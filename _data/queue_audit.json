@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-06-29T23:26:07.485836+00:00",
+  "generated_at": "2026-06-29T23:43:57.341268+00:00",
   "pending": 20,
   "states": {
-    "rewrite": 16,
-    "publish_ready": 4
+    "publish_ready": 5,
+    "rewrite": 15
   },
   "mechanism_clusters": {
     "call_signal": 1,
@@ -13,30 +13,25 @@
     "approved": 20
   },
   "prune_summary": {
-    "pending_before": 29,
+    "pending_before": 20,
     "pending_after": 20,
-    "rejected": 9,
-    "repair_needed": 1,
-    "repaired": 7,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 3,
     "reasons": {
-      "editor_in_chief:subject repeated inside 3-day cooldown": 14,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 15,
       "objective_gate:observe_before_scaling": 13,
-      "duplicate_title": 9,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 5,
       "objective_gate:bootstrap_observe_before_scaling": 4,
       "editor_in_chief:script quality gate blocked the narration": 3,
       "editor_in_chief:editorial score 42 is below 62": 2,
-      "script_subject_mismatch": 2,
-      "copy_subject_mismatch": 2,
+      "editorial_cooldown_supply_fallback": 2,
       "publish_ready_supply_reserve_fallback": 2,
-      "queue_score_reject": 1,
       "editor_in_chief:editorial score 49 is below 62": 1,
       "editor_in_chief:editorial score 44 is below 62": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
-      "editor_in_chief:editorial score 40 is below 62": 1,
-      "editorial_cooldown_supply_fallback": 1,
-      "inventory_reserve_fallback": 1
+      "editor_in_chief:editorial score 40 is below 62": 1
     }
   },
   "rejected_preview": [
@@ -481,7 +476,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-29T23:25:47.154758+00:00",
+        "checked_at": "2026-06-29T23:43:37.981492+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1130,7 +1125,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T23:25:47.784989+00:00",
+        "checked_at": "2026-06-29T23:43:38.016215+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1807,7 +1802,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-29T23:25:47.155756+00:00",
+        "checked_at": "2026-06-29T23:43:37.982458+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -2477,7 +2472,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-29T23:25:47.158238+00:00",
+        "checked_at": "2026-06-29T23:43:37.984712+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -2962,6 +2957,651 @@
       }
     },
     {
+      "id": "d051c1d95735e2ca",
+      "title": "Deer use sound radar before they aim",
+      "category": "wildlife",
+      "publish_score": {
+        "approved": true,
+        "category": "wildlife",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.514,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.352,
+          "data_quality": "observed",
+          "data_quality_score": 1.0,
+          "minimum_sample_size": 38,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.35.",
+          "recommendation_strength": "observe",
+          "sample_size": 23
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.352,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [],
+          "scale_ready": true,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ear",
+            "ears"
+          ],
+          "cue_terms": [
+            "ear",
+            "ears",
+            "radar",
+            "sound"
+          ],
+          "frame_hook_bridge": [],
+          "risks": [
+            "frame_text_not_echoed_early"
+          ],
+          "score": 90.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "deer"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.4,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.2,
+            "data_quality": "observed",
+            "data_quality_score": 1.0,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only.",
+          "reasons": [],
+          "score": 65,
+          "signals": {
+            "comment_potential": 47,
+            "educational_potential": 66,
+            "emotional_potential": 28,
+            "novelty": 62,
+            "replay_potential": 75,
+            "viral_potential": 70,
+            "visual_potential": 82
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.4,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.2,
+            "data_quality": "observed",
+            "data_quality_score": 1.0,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only.",
+          "reasons": [],
+          "score": 79,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 74
+          },
+          "verdict": "ready"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.207,
+          "confidence": {
+            "bootstrap_multiplier": 0.574,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.431,
+            "data_quality": "observed",
+            "data_quality_score": 0.912,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.43.",
+            "recommendation_strength": "observe",
+            "sample_size": 12
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.43.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.242,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-06-29T23:43:37.977070+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "editor_in_chief:subject repeated inside 3-day cooldown",
+          "editorial_cooldown_supply_fallback"
+        ],
+        "score": 72.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 72.0,
+      "youtube_brain": {
+        "animal": "deer",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ear",
+            "ears"
+          ],
+          "cue_terms": [
+            "ear",
+            "ears",
+            "radar",
+            "sound"
+          ],
+          "frame_hook_bridge": [],
+          "risks": [
+            "frame_text_not_echoed_early"
+          ],
+          "score": 90.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "deer"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "deer",
+        "viewer_promise": "See why deer body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which deer clue should Wild Brief compare next in Animal Superpowers?",
+        "cta_prompt": "Want more wild behavior explained without the fluff?",
+        "curiosity_gap": {
+          "hook": "Deer use sound radar before they aim",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "story"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 98,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 43.18,
+            "format:fresh_variant": 37.16,
+            "format:winner_inspired": 43.67,
+            "hook:pattern_reuse": 43.67,
+            "thumbnail:new_thumbnail": 42.74
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "ear",
+              "ears"
+            ],
+            "cue_terms": [
+              "ear",
+              "ears",
+              "radar",
+              "sound"
+            ],
+            "frame_hook_bridge": [],
+            "risks": [
+              "frame_text_not_echoed_early"
+            ],
+            "score": 90.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "deer"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Deer can aim each ear toward danger",
+          "Deer show why the sound radar matters.",
+          "Deer show why the sound radar matters.",
+          "Deer show why the sound radar matters.",
+          "Deer give away the answer through sound radar"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "sound radar",
+          "ending_line": "Would you freeze?",
+          "final_line": "Now the sound radar at the start makes sense.",
+          "loop_score": 0.8,
+          "opening_line": "Deer can aim each ear toward danger.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "sound radar",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.8,
+        "next_episode_question": "Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ear",
+            "ears"
+          ],
+          "cue_terms": [
+            "ear",
+            "ears",
+            "radar",
+            "sound"
+          ],
+          "frame_hook_bridge": [],
+          "risks": [
+            "frame_text_not_echoed_early"
+          ],
+          "score": 90.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "deer"
+        },
+        "pinned_comment": "Watch the sound radar again. Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 14.89,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 19,
+          "first_2s_narration": "Deer can aim each ear toward danger Watch the ears first because",
+          "first_frame_text": "SOUND RADAR",
+          "first_frame_text_words": 2,
+          "hook": "Deer can aim each ear toward danger.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.8,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "ear",
+              "ears"
+            ],
+            "cue_terms": [
+              "ear",
+              "ears",
+              "radar",
+              "sound"
+            ],
+            "frame_hook_bridge": [],
+            "risks": [
+              "frame_text_not_echoed_early"
+            ],
+            "score": 90.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "deer"
+          },
+          "opening_retention_score": 90.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the sound radar, so viewers rewatch the deer clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.4,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.2,
+            "data_quality": "observed",
+            "data_quality_score": 1.0,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only.",
+          "reasons": [],
+          "score": 79,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 74
+          },
+          "verdict": "ready"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Deer can aim each ear toward danger Watch the ears first because",
+          "first_frame_text": "SOUND RADAR",
+          "next_episode_question": "Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
+          "opening_retention_score": 90.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Deer behavior through the visible sound radar.",
+            "series": "Animal Superpowers",
+            "subject": "deer",
+            "terms": [
+              "deer",
+              "sound radar",
+              "wildlife",
+              "body superpower"
+            ],
+            "title_variant": "Deer behavior: sound radar explained",
+            "visible_cue": "sound radar"
+          },
+          "series": "Animal Superpowers",
+          "subject": "deer",
+          "visible_cue": "sound radar"
+        },
+        "risks": [],
+        "score": 98,
+        "search_intent": {
+          "description_line": "This Short explains Deer behavior through the visible sound radar.",
+          "series": "Animal Superpowers",
+          "subject": "deer",
+          "terms": [
+            "deer",
+            "sound radar",
+            "wildlife",
+            "body superpower"
+          ],
+          "title_variant": "Deer behavior: sound radar explained",
+          "visible_cue": "sound radar"
+        },
+        "selected_variant": {
+          "hook": "Deer can aim each ear toward danger",
+          "score": 79,
+          "thumbnail_text": "SOUND RADAR",
+          "title": "Deer aim their ears like sound radar"
+        },
+        "series": "Animal Superpowers #19",
+        "series_identity": {
+          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature.",
+          "episode": 19,
+          "label": "Animal Superpowers #19",
+          "series": "Animal Superpowers"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.207,
+          "confidence": {
+            "bootstrap_multiplier": 0.574,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.431,
+            "data_quality": "observed",
+            "data_quality_score": 0.912,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.43.",
+            "recommendation_strength": "observe",
+            "sample_size": 12
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.43.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.242,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "SOUND RADAR",
+          "WATCH SOUND RADAR",
+          "DEER AIM",
+          "SOUND RADAR MATTERS",
+          "SOUND RADAR FIRST",
+          "SOUND RADAR REVEAL",
+          "SOUND RADAR CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Deer aim their ears like sound radar",
+          "Deer use sound radar before they aim",
+          "This sound radar gives deer away",
+          "Why deer aim after one sound radar",
+          "Deer reveal the answer with sound radar",
+          "The sound radar that changes the moment",
+          "Deer make one sound radar matter",
+          "Deer show the hidden answer in seconds",
+          "Deer: watch this sound radar",
+          "Watch deer after the sound radar"
+        ],
+        "top_variants": [
+          {
+            "hook": "Deer can aim each ear toward danger",
+            "score": 79,
+            "thumbnail_text": "SOUND RADAR",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Start with the sound radar; it changes the scene",
+            "score": 79,
+            "thumbnail_text": "SOUND RADAR",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Watch the sound radar; it explains the behavior",
+            "score": 77,
+            "thumbnail_text": "SOUND RADAR",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Deer can aim each ear toward danger",
+            "score": 72,
+            "thumbnail_text": "WATCH SOUND RADAR",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Start with the sound radar; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "WATCH SOUND RADAR",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Deer can aim each ear toward danger",
+            "score": 72,
+            "thumbnail_text": "DEER AIM",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Start with the sound radar; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "DEER AIM",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Deer can aim each ear toward danger",
+            "score": 72,
+            "thumbnail_text": "SOUND RADAR MATTERS",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Start with the sound radar; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "SOUND RADAR MATTERS",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Deer can aim each ear toward danger",
+            "score": 72,
+            "thumbnail_text": "SOUND RADAR FIRST",
+            "title": "Deer aim their ears like sound radar"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "0ef428432eac25bb",
       "title": "Leaves turn a forest into a cooler room",
       "category": "earth_from_space",
@@ -3136,7 +3776,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-29T23:25:47.163538+00:00",
+        "checked_at": "2026-06-29T23:43:37.989868+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -3608,651 +4248,6 @@
       }
     },
     {
-      "id": "d051c1d95735e2ca",
-      "title": "Deer use sound radar before they aim",
-      "category": "wildlife",
-      "publish_score": {
-        "approved": true,
-        "category": "wildlife",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.489,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.319,
-          "data_quality": "observed",
-          "data_quality_score": 1.0,
-          "minimum_sample_size": 35,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.32.",
-          "recommendation_strength": "observe",
-          "sample_size": 21
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.319,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "ear",
-            "ears"
-          ],
-          "cue_terms": [
-            "ear",
-            "ears",
-            "radar",
-            "sound"
-          ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early"
-          ],
-          "score": 90.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "deer"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.4,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.2,
-            "data_quality": "observed",
-            "data_quality_score": 1.0,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only.",
-          "reasons": [],
-          "score": 63,
-          "signals": {
-            "comment_potential": 47,
-            "educational_potential": 66,
-            "emotional_potential": 28,
-            "novelty": 62,
-            "replay_potential": 65,
-            "viral_potential": 70,
-            "visual_potential": 82
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.4,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.2,
-            "data_quality": "observed",
-            "data_quality_score": 1.0,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only.",
-          "reasons": [],
-          "score": 76,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 74
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "body_superpower",
-        "subscriber_conversion": {
-          "comment_probability": 0.193,
-          "confidence": {
-            "bootstrap_multiplier": 0.449,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.265,
-            "data_quality": "observed",
-            "data_quality_score": 0.883,
-            "minimum_sample_size": 15,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.26.",
-            "recommendation_strength": "observe",
-            "sample_size": 10
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.26.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.225,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 73,
-          "state": "usable",
-          "subscriber_probability": 0.104
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-06-29T23:25:48.093411+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "inventory_reserve_fallback",
-          "inventory_reserve:duplicate_title"
-        ],
-        "score": 72.0,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 72.0,
-      "youtube_brain": {
-        "animal": "deer",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "ear",
-            "ears"
-          ],
-          "cue_terms": [
-            "ear",
-            "ears",
-            "radar",
-            "sound"
-          ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early"
-          ],
-          "score": 90.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "deer"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "body_superpower",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "deer",
-        "viewer_promise": "See why deer body superpower matters."
-      },
-      "packaging": {
-        "community_prompt": "Which deer clue should Wild Brief compare next in Watch The Cue?",
-        "cta_prompt": "Want more wild behavior explained without the fluff?",
-        "curiosity_gap": {
-          "hook": "Why do these deer change after the sound radar?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "body superpower",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 98,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 43.18,
-            "format:fresh_variant": 37.16,
-            "format:winner_inspired": 43.67,
-            "hook:pattern_reuse": 43.67,
-            "thumbnail:new_thumbnail": 42.74
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "ear",
-              "ears"
-            ],
-            "cue_terms": [
-              "ear",
-              "ears",
-              "radar",
-              "sound"
-            ],
-            "frame_hook_bridge": [],
-            "risks": [
-              "frame_text_not_echoed_early"
-            ],
-            "score": 90.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "deer"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Deer can aim each ear toward danger",
-          "Deer show why the sound radar matters.",
-          "Deer show why the sound radar matters.",
-          "Deer show why the sound radar matters.",
-          "Deer give away the answer through sound radar"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "sound radar",
-          "ending_line": "Would you freeze?",
-          "final_line": "Now the sound radar at the start makes sense.",
-          "loop_score": 0.8,
-          "opening_line": "Deer can aim each ear toward danger.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "sound radar",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.8,
-        "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. Is this adaptation, instinct, or intelligence?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "ear",
-            "ears"
-          ],
-          "cue_terms": [
-            "ear",
-            "ears",
-            "radar",
-            "sound"
-          ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early"
-          ],
-          "score": 90.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "deer"
-        },
-        "pinned_comment": "Watch the sound radar again. Tomorrow in Watch The Cue: another animal signal. Is this adaptation, instinct, or intelligence?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 14.89,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 19,
-          "first_2s_narration": "Deer can aim each ear toward danger Watch the ears first because",
-          "first_frame_text": "SOUND RADAR",
-          "first_frame_text_words": 2,
-          "hook": "Deer can aim each ear toward danger.",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.8,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "ear",
-              "ears"
-            ],
-            "cue_terms": [
-              "ear",
-              "ears",
-              "radar",
-              "sound"
-            ],
-            "frame_hook_bridge": [],
-            "risks": [
-              "frame_text_not_echoed_early"
-            ],
-            "score": 90.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "deer"
-          },
-          "opening_retention_score": 90.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the sound radar, so viewers rewatch the deer clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.4,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.2,
-            "data_quality": "observed",
-            "data_quality_score": 1.0,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only.",
-          "reasons": [],
-          "score": 76,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 74
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Deer can aim each ear toward danger Watch the ears first because",
-          "first_frame_text": "SOUND RADAR",
-          "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. Is this adaptation, instinct, or intelligence?",
-          "opening_retention_score": 90.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains Deer behavior through the visible sound radar.",
-            "series": "Watch The Cue",
-            "subject": "deer",
-            "terms": [
-              "deer",
-              "sound radar",
-              "wildlife",
-              "body superpower"
-            ],
-            "title_variant": "Deer behavior: sound radar explained",
-            "visible_cue": "sound radar"
-          },
-          "series": "Watch The Cue",
-          "subject": "deer",
-          "visible_cue": "sound radar"
-        },
-        "risks": [],
-        "score": 97,
-        "search_intent": {
-          "description_line": "This Short explains Deer behavior through the visible sound radar.",
-          "series": "Watch The Cue",
-          "subject": "deer",
-          "terms": [
-            "deer",
-            "sound radar",
-            "wildlife",
-            "body superpower"
-          ],
-          "title_variant": "Deer behavior: sound radar explained",
-          "visible_cue": "sound radar"
-        },
-        "selected_variant": {
-          "hook": "Deer can aim each ear toward danger",
-          "score": 79,
-          "thumbnail_text": "SOUND RADAR",
-          "title": "Deer aim their ears like sound radar"
-        },
-        "series": "Watch The Cue",
-        "series_identity": {
-          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Watch The Cue",
-          "series": "Watch The Cue"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.193,
-          "confidence": {
-            "bootstrap_multiplier": 0.449,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.265,
-            "data_quality": "observed",
-            "data_quality_score": 0.883,
-            "minimum_sample_size": 15,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.26.",
-            "recommendation_strength": "observe",
-            "sample_size": 10
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.26.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.225,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 73,
-          "state": "usable",
-          "subscriber_probability": 0.104
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "SOUND RADAR",
-          "WATCH SOUND RADAR",
-          "DEER AIM",
-          "SOUND RADAR MATTERS",
-          "SOUND RADAR FIRST",
-          "SOUND RADAR REVEAL",
-          "SOUND RADAR CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Deer aim their ears like sound radar",
-          "Deer use sound radar before they aim",
-          "This sound radar gives deer away",
-          "Why deer aim after one sound radar",
-          "Deer reveal the answer with sound radar",
-          "The sound radar that changes the moment",
-          "Deer make one sound radar matter",
-          "Deer show the hidden answer in seconds",
-          "Deer: watch this sound radar",
-          "Watch deer after the sound radar"
-        ],
-        "top_variants": [
-          {
-            "hook": "Deer can aim each ear toward danger",
-            "score": 79,
-            "thumbnail_text": "SOUND RADAR",
-            "title": "Deer aim their ears like sound radar"
-          },
-          {
-            "hook": "Start with the sound radar; it changes the scene",
-            "score": 79,
-            "thumbnail_text": "SOUND RADAR",
-            "title": "Deer aim their ears like sound radar"
-          },
-          {
-            "hook": "Watch the sound radar; it explains the behavior",
-            "score": 77,
-            "thumbnail_text": "SOUND RADAR",
-            "title": "Deer aim their ears like sound radar"
-          },
-          {
-            "hook": "Deer can aim each ear toward danger",
-            "score": 72,
-            "thumbnail_text": "WATCH SOUND RADAR",
-            "title": "Deer aim their ears like sound radar"
-          },
-          {
-            "hook": "Start with the sound radar; it changes the scene",
-            "score": 72,
-            "thumbnail_text": "WATCH SOUND RADAR",
-            "title": "Deer aim their ears like sound radar"
-          },
-          {
-            "hook": "Deer can aim each ear toward danger",
-            "score": 72,
-            "thumbnail_text": "DEER AIM",
-            "title": "Deer aim their ears like sound radar"
-          },
-          {
-            "hook": "Start with the sound radar; it changes the scene",
-            "score": 72,
-            "thumbnail_text": "DEER AIM",
-            "title": "Deer aim their ears like sound radar"
-          },
-          {
-            "hook": "Deer can aim each ear toward danger",
-            "score": 72,
-            "thumbnail_text": "SOUND RADAR MATTERS",
-            "title": "Deer aim their ears like sound radar"
-          },
-          {
-            "hook": "Start with the sound radar; it changes the scene",
-            "score": 72,
-            "thumbnail_text": "SOUND RADAR MATTERS",
-            "title": "Deer aim their ears like sound radar"
-          },
-          {
-            "hook": "Deer can aim each ear toward danger",
-            "score": 72,
-            "thumbnail_text": "SOUND RADAR FIRST",
-            "title": "Deer aim their ears like sound radar"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "c85dc830f3c83f6f",
       "title": "Volcanoes build land from flowing lava",
       "category": "geology",
@@ -4426,7 +4421,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T23:25:47.166044+00:00",
+        "checked_at": "2026-06-29T23:43:37.992139+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -5073,7 +5068,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T23:25:46.596315+00:00",
+        "checked_at": "2026-06-29T23:43:37.978246+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -5737,7 +5732,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T23:25:47.159752+00:00",
+        "checked_at": "2026-06-29T23:43:37.986193+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -6381,7 +6376,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T23:25:47.167945+00:00",
+        "checked_at": "2026-06-29T23:43:37.994360+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -7021,7 +7016,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T23:25:47.169495+00:00",
+        "checked_at": "2026-06-29T23:43:37.996064+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -7663,7 +7658,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T23:25:47.171235+00:00",
+        "checked_at": "2026-06-29T23:43:37.997854+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -8319,7 +8314,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T23:25:47.173633+00:00",
+        "checked_at": "2026-06-29T23:43:38.000316+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -8983,7 +8978,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T23:25:47.175260+00:00",
+        "checked_at": "2026-06-29T23:43:38.007554+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -9639,7 +9634,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T23:25:47.177092+00:00",
+        "checked_at": "2026-06-29T23:43:38.009475+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -10292,7 +10287,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T23:25:47.457382+00:00",
+        "checked_at": "2026-06-29T23:43:38.011531+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10945,7 +10940,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T23:25:47.780963+00:00",
+        "checked_at": "2026-06-29T23:43:38.013317+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11598,7 +11593,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T23:25:47.787324+00:00",
+        "checked_at": "2026-06-29T23:43:38.018061+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12256,7 +12251,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T23:25:47.162156+00:00",
+        "checked_at": "2026-06-29T23:43:37.988477+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -12912,7 +12907,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T23:25:46.597300+00:00",
+        "checked_at": "2026-06-29T23:43:37.979218+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",

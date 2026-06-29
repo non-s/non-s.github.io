@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 6,
+    "analytics_due": 4,
     "awaiting_1h": 1,
-    "high_priority": 6,
-    "repair_candidates": 0,
+    "high_priority": 5,
+    "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-06-29T23:25:21.438851+00:00",
+  "generated_at": "2026-06-29T23:43:18.810370+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.2,
+      "age_hours": 0.499,
       "category": "weather",
       "checkpoints": [
         {
@@ -69,16 +69,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 1.017,
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 1.316,
       "category": "geology",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-06-29T23:24:21.883626+00:00",
           "label": "1h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -102,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-06-29T23:24:21.883626+00:00",
-        "label": "1h",
+        "delta_to_target": 0,
+        "due_at": "2026-06-30T04:24:21.883626+00:00",
+        "label": "6h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 24,
+        "state": "pending",
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "high",
+      "priority": "low",
       "series": "Earth Engine",
-      "state": "analytics_due",
+      "state": "watch",
       "title": "Rock layers use rock layers before they change",
       "uploaded_at": "2026-06-29T22:24:21.883626+00:00",
       "url": "https://www.youtube.com/shorts/8-ETIZd80TE",
@@ -125,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.292,
+      "age_hours": 2.591,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.149,
+      "age_hours": 3.448,
       "category": "trees",
       "checkpoints": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.2,
+      "age_hours": 4.499,
       "category": "farm",
       "checkpoints": [
         {
@@ -289,8 +289,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.035,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.334,
       "category": "ocean",
       "checkpoints": [
         {
@@ -306,8 +306,8 @@
           "delta_to_target": -105,
           "due_at": "2026-06-29T23:23:14.984297+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -322,30 +322,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
-        "delta_to_target": -105,
-        "due_at": "2026-06-29T23:23:14.984297+00:00",
-        "label": "6h",
+        "delta_to_target": 0,
+        "due_at": "2026-06-30T17:23:14.984297+00:00",
+        "label": "24h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 105,
+        "state": "pending",
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Ocean Mysteries",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Whales send songs across huge ocean distances",
       "uploaded_at": "2026-06-29T17:23:14.984297+00:00",
       "url": "https://www.youtube.com/shorts/mPIUYYP7Ty4",
       "video_id": "mPIUYYP7Ty4",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Whales send songs across huge ocean distances",
+        "video_id": "mPIUYYP7Ty4",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 7.264,
+      "age_hours": 7.563,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -400,7 +411,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.054,
+      "age_hours": 9.354,
       "category": "space",
       "checkpoints": [
         {
@@ -455,7 +466,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.982,
+      "age_hours": 12.281,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -471,8 +482,8 @@
           "delta_to_target": -105,
           "due_at": "2026-06-29T17:26:25.555830+00:00",
           "label": "6h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 105,
           "views": 0
         },
@@ -510,7 +521,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.405,
+      "age_hours": 13.704,
       "category": "conservation",
       "checkpoints": [
         {
