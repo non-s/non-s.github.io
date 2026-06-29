@@ -1,91 +1,111 @@
 {
-  "generated_at": "2026-06-29T21:49:18.726046+00:00",
-  "pending": 17,
+  "generated_at": "2026-06-29T21:49:43.886722+00:00",
+  "pending": 20,
   "states": {
-    "rewrite": 14,
-    "publish_ready": 3
+    "publish_ready": 5,
+    "rewrite": 15
   },
   "mechanism_clusters": {
     "call_signal": 1,
     "scent_map": 1
   },
   "rights": {
-    "approved": 17
+    "approved": 20
   },
   "prune_summary": {
-    "pending_before": 17,
-    "pending_after": 17,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 3,
+    "pending_before": 57,
+    "pending_after": 20,
+    "rejected": 37,
+    "repair_needed": 7,
+    "repaired": 10,
     "reasons": {
+      "duplicate_title": 19,
       "editor_in_chief:subject repeated inside 3-day cooldown": 13,
       "objective_gate:observe_before_scaling": 12,
+      "off_topic_visual": 9,
+      "queue_score_reject": 7,
+      "duplicate_script": 4,
+      "duplicate_angle": 4,
+      "script_hook_mismatch": 3,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
       "editor_in_chief:script quality gate blocked the narration": 3,
       "objective_gate:bootstrap_observe_before_scaling": 3,
+      "opening_retention_gap_risk": 2,
+      "opening promise is not concrete enough": 2,
+      "publish_ready_supply_reserve_fallback": 2,
+      "non_animal_body_language": 1,
       "editor_in_chief:editorial score 49 is below 62": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
       "editor_in_chief:editorial score 40 is below 62": 1,
       "editorial_cooldown_supply_fallback": 1,
-      "publish_ready_supply_reserve_fallback": 1
+      "inventory_reserve_fallback": 1
     }
   },
   "rejected_preview": [
     {
-      "id": "cefbba0308304425",
-      "title": "Forests make cooler air under the canopy",
+      "id": "24a0617456caf977",
+      "title": "Coral reefs are built by tiny living builders",
       "reasons": [
-        "duplicate_title",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "8954cdf6099e85ef",
+      "title": "Cats use grooming to reset their scent map",
+      "reasons": [
+        "duplicate_script",
         "duplicate_angle"
       ],
-      "stage": "queue_prune"
+      "stage": "queue_prune_final"
     },
     {
-      "id": "14f207991dea2fc0",
-      "title": "Forests reveal edge climates along trails",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "0f63eac4a0bce6b3",
-      "title": "Ocean animals make the gill rhythm matter first",
-      "reasons": [
-        "copy_subject_mismatch",
-        "script_word_loop"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "da94784a521d95f5",
-      "title": "Birds see ultraviolet patterns we miss",
+      "id": "eb4eed0d0eab8cdb",
+      "title": "Trees keep weather history in their rings",
       "reasons": [
         "duplicate_title"
       ],
       "stage": "queue_prune_final"
     },
     {
-      "id": "f8c67a60fa7a1427",
-      "title": "Forests can cool the air below them",
+      "id": "59ff26920ffc16e0",
+      "title": "Owls fly silently because feathers break sound",
       "reasons": [
         "duplicate_title"
       ],
       "stage": "queue_prune_final"
     },
     {
-      "id": "42bc9f9a065abe14",
-      "title": "Storm clouds reveal weather from above the clouds",
+      "id": "c99cc7f801abaeba",
+      "title": "Rock layers reveal heat moving under the surface",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "e5359ff8c4f31e87",
+      "title": "Lions hunt better when the pride coordinates",
       "reasons": [
         "duplicate_title"
       ],
       "stage": "queue_prune_final"
     },
     {
-      "id": "01c057d44743be0f",
+      "id": "61df0f455351f1ef",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "9c0b0d680157d87c",
       "title": "Ants show why scent road matters",
       "reasons": [
         "duplicate_angle"
@@ -93,57 +113,66 @@
       "stage": "queue_prune_final"
     },
     {
-      "id": "e9560b7b545e9874",
-      "title": "Cows can remember who belongs in the herd",
+      "id": "486eb30ccc8fcce5",
+      "title": "Antlions use first move before they trap",
       "reasons": [
-        "duplicate_title"
+        "script_hook_mismatch"
       ],
       "stage": "queue_prune_final"
     },
     {
-      "id": "1558dfef8c8ea4c4",
-      "title": "Dogs read human pointing surprisingly well",
+      "id": "cf5c48a8ec9abe08",
+      "title": "Goats see wide with rectangular pupils",
       "reasons": [
-        "rights_guard_person_manual_review"
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
       ],
-      "stage": "queue_prune"
+      "stage": "queue_prune_final"
     },
     {
-      "id": "792fd0974ba3fc11",
-      "title": "Farm animals make the hoof timing matter first",
+      "id": "1773efa1eff8faa6",
+      "title": "Dogs read the world through scent maps",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "47db04b738be1360",
+      "title": "Winter dogs sniff out survival faster than we think",
       "reasons": [
         "off_topic_visual",
-        "bad_plural_verb"
+        "script_hook_mismatch"
       ],
       "stage": "queue_prune"
     },
     {
-      "id": "9cad028de9518da0",
-      "title": "Farm animals make the feeding cue matter first",
+      "id": "b26a4cab37dbd006",
+      "title": "Dogs read the world through scent maps",
       "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "06cac1f445360cac",
-      "title": "Plants turn light into stored sugar",
-      "reasons": [
-        "off_topic_visual",
         "duplicate_title"
       ],
       "stage": "queue_prune"
     },
     {
-      "id": "6c499452b07db38b",
-      "title": "What a dog's tail says before the bark that most people miss",
+      "id": "f2a6c9ccae4ffa27",
+      "title": "Goats use wide pupils to watch danger",
       "reasons": [
-        "script_word_loop"
+        "duplicate_title"
       ],
       "stage": "queue_prune"
     },
     {
-      "id": "a6889be84e7fb595",
+      "id": "9ee098ecdf0b7d81",
+      "title": "Plants use trap hairs to count touches before snapping shut",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "9adefdf9d8da965e",
       "title": "Birds see ultraviolet patterns we miss",
       "reasons": [
         "duplicate_title"
@@ -151,7 +180,7 @@
       "stage": "queue_prune"
     },
     {
-      "id": "6a492508bb15d9cb",
+      "id": "8ad4a5e6eda6f863",
       "title": "Plants turn light into stored sugar",
       "reasons": [
         "queue_score_reject"
@@ -159,17 +188,40 @@
       "stage": "queue_repair"
     },
     {
-      "id": "b6227919dd757da4",
-      "title": "Ants reveal the answer with footwork",
+      "id": "a24997171f6937ec",
+      "title": "Mountain valleys aren’t just pretty views",
       "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch"
+        "off_topic_visual"
       ],
       "stage": "queue_prune"
     },
     {
-      "id": "edd5345940d496e8",
-      "title": "Birds turn fast by changing wing angles",
+      "id": "4806e70e43d77762",
+      "title": "The moon keeps one face turned toward Earth",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "d41bcae0cac67563",
+      "title": "Lions use dark ear marks to guide cubs",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "f356324a02663576",
+      "title": "Lions hunt better when the pride coordinates",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "95de2c9c23b17480",
+      "title": "squirrels use trees to hide more than you think",
       "reasons": [
         "off_topic_visual",
         "non_animal_body_language"
@@ -177,8 +229,16 @@
       "stage": "queue_prune"
     },
     {
-      "id": "b91e50d4908158ea",
-      "title": "mountains are younger than you think",
+      "id": "906e26387d091610",
+      "title": "Tree roots hijack rivers faster than you think",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "b5cec8233e71e775",
+      "title": "Snow mountains hide a slow explosion beneath",
       "reasons": [
         "off_topic_visual",
         "script_hook_mismatch"
@@ -186,111 +246,700 @@
       "stage": "queue_prune"
     },
     {
-      "id": "7b08a7281c1de0c8",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "419112a2d507aa50",
-      "title": "Volcanoes aren't just fire â€” they're clay builders",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch",
-        "encoding_artifact"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "814acf621b9b721a",
-      "title": "Leopards walk on snow without slipping",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "5ddb6ab2a0efab8a",
-      "title": "Leopards nap in trees like they own the place",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch",
-        "non_animal_body_language"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "744b7a8898381080",
-      "title": "Snow leopard chooses tree over mountain in winter",
-      "reasons": [
-        "off_topic_visual",
-        "non_animal_body_language"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "31cd2c6c9e6a1768",
-      "title": "Powerful owls hunt like silent ninjas",
-      "reasons": [
-        "off_topic_visual",
-        "non_animal_body_language"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "13d1eeceed63ca04",
-      "title": "Mountains aren’t solid—they’re constantly leaking",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "e22b0719d779ebc2",
-      "title": "Storm clouds reveal a storm's heat engine",
+      "id": "206a31e9c26c56e7",
+      "title": "The moon keeps one face turned toward Earth",
       "reasons": [
         "queue_score_reject"
       ],
       "stage": "queue_repair"
     },
     {
-      "id": "609f13e39559a409",
-      "title": "Rivers carve bends by stealing from one bank",
+      "id": "ecdb52c78cc6d0ff",
+      "title": "The moon keeps one face turned toward Earth",
       "reasons": [
         "queue_score_reject"
       ],
       "stage": "queue_repair"
     },
     {
-      "id": "d0fcbfdee0d0b013",
-      "title": "Forests make cooler air under the canopy",
+      "id": "50bca577d0bcaf8a",
+      "title": "Alpine snow hides a rock time bomb",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "ead8cdd09f1e9ae9",
+      "title": "Dogs read the world through scent maps",
       "reasons": [
         "duplicate_title"
       ],
       "stage": "queue_prune"
     },
     {
-      "id": "c334e0f40c32052e",
-      "title": "Dead desert trees don’t just rot they build soil",
+      "id": "52885a0c4ca2d1e0",
+      "title": "Rock layers show their timeline inside caves",
       "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
+        "duplicate_title"
       ],
       "stage": "queue_prune"
     },
     {
-      "id": "da5ad86504c76030",
-      "title": "Why dog play is more serious than it looks that most people miss",
+      "id": "f3a7fb8578a19602",
+      "title": "Trees record wet years inside their rings",
       "reasons": [
-        "off_topic_visual",
-        "script_word_loop"
+        "duplicate_title"
       ],
       "stage": "queue_prune"
     }
   ],
   "top": [
+    {
+      "id": "1f348db0eb1fbb19",
+      "title": "Ocean animals make the gill rhythm matter first",
+      "category": "ocean",
+      "publish_score": {
+        "approved": true,
+        "category": "ocean",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.655,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.54,
+          "data_quality": "observed",
+          "data_quality_score": 1.0,
+          "minimum_sample_size": 35,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.54.",
+          "recommendation_strength": "observe",
+          "sample_size": 33
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 86,
+        "objective_gate": {
+          "confidence_score": 0.54,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [],
+          "scale_ready": true,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "gill",
+            "rhythm"
+          ],
+          "cue_terms": [
+            "gill",
+            "rhythm"
+          ],
+          "frame_hook_bridge": [
+            "gill",
+            "rhythm"
+          ],
+          "risks": [
+            "subject_not_frontloaded"
+          ],
+          "score": 92.0,
+          "state": "retention_ready",
+          "strengths": [
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "coral"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.55,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.54,
+            "data_quality": "observed",
+            "data_quality_score": 0.675,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 4/5 samples, observed data, confidence 0.54; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 4
+          },
+          "reasoning": "category has 4/5 samples, observed data, confidence 0.54; observation only.",
+          "reasons": [],
+          "score": 55,
+          "signals": {
+            "comment_potential": 23,
+            "educational_potential": 53,
+            "emotional_potential": 28,
+            "novelty": 62,
+            "replay_potential": 55,
+            "viral_potential": 47,
+            "visual_potential": 92
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.55,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.54,
+            "data_quality": "observed",
+            "data_quality_score": 0.675,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 4/5 samples, observed data, confidence 0.54; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 4
+          },
+          "reasoning": "category has 4/5 samples, observed data, confidence 0.54; observation only.",
+          "reasons": [],
+          "score": 79,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 82
+          },
+          "verdict": "ready"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.226,
+          "confidence": {
+            "bootstrap_multiplier": 0.512,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.35,
+            "data_quality": "observed",
+            "data_quality_score": 0.883,
+            "minimum_sample_size": 15,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.35.",
+            "recommendation_strength": "observe",
+            "sample_size": 13
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.35.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.264,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 87,
+          "state": "strong",
+          "subscriber_probability": 0.124
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [
+            "repetitive_script"
+          ],
+          "risk": 22,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-06-29T21:49:27.103789+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "ocean",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "gill",
+            "rhythm"
+          ],
+          "cue_terms": [
+            "gill",
+            "rhythm"
+          ],
+          "frame_hook_bridge": [
+            "gill",
+            "rhythm"
+          ],
+          "risks": [
+            "subject_not_frontloaded"
+          ],
+          "score": 92.0,
+          "state": "retention_ready",
+          "strengths": [
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "coral"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "ocean",
+        "viewer_promise": "See the ocean detail that changes the whole scene."
+      },
+      "packaging": {
+        "community_prompt": "Which ocean clue should Wild Brief compare next in Nature Signals?",
+        "cta_prompt": "Want to uncover what is still hidden in the ocean?",
+        "curiosity_gap": {
+          "hook": "Why does this coral changes after the gill rhythm?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 96,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 43.18,
+            "format:fresh_variant": 37.16,
+            "format:winner_inspired": 43.67,
+            "hook:pattern_reuse": 43.67,
+            "thumbnail:new_thumbnail": 42.74
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "gill",
+              "rhythm"
+            ],
+            "cue_terms": [
+              "gill",
+              "rhythm"
+            ],
+            "frame_hook_bridge": [
+              "gill",
+              "rhythm"
+            ],
+            "risks": [
+              "subject_not_frontloaded"
+            ],
+            "score": 92.0,
+            "state": "retention_ready",
+            "strengths": [
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "coral"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Ocean shows why the coral matters.",
+          "Ocean animals make the gill rhythm matter first",
+          "Ocean shows why the reef city matters.",
+          "Ocean shows why the reef city matters.",
+          "Ocean shows why the reef city matters."
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "gill rhythm",
+          "ending_line": "By the last line, the opening detail has a job viewers can name.",
+          "final_line": "Now the gill rhythm at the start makes sense.",
+          "loop_score": 0.791,
+          "opening_line": "Ocean animals make the gill rhythm matter first.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "gill rhythm",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.791,
+        "next_episode_question": "Tomorrow in Nature Signals: another nature signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "gill",
+            "rhythm"
+          ],
+          "cue_terms": [
+            "gill",
+            "rhythm"
+          ],
+          "frame_hook_bridge": [
+            "gill",
+            "rhythm"
+          ],
+          "risks": [
+            "subject_not_frontloaded"
+          ],
+          "score": 92.0,
+          "state": "retention_ready",
+          "strengths": [
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "coral"
+        },
+        "pinned_comment": "Watch the coral again. Tomorrow in Nature Signals: another nature signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.92,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 24,
+          "first_2s_narration": "Ocean animals make the gill rhythm matter first Watch the gill rhythm",
+          "first_frame_text": "GILL RHYTHM",
+          "first_frame_text_words": 2,
+          "hook": "Ocean animals make the gill rhythm matter first.",
+          "hook_specificity": 0.78,
+          "hook_words": 8,
+          "loop_score": 0.791,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "gill",
+              "rhythm"
+            ],
+            "cue_terms": [
+              "gill",
+              "rhythm"
+            ],
+            "frame_hook_bridge": [
+              "gill",
+              "rhythm"
+            ],
+            "risks": [
+              "subject_not_frontloaded"
+            ],
+            "score": 92.0,
+            "state": "retention_ready",
+            "strengths": [
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "coral"
+          },
+          "opening_retention_score": 92.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the coral, so viewers rewatch the ocean clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.55,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.54,
+            "data_quality": "observed",
+            "data_quality_score": 0.675,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 4/5 samples, observed data, confidence 0.54; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 4
+          },
+          "reasoning": "category has 4/5 samples, observed data, confidence 0.54; observation only.",
+          "reasons": [],
+          "score": 79,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 82
+          },
+          "verdict": "ready"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Ocean animals make the gill rhythm matter first Watch the gill rhythm",
+          "first_frame_text": "GILL RHYTHM",
+          "next_episode_question": "Tomorrow in Nature Signals: another nature signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+          "opening_retention_score": 92.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains the visible coral behind Ocean in a fast nature science story.",
+            "series": "Nature Signals",
+            "subject": "ocean",
+            "terms": [
+              "ocean",
+              "coral",
+              "body superpower"
+            ],
+            "title_variant": "Ocean coral explained fast",
+            "visible_cue": "coral"
+          },
+          "series": "Nature Signals",
+          "subject": "ocean",
+          "visible_cue": "coral"
+        },
+        "risks": [],
+        "score": 98,
+        "search_intent": {
+          "description_line": "This Short explains the visible coral behind Ocean in a fast nature science story.",
+          "series": "Nature Signals",
+          "subject": "ocean",
+          "terms": [
+            "ocean",
+            "coral",
+            "body superpower"
+          ],
+          "title_variant": "Ocean coral explained fast",
+          "visible_cue": "coral"
+        },
+        "selected_variant": {
+          "hook": "Coral reefs are built by tiny living builders",
+          "score": 79,
+          "thumbnail_text": "REEF CITY",
+          "title": "Coral reefs are cities built by tiny animals"
+        },
+        "series": "Nature Signals #4",
+        "series_identity": {
+          "continuity_prompt": "Next in Nature Signals: compare this with another force of nature.",
+          "episode": 4,
+          "label": "Nature Signals #4",
+          "series": "Nature Signals"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.226,
+          "confidence": {
+            "bootstrap_multiplier": 0.512,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.35,
+            "data_quality": "observed",
+            "data_quality_score": 0.883,
+            "minimum_sample_size": 15,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.35.",
+            "recommendation_strength": "observe",
+            "sample_size": 13
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.35.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.264,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 87,
+          "state": "strong",
+          "subscriber_probability": 0.124
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "REEF CITY",
+          "WATCH REEF CITY",
+          "CORAL REEFS CHANGE",
+          "REEF CITY MATTERS",
+          "REEF CITY FIRST",
+          "REEF CITY REVEAL",
+          "REEF CITY CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Coral reefs are cities built by tiny animals",
+          "Ocean animals make the gill rhythm matter first",
+          "Coral reefs use reef city before they change",
+          "This reef city gives coral reefs away",
+          "Why coral reefs change after one reef city",
+          "Coral reefs reveal the answer with reef city",
+          "The reef city that changes the moment",
+          "Coral reefs make one reef city matter",
+          "Coral reefs show the hidden answer in seconds",
+          "Coral reefs: watch this reef city"
+        ],
+        "top_variants": [
+          {
+            "hook": "Coral reefs are built by tiny living builders",
+            "score": 79,
+            "thumbnail_text": "REEF CITY",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Ocean animals make the gill rhythm matter first",
+            "score": 79,
+            "thumbnail_text": "REEF CITY",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Watch the reef city; it explains the behavior",
+            "score": 79,
+            "thumbnail_text": "REEF CITY",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Coral reefs are built by tiny living builders",
+            "score": 73,
+            "thumbnail_text": "CORAL REEFS CHANGE",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Ocean animals make the gill rhythm matter first",
+            "score": 73,
+            "thumbnail_text": "CORAL REEFS CHANGE",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Watch the reef city; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "CORAL REEFS CHANGE",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Coral reefs are built by tiny living builders",
+            "score": 72,
+            "thumbnail_text": "WATCH REEF CITY",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Ocean animals make the gill rhythm matter first",
+            "score": 72,
+            "thumbnail_text": "WATCH REEF CITY",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Watch the reef city; it explains the behavior",
+            "score": 72,
+            "thumbnail_text": "WATCH REEF CITY",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Coral reefs are built by tiny living builders",
+            "score": 72,
+            "thumbnail_text": "REEF CITY MATTERS",
+            "title": "Coral reefs are cities built by tiny animals"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
     {
       "id": "7ea6de9283de7ea9",
       "title": "Ants reveal the answer with scent road",
@@ -466,7 +1115,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:00.120141+00:00",
+        "checked_at": "2026-06-29T21:49:27.520308+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -1115,7 +1764,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:00.148562+00:00",
+        "checked_at": "2026-06-29T21:49:28.937849+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1603,6 +2252,675 @@
       }
     },
     {
+      "id": "a288d018c578b236",
+      "title": "Goats see wide with rectangular pupils",
+      "category": "farm",
+      "publish_score": {
+        "approved": true,
+        "category": "farm",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.642,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.523,
+          "data_quality": "observed",
+          "data_quality_score": 1.0,
+          "minimum_sample_size": 35,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.52.",
+          "recommendation_strength": "observe",
+          "sample_size": 29
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 86,
+        "objective_gate": {
+          "confidence_score": 0.523,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [],
+          "scale_ready": true,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "eyes",
+            "pupil",
+            "wide"
+          ],
+          "cue_terms": [
+            "eyes",
+            "pupil",
+            "vision",
+            "wide"
+          ],
+          "frame_hook_bridge": [
+            "wide"
+          ],
+          "risks": [
+            "missing_early_action"
+          ],
+          "score": 96.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "goats"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.55,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.514,
+            "data_quality": "observed",
+            "data_quality_score": 0.856,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 3
+          },
+          "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only.",
+          "reasons": [
+            "weak_replay_reason",
+            "low_opportunity_score"
+          ],
+          "score": 48,
+          "signals": {
+            "comment_potential": 38,
+            "educational_potential": 51,
+            "emotional_potential": 36,
+            "novelty": 47,
+            "replay_potential": 44,
+            "viral_potential": 40,
+            "visual_potential": 67
+          },
+          "verdict": "discard"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "reserve_override": {
+          "original_approved": false,
+          "original_opportunity_reasons": [
+            "weak_replay_reason",
+            "low_opportunity_score"
+          ],
+          "original_state": "rewrite",
+          "reason": "publish_ready_supply_reserve_fallback"
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.55,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.514,
+            "data_quality": "observed",
+            "data_quality_score": 0.856,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 3
+          },
+          "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only.",
+          "reasons": [],
+          "score": 74,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 74
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.244,
+          "confidence": {
+            "bootstrap_multiplier": 0.507,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.343,
+            "data_quality": "observed",
+            "data_quality_score": 0.883,
+            "minimum_sample_size": 15,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.34.",
+            "recommendation_strength": "observe",
+            "sample_size": 12
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.34.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.286,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 95,
+          "state": "strong",
+          "subscriber_probability": 0.136
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-06-29T21:49:27.308390+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "publish_ready_supply_reserve_fallback"
+        ],
+        "score": 78.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 78.0,
+      "youtube_brain": {
+        "animal": "goats",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "eyes",
+            "pupil",
+            "wide"
+          ],
+          "cue_terms": [
+            "eyes",
+            "pupil",
+            "vision",
+            "wide"
+          ],
+          "frame_hook_bridge": [
+            "wide"
+          ],
+          "risks": [
+            "missing_early_action"
+          ],
+          "score": 96.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "goats"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "goats",
+        "viewer_promise": "See why goats body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which goats clue should Wild Brief compare next in Body Clues?",
+        "cta_prompt": "Want one animal signal a day? Follow for tomorrow's farm clue.",
+        "curiosity_gap": {
+          "hook": "Why do these goats change after the wide pupils?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 96,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 43.18,
+            "format:fresh_variant": 37.16,
+            "format:winner_inspired": 43.67,
+            "hook:pattern_reuse": 43.67,
+            "thumbnail:new_thumbnail": 42.74
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "eyes",
+              "pupil",
+              "wide"
+            ],
+            "cue_terms": [
+              "eyes",
+              "pupil",
+              "vision",
+              "wide"
+            ],
+            "frame_hook_bridge": [
+              "wide"
+            ],
+            "risks": [
+              "missing_early_action"
+            ],
+            "score": 96.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "goats"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Goats see wide with rectangular pupils",
+          "Goats show why the wide pupils matters.",
+          "Goats show why the wide pupils matters.",
+          "Goats show why the wide pupils matters.",
+          "Goats give away the answer through wide pupils"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "wide vision",
+          "ending_line": "Which farm detail should we decode next?",
+          "final_line": "Now the wide vision at the start makes sense.",
+          "loop_score": 0.769,
+          "opening_line": "Goats see wide with rectangular pupils.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "wide vision",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.769,
+        "next_episode_question": "Tomorrow in Body Clues: another animal signal. What part of this feels most impossible?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "eyes",
+            "pupil",
+            "wide"
+          ],
+          "cue_terms": [
+            "eyes",
+            "pupil",
+            "vision",
+            "wide"
+          ],
+          "frame_hook_bridge": [
+            "wide"
+          ],
+          "risks": [
+            "missing_early_action"
+          ],
+          "score": 96.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "goats"
+        },
+        "pinned_comment": "Watch the pupils again. Tomorrow in Body Clues: another animal signal. What part of this feels most impossible?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.61,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 18,
+          "first_2s_narration": "Goats see wide with rectangular pupils Watch the eyes from the side",
+          "first_frame_text": "WIDE VISION",
+          "first_frame_text_words": 2,
+          "hook": "Goats see wide with rectangular pupils.",
+          "hook_specificity": 0.78,
+          "hook_words": 6,
+          "loop_score": 0.769,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "eyes",
+              "pupil",
+              "wide"
+            ],
+            "cue_terms": [
+              "eyes",
+              "pupil",
+              "vision",
+              "wide"
+            ],
+            "frame_hook_bridge": [
+              "wide"
+            ],
+            "risks": [
+              "missing_early_action"
+            ],
+            "score": 96.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "goats"
+          },
+          "opening_retention_score": 96.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the pupils, so viewers rewatch the goats clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.55,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.514,
+            "data_quality": "observed",
+            "data_quality_score": 0.856,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 3
+          },
+          "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only.",
+          "reasons": [],
+          "score": 74,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 74
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Goats see wide with rectangular pupils Watch the eyes from the side",
+          "first_frame_text": "WIDE VISION",
+          "next_episode_question": "Tomorrow in Body Clues: another animal signal. What part of this feels most impossible?",
+          "opening_retention_score": 96.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Goats behavior through the visible pupils.",
+            "series": "Body Clues",
+            "subject": "goats",
+            "terms": [
+              "goats",
+              "pupils",
+              "farm",
+              "body superpower"
+            ],
+            "title_variant": "Goats behavior: pupils explained",
+            "visible_cue": "pupils"
+          },
+          "series": "Body Clues",
+          "subject": "goats",
+          "visible_cue": "pupils"
+        },
+        "risks": [],
+        "score": 96,
+        "search_intent": {
+          "description_line": "This Short explains Goats behavior through the visible pupils.",
+          "series": "Body Clues",
+          "subject": "goats",
+          "terms": [
+            "goats",
+            "pupils",
+            "farm",
+            "body superpower"
+          ],
+          "title_variant": "Goats behavior: pupils explained",
+          "visible_cue": "pupils"
+        },
+        "selected_variant": {
+          "hook": "Start with the wide pupils; it changes the scene",
+          "score": 76,
+          "thumbnail_text": "WIDE VISION",
+          "title": "Goats use wide pupils to watch danger"
+        },
+        "series": "Body Clues",
+        "series_identity": {
+          "continuity_prompt": "Next in Body Clues: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Body Clues",
+          "series": "Body Clues"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.244,
+          "confidence": {
+            "bootstrap_multiplier": 0.507,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.343,
+            "data_quality": "observed",
+            "data_quality_score": 0.883,
+            "minimum_sample_size": 15,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.34.",
+            "recommendation_strength": "observe",
+            "sample_size": 12
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.34.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.286,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 95,
+          "state": "strong",
+          "subscriber_probability": 0.136
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "WIDE VISION",
+          "WIDE PUPILS",
+          "WATCH WIDE PUPILS",
+          "GOATS CHANGE",
+          "WIDE PUPILS MATTERS",
+          "WIDE PUPILS FIRST",
+          "WIDE PUPILS REVEAL",
+          "WIDE PUPILS CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Goats use wide pupils to watch danger",
+          "Goats see wide with rectangular pupils",
+          "Goats use wide pupils before they change",
+          "Why goats change after one wide pupils",
+          "Goats reveal the answer with wide pupils",
+          "The wide pupils that changes the moment",
+          "Goats make one wide pupils matter",
+          "Goats show the hidden answer in seconds",
+          "Goats: watch this wide pupils"
+        ],
+        "top_variants": [
+          {
+            "hook": "Start with the wide pupils; it changes the scene",
+            "score": 76,
+            "thumbnail_text": "WIDE VISION",
+            "title": "Goats use wide pupils to watch danger"
+          },
+          {
+            "hook": "Goats see wide with rectangular pupils",
+            "score": 75,
+            "thumbnail_text": "WIDE VISION",
+            "title": "Goats use wide pupils to watch danger"
+          },
+          {
+            "hook": "Watch the wide pupils; it explains the behavior",
+            "score": 75,
+            "thumbnail_text": "WIDE VISION",
+            "title": "Goats use wide pupils to watch danger"
+          },
+          {
+            "hook": "Start with the wide pupils; it changes the scene",
+            "score": 69,
+            "thumbnail_text": "WIDE PUPILS",
+            "title": "Goats use wide pupils to watch danger"
+          },
+          {
+            "hook": "Start with the wide pupils; it changes the scene",
+            "score": 69,
+            "thumbnail_text": "WATCH WIDE PUPILS",
+            "title": "Goats use wide pupils to watch danger"
+          },
+          {
+            "hook": "Goats see wide with rectangular pupils",
+            "score": 69,
+            "thumbnail_text": "GOATS CHANGE",
+            "title": "Goats use wide pupils to watch danger"
+          },
+          {
+            "hook": "Watch the wide pupils; it explains the behavior",
+            "score": 69,
+            "thumbnail_text": "GOATS CHANGE",
+            "title": "Goats use wide pupils to watch danger"
+          },
+          {
+            "hook": "Start with the wide pupils; it changes the scene",
+            "score": 69,
+            "thumbnail_text": "GOATS CHANGE",
+            "title": "Goats use wide pupils to watch danger"
+          },
+          {
+            "hook": "Start with the wide pupils; it changes the scene",
+            "score": 69,
+            "thumbnail_text": "WIDE PUPILS MATTERS",
+            "title": "Goats use wide pupils to watch danger"
+          },
+          {
+            "hook": "Goats see wide with rectangular pupils",
+            "score": 68,
+            "thumbnail_text": "WIDE PUPILS",
+            "title": "Goats use wide pupils to watch danger"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "ff4daa85598c5851",
       "title": "Cats groom to reset their scent map",
       "category": "cats",
@@ -1792,7 +3110,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:00.121486+00:00",
+        "checked_at": "2026-06-29T21:49:27.520972+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -2449,7 +3767,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:00.128232+00:00",
+        "checked_at": "2026-06-29T21:49:27.984536+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -2921,6 +4239,649 @@
       }
     },
     {
+      "id": "77c51799ed1da425",
+      "title": "Forests use cool canopy before they cover",
+      "category": "forests",
+      "publish_score": {
+        "approved": true,
+        "category": "forests",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.392,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.189,
+          "data_quality": "observed",
+          "data_quality_score": 0.825,
+          "minimum_sample_size": 25,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.19.",
+          "recommendation_strength": "observe",
+          "sample_size": 17
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.189,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "air",
+            "cool"
+          ],
+          "cue_terms": [
+            "air",
+            "canop",
+            "cool"
+          ],
+          "frame_hook_bridge": [
+            "cool"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "forests"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 66,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 72,
+            "emotional_potential": 35,
+            "novelty": 59,
+            "replay_potential": 72,
+            "viral_potential": 82,
+            "visual_potential": 69
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.186,
+          "confidence": {
+            "bootstrap_multiplier": 0.411,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.215,
+            "data_quality": "observed",
+            "data_quality_score": 0.825,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.21.",
+            "recommendation_strength": "observe",
+            "sample_size": 9
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.21.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.217,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 70,
+          "state": "usable",
+          "subscriber_probability": 0.1
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-06-29T21:49:29.398102+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "inventory_reserve_fallback",
+          "inventory_reserve:duplicate_title"
+        ],
+        "score": 72.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 72.0,
+      "youtube_brain": {
+        "animal": "forests",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "air",
+            "cool"
+          ],
+          "cue_terms": [
+            "air",
+            "canop",
+            "cool"
+          ],
+          "frame_hook_bridge": [
+            "cool"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "forests"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "forests",
+        "viewer_promise": "See the forest detail that changes the whole scene."
+      },
+      "packaging": {
+        "community_prompt": "Which forests clue should Wild Brief compare next in Hidden Network?",
+        "cta_prompt": "Want to see how forests quietly run the planet?",
+        "curiosity_gap": {
+          "hook": "Why do these forests change after the cool canopy?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 96,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 43.18,
+            "format:fresh_variant": 37.16,
+            "format:winner_inspired": 43.67,
+            "hook:pattern_reuse": 43.67,
+            "thumbnail:new_thumbnail": 42.74
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "air",
+              "cool"
+            ],
+            "cue_terms": [
+              "air",
+              "canop",
+              "cool"
+            ],
+            "frame_hook_bridge": [
+              "cool"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "forests"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Forests can cool the air below them",
+          "Forests show why the cool canopy matters.",
+          "Forests show why the cool canopy matters.",
+          "Forests show why the cool canopy matters.",
+          "Forests give away the answer through cool canopy"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "cool canopy",
+          "ending_line": "Which forest layer next?",
+          "final_line": "Now the cool canopy at the start makes sense.",
+          "loop_score": 0.836,
+          "opening_line": "Forests can cool the air below them.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "cool canopy",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.836,
+        "next_episode_question": "Tomorrow in Hidden Network: another nature signal. Do forests feel more like places, systems, or living machines?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "air",
+            "cool"
+          ],
+          "cue_terms": [
+            "air",
+            "canop",
+            "cool"
+          ],
+          "frame_hook_bridge": [
+            "cool"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "forests"
+        },
+        "pinned_comment": "Watch the cool canopy again. Tomorrow in Hidden Network: another nature signal. Do forests feel more like places, systems, or living machines?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.71,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 17,
+          "first_2s_narration": "Forests can cool the air below them Watch the shade and mist",
+          "first_frame_text": "COOL CANOPY",
+          "first_frame_text_words": 2,
+          "hook": "Forests can cool the air below them.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.836,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "air",
+              "cool"
+            ],
+            "cue_terms": [
+              "air",
+              "canop",
+              "cool"
+            ],
+            "frame_hook_bridge": [
+              "cool"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "forests"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the cool canopy, so viewers rewatch the forests clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Forests can cool the air below them Watch the shade and mist",
+          "first_frame_text": "COOL CANOPY",
+          "next_episode_question": "Tomorrow in Hidden Network: another nature signal. Do forests feel more like places, systems, or living machines?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains the visible cool canopy behind Forests in a fast nature science story.",
+            "series": "Hidden Network",
+            "subject": "forests",
+            "terms": [
+              "forests",
+              "cool canopy",
+              "body superpower"
+            ],
+            "title_variant": "Forests cool canopy explained fast",
+            "visible_cue": "cool canopy"
+          },
+          "series": "Hidden Network",
+          "subject": "forests",
+          "visible_cue": "cool canopy"
+        },
+        "risks": [],
+        "score": 96,
+        "search_intent": {
+          "description_line": "This Short explains the visible cool canopy behind Forests in a fast nature science story.",
+          "series": "Hidden Network",
+          "subject": "forests",
+          "terms": [
+            "forests",
+            "cool canopy",
+            "body superpower"
+          ],
+          "title_variant": "Forests cool canopy explained fast",
+          "visible_cue": "cool canopy"
+        },
+        "selected_variant": {
+          "hook": "Forests can cool the air below them",
+          "score": 78,
+          "thumbnail_text": "COOL CANOPY",
+          "title": "Forests make cooler air under the canopy"
+        },
+        "series": "Hidden Network #9",
+        "series_identity": {
+          "continuity_prompt": "Next in Hidden Network: compare this with another force of nature.",
+          "episode": 9,
+          "label": "Hidden Network #9",
+          "series": "Hidden Network"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.186,
+          "confidence": {
+            "bootstrap_multiplier": 0.411,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.215,
+            "data_quality": "observed",
+            "data_quality_score": 0.825,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.21.",
+            "recommendation_strength": "observe",
+            "sample_size": 9
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.21.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.217,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 70,
+          "state": "usable",
+          "subscriber_probability": 0.1
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "COOL CANOPY",
+          "WATCH COOL CANOPY",
+          "FORESTS COVER",
+          "COOL CANOPY MATTERS",
+          "COOL CANOPY FIRST",
+          "COOL CANOPY REVEAL",
+          "COOL CANOPY CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Forests make cooler air under the canopy",
+          "Forests use cool canopy before they cover",
+          "This cool canopy gives forests away",
+          "Why forests cover after one cool canopy",
+          "Forests reveal the answer with cool canopy",
+          "The cool canopy that changes the moment",
+          "Forests make one cool canopy matter",
+          "Forests show the hidden answer in seconds",
+          "Forests: watch this cool canopy",
+          "Watch forests after the cool canopy"
+        ],
+        "top_variants": [
+          {
+            "hook": "Forests can cool the air below them",
+            "score": 78,
+            "thumbnail_text": "COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Watch the cool canopy; it explains the behavior",
+            "score": 78,
+            "thumbnail_text": "COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Start with the cool canopy; it changes the scene",
+            "score": 78,
+            "thumbnail_text": "COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Forests can cool the air below them",
+            "score": 71,
+            "thumbnail_text": "WATCH COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Watch the cool canopy; it explains the behavior",
+            "score": 71,
+            "thumbnail_text": "WATCH COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Start with the cool canopy; it changes the scene",
+            "score": 71,
+            "thumbnail_text": "WATCH COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Forests can cool the air below them",
+            "score": 71,
+            "thumbnail_text": "FORESTS COVER",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Watch the cool canopy; it explains the behavior",
+            "score": 71,
+            "thumbnail_text": "FORESTS COVER",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Start with the cool canopy; it changes the scene",
+            "score": 71,
+            "thumbnail_text": "FORESTS COVER",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Forests can cool the air below them",
+            "score": 71,
+            "thumbnail_text": "COOL CANOPY MATTERS",
+            "title": "Forests make cooler air under the canopy"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "c85dc830f3c83f6f",
       "title": "Volcanoes build land from flowing lava",
       "category": "geology",
@@ -3094,7 +5055,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:00.130860+00:00",
+        "checked_at": "2026-06-29T21:49:28.021736+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -3741,7 +5702,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:00.115562+00:00",
+        "checked_at": "2026-06-29T21:49:27.518417+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -4405,7 +6366,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:00.123948+00:00",
+        "checked_at": "2026-06-29T21:49:27.722388+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -5049,7 +7010,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:00.132913+00:00",
+        "checked_at": "2026-06-29T21:49:28.023985+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -5687,7 +7648,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:00.134669+00:00",
+        "checked_at": "2026-06-29T21:49:28.025532+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -6329,7 +8290,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:00.136657+00:00",
+        "checked_at": "2026-06-29T21:49:28.027536+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -6985,7 +8946,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:00.139270+00:00",
+        "checked_at": "2026-06-29T21:49:28.029339+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -7649,7 +9610,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:00.141119+00:00",
+        "checked_at": "2026-06-29T21:49:28.030563+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -8305,7 +10266,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:00.143198+00:00",
+        "checked_at": "2026-06-29T21:49:28.305747+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -8957,7 +10918,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:00.145267+00:00",
+        "checked_at": "2026-06-29T21:49:28.935284+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9610,7 +11571,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:00.150658+00:00",
+        "checked_at": "2026-06-29T21:49:28.939159+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10268,7 +12229,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:00.126705+00:00",
+        "checked_at": "2026-06-29T21:49:27.983552+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -10924,7 +12885,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-29T21:49:00.116668+00:00",
+        "checked_at": "2026-06-29T21:49:27.519091+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
