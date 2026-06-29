@@ -1,16 +1,15 @@
 {
   "items": [
     {
-      "id": "ebd76ab310b5675e",
-      "title": "Mangroves take power out of waves",
-      "category": "conservation",
-      "autonomy_priority": 117.7,
-      "queue_score": 78.0,
+      "id": "11137f107a134f04",
+      "title": "Lions hunt better when the pride coordinates",
+      "category": "wildlife",
+      "autonomy_priority": 103.0,
+      "queue_score": 100.0,
       "template_cluster": "",
       "mechanism_cluster": "",
       "objective_reasons": [
-        "objective_gate:bootstrap_observe_before_scaling",
-        "publish_ready_supply_reserve_fallback"
+        "objective_gate:observe_before_scaling"
       ],
       "lane": "evergreen",
       "mix_adjustment": 5.0,
@@ -19,20 +18,18 @@
         "approved": true,
         "state": "publish_ready",
         "opportunity": {
-          "score": 54,
+          "score": 57,
           "signals": {
-            "viral_potential": 54,
-            "visual_potential": 71,
-            "replay_potential": 62,
-            "comment_potential": 38,
-            "educational_potential": 58,
-            "emotional_potential": 27,
-            "novelty": 51
+            "viral_potential": 57,
+            "visual_potential": 72,
+            "replay_potential": 57,
+            "comment_potential": 47,
+            "educational_potential": 59,
+            "emotional_potential": 28,
+            "novelty": 62
           },
-          "verdict": "discard",
-          "reasons": [
-            "low_opportunity_score"
-          ],
+          "verdict": "rewrite",
+          "reasons": [],
           "confidence": {
             "confidence_score": 0.2,
             "sample_size": 1,
@@ -47,12 +44,12 @@
           "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
         },
         "retention": {
-          "score": 77,
+          "score": 71,
           "signals": {
-            "hook_score": 82,
-            "curiosity_score": 79,
+            "hook_score": 70,
+            "curiosity_score": 71,
             "visual_score": 66,
-            "replay_score": 72,
+            "replay_score": 62,
             "completion_prediction": 84
           },
           "verdict": "rewrite",
@@ -74,18 +71,18 @@
           "score": 100.0,
           "state": "retention_ready",
           "approved": true,
-          "subject": "mangroves",
+          "subject": "lions",
           "cue_terms": [
-            "buffer",
-            "root",
-            "wave"
+            "plan",
+            "pride"
           ],
           "frame_hook_bridge": [
-            "wave"
+            "plan",
+            "pride"
           ],
           "cue_bridge": [
-            "root",
-            "wave"
+            "plan",
+            "pride"
           ],
           "strengths": [
             "subject_frontloaded",
@@ -94,8 +91,7 @@
             "watch_instruction_early",
             "action_promise_early",
             "reason_arrives_early",
-            "frame_text_scannable",
-            "curiosity_shape"
+            "frame_text_scannable"
           ],
           "risks": []
         },
@@ -117,51 +113,51 @@
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
         "subscriber_conversion": {
-          "score": 82,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.117,
-          "return_probability": 0.25,
-          "comment_probability": 0.214,
+          "subscriber_probability": 0.143,
+          "return_probability": 0.3,
+          "comment_probability": 0.256,
           "robotic_title": {
             "risk": 0,
             "state": "clear",
             "hits": []
           },
           "reasons": [
-            "hook_invites_return",
+            "identity_cta",
             "debate_comment",
             "return_prompt",
             "series_identity"
           ],
           "confidence": {
-            "confidence_score": 0.083,
-            "sample_size": 2,
-            "minimum_sample_size": 10,
+            "confidence_score": 0.347,
+            "sample_size": 6,
+            "minimum_sample_size": 18,
             "data_quality": "observed",
-            "data_quality_score": 0.825,
+            "data_quality_score": 0.912,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.312,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.08."
+            "bootstrap_multiplier": 0.51,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.35."
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.08."
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.35."
         },
         "distribution_adjustment": 0,
         "decision_confidence": {
-          "confidence_score": 0.137,
-          "sample_size": 5,
-          "minimum_sample_size": 25,
+          "confidence_score": 0.229,
+          "sample_size": 10,
+          "minimum_sample_size": 38,
           "data_quality": "observed",
           "data_quality_score": 1.0,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.352,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.14."
+          "bootstrap_multiplier": 0.422,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.23."
         },
-        "category": "conservation",
-        "story_format": "conservation_signal",
+        "category": "wildlife",
+        "story_format": "animal_intelligence",
         "hook_score": 100,
-        "title_score": 74,
+        "title_score": 90,
         "phrase_risk": {
           "penalty": 0,
           "hits": []
@@ -174,23 +170,15 @@
         "objective_gate": {
           "penalty": 0.0,
           "reasons": [
-            "bootstrap_observe_before_scaling"
+            "observe_before_scaling"
           ],
-          "confidence_score": 0.137,
+          "confidence_score": 0.229,
           "scale_ready": false,
           "publish_blocking": false,
           "swipe_risk_band": "low",
           "payoff_time_s": 0.0,
           "template_cluster": "",
           "mechanism_cluster": ""
-        },
-        "reserve_override": {
-          "reason": "publish_ready_supply_reserve_fallback",
-          "original_approved": false,
-          "original_state": "rewrite",
-          "original_opportunity_reasons": [
-            "low_opportunity_score"
-          ]
         }
       }
     },
@@ -324,29 +312,29 @@
             "series_identity"
           ],
           "confidence": {
-            "confidence_score": 0.244,
-            "sample_size": 5,
+            "confidence_score": 0.216,
+            "sample_size": 4,
             "minimum_sample_size": 18,
             "data_quality": "observed",
             "data_quality_score": 0.912,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.433,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.24."
+            "bootstrap_multiplier": 0.412,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.22."
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.24."
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.22."
         },
         "distribution_adjustment": 0,
         "decision_confidence": {
-          "confidence_score": 0.231,
-          "sample_size": 10,
+          "confidence_score": 0.203,
+          "sample_size": 8,
           "minimum_sample_size": 38,
           "data_quality": "observed",
           "data_quality_score": 1.0,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.424,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.23."
+          "bootstrap_multiplier": 0.402,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.20."
         },
         "category": "insects",
         "story_format": "animal_intelligence",
@@ -366,7 +354,7 @@
           "reasons": [
             "observe_before_scaling"
           ],
-          "confidence_score": 0.231,
+          "confidence_score": 0.203,
           "scale_ready": false,
           "publish_blocking": false,
           "swipe_risk_band": "low",
@@ -377,7 +365,7 @@
       }
     },
     {
-      "id": "0af584c7e3758201",
+      "id": "7f3db6135bcccc99",
       "title": "The moon keeps one face turned toward Earth",
       "category": "space",
       "autonomy_priority": 103.0,
@@ -570,88 +558,95 @@
       }
     },
     {
-      "id": "11137f107a134f04",
-      "title": "Lions hunt better when the pride coordinates",
-      "category": "wildlife",
-      "autonomy_priority": 102.4,
-      "queue_score": 100.0,
+      "id": "ff4daa85598c5851",
+      "title": "Cats groom to reset their scent map",
+      "category": "cats",
+      "autonomy_priority": 100.09,
+      "queue_score": 78.0,
       "template_cluster": "",
-      "mechanism_cluster": "",
+      "mechanism_cluster": "scent_map",
       "objective_reasons": [
-        "objective_gate:observe_before_scaling"
+        "objective_gate:observe_before_scaling",
+        "publish_ready_supply_reserve_fallback"
       ],
-      "lane": "evergreen",
+      "lane": "recovery",
       "mix_adjustment": 5.0,
       "score": {
         "score": 100.0,
         "approved": true,
         "state": "publish_ready",
         "opportunity": {
-          "score": 57,
+          "score": 43,
           "signals": {
-            "viral_potential": 57,
-            "visual_potential": 72,
-            "replay_potential": 57,
-            "comment_potential": 47,
-            "educational_potential": 59,
-            "emotional_potential": 28,
-            "novelty": 62
+            "viral_potential": 42,
+            "visual_potential": 37,
+            "replay_potential": 56,
+            "comment_potential": 46,
+            "educational_potential": 50,
+            "emotional_potential": 27,
+            "novelty": 37
           },
-          "verdict": "rewrite",
-          "reasons": [],
+          "verdict": "discard",
+          "reasons": [
+            "weak_visual_surface",
+            "low_opportunity_score"
+          ],
           "confidence": {
-            "confidence_score": 0.2,
+            "confidence_score": 0.113,
             "sample_size": 1,
             "minimum_sample_size": 5,
-            "data_quality": "observed",
-            "data_quality_score": 1.0,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.4,
-            "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
+            "bootstrap_multiplier": 0.335,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
           },
-          "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
         },
         "retention": {
-          "score": 71,
+          "score": 68,
           "signals": {
             "hook_score": 70,
             "curiosity_score": 71,
-            "visual_score": 66,
+            "visual_score": 50,
             "replay_score": 62,
             "completion_prediction": 84
           },
           "verdict": "rewrite",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.2,
+            "confidence_score": 0.113,
             "sample_size": 1,
             "minimum_sample_size": 5,
-            "data_quality": "observed",
-            "data_quality_score": 1.0,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.4,
-            "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
+            "bootstrap_multiplier": 0.335,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
           },
-          "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only."
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
         },
         "opening_retention": {
           "score": 100.0,
           "state": "retention_ready",
           "approved": true,
-          "subject": "lions",
+          "subject": "cats",
           "cue_terms": [
-            "plan",
-            "pride"
+            "groom",
+            "map",
+            "scent",
+            "tongue"
           ],
           "frame_hook_bridge": [
-            "plan",
-            "pride"
+            "groom"
           ],
           "cue_bridge": [
-            "plan",
-            "pride"
+            "groom",
+            "map",
+            "scent",
+            "tongue"
           ],
           "strengths": [
             "subject_frontloaded",
@@ -682,11 +677,11 @@
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
         "subscriber_conversion": {
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143,
-          "return_probability": 0.3,
-          "comment_probability": 0.256,
+          "score": 73,
+          "state": "usable",
+          "subscriber_probability": 0.104,
+          "return_probability": 0.225,
+          "comment_probability": 0.193,
           "robotic_title": {
             "risk": 0,
             "state": "clear",
@@ -699,34 +694,34 @@
             "series_identity"
           ],
           "confidence": {
-            "confidence_score": 0.357,
-            "sample_size": 8,
+            "confidence_score": 0.373,
+            "sample_size": 12,
             "minimum_sample_size": 18,
             "data_quality": "observed",
-            "data_quality_score": 0.912,
+            "data_quality_score": 0.75,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.517,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.36."
+            "bootstrap_multiplier": 0.53,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.37."
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.36."
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.37."
         },
         "distribution_adjustment": 0,
         "decision_confidence": {
-          "confidence_score": 0.254,
-          "sample_size": 13,
+          "confidence_score": 0.288,
+          "sample_size": 23,
           "minimum_sample_size": 38,
-          "data_quality": "observed",
-          "data_quality_score": 1.0,
+          "data_quality": "estimated",
+          "data_quality_score": 0.61,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.441,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.25."
+          "bootstrap_multiplier": 0.466,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.29."
         },
-        "category": "wildlife",
-        "story_format": "animal_intelligence",
+        "category": "cats",
+        "story_format": "body_superpower",
         "hook_score": 100,
-        "title_score": 90,
+        "title_score": 100,
         "phrase_risk": {
           "penalty": 0,
           "hits": []
@@ -741,13 +736,22 @@
           "reasons": [
             "observe_before_scaling"
           ],
-          "confidence_score": 0.254,
+          "confidence_score": 0.288,
           "scale_ready": false,
           "publish_blocking": false,
           "swipe_risk_band": "low",
           "payoff_time_s": 0.0,
           "template_cluster": "",
-          "mechanism_cluster": ""
+          "mechanism_cluster": "scent_map"
+        },
+        "reserve_override": {
+          "reason": "publish_ready_supply_reserve_fallback",
+          "original_approved": false,
+          "original_state": "rewrite",
+          "original_opportunity_reasons": [
+            "weak_visual_surface",
+            "low_opportunity_score"
+          ]
         }
       }
     },
@@ -755,7 +759,7 @@
       "id": "b9b63282a8ab9d48",
       "title": "Foxes use snow hearing before they hunt",
       "category": "nocturnal",
-      "autonomy_priority": 98.5,
+      "autonomy_priority": 98.7,
       "queue_score": 100.0,
       "template_cluster": "",
       "mechanism_cluster": "",
@@ -882,28 +886,28 @@
             "series_identity"
           ],
           "confidence": {
-            "confidence_score": 0.221,
-            "sample_size": 8,
+            "confidence_score": 0.215,
+            "sample_size": 9,
             "minimum_sample_size": 10,
             "data_quality": "observed",
             "data_quality_score": 0.825,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.415,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.22."
+            "bootstrap_multiplier": 0.411,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.21."
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.22."
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.21."
         },
         "distribution_adjustment": 0,
         "decision_confidence": {
-          "confidence_score": 0.195,
-          "sample_size": 15,
+          "confidence_score": 0.189,
+          "sample_size": 17,
           "minimum_sample_size": 25,
           "data_quality": "observed",
           "data_quality_score": 0.825,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.396,
+          "bootstrap_multiplier": 0.392,
           "reasoning": "Combined 5 evidence source(s) with average confidence 0.19."
         },
         "category": "nocturnal",
@@ -924,7 +928,7 @@
           "reasons": [
             "observe_before_scaling"
           ],
-          "confidence_score": 0.195,
+          "confidence_score": 0.189,
           "scale_ready": false,
           "publish_blocking": false,
           "swipe_risk_band": "low",
@@ -938,7 +942,7 @@
       "id": "866e1c66b313b9c1",
       "title": "Plants turn light into stored sugar",
       "category": "plants",
-      "autonomy_priority": 96.8,
+      "autonomy_priority": 97.0,
       "queue_score": 72.0,
       "template_cluster": "",
       "mechanism_cluster": "",
@@ -950,7 +954,7 @@
       "lane": "evergreen",
       "mix_adjustment": 5.0,
       "score": {
-        "score": 98.8,
+        "score": 99.0,
         "approved": true,
         "state": "publish_ready",
         "opportunity": {
@@ -1069,28 +1073,28 @@
             "series_identity"
           ],
           "confidence": {
-            "confidence_score": 0.221,
-            "sample_size": 8,
+            "confidence_score": 0.215,
+            "sample_size": 9,
             "minimum_sample_size": 10,
             "data_quality": "observed",
             "data_quality_score": 0.825,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.415,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.22."
+            "bootstrap_multiplier": 0.411,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.21."
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.22."
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.21."
         },
         "distribution_adjustment": 0,
         "decision_confidence": {
-          "confidence_score": 0.195,
-          "sample_size": 15,
+          "confidence_score": 0.189,
+          "sample_size": 17,
           "minimum_sample_size": 25,
           "data_quality": "observed",
           "data_quality_score": 0.825,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.396,
+          "bootstrap_multiplier": 0.392,
           "reasoning": "Combined 5 evidence source(s) with average confidence 0.19."
         },
         "category": "plants",
@@ -1111,7 +1115,7 @@
           "reasons": [
             "observe_before_scaling"
           ],
-          "confidence_score": 0.195,
+          "confidence_score": 0.189,
           "scale_ready": false,
           "publish_blocking": false,
           "swipe_risk_band": "low",
@@ -1131,7 +1135,7 @@
     },
     "counts": {
       "recovery": 7,
-      "evergreen": 18
+      "evergreen": 17
     },
     "items": [
       {
@@ -1172,7 +1176,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 53.24
+        "freshness_score": 53.22
       },
       {
         "id": "4681629feff2b44e",
@@ -1231,14 +1235,6 @@
         "freshness_score": 53.54
       },
       {
-        "id": "11137f107a134f04",
-        "title": "Lions hunt better when the pride coordinates",
-        "category": "wildlife",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 53.3
-      },
-      {
         "id": "f9d94f8f411a03aa",
         "title": "Rock layers reveal heat moving under the surface",
         "category": "geology",
@@ -1260,7 +1256,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.24
+        "freshness_score": 53.22
       },
       {
         "id": "9d83eac332b110af",
@@ -1269,6 +1265,14 @@
         "lane": "evergreen",
         "adjustment": 5.0,
         "freshness_score": 52.44
+      },
+      {
+        "id": "11137f107a134f04",
+        "title": "Lions hunt better when the pride coordinates",
+        "category": "wildlife",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 53.3
       },
       {
         "id": "7ea6de9283de7ea9",
@@ -1284,7 +1288,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.98
+        "freshness_score": 53.96
       },
       {
         "id": "b9b63282a8ab9d48",
@@ -1303,14 +1307,6 @@
         "freshness_score": 53.7
       },
       {
-        "id": "ebd76ab310b5675e",
-        "title": "Mangroves take power out of waves",
-        "category": "conservation",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 53.1
-      },
-      {
         "id": "18f566b37db1413b",
         "title": "Cells copy instructions before splitting",
         "category": "microscopy",
@@ -1319,12 +1315,12 @@
         "freshness_score": 53.84
       },
       {
-        "id": "0af584c7e3758201",
+        "id": "7f3db6135bcccc99",
         "title": "The moon keeps one face turned toward Earth",
         "category": "space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 55.0
+        "freshness_score": 53.54
       },
       {
         "id": "1220f0d7f7bdbf9f",
@@ -1332,7 +1328,7 @@
         "category": "discoveries",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.88
+        "freshness_score": 53.86
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -1345,12 +1341,12 @@
       {
         "window": 10,
         "items": 6,
-        "dominant_shape": "{subject} take power out of waves",
+        "dominant_shape": "{subject} hunt better when the pride coordinates",
         "dominant_count": 1,
         "dominant_share": 0.167,
         "top_shapes": [
           {
-            "shape": "{subject} take power out of waves",
+            "shape": "{subject} hunt better when the pride coordinates",
             "count": 1,
             "share": 0.167
           },
@@ -1365,7 +1361,7 @@
             "share": 0.167
           },
           {
-            "shape": "{subject} hunt better when the pride coordinates",
+            "shape": "{subject} groom to reset their scent map",
             "count": 1,
             "share": 0.167
           },
@@ -1379,12 +1375,12 @@
       {
         "window": 30,
         "items": 6,
-        "dominant_shape": "{subject} take power out of waves",
+        "dominant_shape": "{subject} hunt better when the pride coordinates",
         "dominant_count": 1,
         "dominant_share": 0.167,
         "top_shapes": [
           {
-            "shape": "{subject} take power out of waves",
+            "shape": "{subject} hunt better when the pride coordinates",
             "count": 1,
             "share": 0.167
           },
@@ -1399,7 +1395,7 @@
             "share": 0.167
           },
           {
-            "shape": "{subject} hunt better when the pride coordinates",
+            "shape": "{subject} groom to reset their scent map",
             "count": 1,
             "share": 0.167
           },
@@ -1414,16 +1410,16 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 25,
-    "pending_after": 25,
+    "pending_before": 24,
+    "pending_after": 24,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 4,
     "reasons": {
       "objective_gate:observe_before_scaling": 12,
       "editor_in_chief:subject repeated inside 3-day cooldown": 11,
-      "objective_gate:bootstrap_observe_before_scaling": 4,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
+      "objective_gate:bootstrap_observe_before_scaling": 3,
       "editor_in_chief:script quality gate blocked the narration": 2,
       "publish_ready_supply_reserve_fallback": 2,
       "editor_in_chief:editorial score 49 is below 62": 1,

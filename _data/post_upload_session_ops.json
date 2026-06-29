@@ -6,40 +6,14 @@
       "high": 1,
       "manual_review": 1,
       "total": 10,
-      "urgent": 9
+      "urgent": 8
     },
     "free_only": true,
-    "generated_at": "2026-06-29T09:58:50.179314+00:00",
+    "generated_at": "2026-06-29T10:03:53.563231+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 21.818,
-        "automation_safe": true,
-        "category": "weather",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "overdue",
-        "current_views": 0,
-        "due_at": "2026-06-28T13:09:45.477006+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:ZR7bZ3m550c:analytics_due:1h",
-        "lane": "measurement",
-        "manual_approval_required": false,
-        "opening_retention_score": 90.0,
-        "priority": "urgent",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
-        "series": "Earth Engine",
-        "state": "analytics_due",
-        "target_views": 24,
-        "title": "Lightning signals through lightning flash",
-        "url": "https://www.youtube.com/shorts/ZR7bZ3m550c",
-        "video_id": "ZR7bZ3m550c",
-        "wait_until": "",
-        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
-      },
-      {
-        "action_type": "pull_fresh_analytics",
-        "age_hours": 20.923,
+        "age_hours": 21.007,
         "automation_safe": true,
         "category": "chemistry",
         "checkpoint_label": "1h",
@@ -65,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 19.91,
+        "age_hours": 19.995,
         "automation_safe": true,
         "category": "plants",
         "checkpoint_label": "1h",
@@ -91,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 17.822,
+        "age_hours": 17.907,
         "automation_safe": true,
         "category": "rivers",
         "checkpoint_label": "6h",
@@ -117,7 +91,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 12.64,
+        "age_hours": 12.724,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "1h",
@@ -143,7 +117,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 16.525,
+        "age_hours": 16.609,
         "automation_safe": true,
         "category": "plants",
         "checkpoint_label": "6h",
@@ -169,7 +143,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 15.913,
+        "age_hours": 15.997,
         "automation_safe": true,
         "category": "plants",
         "checkpoint_label": "6h",
@@ -195,7 +169,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 14.87,
+        "age_hours": 14.954,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "6h",
@@ -221,7 +195,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 13.939,
+        "age_hours": 14.023,
         "automation_safe": true,
         "category": "forests",
         "checkpoint_label": "6h",
@@ -247,7 +221,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 18.849,
+        "age_hours": 18.933,
         "automation_safe": false,
         "category": "discoveries",
         "checkpoint_label": "24h",
@@ -270,10 +244,36 @@
         "video_id": "WPRlhQVdM8k",
         "wait_until": "",
         "why": "Observed velocity is weak enough to prepare a package intervention."
+      },
+      {
+        "action_type": "hold_until_first_hour",
+        "age_hours": 0.047,
+        "automation_safe": true,
+        "category": "conservation",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-06-29T11:01:03.929588+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:q7XFYARNqgs:awaiting_1h:1h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "low",
+        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "series": "Planet Repair",
+        "state": "awaiting_1h",
+        "target_views": 24,
+        "title": "Fish Mangroves take power out of waves",
+        "url": "https://www.youtube.com/shorts/q7XFYARNqgs",
+        "video_id": "q7XFYARNqgs",
+        "wait_until": "2026-06-29T11:01:03.929588+00:00",
+        "why": "The upload is still inside the no-panic observation window."
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-06-29T09:58:50.178307+00:00"
+    "source_generated_at": "2026-06-29T10:03:53.562045+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,72 @@
       24
     ],
     "counts": {
-      "analytics_due": 9,
-      "awaiting_1h": 0,
-      "high_priority": 10,
+      "analytics_due": 8,
+      "awaiting_1h": 1,
+      "high_priority": 9,
       "repair_candidates": 1,
       "tracked": 10
     },
-    "generated_at": "2026-06-29T09:58:50.178307+00:00",
+    "generated_at": "2026-06-29T10:03:53.562045+00:00",
     "items": [
       {
+        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "age_hours": 0.047,
+        "category": "conservation",
+        "checkpoints": [
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-06-29T11:01:03.929588+00:00",
+            "label": "1h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 24,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-06-29T16:01:03.929588+00:00",
+            "label": "6h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 105,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-06-30T10:01:03.929588+00:00",
+            "label": "24h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 300,
+            "views": 0
+          }
+        ],
+        "current_views": 0,
+        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "next_checkpoint": {
+          "delta_to_target": 0,
+          "due_at": "2026-06-29T11:01:03.929588+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        "opening_retention_score": 100.0,
+        "opening_retention_state": "retention_ready",
+        "priority": "low",
+        "series": "Planet Repair",
+        "state": "awaiting_1h",
+        "title": "Fish Mangroves take power out of waves",
+        "uploaded_at": "2026-06-29T10:01:03.929588+00:00",
+        "url": "https://www.youtube.com/shorts/q7XFYARNqgs",
+        "video_id": "q7XFYARNqgs",
+        "views_per_hour": 0.0
+      },
+      {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 12.64,
+        "age_hours": 12.724,
         "category": "geology",
         "checkpoints": [
           {
@@ -347,7 +402,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 13.939,
+        "age_hours": 14.023,
         "category": "forests",
         "checkpoints": [
           {
@@ -402,7 +457,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 14.87,
+        "age_hours": 14.954,
         "category": "geology",
         "checkpoints": [
           {
@@ -457,7 +512,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 15.913,
+        "age_hours": 15.997,
         "category": "plants",
         "checkpoints": [
           {
@@ -512,7 +567,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 16.525,
+        "age_hours": 16.609,
         "category": "plants",
         "checkpoints": [
           {
@@ -567,7 +622,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 17.822,
+        "age_hours": 17.907,
         "category": "rivers",
         "checkpoints": [
           {
@@ -618,11 +673,11 @@
         "uploaded_at": "2026-06-28T16:09:29.268170+00:00",
         "url": "https://www.youtube.com/shorts/xfOfa8OLwNw",
         "video_id": "xfOfa8OLwNw",
-        "views_per_hour": 0.122
+        "views_per_hour": 0.112
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 18.849,
+        "age_hours": 18.933,
         "category": "discoveries",
         "checkpoints": [
           {
@@ -688,7 +743,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 19.91,
+        "age_hours": 19.995,
         "category": "plants",
         "checkpoints": [
           {
@@ -743,7 +798,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 20.923,
+        "age_hours": 21.007,
         "category": "chemistry",
         "checkpoints": [
           {
@@ -795,61 +850,6 @@
         "url": "https://www.youtube.com/shorts/W8pfsTzlVsk",
         "video_id": "W8pfsTzlVsk",
         "views_per_hour": 0.0
-      },
-      {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 21.818,
-        "category": "weather",
-        "checkpoints": [
-          {
-            "delta_to_target": -24,
-            "due_at": "2026-06-28T13:09:45.477006+00:00",
-            "label": "1h",
-            "source": "estimated",
-            "state": "overdue",
-            "target_views": 24,
-            "views": 0
-          },
-          {
-            "delta_to_target": -105,
-            "due_at": "2026-06-28T18:09:45.477006+00:00",
-            "label": "6h",
-            "source": "observed",
-            "state": "observed",
-            "target_views": 105,
-            "views": 0
-          },
-          {
-            "delta_to_target": 0,
-            "due_at": "2026-06-29T12:09:45.477006+00:00",
-            "label": "24h",
-            "source": "estimated",
-            "state": "pending",
-            "target_views": 300,
-            "views": 0
-          }
-        ],
-        "current_views": 0,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-        "next_checkpoint": {
-          "delta_to_target": -24,
-          "due_at": "2026-06-28T13:09:45.477006+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        "opening_retention_score": 90.0,
-        "opening_retention_state": "retention_ready",
-        "priority": "high",
-        "series": "Earth Engine",
-        "state": "analytics_due",
-        "title": "Lightning signals through lightning flash",
-        "uploaded_at": "2026-06-28T12:09:45.477006+00:00",
-        "url": "https://www.youtube.com/shorts/ZR7bZ3m550c",
-        "video_id": "ZR7bZ3m550c",
-        "views_per_hour": 0.0
       }
     ],
     "targets": {
@@ -859,23 +859,12 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-06-29T09:58:50.179401+00:00",
+  "generated_at": "2026-06-29T10:03:53.563326+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
   ],
   "related_video_recommendations": [
-    {
-      "recommendation": {
-        "reason": "same series/category/format session bridge",
-        "score": 85.0,
-        "title": "Plants use trap hairs to count touches before snapping shut",
-        "url": "https://www.youtube.com/shorts/PhxKQCtm9wU",
-        "video_id": "PhxKQCtm9wU"
-      },
-      "source_title": "Flowers use trap hairs to count touches before snapping shut",
-      "source_video_id": "u5VrAUBYcKg"
-    },
     {
       "recommendation": {
         "reason": "same series/category/format session bridge",
@@ -919,14 +908,20 @@
       },
       "source_title": "Rock layers expose erosion in bare open hills",
       "source_video_id": "AdQTndo_VR4"
+    },
+    {
+      "recommendation": {
+        "reason": "same series/category/format session bridge",
+        "score": 35.0,
+        "title": "Deer aim their ears like sound radar",
+        "url": "https://www.youtube.com/shorts/Pk8ys8H9vPg",
+        "video_id": "Pk8ys8H9vPg"
+      },
+      "source_title": "Fish Mangroves take power out of waves",
+      "source_video_id": "q7XFYARNqgs"
     }
   ],
   "sequel_opportunities": [
-    {
-      "prompt": "Make a sequel with a new subject but the same payoff shape: Flowers use trap hairs to count touches before snapping shut",
-      "title": "Flowers use trap hairs to count touches before snapping shut",
-      "video_id": "u5VrAUBYcKg"
-    },
     {
       "prompt": "Make a sequel with a new subject but the same payoff shape: Plants use trap hairs to count touches before snapping shut | Leaf surface",
       "title": "Plants use trap hairs to count touches before snapping shut | Leaf surface",
@@ -946,13 +941,18 @@
       "prompt": "Make a sequel with a new subject but the same payoff shape: Rock layers expose erosion in bare open hills",
       "title": "Rock layers expose erosion in bare open hills",
       "video_id": "AdQTndo_VR4"
+    },
+    {
+      "prompt": "Make a sequel with a new subject but the same payoff shape: Fish Mangroves take power out of waves",
+      "title": "Fish Mangroves take power out of waves",
+      "video_id": "q7XFYARNqgs"
     }
   ],
   "session_graph": {
     "action_score_threshold": 55,
-    "coverage": 0.7,
+    "coverage": 0.65,
     "edges": 20,
-    "nodes": 88,
+    "nodes": 89,
     "target_reuse_limit": 2
   }
 }
