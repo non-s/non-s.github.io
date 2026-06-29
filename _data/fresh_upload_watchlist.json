@@ -5,34 +5,34 @@
     24
   ],
   "counts": {
-    "analytics_due": 3,
-    "awaiting_1h": 1,
-    "high_priority": 4,
+    "analytics_due": 9,
+    "awaiting_1h": 0,
+    "high_priority": 10,
     "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-06-28T21:50:38.852977+00:00",
+  "generated_at": "2026-06-29T08:34:19.158146+00:00",
   "items": [
     {
-      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.504,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 11.232,
       "category": "geology",
       "checkpoints": [
         {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-06-28T22:20:25.711108+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-06-29T03:20:25.711108+00:00",
           "label": "6h",
           "source": "estimated",
-          "state": "pending",
+          "state": "overdue",
           "target_views": 105,
           "views": 0
         },
@@ -47,21 +47,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -24,
         "due_at": "2026-06-28T22:20:25.711108+00:00",
         "label": "1h",
         "source": "estimated",
-        "state": "pending",
+        "state": "overdue",
         "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Earth Engine",
-      "state": "awaiting_1h",
+      "state": "analytics_due",
       "title": "Rock layers expose erosion in bare open hills",
       "uploaded_at": "2026-06-28T21:20:25.711108+00:00",
       "url": "https://www.youtube.com/shorts/AdQTndo_VR4",
@@ -69,8 +69,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.803,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 12.53,
       "category": "forests",
       "checkpoints": [
         {
@@ -83,11 +83,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-06-29T02:02:29.373888+00:00",
           "label": "6h",
           "source": "estimated",
-          "state": "pending",
+          "state": "overdue",
           "target_views": 105,
           "views": 0
         },
@@ -102,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -105,
         "due_at": "2026-06-29T02:02:29.373888+00:00",
         "label": "6h",
         "source": "estimated",
-        "state": "pending",
+        "state": "overdue",
         "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Hidden Network",
-      "state": "watch",
+      "state": "analytics_due",
       "title": "Forest shade keeps soil moisture from leaving",
       "uploaded_at": "2026-06-28T20:02:29.373888+00:00",
       "url": "https://www.youtube.com/shorts/CWvl2EcQbGQ",
@@ -124,8 +124,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.734,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 13.461,
       "category": "geology",
       "checkpoints": [
         {
@@ -138,11 +138,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-06-29T01:06:37.895741+00:00",
           "label": "6h",
           "source": "estimated",
-          "state": "pending",
+          "state": "overdue",
           "target_views": 105,
           "views": 0
         },
@@ -157,21 +157,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -105,
         "due_at": "2026-06-29T01:06:37.895741+00:00",
         "label": "6h",
         "source": "estimated",
-        "state": "pending",
+        "state": "overdue",
         "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Earth Engine",
-      "state": "watch",
+      "state": "analytics_due",
       "title": "This rock layer gives rock layers away",
       "uploaded_at": "2026-06-28T19:06:37.895741+00:00",
       "url": "https://www.youtube.com/shorts/Jm1bnXNsYb0",
@@ -179,8 +179,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Rewrite the next version around a clearer first-frame cue and first sentence.",
-      "age_hours": 3.777,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 14.504,
       "category": "plants",
       "checkpoints": [
         {
@@ -193,11 +193,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-06-29T00:04:03.383685+00:00",
           "label": "6h",
           "source": "estimated",
-          "state": "pending",
+          "state": "overdue",
           "target_views": 105,
           "views": 0
         },
@@ -212,21 +212,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The published opening was below the retention promise floor.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -105,
         "due_at": "2026-06-29T00:04:03.383685+00:00",
         "label": "6h",
         "source": "estimated",
-        "state": "pending",
+        "state": "overdue",
         "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 72.0,
       "opening_retention_state": "needs_tightening",
-      "priority": "normal",
+      "priority": "high",
       "series": "Biology Brief",
-      "state": "opening_rewrite_next",
+      "state": "analytics_due",
       "title": "Plants use trap hairs to count touches before snapping shut | Leaf surface",
       "uploaded_at": "2026-06-28T18:04:03.383685+00:00",
       "url": "https://www.youtube.com/shorts/uMBHm6tNXkg",
@@ -234,8 +234,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Rewrite the next version around a clearer first-frame cue and first sentence.",
-      "age_hours": 4.388,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 15.116,
       "category": "plants",
       "checkpoints": [
         {
@@ -248,11 +248,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-06-28T23:27:21.477158+00:00",
           "label": "6h",
           "source": "estimated",
-          "state": "pending",
+          "state": "overdue",
           "target_views": 105,
           "views": 0
         },
@@ -267,21 +267,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The published opening was below the retention promise floor.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -105,
         "due_at": "2026-06-28T23:27:21.477158+00:00",
         "label": "6h",
         "source": "estimated",
-        "state": "pending",
+        "state": "overdue",
         "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 72.0,
       "opening_retention_state": "needs_tightening",
-      "priority": "normal",
+      "priority": "high",
       "series": "Biology Brief",
-      "state": "opening_rewrite_next",
+      "state": "analytics_due",
       "title": "Flowers use trap hairs to count touches before snapping shut",
       "uploaded_at": "2026-06-28T17:27:21.477158+00:00",
       "url": "https://www.youtube.com/shorts/u5VrAUBYcKg",
@@ -289,8 +289,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.686,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 16.414,
       "category": "rivers",
       "checkpoints": [
         {
@@ -303,11 +303,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-06-28T22:09:29.268170+00:00",
           "label": "6h",
           "source": "estimated",
-          "state": "pending",
+          "state": "overdue",
           "target_views": 105,
           "views": 0
         },
@@ -318,34 +318,34 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 300,
-          "views": 0
+          "views": 2
         }
       ],
-      "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "current_views": 2,
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -105,
         "due_at": "2026-06-28T22:09:29.268170+00:00",
         "label": "6h",
         "source": "estimated",
-        "state": "pending",
+        "state": "overdue",
         "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Earth Engine",
-      "state": "watch",
+      "state": "analytics_due",
       "title": "River bends sort sand from larger stones",
       "uploaded_at": "2026-06-28T16:09:29.268170+00:00",
       "url": "https://www.youtube.com/shorts/xfOfa8OLwNw",
       "video_id": "xfOfa8OLwNw",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.122
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.712,
+      "age_hours": 17.44,
       "category": "discoveries",
       "checkpoints": [
         {
@@ -411,7 +411,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 7.774,
+      "age_hours": 18.502,
       "category": "plants",
       "checkpoints": [
         {
@@ -466,7 +466,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.786,
+      "age_hours": 19.514,
       "category": "chemistry",
       "checkpoints": [
         {
@@ -521,7 +521,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.681,
+      "age_hours": 20.409,
       "category": "weather",
       "checkpoints": [
         {
