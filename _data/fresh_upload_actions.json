@@ -1,17 +1,17 @@
 {
   "counts": {
     "automation_safe": 8,
-    "high": 1,
+    "high": 2,
     "manual_review": 2,
     "total": 10,
     "urgent": 4
   },
   "free_only": true,
-  "generated_at": "2026-06-29T21:14:23.682595+00:00",
+  "generated_at": "2026-06-29T21:19:12.864045+00:00",
   "items": [
     {
       "action_type": "prepare_package_rescue",
-      "age_hours": 25.198,
+      "age_hours": 25.279,
       "automation_safe": false,
       "category": "forests",
       "checkpoint_label": "1h",
@@ -37,7 +37,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 23.899,
+      "age_hours": 23.98,
       "automation_safe": true,
       "category": "geology",
       "checkpoint_label": "1h",
@@ -63,7 +63,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 11.222,
+      "age_hours": 11.302,
       "automation_safe": true,
       "category": "conservation",
       "checkpoint_label": "1h",
@@ -89,7 +89,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 9.799,
+      "age_hours": 9.88,
       "automation_safe": true,
       "category": "wildlife",
       "checkpoint_label": "1h",
@@ -114,8 +114,34 @@
       "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
+      "action_type": "pull_fresh_analytics",
+      "age_hours": 1.047,
+      "automation_safe": true,
+      "category": "trees",
+      "checkpoint_label": "1h",
+      "checkpoint_state": "due",
+      "current_views": 0,
+      "due_at": "2026-06-29T21:16:25.095397+00:00",
+      "free_only": true,
+      "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+      "id": "fresh-upload:OXyJCq6HgMo:analytics_due:1h",
+      "lane": "measurement",
+      "manual_approval_required": false,
+      "opening_retention_score": 100.0,
+      "priority": "high",
+      "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
+      "series": "Hidden Network",
+      "state": "analytics_due",
+      "target_views": 24,
+      "title": "Trees use tree rings before they leaves",
+      "url": "https://www.youtube.com/shorts/OXyJCq6HgMo",
+      "video_id": "OXyJCq6HgMo",
+      "wait_until": "",
+      "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
+    },
+    {
       "action_type": "prepare_package_rescue",
-      "age_hours": 6.872,
+      "age_hours": 6.952,
       "automation_safe": false,
       "category": "space",
       "checkpoint_label": "24h",
@@ -141,33 +167,7 @@
     },
     {
       "action_type": "hold_until_first_hour",
-      "age_hours": 0.966,
-      "automation_safe": true,
-      "category": "trees",
-      "checkpoint_label": "1h",
-      "checkpoint_state": "pending",
-      "current_views": 0,
-      "due_at": "2026-06-29T21:16:25.095397+00:00",
-      "free_only": true,
-      "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-      "id": "fresh-upload:OXyJCq6HgMo:awaiting_1h:1h",
-      "lane": "observe",
-      "manual_approval_required": false,
-      "opening_retention_score": 100.0,
-      "priority": "low",
-      "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "series": "Hidden Network",
-      "state": "awaiting_1h",
-      "target_views": 24,
-      "title": "Trees use tree rings before they leaves",
-      "url": "https://www.youtube.com/shorts/OXyJCq6HgMo",
-      "video_id": "OXyJCq6HgMo",
-      "wait_until": "2026-06-29T21:16:25.095397+00:00",
-      "why": "The upload is still inside the no-panic observation window."
-    },
-    {
-      "action_type": "hold_until_first_hour",
-      "age_hours": 0.109,
+      "age_hours": 0.189,
       "automation_safe": true,
       "category": "nocturnal",
       "checkpoint_label": "1h",
@@ -193,7 +193,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 5.081,
+      "age_hours": 5.161,
       "automation_safe": true,
       "category": "nocturnal",
       "checkpoint_label": "6h",
@@ -219,7 +219,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 3.852,
+      "age_hours": 3.933,
       "automation_safe": true,
       "category": "ocean",
       "checkpoint_label": "6h",
@@ -245,7 +245,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 2.017,
+      "age_hours": 2.097,
       "automation_safe": true,
       "category": "farm",
       "checkpoint_label": "6h",
@@ -271,5 +271,5 @@
     }
   ],
   "source": "fresh_upload_watchlist",
-  "source_generated_at": "2026-06-29T21:14:23.681197+00:00"
+  "source_generated_at": "2026-06-29T21:19:12.862758+00:00"
 }

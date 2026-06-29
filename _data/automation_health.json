@@ -1,22 +1,20 @@
 {
-  "generated_at": "2026-06-29T21:08:14.093918+00:00",
-  "score": 84,
-  "state": "watch",
-  "issues": [
-    "queue_inventory_low",
-    "subject_frontload_below_target"
-  ],
+  "generated_at": "2026-06-29T21:20:46.658006+00:00",
+  "score": 100,
+  "state": "excellent",
+  "issues": [],
   "queue": {
-    "pending": 15,
-    "publish_ready": 3,
+    "pending": 20,
+    "publish_ready": 4,
     "categories": {
       "cats": 1,
       "discoveries": 1,
-      "earth_from_space": 2,
-      "forests": 1,
-      "geology": 5,
+      "earth_from_space": 3,
+      "forests": 3,
+      "geology": 6,
       "insects": 1,
       "microscopy": 1,
+      "ocean": 1,
       "rare_phenomena": 1,
       "wildlife": 2
     },
@@ -24,9 +22,11 @@
     "missing_scripts": 0,
     "missing_source": 0,
     "held_reasons": {
-      "queue_prune:rewrite": 12,
-      "editor_in_chief:cooldown_subject": 10,
+      "queue_prune:rewrite": 16,
+      "editor_in_chief:cooldown_subject": 14,
       "packaging:missing_action_word": 2,
+      "agency_gate:success_recovery_format_required": 2,
+      "agency_gate:success_recovery_hook_required": 2,
       "youtube_brain:missing_visual_cue": 1,
       "editor_in_chief:needs_ai_rewrite": 1,
       "youtube_brain:no_action_promise": 1,
@@ -34,16 +34,16 @@
     }
   },
   "seo": {
-    "average_score": 98.13,
-    "animal_frontloaded_pct": 93.33,
-    "subject_frontloaded_pct": 93.33
+    "average_score": 98.6,
+    "animal_frontloaded_pct": 95.0,
+    "subject_frontloaded_pct": 95.0
   },
   "agency": {
-    "average_score": 49.1,
+    "average_score": 50.1,
     "decisions": {
-      "hold": 12,
+      "hold": 16,
       "publish_now": 1,
-      "strong_candidate": 2
+      "strong_candidate": 3
     },
     "top": [
       {
@@ -51,6 +51,18 @@
         "category": "cats",
         "score": 84,
         "decision": "publish_now",
+        "strengths": [
+          "strong_quality",
+          "timely_trend",
+          "matches_channel_learning",
+          "fresh_inventory"
+        ]
+      },
+      {
+        "title": "Ocean animals make the gill rhythm matter first",
+        "category": "ocean",
+        "score": 81,
+        "decision": "strong_candidate",
         "strengths": [
           "strong_quality",
           "timely_trend",
@@ -80,6 +92,18 @@
         ]
       },
       {
+        "title": "Rock layers use rock layers before they change",
+        "category": "geology",
+        "score": 48,
+        "decision": "hold",
+        "strengths": [
+          "strong_quality",
+          "matches_channel_learning",
+          "fresh_angle",
+          "fresh_inventory"
+        ]
+      },
+      {
         "title": "Volcanoes build land from flowing lava",
         "category": "geology",
         "score": 47,
@@ -92,48 +116,23 @@
         ]
       },
       {
-        "title": "Rock layers store old environments in stripes",
-        "category": "geology",
+        "title": "Forests use trail edge before they compare",
+        "category": "forests",
+        "score": 46,
+        "decision": "hold",
+        "strengths": [
+          "strong_quality",
+          "matches_channel_learning",
+          "fresh_inventory"
+        ]
+      },
+      {
+        "title": "Storm clouds use cloud spiral before they build",
+        "category": "earth_from_space",
         "score": 45,
         "decision": "hold",
         "strengths": [
           "strong_quality",
-          "matches_channel_learning",
-          "fresh_angle",
-          "fresh_inventory"
-        ]
-      },
-      {
-        "title": "Elephants cool blood through giant ears",
-        "category": "wildlife",
-        "score": 44,
-        "decision": "hold",
-        "strengths": [
-          "strong_quality",
-          "timely_trend",
-          "matches_channel_learning",
-          "fresh_inventory"
-        ]
-      },
-      {
-        "title": "Leaves turn a forest into a cooler room",
-        "category": "earth_from_space",
-        "score": 44,
-        "decision": "hold",
-        "strengths": [
-          "strong_quality",
-          "matches_channel_learning",
-          "fresh_inventory"
-        ]
-      },
-      {
-        "title": "Storm clouds show air layers changing over time",
-        "category": "earth_from_space",
-        "score": 44,
-        "decision": "hold",
-        "strengths": [
-          "strong_quality",
-          "matches_channel_learning",
           "fresh_inventory"
         ]
       }
