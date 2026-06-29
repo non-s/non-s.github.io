@@ -1,17 +1,17 @@
 {
   "counts": {
     "automation_safe": 10,
-    "high": 0,
+    "high": 2,
     "manual_review": 0,
     "total": 10,
     "urgent": 4
   },
   "free_only": true,
-  "generated_at": "2026-06-29T23:21:12.885000+00:00",
+  "generated_at": "2026-06-29T23:25:21.440145+00:00",
   "items": [
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 13.336,
+      "age_hours": 13.405,
       "automation_safe": true,
       "category": "conservation",
       "checkpoint_label": "1h",
@@ -37,7 +37,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 11.913,
+      "age_hours": 11.982,
       "automation_safe": true,
       "category": "wildlife",
       "checkpoint_label": "1h",
@@ -63,7 +63,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 8.985,
+      "age_hours": 9.054,
       "automation_safe": true,
       "category": "space",
       "checkpoint_label": "1h",
@@ -89,7 +89,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 7.195,
+      "age_hours": 7.264,
       "automation_safe": true,
       "category": "nocturnal",
       "checkpoint_label": "1h",
@@ -114,60 +114,60 @@
       "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
-      "action_type": "watch_next_checkpoint",
-      "age_hours": 5.966,
+      "action_type": "pull_fresh_analytics",
+      "age_hours": 6.035,
       "automation_safe": true,
       "category": "ocean",
       "checkpoint_label": "6h",
-      "checkpoint_state": "pending",
+      "checkpoint_state": "due",
       "current_views": 0,
       "due_at": "2026-06-29T23:23:14.984297+00:00",
       "free_only": true,
       "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-      "id": "fresh-upload:mPIUYYP7Ty4:watch:6h",
-      "lane": "observe",
+      "id": "fresh-upload:mPIUYYP7Ty4:analytics_due:6h",
+      "lane": "measurement",
       "manual_approval_required": false,
       "opening_retention_score": 100.0,
-      "priority": "low",
-      "recommended_action": "Keep observing through the next checkpoint.",
+      "priority": "high",
+      "recommended_action": "Run the analytics pull before making a creative decision. Check the 6h sample first.",
       "series": "Ocean Mysteries",
-      "state": "watch",
+      "state": "analytics_due",
       "target_views": 105,
       "title": "Whales send songs across huge ocean distances",
       "url": "https://www.youtube.com/shorts/mPIUYYP7Ty4",
       "video_id": "mPIUYYP7Ty4",
-      "wait_until": "2026-06-29T23:23:14.984297+00:00",
-      "why": "No intervention signal is strong enough yet."
+      "wait_until": "",
+      "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
-      "action_type": "hold_until_first_hour",
-      "age_hours": 0.947,
+      "action_type": "pull_fresh_analytics",
+      "age_hours": 1.017,
       "automation_safe": true,
       "category": "geology",
       "checkpoint_label": "1h",
-      "checkpoint_state": "pending",
+      "checkpoint_state": "due",
       "current_views": 0,
       "due_at": "2026-06-29T23:24:21.883626+00:00",
       "free_only": true,
       "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-      "id": "fresh-upload:8-ETIZd80TE:awaiting_1h:1h",
-      "lane": "observe",
+      "id": "fresh-upload:8-ETIZd80TE:analytics_due:1h",
+      "lane": "measurement",
       "manual_approval_required": false,
       "opening_retention_score": 100.0,
-      "priority": "low",
-      "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "priority": "high",
+      "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
       "series": "Earth Engine",
-      "state": "awaiting_1h",
+      "state": "analytics_due",
       "target_views": 24,
       "title": "Rock layers use rock layers before they change",
       "url": "https://www.youtube.com/shorts/8-ETIZd80TE",
       "video_id": "8-ETIZd80TE",
-      "wait_until": "2026-06-29T23:24:21.883626+00:00",
-      "why": "The upload is still inside the no-panic observation window."
+      "wait_until": "",
+      "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
       "action_type": "hold_until_first_hour",
-      "age_hours": 0.131,
+      "age_hours": 0.2,
       "automation_safe": true,
       "category": "weather",
       "checkpoint_label": "1h",
@@ -193,7 +193,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 4.131,
+      "age_hours": 4.2,
       "automation_safe": true,
       "category": "farm",
       "checkpoint_label": "6h",
@@ -219,7 +219,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 3.08,
+      "age_hours": 3.149,
       "automation_safe": true,
       "category": "trees",
       "checkpoint_label": "6h",
@@ -245,7 +245,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 2.223,
+      "age_hours": 2.292,
       "automation_safe": true,
       "category": "nocturnal",
       "checkpoint_label": "6h",
@@ -271,5 +271,5 @@
     }
   ],
   "source": "fresh_upload_watchlist",
-  "source_generated_at": "2026-06-29T23:21:12.883433+00:00"
+  "source_generated_at": "2026-06-29T23:25:21.438851+00:00"
 }

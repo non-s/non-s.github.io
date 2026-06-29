@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-06-29T23:22:16.157874+00:00",
+  "generated_at": "2026-06-29T23:26:07.332245+00:00",
   "floor": 82.0,
   "pending": 20,
   "ready": 20,
   "held": 0,
   "rewritten": 4,
-  "average_opening_score": 98.5,
+  "average_opening_score": 98.0,
   "render_gate": "approved",
   "counts": {
     "approved": 20,
@@ -83,6 +83,26 @@
       "after_score": 90.0,
       "risks": [],
       "action": "Use the frame-zero rewrite before rendering."
+    },
+    {
+      "id": "d051c1d95735e2ca",
+      "title": "Deer use sound radar before they aim",
+      "category": "wildlife",
+      "render_gate": "approved",
+      "opening_score": 90.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Deer can aim each ear toward danger.",
+      "first_frame_text": "SOUND RADAR",
+      "visible_cue": "",
+      "rewrite_applied": false,
+      "rewrite_reason": "",
+      "before_score": null,
+      "after_score": 90.0,
+      "risks": [
+        "frame_text_not_echoed_early"
+      ],
+      "action": "Ready to render with current first frame."
     },
     {
       "id": "60f46d48c8487016",
@@ -191,24 +211,6 @@
       "frame_zero_score": 92.0,
       "opening_state": "retention_ready",
       "opening_line": "Forests trap cool air below thick leaves.",
-      "first_frame_text": "COOL CANOPY",
-      "visible_cue": "",
-      "rewrite_applied": false,
-      "rewrite_reason": "",
-      "before_score": null,
-      "after_score": 100.0,
-      "risks": [],
-      "action": "Ready to render with current first frame."
-    },
-    {
-      "id": "e0b70b07952cb0cb",
-      "title": "Forests use cool canopy before they cover",
-      "category": "forests",
-      "render_gate": "approved",
-      "opening_score": 100.0,
-      "frame_zero_score": 92.0,
-      "opening_state": "retention_ready",
-      "opening_line": "Forests can cool the air below them.",
       "first_frame_text": "COOL CANOPY",
       "visible_cue": "",
       "rewrite_applied": false,

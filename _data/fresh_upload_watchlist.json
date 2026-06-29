@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 4,
-    "awaiting_1h": 2,
-    "high_priority": 4,
+    "analytics_due": 6,
+    "awaiting_1h": 1,
+    "high_priority": 6,
     "repair_candidates": 0,
     "tracked": 10
   },
-  "generated_at": "2026-06-29T23:21:12.883433+00:00",
+  "generated_at": "2026-06-29T23:25:21.438851+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.131,
+      "age_hours": 0.2,
       "category": "weather",
       "checkpoints": [
         {
@@ -69,16 +69,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.947,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 1.017,
       "category": "geology",
       "checkpoints": [
         {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-06-29T23:24:21.883626+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 24,
           "views": 0
         },
@@ -102,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -24,
         "due_at": "2026-06-29T23:24:21.883626+00:00",
         "label": "1h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Earth Engine",
-      "state": "awaiting_1h",
+      "state": "analytics_due",
       "title": "Rock layers use rock layers before they change",
       "uploaded_at": "2026-06-29T22:24:21.883626+00:00",
       "url": "https://www.youtube.com/shorts/8-ETIZd80TE",
@@ -125,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.223,
+      "age_hours": 2.292,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.08,
+      "age_hours": 3.149,
       "category": "trees",
       "checkpoints": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.131,
+      "age_hours": 4.2,
       "category": "farm",
       "checkpoints": [
         {
@@ -289,8 +289,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.966,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 6.035,
       "category": "ocean",
       "checkpoints": [
         {
@@ -303,11 +303,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-06-29T23:23:14.984297+00:00",
           "label": "6h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 105,
           "views": 0
         },
@@ -322,21 +322,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -105,
         "due_at": "2026-06-29T23:23:14.984297+00:00",
         "label": "6h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Ocean Mysteries",
-      "state": "watch",
+      "state": "analytics_due",
       "title": "Whales send songs across huge ocean distances",
       "uploaded_at": "2026-06-29T17:23:14.984297+00:00",
       "url": "https://www.youtube.com/shorts/mPIUYYP7Ty4",
@@ -345,7 +345,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 7.195,
+      "age_hours": 7.264,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -400,7 +400,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.985,
+      "age_hours": 9.054,
       "category": "space",
       "checkpoints": [
         {
@@ -455,7 +455,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.913,
+      "age_hours": 11.982,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -510,7 +510,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.336,
+      "age_hours": 13.405,
       "category": "conservation",
       "checkpoints": [
         {
