@@ -1,48 +1,32 @@
 {
-  "generated_at": "2026-06-30T06:25:22.717936+00:00",
-  "pending": 20,
+  "generated_at": "2026-06-30T06:37:46.362380+00:00",
+  "pending": 19,
   "states": {
-    "rewrite": 17,
+    "rewrite": 16,
     "publish_ready": 3
   },
   "mechanism_clusters": {
-    "visual_stabilization": 1,
     "call_signal": 1,
     "scent_map": 1
   },
   "rights": {
-    "approved": 20
+    "approved": 19
   },
   "prune_summary": {
-    "pending_before": 54,
-    "pending_after": 20,
-    "rejected": 34,
-    "repair_needed": 8,
-    "repaired": 9,
+    "pending_before": 19,
+    "pending_after": 19,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 3,
     "reasons": {
-      "duplicate_title": 18,
       "editor_in_chief:subject repeated inside 3-day cooldown": 15,
       "objective_gate:observe_before_scaling": 12,
-      "queue_score_reject": 8,
-      "duplicate_script": 7,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 7,
-      "copy_subject_mismatch": 5,
-      "off_topic_visual": 4,
       "objective_gate:bootstrap_observe_before_scaling": 4,
-      "duplicate_angle": 3,
       "editor_in_chief:script quality gate blocked the narration": 3,
-      "opening_retention_gap_risk": 2,
-      "opening promise is not concrete enough": 2,
-      "script_word_loop": 2,
       "editor_in_chief:editorial score 49 is below 62": 2,
       "editor_in_chief:editorial score 42 is below 62": 2,
       "publish_ready_supply_reserve_fallback": 2,
-      "missing_visual_cue": 1,
-      "missing_visible_cue": 1,
-      "rights_guard_person_manual_review": 1,
-      "script_subject_mismatch": 1,
-      "script_hook_mismatch": 1,
-      "bad_plural_verb": 1,
       "editor_in_chief:editorial score 47 is below 62": 1,
       "editor_in_chief:editorial score 44 is below 62": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
@@ -52,6 +36,14 @@
     }
   },
   "rejected_preview": [
+    {
+      "id": "70f01915bdac9fa9",
+      "title": "Chickens keep their view steady while walking",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "c39730f5e142d4c3",
       "title": "Crystals build shape from repeating atoms",
@@ -297,16 +289,6 @@
         "duplicate_script"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "47f19a73c66a9115",
-      "title": "Dogs read human pointing surprisingly well",
-      "reasons": [
-        "rights_guard_person_manual_review",
-        "script_subject_mismatch",
-        "copy_subject_mismatch"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -489,7 +471,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:25:00.671930+00:00",
+        "checked_at": "2026-06-30T06:37:25.486572+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -977,648 +959,6 @@
       }
     },
     {
-      "id": "70f01915bdac9fa9",
-      "title": "Chickens lock their view between steps",
-      "category": "farm",
-      "publish_score": {
-        "approved": false,
-        "category": "farm",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.646,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.529,
-          "data_quality": "observed",
-          "data_quality_score": 1.0,
-          "minimum_sample_size": 35,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.53.",
-          "recommendation_strength": "observe",
-          "sample_size": 27
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.529,
-          "mechanism_cluster": "visual_stabilization",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [],
-          "scale_ready": true,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "eyes"
-          ],
-          "cue_terms": [
-            "eyes",
-            "hoof",
-            "stead",
-            "timing"
-          ],
-          "frame_hook_bridge": [
-            "eyes"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "chickens"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.514,
-            "data_quality": "observed",
-            "data_quality_score": 0.856,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only.",
-          "reasons": [
-            "weak_visual_surface",
-            "low_opportunity_score"
-          ],
-          "score": 51,
-          "signals": {
-            "comment_potential": 46,
-            "educational_potential": 57,
-            "emotional_potential": 36,
-            "novelty": 37,
-            "replay_potential": 76,
-            "viral_potential": 50,
-            "visual_potential": 47
-          },
-          "verdict": "discard"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.514,
-            "data_quality": "observed",
-            "data_quality_score": 0.856,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only.",
-          "reasons": [],
-          "score": 75,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 82,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "rewrite",
-        "story_format": "body_superpower",
-        "subscriber_conversion": {
-          "comment_probability": 0.242,
-          "confidence": {
-            "bootstrap_multiplier": 0.512,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.349,
-            "data_quality": "observed",
-            "data_quality_score": 0.883,
-            "minimum_sample_size": 15,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.35.",
-            "recommendation_strength": "observe",
-            "sample_size": 11
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.35.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.283,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 94,
-          "state": "strong",
-          "subscriber_probability": 0.134
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-06-30T06:24:58.517087+00:00",
-        "mechanism_cluster": "visual_stabilization",
-        "objective_reasons": [],
-        "score": 78.0,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 78.0,
-      "youtube_brain": {
-        "animal": "chickens",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "eyes"
-          ],
-          "cue_terms": [
-            "eyes",
-            "hoof",
-            "stead",
-            "timing"
-          ],
-          "frame_hook_bridge": [
-            "eyes"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "chickens"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "body_superpower",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "chickens",
-        "viewer_promise": "See why chickens body superpower matters."
-      },
-      "packaging": {
-        "community_prompt": "Which chickens clue should Wild Brief compare next in Watch The Cue?",
-        "cta_prompt": "Want one animal signal a day? Follow for tomorrow's farm clue.",
-        "curiosity_gap": {
-          "hook": "Why do these chickens change after the hoof timing?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "body superpower",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 101,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 42.97,
-            "cta:specific_question": 40.56,
-            "format:winner_inspired": 43.45,
-            "hook:pattern_reuse": 43.45,
-            "thumbnail:new_thumbnail": 42.74
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "eyes"
-            ],
-            "cue_terms": [
-              "eyes",
-              "hoof",
-              "stead",
-              "timing"
-            ],
-            "frame_hook_bridge": [
-              "eyes"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "chickens"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Chickens lock their view between steps",
-          "Chickens show why the steady eyes matters.",
-          "Chickens show why the steady eyes matters.",
-          "Chickens show why the steady eyes matters.",
-          "Chickens give away the answer through steady eyes"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "steady eyes",
-          "ending_line": "Did you notice it?",
-          "final_line": "Now the steady eyes at the start make sense.",
-          "loop_score": 0.795,
-          "opening_line": "Chickens lock their view between steps.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "steady eyes",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.795,
-        "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. What part of this feels most impossible?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "eyes"
-          ],
-          "cue_terms": [
-            "eyes",
-            "hoof",
-            "stead",
-            "timing"
-          ],
-          "frame_hook_bridge": [
-            "eyes"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "chickens"
-        },
-        "pinned_comment": "Watch the steady eyes again. Tomorrow in Watch The Cue: another animal signal. What part of this feels most impossible?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.42,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 19,
-          "first_2s_narration": "Chickens lock their view between steps Watch the eyes stay level while",
-          "first_frame_text": "STEADY EYES",
-          "first_frame_text_words": 2,
-          "hook": "Chickens lock their view between steps.",
-          "hook_specificity": 0.78,
-          "hook_words": 6,
-          "loop_score": 0.795,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "eyes"
-            ],
-            "cue_terms": [
-              "eyes",
-              "hoof",
-              "stead",
-              "timing"
-            ],
-            "frame_hook_bridge": [
-              "eyes"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "chickens"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the steady eyes, so viewers rewatch the chickens clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.514,
-            "data_quality": "observed",
-            "data_quality_score": 0.856,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only.",
-          "reasons": [],
-          "score": 75,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 82,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Chickens lock their view between steps Watch the eyes stay level while",
-          "first_frame_text": "STEADY EYES",
-          "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. What part of this feels most impossible?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains Chickens behavior through the visible steady eyes.",
-            "series": "Watch The Cue",
-            "subject": "chickens",
-            "terms": [
-              "chickens",
-              "steady eyes",
-              "farm",
-              "body superpower"
-            ],
-            "title_variant": "Chickens behavior: steady eyes explained",
-            "visible_cue": "steady eyes"
-          },
-          "series": "Watch The Cue",
-          "subject": "chickens",
-          "visible_cue": "steady eyes"
-        },
-        "risks": [],
-        "score": 96,
-        "search_intent": {
-          "description_line": "This Short explains Chickens behavior through the visible steady eyes.",
-          "series": "Watch The Cue",
-          "subject": "chickens",
-          "terms": [
-            "chickens",
-            "steady eyes",
-            "farm",
-            "body superpower"
-          ],
-          "title_variant": "Chickens behavior: steady eyes explained",
-          "visible_cue": "steady eyes"
-        },
-        "selected_variant": {
-          "hook": "Chickens lock their view between steps",
-          "score": 80,
-          "thumbnail_text": "STEADY EYES",
-          "title": "Chickens keep their view steady while walking"
-        },
-        "series": "Watch The Cue",
-        "series_identity": {
-          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Watch The Cue",
-          "series": "Watch The Cue"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.242,
-          "confidence": {
-            "bootstrap_multiplier": 0.512,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.349,
-            "data_quality": "observed",
-            "data_quality_score": 0.883,
-            "minimum_sample_size": 15,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.35.",
-            "recommendation_strength": "observe",
-            "sample_size": 11
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.35.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.283,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 94,
-          "state": "strong",
-          "subscriber_probability": 0.134
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "STEADY EYES",
-          "WATCH STEADY EYES",
-          "CHICKENS STABILIZE",
-          "STEADY EYES MATTERS",
-          "STEADY EYES FIRST",
-          "STEADY EYES REVEAL",
-          "STEADY EYES CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Chickens keep their view steady while walking",
-          "Chickens lock their view between steps",
-          "Chickens use steady eyes before they stabilize",
-          "Why chickens stabilize after one steady eyes",
-          "Chickens reveal the answer with steady eyes",
-          "The steady eyes that changes the moment",
-          "Chickens make one steady eyes matter",
-          "Chickens show the hidden answer in seconds",
-          "Chickens: watch this steady eyes"
-        ],
-        "top_variants": [
-          {
-            "hook": "Chickens lock their view between steps",
-            "score": 80,
-            "thumbnail_text": "STEADY EYES",
-            "title": "Chickens keep their view steady while walking"
-          },
-          {
-            "hook": "Watch the steady eyes; it explains the behavior",
-            "score": 80,
-            "thumbnail_text": "STEADY EYES",
-            "title": "Chickens keep their view steady while walking"
-          },
-          {
-            "hook": "Start with the steady eyes; it changes the scene",
-            "score": 80,
-            "thumbnail_text": "STEADY EYES",
-            "title": "Chickens keep their view steady while walking"
-          },
-          {
-            "hook": "Chickens lock their view between steps",
-            "score": 73,
-            "thumbnail_text": "WATCH STEADY EYES",
-            "title": "Chickens keep their view steady while walking"
-          },
-          {
-            "hook": "Watch the steady eyes; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "WATCH STEADY EYES",
-            "title": "Chickens keep their view steady while walking"
-          },
-          {
-            "hook": "Start with the steady eyes; it changes the scene",
-            "score": 73,
-            "thumbnail_text": "WATCH STEADY EYES",
-            "title": "Chickens keep their view steady while walking"
-          },
-          {
-            "hook": "Chickens lock their view between steps",
-            "score": 73,
-            "thumbnail_text": "CHICKENS STABILIZE",
-            "title": "Chickens keep their view steady while walking"
-          },
-          {
-            "hook": "Watch the steady eyes; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "CHICKENS STABILIZE",
-            "title": "Chickens keep their view steady while walking"
-          },
-          {
-            "hook": "Start with the steady eyes; it changes the scene",
-            "score": 73,
-            "thumbnail_text": "CHICKENS STABILIZE",
-            "title": "Chickens keep their view steady while walking"
-          },
-          {
-            "hook": "Chickens lock their view between steps",
-            "score": 73,
-            "thumbnail_text": "STEADY EYES MATTERS",
-            "title": "Chickens keep their view steady while walking"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "969dd963aca75fd5",
       "title": "Cats groom to reset their scent map",
       "category": "cats",
@@ -1808,7 +1148,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:24:58.522187+00:00",
+        "checked_at": "2026-06-30T06:37:25.457942+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -2478,7 +1818,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:24:58.525128+00:00",
+        "checked_at": "2026-06-30T06:37:25.459848+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -2694,7 +2034,7 @@
         },
         "pinned_comment": "Watch the leaf surface again. Tomorrow in Biology Brief: another nature signal. Do plants feel more passive, reactive, or strategic here?",
         "preflight_inputs": {
-          "caption_chars_per_second": 14.71,
+          "caption_chars_per_second": 15.0,
           "contrast_score": 0.74,
           "cta_count": 1,
           "duration_hint_s": 21,
@@ -3137,7 +2477,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:24:59.246315+00:00",
+        "checked_at": "2026-06-30T06:37:25.465644+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -3782,7 +3122,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:24:59.248479+00:00",
+        "checked_at": "2026-06-30T06:37:25.468448+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -4429,7 +3769,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:24:58.518585+00:00",
+        "checked_at": "2026-06-30T06:37:25.453110+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -5091,7 +4431,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:24:58.520046+00:00",
+        "checked_at": "2026-06-30T06:37:25.455156+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -5739,7 +5079,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:24:58.852239+00:00",
+        "checked_at": "2026-06-30T06:37:25.461502+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -6386,7 +5726,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:24:59.250195+00:00",
+        "checked_at": "2026-06-30T06:37:25.470795+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -7036,7 +6376,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:24:59.252200+00:00",
+        "checked_at": "2026-06-30T06:37:25.472892+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -7676,7 +7016,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:24:59.253903+00:00",
+        "checked_at": "2026-06-30T06:37:25.474589+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -8318,7 +7658,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:24:59.255817+00:00",
+        "checked_at": "2026-06-30T06:37:25.476510+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -8974,7 +8314,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:24:59.258363+00:00",
+        "checked_at": "2026-06-30T06:37:25.479191+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -9638,7 +8978,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:24:59.260176+00:00",
+        "checked_at": "2026-06-30T06:37:25.481003+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -10292,7 +9632,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:25:00.316703+00:00",
+        "checked_at": "2026-06-30T06:37:25.483207+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10945,7 +10285,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:25:00.681465+00:00",
+        "checked_at": "2026-06-30T06:37:25.488538+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11598,7 +10938,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:25:00.683776+00:00",
+        "checked_at": "2026-06-30T06:37:25.490539+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12256,7 +11596,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:24:59.244795+00:00",
+        "checked_at": "2026-06-30T06:37:25.464134+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -12912,7 +12252,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:24:58.521141+00:00",
+        "checked_at": "2026-06-30T06:37:25.456802+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
