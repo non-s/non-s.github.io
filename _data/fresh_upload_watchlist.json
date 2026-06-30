@@ -6,16 +6,71 @@
   ],
   "counts": {
     "analytics_due": 8,
-    "awaiting_1h": 0,
-    "high_priority": 10,
-    "repair_candidates": 2,
+    "awaiting_1h": 1,
+    "high_priority": 9,
+    "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-06-30T12:39:05.971614+00:00",
+  "generated_at": "2026-06-30T12:52:57.111070+00:00",
   "items": [
     {
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.084,
+      "category": "forests",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-06-30T13:47:54.862044+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-06-30T18:47:54.862044+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-01T12:47:54.862044+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-06-30T13:47:54.862044+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Hidden Network",
+      "state": "awaiting_1h",
+      "title": "Forests make cooler air under the canopy | Cool canopy",
+      "uploaded_at": "2026-06-30T12:47:54.862044+00:00",
+      "url": "https://www.youtube.com/shorts/CLtQkqTR_r8",
+      "video_id": "CLtQkqTR_r8",
+      "views_per_hour": 0.0
+    },
+    {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.565,
+      "age_hours": 6.796,
       "category": "forests",
       "checkpoints": [
         {
@@ -80,16 +135,16 @@
       }
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 8.254,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 8.485,
       "category": "insects",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-06-30T05:23:51.713982+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -113,41 +168,30 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-01T04:23:51.713982+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-06-30T05:23:51.713982+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "overdue",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Tiny Worlds",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Ants use scent road before they change",
       "uploaded_at": "2026-06-30T04:23:51.713982+00:00",
       "url": "https://www.youtube.com/shorts/BdO9Suta2zU",
       "video_id": "BdO9Suta2zU",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Ants use scent road before they change",
-        "video_id": "BdO9Suta2zU",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.116,
+      "age_hours": 11.347,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -202,7 +246,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.429,
+      "age_hours": 13.66,
       "category": "weather",
       "checkpoints": [
         {
@@ -218,8 +262,8 @@
           "delta_to_target": -105,
           "due_at": "2026-06-30T05:13:20.974300+00:00",
           "label": "6h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 105,
           "views": 0
         },
@@ -257,7 +301,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 14.246,
+      "age_hours": 14.476,
       "category": "geology",
       "checkpoints": [
         {
@@ -312,7 +356,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 15.521,
+      "age_hours": 15.751,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -367,7 +411,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.378,
+      "age_hours": 16.609,
       "category": "trees",
       "checkpoints": [
         {
@@ -422,7 +466,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 17.429,
+      "age_hours": 17.66,
       "category": "farm",
       "checkpoints": [
         {
@@ -477,7 +521,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 19.264,
+      "age_hours": 19.495,
       "category": "ocean",
       "checkpoints": [
         {
@@ -528,61 +572,6 @@
       "uploaded_at": "2026-06-29T17:23:14.984297+00:00",
       "url": "https://www.youtube.com/shorts/mPIUYYP7Ty4",
       "video_id": "mPIUYYP7Ty4",
-      "views_per_hour": 0.0
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 20.493,
-      "category": "nocturnal",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-06-29T17:09:32.276643+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-06-29T22:09:32.276643+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-06-30T16:09:32.276643+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-06-29T17:09:32.276643+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Night Shift Nature",
-      "state": "analytics_due",
-      "title": "Foxes use snow hearing before they hunt",
-      "uploaded_at": "2026-06-29T16:09:32.276643+00:00",
-      "url": "https://www.youtube.com/shorts/VgUn1CFEhhc",
-      "video_id": "VgUn1CFEhhc",
       "views_per_hour": 0.0
     }
   ],
