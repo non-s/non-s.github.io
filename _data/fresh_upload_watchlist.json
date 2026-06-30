@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 7,
+    "analytics_due": 6,
     "awaiting_1h": 0,
     "high_priority": 9,
-    "repair_candidates": 2,
+    "repair_candidates": 3,
     "tracked": 10
   },
-  "generated_at": "2026-06-30T10:28:06.103393+00:00",
+  "generated_at": "2026-06-30T10:33:51.430956+00:00",
   "items": [
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.382,
+      "age_hours": 4.478,
       "category": "forests",
       "checkpoints": [
         {
@@ -69,8 +69,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.071,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.167,
       "category": "insects",
       "checkpoints": [
         {
@@ -86,8 +86,8 @@
           "delta_to_target": -105,
           "due_at": "2026-06-30T10:23:51.713982+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -102,30 +102,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
-        "delta_to_target": -105,
-        "due_at": "2026-06-30T10:23:51.713982+00:00",
-        "label": "6h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-01T04:23:51.713982+00:00",
+        "label": "24h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 105,
+        "state": "pending",
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Tiny Worlds",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Ants use scent road before they change",
       "uploaded_at": "2026-06-30T04:23:51.713982+00:00",
       "url": "https://www.youtube.com/shorts/BdO9Suta2zU",
       "video_id": "BdO9Suta2zU",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 27/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Ants use scent road before they change",
+        "video_id": "BdO9Suta2zU",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 8.933,
+      "age_hours": 9.028,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -191,7 +202,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 11.246,
+      "age_hours": 11.342,
       "category": "weather",
       "checkpoints": [
         {
@@ -257,7 +268,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.062,
+      "age_hours": 12.158,
       "category": "geology",
       "checkpoints": [
         {
@@ -312,7 +323,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.337,
+      "age_hours": 13.433,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -367,7 +378,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 14.195,
+      "age_hours": 14.291,
       "category": "trees",
       "checkpoints": [
         {
@@ -422,7 +433,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 15.245,
+      "age_hours": 15.341,
       "category": "farm",
       "checkpoints": [
         {
@@ -477,7 +488,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 17.081,
+      "age_hours": 17.177,
       "category": "ocean",
       "checkpoints": [
         {
@@ -532,7 +543,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 18.309,
+      "age_hours": 18.405,
       "category": "nocturnal",
       "checkpoints": [
         {
