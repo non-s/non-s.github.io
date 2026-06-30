@@ -4,7 +4,7 @@
       "id": "969dd963aca75fd5",
       "title": "Cats groom to reset their scent map",
       "category": "cats",
-      "autonomy_priority": 98.9,
+      "autonomy_priority": 98.8,
       "queue_score": 78.0,
       "template_cluster": "",
       "mechanism_cluster": "scent_map",
@@ -48,13 +48,13 @@
           "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
         },
         "retention": {
-          "score": 70,
+          "score": 72,
           "signals": {
             "hook_score": 70,
             "curiosity_score": 71,
             "visual_score": 58,
             "replay_score": 62,
-            "completion_prediction": 84
+            "completion_prediction": 94
           },
           "verdict": "rewrite",
           "reasons": [],
@@ -137,29 +137,29 @@
             "series_identity"
           ],
           "confidence": {
-            "confidence_score": 0.379,
-            "sample_size": 11,
+            "confidence_score": 0.387,
+            "sample_size": 10,
             "minimum_sample_size": 18,
             "data_quality": "observed",
             "data_quality_score": 0.75,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.534,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.38."
+            "bootstrap_multiplier": 0.54,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.39."
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.38."
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.39."
         },
         "distribution_adjustment": 0,
         "decision_confidence": {
-          "confidence_score": 0.294,
-          "sample_size": 21,
+          "confidence_score": 0.302,
+          "sample_size": 19,
           "minimum_sample_size": 38,
           "data_quality": "estimated",
           "data_quality_score": 0.61,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.47,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.29."
+          "bootstrap_multiplier": 0.476,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.30."
         },
         "category": "cats",
         "story_format": "body_superpower",
@@ -179,7 +179,7 @@
           "reasons": [
             "observe_before_scaling"
           ],
-          "confidence_score": 0.294,
+          "confidence_score": 0.302,
           "scale_ready": false,
           "publish_blocking": false,
           "swipe_risk_band": "low",
@@ -381,198 +381,6 @@
           "mechanism_cluster": ""
         }
       }
-    },
-    {
-      "id": "5820cf872ca879e9",
-      "title": "Ocean animals make the gill rhythm matter first",
-      "category": "ocean",
-      "autonomy_priority": 90.9,
-      "queue_score": 78.0,
-      "template_cluster": "",
-      "mechanism_cluster": "",
-      "objective_reasons": [
-        "publish_ready_supply_reserve_fallback"
-      ],
-      "lane": "evergreen",
-      "mix_adjustment": 5.0,
-      "score": {
-        "score": 100.0,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 50,
-          "signals": {
-            "viral_potential": 46,
-            "visual_potential": 71,
-            "replay_potential": 54,
-            "comment_potential": 22,
-            "educational_potential": 52,
-            "emotional_potential": 27,
-            "novelty": 61
-          },
-          "verdict": "discard",
-          "reasons": [
-            "low_opportunity_score"
-          ],
-          "confidence": {
-            "confidence_score": 0.427,
-            "sample_size": 3,
-            "minimum_sample_size": 5,
-            "data_quality": "observed",
-            "data_quality_score": 0.711,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.55,
-            "reasoning": "category has 3/5 samples, observed data, confidence 0.43; observation only."
-          },
-          "reasoning": "category has 3/5 samples, observed data, confidence 0.43; observation only."
-        },
-        "retention": {
-          "score": 75,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 79,
-            "visual_score": 66,
-            "replay_score": 72,
-            "completion_prediction": 75
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.427,
-            "sample_size": 3,
-            "minimum_sample_size": 5,
-            "data_quality": "observed",
-            "data_quality_score": 0.711,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.55,
-            "reasoning": "category has 3/5 samples, observed data, confidence 0.43; observation only."
-          },
-          "reasoning": "category has 3/5 samples, observed data, confidence 0.43; observation only."
-        },
-        "opening_retention": {
-          "score": 92.0,
-          "state": "retention_ready",
-          "approved": true,
-          "subject": "shark",
-          "cue_terms": [
-            "gill",
-            "rhythm"
-          ],
-          "frame_hook_bridge": [
-            "gill",
-            "rhythm"
-          ],
-          "cue_bridge": [
-            "gill",
-            "rhythm"
-          ],
-          "strengths": [
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "risks": [
-            "subject_not_frontloaded"
-          ]
-        },
-        "weak_content": {
-          "risk": 22,
-          "state": "clear",
-          "reasons": [
-            "repetitive_script"
-          ],
-          "confidence": {
-            "confidence_score": 0.65,
-            "sample_size": 12,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 95,
-          "state": "strong",
-          "subscriber_probability": 0.136,
-          "return_probability": 0.286,
-          "comment_probability": 0.244,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.505,
-            "sample_size": 14,
-            "minimum_sample_size": 18,
-            "data_quality": "observed",
-            "data_quality_score": 0.912,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.629,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.51."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.51."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.508,
-          "sample_size": 30,
-          "minimum_sample_size": 38,
-          "data_quality": "observed",
-          "data_quality_score": 1.0,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.631,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.51."
-        },
-        "category": "ocean",
-        "story_format": "body_superpower",
-        "hook_score": 86,
-        "title_score": 100,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 0.0,
-          "reasons": [],
-          "confidence_score": 0.508,
-          "scale_ready": true,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 0.0,
-          "template_cluster": "",
-          "mechanism_cluster": ""
-        },
-        "reserve_override": {
-          "reason": "publish_ready_supply_reserve_fallback",
-          "original_approved": false,
-          "original_state": "rewrite",
-          "original_opportunity_reasons": [
-            "low_opportunity_score"
-          ]
-        }
-      }
     }
   ],
   "editorial_mix": {
@@ -583,18 +391,10 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 21,
+      "evergreen": 19,
       "recovery": 1
     },
     "items": [
-      {
-        "id": "5820cf872ca879e9",
-        "title": "Ocean animals make the gill rhythm matter first",
-        "category": "ocean",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 55.0
-      },
       {
         "id": "fc8688ca9a9e53be",
         "title": "Elephants cool blood through giant ears",
@@ -657,7 +457,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.24
+        "freshness_score": 53.22
       },
       {
         "id": "a3964b1697a47edc",
@@ -708,12 +508,12 @@
         "freshness_score": 50.28
       },
       {
-        "id": "95a5f9a6cd71884a",
+        "id": "4111626a62866b27",
         "title": "Forests trap cool air below thick leaves",
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.88
+        "freshness_score": 55.0
       },
       {
         "id": "8e1097b5127e4c6c",
@@ -722,14 +522,6 @@
         "lane": "evergreen",
         "adjustment": 5.0,
         "freshness_score": 53.94
-      },
-      {
-        "id": "4111626a62866b27",
-        "title": "Forests hold cool air under the canopy",
-        "category": "forests",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 55.0
       },
       {
         "id": "18f566b37db1413b",
@@ -773,49 +565,39 @@
     "windows": [
       {
         "window": 10,
-        "items": 3,
+        "items": 2,
         "dominant_shape": "{subject} groom to reset their scent map",
         "dominant_count": 1,
-        "dominant_share": 0.333,
+        "dominant_share": 0.5,
         "top_shapes": [
           {
             "shape": "{subject} groom to reset their scent map",
             "count": 1,
-            "share": 0.333
+            "share": 0.5
           },
           {
             "shape": "{subject} turn a forest into a cooler room",
             "count": 1,
-            "share": 0.333
-          },
-          {
-            "shape": "{subject} animals make the gill rhythm matter first",
-            "count": 1,
-            "share": 0.333
+            "share": 0.5
           }
         ]
       },
       {
         "window": 30,
-        "items": 3,
+        "items": 2,
         "dominant_shape": "{subject} groom to reset their scent map",
         "dominant_count": 1,
-        "dominant_share": 0.333,
+        "dominant_share": 0.5,
         "top_shapes": [
           {
             "shape": "{subject} groom to reset their scent map",
             "count": 1,
-            "share": 0.333
+            "share": 0.5
           },
           {
             "shape": "{subject} turn a forest into a cooler room",
             "count": 1,
-            "share": 0.333
-          },
-          {
-            "shape": "{subject} animals make the gill rhythm matter first",
-            "count": 1,
-            "share": 0.333
+            "share": 0.5
           }
         ]
       }
@@ -823,26 +605,26 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 22,
-    "pending_after": 22,
+    "pending_before": 20,
+    "pending_after": 20,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 3,
     "reasons": {
-      "editor_in_chief:subject repeated inside 3-day cooldown": 18,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 17,
       "objective_gate:observe_before_scaling": 12,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 7,
-      "objective_gate:bootstrap_observe_before_scaling": 6,
-      "editor_in_chief:script quality gate blocked the narration": 5,
+      "objective_gate:bootstrap_observe_before_scaling": 5,
+      "editor_in_chief:script quality gate blocked the narration": 4,
       "editor_in_chief:editorial score 49 is below 62": 2,
       "editor_in_chief:editorial score 42 is below 62": 2,
-      "editor_in_chief:editorial score 46 is below 62": 2,
       "editor_in_chief:editorial score 40 is below 62": 2,
-      "publish_ready_supply_reserve_fallback": 2,
       "editor_in_chief:editorial score 41 is below 62": 1,
       "editor_in_chief:editorial score 47 is below 62": 1,
       "editor_in_chief:editorial score 44 is below 62": 1,
-      "editorial_cooldown_supply_fallback": 1
+      "editor_in_chief:editorial score 46 is below 62": 1,
+      "editorial_cooldown_supply_fallback": 1,
+      "publish_ready_supply_reserve_fallback": 1
     }
   }
 }
