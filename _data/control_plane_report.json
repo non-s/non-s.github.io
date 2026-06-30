@@ -2,11 +2,11 @@
   "state": "migration_needed",
   "pressure_score": 100,
   "metrics": {
-    "live_state_files": 250,
-    "data_state_files": 147,
+    "live_state_files": 396,
+    "data_state_files": 293,
     "video_done_markers": 101,
-    "live_state_bytes": 20938899,
-    "stories_queue_bytes": 3750254,
+    "live_state_bytes": 22275827,
+    "stories_queue_bytes": 3903700,
     "stories_queue_lines": 0,
     "workflow_files": 18,
     "state_path_refs": 285
@@ -14,33 +14,33 @@
   "largest_state_files": [
     {
       "path": "_data/ai_cache.jsonl",
-      "bytes": 6842112,
+      "bytes": 6849479,
       "lines": 0
     },
     {
       "path": "_data/stories_queue.json",
-      "bytes": 3750254,
+      "bytes": 3903700,
       "lines": 0
     },
     {
-      "path": "_data/early_performance.json",
-      "bytes": 908162,
-      "lines": 35177
+      "path": "_data/rejected_queue.jsonl",
+      "bytes": 925826,
+      "lines": 1166
     },
     {
-      "path": "_data/rejected_queue.jsonl",
-      "bytes": 793951,
-      "lines": 1000
+      "path": "_data/early_performance.json",
+      "bytes": 908665,
+      "lines": 35193
     },
     {
       "path": "_data/analytics/api_quota_ledger.jsonl",
-      "bytes": 782223,
-      "lines": 1229
+      "bytes": 783451,
+      "lines": 1231
     },
     {
       "path": "_data/provider_stats.jsonl",
-      "bytes": 724589,
-      "lines": 9322
+      "bytes": 725366,
+      "lines": 9332
     },
     {
       "path": "_data/queue_audit.json",
@@ -51,6 +51,11 @@
       "path": "_data/publish_slot_decisions.jsonl",
       "bytes": 390702,
       "lines": 511
+    },
+    {
+      "path": "_data/repair_queue.jsonl",
+      "bytes": 329014,
+      "lines": 19
     },
     {
       "path": "_data/packaging_report.json",
@@ -66,11 +71,6 @@
       "path": "_data/autonomous_growth_plan.json",
       "bytes": 155761,
       "lines": 4304
-    },
-    {
-      "path": "_data/fact_sources.jsonl",
-      "bytes": 140817,
-      "lines": 451
     }
   ],
   "migration_lanes": [
