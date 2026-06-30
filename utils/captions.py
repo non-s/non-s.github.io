@@ -39,6 +39,8 @@ from typing import Iterable
 
 import requests
 
+from utils.retry import retry_call
+
 log = logging.getLogger(__name__)
 
 
@@ -103,6 +105,21 @@ def _whisper_language(lang: str | None = None) -> str:
     return base if base in known else ""
 
 
+def _groq_whisper_request(audio_path: Path, key: str, data: dict) -> requests.Response:
+    """One Groq Whisper attempt. Raises on transient (retryable) failure."""
+    with audio_path.open("rb") as fh:
+        r = requests.post(
+            _GROQ_STT_URL,
+            headers={"Authorization": f"Bearer {key}"},
+            files={"file": (audio_path.name, fh, "audio/mpeg")},
+            data=data,
+            timeout=60,
+        )
+    if r.status_code in (429, 500, 502, 503, 504):
+        raise requests.exceptions.HTTPError(f"groq whisper transient status {r.status_code}", response=r)
+    return r
+
+
 def transcribe_groq(audio_path: Path, lang: str | None = None) -> list[Caption] | None:
     """Word-level transcribe via Groq Whisper. None on any failure."""
     key = os.environ.get("GROQ_API_KEY", "")
@@ -111,40 +128,28 @@ def transcribe_groq(audio_path: Path, lang: str | None = None) -> list[Caption] 
     if not audio_path.exists():
         return None
     lang = _whisper_language(lang)
-    for attempt in range(2):
-        try:
-            with audio_path.open("rb") as fh:
-                data = {
-                    "model": _GROQ_MODEL,
-                    "response_format": "verbose_json",
-                    "timestamp_granularities[]": "word",
-                    "temperature": "0",
-                }
-                if lang:
-                    data["language"] = lang
-                r = requests.post(
-                    _GROQ_STT_URL,
-                    headers={"Authorization": f"Bearer {key}"},
-                    files={"file": (audio_path.name, fh, "audio/mpeg")},
-                    data=data,
-                    timeout=60,
-                )
-        except (requests.ConnectionError, requests.Timeout) as exc:
-            if attempt == 0:
-                log.debug("groq whisper transient %s; retrying", type(exc).__name__)
-                import time as _time
+    data = {
+        "model": _GROQ_MODEL,
+        "response_format": "verbose_json",
+        "timestamp_granularities[]": "word",
+        "temperature": "0",
+    }
+    if lang:
+        data["language"] = lang
 
-                _time.sleep(_GROQ_RETRY_DELAY_S)
-                continue
-            return None
-        if r.status_code == 200:
-            break
-        if r.status_code in (429, 500, 502, 503, 504) and attempt == 0:
-            log.debug("groq whisper %d; retrying once", r.status_code)
-            import time as _time
-
-            _time.sleep(_GROQ_RETRY_DELAY_S)
-            continue
+    r = retry_call(
+        _groq_whisper_request,
+        audio_path,
+        key,
+        data,
+        max_attempts=2,
+        base_delay=_GROQ_RETRY_DELAY_S,
+        jitter=0,
+        default=None,
+    )
+    if r is None:
+        return None
+    if r.status_code != 200:
         log.debug("groq whisper %d: %s", r.status_code, r.text[:200])
         return None
     try:
