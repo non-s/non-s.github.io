@@ -5,25 +5,80 @@
     24
   ],
   "counts": {
-    "analytics_due": 6,
-    "awaiting_1h": 0,
-    "high_priority": 7,
-    "repair_candidates": 1,
+    "analytics_due": 2,
+    "awaiting_1h": 1,
+    "high_priority": 4,
+    "repair_candidates": 2,
     "tracked": 10
   },
-  "generated_at": "2026-06-30T01:29:58.710149+00:00",
+  "generated_at": "2026-06-30T01:34:51.624494+00:00",
   "items": [
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 2.277,
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.045,
+      "category": "wildlife",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-06-30T02:32:09.057532+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-06-30T07:32:09.057532+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-01T01:32:09.057532+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-06-30T02:32:09.057532+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 90.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Animal Superpowers",
+      "state": "awaiting_1h",
+      "title": "Deer use sound radar before they aim",
+      "uploaded_at": "2026-06-30T01:32:09.057532+00:00",
+      "url": "https://www.youtube.com/shorts/fW7s6wfSJnA",
+      "video_id": "fW7s6wfSJnA",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 2.359,
       "category": "weather",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-06-30T00:13:20.974300+00:00",
           "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-06-30T00:13:20.974300+00:00",
-        "label": "1h",
+        "delta_to_target": 0,
+        "due_at": "2026-06-30T05:13:20.974300+00:00",
+        "label": "6h",
         "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
+        "state": "pending",
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 90.0,
       "opening_retention_state": "retention_ready",
-      "priority": "high",
+      "priority": "low",
       "series": "Earth Engine",
-      "state": "analytics_due",
+      "state": "watch",
       "title": "Lightning uses lightning flash before it signals",
       "uploaded_at": "2026-06-29T23:13:20.974300+00:00",
       "url": "https://www.youtube.com/shorts/Mmi-lyfFJuA",
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.094,
+      "age_hours": 3.175,
       "category": "geology",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.369,
+      "age_hours": 4.45,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.226,
+      "age_hours": 5.307,
       "category": "trees",
       "checkpoints": [
         {
@@ -234,8 +289,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.277,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.358,
       "category": "farm",
       "checkpoints": [
         {
@@ -251,8 +306,8 @@
           "delta_to_target": -105,
           "due_at": "2026-06-30T01:13:22.718122+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -267,30 +322,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
-        "delta_to_target": -105,
-        "due_at": "2026-06-30T01:13:22.718122+00:00",
-        "label": "6h",
+        "delta_to_target": 0,
+        "due_at": "2026-06-30T19:13:22.718122+00:00",
+        "label": "24h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 105,
+        "state": "pending",
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Farmyard Surprises",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Horses sort familiar clues with face memory",
       "uploaded_at": "2026-06-29T19:13:22.718122+00:00",
       "url": "https://www.youtube.com/shorts/s3fHXjq6bic",
       "video_id": "s3fHXjq6bic",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Horses sort familiar clues with face memory",
+        "video_id": "s3fHXjq6bic",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 8.112,
+      "age_hours": 8.194,
       "category": "ocean",
       "checkpoints": [
         {
@@ -356,7 +422,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.341,
+      "age_hours": 9.422,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -410,8 +476,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.131,
+      "action": "Queue a sequel or related-video bridge while the session has momentum.",
+      "age_hours": 11.213,
       "category": "space",
       "checkpoints": [
         {
@@ -439,11 +505,11 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 300,
-          "views": 0
+          "views": 2
         }
       ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "current_views": 2,
+      "hypothesis": "Performance signal is already positive; amplify without changing the opening.",
       "next_checkpoint": {
         "delta_to_target": -24,
         "due_at": "2026-06-29T15:22:05.678381+00:00",
@@ -455,18 +521,27 @@
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "high",
+      "priority": "normal",
       "series": "Nature Signals",
-      "state": "analytics_due",
+      "state": "accelerating",
       "title": "The moon keeps one face turned toward Earth",
       "uploaded_at": "2026-06-29T14:22:05.678381+00:00",
       "url": "https://www.youtube.com/shorts/mk0JV1QLoiw",
       "video_id": "mk0JV1QLoiw",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.179,
+      "warning": {
+        "confidence_score": 0.512,
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.51; observation only.",
+        "score": 0,
+        "state": "accelerating",
+        "title": "The moon keeps one face turned toward Earth",
+        "video_id": "mk0JV1QLoiw",
+        "warning_state": "accelerator"
+      }
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 14.059,
+      "age_hours": 14.141,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -517,61 +592,6 @@
       "uploaded_at": "2026-06-29T11:26:25.555830+00:00",
       "url": "https://www.youtube.com/shorts/aMLo86lOqY4",
       "video_id": "aMLo86lOqY4",
-      "views_per_hour": 0.0
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 15.482,
-      "category": "conservation",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-06-29T11:01:03.929588+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-06-29T16:01:03.929588+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-06-30T10:01:03.929588+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-06-29T11:01:03.929588+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Planet Repair",
-      "state": "analytics_due",
-      "title": "Fish Mangroves take power out of waves",
-      "uploaded_at": "2026-06-29T10:01:03.929588+00:00",
-      "url": "https://www.youtube.com/shorts/q7XFYARNqgs",
-      "video_id": "q7XFYARNqgs",
       "views_per_hour": 0.0
     }
   ],
