@@ -381,6 +381,394 @@
           "mechanism_cluster": ""
         }
       }
+    },
+    {
+      "id": "dad711bb1ab5be00",
+      "title": "Plants turn light into stored sugar",
+      "category": "plants",
+      "autonomy_priority": 95.2,
+      "queue_score": 78.0,
+      "template_cluster": "",
+      "mechanism_cluster": "",
+      "objective_reasons": [
+        "objective_gate:observe_before_scaling",
+        "publish_ready_supply_reserve_fallback"
+      ],
+      "lane": "evergreen",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 100.0,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 51,
+          "signals": {
+            "viral_potential": 50,
+            "visual_potential": 60,
+            "replay_potential": 59,
+            "comment_potential": 33,
+            "educational_potential": 59,
+            "emotional_potential": 30,
+            "novelty": 50
+          },
+          "verdict": "discard",
+          "reasons": [
+            "low_opportunity_score"
+          ],
+          "confidence": {
+            "confidence_score": 0.113,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.335,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+        },
+        "retention": {
+          "score": 70,
+          "signals": {
+            "hook_score": 70,
+            "curiosity_score": 71,
+            "visual_score": 66,
+            "replay_score": 62,
+            "completion_prediction": 77
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.113,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.335,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+        },
+        "opening_retention": {
+          "score": 100.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "plants",
+          "cue_terms": [
+            "leaf",
+            "light",
+            "sugar",
+            "surface"
+          ],
+          "frame_hook_bridge": [
+            "light",
+            "sugar"
+          ],
+          "cue_bridge": [
+            "leaf",
+            "light",
+            "sugar",
+            "surface"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": []
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 12,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113,
+          "return_probability": 0.242,
+          "comment_probability": 0.207,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.296,
+            "sample_size": 10,
+            "minimum_sample_size": 18,
+            "data_quality": "estimated",
+            "data_quality_score": 0.587,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.472,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.30."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.30."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.277,
+          "sample_size": 20,
+          "minimum_sample_size": 38,
+          "data_quality": "estimated",
+          "data_quality_score": 0.48,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.458,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.28."
+        },
+        "category": "plants",
+        "story_format": "body_superpower",
+        "hook_score": 86,
+        "title_score": 100,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "confidence_score": 0.277,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 0.0,
+          "template_cluster": "",
+          "mechanism_cluster": ""
+        },
+        "reserve_override": {
+          "reason": "publish_ready_supply_reserve_fallback",
+          "original_approved": false,
+          "original_state": "rewrite",
+          "original_opportunity_reasons": [
+            "low_opportunity_score"
+          ]
+        }
+      }
+    },
+    {
+      "id": "70f01915bdac9fa9",
+      "title": "Chickens lock their view between steps",
+      "category": "farm",
+      "autonomy_priority": 79.5,
+      "queue_score": 78.0,
+      "template_cluster": "",
+      "mechanism_cluster": "visual_stabilization",
+      "objective_reasons": [
+        "publish_ready_supply_reserve_fallback"
+      ],
+      "lane": "recovery",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 100.0,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 51,
+          "signals": {
+            "viral_potential": 50,
+            "visual_potential": 47,
+            "replay_potential": 76,
+            "comment_potential": 46,
+            "educational_potential": 57,
+            "emotional_potential": 36,
+            "novelty": 37
+          },
+          "verdict": "discard",
+          "reasons": [
+            "weak_visual_surface",
+            "low_opportunity_score"
+          ],
+          "confidence": {
+            "confidence_score": 0.514,
+            "sample_size": 3,
+            "minimum_sample_size": 5,
+            "data_quality": "observed",
+            "data_quality_score": 0.856,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.55,
+            "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only."
+          },
+          "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only."
+        },
+        "retention": {
+          "score": 75,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 71,
+            "visual_score": 58,
+            "replay_score": 82,
+            "completion_prediction": 77
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.514,
+            "sample_size": 3,
+            "minimum_sample_size": 5,
+            "data_quality": "observed",
+            "data_quality_score": 0.856,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.55,
+            "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only."
+          },
+          "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only."
+        },
+        "opening_retention": {
+          "score": 100.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "chickens",
+          "cue_terms": [
+            "eyes",
+            "hoof",
+            "stead",
+            "timing"
+          ],
+          "frame_hook_bridge": [
+            "eyes"
+          ],
+          "cue_bridge": [
+            "eyes"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": []
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 12,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143,
+          "return_probability": 0.3,
+          "comment_probability": 0.256,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.563,
+            "sample_size": 14,
+            "minimum_sample_size": 18,
+            "data_quality": "observed",
+            "data_quality_score": 0.912,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.672,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.56."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.56."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.571,
+          "sample_size": 30,
+          "minimum_sample_size": 38,
+          "data_quality": "observed",
+          "data_quality_score": 1.0,
+          "recommendation_strength": "test",
+          "can_adjust_strategy": true,
+          "bootstrap_multiplier": 0.679,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.57."
+        },
+        "category": "farm",
+        "story_format": "body_superpower",
+        "hook_score": 100,
+        "title_score": 90,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [],
+          "confidence_score": 0.571,
+          "scale_ready": true,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 0.0,
+          "template_cluster": "",
+          "mechanism_cluster": "visual_stabilization"
+        },
+        "reserve_override": {
+          "reason": "publish_ready_supply_reserve_fallback",
+          "original_approved": false,
+          "original_state": "rewrite",
+          "original_opportunity_reasons": [
+            "weak_visual_surface",
+            "low_opportunity_score"
+          ]
+        }
+      }
     }
   ],
   "editorial_mix": {
@@ -391,17 +779,25 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 17,
-      "recovery": 1
+      "recovery": 2,
+      "evergreen": 18
     },
     "items": [
+      {
+        "id": "70f01915bdac9fa9",
+        "title": "Chickens lock their view between steps",
+        "category": "farm",
+        "lane": "recovery",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
+      },
       {
         "id": "fc8688ca9a9e53be",
         "title": "Elephants cool blood through giant ears",
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 50.84
+        "freshness_score": 50.82
       },
       {
         "id": "8d4ade82f95eb8ca",
@@ -409,7 +805,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.62
+        "freshness_score": 54.6
       },
       {
         "id": "2a8f3f3725c00fe2",
@@ -417,7 +813,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.08
+        "freshness_score": 51.06
       },
       {
         "id": "969dd963aca75fd5",
@@ -425,7 +821,15 @@
         "category": "cats",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.48
+        "freshness_score": 54.44
+      },
+      {
+        "id": "dad711bb1ab5be00",
+        "title": "Plants turn light into stored sugar",
+        "category": "plants",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       },
       {
         "id": "8c00dca1b8a865fd",
@@ -433,7 +837,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.26
+        "freshness_score": 54.24
       },
       {
         "id": "26ca036370f8ef51",
@@ -441,7 +845,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.12
+        "freshness_score": 54.1
       },
       {
         "id": "0ef428432eac25bb",
@@ -449,7 +853,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.12
+        "freshness_score": 54.1
       },
       {
         "id": "c85dc830f3c83f6f",
@@ -457,7 +861,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.72
+        "freshness_score": 53.7
       },
       {
         "id": "620430ec6b6e44c9",
@@ -465,7 +869,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.62
+        "freshness_score": 54.6
       },
       {
         "id": "60f46d48c8487016",
@@ -473,7 +877,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.26
+        "freshness_score": 54.24
       },
       {
         "id": "f9d94f8f411a03aa",
@@ -481,7 +885,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 50.84
+        "freshness_score": 50.82
       },
       {
         "id": "f56ccfee31bdc152",
@@ -489,7 +893,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.56
+        "freshness_score": 51.54
       },
       {
         "id": "09c8f40beafab256",
@@ -497,7 +901,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 50.84
+        "freshness_score": 50.82
       },
       {
         "id": "9d83eac332b110af",
@@ -505,7 +909,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 50.76
+        "freshness_score": 50.74
       },
       {
         "id": "8e1097b5127e4c6c",
@@ -513,7 +917,7 @@
         "category": "conservation",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.44
+        "freshness_score": 54.42
       },
       {
         "id": "18f566b37db1413b",
@@ -521,7 +925,7 @@
         "category": "microscopy",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.16
+        "freshness_score": 52.14
       },
       {
         "id": "a5e2ce0a3ca4926e",
@@ -529,7 +933,7 @@
         "category": "rare_phenomena",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.34
+        "freshness_score": 53.32
       },
       {
         "id": "1220f0d7f7bdbf9f",
@@ -537,7 +941,7 @@
         "category": "discoveries",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.2
+        "freshness_score": 52.16
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -549,39 +953,59 @@
     "windows": [
       {
         "window": 10,
-        "items": 2,
+        "items": 4,
         "dominant_shape": "{subject} groom to reset their scent map",
         "dominant_count": 1,
-        "dominant_share": 0.5,
+        "dominant_share": 0.25,
         "top_shapes": [
           {
             "shape": "{subject} groom to reset their scent map",
             "count": 1,
-            "share": 0.5
+            "share": 0.25
           },
           {
             "shape": "{subject} turn a forest into a cooler room",
             "count": 1,
-            "share": 0.5
+            "share": 0.25
+          },
+          {
+            "shape": "{subject} turn light into stored sugar",
+            "count": 1,
+            "share": 0.25
+          },
+          {
+            "shape": "{subject} lock their view between steps",
+            "count": 1,
+            "share": 0.25
           }
         ]
       },
       {
         "window": 30,
-        "items": 2,
+        "items": 4,
         "dominant_shape": "{subject} groom to reset their scent map",
         "dominant_count": 1,
-        "dominant_share": 0.5,
+        "dominant_share": 0.25,
         "top_shapes": [
           {
             "shape": "{subject} groom to reset their scent map",
             "count": 1,
-            "share": 0.5
+            "share": 0.25
           },
           {
             "shape": "{subject} turn a forest into a cooler room",
             "count": 1,
-            "share": 0.5
+            "share": 0.25
+          },
+          {
+            "shape": "{subject} turn light into stored sugar",
+            "count": 1,
+            "share": 0.25
+          },
+          {
+            "shape": "{subject} lock their view between steps",
+            "count": 1,
+            "share": 0.25
           }
         ]
       }
@@ -589,17 +1013,18 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 18,
-    "pending_after": 18,
+    "pending_before": 20,
+    "pending_after": 20,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 3,
     "reasons": {
       "editor_in_chief:subject repeated inside 3-day cooldown": 15,
-      "objective_gate:observe_before_scaling": 11,
+      "objective_gate:observe_before_scaling": 12,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 7,
       "objective_gate:bootstrap_observe_before_scaling": 4,
       "editor_in_chief:script quality gate blocked the narration": 3,
+      "publish_ready_supply_reserve_fallback": 3,
       "editor_in_chief:editorial score 49 is below 62": 2,
       "editor_in_chief:editorial score 42 is below 62": 2,
       "editor_in_chief:editorial score 47 is below 62": 1,
@@ -607,8 +1032,7 @@
       "editor_in_chief:editorial score 41 is below 62": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
       "editor_in_chief:editorial score 40 is below 62": 1,
-      "editorial_cooldown_supply_fallback": 1,
-      "publish_ready_supply_reserve_fallback": 1
+      "editorial_cooldown_supply_fallback": 1
     }
   }
 }
