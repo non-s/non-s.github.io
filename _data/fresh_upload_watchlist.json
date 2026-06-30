@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 2,
+    "analytics_due": 4,
     "awaiting_1h": 1,
-    "high_priority": 4,
-    "repair_candidates": 2,
+    "high_priority": 5,
+    "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-06-30T01:34:51.624494+00:00",
+  "generated_at": "2026-06-30T01:39:48.838797+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.045,
+      "age_hours": 0.128,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -70,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.359,
+      "age_hours": 2.441,
       "category": "weather",
       "checkpoints": [
         {
@@ -125,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.175,
+      "age_hours": 3.257,
       "category": "geology",
       "checkpoints": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.45,
+      "age_hours": 4.533,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.307,
+      "age_hours": 5.39,
       "category": "trees",
       "checkpoints": [
         {
@@ -290,7 +290,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.358,
+      "age_hours": 6.441,
       "category": "farm",
       "checkpoints": [
         {
@@ -355,16 +355,16 @@
       }
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 8.194,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 8.276,
       "category": "ocean",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-06-29T18:23:14.984297+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -388,41 +388,30 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-06-30T17:23:14.984297+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-06-29T18:23:14.984297+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "overdue",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Ocean Mysteries",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Whales send songs across huge ocean distances",
       "uploaded_at": "2026-06-29T17:23:14.984297+00:00",
       "url": "https://www.youtube.com/shorts/mPIUYYP7Ty4",
       "video_id": "mPIUYYP7Ty4",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Whales send songs across huge ocean distances",
-        "video_id": "mPIUYYP7Ty4",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.422,
+      "age_hours": 9.505,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -476,8 +465,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Queue a sequel or related-video bridge while the session has momentum.",
-      "age_hours": 11.213,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 11.295,
       "category": "space",
       "checkpoints": [
         {
@@ -505,11 +494,11 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 300,
-          "views": 2
+          "views": 0
         }
       ],
-      "current_views": 2,
-      "hypothesis": "Performance signal is already positive; amplify without changing the opening.",
+      "current_views": 0,
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
         "delta_to_target": -24,
         "due_at": "2026-06-29T15:22:05.678381+00:00",
@@ -521,27 +510,18 @@
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "normal",
+      "priority": "high",
       "series": "Nature Signals",
-      "state": "accelerating",
+      "state": "analytics_due",
       "title": "The moon keeps one face turned toward Earth",
       "uploaded_at": "2026-06-29T14:22:05.678381+00:00",
       "url": "https://www.youtube.com/shorts/mk0JV1QLoiw",
       "video_id": "mk0JV1QLoiw",
-      "views_per_hour": 0.179,
-      "warning": {
-        "confidence_score": 0.512,
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.51; observation only.",
-        "score": 0,
-        "state": "accelerating",
-        "title": "The moon keeps one face turned toward Earth",
-        "video_id": "mk0JV1QLoiw",
-        "warning_state": "accelerator"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 14.141,
+      "age_hours": 14.223,
       "category": "wildlife",
       "checkpoints": [
         {
