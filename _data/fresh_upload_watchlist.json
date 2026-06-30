@@ -5,25 +5,80 @@
     24
   ],
   "counts": {
-    "analytics_due": 4,
+    "analytics_due": 2,
     "awaiting_1h": 1,
-    "high_priority": 5,
-    "repair_candidates": 1,
+    "high_priority": 6,
+    "repair_candidates": 4,
     "tracked": 10
   },
-  "generated_at": "2026-06-30T01:55:50.161101+00:00",
+  "generated_at": "2026-06-30T04:26:32.307720+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.395,
-      "category": "wildlife",
+      "age_hours": 0.045,
+      "category": "insects",
       "checkpoints": [
         {
           "delta_to_target": 0,
-          "due_at": "2026-06-30T02:32:09.057532+00:00",
+          "due_at": "2026-06-30T05:23:51.713982+00:00",
           "label": "1h",
           "source": "estimated",
           "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-06-30T10:23:51.713982+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-01T04:23:51.713982+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-06-30T05:23:51.713982+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Tiny Worlds",
+      "state": "awaiting_1h",
+      "title": "Ants use scent road before they change",
+      "uploaded_at": "2026-06-30T04:23:51.713982+00:00",
+      "url": "https://www.youtube.com/shorts/BdO9Suta2zU",
+      "video_id": "BdO9Suta2zU",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 2.906,
+      "category": "wildlife",
+      "checkpoints": [
+        {
+          "delta_to_target": -24,
+          "due_at": "2026-06-30T02:32:09.057532+00:00",
+          "label": "1h",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-06-30T02:32:09.057532+00:00",
-        "label": "1h",
+        "due_at": "2026-06-30T07:32:09.057532+00:00",
+        "label": "6h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 24,
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 90.0,
       "opening_retention_state": "retention_ready",
       "priority": "low",
       "series": "Animal Superpowers",
-      "state": "awaiting_1h",
+      "state": "watch",
       "title": "Deer use sound radar before they aim",
       "uploaded_at": "2026-06-30T01:32:09.057532+00:00",
       "url": "https://www.youtube.com/shorts/fW7s6wfSJnA",
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.708,
+      "age_hours": 5.22,
       "category": "weather",
       "checkpoints": [
         {
@@ -124,8 +179,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.525,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.036,
       "category": "geology",
       "checkpoints": [
         {
@@ -138,11 +193,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-06-30T04:24:21.883626+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -157,30 +212,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-06-30T04:24:21.883626+00:00",
-        "label": "6h",
+        "due_at": "2026-06-30T22:24:21.883626+00:00",
+        "label": "24h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 105,
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Earth Engine",
-      "state": "watch",
+      "state": "repair_candidate",
       "title": "Rock layers use rock layers before they change",
       "uploaded_at": "2026-06-29T22:24:21.883626+00:00",
       "url": "https://www.youtube.com/shorts/8-ETIZd80TE",
       "video_id": "8-ETIZd80TE",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 22/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Rock layers use rock layers before they change",
+        "video_id": "8-ETIZd80TE",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.8,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 7.311,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -193,11 +259,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-06-30T03:07:51.800774+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -212,30 +278,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-06-30T03:07:51.800774+00:00",
-        "label": "6h",
+        "due_at": "2026-06-30T21:07:51.800774+00:00",
+        "label": "24h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 105,
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Night Shift Nature",
-      "state": "watch",
+      "state": "repair_candidate",
       "title": "Owls use silent feathers before they hunt",
       "uploaded_at": "2026-06-29T21:07:51.800774+00:00",
       "url": "https://www.youtube.com/shorts/sYDWYtlDirw",
       "video_id": "sYDWYtlDirw",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Owls use silent feathers before they hunt",
+        "video_id": "sYDWYtlDirw",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.657,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 8.169,
       "category": "trees",
       "checkpoints": [
         {
@@ -248,11 +325,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-06-30T02:16:25.095397+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -267,30 +344,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-06-30T02:16:25.095397+00:00",
-        "label": "6h",
+        "due_at": "2026-06-30T20:16:25.095397+00:00",
+        "label": "24h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 105,
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Hidden Network",
-      "state": "watch",
+      "state": "repair_candidate",
       "title": "Trees use tree rings before they leaves",
       "uploaded_at": "2026-06-29T20:16:25.095397+00:00",
       "url": "https://www.youtube.com/shorts/OXyJCq6HgMo",
       "video_id": "OXyJCq6HgMo",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Trees use tree rings before they leaves",
+        "video_id": "OXyJCq6HgMo",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.708,
+      "age_hours": 9.219,
       "category": "farm",
       "checkpoints": [
         {
@@ -356,7 +444,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.543,
+      "age_hours": 11.055,
       "category": "ocean",
       "checkpoints": [
         {
@@ -411,7 +499,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.772,
+      "age_hours": 12.283,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -465,8 +553,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.562,
+      "action": "Queue a sequel or related-video bridge while the session has momentum.",
+      "age_hours": 14.074,
       "category": "space",
       "checkpoints": [
         {
@@ -494,11 +582,11 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 300,
-          "views": 0
+          "views": 2
         }
       ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "current_views": 2,
+      "hypothesis": "Performance signal is already positive; amplify without changing the opening.",
       "next_checkpoint": {
         "delta_to_target": -24,
         "due_at": "2026-06-29T15:22:05.678381+00:00",
@@ -510,69 +598,23 @@
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "high",
+      "priority": "normal",
       "series": "Nature Signals",
-      "state": "analytics_due",
+      "state": "accelerating",
       "title": "The moon keeps one face turned toward Earth",
       "uploaded_at": "2026-06-29T14:22:05.678381+00:00",
       "url": "https://www.youtube.com/shorts/mk0JV1QLoiw",
       "video_id": "mk0JV1QLoiw",
-      "views_per_hour": 0.0
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 14.49,
-      "category": "wildlife",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-06-29T12:26:25.555830+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-06-29T17:26:25.555830+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-06-30T11:26:25.555830+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-06-29T12:26:25.555830+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Animal Superpowers",
-      "state": "analytics_due",
-      "title": "Lions hunt better when the pride coordinates",
-      "uploaded_at": "2026-06-29T11:26:25.555830+00:00",
-      "url": "https://www.youtube.com/shorts/aMLo86lOqY4",
-      "video_id": "aMLo86lOqY4",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.142,
+      "warning": {
+        "confidence_score": 0.512,
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.51; observation only.",
+        "score": 0,
+        "state": "accelerating",
+        "title": "The moon keeps one face turned toward Earth",
+        "video_id": "mk0JV1QLoiw",
+        "warning_state": "accelerator"
+      }
     }
   ],
   "targets": {
