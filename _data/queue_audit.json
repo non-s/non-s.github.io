@@ -1,53 +1,59 @@
 {
-  "generated_at": "2026-06-30T10:09:02.827678+00:00",
-  "pending": 20,
+  "generated_at": "2026-06-30T10:14:06.841789+00:00",
+  "pending": 19,
   "states": {
-    "publish_ready": 3,
-    "rewrite": 17
+    "rewrite": 17,
+    "publish_ready": 2
   },
   "mechanism_clusters": {
     "call_signal": 1,
     "scent_map": 1
   },
   "rights": {
-    "approved": 20
+    "approved": 19
   },
   "prune_summary": {
-    "pending_before": 72,
-    "pending_after": 20,
-    "rejected": 52,
-    "repair_needed": 6,
-    "repaired": 13,
+    "pending_before": 19,
+    "pending_after": 19,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 3,
     "reasons": {
-      "duplicate_title": 30,
-      "off_topic_visual": 17,
       "editor_in_chief:subject repeated inside 3-day cooldown": 16,
       "objective_gate:observe_before_scaling": 11,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 7,
-      "queue_score_reject": 6,
-      "copy_subject_mismatch": 5,
       "objective_gate:bootstrap_observe_before_scaling": 5,
       "editor_in_chief:script quality gate blocked the narration": 4,
-      "bad_plural_verb": 2,
-      "script_word_loop": 2,
-      "script_hook_mismatch": 2,
       "editor_in_chief:editorial score 49 is below 62": 2,
       "editor_in_chief:editorial score 42 is below 62": 2,
-      "script_subject_mismatch": 2,
       "editor_in_chief:editorial score 40 is below 62": 2,
-      "publish_ready_supply_reserve_fallback": 2,
-      "opening_retention_gap_risk": 1,
-      "opening promise is not concrete enough": 1,
-      "duplicate_angle": 1,
-      "non_animal_body_language": 1,
       "editor_in_chief:editorial score 47 is below 62": 1,
       "editor_in_chief:editorial score 44 is below 62": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
-      "editorial_cooldown_supply_fallback": 1
+      "editorial_cooldown_supply_fallback": 1,
+      "publish_ready_supply_reserve_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "969dd963aca75fd5",
+      "title": "Cats groom to reset their scent map",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
+      "id": "6e2251189f6e4f4e",
+      "title": "Ocean animals make the song pattern matter first",
+      "reasons": [
+        "copy_subject_mismatch",
+        "script_word_loop"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "bfad452df41432f4",
       "title": "Lions have dark ear marks cubs can follow",
@@ -279,22 +285,6 @@
         "off_topic_visual"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "7e5f0a5a1b964923",
-      "title": "Penguins trap air bubbles under feathers",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "a2fad4129de6ac9d",
-      "title": "Penguins trap air bubbles under feathers",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
     }
   ],
   "top": [
@@ -477,7 +467,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T10:08:40.191976+00:00",
+        "checked_at": "2026-06-30T10:13:46.332382+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -965,663 +955,6 @@
       }
     },
     {
-      "id": "6e2251189f6e4f4e",
-      "title": "Ocean animals make the song pattern matter first",
-      "category": "ocean",
-      "publish_score": {
-        "approved": true,
-        "category": "ocean",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.618,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.491,
-          "data_quality": "observed",
-          "data_quality_score": 1.0,
-          "minimum_sample_size": 38,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.49.",
-          "recommendation_strength": "observe",
-          "sample_size": 29
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 86,
-        "objective_gate": {
-          "confidence_score": 0.491,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [],
-          "scale_ready": true,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "pattern",
-            "song"
-          ],
-          "cue_terms": [
-            "pattern",
-            "song"
-          ],
-          "frame_hook_bridge": [
-            "pattern",
-            "song"
-          ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
-          "state": "retention_ready",
-          "strengths": [
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "sharks"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.427,
-            "data_quality": "observed",
-            "data_quality_score": 0.711,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 3/5 samples, observed data, confidence 0.43; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "category has 3/5 samples, observed data, confidence 0.43; observation only.",
-          "reasons": [
-            "low_opportunity_score"
-          ],
-          "score": 48,
-          "signals": {
-            "comment_potential": 22,
-            "educational_potential": 52,
-            "emotional_potential": 27,
-            "novelty": 61,
-            "replay_potential": 54,
-            "viral_potential": 46,
-            "visual_potential": 61
-          },
-          "verdict": "discard"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "reserve_override": {
-          "original_approved": false,
-          "original_opportunity_reasons": [
-            "low_opportunity_score"
-          ],
-          "original_state": "rewrite",
-          "reason": "publish_ready_supply_reserve_fallback"
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.427,
-            "data_quality": "observed",
-            "data_quality_score": 0.711,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 3/5 samples, observed data, confidence 0.43; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "category has 3/5 samples, observed data, confidence 0.43; observation only.",
-          "reasons": [],
-          "score": 71,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 79,
-            "hook_score": 70,
-            "replay_score": 72,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "body_superpower",
-        "subscriber_conversion": {
-          "comment_probability": 0.226,
-          "confidence": {
-            "bootstrap_multiplier": 0.566,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.422,
-            "data_quality": "observed",
-            "data_quality_score": 0.75,
-            "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.42.",
-            "recommendation_strength": "observe",
-            "sample_size": 13
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.42.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.264,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 87,
-          "state": "strong",
-          "subscriber_probability": 0.124
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [
-            "repetitive_script"
-          ],
-          "risk": 22,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-06-30T10:08:35.937490+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "publish_ready_supply_reserve_fallback"
-        ],
-        "score": 78.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 78.0,
-      "youtube_brain": {
-        "animal": "ocean",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "pattern",
-            "song"
-          ],
-          "cue_terms": [
-            "pattern",
-            "song"
-          ],
-          "frame_hook_bridge": [
-            "pattern",
-            "song"
-          ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
-          "state": "retention_ready",
-          "strengths": [
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "sharks"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "body_superpower",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "ocean",
-        "viewer_promise": "See the ocean detail that changes the whole scene."
-      },
-      "packaging": {
-        "community_prompt": "Which ocean clue should Wild Brief compare next in Nature Signals?",
-        "cta_prompt": "Want to uncover what is still hidden in the ocean?",
-        "curiosity_gap": {
-          "hook": "Why do these sharks change after the song pattern?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "body superpower",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "specific_question",
-            "format": "fresh_variant",
-            "hook": "new_hook",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "explore",
-          "sample_count": 101,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 42.97,
-            "cta:specific_question": 40.56,
-            "format:winner_inspired": 43.45,
-            "hook:pattern_reuse": 43.45,
-            "thumbnail:new_thumbnail": 42.74
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "pattern",
-              "song"
-            ],
-            "cue_terms": [
-              "pattern",
-              "song"
-            ],
-            "frame_hook_bridge": [
-              "pattern",
-              "song"
-            ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
-            "state": "retention_ready",
-            "strengths": [
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "sharks"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Ocean shows why the pattern matters.",
-          "Ocean animals make the song pattern matter first",
-          "Ocean shows why the electric sense matters.",
-          "Ocean shows why the electric sense matters.",
-          "Ocean shows why the electric sense matters."
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "song pattern",
-          "ending_line": "By the last line, the opening detail has a job viewers can name.",
-          "final_line": "Now the song pattern at the start makes sense.",
-          "loop_score": 0.795,
-          "opening_line": "Ocean animals make the song pattern matter first.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "song pattern",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.795,
-        "next_episode_question": "Tomorrow in Nature Signals: another nature signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "pattern",
-            "song"
-          ],
-          "cue_terms": [
-            "pattern",
-            "song"
-          ],
-          "frame_hook_bridge": [
-            "pattern",
-            "song"
-          ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
-          "state": "retention_ready",
-          "strengths": [
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "sharks"
-        },
-        "pinned_comment": "Watch the pattern again. Tomorrow in Nature Signals: another nature signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 16.09,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 22,
-          "first_2s_narration": "Ocean animals make the song pattern matter first Watch the song pattern",
-          "first_frame_text": "SONG PATTERN",
-          "first_frame_text_words": 2,
-          "hook": "Ocean animals make the song pattern matter first.",
-          "hook_specificity": 0.78,
-          "hook_words": 8,
-          "loop_score": 0.795,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "pattern",
-              "song"
-            ],
-            "cue_terms": [
-              "pattern",
-              "song"
-            ],
-            "frame_hook_bridge": [
-              "pattern",
-              "song"
-            ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
-            "state": "retention_ready",
-            "strengths": [
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "sharks"
-          },
-          "opening_retention_score": 92.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the pattern, so viewers rewatch the ocean clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.427,
-            "data_quality": "observed",
-            "data_quality_score": 0.711,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 3/5 samples, observed data, confidence 0.43; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "category has 3/5 samples, observed data, confidence 0.43; observation only.",
-          "reasons": [],
-          "score": 71,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 79,
-            "hook_score": 70,
-            "replay_score": 72,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Ocean animals make the song pattern matter first Watch the song pattern",
-          "first_frame_text": "SONG PATTERN",
-          "next_episode_question": "Tomorrow in Nature Signals: another nature signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-          "opening_retention_score": 92.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains the visible pattern behind Ocean in a fast nature science story.",
-            "series": "Nature Signals",
-            "subject": "ocean",
-            "terms": [
-              "ocean",
-              "pattern",
-              "body superpower"
-            ],
-            "title_variant": "Ocean pattern explained fast",
-            "visible_cue": "pattern"
-          },
-          "series": "Nature Signals",
-          "subject": "ocean",
-          "visible_cue": "pattern"
-        },
-        "risks": [],
-        "score": 95,
-        "search_intent": {
-          "description_line": "This Short explains the visible pattern behind Ocean in a fast nature science story.",
-          "series": "Nature Signals",
-          "subject": "ocean",
-          "terms": [
-            "ocean",
-            "pattern",
-            "body superpower"
-          ],
-          "title_variant": "Ocean pattern explained fast",
-          "visible_cue": "pattern"
-        },
-        "selected_variant": {
-          "hook": "Sharks can feel electricity in the water",
-          "score": 77,
-          "thumbnail_text": "ELECTRIC SENSE",
-          "title": "Sharks sense tiny electric fields"
-        },
-        "series": "Nature Signals #4",
-        "series_identity": {
-          "continuity_prompt": "Next in Nature Signals: compare this with another force of nature.",
-          "episode": 4,
-          "label": "Nature Signals #4",
-          "series": "Nature Signals"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.226,
-          "confidence": {
-            "bootstrap_multiplier": 0.566,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.422,
-            "data_quality": "observed",
-            "data_quality_score": 0.75,
-            "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.42.",
-            "recommendation_strength": "observe",
-            "sample_size": 13
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.42.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.264,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 87,
-          "state": "strong",
-          "subscriber_probability": 0.124
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "ELECTRIC SENSE",
-          "WATCH ELECTRIC SENSE",
-          "SHARKS CHANGE",
-          "ELECTRIC SENSE MATTERS",
-          "ELECTRIC SENSE FIRST",
-          "ELECTRIC SENSE REVEAL",
-          "ELECTRIC SENSE CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Sharks sense tiny electric fields",
-          "Ocean animals make the song pattern matter first",
-          "Sharks use electric sense before they change",
-          "This electric sense gives sharks away",
-          "Why sharks change after one electric sense",
-          "Sharks reveal the answer with electric sense",
-          "The electric sense that changes the moment",
-          "Sharks make one electric sense matter",
-          "Sharks show the hidden answer in seconds",
-          "Sharks: watch this electric sense"
-        ],
-        "top_variants": [
-          {
-            "hook": "Sharks can feel electricity in the water",
-            "score": 77,
-            "thumbnail_text": "ELECTRIC SENSE",
-            "title": "Sharks sense tiny electric fields"
-          },
-          {
-            "hook": "Watch the electric sense; it explains the behavior",
-            "score": 77,
-            "thumbnail_text": "ELECTRIC SENSE",
-            "title": "Sharks sense tiny electric fields"
-          },
-          {
-            "hook": "Ocean animals make the song pattern matter first",
-            "score": 76,
-            "thumbnail_text": "ELECTRIC SENSE",
-            "title": "Sharks sense tiny electric fields"
-          },
-          {
-            "hook": "Sharks can feel electricity in the water",
-            "score": 70,
-            "thumbnail_text": "WATCH ELECTRIC SENSE",
-            "title": "Sharks sense tiny electric fields"
-          },
-          {
-            "hook": "Watch the electric sense; it explains the behavior",
-            "score": 70,
-            "thumbnail_text": "WATCH ELECTRIC SENSE",
-            "title": "Sharks sense tiny electric fields"
-          },
-          {
-            "hook": "Sharks can feel electricity in the water",
-            "score": 70,
-            "thumbnail_text": "SHARKS CHANGE",
-            "title": "Sharks sense tiny electric fields"
-          },
-          {
-            "hook": "Watch the electric sense; it explains the behavior",
-            "score": 70,
-            "thumbnail_text": "SHARKS CHANGE",
-            "title": "Sharks sense tiny electric fields"
-          },
-          {
-            "hook": "Sharks can feel electricity in the water",
-            "score": 70,
-            "thumbnail_text": "ELECTRIC SENSE MATTERS",
-            "title": "Sharks sense tiny electric fields"
-          },
-          {
-            "hook": "Watch the electric sense; it explains the behavior",
-            "score": 70,
-            "thumbnail_text": "ELECTRIC SENSE MATTERS",
-            "title": "Sharks sense tiny electric fields"
-          },
-          {
-            "hook": "Sharks can feel electricity in the water",
-            "score": 70,
-            "thumbnail_text": "ELECTRIC SENSE FIRST",
-            "title": "Sharks sense tiny electric fields"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "969dd963aca75fd5",
       "title": "Cats groom to reset their scent map",
       "category": "cats",
@@ -1811,7 +1144,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-30T10:08:37.621401+00:00",
+        "checked_at": "2026-06-30T10:13:46.304321+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -2468,7 +1801,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-30T10:08:38.299745+00:00",
+        "checked_at": "2026-06-30T10:13:46.308594+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -3113,7 +2446,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T10:08:38.305157+00:00",
+        "checked_at": "2026-06-30T10:13:46.314318+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -3760,7 +3093,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T10:08:36.983659+00:00",
+        "checked_at": "2026-06-30T10:13:46.299833+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -4422,7 +3755,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T10:08:36.985069+00:00",
+        "checked_at": "2026-06-30T10:13:46.302053+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -5070,7 +4403,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T10:08:38.298213+00:00",
+        "checked_at": "2026-06-30T10:13:46.307030+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -5717,7 +5050,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T10:08:38.306896+00:00",
+        "checked_at": "2026-06-30T10:13:46.316110+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -6367,7 +5700,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T10:08:38.309069+00:00",
+        "checked_at": "2026-06-30T10:13:46.318342+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -7007,7 +6340,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T10:08:38.310841+00:00",
+        "checked_at": "2026-06-30T10:13:46.320245+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -7649,7 +6982,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T10:08:38.312798+00:00",
+        "checked_at": "2026-06-30T10:13:46.322191+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -8305,7 +7638,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T10:08:38.315408+00:00",
+        "checked_at": "2026-06-30T10:13:46.324812+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -8969,7 +8302,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T10:08:38.317220+00:00",
+        "checked_at": "2026-06-30T10:13:46.326652+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -9623,7 +8956,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T10:08:39.856910+00:00",
+        "checked_at": "2026-06-30T10:13:46.328996+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10102,6 +9435,656 @@
       }
     },
     {
+      "id": "903ef877b11e42f1",
+      "title": "Waves reveal where the shore steals energy",
+      "category": "rare_phenomena",
+      "publish_score": {
+        "approved": true,
+        "category": "rare_phenomena",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 86,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "edge",
+            "wave"
+          ],
+          "cue_terms": [
+            "edge",
+            "wave"
+          ],
+          "frame_hook_bridge": [
+            "edge",
+            "wave"
+          ],
+          "risks": [
+            "subject_not_frontloaded"
+          ],
+          "score": 92.0,
+          "state": "retention_ready",
+          "strengths": [
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "rare"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 65,
+          "signals": {
+            "comment_potential": 46,
+            "educational_potential": 66,
+            "emotional_potential": 44,
+            "novelty": 79,
+            "replay_potential": 60,
+            "viral_potential": 70,
+            "visual_potential": 79
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 66
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "rare_nature",
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-06-30T10:13:46.334545+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling",
+          "editor_in_chief:subject repeated inside 3-day cooldown",
+          "editor_in_chief:script quality gate blocked the narration",
+          "editor_in_chief:editorial score 40 is below 62"
+        ],
+        "score": 64.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 64.0,
+      "youtube_brain": {
+        "animal": "waves",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "edge",
+            "wave"
+          ],
+          "cue_terms": [
+            "edge",
+            "wave"
+          ],
+          "frame_hook_bridge": [
+            "edge",
+            "wave"
+          ],
+          "risks": [
+            "subject_not_frontloaded"
+          ],
+          "score": 92.0,
+          "state": "retention_ready",
+          "strengths": [
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "rare"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "rare_nature",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "waves",
+        "viewer_promise": "See why this wave rare nature matters."
+      },
+      "packaging": {
+        "community_prompt": "Which waves clue should Wild Brief compare next in Rare Earth?",
+        "cta_prompt": "Want more natural events that look impossible?",
+        "curiosity_gap": {
+          "hook": "Why does this rare changes after the wave edge?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "rare nature",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 101,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 42.97,
+            "cta:specific_question": 40.56,
+            "format:winner_inspired": 43.45,
+            "hook:pattern_reuse": 43.45,
+            "thumbnail:new_thumbnail": 42.74
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "edge",
+              "wave"
+            ],
+            "cue_terms": [
+              "edge",
+              "wave"
+            ],
+            "frame_hook_bridge": [
+              "edge",
+              "wave"
+            ],
+            "risks": [
+              "subject_not_frontloaded"
+            ],
+            "score": 92.0,
+            "state": "retention_ready",
+            "strengths": [
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "rare"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Waves show why the waves matters.",
+          "Waves reveal where the shore steals energy",
+          "Waves show why the aurora glow matters.",
+          "Waves show why the aurora glow matters.",
+          "Waves show why the aurora glow matters."
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "wave edge",
+          "ending_line": "Which ocean clue should we decode next?",
+          "final_line": "Now the wave edge at the start makes sense.",
+          "loop_score": 0.826,
+          "opening_line": "Waves reveal where the shore steals energy.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "wave edge",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.826,
+        "next_episode_question": "Tomorrow in Rare Earth: another nature signal. Which natural phenomenon looks the most fake but is real?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "edge",
+            "wave"
+          ],
+          "cue_terms": [
+            "edge",
+            "wave"
+          ],
+          "frame_hook_bridge": [
+            "edge",
+            "wave"
+          ],
+          "risks": [
+            "subject_not_frontloaded"
+          ],
+          "score": 92.0,
+          "state": "retention_ready",
+          "strengths": [
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "rare"
+        },
+        "pinned_comment": "Watch the waves again. Tomorrow in Rare Earth: another nature signal. Which natural phenomenon looks the most fake but is real?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 14.73,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 15,
+          "first_2s_narration": "Waves reveal where the shore steals energy Watch the wave edge first",
+          "first_frame_text": "WAVE EDGE",
+          "first_frame_text_words": 2,
+          "hook": "Waves reveal where the shore steals energy.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.826,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "edge",
+              "wave"
+            ],
+            "cue_terms": [
+              "edge",
+              "wave"
+            ],
+            "frame_hook_bridge": [
+              "edge",
+              "wave"
+            ],
+            "risks": [
+              "subject_not_frontloaded"
+            ],
+            "score": 92.0,
+            "state": "retention_ready",
+            "strengths": [
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "rare"
+          },
+          "opening_retention_score": 92.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the waves, so viewers rewatch the waves clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 66
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Waves reveal where the shore steals energy Watch the wave edge first",
+          "first_frame_text": "WAVE EDGE",
+          "next_episode_question": "Tomorrow in Rare Earth: another nature signal. Which natural phenomenon looks the most fake but is real?",
+          "opening_retention_score": 92.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains the visible waves behind Waves in a fast nature science story.",
+            "series": "Rare Earth",
+            "subject": "waves",
+            "terms": [
+              "waves",
+              "rare_phenomena",
+              "rare nature"
+            ],
+            "title_variant": "Waves waves explained fast",
+            "visible_cue": "waves"
+          },
+          "series": "Rare Earth",
+          "subject": "waves",
+          "visible_cue": "waves"
+        },
+        "risks": [],
+        "score": 96,
+        "search_intent": {
+          "description_line": "This Short explains the visible waves behind Waves in a fast nature science story.",
+          "series": "Rare Earth",
+          "subject": "waves",
+          "terms": [
+            "waves",
+            "rare_phenomena",
+            "rare nature"
+          ],
+          "title_variant": "Waves waves explained fast",
+          "visible_cue": "waves"
+        },
+        "selected_variant": {
+          "hook": "Waves reveal where the shore steals energy",
+          "score": 85,
+          "thumbnail_text": "AURORA GLOW",
+          "title": "Auroras glow when solar particles hit air"
+        },
+        "series": "Rare Earth",
+        "series_identity": {
+          "continuity_prompt": "Next in Rare Earth: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Rare Earth",
+          "series": "Rare Earth"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "AURORA GLOW",
+          "WATCH AURORA GLOW",
+          "AURORAS CHANGE",
+          "AURORA GLOW MATTERS",
+          "AURORA GLOW FIRST",
+          "AURORA GLOW REVEAL",
+          "AURORA GLOW CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Auroras glow when solar particles hit air",
+          "Waves reveal where the shore steals energy",
+          "Auroras use aurora glow before they change",
+          "This aurora glow gives auroras away",
+          "Why auroras change after one aurora glow",
+          "Auroras reveal the answer with aurora glow",
+          "The aurora glow that changes the moment",
+          "Auroras make one aurora glow matter",
+          "Auroras show the hidden answer in seconds",
+          "Auroras: watch this aurora glow"
+        ],
+        "top_variants": [
+          {
+            "hook": "Waves reveal where the shore steals energy",
+            "score": 85,
+            "thumbnail_text": "AURORA GLOW",
+            "title": "Auroras glow when solar particles hit air"
+          },
+          {
+            "hook": "Watch the aurora glow; it explains the behavior",
+            "score": 85,
+            "thumbnail_text": "AURORA GLOW",
+            "title": "Auroras glow when solar particles hit air"
+          },
+          {
+            "hook": "Auroras start with charged particles from the sun",
+            "score": 84,
+            "thumbnail_text": "AURORA GLOW",
+            "title": "Auroras glow when solar particles hit air"
+          },
+          {
+            "hook": "Watch the aurora glow; it explains the behavior",
+            "score": 79,
+            "thumbnail_text": "AURORAS CHANGE",
+            "title": "Auroras glow when solar particles hit air"
+          },
+          {
+            "hook": "Waves reveal where the shore steals energy",
+            "score": 78,
+            "thumbnail_text": "WATCH AURORA GLOW",
+            "title": "Auroras glow when solar particles hit air"
+          },
+          {
+            "hook": "Watch the aurora glow; it explains the behavior",
+            "score": 78,
+            "thumbnail_text": "WATCH AURORA GLOW",
+            "title": "Auroras glow when solar particles hit air"
+          },
+          {
+            "hook": "Waves reveal where the shore steals energy",
+            "score": 78,
+            "thumbnail_text": "AURORAS CHANGE",
+            "title": "Auroras glow when solar particles hit air"
+          },
+          {
+            "hook": "Waves reveal where the shore steals energy",
+            "score": 78,
+            "thumbnail_text": "AURORA GLOW MATTERS",
+            "title": "Auroras glow when solar particles hit air"
+          },
+          {
+            "hook": "Watch the aurora glow; it explains the behavior",
+            "score": 78,
+            "thumbnail_text": "AURORA GLOW MATTERS",
+            "title": "Auroras glow when solar particles hit air"
+          },
+          {
+            "hook": "Waves reveal where the shore steals energy",
+            "score": 78,
+            "thumbnail_text": "AURORA GLOW FIRST",
+            "title": "Auroras glow when solar particles hit air"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "a5e2ce0a3ca4926e",
       "title": "Ocean waves sort energy along the shore",
       "category": "rare_phenomena",
@@ -10276,7 +10259,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T10:08:40.195009+00:00",
+        "checked_at": "2026-06-30T10:13:46.336541+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10929,7 +10912,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T10:08:40.197118+00:00",
+        "checked_at": "2026-06-30T10:13:46.338605+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11410,656 +11393,6 @@
       }
     },
     {
-      "id": "903ef877b11e42f1",
-      "title": "Waves reveal where the shore steals energy",
-      "category": "rare_phenomena",
-      "publish_score": {
-        "approved": true,
-        "category": "rare_phenomena",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 86,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "edge",
-            "wave"
-          ],
-          "cue_terms": [
-            "edge",
-            "wave"
-          ],
-          "frame_hook_bridge": [
-            "edge",
-            "wave"
-          ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
-          "state": "retention_ready",
-          "strengths": [
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "rare"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 65,
-          "signals": {
-            "comment_potential": 46,
-            "educational_potential": 66,
-            "emotional_potential": 44,
-            "novelty": 79,
-            "replay_potential": 60,
-            "viral_potential": 70,
-            "visual_potential": 79
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "rare_nature",
-        "subscriber_conversion": {
-          "comment_probability": 0.223,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.261,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-06-30T10:08:40.199139+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling",
-          "editor_in_chief:subject repeated inside 3-day cooldown",
-          "editor_in_chief:script quality gate blocked the narration",
-          "editor_in_chief:editorial score 40 is below 62"
-        ],
-        "score": 64.0,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 64.0,
-      "youtube_brain": {
-        "animal": "waves",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "edge",
-            "wave"
-          ],
-          "cue_terms": [
-            "edge",
-            "wave"
-          ],
-          "frame_hook_bridge": [
-            "edge",
-            "wave"
-          ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
-          "state": "retention_ready",
-          "strengths": [
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "rare"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "rare_nature",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "waves",
-        "viewer_promise": "See why this wave rare nature matters."
-      },
-      "packaging": {
-        "community_prompt": "Which waves clue should Wild Brief compare next in Rare Earth?",
-        "cta_prompt": "Want more natural events that look impossible?",
-        "curiosity_gap": {
-          "hook": "Why does this rare changes after the wave edge?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "rare nature",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 101,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 42.97,
-            "cta:specific_question": 40.56,
-            "format:winner_inspired": 43.45,
-            "hook:pattern_reuse": 43.45,
-            "thumbnail:new_thumbnail": 42.74
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "edge",
-              "wave"
-            ],
-            "cue_terms": [
-              "edge",
-              "wave"
-            ],
-            "frame_hook_bridge": [
-              "edge",
-              "wave"
-            ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
-            "state": "retention_ready",
-            "strengths": [
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "rare"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Waves show why the waves matters.",
-          "Waves reveal where the shore steals energy",
-          "Waves show why the aurora glow matters.",
-          "Waves show why the aurora glow matters.",
-          "Waves show why the aurora glow matters."
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "wave edge",
-          "ending_line": "Which ocean clue should we decode next?",
-          "final_line": "Now the wave edge at the start makes sense.",
-          "loop_score": 0.826,
-          "opening_line": "Waves reveal where the shore steals energy.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "wave edge",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.826,
-        "next_episode_question": "Tomorrow in Rare Earth: another nature signal. Which natural phenomenon looks the most fake but is real?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "edge",
-            "wave"
-          ],
-          "cue_terms": [
-            "edge",
-            "wave"
-          ],
-          "frame_hook_bridge": [
-            "edge",
-            "wave"
-          ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
-          "state": "retention_ready",
-          "strengths": [
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "rare"
-        },
-        "pinned_comment": "Watch the waves again. Tomorrow in Rare Earth: another nature signal. Which natural phenomenon looks the most fake but is real?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 14.73,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 15,
-          "first_2s_narration": "Waves reveal where the shore steals energy Watch the wave edge first",
-          "first_frame_text": "WAVE EDGE",
-          "first_frame_text_words": 2,
-          "hook": "Waves reveal where the shore steals energy.",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.826,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "edge",
-              "wave"
-            ],
-            "cue_terms": [
-              "edge",
-              "wave"
-            ],
-            "frame_hook_bridge": [
-              "edge",
-              "wave"
-            ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
-            "state": "retention_ready",
-            "strengths": [
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "rare"
-          },
-          "opening_retention_score": 92.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the waves, so viewers rewatch the waves clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Waves reveal where the shore steals energy Watch the wave edge first",
-          "first_frame_text": "WAVE EDGE",
-          "next_episode_question": "Tomorrow in Rare Earth: another nature signal. Which natural phenomenon looks the most fake but is real?",
-          "opening_retention_score": 92.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains the visible waves behind Waves in a fast nature science story.",
-            "series": "Rare Earth",
-            "subject": "waves",
-            "terms": [
-              "waves",
-              "rare_phenomena",
-              "rare nature"
-            ],
-            "title_variant": "Waves waves explained fast",
-            "visible_cue": "waves"
-          },
-          "series": "Rare Earth",
-          "subject": "waves",
-          "visible_cue": "waves"
-        },
-        "risks": [],
-        "score": 96,
-        "search_intent": {
-          "description_line": "This Short explains the visible waves behind Waves in a fast nature science story.",
-          "series": "Rare Earth",
-          "subject": "waves",
-          "terms": [
-            "waves",
-            "rare_phenomena",
-            "rare nature"
-          ],
-          "title_variant": "Waves waves explained fast",
-          "visible_cue": "waves"
-        },
-        "selected_variant": {
-          "hook": "Waves reveal where the shore steals energy",
-          "score": 85,
-          "thumbnail_text": "AURORA GLOW",
-          "title": "Auroras glow when solar particles hit air"
-        },
-        "series": "Rare Earth",
-        "series_identity": {
-          "continuity_prompt": "Next in Rare Earth: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Rare Earth",
-          "series": "Rare Earth"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.223,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.261,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "AURORA GLOW",
-          "WATCH AURORA GLOW",
-          "AURORAS CHANGE",
-          "AURORA GLOW MATTERS",
-          "AURORA GLOW FIRST",
-          "AURORA GLOW REVEAL",
-          "AURORA GLOW CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Auroras glow when solar particles hit air",
-          "Waves reveal where the shore steals energy",
-          "Auroras use aurora glow before they change",
-          "This aurora glow gives auroras away",
-          "Why auroras change after one aurora glow",
-          "Auroras reveal the answer with aurora glow",
-          "The aurora glow that changes the moment",
-          "Auroras make one aurora glow matter",
-          "Auroras show the hidden answer in seconds",
-          "Auroras: watch this aurora glow"
-        ],
-        "top_variants": [
-          {
-            "hook": "Waves reveal where the shore steals energy",
-            "score": 85,
-            "thumbnail_text": "AURORA GLOW",
-            "title": "Auroras glow when solar particles hit air"
-          },
-          {
-            "hook": "Watch the aurora glow; it explains the behavior",
-            "score": 85,
-            "thumbnail_text": "AURORA GLOW",
-            "title": "Auroras glow when solar particles hit air"
-          },
-          {
-            "hook": "Auroras start with charged particles from the sun",
-            "score": 84,
-            "thumbnail_text": "AURORA GLOW",
-            "title": "Auroras glow when solar particles hit air"
-          },
-          {
-            "hook": "Watch the aurora glow; it explains the behavior",
-            "score": 79,
-            "thumbnail_text": "AURORAS CHANGE",
-            "title": "Auroras glow when solar particles hit air"
-          },
-          {
-            "hook": "Waves reveal where the shore steals energy",
-            "score": 78,
-            "thumbnail_text": "WATCH AURORA GLOW",
-            "title": "Auroras glow when solar particles hit air"
-          },
-          {
-            "hook": "Watch the aurora glow; it explains the behavior",
-            "score": 78,
-            "thumbnail_text": "WATCH AURORA GLOW",
-            "title": "Auroras glow when solar particles hit air"
-          },
-          {
-            "hook": "Waves reveal where the shore steals energy",
-            "score": 78,
-            "thumbnail_text": "AURORAS CHANGE",
-            "title": "Auroras glow when solar particles hit air"
-          },
-          {
-            "hook": "Waves reveal where the shore steals energy",
-            "score": 78,
-            "thumbnail_text": "AURORA GLOW MATTERS",
-            "title": "Auroras glow when solar particles hit air"
-          },
-          {
-            "hook": "Watch the aurora glow; it explains the behavior",
-            "score": 78,
-            "thumbnail_text": "AURORA GLOW MATTERS",
-            "title": "Auroras glow when solar particles hit air"
-          },
-          {
-            "hook": "Waves reveal where the shore steals energy",
-            "score": 78,
-            "thumbnail_text": "AURORA GLOW FIRST",
-            "title": "Auroras glow when solar particles hit air"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "82f6c859562fd674",
       "title": "Storm clouds show air layers changing over time",
       "category": "earth_from_space",
@@ -12237,7 +11570,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T10:08:38.302575+00:00",
+        "checked_at": "2026-06-30T10:13:46.311562+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -12893,7 +12226,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T10:08:36.986138+00:00",
+        "checked_at": "2026-06-30T10:13:46.303218+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
