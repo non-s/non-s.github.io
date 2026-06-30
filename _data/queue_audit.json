@@ -1,42 +1,31 @@
 {
-  "generated_at": "2026-06-30T04:33:23.686267+00:00",
-  "pending": 20,
+  "generated_at": "2026-06-30T06:08:21.399441+00:00",
+  "pending": 18,
   "states": {
-    "rewrite": 17,
-    "publish_ready": 3
+    "rewrite": 16,
+    "publish_ready": 2
   },
   "mechanism_clusters": {
     "call_signal": 1,
     "scent_map": 1
   },
   "rights": {
-    "approved": 20
+    "approved": 18
   },
   "prune_summary": {
-    "pending_before": 50,
-    "pending_after": 20,
-    "rejected": 30,
-    "repair_needed": 5,
-    "repaired": 10,
+    "pending_before": 18,
+    "pending_after": 18,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 3,
     "reasons": {
       "editor_in_chief:subject repeated inside 3-day cooldown": 15,
-      "duplicate_title": 13,
-      "off_topic_visual": 12,
-      "objective_gate:observe_before_scaling": 12,
+      "objective_gate:observe_before_scaling": 11,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 7,
-      "queue_score_reject": 5,
-      "objective_gate:bootstrap_observe_before_scaling": 5,
-      "script_hook_mismatch": 4,
-      "duplicate_script": 3,
-      "duplicate_angle": 3,
+      "objective_gate:bootstrap_observe_before_scaling": 4,
       "editor_in_chief:script quality gate blocked the narration": 3,
-      "non_animal_body_language": 2,
       "editor_in_chief:editorial score 49 is below 62": 2,
       "editor_in_chief:editorial score 42 is below 62": 2,
-      "missing_action_word": 1,
-      "rights_guard_person_manual_review": 1,
-      "script_subject_mismatch": 1,
-      "copy_subject_mismatch": 1,
       "editor_in_chief:editorial score 47 is below 62": 1,
       "editor_in_chief:editorial score 44 is below 62": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
@@ -47,6 +36,34 @@
     }
   },
   "rejected_preview": [
+    {
+      "id": "71f0862ff46743a1",
+      "title": "Los bosques enfrían el aire bajo el dosel",
+      "reasons": [
+        "subject repeated inside 3-day cooldown",
+        "script quality gate blocked the narration",
+        "humanity score is too low",
+        "editorial score 37 is below 62"
+      ],
+      "stage": "editor_in_chief"
+    },
+    {
+      "id": "969dd963aca75fd5",
+      "title": "Cats groom to reset their scent map",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
+      "id": "c46045278a83d3fb",
+      "title": "Rivers carve bends by stealing from one bank",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
     {
       "id": "cbdd3b520423b19c",
       "title": "Forests can cool the air below them",
@@ -276,689 +293,9 @@
         "queue_score_reject"
       ],
       "stage": "queue_repair"
-    },
-    {
-      "id": "98b6378f6c7dba1d",
-      "title": "Owls don't care about your laptop screen",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "f7fa80603effe6ad",
-      "title": "Storm clouds show air layers changing over time",
-      "reasons": [
-        "missing_action_word",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "cc36bb34a58ff920",
-      "title": "Lightning makes air explode into thunder",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
-    {
-      "id": "71f0862ff46743a1",
-      "title": "Forests trap cool air below thick leaves",
-      "category": "forests",
-      "publish_score": {
-        "approved": true,
-        "category": "forests",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.396,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.195,
-          "data_quality": "observed",
-          "data_quality_score": 0.825,
-          "minimum_sample_size": 25,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.19.",
-          "recommendation_strength": "observe",
-          "sample_size": 15
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.195,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "air",
-            "cool",
-            "leave"
-          ],
-          "cue_terms": [
-            "air",
-            "canop",
-            "cool",
-            "leave"
-          ],
-          "frame_hook_bridge": [
-            "cool"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "forests"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 68,
-          "signals": {
-            "comment_potential": 38,
-            "educational_potential": 72,
-            "emotional_potential": 35,
-            "novelty": 69,
-            "replay_potential": 72,
-            "viral_potential": 77,
-            "visual_potential": 89
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 74
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "body_superpower",
-        "subscriber_conversion": {
-          "comment_probability": 0.184,
-          "confidence": {
-            "bootstrap_multiplier": 0.415,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.221,
-            "data_quality": "observed",
-            "data_quality_score": 0.825,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.22.",
-            "recommendation_strength": "observe",
-            "sample_size": 8
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.22.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.214,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 69,
-          "state": "usable",
-          "subscriber_probability": 0.099
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [
-            "repetitive_script"
-          ],
-          "risk": 22,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-06-30T04:33:00.546091+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:observe_before_scaling"
-        ],
-        "score": 100.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 100.0,
-      "youtube_brain": {
-        "animal": "forests",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "air",
-            "cool",
-            "leave"
-          ],
-          "cue_terms": [
-            "air",
-            "canop",
-            "cool",
-            "leave"
-          ],
-          "frame_hook_bridge": [
-            "cool"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "forests"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "body_superpower",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "forests",
-        "viewer_promise": "See the forest detail that changes the whole scene."
-      },
-      "packaging": {
-        "community_prompt": "Which forests clue should Wild Brief compare next in Hidden Network?",
-        "cta_prompt": "Want to see how forests quietly run the planet?",
-        "curiosity_gap": {
-          "hook": "Why do these forests change after the cool canopy?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "body superpower",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 100,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 42.97,
-            "cta:specific_question": 40.56,
-            "format:winner_inspired": 43.45,
-            "hook:pattern_reuse": 43.45,
-            "thumbnail:new_thumbnail": 42.74
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "air",
-              "cool",
-              "leave"
-            ],
-            "cue_terms": [
-              "air",
-              "canop",
-              "cool",
-              "leave"
-            ],
-            "frame_hook_bridge": [
-              "cool"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "forests"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Forests can cool the air below them",
-          "Forests trap cool air below thick leaves",
-          "Forests show why the cool canopy matters.",
-          "Forests show why the cool canopy matters.",
-          "Forests show why the cool canopy matters."
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "cool canopy",
-          "ending_line": "By the last line, the opening detail has a job viewers can name.",
-          "final_line": "Now the cool canopy at the start makes sense.",
-          "loop_score": 0.764,
-          "opening_line": "Forests trap cool air below thick leaves.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "cool canopy",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.764,
-        "next_episode_question": "Tomorrow in Hidden Network: another nature signal. Do forests feel more like places, systems, or living machines?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "air",
-            "cool",
-            "leave"
-          ],
-          "cue_terms": [
-            "air",
-            "canop",
-            "cool",
-            "leave"
-          ],
-          "frame_hook_bridge": [
-            "cool"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "forests"
-        },
-        "pinned_comment": "Watch the cool canopy again. Tomorrow in Hidden Network: another nature signal. Do forests feel more like places, systems, or living machines?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.22,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 23,
-          "first_2s_narration": "Forests trap cool air below thick leaves Watch the shadow line first",
-          "first_frame_text": "COOL CANOPY",
-          "first_frame_text_words": 2,
-          "hook": "Forests trap cool air below thick leaves.",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.764,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "air",
-              "cool",
-              "leave"
-            ],
-            "cue_terms": [
-              "air",
-              "canop",
-              "cool",
-              "leave"
-            ],
-            "frame_hook_bridge": [
-              "cool"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "forests"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the cool canopy, so viewers rewatch the forests clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 74
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Forests trap cool air below thick leaves Watch the shadow line first",
-          "first_frame_text": "COOL CANOPY",
-          "next_episode_question": "Tomorrow in Hidden Network: another nature signal. Do forests feel more like places, systems, or living machines?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains the visible cool canopy behind Forests in a fast nature science story.",
-            "series": "Hidden Network",
-            "subject": "forests",
-            "terms": [
-              "forests",
-              "cool canopy",
-              "body superpower"
-            ],
-            "title_variant": "Forests cool canopy explained fast",
-            "visible_cue": "cool canopy"
-          },
-          "series": "Hidden Network",
-          "subject": "forests",
-          "visible_cue": "cool canopy"
-        },
-        "risks": [],
-        "score": 96,
-        "search_intent": {
-          "description_line": "This Short explains the visible cool canopy behind Forests in a fast nature science story.",
-          "series": "Hidden Network",
-          "subject": "forests",
-          "terms": [
-            "forests",
-            "cool canopy",
-            "body superpower"
-          ],
-          "title_variant": "Forests cool canopy explained fast",
-          "visible_cue": "cool canopy"
-        },
-        "selected_variant": {
-          "hook": "Forests can cool the air below them",
-          "score": 80,
-          "thumbnail_text": "COOL CANOPY",
-          "title": "Forests make cooler air under the canopy"
-        },
-        "series": "Hidden Network #9",
-        "series_identity": {
-          "continuity_prompt": "Next in Hidden Network: compare this with another force of nature.",
-          "episode": 9,
-          "label": "Hidden Network #9",
-          "series": "Hidden Network"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.184,
-          "confidence": {
-            "bootstrap_multiplier": 0.415,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.221,
-            "data_quality": "observed",
-            "data_quality_score": 0.825,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.22.",
-            "recommendation_strength": "observe",
-            "sample_size": 8
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.22.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.214,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 69,
-          "state": "usable",
-          "subscriber_probability": 0.099
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "COOL CANOPY",
-          "WATCH COOL CANOPY",
-          "FORESTS LEAVES",
-          "COOL CANOPY MATTERS",
-          "COOL CANOPY FIRST",
-          "COOL CANOPY REVEAL",
-          "COOL CANOPY CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Forests make cooler air under the canopy",
-          "Forests trap cool air below thick leaves",
-          "Forests use cool canopy before they leaves",
-          "This cool canopy gives forests away",
-          "Why forests leaves after one cool canopy",
-          "Forests reveal the answer with cool canopy",
-          "The cool canopy that changes the moment",
-          "Forests make one cool canopy matter",
-          "Forests show the hidden answer in seconds",
-          "Forests: watch this cool canopy"
-        ],
-        "top_variants": [
-          {
-            "hook": "Forests can cool the air below them",
-            "score": 80,
-            "thumbnail_text": "COOL CANOPY",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Forests trap cool air below thick leaves",
-            "score": 80,
-            "thumbnail_text": "COOL CANOPY",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Watch the cool canopy; it explains the behavior",
-            "score": 80,
-            "thumbnail_text": "COOL CANOPY",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Forests can cool the air below them",
-            "score": 73,
-            "thumbnail_text": "WATCH COOL CANOPY",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Forests trap cool air below thick leaves",
-            "score": 73,
-            "thumbnail_text": "WATCH COOL CANOPY",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Watch the cool canopy; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "WATCH COOL CANOPY",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Forests can cool the air below them",
-            "score": 73,
-            "thumbnail_text": "FORESTS LEAVES",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Forests trap cool air below thick leaves",
-            "score": 73,
-            "thumbnail_text": "FORESTS LEAVES",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Watch the cool canopy; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "FORESTS LEAVES",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Forests can cool the air below them",
-            "score": 73,
-            "thumbnail_text": "COOL CANOPY MATTERS",
-            "title": "Forests make cooler air under the canopy"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
     {
       "id": "18f566b37db1413b",
       "title": "Cells copy instructions before splitting",
@@ -1138,7 +475,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T04:33:01.586067+00:00",
+        "checked_at": "2026-06-30T06:08:01.852645+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1238,7 +575,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1815,7 +1152,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-30T04:32:58.631374+00:00",
+        "checked_at": "2026-06-30T06:08:01.818144+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -1913,7 +1250,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -2298,650 +1635,6 @@
       }
     },
     {
-      "id": "c46045278a83d3fb",
-      "title": "Rivers drop heavy grains at slow edges",
-      "category": "rivers",
-      "publish_score": {
-        "approved": false,
-        "category": "rivers",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.342,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.123,
-          "data_quality": "estimated",
-          "data_quality_score": 0.512,
-          "minimum_sample_size": 28,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.12.",
-          "recommendation_strength": "observe",
-          "sample_size": 8
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 86,
-        "objective_gate": {
-          "confidence_score": 0.123,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "edge",
-            "slow"
-          ],
-          "cue_terms": [
-            "edge",
-            "slow"
-          ],
-          "frame_hook_bridge": [
-            "edge",
-            "slow"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "rivers"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.335,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-          "reasons": [
-            "low_opportunity_score"
-          ],
-          "score": 51,
-          "signals": {
-            "comment_potential": 33,
-            "educational_potential": 59,
-            "emotional_potential": 30,
-            "novelty": 50,
-            "replay_potential": 59,
-            "viral_potential": 40,
-            "visual_potential": 70
-          },
-          "verdict": "discard"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.335,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-          "reasons": [],
-          "score": 71,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 70,
-            "replay_score": 62,
-            "visual_score": 74
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "rewrite",
-        "story_format": "myth_buster",
-        "subscriber_conversion": {
-          "comment_probability": 0.256,
-          "confidence": {
-            "bootstrap_multiplier": 0.456,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.275,
-            "data_quality": "observed",
-            "data_quality_score": 0.667,
-            "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.27.",
-            "recommendation_strength": "observe",
-            "sample_size": 5
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.27.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.3,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-06-30T04:33:01.582502+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 78.0,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 78.0,
-      "youtube_brain": {
-        "animal": "rivers",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "edge",
-            "slow"
-          ],
-          "cue_terms": [
-            "edge",
-            "slow"
-          ],
-          "frame_hook_bridge": [
-            "edge",
-            "slow"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "rivers"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "myth_buster",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "rivers",
-        "viewer_promise": "See why this river myth buster matters."
-      },
-      "packaging": {
-        "community_prompt": "Which rivers clue should Wild Brief compare next in Earth Engine?",
-        "cta_prompt": "Want to see how moving water reshapes the world?",
-        "curiosity_gap": {
-          "hook": "Why do these rivers change after the slow edge?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "myth buster",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 100,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 42.97,
-            "cta:specific_question": 40.56,
-            "format:winner_inspired": 43.45,
-            "hook:pattern_reuse": 43.45,
-            "thumbnail:new_thumbnail": 42.74
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "edge",
-              "slow"
-            ],
-            "cue_terms": [
-              "edge",
-              "slow"
-            ],
-            "frame_hook_bridge": [
-              "edge",
-              "slow"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "rivers"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Rivers move sideways while they flow",
-          "Rivers drop heavy grains at slow edges",
-          "Rivers show why the river bend matters.",
-          "Rivers show why the river bend matters.",
-          "Rivers show why the river bend matters."
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "slow edge",
-          "ending_line": "By the last line, the opening detail has a job viewers can name.",
-          "final_line": "Now the slow edge at the start makes sense.",
-          "loop_score": 0.935,
-          "opening_line": "Rivers drop heavy grains at slow edges.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "slow edge",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.935,
-        "next_episode_question": "Tomorrow in Earth Engine: another nature signal. Are rivers more like roads, tools, or engines?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "edge",
-            "slow"
-          ],
-          "cue_terms": [
-            "edge",
-            "slow"
-          ],
-          "frame_hook_bridge": [
-            "edge",
-            "slow"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "rivers"
-        },
-        "pinned_comment": "Watch the ice again. Tomorrow in Earth Engine: another nature signal. Are rivers more like roads, tools, or engines?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 14.82,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 22,
-          "first_2s_narration": "Rivers drop heavy grains at slow edges Watch the calm edge first",
-          "first_frame_text": "SLOW EDGE",
-          "first_frame_text_words": 2,
-          "hook": "Rivers drop heavy grains at slow edges.",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.935,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "edge",
-              "slow"
-            ],
-            "cue_terms": [
-              "edge",
-              "slow"
-            ],
-            "frame_hook_bridge": [
-              "edge",
-              "slow"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "rivers"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the ice, so viewers rewatch the rivers clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.335,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-          "reasons": [],
-          "score": 71,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 70,
-            "replay_score": 62,
-            "visual_score": 74
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Rivers drop heavy grains at slow edges Watch the calm edge first",
-          "first_frame_text": "SLOW EDGE",
-          "next_episode_question": "Tomorrow in Earth Engine: another nature signal. Are rivers more like roads, tools, or engines?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains the visible ice behind Rivers in a fast nature science story.",
-            "series": "Earth Engine",
-            "subject": "rivers",
-            "terms": [
-              "rivers",
-              "ice",
-              "myth buster"
-            ],
-            "title_variant": "Rivers ice explained fast",
-            "visible_cue": "ice"
-          },
-          "series": "Earth Engine",
-          "subject": "rivers",
-          "visible_cue": "ice"
-        },
-        "risks": [],
-        "score": 95,
-        "search_intent": {
-          "description_line": "This Short explains the visible ice behind Rivers in a fast nature science story.",
-          "series": "Earth Engine",
-          "subject": "rivers",
-          "terms": [
-            "rivers",
-            "ice",
-            "myth buster"
-          ],
-          "title_variant": "Rivers ice explained fast",
-          "visible_cue": "ice"
-        },
-        "selected_variant": {
-          "hook": "Rivers move sideways while they flow",
-          "score": 77,
-          "thumbnail_text": "RIVER BEND",
-          "title": "Rivers carve bends by stealing from one bank"
-        },
-        "series": "Earth Engine #11",
-        "series_identity": {
-          "continuity_prompt": "Next in Earth Engine: compare this with another force of nature.",
-          "episode": 11,
-          "label": "Earth Engine #11",
-          "series": "Earth Engine"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.256,
-          "confidence": {
-            "bootstrap_multiplier": 0.456,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.275,
-            "data_quality": "observed",
-            "data_quality_score": 0.667,
-            "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.27.",
-            "recommendation_strength": "observe",
-            "sample_size": 5
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.27.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.3,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "RIVER BEND",
-          "WATCH RIVER BEND",
-          "RIVERS CARRY",
-          "RIVER BEND MATTERS",
-          "RIVER BEND FIRST",
-          "RIVER BEND REVEAL",
-          "RIVER BEND CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Rivers carve bends by stealing from one bank",
-          "Rivers drop heavy grains at slow edges",
-          "Rivers use river bend before they carry",
-          "This river bend gives rivers away",
-          "Why rivers carry after one river bend",
-          "Rivers reveal the answer with river bend",
-          "The river bend that changes the moment",
-          "Rivers make one river bend matter",
-          "Rivers show the hidden answer in seconds",
-          "Rivers: watch this river bend"
-        ],
-        "top_variants": [
-          {
-            "hook": "Rivers move sideways while they flow",
-            "score": 77,
-            "thumbnail_text": "RIVER BEND",
-            "title": "Rivers carve bends by stealing from one bank"
-          },
-          {
-            "hook": "Watch the river bend; it explains the behavior",
-            "score": 77,
-            "thumbnail_text": "RIVER BEND",
-            "title": "Rivers carve bends by stealing from one bank"
-          },
-          {
-            "hook": "Rivers drop heavy grains at slow edges",
-            "score": 75,
-            "thumbnail_text": "RIVER BEND",
-            "title": "Rivers carve bends by stealing from one bank"
-          },
-          {
-            "hook": "Rivers move sideways while they flow",
-            "score": 70,
-            "thumbnail_text": "WATCH RIVER BEND",
-            "title": "Rivers carve bends by stealing from one bank"
-          },
-          {
-            "hook": "Watch the river bend; it explains the behavior",
-            "score": 70,
-            "thumbnail_text": "WATCH RIVER BEND",
-            "title": "Rivers carve bends by stealing from one bank"
-          },
-          {
-            "hook": "Rivers move sideways while they flow",
-            "score": 70,
-            "thumbnail_text": "RIVERS CARRY",
-            "title": "Rivers carve bends by stealing from one bank"
-          },
-          {
-            "hook": "Watch the river bend; it explains the behavior",
-            "score": 70,
-            "thumbnail_text": "RIVERS CARRY",
-            "title": "Rivers carve bends by stealing from one bank"
-          },
-          {
-            "hook": "Rivers move sideways while they flow",
-            "score": 70,
-            "thumbnail_text": "RIVER BEND MATTERS",
-            "title": "Rivers carve bends by stealing from one bank"
-          },
-          {
-            "hook": "Watch the river bend; it explains the behavior",
-            "score": 70,
-            "thumbnail_text": "RIVER BEND MATTERS",
-            "title": "Rivers carve bends by stealing from one bank"
-          },
-          {
-            "hook": "Rivers move sideways while they flow",
-            "score": 70,
-            "thumbnail_text": "RIVER BEND FIRST",
-            "title": "Rivers carve bends by stealing from one bank"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "0ef428432eac25bb",
       "title": "Leaves turn a forest into a cooler room",
       "category": "earth_from_space",
@@ -3116,7 +1809,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-30T04:32:58.965507+00:00",
+        "checked_at": "2026-06-30T06:08:01.825413+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -3212,7 +1905,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -3761,7 +2454,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T04:32:59.724581+00:00",
+        "checked_at": "2026-06-30T06:08:01.828469+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -3856,7 +2549,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -4408,7 +3101,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T04:32:58.627073+00:00",
+        "checked_at": "2026-06-30T06:08:01.813464+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -4508,7 +3201,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -5070,7 +3763,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T04:32:58.629205+00:00",
+        "checked_at": "2026-06-30T06:08:01.815797+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -5166,7 +3859,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -5718,7 +4411,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T04:32:58.960982+00:00",
+        "checked_at": "2026-06-30T06:08:01.820971+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -5813,7 +4506,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6365,7 +5058,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T04:33:00.533582+00:00",
+        "checked_at": "2026-06-30T06:08:01.836927+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -6463,7 +5156,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -7015,7 +5708,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T04:33:00.535543+00:00",
+        "checked_at": "2026-06-30T06:08:01.839058+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -7111,7 +5804,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -7655,7 +6348,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T04:33:00.537200+00:00",
+        "checked_at": "2026-06-30T06:08:01.840817+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -7750,7 +6443,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -8297,7 +6990,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T04:33:00.539072+00:00",
+        "checked_at": "2026-06-30T06:08:01.842788+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -8394,7 +7087,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -8953,7 +7646,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T04:33:00.542262+00:00",
+        "checked_at": "2026-06-30T06:08:01.845437+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -9054,7 +7747,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -9617,7 +8310,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T04:33:00.544034+00:00",
+        "checked_at": "2026-06-30T06:08:01.847284+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -9714,7 +8407,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -10271,7 +8964,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T04:33:01.579504+00:00",
+        "checked_at": "2026-06-30T06:08:01.849515+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10369,7 +9062,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -10924,7 +9617,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T04:33:01.588089+00:00",
+        "checked_at": "2026-06-30T06:08:01.854643+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11022,7 +9715,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -11577,7 +10270,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T04:33:01.590076+00:00",
+        "checked_at": "2026-06-30T06:08:01.856693+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11674,7 +10367,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -12235,7 +10928,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T04:32:58.963856+00:00",
+        "checked_at": "2026-06-30T06:08:01.823815+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -12333,7 +11026,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -12891,7 +11584,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T04:32:58.630295+00:00",
+        "checked_at": "2026-06-30T06:08:01.816989+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -12987,7 +11680,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
