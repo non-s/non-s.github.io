@@ -2,11 +2,11 @@
   "state": "migration_needed",
   "pressure_score": 100,
   "metrics": {
-    "live_state_files": 250,
-    "data_state_files": 147,
+    "live_state_files": 408,
+    "data_state_files": 305,
     "video_done_markers": 101,
-    "live_state_bytes": 20910714,
-    "stories_queue_bytes": 3722445,
+    "live_state_bytes": 22595757,
+    "stories_queue_bytes": 3882617,
     "stories_queue_lines": 0,
     "workflow_files": 18,
     "state_path_refs": 285
@@ -14,38 +14,43 @@
   "largest_state_files": [
     {
       "path": "_data/ai_cache.jsonl",
-      "bytes": 6855059,
+      "bytes": 6860862,
       "lines": 0
     },
     {
       "path": "_data/stories_queue.json",
-      "bytes": 3722445,
+      "bytes": 3882617,
       "lines": 0
     },
     {
+      "path": "_data/rejected_queue.jsonl",
+      "bytes": 981251,
+      "lines": 1236
+    },
+    {
       "path": "_data/early_performance.json",
-      "bytes": 909514,
+      "bytes": 909458,
       "lines": 35225
     },
     {
-      "path": "_data/rejected_queue.jsonl",
-      "bytes": 785191,
-      "lines": 989
-    },
-    {
       "path": "_data/analytics/api_quota_ledger.jsonl",
-      "bytes": 784678,
-      "lines": 1233
+      "bytes": 785906,
+      "lines": 1235
     },
     {
       "path": "_data/provider_stats.jsonl",
-      "bytes": 725990,
-      "lines": 9340
+      "bytes": 726613,
+      "lines": 9348
+    },
+    {
+      "path": "_data/repair_queue.jsonl",
+      "bytes": 554447,
+      "lines": 32
     },
     {
       "path": "_data/queue_audit.json",
-      "bytes": 452335,
-      "lines": 13351
+      "bytes": 452233,
+      "lines": 13347
     },
     {
       "path": "_data/publish_slot_decisions.jsonl",
@@ -54,7 +59,7 @@
     },
     {
       "path": "_data/packaging_report.json",
-      "bytes": 282870,
+      "bytes": 282911,
       "lines": 8039
     },
     {
@@ -64,13 +69,8 @@
     },
     {
       "path": "_data/autonomous_growth_plan.json",
-      "bytes": 155767,
+      "bytes": 155765,
       "lines": 4304
-    },
-    {
-      "path": "_data/fact_sources.jsonl",
-      "bytes": 141491,
-      "lines": 453
     }
   ],
   "migration_lanes": [
