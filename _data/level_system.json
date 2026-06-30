@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-30T10:51:06.554513+00:00",
+  "generated_at": "2026-06-30T10:56:15.210206+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
   "overall_progress_pct": 25.4,
@@ -35,11 +35,6 @@
           "operator_translation": "observe this pattern before scaling it"
         },
         {
-          "id": "duplicate_title",
-          "count": 21,
-          "operator_translation": "duplicate title"
-        },
-        {
           "id": "queue_prune:rewrite",
           "count": 18,
           "operator_translation": "rewrite the held candidate until queue prune clears"
@@ -48,6 +43,11 @@
           "id": "editor_in_chief:cooldown_subject",
           "count": 16,
           "operator_translation": "pick a fresh subject inside the same lane"
+        },
+        {
+          "id": "editor_in_chief:story angle repeated inside 10-day cooldown",
+          "count": 14,
+          "operator_translation": "editor in chief:story angle repeated inside 10-day cooldown"
         }
       ]
     }
@@ -74,7 +74,7 @@
     {
       "priority": "P0",
       "action": "Batch-fix the top blocker reasons before fetching a larger queue.",
-      "target": "editor_in_chief:subject repeated inside 3-day cooldown, objective_gate:observe_before_scaling, duplicate_title",
+      "target": "editor_in_chief:subject repeated inside 3-day cooldown, objective_gate:observe_before_scaling, queue_prune:rewrite",
       "why": "Current supply has strong ideas but fails late gates."
     },
     {
@@ -123,11 +123,6 @@
       "operator_translation": "observe this pattern before scaling it"
     },
     {
-      "id": "duplicate_title",
-      "count": 21,
-      "operator_translation": "duplicate title"
-    },
-    {
       "id": "queue_prune:rewrite",
       "count": 18,
       "operator_translation": "rewrite the held candidate until queue prune clears"
@@ -139,7 +134,7 @@
     },
     {
       "id": "editor_in_chief:story angle repeated inside 10-day cooldown",
-      "count": 13,
+      "count": 14,
       "operator_translation": "editor in chief:story angle repeated inside 10-day cooldown"
     },
     {
@@ -153,24 +148,29 @@
       "operator_translation": "editor in chief:script quality gate blocked the narration"
     },
     {
-      "id": "off_topic_visual",
-      "count": 7,
-      "operator_translation": "off topic visual"
-    },
-    {
-      "id": "queue_score_reject",
-      "count": 6,
-      "operator_translation": "queue score reject"
-    },
-    {
-      "id": "copy_subject_mismatch",
-      "count": 5,
-      "operator_translation": "copy subject mismatch"
-    },
-    {
       "id": "editor_in_chief:editorial score 49 is below 62",
       "count": 4,
       "operator_translation": "editor in chief:editorial score 49 is below 62"
+    },
+    {
+      "id": "editor_in_chief:editorial score 42 is below 62",
+      "count": 4,
+      "operator_translation": "editor in chief:editorial score 42 is below 62"
+    },
+    {
+      "id": "editor_in_chief:editorial score 40 is below 62",
+      "count": 4,
+      "operator_translation": "editor in chief:editorial score 40 is below 62"
+    },
+    {
+      "id": "packaging:missing_action_word",
+      "count": 2,
+      "operator_translation": "packaging:missing action word"
+    },
+    {
+      "id": "observe_before_scaling",
+      "count": 2,
+      "operator_translation": "observe before scaling"
     }
   ],
   "levels": [
