@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 6,
+    "analytics_due": 7,
     "awaiting_1h": 0,
     "high_priority": 9,
-    "repair_candidates": 3,
+    "repair_candidates": 2,
     "tracked": 10
   },
-  "generated_at": "2026-06-30T10:33:51.430956+00:00",
+  "generated_at": "2026-06-30T10:44:22.457446+00:00",
   "items": [
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.478,
+      "age_hours": 4.653,
       "category": "forests",
       "checkpoints": [
         {
@@ -70,7 +70,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.167,
+      "age_hours": 6.342,
       "category": "insects",
       "checkpoints": [
         {
@@ -126,7 +126,7 @@
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.594,
         "reason": "low early velocity",
-        "reasoning": "video has 27/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "reasoning": "video has 29/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
         "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
         "title": "Ants use scent road before they change",
         "video_id": "BdO9Suta2zU",
@@ -136,7 +136,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 9.028,
+      "age_hours": 9.204,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -201,16 +201,16 @@
       }
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 11.342,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 11.517,
       "category": "weather",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-06-30T00:13:20.974300+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -234,41 +234,30 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-06-30T23:13:20.974300+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-06-30T00:13:20.974300+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "overdue",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 90.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Earth Engine",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Lightning uses lightning flash before it signals",
       "uploaded_at": "2026-06-29T23:13:20.974300+00:00",
       "url": "https://www.youtube.com/shorts/Mmi-lyfFJuA",
       "video_id": "Mmi-lyfFJuA",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Lightning uses lightning flash before it signals",
-        "video_id": "Mmi-lyfFJuA",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.158,
+      "age_hours": 12.333,
       "category": "geology",
       "checkpoints": [
         {
@@ -323,7 +312,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.433,
+      "age_hours": 13.609,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -378,7 +367,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 14.291,
+      "age_hours": 14.466,
       "category": "trees",
       "checkpoints": [
         {
@@ -433,7 +422,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 15.341,
+      "age_hours": 15.517,
       "category": "farm",
       "checkpoints": [
         {
@@ -449,8 +438,8 @@
           "delta_to_target": -105,
           "due_at": "2026-06-30T01:13:22.718122+00:00",
           "label": "6h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 105,
           "views": 0
         },
@@ -488,7 +477,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 17.177,
+      "age_hours": 17.352,
       "category": "ocean",
       "checkpoints": [
         {
@@ -543,7 +532,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 18.405,
+      "age_hours": 18.581,
       "category": "nocturnal",
       "checkpoints": [
         {
