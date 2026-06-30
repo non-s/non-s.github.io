@@ -1,59 +1,72 @@
 {
-  "generated_at": "2026-06-30T06:44:18.114537+00:00",
-  "pending": 19,
+  "generated_at": "2026-06-30T06:49:17.302607+00:00",
+  "pending": 20,
   "states": {
-    "rewrite": 16,
-    "publish_ready": 3
+    "publish_ready": 3,
+    "rewrite": 17
   },
   "mechanism_clusters": {
+    "visual_stabilization": 1,
     "call_signal": 1,
     "scent_map": 1
   },
   "rights": {
-    "approved": 19
+    "approved": 20
   },
   "prune_summary": {
-    "pending_before": 19,
-    "pending_after": 19,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 3,
+    "pending_before": 46,
+    "pending_after": 20,
+    "rejected": 26,
+    "repair_needed": 2,
+    "repaired": 11,
     "reasons": {
+      "duplicate_title": 16,
       "editor_in_chief:subject repeated inside 3-day cooldown": 15,
-      "objective_gate:observe_before_scaling": 12,
+      "objective_gate:observe_before_scaling": 11,
+      "duplicate_script": 8,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 7,
+      "off_topic_visual": 5,
+      "duplicate_angle": 5,
+      "copy_subject_mismatch": 4,
       "objective_gate:bootstrap_observe_before_scaling": 4,
       "editor_in_chief:script quality gate blocked the narration": 3,
+      "queue_score_reject": 2,
+      "script_hook_mismatch": 2,
       "editor_in_chief:editorial score 49 is below 62": 2,
       "editor_in_chief:editorial score 42 is below 62": 2,
       "publish_ready_supply_reserve_fallback": 2,
+      "rights_guard_person_manual_review": 1,
+      "script_subject_mismatch": 1,
+      "script_word_loop": 1,
       "editor_in_chief:editorial score 47 is below 62": 1,
       "editor_in_chief:editorial score 44 is below 62": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
       "editor_in_chief:editorial score 40 is below 62": 1,
-      "editorial_cooldown_supply_fallback": 1
+      "editorial_cooldown_supply_fallback": 1,
+      "inventory_reserve_fallback": 1
     }
   },
   "rejected_preview": [
     {
-      "id": "70f01915bdac9fa9",
-      "title": "Chickens keep their view steady while walking",
+      "id": "a3d5010da3402bb4",
+      "title": "Nocturnals use first move before they change",
       "reasons": [
-        "duplicate_title"
+        "copy_subject_mismatch",
+        "script_hook_mismatch"
       ],
-      "stage": "queue_prune"
+      "stage": "queue_prune_final"
     },
     {
-      "id": "c39730f5e142d4c3",
-      "title": "Crystals build shape from repeating atoms",
+      "id": "1155b6345e66296f",
+      "title": "Wolves leave scent notes for the pack",
       "reasons": [
         "duplicate_title"
       ],
       "stage": "queue_prune_final"
     },
     {
-      "id": "4fa95da90656bff7",
+      "id": "87cc3c50b914fb7f",
       "title": "Forests can cool the air below them",
       "reasons": [
         "duplicate_title"
@@ -61,15 +74,7 @@
       "stage": "queue_prune_final"
     },
     {
-      "id": "9e60249b9a978ac4",
-      "title": "Trees keep weather history in their rings",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "a3af173174531b07",
+      "id": "5b8d5ba174211bae",
       "title": "Rock layers reveal flood paths carved into stone",
       "reasons": [
         "duplicate_title",
@@ -78,7 +83,43 @@
       "stage": "queue_prune_final"
     },
     {
-      "id": "ed9e2dd3b68af971",
+      "id": "91b6564c3b2ab32a",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "526c9770a919f192",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "26ca036370f8ef51",
+      "title": "Storm clouds show air layers changing over time",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "e306935c8804cf45",
+      "title": "Storm clouds show air layers changing over time",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "1ed9c8c2a8f2db00",
       "title": "Storm clouds reveal a storm's heat engine",
       "reasons": [
         "duplicate_title",
@@ -87,74 +128,59 @@
       "stage": "queue_prune_final"
     },
     {
-      "id": "49cb5b052627fb10",
-      "title": "Cats measure tight spaces with their whiskers",
+      "id": "87d2a903c3545533",
+      "title": "Cats use grooming to reset their scent map",
+      "reasons": [
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "7b0743891ce9856b",
+      "title": "Cats use grooming to reset their scent map",
+      "reasons": [
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "0084ace94c140760",
+      "title": "Chickens lock their view between steps",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "390ff4672c1ac4b3",
+      "title": "Chickens keep their view steady while walking",
       "reasons": [
         "duplicate_title"
       ],
       "stage": "queue_prune_final"
     },
     {
-      "id": "3f3e644f7c74c538",
-      "title": "Why cat ears give away the real mood that most people miss",
-      "reasons": [
-        "bad_plural_verb",
-        "script_word_loop"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "feb36fecd7306fcc",
-      "title": "Huskies don't pant because they're hot",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "529e28de6500d798",
-      "title": "Chickens keep their view steady while walking",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "b7059d70c0de1d3c",
-      "title": "Huskies don't just pose on rocks",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "5e3e151023757efd",
-      "title": "Farm animals make the pupil shape matter first",
+      "id": "eba4bf9dfb0392ae",
+      "title": "What a cat's tail tells you before it moves that most people miss",
       "reasons": [
         "script_word_loop"
       ],
       "stage": "queue_prune"
     },
     {
-      "id": "a865e6eb21581106",
-      "title": "Crows know the sky better than you think",
+      "id": "25d89a7c76271ba0",
+      "title": "Baseball player's helmet hides a survival signal",
       "reasons": [
         "off_topic_visual"
       ],
       "stage": "queue_prune"
     },
     {
-      "id": "91533ced0f134ef0",
-      "title": "Plants turn sunlight into stored sugar",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "dba5ec62c8ee6b68",
+      "id": "6a1a8ada1c1f400b",
       "title": "Plants use trap hairs to count touches before snapping shut",
       "reasons": [
         "duplicate_title"
@@ -162,8 +188,16 @@
       "stage": "queue_prune"
     },
     {
-      "id": "1fc6861defbe1778",
-      "title": "Elephants cool blood through giant ears",
+      "id": "e02f864f6ec8aee5",
+      "title": "Plants use trap hairs to count touches before snapping shut",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "6c0afeb572351a6a",
+      "title": "Storm clouds reveal a storm's heat engine",
       "reasons": [
         "copy_subject_mismatch",
         "duplicate_title",
@@ -172,31 +206,7 @@
       "stage": "queue_prune"
     },
     {
-      "id": "03651787f018c708",
-      "title": "Storm clouds trace wind bands over the ocean",
-      "reasons": [
-        "copy_subject_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "4554f934d23c1b32",
-      "title": "Rivers carve bends by stealing from one bank",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "4906f866c79481a5",
-      "title": "The moon keeps one face turned toward Earth",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "46967e48e6f93488",
+      "id": "542cd84b937b5a46",
       "title": "Storm clouds reveal a storm's heat engine",
       "reasons": [
         "queue_score_reject"
@@ -204,91 +214,101 @@
       "stage": "queue_repair"
     },
     {
-      "id": "6e67b7f1666e5cdb",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "fa05acd48f35d581",
-      "title": "Cats groom to reset their scent map",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "cebcae7c354e77b5",
-      "title": "bats hunt like cricket pros at night",
+      "id": "a5ab4ba02933dedf",
+      "title": "rainbow between the mountains isn't what you think",
       "reasons": [
         "off_topic_visual"
       ],
       "stage": "queue_prune"
     },
     {
-      "id": "8c93b128017ef3c4",
-      "title": "Fossils turn old bones into time clues",
+      "id": "f7d366d5f006d187",
+      "title": "bats don't use sonar like you think",
       "reasons": [
-        "duplicate_title",
-        "duplicate_script"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "25834363cb6a70c6",
-      "title": "Plants turn sunlight into stored sugar",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "f5ee03b91a06fdfb",
-      "title": "Forests make cooler air under the canopy",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "15ee13fa9fe40aba",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
+        "rights_guard_person_manual_review",
+        "off_topic_visual",
+        "script_subject_mismatch",
         "copy_subject_mismatch",
-        "duplicate_title",
-        "duplicate_script"
+        "script_hook_mismatch"
       ],
       "stage": "queue_prune"
     },
     {
-      "id": "33b5082b104c19f8",
-      "title": "Lions use dark ear marks to guide cubs",
+      "id": "dad711bb1ab5be00",
+      "title": "Plants use trap hairs to count touches before snapping shut",
       "reasons": [
         "duplicate_title"
       ],
       "stage": "queue_prune"
     },
     {
-      "id": "37002bb12f587348",
-      "title": "Trees record hard seasons inside rings",
+      "id": "af22767cb3abdc68",
+      "title": "Plants turn light into stored sugar",
       "reasons": [
         "queue_score_reject"
       ],
       "stage": "queue_repair"
     },
     {
-      "id": "b3959da7cedfa5a0",
+      "id": "65590639edf54bc4",
       "title": "Storm clouds reveal a storm's heat engine",
       "reasons": [
-        "duplicate_title",
-        "duplicate_script"
+        "copy_subject_mismatch",
+        "duplicate_title"
       ],
       "stage": "queue_prune"
+    },
+    {
+      "id": "ce01808df4acfe00",
+      "title": "Trees don’t just stand still to grow",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "2974ba40e51e0bb2",
+      "title": "Trees don't just grow up they grow down",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "e3eec0d061f8518c",
+      "title": "Fossils can preserve a clue from deep time",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "3ee730f776cd5f7a",
+      "title": "Fossils can preserve a clue from deep time",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "51a53202fdde6bbd",
+      "title": "Monkeys wash food when grit gets annoying",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "003a795ae3615034",
+      "title": "Lions hunt better when the pride coordinates",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
     }
   ],
   "top": [
@@ -471,7 +491,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:43:57.483611+00:00",
+        "checked_at": "2026-06-30T06:48:55.634932+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -959,6 +979,649 @@
       }
     },
     {
+      "id": "79b3761175e0982a",
+      "title": "Chickens lock their view between steps",
+      "category": "farm",
+      "publish_score": {
+        "approved": true,
+        "category": "farm",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.646,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.529,
+          "data_quality": "observed",
+          "data_quality_score": 1.0,
+          "minimum_sample_size": 35,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.53.",
+          "recommendation_strength": "observe",
+          "sample_size": 27
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.529,
+          "mechanism_cluster": "visual_stabilization",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [],
+          "scale_ready": true,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "eyes"
+          ],
+          "cue_terms": [
+            "eyes",
+            "stead"
+          ],
+          "frame_hook_bridge": [
+            "eyes"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "chickens"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.55,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.514,
+            "data_quality": "observed",
+            "data_quality_score": 0.856,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 3
+          },
+          "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only.",
+          "reasons": [
+            "weak_visual_surface",
+            "low_opportunity_score"
+          ],
+          "score": 51,
+          "signals": {
+            "comment_potential": 46,
+            "educational_potential": 57,
+            "emotional_potential": 36,
+            "novelty": 37,
+            "replay_potential": 76,
+            "viral_potential": 50,
+            "visual_potential": 47
+          },
+          "verdict": "discard"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "reserve_override": {
+          "original_approved": false,
+          "original_opportunity_reasons": [
+            "weak_visual_surface",
+            "low_opportunity_score"
+          ],
+          "original_state": "rewrite",
+          "reason": "publish_ready_supply_reserve_fallback"
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.55,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.514,
+            "data_quality": "observed",
+            "data_quality_score": 0.856,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 3
+          },
+          "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only.",
+          "reasons": [],
+          "score": 75,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 82,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.242,
+          "confidence": {
+            "bootstrap_multiplier": 0.512,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.349,
+            "data_quality": "observed",
+            "data_quality_score": 0.883,
+            "minimum_sample_size": 15,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.35.",
+            "recommendation_strength": "observe",
+            "sample_size": 11
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.35.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.283,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 94,
+          "state": "strong",
+          "subscriber_probability": 0.134
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-06-30T06:48:50.196381+00:00",
+        "mechanism_cluster": "visual_stabilization",
+        "objective_reasons": [
+          "publish_ready_supply_reserve_fallback"
+        ],
+        "score": 78.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 78.0,
+      "youtube_brain": {
+        "animal": "chickens",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "eyes"
+          ],
+          "cue_terms": [
+            "eyes",
+            "stead"
+          ],
+          "frame_hook_bridge": [
+            "eyes"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "chickens"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "chickens",
+        "viewer_promise": "See why chickens body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which chickens clue should Wild Brief compare next in Body Clues?",
+        "cta_prompt": "Want one animal signal a day? Follow for tomorrow's farm clue.",
+        "curiosity_gap": {
+          "hook": "Why do these chickens change after the steady eyes?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 101,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 42.97,
+            "cta:specific_question": 40.56,
+            "format:winner_inspired": 43.45,
+            "hook:pattern_reuse": 43.45,
+            "thumbnail:new_thumbnail": 42.74
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "eyes"
+            ],
+            "cue_terms": [
+              "eyes",
+              "stead"
+            ],
+            "frame_hook_bridge": [
+              "eyes"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "chickens"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Chickens lock their view between steps",
+          "Chickens show why the steady eyes matters.",
+          "Chickens show why the steady eyes matters.",
+          "Chickens show why the steady eyes matters.",
+          "Chickens give away the answer through steady eyes"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "steady eyes",
+          "ending_line": "Did you notice it?",
+          "final_line": "Now the steady eyes at the start make sense.",
+          "loop_score": 0.795,
+          "opening_line": "Chickens lock their view between steps.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "steady eyes",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.795,
+        "next_episode_question": "Tomorrow in Body Clues: another animal signal. What part of this feels most impossible?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "eyes"
+          ],
+          "cue_terms": [
+            "eyes",
+            "stead"
+          ],
+          "frame_hook_bridge": [
+            "eyes"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "chickens"
+        },
+        "pinned_comment": "Watch the steady eyes again. Tomorrow in Body Clues: another animal signal. What part of this feels most impossible?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.42,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 19,
+          "first_2s_narration": "Chickens lock their view between steps Watch the eyes stay level while",
+          "first_frame_text": "STEADY EYES",
+          "first_frame_text_words": 2,
+          "hook": "Chickens lock their view between steps.",
+          "hook_specificity": 0.78,
+          "hook_words": 6,
+          "loop_score": 0.795,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "eyes"
+            ],
+            "cue_terms": [
+              "eyes",
+              "stead"
+            ],
+            "frame_hook_bridge": [
+              "eyes"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "chickens"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the steady eyes, so viewers rewatch the chickens clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.55,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.514,
+            "data_quality": "observed",
+            "data_quality_score": 0.856,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 3
+          },
+          "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only.",
+          "reasons": [],
+          "score": 75,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 82,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Chickens lock their view between steps Watch the eyes stay level while",
+          "first_frame_text": "STEADY EYES",
+          "next_episode_question": "Tomorrow in Body Clues: another animal signal. What part of this feels most impossible?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Chickens behavior through the visible steady eyes.",
+            "series": "Body Clues",
+            "subject": "chickens",
+            "terms": [
+              "chickens",
+              "steady eyes",
+              "farm",
+              "body superpower"
+            ],
+            "title_variant": "Chickens behavior: steady eyes explained",
+            "visible_cue": "steady eyes"
+          },
+          "series": "Body Clues",
+          "subject": "chickens",
+          "visible_cue": "steady eyes"
+        },
+        "risks": [],
+        "score": 96,
+        "search_intent": {
+          "description_line": "This Short explains Chickens behavior through the visible steady eyes.",
+          "series": "Body Clues",
+          "subject": "chickens",
+          "terms": [
+            "chickens",
+            "steady eyes",
+            "farm",
+            "body superpower"
+          ],
+          "title_variant": "Chickens behavior: steady eyes explained",
+          "visible_cue": "steady eyes"
+        },
+        "selected_variant": {
+          "hook": "Chickens lock their view between steps",
+          "score": 80,
+          "thumbnail_text": "STEADY EYES",
+          "title": "Chickens keep their view steady while walking"
+        },
+        "series": "Body Clues",
+        "series_identity": {
+          "continuity_prompt": "Next in Body Clues: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Body Clues",
+          "series": "Body Clues"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.242,
+          "confidence": {
+            "bootstrap_multiplier": 0.512,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.349,
+            "data_quality": "observed",
+            "data_quality_score": 0.883,
+            "minimum_sample_size": 15,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.35.",
+            "recommendation_strength": "observe",
+            "sample_size": 11
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.35.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.283,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 94,
+          "state": "strong",
+          "subscriber_probability": 0.134
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "STEADY EYES",
+          "WATCH STEADY EYES",
+          "CHICKENS STABILIZE",
+          "STEADY EYES MATTERS",
+          "STEADY EYES FIRST",
+          "STEADY EYES REVEAL",
+          "STEADY EYES CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Chickens keep their view steady while walking",
+          "Chickens lock their view between steps",
+          "Chickens use steady eyes before they stabilize",
+          "Why chickens stabilize after one steady eyes",
+          "Chickens reveal the answer with steady eyes",
+          "The steady eyes that changes the moment",
+          "Chickens make one steady eyes matter",
+          "Chickens show the hidden answer in seconds",
+          "Chickens: watch this steady eyes"
+        ],
+        "top_variants": [
+          {
+            "hook": "Chickens lock their view between steps",
+            "score": 80,
+            "thumbnail_text": "STEADY EYES",
+            "title": "Chickens keep their view steady while walking"
+          },
+          {
+            "hook": "Watch the steady eyes; it explains the behavior",
+            "score": 80,
+            "thumbnail_text": "STEADY EYES",
+            "title": "Chickens keep their view steady while walking"
+          },
+          {
+            "hook": "Start with the steady eyes; it changes the scene",
+            "score": 80,
+            "thumbnail_text": "STEADY EYES",
+            "title": "Chickens keep their view steady while walking"
+          },
+          {
+            "hook": "Chickens lock their view between steps",
+            "score": 73,
+            "thumbnail_text": "WATCH STEADY EYES",
+            "title": "Chickens keep their view steady while walking"
+          },
+          {
+            "hook": "Watch the steady eyes; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "WATCH STEADY EYES",
+            "title": "Chickens keep their view steady while walking"
+          },
+          {
+            "hook": "Start with the steady eyes; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "WATCH STEADY EYES",
+            "title": "Chickens keep their view steady while walking"
+          },
+          {
+            "hook": "Chickens lock their view between steps",
+            "score": 73,
+            "thumbnail_text": "CHICKENS STABILIZE",
+            "title": "Chickens keep their view steady while walking"
+          },
+          {
+            "hook": "Watch the steady eyes; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "CHICKENS STABILIZE",
+            "title": "Chickens keep their view steady while walking"
+          },
+          {
+            "hook": "Start with the steady eyes; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "CHICKENS STABILIZE",
+            "title": "Chickens keep their view steady while walking"
+          },
+          {
+            "hook": "Chickens lock their view between steps",
+            "score": 73,
+            "thumbnail_text": "STEADY EYES MATTERS",
+            "title": "Chickens keep their view steady while walking"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "969dd963aca75fd5",
       "title": "Cats groom to reset their scent map",
       "category": "cats",
@@ -1148,7 +1811,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:43:57.453404+00:00",
+        "checked_at": "2026-06-30T06:48:50.535327+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -1631,678 +2294,6 @@
       }
     },
     {
-      "id": "dad711bb1ab5be00",
-      "title": "Plants turn light into stored sugar",
-      "category": "plants",
-      "publish_score": {
-        "approved": true,
-        "category": "plants",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.458,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.277,
-          "data_quality": "estimated",
-          "data_quality_score": 0.48,
-          "minimum_sample_size": 38,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.28.",
-          "recommendation_strength": "observe",
-          "sample_size": 20
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 86,
-        "objective_gate": {
-          "confidence_score": 0.277,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "leaf",
-            "light",
-            "sugar",
-            "surface"
-          ],
-          "cue_terms": [
-            "leaf",
-            "light",
-            "sugar",
-            "surface"
-          ],
-          "frame_hook_bridge": [
-            "light",
-            "sugar"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "plants"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.335,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-          "reasons": [
-            "low_opportunity_score"
-          ],
-          "score": 51,
-          "signals": {
-            "comment_potential": 33,
-            "educational_potential": 59,
-            "emotional_potential": 30,
-            "novelty": 50,
-            "replay_potential": 59,
-            "viral_potential": 50,
-            "visual_potential": 60
-          },
-          "verdict": "discard"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "reserve_override": {
-          "original_approved": false,
-          "original_opportunity_reasons": [
-            "low_opportunity_score"
-          ],
-          "original_state": "rewrite",
-          "reason": "publish_ready_supply_reserve_fallback"
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.335,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-          "reasons": [],
-          "score": 70,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 70,
-            "replay_score": 62,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "body_superpower",
-        "subscriber_conversion": {
-          "comment_probability": 0.226,
-          "confidence": {
-            "bootstrap_multiplier": 0.472,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.296,
-            "data_quality": "estimated",
-            "data_quality_score": 0.587,
-            "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.30.",
-            "recommendation_strength": "observe",
-            "sample_size": 10
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.30.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.264,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 87,
-          "state": "strong",
-          "subscriber_probability": 0.124
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-06-30T06:43:57.455498+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:observe_before_scaling",
-          "publish_ready_supply_reserve_fallback"
-        ],
-        "score": 78.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 78.0,
-      "youtube_brain": {
-        "animal": "plants",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "leaf",
-            "light",
-            "sugar",
-            "surface"
-          ],
-          "cue_terms": [
-            "leaf",
-            "light",
-            "sugar",
-            "surface"
-          ],
-          "frame_hook_bridge": [
-            "light",
-            "sugar"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "plants"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "body_superpower",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "plants",
-        "viewer_promise": "See the plant detail that changes the whole scene."
-      },
-      "packaging": {
-        "community_prompt": "Which plants clue should Wild Brief compare next in Biology Brief?",
-        "cta_prompt": "Want to see how plants quietly engineer survival?",
-        "curiosity_gap": {
-          "hook": "Why do these plants change after the light to sugar?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "body superpower",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 101,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 42.97,
-            "cta:specific_question": 40.56,
-            "format:winner_inspired": 43.45,
-            "hook:pattern_reuse": 43.45,
-            "thumbnail:new_thumbnail": 42.74
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "leaf",
-              "light",
-              "sugar",
-              "surface"
-            ],
-            "cue_terms": [
-              "leaf",
-              "light",
-              "sugar",
-              "surface"
-            ],
-            "frame_hook_bridge": [
-              "light",
-              "sugar"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "plants"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 3
-        },
-        "hook_options": [
-          "Plants use trap hairs to count touches before closing",
-          "Plants turn light into stored sugar",
-          "Plants show why the leaf surface matters.",
-          "Plants show why the leaf surface matters.",
-          "Plants show why the leaf surface matters."
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "light to sugar",
-          "ending_line": "By the last line, the opening detail has a job viewers can name.",
-          "final_line": "Now the light to sugar at the start makes sense.",
-          "loop_score": 1.0,
-          "opening_line": "Plants turn light into stored sugar.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "light to sugar",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 1.0,
-        "next_episode_question": "Tomorrow in Biology Brief: another nature signal. Do plants feel more passive, reactive, or strategic here?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "leaf",
-            "light",
-            "sugar",
-            "surface"
-          ],
-          "cue_terms": [
-            "leaf",
-            "light",
-            "sugar",
-            "surface"
-          ],
-          "frame_hook_bridge": [
-            "light",
-            "sugar"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "plants"
-        },
-        "pinned_comment": "Watch the leaf surface again. Tomorrow in Biology Brief: another nature signal. Do plants feel more passive, reactive, or strategic here?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.0,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 21,
-          "first_2s_narration": "Plants turn light into stored sugar Watch the leaf surface first because",
-          "first_frame_text": "LIGHT TO SUGAR",
-          "first_frame_text_words": 3,
-          "hook": "Plants turn light into stored sugar.",
-          "hook_specificity": 0.78,
-          "hook_words": 6,
-          "loop_score": 1.0,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "leaf",
-              "light",
-              "sugar",
-              "surface"
-            ],
-            "cue_terms": [
-              "leaf",
-              "light",
-              "sugar",
-              "surface"
-            ],
-            "frame_hook_bridge": [
-              "light",
-              "sugar"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "plants"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the leaf surface, so viewers rewatch the plants clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.335,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-          "reasons": [],
-          "score": 70,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 70,
-            "replay_score": 62,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Plants turn light into stored sugar Watch the leaf surface first because",
-          "first_frame_text": "LIGHT TO SUGAR",
-          "next_episode_question": "Tomorrow in Biology Brief: another nature signal. Do plants feel more passive, reactive, or strategic here?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains the visible leaf surface behind Plants in a fast nature science story.",
-            "series": "Biology Brief",
-            "subject": "plants",
-            "terms": [
-              "plants",
-              "leaf surface",
-              "body superpower"
-            ],
-            "title_variant": "Plants leaf surface explained fast",
-            "visible_cue": "leaf surface"
-          },
-          "series": "Biology Brief",
-          "subject": "plants",
-          "visible_cue": "leaf surface"
-        },
-        "risks": [],
-        "score": 95,
-        "search_intent": {
-          "description_line": "This Short explains the visible leaf surface behind Plants in a fast nature science story.",
-          "series": "Biology Brief",
-          "subject": "plants",
-          "terms": [
-            "plants",
-            "leaf surface",
-            "body superpower"
-          ],
-          "title_variant": "Plants leaf surface explained fast",
-          "visible_cue": "leaf surface"
-        },
-        "selected_variant": {
-          "hook": "Watch the trap hairs; it explains the behavior",
-          "score": 81,
-          "thumbnail_text": "TRAP HAIRS",
-          "title": "Plants use trap hairs to count touches before snapping shut"
-        },
-        "series": "Biology Brief #6",
-        "series_identity": {
-          "continuity_prompt": "Next in Biology Brief: compare this with another force of nature.",
-          "episode": 6,
-          "label": "Biology Brief #6",
-          "series": "Biology Brief"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.226,
-          "confidence": {
-            "bootstrap_multiplier": 0.472,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.296,
-            "data_quality": "estimated",
-            "data_quality_score": 0.587,
-            "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.30.",
-            "recommendation_strength": "observe",
-            "sample_size": 10
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.30.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.264,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 87,
-          "state": "strong",
-          "subscriber_probability": 0.124
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "TRAP HAIRS",
-          "WATCH TRAP HAIRS",
-          "PLANTS FLY",
-          "TRAP HAIRS MATTERS",
-          "TRAP HAIRS FIRST",
-          "TRAP HAIRS REVEAL",
-          "TRAP HAIRS CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Plants use trap hairs to count touches before snapping shut",
-          "Plants turn light into stored sugar",
-          "Plants use trap hairs before they fly",
-          "Why plants fly after one trap hairs",
-          "Plants reveal the answer with trap hairs",
-          "The trap hairs that changes the moment",
-          "Plants make one trap hairs matter",
-          "Plants show the hidden answer in seconds",
-          "Plants: watch this trap hairs"
-        ],
-        "top_variants": [
-          {
-            "hook": "Watch the trap hairs; it explains the behavior",
-            "score": 81,
-            "thumbnail_text": "TRAP HAIRS",
-            "title": "Plants use trap hairs to count touches before snapping shut"
-          },
-          {
-            "hook": "Plants use trap hairs to count touches before closing",
-            "score": 80,
-            "thumbnail_text": "TRAP HAIRS",
-            "title": "Plants use trap hairs to count touches before snapping shut"
-          },
-          {
-            "hook": "Plants turn light into stored sugar",
-            "score": 80,
-            "thumbnail_text": "TRAP HAIRS",
-            "title": "Plants use trap hairs to count touches before snapping shut"
-          },
-          {
-            "hook": "Watch the trap hairs; it explains the behavior",
-            "score": 74,
-            "thumbnail_text": "WATCH TRAP HAIRS",
-            "title": "Plants use trap hairs to count touches before snapping shut"
-          },
-          {
-            "hook": "Watch the trap hairs; it explains the behavior",
-            "score": 74,
-            "thumbnail_text": "PLANTS FLY",
-            "title": "Plants use trap hairs to count touches before snapping shut"
-          },
-          {
-            "hook": "Watch the trap hairs; it explains the behavior",
-            "score": 74,
-            "thumbnail_text": "TRAP HAIRS MATTERS",
-            "title": "Plants use trap hairs to count touches before snapping shut"
-          },
-          {
-            "hook": "Watch the trap hairs; it explains the behavior",
-            "score": 74,
-            "thumbnail_text": "TRAP HAIRS FIRST",
-            "title": "Plants use trap hairs to count touches before snapping shut"
-          },
-          {
-            "hook": "Plants use trap hairs to count touches before closing",
-            "score": 73,
-            "thumbnail_text": "WATCH TRAP HAIRS",
-            "title": "Plants use trap hairs to count touches before snapping shut"
-          },
-          {
-            "hook": "Plants turn light into stored sugar",
-            "score": 73,
-            "thumbnail_text": "WATCH TRAP HAIRS",
-            "title": "Plants use trap hairs to count touches before snapping shut"
-          },
-          {
-            "hook": "Plants use trap hairs to count touches before closing",
-            "score": 73,
-            "thumbnail_text": "PLANTS FLY",
-            "title": "Plants use trap hairs to count touches before snapping shut"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "0ef428432eac25bb",
       "title": "Leaves turn a forest into a cooler room",
       "category": "earth_from_space",
@@ -2477,7 +2468,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:43:57.462160+00:00",
+        "checked_at": "2026-06-30T06:48:52.724536+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -2949,6 +2940,649 @@
       }
     },
     {
+      "id": "152bf2d45eb729f2",
+      "title": "Forests use cool canopy before they cover",
+      "category": "forests",
+      "publish_score": {
+        "approved": true,
+        "category": "forests",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.372,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.163,
+          "data_quality": "observed",
+          "data_quality_score": 0.825,
+          "minimum_sample_size": 25,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.16.",
+          "recommendation_strength": "observe",
+          "sample_size": 9
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.163,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "air",
+            "cool"
+          ],
+          "cue_terms": [
+            "air",
+            "canop",
+            "cool"
+          ],
+          "frame_hook_bridge": [
+            "cool"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "forests"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 68,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 72,
+            "emotional_potential": 35,
+            "novelty": 59,
+            "replay_potential": 72,
+            "viral_potential": 82,
+            "visual_potential": 79
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 66
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "earth_engine",
+        "subscriber_conversion": {
+          "comment_probability": 0.207,
+          "confidence": {
+            "bootstrap_multiplier": 0.392,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.189,
+            "data_quality": "observed",
+            "data_quality_score": 0.825,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
+            "recommendation_strength": "observe",
+            "sample_size": 5
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.242,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-06-30T06:48:55.765452+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "inventory_reserve_fallback",
+          "inventory_reserve:duplicate_title"
+        ],
+        "score": 72.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 72.0,
+      "youtube_brain": {
+        "animal": "forests",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "air",
+            "cool"
+          ],
+          "cue_terms": [
+            "air",
+            "canop",
+            "cool"
+          ],
+          "frame_hook_bridge": [
+            "cool"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "forests"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "earth_engine",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "forests",
+        "viewer_promise": "See why this forest earth engine matters."
+      },
+      "packaging": {
+        "community_prompt": "Which forests clue should Wild Brief compare next in Hidden Network?",
+        "cta_prompt": "Want to see how forests quietly run the planet?",
+        "curiosity_gap": {
+          "hook": "Why do these forests change after the cool canopy?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "earth engine",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 101,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 42.97,
+            "cta:specific_question": 40.56,
+            "format:winner_inspired": 43.45,
+            "hook:pattern_reuse": 43.45,
+            "thumbnail:new_thumbnail": 42.74
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "air",
+              "cool"
+            ],
+            "cue_terms": [
+              "air",
+              "canop",
+              "cool"
+            ],
+            "frame_hook_bridge": [
+              "cool"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "forests"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Forests can cool the air below them",
+          "Forests show why the cool canopy matters.",
+          "Forests show why the cool canopy matters.",
+          "Forests show why the cool canopy matters.",
+          "Forests give away the answer through cool canopy"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "cool canopy",
+          "ending_line": "Which forest layer next?",
+          "final_line": "Now the cool canopy at the start makes sense.",
+          "loop_score": 0.836,
+          "opening_line": "Forests can cool the air below them.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "cool canopy",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.836,
+        "next_episode_question": "Tomorrow in Hidden Network: another nature signal. Do forests feel more like places, systems, or living machines?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "air",
+            "cool"
+          ],
+          "cue_terms": [
+            "air",
+            "canop",
+            "cool"
+          ],
+          "frame_hook_bridge": [
+            "cool"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "forests"
+        },
+        "pinned_comment": "Watch the cool canopy again. Tomorrow in Hidden Network: another nature signal. Do forests feel more like places, systems, or living machines?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.71,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 17,
+          "first_2s_narration": "Forests can cool the air below them Watch the shade and mist",
+          "first_frame_text": "COOL CANOPY",
+          "first_frame_text_words": 2,
+          "hook": "Forests can cool the air below them.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.836,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "air",
+              "cool"
+            ],
+            "cue_terms": [
+              "air",
+              "canop",
+              "cool"
+            ],
+            "frame_hook_bridge": [
+              "cool"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "forests"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the cool canopy, so viewers rewatch the forests clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 66
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Forests can cool the air below them Watch the shade and mist",
+          "first_frame_text": "COOL CANOPY",
+          "next_episode_question": "Tomorrow in Hidden Network: another nature signal. Do forests feel more like places, systems, or living machines?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains the visible cool canopy behind Forests in a fast nature science story.",
+            "series": "Hidden Network",
+            "subject": "forests",
+            "terms": [
+              "forests",
+              "cool canopy",
+              "earth engine"
+            ],
+            "title_variant": "Forests cool canopy explained fast",
+            "visible_cue": "cool canopy"
+          },
+          "series": "Hidden Network",
+          "subject": "forests",
+          "visible_cue": "cool canopy"
+        },
+        "risks": [],
+        "score": 96,
+        "search_intent": {
+          "description_line": "This Short explains the visible cool canopy behind Forests in a fast nature science story.",
+          "series": "Hidden Network",
+          "subject": "forests",
+          "terms": [
+            "forests",
+            "cool canopy",
+            "earth engine"
+          ],
+          "title_variant": "Forests cool canopy explained fast",
+          "visible_cue": "cool canopy"
+        },
+        "selected_variant": {
+          "hook": "Forests can cool the air below them",
+          "score": 80,
+          "thumbnail_text": "COOL CANOPY",
+          "title": "Forests make cooler air under the canopy"
+        },
+        "series": "Hidden Network #10",
+        "series_identity": {
+          "continuity_prompt": "Next in Hidden Network #10: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Hidden Network #10",
+          "series": "Hidden Network #10"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.207,
+          "confidence": {
+            "bootstrap_multiplier": 0.392,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.189,
+            "data_quality": "observed",
+            "data_quality_score": 0.825,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
+            "recommendation_strength": "observe",
+            "sample_size": 5
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.242,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "COOL CANOPY",
+          "WATCH COOL CANOPY",
+          "FORESTS COVER",
+          "COOL CANOPY MATTERS",
+          "COOL CANOPY FIRST",
+          "COOL CANOPY REVEAL",
+          "COOL CANOPY CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Forests make cooler air under the canopy",
+          "Forests can cool the air below them",
+          "Forests use cool canopy before they cover",
+          "This cool canopy gives forests away",
+          "Why forests cover after one cool canopy",
+          "Forests reveal the answer with cool canopy",
+          "The cool canopy that changes the moment",
+          "Forests make one cool canopy matter",
+          "Forests show the hidden answer in seconds",
+          "Forests: watch this cool canopy"
+        ],
+        "top_variants": [
+          {
+            "hook": "Forests can cool the air below them",
+            "score": 80,
+            "thumbnail_text": "COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Watch the cool canopy; it explains the behavior",
+            "score": 80,
+            "thumbnail_text": "COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Start with the cool canopy; it changes the scene",
+            "score": 80,
+            "thumbnail_text": "COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Forests can cool the air below them",
+            "score": 73,
+            "thumbnail_text": "WATCH COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Watch the cool canopy; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "WATCH COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Start with the cool canopy; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "WATCH COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Forests can cool the air below them",
+            "score": 73,
+            "thumbnail_text": "FORESTS COVER",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Watch the cool canopy; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "FORESTS COVER",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Start with the cool canopy; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "FORESTS COVER",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Forests can cool the air below them",
+            "score": 73,
+            "thumbnail_text": "COOL CANOPY MATTERS",
+            "title": "Forests make cooler air under the canopy"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "c85dc830f3c83f6f",
       "title": "Volcanoes build land from flowing lava",
       "category": "geology",
@@ -3122,7 +3756,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:43:57.465320+00:00",
+        "checked_at": "2026-06-30T06:48:52.727539+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -3769,7 +4403,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:43:57.442382+00:00",
+        "checked_at": "2026-06-30T06:48:50.531586+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -4431,7 +5065,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:43:57.444439+00:00",
+        "checked_at": "2026-06-30T06:48:50.533110+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -5079,7 +5713,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:43:57.457231+00:00",
+        "checked_at": "2026-06-30T06:48:51.190846+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -5726,7 +6360,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:43:57.467147+00:00",
+        "checked_at": "2026-06-30T06:48:52.736437+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -6376,7 +7010,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:43:57.469355+00:00",
+        "checked_at": "2026-06-30T06:48:52.738631+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -7016,7 +7650,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:43:57.471134+00:00",
+        "checked_at": "2026-06-30T06:48:52.740502+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -7658,7 +8292,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:43:57.473164+00:00",
+        "checked_at": "2026-06-30T06:48:52.742556+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -8314,7 +8948,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:43:57.475890+00:00",
+        "checked_at": "2026-06-30T06:48:52.745348+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -8978,7 +9612,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:43:57.477817+00:00",
+        "checked_at": "2026-06-30T06:48:52.747321+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -9632,7 +10266,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:43:57.480199+00:00",
+        "checked_at": "2026-06-30T06:48:55.630555+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10285,7 +10919,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:43:57.486043+00:00",
+        "checked_at": "2026-06-30T06:48:55.637883+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10938,7 +11572,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:43:57.488304+00:00",
+        "checked_at": "2026-06-30T06:48:55.705597+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11419,7 +12053,7 @@
       }
     },
     {
-      "id": "26ca036370f8ef51",
+      "id": "82f6c859562fd674",
       "title": "Storm clouds show air layers changing over time",
       "category": "earth_from_space",
       "publish_score": {
@@ -11460,24 +12094,24 @@
           "approved": true,
           "cue_bridge": [
             "air",
-            "cloud"
+            "cloud",
+            "storm"
           ],
           "cue_terms": [
             "air",
             "cloud",
-            "snap",
-            "thunder"
+            "engine",
+            "storm"
           ],
           "frame_hook_bridge": [
             "air",
             "layer"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -11485,7 +12119,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "lightning"
+          "subject": "clouds"
         },
         "opportunity": {
           "confidence": {
@@ -11501,15 +12135,15 @@
           },
           "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
           "reasons": [],
-          "score": 57,
+          "score": 56,
           "signals": {
             "comment_potential": 49,
             "educational_potential": 59,
-            "emotional_potential": 39,
-            "novelty": 50,
+            "emotional_potential": 30,
+            "novelty": 40,
             "replay_potential": 59,
-            "viral_potential": 48,
-            "visual_potential": 80
+            "viral_potential": 40,
+            "visual_potential": 90
           },
           "verdict": "rewrite"
         },
@@ -11531,13 +12165,13 @@
           },
           "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
           "reasons": [],
-          "score": 75,
+          "score": 77,
           "signals": {
             "completion_prediction": 77,
             "curiosity_score": 71,
             "hook_score": 82,
             "replay_score": 62,
-            "visual_score": 82
+            "visual_score": 90
           },
           "verdict": "rewrite"
         },
@@ -11596,7 +12230,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:43:57.460420+00:00",
+        "checked_at": "2026-06-30T06:48:52.288929+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -11614,24 +12248,24 @@
           "approved": true,
           "cue_bridge": [
             "air",
-            "cloud"
+            "cloud",
+            "storm"
           ],
           "cue_terms": [
             "air",
             "cloud",
-            "snap",
-            "thunder"
+            "engine",
+            "storm"
           ],
           "frame_hook_bridge": [
             "air",
             "layer"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -11639,7 +12273,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "lightning"
+          "subject": "clouds"
         },
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
@@ -11669,7 +12303,7 @@
         "community_prompt": "Which storm clue should Wild Brief compare next in Planet Earth?",
         "cta_prompt": "Want more planet-scale nature explained fast?",
         "curiosity_gap": {
-          "hook": "Why does this lightning changes after the thunder snap?",
+          "hook": "Why do these clouds change after the storm engine?",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -11715,24 +12349,24 @@
             "approved": true,
             "cue_bridge": [
               "air",
-              "cloud"
+              "cloud",
+              "storm"
             ],
             "cue_terms": [
               "air",
               "cloud",
-              "snap",
-              "thunder"
+              "engine",
+              "storm"
             ],
             "frame_hook_bridge": [
               "air",
               "layer"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
+            "risks": [],
+            "score": 100.0,
             "state": "retention_ready",
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -11740,7 +12374,7 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "lightning"
+            "subject": "clouds"
           },
           "safe_area": {
             "aspect": "4:5",
@@ -11780,24 +12414,24 @@
           "approved": true,
           "cue_bridge": [
             "air",
-            "cloud"
+            "cloud",
+            "storm"
           ],
           "cue_terms": [
             "air",
             "cloud",
-            "snap",
-            "thunder"
+            "engine",
+            "storm"
           ],
           "frame_hook_bridge": [
             "air",
             "layer"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -11805,7 +12439,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "lightning"
+          "subject": "clouds"
         },
         "pinned_comment": "Watch the cloud deck again. Tomorrow in Planet Earth: another nature signal. Which planet-scale clue should we compare next?",
         "preflight_inputs": {
@@ -11825,24 +12459,24 @@
             "approved": true,
             "cue_bridge": [
               "air",
-              "cloud"
+              "cloud",
+              "storm"
             ],
             "cue_terms": [
               "air",
               "cloud",
-              "snap",
-              "thunder"
+              "engine",
+              "storm"
             ],
             "frame_hook_bridge": [
               "air",
               "layer"
             ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
+            "risks": [],
+            "score": 100.0,
             "state": "retention_ready",
             "strengths": [
+              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -11850,9 +12484,9 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "lightning"
+            "subject": "clouds"
           },
-          "opening_retention_score": 92.0,
+          "opening_retention_score": 100.0,
           "payoff_reveal_sentence_index": 0,
           "payoff_score": 75,
           "payoff_time_s": 0,
@@ -11874,13 +12508,13 @@
           },
           "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
           "reasons": [],
-          "score": 75,
+          "score": 77,
           "signals": {
             "completion_prediction": 77,
             "curiosity_score": 71,
             "hook_score": 82,
             "replay_score": 62,
-            "visual_score": 82
+            "visual_score": 90
           },
           "verdict": "rewrite"
         },
@@ -11888,7 +12522,7 @@
           "first_2s_narration": "Storm clouds show air layers changing over time Watch the cloud deck",
           "first_frame_text": "AIR LAYERS",
           "next_episode_question": "Tomorrow in Planet Earth: another nature signal. Which planet-scale clue should we compare next?",
-          "opening_retention_score": 92.0,
+          "opening_retention_score": 100.0,
           "opening_retention_state": "retention_ready",
           "search_intent": {
             "description_line": "This Short explains the visible cloud deck behind Storm in a fast nature science story.",
@@ -12048,6 +12682,12 @@
             "title": "Storm clouds show air layers changing over time"
           },
           {
+            "hook": "Storm clouds show air layers changing over time",
+            "score": 72,
+            "thumbnail_text": "STORM CLOUDS CHANGE",
+            "title": "Storm clouds show air layers changing over time"
+          },
+          {
             "hook": "Watch the cloud deck; it explains the behavior",
             "score": 72,
             "thumbnail_text": "STORM CLOUDS CHANGE",
@@ -12057,12 +12697,6 @@
             "hook": "Start with the cloud deck; it changes the scene",
             "score": 72,
             "thumbnail_text": "STORM CLOUDS CHANGE",
-            "title": "Storm clouds show air layers changing over time"
-          },
-          {
-            "hook": "Watch the cloud deck; it explains the behavior",
-            "score": 72,
-            "thumbnail_text": "CLOUD DECK MATTERS",
             "title": "Storm clouds show air layers changing over time"
           }
         ]
@@ -12252,7 +12886,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T06:43:57.452000+00:00",
+        "checked_at": "2026-06-30T06:48:50.534230+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
