@@ -44,6 +44,7 @@ jobs:
       MUSIC_BED_ENABLED: ${{ vars.MUSIC_BED_ENABLED || '0' }}
       BROLL_SOURCE_MODE: ${{ vars.BROLL_SOURCE_MODE || 'pexels' }}
       PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
+      PEXELS_MIN_INTERVAL_S: ${{ vars.PEXELS_MIN_INTERVAL_S || '1.0' }}
       # Open immediately on the animal and hook in the Shorts feed.
       BRAND_CARDS_ENABLED: "0"
       # Monetization-first mode: skip a candidate instead of shipping a
@@ -194,6 +195,7 @@ jobs:
           PYTHONUNBUFFERED: "1"
           BROLL_SOURCE_MODE: "pexels"
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
+          PEXELS_MIN_INTERVAL_S: ${{ vars.PEXELS_MIN_INTERVAL_S || '1.0' }}
           QUEUE_TARGET_PUBLISH_READY: ${{ vars.PUBLISH_BACKFILL_READY_TARGET || '6' }}
           QUEUE_MIN_READY_TO_PUBLISH: ${{ vars.PUBLISH_MIN_READY_TO_PUBLISH || '1' }}
           QUEUE_TARGET_PENDING: ${{ vars.PUBLISH_BACKFILL_QUEUE_TARGET || '18' }}

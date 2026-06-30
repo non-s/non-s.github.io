@@ -227,7 +227,20 @@ def _frontload_package(package: dict) -> dict:
     tail = _because_tail(str(out.get("script") or ""))
     if not tail:
         tail = "that visible cue makes the payoff clear before the viewer swipes"
-    script = f"{hook} Watch the {cue} first, because {tail}."
+    # tail is everything after "because" in the source script, which can
+    # itself end in its own sentence-ending punctuation (often a closing
+    # question, e.g. "...Would you spot that?"). _because_tail only strips
+    # trailing spaces/periods, so blindly appending "." below used to
+    # produce "...Would you spot that?." — reuse tail's own terminator
+    # instead of always forcing a period.
+    tail = tail.rstrip(" ")
+    terminator = "." if not tail or tail[-1] not in ".!?" else ""
+    # The cue already opens the hook sentence above — score_retention_opening
+    # only checks that a cue term appears in the first words, not that it
+    # repeats. Echoing "Watch the {cue} first" again here just produced
+    # stuttery scripts like "Whales reveal the ocean song first. Watch the
+    # ocean song first, because ...". Point forward instead.
+    script = f"{hook} Watch closely, because {tail}{terminator}"
     script = re.sub(r"\s+", " ", script).strip()
     out["hook"] = hook
     out["script"] = script
