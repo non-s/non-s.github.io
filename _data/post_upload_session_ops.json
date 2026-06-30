@@ -2,18 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 8,
-      "high": 1,
-      "manual_review": 2,
+      "automation_safe": 7,
+      "high": 2,
+      "manual_review": 3,
       "total": 10,
       "urgent": 8
     },
     "free_only": true,
-    "generated_at": "2026-06-30T19:27:41.936849+00:00",
+    "generated_at": "2026-06-30T20:14:50.165358+00:00",
     "items": [
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 24.239,
+        "age_hours": 25.024,
         "automation_safe": false,
         "category": "farm",
         "checkpoint_label": "1h",
@@ -39,12 +39,12 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 23.188,
+        "age_hours": 23.974,
         "automation_safe": true,
         "category": "trees",
         "checkpoint_label": "1h",
         "checkpoint_state": "overdue",
-        "current_views": 0,
+        "current_views": 3,
         "due_at": "2026-06-29T21:16:25.095397+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 22.331,
+        "age_hours": 23.116,
         "automation_safe": true,
         "category": "nocturnal",
         "checkpoint_label": "1h",
@@ -91,7 +91,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 21.056,
+        "age_hours": 21.841,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "1h",
@@ -117,7 +117,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 20.239,
+        "age_hours": 21.025,
         "automation_safe": true,
         "category": "weather",
         "checkpoint_label": "1h",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 17.926,
+        "age_hours": 18.711,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -169,7 +169,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 15.064,
+        "age_hours": 15.85,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 13.375,
+        "age_hours": 14.161,
         "automation_safe": true,
         "category": "forests",
         "checkpoint_label": "1h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 6.663,
+        "age_hours": 7.449,
         "automation_safe": false,
         "category": "forests",
         "checkpoint_label": "24h",
@@ -246,34 +246,34 @@
         "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
-        "action_type": "watch_next_checkpoint",
-        "age_hours": 5.902,
-        "automation_safe": true,
+        "action_type": "prepare_package_rescue",
+        "age_hours": 6.688,
+        "automation_safe": false,
         "category": "forests",
-        "checkpoint_label": "6h",
+        "checkpoint_label": "24h",
         "checkpoint_state": "pending",
         "current_views": 0,
-        "due_at": "2026-06-30T19:33:35.030304+00:00",
+        "due_at": "2026-07-01T13:33:35.030304+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:ppveQUNAejY:watch:6h",
-        "lane": "observe",
-        "manual_approval_required": false,
+        "id": "fresh-upload:ppveQUNAejY:repair_candidate:24h",
+        "lane": "package_rescue",
+        "manual_approval_required": true,
         "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Keep observing through the next checkpoint.",
+        "priority": "high",
+        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
         "series": "Hidden Network",
-        "state": "watch",
-        "target_views": 105,
+        "state": "repair_candidate",
+        "target_views": 300,
         "title": "Hidden network make cooler air under the canopy",
         "url": "https://www.youtube.com/shorts/ppveQUNAejY",
         "video_id": "ppveQUNAejY",
-        "wait_until": "2026-06-30T19:33:35.030304+00:00",
-        "why": "No intervention signal is strong enough yet."
+        "wait_until": "",
+        "why": "Observed velocity is weak enough to prepare a package intervention."
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-06-30T19:27:41.935235+00:00"
+    "source_generated_at": "2026-06-30T20:14:50.163654+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -284,15 +284,15 @@
     "counts": {
       "analytics_due": 7,
       "awaiting_1h": 0,
-      "high_priority": 9,
-      "repair_candidates": 2,
+      "high_priority": 10,
+      "repair_candidates": 3,
       "tracked": 10
     },
-    "generated_at": "2026-06-30T19:27:41.935235+00:00",
+    "generated_at": "2026-06-30T20:14:50.163654+00:00",
     "items": [
       {
-        "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.902,
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "age_hours": 6.688,
         "category": "forests",
         "checkpoints": [
           {
@@ -305,11 +305,11 @@
             "views": 0
           },
           {
-            "delta_to_target": 0,
+            "delta_to_target": -105,
             "due_at": "2026-06-30T19:33:35.030304+00:00",
             "label": "6h",
-            "source": "estimated",
-            "state": "pending",
+            "source": "observed",
+            "state": "observed",
             "target_views": 105,
             "views": 0
           },
@@ -324,30 +324,41 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "No intervention signal is strong enough yet.",
+        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
         "next_checkpoint": {
           "delta_to_target": 0,
-          "due_at": "2026-06-30T19:33:35.030304+00:00",
-          "label": "6h",
+          "due_at": "2026-07-01T13:33:35.030304+00:00",
+          "label": "24h",
           "source": "estimated",
           "state": "pending",
-          "target_views": 105,
+          "target_views": 300,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Hidden Network",
-        "state": "watch",
+        "state": "repair_candidate",
         "title": "Hidden network make cooler air under the canopy",
         "uploaded_at": "2026-06-30T13:33:35.030304+00:00",
         "url": "https://www.youtube.com/shorts/ppveQUNAejY",
         "video_id": "ppveQUNAejY",
-        "views_per_hour": 0.0
+        "views_per_hour": 0.0,
+        "warning": {
+          "action": "TITLE_AUTO_REPAIR_TRIGGER",
+          "confidence_score": 0.594,
+          "reason": "low early velocity",
+          "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+          "title": "Hidden network make cooler air under the canopy",
+          "video_id": "ppveQUNAejY",
+          "views": 0,
+          "warning_state": "repair_risk"
+        }
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 6.663,
+        "age_hours": 7.449,
         "category": "forests",
         "checkpoints": [
           {
@@ -413,7 +424,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 13.375,
+        "age_hours": 14.161,
         "category": "forests",
         "checkpoints": [
           {
@@ -468,7 +479,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 15.064,
+        "age_hours": 15.85,
         "category": "insects",
         "checkpoints": [
           {
@@ -523,7 +534,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 17.926,
+        "age_hours": 18.711,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -578,7 +589,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 20.239,
+        "age_hours": 21.025,
         "category": "weather",
         "checkpoints": [
           {
@@ -633,7 +644,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 21.056,
+        "age_hours": 21.841,
         "category": "geology",
         "checkpoints": [
           {
@@ -688,7 +699,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 22.331,
+        "age_hours": 23.116,
         "category": "nocturnal",
         "checkpoints": [
           {
@@ -743,7 +754,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 23.188,
+        "age_hours": 23.974,
         "category": "trees",
         "checkpoints": [
           {
@@ -771,10 +782,10 @@
             "source": "estimated",
             "state": "pending",
             "target_views": 300,
-            "views": 0
+            "views": 3
           }
         ],
-        "current_views": 0,
+        "current_views": 3,
         "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
           "delta_to_target": -24,
@@ -794,11 +805,11 @@
         "uploaded_at": "2026-06-29T20:16:25.095397+00:00",
         "url": "https://www.youtube.com/shorts/OXyJCq6HgMo",
         "video_id": "OXyJCq6HgMo",
-        "views_per_hour": 0.0
+        "views_per_hour": 0.125
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 24.239,
+        "age_hours": 25.024,
         "category": "farm",
         "checkpoints": [
           {
@@ -870,7 +881,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-06-30T19:27:41.936943+00:00",
+  "generated_at": "2026-06-30T20:14:50.165470+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
