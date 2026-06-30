@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-06-30T01:53:18.707314+00:00",
+  "generated_at": "2026-06-30T01:56:44.038163+00:00",
   "pending": 20,
   "states": {
-    "rewrite": 17,
-    "publish_ready": 3
+    "rewrite": 16,
+    "publish_ready": 4
   },
   "mechanism_clusters": {
     "call_signal": 1,
@@ -13,19 +13,23 @@
     "approved": 20
   },
   "prune_summary": {
-    "pending_before": 20,
+    "pending_before": 32,
     "pending_after": 20,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 3,
+    "rejected": 12,
+    "repair_needed": 5,
+    "repaired": 6,
     "reasons": {
-      "editor_in_chief:subject repeated inside 3-day cooldown": 16,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 15,
       "objective_gate:observe_before_scaling": 13,
+      "duplicate_title": 7,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 7,
+      "queue_score_reject": 5,
       "objective_gate:bootstrap_observe_before_scaling": 4,
       "editor_in_chief:script quality gate blocked the narration": 3,
       "editor_in_chief:editorial score 49 is below 62": 2,
       "editor_in_chief:editorial score 42 is below 62": 2,
+      "duplicate_script": 1,
+      "duplicate_angle": 1,
       "editor_in_chief:editorial score 47 is below 62": 1,
       "editor_in_chief:editorial score 44 is below 62": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
@@ -36,6 +40,104 @@
     }
   },
   "rejected_preview": [
+    {
+      "id": "320f977969bb88c0",
+      "title": "Forests can cool the air below them",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "b1e55cd5db97ec12",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "a113553b8210a4ce",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "966b257982e49edc",
+      "title": "Dragonflies lock onto prey in midair",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "52af7598fe27ac52",
+      "title": "Deer can aim each ear toward danger",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "e278bd4744f417ef",
+      "title": "Sheep recognize faces across the flock",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "2566654ef114877c",
+      "title": "Sheep recognize faces across the flock",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "cd2723fe81c83046",
+      "title": "Dogs read human pointing surprisingly well",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "0aec8b47199784a1",
+      "title": "Plants turn light into stored sugar",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "592b21cc4ec4f0cc",
+      "title": "Dogs read human pointing surprisingly well",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "5512b6d44d5dc60b",
+      "title": "Forests make cooler air under the canopy",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "e90ef362caff023d",
+      "title": "Forests make cooler air under the canopy",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "eb636ff95d55d7b4",
       "title": "Beetles can steer by the Milky Way",
@@ -182,109 +284,6 @@
         "duplicate_title"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "51ba16ef72a6b6b0",
-      "title": "Plants use trap hairs to count touches before snapping shut",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "b405880cbe5f73f9",
-      "title": "Plants use trap hairs to count touches before snapping shut",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "8e117de73d6c0e86",
-      "title": "Plants turn light into stored sugar",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "3eac941b68fb0505",
-      "title": "Forests make cooler air under the canopy",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "cd2a065f74da0223",
-      "title": "Forests make cooler air under the canopy",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "f1a9300f2f60217c",
-      "title": "Mushrooms trade nutrients through underground threads",
-      "reasons": [
-        "opening_retention_gap_risk",
-        "opening promise is not concrete enough",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "2077c0fe9944de12",
-      "title": "Crystals reveal order while they grow",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "Deer Ciervos apuntan sus orejas como radar",
-      "title": "Deer Ciervos apuntan sus orejas como radar",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "payoff_not_explicit",
-        "opening_retention_gap_risk"
-      ],
-      "stage": "youtube_brain"
-    },
-    {
-      "id": "Ants This scent road gives ants away",
-      "title": "Ants This scent road gives ants away",
-      "reasons": [
-        "stitched_category_title",
-        "stitched_repeated_animal_title"
-      ],
-      "stage": "editorial_guard"
-    },
-    {
-      "id": "969dd963aca75fd5",
-      "title": "Cats groom to reset their scent map",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
-    },
-    {
-      "id": "ba7b09e14a4a1ca7",
-      "title": "Ocean animals make the ink cloud matter first",
-      "reasons": [
-        "copy_subject_mismatch",
-        "script_word_loop"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "a4ca94af1a59d5df",
-      "title": "Owls can make a hunt almost silent",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
     }
   ],
   "top": [
@@ -463,7 +462,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-30T01:52:56.979569+00:00",
+        "checked_at": "2026-06-30T01:56:22.421049+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -934,6 +933,660 @@
       }
     },
     {
+      "id": "71f0862ff46743a1",
+      "title": "Forests trap cool air below thick leaves",
+      "category": "forests",
+      "publish_score": {
+        "approved": true,
+        "category": "forests",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.392,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.189,
+          "data_quality": "observed",
+          "data_quality_score": 0.825,
+          "minimum_sample_size": 25,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.19.",
+          "recommendation_strength": "observe",
+          "sample_size": 17
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.189,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "air",
+            "cool",
+            "leave"
+          ],
+          "cue_terms": [
+            "air",
+            "canop",
+            "cool",
+            "leave"
+          ],
+          "frame_hook_bridge": [
+            "cool"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "forests"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 68,
+          "signals": {
+            "comment_potential": 38,
+            "educational_potential": 72,
+            "emotional_potential": 35,
+            "novelty": 69,
+            "replay_potential": 72,
+            "viral_potential": 77,
+            "visual_potential": 89
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 74,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 74
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.186,
+          "confidence": {
+            "bootstrap_multiplier": 0.411,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.215,
+            "data_quality": "observed",
+            "data_quality_score": 0.825,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.21.",
+            "recommendation_strength": "observe",
+            "sample_size": 9
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.21.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.217,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 70,
+          "state": "usable",
+          "subscriber_probability": 0.1
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [
+            "repetitive_script"
+          ],
+          "risk": 22,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-06-30T01:56:22.423081+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:observe_before_scaling"
+        ],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "forests",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "air",
+            "cool",
+            "leave"
+          ],
+          "cue_terms": [
+            "air",
+            "canop",
+            "cool",
+            "leave"
+          ],
+          "frame_hook_bridge": [
+            "cool"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "forests"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "forests",
+        "viewer_promise": "See the forest detail that changes the whole scene."
+      },
+      "packaging": {
+        "community_prompt": "Which forests clue should Wild Brief compare next in Hidden Network?",
+        "cta_prompt": "Want to see how forests quietly run the planet?",
+        "curiosity_gap": {
+          "hook": "Why do these forests change after the cool canopy?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 99,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 42.97,
+            "cta:specific_question": 40.56,
+            "format:winner_inspired": 43.45,
+            "hook:pattern_reuse": 43.45,
+            "thumbnail:new_thumbnail": 42.74
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "air",
+              "cool",
+              "leave"
+            ],
+            "cue_terms": [
+              "air",
+              "canop",
+              "cool",
+              "leave"
+            ],
+            "frame_hook_bridge": [
+              "cool"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "forests"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Forests can cool the air below them",
+          "Forests trap cool air below thick leaves",
+          "Forests show why the cool canopy matters.",
+          "Forests show why the cool canopy matters.",
+          "Forests show why the cool canopy matters."
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "cool canopy",
+          "ending_line": "By the last line, the opening detail has a job viewers can name.",
+          "final_line": "Now the cool canopy at the start makes sense.",
+          "loop_score": 0.764,
+          "opening_line": "Forests trap cool air below thick leaves.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "cool canopy",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.764,
+        "next_episode_question": "Tomorrow in Hidden Network: another nature signal. Do forests feel more like places, systems, or living machines?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "air",
+            "cool",
+            "leave"
+          ],
+          "cue_terms": [
+            "air",
+            "canop",
+            "cool",
+            "leave"
+          ],
+          "frame_hook_bridge": [
+            "cool"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "forests"
+        },
+        "pinned_comment": "Watch the cool canopy again. Tomorrow in Hidden Network: another nature signal. Do forests feel more like places, systems, or living machines?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.0,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 23,
+          "first_2s_narration": "Forests trap cool air below thick leaves Watch the shadow line first",
+          "first_frame_text": "COOL CANOPY",
+          "first_frame_text_words": 2,
+          "hook": "Forests trap cool air below thick leaves.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.764,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "air",
+              "cool",
+              "leave"
+            ],
+            "cue_terms": [
+              "air",
+              "canop",
+              "cool",
+              "leave"
+            ],
+            "frame_hook_bridge": [
+              "cool"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "forests"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the cool canopy, so viewers rewatch the forests clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 74,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 74
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Forests trap cool air below thick leaves Watch the shadow line first",
+          "first_frame_text": "COOL CANOPY",
+          "next_episode_question": "Tomorrow in Hidden Network: another nature signal. Do forests feel more like places, systems, or living machines?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains the visible cool canopy behind Forests in a fast nature science story.",
+            "series": "Hidden Network",
+            "subject": "forests",
+            "terms": [
+              "forests",
+              "cool canopy",
+              "body superpower"
+            ],
+            "title_variant": "Forests cool canopy explained fast",
+            "visible_cue": "cool canopy"
+          },
+          "series": "Hidden Network",
+          "subject": "forests",
+          "visible_cue": "cool canopy"
+        },
+        "risks": [],
+        "score": 96,
+        "search_intent": {
+          "description_line": "This Short explains the visible cool canopy behind Forests in a fast nature science story.",
+          "series": "Hidden Network",
+          "subject": "forests",
+          "terms": [
+            "forests",
+            "cool canopy",
+            "body superpower"
+          ],
+          "title_variant": "Forests cool canopy explained fast",
+          "visible_cue": "cool canopy"
+        },
+        "selected_variant": {
+          "hook": "Forests can cool the air below them",
+          "score": 80,
+          "thumbnail_text": "COOL CANOPY",
+          "title": "Forests make cooler air under the canopy"
+        },
+        "series": "Hidden Network #9",
+        "series_identity": {
+          "continuity_prompt": "Next in Hidden Network: compare this with another force of nature.",
+          "episode": 9,
+          "label": "Hidden Network #9",
+          "series": "Hidden Network"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.186,
+          "confidence": {
+            "bootstrap_multiplier": 0.411,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.215,
+            "data_quality": "observed",
+            "data_quality_score": 0.825,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.21.",
+            "recommendation_strength": "observe",
+            "sample_size": 9
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.21.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.217,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 70,
+          "state": "usable",
+          "subscriber_probability": 0.1
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "COOL CANOPY",
+          "WATCH COOL CANOPY",
+          "FORESTS LEAVES",
+          "COOL CANOPY MATTERS",
+          "COOL CANOPY FIRST",
+          "COOL CANOPY REVEAL",
+          "COOL CANOPY CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Forests make cooler air under the canopy",
+          "Forests trap cool air below thick leaves",
+          "Forests use cool canopy before they leaves",
+          "This cool canopy gives forests away",
+          "Why forests leaves after one cool canopy",
+          "Forests reveal the answer with cool canopy",
+          "The cool canopy that changes the moment",
+          "Forests make one cool canopy matter",
+          "Forests show the hidden answer in seconds",
+          "Forests: watch this cool canopy"
+        ],
+        "top_variants": [
+          {
+            "hook": "Forests can cool the air below them",
+            "score": 80,
+            "thumbnail_text": "COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Forests trap cool air below thick leaves",
+            "score": 80,
+            "thumbnail_text": "COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Watch the cool canopy; it explains the behavior",
+            "score": 80,
+            "thumbnail_text": "COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Forests can cool the air below them",
+            "score": 73,
+            "thumbnail_text": "WATCH COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Forests trap cool air below thick leaves",
+            "score": 73,
+            "thumbnail_text": "WATCH COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Watch the cool canopy; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "WATCH COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Forests can cool the air below them",
+            "score": 73,
+            "thumbnail_text": "FORESTS LEAVES",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Forests trap cool air below thick leaves",
+            "score": 73,
+            "thumbnail_text": "FORESTS LEAVES",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Watch the cool canopy; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "FORESTS LEAVES",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Forests can cool the air below them",
+            "score": 73,
+            "thumbnail_text": "COOL CANOPY MATTERS",
+            "title": "Forests make cooler air under the canopy"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "18f566b37db1413b",
       "title": "Cells copy instructions before splitting",
       "category": "microscopy",
@@ -1112,7 +1765,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T01:52:56.987242+00:00",
+        "checked_at": "2026-06-30T01:56:22.749376+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1789,7 +2442,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-30T01:52:56.953709+00:00",
+        "checked_at": "2026-06-30T01:56:21.626127+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -2446,7 +3099,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-06-30T01:52:56.962053+00:00",
+        "checked_at": "2026-06-30T01:56:21.632863+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -3091,7 +3744,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T01:52:56.965121+00:00",
+        "checked_at": "2026-06-30T01:56:21.635801+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -3738,7 +4391,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T01:52:56.949599+00:00",
+        "checked_at": "2026-06-30T01:56:20.990236+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -4400,7 +5053,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T01:52:56.951563+00:00",
+        "checked_at": "2026-06-30T01:56:20.991763+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -5048,7 +5701,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T01:52:56.957238+00:00",
+        "checked_at": "2026-06-30T01:56:21.628513+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -5695,7 +6348,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T01:52:56.967039+00:00",
+        "checked_at": "2026-06-30T01:56:21.643239+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -6345,7 +6998,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T01:52:56.969433+00:00",
+        "checked_at": "2026-06-30T01:56:21.645278+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -6985,7 +7638,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T01:52:56.971149+00:00",
+        "checked_at": "2026-06-30T01:56:21.646970+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -7627,7 +8280,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T01:52:56.973231+00:00",
+        "checked_at": "2026-06-30T01:56:21.648918+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -8283,7 +8936,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T01:52:56.975892+00:00",
+        "checked_at": "2026-06-30T01:56:21.651496+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -8947,7 +9600,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T01:52:56.977727+00:00",
+        "checked_at": "2026-06-30T01:56:21.654848+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -9426,661 +10079,6 @@
       }
     },
     {
-      "id": "5512b6d44d5dc60b",
-      "title": "Forests trap cool air below thick leaves",
-      "category": "forests",
-      "publish_score": {
-        "approved": true,
-        "category": "forests",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.392,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.189,
-          "data_quality": "observed",
-          "data_quality_score": 0.825,
-          "minimum_sample_size": 25,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.19.",
-          "recommendation_strength": "observe",
-          "sample_size": 17
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.189,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "air",
-            "cool",
-            "leave"
-          ],
-          "cue_terms": [
-            "air",
-            "canop",
-            "cool",
-            "leave"
-          ],
-          "frame_hook_bridge": [
-            "cool"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "forests"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 68,
-          "signals": {
-            "comment_potential": 38,
-            "educational_potential": 72,
-            "emotional_potential": 35,
-            "novelty": 69,
-            "replay_potential": 72,
-            "viral_potential": 77,
-            "visual_potential": 89
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 74
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "body_superpower",
-        "subscriber_conversion": {
-          "comment_probability": 0.186,
-          "confidence": {
-            "bootstrap_multiplier": 0.411,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.215,
-            "data_quality": "observed",
-            "data_quality_score": 0.825,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.21.",
-            "recommendation_strength": "observe",
-            "sample_size": 9
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.21.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.217,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 70,
-          "state": "usable",
-          "subscriber_probability": 0.1
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [
-            "repetitive_script"
-          ],
-          "risk": 22,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-06-30T01:52:56.981640+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:observe_before_scaling",
-          "editor_in_chief:subject repeated inside 3-day cooldown"
-        ],
-        "score": 64.0,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 64.0,
-      "youtube_brain": {
-        "animal": "forests",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "air",
-            "cool",
-            "leave"
-          ],
-          "cue_terms": [
-            "air",
-            "canop",
-            "cool",
-            "leave"
-          ],
-          "frame_hook_bridge": [
-            "cool"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "forests"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "body_superpower",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "forests",
-        "viewer_promise": "See the forest detail that changes the whole scene."
-      },
-      "packaging": {
-        "community_prompt": "Which forests clue should Wild Brief compare next in Hidden Network?",
-        "cta_prompt": "Want to see how forests quietly run the planet?",
-        "curiosity_gap": {
-          "hook": "Why do these forests change after the cool canopy?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "body superpower",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 99,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 42.97,
-            "cta:specific_question": 40.56,
-            "format:winner_inspired": 43.45,
-            "hook:pattern_reuse": 43.45,
-            "thumbnail:new_thumbnail": 42.74
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "air",
-              "cool",
-              "leave"
-            ],
-            "cue_terms": [
-              "air",
-              "canop",
-              "cool",
-              "leave"
-            ],
-            "frame_hook_bridge": [
-              "cool"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "forests"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Forests can cool the air below them",
-          "Forests trap cool air below thick leaves",
-          "Forests show why the cool canopy matters.",
-          "Forests show why the cool canopy matters.",
-          "Forests show why the cool canopy matters."
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "cool canopy",
-          "ending_line": "By the last line, the opening detail has a job viewers can name.",
-          "final_line": "Now the cool canopy at the start makes sense.",
-          "loop_score": 0.764,
-          "opening_line": "Forests trap cool air below thick leaves.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "cool canopy",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.764,
-        "next_episode_question": "Tomorrow in Hidden Network: another nature signal. Do forests feel more like places, systems, or living machines?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "air",
-            "cool",
-            "leave"
-          ],
-          "cue_terms": [
-            "air",
-            "canop",
-            "cool",
-            "leave"
-          ],
-          "frame_hook_bridge": [
-            "cool"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "forests"
-        },
-        "pinned_comment": "Watch the cool canopy again. Tomorrow in Hidden Network: another nature signal. Do forests feel more like places, systems, or living machines?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.22,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 23,
-          "first_2s_narration": "Forests trap cool air below thick leaves Watch the shadow line first",
-          "first_frame_text": "COOL CANOPY",
-          "first_frame_text_words": 2,
-          "hook": "Forests trap cool air below thick leaves.",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.764,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "air",
-              "cool",
-              "leave"
-            ],
-            "cue_terms": [
-              "air",
-              "canop",
-              "cool",
-              "leave"
-            ],
-            "frame_hook_bridge": [
-              "cool"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "forests"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the cool canopy, so viewers rewatch the forests clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 74
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Forests trap cool air below thick leaves Watch the shadow line first",
-          "first_frame_text": "COOL CANOPY",
-          "next_episode_question": "Tomorrow in Hidden Network: another nature signal. Do forests feel more like places, systems, or living machines?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains the visible cool canopy behind Forests in a fast nature science story.",
-            "series": "Hidden Network",
-            "subject": "forests",
-            "terms": [
-              "forests",
-              "cool canopy",
-              "body superpower"
-            ],
-            "title_variant": "Forests cool canopy explained fast",
-            "visible_cue": "cool canopy"
-          },
-          "series": "Hidden Network",
-          "subject": "forests",
-          "visible_cue": "cool canopy"
-        },
-        "risks": [],
-        "score": 96,
-        "search_intent": {
-          "description_line": "This Short explains the visible cool canopy behind Forests in a fast nature science story.",
-          "series": "Hidden Network",
-          "subject": "forests",
-          "terms": [
-            "forests",
-            "cool canopy",
-            "body superpower"
-          ],
-          "title_variant": "Forests cool canopy explained fast",
-          "visible_cue": "cool canopy"
-        },
-        "selected_variant": {
-          "hook": "Forests can cool the air below them",
-          "score": 80,
-          "thumbnail_text": "COOL CANOPY",
-          "title": "Forests make cooler air under the canopy"
-        },
-        "series": "Hidden Network #9",
-        "series_identity": {
-          "continuity_prompt": "Next in Hidden Network: compare this with another force of nature.",
-          "episode": 9,
-          "label": "Hidden Network #9",
-          "series": "Hidden Network"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.186,
-          "confidence": {
-            "bootstrap_multiplier": 0.411,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.215,
-            "data_quality": "observed",
-            "data_quality_score": 0.825,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.21.",
-            "recommendation_strength": "observe",
-            "sample_size": 9
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.21.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.217,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 70,
-          "state": "usable",
-          "subscriber_probability": 0.1
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "COOL CANOPY",
-          "WATCH COOL CANOPY",
-          "FORESTS LEAVES",
-          "COOL CANOPY MATTERS",
-          "COOL CANOPY FIRST",
-          "COOL CANOPY REVEAL",
-          "COOL CANOPY CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Forests make cooler air under the canopy",
-          "Forests trap cool air below thick leaves",
-          "Forests use cool canopy before they leaves",
-          "This cool canopy gives forests away",
-          "Why forests leaves after one cool canopy",
-          "Forests reveal the answer with cool canopy",
-          "The cool canopy that changes the moment",
-          "Forests make one cool canopy matter",
-          "Forests show the hidden answer in seconds",
-          "Forests: watch this cool canopy"
-        ],
-        "top_variants": [
-          {
-            "hook": "Forests can cool the air below them",
-            "score": 80,
-            "thumbnail_text": "COOL CANOPY",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Forests trap cool air below thick leaves",
-            "score": 80,
-            "thumbnail_text": "COOL CANOPY",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Watch the cool canopy; it explains the behavior",
-            "score": 80,
-            "thumbnail_text": "COOL CANOPY",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Forests can cool the air below them",
-            "score": 73,
-            "thumbnail_text": "WATCH COOL CANOPY",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Forests trap cool air below thick leaves",
-            "score": 73,
-            "thumbnail_text": "WATCH COOL CANOPY",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Watch the cool canopy; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "WATCH COOL CANOPY",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Forests can cool the air below them",
-            "score": 73,
-            "thumbnail_text": "FORESTS LEAVES",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Forests trap cool air below thick leaves",
-            "score": 73,
-            "thumbnail_text": "FORESTS LEAVES",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Watch the cool canopy; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "FORESTS LEAVES",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Forests can cool the air below them",
-            "score": 73,
-            "thumbnail_text": "COOL CANOPY MATTERS",
-            "title": "Forests make cooler air under the canopy"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "8e1097b5127e4c6c",
       "title": "Mangroves take power out of waves",
       "category": "conservation",
@@ -10256,7 +10254,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T01:52:56.983869+00:00",
+        "checked_at": "2026-06-30T01:56:22.744974+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10909,7 +10907,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T01:52:56.989236+00:00",
+        "checked_at": "2026-06-30T01:56:22.751771+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11562,7 +11560,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T01:52:56.991309+00:00",
+        "checked_at": "2026-06-30T01:56:22.753839+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12220,7 +12218,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T01:52:56.960420+00:00",
+        "checked_at": "2026-06-30T01:56:21.631257+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -12876,7 +12874,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-06-30T01:52:56.952633+00:00",
+        "checked_at": "2026-06-30T01:56:20.992901+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
