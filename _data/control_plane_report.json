@@ -2,11 +2,11 @@
   "state": "migration_needed",
   "pressure_score": 100,
   "metrics": {
-    "live_state_files": 250,
-    "data_state_files": 147,
+    "live_state_files": 415,
+    "data_state_files": 312,
     "video_done_markers": 101,
-    "live_state_bytes": 20933721,
-    "stories_queue_bytes": 3722441,
+    "live_state_bytes": 22780019,
+    "stories_queue_bytes": 3869832,
     "stories_queue_lines": 0,
     "workflow_files": 18,
     "state_path_refs": 285
@@ -14,37 +14,42 @@
   "largest_state_files": [
     {
       "path": "_data/ai_cache.jsonl",
-      "bytes": 6860862,
+      "bytes": 6867439,
       "lines": 0
     },
     {
       "path": "_data/stories_queue.json",
-      "bytes": 3722441,
+      "bytes": 3869832,
       "lines": 0
     },
     {
+      "path": "_data/rejected_queue.jsonl",
+      "bytes": 1014835,
+      "lines": 1278
+    },
+    {
       "path": "_data/early_performance.json",
-      "bytes": 909524,
+      "bytes": 909485,
       "lines": 35225
     },
     {
-      "path": "_data/rejected_queue.jsonl",
-      "bytes": 794107,
-      "lines": 1000
-    },
-    {
       "path": "_data/analytics/api_quota_ledger.jsonl",
-      "bytes": 785906,
-      "lines": 1235
+      "bytes": 787134,
+      "lines": 1237
     },
     {
       "path": "_data/provider_stats.jsonl",
-      "bytes": 726613,
-      "lines": 9348
+      "bytes": 727313,
+      "lines": 9357
+    },
+    {
+      "path": "_data/repair_queue.jsonl",
+      "bytes": 677598,
+      "lines": 39
     },
     {
       "path": "_data/queue_audit.json",
-      "bytes": 452361,
+      "bytes": 452400,
       "lines": 13354
     },
     {
@@ -54,7 +59,7 @@
     },
     {
       "path": "_data/packaging_report.json",
-      "bytes": 282870,
+      "bytes": 282911,
       "lines": 8039
     },
     {
@@ -64,13 +69,8 @@
     },
     {
       "path": "_data/autonomous_growth_plan.json",
-      "bytes": 155767,
+      "bytes": 155765,
       "lines": 4304
-    },
-    {
-      "path": "_data/fact_sources.jsonl",
-      "bytes": 141485,
-      "lines": 453
     }
   ],
   "migration_lanes": [
