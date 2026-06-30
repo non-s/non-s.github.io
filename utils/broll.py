@@ -26,6 +26,20 @@ _CACHE_DIR = Path(os.environ.get("BROLL_CACHE_DIR", "_data/broll_cache"))
 _CACHE_TTL_S = 86400 * 7
 _PEXELS_API = "https://api.pexels.com/v1/videos/search"
 
+# Pexels free tier asks for courteous request spacing. fetch-content.yml and
+# youtube-bot.yml can both call fetch_pexels() many times within one process
+# run; this throttle keeps real (non-cached) calls from bursting.
+_MIN_REQUEST_INTERVAL_S = float(os.environ.get("PEXELS_MIN_INTERVAL_S", "0"))
+_last_request_ts = 0.0
+
+
+def _throttle() -> None:
+    global _last_request_ts
+    wait = _MIN_REQUEST_INTERVAL_S - (time.time() - _last_request_ts)
+    if wait > 0:
+        time.sleep(wait)
+    _last_request_ts = time.time()
+
 
 @dataclasses.dataclass
 class BrollClip:
@@ -100,6 +114,7 @@ def fetch_pexels(query: str, per_page: int = 8, page: int = 1) -> list[BrollClip
         return [BrollClip(**c) for c in cached]
 
     try:
+        _throttle()
         response = _session().get(
             _PEXELS_API,
             params={
