@@ -383,17 +383,18 @@
       }
     },
     {
-      "id": "fb9dca2c690a5fc5",
-      "title": "Chickens lock their view between steps",
-      "category": "farm",
-      "autonomy_priority": 78.7,
+      "id": "dad711bb1ab5be00",
+      "title": "Plants turn light into stored sugar",
+      "category": "plants",
+      "autonomy_priority": 95.2,
       "queue_score": 78.0,
       "template_cluster": "",
-      "mechanism_cluster": "visual_stabilization",
+      "mechanism_cluster": "",
       "objective_reasons": [
+        "objective_gate:observe_before_scaling",
         "publish_ready_supply_reserve_fallback"
       ],
-      "lane": "recovery",
+      "lane": "evergreen",
       "mix_adjustment": 5.0,
       "score": {
         "score": 100.0,
@@ -403,69 +404,74 @@
           "score": 51,
           "signals": {
             "viral_potential": 50,
-            "visual_potential": 47,
-            "replay_potential": 76,
-            "comment_potential": 46,
-            "educational_potential": 57,
-            "emotional_potential": 36,
-            "novelty": 37
+            "visual_potential": 60,
+            "replay_potential": 59,
+            "comment_potential": 33,
+            "educational_potential": 59,
+            "emotional_potential": 30,
+            "novelty": 50
           },
           "verdict": "discard",
           "reasons": [
-            "weak_visual_surface",
             "low_opportunity_score"
           ],
           "confidence": {
-            "confidence_score": 0.514,
-            "sample_size": 3,
+            "confidence_score": 0.113,
+            "sample_size": 1,
             "minimum_sample_size": 5,
-            "data_quality": "observed",
-            "data_quality_score": 0.856,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.55,
-            "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only."
+            "bootstrap_multiplier": 0.335,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
           },
-          "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only."
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
         },
         "retention": {
-          "score": 75,
+          "score": 70,
           "signals": {
-            "hook_score": 82,
+            "hook_score": 70,
             "curiosity_score": 71,
-            "visual_score": 58,
-            "replay_score": 82,
+            "visual_score": 66,
+            "replay_score": 62,
             "completion_prediction": 77
           },
           "verdict": "rewrite",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.514,
-            "sample_size": 3,
+            "confidence_score": 0.113,
+            "sample_size": 1,
             "minimum_sample_size": 5,
-            "data_quality": "observed",
-            "data_quality_score": 0.856,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.55,
-            "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only."
+            "bootstrap_multiplier": 0.335,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
           },
-          "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only."
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
         },
         "opening_retention": {
           "score": 100.0,
           "state": "retention_ready",
           "approved": true,
-          "subject": "chickens",
+          "subject": "plants",
           "cue_terms": [
-            "eyes",
-            "stead"
+            "leaf",
+            "light",
+            "sugar",
+            "surface"
           ],
           "frame_hook_bridge": [
-            "eyes"
+            "light",
+            "sugar"
           ],
           "cue_bridge": [
-            "eyes"
+            "leaf",
+            "light",
+            "sugar",
+            "surface"
           ],
           "strengths": [
             "subject_frontloaded",
@@ -496,51 +502,50 @@
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
         "subscriber_conversion": {
-          "score": 100,
+          "score": 79,
           "state": "strong",
-          "subscriber_probability": 0.143,
-          "return_probability": 0.3,
-          "comment_probability": 0.256,
+          "subscriber_probability": 0.113,
+          "return_probability": 0.242,
+          "comment_probability": 0.207,
           "robotic_title": {
             "risk": 0,
             "state": "clear",
             "hits": []
           },
           "reasons": [
-            "identity_cta",
             "debate_comment",
             "return_prompt",
             "series_identity"
           ],
           "confidence": {
-            "confidence_score": 0.563,
-            "sample_size": 14,
+            "confidence_score": 0.296,
+            "sample_size": 10,
             "minimum_sample_size": 18,
-            "data_quality": "observed",
-            "data_quality_score": 0.912,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.672,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.56."
+            "data_quality": "estimated",
+            "data_quality_score": 0.587,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.472,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.30."
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.56."
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.30."
         },
         "distribution_adjustment": 0,
         "decision_confidence": {
-          "confidence_score": 0.571,
-          "sample_size": 30,
+          "confidence_score": 0.277,
+          "sample_size": 20,
           "minimum_sample_size": 38,
-          "data_quality": "observed",
-          "data_quality_score": 1.0,
-          "recommendation_strength": "test",
-          "can_adjust_strategy": true,
-          "bootstrap_multiplier": 0.679,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.57."
+          "data_quality": "estimated",
+          "data_quality_score": 0.48,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.458,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.28."
         },
-        "category": "farm",
+        "category": "plants",
         "story_format": "body_superpower",
-        "hook_score": 100,
-        "title_score": 90,
+        "hook_score": 86,
+        "title_score": 100,
         "phrase_risk": {
           "penalty": 0,
           "hits": []
@@ -552,21 +557,22 @@
         },
         "objective_gate": {
           "penalty": 0.0,
-          "reasons": [],
-          "confidence_score": 0.571,
-          "scale_ready": true,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "confidence_score": 0.277,
+          "scale_ready": false,
           "publish_blocking": false,
           "swipe_risk_band": "low",
           "payoff_time_s": 0.0,
           "template_cluster": "",
-          "mechanism_cluster": "visual_stabilization"
+          "mechanism_cluster": ""
         },
         "reserve_override": {
           "reason": "publish_ready_supply_reserve_fallback",
           "original_approved": false,
           "original_state": "rewrite",
           "original_opportunity_reasons": [
-            "weak_visual_surface",
             "low_opportunity_score"
           ]
         }
@@ -581,18 +587,10 @@
       "recovery": 0.15
     },
     "counts": {
-      "recovery": 2,
-      "evergreen": 18
+      "evergreen": 18,
+      "recovery": 1
     },
     "items": [
-      {
-        "id": "fb9dca2c690a5fc5",
-        "title": "Chickens lock their view between steps",
-        "category": "farm",
-        "lane": "recovery",
-        "adjustment": 5.0,
-        "freshness_score": 55.0
-      },
       {
         "id": "fc8688ca9a9e53be",
         "title": "Elephants cool blood through giant ears",
@@ -626,12 +624,28 @@
         "freshness_score": 54.42
       },
       {
+        "id": "dad711bb1ab5be00",
+        "title": "Plants turn light into stored sugar",
+        "category": "plants",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 54.98
+      },
+      {
         "id": "8c00dca1b8a865fd",
         "title": "Storm clouds use cloud spiral before they build",
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
         "freshness_score": 54.22
+      },
+      {
+        "id": "26ca036370f8ef51",
+        "title": "Storm clouds show air layers changing over time",
+        "category": "earth_from_space",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 54.06
       },
       {
         "id": "0ef428432eac25bb",
@@ -642,20 +656,12 @@
         "freshness_score": 54.06
       },
       {
-        "id": "82f6c859562fd674",
-        "title": "Storm clouds show air layers changing over time",
-        "category": "earth_from_space",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 55.0
-      },
-      {
         "id": "c85dc830f3c83f6f",
         "title": "Volcanoes build land from flowing lava",
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.68
+        "freshness_score": 53.66
       },
       {
         "id": "620430ec6b6e44c9",
@@ -736,14 +742,6 @@
         "lane": "evergreen",
         "adjustment": 5.0,
         "freshness_score": 52.14
-      },
-      {
-        "id": "526c9770a919f192",
-        "title": "The rock layer that changes the moment",
-        "category": "geology",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 55.0
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -771,7 +769,7 @@
             "share": 0.333
           },
           {
-            "shape": "{subject} lock their view between steps",
+            "shape": "{subject} turn light into stored sugar",
             "count": 1,
             "share": 0.333
           }
@@ -795,7 +793,7 @@
             "share": 0.333
           },
           {
-            "shape": "{subject} lock their view between steps",
+            "shape": "{subject} turn light into stored sugar",
             "count": 1,
             "share": 0.333
           }
@@ -805,14 +803,14 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 20,
-    "pending_after": 20,
+    "pending_before": 19,
+    "pending_after": 19,
     "rejected": 0,
     "repair_needed": 0,
-    "repaired": 4,
+    "repaired": 3,
     "reasons": {
       "editor_in_chief:subject repeated inside 3-day cooldown": 15,
-      "objective_gate:observe_before_scaling": 11,
+      "objective_gate:observe_before_scaling": 12,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 7,
       "objective_gate:bootstrap_observe_before_scaling": 4,
       "editor_in_chief:script quality gate blocked the narration": 3,
@@ -822,11 +820,9 @@
       "editor_in_chief:editorial score 47 is below 62": 1,
       "editor_in_chief:editorial score 44 is below 62": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
-      "duplicate_title": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
       "editor_in_chief:editorial score 40 is below 62": 1,
-      "editorial_cooldown_supply_fallback": 1,
-      "inventory_reserve_fallback": 1
+      "editorial_cooldown_supply_fallback": 1
     }
   }
 }

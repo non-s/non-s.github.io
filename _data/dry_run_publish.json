@@ -1340,34 +1340,36 @@
       }
     },
     {
-      "id": "fb9dca2c690a5fc5",
-      "title": "Chickens lock their view between steps",
-      "category": "farm",
+      "id": "dad711bb1ab5be00",
+      "title": "Plants turn light into stored sugar",
+      "category": "plants",
       "queue_score": 78.0,
       "template_cluster": "",
-      "mechanism_cluster": "visual_stabilization",
-      "objective_reasons": [],
-      "scale_ready": true,
-      "autonomy_priority": 78.7,
+      "mechanism_cluster": "",
+      "objective_reasons": [
+        "observe_before_scaling"
+      ],
+      "scale_ready": false,
+      "autonomy_priority": 95.2,
       "autonomy_lane": "fresh_experiment",
       "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
       "packaging_lab": {
         "title_variants": [
-          "Chickens keep their view steady while walking",
-          "Chickens lock their view between steps",
-          "Chickens use steady eyes before they stabilize"
+          "Plants use trap hairs to count touches before snapping shut",
+          "Plants turn light into stored sugar",
+          "Plants use trap hairs before they fly"
         ],
         "thumbnail_variants": [
-          "STEADY EYES",
-          "WATCH STEADY EYES",
-          "CHICKENS STABILIZE"
+          "TRAP HAIRS",
+          "WATCH TRAP HAIRS",
+          "PLANTS FLY"
         ],
         "hook_variants": [
-          "Chickens lock their view between steps.",
-          "Chickens lock their view between steps",
-          "Watch the steady eyes again. Tomorrow in Farmyard Surprises: another animal signal. What part of this feels mo"
+          "Plants turn light into stored sugar.",
+          "Plants turn light into stored sugar",
+          "Watch the leaf surface again. Tomorrow in Biology Brief: another nature signal. Do plants feel more passive, r"
         ],
-        "pinned_comment": "Watch the steady eyes again. Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
+        "pinned_comment": "Watch the leaf surface again. Tomorrow in Biology Brief: another nature signal. Do plants feel more passive, reactive, or strategic here?",
         "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
       },
       "publish_score": {
@@ -1378,69 +1380,74 @@
           "score": 51,
           "signals": {
             "viral_potential": 50,
-            "visual_potential": 47,
-            "replay_potential": 76,
-            "comment_potential": 46,
-            "educational_potential": 57,
-            "emotional_potential": 36,
-            "novelty": 37
+            "visual_potential": 60,
+            "replay_potential": 59,
+            "comment_potential": 33,
+            "educational_potential": 59,
+            "emotional_potential": 30,
+            "novelty": 50
           },
           "verdict": "discard",
           "reasons": [
-            "weak_visual_surface",
             "low_opportunity_score"
           ],
           "confidence": {
-            "confidence_score": 0.514,
-            "sample_size": 3,
+            "confidence_score": 0.113,
+            "sample_size": 1,
             "minimum_sample_size": 5,
-            "data_quality": "observed",
-            "data_quality_score": 0.856,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.55,
-            "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only."
+            "bootstrap_multiplier": 0.335,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
           },
-          "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only."
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
         },
         "retention": {
-          "score": 75,
+          "score": 70,
           "signals": {
-            "hook_score": 82,
+            "hook_score": 70,
             "curiosity_score": 71,
-            "visual_score": 58,
-            "replay_score": 82,
+            "visual_score": 66,
+            "replay_score": 62,
             "completion_prediction": 77
           },
           "verdict": "rewrite",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.514,
-            "sample_size": 3,
+            "confidence_score": 0.113,
+            "sample_size": 1,
             "minimum_sample_size": 5,
-            "data_quality": "observed",
-            "data_quality_score": 0.856,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.55,
-            "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only."
+            "bootstrap_multiplier": 0.335,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
           },
-          "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only."
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
         },
         "opening_retention": {
           "score": 100.0,
           "state": "retention_ready",
           "approved": true,
-          "subject": "chickens",
+          "subject": "plants",
           "cue_terms": [
-            "eyes",
-            "stead"
+            "leaf",
+            "light",
+            "sugar",
+            "surface"
           ],
           "frame_hook_bridge": [
-            "eyes"
+            "light",
+            "sugar"
           ],
           "cue_bridge": [
-            "eyes"
+            "leaf",
+            "light",
+            "sugar",
+            "surface"
           ],
           "strengths": [
             "subject_frontloaded",
@@ -1471,52 +1478,51 @@
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
         "subscriber_conversion": {
-          "score": 100,
+          "score": 87,
           "state": "strong",
-          "subscriber_probability": 0.143,
-          "return_probability": 0.3,
-          "comment_probability": 0.256,
+          "subscriber_probability": 0.124,
+          "return_probability": 0.264,
+          "comment_probability": 0.226,
           "robotic_title": {
             "risk": 0,
             "state": "clear",
             "hits": []
           },
           "reasons": [
-            "identity_cta",
             "debate_comment",
             "return_prompt",
             "series_identity",
             "episode_continuity"
           ],
           "confidence": {
-            "confidence_score": 0.563,
-            "sample_size": 14,
+            "confidence_score": 0.296,
+            "sample_size": 10,
             "minimum_sample_size": 18,
-            "data_quality": "observed",
-            "data_quality_score": 0.912,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.672,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.56."
+            "data_quality": "estimated",
+            "data_quality_score": 0.587,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.472,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.30."
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.56."
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.30."
         },
         "distribution_adjustment": 0,
         "decision_confidence": {
-          "confidence_score": 0.571,
-          "sample_size": 30,
+          "confidence_score": 0.277,
+          "sample_size": 20,
           "minimum_sample_size": 38,
-          "data_quality": "observed",
-          "data_quality_score": 1.0,
-          "recommendation_strength": "test",
-          "can_adjust_strategy": true,
-          "bootstrap_multiplier": 0.679,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.57."
+          "data_quality": "estimated",
+          "data_quality_score": 0.48,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.458,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.28."
         },
-        "category": "farm",
+        "category": "plants",
         "story_format": "body_superpower",
-        "hook_score": 100,
-        "title_score": 90,
+        "hook_score": 86,
+        "title_score": 100,
         "phrase_risk": {
           "penalty": 0,
           "hits": []
@@ -1528,21 +1534,22 @@
         },
         "objective_gate": {
           "penalty": 0.0,
-          "reasons": [],
-          "confidence_score": 0.571,
-          "scale_ready": true,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "confidence_score": 0.277,
+          "scale_ready": false,
           "publish_blocking": false,
           "swipe_risk_band": "low",
           "payoff_time_s": 0.0,
           "template_cluster": "",
-          "mechanism_cluster": "visual_stabilization"
+          "mechanism_cluster": ""
         },
         "reserve_override": {
           "reason": "publish_ready_supply_reserve_fallback",
           "original_approved": false,
           "original_state": "rewrite",
           "original_opportunity_reasons": [
-            "weak_visual_surface",
             "low_opportunity_score"
           ]
         }
@@ -1550,11 +1557,11 @@
       "youtube_brain": {
         "score": 100,
         "state": "publish_minded",
-        "animal": "chickens",
-        "subject": "chickens",
+        "animal": "plants",
+        "subject": "plants",
         "story_format": "body_superpower",
-        "viewer_promise": "See why chickens body superpower matters.",
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "viewer_promise": "See the plant detail that changes the whole scene.",
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
           "0-1s: visible subject and outcome",
@@ -1566,16 +1573,22 @@
           "score": 100.0,
           "state": "retention_ready",
           "approved": true,
-          "subject": "chickens",
+          "subject": "plants",
           "cue_terms": [
-            "eyes",
-            "stead"
+            "leaf",
+            "light",
+            "sugar",
+            "surface"
           ],
           "frame_hook_bridge": [
-            "eyes"
+            "light",
+            "sugar"
           ],
           "cue_bridge": [
-            "eyes"
+            "leaf",
+            "light",
+            "sugar",
+            "surface"
           ],
           "strengths": [
             "subject_frontloaded",
@@ -1601,7 +1614,7 @@
         "commands": []
       },
       "packaging": {
-        "score": 96,
+        "score": 95,
         "state": "magnetic",
         "strengths": [
           "title_shape",
@@ -1613,125 +1626,125 @@
         ],
         "risks": [],
         "title_options": [
-          "Chickens keep their view steady while walking",
-          "Chickens lock their view between steps",
-          "Chickens use steady eyes before they stabilize",
-          "Why chickens stabilize after one steady eyes",
-          "Chickens reveal the answer with steady eyes",
-          "The steady eyes that changes the moment",
-          "Chickens make one steady eyes matter",
-          "Chickens show the hidden answer in seconds",
-          "Chickens: watch this steady eyes"
+          "Plants use trap hairs to count touches before snapping shut",
+          "Plants turn light into stored sugar",
+          "Plants use trap hairs before they fly",
+          "Why plants fly after one trap hairs",
+          "Plants reveal the answer with trap hairs",
+          "The trap hairs that changes the moment",
+          "Plants make one trap hairs matter",
+          "Plants show the hidden answer in seconds",
+          "Plants: watch this trap hairs"
         ],
         "thumbnail_options": [
-          "STEADY EYES",
-          "WATCH STEADY EYES",
-          "CHICKENS STABILIZE",
-          "STEADY EYES MATTERS",
-          "STEADY EYES FIRST",
-          "STEADY EYES REVEAL",
-          "STEADY EYES CLUE",
+          "TRAP HAIRS",
+          "WATCH TRAP HAIRS",
+          "PLANTS FLY",
+          "TRAP HAIRS MATTERS",
+          "TRAP HAIRS FIRST",
+          "TRAP HAIRS REVEAL",
+          "TRAP HAIRS CLUE",
           "WATCH THE MOVE",
           "SPOT THE CLUE"
         ],
         "hook_options": [
-          "Chickens lock their view between steps",
-          "Chickens show why the steady eyes matters.",
-          "Chickens show why the steady eyes matters.",
-          "Chickens show why the steady eyes matters.",
-          "Chickens give away the answer through steady eyes"
+          "Plants use trap hairs to count touches before closing",
+          "Plants turn light into stored sugar",
+          "Plants show why the leaf surface matters.",
+          "Plants show why the leaf surface matters.",
+          "Plants show why the leaf surface matters."
         ],
         "selected_variant": {
-          "score": 80,
-          "title": "Chickens keep their view steady while walking",
-          "thumbnail_text": "STEADY EYES",
-          "hook": "Chickens lock their view between steps"
+          "score": 81,
+          "title": "Plants use trap hairs to count touches before snapping shut",
+          "thumbnail_text": "TRAP HAIRS",
+          "hook": "Watch the trap hairs; it explains the behavior"
         },
         "top_variants": [
           {
-            "score": 80,
-            "title": "Chickens keep their view steady while walking",
-            "thumbnail_text": "STEADY EYES",
-            "hook": "Chickens lock their view between steps"
+            "score": 81,
+            "title": "Plants use trap hairs to count touches before snapping shut",
+            "thumbnail_text": "TRAP HAIRS",
+            "hook": "Watch the trap hairs; it explains the behavior"
           },
           {
             "score": 80,
-            "title": "Chickens keep their view steady while walking",
-            "thumbnail_text": "STEADY EYES",
-            "hook": "Watch the steady eyes; it explains the behavior"
+            "title": "Plants use trap hairs to count touches before snapping shut",
+            "thumbnail_text": "TRAP HAIRS",
+            "hook": "Plants use trap hairs to count touches before closing"
           },
           {
             "score": 80,
-            "title": "Chickens keep their view steady while walking",
-            "thumbnail_text": "STEADY EYES",
-            "hook": "Start with the steady eyes; it changes the scene"
+            "title": "Plants use trap hairs to count touches before snapping shut",
+            "thumbnail_text": "TRAP HAIRS",
+            "hook": "Plants turn light into stored sugar"
+          },
+          {
+            "score": 74,
+            "title": "Plants use trap hairs to count touches before snapping shut",
+            "thumbnail_text": "WATCH TRAP HAIRS",
+            "hook": "Watch the trap hairs; it explains the behavior"
+          },
+          {
+            "score": 74,
+            "title": "Plants use trap hairs to count touches before snapping shut",
+            "thumbnail_text": "PLANTS FLY",
+            "hook": "Watch the trap hairs; it explains the behavior"
+          },
+          {
+            "score": 74,
+            "title": "Plants use trap hairs to count touches before snapping shut",
+            "thumbnail_text": "TRAP HAIRS MATTERS",
+            "hook": "Watch the trap hairs; it explains the behavior"
+          },
+          {
+            "score": 74,
+            "title": "Plants use trap hairs to count touches before snapping shut",
+            "thumbnail_text": "TRAP HAIRS FIRST",
+            "hook": "Watch the trap hairs; it explains the behavior"
           },
           {
             "score": 73,
-            "title": "Chickens keep their view steady while walking",
-            "thumbnail_text": "WATCH STEADY EYES",
-            "hook": "Chickens lock their view between steps"
+            "title": "Plants use trap hairs to count touches before snapping shut",
+            "thumbnail_text": "WATCH TRAP HAIRS",
+            "hook": "Plants use trap hairs to count touches before closing"
           },
           {
             "score": 73,
-            "title": "Chickens keep their view steady while walking",
-            "thumbnail_text": "WATCH STEADY EYES",
-            "hook": "Watch the steady eyes; it explains the behavior"
+            "title": "Plants use trap hairs to count touches before snapping shut",
+            "thumbnail_text": "WATCH TRAP HAIRS",
+            "hook": "Plants turn light into stored sugar"
           },
           {
             "score": 73,
-            "title": "Chickens keep their view steady while walking",
-            "thumbnail_text": "WATCH STEADY EYES",
-            "hook": "Start with the steady eyes; it changes the scene"
-          },
-          {
-            "score": 73,
-            "title": "Chickens keep their view steady while walking",
-            "thumbnail_text": "CHICKENS STABILIZE",
-            "hook": "Chickens lock their view between steps"
-          },
-          {
-            "score": 73,
-            "title": "Chickens keep their view steady while walking",
-            "thumbnail_text": "CHICKENS STABILIZE",
-            "hook": "Watch the steady eyes; it explains the behavior"
-          },
-          {
-            "score": 73,
-            "title": "Chickens keep their view steady while walking",
-            "thumbnail_text": "CHICKENS STABILIZE",
-            "hook": "Start with the steady eyes; it changes the scene"
-          },
-          {
-            "score": 73,
-            "title": "Chickens keep their view steady while walking",
-            "thumbnail_text": "STEADY EYES MATTERS",
-            "hook": "Chickens lock their view between steps"
+            "title": "Plants use trap hairs to count touches before snapping shut",
+            "thumbnail_text": "PLANTS FLY",
+            "hook": "Plants use trap hairs to count touches before closing"
           }
         ],
         "retention": {
-          "score": 75,
+          "score": 70,
           "signals": {
-            "hook_score": 82,
+            "hook_score": 70,
             "curiosity_score": 71,
-            "visual_score": 58,
-            "replay_score": 82,
+            "visual_score": 66,
+            "replay_score": 62,
             "completion_prediction": 77
           },
           "verdict": "rewrite",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.514,
-            "sample_size": 3,
+            "confidence_score": 0.113,
+            "sample_size": 1,
             "minimum_sample_size": 5,
-            "data_quality": "observed",
-            "data_quality_score": 0.856,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.55,
-            "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only."
+            "bootstrap_multiplier": 0.335,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
           },
-          "reasoning": "category has 3/5 samples, observed data, confidence 0.51; observation only."
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
         },
         "experiment": {
           "mode": "exploit",
@@ -1757,83 +1770,80 @@
           }
         },
         "series_identity": {
-          "series": "Farmyard Surprises",
-          "episode": 13,
-          "label": "Farmyard Surprises #13",
-          "continuity_prompt": "Next in Farmyard Surprises: compare this with another force of nature."
+          "series": "Biology Brief",
+          "episode": 6,
+          "label": "Biology Brief #6",
+          "continuity_prompt": "Next in Biology Brief: compare this with another force of nature."
         },
-        "pinned_comment": "Watch the steady eyes again. Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
-        "community_prompt": "Which chickens clue should Wild Brief compare next in Farmyard Surprises?",
-        "series": "Farmyard Surprises #13",
-        "next_episode_question": "Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
+        "pinned_comment": "Watch the leaf surface again. Tomorrow in Biology Brief: another nature signal. Do plants feel more passive, reactive, or strategic here?",
+        "community_prompt": "Which plants clue should Wild Brief compare next in Biology Brief?",
+        "series": "Biology Brief #6",
+        "next_episode_question": "Tomorrow in Biology Brief: another nature signal. Do plants feel more passive, reactive, or strategic here?",
         "search_intent": {
-          "subject": "chickens",
-          "visible_cue": "steady eyes",
-          "series": "Farmyard Surprises",
-          "title_variant": "Chickens behavior: steady eyes explained",
-          "description_line": "This Short explains Chickens behavior through the visible steady eyes.",
+          "subject": "plants",
+          "visible_cue": "leaf surface",
+          "series": "Biology Brief",
+          "title_variant": "Plants leaf surface explained fast",
+          "description_line": "This Short explains the visible leaf surface behind Plants in a fast nature science story.",
           "terms": [
-            "chickens",
-            "steady eyes",
-            "farm",
+            "plants",
+            "leaf surface",
             "body superpower"
           ]
         },
         "retention_contract": {
-          "subject": "chickens",
-          "visible_cue": "steady eyes",
-          "first_frame_text": "STEADY EYES",
-          "first_2s_narration": "Chickens lock their view between steps Watch the eyes stay level while",
-          "series": "Farmyard Surprises",
-          "next_episode_question": "Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
+          "subject": "plants",
+          "visible_cue": "leaf surface",
+          "first_frame_text": "LIGHT TO SUGAR",
+          "first_2s_narration": "Plants turn light into stored sugar Watch the leaf surface first because",
+          "series": "Biology Brief",
+          "next_episode_question": "Tomorrow in Biology Brief: another nature signal. Do plants feel more passive, reactive, or strategic here?",
           "search_intent": {
-            "subject": "chickens",
-            "visible_cue": "steady eyes",
-            "series": "Farmyard Surprises",
-            "title_variant": "Chickens behavior: steady eyes explained",
-            "description_line": "This Short explains Chickens behavior through the visible steady eyes.",
+            "subject": "plants",
+            "visible_cue": "leaf surface",
+            "series": "Biology Brief",
+            "title_variant": "Plants leaf surface explained fast",
+            "description_line": "This Short explains the visible leaf surface behind Plants in a fast nature science story.",
             "terms": [
-              "chickens",
-              "steady eyes",
-              "farm",
+              "plants",
+              "leaf surface",
               "body superpower"
             ]
           },
           "opening_retention_score": 100.0,
           "opening_retention_state": "retention_ready"
         },
-        "cta_prompt": "Want one animal signal a day? Follow for tomorrow's farm clue.",
-        "replay_prompt": "End by pointing back to the steady eyes, so viewers rewatch the chickens clip.",
+        "cta_prompt": "Want to see how plants quietly engineer survival?",
+        "replay_prompt": "End by pointing back to the leaf surface, so viewers rewatch the plants clip.",
         "subscriber_conversion": {
-          "score": 100,
+          "score": 87,
           "state": "strong",
-          "subscriber_probability": 0.143,
-          "return_probability": 0.3,
-          "comment_probability": 0.256,
+          "subscriber_probability": 0.124,
+          "return_probability": 0.264,
+          "comment_probability": 0.226,
           "robotic_title": {
             "risk": 0,
             "state": "clear",
             "hits": []
           },
           "reasons": [
-            "identity_cta",
             "debate_comment",
             "return_prompt",
             "series_identity",
             "episode_continuity"
           ],
           "confidence": {
-            "confidence_score": 0.563,
-            "sample_size": 14,
+            "confidence_score": 0.296,
+            "sample_size": 10,
             "minimum_sample_size": 18,
-            "data_quality": "observed",
-            "data_quality_score": 0.912,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.672,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.56."
+            "data_quality": "estimated",
+            "data_quality_score": 0.587,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.472,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.30."
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.56."
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.30."
         },
         "frame_zero": {
           "score": 92,
@@ -1845,22 +1855,28 @@
             "aspect": "4:5"
           },
           "first_frame_preview": "first_frame_preview.png",
-          "word_count": 2,
+          "word_count": 3,
           "approved": true,
           "retention_opening": {
             "score": 100.0,
             "state": "retention_ready",
             "approved": true,
-            "subject": "chickens",
+            "subject": "plants",
             "cue_terms": [
-              "eyes",
-              "stead"
+              "leaf",
+              "light",
+              "sugar",
+              "surface"
             ],
             "frame_hook_bridge": [
-              "eyes"
+              "light",
+              "sugar"
             ],
             "cue_bridge": [
-              "eyes"
+              "leaf",
+              "light",
+              "sugar",
+              "surface"
             ],
             "strengths": [
               "subject_frontloaded",
@@ -1875,7 +1891,7 @@
           }
         },
         "curiosity_gap": {
-          "hook": "Why do these chickens change after the steady eyes?",
+          "hook": "Why do these plants change after the light to sugar?",
           "source": "template",
           "score": 78.0,
           "reasons": [
@@ -1887,16 +1903,22 @@
           "score": 100.0,
           "state": "retention_ready",
           "approved": true,
-          "subject": "chickens",
+          "subject": "plants",
           "cue_terms": [
-            "eyes",
-            "stead"
+            "leaf",
+            "light",
+            "sugar",
+            "surface"
           ],
           "frame_hook_bridge": [
-            "eyes"
+            "light",
+            "sugar"
           ],
           "cue_bridge": [
-            "eyes"
+            "leaf",
+            "light",
+            "sugar",
+            "surface"
           ],
           "strengths": [
             "subject_frontloaded",
@@ -1916,21 +1938,21 @@
           "fixes": []
         },
         "loop_plan": {
-          "callback_keyword": "steady eyes",
-          "opening_line": "Chickens lock their view between steps.",
-          "ending_line": "Did you notice it?",
-          "final_line": "Now the steady eyes at the start make sense.",
+          "callback_keyword": "light to sugar",
+          "opening_line": "Plants turn light into stored sugar.",
+          "ending_line": "By the last line, the opening detail has a job viewers can name.",
+          "final_line": "Now the light to sugar at the start makes sense.",
           "rewrite_applied": true,
           "audio_crossfade_ms": 120,
           "subtitle_tail_mode": "carry-forward",
-          "loop_score": 0.795,
+          "loop_score": 1.0,
           "render_hints": {
-            "carry_keyword": "steady eyes",
+            "carry_keyword": "light to sugar",
             "subtle_audio_tail": true,
             "avoid_hard_stop": true
           }
         },
-        "loop_score": 0.795,
+        "loop_score": 1.0,
         "editorial_rulebook": {
           "approved": true,
           "score": 100.0,
@@ -1940,17 +1962,17 @@
           "recommended_duration_s": 24
         },
         "preflight_inputs": {
-          "first_frame_text": "STEADY EYES",
-          "first_frame_text_words": 2,
-          "hook": "Chickens lock their view between steps.",
+          "first_frame_text": "LIGHT TO SUGAR",
+          "first_frame_text_words": 3,
+          "hook": "Plants turn light into stored sugar.",
           "hook_words": 6,
-          "first_2s_narration": "Chickens lock their view between steps Watch the eyes stay level while",
-          "caption_chars_per_second": 15.42,
+          "first_2s_narration": "Plants turn light into stored sugar Watch the leaf surface first because",
+          "caption_chars_per_second": 15.0,
           "visual_motion_score": 0.76,
           "contrast_score": 0.74,
           "hook_specificity": 0.78,
           "novelty_score": 0.58,
-          "duration_hint_s": 19,
+          "duration_hint_s": 21,
           "payoff_time_s": 0,
           "payoff_score": 75,
           "payoff_reveal_sentence_index": 0,
@@ -1959,16 +1981,22 @@
             "score": 100.0,
             "state": "retention_ready",
             "approved": true,
-            "subject": "chickens",
+            "subject": "plants",
             "cue_terms": [
-              "eyes",
-              "stead"
+              "leaf",
+              "light",
+              "sugar",
+              "surface"
             ],
             "frame_hook_bridge": [
-              "eyes"
+              "light",
+              "sugar"
             ],
             "cue_bridge": [
-              "eyes"
+              "leaf",
+              "light",
+              "sugar",
+              "surface"
             ],
             "strengths": [
               "subject_frontloaded",
@@ -1982,7 +2010,7 @@
             "risks": []
           },
           "opening_retention_score": 100.0,
-          "loop_score": 0.795
+          "loop_score": 1.0
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast."
       },
@@ -1996,21 +2024,21 @@
     }
   ],
   "eligible_count": 3,
-  "scale_ready_count": 1,
-  "observe_before_scaling_count": 2,
+  "scale_ready_count": 0,
+  "observe_before_scaling_count": 3,
   "objective_reasons": {
-    "observe_before_scaling": 2
+    "observe_before_scaling": 3
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 20,
-    "pending_after": 20,
+    "pending_before": 19,
+    "pending_after": 19,
     "rejected": 0,
     "repair_needed": 0,
-    "repaired": 4,
+    "repaired": 3,
     "reasons": {
       "editor_in_chief:subject repeated inside 3-day cooldown": 15,
-      "objective_gate:observe_before_scaling": 11,
+      "objective_gate:observe_before_scaling": 12,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 7,
       "objective_gate:bootstrap_observe_before_scaling": 4,
       "editor_in_chief:script quality gate blocked the narration": 3,
@@ -2020,11 +2048,9 @@
       "editor_in_chief:editorial score 47 is below 62": 1,
       "editor_in_chief:editorial score 44 is below 62": 1,
       "editor_in_chief:editorial score 41 is below 62": 1,
-      "duplicate_title": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
       "editor_in_chief:editorial score 40 is below 62": 1,
-      "editorial_cooldown_supply_fallback": 1,
-      "inventory_reserve_fallback": 1
+      "editorial_cooldown_supply_fallback": 1
     }
   },
   "rejected_preview": []
