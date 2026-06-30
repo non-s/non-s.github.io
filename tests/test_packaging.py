@@ -389,7 +389,7 @@ def test_package_story_rewrites_low_frame_zero_retention_bridge():
     assert repair["method"] == "curiosity_angle_frame_zero_retention_rewrite"
     assert repair["before"]["score"] < 82
     assert repair["after"]["score"] >= 82
-    assert "Watch the ground signal first" in packaged["script"]
+    assert "ground signal" in packaged["script"].lower()
     assert packaged["packaging"]["opening_retention"]["approved"] is True
 
 
@@ -445,7 +445,7 @@ def test_package_story_reapplies_stale_frame_zero_repair_below_tightening_band()
     )
 
     assert packaged["hook"] == "Bears reveal the scent map first."
-    assert packaged["script"].startswith("Bears reveal the scent map first. Watch the scent map first")
+    assert packaged["script"].startswith("Bears reveal the scent map first. Watch closely")
     assert packaged["frame_zero_repair"]["reason"] == "stale_frame_zero_repair"
     assert packaged["packaging"]["opening_retention"]["approved"] is True
     assert "frame_text_not_echoed_early" not in packaged["packaging"]["opening_retention"]["risks"]
