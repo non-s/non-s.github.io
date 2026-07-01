@@ -6,13 +6,69 @@
   ],
   "counts": {
     "analytics_due": 0,
-    "awaiting_1h": 0,
+    "awaiting_1h": 1,
     "high_priority": 0,
     "repair_candidates": 0,
-    "tracked": 0
+    "tracked": 1
   },
-  "generated_at": "2026-07-01T17:59:56.650262+00:00",
-  "items": [],
+  "generated_at": "2026-07-01T18:13:58.323815+00:00",
+  "items": [
+    {
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.03,
+      "category": "birds",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-01T19:12:09.438871+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-02T00:12:09.438871+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-02T18:12:09.438871+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-01T19:12:09.438871+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Sky Intelligence",
+      "state": "awaiting_1h",
+      "title": "Owls fly silently because feathers break sound",
+      "uploaded_at": "2026-07-01T18:12:09.438871+00:00",
+      "url": "https://www.youtube.com/shorts/dNBmZyaqKXQ",
+      "video_id": "dNBmZyaqKXQ",
+      "views_per_hour": 0.0
+    }
+  ],
   "targets": {
     "1h": 24,
     "24h": 300,
