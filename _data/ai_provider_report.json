@@ -1,53 +1,53 @@
 {
-  "generated_at": "2026-07-01T19:10:24Z",
+  "generated_at": "2026-07-01T19:19:18Z",
   "default_chain": [
-    "groq",
     "mistral",
     "cerebras",
-    "gemini"
+    "gemini",
+    "groq"
   ],
   "json_chain": [
-    "groq",
     "mistral",
     "gemini",
-    "cerebras"
+    "cerebras",
+    "groq"
   ],
   "rewrite_chain": [
-    "groq",
     "mistral",
     "cerebras",
-    "gemini"
+    "gemini",
+    "groq"
   ],
   "longform_chain": [
-    "groq",
     "mistral",
     "gemini",
-    "cerebras"
+    "cerebras",
+    "groq"
   ],
   "providers": [
     {
       "provider": "mistral",
-      "configured": true,
-      "success_rate": null,
+      "configured": false,
+      "success_rate": 1.0,
       "cooldown_seconds": 0
     },
     {
       "provider": "cerebras",
-      "configured": true,
+      "configured": false,
       "success_rate": 0.0,
       "cooldown_seconds": 0
     },
     {
       "provider": "gemini",
-      "configured": true,
+      "configured": false,
       "success_rate": 0.0,
       "cooldown_seconds": 0
     },
     {
       "provider": "groq",
-      "configured": true,
-      "success_rate": 1.0,
-      "cooldown_seconds": 0
+      "configured": false,
+      "success_rate": 0.333,
+      "cooldown_seconds": 495
     }
   ]
 }

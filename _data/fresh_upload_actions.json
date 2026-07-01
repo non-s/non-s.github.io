@@ -1,43 +1,43 @@
 {
   "counts": {
     "automation_safe": 2,
-    "high": 0,
+    "high": 1,
     "manual_review": 0,
     "total": 2,
     "urgent": 0
   },
   "free_only": true,
-  "generated_at": "2026-07-01T19:10:42.792250+00:00",
+  "generated_at": "2026-07-01T19:19:59.550889+00:00",
   "items": [
     {
-      "action_type": "hold_until_first_hour",
-      "age_hours": 0.976,
+      "action_type": "pull_fresh_analytics",
+      "age_hours": 1.131,
       "automation_safe": true,
       "category": "birds",
       "checkpoint_label": "1h",
-      "checkpoint_state": "pending",
+      "checkpoint_state": "due",
       "current_views": 0,
       "due_at": "2026-07-01T19:12:09.438871+00:00",
       "free_only": true,
       "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-      "id": "fresh-upload:dNBmZyaqKXQ:awaiting_1h:1h",
-      "lane": "observe",
+      "id": "fresh-upload:dNBmZyaqKXQ:analytics_due:1h",
+      "lane": "measurement",
       "manual_approval_required": false,
       "opening_retention_score": 100.0,
-      "priority": "low",
-      "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "priority": "high",
+      "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
       "series": "Sky Intelligence",
-      "state": "awaiting_1h",
+      "state": "analytics_due",
       "target_views": 24,
       "title": "Owls fly silently because feathers break sound",
       "url": "https://www.youtube.com/shorts/dNBmZyaqKXQ",
       "video_id": "dNBmZyaqKXQ",
-      "wait_until": "2026-07-01T19:12:09.438871+00:00",
-      "why": "The upload is still inside the no-panic observation window."
+      "wait_until": "",
+      "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
       "action_type": "hold_until_first_hour",
-      "age_hours": 0.033,
+      "age_hours": 0.188,
       "automation_safe": true,
       "category": "geology",
       "checkpoint_label": "1h",
@@ -63,5 +63,5 @@
     }
   ],
   "source": "fresh_upload_watchlist",
-  "source_generated_at": "2026-07-01T19:10:42.792148+00:00"
+  "source_generated_at": "2026-07-01T19:19:59.550778+00:00"
 }
