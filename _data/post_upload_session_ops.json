@@ -3,43 +3,43 @@
   "fresh_upload_actions": {
     "counts": {
       "automation_safe": 2,
-      "high": 0,
+      "high": 1,
       "manual_review": 0,
       "total": 2,
       "urgent": 0
     },
     "free_only": true,
-    "generated_at": "2026-07-01T19:35:18.033881+00:00",
+    "generated_at": "2026-07-01T20:11:36.447811+00:00",
     "items": [
       {
-        "action_type": "hold_until_first_hour",
-        "age_hours": 0.443,
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 1.048,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "1h",
-        "checkpoint_state": "pending",
+        "checkpoint_state": "due",
         "current_views": 0,
         "due_at": "2026-07-01T20:08:43.611233+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:FEAbi2e-yas:awaiting_1h:1h",
-        "lane": "observe",
+        "id": "fresh-upload:FEAbi2e-yas:analytics_due:1h",
+        "lane": "measurement",
         "manual_approval_required": false,
         "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "priority": "high",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
         "series": "Earth Engine",
-        "state": "awaiting_1h",
+        "state": "analytics_due",
         "target_views": 24,
         "title": "Rock layers store ancient environments in stripes",
         "url": "https://www.youtube.com/shorts/FEAbi2e-yas",
         "video_id": "FEAbi2e-yas",
-        "wait_until": "2026-07-01T20:08:43.611233+00:00",
-        "why": "The upload is still inside the no-panic observation window."
+        "wait_until": "",
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 1.386,
+        "age_hours": 1.991,
         "automation_safe": true,
         "category": "birds",
         "checkpoint_label": "6h",
@@ -65,7 +65,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-01T19:35:18.033779+00:00"
+    "source_generated_at": "2026-07-01T20:11:36.447700+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -74,25 +74,25 @@
       24
     ],
     "counts": {
-      "analytics_due": 0,
-      "awaiting_1h": 1,
-      "high_priority": 0,
+      "analytics_due": 1,
+      "awaiting_1h": 0,
+      "high_priority": 1,
       "repair_candidates": 0,
       "tracked": 2
     },
-    "generated_at": "2026-07-01T19:35:18.033779+00:00",
+    "generated_at": "2026-07-01T20:11:36.447700+00:00",
     "items": [
       {
-        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.443,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 1.048,
         "category": "geology",
         "checkpoints": [
           {
-            "delta_to_target": 0,
+            "delta_to_target": -24,
             "due_at": "2026-07-01T20:08:43.611233+00:00",
             "label": "1h",
             "source": "estimated",
-            "state": "pending",
+            "state": "due",
             "target_views": 24,
             "views": 0
           },
@@ -116,21 +116,21 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-01T20:08:43.611233+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 24,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Earth Engine",
-        "state": "awaiting_1h",
+        "state": "analytics_due",
         "title": "Rock layers store ancient environments in stripes",
         "uploaded_at": "2026-07-01T19:08:43.611233+00:00",
         "url": "https://www.youtube.com/shorts/FEAbi2e-yas",
@@ -139,7 +139,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 1.386,
+        "age_hours": 1.991,
         "category": "birds",
         "checkpoints": [
           {
@@ -200,7 +200,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-01T19:35:18.033907+00:00",
+  "generated_at": "2026-07-01T20:11:36.447839+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
