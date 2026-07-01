@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-07-01T22:57:33.658683+00:00",
-  "pending": 53,
+  "generated_at": "2026-07-01T23:04:08.376293+00:00",
+  "pending": 58,
   "states": {
-    "rewrite": 24,
-    "publish_ready": 29
+    "rewrite": 26,
+    "publish_ready": 32
   },
   "mechanism_clusters": {
-    "scent_map": 3,
+    "scent_map": 4,
     "face_recognition": 2,
     "tongue_smell": 1,
     "tail_signal": 1,
@@ -16,22 +16,172 @@
     "call_signal": 1
   },
   "rights": {
-    "approved": 53
+    "approved": 58
   },
   "prune_summary": {
-    "pending_before": 53,
-    "pending_after": 53,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 4,
+    "pending_before": 72,
+    "pending_after": 58,
+    "rejected": 14,
+    "repair_needed": 2,
+    "repaired": 13,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 53,
-      "editor_in_chief:script quality gate blocked the narration": 10,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 8,
+      "objective_gate:bootstrap_observe_before_scaling": 58,
+      "editor_in_chief:script quality gate blocked the narration": 11,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 9,
+      "duplicate_script": 8,
+      "duplicate_title": 7,
+      "duplicate_angle": 7,
+      "off_topic_visual": 3,
+      "queue_score_reject": 2,
+      "opening_retention_gap_risk": 1,
+      "opening promise is not concrete enough": 1,
+      "copy_subject_mismatch": 1,
+      "script_word_loop": 1,
+      "payoff_not_explicit": 1,
+      "title_shape_weak": 1,
+      "title_needs_stronger_shape": 1,
+      "subject_not_clear": 1,
+      "missing_action_word": 1,
+      "script does not expose enough concrete visual detail": 1,
       "editor_in_chief:editorial score 46 is below 62": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "a5253f4131e711d4",
+      "title": "Plants use trap hairs to count touches before closing",
+      "reasons": [
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "532d0333ce74f03b",
+      "title": "Monkeys wash food when grit gets annoying",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "0db960001f7c13da",
+      "title": "Lions use dark ear marks to guide cubs",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "b28f3023140535c3",
+      "title": "Birds see ultraviolet patterns we miss",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "96d15399829a5d39",
+      "title": "Whales send songs across huge ocean distances",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "21a28ebf026758d2",
+      "title": "Owls can make a hunt almost silent",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "1e4560388b793411",
+      "title": "ants taste plants with their feet",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "0e46ecd46c794407",
+      "title": "Walrus use first move before they change",
+      "reasons": [
+        "payoff_not_explicit",
+        "title_shape_weak",
+        "title_needs_stronger_shape",
+        "subject_not_clear",
+        "missing_action_word",
+        "script does not expose enough concrete visual detail",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "df3bf399773f462e",
+      "title": "Glaciers carve mountains faster than you think",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "d0520e6419d352c8",
+      "title": "What a cat's tail tells you before it moves right before the move",
+      "reasons": [
+        "script_word_loop"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "0a81caea663d30cb",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "2969be68665e3e17",
+      "title": "Forests make cooler air under the canopy",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "04a91b736065f974",
+      "title": "Volcanoes create fresh land while lava cools",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "84831aec079367e9",
+      "title": "Mushrooms trade nutrients through underground threads",
+      "reasons": [
+        "opening_retention_gap_risk",
+        "opening promise is not concrete enough",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
     {
       "id": "2babb879b8125bde",
       "title": "Los árboles guardan años lluviosos en sus anillos",
@@ -175,134 +325,641 @@
         "duplicate_angle"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "bfcf7fcbcaaeb0a3",
-      "title": "Tree roots pull water upward like straws",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "c030c31e2e81d298",
-      "title": "Mountain streams carve land faster than you think",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "25ae509b56b8aab8",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "64f33702fb336d01",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "copy_subject_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "e018cdd27f3a4b8d",
-      "title": "Cats measure tight spaces with their whiskers",
-      "reasons": [
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "d441fe03feab45ad",
-      "title": "Elephants cool blood through giant ears",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "292a3c0fff465db3",
-      "title": "Seals can follow wakes with their whiskers",
-      "reasons": [
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "0bcc566dc1c66445",
-      "title": "Monkeys wash food when grit gets annoying",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "91b14503db19a684",
-      "title": "Owls can make a hunt almost silent",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "17f93bd1fd66bd13",
-      "title": "Forests can cool the air below them",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "ccab90908e236139",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "604b520e8fc82e7b",
-      "title": "horses lock eyes with trees",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "6ef126a361a76805",
-      "title": "Rock layers show their timeline inside caves",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "cf086eebf0db9c56",
-      "title": "Why dog play is more serious than it looks before the obvious moment",
-      "reasons": [
-        "script_word_loop"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
+    {
+      "id": "269ea551ffaeabdd",
+      "title": "Birds see ultraviolet patterns we miss",
+      "category": "birds",
+      "publish_score": {
+        "approved": true,
+        "category": "birds",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 86,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ultraviolet",
+            "vision"
+          ],
+          "cue_terms": [
+            "ultraviolet",
+            "vision"
+          ],
+          "frame_hook_bridge": [
+            "vision"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "birds"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 61,
+          "signals": {
+            "comment_potential": 46,
+            "educational_potential": 60,
+            "emotional_potential": 44,
+            "novelty": 69,
+            "replay_potential": 60,
+            "viral_potential": 70,
+            "visual_potential": 69
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 70,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-07-01T23:03:10.007293+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "birds",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ultraviolet",
+            "vision"
+          ],
+          "cue_terms": [
+            "ultraviolet",
+            "vision"
+          ],
+          "frame_hook_bridge": [
+            "vision"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "birds"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "birds",
+        "viewer_promise": "See why birds body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which birds clue should Wild Brief compare next in Body Clues?",
+        "cta_prompt": "Want one animal signal a day? Follow for the next clue.",
+        "curiosity_gap": {
+          "hook": "Why do these birds change after the ultraviolet vision?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.35,
+          "mode": "exploit",
+          "sample_count": 5,
+          "winners": {
+            "hook_pattern": "{subject} can {action} the air {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {subject} {subject} air {subject} the {visual}"
+          },
+          "winning_experiments": {}
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "ultraviolet",
+              "vision"
+            ],
+            "cue_terms": [
+              "ultraviolet",
+              "vision"
+            ],
+            "frame_hook_bridge": [
+              "vision"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "birds"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Birds see colors humans cannot see",
+          "Birds reveal the ultraviolet vision first",
+          "Birds show why the ultraviolet vision matters.",
+          "Birds show why the ultraviolet vision matters.",
+          "Birds show why the ultraviolet vision matters."
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "uv vision",
+          "ending_line": "Which bird fact next?",
+          "final_line": "Now the uv vision at the start makes sense.",
+          "loop_score": 0.818,
+          "opening_line": "Birds reveal the ultraviolet vision first.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "uv vision",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.818,
+        "next_episode_question": "Tomorrow in Body Clues: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ultraviolet",
+            "vision"
+          ],
+          "cue_terms": [
+            "ultraviolet",
+            "vision"
+          ],
+          "frame_hook_bridge": [
+            "vision"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "birds"
+        },
+        "pinned_comment": "Watch the ultraviolet vision again. Tomorrow in Body Clues: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 14.59,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 17,
+          "first_2s_narration": "Birds reveal the ultraviolet vision first Watch closely because many birds see",
+          "first_frame_text": "UV VISION",
+          "first_frame_text_words": 2,
+          "hook": "Birds reveal the ultraviolet vision first.",
+          "hook_specificity": 0.78,
+          "hook_words": 6,
+          "loop_score": 0.818,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "ultraviolet",
+              "vision"
+            ],
+            "cue_terms": [
+              "ultraviolet",
+              "vision"
+            ],
+            "frame_hook_bridge": [
+              "vision"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "birds"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the ultraviolet vision, so viewers rewatch the birds clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 70,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Birds reveal the ultraviolet vision first Watch closely because many birds see",
+          "first_frame_text": "UV VISION",
+          "next_episode_question": "Tomorrow in Body Clues: another animal signal. Is this adaptation, instinct, or intelligence?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Birds behavior through the visible ultraviolet vision.",
+            "series": "Body Clues",
+            "subject": "birds",
+            "terms": [
+              "birds",
+              "ultraviolet vision",
+              "body superpower"
+            ],
+            "title_variant": "Birds behavior: ultraviolet vision explained",
+            "visible_cue": "ultraviolet vision"
+          },
+          "series": "Body Clues",
+          "subject": "birds",
+          "visible_cue": "ultraviolet vision"
+        },
+        "risks": [],
+        "score": 95,
+        "search_intent": {
+          "description_line": "This Short explains Birds behavior through the visible ultraviolet vision.",
+          "series": "Body Clues",
+          "subject": "birds",
+          "terms": [
+            "birds",
+            "ultraviolet vision",
+            "body superpower"
+          ],
+          "title_variant": "Birds behavior: ultraviolet vision explained",
+          "visible_cue": "ultraviolet vision"
+        },
+        "selected_variant": {
+          "hook": "Birds see colors humans cannot see",
+          "score": 77,
+          "thumbnail_text": "UV VISION",
+          "title": "Birds see ultraviolet patterns we miss"
+        },
+        "series": "Body Clues",
+        "series_identity": {
+          "continuity_prompt": "Next in Body Clues: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Body Clues",
+          "series": "Body Clues"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "UV VISION",
+          "ULTRAVIOLET VISION",
+          "WATCH ULTRAVIOLET VISION",
+          "BIRDS CHANGE",
+          "ULTRAVIOLET VISION MATTERS",
+          "ULTRAVIOLET VISION FIRST",
+          "ULTRAVIOLET VISION REVEAL",
+          "ULTRAVIOLET VISION CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Birds see ultraviolet patterns we miss",
+          "Birds use ultraviolet vision before they change",
+          "This ultraviolet vision gives birds away",
+          "Why birds change after one ultraviolet vision",
+          "Birds reveal the answer with ultraviolet vision",
+          "The ultraviolet vision that changes the moment",
+          "Birds make one ultraviolet vision matter",
+          "Birds show the hidden answer in seconds",
+          "Birds: watch this ultraviolet vision",
+          "Watch birds after the ultraviolet vision"
+        ],
+        "top_variants": [
+          {
+            "hook": "Birds see colors humans cannot see",
+            "score": 77,
+            "thumbnail_text": "UV VISION",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Birds reveal the ultraviolet vision first",
+            "score": 77,
+            "thumbnail_text": "UV VISION",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Watch the ultraviolet vision; it explains the behavior",
+            "score": 77,
+            "thumbnail_text": "UV VISION",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Birds see colors humans cannot see",
+            "score": 71,
+            "thumbnail_text": "BIRDS CHANGE",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Birds reveal the ultraviolet vision first",
+            "score": 71,
+            "thumbnail_text": "BIRDS CHANGE",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Watch the ultraviolet vision; it explains the behavior",
+            "score": 71,
+            "thumbnail_text": "BIRDS CHANGE",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Birds see colors humans cannot see",
+            "score": 70,
+            "thumbnail_text": "ULTRAVIOLET VISION",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Birds reveal the ultraviolet vision first",
+            "score": 70,
+            "thumbnail_text": "ULTRAVIOLET VISION",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Watch the ultraviolet vision; it explains the behavior",
+            "score": 70,
+            "thumbnail_text": "ULTRAVIOLET VISION",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Birds see colors humans cannot see",
+            "score": 70,
+            "thumbnail_text": "WATCH ULTRAVIOLET VISION",
+            "title": "Birds see ultraviolet patterns we miss"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
     {
       "id": "e700a90fe9c91e42",
       "title": "Lightning makes air explode into thunder",
@@ -479,7 +1136,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T22:56:42.088912+00:00",
+        "checked_at": "2026-07-01T23:03:10.009778+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1120,7 +1777,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T22:56:42.091358+00:00",
+        "checked_at": "2026-07-01T23:03:10.012160+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1758,7 +2415,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T22:56:42.093898+00:00",
+        "checked_at": "2026-07-01T23:03:10.014736+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2397,7 +3054,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T22:56:42.096131+00:00",
+        "checked_at": "2026-07-01T23:03:10.016903+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3037,7 +3694,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T22:56:42.107069+00:00",
+        "checked_at": "2026-07-01T23:03:10.027414+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3512,6 +4169,634 @@
       }
     },
     {
+      "id": "9f07c71ee1907fc0",
+      "title": "Whales send songs across huge ocean distances",
+      "category": "ocean",
+      "publish_score": {
+        "approved": true,
+        "category": "ocean",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": false,
+          "cue_bridge": [
+            "sound"
+          ],
+          "cue_terms": [
+            "ocean",
+            "song",
+            "sound"
+          ],
+          "frame_hook_bridge": [],
+          "risks": [
+            "frame_text_not_echoed_early",
+            "missing_early_action"
+          ],
+          "score": 72.0,
+          "state": "needs_tightening",
+          "strengths": [
+            "subject_frontloaded",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "whales"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 56,
+          "signals": {
+            "comment_potential": 46,
+            "educational_potential": 60,
+            "emotional_potential": 35,
+            "novelty": 59,
+            "replay_potential": 60,
+            "viral_potential": 62,
+            "visual_potential": 59
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 68,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 50
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "animal_intelligence",
+        "subscriber_conversion": {
+          "comment_probability": 0.207,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.242,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-07-01T23:03:10.337245+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "whales",
+        "commands": [],
+        "opening_retention": {
+          "approved": false,
+          "cue_bridge": [
+            "sound"
+          ],
+          "cue_terms": [
+            "ocean",
+            "song",
+            "sound"
+          ],
+          "frame_hook_bridge": [],
+          "risks": [
+            "frame_text_not_echoed_early",
+            "missing_early_action"
+          ],
+          "score": 72.0,
+          "state": "needs_tightening",
+          "strengths": [
+            "subject_frontloaded",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "whales"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "animal_intelligence",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "whales",
+        "viewer_promise": "See why whales animal intelligence matters."
+      },
+      "packaging": {
+        "community_prompt": "Which whales clue should Wild Brief compare next in Hidden Network?",
+        "cta_prompt": "Want to uncover what is still hidden in the ocean?",
+        "curiosity_gap": {
+          "hook": "Why do these whales change after the ocean song?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [
+            "opening promise needs a clearer visual bridge"
+          ],
+          "recommended_duration_s": 24,
+          "recommended_format": "animal intelligence",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.35,
+          "mode": "exploit",
+          "sample_count": 5,
+          "winners": {
+            "hook_pattern": "{subject} can {action} the air {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {subject} {subject} air {subject} the {visual}"
+          },
+          "winning_experiments": {}
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": false,
+            "cue_bridge": [
+              "sound"
+            ],
+            "cue_terms": [
+              "ocean",
+              "song",
+              "sound"
+            ],
+            "frame_hook_bridge": [],
+            "risks": [
+              "frame_text_not_echoed_early",
+              "missing_early_action"
+            ],
+            "score": 72.0,
+            "state": "needs_tightening",
+            "strengths": [
+              "subject_frontloaded",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "whales"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 84,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Whales can send sound farther than sight",
+          "Whales show why the ocean song matters.",
+          "Whales show why the ocean song matters.",
+          "Whales show why the ocean song matters.",
+          "Whales give away the answer through ocean song"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "ocean song",
+          "ending_line": "Which call should come next?",
+          "final_line": "Now the ocean song at the start makes sense.",
+          "loop_score": 0.792,
+          "opening_line": "Whales can send sound farther than sight.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "ocean song",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.792,
+        "next_episode_question": "Tomorrow in Hidden Network: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+        "opening_retention": {
+          "approved": false,
+          "cue_bridge": [
+            "sound"
+          ],
+          "cue_terms": [
+            "ocean",
+            "song",
+            "sound"
+          ],
+          "frame_hook_bridge": [],
+          "risks": [
+            "frame_text_not_echoed_early",
+            "missing_early_action"
+          ],
+          "score": 72.0,
+          "state": "needs_tightening",
+          "strengths": [
+            "subject_frontloaded",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "whales"
+        },
+        "pinned_comment": "Watch the ocean song again. Tomorrow in Hidden Network: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.39,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 18,
+          "first_2s_narration": "Whales can send sound farther than sight Watch the body rise and",
+          "first_frame_text": "OCEAN SONG",
+          "first_frame_text_words": 2,
+          "hook": "Whales can send sound farther than sight.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.792,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": false,
+            "cue_bridge": [
+              "sound"
+            ],
+            "cue_terms": [
+              "ocean",
+              "song",
+              "sound"
+            ],
+            "frame_hook_bridge": [],
+            "risks": [
+              "frame_text_not_echoed_early",
+              "missing_early_action"
+            ],
+            "score": 72.0,
+            "state": "needs_tightening",
+            "strengths": [
+              "subject_frontloaded",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "whales"
+          },
+          "opening_retention_score": 72.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the ocean song, so viewers rewatch the whales clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 68,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 50
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Whales can send sound farther than sight Watch the body rise and",
+          "first_frame_text": "OCEAN SONG",
+          "next_episode_question": "Tomorrow in Hidden Network: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+          "opening_retention_score": 72.0,
+          "opening_retention_state": "needs_tightening",
+          "search_intent": {
+            "description_line": "This Short explains Whales behavior through the visible ocean song.",
+            "series": "Hidden Network",
+            "subject": "whales",
+            "terms": [
+              "whales",
+              "ocean song",
+              "ocean",
+              "animal intelligence"
+            ],
+            "title_variant": "Whales behavior: ocean song explained",
+            "visible_cue": "ocean song"
+          },
+          "series": "Hidden Network",
+          "subject": "whales",
+          "visible_cue": "ocean song"
+        },
+        "risks": [],
+        "score": 90,
+        "search_intent": {
+          "description_line": "This Short explains Whales behavior through the visible ocean song.",
+          "series": "Hidden Network",
+          "subject": "whales",
+          "terms": [
+            "whales",
+            "ocean song",
+            "ocean",
+            "animal intelligence"
+          ],
+          "title_variant": "Whales behavior: ocean song explained",
+          "visible_cue": "ocean song"
+        },
+        "selected_variant": {
+          "hook": "Start with the ocean song; it changes the scene",
+          "score": 77,
+          "thumbnail_text": "OCEAN SONG",
+          "title": "Whales send songs across huge ocean distances"
+        },
+        "series": "Hidden Network #3",
+        "series_identity": {
+          "continuity_prompt": "Next in Hidden Network: compare this with another force of nature.",
+          "episode": 3,
+          "label": "Hidden Network #3",
+          "series": "Hidden Network"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.207,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.242,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "OCEAN SONG",
+          "WATCH OCEAN SONG",
+          "WHALES CHANGE",
+          "OCEAN SONG MATTERS",
+          "OCEAN SONG FIRST",
+          "OCEAN SONG REVEAL",
+          "OCEAN SONG CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Whales send songs across huge ocean distances",
+          "Whales use ocean song before they change",
+          "This ocean song gives whales away",
+          "Why whales change after one ocean song",
+          "Whales reveal the answer with ocean song",
+          "The ocean song that changes the moment",
+          "Whales make one ocean song matter",
+          "Whales show the hidden answer in seconds",
+          "Whales: watch this ocean song",
+          "Watch whales after the ocean song"
+        ],
+        "top_variants": [
+          {
+            "hook": "Start with the ocean song; it changes the scene",
+            "score": 77,
+            "thumbnail_text": "OCEAN SONG",
+            "title": "Whales send songs across huge ocean distances"
+          },
+          {
+            "hook": "Whales can send sound farther than sight",
+            "score": 75,
+            "thumbnail_text": "OCEAN SONG",
+            "title": "Whales send songs across huge ocean distances"
+          },
+          {
+            "hook": "Watch the ocean song; it explains the behavior",
+            "score": 75,
+            "thumbnail_text": "OCEAN SONG",
+            "title": "Whales send songs across huge ocean distances"
+          },
+          {
+            "hook": "Start with the ocean song; it changes the scene",
+            "score": 70,
+            "thumbnail_text": "WATCH OCEAN SONG",
+            "title": "Whales send songs across huge ocean distances"
+          },
+          {
+            "hook": "Start with the ocean song; it changes the scene",
+            "score": 70,
+            "thumbnail_text": "WHALES CHANGE",
+            "title": "Whales send songs across huge ocean distances"
+          },
+          {
+            "hook": "Start with the ocean song; it changes the scene",
+            "score": 70,
+            "thumbnail_text": "OCEAN SONG MATTERS",
+            "title": "Whales send songs across huge ocean distances"
+          },
+          {
+            "hook": "Start with the ocean song; it changes the scene",
+            "score": 70,
+            "thumbnail_text": "OCEAN SONG FIRST",
+            "title": "Whales send songs across huge ocean distances"
+          },
+          {
+            "hook": "Whales can send sound farther than sight",
+            "score": 69,
+            "thumbnail_text": "WHALES CHANGE",
+            "title": "Whales send songs across huge ocean distances"
+          },
+          {
+            "hook": "Watch the ocean song; it explains the behavior",
+            "score": 69,
+            "thumbnail_text": "WHALES CHANGE",
+            "title": "Whales send songs across huge ocean distances"
+          },
+          {
+            "hook": "Whales can send sound farther than sight",
+            "score": 68,
+            "thumbnail_text": "WATCH OCEAN SONG",
+            "title": "Whales send songs across huge ocean distances"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "d7370c6ab147dba8",
       "title": "Snakes smell the air with their tongues",
       "category": "reptiles",
@@ -3685,7 +4970,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T22:56:42.110739+00:00",
+        "checked_at": "2026-07-01T23:03:10.694701+00:00",
         "mechanism_cluster": "tongue_smell",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4322,7 +5607,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T22:56:42.112294+00:00",
+        "checked_at": "2026-07-01T23:03:10.696654+00:00",
         "mechanism_cluster": "tail_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4956,7 +6241,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T22:56:42.113251+00:00",
+        "checked_at": "2026-07-01T23:03:10.697663+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5413,632 +6698,6 @@
       }
     },
     {
-      "id": "96d15399829a5d39",
-      "title": "Whales send songs across huge ocean distances",
-      "category": "ocean",
-      "publish_score": {
-        "approved": true,
-        "category": "ocean",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": false,
-          "cue_bridge": [
-            "sound"
-          ],
-          "cue_terms": [
-            "ocean",
-            "song",
-            "sound"
-          ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early",
-            "missing_early_action"
-          ],
-          "score": 72.0,
-          "state": "needs_tightening",
-          "strengths": [
-            "subject_frontloaded",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "whales"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 56,
-          "signals": {
-            "comment_potential": 46,
-            "educational_potential": 60,
-            "emotional_potential": 35,
-            "novelty": 59,
-            "replay_potential": 60,
-            "viral_potential": 62,
-            "visual_potential": 59
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 68,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 70,
-            "replay_score": 62,
-            "visual_score": 50
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "animal_intelligence",
-        "subscriber_conversion": {
-          "comment_probability": 0.191,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.222,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-07-01T22:56:42.114755+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 100.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 100.0,
-      "youtube_brain": {
-        "animal": "whales",
-        "commands": [],
-        "opening_retention": {
-          "approved": false,
-          "cue_bridge": [
-            "sound"
-          ],
-          "cue_terms": [
-            "ocean",
-            "song",
-            "sound"
-          ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early",
-            "missing_early_action"
-          ],
-          "score": 72.0,
-          "state": "needs_tightening",
-          "strengths": [
-            "subject_frontloaded",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "whales"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "animal_intelligence",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "subject": "whales",
-        "viewer_promise": "See why whales animal intelligence matters."
-      },
-      "packaging": {
-        "community_prompt": "Which whales clue should Wild Brief compare next in Ocean Mysteries?",
-        "cta_prompt": "Want to uncover what is still hidden in the ocean?",
-        "curiosity_gap": {
-          "hook": "Why do these whales change after the ocean song?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [
-            "opening promise needs a clearer visual bridge"
-          ],
-          "recommended_duration_s": 24,
-          "recommended_format": "animal intelligence",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.35,
-          "mode": "exploit",
-          "sample_count": 5,
-          "winners": {
-            "hook_pattern": "{subject} can {action} the air {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {subject} air {subject} the {visual}"
-          },
-          "winning_experiments": {}
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": false,
-            "cue_bridge": [
-              "sound"
-            ],
-            "cue_terms": [
-              "ocean",
-              "song",
-              "sound"
-            ],
-            "frame_hook_bridge": [],
-            "risks": [
-              "frame_text_not_echoed_early",
-              "missing_early_action"
-            ],
-            "score": 72.0,
-            "state": "needs_tightening",
-            "strengths": [
-              "subject_frontloaded",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "whales"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 84,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Whales can send sound farther than sight",
-          "Whales show why the ocean song matters.",
-          "Whales show why the ocean song matters.",
-          "Whales show why the ocean song matters.",
-          "Whales give away the answer through ocean song"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "ocean song",
-          "ending_line": "Which call should come next?",
-          "final_line": "Now the ocean song at the start makes sense.",
-          "loop_score": 0.792,
-          "opening_line": "Whales can send sound farther than sight.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "ocean song",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.792,
-        "next_episode_question": "Tomorrow in Ocean Mysteries: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-        "opening_retention": {
-          "approved": false,
-          "cue_bridge": [
-            "sound"
-          ],
-          "cue_terms": [
-            "ocean",
-            "song",
-            "sound"
-          ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early",
-            "missing_early_action"
-          ],
-          "score": 72.0,
-          "state": "needs_tightening",
-          "strengths": [
-            "subject_frontloaded",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "whales"
-        },
-        "pinned_comment": "Watch the ocean song again. Tomorrow in Ocean Mysteries: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.39,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 18,
-          "first_2s_narration": "Whales can send sound farther than sight Watch the body rise and",
-          "first_frame_text": "OCEAN SONG",
-          "first_frame_text_words": 2,
-          "hook": "Whales can send sound farther than sight.",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.792,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": false,
-            "cue_bridge": [
-              "sound"
-            ],
-            "cue_terms": [
-              "ocean",
-              "song",
-              "sound"
-            ],
-            "frame_hook_bridge": [],
-            "risks": [
-              "frame_text_not_echoed_early",
-              "missing_early_action"
-            ],
-            "score": 72.0,
-            "state": "needs_tightening",
-            "strengths": [
-              "subject_frontloaded",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "whales"
-          },
-          "opening_retention_score": 72.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the ocean song, so viewers rewatch the whales clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 68,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 70,
-            "replay_score": 62,
-            "visual_score": 50
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Whales can send sound farther than sight Watch the body rise and",
-          "first_frame_text": "OCEAN SONG",
-          "next_episode_question": "Tomorrow in Ocean Mysteries: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-          "opening_retention_score": 72.0,
-          "opening_retention_state": "needs_tightening",
-          "search_intent": {
-            "description_line": "This Short explains Whales behavior through the visible ocean song.",
-            "series": "Ocean Mysteries",
-            "subject": "whales",
-            "terms": [
-              "whales",
-              "ocean song",
-              "ocean",
-              "animal intelligence"
-            ],
-            "title_variant": "Whales behavior: ocean song explained",
-            "visible_cue": "ocean song"
-          },
-          "series": "Ocean Mysteries",
-          "subject": "whales",
-          "visible_cue": "ocean song"
-        },
-        "risks": [],
-        "score": 90,
-        "search_intent": {
-          "description_line": "This Short explains Whales behavior through the visible ocean song.",
-          "series": "Ocean Mysteries",
-          "subject": "whales",
-          "terms": [
-            "whales",
-            "ocean song",
-            "ocean",
-            "animal intelligence"
-          ],
-          "title_variant": "Whales behavior: ocean song explained",
-          "visible_cue": "ocean song"
-        },
-        "selected_variant": {
-          "hook": "Start with the ocean song; it changes the scene",
-          "score": 77,
-          "thumbnail_text": "OCEAN SONG",
-          "title": "Whales send songs across huge ocean distances"
-        },
-        "series": "Ocean Mysteries",
-        "series_identity": {
-          "continuity_prompt": "Next in Ocean Mysteries: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Ocean Mysteries",
-          "series": "Ocean Mysteries"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.191,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.222,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "OCEAN SONG",
-          "WATCH OCEAN SONG",
-          "WHALES CHANGE",
-          "OCEAN SONG MATTERS",
-          "OCEAN SONG FIRST",
-          "OCEAN SONG REVEAL",
-          "OCEAN SONG CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Whales send songs across huge ocean distances",
-          "Whales use ocean song before they change",
-          "This ocean song gives whales away",
-          "Why whales change after one ocean song",
-          "Whales reveal the answer with ocean song",
-          "The ocean song that changes the moment",
-          "Whales make one ocean song matter",
-          "Whales show the hidden answer in seconds",
-          "Whales: watch this ocean song",
-          "Watch whales after the ocean song"
-        ],
-        "top_variants": [
-          {
-            "hook": "Start with the ocean song; it changes the scene",
-            "score": 77,
-            "thumbnail_text": "OCEAN SONG",
-            "title": "Whales send songs across huge ocean distances"
-          },
-          {
-            "hook": "Whales can send sound farther than sight",
-            "score": 75,
-            "thumbnail_text": "OCEAN SONG",
-            "title": "Whales send songs across huge ocean distances"
-          },
-          {
-            "hook": "Watch the ocean song; it explains the behavior",
-            "score": 75,
-            "thumbnail_text": "OCEAN SONG",
-            "title": "Whales send songs across huge ocean distances"
-          },
-          {
-            "hook": "Start with the ocean song; it changes the scene",
-            "score": 70,
-            "thumbnail_text": "WATCH OCEAN SONG",
-            "title": "Whales send songs across huge ocean distances"
-          },
-          {
-            "hook": "Start with the ocean song; it changes the scene",
-            "score": 70,
-            "thumbnail_text": "WHALES CHANGE",
-            "title": "Whales send songs across huge ocean distances"
-          },
-          {
-            "hook": "Start with the ocean song; it changes the scene",
-            "score": 70,
-            "thumbnail_text": "OCEAN SONG MATTERS",
-            "title": "Whales send songs across huge ocean distances"
-          },
-          {
-            "hook": "Start with the ocean song; it changes the scene",
-            "score": 70,
-            "thumbnail_text": "OCEAN SONG FIRST",
-            "title": "Whales send songs across huge ocean distances"
-          },
-          {
-            "hook": "Whales can send sound farther than sight",
-            "score": 69,
-            "thumbnail_text": "WHALES CHANGE",
-            "title": "Whales send songs across huge ocean distances"
-          },
-          {
-            "hook": "Watch the ocean song; it explains the behavior",
-            "score": 69,
-            "thumbnail_text": "WHALES CHANGE",
-            "title": "Whales send songs across huge ocean distances"
-          },
-          {
-            "hook": "Whales can send sound farther than sight",
-            "score": 68,
-            "thumbnail_text": "WATCH OCEAN SONG",
-            "title": "Whales send songs across huge ocean distances"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "55df02bbb2e60851",
       "title": "Seals track fish trails with whiskers",
       "category": "arctic",
@@ -6212,7 +6871,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T22:56:42.116441+00:00",
+        "checked_at": "2026-07-01T23:03:10.738941+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6843,7 +7502,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T22:56:42.118164+00:00",
+        "checked_at": "2026-07-01T23:03:10.741315+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7479,7 +8138,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T22:56:42.119919+00:00",
+        "checked_at": "2026-07-01T23:03:10.743134+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8117,7 +8776,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T22:56:42.121117+00:00",
+        "checked_at": "2026-07-01T23:03:10.744359+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8754,7 +9413,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T22:56:42.123131+00:00",
+        "checked_at": "2026-07-01T23:03:10.746514+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -9386,7 +10045,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T22:56:42.125486+00:00",
+        "checked_at": "2026-07-01T23:03:10.749130+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -10024,7 +10683,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T22:56:42.126689+00:00",
+        "checked_at": "2026-07-01T23:03:10.750368+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -10683,7 +11342,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T22:56:42.128138+00:00",
+        "checked_at": "2026-07-01T23:03:10.751799+00:00",
         "mechanism_cluster": "wing_scales",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -11343,7 +12002,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T22:56:42.129800+00:00",
+        "checked_at": "2026-07-01T23:03:10.753453+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -11988,7 +12647,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T22:56:42.131894+00:00",
+        "checked_at": "2026-07-01T23:03:10.755534+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -12436,654 +13095,6 @@
             "score": 72,
             "thumbnail_text": "WATCH FOSSIL SHAPE",
             "title": "Fossils turn old bones into time clues"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
-      "id": "6568a4ceeb37c856",
-      "title": "Horses remember familiar faces for months",
-      "category": "farm",
-      "publish_score": {
-        "approved": true,
-        "category": "farm",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "face_recognition",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "ears",
-            "eyes",
-            "face"
-          ],
-          "cue_terms": [
-            "ears",
-            "eyes",
-            "face",
-            "memor"
-          ],
-          "frame_hook_bridge": [
-            "face"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "horses"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 56,
-          "signals": {
-            "comment_potential": 62,
-            "educational_potential": 58,
-            "emotional_potential": 35,
-            "novelty": 45,
-            "replay_potential": 64,
-            "viral_potential": 50,
-            "visual_potential": 65
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "animal_memory",
-        "subscriber_conversion": {
-          "comment_probability": 0.223,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.261,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-07-01T22:56:42.133310+00:00",
-        "mechanism_cluster": "face_recognition",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 100.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 100.0,
-      "youtube_brain": {
-        "animal": "horses",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "ears",
-            "eyes",
-            "face"
-          ],
-          "cue_terms": [
-            "ears",
-            "eyes",
-            "face",
-            "memor"
-          ],
-          "frame_hook_bridge": [
-            "face"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "horses"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "animal_memory",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "horses",
-        "viewer_promise": "See why horses animal memory matters."
-      },
-      "packaging": {
-        "community_prompt": "Which horses clue should Wild Brief compare next in Farmyard Surprises?",
-        "cta_prompt": "Want one animal signal a day? Follow for tomorrow's farm clue.",
-        "curiosity_gap": {
-          "hook": "Why do these horses change after the face memory?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "animal memory",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.35,
-          "mode": "exploit",
-          "sample_count": 5,
-          "winners": {
-            "hook_pattern": "{subject} can {action} the air {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {subject} air {subject} the {visual}"
-          },
-          "winning_experiments": {}
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "ears",
-              "eyes",
-              "face"
-            ],
-            "cue_terms": [
-              "ears",
-              "eyes",
-              "face",
-              "memor"
-            ],
-            "frame_hook_bridge": [
-              "face"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "horses"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Horses can remember familiar faces",
-          "Horses show why the face memory matters.",
-          "Horses show why the face memory matters.",
-          "Horses show why the face memory matters.",
-          "Horses give away the answer through face memory"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "face memory",
-          "ending_line": "Which herd animal next?",
-          "final_line": "Now the face memory at the start makes sense.",
-          "loop_score": 0.779,
-          "opening_line": "Horses can remember familiar faces.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "face memory",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.779,
-        "next_episode_question": "Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "ears",
-            "eyes",
-            "face"
-          ],
-          "cue_terms": [
-            "ears",
-            "eyes",
-            "face",
-            "memor"
-          ],
-          "frame_hook_bridge": [
-            "face"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "horses"
-        },
-        "pinned_comment": "Watch the face memory again. Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.29,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 17,
-          "first_2s_narration": "Horses can remember familiar faces Watch the eyes and ears because horses",
-          "first_frame_text": "FACE MEMORY",
-          "first_frame_text_words": 2,
-          "hook": "Horses can remember familiar faces.",
-          "hook_specificity": 0.78,
-          "hook_words": 5,
-          "loop_score": 0.779,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "ears",
-              "eyes",
-              "face"
-            ],
-            "cue_terms": [
-              "ears",
-              "eyes",
-              "face",
-              "memor"
-            ],
-            "frame_hook_bridge": [
-              "face"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "horses"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the face memory, so viewers rewatch the horses clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Horses can remember familiar faces Watch the eyes and ears because horses",
-          "first_frame_text": "FACE MEMORY",
-          "next_episode_question": "Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains Horses behavior through the visible face memory.",
-            "series": "Farmyard Surprises",
-            "subject": "horses",
-            "terms": [
-              "horses",
-              "face memory",
-              "farm",
-              "animal memory"
-            ],
-            "title_variant": "Horses behavior: face memory explained",
-            "visible_cue": "face memory"
-          },
-          "series": "Farmyard Surprises",
-          "subject": "horses",
-          "visible_cue": "face memory"
-        },
-        "risks": [],
-        "score": 96,
-        "search_intent": {
-          "description_line": "This Short explains Horses behavior through the visible face memory.",
-          "series": "Farmyard Surprises",
-          "subject": "horses",
-          "terms": [
-            "horses",
-            "face memory",
-            "farm",
-            "animal memory"
-          ],
-          "title_variant": "Horses behavior: face memory explained",
-          "visible_cue": "face memory"
-        },
-        "selected_variant": {
-          "hook": "Horses can remember familiar faces",
-          "score": 77,
-          "thumbnail_text": "FACE MEMORY",
-          "title": "Horses remember familiar faces for months"
-        },
-        "series": "Farmyard Surprises",
-        "series_identity": {
-          "continuity_prompt": "Next in Farmyard Surprises: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Farmyard Surprises",
-          "series": "Farmyard Surprises"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.223,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.261,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "FACE MEMORY",
-          "WATCH FACE MEMORY",
-          "HORSES REMEMBER",
-          "FACE MEMORY MATTERS",
-          "FACE MEMORY FIRST",
-          "FACE MEMORY REVEAL",
-          "FACE MEMORY CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Horses remember familiar faces for months",
-          "Horses use face memory before they remember",
-          "This face memory gives horses away",
-          "Why horses remember after one face memory",
-          "Horses reveal the answer with face memory",
-          "The face memory that changes the moment",
-          "Horses make one face memory matter",
-          "Horses show the hidden answer in seconds",
-          "Horses: watch this face memory",
-          "Watch horses after the face memory"
-        ],
-        "top_variants": [
-          {
-            "hook": "Horses can remember familiar faces",
-            "score": 77,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Start with the face memory; it changes the scene",
-            "score": 77,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Watch the face memory; it explains the behavior",
-            "score": 76,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Horses can remember familiar faces",
-            "score": 70,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Start with the face memory; it changes the scene",
-            "score": 70,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Horses can remember familiar faces",
-            "score": 70,
-            "thumbnail_text": "HORSES REMEMBER",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Start with the face memory; it changes the scene",
-            "score": 70,
-            "thumbnail_text": "HORSES REMEMBER",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Horses can remember familiar faces",
-            "score": 70,
-            "thumbnail_text": "FACE MEMORY MATTERS",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Start with the face memory; it changes the scene",
-            "score": 70,
-            "thumbnail_text": "FACE MEMORY MATTERS",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Horses can remember familiar faces",
-            "score": 70,
-            "thumbnail_text": "FACE MEMORY FIRST",
-            "title": "Horses remember familiar faces for months"
           }
         ]
       },
