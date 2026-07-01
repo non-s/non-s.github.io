@@ -5,25 +5,80 @@
     24
   ],
   "counts": {
-    "analytics_due": 1,
-    "awaiting_1h": 0,
-    "high_priority": 1,
+    "analytics_due": 0,
+    "awaiting_1h": 1,
+    "high_priority": 0,
     "repair_candidates": 0,
-    "tracked": 2
+    "tracked": 3
   },
-  "generated_at": "2026-07-01T20:11:36.447700+00:00",
+  "generated_at": "2026-07-01T20:15:40.885135+00:00",
   "items": [
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 1.048,
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.045,
+      "category": "geology",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-01T21:12:59.948248+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-02T02:12:59.948248+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-02T20:12:59.948248+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-01T21:12:59.948248+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 94.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Earth Engine",
+      "state": "awaiting_1h",
+      "title": "Mountains reveal weather lines in snow",
+      "uploaded_at": "2026-07-01T20:12:59.948248+00:00",
+      "url": "https://www.youtube.com/shorts/or7TN0gMpWA",
+      "video_id": "or7TN0gMpWA",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 1.116,
       "category": "geology",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-01T20:08:43.611233+00:00",
           "label": "1h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-01T20:08:43.611233+00:00",
-        "label": "1h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-02T01:08:43.611233+00:00",
+        "label": "6h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 24,
+        "state": "pending",
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "high",
+      "priority": "low",
       "series": "Earth Engine",
-      "state": "analytics_due",
+      "state": "watch",
       "title": "Rock layers store ancient environments in stripes",
       "uploaded_at": "2026-07-01T19:08:43.611233+00:00",
       "url": "https://www.youtube.com/shorts/FEAbi2e-yas",
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.991,
+      "age_hours": 2.059,
       "category": "birds",
       "checkpoints": [
         {

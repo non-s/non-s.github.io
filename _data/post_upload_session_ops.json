@@ -2,44 +2,44 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 2,
-      "high": 1,
+      "automation_safe": 3,
+      "high": 0,
       "manual_review": 0,
-      "total": 2,
+      "total": 3,
       "urgent": 0
     },
     "free_only": true,
-    "generated_at": "2026-07-01T20:11:36.447811+00:00",
+    "generated_at": "2026-07-01T20:15:40.885299+00:00",
     "items": [
       {
-        "action_type": "pull_fresh_analytics",
-        "age_hours": 1.048,
+        "action_type": "hold_until_first_hour",
+        "age_hours": 0.045,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "1h",
-        "checkpoint_state": "due",
+        "checkpoint_state": "pending",
         "current_views": 0,
-        "due_at": "2026-07-01T20:08:43.611233+00:00",
+        "due_at": "2026-07-01T21:12:59.948248+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:FEAbi2e-yas:analytics_due:1h",
-        "lane": "measurement",
+        "id": "fresh-upload:or7TN0gMpWA:awaiting_1h:1h",
+        "lane": "observe",
         "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "high",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
+        "opening_retention_score": 94.0,
+        "priority": "low",
+        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
         "series": "Earth Engine",
-        "state": "analytics_due",
+        "state": "awaiting_1h",
         "target_views": 24,
-        "title": "Rock layers store ancient environments in stripes",
-        "url": "https://www.youtube.com/shorts/FEAbi2e-yas",
-        "video_id": "FEAbi2e-yas",
-        "wait_until": "",
-        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
+        "title": "Mountains reveal weather lines in snow",
+        "url": "https://www.youtube.com/shorts/or7TN0gMpWA",
+        "video_id": "or7TN0gMpWA",
+        "wait_until": "2026-07-01T21:12:59.948248+00:00",
+        "why": "The upload is still inside the no-panic observation window."
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 1.991,
+        "age_hours": 2.059,
         "automation_safe": true,
         "category": "birds",
         "checkpoint_label": "6h",
@@ -62,10 +62,36 @@
         "video_id": "dNBmZyaqKXQ",
         "wait_until": "2026-07-02T00:12:09.438871+00:00",
         "why": "No intervention signal is strong enough yet."
+      },
+      {
+        "action_type": "watch_next_checkpoint",
+        "age_hours": 1.116,
+        "automation_safe": true,
+        "category": "geology",
+        "checkpoint_label": "6h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-02T01:08:43.611233+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:FEAbi2e-yas:watch:6h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "low",
+        "recommended_action": "Keep observing through the next checkpoint.",
+        "series": "Earth Engine",
+        "state": "watch",
+        "target_views": 105,
+        "title": "Rock layers store ancient environments in stripes",
+        "url": "https://www.youtube.com/shorts/FEAbi2e-yas",
+        "video_id": "FEAbi2e-yas",
+        "wait_until": "2026-07-02T01:08:43.611233+00:00",
+        "why": "No intervention signal is strong enough yet."
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-01T20:11:36.447700+00:00"
+    "source_generated_at": "2026-07-01T20:15:40.885135+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -74,25 +100,80 @@
       24
     ],
     "counts": {
-      "analytics_due": 1,
-      "awaiting_1h": 0,
-      "high_priority": 1,
+      "analytics_due": 0,
+      "awaiting_1h": 1,
+      "high_priority": 0,
       "repair_candidates": 0,
-      "tracked": 2
+      "tracked": 3
     },
-    "generated_at": "2026-07-01T20:11:36.447700+00:00",
+    "generated_at": "2026-07-01T20:15:40.885135+00:00",
     "items": [
       {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 1.048,
+        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "age_hours": 0.045,
+        "category": "geology",
+        "checkpoints": [
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-01T21:12:59.948248+00:00",
+            "label": "1h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 24,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-02T02:12:59.948248+00:00",
+            "label": "6h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 105,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-02T20:12:59.948248+00:00",
+            "label": "24h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 300,
+            "views": 0
+          }
+        ],
+        "current_views": 0,
+        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "next_checkpoint": {
+          "delta_to_target": 0,
+          "due_at": "2026-07-01T21:12:59.948248+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        "opening_retention_score": 94.0,
+        "opening_retention_state": "retention_ready",
+        "priority": "low",
+        "series": "Earth Engine",
+        "state": "awaiting_1h",
+        "title": "Mountains reveal weather lines in snow",
+        "uploaded_at": "2026-07-01T20:12:59.948248+00:00",
+        "url": "https://www.youtube.com/shorts/or7TN0gMpWA",
+        "video_id": "or7TN0gMpWA",
+        "views_per_hour": 0.0
+      },
+      {
+        "action": "Keep observing through the next checkpoint.",
+        "age_hours": 1.116,
         "category": "geology",
         "checkpoints": [
           {
             "delta_to_target": -24,
             "due_at": "2026-07-01T20:08:43.611233+00:00",
             "label": "1h",
-            "source": "estimated",
-            "state": "due",
+            "source": "observed",
+            "state": "observed",
             "target_views": 24,
             "views": 0
           },
@@ -116,21 +197,21 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+        "hypothesis": "No intervention signal is strong enough yet.",
         "next_checkpoint": {
-          "delta_to_target": -24,
-          "due_at": "2026-07-01T20:08:43.611233+00:00",
-          "label": "1h",
+          "delta_to_target": 0,
+          "due_at": "2026-07-02T01:08:43.611233+00:00",
+          "label": "6h",
           "source": "estimated",
-          "state": "due",
-          "target_views": 24,
+          "state": "pending",
+          "target_views": 105,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "high",
+        "priority": "low",
         "series": "Earth Engine",
-        "state": "analytics_due",
+        "state": "watch",
         "title": "Rock layers store ancient environments in stripes",
         "uploaded_at": "2026-07-01T19:08:43.611233+00:00",
         "url": "https://www.youtube.com/shorts/FEAbi2e-yas",
@@ -139,7 +220,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 1.991,
+        "age_hours": 2.059,
         "category": "birds",
         "checkpoints": [
           {
@@ -200,7 +281,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-01T20:11:36.447839+00:00",
+  "generated_at": "2026-07-01T20:15:40.885336+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
@@ -220,13 +301,24 @@
     {
       "recommendation": {
         "reason": "same series/category/format session bridge",
-        "score": 0.0,
-        "title": "Owls fly silently because feathers break sound",
-        "url": "https://www.youtube.com/shorts/dNBmZyaqKXQ",
-        "video_id": "dNBmZyaqKXQ"
+        "score": 85.0,
+        "title": "Mountains reveal weather lines in snow",
+        "url": "https://www.youtube.com/shorts/or7TN0gMpWA",
+        "video_id": "or7TN0gMpWA"
       },
       "source_title": "Rock layers store ancient environments in stripes",
       "source_video_id": "FEAbi2e-yas"
+    },
+    {
+      "recommendation": {
+        "reason": "same series/category/format session bridge",
+        "score": 85.0,
+        "title": "Rock layers store ancient environments in stripes",
+        "url": "https://www.youtube.com/shorts/FEAbi2e-yas",
+        "video_id": "FEAbi2e-yas"
+      },
+      "source_title": "Mountains reveal weather lines in snow",
+      "source_video_id": "or7TN0gMpWA"
     }
   ],
   "sequel_opportunities": [
@@ -239,13 +331,18 @@
       "prompt": "Make a sequel with a new subject but the same payoff shape: Rock layers store ancient environments in stripes",
       "title": "Rock layers store ancient environments in stripes",
       "video_id": "FEAbi2e-yas"
+    },
+    {
+      "prompt": "Make a sequel with a new subject but the same payoff shape: Mountains reveal weather lines in snow",
+      "title": "Mountains reveal weather lines in snow",
+      "video_id": "or7TN0gMpWA"
     }
   ],
   "session_graph": {
     "action_score_threshold": 55,
-    "coverage": 0.0,
-    "edges": 2,
-    "nodes": 2,
+    "coverage": 0.6667,
+    "edges": 3,
+    "nodes": 3,
     "target_reuse_limit": 2
   }
 }
