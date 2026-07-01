@@ -1,16 +1,16 @@
 {
-  "pulled_at": "2026-07-01T22:11:23.855513+00:00",
+  "pulled_at": "2026-07-01T23:11:07.261309+00:00",
   "metric_scope": "public_video_statistics",
-  "total_views": 0,
-  "shorts_tracked": 5,
+  "total_views": 1,
+  "shorts_tracked": 6,
   "avg_engagement_score": 200.0,
-  "avg_humanity_score": 91.2,
+  "avg_humanity_score": 90.833,
   "humanity_label_counts": {
-    "signature": 5
+    "signature": 6
   },
   "studio_polished_count": 0,
   "studio_state_counts": {
-    "publish_now": 5
+    "publish_now": 6
   },
   "avg_view_percentage": 0.0,
   "avg_view_pct": 0.0,
@@ -20,12 +20,14 @@
   "category_avg_view_pct": {},
   "category_avg_engagement": {
     "birds": 200.0,
+    "earth_from_space": 200.0,
     "forests": 200.0,
     "geology": 200.0,
     "trees": 200.0
   },
   "category_avg_growth_score": {
-    "birds": 200.0,
+    "birds": 201.256,
+    "earth_from_space": 200.0,
     "forests": 200.0,
     "geology": 200.0,
     "trees": 200.0
@@ -33,14 +35,54 @@
   "format_avg_growth_score": {
     "earth_engine": 200.0,
     "hidden_network": 200.0,
-    "single_fact": 200.0
+    "single_fact": 201.256
   },
   "series_avg_engagement": {
     "Earth Engine": 200.0,
     "Hidden Network": 200.0,
+    "Planet Earth": 200.0,
     "Sky Intelligence": 200.0
   },
   "top_performers": [
+    {
+      "video_id": "dNBmZyaqKXQ",
+      "title": "Owls fly silently because feathers break sound",
+      "views": 1,
+      "engagement_score": 200.0,
+      "growth_score": 201.256,
+      "views_per_hour": 0.201,
+      "share_url": "https://www.youtube.com/shorts/dNBmZyaqKXQ",
+      "category": "birds",
+      "story_format": "single_fact",
+      "humanity_score": 100.0,
+      "humanity_label": "signature",
+      "studio_polished": false,
+      "studio_state": "publish_now",
+      "average_view_percentage": 0.0,
+      "view_pct": 0.0,
+      "average_view_duration": 0.0,
+      "subscribers_gained": 0,
+      "visual_profile": "close_subject|feed_bright|high_contrast",
+      "visual_ctr_score": 100,
+      "postmortem": {
+        "story_format": "single_fact",
+        "hook_audit": {
+          "score": 88,
+          "issues": [
+            "animal_not_front_loaded"
+          ]
+        },
+        "title_audit": {
+          "score": 84,
+          "issues": [
+            "animal_not_front_loaded"
+          ]
+        },
+        "likely_causes": [
+          "low_initial_velocity"
+        ]
+      }
+    },
     {
       "video_id": "T0Wl3m_A7So",
       "title": "Forests make cooler air under the canopy",
@@ -182,16 +224,16 @@
       }
     },
     {
-      "video_id": "dNBmZyaqKXQ",
-      "title": "Owls fly silently because feathers break sound",
+      "video_id": "nZ6XIZKnuIE",
+      "title": "Storm clouds reveal a storm's heat engine",
       "views": 0,
       "engagement_score": 200.0,
       "growth_score": 200.0,
       "views_per_hour": 0.0,
-      "share_url": "https://www.youtube.com/shorts/dNBmZyaqKXQ",
-      "category": "birds",
-      "story_format": "single_fact",
-      "humanity_score": 100.0,
+      "share_url": "https://www.youtube.com/shorts/nZ6XIZKnuIE",
+      "category": "earth_from_space",
+      "story_format": "earth_engine",
+      "humanity_score": 89.0,
       "humanity_label": "signature",
       "studio_polished": false,
       "studio_state": "publish_now",
@@ -199,21 +241,17 @@
       "view_pct": 0.0,
       "average_view_duration": 0.0,
       "subscribers_gained": 0,
-      "visual_profile": "close_subject|feed_bright|high_contrast",
-      "visual_ctr_score": 100,
+      "visual_profile": "weak_subject|usable_light|medium_contrast",
+      "visual_ctr_score": 78,
       "postmortem": {
-        "story_format": "single_fact",
+        "story_format": "earth_engine",
         "hook_audit": {
-          "score": 88,
-          "issues": [
-            "animal_not_front_loaded"
-          ]
+          "score": 100,
+          "issues": []
         },
         "title_audit": {
-          "score": 84,
-          "issues": [
-            "animal_not_front_loaded"
-          ]
+          "score": 100,
+          "issues": []
         },
         "likely_causes": []
       }
@@ -221,35 +259,36 @@
   ],
   "learning_profile": {
     "retention_tiers": {
-      "unknown": 5
+      "unknown": 6
     },
     "winning_categories": [
       "birds",
+      "earth_from_space",
       "forests",
       "geology",
       "trees"
     ],
     "winning_formats": [
+      "single_fact",
       "earth_engine",
-      "hidden_network",
-      "single_fact"
+      "hidden_network"
     ],
     "winning_humanity_labels": [
       "signature"
     ],
     "winning_title_keywords": [
+      "silently",
+      "because",
+      "feathers",
+      "break",
+      "sound",
       "forests",
       "cooler",
       "under",
       "canopy",
       "trees",
       "record",
-      "years",
-      "inside",
-      "rings",
-      "mountains",
-      "reveal",
-      "weather"
+      "years"
     ],
     "avoid_repeating_video_ids": [],
     "rules": [
@@ -281,6 +320,12 @@
       },
       "birds": {
         "n": 1,
+        "mean_growth": 201.256,
+        "mean_retention": 0.0,
+        "subscribers_gained": 0
+      },
+      "earth_from_space": {
+        "n": 1,
         "mean_growth": 200.0,
         "mean_retention": 0.0,
         "subscribers_gained": 0
@@ -294,22 +339,22 @@
         "subscribers_gained": 0
       },
       "earth_engine": {
-        "n": 2,
+        "n": 3,
         "mean_growth": 200.0,
         "mean_retention": 0.0,
         "subscribers_gained": 0
       },
       "single_fact": {
         "n": 1,
-        "mean_growth": 200.0,
+        "mean_growth": 201.256,
         "mean_retention": 0.0,
         "subscribers_gained": 0
       }
     },
     "narrator_voice": {
       "en-US-ChristopherNeural": {
-        "n": 5,
-        "mean_growth": 200.0,
+        "n": 6,
+        "mean_growth": 200.209,
         "mean_retention": 0.0,
         "subscribers_gained": 0
       }
@@ -317,12 +362,12 @@
     "hook_style": {
       "shocking_number": {
         "n": 2,
-        "mean_growth": 200.0,
+        "mean_growth": 200.628,
         "mean_retention": 0.0,
         "subscribers_gained": 0
       },
       "outcome_first": {
-        "n": 1,
+        "n": 2,
         "mean_growth": 200.0,
         "mean_retention": 0.0,
         "subscribers_gained": 0
@@ -354,16 +399,16 @@
         "subscribers_gained": 0
       },
       "conversational": {
-        "n": 1,
-        "mean_growth": 200.0,
+        "n": 2,
+        "mean_growth": 200.628,
         "mean_retention": 0.0,
         "subscribers_gained": 0
       }
     },
     "thumbnail_style": {
       "frame_first_side_caption": {
-        "n": 5,
-        "mean_growth": 200.0,
+        "n": 6,
+        "mean_growth": 200.209,
         "mean_retention": 0.0,
         "subscribers_gained": 0
       }
@@ -383,6 +428,12 @@
       },
       "Sky Intelligence": {
         "n": 1,
+        "mean_growth": 201.256,
+        "mean_retention": 0.0,
+        "subscribers_gained": 0
+      },
+      "Planet Earth": {
+        "n": 1,
         "mean_growth": 200.0,
         "mean_retention": 0.0,
         "subscribers_gained": 0
@@ -390,8 +441,8 @@
     },
     "humanity_label": {
       "signature": {
-        "n": 5,
-        "mean_growth": 200.0,
+        "n": 6,
+        "mean_growth": 200.209,
         "mean_retention": 0.0,
         "subscribers_gained": 0
       }
@@ -404,9 +455,9 @@
       {
         "profile": "close_subject|feed_bright|high_contrast",
         "n": 3,
-        "mean_growth_score": 200.0,
+        "mean_growth_score": 200.419,
         "mean_retention": 0.0,
-        "mean_views": 0.0,
+        "mean_views": 0.333,
         "mean_visual_ctr_score": 100.0
       },
       {
@@ -416,6 +467,14 @@
         "mean_retention": 0.0,
         "mean_views": 0.0,
         "mean_visual_ctr_score": 100.0
+      },
+      {
+        "profile": "weak_subject|usable_light|medium_contrast",
+        "n": 1,
+        "mean_growth_score": 200.0,
+        "mean_retention": 0.0,
+        "mean_views": 0.0,
+        "mean_visual_ctr_score": 78.0
       },
       {
         "profile": "subject_rich|dark_or_washed|high_contrast",
@@ -431,8 +490,66 @@
   "winner_loser_map": {
     "winners": {
       "category": {
-        "value": "geology",
+        "value": "birds",
+        "n": 1,
+        "mean_growth": 201.256,
+        "mean_retention": 0.0,
+        "subscribers_gained": 0
+      },
+      "story_format": {
+        "value": "single_fact",
+        "n": 1,
+        "mean_growth": 201.256,
+        "mean_retention": 0.0,
+        "subscribers_gained": 0
+      },
+      "narrator_voice": {
+        "value": "en-US-ChristopherNeural",
+        "n": 6,
+        "mean_growth": 200.209,
+        "mean_retention": 0.0,
+        "subscribers_gained": 0
+      },
+      "hook_style": {
+        "value": "shocking_number",
         "n": 2,
+        "mean_growth": 200.628,
+        "mean_retention": 0.0,
+        "subscribers_gained": 0
+      },
+      "script_tone": {
+        "value": "conversational",
+        "n": 2,
+        "mean_growth": 200.628,
+        "mean_retention": 0.0,
+        "subscribers_gained": 0
+      },
+      "thumbnail_style": {
+        "value": "frame_first_side_caption",
+        "n": 6,
+        "mean_growth": 200.209,
+        "mean_retention": 0.0,
+        "subscribers_gained": 0
+      },
+      "series": {
+        "value": "Sky Intelligence",
+        "n": 1,
+        "mean_growth": 201.256,
+        "mean_retention": 0.0,
+        "subscribers_gained": 0
+      },
+      "humanity_label": {
+        "value": "signature",
+        "n": 6,
+        "mean_growth": 200.209,
+        "mean_retention": 0.0,
+        "subscribers_gained": 0
+      }
+    },
+    "losers": {
+      "category": {
+        "value": "earth_from_space",
+        "n": 1,
         "mean_growth": 200.0,
         "mean_retention": 0.0,
         "subscribers_gained": 0
@@ -440,64 +557,6 @@
       "story_format": {
         "value": "hidden_network",
         "n": 2,
-        "mean_growth": 200.0,
-        "mean_retention": 0.0,
-        "subscribers_gained": 0
-      },
-      "narrator_voice": {
-        "value": "en-US-ChristopherNeural",
-        "n": 5,
-        "mean_growth": 200.0,
-        "mean_retention": 0.0,
-        "subscribers_gained": 0
-      },
-      "hook_style": {
-        "value": "shocking_number",
-        "n": 2,
-        "mean_growth": 200.0,
-        "mean_retention": 0.0,
-        "subscribers_gained": 0
-      },
-      "script_tone": {
-        "value": "analytical",
-        "n": 3,
-        "mean_growth": 200.0,
-        "mean_retention": 0.0,
-        "subscribers_gained": 0
-      },
-      "thumbnail_style": {
-        "value": "frame_first_side_caption",
-        "n": 5,
-        "mean_growth": 200.0,
-        "mean_retention": 0.0,
-        "subscribers_gained": 0
-      },
-      "series": {
-        "value": "Hidden Network",
-        "n": 2,
-        "mean_growth": 200.0,
-        "mean_retention": 0.0,
-        "subscribers_gained": 0
-      },
-      "humanity_label": {
-        "value": "signature",
-        "n": 5,
-        "mean_growth": 200.0,
-        "mean_retention": 0.0,
-        "subscribers_gained": 0
-      }
-    },
-    "losers": {
-      "category": {
-        "value": "birds",
-        "n": 1,
-        "mean_growth": 200.0,
-        "mean_retention": 0.0,
-        "subscribers_gained": 0
-      },
-      "story_format": {
-        "value": "single_fact",
-        "n": 1,
         "mean_growth": 200.0,
         "mean_retention": 0.0,
         "subscribers_gained": 0
@@ -510,14 +569,14 @@
         "subscribers_gained": 0
       },
       "script_tone": {
-        "value": "conversational",
+        "value": "opinionated",
         "n": 1,
         "mean_growth": 200.0,
         "mean_retention": 0.0,
         "subscribers_gained": 0
       },
       "series": {
-        "value": "Sky Intelligence",
+        "value": "Planet Earth",
         "n": 1,
         "mean_growth": 200.0,
         "mean_retention": 0.0,
@@ -528,11 +587,11 @@
   "remake_candidates": [],
   "weekly_brief": {
     "headline": "Scale what retains, remake what nearly worked, keep experiments small.",
-    "views": 0,
+    "views": 1,
     "avg_retention": 0.0,
     "subscribers_gained": 0,
-    "best_category": "geology",
-    "best_format": "hidden_network",
+    "best_category": "birds",
+    "best_format": "single_fact",
     "best_narrator": "en-US-ChristopherNeural",
     "remake_count": 0,
     "production_mix": {
@@ -551,8 +610,8 @@
   "production_recommendations": {
     "hot_categories": [
       "birds",
-      "forests",
-      "geology"
+      "earth_from_space",
+      "forests"
     ],
     "slow_categories": [
       "forests",
@@ -560,67 +619,69 @@
       "trees"
     ],
     "hot_formats": [
+      "single_fact",
       "earth_engine",
-      "hidden_network",
-      "single_fact"
+      "hidden_network"
     ],
     "category_weights": {
       "birds": 1.8,
-      "forests": 1.8,
-      "geology": 1.8,
-      "trees": 1.8
+      "earth_from_space": 1.795,
+      "forests": 1.795,
+      "geology": 1.795,
+      "trees": 1.795
     },
     "format_weights": {
-      "earth_engine": 1.6,
-      "hidden_network": 1.6,
-      "single_fact": 1.6
+      "single_fact": 1.6,
+      "earth_engine": 1.596,
+      "hidden_network": 1.596
     },
     "exploit_mode": true,
     "exploit_keywords": [
+      "silently",
+      "because",
+      "feathers",
+      "break",
+      "sound",
       "forests",
       "cooler",
       "under",
       "canopy",
       "trees",
       "record",
-      "years",
-      "inside",
-      "their",
-      "rings",
-      "mountains",
-      "reveal"
+      "years"
     ],
     "learning_profile": {
       "retention_tiers": {
-        "unknown": 5
+        "unknown": 6
       },
       "winning_categories": [
         "birds",
+        "earth_from_space",
         "forests",
         "geology",
         "trees"
       ],
       "winning_formats": [
+        "single_fact",
         "earth_engine",
-        "hidden_network",
-        "single_fact"
+        "hidden_network"
       ],
       "winning_humanity_labels": [
         "signature"
       ],
       "winning_title_keywords": [
+        "silently",
+        "because",
+        "feathers",
+        "break",
+        "sound",
         "forests",
         "cooler",
         "under",
         "canopy",
         "trees",
         "record",
-        "years",
-        "inside",
-        "rings",
-        "mountains",
-        "reveal",
-        "weather"
+        "years"
       ],
       "avoid_repeating_video_ids": [],
       "rules": [
@@ -652,6 +713,12 @@
         },
         "birds": {
           "n": 1,
+          "mean_growth": 201.256,
+          "mean_retention": 0.0,
+          "subscribers_gained": 0
+        },
+        "earth_from_space": {
+          "n": 1,
           "mean_growth": 200.0,
           "mean_retention": 0.0,
           "subscribers_gained": 0
@@ -665,22 +732,22 @@
           "subscribers_gained": 0
         },
         "earth_engine": {
-          "n": 2,
+          "n": 3,
           "mean_growth": 200.0,
           "mean_retention": 0.0,
           "subscribers_gained": 0
         },
         "single_fact": {
           "n": 1,
-          "mean_growth": 200.0,
+          "mean_growth": 201.256,
           "mean_retention": 0.0,
           "subscribers_gained": 0
         }
       },
       "narrator_voice": {
         "en-US-ChristopherNeural": {
-          "n": 5,
-          "mean_growth": 200.0,
+          "n": 6,
+          "mean_growth": 200.209,
           "mean_retention": 0.0,
           "subscribers_gained": 0
         }
@@ -688,12 +755,12 @@
       "hook_style": {
         "shocking_number": {
           "n": 2,
-          "mean_growth": 200.0,
+          "mean_growth": 200.628,
           "mean_retention": 0.0,
           "subscribers_gained": 0
         },
         "outcome_first": {
-          "n": 1,
+          "n": 2,
           "mean_growth": 200.0,
           "mean_retention": 0.0,
           "subscribers_gained": 0
@@ -725,16 +792,16 @@
           "subscribers_gained": 0
         },
         "conversational": {
-          "n": 1,
-          "mean_growth": 200.0,
+          "n": 2,
+          "mean_growth": 200.628,
           "mean_retention": 0.0,
           "subscribers_gained": 0
         }
       },
       "thumbnail_style": {
         "frame_first_side_caption": {
-          "n": 5,
-          "mean_growth": 200.0,
+          "n": 6,
+          "mean_growth": 200.209,
           "mean_retention": 0.0,
           "subscribers_gained": 0
         }
@@ -754,6 +821,12 @@
         },
         "Sky Intelligence": {
           "n": 1,
+          "mean_growth": 201.256,
+          "mean_retention": 0.0,
+          "subscribers_gained": 0
+        },
+        "Planet Earth": {
+          "n": 1,
           "mean_growth": 200.0,
           "mean_retention": 0.0,
           "subscribers_gained": 0
@@ -761,8 +834,8 @@
       },
       "humanity_label": {
         "signature": {
-          "n": 5,
-          "mean_growth": 200.0,
+          "n": 6,
+          "mean_growth": 200.209,
           "mean_retention": 0.0,
           "subscribers_gained": 0
         }
@@ -775,9 +848,9 @@
         {
           "profile": "close_subject|feed_bright|high_contrast",
           "n": 3,
-          "mean_growth_score": 200.0,
+          "mean_growth_score": 200.419,
           "mean_retention": 0.0,
-          "mean_views": 0.0,
+          "mean_views": 0.333,
           "mean_visual_ctr_score": 100.0
         },
         {
@@ -787,6 +860,14 @@
           "mean_retention": 0.0,
           "mean_views": 0.0,
           "mean_visual_ctr_score": 100.0
+        },
+        {
+          "profile": "weak_subject|usable_light|medium_contrast",
+          "n": 1,
+          "mean_growth_score": 200.0,
+          "mean_retention": 0.0,
+          "mean_views": 0.0,
+          "mean_visual_ctr_score": 78.0
         },
         {
           "profile": "subject_rich|dark_or_washed|high_contrast",
@@ -802,8 +883,66 @@
     "winner_loser_map": {
       "winners": {
         "category": {
-          "value": "geology",
+          "value": "birds",
+          "n": 1,
+          "mean_growth": 201.256,
+          "mean_retention": 0.0,
+          "subscribers_gained": 0
+        },
+        "story_format": {
+          "value": "single_fact",
+          "n": 1,
+          "mean_growth": 201.256,
+          "mean_retention": 0.0,
+          "subscribers_gained": 0
+        },
+        "narrator_voice": {
+          "value": "en-US-ChristopherNeural",
+          "n": 6,
+          "mean_growth": 200.209,
+          "mean_retention": 0.0,
+          "subscribers_gained": 0
+        },
+        "hook_style": {
+          "value": "shocking_number",
           "n": 2,
+          "mean_growth": 200.628,
+          "mean_retention": 0.0,
+          "subscribers_gained": 0
+        },
+        "script_tone": {
+          "value": "conversational",
+          "n": 2,
+          "mean_growth": 200.628,
+          "mean_retention": 0.0,
+          "subscribers_gained": 0
+        },
+        "thumbnail_style": {
+          "value": "frame_first_side_caption",
+          "n": 6,
+          "mean_growth": 200.209,
+          "mean_retention": 0.0,
+          "subscribers_gained": 0
+        },
+        "series": {
+          "value": "Sky Intelligence",
+          "n": 1,
+          "mean_growth": 201.256,
+          "mean_retention": 0.0,
+          "subscribers_gained": 0
+        },
+        "humanity_label": {
+          "value": "signature",
+          "n": 6,
+          "mean_growth": 200.209,
+          "mean_retention": 0.0,
+          "subscribers_gained": 0
+        }
+      },
+      "losers": {
+        "category": {
+          "value": "earth_from_space",
+          "n": 1,
           "mean_growth": 200.0,
           "mean_retention": 0.0,
           "subscribers_gained": 0
@@ -811,64 +950,6 @@
         "story_format": {
           "value": "hidden_network",
           "n": 2,
-          "mean_growth": 200.0,
-          "mean_retention": 0.0,
-          "subscribers_gained": 0
-        },
-        "narrator_voice": {
-          "value": "en-US-ChristopherNeural",
-          "n": 5,
-          "mean_growth": 200.0,
-          "mean_retention": 0.0,
-          "subscribers_gained": 0
-        },
-        "hook_style": {
-          "value": "shocking_number",
-          "n": 2,
-          "mean_growth": 200.0,
-          "mean_retention": 0.0,
-          "subscribers_gained": 0
-        },
-        "script_tone": {
-          "value": "analytical",
-          "n": 3,
-          "mean_growth": 200.0,
-          "mean_retention": 0.0,
-          "subscribers_gained": 0
-        },
-        "thumbnail_style": {
-          "value": "frame_first_side_caption",
-          "n": 5,
-          "mean_growth": 200.0,
-          "mean_retention": 0.0,
-          "subscribers_gained": 0
-        },
-        "series": {
-          "value": "Hidden Network",
-          "n": 2,
-          "mean_growth": 200.0,
-          "mean_retention": 0.0,
-          "subscribers_gained": 0
-        },
-        "humanity_label": {
-          "value": "signature",
-          "n": 5,
-          "mean_growth": 200.0,
-          "mean_retention": 0.0,
-          "subscribers_gained": 0
-        }
-      },
-      "losers": {
-        "category": {
-          "value": "birds",
-          "n": 1,
-          "mean_growth": 200.0,
-          "mean_retention": 0.0,
-          "subscribers_gained": 0
-        },
-        "story_format": {
-          "value": "single_fact",
-          "n": 1,
           "mean_growth": 200.0,
           "mean_retention": 0.0,
           "subscribers_gained": 0
@@ -881,14 +962,14 @@
           "subscribers_gained": 0
         },
         "script_tone": {
-          "value": "conversational",
+          "value": "opinionated",
           "n": 1,
           "mean_growth": 200.0,
           "mean_retention": 0.0,
           "subscribers_gained": 0
         },
         "series": {
-          "value": "Sky Intelligence",
+          "value": "Planet Earth",
           "n": 1,
           "mean_growth": 200.0,
           "mean_retention": 0.0,
@@ -903,7 +984,9 @@
       "moonshot": 15,
       "reason": "early_channel_learning"
     },
-    "double_down_titles": [],
+    "double_down_titles": [
+      "Owls fly silently because feathers break sound"
+    ],
     "next_actions": [
       "Favor categories with the highest growth score for the next production day.",
       "Keep Shorts tight: one strong hook, one animal, one payoff.",
