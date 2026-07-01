@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from scripts.audit_slot_contracts import audit_slot_contracts
+from scripts.reset_day_zero_state import reset_state
 from scripts.upload_intent import build_upload_intent, duplicate_report, duplicate_uploaded, write_upload_intent
 from utils.analytics_schema import build_video_metric_row
 from utils.claim_risk import evaluate_claim_risk
@@ -230,6 +231,29 @@ def test_upload_intent_report_flags_duplicate_titles_and_slots(tmp_path):
     assert len(report["duplicate_uploads"]) == 0
     assert len(report["duplicate_titles"]) == 1
     assert len(report["duplicate_slots"]) == 1
+
+
+def test_day_zero_reset_can_preserve_queue_inventory(tmp_path):
+    queue = {"stories": [{"id": "ready", "title": "Ready story"}]}
+    queue_path = tmp_path / "_data" / "stories_queue.json"
+    queue_path.parent.mkdir(parents=True)
+    queue_path.write_text(json.dumps(queue), encoding="utf-8")
+    intents = tmp_path / "_data" / "upload_intents.jsonl"
+    intents.write_text(
+        json.dumps({"status": "uploaded", "video_id": "stale-video", "idempotency_key": "old"}) + "\n",
+        encoding="utf-8",
+    )
+    videos = tmp_path / "_videos"
+    videos.mkdir()
+    marker = videos / "short-old.done"
+    marker.write_text(json.dumps({"video_id": "stale-video"}), encoding="utf-8")
+
+    report = reset_state(tmp_path, preserve_queue=True)
+
+    assert report["preserve_queue"] is True
+    assert json.loads(queue_path.read_text(encoding="utf-8")) == queue
+    assert intents.read_text(encoding="utf-8") == ""
+    assert not marker.exists()
 
 
 def test_p1_helpers_cover_search_frame_comment_and_voice():

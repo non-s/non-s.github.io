@@ -38,6 +38,7 @@ for i, arg in enumerate(sys.argv):
 LOG_FILE = f"upload_youtube{'' if _LANGUAGE == 'en' else '_' + _LANGUAGE}.log"
 VIDEOS_DIR = Path("_videos") if _LANGUAGE == "en" else Path(f"_videos_{_LANGUAGE}")
 TOKEN_FILE = Path("youtube_token.json") if _LANGUAGE == "en" else Path(f"youtube_token_{_LANGUAGE}.json")
+YOUTUBE_INTELLIGENCE_FILE = Path("_data/youtube_intelligence.json")
 SCOPES = DEFAULT_SCOPES
 RETRIABLE_STATUS_CODES = {500, 502, 503, 504}
 MAX_RETRIES = 6
@@ -122,6 +123,124 @@ def _existing_upload_titles(videos_dir: Path = VIDEOS_DIR) -> set[str]:
             if key:
                 titles.add(key)
     return titles
+
+
+def _existing_upload_ids(videos_dir: Path = VIDEOS_DIR) -> set[str]:
+    video_ids: set[str] = set()
+    for path in sorted(videos_dir.glob("*.done")):
+        try:
+            marker = json.loads(path.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        if isinstance(marker, dict):
+            video_id = str(marker.get("video_id") or "").strip()
+            if video_id:
+                video_ids.add(video_id)
+    return video_ids
+
+
+def _read_json_object(path: Path) -> dict:
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def _normalise_channel_upload(row: dict, *, source: str) -> dict:
+    title = str(row.get("title") or "").strip()
+    video_id = str(row.get("video_id") or row.get("id") or "").strip()
+    if not title or not video_id:
+        return {}
+    return {
+        "video_id": video_id,
+        "title": title,
+        "published_at": str(row.get("published_at") or row.get("publishedAt") or ""),
+        "source": source,
+    }
+
+
+def _upload_title_map(rows: list[dict]) -> dict[str, dict]:
+    by_title: dict[str, dict] = {}
+    for row in rows:
+        key = _title_key(row.get("title") or "")
+        if key and row.get("video_id") and key not in by_title:
+            by_title[key] = row
+    return by_title
+
+
+def _channel_uploads_from_intelligence(path: Path = YOUTUBE_INTELLIGENCE_FILE) -> list[dict]:
+    payload = _read_json_object(path)
+    rows: list[dict] = []
+    sections = (
+        ((payload.get("uploads_inventory") or {}).get("latest_uploads") or [], "youtube_intelligence.uploads"),
+        ((payload.get("video_audit") or {}).get("top_public_videos") or [], "youtube_intelligence.audit"),
+    )
+    for items, source in sections:
+        if not isinstance(items, list):
+            continue
+        for item in items:
+            if not isinstance(item, dict):
+                continue
+            normalised = _normalise_channel_upload(item, source=source)
+            if normalised:
+                rows.append(normalised)
+    return rows
+
+
+def _fetch_recent_channel_uploads(youtube, *, limit: int = 50) -> list[dict]:
+    if youtube is None or not hasattr(youtube, "channels") or not hasattr(youtube, "playlistItems"):
+        return []
+    channel_response = _execute(youtube.channels().list(part="contentDetails", mine=True))
+    channels = channel_response.get("items") or []
+    playlist_id = ""
+    if channels:
+        playlist_id = str(
+            (((channels[0].get("contentDetails") or {}).get("relatedPlaylists") or {}).get("uploads") or "")
+        )
+    if not playlist_id:
+        return []
+    uploads: list[dict] = []
+    page_token = None
+    while len(uploads) < limit:
+        response = _execute(
+            youtube.playlistItems().list(
+                part="snippet,contentDetails",
+                playlistId=playlist_id,
+                maxResults=min(50, limit - len(uploads)),
+                pageToken=page_token,
+            )
+        )
+        for item in response.get("items", []) or []:
+            snippet = item.get("snippet") or {}
+            content = item.get("contentDetails") or {}
+            normalised = _normalise_channel_upload(
+                {
+                    "video_id": content.get("videoId") or item.get("id", ""),
+                    "title": snippet.get("title", ""),
+                    "published_at": content.get("videoPublishedAt") or snippet.get("publishedAt", ""),
+                },
+                source="youtube_api.uploads_playlist",
+            )
+            if normalised:
+                uploads.append(normalised)
+        page_token = response.get("nextPageToken")
+        if not page_token:
+            break
+    return uploads
+
+
+def _existing_channel_upload_titles(
+    youtube=None, *, intelligence_path: Path = YOUTUBE_INTELLIGENCE_FILE
+) -> dict[str, dict]:
+    rows = _channel_uploads_from_intelligence(intelligence_path)
+    try:
+        rows = _fetch_recent_channel_uploads(youtube) + rows
+    except Exception as exc:
+        if _env_bool("YOUTUBE_CHANNEL_DEDUPE_REQUIRED", False):
+            raise RuntimeError(f"YouTube channel duplicate preflight failed: {exc}") from exc
+        log.warning("YouTube channel duplicate preflight unavailable: %s", exc)
+    return _upload_title_map(rows)
 
 
 def _phrase_words(value: str) -> list[str]:
@@ -680,6 +799,69 @@ def _done_marker(video_id: str, meta: dict) -> dict:
     return marker
 
 
+def _record_published_clip(meta: dict, video_id: str) -> None:
+    try:
+        from fetch_animals import record_published_clip
+
+        record_published_clip(
+            pexels_video_id=meta.get("pexels_video_id", ""),
+            story_id=meta.get("story_id", ""),
+            pexels_url=meta.get("pexels_download_url", ""),
+            source_clip_id=meta.get("source_clip_id", ""),
+            source=meta.get("source", ""),
+            source_url=meta.get("source_url", ""),
+            source_license=meta.get("source_license", ""),
+            source_license_evidence=meta.get("source_license_evidence", ""),
+            platform_video_id=video_id,
+        )
+    except Exception as exc:
+        log.warning("published_clips ledger update failed: %s", exc)
+
+
+def _adopt_existing_channel_upload(meta_file: Path, meta: dict, intent: dict, upload: dict) -> None:
+    video_id = str(upload.get("video_id") or "").strip()
+    uploaded_intent = {
+        **intent,
+        "status": "uploaded",
+        "video_id": video_id,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "adopted_from": "youtube_channel_title_duplicate",
+    }
+    meta["upload_intent_key"] = intent["idempotency_key"]
+    meta["upload_intent"] = uploaded_intent
+    meta["youtube_operations"] = {
+        "enabled": False,
+        "reason": "channel_title_duplicate_adopted",
+        "matched_upload": upload,
+    }
+    meta["session_action"] = {
+        "applied": False,
+        "operator_assist": False,
+        "comment_text": "",
+    }
+    write_upload_intent(intent)
+    write_upload_intent(uploaded_intent)
+    marker = _done_marker(video_id, meta)
+    marker["adopted_existing_upload"] = upload
+    marker["media_lifecycle"] = cleanup_meta_artifacts(meta)
+    meta_file.with_suffix(".done").write_text(json.dumps(marker, indent=2), encoding="utf-8")
+    _record_published_clip(meta, video_id)
+    meta_file.unlink(missing_ok=True)
+
+
+def _skip_tracked_channel_duplicate(meta_file: Path, meta: dict, intent: dict, upload: dict) -> None:
+    skipped_intent = {
+        **intent,
+        "status": "skipped_duplicate",
+        "video_id": str(upload.get("video_id") or ""),
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "skip_reason": "channel_title_duplicate_already_tracked",
+    }
+    write_upload_intent(skipped_intent)
+    cleanup_meta_artifacts(meta)
+    meta_file.unlink(missing_ok=True)
+
+
 def _execute(request) -> dict:
     response = request.execute()
     return response if isinstance(response, dict) else {}
@@ -926,6 +1108,8 @@ def main() -> None:
         log.error("Quota guard blocked upload: %s", (quota_row.get("guard") or {}).get("reason"))
         return
     existing_titles = _existing_upload_titles(VIDEOS_DIR)
+    existing_video_ids = _existing_upload_ids(VIDEOS_DIR)
+    channel_upload_titles = _existing_channel_upload_titles(youtube)
     for meta_file in pending:
         try:
             meta = json.loads(meta_file.read_text(encoding="utf-8"))
@@ -949,6 +1133,27 @@ def main() -> None:
                 slot_duplicate.get("video_id"),
             )
             skipped_duplicates += 1
+            continue
+        channel_duplicate = channel_upload_titles.get(_title_key(_youtube_title(meta)))
+        if channel_duplicate and _env_mode_blocks("UPLOAD_CHANNEL_TITLE_DEDUPE_MODE"):
+            intent = build_upload_intent(meta, meta_file=str(meta_file), slot=intent_slot)
+            if str(channel_duplicate.get("video_id") or "") in existing_video_ids:
+                log.warning(
+                    "Skipping duplicate title %r already tracked as %s",
+                    _youtube_title(meta),
+                    channel_duplicate.get("video_id"),
+                )
+                _skip_tracked_channel_duplicate(meta_file, meta, intent, channel_duplicate)
+            else:
+                log.warning(
+                    "Adopting existing channel upload for duplicate title %r as %s",
+                    _youtube_title(meta),
+                    channel_duplicate.get("video_id"),
+                )
+                _adopt_existing_channel_upload(meta_file, meta, intent, channel_duplicate)
+                existing_video_ids.add(str(channel_duplicate.get("video_id") or ""))
+            skipped_duplicates += 1
+            existing_titles.add(_title_key(_youtube_title(meta)))
             continue
         title_dedupe = _apply_unique_upload_title(meta, existing_titles)
         if title_dedupe.get("applied"):
@@ -995,22 +1200,7 @@ def main() -> None:
             json.dumps(marker, indent=2),
             encoding="utf-8",
         )
-        try:
-            from fetch_animals import record_published_clip
-
-            record_published_clip(
-                pexels_video_id=meta.get("pexels_video_id", ""),
-                story_id=meta.get("story_id", ""),
-                pexels_url=meta.get("pexels_download_url", ""),
-                source_clip_id=meta.get("source_clip_id", ""),
-                source=meta.get("source", ""),
-                source_url=meta.get("source_url", ""),
-                source_license=meta.get("source_license", ""),
-                source_license_evidence=meta.get("source_license_evidence", ""),
-                platform_video_id=video_id,
-            )
-        except Exception as exc:
-            log.warning("published_clips ledger update failed: %s", exc)
+        _record_published_clip(meta, video_id)
         meta_file.unlink()
         existing_titles.add(_title_key(_youtube_title(meta)))
         uploaded += 1

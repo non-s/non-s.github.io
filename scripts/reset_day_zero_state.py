@@ -28,7 +28,7 @@ def _write_text(path: Path, text: str = "") -> None:
     path.write_text(text, encoding="utf-8", newline="\n")
 
 
-def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
+def reset_state(root: Path = ROOT, *, dry_run: bool = False, preserve_queue: bool = False) -> dict:
     root = root.resolve()
     stamp = _now()
     deleted: list[str] = []
@@ -50,6 +50,7 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
         "_videos_es-ES/shorts_done.json",
         "_data/published_thumbnails/*.jpg",
         "docs/published_packaging_repair_*.md",
+        "docs/archive/published_packaging_repair_*.md",
         "_data/reports/weekly*.md",
         "_data/analytics/partitions/**/*.jsonl",
     )
@@ -575,6 +576,8 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
             "video_audit": {"top_public_videos": []},
         },
     }
+    if preserve_queue:
+        json_payloads.pop("_data/stories_queue.json", None)
     for rel, payload in json_payloads.items():
         written.append(rel)
         if not dry_run:
@@ -625,6 +628,7 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
         "generated_at": stamp,
         "channel_epoch": EPOCH,
         "dry_run": dry_run,
+        "preserve_queue": preserve_queue,
         "deleted_count": len(deleted),
         "deleted_patterns": list(delete_patterns),
         "written": written,
@@ -638,11 +642,14 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--epoch", default="", help="Override the channel epoch label written into reset artifacts.")
+    parser.add_argument("--preserve-queue", action="store_true", help="Keep _data/stories_queue.json intact.")
     args = parser.parse_args()
     global EPOCH
     if args.epoch.strip():
         EPOCH = args.epoch.strip()
-    print(json.dumps(reset_state(dry_run=args.dry_run), indent=2, ensure_ascii=False))
+    print(
+        json.dumps(reset_state(dry_run=args.dry_run, preserve_queue=args.preserve_queue), indent=2, ensure_ascii=False)
+    )
     return 0
 
 

@@ -189,6 +189,20 @@ def production_quality_issues(story: dict, *, seen_scripts: set[str] | None = No
         script,
     ):
         issues.append("copy_subject_mismatch")
+    public_clip = type(
+        "Clip",
+        (),
+        {
+            "source": story.get("source") or "",
+            "url": story.get("url") or story.get("source_url") or "",
+            "title": story.get("title") or "",
+        },
+    )()
+    public_subject = fetch_animals._subject_from_clip(public_clip, category)
+    if public_subject != subject and not fetch_animals._topic_accepts_subject(topic, public_subject):
+        issues.append("off_topic_visual")
+    if public_subject != subject and not fetch_animals._script_matches_visible_subject(public_subject, script):
+        issues.append("script_subject_mismatch")
     if check_script_starts_with_hook(str(story.get("hook") or ""), script):
         issues.append("script_hook_mismatch")
     script_key = fetch_animals._script_key(script)

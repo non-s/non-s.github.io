@@ -166,6 +166,23 @@ def test_production_quality_uses_source_title_before_ai_title():
     assert "off_topic_visual" in production_quality_issues(story)
 
 
+def test_production_quality_rechecks_public_title_and_url_alignment():
+    story = _story(
+        "stormy-ocean-geology",
+        source="Pexels",
+        source_title="Volcano lava flow close up",
+        title="lava flow: stormachtige oceaan met grote krachtige golven",
+        seo_title="Lava edges reveal the volcano's heat path",
+        hook="Lava edges reveal the volcano's heat path.",
+        script="Lava edges reveal the volcano's heat path. Watch the glowing edge first, because cooling rock shows where the flow is still moving.",
+        thumbnail_text="WATCH THE EDGE",
+        category="geology",
+        source_url="https://www.pexels.com/video/stormachtige-oceaan-met-grote-krachtige-golven-15546522/",
+    )
+
+    assert "off_topic_visual" in production_quality_issues(story)
+
+
 def test_prune_queue_keeps_strong_traceable_candidates_and_quarantines_rest():
     queue = {
         "stories": [
