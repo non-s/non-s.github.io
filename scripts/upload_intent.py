@@ -107,9 +107,7 @@ def duplicate_report(path: Path = INTENTS_FILE) -> dict:
     titles: dict[str, list[dict]] = {}
     slots: dict[str, list[dict]] = {}
     uploaded_rows = [
-        row
-        for row in read_intents(path)
-        if row.get("status") == "uploaded" and str(row.get("video_id") or "").strip()
+        row for row in read_intents(path) if row.get("status") == "uploaded" and str(row.get("video_id") or "").strip()
     ]
     for row in uploaded_rows:
         uploaded.setdefault(str(row.get("idempotency_key") or ""), []).append(row)
