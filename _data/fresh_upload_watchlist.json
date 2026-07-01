@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 1,
+    "analytics_due": 0,
     "awaiting_1h": 1,
-    "high_priority": 1,
+    "high_priority": 0,
     "repair_candidates": 0,
     "tracked": 2
   },
-  "generated_at": "2026-07-01T19:19:59.550778+00:00",
+  "generated_at": "2026-07-01T19:26:47.607544+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.188,
+      "age_hours": 0.301,
       "category": "geology",
       "checkpoints": [
         {
@@ -69,16 +69,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 1.131,
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 1.244,
       "category": "birds",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-01T19:12:09.438871+00:00",
           "label": "1h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -102,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-01T19:12:09.438871+00:00",
-        "label": "1h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-02T00:12:09.438871+00:00",
+        "label": "6h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 24,
+        "state": "pending",
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "high",
+      "priority": "low",
       "series": "Sky Intelligence",
-      "state": "analytics_due",
+      "state": "watch",
       "title": "Owls fly silently because feathers break sound",
       "uploaded_at": "2026-07-01T18:12:09.438871+00:00",
       "url": "https://www.youtube.com/shorts/dNBmZyaqKXQ",

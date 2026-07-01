@@ -3,43 +3,17 @@
   "fresh_upload_actions": {
     "counts": {
       "automation_safe": 2,
-      "high": 1,
+      "high": 0,
       "manual_review": 0,
       "total": 2,
       "urgent": 0
     },
     "free_only": true,
-    "generated_at": "2026-07-01T19:19:59.550889+00:00",
+    "generated_at": "2026-07-01T19:26:47.607660+00:00",
     "items": [
       {
-        "action_type": "pull_fresh_analytics",
-        "age_hours": 1.131,
-        "automation_safe": true,
-        "category": "birds",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "due",
-        "current_views": 0,
-        "due_at": "2026-07-01T19:12:09.438871+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:dNBmZyaqKXQ:analytics_due:1h",
-        "lane": "measurement",
-        "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "high",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
-        "series": "Sky Intelligence",
-        "state": "analytics_due",
-        "target_views": 24,
-        "title": "Owls fly silently because feathers break sound",
-        "url": "https://www.youtube.com/shorts/dNBmZyaqKXQ",
-        "video_id": "dNBmZyaqKXQ",
-        "wait_until": "",
-        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
-      },
-      {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.188,
+        "age_hours": 0.301,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "1h",
@@ -62,10 +36,36 @@
         "video_id": "FEAbi2e-yas",
         "wait_until": "2026-07-01T20:08:43.611233+00:00",
         "why": "The upload is still inside the no-panic observation window."
+      },
+      {
+        "action_type": "watch_next_checkpoint",
+        "age_hours": 1.244,
+        "automation_safe": true,
+        "category": "birds",
+        "checkpoint_label": "6h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-02T00:12:09.438871+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:dNBmZyaqKXQ:watch:6h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "low",
+        "recommended_action": "Keep observing through the next checkpoint.",
+        "series": "Sky Intelligence",
+        "state": "watch",
+        "target_views": 105,
+        "title": "Owls fly silently because feathers break sound",
+        "url": "https://www.youtube.com/shorts/dNBmZyaqKXQ",
+        "video_id": "dNBmZyaqKXQ",
+        "wait_until": "2026-07-02T00:12:09.438871+00:00",
+        "why": "No intervention signal is strong enough yet."
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-01T19:19:59.550778+00:00"
+    "source_generated_at": "2026-07-01T19:26:47.607544+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -74,17 +74,17 @@
       24
     ],
     "counts": {
-      "analytics_due": 1,
+      "analytics_due": 0,
       "awaiting_1h": 1,
-      "high_priority": 1,
+      "high_priority": 0,
       "repair_candidates": 0,
       "tracked": 2
     },
-    "generated_at": "2026-07-01T19:19:59.550778+00:00",
+    "generated_at": "2026-07-01T19:26:47.607544+00:00",
     "items": [
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.188,
+        "age_hours": 0.301,
         "category": "geology",
         "checkpoints": [
           {
@@ -138,16 +138,16 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 1.131,
+        "action": "Keep observing through the next checkpoint.",
+        "age_hours": 1.244,
         "category": "birds",
         "checkpoints": [
           {
             "delta_to_target": -24,
             "due_at": "2026-07-01T19:12:09.438871+00:00",
             "label": "1h",
-            "source": "estimated",
-            "state": "due",
+            "source": "observed",
+            "state": "observed",
             "target_views": 24,
             "views": 0
           },
@@ -171,21 +171,21 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+        "hypothesis": "No intervention signal is strong enough yet.",
         "next_checkpoint": {
-          "delta_to_target": -24,
-          "due_at": "2026-07-01T19:12:09.438871+00:00",
-          "label": "1h",
+          "delta_to_target": 0,
+          "due_at": "2026-07-02T00:12:09.438871+00:00",
+          "label": "6h",
           "source": "estimated",
-          "state": "due",
-          "target_views": 24,
+          "state": "pending",
+          "target_views": 105,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "high",
+        "priority": "low",
         "series": "Sky Intelligence",
-        "state": "analytics_due",
+        "state": "watch",
         "title": "Owls fly silently because feathers break sound",
         "uploaded_at": "2026-07-01T18:12:09.438871+00:00",
         "url": "https://www.youtube.com/shorts/dNBmZyaqKXQ",
@@ -200,7 +200,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-01T19:19:59.550917+00:00",
+  "generated_at": "2026-07-01T19:26:47.607690+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
