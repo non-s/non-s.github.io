@@ -1,10 +1,101 @@
 {
-  "generated_at": "2026-07-01T16:51:22.454589+00:00",
-  "channel_epoch": "channel_reset_2026-07-01",
-  "state": "channel_reset",
-  "pressure_score": 0,
-  "metrics": {},
-  "largest_state_files": [],
-  "migration_lanes": [],
-  "commands": []
+  "state": "watch",
+  "pressure_score": 45,
+  "metrics": {
+    "live_state_files": 194,
+    "data_state_files": 190,
+    "video_done_markers": 1,
+    "live_state_bytes": 2273940,
+    "stories_queue_bytes": 484321,
+    "stories_queue_lines": 13720,
+    "workflow_files": 18,
+    "state_path_refs": 282
+  },
+  "largest_state_files": [
+    {
+      "path": "_data/stories_queue.json",
+      "bytes": 484321,
+      "lines": 13720
+    },
+    {
+      "path": "_data/queue_audit.json",
+      "bytes": 305944,
+      "lines": 9050
+    },
+    {
+      "path": "_data/dry_run_publish.json",
+      "bytes": 224083,
+      "lines": 6498
+    },
+    {
+      "path": "_data/packaging_report.json",
+      "bytes": 192516,
+      "lines": 5490
+    },
+    {
+      "path": "_data/autonomous_growth_plan.json",
+      "bytes": 106325,
+      "lines": 2972
+    },
+    {
+      "path": "_data/next_shorts.json",
+      "bytes": 83944,
+      "lines": 2585
+    },
+    {
+      "path": "_data/youtube_brain_report.json",
+      "bytes": 51563,
+      "lines": 1739
+    },
+    {
+      "path": "_videos/short-2026-07-01-f19e4f14dc57ffe5-2026-07-01.done",
+      "bytes": 47656,
+      "lines": 1719
+    },
+    {
+      "path": "_data/trend_radar.json",
+      "bytes": 36904,
+      "lines": 722
+    },
+    {
+      "path": "_data/broll_cache/pexels-bf43a82b49c7dc33.json",
+      "bytes": 21827,
+      "lines": 1
+    },
+    {
+      "path": "_data/broll_cache/pexels-29c276f5379bca26.json",
+      "bytes": 21763,
+      "lines": 1
+    },
+    {
+      "path": "_data/broll_cache/pexels-899984839b7f9b5b.json",
+      "bytes": 21748,
+      "lines": 1
+    }
+  ],
+  "migration_lanes": [
+    {
+      "lane": "queue_and_upload_intents",
+      "target": "Firebase/Firestore collections keyed by channel, language, state, and publish window",
+      "reason": "Queue and upload state change every run and should not be merged through Git.",
+      "priority": 1
+    },
+    {
+      "lane": "raw_analytics_and_ledgers",
+      "target": "Object storage plus compacted daily snapshots committed to Git",
+      "reason": "Append-heavy JSONL/CSV data creates repository churn and merge pressure.",
+      "priority": 2
+    },
+    {
+      "lane": "workflow_runtime_state",
+      "target": "External run ledger with Git storing reports, not live locks",
+      "reason": "Operational locks, quota ledgers, and markers are control-plane state.",
+      "priority": 3
+    }
+  ],
+  "commands": [
+    "Keep Git for code, dashboards, and reviewed daily/weekly snapshots.",
+    "Move queue, upload intents, raw analytics, quota ledgers, and run markers behind a storage adapter.",
+    "Block new features that add live-state files without a migration lane."
+  ]
 }

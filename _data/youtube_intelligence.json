@@ -1,9 +1,212 @@
 {
-  "generated_at": "2026-07-01T16:51:22.454589+00:00",
-  "channel_epoch": "channel_reset_2026-07-01",
-  "uploaded_video_inventory": [],
-  "video_metadata_statistics": {},
+  "generated_at": "2026-07-01T17:27:21.969625+00:00",
+  "window": {
+    "start_date": "2026-06-04",
+    "end_date": "2026-07-01"
+  },
+  "coverage_score": 80,
+  "quota_strategy": [
+    "Batch videos.list in groups of 50.",
+    "Avoid search.list for routine automation because it is expensive and trend discovery already uses cheaper public sources.",
+    "Run write operations only in publishing workflows; keep intelligence refresh read-only.",
+    "Fail open for unavailable Analytics reports and record the exact missing capability."
+  ],
+  "channel": {
+    "id": "UCWrQoappAOOxsaQK-43MbdQ",
+    "title": "Wild Brief",
+    "custom_url": "@wildbrief-e8o",
+    "published_at": "2024-05-08T11:58:22.022654Z",
+    "uploads_playlist": "UUWrQoappAOOxsaQK-43MbdQ",
+    "subscriber_count": 49,
+    "view_count": 142,
+    "video_count": 2,
+    "privacy_status": "public",
+    "made_for_kids": false,
+    "self_declared_made_for_kids": false
+  },
+  "uploads_inventory": {
+    "uploads_checked": 2,
+    "latest_uploads": [
+      {
+        "video_id": "hcrpZkYqRys",
+        "title": "Chickens keep their view steady while walking",
+        "published_at": "2026-07-01T17:26:31Z",
+        "playlist_item_id": "VVVXclFvYXBwQU9PeHNhUUstNDNNYmRRLmhjcnBaa1lxUnlz"
+      },
+      {
+        "video_id": "66BKanMyX0c",
+        "title": "Chickens keep their view steady while walking",
+        "published_at": "2026-07-01T17:04:49Z",
+        "playlist_item_id": "VVVXclFvYXBwQU9PeHNhUUstNDNNYmRRLjY2Qkthbk15WDBj"
+      }
+    ]
+  },
   "video_audit": {
-    "top_public_videos": []
-  }
+    "videos_checked": 2,
+    "total_views": 0,
+    "total_likes": 0,
+    "total_comments": 2,
+    "private_or_unlisted": 0,
+    "shorts_like": 2,
+    "top_public_videos": [
+      {
+        "video_id": "hcrpZkYqRys",
+        "title": "Chickens keep their view steady while walking",
+        "views": 0,
+        "likes": 0,
+        "comments": 1,
+        "privacy_status": "public",
+        "published_at": "2026-07-01T17:26:31Z"
+      },
+      {
+        "video_id": "66BKanMyX0c",
+        "title": "Chickens keep their view steady while walking",
+        "views": 0,
+        "likes": 0,
+        "comments": 1,
+        "privacy_status": "public",
+        "published_at": "2026-07-01T17:04:49Z"
+      }
+    ]
+  },
+  "capabilities": [
+    {
+      "id": "channel_profile",
+      "api": "youtube.data",
+      "method": "channels.list",
+      "coverage": "implemented",
+      "use": "Channel identity, uploads playlist, subscriber/view/video totals, branding/status audit.",
+      "risk": "read_only",
+      "last_run": "ok"
+    },
+    {
+      "id": "uploaded_video_inventory",
+      "api": "youtube.data",
+      "method": "playlistItems.list",
+      "coverage": "implemented",
+      "use": "Compare YouTube uploads against local .done markers and detect missing local memory.",
+      "risk": "read_only",
+      "last_run": "ok"
+    },
+    {
+      "id": "video_metadata_statistics",
+      "api": "youtube.data",
+      "method": "videos.list",
+      "coverage": "implemented",
+      "use": "Public stats, title/description/tag/status/duration audit for every tracked Short.",
+      "risk": "read_only",
+      "last_run": "ok"
+    },
+    {
+      "id": "comment_threads",
+      "api": "youtube.data",
+      "method": "commentThreads.list",
+      "coverage": "implemented_elsewhere",
+      "use": "Audience questions, requested animals, sentiment and sequel prompts.",
+      "risk": "read_only"
+    },
+    {
+      "id": "video_upload",
+      "api": "youtube.data",
+      "method": "videos.insert",
+      "coverage": "implemented_elsewhere",
+      "use": "Publish generated Shorts.",
+      "risk": "write_high_quota"
+    },
+    {
+      "id": "thumbnail_upload",
+      "api": "youtube.data",
+      "method": "thumbnails.set",
+      "coverage": "implemented_elsewhere",
+      "use": "Upload custom thumbnail when YouTube permits it for the video type/account.",
+      "risk": "write_medium_quota"
+    },
+    {
+      "id": "playlist_management",
+      "api": "youtube.data",
+      "method": "playlists.list,playlistItems.insert",
+      "coverage": "planned_manual_gate",
+      "use": "Series packaging after winners are proven.",
+      "risk": "write_requires_review"
+    },
+    {
+      "id": "comment_replies_moderation",
+      "api": "youtube.data",
+      "method": "comments.insert,comments.setModerationStatus,comments.delete",
+      "coverage": "blocked_by_human_review",
+      "use": "Reply/moderate comments only after explicit operator approval.",
+      "risk": "write_sensitive"
+    },
+    {
+      "id": "channel_branding_update",
+      "api": "youtube.data",
+      "method": "channels.update",
+      "coverage": "blocked_by_human_review",
+      "use": "Branding changes are too sensitive for unattended automation.",
+      "risk": "write_sensitive"
+    }
+  ],
+  "analytics_reports": [
+    {
+      "id": "video_core",
+      "dimensions": "video",
+      "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,likes,comments,shares,subscribersGained",
+      "sort": "-views",
+      "use": "Rank videos by growth, engagement, retention and subscriber conversion.",
+      "status": "ok",
+      "rows": 0,
+      "error": ""
+    },
+    {
+      "id": "daily_channel",
+      "dimensions": "day",
+      "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
+      "sort": "day",
+      "use": "Daily pacing and anomaly detection.",
+      "status": "ok",
+      "rows": 25,
+      "error": ""
+    },
+    {
+      "id": "country",
+      "dimensions": "country",
+      "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
+      "sort": "-views",
+      "use": "Geo demand and publish timing hints.",
+      "status": "ok",
+      "rows": 43,
+      "error": ""
+    },
+    {
+      "id": "traffic_source",
+      "dimensions": "insightTrafficSourceType",
+      "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
+      "sort": "-views",
+      "use": "Detect whether Shorts feed, search, browse, external or channel surfaces are driving growth.",
+      "status": "ok",
+      "rows": 10,
+      "error": ""
+    },
+    {
+      "id": "device_type",
+      "dimensions": "deviceType",
+      "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
+      "sort": "-views",
+      "use": "Tune caption size, pacing and visual density for device mix.",
+      "status": "ok",
+      "rows": 4,
+      "error": ""
+    },
+    {
+      "id": "subscriber_status",
+      "dimensions": "subscribedStatus",
+      "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
+      "sort": "-views",
+      "use": "Separate existing subscriber behavior from discovery behavior.",
+      "status": "ok",
+      "rows": 2,
+      "error": ""
+    }
+  ],
+  "issues": []
 }
