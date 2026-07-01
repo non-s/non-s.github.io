@@ -1,101 +1,10 @@
 {
-  "state": "migration_needed",
-  "pressure_score": 100,
-  "metrics": {
-    "live_state_files": 251,
-    "data_state_files": 146,
-    "video_done_markers": 103,
-    "live_state_bytes": 16249123,
-    "stories_queue_bytes": 3701316,
-    "stories_queue_lines": 0,
-    "workflow_files": 18,
-    "state_path_refs": 286
-  },
-  "largest_state_files": [
-    {
-      "path": "_data/stories_queue.json",
-      "bytes": 3701316,
-      "lines": 0
-    },
-    {
-      "path": "_data/repair_queue.jsonl",
-      "bytes": 1517324,
-      "lines": 87
-    },
-    {
-      "path": "_data/rejected_queue.jsonl",
-      "bytes": 1245257,
-      "lines": 1566
-    },
-    {
-      "path": "_data/early_performance.json",
-      "bytes": 926416,
-      "lines": 35887
-    },
-    {
-      "path": "_data/analytics/api_quota_ledger.jsonl",
-      "bytes": 794999,
-      "lines": 1249
-    },
-    {
-      "path": "_data/provider_stats.jsonl",
-      "bytes": 732369,
-      "lines": 9422
-    },
-    {
-      "path": "_data/queue_audit.json",
-      "bytes": 452904,
-      "lines": 13360
-    },
-    {
-      "path": "_data/publish_slot_decisions.jsonl",
-      "bytes": 408021,
-      "lines": 534
-    },
-    {
-      "path": "_data/packaging_report.json",
-      "bytes": 283114,
-      "lines": 8038
-    },
-    {
-      "path": "_data/originality_pack.jsonl",
-      "bytes": 209315,
-      "lines": 275
-    },
-    {
-      "path": "_data/autonomous_growth_plan.json",
-      "bytes": 155866,
-      "lines": 4309
-    },
-    {
-      "path": "_data/fact_sources.jsonl",
-      "bytes": 144987,
-      "lines": 464
-    }
-  ],
-  "migration_lanes": [
-    {
-      "lane": "queue_and_upload_intents",
-      "target": "Firebase/Firestore collections keyed by channel, language, state, and publish window",
-      "reason": "Queue and upload state change every run and should not be merged through Git.",
-      "priority": 1
-    },
-    {
-      "lane": "raw_analytics_and_ledgers",
-      "target": "Object storage plus compacted daily snapshots committed to Git",
-      "reason": "Append-heavy JSONL/CSV data creates repository churn and merge pressure.",
-      "priority": 2
-    },
-    {
-      "lane": "workflow_runtime_state",
-      "target": "External run ledger with Git storing reports, not live locks",
-      "reason": "Operational locks, quota ledgers, and markers are control-plane state.",
-      "priority": 3
-    }
-  ],
-  "commands": [
-    "Keep Git for code, dashboards, and reviewed daily/weekly snapshots.",
-    "Move queue, upload intents, raw analytics, quota ledgers, and run markers behind a storage adapter.",
-    "Block new features that add live-state files without a migration lane."
-  ]
+  "generated_at": "2026-07-01T16:51:22.454589+00:00",
+  "channel_epoch": "channel_reset_2026-07-01",
+  "state": "channel_reset",
+  "pressure_score": 0,
+  "metrics": {},
+  "largest_state_files": [],
+  "migration_lanes": [],
+  "commands": []
 }

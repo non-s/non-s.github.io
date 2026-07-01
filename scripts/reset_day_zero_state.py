@@ -5,11 +5,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-EPOCH = "pexels_day_zero_2026-06-15"
+EPOCH = os.environ.get("CHANNEL_EPOCH") or f"channel_reset_{datetime.now(timezone.utc).date().isoformat()}"
 SELECTION_RULE = "autonomy_priority with retention lift, then queue_score and publish_score"
 
 
@@ -37,9 +38,16 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
         "_videos/*.done",
         "_videos/*.roundup",
         "_videos/shorts_done.json",
+        "_videos/shorts_done_es.json",
         "_videos_pt-BR/*.done",
         "_videos_pt-BR/*.roundup",
         "_videos_pt-BR/shorts_done.json",
+        "_videos_es-MX/*.done",
+        "_videos_es-MX/*.roundup",
+        "_videos_es-MX/shorts_done.json",
+        "_videos_es-ES/*.done",
+        "_videos_es-ES/*.roundup",
+        "_videos_es-ES/shorts_done.json",
         "_data/published_thumbnails/*.jpg",
         "docs/published_packaging_repair_*.md",
         "_data/reports/weekly*.md",
@@ -123,8 +131,45 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
             "pending": 0,
             "actions": [],
         },
+        "_data/ai_provider_report.json": {
+            "generated_at": stamp,
+            "channel_epoch": EPOCH,
+            "default_chain": [],
+            "json_chain": [],
+            "rewrite_chain": [],
+            "longform_chain": [],
+            "providers": [],
+        },
         "_data/category_recovery.json": {"generated_at": stamp, "channel_epoch": EPOCH, "plans": []},
         "_data/category_recovery_rewriter.json": {"generated_at": stamp, "channel_epoch": EPOCH, "rewritten": []},
+        "_data/comment_idea_clusters.json": {
+            "generated_at": stamp,
+            "channel_epoch": EPOCH,
+            "clusters": [],
+        },
+        "_data/comment_replies.json": {
+            "generated_at": stamp,
+            "channel_epoch": EPOCH,
+            "replied_comment_ids": [],
+            "replies": [],
+        },
+        "_data/control_plane_report.json": {
+            "generated_at": stamp,
+            "channel_epoch": EPOCH,
+            "state": "channel_reset",
+            "pressure_score": 0,
+            "metrics": {},
+            "largest_state_files": [],
+            "migration_lanes": [],
+            "commands": [],
+        },
+        "_data/data_quality_report.json": {
+            "generated_at": stamp,
+            "channel_epoch": EPOCH,
+            "status": "channel_reset",
+            "metrics": {},
+            "issues": [],
+        },
         "_data/analytics/comments.json": {
             "generated_at": stamp,
             "channel_epoch": EPOCH,
@@ -158,6 +203,24 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
             "production_recommendations": {},
             "top_public_videos": [],
             "remake_candidates": [],
+        },
+        "_data/analytics/api_quota_latest.json": {
+            "timestamp_utc": stamp,
+            "channel_epoch": EPOCH,
+            "quota_day_pt": "",
+            "workflow": "channel_reset",
+            "calls": {},
+            "estimated_daily_calls": {},
+            "estimated_units": 0,
+            "guard": {
+                "enabled": True,
+                "mode": "block",
+                "block": False,
+                "spent_today": 0,
+                "projected_today": 0,
+                "projected_ratio": 0,
+                "reason": "channel_reset",
+            },
         },
         "_data/analytics/legacy_backfill.json": {
             "generated_at": stamp,
@@ -243,6 +306,11 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
             "sequence_candidates": [],
             "remake_candidates": [],
         },
+        "_data/experiments_recommendations.json": {
+            "generated_at": stamp,
+            "channel_epoch": EPOCH,
+            "experiments": {},
+        },
         "_data/fan_growth.json": {"generated_at": stamp, "channel_epoch": EPOCH, "ranked_videos": []},
         "_data/fact_ledger.json": {
             "generated_at": stamp,
@@ -259,6 +327,54 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
             "channel_epoch": EPOCH,
             "winning_title_patterns": {},
             "winning_hook_patterns": {},
+        },
+        "_data/frame_zero_preflight.json": {
+            "generated_at": stamp,
+            "channel_epoch": EPOCH,
+            "floor": 82.0,
+            "pending": 0,
+            "ready": 0,
+            "held": 0,
+            "rewritten": 0,
+            "average_opening_score": 0,
+            "render_gate": "channel_reset",
+            "counts": {},
+            "items": [],
+        },
+        "_data/legacy_copy_sanitize_report.json": {
+            "generated_at": stamp,
+            "channel_epoch": EPOCH,
+            "items": [],
+        },
+        "_data/level_system.json": {
+            "generated_at": stamp,
+            "channel_epoch": EPOCH,
+            "mode": "free_resources_only",
+            "status": "channel_reset",
+            "overall_progress_pct": 0,
+            "current_level": {
+                "number": 1,
+                "name": "Clean restart",
+                "mission": "Rebuild the channel from an empty public inventory.",
+                "status": "current",
+                "progress_pct": 0,
+            },
+            "boss": {},
+            "next_upgrade": {},
+            "action_plan": [],
+            "metrics": {"published_count": 0, "views_28d": 0, "comments_sampled": 0},
+            "top_blockers": [],
+        },
+        "_data/media_lifecycle_report.json": {
+            "generated_at": stamp,
+            "channel_epoch": EPOCH,
+            "items": [],
+            "deleted": [],
+        },
+        "_data/narrator_report.json": {
+            "generated_at": stamp,
+            "channel_epoch": EPOCH,
+            "items": [],
         },
         "_data/next_session_actions.json": {
             "generated_at": stamp,
@@ -338,7 +454,29 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
             "items": [],
             "mechanism_clusters": {},
         },
+        "_data/queue_history_repair.json": {
+            "generated_at": stamp,
+            "channel_epoch": EPOCH,
+            "items": [],
+        },
+        "_data/queue_prune_report.json": {
+            "generated_at": stamp,
+            "channel_epoch": EPOCH,
+            "before": 0,
+            "after": 0,
+            "removed": [],
+        },
         "_data/related_video_recommendations.json": {
+            "generated_at": stamp,
+            "channel_epoch": EPOCH,
+            "items": [],
+        },
+        "_data/reject_report.json": {
+            "generated_at": stamp,
+            "channel_epoch": EPOCH,
+            "items": [],
+        },
+        "_data/render_bench.json": {
             "generated_at": stamp,
             "channel_epoch": EPOCH,
             "items": [],
@@ -348,6 +486,12 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
             "channel_epoch": EPOCH,
             "state": "day_zero_pexels_restart",
             "lanes": [],
+        },
+        "_data/security_manifest.json": {
+            "generated_at": stamp,
+            "channel_epoch": EPOCH,
+            "items": [],
+            "issues": [],
         },
         "_data/seo_metadata_lint.json": {
             "generated_at": stamp,
@@ -373,7 +517,42 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
             "action_score_threshold": 55,
         },
         "_data/success_rewriter.json": {"generated_at": stamp, "channel_epoch": EPOCH, "items": []},
+        "_data/trend_radar.json": {
+            "generated_at": stamp,
+            "channel_epoch": EPOCH,
+            "trends": [],
+            "blocked": [],
+        },
+        "_data/trends/freshness_report.json": {
+            "generated_at": stamp,
+            "channel_epoch": EPOCH,
+            "enabled": True,
+            "pending": 0,
+            "scored": 0,
+            "coverage": 0,
+            "average_freshness_score": 0,
+            "stale": [],
+            "top_fresh": [],
+        },
+        "_data/trends/topic_candidates.json": {
+            "generated_at": stamp,
+            "channel_epoch": EPOCH,
+            "items": [],
+        },
+        "_data/underpowered_tests.json": {
+            "generated_at": stamp,
+            "channel_epoch": EPOCH,
+            "active_axes": [],
+            "underpowered_tests": [],
+            "recommended_next_axes": [],
+            "low_volume": True,
+        },
         "_data/visual_qa_backfill.json": {"generated_at": stamp, "channel_epoch": EPOCH, "items": []},
+        "_data/visual_quality_report.json": {
+            "generated_at": stamp,
+            "channel_epoch": EPOCH,
+            "items": [],
+        },
         "_data/winner_patterns.json": {"generated_at": stamp, "channel_epoch": EPOCH, "patterns": []},
         "_data/winner_sequel_factory.json": {
             "generated_at": stamp,
@@ -412,6 +591,7 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
         "_data/analytics/variant_assignments.jsonl",
         "_data/analytics/video_core_daily.jsonl",
         "_data/analytics/video_metrics.jsonl",
+        "_data/analytics/api_quota_ledger.jsonl",
         "_data/channel_memory.jsonl",
         "_data/repair_queue.jsonl",
         "_data/rejected_queue.jsonl",
@@ -419,6 +599,8 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
         "_data/fact_sources.jsonl",
         "_data/ai_cache.jsonl",
         "_data/provider_stats.jsonl",
+        "_data/quota_log.jsonl",
+        "_data/trends/trend_signals.jsonl",
     )
     for rel in jsonl_files:
         written.append(rel)
@@ -455,7 +637,11 @@ def reset_state(root: Path = ROOT, *, dry_run: bool = False) -> dict:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--epoch", default="", help="Override the channel epoch label written into reset artifacts.")
     args = parser.parse_args()
+    global EPOCH
+    if args.epoch.strip():
+        EPOCH = args.epoch.strip()
     print(json.dumps(reset_state(dry_run=args.dry_run), indent=2, ensure_ascii=False))
     return 0
 

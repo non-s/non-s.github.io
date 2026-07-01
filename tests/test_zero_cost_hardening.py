@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from scripts.audit_slot_contracts import audit_slot_contracts
-from scripts.upload_intent import build_upload_intent, duplicate_uploaded, write_upload_intent
+from scripts.upload_intent import build_upload_intent, duplicate_report, duplicate_uploaded, write_upload_intent
 from utils.analytics_schema import build_video_metric_row
 from utils.claim_risk import evaluate_claim_risk
 from utils.comment_policy import classify_comment
@@ -202,6 +202,34 @@ def test_upload_intent_records_prepared_and_detects_uploaded_duplicates(tmp_path
     assert write_upload_intent(uploaded, path)["written"] is True
     assert write_upload_intent(uploaded, path)["written"] is False
     assert duplicate_uploaded(prepared, path)["video_id"] == "yt123"
+
+
+def test_upload_intent_report_flags_duplicate_titles_and_slots(tmp_path):
+    path = tmp_path / "upload_intents.jsonl"
+    rows = [
+        {
+            "idempotency_key": "one",
+            "status": "uploaded",
+            "title": "Plants turn sunlight into stored sugar",
+            "slot": "2026-06-28T14:00Z",
+            "video_id": "video-a",
+        },
+        {
+            "idempotency_key": "two",
+            "status": "uploaded",
+            "title": "Plants turn sunlight into stored sugar",
+            "slot": "2026-06-28T14:00Z",
+            "video_id": "video-b",
+        },
+    ]
+    path.write_text("\n".join(json.dumps(row) for row in rows) + "\n", encoding="utf-8")
+
+    report = duplicate_report(path)
+
+    assert report["uploaded_rows"] == 2
+    assert len(report["duplicate_uploads"]) == 0
+    assert len(report["duplicate_titles"]) == 1
+    assert len(report["duplicate_slots"]) == 1
 
 
 def test_p1_helpers_cover_search_frame_comment_and_voice():

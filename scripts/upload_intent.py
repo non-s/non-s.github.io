@@ -104,11 +104,31 @@ def write_upload_intent(intent: dict, path: Path = INTENTS_FILE) -> dict:
 
 def duplicate_report(path: Path = INTENTS_FILE) -> dict:
     uploaded: dict[str, list[dict]] = {}
-    for row in read_intents(path):
-        if row.get("status") == "uploaded":
-            uploaded.setdefault(str(row.get("idempotency_key") or ""), []).append(row)
-    duplicates = [rows for rows in uploaded.values() if len({r.get("video_id") for r in rows}) > 1]
-    return {"uploaded_keys": len(uploaded), "duplicate_uploads": duplicates}
+    titles: dict[str, list[dict]] = {}
+    slots: dict[str, list[dict]] = {}
+    uploaded_rows = [
+        row
+        for row in read_intents(path)
+        if row.get("status") == "uploaded" and str(row.get("video_id") or "").strip()
+    ]
+    for row in uploaded_rows:
+        uploaded.setdefault(str(row.get("idempotency_key") or ""), []).append(row)
+        title = str(row.get("title") or "").strip().lower()
+        slot = str(row.get("slot") or "").strip()
+        if title:
+            titles.setdefault(title, []).append(row)
+        if slot:
+            slots.setdefault(slot, []).append(row)
+    duplicate_uploads = [rows for rows in uploaded.values() if len({r.get("video_id") for r in rows}) > 1]
+    duplicate_titles = [rows for rows in titles.values() if len({r.get("video_id") for r in rows}) > 1]
+    duplicate_slots = [rows for rows in slots.values() if len({r.get("video_id") for r in rows}) > 1]
+    return {
+        "uploaded_keys": len(uploaded),
+        "uploaded_rows": len(uploaded_rows),
+        "duplicate_uploads": duplicate_uploads,
+        "duplicate_titles": duplicate_titles,
+        "duplicate_slots": duplicate_slots,
+    }
 
 
 def main() -> int:
@@ -117,12 +137,13 @@ def main() -> int:
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
     report = duplicate_report(Path(args.path))
+    duplicate_count = sum(len(report[key]) for key in ("duplicate_uploads", "duplicate_titles", "duplicate_slots"))
     print(
         json.dumps(report, sort_keys=True, ensure_ascii=False)
         if args.json
-        else f"upload_intent: {len(report['duplicate_uploads'])} duplicates"
+        else f"upload_intent: {duplicate_count} duplicate group(s)"
     )
-    return 1 if report["duplicate_uploads"] else 0
+    return 1 if duplicate_count else 0
 
 
 if __name__ == "__main__":
