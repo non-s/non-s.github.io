@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-01T21:27:53.244341+00:00",
+  "generated_at": "2026-07-01T21:48:49.255556+00:00",
   "pending": 49,
   "states": {
     "rewrite": 22,
@@ -8,8 +8,8 @@
   "mechanism_clusters": {
     "scent_map": 3,
     "face_recognition": 2,
-    "tail_signal": 1,
     "tongue_smell": 1,
+    "tail_signal": 1,
     "ear_signal": 1,
     "wing_scales": 1,
     "call_signal": 1
@@ -18,26 +18,15 @@
     "approved": 49
   },
   "prune_summary": {
-    "pending_before": 71,
+    "pending_before": 49,
     "pending_after": 49,
-    "rejected": 22,
-    "repair_needed": 1,
-    "repaired": 12,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 4,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 49,
-      "off_topic_visual": 11,
       "editor_in_chief:script quality gate blocked the narration": 10,
-      "duplicate_script": 9,
-      "duplicate_angle": 7,
-      "duplicate_title": 6,
       "editor_in_chief:subject repeated inside 3-day cooldown": 6,
-      "script_hook_mismatch": 2,
-      "non_animal_body_language": 1,
-      "no_action_promise": 1,
-      "missing_action_word": 1,
-      "missing_visible_cue": 1,
-      "queue_score_reject": 1,
-      "copy_subject_mismatch": 1,
       "editor_in_chief:editorial score 46 is below 62": 1
     }
   },
@@ -495,7 +484,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T21:27:07.642112+00:00",
+        "checked_at": "2026-07-01T21:48:13.765917+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -963,642 +952,6 @@
       }
     },
     {
-      "id": "07eeac3e7fffa982",
-      "title": "Whales slap the surface to warn the pod",
-      "category": "ocean",
-      "publish_score": {
-        "approved": true,
-        "category": "ocean",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 86,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "tail_signal",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "slap",
-            "tail"
-          ],
-          "cue_terms": [
-            "slap",
-            "tail"
-          ],
-          "frame_hook_bridge": [
-            "slap",
-            "tail"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "whales"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 65,
-          "signals": {
-            "comment_potential": 54,
-            "educational_potential": 66,
-            "emotional_potential": 35,
-            "novelty": 69,
-            "replay_potential": 82,
-            "viral_potential": 67,
-            "visual_potential": 69
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 76,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "animal_intelligence",
-        "subscriber_conversion": {
-          "comment_probability": 0.191,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.222,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-07-01T21:27:07.643560+00:00",
-        "mechanism_cluster": "tail_signal",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 100.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 100.0,
-      "youtube_brain": {
-        "animal": "whales",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "slap",
-            "tail"
-          ],
-          "cue_terms": [
-            "slap",
-            "tail"
-          ],
-          "frame_hook_bridge": [
-            "slap",
-            "tail"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "whales"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "animal_intelligence",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "whales",
-        "viewer_promise": "See why whales animal intelligence matters."
-      },
-      "packaging": {
-        "community_prompt": "Which whales clue should Wild Brief compare next in Body Clues?",
-        "cta_prompt": "Want to uncover what is still hidden in the ocean?",
-        "curiosity_gap": {
-          "hook": "Why do these whales change after the tail slap?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "animal intelligence",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.35,
-          "mode": "exploit",
-          "sample_count": 4,
-          "winners": {
-            "hook_pattern": "{subject} can {action} the air {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {subject} air {subject} the {visual}"
-          },
-          "winning_experiments": {}
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "slap",
-              "tail"
-            ],
-            "cue_terms": [
-              "slap",
-              "tail"
-            ],
-            "frame_hook_bridge": [
-              "slap",
-              "tail"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "whales"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Whales can turn one splash into a warning",
-          "Whales reveal the tail slap first",
-          "Whales show why the tail slap matters.",
-          "Whales show why the tail slap matters.",
-          "Whales show why the tail slap matters."
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "tail slap",
-          "ending_line": "Which ocean signal should we decode next?",
-          "final_line": "Now the tail slap at the start makes sense.",
-          "loop_score": 0.78,
-          "opening_line": "Whales reveal the tail slap first.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "tail slap",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.78,
-        "next_episode_question": "Tomorrow in Body Clues: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "slap",
-            "tail"
-          ],
-          "cue_terms": [
-            "slap",
-            "tail"
-          ],
-          "frame_hook_bridge": [
-            "slap",
-            "tail"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "whales"
-        },
-        "pinned_comment": "Watch the tail slap again. Tomorrow in Body Clues: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 16.2,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 15,
-          "first_2s_narration": "Whales reveal the tail slap first Watch closely because tail slap sends",
-          "first_frame_text": "TAIL SLAP",
-          "first_frame_text_words": 2,
-          "hook": "Whales reveal the tail slap first.",
-          "hook_specificity": 0.78,
-          "hook_words": 6,
-          "loop_score": 0.78,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "slap",
-              "tail"
-            ],
-            "cue_terms": [
-              "slap",
-              "tail"
-            ],
-            "frame_hook_bridge": [
-              "slap",
-              "tail"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "whales"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the tail slap, so viewers rewatch the whales clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 76,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Whales reveal the tail slap first Watch closely because a tail slap",
-          "first_frame_text": "TAIL SLAP",
-          "next_episode_question": "Tomorrow in Body Clues: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains Whales behavior through the visible tail slap.",
-            "series": "Body Clues",
-            "subject": "whales",
-            "terms": [
-              "whales",
-              "tail slap",
-              "ocean",
-              "animal intelligence"
-            ],
-            "title_variant": "Whales behavior: tail slap explained",
-            "visible_cue": "tail slap"
-          },
-          "series": "Body Clues",
-          "subject": "whales",
-          "visible_cue": "tail slap"
-        },
-        "risks": [],
-        "score": 97,
-        "search_intent": {
-          "description_line": "This Short explains Whales behavior through the visible tail slap.",
-          "series": "Body Clues",
-          "subject": "whales",
-          "terms": [
-            "whales",
-            "tail slap",
-            "ocean",
-            "animal intelligence"
-          ],
-          "title_variant": "Whales behavior: tail slap explained",
-          "visible_cue": "tail slap"
-        },
-        "selected_variant": {
-          "hook": "Whales reveal the tail slap first",
-          "score": 80,
-          "thumbnail_text": "TAIL SLAP",
-          "title": "Whales slap the surface to warn the pod"
-        },
-        "series": "Body Clues",
-        "series_identity": {
-          "continuity_prompt": "Next in Body Clues: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Body Clues",
-          "series": "Body Clues"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.191,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.222,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "TAIL SLAP",
-          "WATCH TAIL SLAP",
-          "WHALES SIGNAL",
-          "TAIL SLAP MATTERS",
-          "TAIL SLAP FIRST",
-          "TAIL SLAP REVEAL",
-          "TAIL SLAP CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Whales slap the surface to warn the pod",
-          "Whales signal through tail slap",
-          "Whales use tail slap before they signal",
-          "This tail slap gives whales away",
-          "Why whales signal after one tail slap",
-          "Whales reveal the answer with tail slap",
-          "The tail slap that changes the moment",
-          "Whales make one tail slap matter",
-          "Whales show the hidden answer in seconds",
-          "Whales: watch this tail slap"
-        ],
-        "top_variants": [
-          {
-            "hook": "Whales reveal the tail slap first",
-            "score": 80,
-            "thumbnail_text": "TAIL SLAP",
-            "title": "Whales slap the surface to warn the pod"
-          },
-          {
-            "hook": "Watch the tail slap; it explains the behavior",
-            "score": 80,
-            "thumbnail_text": "TAIL SLAP",
-            "title": "Whales slap the surface to warn the pod"
-          },
-          {
-            "hook": "Whales can turn one splash into a warning",
-            "score": 79,
-            "thumbnail_text": "TAIL SLAP",
-            "title": "Whales slap the surface to warn the pod"
-          },
-          {
-            "hook": "Whales reveal the tail slap first",
-            "score": 73,
-            "thumbnail_text": "WATCH TAIL SLAP",
-            "title": "Whales slap the surface to warn the pod"
-          },
-          {
-            "hook": "Watch the tail slap; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "WATCH TAIL SLAP",
-            "title": "Whales slap the surface to warn the pod"
-          },
-          {
-            "hook": "Whales reveal the tail slap first",
-            "score": 73,
-            "thumbnail_text": "WHALES SIGNAL",
-            "title": "Whales slap the surface to warn the pod"
-          },
-          {
-            "hook": "Watch the tail slap; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "WHALES SIGNAL",
-            "title": "Whales slap the surface to warn the pod"
-          },
-          {
-            "hook": "Whales reveal the tail slap first",
-            "score": 73,
-            "thumbnail_text": "TAIL SLAP MATTERS",
-            "title": "Whales slap the surface to warn the pod"
-          },
-          {
-            "hook": "Watch the tail slap; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "TAIL SLAP MATTERS",
-            "title": "Whales slap the surface to warn the pod"
-          },
-          {
-            "hook": "Whales reveal the tail slap first",
-            "score": 73,
-            "thumbnail_text": "TAIL SLAP FIRST",
-            "title": "Whales slap the surface to warn the pod"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "dc204166af48870f",
       "title": "Storm clouds reveal a storm's heat engine",
       "category": "earth_from_space",
@@ -1772,7 +1125,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T21:27:07.645676+00:00",
+        "checked_at": "2026-07-01T21:48:13.767732+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2409,7 +1762,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T21:27:07.647603+00:00",
+        "checked_at": "2026-07-01T21:48:13.769386+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3047,7 +2400,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T21:27:07.649416+00:00",
+        "checked_at": "2026-07-01T21:48:13.770950+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3688,7 +3041,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T21:27:07.651308+00:00",
+        "checked_at": "2026-07-01T21:48:13.772572+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4329,7 +3682,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T21:27:07.653203+00:00",
+        "checked_at": "2026-07-01T21:48:13.774177+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4785,644 +4138,6 @@
       }
     },
     {
-      "id": "d7370c6ab147dba8",
-      "title": "Snakes smell the air with their tongues",
-      "category": "reptiles",
-      "publish_score": {
-        "approved": true,
-        "category": "reptiles",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "tongue_smell",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "air",
-            "tongue"
-          ],
-          "cue_terms": [
-            "air",
-            "smell",
-            "tongue"
-          ],
-          "frame_hook_bridge": [
-            "tongue"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "snakes"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 67,
-          "signals": {
-            "comment_potential": 54,
-            "educational_potential": 73,
-            "emotional_potential": 35,
-            "novelty": 59,
-            "replay_potential": 82,
-            "viral_potential": 77,
-            "visual_potential": 69
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "body_superpower",
-        "subscriber_conversion": {
-          "comment_probability": 0.223,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.261,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-07-01T21:27:07.968586+00:00",
-        "mechanism_cluster": "tongue_smell",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 100.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 100.0,
-      "youtube_brain": {
-        "animal": "snakes",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "air",
-            "tongue"
-          ],
-          "cue_terms": [
-            "air",
-            "smell",
-            "tongue"
-          ],
-          "frame_hook_bridge": [
-            "tongue"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "snakes"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "body_superpower",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "snakes",
-        "viewer_promise": "See why snakes body superpower matters."
-      },
-      "packaging": {
-        "community_prompt": "Which snakes clue should Wild Brief compare next in Body Clues?",
-        "cta_prompt": "Want more survival tricks from ancient designs?",
-        "curiosity_gap": {
-          "hook": "Why do these snakes change after the tongue smell?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "body superpower",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.35,
-          "mode": "exploit",
-          "sample_count": 4,
-          "winners": {
-            "hook_pattern": "{subject} can {action} the air {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {subject} air {subject} the {visual}"
-          },
-          "winning_experiments": {}
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "air",
-              "tongue"
-            ],
-            "cue_terms": [
-              "air",
-              "smell",
-              "tongue"
-            ],
-            "frame_hook_bridge": [
-              "tongue"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "snakes"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Snakes sample the air with a tongue flick",
-          "Snakes show why the tongue smell matters.",
-          "Snakes show why the tongue smell matters.",
-          "Snakes show why the tongue smell matters.",
-          "Snakes give away the answer through tongue smell"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "tongue smell",
-          "ending_line": "Would you notice the trail?",
-          "final_line": "Now the tongue smell at the start makes sense.",
-          "loop_score": 0.79,
-          "opening_line": "Snakes sample the air with a tongue flick.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "tongue smell",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.79,
-        "next_episode_question": "Tomorrow in Body Clues: another animal signal. Is this ancient design underrated?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "air",
-            "tongue"
-          ],
-          "cue_terms": [
-            "air",
-            "smell",
-            "tongue"
-          ],
-          "frame_hook_bridge": [
-            "tongue"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "snakes"
-        },
-        "pinned_comment": "Watch the tongue smell again. Tomorrow in Body Clues: another animal signal. Is this ancient design underrated?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.56,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 18,
-          "first_2s_narration": "Snakes sample the air with tongue flick Watch the tongue flick because",
-          "first_frame_text": "TONGUE SMELL",
-          "first_frame_text_words": 2,
-          "hook": "Snakes sample the air with a tongue flick.",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.79,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "air",
-              "tongue"
-            ],
-            "cue_terms": [
-              "air",
-              "smell",
-              "tongue"
-            ],
-            "frame_hook_bridge": [
-              "tongue"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "snakes"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the tongue smell, so viewers rewatch the snakes clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Snakes sample the air with a tongue flick Watch the tongue flick",
-          "first_frame_text": "TONGUE SMELL",
-          "next_episode_question": "Tomorrow in Body Clues: another animal signal. Is this ancient design underrated?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains Snakes behavior through the visible tongue smell.",
-            "series": "Body Clues",
-            "subject": "snakes",
-            "terms": [
-              "snakes",
-              "tongue smell",
-              "reptiles",
-              "body superpower"
-            ],
-            "title_variant": "Snakes behavior: tongue smell explained",
-            "visible_cue": "tongue smell"
-          },
-          "series": "Body Clues",
-          "subject": "snakes",
-          "visible_cue": "tongue smell"
-        },
-        "risks": [],
-        "score": 96,
-        "search_intent": {
-          "description_line": "This Short explains Snakes behavior through the visible tongue smell.",
-          "series": "Body Clues",
-          "subject": "snakes",
-          "terms": [
-            "snakes",
-            "tongue smell",
-            "reptiles",
-            "body superpower"
-          ],
-          "title_variant": "Snakes behavior: tongue smell explained",
-          "visible_cue": "tongue smell"
-        },
-        "selected_variant": {
-          "hook": "Watch the tongue smell; it explains the behavior",
-          "score": 80,
-          "thumbnail_text": "TONGUE SMELL",
-          "title": "Snakes smell the air with their tongues"
-        },
-        "series": "Body Clues",
-        "series_identity": {
-          "continuity_prompt": "Next in Body Clues: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Body Clues",
-          "series": "Body Clues"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.223,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.261,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "TONGUE SMELL",
-          "WATCH TONGUE SMELL",
-          "SNAKES SMELL",
-          "TONGUE SMELL MATTERS",
-          "TONGUE SMELL FIRST",
-          "TONGUE SMELL REVEAL",
-          "TONGUE SMELL CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Snakes smell the air with their tongues",
-          "Snakes use tongue smell before they smell",
-          "This tongue smell gives snakes away",
-          "Why snakes smell after one tongue smell",
-          "Snakes reveal the answer with tongue smell",
-          "The tongue smell that changes the moment",
-          "Snakes make one tongue smell matter",
-          "Snakes show the hidden answer in seconds",
-          "Snakes: watch this tongue smell",
-          "Watch snakes after the tongue smell"
-        ],
-        "top_variants": [
-          {
-            "hook": "Watch the tongue smell; it explains the behavior",
-            "score": 80,
-            "thumbnail_text": "TONGUE SMELL",
-            "title": "Snakes smell the air with their tongues"
-          },
-          {
-            "hook": "Start with the tongue smell; it changes the scene",
-            "score": 80,
-            "thumbnail_text": "TONGUE SMELL",
-            "title": "Snakes smell the air with their tongues"
-          },
-          {
-            "hook": "Snakes sample the air with a tongue flick",
-            "score": 79,
-            "thumbnail_text": "TONGUE SMELL",
-            "title": "Snakes smell the air with their tongues"
-          },
-          {
-            "hook": "Watch the tongue smell; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "WATCH TONGUE SMELL",
-            "title": "Snakes smell the air with their tongues"
-          },
-          {
-            "hook": "Start with the tongue smell; it changes the scene",
-            "score": 73,
-            "thumbnail_text": "WATCH TONGUE SMELL",
-            "title": "Snakes smell the air with their tongues"
-          },
-          {
-            "hook": "Watch the tongue smell; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "SNAKES SMELL",
-            "title": "Snakes smell the air with their tongues"
-          },
-          {
-            "hook": "Start with the tongue smell; it changes the scene",
-            "score": 73,
-            "thumbnail_text": "SNAKES SMELL",
-            "title": "Snakes smell the air with their tongues"
-          },
-          {
-            "hook": "Watch the tongue smell; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "TONGUE SMELL MATTERS",
-            "title": "Snakes smell the air with their tongues"
-          },
-          {
-            "hook": "Start with the tongue smell; it changes the scene",
-            "score": 73,
-            "thumbnail_text": "TONGUE SMELL MATTERS",
-            "title": "Snakes smell the air with their tongues"
-          },
-          {
-            "hook": "Watch the tongue smell; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "TONGUE SMELL FIRST",
-            "title": "Snakes smell the air with their tongues"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "601507d32615d337",
       "title": "Rivers sort mud and sand along each bank",
       "category": "rivers",
@@ -5599,7 +4314,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T21:27:08.280241+00:00",
+        "checked_at": "2026-07-01T21:48:13.782118+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5924,10 +4639,10 @@
         },
         "series": "Earth Engine #3",
         "series_identity": {
-          "continuity_prompt": "Next in Earth Engine #3: compare this with another force of nature.",
-          "episode": 1,
+          "continuity_prompt": "Next in Earth Engine: compare this with another force of nature.",
+          "episode": 3,
           "label": "Earth Engine #3",
-          "series": "Earth Engine #3"
+          "series": "Earth Engine"
         },
         "state": "magnetic",
         "strengths": [
@@ -6057,6 +4772,1280 @@
             "score": 71,
             "thumbnail_text": "RIVER BEND FIRST",
             "title": "Rivers carve bends by stealing from one bank"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
+      "id": "d7370c6ab147dba8",
+      "title": "Snakes smell the air with their tongues",
+      "category": "reptiles",
+      "publish_score": {
+        "approved": true,
+        "category": "reptiles",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "tongue_smell",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "air",
+            "tongue"
+          ],
+          "cue_terms": [
+            "air",
+            "smell",
+            "tongue"
+          ],
+          "frame_hook_bridge": [
+            "tongue"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "snakes"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 67,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 73,
+            "emotional_potential": 35,
+            "novelty": 59,
+            "replay_potential": 82,
+            "viral_potential": 77,
+            "visual_potential": 69
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-07-01T21:48:13.785025+00:00",
+        "mechanism_cluster": "tongue_smell",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "snakes",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "air",
+            "tongue"
+          ],
+          "cue_terms": [
+            "air",
+            "smell",
+            "tongue"
+          ],
+          "frame_hook_bridge": [
+            "tongue"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "snakes"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "snakes",
+        "viewer_promise": "See why snakes body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which snakes clue should Wild Brief compare next in Cold-Blooded Secrets?",
+        "cta_prompt": "Want more survival tricks from ancient designs?",
+        "curiosity_gap": {
+          "hook": "Why do these snakes change after the tongue smell?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.35,
+          "mode": "exploit",
+          "sample_count": 4,
+          "winners": {
+            "hook_pattern": "{subject} can {action} the air {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {subject} {subject} air {subject} the {visual}"
+          },
+          "winning_experiments": {}
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "air",
+              "tongue"
+            ],
+            "cue_terms": [
+              "air",
+              "smell",
+              "tongue"
+            ],
+            "frame_hook_bridge": [
+              "tongue"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "snakes"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Snakes sample the air with a tongue flick",
+          "Snakes show why the tongue smell matters.",
+          "Snakes show why the tongue smell matters.",
+          "Snakes show why the tongue smell matters.",
+          "Snakes give away the answer through tongue smell"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "tongue smell",
+          "ending_line": "Would you notice the trail?",
+          "final_line": "Now the tongue smell at the start makes sense.",
+          "loop_score": 0.79,
+          "opening_line": "Snakes sample the air with a tongue flick.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "tongue smell",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.79,
+        "next_episode_question": "Tomorrow in Cold-Blooded Secrets: another animal signal. Is this ancient design underrated?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "air",
+            "tongue"
+          ],
+          "cue_terms": [
+            "air",
+            "smell",
+            "tongue"
+          ],
+          "frame_hook_bridge": [
+            "tongue"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "snakes"
+        },
+        "pinned_comment": "Watch the tongue smell again. Tomorrow in Cold-Blooded Secrets: another animal signal. Is this ancient design underrated?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.56,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 18,
+          "first_2s_narration": "Snakes sample the air with tongue flick Watch the tongue flick because",
+          "first_frame_text": "TONGUE SMELL",
+          "first_frame_text_words": 2,
+          "hook": "Snakes sample the air with a tongue flick.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.79,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "air",
+              "tongue"
+            ],
+            "cue_terms": [
+              "air",
+              "smell",
+              "tongue"
+            ],
+            "frame_hook_bridge": [
+              "tongue"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "snakes"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the tongue smell, so viewers rewatch the snakes clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Snakes sample the air with a tongue flick Watch the tongue flick",
+          "first_frame_text": "TONGUE SMELL",
+          "next_episode_question": "Tomorrow in Cold-Blooded Secrets: another animal signal. Is this ancient design underrated?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Snakes behavior through the visible tongue smell.",
+            "series": "Cold-Blooded Secrets",
+            "subject": "snakes",
+            "terms": [
+              "snakes",
+              "tongue smell",
+              "reptiles",
+              "body superpower"
+            ],
+            "title_variant": "Snakes behavior: tongue smell explained",
+            "visible_cue": "tongue smell"
+          },
+          "series": "Cold-Blooded Secrets",
+          "subject": "snakes",
+          "visible_cue": "tongue smell"
+        },
+        "risks": [],
+        "score": 96,
+        "search_intent": {
+          "description_line": "This Short explains Snakes behavior through the visible tongue smell.",
+          "series": "Cold-Blooded Secrets",
+          "subject": "snakes",
+          "terms": [
+            "snakes",
+            "tongue smell",
+            "reptiles",
+            "body superpower"
+          ],
+          "title_variant": "Snakes behavior: tongue smell explained",
+          "visible_cue": "tongue smell"
+        },
+        "selected_variant": {
+          "hook": "Watch the tongue smell; it explains the behavior",
+          "score": 80,
+          "thumbnail_text": "TONGUE SMELL",
+          "title": "Snakes smell the air with their tongues"
+        },
+        "series": "Cold-Blooded Secrets",
+        "series_identity": {
+          "continuity_prompt": "Next in Cold-Blooded Secrets: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Cold-Blooded Secrets",
+          "series": "Cold-Blooded Secrets"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "TONGUE SMELL",
+          "WATCH TONGUE SMELL",
+          "SNAKES SMELL",
+          "TONGUE SMELL MATTERS",
+          "TONGUE SMELL FIRST",
+          "TONGUE SMELL REVEAL",
+          "TONGUE SMELL CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Snakes smell the air with their tongues",
+          "Snakes use tongue smell before they smell",
+          "This tongue smell gives snakes away",
+          "Why snakes smell after one tongue smell",
+          "Snakes reveal the answer with tongue smell",
+          "The tongue smell that changes the moment",
+          "Snakes make one tongue smell matter",
+          "Snakes show the hidden answer in seconds",
+          "Snakes: watch this tongue smell",
+          "Watch snakes after the tongue smell"
+        ],
+        "top_variants": [
+          {
+            "hook": "Watch the tongue smell; it explains the behavior",
+            "score": 80,
+            "thumbnail_text": "TONGUE SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Start with the tongue smell; it changes the scene",
+            "score": 80,
+            "thumbnail_text": "TONGUE SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Snakes sample the air with a tongue flick",
+            "score": 79,
+            "thumbnail_text": "TONGUE SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Watch the tongue smell; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "WATCH TONGUE SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Start with the tongue smell; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "WATCH TONGUE SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Watch the tongue smell; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "SNAKES SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Start with the tongue smell; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "SNAKES SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Watch the tongue smell; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "TONGUE SMELL MATTERS",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Start with the tongue smell; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "TONGUE SMELL MATTERS",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Watch the tongue smell; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "TONGUE SMELL FIRST",
+            "title": "Snakes smell the air with their tongues"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
+      "id": "07eeac3e7fffa982",
+      "title": "Whales slap the surface to warn the pod",
+      "category": "ocean",
+      "publish_score": {
+        "approved": true,
+        "category": "ocean",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 86,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "tail_signal",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "slap",
+            "tail"
+          ],
+          "cue_terms": [
+            "slap",
+            "tail"
+          ],
+          "frame_hook_bridge": [
+            "slap",
+            "tail"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "whales"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 65,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 66,
+            "emotional_potential": 35,
+            "novelty": 69,
+            "replay_potential": 82,
+            "viral_potential": 67,
+            "visual_potential": 69
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 76,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "animal_intelligence",
+        "subscriber_conversion": {
+          "comment_probability": 0.191,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.222,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 72,
+          "state": "usable",
+          "subscriber_probability": 0.103
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-07-01T21:48:13.786231+00:00",
+        "mechanism_cluster": "tail_signal",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "whales",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "slap",
+            "tail"
+          ],
+          "cue_terms": [
+            "slap",
+            "tail"
+          ],
+          "frame_hook_bridge": [
+            "slap",
+            "tail"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "whales"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "animal_intelligence",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "whales",
+        "viewer_promise": "See why whales animal intelligence matters."
+      },
+      "packaging": {
+        "community_prompt": "Which whales clue should Wild Brief compare next in Ocean Mysteries?",
+        "cta_prompt": "Want to uncover what is still hidden in the ocean?",
+        "curiosity_gap": {
+          "hook": "Why do these whales change after the tail slap?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "animal intelligence",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.35,
+          "mode": "exploit",
+          "sample_count": 4,
+          "winners": {
+            "hook_pattern": "{subject} can {action} the air {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {subject} {subject} air {subject} the {visual}"
+          },
+          "winning_experiments": {}
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "slap",
+              "tail"
+            ],
+            "cue_terms": [
+              "slap",
+              "tail"
+            ],
+            "frame_hook_bridge": [
+              "slap",
+              "tail"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "whales"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Whales can turn one splash into a warning",
+          "Whales reveal the tail slap first",
+          "Whales show why the tail slap matters.",
+          "Whales show why the tail slap matters.",
+          "Whales show why the tail slap matters."
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "tail slap",
+          "ending_line": "Which ocean signal should we decode next?",
+          "final_line": "Now the tail slap at the start makes sense.",
+          "loop_score": 0.78,
+          "opening_line": "Whales reveal the tail slap first.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "tail slap",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.78,
+        "next_episode_question": "Tomorrow in Ocean Mysteries: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "slap",
+            "tail"
+          ],
+          "cue_terms": [
+            "slap",
+            "tail"
+          ],
+          "frame_hook_bridge": [
+            "slap",
+            "tail"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "whales"
+        },
+        "pinned_comment": "Watch the tail slap again. Tomorrow in Ocean Mysteries: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 16.2,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 15,
+          "first_2s_narration": "Whales reveal the tail slap first Watch closely because tail slap sends",
+          "first_frame_text": "TAIL SLAP",
+          "first_frame_text_words": 2,
+          "hook": "Whales reveal the tail slap first.",
+          "hook_specificity": 0.78,
+          "hook_words": 6,
+          "loop_score": 0.78,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "slap",
+              "tail"
+            ],
+            "cue_terms": [
+              "slap",
+              "tail"
+            ],
+            "frame_hook_bridge": [
+              "slap",
+              "tail"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "whales"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the tail slap, so viewers rewatch the whales clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 76,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Whales reveal the tail slap first Watch closely because a tail slap",
+          "first_frame_text": "TAIL SLAP",
+          "next_episode_question": "Tomorrow in Ocean Mysteries: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Whales behavior through the visible tail slap.",
+            "series": "Ocean Mysteries",
+            "subject": "whales",
+            "terms": [
+              "whales",
+              "tail slap",
+              "ocean",
+              "animal intelligence"
+            ],
+            "title_variant": "Whales behavior: tail slap explained",
+            "visible_cue": "tail slap"
+          },
+          "series": "Ocean Mysteries",
+          "subject": "whales",
+          "visible_cue": "tail slap"
+        },
+        "risks": [],
+        "score": 97,
+        "search_intent": {
+          "description_line": "This Short explains Whales behavior through the visible tail slap.",
+          "series": "Ocean Mysteries",
+          "subject": "whales",
+          "terms": [
+            "whales",
+            "tail slap",
+            "ocean",
+            "animal intelligence"
+          ],
+          "title_variant": "Whales behavior: tail slap explained",
+          "visible_cue": "tail slap"
+        },
+        "selected_variant": {
+          "hook": "Whales reveal the tail slap first",
+          "score": 80,
+          "thumbnail_text": "TAIL SLAP",
+          "title": "Whales slap the surface to warn the pod"
+        },
+        "series": "Ocean Mysteries",
+        "series_identity": {
+          "continuity_prompt": "Next in Ocean Mysteries: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Ocean Mysteries",
+          "series": "Ocean Mysteries"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.191,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.222,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 72,
+          "state": "usable",
+          "subscriber_probability": 0.103
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "TAIL SLAP",
+          "WATCH TAIL SLAP",
+          "WHALES SIGNAL",
+          "TAIL SLAP MATTERS",
+          "TAIL SLAP FIRST",
+          "TAIL SLAP REVEAL",
+          "TAIL SLAP CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Whales slap the surface to warn the pod",
+          "Whales signal through tail slap",
+          "Whales use tail slap before they signal",
+          "This tail slap gives whales away",
+          "Why whales signal after one tail slap",
+          "Whales reveal the answer with tail slap",
+          "The tail slap that changes the moment",
+          "Whales make one tail slap matter",
+          "Whales show the hidden answer in seconds",
+          "Whales: watch this tail slap"
+        ],
+        "top_variants": [
+          {
+            "hook": "Whales reveal the tail slap first",
+            "score": 80,
+            "thumbnail_text": "TAIL SLAP",
+            "title": "Whales slap the surface to warn the pod"
+          },
+          {
+            "hook": "Watch the tail slap; it explains the behavior",
+            "score": 80,
+            "thumbnail_text": "TAIL SLAP",
+            "title": "Whales slap the surface to warn the pod"
+          },
+          {
+            "hook": "Whales can turn one splash into a warning",
+            "score": 79,
+            "thumbnail_text": "TAIL SLAP",
+            "title": "Whales slap the surface to warn the pod"
+          },
+          {
+            "hook": "Whales reveal the tail slap first",
+            "score": 73,
+            "thumbnail_text": "WATCH TAIL SLAP",
+            "title": "Whales slap the surface to warn the pod"
+          },
+          {
+            "hook": "Watch the tail slap; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "WATCH TAIL SLAP",
+            "title": "Whales slap the surface to warn the pod"
+          },
+          {
+            "hook": "Whales reveal the tail slap first",
+            "score": 73,
+            "thumbnail_text": "WHALES SIGNAL",
+            "title": "Whales slap the surface to warn the pod"
+          },
+          {
+            "hook": "Watch the tail slap; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "WHALES SIGNAL",
+            "title": "Whales slap the surface to warn the pod"
+          },
+          {
+            "hook": "Whales reveal the tail slap first",
+            "score": 73,
+            "thumbnail_text": "TAIL SLAP MATTERS",
+            "title": "Whales slap the surface to warn the pod"
+          },
+          {
+            "hook": "Watch the tail slap; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "TAIL SLAP MATTERS",
+            "title": "Whales slap the surface to warn the pod"
+          },
+          {
+            "hook": "Whales reveal the tail slap first",
+            "score": 73,
+            "thumbnail_text": "TAIL SLAP FIRST",
+            "title": "Whales slap the surface to warn the pod"
           }
         ]
       },
@@ -6244,7 +6233,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T21:27:08.281322+00:00",
+        "checked_at": "2026-07-01T21:48:13.786987+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6874,7 +6863,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T21:27:08.574092+00:00",
+        "checked_at": "2026-07-01T21:48:13.788282+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7505,7 +7494,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T21:27:08.576220+00:00",
+        "checked_at": "2026-07-01T21:48:13.789587+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8141,7 +8130,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T21:27:08.577889+00:00",
+        "checked_at": "2026-07-01T21:48:13.790943+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8779,7 +8768,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T21:27:08.578957+00:00",
+        "checked_at": "2026-07-01T21:48:13.791836+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -9416,7 +9405,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T21:27:08.580943+00:00",
+        "checked_at": "2026-07-01T21:48:13.793377+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -10048,7 +10037,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T21:27:08.583645+00:00",
+        "checked_at": "2026-07-01T21:48:13.795222+00:00",
         "mechanism_cluster": "ear_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -10686,7 +10675,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T21:27:08.590391+00:00",
+        "checked_at": "2026-07-01T21:48:13.796165+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -11345,7 +11334,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T21:27:08.591763+00:00",
+        "checked_at": "2026-07-01T21:48:13.797277+00:00",
         "mechanism_cluster": "wing_scales",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -12005,7 +11994,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T21:27:08.593311+00:00",
+        "checked_at": "2026-07-01T21:48:13.798564+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -12650,7 +12639,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-01T21:27:08.595239+00:00",
+        "checked_at": "2026-07-01T21:48:13.800181+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
