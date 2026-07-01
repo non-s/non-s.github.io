@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-07-01T23:16:01.580414+00:00",
+  "generated_at": "2026-07-01T23:29:54.240232+00:00",
   "floor": 82.0,
-  "pending": 55,
-  "ready": 53,
+  "pending": 56,
+  "ready": 54,
   "held": 2,
-  "rewritten": 17,
-  "average_opening_score": 97.27,
+  "rewritten": 18,
+  "average_opening_score": 97.32,
   "render_gate": "hold",
   "counts": {
-    "approved": 53,
-    "rewritten": 17,
+    "approved": 54,
+    "rewritten": 18,
     "hold": 2
   },
   "items": [
@@ -110,6 +110,24 @@
       "rewrite_reason": "generic_opening_copy",
       "before_score": 92.0,
       "after_score": 94.0,
+      "risks": [],
+      "action": "Use the frame-zero rewrite before rendering."
+    },
+    {
+      "id": "4cdc521a261bc070",
+      "title": "Cats groom to reset their scent map",
+      "category": "cats",
+      "render_gate": "approved",
+      "opening_score": 100.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Cats reveal the grooming signal first.",
+      "first_frame_text": "GROOMING SIGNAL",
+      "visible_cue": "grooming signal",
+      "rewrite_applied": true,
+      "rewrite_reason": "opening_retention_below_floor",
+      "before_score": 72.0,
+      "after_score": 100.0,
       "risks": [],
       "action": "Use the frame-zero rewrite before rendering."
     },
@@ -525,24 +543,6 @@
       "risks": [
         "visible_cue_not_repeated_early"
       ],
-      "action": "Ready to render with current first frame."
-    },
-    {
-      "id": "fe116fdf20834f3c",
-      "title": "Cats groom to reset their scent map",
-      "category": "cats",
-      "render_gate": "approved",
-      "opening_score": 100.0,
-      "frame_zero_score": 92.0,
-      "opening_state": "retention_ready",
-      "opening_line": "Cats use grooming to reset their scent map.",
-      "first_frame_text": "GROOMING SIGNAL",
-      "visible_cue": "grooming signal",
-      "rewrite_applied": false,
-      "rewrite_reason": "",
-      "before_score": null,
-      "after_score": 100.0,
-      "risks": [],
       "action": "Ready to render with current first frame."
     },
     {
