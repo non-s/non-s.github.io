@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-07-01T23:30:58.584555+00:00",
+  "generated_at": "2026-07-01T23:37:05.199263+00:00",
   "floor": 82.0,
   "pending": 55,
   "ready": 53,
   "held": 2,
-  "rewritten": 17,
-  "average_opening_score": 97.27,
+  "rewritten": 18,
+  "average_opening_score": 97.38,
   "render_gate": "hold",
   "counts": {
     "approved": 53,
-    "rewritten": 17,
+    "rewritten": 18,
     "hold": 2
   },
   "items": [
@@ -258,7 +258,7 @@
       "action": "Use the frame-zero rewrite before rendering."
     },
     {
-      "id": "1e4269b46299f899",
+      "id": "a52cec9e32e11400",
       "title": "Mushrooms release spores from hidden gills",
       "category": "fungi",
       "render_gate": "approved",
@@ -270,7 +270,7 @@
       "visible_cue": "mushroom gills",
       "rewrite_applied": true,
       "rewrite_reason": "generic_opening_copy",
-      "before_score": 90.0,
+      "before_score": 100.0,
       "after_score": 100.0,
       "risks": [],
       "action": "Use the frame-zero rewrite before rendering."
@@ -326,6 +326,24 @@
       "rewrite_reason": "opening_retention_below_floor",
       "before_score": 72.0,
       "after_score": 100.0,
+      "risks": [],
+      "action": "Use the frame-zero rewrite before rendering."
+    },
+    {
+      "id": "59eb0e1414f61a06",
+      "title": "Seals track fish trails with whiskers",
+      "category": "arctic",
+      "render_gate": "approved",
+      "opening_score": 100.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Seals can follow wakes with their whiskers.",
+      "first_frame_text": "WAKE TRACKER",
+      "visible_cue": "whisker wake",
+      "rewrite_applied": true,
+      "rewrite_reason": "generic_opening_copy",
+      "before_score": 92.0,
+      "after_score": 94.0,
       "risks": [],
       "action": "Use the frame-zero rewrite before rendering."
     },
@@ -468,7 +486,7 @@
       "action": "Ready to render with current first frame."
     },
     {
-      "id": "3a2777a20047f919",
+      "id": "3838dc5bd1044fb1",
       "title": "Tigers wear stripe shadows as camouflage",
       "category": "wildlife",
       "render_gate": "approved",
@@ -504,26 +522,6 @@
       "after_score": 94.0,
       "risks": [
         "frame_text_not_echoed_early"
-      ],
-      "action": "Ready to render with current first frame."
-    },
-    {
-      "id": "55df02bbb2e60851",
-      "title": "Seals track fish trails with whiskers",
-      "category": "arctic",
-      "render_gate": "approved",
-      "opening_score": 94.0,
-      "frame_zero_score": 92.0,
-      "opening_state": "retention_ready",
-      "opening_line": "Seals can follow wakes with their whiskers.",
-      "first_frame_text": "WAKE TRACKER",
-      "visible_cue": "",
-      "rewrite_applied": false,
-      "rewrite_reason": "",
-      "before_score": null,
-      "after_score": 94.0,
-      "risks": [
-        "visible_cue_not_repeated_early"
       ],
       "action": "Ready to render with current first frame."
     },
