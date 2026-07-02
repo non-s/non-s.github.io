@@ -6,16 +6,71 @@
   ],
   "counts": {
     "analytics_due": 3,
-    "awaiting_1h": 1,
-    "high_priority": 6,
-    "repair_candidates": 3,
+    "awaiting_1h": 2,
+    "high_priority": 5,
+    "repair_candidates": 2,
     "tracked": 10
   },
-  "generated_at": "2026-07-02T12:00:46.726100+00:00",
+  "generated_at": "2026-07-02T12:13:08.647795+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.621,
+      "age_hours": 0.061,
+      "category": "ocean",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-02T13:09:27.536080+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-02T18:09:27.536080+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-03T12:09:27.536080+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-02T13:09:27.536080+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Ocean Mysteries",
+      "state": "awaiting_1h",
+      "title": "Whales slap the surface to warn the pod",
+      "uploaded_at": "2026-07-02T12:09:27.536080+00:00",
+      "url": "https://www.youtube.com/shorts/vUB5OSOv218",
+      "video_id": "vUB5OSOv218",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.827,
       "category": "insects",
       "checkpoints": [
         {
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.332,
+      "age_hours": 1.538,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.611,
+      "age_hours": 3.817,
       "category": "dogs",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.065,
+      "age_hours": 4.271,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -235,7 +290,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.229,
+      "age_hours": 6.435,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -291,7 +346,7 @@
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.594,
         "reason": "low early velocity",
-        "reasoning": "video has 27/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
         "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
         "title": "Elephants cool blood through giant ears",
         "video_id": "HDQAh3KSdtY",
@@ -301,7 +356,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 7.664,
+      "age_hours": 7.87,
       "category": "weather",
       "checkpoints": [
         {
@@ -366,16 +421,16 @@
       }
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 10.268,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 10.474,
       "category": "rivers",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-02T02:44:42.676839+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -399,41 +454,30 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-03T01:44:42.676839+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-02T02:44:42.676839+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "overdue",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Earth Engine",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Rivers sort mud and sand along each bank",
       "uploaded_at": "2026-07-02T01:44:42.676839+00:00",
       "url": "https://www.youtube.com/shorts/Wi2VtQQ88X0",
       "video_id": "Wi2VtQQ88X0",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Rivers sort mud and sand along each bank",
-        "video_id": "Wi2VtQQ88X0",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.882,
+      "age_hours": 12.088,
       "category": "fungi",
       "checkpoints": [
         {
@@ -484,11 +528,11 @@
       "uploaded_at": "2026-07-02T00:07:50.918833+00:00",
       "url": "https://www.youtube.com/shorts/LQPZdiuog_k",
       "video_id": "LQPZdiuog_k",
-      "views_per_hour": 0.085
+      "views_per_hour": 0.083
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.828,
+      "age_hours": 13.034,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -539,61 +583,6 @@
       "uploaded_at": "2026-07-01T23:11:06.265091+00:00",
       "url": "https://www.youtube.com/shorts/nZ6XIZKnuIE",
       "video_id": "nZ6XIZKnuIE",
-      "views_per_hour": 0.0
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.823,
-      "category": "trees",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-01T23:11:22.539496+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-02T04:11:22.539496+00:00",
-          "label": "6h",
-          "source": "observed",
-          "state": "observed",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-07-02T22:11:22.539496+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-01T23:11:22.539496+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Hidden Network",
-      "state": "analytics_due",
-      "title": "Trees record wet years inside their rings",
-      "uploaded_at": "2026-07-01T22:11:22.539496+00:00",
-      "url": "https://www.youtube.com/shorts/Y-dGOykkcBM",
-      "video_id": "Y-dGOykkcBM",
       "views_per_hour": 0.0
     }
   ],
