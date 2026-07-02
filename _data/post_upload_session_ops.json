@@ -6,40 +6,14 @@
       "high": 4,
       "manual_review": 4,
       "total": 10,
-      "urgent": 2
+      "urgent": 1
     },
     "free_only": true,
-    "generated_at": "2026-07-02T10:52:34.100659+00:00",
+    "generated_at": "2026-07-02T11:27:09.201507+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 13.6,
-        "automation_safe": true,
-        "category": "forests",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "overdue",
-        "current_views": 0,
-        "due_at": "2026-07-01T22:16:33.391065+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:T0Wl3m_A7So:analytics_due:1h",
-        "lane": "measurement",
-        "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "urgent",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
-        "series": "Hidden Network",
-        "state": "analytics_due",
-        "target_views": 24,
-        "title": "Forests make cooler air under the canopy",
-        "url": "https://www.youtube.com/shorts/T0Wl3m_A7So",
-        "video_id": "T0Wl3m_A7So",
-        "wait_until": "",
-        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
-      },
-      {
-        "action_type": "pull_fresh_analytics",
-        "age_hours": 12.687,
+        "age_hours": 13.263,
         "automation_safe": true,
         "category": "trees",
         "checkpoint_label": "1h",
@@ -65,7 +39,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 11.691,
+        "age_hours": 12.267,
         "automation_safe": false,
         "category": "earth_from_space",
         "checkpoint_label": "24h",
@@ -91,7 +65,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 10.745,
+        "age_hours": 11.322,
         "automation_safe": false,
         "category": "fungi",
         "checkpoint_label": "24h",
@@ -117,7 +91,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 9.131,
+        "age_hours": 9.707,
         "automation_safe": false,
         "category": "rivers",
         "checkpoint_label": "24h",
@@ -143,7 +117,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 6.528,
+        "age_hours": 7.104,
         "automation_safe": false,
         "category": "weather",
         "checkpoint_label": "24h",
@@ -169,7 +143,7 @@
       },
       {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.195,
+        "age_hours": 0.772,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -195,7 +169,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 5.093,
+        "age_hours": 5.669,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "6h",
@@ -220,8 +194,34 @@
         "why": "No intervention signal is strong enough yet."
       },
       {
+        "action_type": "hold_until_first_hour",
+        "age_hours": 0.061,
+        "automation_safe": true,
+        "category": "insects",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-02T12:23:29.746742+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:zkOPZdHY4i0:awaiting_1h:1h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "low",
+        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "series": "Tiny Worlds",
+        "state": "awaiting_1h",
+        "target_views": 24,
+        "title": "Beetles can steer by the Milky Way",
+        "url": "https://www.youtube.com/shorts/zkOPZdHY4i0",
+        "video_id": "zkOPZdHY4i0",
+        "wait_until": "2026-07-02T12:23:29.746742+00:00",
+        "why": "The upload is still inside the no-panic observation window."
+      },
+      {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.928,
+        "age_hours": 3.504,
         "automation_safe": true,
         "category": "reptiles",
         "checkpoint_label": "6h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.474,
+        "age_hours": 3.05,
         "automation_safe": true,
         "category": "dogs",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-02T10:52:34.100181+00:00"
+    "source_generated_at": "2026-07-02T11:27:09.201016+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,72 @@
       24
     ],
     "counts": {
-      "analytics_due": 2,
-      "awaiting_1h": 1,
-      "high_priority": 6,
+      "analytics_due": 1,
+      "awaiting_1h": 2,
+      "high_priority": 5,
       "repair_candidates": 4,
       "tracked": 10
     },
-    "generated_at": "2026-07-02T10:52:34.100181+00:00",
+    "generated_at": "2026-07-02T11:27:09.201016+00:00",
     "items": [
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.195,
+        "age_hours": 0.061,
+        "category": "insects",
+        "checkpoints": [
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-02T12:23:29.746742+00:00",
+            "label": "1h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 24,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-02T17:23:29.746742+00:00",
+            "label": "6h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 105,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-03T11:23:29.746742+00:00",
+            "label": "24h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 300,
+            "views": 0
+          }
+        ],
+        "current_views": 0,
+        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "next_checkpoint": {
+          "delta_to_target": 0,
+          "due_at": "2026-07-02T12:23:29.746742+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        "opening_retention_score": 100.0,
+        "opening_retention_state": "retention_ready",
+        "priority": "low",
+        "series": "Tiny Worlds",
+        "state": "awaiting_1h",
+        "title": "Beetles can steer by the Milky Way",
+        "uploaded_at": "2026-07-02T11:23:29.746742+00:00",
+        "url": "https://www.youtube.com/shorts/zkOPZdHY4i0",
+        "video_id": "zkOPZdHY4i0",
+        "views_per_hour": 0.0
+      },
+      {
+        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "age_hours": 0.772,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -347,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.474,
+        "age_hours": 3.05,
         "category": "dogs",
         "checkpoints": [
           {
@@ -402,7 +457,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.928,
+        "age_hours": 3.504,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -457,7 +512,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.093,
+        "age_hours": 5.669,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -512,7 +567,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 6.528,
+        "age_hours": 7.104,
         "category": "weather",
         "checkpoints": [
           {
@@ -568,7 +623,7 @@
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.594,
           "reason": "low early velocity",
-          "reasoning": "video has 25/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+          "reasoning": "video has 28/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
           "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
           "title": "Lightning makes air explode into thunder",
           "video_id": "WbwdERQTz90",
@@ -578,7 +633,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 9.131,
+        "age_hours": 9.707,
         "category": "rivers",
         "checkpoints": [
           {
@@ -634,7 +689,7 @@
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.594,
           "reason": "low early velocity",
-          "reasoning": "video has 29/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+          "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
           "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
           "title": "Rivers sort mud and sand along each bank",
           "video_id": "Wi2VtQQ88X0",
@@ -644,7 +699,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 10.745,
+        "age_hours": 11.322,
         "category": "fungi",
         "checkpoints": [
           {
@@ -695,7 +750,7 @@
         "uploaded_at": "2026-07-02T00:07:50.918833+00:00",
         "url": "https://www.youtube.com/shorts/LQPZdiuog_k",
         "video_id": "LQPZdiuog_k",
-        "views_per_hour": 0.094,
+        "views_per_hour": 0.089,
         "warning": {
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.594,
@@ -710,7 +765,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 11.691,
+        "age_hours": 12.267,
         "category": "earth_from_space",
         "checkpoints": [
           {
@@ -776,7 +831,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 12.687,
+        "age_hours": 13.263,
         "category": "trees",
         "checkpoints": [
           {
@@ -828,61 +883,6 @@
         "url": "https://www.youtube.com/shorts/Y-dGOykkcBM",
         "video_id": "Y-dGOykkcBM",
         "views_per_hour": 0.0
-      },
-      {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 13.6,
-        "category": "forests",
-        "checkpoints": [
-          {
-            "delta_to_target": -24,
-            "due_at": "2026-07-01T22:16:33.391065+00:00",
-            "label": "1h",
-            "source": "estimated",
-            "state": "overdue",
-            "target_views": 24,
-            "views": 0
-          },
-          {
-            "delta_to_target": -105,
-            "due_at": "2026-07-02T03:16:33.391065+00:00",
-            "label": "6h",
-            "source": "observed",
-            "state": "observed",
-            "target_views": 105,
-            "views": 0
-          },
-          {
-            "delta_to_target": 0,
-            "due_at": "2026-07-02T21:16:33.391065+00:00",
-            "label": "24h",
-            "source": "estimated",
-            "state": "pending",
-            "target_views": 300,
-            "views": 0
-          }
-        ],
-        "current_views": 0,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-        "next_checkpoint": {
-          "delta_to_target": -24,
-          "due_at": "2026-07-01T22:16:33.391065+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        "opening_retention_score": 100.0,
-        "opening_retention_state": "retention_ready",
-        "priority": "high",
-        "series": "Hidden Network",
-        "state": "analytics_due",
-        "title": "Forests make cooler air under the canopy",
-        "uploaded_at": "2026-07-01T21:16:33.391065+00:00",
-        "url": "https://www.youtube.com/shorts/T0Wl3m_A7So",
-        "video_id": "T0Wl3m_A7So",
-        "views_per_hour": 0.0
       }
     ],
     "targets": {
@@ -892,23 +892,12 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-02T10:52:34.100740+00:00",
+  "generated_at": "2026-07-02T11:27:09.201594+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
   ],
   "related_video_recommendations": [
-    {
-      "recommendation": {
-        "reason": "same series/category/format session bridge",
-        "score": 50.0,
-        "title": "Rock layers store ancient environments in stripes",
-        "url": "https://www.youtube.com/shorts/FEAbi2e-yas",
-        "video_id": "FEAbi2e-yas"
-      },
-      "source_title": "Lightning makes air explode into thunder",
-      "source_video_id": "WbwdERQTz90"
-    },
     {
       "recommendation": {
         "reason": "same series/category/format session bridge",
@@ -952,14 +941,20 @@
       },
       "source_title": "Wolves read scent posts like a map",
       "source_video_id": "p5aVx8ZViPI"
+    },
+    {
+      "recommendation": {
+        "reason": "same series/category/format session bridge",
+        "score": 20.0,
+        "title": "Owls fly silently because feathers break sound",
+        "url": "https://www.youtube.com/shorts/dNBmZyaqKXQ",
+        "video_id": "dNBmZyaqKXQ"
+      },
+      "source_title": "Beetles can steer by the Milky Way",
+      "source_video_id": "zkOPZdHY4i0"
     }
   ],
   "sequel_opportunities": [
-    {
-      "prompt": "Make a sequel with a new subject but the same payoff shape: Lightning makes air explode into thunder",
-      "title": "Lightning makes air explode into thunder",
-      "video_id": "WbwdERQTz90"
-    },
     {
       "prompt": "Make a sequel with a new subject but the same payoff shape: Elephants cool blood through giant ears",
       "title": "Elephants cool blood through giant ears",
@@ -979,13 +974,18 @@
       "prompt": "Make a sequel with a new subject but the same payoff shape: Wolves read scent posts like a map",
       "title": "Wolves read scent posts like a map",
       "video_id": "p5aVx8ZViPI"
+    },
+    {
+      "prompt": "Make a sequel with a new subject but the same payoff shape: Beetles can steer by the Milky Way",
+      "title": "Beetles can steer by the Milky Way",
+      "video_id": "zkOPZdHY4i0"
     }
   ],
   "session_graph": {
     "action_score_threshold": 55,
-    "coverage": 0.3077,
-    "edges": 13,
-    "nodes": 13,
+    "coverage": 0.2857,
+    "edges": 14,
+    "nodes": 14,
     "target_reuse_limit": 2
   }
 }
