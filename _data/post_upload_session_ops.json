@@ -2,18 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 9,
-      "high": 1,
-      "manual_review": 1,
+      "automation_safe": 10,
+      "high": 0,
+      "manual_review": 0,
       "total": 10,
-      "urgent": 9
+      "urgent": 10
     },
     "free_only": true,
-    "generated_at": "2026-07-02T20:59:12.795739+00:00",
+    "generated_at": "2026-07-02T21:22:22.066440+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 19.242,
+        "age_hours": 19.628,
         "automation_safe": true,
         "category": "rivers",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 16.638,
+        "age_hours": 17.024,
         "automation_safe": true,
         "category": "weather",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 15.203,
+        "age_hours": 15.589,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -91,7 +91,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 13.039,
+        "age_hours": 13.424,
         "automation_safe": true,
         "category": "reptiles",
         "checkpoint_label": "1h",
@@ -117,7 +117,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 12.585,
+        "age_hours": 12.971,
         "automation_safe": true,
         "category": "dogs",
         "checkpoint_label": "1h",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 10.306,
+        "age_hours": 10.692,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -169,7 +169,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 9.595,
+        "age_hours": 9.981,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 8.829,
+        "age_hours": 9.215,
         "automation_safe": true,
         "category": "ocean",
         "checkpoint_label": "1h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 7.735,
+        "age_hours": 8.121,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -246,34 +246,34 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "prepare_package_rescue",
-        "age_hours": 6.482,
-        "automation_safe": false,
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 6.867,
+        "automation_safe": true,
         "category": "farm",
-        "checkpoint_label": "24h",
-        "checkpoint_state": "pending",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "overdue",
         "current_views": 0,
-        "due_at": "2026-07-03T14:30:19.353303+00:00",
+        "due_at": "2026-07-02T15:30:19.353303+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:sldOXcDmZuQ:repair_candidate:24h",
-        "lane": "package_rescue",
-        "manual_approval_required": true,
+        "id": "fresh-upload:sldOXcDmZuQ:analytics_due:1h",
+        "lane": "measurement",
+        "manual_approval_required": false,
         "opening_retention_score": 90.0,
-        "priority": "high",
-        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "priority": "urgent",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
         "series": "Farmyard Surprises",
-        "state": "repair_candidate",
-        "target_views": 300,
+        "state": "analytics_due",
+        "target_views": 24,
         "title": "Horses point their ears toward what matters",
         "url": "https://www.youtube.com/shorts/sldOXcDmZuQ",
         "video_id": "sldOXcDmZuQ",
         "wait_until": "",
-        "why": "Observed velocity is weak enough to prepare a package intervention."
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-02T20:59:12.795178+00:00"
+    "source_generated_at": "2026-07-02T21:22:22.065848+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,25 +282,25 @@
       24
     ],
     "counts": {
-      "analytics_due": 9,
+      "analytics_due": 10,
       "awaiting_1h": 0,
       "high_priority": 10,
-      "repair_candidates": 1,
+      "repair_candidates": 0,
       "tracked": 10
     },
-    "generated_at": "2026-07-02T20:59:12.795178+00:00",
+    "generated_at": "2026-07-02T21:22:22.065848+00:00",
     "items": [
       {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 6.482,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 6.867,
         "category": "farm",
         "checkpoints": [
           {
             "delta_to_target": -24,
             "due_at": "2026-07-02T15:30:19.353303+00:00",
             "label": "1h",
-            "source": "observed",
-            "state": "observed",
+            "source": "estimated",
+            "state": "overdue",
             "target_views": 24,
             "views": 0
           },
@@ -324,41 +324,30 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
-          "due_at": "2026-07-03T14:30:19.353303+00:00",
-          "label": "24h",
+          "delta_to_target": -24,
+          "due_at": "2026-07-02T15:30:19.353303+00:00",
+          "label": "1h",
           "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
+          "state": "overdue",
+          "target_views": 24,
           "views": 0
         },
         "opening_retention_score": 90.0,
         "opening_retention_state": "retention_ready",
         "priority": "high",
         "series": "Farmyard Surprises",
-        "state": "repair_candidate",
+        "state": "analytics_due",
         "title": "Horses point their ears toward what matters",
         "uploaded_at": "2026-07-02T14:30:19.353303+00:00",
         "url": "https://www.youtube.com/shorts/sldOXcDmZuQ",
         "video_id": "sldOXcDmZuQ",
-        "views_per_hour": 0.0,
-        "warning": {
-          "action": "TITLE_AUTO_REPAIR_TRIGGER",
-          "confidence_score": 0.594,
-          "reason": "low early velocity",
-          "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-          "title": "Horses point their ears toward what matters",
-          "video_id": "sldOXcDmZuQ",
-          "views": 0,
-          "warning_state": "repair_risk"
-        }
+        "views_per_hour": 0.0
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 7.735,
+        "age_hours": 8.121,
         "category": "insects",
         "checkpoints": [
           {
@@ -409,11 +398,11 @@
         "uploaded_at": "2026-07-02T13:15:06.171182+00:00",
         "url": "https://www.youtube.com/shorts/6EQWaar3wBc",
         "video_id": "6EQWaar3wBc",
-        "views_per_hour": 0.13
+        "views_per_hour": 0.129
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 8.829,
+        "age_hours": 9.215,
         "category": "ocean",
         "checkpoints": [
           {
@@ -468,7 +457,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 9.595,
+        "age_hours": 9.981,
         "category": "insects",
         "checkpoints": [
           {
@@ -523,7 +512,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 10.306,
+        "age_hours": 10.692,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -578,7 +567,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 12.585,
+        "age_hours": 12.971,
         "category": "dogs",
         "checkpoints": [
           {
@@ -641,7 +630,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 13.039,
+        "age_hours": 13.424,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -704,7 +693,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 15.203,
+        "age_hours": 15.589,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -767,7 +756,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 16.638,
+        "age_hours": 17.024,
         "category": "weather",
         "checkpoints": [
           {
@@ -830,7 +819,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 19.242,
+        "age_hours": 19.628,
         "category": "rivers",
         "checkpoints": [
           {
@@ -899,7 +888,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-02T20:59:12.795821+00:00",
+  "generated_at": "2026-07-02T21:22:22.066526+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
