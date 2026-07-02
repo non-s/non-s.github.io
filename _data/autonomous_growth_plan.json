@@ -1,22 +1,22 @@
 {
-  "generated_at": "2026-07-02T00:12:12.909893+00:00",
+  "generated_at": "2026-07-02T01:48:51.995719+00:00",
   "state": "fully_autonomous",
-  "autonomy_score": 80,
-  "operating_mode": "learn",
+  "autonomy_score": 90,
+  "operating_mode": "exploit",
   "data_status": {
     "metric_scope": "public_video_statistics",
-    "shorts_tracked": 7,
+    "shorts_tracked": 8,
     "avg_view_pct": 0.0,
     "subs_per_1000_views": 0.0
   },
   "category_priorities": [
     {
-      "name": "birds",
-      "score": 201.064
+      "name": "geology",
+      "score": 201.049
     },
     {
-      "name": "geology",
-      "score": 200.628
+      "name": "birds",
+      "score": 200.848
     },
     {
       "name": "earth_from_space",
@@ -34,11 +34,11 @@
   "format_priorities": [
     {
       "name": "single_fact",
-      "score": 201.064
+      "score": 200.848
     },
     {
       "name": "earth_engine",
-      "score": 200.419
+      "score": 200.524
     },
     {
       "name": "hidden_network",
@@ -46,21 +46,24 @@
     }
   ],
   "winning_terms": [
+    "along",
     "ancient",
+    "bank",
     "break",
     "canopy",
     "clouds",
     "cooler",
+    "each",
     "engine",
     "environments",
     "feathers",
-    "forests",
-    "from",
-    "gills",
-    "heat"
+    "forests"
   ],
   "experiment_bank": {
-    "winners": {},
+    "winners": {
+      "thumbnail_style": "frame_first_side_caption",
+      "cta_style": "subscribe_channel"
+    },
     "gaps": [
       {
         "axis": "hook_style",
@@ -95,19 +98,15 @@
       },
       {
         "axis": "thumbnail_style",
-        "winner": "",
-        "needs_samples": [
-          "frame_first_side_caption"
-        ],
-        "state": "collecting_signal"
+        "winner": "frame_first_side_caption",
+        "needs_samples": [],
+        "state": "winner_locked"
       },
       {
         "axis": "cta_style",
-        "winner": "",
-        "needs_samples": [
-          "subscribe_channel"
-        ],
-        "state": "collecting_signal"
+        "winner": "subscribe_channel",
+        "needs_samples": [],
+        "state": "winner_locked"
       },
       {
         "axis": "opening_visual_pattern",
@@ -183,16 +182,16 @@
       {
         "id": "H1_DOUBLE_DOWN_CATEGORY",
         "lane": "proven_category",
-        "statement": "Next Shorts in birds, geology should outperform cold topics.",
+        "statement": "Next Shorts in geology, birds should outperform cold topics.",
         "success_metric": "growth_score",
-        "target": 201.064
+        "target": 201.049
       },
       {
         "id": "H2_SCALE_FORMAT",
         "lane": "proven_format",
         "statement": "single_fact is the strongest current story shape.",
         "success_metric": "avg_view_pct_plus_views_per_hour",
-        "target": 201.064
+        "target": 200.848
       },
       {
         "id": "H4_SUBSCRIBER_CONVERSION",
@@ -219,7 +218,7 @@
   },
   "sequence_bank": {
     "source_winners": 0,
-    "variant_count": 6,
+    "variant_count": 7,
     "next_variants": [
       {
         "id": "remake-cafc33fe6a0fc04a-session-graph-sequel",
@@ -252,9 +251,15 @@
         "category": "trees"
       },
       {
-        "id": "remake-5b53ce45f06f99e6-fresh-upload-momentum-sequel",
+        "id": "remake-cafc33fe6a0fc04a-fresh-upload-package-rescue",
+        "title": "The first feathers cue explains owls' payoff",
+        "variant": "fresh_upload_package_rescue",
+        "category": "birds"
+      },
+      {
+        "id": "remake-5b53ce45f06f99e6-fresh-upload-package-rescue",
         "title": "The first rock layer cue explains rocks' payoff",
-        "variant": "fresh_upload_momentum_sequel",
+        "variant": "fresh_upload_package_rescue",
         "category": "geology"
       }
     ]
@@ -274,10 +279,10 @@
     "profiles": [
       {
         "profile": "close_subject|feed_bright|high_contrast",
-        "n": 3,
-        "mean_growth_score": 200.355,
+        "n": 4,
+        "mean_growth_score": 200.496,
         "mean_retention": 0.0,
-        "mean_views": 0.333,
+        "mean_views": 0.5,
         "mean_visual_ctr_score": 100.0
       },
       {
@@ -291,7 +296,7 @@
       {
         "profile": "subject_rich|dark_or_washed|high_contrast",
         "n": 1,
-        "mean_growth_score": 201.256,
+        "mean_growth_score": 200.962,
         "mean_retention": 0.0,
         "mean_views": 1.0,
         "mean_visual_ctr_score": 65.0
@@ -308,18 +313,18 @@
     "rule": "Favor the winning visual profile when available; otherwise keep selecting the highest local CTR score while collecting samples."
   },
   "production_policy": {
-    "exploit_percent": 40,
+    "exploit_percent": 55,
     "sequence_percent": 25,
     "experiment_percent": 15,
     "recovery_percent": 10,
     "selection_rule": "highest autonomy_priority among non-rejected publish_score candidates"
   },
   "queue": {
-    "pending": 55,
-    "approved_candidates": 55,
+    "pending": 53,
+    "approved_candidates": 53,
     "lane_counts": {
       "fresh_experiment": 36,
-      "proven_category": 19
+      "proven_category": 17
     },
     "top_candidates": [
       {
@@ -347,17 +352,17 @@
             "verdict": "produce",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.113,
-              "sample_size": 1,
+              "confidence_score": 0.227,
+              "sample_size": 2,
               "minimum_sample_size": 5,
               "data_quality": "estimated",
               "data_quality_score": 0.567,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.335,
-              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+              "bootstrap_multiplier": 0.42,
+              "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
             },
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
           },
           "retention": {
             "score": 77,
@@ -371,17 +376,17 @@
             "verdict": "rewrite",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.113,
-              "sample_size": 1,
+              "confidence_score": 0.227,
+              "sample_size": 2,
               "minimum_sample_size": 5,
               "data_quality": "estimated",
               "data_quality_score": 0.567,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.335,
-              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+              "bootstrap_multiplier": 0.42,
+              "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
             },
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
           },
           "opening_retention": {
             "score": 100.0,
@@ -417,15 +422,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -447,29 +452,29 @@
               "series_identity"
             ],
             "confidence": {
-              "confidence_score": 0.136,
-              "sample_size": 4,
+              "confidence_score": 0.241,
+              "sample_size": 7,
               "minimum_sample_size": 18,
               "data_quality": "estimated",
               "data_quality_score": 0.425,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.352,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.14."
+              "bootstrap_multiplier": 0.43,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.24."
             },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.14."
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.24."
           },
           "distribution_adjustment": 0,
           "decision_confidence": {
-            "confidence_score": 0.118,
-            "sample_size": 8,
+            "confidence_score": 0.23,
+            "sample_size": 15,
             "minimum_sample_size": 38,
             "data_quality": "estimated",
             "data_quality_score": 0.35,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.338,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.12."
+            "bootstrap_multiplier": 0.422,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.23."
           },
           "category": "geology",
           "story_format": "earth_engine",
@@ -487,9 +492,9 @@
           "objective_gate": {
             "penalty": 0.0,
             "reasons": [
-              "bootstrap_observe_before_scaling"
+              "observe_before_scaling"
             ],
-            "confidence_score": 0.118,
+            "confidence_score": 0.23,
             "scale_ready": false,
             "publish_blocking": false,
             "swipe_risk_band": "low",
@@ -498,7 +503,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 129.95,
+        "autonomy_priority": 129.99,
         "packaging_lab": {
           "title_variants": [
             "Rock layers store ancient environments in stripes",
@@ -544,17 +549,17 @@
             "verdict": "rewrite",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.113,
-              "sample_size": 1,
+              "confidence_score": 0.227,
+              "sample_size": 2,
               "minimum_sample_size": 5,
               "data_quality": "estimated",
               "data_quality_score": 0.567,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.335,
-              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+              "bootstrap_multiplier": 0.42,
+              "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
             },
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
           },
           "retention": {
             "score": 74,
@@ -568,17 +573,17 @@
             "verdict": "rewrite",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.113,
-              "sample_size": 1,
+              "confidence_score": 0.227,
+              "sample_size": 2,
               "minimum_sample_size": 5,
               "data_quality": "estimated",
               "data_quality_score": 0.567,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.335,
-              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+              "bootstrap_multiplier": 0.42,
+              "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
             },
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
           },
           "opening_retention": {
             "score": 92.0,
@@ -615,15 +620,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -644,29 +649,29 @@
               "series_identity"
             ],
             "confidence": {
-              "confidence_score": 0.136,
-              "sample_size": 4,
+              "confidence_score": 0.241,
+              "sample_size": 7,
               "minimum_sample_size": 18,
               "data_quality": "estimated",
               "data_quality_score": 0.425,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.352,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.14."
+              "bootstrap_multiplier": 0.43,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.24."
             },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.14."
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.24."
           },
           "distribution_adjustment": 0,
           "decision_confidence": {
-            "confidence_score": 0.118,
-            "sample_size": 8,
+            "confidence_score": 0.23,
+            "sample_size": 15,
             "minimum_sample_size": 38,
             "data_quality": "estimated",
             "data_quality_score": 0.35,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.338,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.12."
+            "bootstrap_multiplier": 0.422,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.23."
           },
           "category": "geology",
           "story_format": "earth_engine",
@@ -684,9 +689,9 @@
           "objective_gate": {
             "penalty": 0.0,
             "reasons": [
-              "bootstrap_observe_before_scaling"
+              "observe_before_scaling"
             ],
-            "confidence_score": 0.118,
+            "confidence_score": 0.23,
             "scale_ready": false,
             "publish_blocking": false,
             "swipe_risk_band": "low",
@@ -695,7 +700,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 129.95,
+        "autonomy_priority": 129.99,
         "packaging_lab": {
           "title_variants": [
             "Rock layers store ancient environments in stripes",
@@ -741,17 +746,17 @@
             "verdict": "rewrite",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.113,
-              "sample_size": 1,
+              "confidence_score": 0.227,
+              "sample_size": 2,
               "minimum_sample_size": 5,
               "data_quality": "estimated",
               "data_quality_score": 0.567,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.335,
-              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+              "bootstrap_multiplier": 0.42,
+              "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
             },
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
           },
           "retention": {
             "score": 74,
@@ -765,17 +770,17 @@
             "verdict": "rewrite",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.113,
-              "sample_size": 1,
+              "confidence_score": 0.227,
+              "sample_size": 2,
               "minimum_sample_size": 5,
               "data_quality": "estimated",
               "data_quality_score": 0.567,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.335,
-              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+              "bootstrap_multiplier": 0.42,
+              "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
             },
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
           },
           "opening_retention": {
             "score": 100.0,
@@ -812,15 +817,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -841,29 +846,29 @@
               "series_identity"
             ],
             "confidence": {
-              "confidence_score": 0.136,
-              "sample_size": 4,
+              "confidence_score": 0.241,
+              "sample_size": 7,
               "minimum_sample_size": 18,
               "data_quality": "estimated",
               "data_quality_score": 0.425,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.352,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.14."
+              "bootstrap_multiplier": 0.43,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.24."
             },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.14."
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.24."
           },
           "distribution_adjustment": 0,
           "decision_confidence": {
-            "confidence_score": 0.118,
-            "sample_size": 8,
+            "confidence_score": 0.23,
+            "sample_size": 15,
             "minimum_sample_size": 38,
             "data_quality": "estimated",
             "data_quality_score": 0.35,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.338,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.12."
+            "bootstrap_multiplier": 0.422,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.23."
           },
           "category": "geology",
           "story_format": "earth_engine",
@@ -881,9 +886,9 @@
           "objective_gate": {
             "penalty": 0.0,
             "reasons": [
-              "bootstrap_observe_before_scaling"
+              "observe_before_scaling"
             ],
-            "confidence_score": 0.118,
+            "confidence_score": 0.23,
             "scale_ready": false,
             "publish_blocking": false,
             "swipe_risk_band": "low",
@@ -892,7 +897,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 129.95,
+        "autonomy_priority": 129.99,
         "packaging_lab": {
           "title_variants": [
             "Rock layers store ancient environments in stripes",
@@ -938,17 +943,17 @@
             "verdict": "rewrite",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.113,
-              "sample_size": 1,
+              "confidence_score": 0.227,
+              "sample_size": 2,
               "minimum_sample_size": 5,
               "data_quality": "estimated",
               "data_quality_score": 0.567,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.335,
-              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+              "bootstrap_multiplier": 0.42,
+              "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
             },
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
           },
           "retention": {
             "score": 75,
@@ -962,17 +967,17 @@
             "verdict": "rewrite",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.113,
-              "sample_size": 1,
+              "confidence_score": 0.227,
+              "sample_size": 2,
               "minimum_sample_size": 5,
               "data_quality": "estimated",
               "data_quality_score": 0.567,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.335,
-              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+              "bootstrap_multiplier": 0.42,
+              "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
             },
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
           },
           "opening_retention": {
             "score": 100.0,
@@ -1011,15 +1016,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -1040,29 +1045,29 @@
               "series_identity"
             ],
             "confidence": {
-              "confidence_score": 0.136,
-              "sample_size": 4,
+              "confidence_score": 0.241,
+              "sample_size": 7,
               "minimum_sample_size": 18,
               "data_quality": "estimated",
               "data_quality_score": 0.425,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.352,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.14."
+              "bootstrap_multiplier": 0.43,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.24."
             },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.14."
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.24."
           },
           "distribution_adjustment": 0,
           "decision_confidence": {
-            "confidence_score": 0.118,
-            "sample_size": 8,
+            "confidence_score": 0.23,
+            "sample_size": 15,
             "minimum_sample_size": 38,
             "data_quality": "estimated",
             "data_quality_score": 0.35,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.338,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.12."
+            "bootstrap_multiplier": 0.422,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.23."
           },
           "category": "geology",
           "story_format": "earth_engine",
@@ -1080,9 +1085,9 @@
           "objective_gate": {
             "penalty": 0.0,
             "reasons": [
-              "bootstrap_observe_before_scaling"
+              "observe_before_scaling"
             ],
-            "confidence_score": 0.118,
+            "confidence_score": 0.23,
             "scale_ready": false,
             "publish_blocking": false,
             "swipe_risk_band": "low",
@@ -1091,7 +1096,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 129.95,
+        "autonomy_priority": 129.99,
         "packaging_lab": {
           "title_variants": [
             "Rock layers store ancient environments in stripes",
@@ -1137,17 +1142,17 @@
             "verdict": "produce",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.113,
-              "sample_size": 1,
+              "confidence_score": 0.227,
+              "sample_size": 2,
               "minimum_sample_size": 5,
               "data_quality": "estimated",
               "data_quality_score": 0.567,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.335,
-              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+              "bootstrap_multiplier": 0.42,
+              "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
             },
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
           },
           "retention": {
             "score": 78,
@@ -1161,17 +1166,17 @@
             "verdict": "ready",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.113,
-              "sample_size": 1,
+              "confidence_score": 0.227,
+              "sample_size": 2,
               "minimum_sample_size": 5,
               "data_quality": "estimated",
               "data_quality_score": 0.567,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.335,
-              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+              "bootstrap_multiplier": 0.42,
+              "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
             },
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
           },
           "opening_retention": {
             "score": 100.0,
@@ -1207,15 +1212,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -1236,29 +1241,29 @@
               "series_identity"
             ],
             "confidence": {
-              "confidence_score": 0.136,
-              "sample_size": 4,
+              "confidence_score": 0.241,
+              "sample_size": 7,
               "minimum_sample_size": 18,
               "data_quality": "estimated",
               "data_quality_score": 0.425,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.352,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.14."
+              "bootstrap_multiplier": 0.43,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.24."
             },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.14."
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.24."
           },
           "distribution_adjustment": 0,
           "decision_confidence": {
-            "confidence_score": 0.118,
-            "sample_size": 8,
+            "confidence_score": 0.23,
+            "sample_size": 15,
             "minimum_sample_size": 38,
             "data_quality": "estimated",
             "data_quality_score": 0.35,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.338,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.12."
+            "bootstrap_multiplier": 0.422,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.23."
           },
           "category": "geology",
           "story_format": "earth_engine",
@@ -1276,9 +1281,9 @@
           "objective_gate": {
             "penalty": 0.0,
             "reasons": [
-              "bootstrap_observe_before_scaling"
+              "observe_before_scaling"
             ],
-            "confidence_score": 0.118,
+            "confidence_score": 0.23,
             "scale_ready": false,
             "publish_blocking": false,
             "swipe_risk_band": "low",
@@ -1287,7 +1292,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 129.95,
+        "autonomy_priority": 129.99,
         "packaging_lab": {
           "title_variants": [
             "Rock layers reveal heat moving under the surface",
@@ -1402,15 +1407,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -1431,29 +1436,29 @@
               "series_identity"
             ],
             "confidence": {
-              "confidence_score": 0.061,
-              "sample_size": 2,
+              "confidence_score": 0.089,
+              "sample_size": 3,
               "minimum_sample_size": 10,
               "data_quality": "inferred",
               "data_quality_score": 0.5,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.296,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
+              "bootstrap_multiplier": 0.317,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.09."
             },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.09."
           },
           "distribution_adjustment": 0,
           "decision_confidence": {
-            "confidence_score": 0.035,
-            "sample_size": 3,
+            "confidence_score": 0.063,
+            "sample_size": 5,
             "minimum_sample_size": 25,
             "data_quality": "inferred",
             "data_quality_score": 0.575,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.276,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.03."
+            "bootstrap_multiplier": 0.297,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.06."
           },
           "category": "forests",
           "story_format": "earth_engine",
@@ -1473,7 +1478,7 @@
             "reasons": [
               "bootstrap_observe_before_scaling"
             ],
-            "confidence_score": 0.035,
+            "confidence_score": 0.063,
             "scale_ready": false,
             "publish_blocking": false,
             "swipe_risk_band": "low",
@@ -1482,7 +1487,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 129.91,
+        "autonomy_priority": 129.92,
         "packaging_lab": {
           "title_variants": [
             "Forests make cooler air under the canopy",
@@ -1595,15 +1600,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -1624,29 +1629,29 @@
               "series_identity"
             ],
             "confidence": {
-              "confidence_score": 0.061,
-              "sample_size": 2,
+              "confidence_score": 0.089,
+              "sample_size": 3,
               "minimum_sample_size": 10,
               "data_quality": "inferred",
               "data_quality_score": 0.5,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.296,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
+              "bootstrap_multiplier": 0.317,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.09."
             },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.09."
           },
           "distribution_adjustment": 0,
           "decision_confidence": {
-            "confidence_score": 0.035,
-            "sample_size": 3,
+            "confidence_score": 0.063,
+            "sample_size": 5,
             "minimum_sample_size": 25,
             "data_quality": "inferred",
             "data_quality_score": 0.575,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.276,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.03."
+            "bootstrap_multiplier": 0.297,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.06."
           },
           "category": "forests",
           "story_format": "earth_engine",
@@ -1666,7 +1671,7 @@
             "reasons": [
               "bootstrap_observe_before_scaling"
             ],
-            "confidence_score": 0.035,
+            "confidence_score": 0.063,
             "scale_ready": false,
             "publish_blocking": false,
             "swipe_risk_band": "low",
@@ -1675,7 +1680,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 129.91,
+        "autonomy_priority": 129.92,
         "packaging_lab": {
           "title_variants": [
             "Forests make cooler air under the canopy",
@@ -1790,15 +1795,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -1820,29 +1825,29 @@
               "series_identity"
             ],
             "confidence": {
-              "confidence_score": 0.061,
-              "sample_size": 2,
+              "confidence_score": 0.089,
+              "sample_size": 3,
               "minimum_sample_size": 10,
               "data_quality": "inferred",
               "data_quality_score": 0.5,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.296,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
+              "bootstrap_multiplier": 0.317,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.09."
             },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.09."
           },
           "distribution_adjustment": 0,
           "decision_confidence": {
-            "confidence_score": 0.035,
-            "sample_size": 3,
+            "confidence_score": 0.063,
+            "sample_size": 5,
             "minimum_sample_size": 25,
             "data_quality": "inferred",
             "data_quality_score": 0.575,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.276,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.03."
+            "bootstrap_multiplier": 0.297,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.06."
           },
           "category": "earth_from_space",
           "story_format": "earth_engine",
@@ -1862,7 +1867,7 @@
             "reasons": [
               "bootstrap_observe_before_scaling"
             ],
-            "confidence_score": 0.035,
+            "confidence_score": 0.063,
             "scale_ready": false,
             "publish_blocking": false,
             "swipe_risk_band": "low",
@@ -1871,7 +1876,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 129.91,
+        "autonomy_priority": 129.92,
         "packaging_lab": {
           "title_variants": [
             "Storm clouds reveal a storm's heat engine",
@@ -1988,15 +1993,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -2018,29 +2023,29 @@
               "series_identity"
             ],
             "confidence": {
-              "confidence_score": 0.061,
-              "sample_size": 2,
+              "confidence_score": 0.089,
+              "sample_size": 3,
               "minimum_sample_size": 10,
               "data_quality": "inferred",
               "data_quality_score": 0.5,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.296,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
+              "bootstrap_multiplier": 0.317,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.09."
             },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.09."
           },
           "distribution_adjustment": 0,
           "decision_confidence": {
-            "confidence_score": 0.035,
-            "sample_size": 3,
+            "confidence_score": 0.063,
+            "sample_size": 5,
             "minimum_sample_size": 25,
             "data_quality": "inferred",
             "data_quality_score": 0.575,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.276,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.03."
+            "bootstrap_multiplier": 0.297,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.06."
           },
           "category": "earth_from_space",
           "story_format": "earth_engine",
@@ -2060,7 +2065,7 @@
             "reasons": [
               "bootstrap_observe_before_scaling"
             ],
-            "confidence_score": 0.035,
+            "confidence_score": 0.063,
             "scale_ready": false,
             "publish_blocking": false,
             "swipe_risk_band": "low",
@@ -2069,7 +2074,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 129.91,
+        "autonomy_priority": 129.92,
         "packaging_lab": {
           "title_variants": [
             "Storm clouds show air layers changing over time",
@@ -2184,15 +2189,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -2264,7 +2269,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 129.89,
+        "autonomy_priority": 129.9,
         "packaging_lab": {
           "title_variants": [
             "Forests make cooler air under the canopy",
@@ -2381,15 +2386,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -2461,7 +2466,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 129.89,
+        "autonomy_priority": 129.9,
         "packaging_lab": {
           "title_variants": [
             "Forests make cooler air under the canopy",
@@ -2578,15 +2583,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -2659,7 +2664,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 122.0,
+        "autonomy_priority": 121.99,
         "packaging_lab": {
           "title_variants": [
             "Owls fly silently because feathers break sound",
@@ -2774,15 +2779,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -2805,29 +2810,29 @@
               "series_identity"
             ],
             "confidence": {
-              "confidence_score": 0.108,
-              "sample_size": 3,
+              "confidence_score": 0.184,
+              "sample_size": 5,
               "minimum_sample_size": 13,
               "data_quality": "estimated",
               "data_quality_score": 0.45,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.331,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.11."
+              "bootstrap_multiplier": 0.388,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.18."
             },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11."
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.18."
           },
           "distribution_adjustment": 0,
           "decision_confidence": {
-            "confidence_score": 0.044,
-            "sample_size": 4,
+            "confidence_score": 0.082,
+            "sample_size": 7,
             "minimum_sample_size": 28,
             "data_quality": "inferred",
             "data_quality_score": 0.5,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.283,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.04."
+            "bootstrap_multiplier": 0.312,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.08."
           },
           "category": "weather",
           "story_format": "earth_engine",
@@ -2847,7 +2852,7 @@
             "reasons": [
               "bootstrap_observe_before_scaling"
             ],
-            "confidence_score": 0.044,
+            "confidence_score": 0.082,
             "scale_ready": false,
             "publish_blocking": false,
             "swipe_risk_band": "low",
@@ -2856,7 +2861,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 117.97,
+        "autonomy_priority": 117.99,
         "packaging_lab": {
           "title_variants": [
             "Lightning makes air explode into thunder",
@@ -2971,15 +2976,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -3000,29 +3005,29 @@
               "series_identity"
             ],
             "confidence": {
-              "confidence_score": 0.108,
-              "sample_size": 3,
+              "confidence_score": 0.184,
+              "sample_size": 5,
               "minimum_sample_size": 13,
               "data_quality": "estimated",
               "data_quality_score": 0.45,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.331,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.11."
+              "bootstrap_multiplier": 0.388,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.18."
             },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11."
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.18."
           },
           "distribution_adjustment": 0,
           "decision_confidence": {
-            "confidence_score": 0.044,
-            "sample_size": 4,
+            "confidence_score": 0.082,
+            "sample_size": 7,
             "minimum_sample_size": 28,
             "data_quality": "inferred",
             "data_quality_score": 0.5,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.283,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.04."
+            "bootstrap_multiplier": 0.312,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.08."
           },
           "category": "rivers",
           "story_format": "earth_engine",
@@ -3042,7 +3047,7 @@
             "reasons": [
               "bootstrap_observe_before_scaling"
             ],
-            "confidence_score": 0.044,
+            "confidence_score": 0.082,
             "scale_ready": false,
             "publish_blocking": false,
             "swipe_risk_band": "low",
@@ -3051,7 +3056,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 117.97,
+        "autonomy_priority": 117.99,
         "packaging_lab": {
           "title_variants": [
             "Rivers carve bends by stealing from one bank",
@@ -3073,31 +3078,29 @@
         }
       },
       {
-        "id": "096db43fbd321d8b",
-        "title": "Rivers carve bends by stealing from one bank",
+        "id": "a1b777d6296755b1",
+        "title": "Rivers sort sand along every bend",
         "category": "rivers",
         "story_format": "earth_engine",
         "lane": "proven_category",
         "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
         "publish_score": {
-          "score": 100,
-          "approved": false,
-          "state": "rewrite",
+          "score": 100.0,
+          "approved": true,
+          "state": "publish_ready",
           "opportunity": {
-            "score": 54,
+            "score": 60,
             "signals": {
-              "viral_potential": 48,
+              "viral_potential": 53,
               "visual_potential": 65,
-              "replay_potential": 60,
-              "comment_potential": 46,
-              "educational_potential": 58,
+              "replay_potential": 72,
+              "comment_potential": 54,
+              "educational_potential": 64,
               "emotional_potential": 35,
-              "novelty": 55
+              "novelty": 65
             },
-            "verdict": "discard",
-            "reasons": [
-              "low_opportunity_score"
-            ],
+            "verdict": "rewrite",
+            "reasons": [],
             "confidence": {
               "confidence_score": 0.0,
               "sample_size": 0,
@@ -3112,13 +3115,13 @@
             "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
           "retention": {
-            "score": 74,
+            "score": 70,
             "signals": {
-              "hook_score": 82,
+              "hook_score": 70,
               "curiosity_score": 71,
               "visual_score": 66,
               "replay_score": 62,
-              "completion_prediction": 84
+              "completion_prediction": 77
             },
             "verdict": "rewrite",
             "reasons": [],
@@ -3141,16 +3144,16 @@
             "approved": true,
             "subject": "rivers",
             "cue_terms": [
-              "bend",
-              "river"
+              "river",
+              "sort"
             ],
             "frame_hook_bridge": [
-              "bend",
-              "river"
+              "river",
+              "sort"
             ],
             "cue_bridge": [
-              "bend",
-              "river"
+              "river",
+              "sort"
             ],
             "strengths": [
               "subject_frontloaded",
@@ -3168,15 +3171,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -3197,34 +3200,34 @@
               "series_identity"
             ],
             "confidence": {
-              "confidence_score": 0.108,
-              "sample_size": 3,
+              "confidence_score": 0.184,
+              "sample_size": 5,
               "minimum_sample_size": 13,
               "data_quality": "estimated",
               "data_quality_score": 0.45,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.331,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.11."
+              "bootstrap_multiplier": 0.388,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.18."
             },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11."
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.18."
           },
           "distribution_adjustment": 0,
           "decision_confidence": {
-            "confidence_score": 0.044,
-            "sample_size": 4,
+            "confidence_score": 0.082,
+            "sample_size": 7,
             "minimum_sample_size": 28,
             "data_quality": "inferred",
             "data_quality_score": 0.5,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.283,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.04."
+            "bootstrap_multiplier": 0.312,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.08."
           },
           "category": "rivers",
           "story_format": "earth_engine",
           "hook_score": 86,
-          "title_score": 90,
+          "title_score": 100,
           "phrase_risk": {
             "penalty": 0,
             "hits": []
@@ -3239,7 +3242,7 @@
             "reasons": [
               "bootstrap_observe_before_scaling"
             ],
-            "confidence_score": 0.044,
+            "confidence_score": 0.082,
             "scale_ready": false,
             "publish_blocking": false,
             "swipe_risk_band": "low",
@@ -3248,24 +3251,24 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 117.97,
+        "autonomy_priority": 117.99,
         "packaging_lab": {
           "title_variants": [
-            "Rivers sort mud and sand along each bank",
             "Rivers carve bends by stealing from one bank",
-            "Rivers use river bank before they change"
+            "Rivers sort sand along every bend",
+            "Rivers use river bend before they carries"
           ],
           "thumbnail_variants": [
-            "BANK SORTING",
-            "RIVER BANK",
-            "WATCH RIVER BANK"
+            "RIVER BEND",
+            "WATCH RIVER BEND",
+            "RIVERS CARRIES"
           ],
           "hook_variants": [
-            "Rivers reveal the river bend first.",
-            "Rivers carve bends by stealing from one bank",
-            "Watch the river bend again. Tomorrow in Earth Engine: another nature signal. Are rivers more like roads, tools"
+            "Rivers sort sand along every bend.",
+            "Rivers sort sand along every bend",
+            "Watch the bank again. Tomorrow in Earth Engine: another nature signal. Are rivers more like roads, tools, or e"
           ],
-          "pinned_comment": "Watch the river bend again. Tomorrow in Earth Engine: another nature signal. Are rivers more like roads, tools, or engines?",
+          "pinned_comment": "Watch the bank again. Tomorrow in Earth Engine: another nature signal. Are rivers more like roads, tools, or engines?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -3365,15 +3368,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -3394,29 +3397,29 @@
               "series_identity"
             ],
             "confidence": {
-              "confidence_score": 0.061,
-              "sample_size": 2,
+              "confidence_score": 0.089,
+              "sample_size": 3,
               "minimum_sample_size": 10,
               "data_quality": "inferred",
               "data_quality_score": 0.5,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.296,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
+              "bootstrap_multiplier": 0.317,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.09."
             },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.09."
           },
           "distribution_adjustment": 0,
           "decision_confidence": {
-            "confidence_score": 0.035,
-            "sample_size": 3,
+            "confidence_score": 0.063,
+            "sample_size": 5,
             "minimum_sample_size": 25,
             "data_quality": "inferred",
             "data_quality_score": 0.575,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.276,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.03."
+            "bootstrap_multiplier": 0.297,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.06."
           },
           "category": "trees",
           "story_format": "earth_engine",
@@ -3436,7 +3439,7 @@
             "reasons": [
               "bootstrap_observe_before_scaling"
             ],
-            "confidence_score": 0.035,
+            "confidence_score": 0.063,
             "scale_ready": false,
             "publish_blocking": false,
             "swipe_risk_band": "low",
@@ -3445,7 +3448,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 117.97,
+        "autonomy_priority": 117.99,
         "packaging_lab": {
           "title_variants": [
             "Trees record wet years inside their rings",
@@ -3467,399 +3470,6 @@
         }
       },
       {
-        "id": "a1b777d6296755b1",
-        "title": "Rivers sort sand along every bend",
-        "category": "rivers",
-        "story_format": "earth_engine",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 99.8,
-          "approved": true,
-          "state": "publish_ready",
-          "opportunity": {
-            "score": 60,
-            "signals": {
-              "viral_potential": 53,
-              "visual_potential": 65,
-              "replay_potential": 72,
-              "comment_potential": 54,
-              "educational_potential": 64,
-              "emotional_potential": 35,
-              "novelty": 65
-            },
-            "verdict": "rewrite",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "retention": {
-            "score": 70,
-            "signals": {
-              "hook_score": 70,
-              "curiosity_score": 71,
-              "visual_score": 66,
-              "replay_score": 62,
-              "completion_prediction": 77
-            },
-            "verdict": "rewrite",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "opening_retention": {
-            "score": 100.0,
-            "state": "retention_ready",
-            "approved": true,
-            "subject": "rivers",
-            "cue_terms": [
-              "river",
-              "sort"
-            ],
-            "frame_hook_bridge": [
-              "river",
-              "sort"
-            ],
-            "cue_bridge": [
-              "river",
-              "sort"
-            ],
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "risks": []
-          },
-          "weak_content": {
-            "risk": 0,
-            "state": "clear",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 72,
-            "state": "usable",
-            "subscriber_probability": 0.103,
-            "return_probability": 0.222,
-            "comment_probability": 0.191,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "debate_comment",
-              "return_prompt",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.108,
-              "sample_size": 3,
-              "minimum_sample_size": 13,
-              "data_quality": "estimated",
-              "data_quality_score": 0.45,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.331,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.11."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.044,
-            "sample_size": 4,
-            "minimum_sample_size": 28,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.283,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.04."
-          },
-          "category": "rivers",
-          "story_format": "earth_engine",
-          "hook_score": 86,
-          "title_score": 100,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          },
-          "editorial_guard": {
-            "approved": true,
-            "state": "approved",
-            "issues": []
-          },
-          "objective_gate": {
-            "penalty": 0.0,
-            "reasons": [
-              "bootstrap_observe_before_scaling"
-            ],
-            "confidence_score": 0.044,
-            "scale_ready": false,
-            "publish_blocking": false,
-            "swipe_risk_band": "low",
-            "payoff_time_s": 0.0,
-            "template_cluster": "",
-            "mechanism_cluster": ""
-          }
-        },
-        "autonomy_priority": 117.77,
-        "packaging_lab": {
-          "title_variants": [
-            "Rivers carve bends by stealing from one bank",
-            "Rivers sort sand along every bend",
-            "Rivers use river bend before they carries"
-          ],
-          "thumbnail_variants": [
-            "RIVER BEND",
-            "WATCH RIVER BEND",
-            "RIVERS CARRIES"
-          ],
-          "hook_variants": [
-            "Rivers sort sand along every bend.",
-            "Rivers sort sand along every bend",
-            "Watch the bank again. Tomorrow in Earth Engine: another nature signal. Are rivers more like roads, tools, or e"
-          ],
-          "pinned_comment": "Watch the bank again. Tomorrow in Earth Engine: another nature signal. Are rivers more like roads, tools, or engines?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "601507d32615d337",
-        "title": "Rivers sort mud and sand along each bank",
-        "category": "rivers",
-        "story_format": "earth_engine",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 99.7,
-          "approved": true,
-          "state": "publish_ready",
-          "opportunity": {
-            "score": 58,
-            "signals": {
-              "viral_potential": 53,
-              "visual_potential": 65,
-              "replay_potential": 72,
-              "comment_potential": 62,
-              "educational_potential": 64,
-              "emotional_potential": 35,
-              "novelty": 45
-            },
-            "verdict": "rewrite",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "retention": {
-            "score": 71,
-            "signals": {
-              "hook_score": 70,
-              "curiosity_score": 71,
-              "visual_score": 66,
-              "replay_score": 62,
-              "completion_prediction": 84
-            },
-            "verdict": "rewrite",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "opening_retention": {
-            "score": 100.0,
-            "state": "retention_ready",
-            "approved": true,
-            "subject": "rivers",
-            "cue_terms": [
-              "bend",
-              "edge",
-              "river",
-              "sort"
-            ],
-            "frame_hook_bridge": [
-              "sort"
-            ],
-            "cue_bridge": [
-              "bend",
-              "edge",
-              "river",
-              "sort"
-            ],
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "risks": []
-          },
-          "weak_content": {
-            "risk": 0,
-            "state": "clear",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 72,
-            "state": "usable",
-            "subscriber_probability": 0.103,
-            "return_probability": 0.222,
-            "comment_probability": 0.191,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "debate_comment",
-              "return_prompt",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.108,
-              "sample_size": 3,
-              "minimum_sample_size": 13,
-              "data_quality": "estimated",
-              "data_quality_score": 0.45,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.331,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.11."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.044,
-            "sample_size": 4,
-            "minimum_sample_size": 28,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.283,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.04."
-          },
-          "category": "rivers",
-          "story_format": "earth_engine",
-          "hook_score": 86,
-          "title_score": 100,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          },
-          "editorial_guard": {
-            "approved": true,
-            "state": "approved",
-            "issues": []
-          },
-          "objective_gate": {
-            "penalty": 0.0,
-            "reasons": [
-              "bootstrap_observe_before_scaling"
-            ],
-            "confidence_score": 0.044,
-            "scale_ready": false,
-            "publish_blocking": false,
-            "swipe_risk_band": "low",
-            "payoff_time_s": 0.0,
-            "template_cluster": "",
-            "mechanism_cluster": ""
-          }
-        },
-        "autonomy_priority": 117.67,
-        "packaging_lab": {
-          "title_variants": [
-            "Rivers carve bends by stealing from one bank",
-            "Rivers sort mud and sand along each bank",
-            "Rivers use river bend before they compare"
-          ],
-          "thumbnail_variants": [
-            "RIVER BEND",
-            "WATCH RIVER BEND",
-            "RIVERS COMPARE"
-          ],
-          "hook_variants": [
-            "Rivers sort sediment while they bend.",
-            "Rivers sort mud and sand along each bank",
-            "Watch the sediment again. Tomorrow in Earth Engine: another nature signal. Are rivers more like roads, tools, "
-          ],
-          "pinned_comment": "Watch the sediment again. Tomorrow in Earth Engine: another nature signal. Are rivers more like roads, tools, or engines?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
         "id": "8cadc9b623a69cc8",
         "title": "Rivers build new shapes by dropping sediment",
         "category": "rivers",
@@ -3867,7 +3477,7 @@
         "lane": "proven_category",
         "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
         "publish_score": {
-          "score": 99.7,
+          "score": 99.8,
           "approved": true,
           "state": "publish_ready",
           "opportunity": {
@@ -3953,15 +3563,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -3982,29 +3592,29 @@
               "series_identity"
             ],
             "confidence": {
-              "confidence_score": 0.108,
-              "sample_size": 3,
+              "confidence_score": 0.184,
+              "sample_size": 5,
               "minimum_sample_size": 13,
               "data_quality": "estimated",
               "data_quality_score": 0.45,
               "recommendation_strength": "observe",
               "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.331,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.11."
+              "bootstrap_multiplier": 0.388,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.18."
             },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11."
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.18."
           },
           "distribution_adjustment": 0,
           "decision_confidence": {
-            "confidence_score": 0.044,
-            "sample_size": 4,
+            "confidence_score": 0.082,
+            "sample_size": 7,
             "minimum_sample_size": 28,
             "data_quality": "inferred",
             "data_quality_score": 0.5,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.283,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.04."
+            "bootstrap_multiplier": 0.312,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.08."
           },
           "category": "rivers",
           "story_format": "earth_engine",
@@ -4024,7 +3634,7 @@
             "reasons": [
               "bootstrap_observe_before_scaling"
             ],
-            "confidence_score": 0.044,
+            "confidence_score": 0.082,
             "scale_ready": false,
             "publish_blocking": false,
             "swipe_risk_band": "low",
@@ -4033,7 +3643,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 117.67,
+        "autonomy_priority": 117.79,
         "packaging_lab": {
           "title_variants": [
             "Rivers carve bends by stealing from one bank",
@@ -4148,15 +3758,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -4344,15 +3954,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -4537,15 +4147,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -4732,15 +4342,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -4929,15 +4539,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -5123,15 +4733,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -5318,15 +4928,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -5514,15 +5124,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -5710,15 +5320,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -5905,15 +5515,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -6102,15 +5712,15 @@
             "state": "clear",
             "reasons": [],
             "confidence": {
-              "confidence_score": 0.52,
-              "sample_size": 4,
+              "confidence_score": 0.65,
+              "sample_size": 5,
               "minimum_sample_size": 5,
               "data_quality": "inferred",
               "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.55,
-              "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only."
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
             },
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
@@ -6203,15 +5813,416 @@
           "pinned_comment": "Watch the sound again. Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
+      },
+      {
+        "id": "c70ff9b0d002c000",
+        "title": "Elephants cool blood through giant ears",
+        "category": "wildlife",
+        "story_format": "body_superpower",
+        "lane": "fresh_experiment",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "opportunity": {
+            "score": 71,
+            "signals": {
+              "viral_potential": 80,
+              "visual_potential": 79,
+              "replay_potential": 82,
+              "comment_potential": 62,
+              "educational_potential": 73,
+              "emotional_potential": 44,
+              "novelty": 59
+            },
+            "verdict": "produce",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "retention": {
+            "score": 79,
+            "signals": {
+              "hook_score": 82,
+              "curiosity_score": 87,
+              "visual_score": 66,
+              "replay_score": 72,
+              "completion_prediction": 84
+            },
+            "verdict": "ready",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "opening_retention": {
+            "score": 100.0,
+            "state": "retention_ready",
+            "approved": true,
+            "subject": "elephants",
+            "cue_terms": [
+              "ear",
+              "ears",
+              "radiator",
+              "surface"
+            ],
+            "frame_hook_bridge": [
+              "ear",
+              "radiator"
+            ],
+            "cue_bridge": [
+              "ear",
+              "ears",
+              "radiator",
+              "surface"
+            ],
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "risks": []
+          },
+          "weak_content": {
+            "risk": 0,
+            "state": "clear",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.65,
+              "sample_size": 5,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            },
+            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+          },
+          "subscriber_conversion": {
+            "score": 86,
+            "state": "strong",
+            "subscriber_probability": 0.123,
+            "return_probability": 0.261,
+            "comment_probability": 0.223,
+            "robotic_title": {
+              "risk": 0,
+              "state": "clear",
+              "hits": []
+            },
+            "reasons": [
+              "identity_cta",
+              "debate_comment",
+              "return_prompt",
+              "series_identity"
+            ],
+            "confidence": {
+              "confidence_score": 0.033,
+              "sample_size": 1,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.274,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+            },
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "distribution_adjustment": 0,
+          "decision_confidence": {
+            "confidence_score": 0.007,
+            "sample_size": 1,
+            "minimum_sample_size": 15,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.255,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
+          },
+          "category": "wildlife",
+          "story_format": "body_superpower",
+          "hook_score": 100,
+          "title_score": 90,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          },
+          "editorial_guard": {
+            "approved": true,
+            "state": "approved",
+            "issues": []
+          },
+          "objective_gate": {
+            "penalty": 0.0,
+            "reasons": [
+              "bootstrap_observe_before_scaling"
+            ],
+            "confidence_score": 0.007,
+            "scale_ready": false,
+            "publish_blocking": false,
+            "swipe_risk_band": "low",
+            "payoff_time_s": 0.0,
+            "template_cluster": "",
+            "mechanism_cluster": ""
+          }
+        },
+        "autonomy_priority": 103.0,
+        "packaging_lab": {
+          "title_variants": [
+            "Elephants cool blood through giant ears",
+            "Elephants use ear radiator before they trick",
+            "This ear radiator gives elephants away"
+          ],
+          "thumbnail_variants": [
+            "EAR RADIATOR",
+            "WATCH EAR RADIATOR",
+            "ELEPHANTS TRICK"
+          ],
+          "hook_variants": [
+            "Elephants use their ears as living radiators.",
+            "Elephants cool blood through giant ears",
+            "Watch the ear radiator again. Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, insti"
+          ],
+          "pinned_comment": "Watch the ear radiator again. Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
+        "id": "9350de4d49732d9c",
+        "title": "Butterflies carry color on tiny wing scales",
+        "category": "insects",
+        "story_format": "body_superpower",
+        "lane": "fresh_experiment",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "opportunity": {
+            "score": 70,
+            "signals": {
+              "viral_potential": 80,
+              "visual_potential": 79,
+              "replay_potential": 72,
+              "comment_potential": 62,
+              "educational_potential": 73,
+              "emotional_potential": 44,
+              "novelty": 59
+            },
+            "verdict": "produce",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "retention": {
+            "score": 76,
+            "signals": {
+              "hook_score": 82,
+              "curiosity_score": 79,
+              "visual_score": 66,
+              "replay_score": 62,
+              "completion_prediction": 84
+            },
+            "verdict": "rewrite",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "opening_retention": {
+            "score": 96.0,
+            "state": "retention_ready",
+            "approved": true,
+            "subject": "butterflies",
+            "cue_terms": [
+              "color",
+              "scale",
+              "surface",
+              "wing"
+            ],
+            "frame_hook_bridge": [
+              "scale",
+              "wing"
+            ],
+            "cue_bridge": [
+              "color",
+              "scale",
+              "surface",
+              "wing"
+            ],
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "risks": [
+              "missing_early_action"
+            ]
+          },
+          "weak_content": {
+            "risk": 0,
+            "state": "clear",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.65,
+              "sample_size": 5,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            },
+            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+          },
+          "subscriber_conversion": {
+            "score": 86,
+            "state": "strong",
+            "subscriber_probability": 0.123,
+            "return_probability": 0.261,
+            "comment_probability": 0.223,
+            "robotic_title": {
+              "risk": 0,
+              "state": "clear",
+              "hits": []
+            },
+            "reasons": [
+              "identity_cta",
+              "debate_comment",
+              "return_prompt",
+              "series_identity"
+            ],
+            "confidence": {
+              "confidence_score": 0.033,
+              "sample_size": 1,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.274,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+            },
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "distribution_adjustment": 0,
+          "decision_confidence": {
+            "confidence_score": 0.007,
+            "sample_size": 1,
+            "minimum_sample_size": 15,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.255,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
+          },
+          "category": "insects",
+          "story_format": "body_superpower",
+          "hook_score": 100,
+          "title_score": 90,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          },
+          "editorial_guard": {
+            "approved": true,
+            "state": "approved",
+            "issues": []
+          },
+          "objective_gate": {
+            "penalty": 0.0,
+            "reasons": [
+              "bootstrap_observe_before_scaling"
+            ],
+            "confidence_score": 0.007,
+            "scale_ready": false,
+            "publish_blocking": false,
+            "swipe_risk_band": "low",
+            "payoff_time_s": 0.0,
+            "template_cluster": "",
+            "mechanism_cluster": "wing_scales"
+          }
+        },
+        "autonomy_priority": 103.0,
+        "packaging_lab": {
+          "title_variants": [
+            "Butterflies carry color on tiny wing scales",
+            "Butterflies use wing scales before they carry",
+            "Why butterflies carry after one wing scales"
+          ],
+          "thumbnail_variants": [
+            "WING SCALES",
+            "WATCH WING SCALES",
+            "BUTTERFLIES CARRY"
+          ],
+          "hook_variants": [
+            "Butterflies are covered in tiny color scales.",
+            "Butterflies carry color on tiny wing scales",
+            "Watch the wing scales again. Tomorrow in Tiny Worlds: another animal signal. Is this tiny design more impressi"
+          ],
+          "pinned_comment": "Watch the wing scales again. Tomorrow in Tiny Worlds: another animal signal. Is this tiny design more impressive than large-animal survival?",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
       }
     ]
   },
   "decisions": [
-    "Prioritize categories: birds, geology, earth_from_space.",
+    "Prioritize categories: geology, birds, earth_from_space.",
     "Use formats first: single_fact, earth_engine, hidden_network.",
-    "No statistically locked experiment winners yet; reserve traffic for structured learning.",
-    "Current operating mode: learn."
+    "Bias production toward experiment winners: thumbnail_style=frame_first_side_caption, cta_style=subscribe_channel.",
+    "Current operating mode: exploit."
   ],
-  "queue_annotations_written": 46,
+  "queue_annotations_written": 44,
   "queue_annotations_changed": 30
 }

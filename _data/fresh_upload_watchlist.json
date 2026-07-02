@@ -5,25 +5,80 @@
     24
   ],
   "counts": {
-    "analytics_due": 1,
+    "analytics_due": 0,
     "awaiting_1h": 1,
-    "high_priority": 1,
-    "repair_candidates": 0,
-    "tracked": 7
+    "high_priority": 2,
+    "repair_candidates": 2,
+    "tracked": 8
   },
-  "generated_at": "2026-07-02T00:11:16.451559+00:00",
+  "generated_at": "2026-07-02T01:47:59.739297+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.057,
-      "category": "fungi",
+      "age_hours": 0.055,
+      "category": "rivers",
       "checkpoints": [
         {
           "delta_to_target": 0,
-          "due_at": "2026-07-02T01:07:50.918833+00:00",
+          "due_at": "2026-07-02T02:44:42.676839+00:00",
           "label": "1h",
           "source": "estimated",
           "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-02T07:44:42.676839+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-03T01:44:42.676839+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-02T02:44:42.676839+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Earth Engine",
+      "state": "awaiting_1h",
+      "title": "Rivers sort mud and sand along each bank",
+      "uploaded_at": "2026-07-02T01:44:42.676839+00:00",
+      "url": "https://www.youtube.com/shorts/Wi2VtQQ88X0",
+      "video_id": "Wi2VtQQ88X0",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 1.669,
+      "category": "fungi",
+      "checkpoints": [
+        {
+          "delta_to_target": -24,
+          "due_at": "2026-07-02T01:07:50.918833+00:00",
+          "label": "1h",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-02T01:07:50.918833+00:00",
-        "label": "1h",
+        "due_at": "2026-07-02T06:07:50.918833+00:00",
+        "label": "6h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 24,
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "low",
       "series": "Hidden Network",
-      "state": "awaiting_1h",
+      "state": "watch",
       "title": "Mushrooms release spores from hidden gills",
       "uploaded_at": "2026-07-02T00:07:50.918833+00:00",
       "url": "https://www.youtube.com/shorts/LQPZdiuog_k",
@@ -69,16 +124,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 1.003,
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 2.615,
       "category": "earth_from_space",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-02T00:11:06.265091+00:00",
           "label": "1h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -102,21 +157,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-02T00:11:06.265091+00:00",
-        "label": "1h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-02T05:11:06.265091+00:00",
+        "label": "6h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 24,
+        "state": "pending",
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "high",
+      "priority": "low",
       "series": "Planet Earth",
-      "state": "analytics_due",
+      "state": "watch",
       "title": "Storm clouds reveal a storm's heat engine",
       "uploaded_at": "2026-07-01T23:11:06.265091+00:00",
       "url": "https://www.youtube.com/shorts/nZ6XIZKnuIE",
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.998,
+      "age_hours": 3.61,
       "category": "trees",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.912,
+      "age_hours": 4.524,
       "category": "forests",
       "checkpoints": [
         {
@@ -235,7 +290,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.971,
+      "age_hours": 5.583,
       "category": "geology",
       "checkpoints": [
         {
@@ -254,7 +309,7 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 105,
-          "views": 0
+          "views": 1
         },
         {
           "delta_to_target": 0,
@@ -263,10 +318,10 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 300,
-          "views": 0
+          "views": 1
         }
       ],
-      "current_views": 0,
+      "current_views": 1,
       "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
         "delta_to_target": 0,
@@ -275,7 +330,7 @@
         "source": "estimated",
         "state": "pending",
         "target_views": 105,
-        "views": 0
+        "views": 1
       },
       "opening_retention_score": 94.0,
       "opening_retention_state": "retention_ready",
@@ -286,11 +341,11 @@
       "uploaded_at": "2026-07-01T20:12:59.948248+00:00",
       "url": "https://www.youtube.com/shorts/or7TN0gMpWA",
       "video_id": "or7TN0gMpWA",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.18
     },
     {
-      "action": "Queue a sequel or related-video bridge while the session has momentum.",
-      "age_hours": 5.042,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.654,
       "category": "geology",
       "checkpoints": [
         {
@@ -303,11 +358,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -104,
           "due_at": "2026-07-02T01:08:43.611233+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 1
         },
@@ -322,39 +377,41 @@
         }
       ],
       "current_views": 1,
-      "hypothesis": "Performance signal is already positive; amplify without changing the opening.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-02T01:08:43.611233+00:00",
-        "label": "6h",
+        "due_at": "2026-07-02T19:08:43.611233+00:00",
+        "label": "24h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 105,
+        "target_views": 300,
         "views": 1
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "normal",
+      "priority": "high",
       "series": "Earth Engine",
-      "state": "accelerating",
+      "state": "repair_candidate",
       "title": "Rock layers store ancient environments in stripes",
       "uploaded_at": "2026-07-01T19:08:43.611233+00:00",
       "url": "https://www.youtube.com/shorts/FEAbi2e-yas",
       "video_id": "FEAbi2e-yas",
-      "views_per_hour": 0.2,
+      "views_per_hour": 0.151,
       "warning": {
-        "confidence_score": 0.512,
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.51; observation only.",
-        "score": 2,
-        "state": "accelerating",
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
         "title": "Rock layers store ancient environments in stripes",
         "video_id": "FEAbi2e-yas",
-        "warning_state": "accelerator"
+        "views": 1,
+        "warning_state": "repair_risk"
       }
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.985,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 7.597,
       "category": "birds",
       "checkpoints": [
         {
@@ -367,11 +424,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -104,
           "due_at": "2026-07-02T00:12:09.438871+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 1
         },
@@ -386,26 +443,37 @@
         }
       ],
       "current_views": 1,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-02T00:12:09.438871+00:00",
-        "label": "6h",
+        "due_at": "2026-07-02T18:12:09.438871+00:00",
+        "label": "24h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 105,
+        "target_views": 300,
         "views": 1
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Sky Intelligence",
-      "state": "watch",
+      "state": "repair_candidate",
       "title": "Owls fly silently because feathers break sound",
       "uploaded_at": "2026-07-01T18:12:09.438871+00:00",
       "url": "https://www.youtube.com/shorts/dNBmZyaqKXQ",
       "video_id": "dNBmZyaqKXQ",
-      "views_per_hour": 0.168
+      "views_per_hour": 0.132,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Owls fly silently because feathers break sound",
+        "video_id": "dNBmZyaqKXQ",
+        "views": 1,
+        "warning_state": "repair_risk"
+      }
     }
   ],
   "targets": {
