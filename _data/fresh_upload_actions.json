@@ -1,17 +1,17 @@
 {
   "counts": {
-    "automation_safe": 10,
-    "high": 0,
-    "manual_review": 0,
+    "automation_safe": 9,
+    "high": 1,
+    "manual_review": 1,
     "total": 10,
     "urgent": 5
   },
   "free_only": true,
-  "generated_at": "2026-07-02T16:16:01.127197+00:00",
+  "generated_at": "2026-07-02T16:54:06.697037+00:00",
   "items": [
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 14.522,
+      "age_hours": 15.157,
       "automation_safe": true,
       "category": "rivers",
       "checkpoint_label": "1h",
@@ -37,7 +37,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 11.918,
+      "age_hours": 12.553,
       "automation_safe": true,
       "category": "weather",
       "checkpoint_label": "1h",
@@ -63,7 +63,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 10.483,
+      "age_hours": 11.118,
       "automation_safe": true,
       "category": "wildlife",
       "checkpoint_label": "1h",
@@ -89,7 +89,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 8.319,
+      "age_hours": 8.954,
       "automation_safe": true,
       "category": "reptiles",
       "checkpoint_label": "1h",
@@ -115,7 +115,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 7.865,
+      "age_hours": 8.5,
       "automation_safe": true,
       "category": "dogs",
       "checkpoint_label": "1h",
@@ -140,34 +140,34 @@
       "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
-      "action_type": "watch_next_checkpoint",
-      "age_hours": 5.586,
-      "automation_safe": true,
+      "action_type": "prepare_package_rescue",
+      "age_hours": 6.221,
+      "automation_safe": false,
       "category": "wildlife",
-      "checkpoint_label": "6h",
+      "checkpoint_label": "24h",
       "checkpoint_state": "pending",
       "current_views": 0,
-      "due_at": "2026-07-02T16:40:50.370873+00:00",
+      "due_at": "2026-07-03T10:40:50.370873+00:00",
       "free_only": true,
       "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-      "id": "fresh-upload:p5aVx8ZViPI:watch:6h",
-      "lane": "observe",
-      "manual_approval_required": false,
+      "id": "fresh-upload:p5aVx8ZViPI:repair_candidate:24h",
+      "lane": "package_rescue",
+      "manual_approval_required": true,
       "opening_retention_score": 100.0,
-      "priority": "low",
-      "recommended_action": "Keep observing through the next checkpoint.",
+      "priority": "high",
+      "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
       "series": "Animal Superpowers",
-      "state": "watch",
-      "target_views": 105,
+      "state": "repair_candidate",
+      "target_views": 300,
       "title": "Wolves read scent posts like a map",
       "url": "https://www.youtube.com/shorts/p5aVx8ZViPI",
       "video_id": "p5aVx8ZViPI",
-      "wait_until": "2026-07-02T16:40:50.370873+00:00",
-      "why": "No intervention signal is strong enough yet."
+      "wait_until": "",
+      "why": "Observed velocity is weak enough to prepare a package intervention."
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 4.875,
+      "age_hours": 5.51,
       "automation_safe": true,
       "category": "insects",
       "checkpoint_label": "6h",
@@ -193,7 +193,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 4.109,
+      "age_hours": 4.744,
       "automation_safe": true,
       "category": "ocean",
       "checkpoint_label": "6h",
@@ -219,7 +219,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 3.015,
+      "age_hours": 3.65,
       "automation_safe": true,
       "category": "insects",
       "checkpoint_label": "6h",
@@ -245,7 +245,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 1.762,
+      "age_hours": 2.396,
       "automation_safe": true,
       "category": "farm",
       "checkpoint_label": "6h",
@@ -271,5 +271,5 @@
     }
   ],
   "source": "fresh_upload_watchlist",
-  "source_generated_at": "2026-07-02T16:16:01.126615+00:00"
+  "source_generated_at": "2026-07-02T16:54:06.696451+00:00"
 }
