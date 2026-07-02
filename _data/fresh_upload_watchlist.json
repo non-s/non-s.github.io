@@ -9,21 +9,76 @@
     "awaiting_1h": 1,
     "high_priority": 5,
     "repair_candidates": 4,
-    "tracked": 9
+    "tracked": 10
   },
-  "generated_at": "2026-07-02T04:43:39.568739+00:00",
+  "generated_at": "2026-07-02T05:50:25.254606+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.379,
-      "category": "weather",
+      "age_hours": 0.057,
+      "category": "wildlife",
       "checkpoints": [
         {
           "delta_to_target": 0,
-          "due_at": "2026-07-02T05:20:54.900666+00:00",
+          "due_at": "2026-07-02T06:47:00.955436+00:00",
           "label": "1h",
           "source": "estimated",
           "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-02T11:47:00.955436+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-03T05:47:00.955436+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-02T06:47:00.955436+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Animal Superpowers",
+      "state": "awaiting_1h",
+      "title": "Elephants cool blood through giant ears",
+      "uploaded_at": "2026-07-02T05:47:00.955436+00:00",
+      "url": "https://www.youtube.com/shorts/HDQAh3KSdtY",
+      "video_id": "HDQAh3KSdtY",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 1.492,
+      "category": "weather",
+      "checkpoints": [
+        {
+          "delta_to_target": -24,
+          "due_at": "2026-07-02T05:20:54.900666+00:00",
+          "label": "1h",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-02T05:20:54.900666+00:00",
-        "label": "1h",
+        "due_at": "2026-07-02T10:20:54.900666+00:00",
+        "label": "6h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 24,
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 90.0,
       "opening_retention_state": "retention_ready",
       "priority": "low",
       "series": "Earth Engine",
-      "state": "awaiting_1h",
+      "state": "watch",
       "title": "Lightning makes air explode into thunder",
       "uploaded_at": "2026-07-02T04:20:54.900666+00:00",
       "url": "https://www.youtube.com/shorts/WbwdERQTz90",
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.982,
+      "age_hours": 4.095,
       "category": "rivers",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.597,
+      "age_hours": 5.71,
       "category": "fungi",
       "checkpoints": [
         {
@@ -179,8 +234,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.543,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.655,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -193,11 +248,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-07-02T05:11:06.265091+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -212,30 +267,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-02T05:11:06.265091+00:00",
-        "label": "6h",
+        "due_at": "2026-07-02T23:11:06.265091+00:00",
+        "label": "24h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 105,
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Planet Earth",
-      "state": "watch",
+      "state": "repair_candidate",
       "title": "Storm clouds reveal a storm's heat engine",
       "uploaded_at": "2026-07-01T23:11:06.265091+00:00",
       "url": "https://www.youtube.com/shorts/nZ6XIZKnuIE",
       "video_id": "nZ6XIZKnuIE",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 24/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Storm clouds reveal a storm's heat engine",
+        "video_id": "nZ6XIZKnuIE",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.538,
+      "age_hours": 7.651,
       "category": "trees",
       "checkpoints": [
         {
@@ -291,7 +357,7 @@
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.594,
         "reason": "low early velocity",
-        "reasoning": "video has 27/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
         "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
         "title": "Trees record wet years inside their rings",
         "video_id": "Y-dGOykkcBM",
@@ -301,7 +367,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 7.452,
+      "age_hours": 8.564,
       "category": "forests",
       "checkpoints": [
         {
@@ -367,7 +433,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 8.511,
+      "age_hours": 9.624,
       "category": "geology",
       "checkpoints": [
         {
@@ -418,7 +484,7 @@
       "uploaded_at": "2026-07-01T20:12:59.948248+00:00",
       "url": "https://www.youtube.com/shorts/or7TN0gMpWA",
       "video_id": "or7TN0gMpWA",
-      "views_per_hour": 0.119,
+      "views_per_hour": 0.104,
       "warning": {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.594,
@@ -432,16 +498,16 @@
       }
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 9.582,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 10.695,
       "category": "geology",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-01T20:08:43.611233+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -465,41 +531,30 @@
         }
       ],
       "current_views": 1,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-02T19:08:43.611233+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-01T20:08:43.611233+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
-        "views": 1
+        "state": "overdue",
+        "target_views": 24,
+        "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Earth Engine",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Rock layers store ancient environments in stripes",
       "uploaded_at": "2026-07-01T19:08:43.611233+00:00",
       "url": "https://www.youtube.com/shorts/FEAbi2e-yas",
       "video_id": "FEAbi2e-yas",
-      "views_per_hour": 0.105,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Rock layers store ancient environments in stripes",
-        "video_id": "FEAbi2e-yas",
-        "views": 1,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.094
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 10.525,
+      "action": "Queue a sequel or related-video bridge while the session has momentum.",
+      "age_hours": 11.638,
       "category": "birds",
       "checkpoints": [
         {
@@ -527,11 +582,11 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 300,
-          "views": 1
+          "views": 2
         }
       ],
-      "current_views": 1,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "current_views": 2,
+      "hypothesis": "Performance signal is already positive; amplify without changing the opening.",
       "next_checkpoint": {
         "delta_to_target": -24,
         "due_at": "2026-07-01T19:12:09.438871+00:00",
@@ -543,14 +598,23 @@
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "high",
+      "priority": "normal",
       "series": "Sky Intelligence",
-      "state": "analytics_due",
+      "state": "accelerating",
       "title": "Owls fly silently because feathers break sound",
       "uploaded_at": "2026-07-01T18:12:09.438871+00:00",
       "url": "https://www.youtube.com/shorts/dNBmZyaqKXQ",
       "video_id": "dNBmZyaqKXQ",
-      "views_per_hour": 0.096
+      "views_per_hour": 0.172,
+      "warning": {
+        "confidence_score": 0.512,
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.51; observation only.",
+        "score": 0,
+        "state": "accelerating",
+        "title": "Owls fly silently because feathers break sound",
+        "video_id": "dNBmZyaqKXQ",
+        "warning_state": "accelerator"
+      }
     }
   ],
   "targets": {

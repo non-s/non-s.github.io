@@ -4,7 +4,7 @@
       "id": "d7370c6ab147dba8",
       "title": "Snakes smell the air with their tongues",
       "category": "reptiles",
-      "autonomy_priority": 103.0,
+      "autonomy_priority": 117.99,
       "queue_score": 100.0,
       "template_cluster": "",
       "mechanism_cluster": "tongue_smell",
@@ -179,6 +179,1465 @@
           "payoff_time_s": 0.0,
           "template_cluster": "",
           "mechanism_cluster": "tongue_smell"
+        }
+      }
+    },
+    {
+      "id": "5c25e034992e1b6a",
+      "title": "Snakes can detect warm prey in the dark",
+      "category": "reptiles",
+      "autonomy_priority": 117.99,
+      "queue_score": 100.0,
+      "template_cluster": "",
+      "mechanism_cluster": "",
+      "objective_reasons": [
+        "objective_gate:bootstrap_observe_before_scaling"
+      ],
+      "lane": "evergreen",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 100.0,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 65,
+          "signals": {
+            "viral_potential": 72,
+            "visual_potential": 69,
+            "replay_potential": 82,
+            "comment_potential": 54,
+            "educational_potential": 66,
+            "emotional_potential": 35,
+            "novelty": 59
+          },
+          "verdict": "produce",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "retention": {
+          "score": 76,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 79,
+            "visual_score": 58,
+            "replay_score": 72,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "opening_retention": {
+          "score": 100.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "snakes",
+          "cue_terms": [
+            "heat",
+            "light",
+            "vision"
+          ],
+          "frame_hook_bridge": [
+            "heat"
+          ],
+          "cue_bridge": [
+            "heat",
+            "light"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": []
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 5,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123,
+          "return_probability": 0.261,
+          "comment_probability": 0.223,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.007,
+          "sample_size": 1,
+          "minimum_sample_size": 15,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.255,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
+        },
+        "category": "reptiles",
+        "story_format": "body_superpower",
+        "hook_score": 100,
+        "title_score": 100,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "confidence_score": 0.007,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 0.0,
+          "template_cluster": "",
+          "mechanism_cluster": ""
+        }
+      }
+    },
+    {
+      "id": "0b09e3c95cd6b71b",
+      "title": "Cats use whiskers like built-in rulers",
+      "category": "cats",
+      "autonomy_priority": 117.99,
+      "queue_score": 100.0,
+      "template_cluster": "",
+      "mechanism_cluster": "",
+      "objective_reasons": [
+        "objective_gate:bootstrap_observe_before_scaling"
+      ],
+      "lane": "recovery",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 100.0,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 66,
+          "signals": {
+            "viral_potential": 89,
+            "visual_potential": 55,
+            "replay_potential": 82,
+            "comment_potential": 54,
+            "educational_potential": 65,
+            "emotional_potential": 53,
+            "novelty": 45
+          },
+          "verdict": "produce",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "retention": {
+          "score": 76,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 79,
+            "visual_score": 58,
+            "replay_score": 72,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "opening_retention": {
+          "score": 100.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "cats",
+          "cue_terms": [
+            "map",
+            "whisker"
+          ],
+          "frame_hook_bridge": [
+            "whisker"
+          ],
+          "cue_bridge": [
+            "whisker"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": []
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 5,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123,
+          "return_probability": 0.261,
+          "comment_probability": 0.223,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.007,
+          "sample_size": 1,
+          "minimum_sample_size": 15,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.255,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
+        },
+        "category": "cats",
+        "story_format": "body_superpower",
+        "hook_score": 100,
+        "title_score": 100,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "confidence_score": 0.007,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 0.0,
+          "template_cluster": "",
+          "mechanism_cluster": ""
+        }
+      }
+    },
+    {
+      "id": "7b649609c85a5cb7",
+      "title": "Dogs read the world through scent maps",
+      "category": "dogs",
+      "autonomy_priority": 117.99,
+      "queue_score": 100.0,
+      "template_cluster": "",
+      "mechanism_cluster": "scent_map",
+      "objective_reasons": [
+        "objective_gate:bootstrap_observe_before_scaling"
+      ],
+      "lane": "recovery",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 100.0,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 55,
+          "signals": {
+            "viral_potential": 55,
+            "visual_potential": 55,
+            "replay_potential": 74,
+            "comment_potential": 54,
+            "educational_potential": 58,
+            "emotional_potential": 35,
+            "novelty": 45
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "retention": {
+          "score": 76,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 79,
+            "visual_score": 58,
+            "replay_score": 72,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "opening_retention": {
+          "score": 100.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "dogs",
+          "cue_terms": [
+            "map",
+            "nose",
+            "scent"
+          ],
+          "frame_hook_bridge": [
+            "map"
+          ],
+          "cue_bridge": [
+            "map",
+            "nose"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": []
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 5,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123,
+          "return_probability": 0.261,
+          "comment_probability": 0.223,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.007,
+          "sample_size": 1,
+          "minimum_sample_size": 15,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.255,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
+        },
+        "category": "dogs",
+        "story_format": "body_superpower",
+        "hook_score": 100,
+        "title_score": 100,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "confidence_score": 0.007,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 0.0,
+          "template_cluster": "",
+          "mechanism_cluster": "scent_map"
+        }
+      }
+    },
+    {
+      "id": "3018e9a61786a2c5",
+      "title": "Foxes hear tiny prey under snow",
+      "category": "nocturnal",
+      "autonomy_priority": 117.99,
+      "queue_score": 100.0,
+      "template_cluster": "",
+      "mechanism_cluster": "",
+      "objective_reasons": [
+        "objective_gate:bootstrap_observe_before_scaling"
+      ],
+      "lane": "evergreen",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 100.0,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 59,
+          "signals": {
+            "viral_potential": 66,
+            "visual_potential": 55,
+            "replay_potential": 74,
+            "comment_potential": 54,
+            "educational_potential": 58,
+            "emotional_potential": 53,
+            "novelty": 45
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "retention": {
+          "score": 76,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 79,
+            "visual_score": 58,
+            "replay_score": 72,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "opening_retention": {
+          "score": 100.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "foxes",
+          "cue_terms": [
+            "hear",
+            "snow",
+            "sound"
+          ],
+          "frame_hook_bridge": [
+            "snow"
+          ],
+          "cue_bridge": [
+            "snow",
+            "sound"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": []
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 5,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 99,
+          "state": "strong",
+          "subscriber_probability": 0.141,
+          "return_probability": 0.297,
+          "comment_probability": 0.253,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "hook_invites_return",
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.007,
+          "sample_size": 1,
+          "minimum_sample_size": 15,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.255,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
+        },
+        "category": "nocturnal",
+        "story_format": "body_superpower",
+        "hook_score": 88,
+        "title_score": 84,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "confidence_score": 0.007,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 0.0,
+          "template_cluster": "",
+          "mechanism_cluster": ""
+        }
+      }
+    },
+    {
+      "id": "a081bfd89f0a7471",
+      "title": "Sharks sense tiny electric fields",
+      "category": "ocean",
+      "autonomy_priority": 117.99,
+      "queue_score": 100.0,
+      "template_cluster": "",
+      "mechanism_cluster": "electric_sense",
+      "objective_reasons": [
+        "objective_gate:bootstrap_observe_before_scaling"
+      ],
+      "lane": "evergreen",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 100.0,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 67,
+          "signals": {
+            "viral_potential": 95,
+            "visual_potential": 59,
+            "replay_potential": 72,
+            "comment_potential": 46,
+            "educational_potential": 73,
+            "emotional_potential": 44,
+            "novelty": 69
+          },
+          "verdict": "produce",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "retention": {
+          "score": 71,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 71,
+            "visual_score": 50,
+            "replay_score": 62,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "opening_retention": {
+          "score": 100.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "sharks",
+          "cue_terms": [
+            "electric",
+            "sense"
+          ],
+          "frame_hook_bridge": [
+            "electric",
+            "sense"
+          ],
+          "cue_bridge": [
+            "electric",
+            "sense"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": []
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 5,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 72,
+          "state": "usable",
+          "subscriber_probability": 0.103,
+          "return_probability": 0.222,
+          "comment_probability": 0.191,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.007,
+          "sample_size": 1,
+          "minimum_sample_size": 15,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.255,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
+        },
+        "category": "ocean",
+        "story_format": "body_superpower",
+        "hook_score": 88,
+        "title_score": 74,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "confidence_score": 0.007,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 0.0,
+          "template_cluster": "",
+          "mechanism_cluster": "electric_sense"
+        }
+      }
+    },
+    {
+      "id": "59eb0e1414f61a06",
+      "title": "Seals track fish trails with whiskers",
+      "category": "arctic",
+      "autonomy_priority": 117.99,
+      "queue_score": 100.0,
+      "template_cluster": "",
+      "mechanism_cluster": "",
+      "objective_reasons": [
+        "objective_gate:bootstrap_observe_before_scaling"
+      ],
+      "lane": "evergreen",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 100.0,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 55,
+          "signals": {
+            "viral_potential": 68,
+            "visual_potential": 45,
+            "replay_potential": 64,
+            "comment_potential": 54,
+            "educational_potential": 58,
+            "emotional_potential": 44,
+            "novelty": 45
+          },
+          "verdict": "rewrite",
+          "reasons": [
+            "weak_visual_surface"
+          ],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "retention": {
+          "score": 71,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 71,
+            "visual_score": 50,
+            "replay_score": 62,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "opening_retention": {
+          "score": 100.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "seals",
+          "cue_terms": [
+            "tracker",
+            "wake",
+            "whisker"
+          ],
+          "frame_hook_bridge": [
+            "wake"
+          ],
+          "cue_bridge": [
+            "wake",
+            "whisker"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": []
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 5,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123,
+          "return_probability": 0.261,
+          "comment_probability": 0.223,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.007,
+          "sample_size": 1,
+          "minimum_sample_size": 15,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.255,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
+        },
+        "category": "arctic",
+        "story_format": "body_superpower",
+        "hook_score": 100,
+        "title_score": 100,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "confidence_score": 0.007,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 0.0,
+          "template_cluster": "",
+          "mechanism_cluster": ""
+        }
+      }
+    },
+    {
+      "id": "9350de4d49732d9c",
+      "title": "Butterflies carry color on tiny wing scales",
+      "category": "insects",
+      "autonomy_priority": 117.99,
+      "queue_score": 100.0,
+      "template_cluster": "",
+      "mechanism_cluster": "wing_scales",
+      "objective_reasons": [
+        "objective_gate:bootstrap_observe_before_scaling"
+      ],
+      "lane": "evergreen",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 100.0,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 70,
+          "signals": {
+            "viral_potential": 80,
+            "visual_potential": 79,
+            "replay_potential": 72,
+            "comment_potential": 62,
+            "educational_potential": 73,
+            "emotional_potential": 44,
+            "novelty": 59
+          },
+          "verdict": "produce",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "retention": {
+          "score": 76,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 79,
+            "visual_score": 66,
+            "replay_score": 62,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "opening_retention": {
+          "score": 96.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "butterflies",
+          "cue_terms": [
+            "color",
+            "scale",
+            "surface",
+            "wing"
+          ],
+          "frame_hook_bridge": [
+            "scale",
+            "wing"
+          ],
+          "cue_bridge": [
+            "color",
+            "scale",
+            "surface",
+            "wing"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": [
+            "missing_early_action"
+          ]
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 5,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123,
+          "return_probability": 0.261,
+          "comment_probability": 0.223,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.007,
+          "sample_size": 1,
+          "minimum_sample_size": 15,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.255,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
+        },
+        "category": "insects",
+        "story_format": "body_superpower",
+        "hook_score": 100,
+        "title_score": 90,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "confidence_score": 0.007,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 0.0,
+          "template_cluster": "",
+          "mechanism_cluster": "wing_scales"
+        }
+      }
+    },
+    {
+      "id": "33b8c5d2b6058e54",
+      "title": "Dragonflies lock onto prey in midair",
+      "category": "insects",
+      "autonomy_priority": 117.99,
+      "queue_score": 100.0,
+      "template_cluster": "",
+      "mechanism_cluster": "",
+      "objective_reasons": [
+        "objective_gate:bootstrap_observe_before_scaling"
+      ],
+      "lane": "evergreen",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 100.0,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 68,
+          "signals": {
+            "viral_potential": 80,
+            "visual_potential": 69,
+            "replay_potential": 82,
+            "comment_potential": 54,
+            "educational_potential": 73,
+            "emotional_potential": 44,
+            "novelty": 59
+          },
+          "verdict": "produce",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "retention": {
+          "score": 77,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 87,
+            "visual_score": 58,
+            "replay_score": 72,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "opening_retention": {
+          "score": 90.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "dragonflies",
+          "cue_terms": [
+            "eyes",
+            "lock",
+            "motion"
+          ],
+          "frame_hook_bridge": [],
+          "cue_bridge": [
+            "eyes"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": [
+            "frame_text_not_echoed_early"
+          ]
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 5,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123,
+          "return_probability": 0.261,
+          "comment_probability": 0.223,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.007,
+          "sample_size": 1,
+          "minimum_sample_size": 15,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.255,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
+        },
+        "category": "insects",
+        "story_format": "body_superpower",
+        "hook_score": 100,
+        "title_score": 90,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "confidence_score": 0.007,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 0.0,
+          "template_cluster": "",
+          "mechanism_cluster": ""
         }
       }
     },
@@ -364,188 +1823,6 @@
       }
     },
     {
-      "id": "7b649609c85a5cb7",
-      "title": "Dogs read the world through scent maps",
-      "category": "dogs",
-      "autonomy_priority": 103.0,
-      "queue_score": 100.0,
-      "template_cluster": "",
-      "mechanism_cluster": "scent_map",
-      "objective_reasons": [
-        "objective_gate:bootstrap_observe_before_scaling"
-      ],
-      "lane": "recovery",
-      "mix_adjustment": 5.0,
-      "score": {
-        "score": 100.0,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 55,
-          "signals": {
-            "viral_potential": 55,
-            "visual_potential": 55,
-            "replay_potential": 74,
-            "comment_potential": 54,
-            "educational_potential": 58,
-            "emotional_potential": 35,
-            "novelty": 45
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "retention": {
-          "score": 76,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 79,
-            "visual_score": 58,
-            "replay_score": 72,
-            "completion_prediction": 84
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "opening_retention": {
-          "score": 100.0,
-          "state": "retention_ready",
-          "approved": true,
-          "subject": "dogs",
-          "cue_terms": [
-            "map",
-            "nose",
-            "scent"
-          ],
-          "frame_hook_bridge": [
-            "map"
-          ],
-          "cue_bridge": [
-            "map",
-            "nose"
-          ],
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "risks": []
-        },
-        "weak_content": {
-          "risk": 0,
-          "state": "clear",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.65,
-            "sample_size": 5,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123,
-          "return_probability": 0.261,
-          "comment_probability": 0.223,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.033,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.274,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.007,
-          "sample_size": 1,
-          "minimum_sample_size": 15,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.255,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
-        },
-        "category": "dogs",
-        "story_format": "body_superpower",
-        "hook_score": 100,
-        "title_score": 100,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 0.0,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "confidence_score": 0.007,
-          "scale_ready": false,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 0.0,
-          "template_cluster": "",
-          "mechanism_cluster": "scent_map"
-        }
-      }
-    },
-    {
       "id": "11137f107a134f04",
       "title": "Lions use dark ear marks to guide cubs",
       "category": "wildlife",
@@ -703,375 +1980,6 @@
         "story_format": "survival_trick",
         "hook_score": 100,
         "title_score": 100,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 0.0,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "confidence_score": 0.007,
-          "scale_ready": false,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 0.0,
-          "template_cluster": "",
-          "mechanism_cluster": ""
-        }
-      }
-    },
-    {
-      "id": "3018e9a61786a2c5",
-      "title": "Foxes hear tiny prey under snow",
-      "category": "nocturnal",
-      "autonomy_priority": 103.0,
-      "queue_score": 100.0,
-      "template_cluster": "",
-      "mechanism_cluster": "",
-      "objective_reasons": [
-        "objective_gate:bootstrap_observe_before_scaling"
-      ],
-      "lane": "evergreen",
-      "mix_adjustment": 5.0,
-      "score": {
-        "score": 100.0,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 59,
-          "signals": {
-            "viral_potential": 66,
-            "visual_potential": 55,
-            "replay_potential": 74,
-            "comment_potential": 54,
-            "educational_potential": 58,
-            "emotional_potential": 53,
-            "novelty": 45
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "retention": {
-          "score": 76,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 79,
-            "visual_score": 58,
-            "replay_score": 72,
-            "completion_prediction": 84
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "opening_retention": {
-          "score": 100.0,
-          "state": "retention_ready",
-          "approved": true,
-          "subject": "foxes",
-          "cue_terms": [
-            "hear",
-            "snow",
-            "sound"
-          ],
-          "frame_hook_bridge": [
-            "snow"
-          ],
-          "cue_bridge": [
-            "snow",
-            "sound"
-          ],
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "risks": []
-        },
-        "weak_content": {
-          "risk": 0,
-          "state": "clear",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.65,
-            "sample_size": 5,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 99,
-          "state": "strong",
-          "subscriber_probability": 0.141,
-          "return_probability": 0.297,
-          "comment_probability": 0.253,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "hook_invites_return",
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.033,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.274,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.007,
-          "sample_size": 1,
-          "minimum_sample_size": 15,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.255,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
-        },
-        "category": "nocturnal",
-        "story_format": "body_superpower",
-        "hook_score": 88,
-        "title_score": 84,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 0.0,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "confidence_score": 0.007,
-          "scale_ready": false,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 0.0,
-          "template_cluster": "",
-          "mechanism_cluster": ""
-        }
-      }
-    },
-    {
-      "id": "c70ff9b0d002c000",
-      "title": "Elephants cool blood through giant ears",
-      "category": "wildlife",
-      "autonomy_priority": 103.0,
-      "queue_score": 100.0,
-      "template_cluster": "",
-      "mechanism_cluster": "",
-      "objective_reasons": [
-        "objective_gate:bootstrap_observe_before_scaling"
-      ],
-      "lane": "evergreen",
-      "mix_adjustment": 5.0,
-      "score": {
-        "score": 100.0,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 71,
-          "signals": {
-            "viral_potential": 80,
-            "visual_potential": 79,
-            "replay_potential": 82,
-            "comment_potential": 62,
-            "educational_potential": 73,
-            "emotional_potential": 44,
-            "novelty": 59
-          },
-          "verdict": "produce",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "retention": {
-          "score": 79,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 87,
-            "visual_score": 66,
-            "replay_score": 72,
-            "completion_prediction": 84
-          },
-          "verdict": "ready",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "opening_retention": {
-          "score": 100.0,
-          "state": "retention_ready",
-          "approved": true,
-          "subject": "elephants",
-          "cue_terms": [
-            "ear",
-            "ears",
-            "radiator",
-            "surface"
-          ],
-          "frame_hook_bridge": [
-            "ear",
-            "radiator"
-          ],
-          "cue_bridge": [
-            "ear",
-            "ears",
-            "radiator",
-            "surface"
-          ],
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "risks": []
-        },
-        "weak_content": {
-          "risk": 0,
-          "state": "clear",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.65,
-            "sample_size": 5,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123,
-          "return_probability": 0.261,
-          "comment_probability": 0.223,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.033,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.274,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.007,
-          "sample_size": 1,
-          "minimum_sample_size": 15,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.255,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
-        },
-        "category": "wildlife",
-        "story_format": "body_superpower",
-        "hook_score": 100,
-        "title_score": 90,
         "phrase_risk": {
           "penalty": 0,
           "hits": []
@@ -1614,371 +2522,6 @@
         },
         "category": "ocean",
         "story_format": "animal_intelligence",
-        "hook_score": 100,
-        "title_score": 100,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 0.0,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "confidence_score": 0.007,
-          "scale_ready": false,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 0.0,
-          "template_cluster": "",
-          "mechanism_cluster": ""
-        }
-      }
-    },
-    {
-      "id": "a081bfd89f0a7471",
-      "title": "Sharks sense tiny electric fields",
-      "category": "ocean",
-      "autonomy_priority": 103.0,
-      "queue_score": 100.0,
-      "template_cluster": "",
-      "mechanism_cluster": "electric_sense",
-      "objective_reasons": [
-        "objective_gate:bootstrap_observe_before_scaling"
-      ],
-      "lane": "evergreen",
-      "mix_adjustment": 5.0,
-      "score": {
-        "score": 100.0,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 67,
-          "signals": {
-            "viral_potential": 95,
-            "visual_potential": 59,
-            "replay_potential": 72,
-            "comment_potential": 46,
-            "educational_potential": 73,
-            "emotional_potential": 44,
-            "novelty": 69
-          },
-          "verdict": "produce",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "retention": {
-          "score": 71,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 71,
-            "visual_score": 50,
-            "replay_score": 62,
-            "completion_prediction": 84
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "opening_retention": {
-          "score": 100.0,
-          "state": "retention_ready",
-          "approved": true,
-          "subject": "sharks",
-          "cue_terms": [
-            "electric",
-            "sense"
-          ],
-          "frame_hook_bridge": [
-            "electric",
-            "sense"
-          ],
-          "cue_bridge": [
-            "electric",
-            "sense"
-          ],
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "risks": []
-        },
-        "weak_content": {
-          "risk": 0,
-          "state": "clear",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.65,
-            "sample_size": 5,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103,
-          "return_probability": 0.222,
-          "comment_probability": 0.191,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.033,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.274,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.007,
-          "sample_size": 1,
-          "minimum_sample_size": 15,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.255,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
-        },
-        "category": "ocean",
-        "story_format": "body_superpower",
-        "hook_score": 88,
-        "title_score": 74,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 0.0,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "confidence_score": 0.007,
-          "scale_ready": false,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 0.0,
-          "template_cluster": "",
-          "mechanism_cluster": "electric_sense"
-        }
-      }
-    },
-    {
-      "id": "59eb0e1414f61a06",
-      "title": "Seals track fish trails with whiskers",
-      "category": "arctic",
-      "autonomy_priority": 103.0,
-      "queue_score": 100.0,
-      "template_cluster": "",
-      "mechanism_cluster": "",
-      "objective_reasons": [
-        "objective_gate:bootstrap_observe_before_scaling"
-      ],
-      "lane": "evergreen",
-      "mix_adjustment": 5.0,
-      "score": {
-        "score": 100.0,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 55,
-          "signals": {
-            "viral_potential": 68,
-            "visual_potential": 45,
-            "replay_potential": 64,
-            "comment_potential": 54,
-            "educational_potential": 58,
-            "emotional_potential": 44,
-            "novelty": 45
-          },
-          "verdict": "rewrite",
-          "reasons": [
-            "weak_visual_surface"
-          ],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "retention": {
-          "score": 71,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 71,
-            "visual_score": 50,
-            "replay_score": 62,
-            "completion_prediction": 84
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "opening_retention": {
-          "score": 100.0,
-          "state": "retention_ready",
-          "approved": true,
-          "subject": "seals",
-          "cue_terms": [
-            "tracker",
-            "wake",
-            "whisker"
-          ],
-          "frame_hook_bridge": [
-            "wake"
-          ],
-          "cue_bridge": [
-            "wake",
-            "whisker"
-          ],
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "risks": []
-        },
-        "weak_content": {
-          "risk": 0,
-          "state": "clear",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.65,
-            "sample_size": 5,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123,
-          "return_probability": 0.261,
-          "comment_probability": 0.223,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.033,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.274,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.007,
-          "sample_size": 1,
-          "minimum_sample_size": 15,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.255,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
-        },
-        "category": "arctic",
-        "story_format": "body_superpower",
         "hook_score": 100,
         "title_score": 100,
         "phrase_risk": {
@@ -2921,7 +3464,7 @@
       "title": "Lions hunt better when the pride coordinates",
       "category": "wildlife",
       "autonomy_priority": 102.8,
-      "queue_score": 99.8,
+      "queue_score": 100.0,
       "template_cluster": "",
       "mechanism_cluster": "",
       "objective_reasons": [
@@ -3095,193 +3638,6 @@
           "payoff_time_s": 0.0,
           "template_cluster": "",
           "mechanism_cluster": ""
-        }
-      }
-    },
-    {
-      "id": "9350de4d49732d9c",
-      "title": "Butterflies carry color on tiny wing scales",
-      "category": "insects",
-      "autonomy_priority": 103.0,
-      "queue_score": 100.0,
-      "template_cluster": "",
-      "mechanism_cluster": "wing_scales",
-      "objective_reasons": [
-        "objective_gate:bootstrap_observe_before_scaling"
-      ],
-      "lane": "evergreen",
-      "mix_adjustment": 5.0,
-      "score": {
-        "score": 100.0,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 70,
-          "signals": {
-            "viral_potential": 80,
-            "visual_potential": 79,
-            "replay_potential": 72,
-            "comment_potential": 62,
-            "educational_potential": 73,
-            "emotional_potential": 44,
-            "novelty": 59
-          },
-          "verdict": "produce",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "retention": {
-          "score": 76,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 79,
-            "visual_score": 66,
-            "replay_score": 62,
-            "completion_prediction": 84
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "opening_retention": {
-          "score": 96.0,
-          "state": "retention_ready",
-          "approved": true,
-          "subject": "butterflies",
-          "cue_terms": [
-            "color",
-            "scale",
-            "surface",
-            "wing"
-          ],
-          "frame_hook_bridge": [
-            "scale",
-            "wing"
-          ],
-          "cue_bridge": [
-            "color",
-            "scale",
-            "surface",
-            "wing"
-          ],
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "risks": [
-            "missing_early_action"
-          ]
-        },
-        "weak_content": {
-          "risk": 0,
-          "state": "clear",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.65,
-            "sample_size": 5,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123,
-          "return_probability": 0.261,
-          "comment_probability": 0.223,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.033,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.274,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.007,
-          "sample_size": 1,
-          "minimum_sample_size": 15,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.255,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
-        },
-        "category": "insects",
-        "story_format": "body_superpower",
-        "hook_score": 100,
-        "title_score": 90,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 0.0,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "confidence_score": 0.007,
-          "scale_ready": false,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 0.0,
-          "template_cluster": "",
-          "mechanism_cluster": "wing_scales"
         }
       }
     },
@@ -3466,188 +3822,6 @@
       }
     },
     {
-      "id": "5c25e034992e1b6a",
-      "title": "Snakes can detect warm prey in the dark",
-      "category": "reptiles",
-      "autonomy_priority": 100.0,
-      "queue_score": 100.0,
-      "template_cluster": "",
-      "mechanism_cluster": "",
-      "objective_reasons": [
-        "objective_gate:bootstrap_observe_before_scaling"
-      ],
-      "lane": "evergreen",
-      "mix_adjustment": 5.0,
-      "score": {
-        "score": 100.0,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 65,
-          "signals": {
-            "viral_potential": 72,
-            "visual_potential": 69,
-            "replay_potential": 82,
-            "comment_potential": 54,
-            "educational_potential": 66,
-            "emotional_potential": 35,
-            "novelty": 59
-          },
-          "verdict": "produce",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "retention": {
-          "score": 76,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 79,
-            "visual_score": 58,
-            "replay_score": 72,
-            "completion_prediction": 84
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "opening_retention": {
-          "score": 100.0,
-          "state": "retention_ready",
-          "approved": true,
-          "subject": "snakes",
-          "cue_terms": [
-            "heat",
-            "light",
-            "vision"
-          ],
-          "frame_hook_bridge": [
-            "heat"
-          ],
-          "cue_bridge": [
-            "heat",
-            "light"
-          ],
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "risks": []
-        },
-        "weak_content": {
-          "risk": 0,
-          "state": "clear",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.65,
-            "sample_size": 5,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123,
-          "return_probability": 0.261,
-          "comment_probability": 0.223,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.033,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.274,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.007,
-          "sample_size": 1,
-          "minimum_sample_size": 15,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.255,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
-        },
-        "category": "reptiles",
-        "story_format": "body_superpower",
-        "hook_score": 100,
-        "title_score": 100,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 0.0,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "confidence_score": 0.007,
-          "scale_ready": false,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 0.0,
-          "template_cluster": "",
-          "mechanism_cluster": ""
-        }
-      }
-    },
-    {
       "id": "4adfaf5fa95ebe2d",
       "title": "Plants use trap hairs to count touches before snapping shut",
       "category": "plants",
@@ -3804,186 +3978,6 @@
         },
         "category": "plants",
         "story_format": "plant_mechanism",
-        "hook_score": 100,
-        "title_score": 100,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 0.0,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "confidence_score": 0.007,
-          "scale_ready": false,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 0.0,
-          "template_cluster": "",
-          "mechanism_cluster": ""
-        }
-      }
-    },
-    {
-      "id": "0b09e3c95cd6b71b",
-      "title": "Cats use whiskers like built-in rulers",
-      "category": "cats",
-      "autonomy_priority": 100.0,
-      "queue_score": 100.0,
-      "template_cluster": "",
-      "mechanism_cluster": "",
-      "objective_reasons": [
-        "objective_gate:bootstrap_observe_before_scaling"
-      ],
-      "lane": "recovery",
-      "mix_adjustment": 5.0,
-      "score": {
-        "score": 100.0,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 66,
-          "signals": {
-            "viral_potential": 89,
-            "visual_potential": 55,
-            "replay_potential": 82,
-            "comment_potential": 54,
-            "educational_potential": 65,
-            "emotional_potential": 53,
-            "novelty": 45
-          },
-          "verdict": "produce",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "retention": {
-          "score": 76,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 79,
-            "visual_score": 58,
-            "replay_score": 72,
-            "completion_prediction": 84
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "opening_retention": {
-          "score": 100.0,
-          "state": "retention_ready",
-          "approved": true,
-          "subject": "cats",
-          "cue_terms": [
-            "map",
-            "whisker"
-          ],
-          "frame_hook_bridge": [
-            "whisker"
-          ],
-          "cue_bridge": [
-            "whisker"
-          ],
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "risks": []
-        },
-        "weak_content": {
-          "risk": 0,
-          "state": "clear",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.65,
-            "sample_size": 5,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123,
-          "return_probability": 0.261,
-          "comment_probability": 0.223,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.033,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.274,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.007,
-          "sample_size": 1,
-          "minimum_sample_size": 15,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.255,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
-        },
-        "category": "cats",
-        "story_format": "body_superpower",
         "hook_score": 100,
         "title_score": 100,
         "phrase_risk": {
@@ -4738,186 +4732,6 @@
       }
     },
     {
-      "id": "33b8c5d2b6058e54",
-      "title": "Dragonflies lock onto prey in midair",
-      "category": "insects",
-      "autonomy_priority": 100.0,
-      "queue_score": 100.0,
-      "template_cluster": "",
-      "mechanism_cluster": "",
-      "objective_reasons": [
-        "objective_gate:bootstrap_observe_before_scaling"
-      ],
-      "lane": "evergreen",
-      "mix_adjustment": 5.0,
-      "score": {
-        "score": 100.0,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 68,
-          "signals": {
-            "viral_potential": 80,
-            "visual_potential": 69,
-            "replay_potential": 82,
-            "comment_potential": 54,
-            "educational_potential": 73,
-            "emotional_potential": 44,
-            "novelty": 59
-          },
-          "verdict": "produce",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "retention": {
-          "score": 77,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 87,
-            "visual_score": 58,
-            "replay_score": 72,
-            "completion_prediction": 84
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "opening_retention": {
-          "score": 90.0,
-          "state": "retention_ready",
-          "approved": true,
-          "subject": "dragonflies",
-          "cue_terms": [
-            "eyes",
-            "lock",
-            "motion"
-          ],
-          "frame_hook_bridge": [],
-          "cue_bridge": [
-            "eyes"
-          ],
-          "strengths": [
-            "subject_frontloaded",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "risks": [
-            "frame_text_not_echoed_early"
-          ]
-        },
-        "weak_content": {
-          "risk": 0,
-          "state": "clear",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.65,
-            "sample_size": 5,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123,
-          "return_probability": 0.261,
-          "comment_probability": 0.223,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.033,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.274,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.007,
-          "sample_size": 1,
-          "minimum_sample_size": 15,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.255,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
-        },
-        "category": "insects",
-        "story_format": "body_superpower",
-        "hook_score": 100,
-        "title_score": 90,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 0.0,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "confidence_score": 0.007,
-          "scale_ready": false,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 0.0,
-          "template_cluster": "",
-          "mechanism_cluster": ""
-        }
-      }
-    },
-    {
       "id": "6d1ca548cd6f4e33",
       "title": "Plants turn sunlight into stored sugar",
       "category": "plants",
@@ -5290,7 +5104,7 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 47,
+      "evergreen": 46,
       "recovery": 10
     },
     "items": [
@@ -5300,7 +5114,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.38
+        "freshness_score": 54.3
       },
       {
         "id": "7d42811974c363c8",
@@ -5308,7 +5122,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.42
+        "freshness_score": 54.32
       },
       {
         "id": "677b330e4980e87d",
@@ -5316,7 +5130,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.3
+        "freshness_score": 54.22
       },
       {
         "id": "09c8f40beafab256",
@@ -5324,7 +5138,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.06
+        "freshness_score": 53.98
       },
       {
         "id": "d8d90627f96566aa",
@@ -5332,7 +5146,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.06
+        "freshness_score": 53.98
       },
       {
         "id": "f329d4d9415a87cf",
@@ -5340,7 +5154,7 @@
         "category": "birds",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.24
+        "freshness_score": 54.14
       },
       {
         "id": "aaa61c85d17a2936",
@@ -5348,7 +5162,7 @@
         "category": "rivers",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.06
+        "freshness_score": 53.98
       },
       {
         "id": "a1b777d6296755b1",
@@ -5356,7 +5170,7 @@
         "category": "rivers",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.06
+        "freshness_score": 53.98
       },
       {
         "id": "8cadc9b623a69cc8",
@@ -5364,7 +5178,7 @@
         "category": "rivers",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.3
+        "freshness_score": 54.22
       },
       {
         "id": "b48d7d5e01b74a64",
@@ -5372,7 +5186,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.38
+        "freshness_score": 54.3
       },
       {
         "id": "bde3a3cd3f2b3583",
@@ -5380,7 +5194,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 55.0
+        "freshness_score": 54.9
       },
       {
         "id": "41bb91e14c9cd4f6",
@@ -5388,7 +5202,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.42
+        "freshness_score": 54.32
       },
       {
         "id": "db2eb7ca63e0a42a",
@@ -5396,7 +5210,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.3
+        "freshness_score": 54.22
       },
       {
         "id": "984084a6aff9d81c",
@@ -5404,7 +5218,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.42
+        "freshness_score": 54.32
       },
       {
         "id": "17c87451c802bb11",
@@ -5412,7 +5226,7 @@
         "category": "trees",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.52
+        "freshness_score": 54.44
       },
       {
         "id": "d8984d44b4413a7a",
@@ -5420,7 +5234,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.42
+        "freshness_score": 54.34
       },
       {
         "id": "4111626a62866b27",
@@ -5428,15 +5242,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.22
-      },
-      {
-        "id": "286c6fe56686d442",
-        "title": "Dolphins use signature whistles like names",
-        "category": "ocean",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 55.0
+        "freshness_score": 54.12
       },
       {
         "id": "d7370c6ab147dba8",
@@ -5444,247 +5250,7 @@
         "category": "reptiles",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.38
-      },
-      {
-        "id": "07eeac3e7fffa982",
-        "title": "Whales slap the surface to warn the pod",
-        "category": "ocean",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.38
-      },
-      {
-        "id": "41dd7009a859af1f",
-        "title": "Dolphins can call each other with signature whistles",
-        "category": "ocean",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.22
-      },
-      {
-        "id": "a081bfd89f0a7471",
-        "title": "Sharks sense tiny electric fields",
-        "category": "ocean",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.6
-      },
-      {
-        "id": "59eb0e1414f61a06",
-        "title": "Seals track fish trails with whiskers",
-        "category": "arctic",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.56
-      },
-      {
-        "id": "9f07c71ee1907fc0",
-        "title": "Whales send songs across huge ocean distances",
-        "category": "ocean",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.52
-      },
-      {
-        "id": "7b649609c85a5cb7",
-        "title": "Dogs read the world through scent maps",
-        "category": "dogs",
-        "lane": "recovery",
-        "adjustment": 5.0,
-        "freshness_score": 54.2
-      },
-      {
-        "id": "11137f107a134f04",
-        "title": "Lions use dark ear marks to guide cubs",
-        "category": "wildlife",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.08
-      },
-      {
-        "id": "3018e9a61786a2c5",
-        "title": "Foxes hear tiny prey under snow",
-        "category": "nocturnal",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.08
-      },
-      {
-        "id": "4406a9b99388f0ba",
-        "title": "Monkeys wash food when grit gets annoying",
-        "category": "primates",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.08
-      },
-      {
-        "id": "42d9bdab5385350a",
-        "title": "Horses point their ears toward what matters",
-        "category": "farm",
-        "lane": "recovery",
-        "adjustment": 5.0,
-        "freshness_score": 54.08
-      },
-      {
-        "id": "c70ff9b0d002c000",
-        "title": "Elephants cool blood through giant ears",
-        "category": "wildlife",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.08
-      },
-      {
-        "id": "9350de4d49732d9c",
-        "title": "Butterflies carry color on tiny wing scales",
-        "category": "insects",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.06
-      },
-      {
-        "id": "b56baed0627d1611",
-        "title": "Magnets make invisible fields visible",
-        "category": "physics",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.06
-      },
-      {
-        "id": "8bdc8b70af521eb4",
-        "title": "Fossils turn old bones into time clues",
-        "category": "discoveries",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.06
-      },
-      {
-        "id": "6568a4ceeb37c856",
-        "title": "Horses remember familiar faces for months",
-        "category": "farm",
-        "lane": "recovery",
-        "adjustment": 5.0,
-        "freshness_score": 54.06
-      },
-      {
-        "id": "510258fc6cfb6be9",
-        "title": "Ducks fake injuries to protect their young",
-        "category": "farm",
-        "lane": "recovery",
-        "adjustment": 5.0,
-        "freshness_score": 54.44
-      },
-      {
-        "id": "2a8f3f3725c00fe2",
-        "title": "Elephants can feel rumbles through the ground",
-        "category": "wildlife",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.06
-      },
-      {
-        "id": "38a9a9876bc2c5d0",
-        "title": "The moon keeps one face turned toward Earth",
-        "category": "space",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.06
-      },
-      {
-        "id": "daf9d0799895a0a9",
-        "title": "Cats groom to reset their scent map",
-        "category": "cats",
-        "lane": "recovery",
-        "adjustment": 5.0,
-        "freshness_score": 54.6
-      },
-      {
-        "id": "59ff26920ffc16e0",
-        "title": "Birds see ultraviolet patterns we miss",
-        "category": "nocturnal",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.98
-      },
-      {
-        "id": "307f5194e13c5f66",
-        "title": "Horses sleep standing without falling over",
-        "category": "farm",
-        "lane": "recovery",
-        "adjustment": 5.0,
-        "freshness_score": 54.52
-      },
-      {
-        "id": "39c7a9009bed5112",
-        "title": "Lions hunt better when the pride coordinates",
-        "category": "wildlife",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.22
-      },
-      {
-        "id": "05599f551d65f776",
-        "title": "Horses sort familiar clues with face memory",
-        "category": "farm",
-        "lane": "recovery",
-        "adjustment": 5.0,
-        "freshness_score": 54.08
-      },
-      {
-        "id": "e22c7bfd6c2187b6",
-        "title": "Leaves angle toward the light they can use",
-        "category": "plants",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.06
-      },
-      {
-        "id": "3e411d85394495a1",
-        "title": "Dogs follow invisible trails with their nose",
-        "category": "dogs",
-        "lane": "recovery",
-        "adjustment": 5.0,
-        "freshness_score": 54.06
-      },
-      {
-        "id": "ce619185cc5a8b0e",
-        "title": "Plants turn leaf angles into light maps",
-        "category": "plants",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.06
-      },
-      {
-        "id": "9ee098ecdf0b7d81",
-        "title": "Plant leaves reveal where energy comes from",
-        "category": "plants",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.06
-      },
-      {
-        "id": "3838dc5bd1044fb1",
-        "title": "Tigers wear stripe shadows as camouflage",
-        "category": "wildlife",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.56
-      },
-      {
-        "id": "33dd6bb0aeba20be",
-        "title": "Bees dance directions back to the hive",
-        "category": "insects",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.98
-      },
-      {
-        "id": "18762a35e9b1f385",
-        "title": "Wolves read scent posts like a map",
-        "category": "wildlife",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.76
+        "freshness_score": 54.3
       },
       {
         "id": "33b8c5d2b6058e54",
@@ -5692,7 +5258,7 @@
         "category": "insects",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.24
+        "freshness_score": 54.14
       },
       {
         "id": "5c25e034992e1b6a",
@@ -5700,23 +5266,23 @@
         "category": "reptiles",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.24
+        "freshness_score": 54.14
       },
       {
-        "id": "4adfaf5fa95ebe2d",
-        "title": "Plants use trap hairs to count touches before snapping shut",
-        "category": "plants",
+        "id": "a081bfd89f0a7471",
+        "title": "Sharks sense tiny electric fields",
+        "category": "ocean",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.52
+        "freshness_score": 54.5
       },
       {
-        "id": "5511e2f3d6444e5c",
-        "title": "Ants reveal the answer with scent road",
-        "category": "insects",
+        "id": "59eb0e1414f61a06",
+        "title": "Seals track fish trails with whiskers",
+        "category": "arctic",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.44
+        "freshness_score": 54.48
       },
       {
         "id": "0b09e3c95cd6b71b",
@@ -5724,7 +5290,247 @@
         "category": "cats",
         "lane": "recovery",
         "adjustment": 5.0,
+        "freshness_score": 54.34
+      },
+      {
+        "id": "7b649609c85a5cb7",
+        "title": "Dogs read the world through scent maps",
+        "category": "dogs",
+        "lane": "recovery",
+        "adjustment": 5.0,
+        "freshness_score": 54.12
+      },
+      {
+        "id": "3018e9a61786a2c5",
+        "title": "Foxes hear tiny prey under snow",
+        "category": "nocturnal",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 53.98
+      },
+      {
+        "id": "9350de4d49732d9c",
+        "title": "Butterflies carry color on tiny wing scales",
+        "category": "insects",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 53.98
+      },
+      {
+        "id": "daf9d0799895a0a9",
+        "title": "Cats groom to reset their scent map",
+        "category": "cats",
+        "lane": "recovery",
+        "adjustment": 5.0,
+        "freshness_score": 54.5
+      },
+      {
+        "id": "59ff26920ffc16e0",
+        "title": "Birds see ultraviolet patterns we miss",
+        "category": "nocturnal",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 54.88
+      },
+      {
+        "id": "307f5194e13c5f66",
+        "title": "Horses sleep standing without falling over",
+        "category": "farm",
+        "lane": "recovery",
+        "adjustment": 5.0,
         "freshness_score": 54.42
+      },
+      {
+        "id": "2a8f3f3725c00fe2",
+        "title": "Elephants can feel rumbles through the ground",
+        "category": "wildlife",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 53.98
+      },
+      {
+        "id": "286c6fe56686d442",
+        "title": "Dolphins use signature whistles like names",
+        "category": "ocean",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 54.9
+      },
+      {
+        "id": "07eeac3e7fffa982",
+        "title": "Whales slap the surface to warn the pod",
+        "category": "ocean",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 54.3
+      },
+      {
+        "id": "41dd7009a859af1f",
+        "title": "Dolphins can call each other with signature whistles",
+        "category": "ocean",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 54.14
+      },
+      {
+        "id": "9f07c71ee1907fc0",
+        "title": "Whales send songs across huge ocean distances",
+        "category": "ocean",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 54.42
+      },
+      {
+        "id": "11137f107a134f04",
+        "title": "Lions use dark ear marks to guide cubs",
+        "category": "wildlife",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 53.98
+      },
+      {
+        "id": "4406a9b99388f0ba",
+        "title": "Monkeys wash food when grit gets annoying",
+        "category": "primates",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 53.98
+      },
+      {
+        "id": "42d9bdab5385350a",
+        "title": "Horses point their ears toward what matters",
+        "category": "farm",
+        "lane": "recovery",
+        "adjustment": 5.0,
+        "freshness_score": 53.98
+      },
+      {
+        "id": "b56baed0627d1611",
+        "title": "Magnets make invisible fields visible",
+        "category": "physics",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 53.98
+      },
+      {
+        "id": "8bdc8b70af521eb4",
+        "title": "Fossils turn old bones into time clues",
+        "category": "discoveries",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 53.96
+      },
+      {
+        "id": "6568a4ceeb37c856",
+        "title": "Horses remember familiar faces for months",
+        "category": "farm",
+        "lane": "recovery",
+        "adjustment": 5.0,
+        "freshness_score": 53.96
+      },
+      {
+        "id": "510258fc6cfb6be9",
+        "title": "Ducks fake injuries to protect their young",
+        "category": "farm",
+        "lane": "recovery",
+        "adjustment": 5.0,
+        "freshness_score": 54.34
+      },
+      {
+        "id": "38a9a9876bc2c5d0",
+        "title": "The moon keeps one face turned toward Earth",
+        "category": "space",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 53.96
+      },
+      {
+        "id": "39c7a9009bed5112",
+        "title": "Lions hunt better when the pride coordinates",
+        "category": "wildlife",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 54.12
+      },
+      {
+        "id": "05599f551d65f776",
+        "title": "Horses sort familiar clues with face memory",
+        "category": "farm",
+        "lane": "recovery",
+        "adjustment": 5.0,
+        "freshness_score": 53.98
+      },
+      {
+        "id": "e22c7bfd6c2187b6",
+        "title": "Leaves angle toward the light they can use",
+        "category": "plants",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 53.98
+      },
+      {
+        "id": "3e411d85394495a1",
+        "title": "Dogs follow invisible trails with their nose",
+        "category": "dogs",
+        "lane": "recovery",
+        "adjustment": 5.0,
+        "freshness_score": 53.96
+      },
+      {
+        "id": "ce619185cc5a8b0e",
+        "title": "Plants turn leaf angles into light maps",
+        "category": "plants",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 53.98
+      },
+      {
+        "id": "9ee098ecdf0b7d81",
+        "title": "Plant leaves reveal where energy comes from",
+        "category": "plants",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 53.96
+      },
+      {
+        "id": "3838dc5bd1044fb1",
+        "title": "Tigers wear stripe shadows as camouflage",
+        "category": "wildlife",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 54.48
+      },
+      {
+        "id": "33dd6bb0aeba20be",
+        "title": "Bees dance directions back to the hive",
+        "category": "insects",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 54.88
+      },
+      {
+        "id": "18762a35e9b1f385",
+        "title": "Wolves read scent posts like a map",
+        "category": "wildlife",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 54.66
+      },
+      {
+        "id": "4adfaf5fa95ebe2d",
+        "title": "Plants use trap hairs to count touches before snapping shut",
+        "category": "plants",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 54.42
+      },
+      {
+        "id": "5511e2f3d6444e5c",
+        "title": "Ants reveal the answer with scent road",
+        "category": "insects",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 54.34
       },
       {
         "id": "6d1ca548cd6f4e33",
@@ -5732,7 +5538,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.52
+        "freshness_score": 54.42
       },
       {
         "id": "a386b5695dfd9b83",
@@ -5740,7 +5546,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.42
+        "freshness_score": 54.32
       },
       {
         "id": "29ac30c9fe8424d4",
@@ -5748,7 +5554,7 @@
         "category": "dogs",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.52
+        "freshness_score": 54.42
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -5771,17 +5577,17 @@
             "share": 0.1
           },
           {
-            "shape": "{subject} slap the surface to warn the pod",
+            "shape": "{subject} can detect warm prey in the dark",
+            "count": 1,
+            "share": 0.1
+          },
+          {
+            "shape": "{subject} use whiskers like built-in rulers",
             "count": 1,
             "share": 0.1
           },
           {
             "shape": "{subject} read the world through scent maps",
-            "count": 1,
-            "share": 0.1
-          },
-          {
-            "shape": "{subject} use dark {cue} marks to guide cubs",
             "count": 1,
             "share": 0.1
           },
@@ -5794,35 +5600,35 @@
       },
       {
         "window": 30,
-        "items": 29,
+        "items": 28,
         "dominant_shape": "{subject} smell the air with their tongues",
         "dominant_count": 1,
-        "dominant_share": 0.034,
+        "dominant_share": 0.036,
         "top_shapes": [
           {
             "shape": "{subject} smell the air with their tongues",
             "count": 1,
-            "share": 0.034
+            "share": 0.036
           },
           {
-            "shape": "{subject} slap the surface to warn the pod",
+            "shape": "{subject} can detect warm prey in the dark",
             "count": 1,
-            "share": 0.034
+            "share": 0.036
+          },
+          {
+            "shape": "{subject} use whiskers like built-in rulers",
+            "count": 1,
+            "share": 0.036
           },
           {
             "shape": "{subject} read the world through scent maps",
             "count": 1,
-            "share": 0.034
-          },
-          {
-            "shape": "{subject} use dark {cue} marks to guide cubs",
-            "count": 1,
-            "share": 0.034
+            "share": 0.036
           },
           {
             "shape": "{subject} hear tiny prey under snow",
             "count": 1,
-            "share": 0.034
+            "share": 0.036
           }
         ]
       }
@@ -5830,14 +5636,14 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 57,
-    "pending_after": 57,
+    "pending_before": 56,
+    "pending_after": 56,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 2,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 52,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 12,
+      "objective_gate:bootstrap_observe_before_scaling": 51,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 13,
       "editor_in_chief:script quality gate blocked the narration": 12,
       "objective_gate:observe_before_scaling": 5,
       "editor_in_chief:editorial score 46 is below 62": 1,

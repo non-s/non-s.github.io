@@ -1,5 +1,5 @@
 {
-  "total": 351,
+  "total": 344,
   "reasons": {
     "duplicate_angle": 153,
     "duplicate_script": 149,
@@ -11,10 +11,8 @@
     "non_animal_body_language": 12,
     "queue_score_reject": 12,
     "script_subject_mismatch": 11,
-    "thumbnail_text_not_scannable": 9,
-    "thumbnail_not_2_4_words": 9,
-    "subject repeated inside 3-day cooldown": 8,
-    "humanity score is too low": 8,
+    "subject repeated inside 3-day cooldown": 9,
+    "humanity score is too low": 9,
     "script_word_loop": 8,
     "duplicate_source": 7,
     "opening_retention_gap_risk": 6,
@@ -33,53 +31,19 @@
     "title_shape_weak": 1,
     "title_needs_stronger_shape": 1,
     "subject_not_clear": 1,
-    "script does not expose enough concrete visual detail": 1
+    "script does not expose enough concrete visual detail": 1,
+    "thumbnail_text_not_scannable": 1,
+    "thumbnail_not_2_4_words": 1,
+    "editorial score 46 is below 62": 1
   },
   "stages": {
     "queue_prune": 177,
     "queue_prune_final": 142,
+    "editor_in_chief": 12,
     "queue_repair": 12,
-    "editor_in_chief": 11,
-    "youtube_brain_rewrite": 9
+    "youtube_brain_rewrite": 1
   },
   "latest": [
-    {
-      "story_id": "a22511ebde87ad4e",
-      "stage": "queue_prune",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "title": "Monkeys sit on rocks but here's why",
-      "category": "geology",
-      "script_key": "these rocks aren t just chairs monkeys perch high because it s the safest spot to scan for danger that s why notice how they face opposite directions one keeps watch while the other eats did you ever think they re teaming up",
-      "angle_key": "monkeys|keeps|rocks|geology",
-      "source_url": "https://www.pexels.com/video/two-monkeys-sitting-on-rocks-in-front-of-a-zoo-19532330/",
-      "pexels_video_id": "19532330",
-      "source_clip_id": "pexels:a22511ebde87ad4e",
-      "recorded_at": "2026-07-02T04:31:07.796691+00:00",
-      "rewrite_attempted": false,
-      "rewrite_applied": false
-    },
-    {
-      "story_id": "d36fed8bfccab453",
-      "stage": "queue_prune",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "title": "Elephants cool blood through giant ears",
-      "category": "wildlife",
-      "script_key": "elephants use their ears as living radiators watch the ear surface because warm blood flows through those broad veins moving air can dump heat before it spreads through the body that is why the ears are more than decoration in hot places which giant animal trick next",
-      "angle_key": "elephants|trick|ear radiator|wildlife",
-      "source_url": "https://www.pexels.com/video/two-asian-elephants-interacting-in-enclosure-35764996/",
-      "pexels_video_id": "35764996",
-      "source_clip_id": "pexels:d36fed8bfccab453",
-      "recorded_at": "2026-07-02T04:31:07.801832+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
     {
       "story_id": "e3a98e5a6f46a256",
       "stage": "queue_prune",
@@ -503,6 +467,43 @@
       "recorded_at": "2026-07-02T04:44:28.937663+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
+    },
+    {
+      "story_id": "8bdc8b70af521eb4",
+      "stage": "youtube_brain_rewrite",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "title": "Fossils turn old bones into time clues",
+      "category": "discoveries",
+      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
+      "angle_key": "fossils|form|pattern|discoveries",
+      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
+      "pexels_video_id": "36118169",
+      "source_clip_id": "pexels:8bdc8b70af521eb4",
+      "recorded_at": "2026-07-02T05:46:16.120302+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "c70ff9b0d002c000",
+      "stage": "editor_in_chief",
+      "reasons": [
+        "subject repeated inside 3-day cooldown",
+        "humanity score is too low",
+        "editorial score 46 is below 62"
+      ],
+      "title": "Elephants Elefantes enfrían su sangre con orejas gigantes",
+      "category": "wildlife",
+      "script_key": "los elefantes usan las orejas como radiadores vivientes f jate en la superficie de la oreja porque la sangre caliente fluye por esas venas anchas el aire en movimiento suelta el calor antes de que se extienda por el cuerpo por eso las orejas no son solo decoraci n en lugares calurosos qu truco de animal gigante me ense as now the ear radiator at the start makes sense",
+      "angle_key": "elephants|sense|ear radiator|wildlife",
+      "source_url": "https://www.pexels.com/video/an-african-elephant-eating-grass-in-a-field-11760787/",
+      "pexels_video_id": "11760787",
+      "source_clip_id": "pexels:c70ff9b0d002c000",
+      "recorded_at": "2026-07-02T05:46:55.397556+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
     }
   ]
 }
