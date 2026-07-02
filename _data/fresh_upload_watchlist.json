@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 2,
+    "analytics_due": 3,
     "awaiting_1h": 1,
     "high_priority": 5,
-    "repair_candidates": 3,
+    "repair_candidates": 2,
     "tracked": 10
   },
-  "generated_at": "2026-07-02T14:47:51.855895+00:00",
+  "generated_at": "2026-07-02T15:28:50.093858+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.292,
+      "age_hours": 0.975,
       "category": "farm",
       "checkpoints": [
         {
@@ -70,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.546,
+      "age_hours": 2.229,
       "category": "insects",
       "checkpoints": [
         {
@@ -121,11 +121,11 @@
       "uploaded_at": "2026-07-02T13:15:06.171182+00:00",
       "url": "https://www.youtube.com/shorts/6EQWaar3wBc",
       "video_id": "6EQWaar3wBc",
-      "views_per_hour": 0.693
+      "views_per_hour": 0.647
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.64,
+      "age_hours": 3.323,
       "category": "ocean",
       "checkpoints": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.406,
+      "age_hours": 4.089,
       "category": "insects",
       "checkpoints": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.117,
+      "age_hours": 4.8,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -290,7 +290,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.395,
+      "age_hours": 7.078,
       "category": "dogs",
       "checkpoints": [
         {
@@ -356,7 +356,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.849,
+      "age_hours": 7.532,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -421,16 +421,16 @@
       }
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 9.014,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 9.697,
       "category": "wildlife",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-02T06:47:00.955436+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -454,41 +454,30 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-03T05:47:00.955436+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-02T06:47:00.955436+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "overdue",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Animal Superpowers",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Elephants cool blood through giant ears",
       "uploaded_at": "2026-07-02T05:47:00.955436+00:00",
       "url": "https://www.youtube.com/shorts/HDQAh3KSdtY",
       "video_id": "HDQAh3KSdtY",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Elephants cool blood through giant ears",
-        "video_id": "HDQAh3KSdtY",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 10.449,
+      "age_hours": 11.132,
       "category": "weather",
       "checkpoints": [
         {
@@ -543,7 +532,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.053,
+      "age_hours": 13.735,
       "category": "rivers",
       "checkpoints": [
         {
