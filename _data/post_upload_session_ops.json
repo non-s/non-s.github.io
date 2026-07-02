@@ -2,18 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 10,
+      "automation_safe": 9,
       "high": 0,
-      "manual_review": 0,
+      "manual_review": 1,
       "total": 10,
       "urgent": 10
     },
     "free_only": true,
-    "generated_at": "2026-07-02T22:35:22.902285+00:00",
+    "generated_at": "2026-07-02T22:41:23.425123+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 20.845,
+        "age_hours": 20.945,
         "automation_safe": true,
         "category": "rivers",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 18.241,
+        "age_hours": 18.341,
         "automation_safe": true,
         "category": "weather",
         "checkpoint_label": "1h",
@@ -65,12 +65,12 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 16.806,
+        "age_hours": 16.906,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
         "checkpoint_state": "overdue",
-        "current_views": 1,
+        "current_views": 0,
         "due_at": "2026-07-02T06:47:00.955436+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
@@ -91,7 +91,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 14.641,
+        "age_hours": 14.741,
         "automation_safe": true,
         "category": "reptiles",
         "checkpoint_label": "1h",
@@ -117,12 +117,12 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 14.187,
+        "age_hours": 14.288,
         "automation_safe": true,
         "category": "dogs",
         "checkpoint_label": "1h",
         "checkpoint_state": "overdue",
-        "current_views": 0,
+        "current_views": 1,
         "due_at": "2026-07-02T09:24:08.181149+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 11.909,
+        "age_hours": 12.009,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -168,34 +168,34 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "pull_fresh_analytics",
-        "age_hours": 11.198,
-        "automation_safe": true,
+        "action_type": "queue_sequel_bridge",
+        "age_hours": 11.298,
+        "automation_safe": false,
         "category": "insects",
         "checkpoint_label": "1h",
         "checkpoint_state": "overdue",
-        "current_views": 0,
+        "current_views": 1,
         "due_at": "2026-07-02T12:23:29.746742+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:zkOPZdHY4i0:analytics_due:1h",
-        "lane": "measurement",
-        "manual_approval_required": false,
+        "id": "fresh-upload:zkOPZdHY4i0:accelerating:1h",
+        "lane": "amplify",
+        "manual_approval_required": true,
         "opening_retention_score": 100.0,
         "priority": "urgent",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
+        "recommended_action": "Queue a sequel or related-video bridge while the session has momentum.",
         "series": "Tiny Worlds",
-        "state": "analytics_due",
+        "state": "accelerating",
         "target_views": 24,
         "title": "Beetles can steer by the Milky Way",
         "url": "https://www.youtube.com/shorts/zkOPZdHY4i0",
         "video_id": "zkOPZdHY4i0",
         "wait_until": "",
-        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
+        "why": "Performance signal is already positive; amplify without changing the opening."
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 10.432,
+        "age_hours": 10.532,
         "automation_safe": true,
         "category": "ocean",
         "checkpoint_label": "1h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 9.338,
+        "age_hours": 9.438,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 8.084,
+        "age_hours": 8.184,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "1h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-02T22:35:22.901675+00:00"
+    "source_generated_at": "2026-07-02T22:41:23.424517+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,17 @@
       24
     ],
     "counts": {
-      "analytics_due": 10,
+      "analytics_due": 9,
       "awaiting_1h": 0,
-      "high_priority": 10,
+      "high_priority": 9,
       "repair_candidates": 0,
       "tracked": 10
     },
-    "generated_at": "2026-07-02T22:35:22.901675+00:00",
+    "generated_at": "2026-07-02T22:41:23.424517+00:00",
     "items": [
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 8.084,
+        "age_hours": 8.184,
         "category": "farm",
         "checkpoints": [
           {
@@ -347,7 +347,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 9.338,
+        "age_hours": 9.438,
         "category": "insects",
         "checkpoints": [
           {
@@ -398,11 +398,11 @@
         "uploaded_at": "2026-07-02T13:15:06.171182+00:00",
         "url": "https://www.youtube.com/shorts/6EQWaar3wBc",
         "video_id": "6EQWaar3wBc",
-        "views_per_hour": 0.108
+        "views_per_hour": 0.107
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 10.432,
+        "age_hours": 10.532,
         "category": "ocean",
         "checkpoints": [
           {
@@ -456,8 +456,8 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 11.198,
+        "action": "Queue a sequel or related-video bridge while the session has momentum.",
+        "age_hours": 11.298,
         "category": "insects",
         "checkpoints": [
           {
@@ -485,11 +485,11 @@
             "source": "estimated",
             "state": "pending",
             "target_views": 300,
-            "views": 0
+            "views": 1
           }
         ],
-        "current_views": 0,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+        "current_views": 1,
+        "hypothesis": "Performance signal is already positive; amplify without changing the opening.",
         "next_checkpoint": {
           "delta_to_target": -24,
           "due_at": "2026-07-02T12:23:29.746742+00:00",
@@ -501,18 +501,27 @@
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "high",
+        "priority": "normal",
         "series": "Tiny Worlds",
-        "state": "analytics_due",
+        "state": "accelerating",
         "title": "Beetles can steer by the Milky Way",
         "uploaded_at": "2026-07-02T11:23:29.746742+00:00",
         "url": "https://www.youtube.com/shorts/zkOPZdHY4i0",
         "video_id": "zkOPZdHY4i0",
-        "views_per_hour": 0.0
+        "views_per_hour": 0.089,
+        "warning": {
+          "confidence_score": 0.512,
+          "reasoning": "video has 30/2 samples, estimated data, confidence 0.51; observation only.",
+          "score": 0,
+          "state": "accelerating",
+          "title": "Beetles can steer by the Milky Way",
+          "video_id": "zkOPZdHY4i0",
+          "warning_state": "accelerator"
+        }
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 11.909,
+        "age_hours": 12.009,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -575,7 +584,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 14.187,
+        "age_hours": 14.288,
         "category": "dogs",
         "checkpoints": [
           {
@@ -603,10 +612,10 @@
             "source": "estimated",
             "state": "pending",
             "target_views": 300,
-            "views": 0
+            "views": 1
           }
         ],
-        "current_views": 0,
+        "current_views": 1,
         "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
           "delta_to_target": -24,
@@ -626,11 +635,11 @@
         "uploaded_at": "2026-07-02T08:24:08.181149+00:00",
         "url": "https://www.youtube.com/shorts/peeCu1r3K0I",
         "video_id": "peeCu1r3K0I",
-        "views_per_hour": 0.0,
+        "views_per_hour": 0.07,
         "warning": {
           "confidence_score": 0.431,
           "reason": "low confidence early signal; keep observing",
-          "state": "dying_early",
+          "state": "accelerating",
           "title": "Dogs read the world through scent maps",
           "video_id": "peeCu1r3K0I",
           "warning_state": "low_confidence_watch"
@@ -638,7 +647,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 14.641,
+        "age_hours": 14.741,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -701,7 +710,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 16.806,
+        "age_hours": 16.906,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -729,10 +738,10 @@
             "source": "estimated",
             "state": "pending",
             "target_views": 300,
-            "views": 1
+            "views": 0
           }
         ],
-        "current_views": 1,
+        "current_views": 0,
         "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
           "delta_to_target": -24,
@@ -752,7 +761,7 @@
         "uploaded_at": "2026-07-02T05:47:00.955436+00:00",
         "url": "https://www.youtube.com/shorts/HDQAh3KSdtY",
         "video_id": "HDQAh3KSdtY",
-        "views_per_hour": 0.06,
+        "views_per_hour": 0.0,
         "warning": {
           "confidence_score": 0.431,
           "reason": "low confidence early signal; keep observing",
@@ -764,7 +773,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 18.241,
+        "age_hours": 18.341,
         "category": "weather",
         "checkpoints": [
           {
@@ -827,7 +836,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 20.845,
+        "age_hours": 20.945,
         "category": "rivers",
         "checkpoints": [
           {
@@ -896,7 +905,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-02T22:35:22.902372+00:00",
+  "generated_at": "2026-07-02T22:41:23.425213+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
