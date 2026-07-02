@@ -1,5 +1,5 @@
 {
-  "total": 426,
+  "total": 416,
   "reasons": {
     "duplicate_angle": 180,
     "duplicate_script": 179,
@@ -11,11 +11,9 @@
     "queue_score_reject": 14,
     "script_subject_mismatch": 13,
     "non_animal_body_language": 12,
-    "thumbnail_text_not_scannable": 12,
-    "thumbnail_not_2_4_words": 12,
+    "subject repeated inside 3-day cooldown": 12,
+    "humanity score is too low": 12,
     "script_word_loop": 12,
-    "subject repeated inside 3-day cooldown": 11,
-    "humanity score is too low": 11,
     "opening_retention_gap_risk": 8,
     "opening promise is not concrete enough": 8,
     "duplicate_source": 7,
@@ -24,9 +22,9 @@
     "editorial score 37 is below 62": 4,
     "no_action_promise": 3,
     "missing_visible_cue": 3,
+    "editorial score 39 is below 62": 3,
     "script quality gate blocked the narration": 3,
     "stitched_repeated_animal_title": 2,
-    "editorial score 39 is below 62": 2,
     "editorial score 41 is below 62": 2,
     "editorial score 38 is below 62": 1,
     "payoff_not_explicit": 1,
@@ -35,52 +33,18 @@
     "subject_not_clear": 1,
     "script does not expose enough concrete visual detail": 1,
     "editorial score 46 is below 62": 1,
-    "editorial score 43 is below 62": 1
+    "editorial score 43 is below 62": 1,
+    "thumbnail_text_not_scannable": 1,
+    "thumbnail_not_2_4_words": 1
   },
   "stages": {
     "queue_prune": 212,
     "queue_prune_final": 174,
-    "editor_in_chief": 14,
+    "editor_in_chief": 15,
     "queue_repair": 14,
-    "youtube_brain_rewrite": 12
+    "youtube_brain_rewrite": 1
   },
   "latest": [
-    {
-      "story_id": "3dd8e76440dc3d7d",
-      "stage": "queue_prune",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "title": "Tree bark breathes through holes you can't see",
-      "category": "forests",
-      "script_key": "bark isn t dead at all those tiny speckles you see they re breathing pores called lenticels that s why trees can pull in oxygen even when their leaves are gone watch closely those speckles are moving did you ever think bark could do that",
-      "angle_key": "tree|leaves|leaves|forests",
-      "source_url": "https://www.pexels.com/video/a-mossy-tree-trunk-in-the-woods-27682106/",
-      "pexels_video_id": "27682106",
-      "source_clip_id": "pexels:3dd8e76440dc3d7d",
-      "recorded_at": "2026-07-02T08:44:08.338960+00:00",
-      "rewrite_attempted": false,
-      "rewrite_applied": false
-    },
-    {
-      "story_id": "69147123e81d6c0b",
-      "stage": "queue_prune",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "title": "Forests make cooler air under the canopy",
-      "category": "forests",
-      "script_key": "forests can cool the air below them watch the shade and mist because leaves block direct sun and release water vapor that combination can make the forest floor feel like a different climate the canopy is a cooling machine not just cover which forest layer next",
-      "angle_key": "forests|cover|cool canopy|forests",
-      "source_url": "https://www.pexels.com/video/drone-view-of-misty-forest-in-early-fall-29393166/",
-      "pexels_video_id": "29393166",
-      "source_clip_id": "pexels:69147123e81d6c0b",
-      "recorded_at": "2026-07-02T08:44:08.345830+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
     {
       "story_id": "02190a0efcf50fcc",
       "stage": "queue_prune",
@@ -493,6 +457,43 @@
       "pexels_video_id": "36717426",
       "source_clip_id": "pexels:63e168258dbca4fa",
       "recorded_at": "2026-07-02T08:49:40.883273+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "8bdc8b70af521eb4",
+      "stage": "youtube_brain_rewrite",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "title": "Fossils turn old bones into time clues",
+      "category": "discoveries",
+      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
+      "angle_key": "fossils|form|pattern|discoveries",
+      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
+      "pexels_video_id": "36118169",
+      "source_clip_id": "pexels:8bdc8b70af521eb4",
+      "recorded_at": "2026-07-02T10:39:36.311469+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "18762a35e9b1f385",
+      "stage": "editor_in_chief",
+      "reasons": [
+        "subject repeated inside 3-day cooldown",
+        "humanity score is too low",
+        "editorial score 39 is below 62"
+      ],
+      "title": "Wolves Los lobos leen marcas de olor como mapa",
+      "category": "wildlife",
+      "script_key": "los lobos dejan notas de olor para la manada f jate d nde se detienen porque usan marcas de olor para compartir territorio identidad y tiempo un solo punto puede decir qui n pas y cu nto hace el bosque est lleno de mensajes que no entendemos qu se al de manada veremos despu s now the scent map at the start makes sense",
+      "angle_key": "wolves|sense|scent map|wildlife",
+      "source_url": "https://www.pexels.com/video/gray-wolf-engaging-in-scent-rolling-by-pond-34803054/",
+      "pexels_video_id": "34803054",
+      "source_clip_id": "pexels:18762a35e9b1f385",
+      "recorded_at": "2026-07-02T10:40:45.048580+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     }

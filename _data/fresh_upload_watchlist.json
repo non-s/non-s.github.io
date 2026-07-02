@@ -5,25 +5,80 @@
     24
   ],
   "counts": {
-    "analytics_due": 1,
-    "awaiting_1h": 2,
+    "analytics_due": 0,
+    "awaiting_1h": 1,
     "high_priority": 6,
-    "repair_candidates": 5,
+    "repair_candidates": 6,
     "tracked": 10
   },
-  "generated_at": "2026-07-02T08:48:51.810733+00:00",
+  "generated_at": "2026-07-02T10:44:27.558988+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.412,
-      "category": "dogs",
+      "age_hours": 0.06,
+      "category": "wildlife",
       "checkpoints": [
         {
           "delta_to_target": 0,
-          "due_at": "2026-07-02T09:24:08.181149+00:00",
+          "due_at": "2026-07-02T11:40:50.370873+00:00",
           "label": "1h",
           "source": "estimated",
           "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-02T16:40:50.370873+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-03T10:40:50.370873+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-02T11:40:50.370873+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Animal Superpowers",
+      "state": "awaiting_1h",
+      "title": "Wolves read scent posts like a map",
+      "uploaded_at": "2026-07-02T10:40:50.370873+00:00",
+      "url": "https://www.youtube.com/shorts/p5aVx8ZViPI",
+      "video_id": "p5aVx8ZViPI",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 2.339,
+      "category": "dogs",
+      "checkpoints": [
+        {
+          "delta_to_target": -24,
+          "due_at": "2026-07-02T09:24:08.181149+00:00",
+          "label": "1h",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-02T09:24:08.181149+00:00",
-        "label": "1h",
+        "due_at": "2026-07-02T14:24:08.181149+00:00",
+        "label": "6h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 24,
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "low",
       "series": "Pet Secrets",
-      "state": "awaiting_1h",
+      "state": "watch",
       "title": "Dogs read the world through scent maps",
       "uploaded_at": "2026-07-02T08:24:08.181149+00:00",
       "url": "https://www.youtube.com/shorts/peeCu1r3K0I",
@@ -69,16 +124,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.866,
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 2.793,
       "category": "reptiles",
       "checkpoints": [
         {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-02T08:56:54.089798+00:00",
           "label": "1h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -102,21 +157,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-02T08:56:54.089798+00:00",
-        "label": "1h",
+        "due_at": "2026-07-02T13:56:54.089798+00:00",
+        "label": "6h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 24,
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "low",
       "series": "Cold-Blooded Secrets",
-      "state": "awaiting_1h",
+      "state": "watch",
       "title": "Snakes can detect warm prey in the dark",
       "uploaded_at": "2026-07-02T07:56:54.089798+00:00",
       "url": "https://www.youtube.com/shorts/ytZXl-smi5Q",
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.031,
+      "age_hours": 4.957,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -179,8 +234,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.466,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.392,
       "category": "weather",
       "checkpoints": [
         {
@@ -193,11 +248,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-07-02T10:20:54.900666+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -212,30 +267,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-02T10:20:54.900666+00:00",
-        "label": "6h",
+        "due_at": "2026-07-03T04:20:54.900666+00:00",
+        "label": "24h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 105,
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 90.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Earth Engine",
-      "state": "watch",
+      "state": "repair_candidate",
       "title": "Lightning makes air explode into thunder",
       "uploaded_at": "2026-07-02T04:20:54.900666+00:00",
       "url": "https://www.youtube.com/shorts/WbwdERQTz90",
       "video_id": "WbwdERQTz90",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 24/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Lightning makes air explode into thunder",
+        "video_id": "WbwdERQTz90",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 7.069,
+      "age_hours": 8.996,
       "category": "rivers",
       "checkpoints": [
         {
@@ -291,7 +357,7 @@
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.594,
         "reason": "low early velocity",
-        "reasoning": "video has 25/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "reasoning": "video has 28/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
         "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
         "title": "Rivers sort mud and sand along each bank",
         "video_id": "Wi2VtQQ88X0",
@@ -301,7 +367,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 8.684,
+      "age_hours": 10.61,
       "category": "fungi",
       "checkpoints": [
         {
@@ -352,12 +418,12 @@
       "uploaded_at": "2026-07-02T00:07:50.918833+00:00",
       "url": "https://www.youtube.com/shorts/LQPZdiuog_k",
       "video_id": "LQPZdiuog_k",
-      "views_per_hour": 0.116,
+      "views_per_hour": 0.095,
       "warning": {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.594,
         "reason": "low early velocity",
-        "reasoning": "video has 28/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
         "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
         "title": "Mushrooms release spores from hidden gills",
         "video_id": "LQPZdiuog_k",
@@ -367,7 +433,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 9.629,
+      "age_hours": 11.556,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -433,7 +499,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 10.625,
+      "age_hours": 12.551,
       "category": "trees",
       "checkpoints": [
         {
@@ -499,7 +565,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 11.538,
+      "age_hours": 13.465,
       "category": "forests",
       "checkpoints": [
         {
@@ -562,61 +628,6 @@
         "views": 0,
         "warning_state": "repair_risk"
       }
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.598,
-      "category": "geology",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-01T21:12:59.948248+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -104,
-          "due_at": "2026-07-02T02:12:59.948248+00:00",
-          "label": "6h",
-          "source": "observed",
-          "state": "observed",
-          "target_views": 105,
-          "views": 1
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-07-02T20:12:59.948248+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 1
-        }
-      ],
-      "current_views": 1,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-01T21:12:59.948248+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 94.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Earth Engine",
-      "state": "analytics_due",
-      "title": "Mountains reveal weather lines in snow",
-      "uploaded_at": "2026-07-01T20:12:59.948248+00:00",
-      "url": "https://www.youtube.com/shorts/or7TN0gMpWA",
-      "video_id": "or7TN0gMpWA",
-      "views_per_hour": 0.08
     }
   ],
   "targets": {
