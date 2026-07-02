@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-02T14:42:41.720452+00:00",
+  "generated_at": "2026-07-02T14:49:00.155021+00:00",
   "state": "fully_autonomous",
   "autonomy_score": 90,
   "operating_mode": "exploit",
@@ -6062,31 +6062,29 @@
         }
       },
       {
-        "id": "59ff26920ffc16e0",
-        "title": "Birds see ultraviolet patterns we miss",
-        "category": "nocturnal",
+        "id": "80a214d0a2236cfe",
+        "title": "Sharks sense tiny electric fields",
+        "category": "ocean",
         "story_format": "body_superpower",
         "lane": "fresh_experiment",
         "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
         "publish_score": {
           "score": 100,
-          "approved": false,
-          "state": "rewrite",
+          "approved": true,
+          "state": "publish_ready",
           "opportunity": {
-            "score": 51,
+            "score": 67,
             "signals": {
-              "viral_potential": 48,
-              "visual_potential": 55,
-              "replay_potential": 52,
+              "viral_potential": 95,
+              "visual_potential": 59,
+              "replay_potential": 72,
               "comment_potential": 46,
-              "educational_potential": 52,
+              "educational_potential": 73,
               "emotional_potential": 44,
-              "novelty": 55
+              "novelty": 69
             },
-            "verdict": "discard",
-            "reasons": [
-              "low_opportunity_score"
-            ],
+            "verdict": "produce",
+            "reasons": [],
             "confidence": {
               "confidence_score": 0.0,
               "sample_size": 0,
@@ -6101,11 +6099,11 @@
             "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
           "retention": {
-            "score": 70,
+            "score": 71,
             "signals": {
-              "hook_score": 70,
+              "hook_score": 82,
               "curiosity_score": 71,
-              "visual_score": 58,
+              "visual_score": 50,
               "replay_score": 62,
               "completion_prediction": 84
             },
@@ -6128,17 +6126,18 @@
             "score": 100.0,
             "state": "retention_ready",
             "approved": true,
-            "subject": "birds",
+            "subject": "sharks",
             "cue_terms": [
-              "ultraviolet",
-              "vision"
+              "electric",
+              "sense"
             ],
             "frame_hook_bridge": [
-              "vision"
+              "electric",
+              "sense"
             ],
             "cue_bridge": [
-              "ultraviolet",
-              "vision"
+              "electric",
+              "sense"
             ],
             "strengths": [
               "subject_frontloaded",
@@ -6169,18 +6168,17 @@
             "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
           },
           "subscriber_conversion": {
-            "score": 86,
-            "state": "strong",
-            "subscriber_probability": 0.123,
-            "return_probability": 0.261,
-            "comment_probability": 0.223,
+            "score": 72,
+            "state": "usable",
+            "subscriber_probability": 0.103,
+            "return_probability": 0.222,
+            "comment_probability": 0.191,
             "robotic_title": {
               "risk": 0,
               "state": "clear",
               "hits": []
             },
             "reasons": [
-              "identity_cta",
               "debate_comment",
               "return_prompt",
               "series_identity"
@@ -6210,10 +6208,10 @@
             "bootstrap_multiplier": 0.255,
             "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
           },
-          "category": "nocturnal",
+          "category": "ocean",
           "story_format": "body_superpower",
-          "hook_score": 86,
-          "title_score": 90,
+          "hook_score": 88,
+          "title_score": 74,
           "phrase_risk": {
             "penalty": 0,
             "hits": []
@@ -6234,27 +6232,27 @@
             "swipe_risk_band": "low",
             "payoff_time_s": 0.0,
             "template_cluster": "",
-            "mechanism_cluster": ""
+            "mechanism_cluster": "electric_sense"
           }
         },
         "autonomy_priority": 110.95,
         "packaging_lab": {
           "title_variants": [
-            "Birds see ultraviolet patterns we miss",
-            "Birds use first move before they change",
-            "This first move gives birds away"
+            "Sharks sense tiny electric fields",
+            "Sharks signal through electric sense",
+            "Sharks use electric sense before they signal"
           ],
           "thumbnail_variants": [
-            "FIRST MOVE",
-            "WATCH FIRST MOVE",
-            "BIRDS CHANGE"
+            "ELECTRIC SENSE",
+            "WATCH ELECTRIC SENSE",
+            "SHARKS SIGNAL"
           ],
           "hook_variants": [
-            "Birds reveal the ultraviolet vision first.",
-            "Birds see ultraviolet patterns we miss",
-            "Watch the ultraviolet vision again. Tomorrow in Night Shift Nature: another animal signal. What part of this f"
+            "Sharks reveal the electric sense first.",
+            "Sharks sense tiny electric fields",
+            "Watch the electric sense again. Tomorrow in Ocean Mysteries: another animal signal. What feels more impossible"
           ],
-          "pinned_comment": "Watch the ultraviolet vision again. Tomorrow in Night Shift Nature: another animal signal. What part of this feels most impossible?",
+          "pinned_comment": "Watch the electric sense again. Tomorrow in Ocean Mysteries: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       }
@@ -6266,6 +6264,6 @@
     "Bias production toward experiment winners: narrator_voice=jenny, thumbnail_style=frame_first_side_caption, cta_style=subscribe_channel, subtitle_density=medium, loop_style=unfinished_mechanism, cta_pattern=sequel_tease, end_card_style=series_tease, music_bed=off.",
     "Current operating mode: exploit."
   ],
-  "queue_annotations_written": 46,
+  "queue_annotations_written": 47,
   "queue_annotations_changed": 30
 }
