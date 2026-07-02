@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-07-02T18:24:31.835933+00:00",
+  "generated_at": "2026-07-02T18:30:42.113089+00:00",
   "pending": 56,
   "states": {
-    "rewrite": 32,
-    "publish_ready": 24
+    "rewrite": 31,
+    "publish_ready": 25
   },
   "mechanism_clusters": {
     "scent_map": 4,
@@ -21,27 +21,196 @@
     "approved": 56
   },
   "prune_summary": {
-    "pending_before": 56,
+    "pending_before": 72,
     "pending_after": 56,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 4,
+    "rejected": 16,
+    "repair_needed": 1,
+    "repaired": 5,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 51,
       "editor_in_chief:subject repeated inside 3-day cooldown": 20,
       "editor_in_chief:script quality gate blocked the narration": 11,
+      "duplicate_script": 7,
+      "duplicate_angle": 7,
+      "duplicate_title": 6,
+      "off_topic_visual": 5,
       "objective_gate:observe_before_scaling": 5,
+      "opening_retention_gap_risk": 1,
+      "opening promise is not concrete enough": 1,
+      "queue_score_reject": 1,
+      "script_hook_mismatch": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
       "editor_in_chief:editorial score 61 is below 62": 1,
       "editor_in_chief:editorial score 40 is below 62": 1,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
+      "rights_guard_person_manual_review": 1,
       "editor_in_chief:editorial score 50 is below 62": 1,
       "editor_in_chief:editorial score 44 is below 62": 1,
       "editor_in_chief:thumbnail copy must contain 2-4 readable words": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "455c36b48352e053",
+      "title": "Cats use grooming to reset their scent map",
+      "reasons": [
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "8f414aedf5834f86",
+      "title": "Plants use trap hairs to count touches before closing",
+      "reasons": [
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "59ff26920ffc16e0",
+      "title": "Owls fly silently because feathers break sound",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "a781fa3083b5b4df",
+      "title": "Dogs read human pointing surprisingly well",
+      "reasons": [
+        "rights_guard_person_manual_review"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "11b6c843432d4037",
+      "title": "Penguins carry tiny air pockets into the water",
+      "reasons": [
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "bd041dffcee9b172",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "bd31364b222f6314",
+      "title": "Tigers detect changes with their eyes",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "37b6029bf208e880",
+      "title": "Outdoor cats really do hunt—even when they’re napping",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "57bdca7ba610f748",
+      "title": "Dragonflies lock onto prey in midair",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "457c009ce5f09f1b",
+      "title": "hedgehog curls into a spiky ball on sidewalk",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "96b73b21157fc4bb",
+      "title": "Monkeys wash food when grit gets annoying",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "c58c878feea0f52a",
+      "title": "Sea lions don’t just nap in the sun",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "0f63eac4a0bce6b3",
+      "title": "Sharks sense tiny electric fields",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "457e87f9a53abbc8",
+      "title": "ducks paddle for reasons you didn’t learn in school",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "fe0bfc2851fa40e1",
+      "title": "Rivers carry stone grains while they flow",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "7e203e811e4ffd42",
+      "title": "Mushrooms trade nutrients through underground threads",
+      "reasons": [
+        "opening_retention_gap_risk",
+        "opening promise is not concrete enough",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
+      "id": "33dd6bb0aeba20be",
+      "title": "Bees dance directions back to the hive",
+      "reasons": [
+        "weak_visual_surface",
+        "low_opportunity_score"
+      ],
+      "stage": "opportunity_score"
+    },
     {
       "id": "8bdc8b70af521eb4",
       "title": "Fossils turn old bones into time clues",
@@ -145,169 +314,6 @@
       "title": "mountains aren't as still as you think",
       "reasons": [
         "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "dfa482315c61f8c2",
-      "title": "Storm clouds show air layers changing over time",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "e33ceda425183103",
-      "title": "Cats don’t always land on their feet",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "76ca00c26dda912a",
-      "title": "Seals stay warm without blubber lies",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "0819e88c0eab278a",
-      "title": "Monkeys wash food when grit gets annoying",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "d8984d44b4413a7a",
-      "title": "Forests make cooler air under the canopy",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "447ddce9ec1df69a",
-      "title": "Forests make cooler air under the canopy",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "3dda6d06e0f0531e",
-      "title": "Elephants cool blood through giant ears",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "4c4f697f2f38b7ef",
-      "title": "Turtles carry a magnetic map home",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "0799289ab62a50c8",
-      "title": "Seals can follow wakes with their whiskers",
-      "reasons": [
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "4d33f4e1006c19da",
-      "title": "Sharks sense tiny electric fields",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "41b25e95038ace2b",
-      "title": "Monkeys wash food when grit gets annoying",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "94d887217422d163",
-      "title": "Forests can cool the air below them",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "367be9a5e505a675",
-      "title": "Mushrooms release spores from hidden gills",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "5b351b9940535bfe",
-      "title": "Why a dog's nose changes the whole story that most people miss",
-      "reasons": [
-        "script_word_loop"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "39e6066e3e45e86a",
-      "title": "Why dog paws explain the move before the obvious moment",
-      "reasons": [
-        "bad_plural_verb",
-        "script_word_loop"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "19d2994910b6de5f",
-      "title": "Forests make cooler air under the canopy",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "24a883d83a8337d6",
-      "title": "Mountains are built by glaciers more than you think",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "ffa79221ae6fadee",
-      "title": "What a cat's tail tells you before it moves when the body freezes",
-      "reasons": [
-        "off_topic_visual",
-        "non_animal_body_language",
-        "script_word_loop"
       ],
       "stage": "queue_prune"
     }
@@ -490,7 +496,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T18:23:51.590996+00:00",
+        "checked_at": "2026-07-02T18:29:47.799114+00:00",
         "mechanism_cluster": "dance_navigation",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1134,7 +1140,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T18:23:51.592625+00:00",
+        "checked_at": "2026-07-02T18:29:47.801093+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1777,7 +1783,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T18:23:51.593859+00:00",
+        "checked_at": "2026-07-02T18:29:47.802642+00:00",
         "mechanism_cluster": "wing_scales",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2447,7 +2453,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T18:23:51.594909+00:00",
+        "checked_at": "2026-07-02T18:29:47.804022+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2922,6 +2928,644 @@
       }
     },
     {
+      "id": "1f4d4eeb2441657a",
+      "title": "Birds see ultraviolet patterns we miss",
+      "category": "birds",
+      "publish_score": {
+        "approved": true,
+        "category": "birds",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.31,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.08,
+          "data_quality": "estimated",
+          "data_quality_score": 0.425,
+          "minimum_sample_size": 25,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.08.",
+          "recommendation_strength": "observe",
+          "sample_size": 5
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 86,
+        "objective_gate": {
+          "confidence_score": 0.08,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ultraviolet",
+            "vision"
+          ],
+          "cue_terms": [
+            "ultraviolet",
+            "vision"
+          ],
+          "frame_hook_bridge": [
+            "vision"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "birds"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 56,
+          "signals": {
+            "comment_potential": 41,
+            "educational_potential": 55,
+            "emotional_potential": 39,
+            "novelty": 64,
+            "replay_potential": 55,
+            "viral_potential": 65,
+            "visual_potential": 64
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 70,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.296,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.061,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 9/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 9
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-07-02T18:29:48.145466+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "birds",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ultraviolet",
+            "vision"
+          ],
+          "cue_terms": [
+            "ultraviolet",
+            "vision"
+          ],
+          "frame_hook_bridge": [
+            "vision"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "birds"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "birds",
+        "viewer_promise": "See why birds body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which birds clue should Wild Brief compare next in Body Clues?",
+        "cta_prompt": "Want one animal signal a day? Follow for the next clue.",
+        "curiosity_gap": {
+          "hook": "Why do these birds change after the ultraviolet vision?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.18,
+          "mode": "exploit",
+          "sample_count": 17,
+          "winners": {
+            "hook_pattern": "{subject} {action} {subject} {subject} for the {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
+          },
+          "winning_experiments": {
+            "cta:specific_question": 46.7,
+            "format:fresh_variant": 46.7,
+            "format:winner_inspired": 46.1,
+            "hook:new_hook": 46.7,
+            "thumbnail:new_thumbnail": 46.34
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "ultraviolet",
+              "vision"
+            ],
+            "cue_terms": [
+              "ultraviolet",
+              "vision"
+            ],
+            "frame_hook_bridge": [
+              "vision"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "birds"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Birds see colors humans cannot see",
+          "Birds reveal the ultraviolet vision first",
+          "Birds show why the ultraviolet vision matters.",
+          "Birds show why the ultraviolet vision matters.",
+          "Birds show why the ultraviolet vision matters."
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "uv vision",
+          "ending_line": "Which bird fact next?",
+          "final_line": "Now the uv vision at the start makes sense.",
+          "loop_score": 0.818,
+          "opening_line": "Birds reveal the ultraviolet vision first.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "uv vision",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.818,
+        "next_episode_question": "Tomorrow in Body Clues: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ultraviolet",
+            "vision"
+          ],
+          "cue_terms": [
+            "ultraviolet",
+            "vision"
+          ],
+          "frame_hook_bridge": [
+            "vision"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "birds"
+        },
+        "pinned_comment": "Watch the ultraviolet vision again. Tomorrow in Body Clues: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 14.59,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 17,
+          "first_2s_narration": "Birds reveal the ultraviolet vision first Watch closely because many birds see",
+          "first_frame_text": "UV VISION",
+          "first_frame_text_words": 2,
+          "hook": "Birds reveal the ultraviolet vision first.",
+          "hook_specificity": 0.78,
+          "hook_words": 6,
+          "loop_score": 0.818,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "ultraviolet",
+              "vision"
+            ],
+            "cue_terms": [
+              "ultraviolet",
+              "vision"
+            ],
+            "frame_hook_bridge": [
+              "vision"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "birds"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the ultraviolet vision, so viewers rewatch the birds clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 70,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Birds reveal the ultraviolet vision first Watch closely because many birds see",
+          "first_frame_text": "UV VISION",
+          "next_episode_question": "Tomorrow in Body Clues: another animal signal. Is this adaptation, instinct, or intelligence?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Birds behavior through the visible ultraviolet vision.",
+            "series": "Body Clues",
+            "subject": "birds",
+            "terms": [
+              "birds",
+              "ultraviolet vision",
+              "body superpower"
+            ],
+            "title_variant": "Birds behavior: ultraviolet vision explained",
+            "visible_cue": "ultraviolet vision"
+          },
+          "series": "Body Clues",
+          "subject": "birds",
+          "visible_cue": "ultraviolet vision"
+        },
+        "risks": [],
+        "score": 95,
+        "search_intent": {
+          "description_line": "This Short explains Birds behavior through the visible ultraviolet vision.",
+          "series": "Body Clues",
+          "subject": "birds",
+          "terms": [
+            "birds",
+            "ultraviolet vision",
+            "body superpower"
+          ],
+          "title_variant": "Birds behavior: ultraviolet vision explained",
+          "visible_cue": "ultraviolet vision"
+        },
+        "selected_variant": {
+          "hook": "Birds see colors humans cannot see",
+          "score": 76,
+          "thumbnail_text": "UV VISION",
+          "title": "Birds see ultraviolet patterns we miss"
+        },
+        "series": "Body Clues",
+        "series_identity": {
+          "continuity_prompt": "Next in Body Clues: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Body Clues",
+          "series": "Body Clues"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.296,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.061,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "UV VISION",
+          "ULTRAVIOLET VISION",
+          "WATCH ULTRAVIOLET VISION",
+          "BIRDS CHANGE",
+          "ULTRAVIOLET VISION MATTERS",
+          "ULTRAVIOLET VISION FIRST",
+          "ULTRAVIOLET VISION REVEAL",
+          "ULTRAVIOLET VISION CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Birds see ultraviolet patterns we miss",
+          "Birds use ultraviolet vision before they change",
+          "This ultraviolet vision gives birds away",
+          "Why birds change after one ultraviolet vision",
+          "Birds reveal the answer with ultraviolet vision",
+          "The ultraviolet vision that changes the moment",
+          "Birds make one ultraviolet vision matter",
+          "Birds show the hidden answer in seconds",
+          "Birds: watch this ultraviolet vision",
+          "Watch birds after the ultraviolet vision"
+        ],
+        "top_variants": [
+          {
+            "hook": "Birds see colors humans cannot see",
+            "score": 76,
+            "thumbnail_text": "UV VISION",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Birds reveal the ultraviolet vision first",
+            "score": 76,
+            "thumbnail_text": "UV VISION",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Watch the ultraviolet vision; it explains the behavior",
+            "score": 76,
+            "thumbnail_text": "UV VISION",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Birds see colors humans cannot see",
+            "score": 70,
+            "thumbnail_text": "BIRDS CHANGE",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Birds reveal the ultraviolet vision first",
+            "score": 70,
+            "thumbnail_text": "BIRDS CHANGE",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Watch the ultraviolet vision; it explains the behavior",
+            "score": 70,
+            "thumbnail_text": "BIRDS CHANGE",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Birds see colors humans cannot see",
+            "score": 69,
+            "thumbnail_text": "ULTRAVIOLET VISION",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Birds reveal the ultraviolet vision first",
+            "score": 69,
+            "thumbnail_text": "ULTRAVIOLET VISION",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Watch the ultraviolet vision; it explains the behavior",
+            "score": 69,
+            "thumbnail_text": "ULTRAVIOLET VISION",
+            "title": "Birds see ultraviolet patterns we miss"
+          },
+          {
+            "hook": "Birds see colors humans cannot see",
+            "score": 69,
+            "thumbnail_text": "WATCH ULTRAVIOLET VISION",
+            "title": "Birds see ultraviolet patterns we miss"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "02f475952f9bf936",
       "title": "Leaves turn a forest into a cooler room",
       "category": "forests",
@@ -3095,7 +3739,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T18:23:51.614905+00:00",
+        "checked_at": "2026-07-02T18:29:48.168384+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3737,7 +4381,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T18:23:51.616855+00:00",
+        "checked_at": "2026-07-02T18:29:48.171137+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4375,7 +5019,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T18:23:51.617936+00:00",
+        "checked_at": "2026-07-02T18:29:48.172618+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5018,7 +5662,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T18:23:51.619502+00:00",
+        "checked_at": "2026-07-02T18:29:48.174905+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5656,7 +6300,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T18:23:51.623683+00:00",
+        "checked_at": "2026-07-02T18:29:48.181783+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6301,7 +6945,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T18:23:51.625564+00:00",
+        "checked_at": "2026-07-02T18:29:48.184316+00:00",
         "mechanism_cluster": "electric_sense",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6943,7 +7587,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T18:23:51.626960+00:00",
+        "checked_at": "2026-07-02T18:29:48.186125+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7583,7 +8227,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T18:23:51.628575+00:00",
+        "checked_at": "2026-07-02T18:29:48.188334+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8234,7 +8878,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T18:23:51.629669+00:00",
+        "checked_at": "2026-07-02T18:29:48.189778+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8870,7 +9514,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T18:23:51.630752+00:00",
+        "checked_at": "2026-07-02T18:29:48.190992+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -9516,7 +10160,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T18:23:51.636158+00:00",
+        "checked_at": "2026-07-02T18:29:48.527354+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -10163,7 +10807,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T18:23:51.637504+00:00",
+        "checked_at": "2026-07-02T18:29:48.535436+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -10814,7 +11458,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T18:23:51.639208+00:00",
+        "checked_at": "2026-07-02T18:29:48.538310+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -11458,7 +12102,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T18:23:51.640178+00:00",
+        "checked_at": "2026-07-02T18:29:48.539606+00:00",
         "mechanism_cluster": "decoy_injury",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -12103,7 +12747,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T18:23:51.650106+00:00",
+        "checked_at": "2026-07-02T18:29:48.553788+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -12567,653 +13211,6 @@
             "score": 75,
             "thumbnail_text": "STRIPE CAMOUFLAGE MATTERS",
             "title": "Tigers wear stripe shadows as camouflage"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
-      "id": "fba8430ce56b093b",
-      "title": "Ducks fake weak wings to protect ducklings",
-      "category": "farm",
-      "publish_score": {
-        "approved": true,
-        "category": "farm",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 74,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "wing_signal",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "wing"
-          ],
-          "cue_terms": [
-            "deco",
-            "face",
-            "memor",
-            "wing"
-          ],
-          "frame_hook_bridge": [
-            "wing"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "ducks"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 62,
-          "signals": {
-            "comment_potential": 54,
-            "educational_potential": 58,
-            "emotional_potential": 44,
-            "novelty": 45,
-            "replay_potential": 64,
-            "viral_potential": 63,
-            "visual_potential": 85
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 75,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 82
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "survival_trick",
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "title_score": 84,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 9/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 9
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-07-02T18:23:51.650967+00:00",
-        "mechanism_cluster": "wing_signal",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 100.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 100.0,
-      "youtube_brain": {
-        "animal": "ducks",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "wing"
-          ],
-          "cue_terms": [
-            "deco",
-            "face",
-            "memor",
-            "wing"
-          ],
-          "frame_hook_bridge": [
-            "wing"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "ducks"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "survival_trick",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "ducks",
-        "viewer_promise": "See why ducks survival trick matters."
-      },
-      "packaging": {
-        "community_prompt": "Which ducks clue should Wild Brief compare next in Farmyard Surprises?",
-        "cta_prompt": "Want one animal signal a day? Follow for tomorrow's farm clue.",
-        "curiosity_gap": {
-          "hook": "Why do these ducks change after the face memory?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "survival trick",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.18,
-          "mode": "exploit",
-          "sample_count": 17,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} for the {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
-          },
-          "winning_experiments": {
-            "cta:specific_question": 46.7,
-            "format:fresh_variant": 46.7,
-            "format:winner_inspired": 46.1,
-            "hook:new_hook": 46.7,
-            "thumbnail:new_thumbnail": 46.34
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "wing"
-            ],
-            "cue_terms": [
-              "deco",
-              "face",
-              "memor",
-              "wing"
-            ],
-            "frame_hook_bridge": [
-              "wing"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "ducks"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Ducks can act injured to pull danger away",
-          "Ducks fake weak wings to protect ducklings",
-          "Ducks show why the injury display matters.",
-          "Ducks show why the injury display matters.",
-          "Ducks show why the injury display matters."
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "wing decoy",
-          "ending_line": "Which ducks survival detail should we compare next.",
-          "final_line": "Now the wing decoy at the start makes sense.",
-          "loop_score": 0.787,
-          "opening_line": "Ducks fake weak wings to protect ducklings.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "wing decoy",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": false,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.787,
-        "next_episode_question": "Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "wing"
-          ],
-          "cue_terms": [
-            "deco",
-            "face",
-            "memor",
-            "wing"
-          ],
-          "frame_hook_bridge": [
-            "wing"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "ducks"
-        },
-        "pinned_comment": "Watch the wing position again. Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 16.61,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 18,
-          "first_2s_narration": "Ducks fake weak wings to protect ducklings Watch the wing position because",
-          "first_frame_text": "WING DECOY",
-          "first_frame_text_words": 2,
-          "hook": "Ducks fake weak wings to protect ducklings.",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.787,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "wing"
-            ],
-            "cue_terms": [
-              "deco",
-              "face",
-              "memor",
-              "wing"
-            ],
-            "frame_hook_bridge": [
-              "wing"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "ducks"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the wing position, so viewers rewatch the ducks clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 75,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 82
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Ducks fake weak wings to protect ducklings Watch the wing position because",
-          "first_frame_text": "WING DECOY",
-          "next_episode_question": "Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains Ducks behavior through the visible wing position.",
-            "series": "Farmyard Surprises",
-            "subject": "ducks",
-            "terms": [
-              "ducks",
-              "wing position",
-              "farm",
-              "survival trick"
-            ],
-            "title_variant": "Ducks behavior: wing position explained",
-            "visible_cue": "wing position"
-          },
-          "series": "Farmyard Surprises",
-          "subject": "ducks",
-          "visible_cue": "wing position"
-        },
-        "risks": [],
-        "score": 96,
-        "search_intent": {
-          "description_line": "This Short explains Ducks behavior through the visible wing position.",
-          "series": "Farmyard Surprises",
-          "subject": "ducks",
-          "terms": [
-            "ducks",
-            "wing position",
-            "farm",
-            "survival trick"
-          ],
-          "title_variant": "Ducks behavior: wing position explained",
-          "visible_cue": "wing position"
-        },
-        "selected_variant": {
-          "hook": "Ducks can act injured to pull danger away",
-          "score": 80,
-          "thumbnail_text": "FAKE INJURY",
-          "title": "Ducks fake injuries to protect their young"
-        },
-        "series": "Farmyard Surprises #2",
-        "series_identity": {
-          "continuity_prompt": "Next in Farmyard Surprises: compare this with another force of nature.",
-          "episode": 2,
-          "label": "Farmyard Surprises #2",
-          "series": "Farmyard Surprises"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "FAKE INJURY",
-          "INJURY DISPLAY",
-          "WATCH INJURY DISPLAY",
-          "DUCKS FAKE",
-          "INJURY DISPLAY MATTERS",
-          "INJURY DISPLAY FIRST",
-          "INJURY DISPLAY REVEAL",
-          "INJURY DISPLAY CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Ducks fake injuries to protect their young",
-          "Ducks fake weak wings to protect ducklings",
-          "Ducks use injury display before they fake",
-          "This injury display gives ducks away",
-          "Why ducks fake after one injury display",
-          "Ducks reveal the answer with injury display",
-          "The injury display that changes the moment",
-          "Ducks make one injury display matter",
-          "Ducks show the hidden answer in seconds",
-          "Ducks: watch this injury display"
-        ],
-        "top_variants": [
-          {
-            "hook": "Ducks can act injured to pull danger away",
-            "score": 80,
-            "thumbnail_text": "FAKE INJURY",
-            "title": "Ducks fake injuries to protect their young"
-          },
-          {
-            "hook": "Ducks fake weak wings to protect ducklings",
-            "score": 80,
-            "thumbnail_text": "FAKE INJURY",
-            "title": "Ducks fake injuries to protect their young"
-          },
-          {
-            "hook": "Watch the injury display; it explains the behavior",
-            "score": 79,
-            "thumbnail_text": "FAKE INJURY",
-            "title": "Ducks fake injuries to protect their young"
-          },
-          {
-            "hook": "Ducks can act injured to pull danger away",
-            "score": 73,
-            "thumbnail_text": "INJURY DISPLAY",
-            "title": "Ducks fake injuries to protect their young"
-          },
-          {
-            "hook": "Ducks fake weak wings to protect ducklings",
-            "score": 73,
-            "thumbnail_text": "INJURY DISPLAY",
-            "title": "Ducks fake injuries to protect their young"
-          },
-          {
-            "hook": "Ducks can act injured to pull danger away",
-            "score": 73,
-            "thumbnail_text": "WATCH INJURY DISPLAY",
-            "title": "Ducks fake injuries to protect their young"
-          },
-          {
-            "hook": "Ducks fake weak wings to protect ducklings",
-            "score": 73,
-            "thumbnail_text": "WATCH INJURY DISPLAY",
-            "title": "Ducks fake injuries to protect their young"
-          },
-          {
-            "hook": "Ducks can act injured to pull danger away",
-            "score": 73,
-            "thumbnail_text": "DUCKS FAKE",
-            "title": "Ducks fake injuries to protect their young"
-          },
-          {
-            "hook": "Ducks fake weak wings to protect ducklings",
-            "score": 73,
-            "thumbnail_text": "DUCKS FAKE",
-            "title": "Ducks fake injuries to protect their young"
-          },
-          {
-            "hook": "Ducks can act injured to pull danger away",
-            "score": 73,
-            "thumbnail_text": "INJURY DISPLAY MATTERS",
-            "title": "Ducks fake injuries to protect their young"
           }
         ]
       },
