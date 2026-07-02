@@ -2,18 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 9,
-      "high": 1,
-      "manual_review": 1,
+      "automation_safe": 10,
+      "high": 0,
+      "manual_review": 0,
       "total": 10,
-      "urgent": 8
+      "urgent": 9
     },
     "free_only": true,
-    "generated_at": "2026-07-02T20:11:51.294036+00:00",
+    "generated_at": "2026-07-02T20:18:21.984515+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 18.452,
+        "age_hours": 18.561,
         "automation_safe": true,
         "category": "rivers",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 15.849,
+        "age_hours": 15.958,
         "automation_safe": true,
         "category": "weather",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 14.414,
+        "age_hours": 14.523,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -91,7 +91,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 12.249,
+        "age_hours": 12.358,
         "automation_safe": true,
         "category": "reptiles",
         "checkpoint_label": "1h",
@@ -117,7 +117,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 11.795,
+        "age_hours": 11.904,
         "automation_safe": true,
         "category": "dogs",
         "checkpoint_label": "1h",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 9.517,
+        "age_hours": 9.625,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -169,7 +169,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 8.806,
+        "age_hours": 8.915,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 8.04,
+        "age_hours": 8.148,
         "automation_safe": true,
         "category": "ocean",
         "checkpoint_label": "1h",
@@ -220,34 +220,34 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "prepare_package_rescue",
-        "age_hours": 6.946,
-        "automation_safe": false,
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 7.054,
+        "automation_safe": true,
         "category": "insects",
-        "checkpoint_label": "24h",
-        "checkpoint_state": "pending",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "overdue",
         "current_views": 1,
-        "due_at": "2026-07-03T13:15:06.171182+00:00",
+        "due_at": "2026-07-02T14:15:06.171182+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:6EQWaar3wBc:repair_candidate:24h",
-        "lane": "package_rescue",
-        "manual_approval_required": true,
+        "id": "fresh-upload:6EQWaar3wBc:analytics_due:1h",
+        "lane": "measurement",
+        "manual_approval_required": false,
         "opening_retention_score": 100.0,
-        "priority": "high",
-        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "priority": "urgent",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
         "series": "Tiny Worlds",
-        "state": "repair_candidate",
-        "target_views": 300,
+        "state": "analytics_due",
+        "target_views": 24,
         "title": "Ants use scent road before they change",
         "url": "https://www.youtube.com/shorts/6EQWaar3wBc",
         "video_id": "6EQWaar3wBc",
         "wait_until": "",
-        "why": "Observed velocity is weak enough to prepare a package intervention."
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 5.692,
+        "age_hours": 5.801,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-02T20:11:51.293350+00:00"
+    "source_generated_at": "2026-07-02T20:18:21.983906+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,17 @@
       24
     ],
     "counts": {
-      "analytics_due": 8,
+      "analytics_due": 9,
       "awaiting_1h": 0,
       "high_priority": 9,
-      "repair_candidates": 1,
+      "repair_candidates": 0,
       "tracked": 10
     },
-    "generated_at": "2026-07-02T20:11:51.293350+00:00",
+    "generated_at": "2026-07-02T20:18:21.983906+00:00",
     "items": [
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.692,
+        "age_hours": 5.801,
         "category": "farm",
         "checkpoints": [
           {
@@ -346,18 +346,18 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 6.946,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 7.054,
         "category": "insects",
         "checkpoints": [
           {
-            "delta_to_target": -23,
+            "delta_to_target": -24,
             "due_at": "2026-07-02T14:15:06.171182+00:00",
             "label": "1h",
-            "source": "observed",
-            "state": "observed",
+            "source": "estimated",
+            "state": "overdue",
             "target_views": 24,
-            "views": 1
+            "views": 0
           },
           {
             "delta_to_target": -104,
@@ -379,41 +379,30 @@
           }
         ],
         "current_views": 1,
-        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
-          "due_at": "2026-07-03T13:15:06.171182+00:00",
-          "label": "24h",
+          "delta_to_target": -24,
+          "due_at": "2026-07-02T14:15:06.171182+00:00",
+          "label": "1h",
           "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 1
+          "state": "overdue",
+          "target_views": 24,
+          "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
         "priority": "high",
         "series": "Tiny Worlds",
-        "state": "repair_candidate",
+        "state": "analytics_due",
         "title": "Ants use scent road before they change",
         "uploaded_at": "2026-07-02T13:15:06.171182+00:00",
         "url": "https://www.youtube.com/shorts/6EQWaar3wBc",
         "video_id": "6EQWaar3wBc",
-        "views_per_hour": 0.145,
-        "warning": {
-          "action": "TITLE_AUTO_REPAIR_TRIGGER",
-          "confidence_score": 0.594,
-          "reason": "low early velocity",
-          "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-          "title": "Ants use scent road before they change",
-          "video_id": "6EQWaar3wBc",
-          "views": 1,
-          "warning_state": "repair_risk"
-        }
+        "views_per_hour": 0.144
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 8.04,
+        "age_hours": 8.148,
         "category": "ocean",
         "checkpoints": [
           {
@@ -468,7 +457,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 8.806,
+        "age_hours": 8.915,
         "category": "insects",
         "checkpoints": [
           {
@@ -523,7 +512,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 9.517,
+        "age_hours": 9.625,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -578,7 +567,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 11.795,
+        "age_hours": 11.904,
         "category": "dogs",
         "checkpoints": [
           {
@@ -633,7 +622,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 12.249,
+        "age_hours": 12.358,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -696,7 +685,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 14.414,
+        "age_hours": 14.523,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -759,7 +748,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 15.849,
+        "age_hours": 15.958,
         "category": "weather",
         "checkpoints": [
           {
@@ -822,7 +811,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 18.452,
+        "age_hours": 18.561,
         "category": "rivers",
         "checkpoints": [
           {
@@ -891,7 +880,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-02T20:11:51.294131+00:00",
+  "generated_at": "2026-07-02T20:18:21.984609+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."

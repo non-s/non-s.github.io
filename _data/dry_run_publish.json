@@ -1343,7 +1343,7 @@
       }
     },
     {
-      "id": "33b8c5d2b6058e54",
+      "id": "54ac473f9d21fc68",
       "title": "Dragonflies lock onto prey in midair",
       "category": "insects",
       "queue_score": 100.0,
@@ -1359,13 +1359,13 @@
       "packaging_lab": {
         "title_variants": [
           "Dragonflies lock onto prey in midair",
-          "Dragonflies use motion lock before they track",
+          "Dragonflies use motion lock before they fly",
           "This motion lock gives dragonflies away"
         ],
         "thumbnail_variants": [
           "MOTION LOCK",
           "WATCH MOTION LOCK",
-          "DRAGONFLIES TRACK"
+          "DRAGONFLIES FLY"
         ],
         "hook_variants": [
           "Dragonflies track prey with extreme precision.",
@@ -1380,9 +1380,9 @@
         "approved": true,
         "state": "publish_ready",
         "opportunity": {
-          "score": 62,
+          "score": 63,
           "signals": {
-            "viral_potential": 74,
+            "viral_potential": 79,
             "visual_potential": 63,
             "replay_potential": 76,
             "comment_potential": 48,
@@ -1609,9 +1609,9 @@
         "risks": [],
         "title_options": [
           "Dragonflies lock onto prey in midair",
-          "Dragonflies use motion lock before they track",
+          "Dragonflies use motion lock before they fly",
           "This motion lock gives dragonflies away",
-          "Why dragonflies track after one motion lock",
+          "Why dragonflies fly after one motion lock",
           "Dragonflies reveal the answer with motion lock",
           "The motion lock that changes the moment",
           "Dragonflies make one motion lock matter",
@@ -1622,7 +1622,7 @@
         "thumbnail_options": [
           "MOTION LOCK",
           "WATCH MOTION LOCK",
-          "DRAGONFLIES TRACK",
+          "DRAGONFLIES FLY",
           "MOTION LOCK MATTERS",
           "MOTION LOCK FIRST",
           "MOTION LOCK REVEAL",
@@ -1683,19 +1683,19 @@
           {
             "score": 73,
             "title": "Dragonflies lock onto prey in midair",
-            "thumbnail_text": "DRAGONFLIES TRACK",
+            "thumbnail_text": "DRAGONFLIES FLY",
             "hook": "Dragonflies track prey with extreme precision"
           },
           {
             "score": 73,
             "title": "Dragonflies lock onto prey in midair",
-            "thumbnail_text": "DRAGONFLIES TRACK",
+            "thumbnail_text": "DRAGONFLIES FLY",
             "hook": "Watch the motion lock; it explains the behavior"
           },
           {
             "score": 73,
             "title": "Dragonflies lock onto prey in midair",
-            "thumbnail_text": "DRAGONFLIES TRACK",
+            "thumbnail_text": "DRAGONFLIES FLY",
             "hook": "Start with the motion lock; it changes the scene"
           },
           {
@@ -1730,7 +1730,7 @@
           "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
         },
         "experiment": {
-          "mode": "explore",
+          "mode": "exploit",
           "explore_rate": 0.18,
           "winners": {
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}",
@@ -1746,10 +1746,10 @@
           },
           "sample_count": 17,
           "assignment": {
-            "format": "fresh_variant",
-            "hook": "new_hook",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
             "thumbnail": "new_thumbnail",
-            "cta": "specific_question"
+            "cta": "follow_for_more"
           }
         },
         "series_identity": {
@@ -6571,18 +6571,21 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 57,
-    "pending_after": 57,
-    "rejected": 0,
+    "pending_before": 59,
+    "pending_after": 58,
+    "rejected": 1,
     "repair_needed": 0,
-    "repaired": 2,
+    "repaired": 3,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 52,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 20,
+      "objective_gate:bootstrap_observe_before_scaling": 53,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 21,
       "editor_in_chief:script quality gate blocked the narration": 12,
       "objective_gate:observe_before_scaling": 5,
       "editor_in_chief:editorial score 46 is below 62": 1,
       "editor_in_chief:editorial score 61 is below 62": 1,
+      "off_topic_visual": 1,
+      "script_subject_mismatch": 1,
+      "copy_subject_mismatch": 1,
       "editor_in_chief:editorial score 40 is below 62": 1,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
@@ -6591,5 +6594,15 @@
       "editor_in_chief:thumbnail copy must contain 2-4 readable words": 1
     }
   },
-  "rejected_preview": []
+  "rejected_preview": [
+    {
+      "id": "bfdf61047fdeb26c",
+      "title": "Lightning reveal air layers moving at different speeds",
+      "reasons": [
+        "off_topic_visual",
+        "script_subject_mismatch",
+        "copy_subject_mismatch"
+      ]
+    }
+  ]
 }
