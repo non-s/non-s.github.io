@@ -1,5 +1,5 @@
 {
-  "total": 791,
+  "total": 858,
   "reasons": {
     "duplicate_angle": 336,
     "duplicate_script": 336,
@@ -7,9 +7,13 @@
     "off_topic_visual": 249,
     "script_hook_mismatch": 71,
     "copy_subject_mismatch": 50,
+    "thumbnail_text_not_scannable": 45,
+    "thumbnail_not_2_4_words": 45,
     "queue_score_reject": 45,
     "rights_guard_person_manual_review": 30,
     "script_subject_mismatch": 29,
+    "weak_visual_surface": 26,
+    "low_opportunity_score": 26,
     "script_word_loop": 25,
     "non_animal_body_language": 23,
     "subject repeated inside 3-day cooldown": 18,
@@ -26,8 +30,6 @@
     "no_action_promise": 3,
     "script does not expose enough concrete visual detail": 3,
     "editorial score 43 is below 62": 3,
-    "thumbnail_text_not_scannable": 3,
-    "thumbnail_not_2_4_words": 3,
     "stitched_repeated_animal_title": 2,
     "title_shape_weak": 2,
     "title_needs_stronger_shape": 2,
@@ -39,53 +41,17 @@
     "editorial score 46 is below 62": 1,
     "editorial score 34 is below 62": 1,
     "editorial score 36 is below 62": 1,
-    "missing_visual_cue": 1,
-    "weak_visual_surface": 1,
-    "low_opportunity_score": 1
+    "missing_visual_cue": 1
   },
   "stages": {
     "queue_prune": 404,
     "queue_prune_final": 319,
     "queue_repair": 45,
-    "editor_in_chief": 21,
-    "opportunity_score": 1,
-    "youtube_brain_rewrite": 1
+    "youtube_brain_rewrite": 43,
+    "opportunity_score": 26,
+    "editor_in_chief": 21
   },
   "latest": [
-    {
-      "story_id": "c334e0f40c32052e",
-      "stage": "queue_prune",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "title": "Dead desert trees hold rocks in their roots",
-      "category": "forests",
-      "script_key": "that dead tree swallowed rocks see how its roots grip the stones tight that s not random it s holding on for dear life the wind would topple it without the weight pretty smart for something that looks like kindling ever walked past a brittle tree and wondered why it s still standing",
-      "angle_key": "trees|see|roots|forests",
-      "source_url": "https://www.pexels.com/video/a-dead-tree-in-the-desert-with-rocks-28344361/",
-      "pexels_video_id": "28344361",
-      "source_clip_id": "pexels:c334e0f40c32052e",
-      "recorded_at": "2026-07-02T22:42:14.123618+00:00",
-      "rewrite_attempted": false,
-      "rewrite_applied": false
-    },
-    {
-      "story_id": "230c23151fea6f02",
-      "stage": "queue_prune",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "title": "ants don't march in lines they smell each other",
-      "category": "chemistry",
-      "script_key": "they re not marching in lines they follow each other s scent like a moving fingerprint that s why they never get lost watch this one twice the ant in front keeps sniffing the one behind not the path",
-      "angle_key": "ants|follow|cue|chemistry",
-      "source_url": "https://www.pexels.com/video/close-up-video-of-ants-at-a-busy-anthill-31985648/",
-      "pexels_video_id": "31985648",
-      "source_clip_id": "pexels:230c23151fea6f02",
-      "recorded_at": "2026-07-02T22:42:14.139238+00:00",
-      "rewrite_attempted": false,
-      "rewrite_applied": false
-    },
     {
       "story_id": "65c6d07f2e420af7",
       "stage": "queue_prune",
@@ -305,6 +271,42 @@
       "pexels_video_id": "36543009",
       "source_clip_id": "pexels:7f72434d0556b0d4",
       "recorded_at": "2026-07-02T22:42:14.313117+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "33dd6bb0aeba20be",
+      "stage": "opportunity_score",
+      "reasons": [
+        "weak_visual_surface",
+        "low_opportunity_score"
+      ],
+      "title": "Bees dance directions back to the hive",
+      "category": "insects",
+      "script_key": "bees can point the hive toward food watch the body angle because a bee dance can carry direction and distance the hive reads that pattern like a living map then sends more workers to the same flowers tiny body huge navigation system which insect should we decode next",
+      "angle_key": "bees|carry|dance map|insects",
+      "source_url": "https://www.pexels.com/video/bumblebee-gathering-nectar-on-summer-bloom-34370333/",
+      "pexels_video_id": "34370333",
+      "source_clip_id": "pexels:33dd6bb0aeba20be",
+      "recorded_at": "2026-07-02T22:49:27.987437+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "8bdc8b70af521eb4",
+      "stage": "youtube_brain_rewrite",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "title": "Fossils turn old bones into time clues",
+      "category": "discoveries",
+      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
+      "angle_key": "fossils|form|pattern|discoveries",
+      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
+      "pexels_video_id": "36118169",
+      "source_clip_id": "pexels:8bdc8b70af521eb4",
+      "recorded_at": "2026-07-02T22:49:29.200685+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     },
