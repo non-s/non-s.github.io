@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-07-02T20:20:11.313564+00:00",
+  "generated_at": "2026-07-02T20:28:41.110894+00:00",
   "floor": 82.0,
-  "pending": 59,
-  "ready": 56,
+  "pending": 58,
+  "ready": 55,
   "held": 3,
-  "rewritten": 15,
-  "average_opening_score": 97.19,
+  "rewritten": 14,
+  "average_opening_score": 97.28,
   "render_gate": "hold",
   "counts": {
-    "approved": 56,
-    "rewritten": 15,
+    "approved": 55,
+    "rewritten": 14,
     "hold": 3
   },
   "items": [
@@ -74,26 +74,6 @@
         "frame_text_not_echoed_early"
       ],
       "action": "Hold until opening is rewritten."
-    },
-    {
-      "id": "bfdf61047fdeb26c",
-      "title": "Auroras glow when solar particles hit air",
-      "category": "weather",
-      "render_gate": "approved",
-      "opening_score": 92.0,
-      "frame_zero_score": 92.0,
-      "opening_state": "retention_ready",
-      "opening_line": "Auroras start with charged particles from the sun.",
-      "first_frame_text": "AURORA GLOW",
-      "visible_cue": "aurora glow",
-      "rewrite_applied": true,
-      "rewrite_reason": "generic_opening_copy",
-      "before_score": 70.0,
-      "after_score": 92.0,
-      "risks": [
-        "subject_not_frontloaded"
-      ],
-      "action": "Use the frame-zero rewrite before rendering."
     },
     {
       "id": "9350de4d49732d9c",
@@ -940,6 +920,24 @@
       "opening_state": "retention_ready",
       "opening_line": "Rivers sort sand along every bend.",
       "first_frame_text": "RIVER SORTING",
+      "visible_cue": "",
+      "rewrite_applied": false,
+      "rewrite_reason": "",
+      "before_score": null,
+      "after_score": 100.0,
+      "risks": [],
+      "action": "Ready to render with current first frame."
+    },
+    {
+      "id": "677b330e4980e87d",
+      "title": "Rock layers preserve the history of water",
+      "category": "geology",
+      "render_gate": "approved",
+      "opening_score": 100.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Rock layers preserve the history of water.",
+      "first_frame_text": "ROCK TIMELINE",
       "visible_cue": "",
       "rewrite_applied": false,
       "rewrite_reason": "",

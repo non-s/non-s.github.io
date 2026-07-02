@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-02T20:20:11.505296+00:00",
-  "pending": 59,
+  "generated_at": "2026-07-02T20:28:41.309901+00:00",
+  "pending": 58,
   "states": {
-    "rewrite": 34,
+    "rewrite": 33,
     "publish_ready": 25
   },
   "mechanism_clusters": {
@@ -18,26 +18,19 @@
     "visual_stabilization": 1
   },
   "rights": {
-    "approved": 59
+    "approved": 58
   },
   "prune_summary": {
-    "pending_before": 72,
-    "pending_after": 59,
-    "rejected": 13,
-    "repair_needed": 1,
-    "repaired": 7,
+    "pending_before": 58,
+    "pending_after": 58,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 4,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 54,
+      "objective_gate:bootstrap_observe_before_scaling": 53,
       "editor_in_chief:subject repeated inside 3-day cooldown": 21,
       "editor_in_chief:script quality gate blocked the narration": 12,
-      "duplicate_title": 6,
-      "off_topic_visual": 5,
-      "duplicate_script": 5,
-      "duplicate_angle": 5,
       "objective_gate:observe_before_scaling": 5,
-      "opening_retention_gap_risk": 1,
-      "opening promise is not concrete enough": 1,
-      "queue_score_reject": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
       "editor_in_chief:editorial score 61 is below 62": 1,
       "editor_in_chief:editorial score 40 is below 62": 1,
@@ -45,12 +38,38 @@
       "editor_in_chief:editorial score 42 is below 62": 1,
       "editor_in_chief:editorial score 50 is below 62": 1,
       "editor_in_chief:editorial score 44 is below 62": 1,
-      "script_subject_mismatch": 1,
-      "copy_subject_mismatch": 1,
       "editor_in_chief:thumbnail copy must contain 2-4 readable words": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
+      "id": "33dd6bb0aeba20be",
+      "title": "Bees dance directions back to the hive",
+      "reasons": [
+        "weak_visual_surface",
+        "low_opportunity_score"
+      ],
+      "stage": "opportunity_score"
+    },
+    {
+      "id": "bfdf61047fdeb26c",
+      "title": "Lightning reveal air layers moving at different speeds",
+      "reasons": [
+        "off_topic_visual",
+        "script_subject_mismatch",
+        "copy_subject_mismatch"
+      ],
+      "stage": "queue_prune_final"
+    },
     {
       "id": "91ef3894ee943c27",
       "title": "Ducks carry waterproof oil on their feathers",
@@ -169,42 +188,6 @@
       "stage": "queue_prune"
     },
     {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
-    },
-    {
-      "id": "33dd6bb0aeba20be",
-      "title": "Bees dance directions back to the hive",
-      "reasons": [
-        "weak_visual_surface",
-        "low_opportunity_score"
-      ],
-      "stage": "opportunity_score"
-    },
-    {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
-    },
-    {
-      "id": "33dd6bb0aeba20be",
-      "title": "Bees dance directions back to the hive",
-      "reasons": [
-        "weak_visual_surface",
-        "low_opportunity_score"
-      ],
-      "stage": "opportunity_score"
-    },
-    {
       "id": "4fb54499c63581e5",
       "title": "Cats use grooming to reset their scent map",
       "reasons": [
@@ -318,6 +301,14 @@
       "reasons": [
         "off_topic_visual",
         "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "1ae7d69631be51d2",
+      "title": "Mountain rivers carve valleys faster than you think",
+      "reasons": [
+        "off_topic_visual"
       ],
       "stage": "queue_prune"
     }
@@ -500,7 +491,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T20:19:11.262196+00:00",
+        "checked_at": "2026-07-02T20:27:46.772012+00:00",
         "mechanism_cluster": "dance_navigation",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -979,15 +970,15 @@
         "approved": true,
         "category": "insects",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.31,
+          "bootstrap_multiplier": 0.317,
           "can_adjust_strategy": false,
-          "confidence_score": 0.08,
+          "confidence_score": 0.089,
           "data_quality": "estimated",
-          "data_quality_score": 0.425,
-          "minimum_sample_size": 25,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.08.",
+          "data_quality_score": 0.35,
+          "minimum_sample_size": 28,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.09.",
           "recommendation_strength": "observe",
-          "sample_size": 5
+          "sample_size": 6
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -997,7 +988,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.08,
+          "confidence_score": 0.089,
           "mechanism_cluster": "",
           "payoff_time_s": 0.0,
           "penalty": 0.0,
@@ -1093,34 +1084,35 @@
         "state": "publish_ready",
         "story_format": "body_superpower",
         "subscriber_conversion": {
-          "comment_probability": 0.223,
+          "comment_probability": 0.24,
           "confidence": {
-            "bootstrap_multiplier": 0.296,
+            "bootstrap_multiplier": 0.331,
             "can_adjust_strategy": false,
-            "confidence_score": 0.061,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "confidence_score": 0.108,
+            "data_quality": "estimated",
+            "data_quality_score": 0.45,
+            "minimum_sample_size": 13,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
             "recommendation_strength": "observe",
-            "sample_size": 2
+            "sample_size": 3
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
           "reasons": [
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.261,
+          "return_probability": 0.281,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 86,
+          "score": 93,
           "state": "strong",
-          "subscriber_probability": 0.123
+          "subscriber_probability": 0.133
         },
         "title_score": 90,
         "weak_content": {
@@ -1143,7 +1135,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T20:19:11.587852+00:00",
+        "checked_at": "2026-07-02T20:27:46.774033+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1207,7 +1199,7 @@
         "viewer_promise": "See why dragonflies body superpower matters."
       },
       "packaging": {
-        "community_prompt": "Which dragonflies clue should Wild Brief compare next in Watch The Cue?",
+        "community_prompt": "Which dragonflies clue should Wild Brief compare next in Tiny Worlds?",
         "cta_prompt": "Want more small creatures doing impossible things?",
         "curiosity_gap": {
           "hook": "Why do these dragonflies change after the motion lock?",
@@ -1311,7 +1303,7 @@
           "subtitle_tail_mode": "carry-forward"
         },
         "loop_score": 0.754,
-        "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. Is this tiny design more impressive than large-animal survival?",
+        "next_episode_question": "Tomorrow in Tiny Worlds: another animal signal. Is this tiny design more impressive than large-animal survival?",
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
@@ -1338,7 +1330,7 @@
           ],
           "subject": "dragonflies"
         },
-        "pinned_comment": "Watch the motion lock again. Tomorrow in Watch The Cue: another animal signal. Is this tiny design more impressive than large-animal survival?",
+        "pinned_comment": "Watch the motion lock again. Tomorrow in Tiny Worlds: another animal signal. Is this tiny design more impressive than large-animal survival?",
         "preflight_inputs": {
           "caption_chars_per_second": 15.72,
           "contrast_score": 0.74,
@@ -1413,12 +1405,12 @@
         "retention_contract": {
           "first_2s_narration": "Dragonflies track prey with extreme precision Watch the eyes before the flight",
           "first_frame_text": "MOTION LOCK",
-          "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. Is this tiny design more impressive than large-animal survival?",
+          "next_episode_question": "Tomorrow in Tiny Worlds: another animal signal. Is this tiny design more impressive than large-animal survival?",
           "opening_retention_score": 90.0,
           "opening_retention_state": "retention_ready",
           "search_intent": {
             "description_line": "This Short explains Dragonflies behavior through the visible motion lock.",
-            "series": "Watch The Cue",
+            "series": "Tiny Worlds",
             "subject": "dragonflies",
             "terms": [
               "dragonflies",
@@ -1429,7 +1421,7 @@
             "title_variant": "Dragonflies behavior: motion lock explained",
             "visible_cue": "motion lock"
           },
-          "series": "Watch The Cue",
+          "series": "Tiny Worlds",
           "subject": "dragonflies",
           "visible_cue": "motion lock"
         },
@@ -1437,7 +1429,7 @@
         "score": 97,
         "search_intent": {
           "description_line": "This Short explains Dragonflies behavior through the visible motion lock.",
-          "series": "Watch The Cue",
+          "series": "Tiny Worlds",
           "subject": "dragonflies",
           "terms": [
             "dragonflies",
@@ -1454,12 +1446,12 @@
           "thumbnail_text": "MOTION LOCK",
           "title": "Dragonflies lock onto prey in midair"
         },
-        "series": "Watch The Cue",
+        "series": "Tiny Worlds #3",
         "series_identity": {
-          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Watch The Cue",
-          "series": "Watch The Cue"
+          "continuity_prompt": "Next in Tiny Worlds: compare this with another force of nature.",
+          "episode": 3,
+          "label": "Tiny Worlds #3",
+          "series": "Tiny Worlds"
         },
         "state": "magnetic",
         "strengths": [
@@ -1471,34 +1463,35 @@
           "retention_opening_aligned"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.223,
+          "comment_probability": 0.24,
           "confidence": {
-            "bootstrap_multiplier": 0.296,
+            "bootstrap_multiplier": 0.331,
             "can_adjust_strategy": false,
-            "confidence_score": 0.061,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "confidence_score": 0.108,
+            "data_quality": "estimated",
+            "data_quality_score": 0.45,
+            "minimum_sample_size": 13,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
             "recommendation_strength": "observe",
-            "sample_size": 2
+            "sample_size": 3
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
           "reasons": [
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.261,
+          "return_probability": 0.281,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 86,
+          "score": 93,
           "state": "strong",
-          "subscriber_probability": 0.123
+          "subscriber_probability": 0.133
         },
         "swipe_risk": {
           "band": "low",
@@ -1785,7 +1778,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T20:19:11.893718+00:00",
+        "checked_at": "2026-07-02T20:27:46.775583+00:00",
         "mechanism_cluster": "wing_scales",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2455,7 +2448,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T20:19:11.895093+00:00",
+        "checked_at": "2026-07-02T20:27:46.776980+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3103,7 +3096,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T20:19:11.896697+00:00",
+        "checked_at": "2026-07-02T20:27:46.778250+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3743,7 +3736,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T20:19:12.297290+00:00",
+        "checked_at": "2026-07-02T20:27:46.805794+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4385,7 +4378,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T20:19:12.299929+00:00",
+        "checked_at": "2026-07-02T20:27:46.808322+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5023,7 +5016,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T20:19:12.301381+00:00",
+        "checked_at": "2026-07-02T20:27:46.809727+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5666,7 +5659,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T20:19:12.303540+00:00",
+        "checked_at": "2026-07-02T20:27:46.811785+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6304,7 +6297,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T20:19:12.627845+00:00",
+        "checked_at": "2026-07-02T20:27:46.819038+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6949,7 +6942,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T20:19:12.632916+00:00",
+        "checked_at": "2026-07-02T20:27:46.823259+00:00",
         "mechanism_cluster": "electric_sense",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7591,7 +7584,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T20:19:12.634867+00:00",
+        "checked_at": "2026-07-02T20:27:46.825026+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8231,7 +8224,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T20:19:12.637597+00:00",
+        "checked_at": "2026-07-02T20:27:46.827208+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8882,7 +8875,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T20:19:12.639040+00:00",
+        "checked_at": "2026-07-02T20:27:46.828627+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -9518,7 +9511,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T20:19:12.640244+00:00",
+        "checked_at": "2026-07-02T20:27:46.829837+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -10164,7 +10157,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T20:19:12.646400+00:00",
+        "checked_at": "2026-07-02T20:27:46.835617+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -10811,7 +10804,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T20:19:12.648182+00:00",
+        "checked_at": "2026-07-02T20:27:46.837375+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -11462,7 +11455,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T20:19:12.650612+00:00",
+        "checked_at": "2026-07-02T20:27:46.839602+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -12106,7 +12099,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T20:19:12.651922+00:00",
+        "checked_at": "2026-07-02T20:27:46.840852+00:00",
         "mechanism_cluster": "decoy_injury",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -12751,7 +12744,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T20:19:12.665096+00:00",
+        "checked_at": "2026-07-02T20:27:46.853908+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
