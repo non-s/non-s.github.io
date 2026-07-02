@@ -2,44 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 9,
-      "high": 1,
-      "manual_review": 1,
+      "automation_safe": 6,
+      "high": 3,
+      "manual_review": 4,
       "total": 10,
-      "urgent": 3
+      "urgent": 2
     },
     "free_only": true,
-    "generated_at": "2026-07-02T13:32:31.262970+00:00",
+    "generated_at": "2026-07-02T14:33:54.489763+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 13.411,
-        "automation_safe": true,
-        "category": "fungi",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "overdue",
-        "current_views": 1,
-        "due_at": "2026-07-02T01:07:50.918833+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:LQPZdiuog_k:analytics_due:1h",
-        "lane": "measurement",
-        "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "urgent",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
-        "series": "Hidden Network",
-        "state": "analytics_due",
-        "target_views": 24,
-        "title": "Mushrooms release spores from hidden gills",
-        "url": "https://www.youtube.com/shorts/LQPZdiuog_k",
-        "video_id": "LQPZdiuog_k",
-        "wait_until": "",
-        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
-      },
-      {
-        "action_type": "pull_fresh_analytics",
-        "age_hours": 11.797,
+        "age_hours": 12.82,
         "automation_safe": true,
         "category": "rivers",
         "checkpoint_label": "1h",
@@ -65,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 9.193,
+        "age_hours": 10.217,
         "automation_safe": true,
         "category": "weather",
         "checkpoint_label": "1h",
@@ -91,7 +65,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 7.758,
+        "age_hours": 8.782,
         "automation_safe": false,
         "category": "wildlife",
         "checkpoint_label": "24h",
@@ -116,86 +90,112 @@
         "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
-        "action_type": "watch_next_checkpoint",
-        "age_hours": 5.594,
-        "automation_safe": true,
+        "action_type": "prepare_package_rescue",
+        "age_hours": 6.617,
+        "automation_safe": false,
         "category": "reptiles",
-        "checkpoint_label": "6h",
+        "checkpoint_label": "24h",
         "checkpoint_state": "pending",
         "current_views": 0,
-        "due_at": "2026-07-02T13:56:54.089798+00:00",
+        "due_at": "2026-07-03T07:56:54.089798+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:ytZXl-smi5Q:watch:6h",
-        "lane": "observe",
-        "manual_approval_required": false,
+        "id": "fresh-upload:ytZXl-smi5Q:repair_candidate:24h",
+        "lane": "package_rescue",
+        "manual_approval_required": true,
         "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Keep observing through the next checkpoint.",
+        "priority": "high",
+        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
         "series": "Cold-Blooded Secrets",
-        "state": "watch",
-        "target_views": 105,
+        "state": "repair_candidate",
+        "target_views": 300,
         "title": "Snakes can detect warm prey in the dark",
         "url": "https://www.youtube.com/shorts/ytZXl-smi5Q",
         "video_id": "ytZXl-smi5Q",
-        "wait_until": "2026-07-02T13:56:54.089798+00:00",
-        "why": "No intervention signal is strong enough yet."
+        "wait_until": "",
+        "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
-        "action_type": "hold_until_first_hour",
-        "age_hours": 0.29,
-        "automation_safe": true,
-        "category": "insects",
-        "checkpoint_label": "1h",
+        "action_type": "prepare_package_rescue",
+        "age_hours": 6.163,
+        "automation_safe": false,
+        "category": "dogs",
+        "checkpoint_label": "24h",
         "checkpoint_state": "pending",
         "current_views": 0,
-        "due_at": "2026-07-02T14:15:06.171182+00:00",
+        "due_at": "2026-07-03T08:24:08.181149+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:6EQWaar3wBc:awaiting_1h:1h",
-        "lane": "observe",
-        "manual_approval_required": false,
+        "id": "fresh-upload:peeCu1r3K0I:repair_candidate:24h",
+        "lane": "package_rescue",
+        "manual_approval_required": true,
         "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "priority": "high",
+        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "series": "Pet Secrets",
+        "state": "repair_candidate",
+        "target_views": 300,
+        "title": "Dogs read the world through scent maps",
+        "url": "https://www.youtube.com/shorts/peeCu1r3K0I",
+        "video_id": "peeCu1r3K0I",
+        "wait_until": "",
+        "why": "Observed velocity is weak enough to prepare a package intervention."
+      },
+      {
+        "action_type": "queue_sequel_bridge",
+        "age_hours": 1.313,
+        "automation_safe": false,
+        "category": "insects",
+        "checkpoint_label": "6h",
+        "checkpoint_state": "pending",
+        "current_views": 1,
+        "due_at": "2026-07-02T19:15:06.171182+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:6EQWaar3wBc:accelerating:6h",
+        "lane": "amplify",
+        "manual_approval_required": true,
+        "opening_retention_score": 100.0,
+        "priority": "normal",
+        "recommended_action": "Queue a sequel or related-video bridge while the session has momentum.",
         "series": "Tiny Worlds",
-        "state": "awaiting_1h",
-        "target_views": 24,
+        "state": "accelerating",
+        "target_views": 105,
         "title": "Ants use scent road before they change",
         "url": "https://www.youtube.com/shorts/6EQWaar3wBc",
         "video_id": "6EQWaar3wBc",
-        "wait_until": "2026-07-02T14:15:06.171182+00:00",
+        "wait_until": "",
+        "why": "Performance signal is already positive; amplify without changing the opening."
+      },
+      {
+        "action_type": "hold_until_first_hour",
+        "age_hours": 0.06,
+        "automation_safe": true,
+        "category": "farm",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-02T15:30:19.353303+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:sldOXcDmZuQ:awaiting_1h:1h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 90.0,
+        "priority": "low",
+        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "series": "Farmyard Surprises",
+        "state": "awaiting_1h",
+        "target_views": 24,
+        "title": "Horses point their ears toward what matters",
+        "url": "https://www.youtube.com/shorts/sldOXcDmZuQ",
+        "video_id": "sldOXcDmZuQ",
+        "wait_until": "2026-07-02T15:30:19.353303+00:00",
         "why": "The upload is still inside the no-panic observation window."
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 5.14,
-        "automation_safe": true,
-        "category": "dogs",
-        "checkpoint_label": "6h",
-        "checkpoint_state": "pending",
-        "current_views": 0,
-        "due_at": "2026-07-02T14:24:08.181149+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:peeCu1r3K0I:watch:6h",
-        "lane": "observe",
-        "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Keep observing through the next checkpoint.",
-        "series": "Pet Secrets",
-        "state": "watch",
-        "target_views": 105,
-        "title": "Dogs read the world through scent maps",
-        "url": "https://www.youtube.com/shorts/peeCu1r3K0I",
-        "video_id": "peeCu1r3K0I",
-        "wait_until": "2026-07-02T14:24:08.181149+00:00",
-        "why": "No intervention signal is strong enough yet."
-      },
-      {
-        "action_type": "watch_next_checkpoint",
-        "age_hours": 2.861,
+        "age_hours": 3.884,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "6h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.15,
+        "age_hours": 3.174,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "6h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 1.384,
+        "age_hours": 2.407,
         "automation_safe": true,
         "category": "ocean",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-02T13:32:31.262388+00:00"
+    "source_generated_at": "2026-07-02T14:33:54.489187+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,22 +282,22 @@
       24
     ],
     "counts": {
-      "analytics_due": 3,
+      "analytics_due": 2,
       "awaiting_1h": 1,
-      "high_priority": 4,
-      "repair_candidates": 1,
+      "high_priority": 5,
+      "repair_candidates": 3,
       "tracked": 10
     },
-    "generated_at": "2026-07-02T13:32:31.262388+00:00",
+    "generated_at": "2026-07-02T14:33:54.489187+00:00",
     "items": [
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.29,
-        "category": "insects",
+        "age_hours": 0.06,
+        "category": "farm",
         "checkpoints": [
           {
             "delta_to_target": 0,
-            "due_at": "2026-07-02T14:15:06.171182+00:00",
+            "due_at": "2026-07-02T15:30:19.353303+00:00",
             "label": "1h",
             "source": "estimated",
             "state": "pending",
@@ -306,7 +306,7 @@
           },
           {
             "delta_to_target": 0,
-            "due_at": "2026-07-02T19:15:06.171182+00:00",
+            "due_at": "2026-07-02T20:30:19.353303+00:00",
             "label": "6h",
             "source": "estimated",
             "state": "pending",
@@ -315,7 +315,7 @@
           },
           {
             "delta_to_target": 0,
-            "due_at": "2026-07-03T13:15:06.171182+00:00",
+            "due_at": "2026-07-03T14:30:19.353303+00:00",
             "label": "24h",
             "source": "estimated",
             "state": "pending",
@@ -327,27 +327,91 @@
         "hypothesis": "The upload is still inside the no-panic observation window.",
         "next_checkpoint": {
           "delta_to_target": 0,
-          "due_at": "2026-07-02T14:15:06.171182+00:00",
+          "due_at": "2026-07-02T15:30:19.353303+00:00",
           "label": "1h",
           "source": "estimated",
           "state": "pending",
           "target_views": 24,
           "views": 0
         },
-        "opening_retention_score": 100.0,
+        "opening_retention_score": 90.0,
         "opening_retention_state": "retention_ready",
         "priority": "low",
-        "series": "Tiny Worlds",
+        "series": "Farmyard Surprises",
         "state": "awaiting_1h",
+        "title": "Horses point their ears toward what matters",
+        "uploaded_at": "2026-07-02T14:30:19.353303+00:00",
+        "url": "https://www.youtube.com/shorts/sldOXcDmZuQ",
+        "video_id": "sldOXcDmZuQ",
+        "views_per_hour": 0.0
+      },
+      {
+        "action": "Queue a sequel or related-video bridge while the session has momentum.",
+        "age_hours": 1.313,
+        "category": "insects",
+        "checkpoints": [
+          {
+            "delta_to_target": -24,
+            "due_at": "2026-07-02T14:15:06.171182+00:00",
+            "label": "1h",
+            "source": "observed",
+            "state": "observed",
+            "target_views": 24,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-02T19:15:06.171182+00:00",
+            "label": "6h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 105,
+            "views": 1
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-03T13:15:06.171182+00:00",
+            "label": "24h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 300,
+            "views": 1
+          }
+        ],
+        "current_views": 1,
+        "hypothesis": "Performance signal is already positive; amplify without changing the opening.",
+        "next_checkpoint": {
+          "delta_to_target": 0,
+          "due_at": "2026-07-02T19:15:06.171182+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 1
+        },
+        "opening_retention_score": 100.0,
+        "opening_retention_state": "retention_ready",
+        "priority": "normal",
+        "series": "Tiny Worlds",
+        "state": "accelerating",
         "title": "Ants use scent road before they change",
         "uploaded_at": "2026-07-02T13:15:06.171182+00:00",
         "url": "https://www.youtube.com/shorts/6EQWaar3wBc",
         "video_id": "6EQWaar3wBc",
-        "views_per_hour": 0.0
+        "views_per_hour": 0.788,
+        "warning": {
+          "confidence_score": 0.512,
+          "reasoning": "video has 7/2 samples, estimated data, confidence 0.51; observation only.",
+          "score": 2,
+          "state": "accelerating",
+          "title": "Ants use scent road before they change",
+          "video_id": "6EQWaar3wBc",
+          "warning_state": "accelerator"
+        }
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 1.384,
+        "age_hours": 2.407,
         "category": "ocean",
         "checkpoints": [
           {
@@ -402,7 +466,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.15,
+        "age_hours": 3.174,
         "category": "insects",
         "checkpoints": [
           {
@@ -457,7 +521,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.861,
+        "age_hours": 3.884,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -511,8 +575,8 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.14,
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "age_hours": 6.163,
         "category": "dogs",
         "checkpoints": [
           {
@@ -525,11 +589,11 @@
             "views": 0
           },
           {
-            "delta_to_target": 0,
+            "delta_to_target": -105,
             "due_at": "2026-07-02T14:24:08.181149+00:00",
             "label": "6h",
-            "source": "estimated",
-            "state": "pending",
+            "source": "observed",
+            "state": "observed",
             "target_views": 105,
             "views": 0
           },
@@ -544,30 +608,41 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "No intervention signal is strong enough yet.",
+        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
         "next_checkpoint": {
           "delta_to_target": 0,
-          "due_at": "2026-07-02T14:24:08.181149+00:00",
-          "label": "6h",
+          "due_at": "2026-07-03T08:24:08.181149+00:00",
+          "label": "24h",
           "source": "estimated",
           "state": "pending",
-          "target_views": 105,
+          "target_views": 300,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Pet Secrets",
-        "state": "watch",
+        "state": "repair_candidate",
         "title": "Dogs read the world through scent maps",
         "uploaded_at": "2026-07-02T08:24:08.181149+00:00",
         "url": "https://www.youtube.com/shorts/peeCu1r3K0I",
         "video_id": "peeCu1r3K0I",
-        "views_per_hour": 0.0
+        "views_per_hour": 0.0,
+        "warning": {
+          "action": "TITLE_AUTO_REPAIR_TRIGGER",
+          "confidence_score": 0.594,
+          "reason": "low early velocity",
+          "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+          "title": "Dogs read the world through scent maps",
+          "video_id": "peeCu1r3K0I",
+          "views": 0,
+          "warning_state": "repair_risk"
+        }
       },
       {
-        "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.594,
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "age_hours": 6.617,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -580,11 +655,11 @@
             "views": 0
           },
           {
-            "delta_to_target": 0,
+            "delta_to_target": -105,
             "due_at": "2026-07-02T13:56:54.089798+00:00",
             "label": "6h",
-            "source": "estimated",
-            "state": "pending",
+            "source": "observed",
+            "state": "observed",
             "target_views": 105,
             "views": 0
           },
@@ -599,30 +674,41 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "No intervention signal is strong enough yet.",
+        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
         "next_checkpoint": {
           "delta_to_target": 0,
-          "due_at": "2026-07-02T13:56:54.089798+00:00",
-          "label": "6h",
+          "due_at": "2026-07-03T07:56:54.089798+00:00",
+          "label": "24h",
           "source": "estimated",
           "state": "pending",
-          "target_views": 105,
+          "target_views": 300,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Cold-Blooded Secrets",
-        "state": "watch",
+        "state": "repair_candidate",
         "title": "Snakes can detect warm prey in the dark",
         "uploaded_at": "2026-07-02T07:56:54.089798+00:00",
         "url": "https://www.youtube.com/shorts/ytZXl-smi5Q",
         "video_id": "ytZXl-smi5Q",
-        "views_per_hour": 0.0
+        "views_per_hour": 0.0,
+        "warning": {
+          "action": "TITLE_AUTO_REPAIR_TRIGGER",
+          "confidence_score": 0.594,
+          "reason": "low early velocity",
+          "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+          "title": "Snakes can detect warm prey in the dark",
+          "video_id": "ytZXl-smi5Q",
+          "views": 0,
+          "warning_state": "repair_risk"
+        }
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 7.758,
+        "age_hours": 8.782,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -688,7 +774,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 9.193,
+        "age_hours": 10.217,
         "category": "weather",
         "checkpoints": [
           {
@@ -743,7 +829,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 11.797,
+        "age_hours": 12.82,
         "category": "rivers",
         "checkpoints": [
           {
@@ -795,61 +881,6 @@
         "url": "https://www.youtube.com/shorts/Wi2VtQQ88X0",
         "video_id": "Wi2VtQQ88X0",
         "views_per_hour": 0.0
-      },
-      {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 13.411,
-        "category": "fungi",
-        "checkpoints": [
-          {
-            "delta_to_target": -24,
-            "due_at": "2026-07-02T01:07:50.918833+00:00",
-            "label": "1h",
-            "source": "estimated",
-            "state": "overdue",
-            "target_views": 24,
-            "views": 0
-          },
-          {
-            "delta_to_target": -104,
-            "due_at": "2026-07-02T06:07:50.918833+00:00",
-            "label": "6h",
-            "source": "observed",
-            "state": "observed",
-            "target_views": 105,
-            "views": 1
-          },
-          {
-            "delta_to_target": 0,
-            "due_at": "2026-07-03T00:07:50.918833+00:00",
-            "label": "24h",
-            "source": "estimated",
-            "state": "pending",
-            "target_views": 300,
-            "views": 1
-          }
-        ],
-        "current_views": 1,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-        "next_checkpoint": {
-          "delta_to_target": -24,
-          "due_at": "2026-07-02T01:07:50.918833+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        "opening_retention_score": 100.0,
-        "opening_retention_state": "retention_ready",
-        "priority": "high",
-        "series": "Hidden Network",
-        "state": "analytics_due",
-        "title": "Mushrooms release spores from hidden gills",
-        "uploaded_at": "2026-07-02T00:07:50.918833+00:00",
-        "url": "https://www.youtube.com/shorts/LQPZdiuog_k",
-        "video_id": "LQPZdiuog_k",
-        "views_per_hour": 0.075
       }
     ],
     "targets": {
@@ -859,23 +890,12 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-02T13:32:31.263056+00:00",
+  "generated_at": "2026-07-02T14:33:54.489873+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
   ],
   "related_video_recommendations": [
-    {
-      "recommendation": {
-        "reason": "same series/category/format session bridge",
-        "score": 20.0,
-        "title": "Wolves read scent posts like a map",
-        "url": "https://www.youtube.com/shorts/p5aVx8ZViPI",
-        "video_id": "p5aVx8ZViPI"
-      },
-      "source_title": "Dogs read the world through scent maps",
-      "source_video_id": "peeCu1r3K0I"
-    },
     {
       "recommendation": {
         "reason": "same series/category/format session bridge",
@@ -919,14 +939,20 @@
       },
       "source_title": "Ants use scent road before they change",
       "source_video_id": "6EQWaar3wBc"
+    },
+    {
+      "recommendation": {
+        "reason": "same series/category/format session bridge",
+        "score": 20.0,
+        "title": "Dogs read the world through scent maps",
+        "url": "https://www.youtube.com/shorts/peeCu1r3K0I",
+        "video_id": "peeCu1r3K0I"
+      },
+      "source_title": "Horses point their ears toward what matters",
+      "source_video_id": "sldOXcDmZuQ"
     }
   ],
   "sequel_opportunities": [
-    {
-      "prompt": "Make a sequel with a new subject but the same payoff shape: Dogs read the world through scent maps",
-      "title": "Dogs read the world through scent maps",
-      "video_id": "peeCu1r3K0I"
-    },
     {
       "prompt": "Make a sequel with a new subject but the same payoff shape: Wolves read scent posts like a map",
       "title": "Wolves read scent posts like a map",
@@ -946,13 +972,18 @@
       "prompt": "Make a sequel with a new subject but the same payoff shape: Ants use scent road before they change",
       "title": "Ants use scent road before they change",
       "video_id": "6EQWaar3wBc"
+    },
+    {
+      "prompt": "Make a sequel with a new subject but the same payoff shape: Horses point their ears toward what matters",
+      "title": "Horses point their ears toward what matters",
+      "video_id": "sldOXcDmZuQ"
     }
   ],
   "session_graph": {
     "action_score_threshold": 55,
-    "coverage": 0.375,
-    "edges": 16,
-    "nodes": 16,
+    "coverage": 0.3529,
+    "edges": 17,
+    "nodes": 17,
     "target_reuse_limit": 2
   }
 }
