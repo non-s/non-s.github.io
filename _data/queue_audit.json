@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-02T21:56:00.616889+00:00",
-  "pending": 60,
+  "generated_at": "2026-07-02T22:01:27.939897+00:00",
+  "pending": 61,
   "states": {
-    "rewrite": 35,
+    "rewrite": 36,
     "publish_ready": 25
   },
   "mechanism_clusters": {
@@ -18,19 +18,28 @@
     "visual_stabilization": 1
   },
   "rights": {
-    "approved": 60
+    "approved": 61
   },
   "prune_summary": {
-    "pending_before": 60,
-    "pending_after": 60,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 4,
+    "pending_before": 72,
+    "pending_after": 61,
+    "rejected": 11,
+    "repair_needed": 1,
+    "repaired": 8,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 55,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 23,
+      "objective_gate:bootstrap_observe_before_scaling": 56,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 24,
       "editor_in_chief:script quality gate blocked the narration": 12,
+      "duplicate_title": 6,
+      "duplicate_script": 6,
+      "duplicate_angle": 6,
       "objective_gate:observe_before_scaling": 5,
+      "off_topic_visual": 3,
+      "script_hook_mismatch": 1,
+      "script_subject_mismatch": 1,
+      "copy_subject_mismatch": 1,
+      "rights_guard_person_manual_review": 1,
+      "queue_score_reject": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
       "editor_in_chief:editorial score 61 is below 62": 1,
       "editor_in_chief:editorial score 40 is below 62": 1,
@@ -42,6 +51,127 @@
     }
   },
   "rejected_preview": [
+    {
+      "id": "2a10a2aeab86dd27",
+      "title": "Ducks carry waterproof oil on their feathers",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "abdb5bb75211ba1f",
+      "title": "Cats measure tight spaces with their whiskers",
+      "reasons": [
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "1558dfef8c8ea4c4",
+      "title": "Dogs build a map with smell",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "f79810387d15ac63",
+      "title": "Forests hold cool fog between the trees",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "accd30618d4e48a0",
+      "title": "Birds soar without flapping wings",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "9397d0f948fcc2c8",
+      "title": "Beetles can steer by the Milky Way",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "911d582c09de1135",
+      "title": "hedgehogs steal larders like thieves",
+      "reasons": [
+        "rights_guard_person_manual_review",
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "8b63bac021f0e744",
+      "title": "Rivers carve bends by stealing from one bank",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "a8dde872de24e89c",
+      "title": "Snakes smell the air with their tongues",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "13d1eeceed63ca04",
+      "title": "Mountains are younger than you think",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "3b1cda7dab3f9dbf",
+      "title": "Elephants cool blood through giant ears",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
+      "id": "33dd6bb0aeba20be",
+      "title": "Bees dance directions back to the hive",
+      "reasons": [
+        "weak_visual_surface",
+        "low_opportunity_score"
+      ],
+      "stage": "opportunity_score"
+    },
     {
       "id": "8bdc8b70af521eb4",
       "title": "Fossils turn old bones into time clues",
@@ -165,6 +295,24 @@
       "stage": "queue_repair"
     },
     {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
+      "id": "33dd6bb0aeba20be",
+      "title": "Bees dance directions back to the hive",
+      "reasons": [
+        "weak_visual_surface",
+        "low_opportunity_score"
+      ],
+      "stage": "opportunity_score"
+    },
+    {
       "id": "a95ae54c7a9296f6",
       "title": "Ducks carry waterproof oil on their feathers",
       "reasons": [
@@ -177,144 +325,6 @@
       "title": "Lions use dark ear marks to guide cubs",
       "reasons": [
         "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "45c11ea2aa792a7f",
-      "title": "Lions use dark ear marks to guide cubs",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "3838dc5bd1044fb1",
-      "title": "Tigers wear stripe shadows as camouflage",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "8fe0f5d35efb60ee",
-      "title": "Snakes smell the air with their tongues",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "32ce456e1c8b6d91",
-      "title": "Trees keep weather history in their rings",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "02ae01e8fa9de5db",
-      "title": "Owls can make a hunt almost silent",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "a786c0151611f76c",
-      "title": "Why dog play is more serious than it looks in the first second",
-      "reasons": [
-        "script_word_loop"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "f36b50467e8f97a8",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "1a5da9463af07d5b",
-      "title": "Forests make cooler air under the canopy",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "6af57023bf9fa48d",
-      "title": "Rivers carry stone grains while they flow",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "c1ef51e69572297f",
-      "title": "Monkeys wash food when grit gets annoying",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "15aa8b54f3c77f6f",
-      "title": "Snakes can sense heat when light disappears",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "2da9f8fda07f3d1b",
-      "title": "Chickens lock their view between steps",
-      "reasons": [
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "3838dc5bd1044fb1",
-      "title": "Tigers wear stripe shadows as camouflage",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "11137f107a134f04",
-      "title": "Lions use dark ear marks to guide cubs",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "75e23e5cda2a29c8",
-      "title": "Dolphins can call each other with signature whistles",
-      "reasons": [
         "duplicate_script",
         "duplicate_angle"
       ],
@@ -499,7 +509,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T21:55:02.234759+00:00",
+        "checked_at": "2026-07-02T22:00:27.713248+00:00",
         "mechanism_cluster": "dance_navigation",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1143,7 +1153,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T21:55:02.236715+00:00",
+        "checked_at": "2026-07-02T22:00:27.715110+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1786,7 +1796,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T21:55:02.238200+00:00",
+        "checked_at": "2026-07-02T22:00:27.716578+00:00",
         "mechanism_cluster": "wing_scales",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2456,7 +2466,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T21:55:02.239551+00:00",
+        "checked_at": "2026-07-02T22:00:27.717910+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3104,7 +3114,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T21:55:02.240869+00:00",
+        "checked_at": "2026-07-02T22:00:27.719134+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3744,7 +3754,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T21:55:02.273351+00:00",
+        "checked_at": "2026-07-02T22:00:28.080932+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4386,7 +4396,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T21:55:02.275909+00:00",
+        "checked_at": "2026-07-02T22:00:28.083428+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5024,7 +5034,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T21:55:02.277347+00:00",
+        "checked_at": "2026-07-02T22:00:28.084819+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5667,7 +5677,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T21:55:02.279398+00:00",
+        "checked_at": "2026-07-02T22:00:28.087129+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6305,7 +6315,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T21:55:02.289683+00:00",
+        "checked_at": "2026-07-02T22:00:28.411013+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6950,7 +6960,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T21:55:02.296991+00:00",
+        "checked_at": "2026-07-02T22:00:28.415236+00:00",
         "mechanism_cluster": "electric_sense",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7592,7 +7602,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T21:55:02.298791+00:00",
+        "checked_at": "2026-07-02T22:00:28.417246+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8232,7 +8242,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T21:55:02.300915+00:00",
+        "checked_at": "2026-07-02T22:00:28.420108+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8883,7 +8893,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T21:55:02.302373+00:00",
+        "checked_at": "2026-07-02T22:00:28.421510+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -9519,7 +9529,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T21:55:02.303594+00:00",
+        "checked_at": "2026-07-02T22:00:28.422701+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -10165,7 +10175,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T21:55:02.309394+00:00",
+        "checked_at": "2026-07-02T22:00:28.428350+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -10812,7 +10822,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T21:55:02.311124+00:00",
+        "checked_at": "2026-07-02T22:00:28.430343+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -11463,7 +11473,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T21:55:02.313335+00:00",
+        "checked_at": "2026-07-02T22:00:28.432848+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -12107,7 +12117,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T21:55:02.314626+00:00",
+        "checked_at": "2026-07-02T22:00:28.434130+00:00",
         "mechanism_cluster": "decoy_injury",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -12749,7 +12759,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T21:55:02.327572+00:00",
+        "checked_at": "2026-07-02T22:00:28.447663+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
