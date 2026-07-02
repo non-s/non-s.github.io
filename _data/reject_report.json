@@ -1,7 +1,7 @@
 {
-  "total": 276,
+  "total": 273,
   "reasons": {
-    "duplicate_angle": 127,
+    "duplicate_angle": 128,
     "duplicate_script": 124,
     "duplicate_title": 111,
     "off_topic_visual": 81,
@@ -12,11 +12,9 @@
     "queue_score_reject": 10,
     "script_subject_mismatch": 8,
     "duplicate_source": 7,
-    "thumbnail_text_not_scannable": 6,
-    "thumbnail_not_2_4_words": 6,
+    "subject repeated inside 3-day cooldown": 6,
+    "humanity score is too low": 6,
     "script_word_loop": 6,
-    "subject repeated inside 3-day cooldown": 5,
-    "humanity score is too low": 5,
     "opening_retention_gap_risk": 5,
     "opening promise is not concrete enough": 5,
     "missing_action_word": 4,
@@ -32,54 +30,19 @@
     "title_shape_weak": 1,
     "title_needs_stronger_shape": 1,
     "subject_not_clear": 1,
-    "script does not expose enough concrete visual detail": 1
+    "script does not expose enough concrete visual detail": 1,
+    "thumbnail_text_not_scannable": 1,
+    "thumbnail_not_2_4_words": 1,
+    "editorial score 41 is below 62": 1
   },
   "stages": {
     "queue_prune": 141,
-    "queue_prune_final": 111,
+    "queue_prune_final": 112,
     "queue_repair": 10,
-    "editor_in_chief": 8,
-    "youtube_brain_rewrite": 6
+    "editor_in_chief": 9,
+    "youtube_brain_rewrite": 1
   },
   "latest": [
-    {
-      "story_id": "99e45074f2693f1d",
-      "stage": "queue_prune",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "title": "Monkeys wash food when grit gets annoying",
-      "category": "primates",
-      "script_key": "monkeys can change habits to solve small problems watch the hands near the food because some monkeys learn useful routines from their group washing or handling food differently can remove grit and make eating easier the habit spreads because it works which primate trick should come next",
-      "angle_key": "monkeys|trick|hands|primates",
-      "source_url": "https://www.pexels.com/video/group-of-monkeys-playing-on-a-boardwalk-12560273/",
-      "pexels_video_id": "12560273",
-      "source_clip_id": "pexels:99e45074f2693f1d",
-      "recorded_at": "2026-07-01T23:36:13.459991+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "5a6cae3235ae5fbb",
-      "stage": "queue_prune",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "title": "Elephants cool blood through giant ears",
-      "category": "wildlife",
-      "script_key": "elephants use their ears as living radiators watch the ear surface because warm blood flows through those broad veins moving air can dump heat before it spreads through the body that is why the ears are more than decoration in hot places which giant animal trick next",
-      "angle_key": "elephants|trick|ear radiator|wildlife",
-      "source_url": "https://www.pexels.com/video/asian-elephant-walking-in-australian-zoo-34785949/",
-      "pexels_video_id": "34785949",
-      "source_clip_id": "pexels:5a6cae3235ae5fbb",
-      "recorded_at": "2026-07-01T23:36:13.464402+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
     {
       "story_id": "1e4269b46299f899",
       "stage": "queue_prune_final",
@@ -497,6 +460,43 @@
       "recorded_at": "2026-07-01T23:58:54.884737+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
+    },
+    {
+      "story_id": "8bdc8b70af521eb4",
+      "stage": "youtube_brain_rewrite",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "title": "Fossils turn old bones into time clues",
+      "category": "discoveries",
+      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
+      "angle_key": "fossils|form|pattern|discoveries",
+      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
+      "pexels_video_id": "36118169",
+      "source_clip_id": "pexels:8bdc8b70af521eb4",
+      "recorded_at": "2026-07-02T00:05:53.988169+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "a52cec9e32e11400",
+      "stage": "editor_in_chief",
+      "reasons": [
+        "subject repeated inside 3-day cooldown",
+        "humanity score is too low",
+        "editorial score 41 is below 62"
+      ],
+      "title": "Hongos liberan esporas desde sus láminas ocultas",
+      "category": "fungi",
+      "script_key": "los hongos liberan esporas de forma silenciosa mira abajo del sombrero porque ah guardan sus l minas productoras de esporas cuando el ambiente es ideal esas part culas vuelan para crear nuevas redes de hongos qu otro secreto bajo tierra nos falta descubrir now the spore gills at the start make sense",
+      "angle_key": "fungi|make|gills|fungi",
+      "source_url": "https://www.pexels.com/video/video-of-mushrooms-7583542/",
+      "pexels_video_id": "7583542",
+      "source_clip_id": "pexels:a52cec9e32e11400",
+      "recorded_at": "2026-07-02T00:07:45.107075+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
     }
   ]
 }

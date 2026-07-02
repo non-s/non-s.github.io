@@ -5,25 +5,80 @@
     24
   ],
   "counts": {
-    "analytics_due": 0,
+    "analytics_due": 1,
     "awaiting_1h": 1,
-    "high_priority": 0,
+    "high_priority": 1,
     "repair_candidates": 0,
-    "tracked": 6
+    "tracked": 7
   },
-  "generated_at": "2026-07-01T23:58:05.025515+00:00",
+  "generated_at": "2026-07-02T00:11:16.451559+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.783,
-      "category": "earth_from_space",
+      "age_hours": 0.057,
+      "category": "fungi",
       "checkpoints": [
         {
           "delta_to_target": 0,
-          "due_at": "2026-07-02T00:11:06.265091+00:00",
+          "due_at": "2026-07-02T01:07:50.918833+00:00",
           "label": "1h",
           "source": "estimated",
           "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-02T06:07:50.918833+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-03T00:07:50.918833+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-02T01:07:50.918833+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Hidden Network",
+      "state": "awaiting_1h",
+      "title": "Mushrooms release spores from hidden gills",
+      "uploaded_at": "2026-07-02T00:07:50.918833+00:00",
+      "url": "https://www.youtube.com/shorts/LQPZdiuog_k",
+      "video_id": "LQPZdiuog_k",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 1.003,
+      "category": "earth_from_space",
+      "checkpoints": [
+        {
+          "delta_to_target": -24,
+          "due_at": "2026-07-02T00:11:06.265091+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "due",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -24,
         "due_at": "2026-07-02T00:11:06.265091+00:00",
         "label": "1h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Planet Earth",
-      "state": "awaiting_1h",
+      "state": "analytics_due",
       "title": "Storm clouds reveal a storm's heat engine",
       "uploaded_at": "2026-07-01T23:11:06.265091+00:00",
       "url": "https://www.youtube.com/shorts/nZ6XIZKnuIE",
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.778,
+      "age_hours": 1.998,
       "category": "trees",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.692,
+      "age_hours": 2.912,
       "category": "forests",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.751,
+      "age_hours": 3.971,
       "category": "geology",
       "checkpoints": [
         {
@@ -234,8 +289,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.823,
+      "action": "Queue a sequel or related-video bridge while the session has momentum.",
+      "age_hours": 5.042,
       "category": "geology",
       "checkpoints": [
         {
@@ -254,7 +309,7 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 105,
-          "views": 0
+          "views": 1
         },
         {
           "delta_to_target": 0,
@@ -263,11 +318,11 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 300,
-          "views": 0
+          "views": 1
         }
       ],
-      "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "current_views": 1,
+      "hypothesis": "Performance signal is already positive; amplify without changing the opening.",
       "next_checkpoint": {
         "delta_to_target": 0,
         "due_at": "2026-07-02T01:08:43.611233+00:00",
@@ -275,22 +330,31 @@
         "source": "estimated",
         "state": "pending",
         "target_views": 105,
-        "views": 0
+        "views": 1
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "normal",
       "series": "Earth Engine",
-      "state": "watch",
+      "state": "accelerating",
       "title": "Rock layers store ancient environments in stripes",
       "uploaded_at": "2026-07-01T19:08:43.611233+00:00",
       "url": "https://www.youtube.com/shorts/FEAbi2e-yas",
       "video_id": "FEAbi2e-yas",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.2,
+      "warning": {
+        "confidence_score": 0.512,
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.51; observation only.",
+        "score": 2,
+        "state": "accelerating",
+        "title": "Rock layers store ancient environments in stripes",
+        "video_id": "FEAbi2e-yas",
+        "warning_state": "accelerator"
+      }
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.765,
+      "age_hours": 5.985,
       "category": "birds",
       "checkpoints": [
         {
@@ -341,7 +405,7 @@
       "uploaded_at": "2026-07-01T18:12:09.438871+00:00",
       "url": "https://www.youtube.com/shorts/dNBmZyaqKXQ",
       "video_id": "dNBmZyaqKXQ",
-      "views_per_hour": 0.177
+      "views_per_hour": 0.168
     }
   ],
   "targets": {
