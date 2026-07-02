@@ -5,25 +5,80 @@
     24
   ],
   "counts": {
-    "analytics_due": 4,
+    "analytics_due": 3,
     "awaiting_1h": 1,
-    "high_priority": 6,
-    "repair_candidates": 2,
+    "high_priority": 4,
+    "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-07-02T13:05:59.627487+00:00",
+  "generated_at": "2026-07-02T13:18:40.907789+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.942,
-      "category": "ocean",
+      "age_hours": 0.06,
+      "category": "insects",
       "checkpoints": [
         {
           "delta_to_target": 0,
-          "due_at": "2026-07-02T13:09:27.536080+00:00",
+          "due_at": "2026-07-02T14:15:06.171182+00:00",
           "label": "1h",
           "source": "estimated",
           "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-02T19:15:06.171182+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-03T13:15:06.171182+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-02T14:15:06.171182+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Tiny Worlds",
+      "state": "awaiting_1h",
+      "title": "Ants use scent road before they change",
+      "uploaded_at": "2026-07-02T13:15:06.171182+00:00",
+      "url": "https://www.youtube.com/shorts/6EQWaar3wBc",
+      "video_id": "6EQWaar3wBc",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 1.154,
+      "category": "ocean",
+      "checkpoints": [
+        {
+          "delta_to_target": -24,
+          "due_at": "2026-07-02T13:09:27.536080+00:00",
+          "label": "1h",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-02T13:09:27.536080+00:00",
-        "label": "1h",
+        "due_at": "2026-07-02T18:09:27.536080+00:00",
+        "label": "6h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 24,
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "low",
       "series": "Ocean Mysteries",
-      "state": "awaiting_1h",
+      "state": "watch",
       "title": "Whales slap the surface to warn the pod",
       "uploaded_at": "2026-07-02T12:09:27.536080+00:00",
       "url": "https://www.youtube.com/shorts/vUB5OSOv218",
@@ -69,16 +124,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 1.708,
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 1.92,
       "category": "insects",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-02T12:23:29.746742+00:00",
           "label": "1h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -102,21 +157,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-02T12:23:29.746742+00:00",
-        "label": "1h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-02T17:23:29.746742+00:00",
+        "label": "6h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 24,
+        "state": "pending",
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "high",
+      "priority": "low",
       "series": "Tiny Worlds",
-      "state": "analytics_due",
+      "state": "watch",
       "title": "Beetles can steer by the Milky Way",
       "uploaded_at": "2026-07-02T11:23:29.746742+00:00",
       "url": "https://www.youtube.com/shorts/zkOPZdHY4i0",
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.419,
+      "age_hours": 2.631,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.698,
+      "age_hours": 4.909,
       "category": "dogs",
       "checkpoints": [
         {
@@ -235,7 +290,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.152,
+      "age_hours": 5.363,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -290,7 +345,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 7.316,
+      "age_hours": 7.528,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -355,16 +410,16 @@
       }
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 8.751,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 8.963,
       "category": "weather",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-02T05:20:54.900666+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -388,41 +443,30 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-03T04:20:54.900666+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-02T05:20:54.900666+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "overdue",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 90.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Earth Engine",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Lightning makes air explode into thunder",
       "uploaded_at": "2026-07-02T04:20:54.900666+00:00",
       "url": "https://www.youtube.com/shorts/WbwdERQTz90",
       "video_id": "WbwdERQTz90",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Lightning makes air explode into thunder",
-        "video_id": "WbwdERQTz90",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.355,
+      "age_hours": 11.566,
       "category": "rivers",
       "checkpoints": [
         {
@@ -477,7 +521,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.969,
+      "age_hours": 13.181,
       "category": "fungi",
       "checkpoints": [
         {
@@ -528,62 +572,7 @@
       "uploaded_at": "2026-07-02T00:07:50.918833+00:00",
       "url": "https://www.youtube.com/shorts/LQPZdiuog_k",
       "video_id": "LQPZdiuog_k",
-      "views_per_hour": 0.083
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.915,
-      "category": "earth_from_space",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-02T00:11:06.265091+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-02T05:11:06.265091+00:00",
-          "label": "6h",
-          "source": "observed",
-          "state": "observed",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-07-02T23:11:06.265091+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-02T00:11:06.265091+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Planet Earth",
-      "state": "analytics_due",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "uploaded_at": "2026-07-01T23:11:06.265091+00:00",
-      "url": "https://www.youtube.com/shorts/nZ6XIZKnuIE",
-      "video_id": "nZ6XIZKnuIE",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.076
     }
   ],
   "targets": {
