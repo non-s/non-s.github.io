@@ -3287,6 +3287,186 @@
       }
     },
     {
+      "id": "18762a35e9b1f385",
+      "title": "Wolves read scent posts like a map",
+      "category": "wildlife",
+      "autonomy_priority": 100.0,
+      "queue_score": 100.0,
+      "template_cluster": "",
+      "mechanism_cluster": "scent_map",
+      "objective_reasons": [
+        "objective_gate:bootstrap_observe_before_scaling"
+      ],
+      "lane": "evergreen",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 100.0,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 68,
+          "signals": {
+            "viral_potential": 77,
+            "visual_potential": 69,
+            "replay_potential": 82,
+            "comment_potential": 70,
+            "educational_potential": 66,
+            "emotional_potential": 35,
+            "novelty": 59
+          },
+          "verdict": "produce",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "retention": {
+          "score": 75,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 71,
+            "visual_score": 58,
+            "replay_score": 72,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "opening_retention": {
+          "score": 100.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "wolves",
+          "cue_terms": [
+            "post",
+            "scent"
+          ],
+          "frame_hook_bridge": [
+            "scent"
+          ],
+          "cue_bridge": [
+            "scent"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": []
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 5,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123,
+          "return_probability": 0.261,
+          "comment_probability": 0.223,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.007,
+          "sample_size": 1,
+          "minimum_sample_size": 15,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.255,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
+        },
+        "category": "wildlife",
+        "story_format": "animal_intelligence",
+        "hook_score": 100,
+        "title_score": 100,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "confidence_score": 0.007,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 0.0,
+          "template_cluster": "",
+          "mechanism_cluster": "scent_map"
+        }
+      }
+    },
+    {
       "id": "5c25e034992e1b6a",
       "title": "Snakes can detect warm prey in the dark",
       "category": "reptiles",
@@ -4929,7 +5109,7 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 43,
+      "evergreen": 44,
       "recovery": 10
     },
     "items": [
@@ -4939,7 +5119,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.64
+        "freshness_score": 54.62
       },
       {
         "id": "7d42811974c363c8",
@@ -4955,7 +5135,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.56
+        "freshness_score": 54.54
       },
       {
         "id": "09c8f40beafab256",
@@ -4963,7 +5143,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.32
+        "freshness_score": 54.3
       },
       {
         "id": "d8d90627f96566aa",
@@ -4971,7 +5151,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.32
+        "freshness_score": 54.3
       },
       {
         "id": "f329d4d9415a87cf",
@@ -4979,7 +5159,7 @@
         "category": "birds",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.48
+        "freshness_score": 54.46
       },
       {
         "id": "e700a90fe9c91e42",
@@ -4987,7 +5167,7 @@
         "category": "weather",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.46
+        "freshness_score": 54.44
       },
       {
         "id": "aaa61c85d17a2936",
@@ -4995,7 +5175,7 @@
         "category": "rivers",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.32
+        "freshness_score": 54.3
       },
       {
         "id": "a1b777d6296755b1",
@@ -5003,7 +5183,7 @@
         "category": "rivers",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.32
+        "freshness_score": 54.3
       },
       {
         "id": "8cadc9b623a69cc8",
@@ -5011,7 +5191,7 @@
         "category": "rivers",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.56
+        "freshness_score": 54.54
       },
       {
         "id": "b48d7d5e01b74a64",
@@ -5019,7 +5199,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.64
+        "freshness_score": 54.62
       },
       {
         "id": "41bb91e14c9cd4f6",
@@ -5035,7 +5215,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.56
+        "freshness_score": 54.54
       },
       {
         "id": "984084a6aff9d81c",
@@ -5059,7 +5239,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.68
+        "freshness_score": 54.66
       },
       {
         "id": "4111626a62866b27",
@@ -5067,7 +5247,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.46
+        "freshness_score": 54.44
       },
       {
         "id": "d7370c6ab147dba8",
@@ -5075,7 +5255,7 @@
         "category": "reptiles",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.64
+        "freshness_score": 54.62
       },
       {
         "id": "07eeac3e7fffa982",
@@ -5083,7 +5263,7 @@
         "category": "ocean",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.64
+        "freshness_score": 54.62
       },
       {
         "id": "41dd7009a859af1f",
@@ -5091,7 +5271,7 @@
         "category": "ocean",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.48
+        "freshness_score": 54.46
       },
       {
         "id": "a081bfd89f0a7471",
@@ -5107,7 +5287,7 @@
         "category": "arctic",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.82
+        "freshness_score": 54.8
       },
       {
         "id": "9f07c71ee1907fc0",
@@ -5123,7 +5303,7 @@
         "category": "dogs",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.46
+        "freshness_score": 54.44
       },
       {
         "id": "11137f107a134f04",
@@ -5163,7 +5343,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.32
+        "freshness_score": 54.3
       },
       {
         "id": "9350de4d49732d9c",
@@ -5243,7 +5423,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.46
+        "freshness_score": 54.44
       },
       {
         "id": "05599f551d65f776",
@@ -5291,7 +5471,15 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.82
+        "freshness_score": 54.8
+      },
+      {
+        "id": "18762a35e9b1f385",
+        "title": "Wolves read scent posts like a map",
+        "category": "wildlife",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       },
       {
         "id": "33b8c5d2b6058e54",
@@ -5299,7 +5487,7 @@
         "category": "insects",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.48
+        "freshness_score": 54.46
       },
       {
         "id": "5c25e034992e1b6a",
@@ -5307,7 +5495,7 @@
         "category": "reptiles",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.48
+        "freshness_score": 54.46
       },
       {
         "id": "4adfaf5fa95ebe2d",
@@ -5331,7 +5519,7 @@
         "category": "cats",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.68
+        "freshness_score": 54.66
       },
       {
         "id": "6d1ca548cd6f4e33",
@@ -5401,35 +5589,35 @@
       },
       {
         "window": 30,
-        "items": 27,
+        "items": 28,
         "dominant_shape": "{subject} makes air explode into thunder",
         "dominant_count": 1,
-        "dominant_share": 0.037,
+        "dominant_share": 0.036,
         "top_shapes": [
           {
             "shape": "{subject} makes air explode into thunder",
             "count": 1,
-            "share": 0.037
+            "share": 0.036
           },
           {
             "shape": "{subject} smell the air with their tongues",
             "count": 1,
-            "share": 0.037
+            "share": 0.036
           },
           {
             "shape": "{subject} slap the surface to warn the pod",
             "count": 1,
-            "share": 0.037
+            "share": 0.036
           },
           {
             "shape": "{subject} read the world through scent maps",
             "count": 1,
-            "share": 0.037
+            "share": 0.036
           },
           {
             "shape": "{subject} use dark {cue} marks to guide cubs",
             "count": 1,
-            "share": 0.037
+            "share": 0.036
           }
         ]
       }
@@ -5437,13 +5625,13 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 53,
-    "pending_after": 53,
+    "pending_before": 54,
+    "pending_after": 54,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 2,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 48,
+      "objective_gate:bootstrap_observe_before_scaling": 49,
       "editor_in_chief:subject repeated inside 3-day cooldown": 11,
       "editor_in_chief:script quality gate blocked the narration": 11,
       "objective_gate:observe_before_scaling": 5,
