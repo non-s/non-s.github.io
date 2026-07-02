@@ -5,25 +5,25 @@
     24
   ],
   "counts": {
-    "analytics_due": 0,
-    "awaiting_1h": 1,
-    "high_priority": 2,
+    "analytics_due": 4,
+    "awaiting_1h": 0,
+    "high_priority": 6,
     "repair_candidates": 2,
     "tracked": 8
   },
-  "generated_at": "2026-07-02T01:54:51.932245+00:00",
+  "generated_at": "2026-07-02T04:18:56.415109+00:00",
   "items": [
     {
-      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.169,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 2.57,
       "category": "rivers",
       "checkpoints": [
         {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-02T02:44:42.676839+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +47,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -24,
         "due_at": "2026-07-02T02:44:42.676839+00:00",
         "label": "1h",
         "source": "estimated",
-        "state": "pending",
+        "state": "overdue",
         "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Earth Engine",
-      "state": "awaiting_1h",
+      "state": "analytics_due",
       "title": "Rivers sort mud and sand along each bank",
       "uploaded_at": "2026-07-02T01:44:42.676839+00:00",
       "url": "https://www.youtube.com/shorts/Wi2VtQQ88X0",
@@ -70,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.784,
+      "age_hours": 4.185,
       "category": "fungi",
       "checkpoints": [
         {
@@ -125,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.729,
+      "age_hours": 5.131,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -179,8 +179,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.725,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 6.126,
       "category": "trees",
       "checkpoints": [
         {
@@ -193,11 +193,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-07-02T04:11:22.539496+00:00",
           "label": "6h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 105,
           "views": 0
         },
@@ -212,21 +212,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -105,
         "due_at": "2026-07-02T04:11:22.539496+00:00",
         "label": "6h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Hidden Network",
-      "state": "watch",
+      "state": "analytics_due",
       "title": "Trees record wet years inside their rings",
       "uploaded_at": "2026-07-01T22:11:22.539496+00:00",
       "url": "https://www.youtube.com/shorts/Y-dGOykkcBM",
@@ -234,8 +234,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.638,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 7.04,
       "category": "forests",
       "checkpoints": [
         {
@@ -248,11 +248,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-07-02T03:16:33.391065+00:00",
           "label": "6h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 105,
           "views": 0
         },
@@ -267,21 +267,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -105,
         "due_at": "2026-07-02T03:16:33.391065+00:00",
         "label": "6h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Hidden Network",
-      "state": "watch",
+      "state": "analytics_due",
       "title": "Forests make cooler air under the canopy",
       "uploaded_at": "2026-07-01T21:16:33.391065+00:00",
       "url": "https://www.youtube.com/shorts/T0Wl3m_A7So",
@@ -289,8 +289,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.698,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 8.099,
       "category": "geology",
       "checkpoints": [
         {
@@ -303,11 +303,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -104,
           "due_at": "2026-07-02T02:12:59.948248+00:00",
           "label": "6h",
           "source": "estimated",
-          "state": "pending",
+          "state": "overdue",
           "target_views": 105,
           "views": 1
         },
@@ -322,30 +322,30 @@
         }
       ],
       "current_views": 1,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -104,
         "due_at": "2026-07-02T02:12:59.948248+00:00",
         "label": "6h",
         "source": "estimated",
-        "state": "pending",
+        "state": "overdue",
         "target_views": 105,
         "views": 1
       },
       "opening_retention_score": 94.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Earth Engine",
-      "state": "watch",
+      "state": "analytics_due",
       "title": "Mountains reveal weather lines in snow",
       "uploaded_at": "2026-07-01T20:12:59.948248+00:00",
       "url": "https://www.youtube.com/shorts/or7TN0gMpWA",
       "video_id": "or7TN0gMpWA",
-      "views_per_hour": 0.179
+      "views_per_hour": 0.176
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.769,
+      "age_hours": 9.17,
       "category": "geology",
       "checkpoints": [
         {
@@ -396,7 +396,7 @@
       "uploaded_at": "2026-07-01T19:08:43.611233+00:00",
       "url": "https://www.youtube.com/shorts/FEAbi2e-yas",
       "video_id": "FEAbi2e-yas",
-      "views_per_hour": 0.15,
+      "views_per_hour": 0.148,
       "warning": {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.594,
@@ -411,7 +411,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 7.712,
+      "age_hours": 10.113,
       "category": "birds",
       "checkpoints": [
         {
@@ -462,7 +462,7 @@
       "uploaded_at": "2026-07-01T18:12:09.438871+00:00",
       "url": "https://www.youtube.com/shorts/dNBmZyaqKXQ",
       "video_id": "dNBmZyaqKXQ",
-      "views_per_hour": 0.132,
+      "views_per_hour": 0.13,
       "warning": {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.594,
