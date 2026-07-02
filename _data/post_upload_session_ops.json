@@ -2,18 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 6,
+      "automation_safe": 7,
       "high": 3,
-      "manual_review": 4,
+      "manual_review": 3,
       "total": 10,
       "urgent": 2
     },
     "free_only": true,
-    "generated_at": "2026-07-02T14:33:54.489763+00:00",
+    "generated_at": "2026-07-02T14:39:47.560227+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 12.82,
+        "age_hours": 12.918,
         "automation_safe": true,
         "category": "rivers",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 10.217,
+        "age_hours": 10.315,
         "automation_safe": true,
         "category": "weather",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 8.782,
+        "age_hours": 8.88,
         "automation_safe": false,
         "category": "wildlife",
         "checkpoint_label": "24h",
@@ -91,7 +91,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 6.617,
+        "age_hours": 6.715,
         "automation_safe": false,
         "category": "reptiles",
         "checkpoint_label": "24h",
@@ -117,7 +117,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 6.163,
+        "age_hours": 6.261,
         "automation_safe": false,
         "category": "dogs",
         "checkpoint_label": "24h",
@@ -142,34 +142,8 @@
         "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
-        "action_type": "queue_sequel_bridge",
-        "age_hours": 1.313,
-        "automation_safe": false,
-        "category": "insects",
-        "checkpoint_label": "6h",
-        "checkpoint_state": "pending",
-        "current_views": 1,
-        "due_at": "2026-07-02T19:15:06.171182+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:6EQWaar3wBc:accelerating:6h",
-        "lane": "amplify",
-        "manual_approval_required": true,
-        "opening_retention_score": 100.0,
-        "priority": "normal",
-        "recommended_action": "Queue a sequel or related-video bridge while the session has momentum.",
-        "series": "Tiny Worlds",
-        "state": "accelerating",
-        "target_views": 105,
-        "title": "Ants use scent road before they change",
-        "url": "https://www.youtube.com/shorts/6EQWaar3wBc",
-        "video_id": "6EQWaar3wBc",
-        "wait_until": "",
-        "why": "Performance signal is already positive; amplify without changing the opening."
-      },
-      {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.06,
+        "age_hours": 0.158,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "1h",
@@ -195,7 +169,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.884,
+        "age_hours": 3.983,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "6h",
@@ -221,7 +195,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.174,
+        "age_hours": 3.272,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "6h",
@@ -247,7 +221,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.407,
+        "age_hours": 2.506,
         "automation_safe": true,
         "category": "ocean",
         "checkpoint_label": "6h",
@@ -270,10 +244,36 @@
         "video_id": "vUB5OSOv218",
         "wait_until": "2026-07-02T18:09:27.536080+00:00",
         "why": "No intervention signal is strong enough yet."
+      },
+      {
+        "action_type": "watch_next_checkpoint",
+        "age_hours": 1.411,
+        "automation_safe": true,
+        "category": "insects",
+        "checkpoint_label": "6h",
+        "checkpoint_state": "pending",
+        "current_views": 1,
+        "due_at": "2026-07-02T19:15:06.171182+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:6EQWaar3wBc:watch:6h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "low",
+        "recommended_action": "Keep observing through the next checkpoint.",
+        "series": "Tiny Worlds",
+        "state": "watch",
+        "target_views": 105,
+        "title": "Ants use scent road before they change",
+        "url": "https://www.youtube.com/shorts/6EQWaar3wBc",
+        "video_id": "6EQWaar3wBc",
+        "wait_until": "2026-07-02T19:15:06.171182+00:00",
+        "why": "No intervention signal is strong enough yet."
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-02T14:33:54.489187+00:00"
+    "source_generated_at": "2026-07-02T14:39:47.559651+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -288,11 +288,11 @@
       "repair_candidates": 3,
       "tracked": 10
     },
-    "generated_at": "2026-07-02T14:33:54.489187+00:00",
+    "generated_at": "2026-07-02T14:39:47.559651+00:00",
     "items": [
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.06,
+        "age_hours": 0.158,
         "category": "farm",
         "checkpoints": [
           {
@@ -346,8 +346,8 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "Queue a sequel or related-video bridge while the session has momentum.",
-        "age_hours": 1.313,
+        "action": "Keep observing through the next checkpoint.",
+        "age_hours": 1.411,
         "category": "insects",
         "checkpoints": [
           {
@@ -379,7 +379,7 @@
           }
         ],
         "current_views": 1,
-        "hypothesis": "Performance signal is already positive; amplify without changing the opening.",
+        "hypothesis": "No intervention signal is strong enough yet.",
         "next_checkpoint": {
           "delta_to_target": 0,
           "due_at": "2026-07-02T19:15:06.171182+00:00",
@@ -391,27 +391,18 @@
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "normal",
+        "priority": "low",
         "series": "Tiny Worlds",
-        "state": "accelerating",
+        "state": "watch",
         "title": "Ants use scent road before they change",
         "uploaded_at": "2026-07-02T13:15:06.171182+00:00",
         "url": "https://www.youtube.com/shorts/6EQWaar3wBc",
         "video_id": "6EQWaar3wBc",
-        "views_per_hour": 0.788,
-        "warning": {
-          "confidence_score": 0.512,
-          "reasoning": "video has 7/2 samples, estimated data, confidence 0.51; observation only.",
-          "score": 2,
-          "state": "accelerating",
-          "title": "Ants use scent road before they change",
-          "video_id": "6EQWaar3wBc",
-          "warning_state": "accelerator"
-        }
+        "views_per_hour": 0.761
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.407,
+        "age_hours": 2.506,
         "category": "ocean",
         "checkpoints": [
           {
@@ -466,7 +457,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.174,
+        "age_hours": 3.272,
         "category": "insects",
         "checkpoints": [
           {
@@ -521,7 +512,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.884,
+        "age_hours": 3.983,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -576,7 +567,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 6.163,
+        "age_hours": 6.261,
         "category": "dogs",
         "checkpoints": [
           {
@@ -642,7 +633,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 6.617,
+        "age_hours": 6.715,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -708,7 +699,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 8.782,
+        "age_hours": 8.88,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -774,7 +765,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 10.217,
+        "age_hours": 10.315,
         "category": "weather",
         "checkpoints": [
           {
@@ -829,7 +820,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 12.82,
+        "age_hours": 12.918,
         "category": "rivers",
         "checkpoints": [
           {
@@ -890,7 +881,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-02T14:33:54.489873+00:00",
+  "generated_at": "2026-07-02T14:39:47.560312+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
