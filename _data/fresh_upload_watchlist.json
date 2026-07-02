@@ -5,17 +5,72 @@
     24
   ],
   "counts": {
-    "analytics_due": 9,
-    "awaiting_1h": 0,
-    "high_priority": 9,
+    "analytics_due": 8,
+    "awaiting_1h": 1,
+    "high_priority": 8,
     "repair_candidates": 0,
     "tracked": 10
   },
-  "generated_at": "2026-07-02T22:41:23.424517+00:00",
+  "generated_at": "2026-07-02T22:53:47.418667+00:00",
   "items": [
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.184,
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.06,
+      "category": "insects",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-02T23:50:12.893398+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-03T04:50:12.893398+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-03T22:50:12.893398+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-02T23:50:12.893398+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 96.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Tiny Worlds",
+      "state": "awaiting_1h",
+      "title": "Butterflies carry color on tiny wing scales",
+      "uploaded_at": "2026-07-02T22:50:12.893398+00:00",
+      "url": "https://www.youtube.com/shorts/sUsHD3ixSkA",
+      "video_id": "sUsHD3ixSkA",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Queue a sequel or related-video bridge while the session has momentum.",
+      "age_hours": 8.391,
       "category": "farm",
       "checkpoints": [
         {
@@ -43,11 +98,11 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 300,
-          "views": 0
+          "views": 1
         }
       ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "current_views": 1,
+      "hypothesis": "Performance signal is already positive; amplify without changing the opening.",
       "next_checkpoint": {
         "delta_to_target": -24,
         "due_at": "2026-07-02T15:30:19.353303+00:00",
@@ -59,18 +114,27 @@
       },
       "opening_retention_score": 90.0,
       "opening_retention_state": "retention_ready",
-      "priority": "high",
+      "priority": "normal",
       "series": "Farmyard Surprises",
-      "state": "analytics_due",
+      "state": "accelerating",
       "title": "Horses point their ears toward what matters",
       "uploaded_at": "2026-07-02T14:30:19.353303+00:00",
       "url": "https://www.youtube.com/shorts/sldOXcDmZuQ",
       "video_id": "sldOXcDmZuQ",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.12,
+      "warning": {
+        "confidence_score": 0.512,
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.51; observation only.",
+        "score": 0,
+        "state": "accelerating",
+        "title": "Horses point their ears toward what matters",
+        "video_id": "sldOXcDmZuQ",
+        "warning_state": "accelerator"
+      }
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.438,
+      "age_hours": 9.645,
       "category": "insects",
       "checkpoints": [
         {
@@ -121,11 +185,11 @@
       "uploaded_at": "2026-07-02T13:15:06.171182+00:00",
       "url": "https://www.youtube.com/shorts/6EQWaar3wBc",
       "video_id": "6EQWaar3wBc",
-      "views_per_hour": 0.107
+      "views_per_hour": 0.104
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 10.532,
+      "age_hours": 10.739,
       "category": "ocean",
       "checkpoints": [
         {
@@ -179,8 +243,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Queue a sequel or related-video bridge while the session has momentum.",
-      "age_hours": 11.298,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 11.505,
       "category": "insects",
       "checkpoints": [
         {
@@ -196,8 +260,8 @@
           "delta_to_target": -105,
           "due_at": "2026-07-02T17:23:29.746742+00:00",
           "label": "6h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 105,
           "views": 0
         },
@@ -212,7 +276,7 @@
         }
       ],
       "current_views": 1,
-      "hypothesis": "Performance signal is already positive; amplify without changing the opening.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
         "delta_to_target": -24,
         "due_at": "2026-07-02T12:23:29.746742+00:00",
@@ -224,27 +288,26 @@
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "normal",
+      "priority": "high",
       "series": "Tiny Worlds",
-      "state": "accelerating",
+      "state": "analytics_due",
       "title": "Beetles can steer by the Milky Way",
       "uploaded_at": "2026-07-02T11:23:29.746742+00:00",
       "url": "https://www.youtube.com/shorts/zkOPZdHY4i0",
       "video_id": "zkOPZdHY4i0",
-      "views_per_hour": 0.089,
+      "views_per_hour": 0.087,
       "warning": {
-        "confidence_score": 0.512,
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.51; observation only.",
-        "score": 0,
-        "state": "accelerating",
+        "confidence_score": 0.431,
+        "reason": "low confidence early signal; keep observing",
+        "state": "dying_early",
         "title": "Beetles can steer by the Milky Way",
         "video_id": "zkOPZdHY4i0",
-        "warning_state": "accelerator"
+        "warning_state": "low_confidence_watch"
       }
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.009,
+      "age_hours": 12.216,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -295,7 +358,7 @@
       "uploaded_at": "2026-07-02T10:40:50.370873+00:00",
       "url": "https://www.youtube.com/shorts/p5aVx8ZViPI",
       "video_id": "p5aVx8ZViPI",
-      "views_per_hour": 0.084,
+      "views_per_hour": 0.082,
       "warning": {
         "confidence_score": 0.431,
         "reason": "low confidence early signal; keep observing",
@@ -307,7 +370,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 14.288,
+      "age_hours": 14.494,
       "category": "dogs",
       "checkpoints": [
         {
@@ -335,10 +398,10 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 300,
-          "views": 1
+          "views": 0
         }
       ],
-      "current_views": 1,
+      "current_views": 0,
       "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
         "delta_to_target": -24,
@@ -358,11 +421,11 @@
       "uploaded_at": "2026-07-02T08:24:08.181149+00:00",
       "url": "https://www.youtube.com/shorts/peeCu1r3K0I",
       "video_id": "peeCu1r3K0I",
-      "views_per_hour": 0.07,
+      "views_per_hour": 0.0,
       "warning": {
         "confidence_score": 0.431,
         "reason": "low confidence early signal; keep observing",
-        "state": "accelerating",
+        "state": "dying_early",
         "title": "Dogs read the world through scent maps",
         "video_id": "peeCu1r3K0I",
         "warning_state": "low_confidence_watch"
@@ -370,7 +433,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 14.741,
+      "age_hours": 14.948,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -383,13 +446,13 @@
           "views": 0
         },
         {
-          "delta_to_target": -105,
+          "delta_to_target": -104,
           "due_at": "2026-07-02T13:56:54.089798+00:00",
           "label": "6h",
           "source": "estimated",
           "state": "overdue",
           "target_views": 105,
-          "views": 0
+          "views": 1
         },
         {
           "delta_to_target": 0,
@@ -398,10 +461,10 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 300,
-          "views": 0
+          "views": 3
         }
       ],
-      "current_views": 0,
+      "current_views": 3,
       "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
         "delta_to_target": -24,
@@ -421,11 +484,11 @@
       "uploaded_at": "2026-07-02T07:56:54.089798+00:00",
       "url": "https://www.youtube.com/shorts/ytZXl-smi5Q",
       "video_id": "ytZXl-smi5Q",
-      "views_per_hour": 0.0,
+      "views_per_hour": 0.201,
       "warning": {
         "confidence_score": 0.431,
         "reason": "low confidence early signal; keep observing",
-        "state": "dying_early",
+        "state": "accelerating",
         "title": "Snakes can detect warm prey in the dark",
         "video_id": "ytZXl-smi5Q",
         "warning_state": "low_confidence_watch"
@@ -433,7 +496,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.906,
+      "age_hours": 17.113,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -461,10 +524,10 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 300,
-          "views": 0
+          "views": 1
         }
       ],
-      "current_views": 0,
+      "current_views": 1,
       "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
         "delta_to_target": -24,
@@ -484,11 +547,11 @@
       "uploaded_at": "2026-07-02T05:47:00.955436+00:00",
       "url": "https://www.youtube.com/shorts/HDQAh3KSdtY",
       "video_id": "HDQAh3KSdtY",
-      "views_per_hour": 0.0,
+      "views_per_hour": 0.059,
       "warning": {
         "confidence_score": 0.431,
         "reason": "low confidence early signal; keep observing",
-        "state": "dying_early",
+        "state": "accelerating",
         "title": "Elephants cool blood through giant ears",
         "video_id": "HDQAh3KSdtY",
         "warning_state": "low_confidence_watch"
@@ -496,7 +559,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 18.341,
+      "age_hours": 18.548,
       "category": "weather",
       "checkpoints": [
         {
@@ -524,10 +587,10 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 300,
-          "views": 0
+          "views": 1
         }
       ],
-      "current_views": 0,
+      "current_views": 1,
       "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
         "delta_to_target": -24,
@@ -547,76 +610,13 @@
       "uploaded_at": "2026-07-02T04:20:54.900666+00:00",
       "url": "https://www.youtube.com/shorts/WbwdERQTz90",
       "video_id": "WbwdERQTz90",
-      "views_per_hour": 0.0,
+      "views_per_hour": 0.054,
       "warning": {
         "confidence_score": 0.431,
         "reason": "low confidence early signal; keep observing",
-        "state": "dying_early",
+        "state": "accelerating",
         "title": "Lightning makes air explode into thunder",
         "video_id": "WbwdERQTz90",
-        "warning_state": "low_confidence_watch"
-      }
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 20.945,
-      "category": "rivers",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-02T02:44:42.676839+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-02T07:44:42.676839+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-07-03T01:44:42.676839+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-02T02:44:42.676839+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Earth Engine",
-      "state": "analytics_due",
-      "title": "Rivers sort mud and sand along each bank",
-      "uploaded_at": "2026-07-02T01:44:42.676839+00:00",
-      "url": "https://www.youtube.com/shorts/Wi2VtQQ88X0",
-      "video_id": "Wi2VtQQ88X0",
-      "views_per_hour": 0.0,
-      "warning": {
-        "confidence_score": 0.431,
-        "reason": "low confidence early signal; keep observing",
-        "state": "dying_early",
-        "title": "Rivers sort mud and sand along each bank",
-        "video_id": "Wi2VtQQ88X0",
         "warning_state": "low_confidence_watch"
       }
     }
