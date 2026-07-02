@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 6,
+    "analytics_due": 5,
     "awaiting_1h": 0,
     "high_priority": 8,
-    "repair_candidates": 2,
+    "repair_candidates": 3,
     "tracked": 10
   },
-  "generated_at": "2026-07-02T18:11:15.029400+00:00",
+  "generated_at": "2026-07-02T18:23:22.121327+00:00",
   "items": [
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.682,
+      "age_hours": 3.884,
       "category": "farm",
       "checkpoints": [
         {
@@ -70,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.936,
+      "age_hours": 5.138,
       "category": "insects",
       "checkpoints": [
         {
@@ -121,11 +121,11 @@
       "uploaded_at": "2026-07-02T13:15:06.171182+00:00",
       "url": "https://www.youtube.com/shorts/6EQWaar3wBc",
       "video_id": "6EQWaar3wBc",
-      "views_per_hour": 0.205
+      "views_per_hour": 0.197
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.03,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.232,
       "category": "ocean",
       "checkpoints": [
         {
@@ -141,8 +141,8 @@
           "delta_to_target": -105,
           "due_at": "2026-07-02T18:09:27.536080+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -157,30 +157,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
-        "delta_to_target": -105,
-        "due_at": "2026-07-02T18:09:27.536080+00:00",
-        "label": "6h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-03T12:09:27.536080+00:00",
+        "label": "24h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 105,
+        "state": "pending",
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Ocean Mysteries",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Whales slap the surface to warn the pod",
       "uploaded_at": "2026-07-02T12:09:27.536080+00:00",
       "url": "https://www.youtube.com/shorts/vUB5OSOv218",
       "video_id": "vUB5OSOv218",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Whales slap the surface to warn the pod",
+        "video_id": "vUB5OSOv218",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.796,
+      "age_hours": 6.998,
       "category": "insects",
       "checkpoints": [
         {
@@ -246,7 +257,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 7.507,
+      "age_hours": 7.709,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -312,7 +323,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.785,
+      "age_hours": 9.987,
       "category": "dogs",
       "checkpoints": [
         {
@@ -367,7 +378,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 10.239,
+      "age_hours": 10.441,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -422,7 +433,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.404,
+      "age_hours": 12.606,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -477,7 +488,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.839,
+      "age_hours": 14.041,
       "category": "weather",
       "checkpoints": [
         {
@@ -540,7 +551,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.442,
+      "age_hours": 16.644,
       "category": "rivers",
       "checkpoints": [
         {
