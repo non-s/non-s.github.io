@@ -7,15 +7,15 @@
   "counts": {
     "analytics_due": 9,
     "awaiting_1h": 0,
-    "high_priority": 9,
-    "repair_candidates": 0,
+    "high_priority": 10,
+    "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-07-02T20:27:07.452624+00:00",
+  "generated_at": "2026-07-02T20:35:54.245745+00:00",
   "items": [
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.947,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.093,
       "category": "farm",
       "checkpoints": [
         {
@@ -28,11 +28,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-07-02T20:30:19.353303+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -47,30 +47,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-02T20:30:19.353303+00:00",
-        "label": "6h",
+        "due_at": "2026-07-03T14:30:19.353303+00:00",
+        "label": "24h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 105,
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 90.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Farmyard Surprises",
-      "state": "watch",
+      "state": "repair_candidate",
       "title": "Horses point their ears toward what matters",
       "uploaded_at": "2026-07-02T14:30:19.353303+00:00",
       "url": "https://www.youtube.com/shorts/sldOXcDmZuQ",
       "video_id": "sldOXcDmZuQ",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Horses point their ears toward what matters",
+        "video_id": "sldOXcDmZuQ",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 7.2,
+      "age_hours": 7.347,
       "category": "insects",
       "checkpoints": [
         {
@@ -121,11 +132,11 @@
       "uploaded_at": "2026-07-02T13:15:06.171182+00:00",
       "url": "https://www.youtube.com/shorts/6EQWaar3wBc",
       "video_id": "6EQWaar3wBc",
-      "views_per_hour": 0.14
+      "views_per_hour": 0.137
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.294,
+      "age_hours": 8.441,
       "category": "ocean",
       "checkpoints": [
         {
@@ -180,7 +191,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.06,
+      "age_hours": 9.207,
       "category": "insects",
       "checkpoints": [
         {
@@ -235,7 +246,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.771,
+      "age_hours": 9.918,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -290,7 +301,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.05,
+      "age_hours": 12.196,
       "category": "dogs",
       "checkpoints": [
         {
@@ -353,7 +364,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.504,
+      "age_hours": 12.65,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -416,7 +427,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 14.668,
+      "age_hours": 14.815,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -479,7 +490,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.103,
+      "age_hours": 16.25,
       "category": "weather",
       "checkpoints": [
         {
@@ -542,7 +553,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 18.707,
+      "age_hours": 18.853,
       "category": "rivers",
       "checkpoints": [
         {
