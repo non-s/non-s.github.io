@@ -2,19 +2,19 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 5,
+      "automation_safe": 6,
       "high": 4,
-      "manual_review": 5,
+      "manual_review": 4,
       "total": 10,
       "urgent": 2
     },
     "free_only": true,
-    "generated_at": "2026-07-02T05:50:25.254985+00:00",
+    "generated_at": "2026-07-02T05:56:32.651374+00:00",
     "items": [
       {
-        "action_type": "queue_sequel_bridge",
-        "age_hours": 11.638,
-        "automation_safe": false,
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 11.74,
+        "automation_safe": true,
         "category": "birds",
         "checkpoint_label": "1h",
         "checkpoint_state": "overdue",
@@ -22,24 +22,24 @@
         "due_at": "2026-07-01T19:12:09.438871+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:dNBmZyaqKXQ:accelerating:1h",
-        "lane": "amplify",
-        "manual_approval_required": true,
+        "id": "fresh-upload:dNBmZyaqKXQ:analytics_due:1h",
+        "lane": "measurement",
+        "manual_approval_required": false,
         "opening_retention_score": 100.0,
         "priority": "urgent",
-        "recommended_action": "Queue a sequel or related-video bridge while the session has momentum.",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
         "series": "Sky Intelligence",
-        "state": "accelerating",
+        "state": "analytics_due",
         "target_views": 24,
         "title": "Owls fly silently because feathers break sound",
         "url": "https://www.youtube.com/shorts/dNBmZyaqKXQ",
         "video_id": "dNBmZyaqKXQ",
         "wait_until": "",
-        "why": "Performance signal is already positive; amplify without changing the opening."
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 10.695,
+        "age_hours": 10.797,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 9.624,
+        "age_hours": 9.726,
         "automation_safe": false,
         "category": "geology",
         "checkpoint_label": "24h",
@@ -91,7 +91,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 8.564,
+        "age_hours": 8.666,
         "automation_safe": false,
         "category": "forests",
         "checkpoint_label": "24h",
@@ -117,7 +117,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 7.651,
+        "age_hours": 7.753,
         "automation_safe": false,
         "category": "trees",
         "checkpoint_label": "24h",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 6.655,
+        "age_hours": 6.757,
         "automation_safe": false,
         "category": "earth_from_space",
         "checkpoint_label": "24h",
@@ -169,7 +169,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 5.71,
+        "age_hours": 5.812,
         "automation_safe": true,
         "category": "fungi",
         "checkpoint_label": "6h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.057,
+        "age_hours": 0.159,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 4.095,
+        "age_hours": 4.197,
         "automation_safe": true,
         "category": "rivers",
         "checkpoint_label": "6h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 1.492,
+        "age_hours": 1.594,
         "automation_safe": true,
         "category": "weather",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-02T05:50:25.254606+00:00"
+    "source_generated_at": "2026-07-02T05:56:32.650934+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,17 @@
       24
     ],
     "counts": {
-      "analytics_due": 1,
+      "analytics_due": 2,
       "awaiting_1h": 1,
-      "high_priority": 5,
+      "high_priority": 6,
       "repair_candidates": 4,
       "tracked": 10
     },
-    "generated_at": "2026-07-02T05:50:25.254606+00:00",
+    "generated_at": "2026-07-02T05:56:32.650934+00:00",
     "items": [
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.057,
+        "age_hours": 0.159,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -347,7 +347,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 1.492,
+        "age_hours": 1.594,
         "category": "weather",
         "checkpoints": [
           {
@@ -402,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 4.095,
+        "age_hours": 4.197,
         "category": "rivers",
         "checkpoints": [
           {
@@ -457,7 +457,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.71,
+        "age_hours": 5.812,
         "category": "fungi",
         "checkpoints": [
           {
@@ -512,7 +512,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 6.655,
+        "age_hours": 6.757,
         "category": "earth_from_space",
         "checkpoints": [
           {
@@ -568,7 +568,7 @@
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.594,
           "reason": "low early velocity",
-          "reasoning": "video has 24/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+          "reasoning": "video has 25/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
           "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
           "title": "Storm clouds reveal a storm's heat engine",
           "video_id": "nZ6XIZKnuIE",
@@ -578,7 +578,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 7.651,
+        "age_hours": 7.753,
         "category": "trees",
         "checkpoints": [
           {
@@ -644,7 +644,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 8.564,
+        "age_hours": 8.666,
         "category": "forests",
         "checkpoints": [
           {
@@ -710,7 +710,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 9.624,
+        "age_hours": 9.726,
         "category": "geology",
         "checkpoints": [
           {
@@ -776,7 +776,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 10.695,
+        "age_hours": 10.797,
         "category": "geology",
         "checkpoints": [
           {
@@ -830,8 +830,8 @@
         "views_per_hour": 0.094
       },
       {
-        "action": "Queue a sequel or related-video bridge while the session has momentum.",
-        "age_hours": 11.638,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 11.74,
         "category": "birds",
         "checkpoints": [
           {
@@ -863,7 +863,7 @@
           }
         ],
         "current_views": 2,
-        "hypothesis": "Performance signal is already positive; amplify without changing the opening.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
           "delta_to_target": -24,
           "due_at": "2026-07-01T19:12:09.438871+00:00",
@@ -875,23 +875,14 @@
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "normal",
+        "priority": "high",
         "series": "Sky Intelligence",
-        "state": "accelerating",
+        "state": "analytics_due",
         "title": "Owls fly silently because feathers break sound",
         "uploaded_at": "2026-07-01T18:12:09.438871+00:00",
         "url": "https://www.youtube.com/shorts/dNBmZyaqKXQ",
         "video_id": "dNBmZyaqKXQ",
-        "views_per_hour": 0.172,
-        "warning": {
-          "confidence_score": 0.512,
-          "reasoning": "video has 30/2 samples, estimated data, confidence 0.51; observation only.",
-          "score": 0,
-          "state": "accelerating",
-          "title": "Owls fly silently because feathers break sound",
-          "video_id": "dNBmZyaqKXQ",
-          "warning_state": "accelerator"
-        }
+        "views_per_hour": 0.172
       }
     ],
     "targets": {
@@ -901,7 +892,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-02T05:50:25.255072+00:00",
+  "generated_at": "2026-07-02T05:56:32.651469+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
