@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-02T16:00:15.788066+00:00",
+  "generated_at": "2026-07-02T16:06:30.979544+00:00",
   "state": "fully_autonomous",
   "autonomy_score": 90,
   "operating_mode": "exploit",
@@ -226,7 +226,7 @@
   },
   "sequence_bank": {
     "source_winners": 0,
-    "variant_count": 7,
+    "variant_count": 6,
     "next_variants": [
       {
         "id": "remake-cafc33fe6a0fc04a-session-graph-sequel",
@@ -257,12 +257,6 @@
         "title": "The first tree ring cue explains trees' payoff",
         "variant": "session_graph_sequel",
         "category": "trees"
-      },
-      {
-        "id": "remake-65f3763d8f5506f8-fresh-upload-package-rescue",
-        "title": "The first heat vision cue explains snakes' payoff",
-        "variant": "fresh_upload_package_rescue",
-        "category": "reptiles"
       },
       {
         "id": "remake-5413278ae9092e2d-fresh-upload-package-rescue",
@@ -6056,7 +6050,7 @@
         }
       },
       {
-        "id": "80a214d0a2236cfe",
+        "id": "4d33f4e1006c19da",
         "title": "Sharks sense tiny electric fields",
         "category": "ocean",
         "story_format": "body_superpower",
@@ -6067,15 +6061,15 @@
           "approved": true,
           "state": "publish_ready",
           "opportunity": {
-            "score": 67,
+            "score": 70,
             "signals": {
               "viral_potential": 95,
-              "visual_potential": 59,
-              "replay_potential": 72,
+              "visual_potential": 69,
+              "replay_potential": 82,
               "comment_potential": 46,
               "educational_potential": 73,
               "emotional_potential": 44,
-              "novelty": 69
+              "novelty": 59
             },
             "verdict": "produce",
             "reasons": [],
@@ -6093,12 +6087,12 @@
             "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
           "retention": {
-            "score": 71,
+            "score": 76,
             "signals": {
               "hook_score": 82,
-              "curiosity_score": 71,
-              "visual_score": 50,
-              "replay_score": 62,
+              "curiosity_score": 79,
+              "visual_score": 58,
+              "replay_score": 72,
               "completion_prediction": 84
             },
             "verdict": "rewrite",
@@ -6117,32 +6111,27 @@
             "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
           "opening_retention": {
-            "score": 100.0,
-            "state": "retention_ready",
-            "approved": true,
+            "score": 70.0,
+            "state": "needs_tightening",
+            "approved": false,
             "subject": "sharks",
             "cue_terms": [
               "electric",
               "sense"
             ],
-            "frame_hook_bridge": [
-              "electric",
-              "sense"
-            ],
-            "cue_bridge": [
-              "electric",
-              "sense"
-            ],
+            "frame_hook_bridge": [],
+            "cue_bridge": [],
             "strengths": [
               "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
               "watch_instruction_early",
               "action_promise_early",
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "risks": []
+            "risks": [
+              "frame_text_not_echoed_early",
+              "visible_cue_not_repeated_early"
+            ]
           },
           "weak_content": {
             "risk": 0,
