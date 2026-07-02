@@ -6,16 +6,71 @@
   ],
   "counts": {
     "analytics_due": 1,
-    "awaiting_1h": 1,
-    "high_priority": 7,
-    "repair_candidates": 6,
+    "awaiting_1h": 2,
+    "high_priority": 6,
+    "repair_candidates": 5,
     "tracked": 10
   },
-  "generated_at": "2026-07-02T08:00:23.956246+00:00",
+  "generated_at": "2026-07-02T08:27:18.690985+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.058,
+      "age_hours": 0.053,
+      "category": "dogs",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-02T09:24:08.181149+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-02T14:24:08.181149+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-03T08:24:08.181149+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-02T09:24:08.181149+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Pet Secrets",
+      "state": "awaiting_1h",
+      "title": "Dogs read the world through scent maps",
+      "uploaded_at": "2026-07-02T08:24:08.181149+00:00",
+      "url": "https://www.youtube.com/shorts/peeCu1r3K0I",
+      "video_id": "peeCu1r3K0I",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.507,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.223,
+      "age_hours": 2.672,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.658,
+      "age_hours": 4.107,
       "category": "weather",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.261,
+      "age_hours": 6.71,
       "category": "rivers",
       "checkpoints": [
         {
@@ -236,7 +291,7 @@
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.594,
         "reason": "low early velocity",
-        "reasoning": "video has 18/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "reasoning": "video has 21/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
         "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
         "title": "Rivers sort mud and sand along each bank",
         "video_id": "Wi2VtQQ88X0",
@@ -246,7 +301,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 7.876,
+      "age_hours": 8.324,
       "category": "fungi",
       "checkpoints": [
         {
@@ -297,12 +352,12 @@
       "uploaded_at": "2026-07-02T00:07:50.918833+00:00",
       "url": "https://www.youtube.com/shorts/LQPZdiuog_k",
       "video_id": "LQPZdiuog_k",
-      "views_per_hour": 0.128,
+      "views_per_hour": 0.121,
       "warning": {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.594,
         "reason": "low early velocity",
-        "reasoning": "video has 21/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "reasoning": "video has 24/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
         "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
         "title": "Mushrooms release spores from hidden gills",
         "video_id": "LQPZdiuog_k",
@@ -312,7 +367,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 8.822,
+      "age_hours": 9.27,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -378,7 +433,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 9.817,
+      "age_hours": 10.266,
       "category": "trees",
       "checkpoints": [
         {
@@ -444,7 +499,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 10.731,
+      "age_hours": 11.179,
       "category": "forests",
       "checkpoints": [
         {
@@ -509,16 +564,16 @@
       }
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 11.79,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 12.239,
       "category": "geology",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-01T21:12:59.948248+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -542,92 +597,26 @@
         }
       ],
       "current_views": 1,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
-      "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-02T20:12:59.948248+00:00",
-        "label": "24h",
-        "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
-        "views": 1
-      },
-      "opening_retention_score": 94.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Earth Engine",
-      "state": "repair_candidate",
-      "title": "Mountains reveal weather lines in snow",
-      "uploaded_at": "2026-07-01T20:12:59.948248+00:00",
-      "url": "https://www.youtube.com/shorts/or7TN0gMpWA",
-      "video_id": "or7TN0gMpWA",
-      "views_per_hour": 0.085,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Mountains reveal weather lines in snow",
-        "video_id": "or7TN0gMpWA",
-        "views": 1,
-        "warning_state": "repair_risk"
-      }
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.861,
-      "category": "geology",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-01T20:08:43.611233+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -104,
-          "due_at": "2026-07-02T01:08:43.611233+00:00",
-          "label": "6h",
-          "source": "observed",
-          "state": "observed",
-          "target_views": 105,
-          "views": 1
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-07-02T19:08:43.611233+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 1
-        }
-      ],
-      "current_views": 1,
       "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
         "delta_to_target": -24,
-        "due_at": "2026-07-01T20:08:43.611233+00:00",
+        "due_at": "2026-07-01T21:12:59.948248+00:00",
         "label": "1h",
         "source": "estimated",
         "state": "overdue",
         "target_views": 24,
         "views": 0
       },
-      "opening_retention_score": 100.0,
+      "opening_retention_score": 94.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Earth Engine",
       "state": "analytics_due",
-      "title": "Rock layers store ancient environments in stripes",
-      "uploaded_at": "2026-07-01T19:08:43.611233+00:00",
-      "url": "https://www.youtube.com/shorts/FEAbi2e-yas",
-      "video_id": "FEAbi2e-yas",
-      "views_per_hour": 0.078
+      "title": "Mountains reveal weather lines in snow",
+      "uploaded_at": "2026-07-01T20:12:59.948248+00:00",
+      "url": "https://www.youtube.com/shorts/or7TN0gMpWA",
+      "video_id": "or7TN0gMpWA",
+      "views_per_hour": 0.082
     }
   ],
   "targets": {

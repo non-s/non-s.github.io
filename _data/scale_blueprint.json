@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-02T08:02:34.655585+00:00",
+  "generated_at": "2026-07-02T08:29:15.681754+00:00",
   "phase": "discovery_spike_to_loyalty",
   "north_star": "Turn Shorts Feed spikes into a repeat audience that recognizes Wild Brief and comes back for the next animal signal.",
   "baseline": {
@@ -29,7 +29,7 @@
     "no_captions_view_rate": 0.944,
     "realtime_48h_views": 2954,
     "avg_view_percentage": 0.0,
-    "shorts_tracked": 11
+    "shorts_tracked": 12
   },
   "bottlenecks": [
     {
@@ -121,6 +121,18 @@
       "publish_ready_supply": 4
     },
     {
+      "lane": "Pet Signals",
+      "categories": [
+        "cats",
+        "dogs"
+      ],
+      "promise": "home-animal behavior only when the hook beats retention gates",
+      "state": "scale",
+      "retention": 0.0,
+      "growth_score": 200.0,
+      "publish_ready_supply": 1
+    },
+    {
       "lane": "Ocean Signals",
       "categories": [
         "ocean"
@@ -141,18 +153,6 @@
       "retention": 0.0,
       "growth_score": 0.0,
       "publish_ready_supply": 3
-    },
-    {
-      "lane": "Pet Signals",
-      "categories": [
-        "cats",
-        "dogs"
-      ],
-      "promise": "home-animal behavior only when the hook beats retention gates",
-      "state": "test",
-      "retention": 0.0,
-      "growth_score": 0.0,
-      "publish_ready_supply": 2
     }
   ],
   "video_action_plan": {
@@ -163,7 +163,7 @@
         "views": 1,
         "retention": 0.0,
         "subscribers_gained": 0,
-        "views_per_hour": 0.128,
+        "views_per_hour": 0.121,
         "action": "observe",
         "reason": "not enough signal yet"
       },
@@ -173,7 +173,7 @@
         "views": 1,
         "retention": 0.0,
         "subscribers_gained": 0,
-        "views_per_hour": 0.085,
+        "views_per_hour": 0.082,
         "action": "observe",
         "reason": "not enough signal yet"
       },
@@ -183,17 +183,7 @@
         "views": 1,
         "retention": 0.0,
         "subscribers_gained": 0,
-        "views_per_hour": 0.078,
-        "action": "observe",
-        "reason": "not enough signal yet"
-      },
-      {
-        "video_id": "dNBmZyaqKXQ",
-        "title": "Owls fly silently because feathers break sound",
-        "views": 1,
-        "retention": 0.0,
-        "subscribers_gained": 0,
-        "views_per_hour": 0.073,
+        "views_per_hour": 0.075,
         "action": "observe",
         "reason": "not enough signal yet"
       },
@@ -238,6 +228,16 @@
         "reason": "not enough signal yet"
       },
       {
+        "video_id": "peeCu1r3K0I",
+        "title": "Dogs read the world through scent maps",
+        "views": 0,
+        "retention": 0.0,
+        "subscribers_gained": 0,
+        "views_per_hour": 0.0,
+        "action": "observe",
+        "reason": "not enough signal yet"
+      },
+      {
         "video_id": "HDQAh3KSdtY",
         "title": "Elephants cool blood through giant ears",
         "views": 0,
@@ -266,7 +266,7 @@
     "Before rendering, run every candidate through a frame-zero rewrite: animal + visible cue + payoff.",
     "Attach a named series lane and next-episode pinned question to every strong candidate.",
     "For each winner, add one searchable title/description variant around animal behavior intent.",
-    "Use the next publish block to deepen: Body Clues, Predator tells."
+    "Use the next publish block to deepen: Body Clues, Predator tells, Pet Signals."
   ],
   "milestone_path": [
     {
@@ -308,6 +308,18 @@
       }
     },
     {
+      "title": "Dogs read the world through scent maps",
+      "views": 0,
+      "views_per_hour": 0.0,
+      "breakout_probability": {
+        "pass_500": 0.0,
+        "pass_1000": 0.0,
+        "pass_5000": 0.0,
+        "pass_10000": 0.0,
+        "pass_50000": 0.0
+      }
+    },
+    {
       "title": "Elephants cool blood through giant ears",
       "views": 0,
       "views_per_hour": 0.0,
@@ -332,21 +344,9 @@
       }
     },
     {
-      "title": "Mushrooms release spores from hidden gills",
-      "views": 1,
-      "views_per_hour": 0.127,
-      "breakout_probability": {
-        "pass_500": 0.0,
-        "pass_1000": 0.0,
-        "pass_5000": 0.0,
-        "pass_10000": 0.0,
-        "pass_50000": 0.0
-      }
-    },
-    {
-      "title": "Mountains reveal weather lines in snow",
-      "views": 1,
-      "views_per_hour": 0.085,
+      "title": "Owls fly silently because feathers break sound",
+      "views": 2,
+      "views_per_hour": 0.14,
       "breakout_probability": {
         "pass_500": 0.0,
         "pass_1000": 0.0,

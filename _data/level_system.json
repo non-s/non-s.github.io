@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-02T08:02:34.837453+00:00",
+  "generated_at": "2026-07-02T08:29:15.840924+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
   "overall_progress_pct": 34.3,
@@ -22,8 +22,13 @@
       "top_blockers": [
         {
           "id": "objective_gate:bootstrap_observe_before_scaling",
-          "count": 104,
+          "count": 102,
           "operator_translation": "collect more observed signal before scaling this pattern"
+        },
+        {
+          "id": "editor_in_chief:subject repeated inside 3-day cooldown",
+          "count": 34,
+          "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
         },
         {
           "id": "queue_prune:rewrite",
@@ -31,13 +36,8 @@
           "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
-          "id": "editor_in_chief:subject repeated inside 3-day cooldown",
-          "count": 30,
-          "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
-        },
-        {
           "id": "bootstrap_observe_before_scaling",
-          "count": 27,
+          "count": 26,
           "operator_translation": "bootstrap observe before scaling"
         },
         {
@@ -80,7 +80,7 @@
     },
     {
       "priority": "P1",
-      "action": "Use the next publish block to deepen: Body Clues, Predator tells.",
+      "action": "Use the next publish block to deepen: Body Clues, Predator tells, Pet Signals.",
       "target": "retention packaging",
       "why": "The scale blueprint marks this as the active bottleneck."
     }
@@ -88,14 +88,14 @@
   "metrics": {
     "health_score": 82,
     "health_state": "watch",
-    "pending": 57,
-    "operational_publish_ready": 27,
-    "apparent_publish_ready": 27,
-    "eligible_count": 27,
+    "pending": 56,
+    "operational_publish_ready": 26,
+    "apparent_publish_ready": 26,
+    "eligible_count": 26,
     "scale_ready_count": 0,
-    "next_shorts_count": 27,
-    "editorial_candidate_count": 57,
-    "published_count": 11,
+    "next_shorts_count": 26,
+    "editorial_candidate_count": 56,
+    "published_count": 12,
     "views_28d": 30314,
     "total_subscribers": 46,
     "subs_per_1000_views": 1.221,
@@ -104,13 +104,18 @@
     "recurring_viewer_rate": 0.001,
     "youtube_search_view_rate": 0.017,
     "crosspost_assets": 10,
-    "comments_sampled": 11
+    "comments_sampled": 12
   },
   "top_blockers": [
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
-      "count": 104,
+      "count": 102,
       "operator_translation": "collect more observed signal before scaling this pattern"
+    },
+    {
+      "id": "editor_in_chief:subject repeated inside 3-day cooldown",
+      "count": 34,
+      "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
     },
     {
       "id": "queue_prune:rewrite",
@@ -118,13 +123,8 @@
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
-      "id": "editor_in_chief:subject repeated inside 3-day cooldown",
-      "count": 30,
-      "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
-    },
-    {
       "id": "bootstrap_observe_before_scaling",
-      "count": 27,
+      "count": 26,
       "operator_translation": "bootstrap observe before scaling"
     },
     {
@@ -134,18 +134,18 @@
     },
     {
       "id": "editor_in_chief:cooldown_subject",
-      "count": 15,
+      "count": 17,
       "operator_translation": "pick a fresh subject inside the same lane"
-    },
-    {
-      "id": "editor_in_chief:needs_ai_rewrite",
-      "count": 10,
-      "operator_translation": "editor in chief:needs ai rewrite"
     },
     {
       "id": "objective_gate:observe_before_scaling",
       "count": 10,
       "operator_translation": "observe this pattern before scaling it"
+    },
+    {
+      "id": "editor_in_chief:needs_ai_rewrite",
+      "count": 8,
+      "operator_translation": "editor in chief:needs ai rewrite"
     },
     {
       "id": "publish_score:rewrite",
@@ -178,7 +178,7 @@
       "status": "cleared",
       "progress_pct": 100.0,
       "evidence": {
-        "published_count": 11,
+        "published_count": 12,
         "health_score": 82
       }
     },
@@ -191,9 +191,9 @@
       "status": "cleared",
       "progress_pct": 100.0,
       "evidence": {
-        "operational_publish_ready": 27,
-        "eligible_count": 27,
-        "pending": 57,
+        "operational_publish_ready": 26,
+        "eligible_count": 26,
+        "pending": 56,
         "target_publish_ready": 6,
         "target_pending": 20
       }
@@ -218,10 +218,10 @@
       "unlock": "Recurring viewer rate reaches 2% and audience comments keep producing usable prompts.",
       "revenue_job": "Build an audience identity instead of isolated viral posts.",
       "status": "locked",
-      "progress_pct": 30.0,
+      "progress_pct": 32.5,
       "evidence": {
         "recurring_viewer_rate": 0.001,
-        "comments_sampled": 11
+        "comments_sampled": 12
       }
     },
     {
@@ -261,7 +261,7 @@
       "evidence": {
         "views_28d": 30314,
         "health_state": "watch",
-        "operational_publish_ready": 27
+        "operational_publish_ready": 26
       }
     }
   ],
