@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-02T19:51:39.234139+00:00",
+  "generated_at": "2026-07-02T20:00:22.332620+00:00",
   "pending": 57,
   "states": {
     "rewrite": 32,
@@ -21,23 +21,16 @@
     "approved": 57
   },
   "prune_summary": {
-    "pending_before": 72,
+    "pending_before": 57,
     "pending_after": 57,
-    "rejected": 15,
+    "rejected": 0,
     "repair_needed": 0,
-    "repaired": 10,
+    "repaired": 4,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 52,
       "editor_in_chief:subject repeated inside 3-day cooldown": 20,
       "editor_in_chief:script quality gate blocked the narration": 12,
-      "duplicate_script": 7,
-      "duplicate_angle": 7,
-      "duplicate_title": 5,
-      "off_topic_visual": 5,
       "objective_gate:observe_before_scaling": 5,
-      "non_animal_body_language": 2,
-      "script_hook_mismatch": 1,
-      "rights_guard_person_manual_review": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
       "editor_in_chief:editorial score 61 is below 62": 1,
       "editor_in_chief:editorial score 40 is below 62": 1,
@@ -49,6 +42,24 @@
     }
   },
   "rejected_preview": [
+    {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
+      "id": "33dd6bb0aeba20be",
+      "title": "Bees dance directions back to the hive",
+      "reasons": [
+        "weak_visual_surface",
+        "low_opportunity_score"
+      ],
+      "stage": "opportunity_score"
+    },
     {
       "id": "4fb54499c63581e5",
       "title": "Cats use grooming to reset their scent map",
@@ -181,24 +192,6 @@
         "duplicate_title"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
-    },
-    {
-      "id": "33dd6bb0aeba20be",
-      "title": "Bees dance directions back to the hive",
-      "reasons": [
-        "weak_visual_surface",
-        "low_opportunity_score"
-      ],
-      "stage": "opportunity_score"
     },
     {
       "id": "f706eae7d3094819",
@@ -505,7 +498,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T19:50:41.911222+00:00",
+        "checked_at": "2026-07-02T19:59:26.821198+00:00",
         "mechanism_cluster": "dance_navigation",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1149,7 +1142,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T19:50:41.913550+00:00",
+        "checked_at": "2026-07-02T19:59:26.823115+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1792,7 +1785,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T19:50:41.915493+00:00",
+        "checked_at": "2026-07-02T19:59:26.824682+00:00",
         "mechanism_cluster": "wing_scales",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2283,6 +2276,660 @@
       }
     },
     {
+      "id": "d99bc3c78a669d88",
+      "title": "Penguins trap air bubbles under feathers",
+      "category": "birds",
+      "publish_score": {
+        "approved": true,
+        "category": "birds",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.317,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.089,
+          "data_quality": "estimated",
+          "data_quality_score": 0.35,
+          "minimum_sample_size": 28,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.09.",
+          "recommendation_strength": "observe",
+          "sample_size": 6
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.089,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "air",
+            "feather"
+          ],
+          "cue_terms": [
+            "air",
+            "bubble",
+            "feather"
+          ],
+          "frame_hook_bridge": [
+            "air"
+          ],
+          "risks": [
+            "missing_early_action"
+          ],
+          "score": 96.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "penguins"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [
+            "weak_visual_surface"
+          ],
+          "score": 59,
+          "signals": {
+            "comment_potential": 49,
+            "educational_potential": 61,
+            "emotional_potential": 39,
+            "novelty": 54,
+            "replay_potential": 69,
+            "viral_potential": 77,
+            "visual_potential": 54
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 75,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 50
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.331,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.108,
+            "data_quality": "estimated",
+            "data_quality_score": 0.45,
+            "minimum_sample_size": 13,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
+            "recommendation_strength": "observe",
+            "sample_size": 3
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 9/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 9
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [
+            "repetitive_script"
+          ],
+          "risk": 22,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-07-02T19:59:26.826137+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "penguins",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "air",
+            "feather"
+          ],
+          "cue_terms": [
+            "air",
+            "bubble",
+            "feather"
+          ],
+          "frame_hook_bridge": [
+            "air"
+          ],
+          "risks": [
+            "missing_early_action"
+          ],
+          "score": 96.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "penguins"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "penguins",
+        "viewer_promise": "See why penguins body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which penguins clue should Wild Brief compare next in Sky Intelligence?",
+        "cta_prompt": "Want one animal signal a day? Follow for the next clue.",
+        "curiosity_gap": {
+          "hook": "Why do these penguins change after the air bubbles?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.18,
+          "mode": "exploit",
+          "sample_count": 17,
+          "winners": {
+            "hook_pattern": "{subject} {action} {subject} {subject} for the {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
+          },
+          "winning_experiments": {
+            "cta:specific_question": 46.7,
+            "format:fresh_variant": 46.7,
+            "format:winner_inspired": 46.1,
+            "hook:new_hook": 46.7,
+            "thumbnail:new_thumbnail": 46.34
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "air",
+              "feather"
+            ],
+            "cue_terms": [
+              "air",
+              "bubble",
+              "feather"
+            ],
+            "frame_hook_bridge": [
+              "air"
+            ],
+            "risks": [
+              "missing_early_action"
+            ],
+            "score": 96.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "penguins"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Penguins carry tiny air pockets into the water",
+          "Penguins show why the air bubbles matters.",
+          "Penguins show why the air bubbles matters.",
+          "Penguins show why the air bubbles matters.",
+          "Penguins give away the answer through air bubbles"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "air bubbles",
+          "ending_line": "Which polar trick next?",
+          "final_line": "Now the air bubbles at the start make sense.",
+          "loop_score": 0.786,
+          "opening_line": "Penguins carry tiny air pockets into the water.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "air bubbles",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.786,
+        "next_episode_question": "Tomorrow in Sky Intelligence: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "air",
+            "feather"
+          ],
+          "cue_terms": [
+            "air",
+            "bubble",
+            "feather"
+          ],
+          "frame_hook_bridge": [
+            "air"
+          ],
+          "risks": [
+            "missing_early_action"
+          ],
+          "score": 96.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "penguins"
+        },
+        "pinned_comment": "Watch the air bubbles again. Tomorrow in Sky Intelligence: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.56,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 18,
+          "first_2s_narration": "Penguins carry tiny air pockets into the water Watch the feathers before",
+          "first_frame_text": "AIR BUBBLES",
+          "first_frame_text_words": 2,
+          "hook": "Penguins carry tiny air pockets into the water.",
+          "hook_specificity": 0.78,
+          "hook_words": 8,
+          "loop_score": 0.786,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "air",
+              "feather"
+            ],
+            "cue_terms": [
+              "air",
+              "bubble",
+              "feather"
+            ],
+            "frame_hook_bridge": [
+              "air"
+            ],
+            "risks": [
+              "missing_early_action"
+            ],
+            "score": 96.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "penguins"
+          },
+          "opening_retention_score": 96.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the air bubbles, so viewers rewatch the penguins clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 75,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 50
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Penguins carry tiny air pockets into the water Watch the feathers before",
+          "first_frame_text": "AIR BUBBLES",
+          "next_episode_question": "Tomorrow in Sky Intelligence: another animal signal. Is this adaptation, instinct, or intelligence?",
+          "opening_retention_score": 96.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Penguins behavior through the visible air bubbles.",
+            "series": "Sky Intelligence",
+            "subject": "penguins",
+            "terms": [
+              "penguins",
+              "air bubbles",
+              "birds",
+              "body superpower"
+            ],
+            "title_variant": "Penguins behavior: air bubbles explained",
+            "visible_cue": "air bubbles"
+          },
+          "series": "Sky Intelligence",
+          "subject": "penguins",
+          "visible_cue": "air bubbles"
+        },
+        "risks": [],
+        "score": 96,
+        "search_intent": {
+          "description_line": "This Short explains Penguins behavior through the visible air bubbles.",
+          "series": "Sky Intelligence",
+          "subject": "penguins",
+          "terms": [
+            "penguins",
+            "air bubbles",
+            "birds",
+            "body superpower"
+          ],
+          "title_variant": "Penguins behavior: air bubbles explained",
+          "visible_cue": "air bubbles"
+        },
+        "selected_variant": {
+          "hook": "Penguins carry tiny air pockets into the water",
+          "score": 78,
+          "thumbnail_text": "AIR BUBBLES",
+          "title": "Penguins trap air bubbles under feathers"
+        },
+        "series": "Sky Intelligence #2",
+        "series_identity": {
+          "continuity_prompt": "Next in Sky Intelligence: compare this with another force of nature.",
+          "episode": 2,
+          "label": "Sky Intelligence #2",
+          "series": "Sky Intelligence"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.331,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.108,
+            "data_quality": "estimated",
+            "data_quality_score": 0.45,
+            "minimum_sample_size": 13,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
+            "recommendation_strength": "observe",
+            "sample_size": 3
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "AIR BUBBLES",
+          "WATCH AIR BUBBLES",
+          "PENGUINS TRICK",
+          "AIR BUBBLES MATTERS",
+          "AIR BUBBLES FIRST",
+          "AIR BUBBLES REVEAL",
+          "AIR BUBBLES CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Penguins trap air bubbles under feathers",
+          "Penguins use air bubbles before they trick",
+          "Why penguins trick after one air bubbles",
+          "Penguins reveal the answer with air bubbles",
+          "The air bubbles that changes the moment",
+          "Penguins make one air bubbles matter",
+          "Penguins show the hidden answer in seconds",
+          "Penguins: watch this air bubbles",
+          "Watch penguins after the air bubbles"
+        ],
+        "top_variants": [
+          {
+            "hook": "Penguins carry tiny air pockets into the water",
+            "score": 78,
+            "thumbnail_text": "AIR BUBBLES",
+            "title": "Penguins trap air bubbles under feathers"
+          },
+          {
+            "hook": "Start with the air bubbles; it changes the scene",
+            "score": 78,
+            "thumbnail_text": "AIR BUBBLES",
+            "title": "Penguins trap air bubbles under feathers"
+          },
+          {
+            "hook": "Watch the air bubbles; it explains the behavior",
+            "score": 77,
+            "thumbnail_text": "AIR BUBBLES",
+            "title": "Penguins trap air bubbles under feathers"
+          },
+          {
+            "hook": "Penguins carry tiny air pockets into the water",
+            "score": 72,
+            "thumbnail_text": "AIR BUBBLES FIRST",
+            "title": "Penguins trap air bubbles under feathers"
+          },
+          {
+            "hook": "Start with the air bubbles; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "AIR BUBBLES FIRST",
+            "title": "Penguins trap air bubbles under feathers"
+          },
+          {
+            "hook": "Penguins carry tiny air pockets into the water",
+            "score": 71,
+            "thumbnail_text": "WATCH AIR BUBBLES",
+            "title": "Penguins trap air bubbles under feathers"
+          },
+          {
+            "hook": "Start with the air bubbles; it changes the scene",
+            "score": 71,
+            "thumbnail_text": "WATCH AIR BUBBLES",
+            "title": "Penguins trap air bubbles under feathers"
+          },
+          {
+            "hook": "Penguins carry tiny air pockets into the water",
+            "score": 71,
+            "thumbnail_text": "PENGUINS TRICK",
+            "title": "Penguins trap air bubbles under feathers"
+          },
+          {
+            "hook": "Start with the air bubbles; it changes the scene",
+            "score": 71,
+            "thumbnail_text": "PENGUINS TRICK",
+            "title": "Penguins trap air bubbles under feathers"
+          },
+          {
+            "hook": "Penguins carry tiny air pockets into the water",
+            "score": 71,
+            "thumbnail_text": "AIR BUBBLES MATTERS",
+            "title": "Penguins trap air bubbles under feathers"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "1f4d4eeb2441657a",
       "title": "Birds see ultraviolet patterns we miss",
       "category": "birds",
@@ -2456,7 +3103,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T19:50:41.916777+00:00",
+        "checked_at": "2026-07-02T19:59:26.827533+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2923,658 +3570,6 @@
       }
     },
     {
-      "id": "d99bc3c78a669d88",
-      "title": "Penguins trap air bubbles under feathers",
-      "category": "birds",
-      "publish_score": {
-        "approved": true,
-        "category": "birds",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.31,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.08,
-          "data_quality": "estimated",
-          "data_quality_score": 0.425,
-          "minimum_sample_size": 25,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.08.",
-          "recommendation_strength": "observe",
-          "sample_size": 5
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.08,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "air",
-            "feather"
-          ],
-          "cue_terms": [
-            "air",
-            "bubble",
-            "feather"
-          ],
-          "frame_hook_bridge": [
-            "air"
-          ],
-          "risks": [
-            "missing_early_action"
-          ],
-          "score": 96.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "penguins"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.335,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-          "reasons": [
-            "weak_visual_surface"
-          ],
-          "score": 59,
-          "signals": {
-            "comment_potential": 49,
-            "educational_potential": 61,
-            "emotional_potential": 39,
-            "novelty": 54,
-            "replay_potential": 69,
-            "viral_potential": 77,
-            "visual_potential": 54
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.335,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-          "reasons": [],
-          "score": 75,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 50
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "body_superpower",
-        "subscriber_conversion": {
-          "comment_probability": 0.223,
-          "confidence": {
-            "bootstrap_multiplier": 0.296,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.061,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.261,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 9/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 9
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [
-            "repetitive_script"
-          ],
-          "risk": 22,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-07-02T19:50:41.929921+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 100.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 100.0,
-      "youtube_brain": {
-        "animal": "penguins",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "air",
-            "feather"
-          ],
-          "cue_terms": [
-            "air",
-            "bubble",
-            "feather"
-          ],
-          "frame_hook_bridge": [
-            "air"
-          ],
-          "risks": [
-            "missing_early_action"
-          ],
-          "score": 96.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "penguins"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "body_superpower",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "penguins",
-        "viewer_promise": "See why penguins body superpower matters."
-      },
-      "packaging": {
-        "community_prompt": "Which penguins clue should Wild Brief compare next in Watch The Cue?",
-        "cta_prompt": "Want one animal signal a day? Follow for the next clue.",
-        "curiosity_gap": {
-          "hook": "Why do these penguins change after the air bubbles?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "body superpower",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.18,
-          "mode": "exploit",
-          "sample_count": 17,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} for the {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
-          },
-          "winning_experiments": {
-            "cta:specific_question": 46.7,
-            "format:fresh_variant": 46.7,
-            "format:winner_inspired": 46.1,
-            "hook:new_hook": 46.7,
-            "thumbnail:new_thumbnail": 46.34
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "air",
-              "feather"
-            ],
-            "cue_terms": [
-              "air",
-              "bubble",
-              "feather"
-            ],
-            "frame_hook_bridge": [
-              "air"
-            ],
-            "risks": [
-              "missing_early_action"
-            ],
-            "score": 96.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "penguins"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Penguins carry tiny air pockets into the water",
-          "Penguins show why the air bubbles matters.",
-          "Penguins show why the air bubbles matters.",
-          "Penguins show why the air bubbles matters.",
-          "Penguins give away the answer through air bubbles"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "air bubbles",
-          "ending_line": "Which polar trick next?",
-          "final_line": "Now the air bubbles at the start make sense.",
-          "loop_score": 0.786,
-          "opening_line": "Penguins carry tiny air pockets into the water.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "air bubbles",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.786,
-        "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. Is this adaptation, instinct, or intelligence?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "air",
-            "feather"
-          ],
-          "cue_terms": [
-            "air",
-            "bubble",
-            "feather"
-          ],
-          "frame_hook_bridge": [
-            "air"
-          ],
-          "risks": [
-            "missing_early_action"
-          ],
-          "score": 96.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "penguins"
-        },
-        "pinned_comment": "Watch the air bubbles again. Tomorrow in Watch The Cue: another animal signal. Is this adaptation, instinct, or intelligence?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.56,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 18,
-          "first_2s_narration": "Penguins carry tiny air pockets into the water Watch the feathers before",
-          "first_frame_text": "AIR BUBBLES",
-          "first_frame_text_words": 2,
-          "hook": "Penguins carry tiny air pockets into the water.",
-          "hook_specificity": 0.78,
-          "hook_words": 8,
-          "loop_score": 0.786,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "air",
-              "feather"
-            ],
-            "cue_terms": [
-              "air",
-              "bubble",
-              "feather"
-            ],
-            "frame_hook_bridge": [
-              "air"
-            ],
-            "risks": [
-              "missing_early_action"
-            ],
-            "score": 96.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "penguins"
-          },
-          "opening_retention_score": 96.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the air bubbles, so viewers rewatch the penguins clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.335,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-          "reasons": [],
-          "score": 75,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 50
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Penguins carry tiny air pockets into the water Watch the feathers before",
-          "first_frame_text": "AIR BUBBLES",
-          "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. Is this adaptation, instinct, or intelligence?",
-          "opening_retention_score": 96.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains Penguins behavior through the visible air bubbles.",
-            "series": "Watch The Cue",
-            "subject": "penguins",
-            "terms": [
-              "penguins",
-              "air bubbles",
-              "birds",
-              "body superpower"
-            ],
-            "title_variant": "Penguins behavior: air bubbles explained",
-            "visible_cue": "air bubbles"
-          },
-          "series": "Watch The Cue",
-          "subject": "penguins",
-          "visible_cue": "air bubbles"
-        },
-        "risks": [],
-        "score": 96,
-        "search_intent": {
-          "description_line": "This Short explains Penguins behavior through the visible air bubbles.",
-          "series": "Watch The Cue",
-          "subject": "penguins",
-          "terms": [
-            "penguins",
-            "air bubbles",
-            "birds",
-            "body superpower"
-          ],
-          "title_variant": "Penguins behavior: air bubbles explained",
-          "visible_cue": "air bubbles"
-        },
-        "selected_variant": {
-          "hook": "Penguins carry tiny air pockets into the water",
-          "score": 78,
-          "thumbnail_text": "AIR BUBBLES",
-          "title": "Penguins trap air bubbles under feathers"
-        },
-        "series": "Watch The Cue",
-        "series_identity": {
-          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Watch The Cue",
-          "series": "Watch The Cue"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.223,
-          "confidence": {
-            "bootstrap_multiplier": 0.296,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.061,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.261,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "AIR BUBBLES",
-          "WATCH AIR BUBBLES",
-          "PENGUINS TRICK",
-          "AIR BUBBLES MATTERS",
-          "AIR BUBBLES FIRST",
-          "AIR BUBBLES REVEAL",
-          "AIR BUBBLES CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Penguins trap air bubbles under feathers",
-          "Penguins use air bubbles before they trick",
-          "Why penguins trick after one air bubbles",
-          "Penguins reveal the answer with air bubbles",
-          "The air bubbles that changes the moment",
-          "Penguins make one air bubbles matter",
-          "Penguins show the hidden answer in seconds",
-          "Penguins: watch this air bubbles",
-          "Watch penguins after the air bubbles"
-        ],
-        "top_variants": [
-          {
-            "hook": "Penguins carry tiny air pockets into the water",
-            "score": 78,
-            "thumbnail_text": "AIR BUBBLES",
-            "title": "Penguins trap air bubbles under feathers"
-          },
-          {
-            "hook": "Start with the air bubbles; it changes the scene",
-            "score": 78,
-            "thumbnail_text": "AIR BUBBLES",
-            "title": "Penguins trap air bubbles under feathers"
-          },
-          {
-            "hook": "Watch the air bubbles; it explains the behavior",
-            "score": 77,
-            "thumbnail_text": "AIR BUBBLES",
-            "title": "Penguins trap air bubbles under feathers"
-          },
-          {
-            "hook": "Penguins carry tiny air pockets into the water",
-            "score": 72,
-            "thumbnail_text": "AIR BUBBLES FIRST",
-            "title": "Penguins trap air bubbles under feathers"
-          },
-          {
-            "hook": "Start with the air bubbles; it changes the scene",
-            "score": 72,
-            "thumbnail_text": "AIR BUBBLES FIRST",
-            "title": "Penguins trap air bubbles under feathers"
-          },
-          {
-            "hook": "Penguins carry tiny air pockets into the water",
-            "score": 71,
-            "thumbnail_text": "WATCH AIR BUBBLES",
-            "title": "Penguins trap air bubbles under feathers"
-          },
-          {
-            "hook": "Start with the air bubbles; it changes the scene",
-            "score": 71,
-            "thumbnail_text": "WATCH AIR BUBBLES",
-            "title": "Penguins trap air bubbles under feathers"
-          },
-          {
-            "hook": "Penguins carry tiny air pockets into the water",
-            "score": 71,
-            "thumbnail_text": "PENGUINS TRICK",
-            "title": "Penguins trap air bubbles under feathers"
-          },
-          {
-            "hook": "Start with the air bubbles; it changes the scene",
-            "score": 71,
-            "thumbnail_text": "PENGUINS TRICK",
-            "title": "Penguins trap air bubbles under feathers"
-          },
-          {
-            "hook": "Penguins carry tiny air pockets into the water",
-            "score": 71,
-            "thumbnail_text": "AIR BUBBLES MATTERS",
-            "title": "Penguins trap air bubbles under feathers"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "02f475952f9bf936",
       "title": "Leaves turn a forest into a cooler room",
       "category": "forests",
@@ -3748,7 +3743,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T19:50:42.348209+00:00",
+        "checked_at": "2026-07-02T19:59:26.854807+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4390,7 +4385,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T19:50:42.350765+00:00",
+        "checked_at": "2026-07-02T19:59:26.857332+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5028,7 +5023,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T19:50:42.352170+00:00",
+        "checked_at": "2026-07-02T19:59:26.858758+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5671,7 +5666,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T19:50:42.354302+00:00",
+        "checked_at": "2026-07-02T19:59:26.860855+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6309,7 +6304,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T19:50:42.360002+00:00",
+        "checked_at": "2026-07-02T19:59:26.866272+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6954,7 +6949,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T19:50:42.363913+00:00",
+        "checked_at": "2026-07-02T19:59:26.870183+00:00",
         "mechanism_cluster": "electric_sense",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7596,7 +7591,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T19:50:42.365649+00:00",
+        "checked_at": "2026-07-02T19:59:26.872216+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8236,7 +8231,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T19:50:42.367693+00:00",
+        "checked_at": "2026-07-02T19:59:26.874332+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8887,7 +8882,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T19:50:42.369087+00:00",
+        "checked_at": "2026-07-02T19:59:26.875771+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -9523,7 +9518,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T19:50:42.370277+00:00",
+        "checked_at": "2026-07-02T19:59:26.876998+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -10169,7 +10164,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T19:50:42.375805+00:00",
+        "checked_at": "2026-07-02T19:59:26.882749+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -10816,7 +10811,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T19:50:42.377460+00:00",
+        "checked_at": "2026-07-02T19:59:26.884485+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -11467,7 +11462,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T19:50:42.379553+00:00",
+        "checked_at": "2026-07-02T19:59:26.886744+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -12111,7 +12106,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T19:50:42.380786+00:00",
+        "checked_at": "2026-07-02T19:59:26.888037+00:00",
         "mechanism_cluster": "decoy_injury",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -12756,7 +12751,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-02T19:50:42.394210+00:00",
+        "checked_at": "2026-07-02T19:59:26.900795+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
