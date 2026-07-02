@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 4,
+    "analytics_due": 3,
     "awaiting_1h": 1,
     "high_priority": 6,
-    "repair_candidates": 2,
+    "repair_candidates": 3,
     "tracked": 10
   },
-  "generated_at": "2026-07-02T11:52:24.884858+00:00",
+  "generated_at": "2026-07-02T11:54:51.862893+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.482,
+      "age_hours": 0.523,
       "category": "insects",
       "checkpoints": [
         {
@@ -70,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.193,
+      "age_hours": 1.234,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -125,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.471,
+      "age_hours": 3.512,
       "category": "dogs",
       "checkpoints": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.925,
+      "age_hours": 3.966,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -234,8 +234,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.09,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.131,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -251,8 +251,8 @@
           "delta_to_target": -105,
           "due_at": "2026-07-02T11:47:00.955436+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -267,30 +267,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
-        "delta_to_target": -105,
-        "due_at": "2026-07-02T11:47:00.955436+00:00",
-        "label": "6h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-03T05:47:00.955436+00:00",
+        "label": "24h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 105,
+        "state": "pending",
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Animal Superpowers",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Elephants cool blood through giant ears",
       "uploaded_at": "2026-07-02T05:47:00.955436+00:00",
       "url": "https://www.youtube.com/shorts/HDQAh3KSdtY",
       "video_id": "HDQAh3KSdtY",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 26/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Elephants cool blood through giant ears",
+        "video_id": "HDQAh3KSdtY",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 7.525,
+      "age_hours": 7.566,
       "category": "weather",
       "checkpoints": [
         {
@@ -356,7 +367,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 10.128,
+      "age_hours": 10.169,
       "category": "rivers",
       "checkpoints": [
         {
@@ -422,7 +433,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.743,
+      "age_hours": 11.784,
       "category": "fungi",
       "checkpoints": [
         {
@@ -473,11 +484,11 @@
       "uploaded_at": "2026-07-02T00:07:50.918833+00:00",
       "url": "https://www.youtube.com/shorts/LQPZdiuog_k",
       "video_id": "LQPZdiuog_k",
-      "views_per_hour": 0.086
+      "views_per_hour": 0.085
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.689,
+      "age_hours": 12.729,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -532,7 +543,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.684,
+      "age_hours": 13.725,
       "category": "trees",
       "checkpoints": [
         {
