@@ -2,18 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 9,
-      "high": 1,
-      "manual_review": 1,
+      "automation_safe": 10,
+      "high": 0,
+      "manual_review": 0,
       "total": 10,
-      "urgent": 4
+      "urgent": 5
     },
     "free_only": true,
-    "generated_at": "2026-07-02T16:05:26.532607+00:00",
+    "generated_at": "2026-07-02T16:16:01.127197+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 14.346,
+        "age_hours": 14.522,
         "automation_safe": true,
         "category": "rivers",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 11.742,
+        "age_hours": 11.918,
         "automation_safe": true,
         "category": "weather",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 10.307,
+        "age_hours": 10.483,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -91,7 +91,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 8.142,
+        "age_hours": 8.319,
         "automation_safe": true,
         "category": "reptiles",
         "checkpoint_label": "1h",
@@ -116,34 +116,34 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "prepare_package_rescue",
-        "age_hours": 7.688,
-        "automation_safe": false,
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 7.865,
+        "automation_safe": true,
         "category": "dogs",
-        "checkpoint_label": "24h",
-        "checkpoint_state": "pending",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "overdue",
         "current_views": 0,
-        "due_at": "2026-07-03T08:24:08.181149+00:00",
+        "due_at": "2026-07-02T09:24:08.181149+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:peeCu1r3K0I:repair_candidate:24h",
-        "lane": "package_rescue",
-        "manual_approval_required": true,
+        "id": "fresh-upload:peeCu1r3K0I:analytics_due:1h",
+        "lane": "measurement",
+        "manual_approval_required": false,
         "opening_retention_score": 100.0,
-        "priority": "high",
-        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "priority": "urgent",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
         "series": "Pet Secrets",
-        "state": "repair_candidate",
-        "target_views": 300,
+        "state": "analytics_due",
+        "target_views": 24,
         "title": "Dogs read the world through scent maps",
         "url": "https://www.youtube.com/shorts/peeCu1r3K0I",
         "video_id": "peeCu1r3K0I",
         "wait_until": "",
-        "why": "Observed velocity is weak enough to prepare a package intervention."
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 5.41,
+        "age_hours": 5.586,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "6h",
@@ -169,7 +169,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 4.699,
+        "age_hours": 4.875,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "6h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.933,
+        "age_hours": 4.109,
         "automation_safe": true,
         "category": "ocean",
         "checkpoint_label": "6h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.839,
+        "age_hours": 3.015,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "6h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 1.585,
+        "age_hours": 1.762,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-02T16:05:26.532058+00:00"
+    "source_generated_at": "2026-07-02T16:16:01.126615+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,17 @@
       24
     ],
     "counts": {
-      "analytics_due": 4,
+      "analytics_due": 5,
       "awaiting_1h": 0,
       "high_priority": 5,
-      "repair_candidates": 1,
+      "repair_candidates": 0,
       "tracked": 10
     },
-    "generated_at": "2026-07-02T16:05:26.532058+00:00",
+    "generated_at": "2026-07-02T16:16:01.126615+00:00",
     "items": [
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 1.585,
+        "age_hours": 1.762,
         "category": "farm",
         "checkpoints": [
           {
@@ -347,7 +347,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.839,
+        "age_hours": 3.015,
         "category": "insects",
         "checkpoints": [
           {
@@ -398,11 +398,11 @@
         "uploaded_at": "2026-07-02T13:15:06.171182+00:00",
         "url": "https://www.youtube.com/shorts/6EQWaar3wBc",
         "video_id": "6EQWaar3wBc",
-        "views_per_hour": 0.365
+        "views_per_hour": 0.338
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.933,
+        "age_hours": 4.109,
         "category": "ocean",
         "checkpoints": [
           {
@@ -457,7 +457,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 4.699,
+        "age_hours": 4.875,
         "category": "insects",
         "checkpoints": [
           {
@@ -512,7 +512,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.41,
+        "age_hours": 5.586,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -566,16 +566,16 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 7.688,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 7.865,
         "category": "dogs",
         "checkpoints": [
           {
             "delta_to_target": -24,
             "due_at": "2026-07-02T09:24:08.181149+00:00",
             "label": "1h",
-            "source": "observed",
-            "state": "observed",
+            "source": "estimated",
+            "state": "overdue",
             "target_views": 24,
             "views": 0
           },
@@ -599,41 +599,30 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
-          "due_at": "2026-07-03T08:24:08.181149+00:00",
-          "label": "24h",
+          "delta_to_target": -24,
+          "due_at": "2026-07-02T09:24:08.181149+00:00",
+          "label": "1h",
           "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
+          "state": "overdue",
+          "target_views": 24,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
         "priority": "high",
         "series": "Pet Secrets",
-        "state": "repair_candidate",
+        "state": "analytics_due",
         "title": "Dogs read the world through scent maps",
         "uploaded_at": "2026-07-02T08:24:08.181149+00:00",
         "url": "https://www.youtube.com/shorts/peeCu1r3K0I",
         "video_id": "peeCu1r3K0I",
-        "views_per_hour": 0.0,
-        "warning": {
-          "action": "TITLE_AUTO_REPAIR_TRIGGER",
-          "confidence_score": 0.594,
-          "reason": "low early velocity",
-          "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-          "title": "Dogs read the world through scent maps",
-          "video_id": "peeCu1r3K0I",
-          "views": 0,
-          "warning_state": "repair_risk"
-        }
+        "views_per_hour": 0.0
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 8.142,
+        "age_hours": 8.319,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -688,7 +677,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 10.307,
+        "age_hours": 10.483,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -743,7 +732,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 11.742,
+        "age_hours": 11.918,
         "category": "weather",
         "checkpoints": [
           {
@@ -798,7 +787,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 14.346,
+        "age_hours": 14.522,
         "category": "rivers",
         "checkpoints": [
           {
@@ -867,7 +856,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-02T16:05:26.532692+00:00",
+  "generated_at": "2026-07-02T16:16:01.127283+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
