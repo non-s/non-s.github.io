@@ -3264,7 +3264,7 @@
       }
     },
     {
-      "id": "0b09e3c95cd6b71b",
+      "id": "a6b589dc4d9db6f3",
       "title": "Cats use whiskers like built-in rulers",
       "category": "cats",
       "queue_score": 100.0,
@@ -3274,27 +3274,27 @@
         "bootstrap_observe_before_scaling"
       ],
       "scale_ready": false,
-      "autonomy_priority": 110.98,
+      "autonomy_priority": 110.99,
       "autonomy_lane": "fresh_experiment",
       "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
       "packaging_lab": {
+        "title_variants": [
+          "Cats use whiskers like built-in rulers",
+          "Cats use whisker map before they protect",
+          "This whisker map gives cats away"
+        ],
+        "thumbnail_variants": [
+          "WHISKER MAP",
+          "WATCH WHISKER MAP",
+          "CATS PROTECT"
+        ],
         "hook_variants": [
           "Cats measure tight spaces with their whiskers.",
           "Cats use whiskers like built-in rulers",
           "Watch the whisker map again. Tomorrow in Pet Secrets: another animal signal. What part of this feels most impo"
         ],
         "pinned_comment": "Watch the whisker map again. Tomorrow in Pet Secrets: another animal signal. What part of this feels most impossible?",
-        "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target.",
-        "thumbnail_variants": [
-          "WHISKER MAP",
-          "WATCH WHISKER MAP",
-          "CATS PROTECT"
-        ],
-        "title_variants": [
-          "Cats use whiskers like built-in rulers",
-          "Cats use whisker map before they protect",
-          "This whisker map gives cats away"
-        ]
+        "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
       },
       "publish_score": {
         "score": 100,
@@ -3651,7 +3651,7 @@
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
         },
         "experiment": {
-          "mode": "explore",
+          "mode": "exploit",
           "explore_rate": 0.18,
           "winners": {
             "title_pattern": "{subject} {subject} {subject} {visual} in {subject}",
@@ -3667,10 +3667,10 @@
           },
           "sample_count": 16,
           "assignment": {
-            "format": "fresh_variant",
-            "hook": "new_hook",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
             "thumbnail": "new_thumbnail",
-            "cta": "specific_question"
+            "cta": "follow_for_more"
           }
         },
         "series_identity": {
@@ -6580,13 +6580,13 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 57,
-    "pending_after": 57,
+    "pending_before": 58,
+    "pending_after": 58,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 2,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 52,
+      "objective_gate:bootstrap_observe_before_scaling": 53,
       "editor_in_chief:subject repeated inside 3-day cooldown": 19,
       "editor_in_chief:script quality gate blocked the narration": 12,
       "objective_gate:observe_before_scaling": 5,
@@ -6596,7 +6596,8 @@
       "editor_in_chief:story angle repeated inside 10-day cooldown": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
       "editor_in_chief:editorial score 50 is below 62": 1,
-      "editor_in_chief:editorial score 44 is below 62": 1
+      "editor_in_chief:editorial score 44 is below 62": 1,
+      "editor_in_chief:thumbnail copy must contain 2-4 readable words": 1
     }
   },
   "rejected_preview": []

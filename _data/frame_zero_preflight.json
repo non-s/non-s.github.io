@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-07-02T13:28:08.151861+00:00",
+  "generated_at": "2026-07-02T13:34:18.283995+00:00",
   "floor": 82.0,
-  "pending": 57,
+  "pending": 58,
   "ready": 55,
-  "held": 2,
-  "rewritten": 15,
-  "average_opening_score": 97.05,
+  "held": 3,
+  "rewritten": 16,
+  "average_opening_score": 97.1,
   "render_gate": "hold",
   "counts": {
     "approved": 55,
-    "rewritten": 15,
-    "hold": 2
+    "rewritten": 16,
+    "hold": 3
   },
   "items": [
     {
@@ -31,6 +31,26 @@
       "risks": [
         "frame_text_not_echoed_early",
         "missing_early_action"
+      ],
+      "action": "Use the frame-zero rewrite before rendering."
+    },
+    {
+      "id": "d55ddd48e5ff993d",
+      "title": "Ducks carry waterproof oil on their feathers",
+      "category": "farm",
+      "render_gate": "hold",
+      "opening_score": 100.0,
+      "frame_zero_score": 70.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Ducks reveal the waterproof feathers first.",
+      "first_frame_text": "WATERPROOF",
+      "visible_cue": "waterproof feathers",
+      "rewrite_applied": true,
+      "rewrite_reason": "opening_retention_below_floor",
+      "before_score": 76.0,
+      "after_score": 100.0,
+      "risks": [
+        "frame_text_not_scannable"
       ],
       "action": "Use the frame-zero rewrite before rendering."
     },
@@ -132,7 +152,7 @@
       "action": "Use the frame-zero rewrite before rendering."
     },
     {
-      "id": "0b09e3c95cd6b71b",
+      "id": "a6b589dc4d9db6f3",
       "title": "Cats use whiskers like built-in rulers",
       "category": "cats",
       "render_gate": "approved",
@@ -920,24 +940,6 @@
       "opening_state": "retention_ready",
       "opening_line": "Rock layers preserve the history of water.",
       "first_frame_text": "ROCK TIMELINE",
-      "visible_cue": "",
-      "rewrite_applied": false,
-      "rewrite_reason": "",
-      "before_score": null,
-      "after_score": 100.0,
-      "risks": [],
-      "action": "Ready to render with current first frame."
-    },
-    {
-      "id": "ef76ad9a8f8a03ae",
-      "title": "Rock layers show their timeline inside caves",
-      "category": "geology",
-      "render_gate": "approved",
-      "opening_score": 100.0,
-      "frame_zero_score": 92.0,
-      "opening_state": "retention_ready",
-      "opening_line": "Rock layers keep a hidden timeline inside caves.",
-      "first_frame_text": "CAVE TIMELINE",
       "visible_cue": "",
       "rewrite_applied": false,
       "rewrite_reason": "",
