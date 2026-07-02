@@ -2,18 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 6,
-      "high": 4,
-      "manual_review": 4,
+      "automation_safe": 5,
+      "high": 5,
+      "manual_review": 5,
       "total": 10,
       "urgent": 2
     },
     "free_only": true,
-    "generated_at": "2026-07-02T05:56:32.651374+00:00",
+    "generated_at": "2026-07-02T06:57:01.774305+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 11.74,
+        "age_hours": 12.748,
         "automation_safe": true,
         "category": "birds",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 10.797,
+        "age_hours": 11.805,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 9.726,
+        "age_hours": 10.734,
         "automation_safe": false,
         "category": "geology",
         "checkpoint_label": "24h",
@@ -91,7 +91,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 8.666,
+        "age_hours": 9.675,
         "automation_safe": false,
         "category": "forests",
         "checkpoint_label": "24h",
@@ -117,7 +117,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 7.753,
+        "age_hours": 8.761,
         "automation_safe": false,
         "category": "trees",
         "checkpoint_label": "24h",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 6.757,
+        "age_hours": 7.765,
         "automation_safe": false,
         "category": "earth_from_space",
         "checkpoint_label": "24h",
@@ -168,60 +168,34 @@
         "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
-        "action_type": "watch_next_checkpoint",
-        "age_hours": 5.812,
-        "automation_safe": true,
+        "action_type": "prepare_package_rescue",
+        "age_hours": 6.82,
+        "automation_safe": false,
         "category": "fungi",
-        "checkpoint_label": "6h",
+        "checkpoint_label": "24h",
         "checkpoint_state": "pending",
         "current_views": 0,
-        "due_at": "2026-07-02T06:07:50.918833+00:00",
+        "due_at": "2026-07-03T00:07:50.918833+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:LQPZdiuog_k:watch:6h",
-        "lane": "observe",
-        "manual_approval_required": false,
+        "id": "fresh-upload:LQPZdiuog_k:repair_candidate:24h",
+        "lane": "package_rescue",
+        "manual_approval_required": true,
         "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Keep observing through the next checkpoint.",
+        "priority": "high",
+        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
         "series": "Hidden Network",
-        "state": "watch",
-        "target_views": 105,
+        "state": "repair_candidate",
+        "target_views": 300,
         "title": "Mushrooms release spores from hidden gills",
         "url": "https://www.youtube.com/shorts/LQPZdiuog_k",
         "video_id": "LQPZdiuog_k",
-        "wait_until": "2026-07-02T06:07:50.918833+00:00",
-        "why": "No intervention signal is strong enough yet."
-      },
-      {
-        "action_type": "hold_until_first_hour",
-        "age_hours": 0.159,
-        "automation_safe": true,
-        "category": "wildlife",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "pending",
-        "current_views": 0,
-        "due_at": "2026-07-02T06:47:00.955436+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:HDQAh3KSdtY:awaiting_1h:1h",
-        "lane": "observe",
-        "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "series": "Animal Superpowers",
-        "state": "awaiting_1h",
-        "target_views": 24,
-        "title": "Elephants cool blood through giant ears",
-        "url": "https://www.youtube.com/shorts/HDQAh3KSdtY",
-        "video_id": "HDQAh3KSdtY",
-        "wait_until": "2026-07-02T06:47:00.955436+00:00",
-        "why": "The upload is still inside the no-panic observation window."
+        "wait_until": "",
+        "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 4.197,
+        "age_hours": 5.205,
         "automation_safe": true,
         "category": "rivers",
         "checkpoint_label": "6h",
@@ -247,7 +221,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 1.594,
+        "age_hours": 2.602,
         "automation_safe": true,
         "category": "weather",
         "checkpoint_label": "6h",
@@ -270,10 +244,36 @@
         "video_id": "WbwdERQTz90",
         "wait_until": "2026-07-02T10:20:54.900666+00:00",
         "why": "No intervention signal is strong enough yet."
+      },
+      {
+        "action_type": "watch_next_checkpoint",
+        "age_hours": 1.167,
+        "automation_safe": true,
+        "category": "wildlife",
+        "checkpoint_label": "6h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-02T11:47:00.955436+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:HDQAh3KSdtY:watch:6h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "low",
+        "recommended_action": "Keep observing through the next checkpoint.",
+        "series": "Animal Superpowers",
+        "state": "watch",
+        "target_views": 105,
+        "title": "Elephants cool blood through giant ears",
+        "url": "https://www.youtube.com/shorts/HDQAh3KSdtY",
+        "video_id": "HDQAh3KSdtY",
+        "wait_until": "2026-07-02T11:47:00.955436+00:00",
+        "why": "No intervention signal is strong enough yet."
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-02T05:56:32.650934+00:00"
+    "source_generated_at": "2026-07-02T06:57:01.773936+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -283,24 +283,24 @@
     ],
     "counts": {
       "analytics_due": 2,
-      "awaiting_1h": 1,
-      "high_priority": 6,
-      "repair_candidates": 4,
+      "awaiting_1h": 0,
+      "high_priority": 7,
+      "repair_candidates": 5,
       "tracked": 10
     },
-    "generated_at": "2026-07-02T05:56:32.650934+00:00",
+    "generated_at": "2026-07-02T06:57:01.773936+00:00",
     "items": [
       {
-        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.159,
+        "action": "Keep observing through the next checkpoint.",
+        "age_hours": 1.167,
         "category": "wildlife",
         "checkpoints": [
           {
-            "delta_to_target": 0,
+            "delta_to_target": -24,
             "due_at": "2026-07-02T06:47:00.955436+00:00",
             "label": "1h",
-            "source": "estimated",
-            "state": "pending",
+            "source": "observed",
+            "state": "observed",
             "target_views": 24,
             "views": 0
           },
@@ -324,21 +324,21 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "hypothesis": "No intervention signal is strong enough yet.",
         "next_checkpoint": {
           "delta_to_target": 0,
-          "due_at": "2026-07-02T06:47:00.955436+00:00",
-          "label": "1h",
+          "due_at": "2026-07-02T11:47:00.955436+00:00",
+          "label": "6h",
           "source": "estimated",
           "state": "pending",
-          "target_views": 24,
+          "target_views": 105,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
         "priority": "low",
         "series": "Animal Superpowers",
-        "state": "awaiting_1h",
+        "state": "watch",
         "title": "Elephants cool blood through giant ears",
         "uploaded_at": "2026-07-02T05:47:00.955436+00:00",
         "url": "https://www.youtube.com/shorts/HDQAh3KSdtY",
@@ -347,7 +347,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 1.594,
+        "age_hours": 2.602,
         "category": "weather",
         "checkpoints": [
           {
@@ -402,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 4.197,
+        "age_hours": 5.205,
         "category": "rivers",
         "checkpoints": [
           {
@@ -456,8 +456,8 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.812,
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "age_hours": 6.82,
         "category": "fungi",
         "checkpoints": [
           {
@@ -470,11 +470,11 @@
             "views": 0
           },
           {
-            "delta_to_target": 0,
+            "delta_to_target": -105,
             "due_at": "2026-07-02T06:07:50.918833+00:00",
             "label": "6h",
-            "source": "estimated",
-            "state": "pending",
+            "source": "observed",
+            "state": "observed",
             "target_views": 105,
             "views": 0
           },
@@ -489,30 +489,41 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "No intervention signal is strong enough yet.",
+        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
         "next_checkpoint": {
           "delta_to_target": 0,
-          "due_at": "2026-07-02T06:07:50.918833+00:00",
-          "label": "6h",
+          "due_at": "2026-07-03T00:07:50.918833+00:00",
+          "label": "24h",
           "source": "estimated",
           "state": "pending",
-          "target_views": 105,
+          "target_views": 300,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Hidden Network",
-        "state": "watch",
+        "state": "repair_candidate",
         "title": "Mushrooms release spores from hidden gills",
         "uploaded_at": "2026-07-02T00:07:50.918833+00:00",
         "url": "https://www.youtube.com/shorts/LQPZdiuog_k",
         "video_id": "LQPZdiuog_k",
-        "views_per_hour": 0.0
+        "views_per_hour": 0.0,
+        "warning": {
+          "action": "TITLE_AUTO_REPAIR_TRIGGER",
+          "confidence_score": 0.594,
+          "reason": "low early velocity",
+          "reasoning": "video has 18/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+          "title": "Mushrooms release spores from hidden gills",
+          "video_id": "LQPZdiuog_k",
+          "views": 0,
+          "warning_state": "repair_risk"
+        }
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 6.757,
+        "age_hours": 7.765,
         "category": "earth_from_space",
         "checkpoints": [
           {
@@ -568,7 +579,7 @@
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.594,
           "reason": "low early velocity",
-          "reasoning": "video has 25/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+          "reasoning": "video has 27/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
           "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
           "title": "Storm clouds reveal a storm's heat engine",
           "video_id": "nZ6XIZKnuIE",
@@ -578,7 +589,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 7.753,
+        "age_hours": 8.761,
         "category": "trees",
         "checkpoints": [
           {
@@ -644,7 +655,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 8.666,
+        "age_hours": 9.675,
         "category": "forests",
         "checkpoints": [
           {
@@ -710,7 +721,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 9.726,
+        "age_hours": 10.734,
         "category": "geology",
         "checkpoints": [
           {
@@ -761,7 +772,7 @@
         "uploaded_at": "2026-07-01T20:12:59.948248+00:00",
         "url": "https://www.youtube.com/shorts/or7TN0gMpWA",
         "video_id": "or7TN0gMpWA",
-        "views_per_hour": 0.104,
+        "views_per_hour": 0.093,
         "warning": {
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.594,
@@ -776,7 +787,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 10.797,
+        "age_hours": 11.805,
         "category": "geology",
         "checkpoints": [
           {
@@ -827,11 +838,11 @@
         "uploaded_at": "2026-07-01T19:08:43.611233+00:00",
         "url": "https://www.youtube.com/shorts/FEAbi2e-yas",
         "video_id": "FEAbi2e-yas",
-        "views_per_hour": 0.094
+        "views_per_hour": 0.085
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 11.74,
+        "age_hours": 12.748,
         "category": "birds",
         "checkpoints": [
           {
@@ -882,7 +893,7 @@
         "uploaded_at": "2026-07-01T18:12:09.438871+00:00",
         "url": "https://www.youtube.com/shorts/dNBmZyaqKXQ",
         "video_id": "dNBmZyaqKXQ",
-        "views_per_hour": 0.172
+        "views_per_hour": 0.157
       }
     ],
     "targets": {
@@ -892,7 +903,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-02T05:56:32.651469+00:00",
+  "generated_at": "2026-07-02T06:57:01.774387+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
