@@ -1457,6 +1457,189 @@
       }
     },
     {
+      "id": "9e22823752beb432",
+      "title": "Plants turn sunlight into stored sugar",
+      "category": "plants",
+      "autonomy_priority": 118.0,
+      "queue_score": 93.8,
+      "template_cluster": "",
+      "mechanism_cluster": "",
+      "objective_reasons": [
+        "objective_gate:bootstrap_observe_before_scaling"
+      ],
+      "lane": "evergreen",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 98.8,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 61,
+          "signals": {
+            "viral_potential": 66,
+            "visual_potential": 65,
+            "replay_potential": 72,
+            "comment_potential": 54,
+            "educational_potential": 64,
+            "emotional_potential": 44,
+            "novelty": 45
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "retention": {
+          "score": 71,
+          "signals": {
+            "hook_score": 70,
+            "curiosity_score": 71,
+            "visual_score": 66,
+            "replay_score": 62,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "opening_retention": {
+          "score": 100.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "plants",
+          "cue_terms": [
+            "leaf",
+            "light",
+            "sugar",
+            "surface"
+          ],
+          "frame_hook_bridge": [
+            "light"
+          ],
+          "cue_bridge": [
+            "leaf",
+            "light",
+            "surface"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": []
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 9,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 9/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 72,
+          "state": "usable",
+          "subscriber_probability": 0.103,
+          "return_probability": 0.222,
+          "comment_probability": 0.191,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.007,
+          "sample_size": 1,
+          "minimum_sample_size": 15,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.255,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
+        },
+        "category": "plants",
+        "story_format": "plant_mechanism",
+        "hook_score": 86,
+        "title_score": 100,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "confidence_score": 0.007,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 0.0,
+          "template_cluster": "",
+          "mechanism_cluster": ""
+        }
+      }
+    },
+    {
       "id": "a6b589dc4d9db6f3",
       "title": "Cats use whiskers like built-in rulers",
       "category": "cats",
@@ -4190,189 +4373,6 @@
       }
     },
     {
-      "id": "f05ec39064f35742",
-      "title": "Plants turn sunlight into stored sugar",
-      "category": "plants",
-      "autonomy_priority": 95.0,
-      "queue_score": 95.0,
-      "template_cluster": "",
-      "mechanism_cluster": "",
-      "objective_reasons": [
-        "objective_gate:bootstrap_observe_before_scaling"
-      ],
-      "lane": "evergreen",
-      "mix_adjustment": 5.0,
-      "score": {
-        "score": 100.0,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 61,
-          "signals": {
-            "viral_potential": 66,
-            "visual_potential": 65,
-            "replay_potential": 72,
-            "comment_potential": 54,
-            "educational_potential": 64,
-            "emotional_potential": 44,
-            "novelty": 45
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "retention": {
-          "score": 71,
-          "signals": {
-            "hook_score": 70,
-            "curiosity_score": 71,
-            "visual_score": 66,
-            "replay_score": 62,
-            "completion_prediction": 84
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "opening_retention": {
-          "score": 100.0,
-          "state": "retention_ready",
-          "approved": true,
-          "subject": "plants",
-          "cue_terms": [
-            "leaf",
-            "light",
-            "sugar",
-            "surface"
-          ],
-          "frame_hook_bridge": [
-            "light"
-          ],
-          "cue_bridge": [
-            "leaf",
-            "light",
-            "surface"
-          ],
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "risks": []
-        },
-        "weak_content": {
-          "risk": 0,
-          "state": "clear",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.65,
-            "sample_size": 9,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 9/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103,
-          "return_probability": 0.222,
-          "comment_probability": 0.191,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.033,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.274,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.007,
-          "sample_size": 1,
-          "minimum_sample_size": 15,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.255,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
-        },
-        "category": "plants",
-        "story_format": "plant_mechanism",
-        "hook_score": 86,
-        "title_score": 100,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 0.0,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "confidence_score": 0.007,
-          "scale_ready": false,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 0.0,
-          "template_cluster": "",
-          "mechanism_cluster": ""
-        }
-      }
-    },
-    {
       "id": "a386b5695dfd9b83",
       "title": "Plants speed growth under protected glass",
       "category": "plants",
@@ -4580,7 +4580,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.24
+        "freshness_score": 53.22
       },
       {
         "id": "677b330e4980e87d",
@@ -4612,7 +4612,7 @@
         "category": "insects",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.8
+        "freshness_score": 53.78
       },
       {
         "id": "33b8c5d2b6058e54",
@@ -4692,7 +4692,7 @@
         "category": "rivers",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.92
+        "freshness_score": 53.9
       },
       {
         "id": "17c87451c802bb11",
@@ -4716,7 +4716,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.24
+        "freshness_score": 53.22
       },
       {
         "id": "bde3a3cd3f2b3583",
@@ -4724,7 +4724,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.82
+        "freshness_score": 53.8
       },
       {
         "id": "db2eb7ca63e0a42a",
@@ -4740,7 +4740,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.24
+        "freshness_score": 53.22
       },
       {
         "id": "02f475952f9bf936",
@@ -4772,7 +4772,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.42
+        "freshness_score": 54.4
       },
       {
         "id": "4406a9b99388f0ba",
@@ -4780,7 +4780,7 @@
         "category": "primates",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.9
+        "freshness_score": 52.88
       },
       {
         "id": "9f07c71ee1907fc0",
@@ -4788,7 +4788,7 @@
         "category": "ocean",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.34
+        "freshness_score": 53.32
       },
       {
         "id": "29ac30c9fe8424d4",
@@ -4796,7 +4796,7 @@
         "category": "dogs",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 53.34
+        "freshness_score": 53.32
       },
       {
         "id": "f02e42af190accb5",
@@ -4804,7 +4804,15 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.66
+        "freshness_score": 54.64
+      },
+      {
+        "id": "9e22823752beb432",
+        "title": "Plants turn sunlight into stored sugar",
+        "category": "plants",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       },
       {
         "id": "3e411d85394495a1",
@@ -4812,7 +4820,7 @@
         "category": "dogs",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 52.88
+        "freshness_score": 52.86
       },
       {
         "id": "893ffe8d80d16f7a",
@@ -4828,7 +4836,7 @@
         "category": "arctic",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.52
+        "freshness_score": 54.5
       },
       {
         "id": "259c7b57eae57db8",
@@ -4852,7 +4860,7 @@
         "category": "nocturnal",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.9
+        "freshness_score": 52.88
       },
       {
         "id": "cd5660d9f870792d",
@@ -4876,7 +4884,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.76
+        "freshness_score": 54.74
       },
       {
         "id": "11137f107a134f04",
@@ -4884,7 +4892,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.9
+        "freshness_score": 52.88
       },
       {
         "id": "b56baed0627d1611",
@@ -4900,7 +4908,7 @@
         "category": "discoveries",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.88
+        "freshness_score": 52.86
       },
       {
         "id": "510258fc6cfb6be9",
@@ -4908,7 +4916,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 53.26
+        "freshness_score": 53.24
       },
       {
         "id": "38a9a9876bc2c5d0",
@@ -4916,7 +4924,7 @@
         "category": "space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.88
+        "freshness_score": 52.86
       },
       {
         "id": "6568a4ceeb37c856",
@@ -4924,7 +4932,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 52.88
+        "freshness_score": 52.86
       },
       {
         "id": "e22c7bfd6c2187b6",
@@ -4948,7 +4956,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.88
+        "freshness_score": 52.86
       },
       {
         "id": "3838dc5bd1044fb1",
@@ -4980,7 +4988,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.16
+        "freshness_score": 54.14
       },
       {
         "id": "a4ca94af1a59d5df",
@@ -4991,28 +4999,20 @@
         "freshness_score": 54.38
       },
       {
-        "id": "f05ec39064f35742",
-        "title": "Plants turn sunlight into stored sugar",
-        "category": "plants",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.76
-      },
-      {
         "id": "a386b5695dfd9b83",
         "title": "Plants speed growth under protected glass",
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.24
+        "freshness_score": 53.22
       },
       {
-        "id": "f706eae7d3094819",
+        "id": "1e79a367661a044e",
         "title": "Ducks carry waterproof oil on their feathers",
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.7
+        "freshness_score": 55.0
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
