@@ -1,5 +1,5 @@
 {
-  "sample_count": 18,
+  "sample_count": 19,
   "bootstrap_mode": true,
   "minimum_sample_rules": {
     "category": 5,
@@ -14,25 +14,25 @@
   },
   "category": {
     "ocean": {
-      "n": 1,
-      "views": 2,
+      "n": 2,
+      "views": 3,
       "retention_samples": 0,
       "watch_time_samples": 0,
       "avg_retention": 0.0,
       "avg_watch_time": 0.0,
       "subs_per_1k": 0.0,
-      "comments_per_1k": 500.0,
-      "return_proxy": 1001.5,
+      "comments_per_1k": 250.0,
+      "return_proxy": 503.0,
       "confidence": {
-        "confidence_score": 0.113,
-        "sample_size": 1,
+        "confidence_score": 0.227,
+        "sample_size": 2,
         "minimum_sample_size": 5,
         "data_quality": "estimated",
         "data_quality_score": 0.567,
         "recommendation_strength": "observe",
         "can_adjust_strategy": false,
-        "bootstrap_multiplier": 0.335,
-        "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+        "bootstrap_multiplier": 0.42,
+        "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
       }
     },
     "farm": {
@@ -58,25 +58,25 @@
       }
     },
     "insects": {
-      "n": 2,
-      "views": 5,
+      "n": 3,
+      "views": 6,
       "retention_samples": 0,
       "watch_time_samples": 0,
       "avg_retention": 0.0,
       "avg_watch_time": 0.0,
       "subs_per_1k": 0.0,
-      "comments_per_1k": 416.667,
-      "return_proxy": 836.334,
+      "comments_per_1k": 611.111,
+      "return_proxy": 1226.722,
       "confidence": {
-        "confidence_score": 0.227,
-        "sample_size": 2,
+        "confidence_score": 0.34,
+        "sample_size": 3,
         "minimum_sample_size": 5,
         "data_quality": "estimated",
         "data_quality_score": 0.567,
         "recommendation_strength": "observe",
         "can_adjust_strategy": false,
-        "bootstrap_multiplier": 0.42,
-        "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+        "bootstrap_multiplier": 0.45,
+        "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only."
       }
     },
     "reptiles": {
@@ -124,25 +124,25 @@
       }
     },
     "geology": {
-      "n": 2,
-      "views": 3,
+      "n": 1,
+      "views": 2,
       "retention_samples": 0,
       "watch_time_samples": 0,
       "avg_retention": 0.0,
       "avg_watch_time": 0.0,
       "subs_per_1k": 0.0,
-      "comments_per_1k": 250.0,
-      "return_proxy": 503.0,
+      "comments_per_1k": 500.0,
+      "return_proxy": 1001.5,
       "confidence": {
-        "confidence_score": 0.227,
-        "sample_size": 2,
+        "confidence_score": 0.113,
+        "sample_size": 1,
         "minimum_sample_size": 5,
         "data_quality": "estimated",
         "data_quality_score": 0.567,
         "recommendation_strength": "observe",
         "can_adjust_strategy": false,
-        "bootstrap_multiplier": 0.42,
-        "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+        "bootstrap_multiplier": 0.335,
+        "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
       }
     },
     "dogs": {
@@ -307,8 +307,8 @@
       "avg_retention": 0.0,
       "avg_watch_time": 0.0,
       "subs_per_1k": 0.0,
-      "comments_per_1k": 1000.0,
-      "return_proxy": 2001.5,
+      "comments_per_1k": 0.0,
+      "return_proxy": 1.5,
       "confidence": {
         "confidence_score": 0.113,
         "sample_size": 1,
@@ -331,8 +331,8 @@
       "avg_retention": 0.0,
       "avg_watch_time": 0.0,
       "subs_per_1k": 0.0,
-      "comments_per_1k": 500.0,
-      "return_proxy": 1004.5,
+      "comments_per_1k": 166.667,
+      "return_proxy": 337.834,
       "confidence": {
         "confidence_score": 0.34,
         "sample_size": 3,
@@ -390,25 +390,25 @@
       }
     },
     "earth_engine": {
-      "n": 5,
-      "views": 7,
+      "n": 4,
+      "views": 6,
       "retention_samples": 0,
       "watch_time_samples": 0,
       "avg_retention": 0.0,
       "avg_watch_time": 0.0,
       "subs_per_1k": 0.0,
-      "comments_per_1k": 200.0,
-      "return_proxy": 407.5,
+      "comments_per_1k": 250.0,
+      "return_proxy": 506.0,
       "confidence": {
-        "confidence_score": 0.567,
-        "sample_size": 5,
+        "confidence_score": 0.454,
+        "sample_size": 4,
         "minimum_sample_size": 5,
         "data_quality": "estimated",
         "data_quality_score": 0.567,
-        "recommendation_strength": "test",
-        "can_adjust_strategy": true,
+        "recommendation_strength": "observe",
+        "can_adjust_strategy": false,
         "bootstrap_multiplier": 0.45,
-        "reasoning": "format has 5/5 samples, estimated data, confidence 0.57; strategy changes allowed."
+        "reasoning": "format has 4/5 samples, estimated data, confidence 0.45; observation only."
       }
     },
     "hidden_network": {
@@ -434,49 +434,71 @@
       }
     },
     "single_fact": {
-      "n": 2,
-      "views": 5,
+      "n": 3,
+      "views": 6,
       "retention_samples": 0,
       "watch_time_samples": 0,
       "avg_retention": 0.0,
       "avg_watch_time": 0.0,
       "subs_per_1k": 0.0,
-      "comments_per_1k": 416.667,
-      "return_proxy": 836.334,
+      "comments_per_1k": 611.111,
+      "return_proxy": 1226.722,
       "confidence": {
-        "confidence_score": 0.227,
-        "sample_size": 2,
+        "confidence_score": 0.34,
+        "sample_size": 3,
         "minimum_sample_size": 5,
         "data_quality": "estimated",
         "data_quality_score": 0.567,
         "recommendation_strength": "observe",
         "can_adjust_strategy": false,
-        "bootstrap_multiplier": 0.42,
-        "reasoning": "format has 2/5 samples, estimated data, confidence 0.23; observation only."
+        "bootstrap_multiplier": 0.45,
+        "reasoning": "format has 3/5 samples, estimated data, confidence 0.34; observation only."
       }
-    }
-  },
-  "series": {
-    "Ocean Mysteries": {
+    },
+    "ecosystem_engine": {
       "n": 1,
-      "views": 2,
+      "views": 1,
       "retention_samples": 0,
       "watch_time_samples": 0,
       "avg_retention": 0.0,
       "avg_watch_time": 0.0,
       "subs_per_1k": 0.0,
-      "comments_per_1k": 500.0,
-      "return_proxy": 1001.5,
+      "comments_per_1k": 0.0,
+      "return_proxy": 1.5,
       "confidence": {
-        "confidence_score": 0.189,
+        "confidence_score": 0.113,
         "sample_size": 1,
+        "minimum_sample_size": 5,
+        "data_quality": "estimated",
+        "data_quality_score": 0.567,
+        "recommendation_strength": "observe",
+        "can_adjust_strategy": false,
+        "bootstrap_multiplier": 0.335,
+        "reasoning": "format has 1/5 samples, estimated data, confidence 0.11; observation only."
+      }
+    }
+  },
+  "series": {
+    "Ocean Mysteries": {
+      "n": 2,
+      "views": 3,
+      "retention_samples": 0,
+      "watch_time_samples": 0,
+      "avg_retention": 0.0,
+      "avg_watch_time": 0.0,
+      "subs_per_1k": 0.0,
+      "comments_per_1k": 250.0,
+      "return_proxy": 503.0,
+      "confidence": {
+        "confidence_score": 0.378,
+        "sample_size": 2,
         "minimum_sample_size": 3,
         "data_quality": "estimated",
         "data_quality_score": 0.567,
         "recommendation_strength": "observe",
         "can_adjust_strategy": false,
-        "bootstrap_multiplier": 0.392,
-        "reasoning": "series has 1/3 samples, estimated data, confidence 0.19; observation only."
+        "bootstrap_multiplier": 0.45,
+        "reasoning": "series has 2/3 samples, estimated data, confidence 0.38; observation only."
       }
     },
     "Farmyard Surprises": {
@@ -502,25 +524,25 @@
       }
     },
     "Tiny Worlds": {
-      "n": 2,
-      "views": 5,
+      "n": 3,
+      "views": 6,
       "retention_samples": 0,
       "watch_time_samples": 0,
       "avg_retention": 0.0,
       "avg_watch_time": 0.0,
       "subs_per_1k": 0.0,
-      "comments_per_1k": 416.667,
-      "return_proxy": 836.334,
+      "comments_per_1k": 611.111,
+      "return_proxy": 1226.722,
       "confidence": {
-        "confidence_score": 0.378,
-        "sample_size": 2,
+        "confidence_score": 0.567,
+        "sample_size": 3,
         "minimum_sample_size": 3,
         "data_quality": "estimated",
         "data_quality_score": 0.567,
-        "recommendation_strength": "observe",
-        "can_adjust_strategy": false,
+        "recommendation_strength": "test",
+        "can_adjust_strategy": true,
         "bootstrap_multiplier": 0.45,
-        "reasoning": "series has 2/3 samples, estimated data, confidence 0.38; observation only."
+        "reasoning": "series has 3/3 samples, estimated data, confidence 0.57; strategy changes allowed."
       }
     },
     "Cold-Blooded Secrets": {
@@ -546,25 +568,25 @@
       }
     },
     "Earth Engine": {
-      "n": 4,
-      "views": 5,
+      "n": 3,
+      "views": 4,
       "retention_samples": 0,
       "watch_time_samples": 0,
       "avg_retention": 0.0,
       "avg_watch_time": 0.0,
       "subs_per_1k": 0.0,
-      "comments_per_1k": 125.0,
-      "return_proxy": 256.0,
+      "comments_per_1k": 166.667,
+      "return_proxy": 337.834,
       "confidence": {
         "confidence_score": 0.567,
-        "sample_size": 4,
+        "sample_size": 3,
         "minimum_sample_size": 3,
         "data_quality": "estimated",
         "data_quality_score": 0.567,
         "recommendation_strength": "test",
         "can_adjust_strategy": true,
         "bootstrap_multiplier": 0.45,
-        "reasoning": "series has 4/3 samples, estimated data, confidence 0.57; strategy changes allowed."
+        "reasoning": "series has 3/3 samples, estimated data, confidence 0.57; strategy changes allowed."
       }
     },
     "Pet Secrets": {
@@ -575,8 +597,8 @@
       "avg_retention": 0.0,
       "avg_watch_time": 0.0,
       "subs_per_1k": 0.0,
-      "comments_per_1k": 500.0,
-      "return_proxy": 1003.0,
+      "comments_per_1k": 0.0,
+      "return_proxy": 3.0,
       "confidence": {
         "confidence_score": 0.378,
         "sample_size": 2,
@@ -684,40 +706,40 @@
     "category_comments": {},
     "format_retention": {},
     "format_subscribers": {
-      "animal_intelligence": 0.932,
-      "earth_engine": 0.932
+      "animal_intelligence": 0.932
     },
     "series_return": {
+      "Tiny Worlds": 1.126,
       "Earth Engine": 1.126
     }
   },
   "winners": {
     "category": [
       {
-        "value": "cats",
-        "n": 1,
-        "views": 1,
+        "value": "insects",
+        "n": 3,
+        "views": 6,
         "retention_samples": 0,
         "watch_time_samples": 0,
         "avg_retention": 0.0,
         "avg_watch_time": 0.0,
         "subs_per_1k": 0.0,
-        "comments_per_1k": 1000.0,
-        "return_proxy": 2001.5,
+        "comments_per_1k": 611.111,
+        "return_proxy": 1226.722,
         "confidence": {
-          "confidence_score": 0.113,
-          "sample_size": 1,
+          "confidence_score": 0.34,
+          "sample_size": 3,
           "minimum_sample_size": 5,
           "data_quality": "estimated",
           "data_quality_score": 0.567,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.335,
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+          "bootstrap_multiplier": 0.45,
+          "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only."
         }
       },
       {
-        "value": "ocean",
+        "value": "farm",
         "n": 1,
         "views": 2,
         "retention_samples": 0,
@@ -740,7 +762,7 @@
         }
       },
       {
-        "value": "farm",
+        "value": "geology",
         "n": 1,
         "views": 2,
         "retention_samples": 0,
@@ -834,16 +856,16 @@
     ],
     "format": [
       {
-        "value": "body_superpower",
+        "value": "single_fact",
         "n": 3,
-        "views": 4,
+        "views": 6,
         "retention_samples": 0,
         "watch_time_samples": 0,
         "avg_retention": 0.0,
         "avg_watch_time": 0.0,
         "subs_per_1k": 0.0,
-        "comments_per_1k": 500.0,
-        "return_proxy": 1004.5,
+        "comments_per_1k": 611.111,
+        "return_proxy": 1226.722,
         "confidence": {
           "confidence_score": 0.34,
           "sample_size": 3,
@@ -854,29 +876,6 @@
           "can_adjust_strategy": false,
           "bootstrap_multiplier": 0.45,
           "reasoning": "format has 3/5 samples, estimated data, confidence 0.34; observation only."
-        }
-      },
-      {
-        "value": "single_fact",
-        "n": 2,
-        "views": 5,
-        "retention_samples": 0,
-        "watch_time_samples": 0,
-        "avg_retention": 0.0,
-        "avg_watch_time": 0.0,
-        "subs_per_1k": 0.0,
-        "comments_per_1k": 416.667,
-        "return_proxy": 836.334,
-        "confidence": {
-          "confidence_score": 0.227,
-          "sample_size": 2,
-          "minimum_sample_size": 5,
-          "data_quality": "estimated",
-          "data_quality_score": 0.567,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.42,
-          "reasoning": "format has 2/5 samples, estimated data, confidence 0.23; observation only."
         }
       },
       {
@@ -900,6 +899,29 @@
           "can_adjust_strategy": false,
           "bootstrap_multiplier": 0.335,
           "reasoning": "format has 1/5 samples, estimated data, confidence 0.11; observation only."
+        }
+      },
+      {
+        "value": "earth_engine",
+        "n": 4,
+        "views": 6,
+        "retention_samples": 0,
+        "watch_time_samples": 0,
+        "avg_retention": 0.0,
+        "avg_watch_time": 0.0,
+        "subs_per_1k": 0.0,
+        "comments_per_1k": 250.0,
+        "return_proxy": 506.0,
+        "confidence": {
+          "confidence_score": 0.454,
+          "sample_size": 4,
+          "minimum_sample_size": 5,
+          "data_quality": "estimated",
+          "data_quality_score": 0.567,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.45,
+          "reasoning": "format has 4/5 samples, estimated data, confidence 0.45; observation only."
         }
       },
       {
@@ -949,74 +971,51 @@
         }
       },
       {
-        "value": "earth_engine",
-        "n": 5,
-        "views": 7,
+        "value": "body_superpower",
+        "n": 3,
+        "views": 4,
         "retention_samples": 0,
         "watch_time_samples": 0,
         "avg_retention": 0.0,
         "avg_watch_time": 0.0,
         "subs_per_1k": 0.0,
-        "comments_per_1k": 200.0,
-        "return_proxy": 407.5,
+        "comments_per_1k": 166.667,
+        "return_proxy": 337.834,
         "confidence": {
-          "confidence_score": 0.567,
-          "sample_size": 5,
+          "confidence_score": 0.34,
+          "sample_size": 3,
           "minimum_sample_size": 5,
           "data_quality": "estimated",
           "data_quality_score": 0.567,
-          "recommendation_strength": "test",
-          "can_adjust_strategy": true,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
           "bootstrap_multiplier": 0.45,
-          "reasoning": "format has 5/5 samples, estimated data, confidence 0.57; strategy changes allowed."
+          "reasoning": "format has 3/5 samples, estimated data, confidence 0.34; observation only."
         }
       }
     ],
     "series": [
       {
-        "value": "Pet Secrets",
-        "n": 2,
-        "views": 2,
+        "value": "Tiny Worlds",
+        "n": 3,
+        "views": 6,
         "retention_samples": 0,
         "watch_time_samples": 0,
         "avg_retention": 0.0,
         "avg_watch_time": 0.0,
         "subs_per_1k": 0.0,
-        "comments_per_1k": 500.0,
-        "return_proxy": 1003.0,
+        "comments_per_1k": 611.111,
+        "return_proxy": 1226.722,
         "confidence": {
-          "confidence_score": 0.378,
-          "sample_size": 2,
+          "confidence_score": 0.567,
+          "sample_size": 3,
           "minimum_sample_size": 3,
           "data_quality": "estimated",
           "data_quality_score": 0.567,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
+          "recommendation_strength": "test",
+          "can_adjust_strategy": true,
           "bootstrap_multiplier": 0.45,
-          "reasoning": "series has 2/3 samples, estimated data, confidence 0.38; observation only."
-        }
-      },
-      {
-        "value": "Ocean Mysteries",
-        "n": 1,
-        "views": 2,
-        "retention_samples": 0,
-        "watch_time_samples": 0,
-        "avg_retention": 0.0,
-        "avg_watch_time": 0.0,
-        "subs_per_1k": 0.0,
-        "comments_per_1k": 500.0,
-        "return_proxy": 1001.5,
-        "confidence": {
-          "confidence_score": 0.189,
-          "sample_size": 1,
-          "minimum_sample_size": 3,
-          "data_quality": "estimated",
-          "data_quality_score": 0.567,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.392,
-          "reasoning": "series has 1/3 samples, estimated data, confidence 0.19; observation only."
+          "reasoning": "series has 3/3 samples, estimated data, confidence 0.57; strategy changes allowed."
         }
       },
       {
@@ -1089,16 +1088,39 @@
         }
       },
       {
-        "value": "Tiny Worlds",
-        "n": 2,
-        "views": 5,
+        "value": "Cold-Blooded Secrets",
+        "n": 1,
+        "views": 3,
         "retention_samples": 0,
         "watch_time_samples": 0,
         "avg_retention": 0.0,
         "avg_watch_time": 0.0,
         "subs_per_1k": 0.0,
-        "comments_per_1k": 416.667,
-        "return_proxy": 836.334,
+        "comments_per_1k": 333.333,
+        "return_proxy": 668.166,
+        "confidence": {
+          "confidence_score": 0.189,
+          "sample_size": 1,
+          "minimum_sample_size": 3,
+          "data_quality": "estimated",
+          "data_quality_score": 0.567,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.392,
+          "reasoning": "series has 1/3 samples, estimated data, confidence 0.19; observation only."
+        }
+      },
+      {
+        "value": "Ocean Mysteries",
+        "n": 2,
+        "views": 3,
+        "retention_samples": 0,
+        "watch_time_samples": 0,
+        "avg_retention": 0.0,
+        "avg_watch_time": 0.0,
+        "subs_per_1k": 0.0,
+        "comments_per_1k": 250.0,
+        "return_proxy": 503.0,
         "confidence": {
           "confidence_score": 0.378,
           "sample_size": 2,
@@ -1208,6 +1230,29 @@
         }
       },
       {
+        "value": "cats",
+        "n": 1,
+        "views": 1,
+        "retention_samples": 0,
+        "watch_time_samples": 0,
+        "avg_retention": 0.0,
+        "avg_watch_time": 0.0,
+        "subs_per_1k": 0.0,
+        "comments_per_1k": 0.0,
+        "return_proxy": 1.5,
+        "confidence": {
+          "confidence_score": 0.113,
+          "sample_size": 1,
+          "minimum_sample_size": 5,
+          "data_quality": "estimated",
+          "data_quality_score": 0.567,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.335,
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+        }
+      },
+      {
         "value": "wildlife",
         "n": 3,
         "views": 3,
@@ -1229,57 +1274,57 @@
           "bootstrap_multiplier": 0.45,
           "reasoning": "category has 3/5 samples, estimated data, confidence 0.34; observation only."
         }
-      },
+      }
+    ],
+    "format": [
       {
-        "value": "geology",
-        "n": 2,
-        "views": 3,
+        "value": "ecosystem_engine",
+        "n": 1,
+        "views": 1,
         "retention_samples": 0,
         "watch_time_samples": 0,
         "avg_retention": 0.0,
         "avg_watch_time": 0.0,
         "subs_per_1k": 0.0,
-        "comments_per_1k": 250.0,
-        "return_proxy": 503.0,
+        "comments_per_1k": 0.0,
+        "return_proxy": 1.5,
         "confidence": {
-          "confidence_score": 0.227,
-          "sample_size": 2,
+          "confidence_score": 0.113,
+          "sample_size": 1,
           "minimum_sample_size": 5,
           "data_quality": "estimated",
           "data_quality_score": 0.567,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.42,
-          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+          "bootstrap_multiplier": 0.335,
+          "reasoning": "format has 1/5 samples, estimated data, confidence 0.11; observation only."
         }
-      }
-    ],
-    "format": [
+      },
       {
-        "value": "animal_intelligence",
-        "n": 5,
-        "views": 7,
+        "value": "body_superpower",
+        "n": 3,
+        "views": 4,
         "retention_samples": 0,
         "watch_time_samples": 0,
         "avg_retention": 0.0,
         "avg_watch_time": 0.0,
         "subs_per_1k": 0.0,
-        "comments_per_1k": 200.0,
-        "return_proxy": 407.5,
+        "comments_per_1k": 166.667,
+        "return_proxy": 337.834,
         "confidence": {
-          "confidence_score": 0.567,
-          "sample_size": 5,
+          "confidence_score": 0.34,
+          "sample_size": 3,
           "minimum_sample_size": 5,
           "data_quality": "estimated",
           "data_quality_score": 0.567,
-          "recommendation_strength": "test",
-          "can_adjust_strategy": true,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
           "bootstrap_multiplier": 0.45,
-          "reasoning": "format has 5/5 samples, estimated data, confidence 0.57; strategy changes allowed."
+          "reasoning": "format has 3/5 samples, estimated data, confidence 0.34; observation only."
         }
       },
       {
-        "value": "earth_engine",
+        "value": "animal_intelligence",
         "n": 5,
         "views": 7,
         "retention_samples": 0,
@@ -1325,6 +1370,29 @@
         }
       },
       {
+        "value": "earth_engine",
+        "n": 4,
+        "views": 6,
+        "retention_samples": 0,
+        "watch_time_samples": 0,
+        "avg_retention": 0.0,
+        "avg_watch_time": 0.0,
+        "subs_per_1k": 0.0,
+        "comments_per_1k": 250.0,
+        "return_proxy": 506.0,
+        "confidence": {
+          "confidence_score": 0.454,
+          "sample_size": 4,
+          "minimum_sample_size": 5,
+          "data_quality": "estimated",
+          "data_quality_score": 0.567,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.45,
+          "reasoning": "format has 4/5 samples, estimated data, confidence 0.45; observation only."
+        }
+      },
+      {
         "value": "rare_nature",
         "n": 1,
         "views": 3,
@@ -1346,55 +1414,32 @@
           "bootstrap_multiplier": 0.335,
           "reasoning": "format has 1/5 samples, estimated data, confidence 0.11; observation only."
         }
-      },
+      }
+    ],
+    "series": [
       {
-        "value": "single_fact",
+        "value": "Pet Secrets",
         "n": 2,
-        "views": 5,
+        "views": 2,
         "retention_samples": 0,
         "watch_time_samples": 0,
         "avg_retention": 0.0,
         "avg_watch_time": 0.0,
         "subs_per_1k": 0.0,
-        "comments_per_1k": 416.667,
-        "return_proxy": 836.334,
+        "comments_per_1k": 0.0,
+        "return_proxy": 3.0,
         "confidence": {
-          "confidence_score": 0.227,
+          "confidence_score": 0.378,
           "sample_size": 2,
-          "minimum_sample_size": 5,
-          "data_quality": "estimated",
-          "data_quality_score": 0.567,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.42,
-          "reasoning": "format has 2/5 samples, estimated data, confidence 0.23; observation only."
-        }
-      },
-      {
-        "value": "body_superpower",
-        "n": 3,
-        "views": 4,
-        "retention_samples": 0,
-        "watch_time_samples": 0,
-        "avg_retention": 0.0,
-        "avg_watch_time": 0.0,
-        "subs_per_1k": 0.0,
-        "comments_per_1k": 500.0,
-        "return_proxy": 1004.5,
-        "confidence": {
-          "confidence_score": 0.34,
-          "sample_size": 3,
-          "minimum_sample_size": 5,
+          "minimum_sample_size": 3,
           "data_quality": "estimated",
           "data_quality_score": 0.567,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
           "bootstrap_multiplier": 0.45,
-          "reasoning": "format has 3/5 samples, estimated data, confidence 0.34; observation only."
+          "reasoning": "series has 2/3 samples, estimated data, confidence 0.38; observation only."
         }
-      }
-    ],
-    "series": [
+      },
       {
         "value": "Animal Superpowers",
         "n": 3,
@@ -1420,25 +1465,48 @@
       },
       {
         "value": "Earth Engine",
-        "n": 4,
-        "views": 5,
+        "n": 3,
+        "views": 4,
         "retention_samples": 0,
         "watch_time_samples": 0,
         "avg_retention": 0.0,
         "avg_watch_time": 0.0,
         "subs_per_1k": 0.0,
-        "comments_per_1k": 125.0,
-        "return_proxy": 256.0,
+        "comments_per_1k": 166.667,
+        "return_proxy": 337.834,
         "confidence": {
           "confidence_score": 0.567,
-          "sample_size": 4,
+          "sample_size": 3,
           "minimum_sample_size": 3,
           "data_quality": "estimated",
           "data_quality_score": 0.567,
           "recommendation_strength": "test",
           "can_adjust_strategy": true,
           "bootstrap_multiplier": 0.45,
-          "reasoning": "series has 4/3 samples, estimated data, confidence 0.57; strategy changes allowed."
+          "reasoning": "series has 3/3 samples, estimated data, confidence 0.57; strategy changes allowed."
+        }
+      },
+      {
+        "value": "Ocean Mysteries",
+        "n": 2,
+        "views": 3,
+        "retention_samples": 0,
+        "watch_time_samples": 0,
+        "avg_retention": 0.0,
+        "avg_watch_time": 0.0,
+        "subs_per_1k": 0.0,
+        "comments_per_1k": 250.0,
+        "return_proxy": 503.0,
+        "confidence": {
+          "confidence_score": 0.378,
+          "sample_size": 2,
+          "minimum_sample_size": 3,
+          "data_quality": "estimated",
+          "data_quality_score": 0.567,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.45,
+          "reasoning": "series has 2/3 samples, estimated data, confidence 0.38; observation only."
         }
       },
       {
@@ -1475,52 +1543,6 @@
         "subs_per_1k": 0.0,
         "comments_per_1k": 333.333,
         "return_proxy": 668.166,
-        "confidence": {
-          "confidence_score": 0.189,
-          "sample_size": 1,
-          "minimum_sample_size": 3,
-          "data_quality": "estimated",
-          "data_quality_score": 0.567,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.392,
-          "reasoning": "series has 1/3 samples, estimated data, confidence 0.19; observation only."
-        }
-      },
-      {
-        "value": "Tiny Worlds",
-        "n": 2,
-        "views": 5,
-        "retention_samples": 0,
-        "watch_time_samples": 0,
-        "avg_retention": 0.0,
-        "avg_watch_time": 0.0,
-        "subs_per_1k": 0.0,
-        "comments_per_1k": 416.667,
-        "return_proxy": 836.334,
-        "confidence": {
-          "confidence_score": 0.378,
-          "sample_size": 2,
-          "minimum_sample_size": 3,
-          "data_quality": "estimated",
-          "data_quality_score": 0.567,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.45,
-          "reasoning": "series has 2/3 samples, estimated data, confidence 0.38; observation only."
-        }
-      },
-      {
-        "value": "Ocean Mysteries",
-        "n": 1,
-        "views": 2,
-        "retention_samples": 0,
-        "watch_time_samples": 0,
-        "avg_retention": 0.0,
-        "avg_watch_time": 0.0,
-        "subs_per_1k": 0.0,
-        "comments_per_1k": 500.0,
-        "return_proxy": 1001.5,
         "confidence": {
           "confidence_score": 0.189,
           "sample_size": 1,

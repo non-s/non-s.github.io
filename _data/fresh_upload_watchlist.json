@@ -5,22 +5,22 @@
     24
   ],
   "counts": {
-    "analytics_due": 4,
+    "analytics_due": 1,
     "awaiting_1h": 1,
-    "high_priority": 5,
-    "repair_candidates": 1,
+    "high_priority": 3,
+    "repair_candidates": 2,
     "tracked": 10
   },
-  "generated_at": "2026-07-03T19:59:00.747712+00:00",
+  "generated_at": "2026-07-03T20:09:59.590507+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.871,
-      "category": "insects",
+      "age_hours": 0.052,
+      "category": "conservation",
       "checkpoints": [
         {
           "delta_to_target": 0,
-          "due_at": "2026-07-03T20:06:43.760986+00:00",
+          "due_at": "2026-07-03T21:06:52.231213+00:00",
           "label": "1h",
           "source": "estimated",
           "state": "pending",
@@ -29,7 +29,7 @@
         },
         {
           "delta_to_target": 0,
-          "due_at": "2026-07-04T01:06:43.760986+00:00",
+          "due_at": "2026-07-04T02:06:52.231213+00:00",
           "label": "6h",
           "source": "estimated",
           "state": "pending",
@@ -38,7 +38,7 @@
         },
         {
           "delta_to_target": 0,
-          "due_at": "2026-07-04T19:06:43.760986+00:00",
+          "due_at": "2026-07-04T20:06:52.231213+00:00",
           "label": "24h",
           "source": "estimated",
           "state": "pending",
@@ -50,7 +50,7 @@
       "hypothesis": "The upload is still inside the no-panic observation window.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-03T20:06:43.760986+00:00",
+        "due_at": "2026-07-03T21:06:52.231213+00:00",
         "label": "1h",
         "source": "estimated",
         "state": "pending",
@@ -60,25 +60,89 @@
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "low",
-      "series": "Tiny Worlds",
+      "series": "Planet Repair",
       "state": "awaiting_1h",
+      "title": "Fish Mangroves take power out of waves",
+      "uploaded_at": "2026-07-03T20:06:52.231213+00:00",
+      "url": "https://www.youtube.com/shorts/rPhsl7qFRfY",
+      "video_id": "rPhsl7qFRfY",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Queue a sequel or related-video bridge while the session has momentum.",
+      "age_hours": 1.054,
+      "category": "insects",
+      "checkpoints": [
+        {
+          "delta_to_target": -23,
+          "due_at": "2026-07-03T20:06:43.760986+00:00",
+          "label": "1h",
+          "source": "observed",
+          "state": "observed",
+          "target_views": 24,
+          "views": 1
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-04T01:06:43.760986+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 1
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-04T19:06:43.760986+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 1
+        }
+      ],
+      "current_views": 1,
+      "hypothesis": "Performance signal is already positive; amplify without changing the opening.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-04T01:06:43.760986+00:00",
+        "label": "6h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 105,
+        "views": 1
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "normal",
+      "series": "Tiny Worlds",
+      "state": "accelerating",
       "title": "Mantises judge distance with 3D vision",
       "uploaded_at": "2026-07-03T19:06:43.760986+00:00",
       "url": "https://www.youtube.com/shorts/ZEsLlK_ftDc",
       "video_id": "ZEsLlK_ftDc",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.985,
+      "warning": {
+        "confidence_score": 0.512,
+        "reasoning": "video has 5/2 samples, estimated data, confidence 0.51; observation only.",
+        "score": 2,
+        "state": "accelerating",
+        "title": "Mantises judge distance with 3D vision",
+        "video_id": "ZEsLlK_ftDc",
+        "warning_state": "accelerator"
+      }
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 1.575,
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 1.758,
       "category": "birds",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-03T19:24:31.178599+00:00",
           "label": "1h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -102,21 +166,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-03T19:24:31.178599+00:00",
-        "label": "1h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-04T00:24:31.178599+00:00",
+        "label": "6h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 24,
+        "state": "pending",
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "high",
+      "priority": "low",
       "series": "Sky Intelligence",
-      "state": "analytics_due",
+      "state": "watch",
       "title": "Birds see ultraviolet patterns we miss",
       "uploaded_at": "2026-07-03T18:24:31.178599+00:00",
       "url": "https://www.youtube.com/shorts/JW9gO7JDkLU",
@@ -125,7 +189,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.865,
+      "age_hours": 3.048,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -180,7 +244,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.199,
+      "age_hours": 3.382,
       "category": "primates",
       "checkpoints": [
         {
@@ -234,8 +298,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.455,
+      "action": "Queue a sequel or related-video bridge while the session has momentum.",
+      "age_hours": 4.638,
       "category": "ocean",
       "checkpoints": [
         {
@@ -254,7 +318,7 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 105,
-          "views": 0
+          "views": 1
         },
         {
           "delta_to_target": 0,
@@ -263,11 +327,11 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 300,
-          "views": 0
+          "views": 1
         }
       ],
-      "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "current_views": 1,
+      "hypothesis": "Performance signal is already positive; amplify without changing the opening.",
       "next_checkpoint": {
         "delta_to_target": 0,
         "due_at": "2026-07-03T21:31:43.787838+00:00",
@@ -275,22 +339,31 @@
         "source": "estimated",
         "state": "pending",
         "target_views": 105,
-        "views": 0
+        "views": 1
       },
       "opening_retention_score": 94.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "normal",
       "series": "Ocean Mysteries",
-      "state": "watch",
+      "state": "accelerating",
       "title": "Coral reefs are cities built by tiny animals",
       "uploaded_at": "2026-07-03T15:31:43.787838+00:00",
       "url": "https://www.youtube.com/shorts/StWGdOT1uDA",
       "video_id": "StWGdOT1uDA",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.217,
+      "warning": {
+        "confidence_score": 0.512,
+        "reasoning": "video has 28/2 samples, estimated data, confidence 0.51; observation only.",
+        "score": 0,
+        "state": "accelerating",
+        "title": "Coral reefs are cities built by tiny animals",
+        "video_id": "StWGdOT1uDA",
+        "warning_state": "accelerator"
+      }
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.436,
+      "age_hours": 5.619,
       "category": "cats",
       "checkpoints": [
         {
@@ -341,11 +414,11 @@
       "uploaded_at": "2026-07-03T14:32:52.669353+00:00",
       "url": "https://www.youtube.com/shorts/vJLRYY9DC2M",
       "video_id": "vJLRYY9DC2M",
-      "views_per_hour": 0.217
+      "views_per_hour": 0.179
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.707,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.89,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -361,8 +434,8 @@
           "delta_to_target": -105,
           "due_at": "2026-07-03T19:16:35.241595+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -377,30 +450,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
-        "delta_to_target": -105,
-        "due_at": "2026-07-03T19:16:35.241595+00:00",
-        "label": "6h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-04T13:16:35.241595+00:00",
+        "label": "24h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 105,
+        "state": "pending",
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Night Shift Nature",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Foxes hear tiny prey under snow",
       "uploaded_at": "2026-07-03T13:16:35.241595+00:00",
       "url": "https://www.youtube.com/shorts/11T4y_mTyZs",
       "video_id": "11T4y_mTyZs",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Foxes hear tiny prey under snow",
+        "video_id": "11T4y_mTyZs",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 7.824,
+      "age_hours": 8.007,
       "category": "arctic",
       "checkpoints": [
         {
@@ -466,7 +550,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.97,
+      "age_hours": 9.153,
       "category": "farm",
       "checkpoints": [
         {
@@ -518,61 +602,6 @@
       "url": "https://www.youtube.com/shorts/whKoRn3btJc",
       "video_id": "whKoRn3btJc",
       "views_per_hour": 0.0
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.908,
-      "category": "forests",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-03T09:04:31.416658+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -104,
-          "due_at": "2026-07-03T14:04:31.416658+00:00",
-          "label": "6h",
-          "source": "observed",
-          "state": "observed",
-          "target_views": 105,
-          "views": 1
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-07-04T08:04:31.416658+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 1
-        }
-      ],
-      "current_views": 1,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-03T09:04:31.416658+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Hidden Network",
-      "state": "analytics_due",
-      "title": "Leaves turn a forest into a cooler room",
-      "uploaded_at": "2026-07-03T08:04:31.416658+00:00",
-      "url": "https://www.youtube.com/shorts/b4BSE-x_MTE",
-      "video_id": "b4BSE-x_MTE",
-      "views_per_hour": 0.09
     }
   ],
   "targets": {
