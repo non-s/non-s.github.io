@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-03T19:01:10.367875+00:00",
+  "generated_at": "2026-07-03T19:11:36.658740+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
-  "overall_progress_pct": 34.3,
+  "overall_progress_pct": 36.6,
   "current_level": {
     "number": 3,
     "name": "Retention packaging",
@@ -10,7 +10,7 @@
     "unlock": "Stayed-to-watch rate at 40% or higher and average view percentage at 62% or higher.",
     "revenue_job": "Convert reach into watch time and proof that the format works.",
     "status": "boss_fight",
-    "progress_pct": 39.8
+    "progress_pct": 56.2
   },
   "boss": {
     "id": "opening_retention_gap",
@@ -18,7 +18,7 @@
     "severity": "critical",
     "evidence": {
       "stayed_to_watch_rate": 0.318,
-      "avg_view_percentage": 0.0,
+      "avg_view_percentage": 20.4,
       "top_blockers": [
         {
           "id": "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -27,7 +27,7 @@
         },
         {
           "id": "objective_gate:bootstrap_observe_before_scaling",
-          "count": 46,
+          "count": 44,
           "operator_translation": "collect more observed signal before scaling this pattern"
         },
         {
@@ -37,7 +37,7 @@
         },
         {
           "id": "queue_prune:rewrite",
-          "count": 36,
+          "count": 35,
           "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
@@ -86,25 +86,25 @@
     }
   ],
   "metrics": {
-    "health_score": 82,
-    "health_state": "watch",
-    "pending": 43,
+    "health_score": 92,
+    "health_state": "excellent",
+    "pending": 42,
     "operational_publish_ready": 7,
     "apparent_publish_ready": 7,
     "eligible_count": 7,
     "scale_ready_count": 0,
     "next_shorts_count": 7,
-    "editorial_candidate_count": 43,
-    "published_count": 33,
+    "editorial_candidate_count": 42,
+    "published_count": 34,
     "views_28d": 30314,
     "total_subscribers": 46,
     "subs_per_1000_views": 1.221,
     "stayed_to_watch_rate": 0.318,
-    "avg_view_percentage": 0.0,
+    "avg_view_percentage": 20.4,
     "recurring_viewer_rate": 0.001,
     "youtube_search_view_rate": 0.017,
     "crosspost_assets": 10,
-    "comments_sampled": 33
+    "comments_sampled": 34
   },
   "top_blockers": [
     {
@@ -114,7 +114,7 @@
     },
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
-      "count": 46,
+      "count": 44,
       "operator_translation": "collect more observed signal before scaling this pattern"
     },
     {
@@ -124,7 +124,7 @@
     },
     {
       "id": "queue_prune:rewrite",
-      "count": 36,
+      "count": 35,
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
@@ -139,23 +139,13 @@
     },
     {
       "id": "bootstrap_observe_before_scaling",
-      "count": 6,
+      "count": 5,
       "operator_translation": "bootstrap observe before scaling"
     },
     {
       "id": "publish_score:rewrite",
-      "count": 5,
+      "count": 4,
       "operator_translation": "repair the publish score package"
-    },
-    {
-      "id": "duplicate_title",
-      "count": 5,
-      "operator_translation": "duplicate title"
-    },
-    {
-      "id": "duplicate_script",
-      "count": 5,
-      "operator_translation": "duplicate script"
     },
     {
       "id": "editor_in_chief:editorial score 46 is below 62",
@@ -166,6 +156,16 @@
       "id": "editor_in_chief:editorial score 40 is below 62",
       "count": 4,
       "operator_translation": "editor in chief:editorial score 40 is below 62"
+    },
+    {
+      "id": "editor_in_chief:needs_ai_rewrite",
+      "count": 3,
+      "operator_translation": "editor in chief:needs ai rewrite"
+    },
+    {
+      "id": "observe_before_scaling",
+      "count": 2,
+      "operator_translation": "observe before scaling"
     }
   ],
   "levels": [
@@ -178,8 +178,8 @@
       "status": "cleared",
       "progress_pct": 100.0,
       "evidence": {
-        "published_count": 33,
-        "health_score": 82
+        "published_count": 34,
+        "health_score": 92
       }
     },
     {
@@ -193,7 +193,7 @@
       "evidence": {
         "operational_publish_ready": 7,
         "eligible_count": 7,
-        "pending": 43,
+        "pending": 42,
         "target_publish_ready": 6,
         "target_pending": 20
       }
@@ -205,10 +205,10 @@
       "unlock": "Stayed-to-watch rate at 40% or higher and average view percentage at 62% or higher.",
       "revenue_job": "Convert reach into watch time and proof that the format works.",
       "status": "current",
-      "progress_pct": 39.8,
+      "progress_pct": 56.2,
       "evidence": {
         "stayed_to_watch_rate": 0.318,
-        "avg_view_percentage": 0.0
+        "avg_view_percentage": 20.4
       }
     },
     {
@@ -221,7 +221,7 @@
       "progress_pct": 52.5,
       "evidence": {
         "recurring_viewer_rate": 0.001,
-        "comments_sampled": 33
+        "comments_sampled": 34
       }
     },
     {
@@ -257,10 +257,10 @@
       "unlock": "One million views per 28 days, excellent health, and ten publish-ready Shorts in reserve.",
       "revenue_job": "Scale the proven system instead of adding random effort.",
       "status": "locked",
-      "progress_pct": 24.3,
+      "progress_pct": 57.7,
       "evidence": {
         "views_28d": 30314,
-        "health_state": "watch",
+        "health_state": "excellent",
         "operational_publish_ready": 7
       }
     }
