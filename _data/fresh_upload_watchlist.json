@@ -6,24 +6,79 @@
   ],
   "counts": {
     "analytics_due": 7,
-    "awaiting_1h": 2,
+    "awaiting_1h": 1,
     "high_priority": 7,
     "repair_candidates": 0,
     "tracked": 10
   },
-  "generated_at": "2026-07-03T00:29:45.139241+00:00",
+  "generated_at": "2026-07-03T01:12:20.752058+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.292,
-      "category": "ocean",
+      "age_hours": 0.047,
+      "category": "wildlife",
       "checkpoints": [
         {
           "delta_to_target": 0,
-          "due_at": "2026-07-03T01:12:13.039442+00:00",
+          "due_at": "2026-07-03T02:09:30.352703+00:00",
           "label": "1h",
           "source": "estimated",
           "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-03T07:09:30.352703+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-04T01:09:30.352703+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-03T02:09:30.352703+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Animal Superpowers",
+      "state": "awaiting_1h",
+      "title": "Lions use dark ear marks to guide cubs",
+      "uploaded_at": "2026-07-03T01:09:30.352703+00:00",
+      "url": "https://www.youtube.com/shorts/jEfCOGWl34M",
+      "video_id": "jEfCOGWl34M",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 1.002,
+      "category": "ocean",
+      "checkpoints": [
+        {
+          "delta_to_target": -24,
+          "due_at": "2026-07-03T01:12:13.039442+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "due",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -24,
         "due_at": "2026-07-03T01:12:13.039442+00:00",
         "label": "1h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Ocean Mysteries",
-      "state": "awaiting_1h",
+      "state": "analytics_due",
       "title": "Sharks sense tiny electric fields",
       "uploaded_at": "2026-07-03T00:12:13.039442+00:00",
       "url": "https://www.youtube.com/shorts/cg_nDJV45AI",
@@ -69,16 +124,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.693,
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 1.403,
       "category": "insects",
       "checkpoints": [
         {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-03T00:48:09.095714+00:00",
           "label": "1h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -102,21 +157,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-03T00:48:09.095714+00:00",
-        "label": "1h",
+        "due_at": "2026-07-03T05:48:09.095714+00:00",
+        "label": "6h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 24,
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 90.0,
       "opening_retention_state": "retention_ready",
       "priority": "low",
       "series": "Tiny Worlds",
-      "state": "awaiting_1h",
+      "state": "watch",
       "title": "Dragonflies lock onto prey in midair",
       "uploaded_at": "2026-07-02T23:48:09.095714+00:00",
       "url": "https://www.youtube.com/shorts/iobRQwyAWRU",
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.659,
+      "age_hours": 2.369,
       "category": "insects",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.99,
+      "age_hours": 10.7,
       "category": "farm",
       "checkpoints": [
         {
@@ -231,11 +286,11 @@
       "uploaded_at": "2026-07-02T14:30:19.353303+00:00",
       "url": "https://www.youtube.com/shorts/sldOXcDmZuQ",
       "video_id": "sldOXcDmZuQ",
-      "views_per_hour": 0.101
+      "views_per_hour": 0.094
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.244,
+      "age_hours": 11.954,
       "category": "insects",
       "checkpoints": [
         {
@@ -251,8 +306,8 @@
           "delta_to_target": -104,
           "due_at": "2026-07-02T19:15:06.171182+00:00",
           "label": "6h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 105,
           "views": 1
         },
@@ -286,11 +341,19 @@
       "uploaded_at": "2026-07-02T13:15:06.171182+00:00",
       "url": "https://www.youtube.com/shorts/6EQWaar3wBc",
       "video_id": "6EQWaar3wBc",
-      "views_per_hour": 0.18
+      "views_per_hour": 0.168,
+      "warning": {
+        "confidence_score": 0.431,
+        "reason": "low confidence early signal; keep observing",
+        "state": "dying_early",
+        "title": "Ants use scent road before they change",
+        "video_id": "6EQWaar3wBc",
+        "warning_state": "low_confidence_watch"
+      }
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.338,
+      "age_hours": 13.048,
       "category": "ocean",
       "checkpoints": [
         {
@@ -341,7 +404,7 @@
       "uploaded_at": "2026-07-02T12:09:27.536080+00:00",
       "url": "https://www.youtube.com/shorts/vUB5OSOv218",
       "video_id": "vUB5OSOv218",
-      "views_per_hour": 0.082,
+      "views_per_hour": 0.077,
       "warning": {
         "confidence_score": 0.431,
         "reason": "low confidence early signal; keep observing",
@@ -353,7 +416,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.104,
+      "age_hours": 13.814,
       "category": "insects",
       "checkpoints": [
         {
@@ -404,7 +467,7 @@
       "uploaded_at": "2026-07-02T11:23:29.746742+00:00",
       "url": "https://www.youtube.com/shorts/zkOPZdHY4i0",
       "video_id": "zkOPZdHY4i0",
-      "views_per_hour": 0.077,
+      "views_per_hour": 0.073,
       "warning": {
         "confidence_score": 0.431,
         "reason": "low confidence early signal; keep observing",
@@ -416,7 +479,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.815,
+      "age_hours": 14.525,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -467,7 +530,7 @@
       "uploaded_at": "2026-07-02T10:40:50.370873+00:00",
       "url": "https://www.youtube.com/shorts/p5aVx8ZViPI",
       "video_id": "p5aVx8ZViPI",
-      "views_per_hour": 0.073,
+      "views_per_hour": 0.069,
       "warning": {
         "confidence_score": 0.431,
         "reason": "low confidence early signal; keep observing",
@@ -479,7 +542,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.094,
+      "age_hours": 16.803,
       "category": "dogs",
       "checkpoints": [
         {
@@ -530,76 +593,13 @@
       "uploaded_at": "2026-07-02T08:24:08.181149+00:00",
       "url": "https://www.youtube.com/shorts/peeCu1r3K0I",
       "video_id": "peeCu1r3K0I",
-      "views_per_hour": 0.063,
+      "views_per_hour": 0.06,
       "warning": {
         "confidence_score": 0.431,
         "reason": "low confidence early signal; keep observing",
         "state": "dying_early",
         "title": "Dogs read the world through scent maps",
         "video_id": "peeCu1r3K0I",
-        "warning_state": "low_confidence_watch"
-      }
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.548,
-      "category": "reptiles",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-02T08:56:54.089798+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -104,
-          "due_at": "2026-07-02T13:56:54.089798+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 1
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-07-03T07:56:54.089798+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 3
-        }
-      ],
-      "current_views": 3,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-02T08:56:54.089798+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Cold-Blooded Secrets",
-      "state": "analytics_due",
-      "title": "Snakes can detect warm prey in the dark",
-      "uploaded_at": "2026-07-02T07:56:54.089798+00:00",
-      "url": "https://www.youtube.com/shorts/ytZXl-smi5Q",
-      "video_id": "ytZXl-smi5Q",
-      "views_per_hour": 0.183,
-      "warning": {
-        "confidence_score": 0.431,
-        "reason": "low confidence early signal; keep observing",
-        "state": "dying_early",
-        "title": "Snakes can detect warm prey in the dark",
-        "video_id": "ytZXl-smi5Q",
         "warning_state": "low_confidence_watch"
       }
     }
