@@ -5,25 +5,25 @@
     24
   ],
   "counts": {
-    "analytics_due": 3,
-    "awaiting_1h": 1,
-    "high_priority": 4,
+    "analytics_due": 4,
+    "awaiting_1h": 0,
+    "high_priority": 5,
     "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-07-03T20:53:30.474677+00:00",
+  "generated_at": "2026-07-03T21:24:36.456016+00:00",
   "items": [
     {
-      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.777,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 1.296,
       "category": "conservation",
       "checkpoints": [
         {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-03T21:06:52.231213+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +47,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -24,
         "due_at": "2026-07-03T21:06:52.231213+00:00",
         "label": "1h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Planet Repair",
-      "state": "awaiting_1h",
+      "state": "analytics_due",
       "title": "Fish Mangroves take power out of waves",
       "uploaded_at": "2026-07-03T20:06:52.231213+00:00",
       "url": "https://www.youtube.com/shorts/rPhsl7qFRfY",
@@ -70,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.78,
+      "age_hours": 2.298,
       "category": "insects",
       "checkpoints": [
         {
@@ -121,11 +121,11 @@
       "uploaded_at": "2026-07-03T19:06:43.760986+00:00",
       "url": "https://www.youtube.com/shorts/ZEsLlK_ftDc",
       "video_id": "ZEsLlK_ftDc",
-      "views_per_hour": 0.601
+      "views_per_hour": 0.562
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.483,
+      "age_hours": 3.001,
       "category": "birds",
       "checkpoints": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.773,
+      "age_hours": 4.291,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.107,
+      "age_hours": 4.625,
       "category": "primates",
       "checkpoints": [
         {
@@ -290,7 +290,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.363,
+      "age_hours": 5.881,
       "category": "ocean",
       "checkpoints": [
         {
@@ -341,11 +341,11 @@
       "uploaded_at": "2026-07-03T15:31:43.787838+00:00",
       "url": "https://www.youtube.com/shorts/StWGdOT1uDA",
       "video_id": "StWGdOT1uDA",
-      "views_per_hour": 0.191
+      "views_per_hour": 0.186
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.344,
+      "age_hours": 6.862,
       "category": "cats",
       "checkpoints": [
         {
@@ -396,7 +396,7 @@
       "uploaded_at": "2026-07-03T14:32:52.669353+00:00",
       "url": "https://www.youtube.com/shorts/vJLRYY9DC2M",
       "video_id": "vJLRYY9DC2M",
-      "views_per_hour": 0.161,
+      "views_per_hour": 0.158,
       "warning": {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.594,
@@ -411,7 +411,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 7.615,
+      "age_hours": 8.134,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -466,7 +466,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.732,
+      "age_hours": 9.25,
       "category": "arctic",
       "checkpoints": [
         {
@@ -521,7 +521,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.878,
+      "age_hours": 10.396,
       "category": "farm",
       "checkpoints": [
         {
