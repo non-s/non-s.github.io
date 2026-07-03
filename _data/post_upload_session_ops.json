@@ -3,17 +3,17 @@
   "fresh_upload_actions": {
     "counts": {
       "automation_safe": 10,
-      "high": 0,
+      "high": 1,
       "manual_review": 0,
       "total": 10,
       "urgent": 3
     },
     "free_only": true,
-    "generated_at": "2026-07-03T22:31:00.023483+00:00",
+    "generated_at": "2026-07-03T22:38:28.932823+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 9.24,
+        "age_hours": 9.365,
         "automation_safe": true,
         "category": "nocturnal",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 7.969,
+        "age_hours": 8.093,
         "automation_safe": true,
         "category": "cats",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 6.988,
+        "age_hours": 7.113,
         "automation_safe": true,
         "category": "ocean",
         "checkpoint_label": "1h",
@@ -90,34 +90,34 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "hold_until_first_hour",
-        "age_hours": 0.972,
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 1.097,
         "automation_safe": true,
         "category": "plants",
         "checkpoint_label": "1h",
-        "checkpoint_state": "pending",
+        "checkpoint_state": "due",
         "current_views": 0,
         "due_at": "2026-07-03T22:32:41.232849+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:ODaf6_f8FCk:awaiting_1h:1h",
-        "lane": "observe",
+        "id": "fresh-upload:ODaf6_f8FCk:analytics_due:1h",
+        "lane": "measurement",
         "manual_approval_required": false,
         "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "priority": "high",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
         "series": "Biology Brief",
-        "state": "awaiting_1h",
+        "state": "analytics_due",
         "target_views": 24,
         "title": "Plants use trap hairs to count touches before snapping shut",
         "url": "https://www.youtube.com/shorts/ODaf6_f8FCk",
         "video_id": "ODaf6_f8FCk",
-        "wait_until": "2026-07-03T22:32:41.232849+00:00",
-        "why": "The upload is still inside the no-panic observation window."
+        "wait_until": "",
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 5.732,
+        "age_hours": 5.856,
         "automation_safe": true,
         "category": "primates",
         "checkpoint_label": "6h",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.402,
+        "age_hours": 0.527,
         "automation_safe": true,
         "category": "plants",
         "checkpoint_label": "1h",
@@ -169,7 +169,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 5.398,
+        "age_hours": 5.523,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "6h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 4.108,
+        "age_hours": 4.233,
         "automation_safe": true,
         "category": "birds",
         "checkpoint_label": "6h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.405,
+        "age_hours": 3.529,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "6h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.402,
+        "age_hours": 2.527,
         "automation_safe": true,
         "category": "conservation",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-03T22:31:00.022246+00:00"
+    "source_generated_at": "2026-07-03T22:38:28.931692+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,17 @@
       24
     ],
     "counts": {
-      "analytics_due": 3,
-      "awaiting_1h": 2,
-      "high_priority": 3,
+      "analytics_due": 4,
+      "awaiting_1h": 1,
+      "high_priority": 4,
       "repair_candidates": 0,
       "tracked": 10
     },
-    "generated_at": "2026-07-03T22:31:00.022246+00:00",
+    "generated_at": "2026-07-03T22:38:28.931692+00:00",
     "items": [
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.402,
+        "age_hours": 0.527,
         "category": "plants",
         "checkpoints": [
           {
@@ -346,16 +346,16 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.972,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 1.097,
         "category": "plants",
         "checkpoints": [
           {
-            "delta_to_target": 0,
+            "delta_to_target": -24,
             "due_at": "2026-07-03T22:32:41.232849+00:00",
             "label": "1h",
             "source": "estimated",
-            "state": "pending",
+            "state": "due",
             "target_views": 24,
             "views": 0
           },
@@ -379,21 +379,21 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-03T22:32:41.232849+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 24,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Biology Brief",
-        "state": "awaiting_1h",
+        "state": "analytics_due",
         "title": "Plants use trap hairs to count touches before snapping shut",
         "uploaded_at": "2026-07-03T21:32:41.232849+00:00",
         "url": "https://www.youtube.com/shorts/ODaf6_f8FCk",
@@ -402,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.402,
+        "age_hours": 2.527,
         "category": "conservation",
         "checkpoints": [
           {
@@ -457,7 +457,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.405,
+        "age_hours": 3.529,
         "category": "insects",
         "checkpoints": [
           {
@@ -508,11 +508,11 @@
         "uploaded_at": "2026-07-03T19:06:43.760986+00:00",
         "url": "https://www.youtube.com/shorts/ZEsLlK_ftDc",
         "video_id": "ZEsLlK_ftDc",
-        "views_per_hour": 0.306
+        "views_per_hour": 0.294
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 4.108,
+        "age_hours": 4.233,
         "category": "birds",
         "checkpoints": [
           {
@@ -567,7 +567,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.398,
+        "age_hours": 5.523,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -622,7 +622,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.732,
+        "age_hours": 5.856,
         "category": "primates",
         "checkpoints": [
           {
@@ -677,7 +677,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 6.988,
+        "age_hours": 7.113,
         "category": "ocean",
         "checkpoints": [
           {
@@ -728,11 +728,11 @@
         "uploaded_at": "2026-07-03T15:31:43.787838+00:00",
         "url": "https://www.youtube.com/shorts/StWGdOT1uDA",
         "video_id": "StWGdOT1uDA",
-        "views_per_hour": 0.146
+        "views_per_hour": 0.143
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 7.969,
+        "age_hours": 8.093,
         "category": "cats",
         "checkpoints": [
           {
@@ -783,11 +783,11 @@
         "uploaded_at": "2026-07-03T14:32:52.669353+00:00",
         "url": "https://www.youtube.com/shorts/vJLRYY9DC2M",
         "video_id": "vJLRYY9DC2M",
-        "views_per_hour": 0.128
+        "views_per_hour": 0.125
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 9.24,
+        "age_hours": 9.365,
         "category": "nocturnal",
         "checkpoints": [
           {
@@ -848,7 +848,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-03T22:31:00.023575+00:00",
+  "generated_at": "2026-07-03T22:38:28.932910+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
