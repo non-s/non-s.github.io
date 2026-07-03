@@ -3983,21 +3983,32 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 40,
-    "pending_after": 40,
-    "rejected": 0,
+    "pending_before": 42,
+    "pending_after": 41,
+    "rejected": 1,
     "repair_needed": 0,
-    "repaired": 2,
+    "repaired": 3,
     "reasons": {
-      "editor_in_chief:subject repeated inside 3-day cooldown": 27,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 28,
       "objective_gate:bootstrap_observe_before_scaling": 20,
-      "objective_gate:observe_before_scaling": 18,
+      "objective_gate:observe_before_scaling": 19,
       "editor_in_chief:script quality gate blocked the narration": 6,
       "editor_in_chief:editorial score 46 is below 62": 2,
       "editor_in_chief:editorial score 40 is below 62": 2,
+      "copy_subject_mismatch": 1,
+      "duplicate_title": 1,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 1,
       "editorial_cooldown_supply_fallback": 1
     }
   },
-  "rejected_preview": []
+  "rejected_preview": [
+    {
+      "id": "a84b2a9b8ba858f9",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ]
+    }
+  ]
 }

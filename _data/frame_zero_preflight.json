@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-07-03T21:51:36.444165+00:00",
+  "generated_at": "2026-07-03T22:00:33.518013+00:00",
   "floor": 82.0,
-  "pending": 40,
-  "ready": 39,
+  "pending": 42,
+  "ready": 41,
   "held": 1,
   "rewritten": 8,
-  "average_opening_score": 97.2,
+  "average_opening_score": 97.0,
   "render_gate": "hold",
   "counts": {
-    "approved": 39,
+    "approved": 41,
     "rewritten": 8,
     "hold": 1
   },
@@ -260,6 +260,26 @@
       "action": "Ready to render with current first frame."
     },
     {
+      "id": "a84b2a9b8ba858f9",
+      "title": "Auroras glow when solar particles hit air",
+      "category": "weather",
+      "render_gate": "approved",
+      "opening_score": 92.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Auroras start with charged particles from the sun.",
+      "first_frame_text": "AURORA GLOW",
+      "visible_cue": "",
+      "rewrite_applied": false,
+      "rewrite_reason": "",
+      "before_score": null,
+      "after_score": 92.0,
+      "risks": [
+        "subject_not_frontloaded"
+      ],
+      "action": "Ready to render with current first frame."
+    },
+    {
       "id": "e22c7bfd6c2187b6",
       "title": "Leaves angle toward the light they can use",
       "category": "plants",
@@ -316,6 +336,26 @@
       "after_score": 92.0,
       "risks": [
         "subject_not_frontloaded"
+      ],
+      "action": "Ready to render with current first frame."
+    },
+    {
+      "id": "81d75c4c30910d0f",
+      "title": "Storm clouds filter sunlight into a softer glow",
+      "category": "earth_from_space",
+      "render_gate": "approved",
+      "opening_score": 94.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Storm clouds spread sunlight before it reaches the ground.",
+      "first_frame_text": "SOFT LIGHT",
+      "visible_cue": "",
+      "rewrite_applied": false,
+      "rewrite_reason": "",
+      "before_score": null,
+      "after_score": 94.0,
+      "risks": [
+        "frame_text_not_echoed_early"
       ],
       "action": "Ready to render with current first frame."
     },
