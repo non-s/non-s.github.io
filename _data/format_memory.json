@@ -1,5 +1,5 @@
 {
-  "sample_count": 26,
+  "sample_count": 27,
   "category_counts": {
     "ocean": 2,
     "forests": 2,
@@ -15,10 +15,11 @@
     "birds": 1,
     "earth_from_space": 1,
     "weather": 1,
-    "plants": 1
+    "plants": 1,
+    "arctic": 1
   },
   "format_counts": {
-    "body_superpower": 5,
+    "body_superpower": 6,
     "hidden_network": 5,
     "animal_intelligence": 6,
     "rare_nature": 1,
@@ -38,12 +39,13 @@
     "Pet Secrets": 1,
     "Sky Intelligence": 1,
     "Planet Earth": 1,
-    "Biology Brief": 1
+    "Biology Brief": 1,
+    "Polar Survival": 1
   },
   "category_scores": {
     "ocean": 46.1,
     "farm": 47.3,
-    "insects": 46.7,
+    "insects": 36.7,
     "reptiles": 48.01,
     "rivers": 26.1,
     "geology": 36.7,
@@ -52,20 +54,21 @@
     "birds": 47.3,
     "wildlife": 26.1,
     "earth_from_space": 47.3,
-    "weather": 47.3
+    "weather": 47.3,
+    "forests": 46.1
   },
   "format_scores": {
     "body_superpower": 36.1,
     "animal_intelligence": 36.7,
     "rare_nature": 48.01,
     "earth_engine": 38.82,
-    "hidden_network": 47.3,
-    "single_fact": 46.7
+    "hidden_network": 46.7,
+    "single_fact": 36.7
   },
   "category_subscriber_rates": {
     "ocean": 120.0,
     "farm": 60.0,
-    "insects": 90.0,
+    "insects": 30.0,
     "reptiles": 40.0,
     "rivers": 0.0,
     "geology": 30.0,
@@ -74,20 +77,21 @@
     "birds": 60.0,
     "wildlife": 0.0,
     "earth_from_space": 60.0,
-    "weather": 60.0
+    "weather": 60.0,
+    "forests": 120.0
   },
   "format_subscriber_rates": {
     "body_superpower": 60.0,
     "animal_intelligence": 30.0,
     "rare_nature": 40.0,
     "earth_engine": 36.0,
-    "hidden_network": 60.0,
-    "single_fact": 90.0
+    "hidden_network": 90.0,
+    "single_fact": 30.0
   },
   "category_weights": {
     "ocean": 0.968,
     "farm": 0.971,
-    "insects": 0.939,
+    "insects": 0.899,
     "reptiles": 0.972,
     "rivers": 0.928,
     "geology": 0.899,
@@ -96,15 +100,16 @@
     "birds": 0.971,
     "wildlife": 0.856,
     "earth_from_space": 0.971,
-    "weather": 0.971
+    "weather": 0.971,
+    "forests": 0.968
   },
   "format_weights": {
     "body_superpower": 0.896,
     "animal_intelligence": 0.798,
     "rare_nature": 0.972,
     "earth_engine": 0.768,
-    "hidden_network": 0.971,
-    "single_fact": 0.939
+    "hidden_network": 0.939,
+    "single_fact": 0.899
   },
   "subscriber_category_weights": {
     "ocean": 1.25,
@@ -118,7 +123,8 @@
     "birds": 1.25,
     "wildlife": 0.94,
     "earth_from_space": 1.25,
-    "weather": 1.25
+    "weather": 1.25,
+    "forests": 1.25
   },
   "subscriber_format_weights": {
     "body_superpower": 1.25,
@@ -138,14 +144,14 @@
     "{subject} {action} {subject} {subject} {subject} {subject} {subject}": 2,
     "{visual} {visual} {subject} a {subject} {subject} {subject}": 2,
     "{visual} {subject} air {emotion} {subject} {subject}": 2,
-    "{subject} can {action} by the {subject} way": 2,
-    "{subject} {subject} {subject} air {subject} the {visual}": 1,
-    "{subject} use {subject} {visual} {subject} to {subject} {subject}": 1
+    "{action} {subject} a {subject} {subject} a {subject} {subject}": 2,
+    "{subject} {action} {subject} {subject} {subject} {subject}": 2,
+    "{subject} {subject} {subject} air {subject} the {visual}": 1
   },
   "winning_thumbnail_patterns": {},
   "winning_hook_patterns": {
+    "{subject} can {action} {subject} {subject} {subject} {subject}": 4,
     "{subject} {action} {subject} {subject} for the {subject}": 3,
-    "{subject} can {action} {subject} {subject} {subject} {subject}": 3,
     "{subject} {subject} the {visual} {subject} {subject}": 2,
     "{subject} {subject} {subject} {subject} {subject} {visual}": 2,
     "{subject} {subject} {subject} {visual} in {subject}": 2,
@@ -153,13 +159,14 @@
     "{subject} can {subject} a {action} {subject} {subject}": 2,
     "{visual} {visual} {subject} {subject} a {visual} is {visual}": 2,
     "{visual} {subject} air {subject} a {subject} {subject}": 2,
-    "{subject} can use the {subject} sky {subject} a": 2,
+    "{action} {subject} a {subject} {subject} a {subject} {subject}": 2,
     "{subject} can {action} the air {subject} {subject}": 1,
     "{subject} {subject} {subject} {visual} {subject} {subject} can {action}": 1
   },
   "weak_patterns": {
     "{subject} {action} {subject} {subject} for the {subject}": 2,
     "{subject} {subject} {subject} {visual} in {subject}": 2,
+    "{action} {subject} a {subject} {subject} a {subject} {subject}": 2,
     "{subject} {subject} the {subject} to {subject} the pod": 1,
     "{subject} {subject} the {visual} {subject} {subject}": 1,
     "{subject} {subject} {subject} {visual} {subject} {subject} {subject}": 1,
@@ -168,14 +175,13 @@
     "{subject} {subject} mud and {subject} {subject} {subject} {subject}": 1,
     "{subject} {subject} {subject} {subject} {subject} {subject}": 1,
     "{subject} {action} the {subject} {subject} {subject} {subject}": 1,
-    "{subject} {action} a map {subject} {action}": 1,
-    "{visual} {subject} {subject} {emotion} {subject} in {subject}": 1
+    "{subject} {action} a map {subject} {action}": 1
   },
   "experiment_scores": {
-    "format:winner_inspired": 40.09,
-    "hook:pattern_reuse": 40.09,
-    "thumbnail:new_thumbnail": 40.12,
-    "cta:follow_for_more": 40.09,
+    "format:winner_inspired": 39.02,
+    "hook:pattern_reuse": 39.02,
+    "thumbnail:new_thumbnail": 39.24,
+    "cta:follow_for_more": 39.02,
     "format:fresh_variant": 40.23,
     "hook:new_hook": 40.23,
     "cta:specific_question": 40.23
@@ -184,15 +190,15 @@
     "format:fresh_variant": 40.23,
     "hook:new_hook": 40.23,
     "cta:specific_question": 40.23,
-    "thumbnail:new_thumbnail": 40.12,
-    "format:winner_inspired": 40.09,
-    "hook:pattern_reuse": 40.09,
-    "cta:follow_for_more": 40.09
+    "thumbnail:new_thumbnail": 39.24,
+    "format:winner_inspired": 39.02,
+    "hook:pattern_reuse": 39.02,
+    "cta:follow_for_more": 39.02
   },
-  "updated_at": "2026-07-03T12:02:22.895804+00:00",
+  "updated_at": "2026-07-03T12:12:24.722969+00:00",
   "data_coverage": {
-    "total_markers": 26,
-    "views": 15,
+    "total_markers": 27,
+    "views": 16,
     "retention": 0,
     "watch_time": 0,
     "subscribers": 0,

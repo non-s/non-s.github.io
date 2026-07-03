@@ -1,30 +1,28 @@
 {
-  "total": 1000,
+  "total": 960,
   "reasons": {
-    "duplicate_title": 373,
-    "duplicate_script": 330,
-    "duplicate_angle": 329,
-    "off_topic_visual": 313,
-    "script_hook_mismatch": 91,
-    "queue_score_reject": 86,
+    "duplicate_title": 384,
+    "duplicate_script": 342,
+    "duplicate_angle": 341,
+    "off_topic_visual": 329,
+    "script_hook_mismatch": 96,
+    "queue_score_reject": 87,
     "copy_subject_mismatch": 74,
     "script_subject_mismatch": 54,
-    "thumbnail_text_not_scannable": 51,
-    "thumbnail_not_2_4_words": 51,
     "script_word_loop": 33,
-    "weak_visual_surface": 33,
-    "low_opportunity_score": 33,
     "non_animal_body_language": 27,
     "rights_guard_person_manual_review": 26,
-    "opening_retention_gap_risk": 24,
-    "opening promise is not concrete enough": 24,
+    "opening_retention_gap_risk": 25,
+    "opening promise is not concrete enough": 25,
+    "subject repeated inside 3-day cooldown": 19,
+    "humanity score is too low": 19,
     "bad_plural_verb": 19,
-    "subject repeated inside 3-day cooldown": 18,
-    "humanity score is too low": 18,
+    "thumbnail_text_not_scannable": 10,
+    "thumbnail_not_2_4_words": 10,
     "editorial score 41 is below 62": 4,
+    "editorial score 43 is below 62": 4,
     "script does not expose enough concrete visual detail": 4,
     "missing_action_word": 4,
-    "editorial score 43 is below 62": 3,
     "editorial score 39 is below 62": 3,
     "editorial score 37 is below 62": 2,
     "subject_not_immediately_clear": 2,
@@ -37,69 +35,19 @@
     "missing_visual_cue": 1,
     "title_shape_weak": 1,
     "title_needs_stronger_shape": 1,
-    "editorial score 33 is below 62": 1
+    "editorial score 33 is below 62": 1,
+    "weak_visual_surface": 1,
+    "low_opportunity_score": 1
   },
   "stages": {
-    "queue_prune": 495,
-    "queue_prune_final": 326,
-    "queue_repair": 86,
-    "youtube_brain_rewrite": 42,
-    "opportunity_score": 33,
-    "editor_in_chief": 18
+    "queue_prune": 512,
+    "queue_prune_final": 340,
+    "queue_repair": 87,
+    "editor_in_chief": 19,
+    "opportunity_score": 1,
+    "youtube_brain_rewrite": 1
   },
   "latest": [
-    {
-      "story_id": "09dcabb3dd0bc6cf",
-      "stage": "queue_repair",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "title": "Lightning reveal air layers moving at different speeds",
-      "category": "earth_from_space",
-      "script_key": "lightning show stacked air moving at different speeds watch the cloud layers because wind can change direction and speed with height that makes one part of the sky slide past another turning invisible air motion into a visible map which sky layer should we read next",
-      "angle_key": "lightning|slide|cloud layers|earth_from_space",
-      "source_url": "https://www.pexels.com/video/dramatic-black-and-white-cloudy-sky-35211012/",
-      "pexels_video_id": "35211012",
-      "source_clip_id": "pexels:09dcabb3dd0bc6cf",
-      "recorded_at": "2026-07-03T12:03:13.187438+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "862cb7e0bdc9f3be",
-      "stage": "queue_prune",
-      "reasons": [
-        "bad_plural_verb",
-        "script_word_loop"
-      ],
-      "title": "Why cat ears give away the real mood in the first second",
-      "category": "cats",
-      "script_key": "cats give away the answer with their ears first watch the first second the body pauses then the ears gives the clue in this clip the recovery angle is curious exploring urban jungle the clue is not the cute part it is the timing of the movement that visible cue is the whole story so the short opens on the cat instead of stretching the setup that makes the short feel observed not copied",
-      "angle_key": "cat|feel|movement|cats",
-      "source_url": "https://www.pexels.com/video/curious-cat-exploring-urban-jungle-34274643/",
-      "pexels_video_id": "34274643",
-      "source_clip_id": "pexels:862cb7e0bdc9f3be",
-      "recorded_at": "2026-07-03T12:03:13.203094+00:00",
-      "rewrite_attempted": false,
-      "rewrite_applied": false
-    },
-    {
-      "story_id": "4abb90f306b30615",
-      "stage": "queue_repair",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "title": "Storm clouds reveal weather from above the clouds",
-      "category": "earth_from_space",
-      "script_key": "storm clouds look different when seen from above watch the cloud tops because the upper shape shows where air is rising flattening or spreading out from above weather becomes a texture map instead of a ceiling which above cloud clue should we compare next",
-      "angle_key": "storm|reveal|cloud tops|earth_from_space",
-      "source_url": "https://www.pexels.com/video/dramatic-cloudscape-under-grey-sky-29326055/",
-      "pexels_video_id": "29326055",
-      "source_clip_id": "pexels:4abb90f306b30615",
-      "recorded_at": "2026-07-03T12:03:13.227331+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
     {
       "story_id": "44adc77357342236",
       "stage": "queue_prune",
@@ -487,6 +435,61 @@
       "pexels_video_id": "7691954",
       "source_clip_id": "pexels:8b55169b68228d1a",
       "recorded_at": "2026-07-03T12:03:13.560098+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "33dd6bb0aeba20be",
+      "stage": "opportunity_score",
+      "reasons": [
+        "weak_visual_surface",
+        "low_opportunity_score"
+      ],
+      "title": "Bees dance directions back to the hive",
+      "category": "insects",
+      "script_key": "bees can point the hive toward food watch the body angle because a bee dance can carry direction and distance the hive reads that pattern like a living map then sends more workers to the same flowers tiny body huge navigation system which insect should we decode next",
+      "angle_key": "bees|carry|dance map|insects",
+      "source_url": "https://www.pexels.com/video/bumblebee-gathering-nectar-on-summer-bloom-34370333/",
+      "pexels_video_id": "34370333",
+      "source_clip_id": "pexels:33dd6bb0aeba20be",
+      "recorded_at": "2026-07-03T12:08:54.045621+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "8bdc8b70af521eb4",
+      "stage": "youtube_brain_rewrite",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "title": "Fossils turn old bones into time clues",
+      "category": "discoveries",
+      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
+      "angle_key": "fossils|form|pattern|discoveries",
+      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
+      "pexels_video_id": "36118169",
+      "source_clip_id": "pexels:8bdc8b70af521eb4",
+      "recorded_at": "2026-07-03T12:08:54.117549+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "acdd68dea2bf9b74",
+      "stage": "editor_in_chief",
+      "reasons": [
+        "subject repeated inside 3-day cooldown",
+        "humanity score is too low",
+        "editorial score 43 is below 62"
+      ],
+      "title": "Seals Focas rastrean peces con sus bigotes",
+      "category": "arctic",
+      "script_key": "las focas rastrean a los peces con sus bigotes mira c mo vibran bajo el agua detectan el rastro que dejan al moverse funciona hasta en aguas oscuras o turbias su cara es un detector de corrientes qu otro sentido del oc ano te sorprende now the wake tracker at the start makes sense",
+      "angle_key": "seals|sense|cue|arctic",
+      "source_url": "https://www.pexels.com/video/scenic-beach-with-resting-seals-and-ocean-waves-36991136/",
+      "pexels_video_id": "36991136",
+      "source_clip_id": "pexels:acdd68dea2bf9b74",
+      "recorded_at": "2026-07-03T12:09:28.729981+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     }
