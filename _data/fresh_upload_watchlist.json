@@ -5,24 +5,24 @@
     24
   ],
   "counts": {
-    "analytics_due": 4,
+    "analytics_due": 5,
     "awaiting_1h": 1,
-    "high_priority": 4,
+    "high_priority": 5,
     "repair_candidates": 0,
     "tracked": 10
   },
-  "generated_at": "2026-07-03T16:55:58.416095+00:00",
+  "generated_at": "2026-07-03T17:02:20.353355+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.148,
+      "age_hours": 0.254,
       "category": "primates",
       "checkpoints": [
         {
           "delta_to_target": 0,
           "due_at": "2026-07-03T17:47:06.114143+00:00",
           "label": "1h",
-          "source": "estimated",
+          "source": "missing",
           "state": "pending",
           "target_views": 24,
           "views": 0
@@ -31,7 +31,7 @@
           "delta_to_target": 0,
           "due_at": "2026-07-03T22:47:06.114143+00:00",
           "label": "6h",
-          "source": "estimated",
+          "source": "missing",
           "state": "pending",
           "target_views": 105,
           "views": 0
@@ -40,7 +40,7 @@
           "delta_to_target": 0,
           "due_at": "2026-07-04T16:47:06.114143+00:00",
           "label": "24h",
-          "source": "estimated",
+          "source": "missing",
           "state": "pending",
           "target_views": 300,
           "views": 0
@@ -52,7 +52,7 @@
         "delta_to_target": 0,
         "due_at": "2026-07-03T17:47:06.114143+00:00",
         "label": "1h",
-        "source": "estimated",
+        "source": "missing",
         "state": "pending",
         "target_views": 24,
         "views": 0
@@ -70,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.404,
+      "age_hours": 1.51,
       "category": "ocean",
       "checkpoints": [
         {
@@ -125,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.385,
+      "age_hours": 2.491,
       "category": "cats",
       "checkpoints": [
         {
@@ -176,11 +176,11 @@
       "uploaded_at": "2026-07-03T14:32:52.669353+00:00",
       "url": "https://www.youtube.com/shorts/vJLRYY9DC2M",
       "video_id": "vJLRYY9DC2M",
-      "views_per_hour": 0.427
+      "views_per_hour": 0.426
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.656,
+      "age_hours": 3.763,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.773,
+      "age_hours": 4.879,
       "category": "arctic",
       "checkpoints": [
         {
@@ -289,8 +289,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.919,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 6.025,
       "category": "farm",
       "checkpoints": [
         {
@@ -303,11 +303,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-07-03T17:00:49.786984+00:00",
           "label": "6h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 105,
           "views": 0
         },
@@ -322,21 +322,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -105,
         "due_at": "2026-07-03T17:00:49.786984+00:00",
         "label": "6h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Farmyard Surprises",
-      "state": "watch",
+      "state": "analytics_due",
       "title": "Ducks fake weak wings to protect ducklings",
       "uploaded_at": "2026-07-03T11:00:49.786984+00:00",
       "url": "https://www.youtube.com/shorts/whKoRn3btJc",
@@ -345,7 +345,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.857,
+      "age_hours": 8.964,
       "category": "forests",
       "checkpoints": [
         {
@@ -400,7 +400,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.021,
+      "age_hours": 9.127,
       "category": "plants",
       "checkpoints": [
         {
@@ -455,7 +455,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.845,
+      "age_hours": 11.951,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -510,7 +510,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.54,
+      "age_hours": 12.646,
       "category": "wildlife",
       "checkpoints": [
         {
