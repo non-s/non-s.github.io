@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-03T12:13:07.340069+00:00",
+  "generated_at": "2026-07-03T13:12:21.018764+00:00",
   "state": "fully_autonomous",
   "autonomy_score": 90,
   "operating_mode": "exploit",
@@ -221,7 +221,7 @@
   },
   "sequence_bank": {
     "source_winners": 0,
-    "variant_count": 8,
+    "variant_count": 7,
     "next_variants": [
       {
         "id": "remake-3ff78e2f1c3c4cdb-session-graph-sequel",
@@ -264,12 +264,6 @@
         "title": "The first scent map cue explains bears' payoff",
         "variant": "fresh_upload_package_rescue",
         "category": "wildlife"
-      },
-      {
-        "id": "remake-0148aeb4e8f43ba1-fresh-upload-momentum-sequel",
-        "title": "The first leaves cue explains forests' payoff",
-        "variant": "fresh_upload_momentum_sequel",
-        "category": "forests"
       }
     ]
   },
@@ -361,11 +355,11 @@
     "selection_rule": "highest autonomy_priority among non-rejected publish_score candidates"
   },
   "queue": {
-    "pending": 41,
-    "approved_candidates": 41,
+    "pending": 45,
+    "approved_candidates": 45,
     "lane_counts": {
-      "fresh_experiment": 19,
-      "proven_category": 22
+      "fresh_experiment": 22,
+      "proven_category": 23
     },
     "top_candidates": [
       {
@@ -4494,6 +4488,398 @@
         }
       },
       {
+        "id": "e68ed8abae5744a3",
+        "title": "Plants turn light into food",
+        "category": "plants",
+        "story_format": "plant_mechanism",
+        "lane": "proven_category",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 92.4,
+          "approved": true,
+          "state": "publish_ready",
+          "opportunity": {
+            "score": 61,
+            "signals": {
+              "viral_potential": 66,
+              "visual_potential": 65,
+              "replay_potential": 72,
+              "comment_potential": 54,
+              "educational_potential": 64,
+              "emotional_potential": 44,
+              "novelty": 45
+            },
+            "verdict": "rewrite",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "retention": {
+            "score": 70,
+            "signals": {
+              "hook_score": 70,
+              "curiosity_score": 71,
+              "visual_score": 66,
+              "replay_score": 62,
+              "completion_prediction": 77
+            },
+            "verdict": "rewrite",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "opening_retention": {
+            "score": 100.0,
+            "state": "retention_ready",
+            "approved": true,
+            "subject": "plants",
+            "cue_terms": [
+              "leaf",
+              "light",
+              "sugar",
+              "surface"
+            ],
+            "frame_hook_bridge": [
+              "light"
+            ],
+            "cue_bridge": [
+              "leaf",
+              "light",
+              "surface"
+            ],
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "risks": []
+          },
+          "weak_content": {
+            "risk": 0,
+            "state": "clear",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.65,
+              "sample_size": 12,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            },
+            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+          },
+          "subscriber_conversion": {
+            "score": 72,
+            "state": "usable",
+            "subscriber_probability": 0.103,
+            "return_probability": 0.222,
+            "comment_probability": 0.191,
+            "robotic_title": {
+              "risk": 0,
+              "state": "clear",
+              "hits": []
+            },
+            "reasons": [
+              "debate_comment",
+              "return_prompt",
+              "series_identity"
+            ],
+            "confidence": {
+              "confidence_score": 0.033,
+              "sample_size": 1,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.274,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+            },
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "distribution_adjustment": 0,
+          "decision_confidence": {
+            "confidence_score": 0.007,
+            "sample_size": 1,
+            "minimum_sample_size": 15,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.255,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
+          },
+          "category": "plants",
+          "story_format": "plant_mechanism",
+          "hook_score": 86,
+          "title_score": 100,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          },
+          "editorial_guard": {
+            "approved": true,
+            "state": "approved",
+            "issues": []
+          },
+          "objective_gate": {
+            "penalty": 0.0,
+            "reasons": [
+              "bootstrap_observe_before_scaling"
+            ],
+            "confidence_score": 0.007,
+            "scale_ready": false,
+            "publish_blocking": false,
+            "swipe_risk_band": "low",
+            "payoff_time_s": 0.0,
+            "template_cluster": "",
+            "mechanism_cluster": ""
+          }
+        },
+        "autonomy_priority": 110.4,
+        "packaging_lab": {
+          "title_variants": [
+            "Plants turn sunlight into stored sugar",
+            "Plants turn light into food",
+            "Plants use leaf surface before they leaves"
+          ],
+          "thumbnail_variants": [
+            "LIGHT TO SUGAR",
+            "LEAF SURFACE",
+            "WATCH LEAF SURFACE"
+          ],
+          "hook_variants": [
+            "Plants turn light into food.",
+            "Plants turn light into food",
+            "Watch the leaf surface again. Tomorrow in Biology Brief: another nature signal. Do plants feel more passive, r"
+          ],
+          "pinned_comment": "Watch the leaf surface again. Tomorrow in Biology Brief: another nature signal. Do plants feel more passive, reactive, or strategic here?",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
+        "id": "94d7b569eb9a4ac7",
+        "title": "Mushrooms trade nutrients through underground threads",
+        "category": "fungi",
+        "story_format": "hidden_network",
+        "lane": "fresh_experiment",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 100,
+          "approved": true,
+          "state": "publish_ready",
+          "opportunity": {
+            "score": 69,
+            "signals": {
+              "viral_potential": 73,
+              "visual_potential": 100,
+              "replay_potential": 55,
+              "comment_potential": 49,
+              "educational_potential": 68,
+              "emotional_potential": 48,
+              "novelty": 64
+            },
+            "verdict": "produce",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.113,
+              "sample_size": 1,
+              "minimum_sample_size": 5,
+              "data_quality": "estimated",
+              "data_quality_score": 0.567,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.335,
+              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            },
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+          },
+          "retention": {
+            "score": 81,
+            "signals": {
+              "hook_score": 82,
+              "curiosity_score": 79,
+              "visual_score": 100,
+              "replay_score": 62,
+              "completion_prediction": 84
+            },
+            "verdict": "ready",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.113,
+              "sample_size": 1,
+              "minimum_sample_size": 5,
+              "data_quality": "estimated",
+              "data_quality_score": 0.567,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.335,
+              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+            },
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+          },
+          "opening_retention": {
+            "score": 90.0,
+            "state": "retention_ready",
+            "approved": true,
+            "subject": "mushrooms",
+            "cue_terms": [
+              "fungal",
+              "mycelium",
+              "thread"
+            ],
+            "frame_hook_bridge": [],
+            "cue_bridge": [
+              "mycelium",
+              "thread"
+            ],
+            "strengths": [
+              "subject_frontloaded",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "risks": [
+              "frame_text_not_echoed_early"
+            ]
+          },
+          "weak_content": {
+            "risk": 0,
+            "state": "clear",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.65,
+              "sample_size": 12,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "test",
+              "can_adjust_strategy": true,
+              "bootstrap_multiplier": 0.738,
+              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            },
+            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+          },
+          "subscriber_conversion": {
+            "score": 100,
+            "state": "strong",
+            "subscriber_probability": 0.143,
+            "return_probability": 0.3,
+            "comment_probability": 0.256,
+            "robotic_title": {
+              "risk": 0,
+              "state": "clear",
+              "hits": []
+            },
+            "reasons": [
+              "identity_cta",
+              "debate_comment",
+              "return_prompt",
+              "series_identity"
+            ],
+            "confidence": {
+              "confidence_score": 0.212,
+              "sample_size": 6,
+              "minimum_sample_size": 18,
+              "data_quality": "estimated",
+              "data_quality_score": 0.425,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.409,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.21."
+            },
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.21."
+          },
+          "distribution_adjustment": 0,
+          "decision_confidence": {
+            "confidence_score": 0.156,
+            "sample_size": 11,
+            "minimum_sample_size": 38,
+            "data_quality": "estimated",
+            "data_quality_score": 0.35,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.367,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.16."
+          },
+          "category": "fungi",
+          "story_format": "hidden_network",
+          "hook_score": 86,
+          "title_score": 90,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          },
+          "editorial_guard": {
+            "approved": true,
+            "state": "approved",
+            "issues": []
+          },
+          "objective_gate": {
+            "penalty": 0.0,
+            "reasons": [
+              "bootstrap_observe_before_scaling"
+            ],
+            "confidence_score": 0.156,
+            "scale_ready": false,
+            "publish_blocking": false,
+            "swipe_risk_band": "low",
+            "payoff_time_s": 0.0,
+            "template_cluster": "",
+            "mechanism_cluster": ""
+          }
+        },
+        "autonomy_priority": 110.21,
+        "packaging_lab": {
+          "title_variants": [
+            "Mushrooms trade nutrients through underground threads",
+            "Mushrooms use mycelium threads before they change",
+            "Why mushrooms change after one mycelium threads"
+          ],
+          "thumbnail_variants": [
+            "FUNGAL WEB",
+            "MYCELIUM THREADS",
+            "WATCH MYCELIUM THREADS"
+          ],
+          "hook_variants": [
+            "Mushrooms reveal the mycelium threads first.",
+            "Mushrooms trade nutrients through underground threads",
+            "Watch the underground threads again. Tomorrow in Hidden Network: another nature signal. Is this closer to a ne"
+          ],
+          "pinned_comment": "Watch the underground threads again. Tomorrow in Hidden Network: another nature signal. Is this closer to a network, a warning system, or something stranger?",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
+      },
+      {
         "id": "2da9f8fda07f3d1b",
         "title": "Chickens keep their view steady while walking",
         "category": "farm",
@@ -5862,400 +6248,6 @@
           "pinned_comment": "Watch the face memory again. Tomorrow in Night Shift Nature: another animal signal. What part of this feels most impossible?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
-      },
-      {
-        "id": "b56baed0627d1611",
-        "title": "Magnets make invisible fields visible",
-        "category": "physics",
-        "story_format": "physics_demo",
-        "lane": "fresh_experiment",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "opportunity": {
-            "score": 60,
-            "signals": {
-              "viral_potential": 64,
-              "visual_potential": 75,
-              "replay_potential": 60,
-              "comment_potential": 46,
-              "educational_potential": 58,
-              "emotional_potential": 53,
-              "novelty": 45
-            },
-            "verdict": "rewrite",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "retention": {
-            "score": 72,
-            "signals": {
-              "hook_score": 70,
-              "curiosity_score": 71,
-              "visual_score": 74,
-              "replay_score": 62,
-              "completion_prediction": 84
-            },
-            "verdict": "rewrite",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "opening_retention": {
-            "score": 100.0,
-            "state": "retention_ready",
-            "approved": true,
-            "subject": "magnets",
-            "cue_terms": [
-              "field",
-              "filing",
-              "line",
-              "map"
-            ],
-            "frame_hook_bridge": [
-              "line"
-            ],
-            "cue_bridge": [
-              "filing",
-              "line",
-              "map"
-            ],
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "risks": []
-          },
-          "weak_content": {
-            "risk": 0,
-            "state": "clear",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.65,
-              "sample_size": 12,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "test",
-              "can_adjust_strategy": true,
-              "bootstrap_multiplier": 0.738,
-              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 99,
-            "state": "strong",
-            "subscriber_probability": 0.141,
-            "return_probability": 0.297,
-            "comment_probability": 0.253,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "hook_invites_return",
-              "identity_cta",
-              "debate_comment",
-              "return_prompt",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.033,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.274,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.007,
-            "sample_size": 1,
-            "minimum_sample_size": 15,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.255,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
-          },
-          "category": "physics",
-          "story_format": "physics_demo",
-          "hook_score": 100,
-          "title_score": 100,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          },
-          "editorial_guard": {
-            "approved": true,
-            "state": "approved",
-            "issues": []
-          },
-          "objective_gate": {
-            "penalty": 0.0,
-            "reasons": [
-              "bootstrap_observe_before_scaling"
-            ],
-            "confidence_score": 0.007,
-            "scale_ready": false,
-            "publish_blocking": false,
-            "swipe_risk_band": "low",
-            "payoff_time_s": 0.0,
-            "template_cluster": "",
-            "mechanism_cluster": ""
-          }
-        },
-        "autonomy_priority": 103.0,
-        "packaging_lab": {
-          "title_variants": [
-            "Magnets make invisible fields visible",
-            "Magnets use field lines before they change",
-            "Why magnets change after one field lines"
-          ],
-          "thumbnail_variants": [
-            "FIELD LINES",
-            "WATCH FIELD LINES",
-            "MAGNETS CHANGE"
-          ],
-          "hook_variants": [
-            "Magnets can show a hidden force map.",
-            "Magnets make invisible fields visible",
-            "Watch the field lines again. Tomorrow in Nature Signals: another nature signal. What part of this feels most i"
-          ],
-          "pinned_comment": "Watch the field lines again. Tomorrow in Nature Signals: another nature signal. What part of this feels most impossible?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "8bdc8b70af521eb4",
-        "title": "Fossils turn old bones into time clues",
-        "category": "discoveries",
-        "story_format": "science_clue",
-        "lane": "fresh_experiment",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "opportunity": {
-            "score": 70,
-            "signals": {
-              "viral_potential": 93,
-              "visual_potential": 69,
-              "replay_potential": 72,
-              "comment_potential": 54,
-              "educational_potential": 72,
-              "emotional_potential": 53,
-              "novelty": 59
-            },
-            "verdict": "produce",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "retention": {
-            "score": 71,
-            "signals": {
-              "hook_score": 70,
-              "curiosity_score": 79,
-              "visual_score": 58,
-              "replay_score": 62,
-              "completion_prediction": 84
-            },
-            "verdict": "rewrite",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "opening_retention": {
-            "score": 100.0,
-            "state": "retention_ready",
-            "approved": true,
-            "subject": "fossils",
-            "cue_terms": [
-              "fossil",
-              "shape"
-            ],
-            "frame_hook_bridge": [
-              "clue",
-              "fossil"
-            ],
-            "cue_bridge": [
-              "fossil",
-              "shape"
-            ],
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "risks": []
-          },
-          "weak_content": {
-            "risk": 0,
-            "state": "clear",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.65,
-              "sample_size": 12,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "test",
-              "can_adjust_strategy": true,
-              "bootstrap_multiplier": 0.738,
-              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 72,
-            "state": "usable",
-            "subscriber_probability": 0.103,
-            "return_probability": 0.222,
-            "comment_probability": 0.191,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "debate_comment",
-              "return_prompt",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.033,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.274,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.007,
-            "sample_size": 1,
-            "minimum_sample_size": 15,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.255,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
-          },
-          "category": "discoveries",
-          "story_format": "science_clue",
-          "hook_score": 100,
-          "title_score": 100,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          },
-          "editorial_guard": {
-            "approved": true,
-            "state": "approved",
-            "issues": []
-          },
-          "objective_gate": {
-            "penalty": 0.0,
-            "reasons": [
-              "bootstrap_observe_before_scaling"
-            ],
-            "confidence_score": 0.007,
-            "scale_ready": false,
-            "publish_blocking": false,
-            "swipe_risk_band": "low",
-            "payoff_time_s": 0.0,
-            "template_cluster": "",
-            "mechanism_cluster": ""
-          }
-        },
-        "autonomy_priority": 103.0,
-        "packaging_lab": {
-          "title_variants": [
-            "Fossils turn old bones into time clues",
-            "Fossils use fossil shape before they leave",
-            "This fossil shape gives fossils away"
-          ],
-          "thumbnail_variants": [
-            "FOSSIL CLUE",
-            "FOSSIL SHAPE",
-            "WATCH FOSSIL SHAPE"
-          ],
-          "hook_variants": [
-            "Fossils can preserve a clue from deep time.",
-            "Fossils turn old bones into time clues",
-            "Watch the pattern again. Tomorrow in Discovery Brief: another nature signal. Would you trust this explanation "
-          ],
-          "pinned_comment": "Watch the pattern again. Tomorrow in Discovery Brief: another nature signal. Would you trust this explanation from footage alone?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
       }
     ]
   },
@@ -6265,6 +6257,6 @@
     "Bias production toward experiment winners: hook_style=outcome_first, script_tone=opinionated, narrator_voice=jenny, thumbnail_style=frame_first_side_caption, cta_style=subscribe_channel, opening_visual_pattern=animal_closeup, subtitle_density=medium, loop_style=unfinished_mechanism, cta_pattern=sequel_tease, end_card_style=series_tease, title_shape=impossible_fact, music_bed=light_bed.",
     "Current operating mode: exploit."
   ],
-  "queue_annotations_written": 40,
+  "queue_annotations_written": 42,
   "queue_annotations_changed": 30
 }

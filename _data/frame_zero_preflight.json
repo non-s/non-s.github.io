@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-07-03T12:13:33.033059+00:00",
+  "generated_at": "2026-07-03T13:12:49.896528+00:00",
   "floor": 82.0,
-  "pending": 41,
-  "ready": 40,
+  "pending": 45,
+  "ready": 44,
   "held": 1,
-  "rewritten": 9,
-  "average_opening_score": 97.56,
+  "rewritten": 10,
+  "average_opening_score": 97.24,
   "render_gate": "hold",
   "counts": {
-    "approved": 40,
-    "rewritten": 9,
+    "approved": 44,
+    "rewritten": 10,
     "hold": 1
   },
   "items": [
@@ -33,6 +33,26 @@
         "frame_text_not_echoed_early"
       ],
       "action": "Hold until opening is rewritten."
+    },
+    {
+      "id": "94d7b569eb9a4ac7",
+      "title": "Mushrooms trade nutrients through underground threads",
+      "category": "fungi",
+      "render_gate": "approved",
+      "opening_score": 90.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Mushrooms reveal the mycelium threads first.",
+      "first_frame_text": "FUNGAL WEB",
+      "visible_cue": "mycelium threads",
+      "rewrite_applied": true,
+      "rewrite_reason": "stale_frame_zero_repair",
+      "before_score": 90.0,
+      "after_score": 90.0,
+      "risks": [
+        "frame_text_not_echoed_early"
+      ],
+      "action": "Use the frame-zero rewrite before rendering."
     },
     {
       "id": "33dd6bb0aeba20be",
@@ -278,6 +298,26 @@
       "action": "Ready to render with current first frame."
     },
     {
+      "id": "fa7c85e672e4ff2a",
+      "title": "Sheep recognize faces across the flock",
+      "category": "farm",
+      "render_gate": "approved",
+      "opening_score": 90.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Sheep can remember familiar faces.",
+      "first_frame_text": "FLOCK MEMORY",
+      "visible_cue": "",
+      "rewrite_applied": false,
+      "rewrite_reason": "",
+      "before_score": null,
+      "after_score": 90.0,
+      "risks": [
+        "frame_text_not_echoed_early"
+      ],
+      "action": "Ready to render with current first frame."
+    },
+    {
       "id": "e22c7bfd6c2187b6",
       "title": "Leaves angle toward the light they can use",
       "category": "plants",
@@ -327,6 +367,26 @@
       "opening_state": "retention_ready",
       "opening_line": "Penguins carry tiny air pockets into the water.",
       "first_frame_text": "AIR BUBBLES",
+      "visible_cue": "",
+      "rewrite_applied": false,
+      "rewrite_reason": "",
+      "before_score": null,
+      "after_score": 96.0,
+      "risks": [
+        "missing_early_action"
+      ],
+      "action": "Ready to render with current first frame."
+    },
+    {
+      "id": "33b5082b104c19f8",
+      "title": "Wolves leave scent notes for the pack",
+      "category": "wildlife",
+      "render_gate": "approved",
+      "opening_score": 96.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Wolves leave scent notes for the pack.",
+      "first_frame_text": "SCENT POST",
       "visible_cue": "",
       "rewrite_applied": false,
       "rewrite_reason": "",
@@ -599,6 +659,24 @@
       "opening_state": "retention_ready",
       "opening_line": "Plants turn leaf angles into light maps.",
       "first_frame_text": "LEAF ANGLE",
+      "visible_cue": "",
+      "rewrite_applied": false,
+      "rewrite_reason": "",
+      "before_score": null,
+      "after_score": 100.0,
+      "risks": [],
+      "action": "Ready to render with current first frame."
+    },
+    {
+      "id": "e68ed8abae5744a3",
+      "title": "Plants turn light into food",
+      "category": "plants",
+      "render_gate": "approved",
+      "opening_score": 100.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Plants turn light into food.",
+      "first_frame_text": "LIGHT TO SUGAR",
       "visible_cue": "",
       "rewrite_applied": false,
       "rewrite_reason": "",
