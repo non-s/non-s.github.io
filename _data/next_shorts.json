@@ -2737,6 +2737,188 @@
       }
     },
     {
+      "id": "d051c1d95735e2ca",
+      "title": "Deer aim their ears like sound radar",
+      "category": "wildlife",
+      "autonomy_priority": 100.0,
+      "queue_score": 100.0,
+      "template_cluster": "",
+      "mechanism_cluster": "",
+      "objective_reasons": [
+        "objective_gate:observe_before_scaling"
+      ],
+      "lane": "evergreen",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 93.8,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 60,
+          "signals": {
+            "viral_potential": 69,
+            "visual_potential": 71,
+            "replay_potential": 64,
+            "comment_potential": 46,
+            "educational_potential": 65,
+            "emotional_potential": 27,
+            "novelty": 61
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.227,
+            "sample_size": 2,
+            "minimum_sample_size": 5,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.42,
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+          },
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+        },
+        "retention": {
+          "score": 71,
+          "signals": {
+            "hook_score": 70,
+            "curiosity_score": 71,
+            "visual_score": 66,
+            "replay_score": 62,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.227,
+            "sample_size": 2,
+            "minimum_sample_size": 5,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.42,
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+          },
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+        },
+        "opening_retention": {
+          "score": 100.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "deer",
+          "cue_terms": [
+            "radar",
+            "sound"
+          ],
+          "frame_hook_bridge": [
+            "radar",
+            "sound"
+          ],
+          "cue_bridge": [
+            "radar",
+            "sound"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": []
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 12,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143,
+          "return_probability": 0.3,
+          "comment_probability": 0.256,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.241,
+            "sample_size": 7,
+            "minimum_sample_size": 18,
+            "data_quality": "estimated",
+            "data_quality_score": 0.425,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.43,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.24."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.24."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.23,
+          "sample_size": 15,
+          "minimum_sample_size": 38,
+          "data_quality": "estimated",
+          "data_quality_score": 0.35,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.422,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.23."
+        },
+        "category": "wildlife",
+        "story_format": "body_superpower",
+        "hook_score": 86,
+        "title_score": 90,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "confidence_score": 0.23,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 0.0,
+          "template_cluster": "",
+          "mechanism_cluster": ""
+        }
+      }
+    },
+    {
       "id": "a386b5695dfd9b83",
       "title": "Plants speed growth under protected glass",
       "category": "plants",
@@ -2926,7 +3108,7 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 35,
+      "evergreen": 38,
       "recovery": 6
     },
     "items": [
@@ -2960,7 +3142,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.72
+        "freshness_score": 52.7
       },
       {
         "id": "677b330e4980e87d",
@@ -2976,7 +3158,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.9
+        "freshness_score": 53.88
       },
       {
         "id": "33dd6bb0aeba20be",
@@ -2984,7 +3166,7 @@
         "category": "insects",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.28
+        "freshness_score": 53.26
       },
       {
         "id": "0ef428432eac25bb",
@@ -2992,7 +3174,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.64
+        "freshness_score": 54.62
       },
       {
         "id": "cdfb416d8c795884",
@@ -3000,7 +3182,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.24
+        "freshness_score": 54.22
       },
       {
         "id": "259c7b57eae57db8",
@@ -3009,6 +3191,14 @@
         "lane": "evergreen",
         "adjustment": 5.0,
         "freshness_score": 54.18
+      },
+      {
+        "id": "d051c1d95735e2ca",
+        "title": "Deer aim their ears like sound radar",
+        "category": "wildlife",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       },
       {
         "id": "9eb20513a1ebf366",
@@ -3024,7 +3214,15 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.64
+        "freshness_score": 54.62
+      },
+      {
+        "id": "746750435163b0be",
+        "title": "Lions have dark ear marks cubs can follow",
+        "category": "wildlife",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       },
       {
         "id": "14f207991dea2fc0",
@@ -3040,7 +3238,7 @@
         "category": "trees",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.82
+        "freshness_score": 52.8
       },
       {
         "id": "b48d7d5e01b74a64",
@@ -3056,7 +3254,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.72
+        "freshness_score": 52.7
       },
       {
         "id": "2da9f8fda07f3d1b",
@@ -3064,7 +3262,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 53.64
+        "freshness_score": 53.62
       },
       {
         "id": "d7370c6ab147dba8",
@@ -3072,7 +3270,15 @@
         "category": "reptiles",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.68
+        "freshness_score": 52.66
+      },
+      {
+        "id": "16394dd0594f4bd3",
+        "title": "Sharks can feel electricity in the water",
+        "category": "ocean",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       },
       {
         "id": "f329d4d9415a87cf",
@@ -3088,7 +3294,7 @@
         "category": "birds",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.44
+        "freshness_score": 54.42
       },
       {
         "id": "d99bc3c78a669d88",
@@ -3104,7 +3310,7 @@
         "category": "primates",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.38
+        "freshness_score": 52.36
       },
       {
         "id": "ebdbe5c5026628e6",
@@ -3120,7 +3326,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 52.74
+        "freshness_score": 52.72
       },
       {
         "id": "0dbd5efac2965abc",
@@ -3144,7 +3350,7 @@
         "category": "cats",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.34
+        "freshness_score": 54.32
       },
       {
         "id": "acdd68dea2bf9b74",
@@ -3160,7 +3366,7 @@
         "category": "nocturnal",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.38
+        "freshness_score": 52.36
       },
       {
         "id": "02f475952f9bf936",
@@ -3168,7 +3374,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.4
+        "freshness_score": 54.38
       },
       {
         "id": "4111626a62866b27",
@@ -3184,7 +3390,7 @@
         "category": "nocturnal",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.86
+        "freshness_score": 53.84
       },
       {
         "id": "9e22823752beb432",
@@ -3208,7 +3414,7 @@
         "category": "physics",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.36
+        "freshness_score": 52.34
       },
       {
         "id": "8bdc8b70af521eb4",
@@ -3216,7 +3422,7 @@
         "category": "discoveries",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.36
+        "freshness_score": 52.34
       },
       {
         "id": "38a9a9876bc2c5d0",
@@ -3224,7 +3430,7 @@
         "category": "space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.36
+        "freshness_score": 52.34
       },
       {
         "id": "e22c7bfd6c2187b6",
@@ -3232,7 +3438,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.36
+        "freshness_score": 52.34
       },
       {
         "id": "ce619185cc5a8b0e",
@@ -3240,7 +3446,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.36
+        "freshness_score": 52.34
       },
       {
         "id": "9ee098ecdf0b7d81",
@@ -3248,7 +3454,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.36
+        "freshness_score": 52.34
       },
       {
         "id": "a386b5695dfd9b83",
@@ -3256,7 +3462,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.72
+        "freshness_score": 52.7
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -3302,35 +3508,35 @@
       },
       {
         "window": 30,
-        "items": 16,
+        "items": 17,
         "dominant_shape": "{subject} fake weak {cue} to protect ducklings",
         "dominant_count": 1,
-        "dominant_share": 0.062,
+        "dominant_share": 0.059,
         "top_shapes": [
           {
             "shape": "{subject} fake weak {cue} to protect ducklings",
             "count": 1,
-            "share": 0.062
+            "share": 0.059
           },
           {
             "shape": "{subject} wear stripe shadows as camouflage",
             "count": 1,
-            "share": 0.062
+            "share": 0.059
           },
           {
             "shape": "{subject} turn sunlight into stored sugar",
             "count": 1,
-            "share": 0.062
+            "share": 0.059
           },
           {
             "shape": "{subject} track fish trails with whiskers",
             "count": 1,
-            "share": 0.062
+            "share": 0.059
           },
           {
             "shape": "{subject} hear tiny prey under snow",
             "count": 1,
-            "share": 0.062
+            "share": 0.059
           }
         ]
       }
@@ -3338,15 +3544,15 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 41,
-    "pending_after": 41,
+    "pending_before": 44,
+    "pending_after": 44,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 1,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 30,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 14,
-      "objective_gate:observe_before_scaling": 11,
+      "objective_gate:bootstrap_observe_before_scaling": 32,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 16,
+      "objective_gate:observe_before_scaling": 12,
       "editor_in_chief:script quality gate blocked the narration": 5,
       "editor_in_chief:editorial score 46 is below 62": 1
     }
