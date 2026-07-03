@@ -2,44 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 8,
-      "high": 2,
-      "manual_review": 2,
+      "automation_safe": 9,
+      "high": 1,
+      "manual_review": 1,
       "total": 10,
       "urgent": 2
     },
     "free_only": true,
-    "generated_at": "2026-07-03T21:59:01.794767+00:00",
+    "generated_at": "2026-07-03T22:09:50.925519+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 9.824,
-        "automation_safe": true,
-        "category": "arctic",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "overdue",
-        "current_views": 0,
-        "due_at": "2026-07-03T13:09:35.195690+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:GO7SG1fM1y0:analytics_due:1h",
-        "lane": "measurement",
-        "manual_approval_required": false,
-        "opening_retention_score": 94.0,
-        "priority": "urgent",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
-        "series": "Polar Survival",
-        "state": "analytics_due",
-        "target_views": 24,
-        "title": "Seals track fish trails with whiskers",
-        "url": "https://www.youtube.com/shorts/GO7SG1fM1y0",
-        "video_id": "GO7SG1fM1y0",
-        "wait_until": "",
-        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
-      },
-      {
-        "action_type": "pull_fresh_analytics",
-        "age_hours": 8.707,
+        "age_hours": 8.888,
         "automation_safe": true,
         "category": "nocturnal",
         "checkpoint_label": "1h",
@@ -64,34 +38,34 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "prepare_package_rescue",
-        "age_hours": 7.436,
-        "automation_safe": false,
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 7.616,
+        "automation_safe": true,
         "category": "cats",
-        "checkpoint_label": "24h",
-        "checkpoint_state": "pending",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "overdue",
         "current_views": 1,
-        "due_at": "2026-07-04T14:32:52.669353+00:00",
+        "due_at": "2026-07-03T15:32:52.669353+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:vJLRYY9DC2M:repair_candidate:24h",
-        "lane": "package_rescue",
-        "manual_approval_required": true,
+        "id": "fresh-upload:vJLRYY9DC2M:analytics_due:1h",
+        "lane": "measurement",
+        "manual_approval_required": false,
         "opening_retention_score": 100.0,
-        "priority": "high",
-        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "priority": "urgent",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
         "series": "Pet Secrets",
-        "state": "repair_candidate",
-        "target_views": 300,
+        "state": "analytics_due",
+        "target_views": 24,
         "title": "Cats use whiskers like built-in rulers",
         "url": "https://www.youtube.com/shorts/vJLRYY9DC2M",
         "video_id": "vJLRYY9DC2M",
         "wait_until": "",
-        "why": "Observed velocity is weak enough to prepare a package intervention."
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 6.455,
+        "age_hours": 6.635,
         "automation_safe": false,
         "category": "ocean",
         "checkpoint_label": "24h",
@@ -117,7 +91,7 @@
       },
       {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.439,
+        "age_hours": 0.619,
         "automation_safe": true,
         "category": "plants",
         "checkpoint_label": "1h",
@@ -143,7 +117,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 5.199,
+        "age_hours": 5.379,
         "automation_safe": true,
         "category": "primates",
         "checkpoint_label": "6h",
@@ -168,8 +142,34 @@
         "why": "No intervention signal is strong enough yet."
       },
       {
+        "action_type": "hold_until_first_hour",
+        "age_hours": 0.05,
+        "automation_safe": true,
+        "category": "plants",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-03T23:06:52.291088+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:bzhm_MUPS8w:awaiting_1h:1h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "low",
+        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "series": "Biology Brief",
+        "state": "awaiting_1h",
+        "target_views": 24,
+        "title": "Plants turn light into food",
+        "url": "https://www.youtube.com/shorts/bzhm_MUPS8w",
+        "video_id": "bzhm_MUPS8w",
+        "wait_until": "2026-07-03T23:06:52.291088+00:00",
+        "why": "The upload is still inside the no-panic observation window."
+      },
+      {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 4.865,
+        "age_hours": 5.045,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "6h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.575,
+        "age_hours": 3.755,
         "automation_safe": true,
         "category": "birds",
         "checkpoint_label": "6h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.872,
+        "age_hours": 3.052,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "6h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 1.869,
+        "age_hours": 2.05,
         "automation_safe": true,
         "category": "conservation",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-03T21:59:01.793705+00:00"
+    "source_generated_at": "2026-07-03T22:09:50.924345+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -283,16 +283,71 @@
     ],
     "counts": {
       "analytics_due": 2,
-      "awaiting_1h": 1,
-      "high_priority": 4,
-      "repair_candidates": 2,
+      "awaiting_1h": 2,
+      "high_priority": 3,
+      "repair_candidates": 1,
       "tracked": 10
     },
-    "generated_at": "2026-07-03T21:59:01.793705+00:00",
+    "generated_at": "2026-07-03T22:09:50.924345+00:00",
     "items": [
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.439,
+        "age_hours": 0.05,
+        "category": "plants",
+        "checkpoints": [
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-03T23:06:52.291088+00:00",
+            "label": "1h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 24,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-04T04:06:52.291088+00:00",
+            "label": "6h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 105,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-04T22:06:52.291088+00:00",
+            "label": "24h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 300,
+            "views": 0
+          }
+        ],
+        "current_views": 0,
+        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "next_checkpoint": {
+          "delta_to_target": 0,
+          "due_at": "2026-07-03T23:06:52.291088+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        "opening_retention_score": 100.0,
+        "opening_retention_state": "retention_ready",
+        "priority": "low",
+        "series": "Biology Brief",
+        "state": "awaiting_1h",
+        "title": "Plants turn light into food",
+        "uploaded_at": "2026-07-03T22:06:52.291088+00:00",
+        "url": "https://www.youtube.com/shorts/bzhm_MUPS8w",
+        "video_id": "bzhm_MUPS8w",
+        "views_per_hour": 0.0
+      },
+      {
+        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "age_hours": 0.619,
         "category": "plants",
         "checkpoints": [
           {
@@ -347,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 1.869,
+        "age_hours": 2.05,
         "category": "conservation",
         "checkpoints": [
           {
@@ -402,7 +457,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.872,
+        "age_hours": 3.052,
         "category": "insects",
         "checkpoints": [
           {
@@ -453,11 +508,11 @@
         "uploaded_at": "2026-07-03T19:06:43.760986+00:00",
         "url": "https://www.youtube.com/shorts/ZEsLlK_ftDc",
         "video_id": "ZEsLlK_ftDc",
-        "views_per_hour": 0.366
+        "views_per_hour": 0.332
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.575,
+        "age_hours": 3.755,
         "category": "birds",
         "checkpoints": [
           {
@@ -512,7 +567,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 4.865,
+        "age_hours": 5.045,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -567,7 +622,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.199,
+        "age_hours": 5.379,
         "category": "primates",
         "checkpoints": [
           {
@@ -622,7 +677,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 6.455,
+        "age_hours": 6.635,
         "category": "ocean",
         "checkpoints": [
           {
@@ -673,7 +728,7 @@
         "uploaded_at": "2026-07-03T15:31:43.787838+00:00",
         "url": "https://www.youtube.com/shorts/StWGdOT1uDA",
         "video_id": "StWGdOT1uDA",
-        "views_per_hour": 0.158,
+        "views_per_hour": 0.152,
         "warning": {
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.594,
@@ -687,18 +742,18 @@
         }
       },
       {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 7.436,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 7.616,
         "category": "cats",
         "checkpoints": [
           {
-            "delta_to_target": -23,
+            "delta_to_target": -24,
             "due_at": "2026-07-03T15:32:52.669353+00:00",
             "label": "1h",
-            "source": "observed",
-            "state": "observed",
+            "source": "estimated",
+            "state": "overdue",
             "target_views": 24,
-            "views": 1
+            "views": 0
           },
           {
             "delta_to_target": -104,
@@ -720,41 +775,30 @@
           }
         ],
         "current_views": 1,
-        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
-          "due_at": "2026-07-04T14:32:52.669353+00:00",
-          "label": "24h",
+          "delta_to_target": -24,
+          "due_at": "2026-07-03T15:32:52.669353+00:00",
+          "label": "1h",
           "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 1
+          "state": "overdue",
+          "target_views": 24,
+          "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
         "priority": "high",
         "series": "Pet Secrets",
-        "state": "repair_candidate",
+        "state": "analytics_due",
         "title": "Cats use whiskers like built-in rulers",
         "uploaded_at": "2026-07-03T14:32:52.669353+00:00",
         "url": "https://www.youtube.com/shorts/vJLRYY9DC2M",
         "video_id": "vJLRYY9DC2M",
-        "views_per_hour": 0.137,
-        "warning": {
-          "action": "TITLE_AUTO_REPAIR_TRIGGER",
-          "confidence_score": 0.594,
-          "reason": "low early velocity",
-          "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-          "title": "Cats use whiskers like built-in rulers",
-          "video_id": "vJLRYY9DC2M",
-          "views": 1,
-          "warning_state": "repair_risk"
-        }
+        "views_per_hour": 0.132
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 8.707,
+        "age_hours": 8.888,
         "category": "nocturnal",
         "checkpoints": [
           {
@@ -806,61 +850,6 @@
         "url": "https://www.youtube.com/shorts/11T4y_mTyZs",
         "video_id": "11T4y_mTyZs",
         "views_per_hour": 0.0
-      },
-      {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 9.824,
-        "category": "arctic",
-        "checkpoints": [
-          {
-            "delta_to_target": -24,
-            "due_at": "2026-07-03T13:09:35.195690+00:00",
-            "label": "1h",
-            "source": "estimated",
-            "state": "overdue",
-            "target_views": 24,
-            "views": 0
-          },
-          {
-            "delta_to_target": -105,
-            "due_at": "2026-07-03T18:09:35.195690+00:00",
-            "label": "6h",
-            "source": "observed",
-            "state": "observed",
-            "target_views": 105,
-            "views": 0
-          },
-          {
-            "delta_to_target": 0,
-            "due_at": "2026-07-04T12:09:35.195690+00:00",
-            "label": "24h",
-            "source": "estimated",
-            "state": "pending",
-            "target_views": 300,
-            "views": 0
-          }
-        ],
-        "current_views": 0,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-        "next_checkpoint": {
-          "delta_to_target": -24,
-          "due_at": "2026-07-03T13:09:35.195690+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        "opening_retention_score": 94.0,
-        "opening_retention_state": "retention_ready",
-        "priority": "high",
-        "series": "Polar Survival",
-        "state": "analytics_due",
-        "title": "Seals track fish trails with whiskers",
-        "uploaded_at": "2026-07-03T12:09:35.195690+00:00",
-        "url": "https://www.youtube.com/shorts/GO7SG1fM1y0",
-        "video_id": "GO7SG1fM1y0",
-        "views_per_hour": 0.0
       }
     ],
     "targets": {
@@ -870,23 +859,12 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-03T21:59:01.794852+00:00",
+  "generated_at": "2026-07-03T22:09:50.925623+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
   ],
   "related_video_recommendations": [
-    {
-      "recommendation": {
-        "reason": "same series/category/format session bridge",
-        "score": 85.0,
-        "title": "Elephants cool blood through giant ears",
-        "url": "https://www.youtube.com/shorts/HDQAh3KSdtY",
-        "video_id": "HDQAh3KSdtY"
-      },
-      "source_title": "Deer aim their ears like sound radar",
-      "source_video_id": "dpahJs0978c"
-    },
     {
       "recommendation": {
         "reason": "same series/category/format session bridge",
@@ -930,14 +908,20 @@
       },
       "source_title": "Plants use trap hairs to count touches before snapping shut",
       "source_video_id": "ODaf6_f8FCk"
+    },
+    {
+      "recommendation": {
+        "reason": "same series/category/format session bridge",
+        "score": 85.0,
+        "title": "Plants turn sunlight into stored sugar",
+        "url": "https://www.youtube.com/shorts/8355f3mQPE0",
+        "video_id": "8355f3mQPE0"
+      },
+      "source_title": "Plants turn light into food",
+      "source_video_id": "bzhm_MUPS8w"
     }
   ],
   "sequel_opportunities": [
-    {
-      "prompt": "Make a sequel with a new subject but the same payoff shape: Deer aim their ears like sound radar",
-      "title": "Deer aim their ears like sound radar",
-      "video_id": "dpahJs0978c"
-    },
     {
       "prompt": "Make a sequel with a new subject but the same payoff shape: Birds see ultraviolet patterns we miss",
       "title": "Birds see ultraviolet patterns we miss",
@@ -957,13 +941,18 @@
       "prompt": "Make a sequel with a new subject but the same payoff shape: Plants use trap hairs to count touches before snapping shut",
       "title": "Plants use trap hairs to count touches before snapping shut",
       "video_id": "ODaf6_f8FCk"
+    },
+    {
+      "prompt": "Make a sequel with a new subject but the same payoff shape: Plants turn light into food",
+      "title": "Plants turn light into food",
+      "video_id": "bzhm_MUPS8w"
     }
   ],
   "session_graph": {
     "action_score_threshold": 55,
     "coverage": 0.75,
     "edges": 20,
-    "nodes": 36,
+    "nodes": 37,
     "target_reuse_limit": 2
   }
 }
