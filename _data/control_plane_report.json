@@ -2,25 +2,30 @@
   "state": "migration_needed",
   "pressure_score": 78,
   "metrics": {
-    "live_state_files": 144,
-    "data_state_files": 120,
+    "live_state_files": 239,
+    "data_state_files": 215,
     "video_done_markers": 22,
-    "live_state_bytes": 6830455,
-    "stories_queue_bytes": 2256166,
-    "stories_queue_lines": 63053,
+    "live_state_bytes": 8464604,
+    "stories_queue_bytes": 2337487,
+    "stories_queue_lines": 64723,
     "workflow_files": 18,
     "state_path_refs": 282
   },
   "largest_state_files": [
     {
       "path": "_data/stories_queue.json",
-      "bytes": 2256166,
-      "lines": 63053
+      "bytes": 2337487,
+      "lines": 64723
     },
     {
       "path": "_data/rejected_queue.jsonl",
       "bytes": 797944,
       "lines": 994
+    },
+    {
+      "path": "_data/repair_queue.jsonl",
+      "bytes": 701553,
+      "lines": 39
     },
     {
       "path": "_data/queue_audit.json",
@@ -34,8 +39,8 @@
     },
     {
       "path": "_data/autonomous_growth_plan.json",
-      "bytes": 227587,
-      "lines": 6259
+      "bytes": 227359,
+      "lines": 6253
     },
     {
       "path": "_data/dry_run_publish.json",
@@ -44,8 +49,8 @@
     },
     {
       "path": "_data/early_performance.json",
-      "bytes": 219368,
-      "lines": 8420
+      "bytes": 220348,
+      "lines": 8460
     },
     {
       "path": "_data/youtube_brain_report.json",
@@ -54,23 +59,18 @@
     },
     {
       "path": "_data/next_shorts.json",
-      "bytes": 115171,
+      "bytes": 115169,
       "lines": 3552
     },
     {
       "path": "_data/provider_stats.jsonl",
-      "bytes": 86125,
-      "lines": 1108
+      "bytes": 88299,
+      "lines": 1136
     },
     {
       "path": "_data/analytics/api_quota_ledger.jsonl",
-      "bytes": 81737,
-      "lines": 124
-    },
-    {
-      "path": "_data/fact_sources.jsonl",
-      "bytes": 50990,
-      "lines": 162
+      "bytes": 82974,
+      "lines": 126
     }
   ],
   "migration_lanes": [
