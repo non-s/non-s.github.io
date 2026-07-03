@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-07-03T15:51:07.438876+00:00",
-  "pending": 40,
+  "generated_at": "2026-07-03T16:51:06.774441+00:00",
+  "pending": 39,
   "states": {
     "rewrite": 33,
-    "publish_ready": 7
+    "publish_ready": 6
   },
   "mechanism_clusters": {
     "face_recognition": 3,
@@ -15,41 +15,44 @@
     "decoy_injury": 1
   },
   "rights": {
-    "approved": 40
+    "approved": 39
   },
   "prune_summary": {
-    "pending_before": 72,
-    "pending_after": 40,
-    "rejected": 32,
-    "repair_needed": 8,
-    "repaired": 9,
+    "pending_before": 39,
+    "pending_after": 39,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 3,
     "reasons": {
       "editor_in_chief:subject repeated inside 3-day cooldown": 24,
       "objective_gate:bootstrap_observe_before_scaling": 22,
-      "objective_gate:observe_before_scaling": 18,
-      "duplicate_title": 14,
-      "duplicate_script": 9,
-      "duplicate_angle": 8,
-      "queue_score_reject": 8,
-      "off_topic_visual": 7,
+      "objective_gate:observe_before_scaling": 17,
       "editor_in_chief:script quality gate blocked the narration": 5,
-      "copy_subject_mismatch": 3,
-      "missing_action_word": 2,
-      "bad_plural_verb": 2,
-      "script_word_loop": 2,
       "editor_in_chief:editorial score 46 is below 62": 2,
-      "script_hook_mismatch": 1,
-      "missing_visual_cue": 1,
-      "missing_visible_cue": 1,
-      "opening_retention_gap_risk": 1,
-      "opening promise is not concrete enough": 1,
-      "non_animal_body_language": 1,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 1,
-      "editor_in_chief:editorial score 40 is below 62": 1,
-      "script_subject_mismatch": 1
+      "editor_in_chief:editorial score 40 is below 62": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "4406a9b99388f0ba",
+      "title": "Monkeys Los monos lavan su comida para quitar la arena",
+      "reasons": [
+        "subject repeated inside 3-day cooldown",
+        "humanity score is too low",
+        "editorial score 37 is below 62"
+      ],
+      "stage": "editor_in_chief"
+    },
+    {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
     {
       "id": "4d444b1a3eaa0fcf",
       "title": "Auroras glow when solar particles hit air",
@@ -300,22 +303,6 @@
         "duplicate_title"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "f17886d7839b3b22",
-      "title": "Mountains shrink faster than you think",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "cb4cb593e9502516",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
     }
   ],
   "top": [
@@ -494,7 +481,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-03T15:50:29.717358+00:00",
+        "checked_at": "2026-07-03T16:50:28.279505+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -588,7 +575,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 30,
+          "sample_count": 31,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -973,15 +960,15 @@
         "approved": true,
         "category": "birds",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.395,
+          "bootstrap_multiplier": 0.381,
           "can_adjust_strategy": false,
-          "confidence_score": 0.193,
+          "confidence_score": 0.174,
           "data_quality": "estimated",
           "data_quality_score": 0.35,
           "minimum_sample_size": 38,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.19.",
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.17.",
           "recommendation_strength": "observe",
-          "sample_size": 15
+          "sample_size": 12
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -991,13 +978,13 @@
         },
         "hook_score": 86,
         "objective_gate": {
-          "confidence_score": 0.193,
+          "confidence_score": 0.174,
           "mechanism_cluster": "",
           "payoff_time_s": 0.0,
           "penalty": 0.0,
           "publish_blocking": false,
           "reasons": [
-            "observe_before_scaling"
+            "bootstrap_observe_before_scaling"
           ],
           "scale_ready": false,
           "swipe_risk_band": "low",
@@ -1088,17 +1075,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.466,
+            "bootstrap_multiplier": 0.395,
             "can_adjust_strategy": false,
-            "confidence_score": 0.287,
+            "confidence_score": 0.193,
             "data_quality": "estimated",
             "data_quality_score": 0.425,
             "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.29.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
             "recommendation_strength": "observe",
-            "sample_size": 9
+            "sample_size": 6
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.29.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -1137,10 +1124,10 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-03T15:50:30.995906+00:00",
+        "checked_at": "2026-07-03T16:50:28.300406+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
-          "objective_gate:observe_before_scaling"
+          "objective_gate:bootstrap_observe_before_scaling"
         ],
         "score": 100.0,
         "state": "publish_ready",
@@ -1200,7 +1187,7 @@
         "viewer_promise": "See why birds body superpower matters."
       },
       "packaging": {
-        "community_prompt": "Which birds clue should Wild Brief compare next in Earth Engine?",
+        "community_prompt": "Which birds clue should Wild Brief compare next in Sky Intelligence?",
         "cta_prompt": "Want one animal signal a day? Follow for the next clue.",
         "curiosity_gap": {
           "hook": "Why do these birds change after the uv vision?",
@@ -1228,7 +1215,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 30,
+          "sample_count": 31,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1303,7 +1290,7 @@
           "subtitle_tail_mode": "carry-forward"
         },
         "loop_score": 0.818,
-        "next_episode_question": "Tomorrow in Earth Engine: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "next_episode_question": "Tomorrow in Sky Intelligence: another animal signal. Is this adaptation, instinct, or intelligence?",
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
@@ -1329,7 +1316,7 @@
           ],
           "subject": "birds"
         },
-        "pinned_comment": "Watch the ultraviolet vision again. Tomorrow in Earth Engine: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "pinned_comment": "Watch the ultraviolet vision again. Tomorrow in Sky Intelligence: another animal signal. Is this adaptation, instinct, or intelligence?",
         "preflight_inputs": {
           "caption_chars_per_second": 14.59,
           "contrast_score": 0.74,
@@ -1403,12 +1390,12 @@
         "retention_contract": {
           "first_2s_narration": "Birds reveal the ultraviolet vision first Watch closely because many birds see",
           "first_frame_text": "UV VISION",
-          "next_episode_question": "Tomorrow in Earth Engine: another animal signal. Is this adaptation, instinct, or intelligence?",
+          "next_episode_question": "Tomorrow in Sky Intelligence: another animal signal. Is this adaptation, instinct, or intelligence?",
           "opening_retention_score": 100.0,
           "opening_retention_state": "retention_ready",
           "search_intent": {
             "description_line": "This Short explains Birds behavior through the visible ultraviolet vision.",
-            "series": "Earth Engine",
+            "series": "Sky Intelligence",
             "subject": "birds",
             "terms": [
               "birds",
@@ -1418,7 +1405,7 @@
             "title_variant": "Birds behavior: ultraviolet vision explained",
             "visible_cue": "ultraviolet vision"
           },
-          "series": "Earth Engine",
+          "series": "Sky Intelligence",
           "subject": "birds",
           "visible_cue": "ultraviolet vision"
         },
@@ -1426,7 +1413,7 @@
         "score": 95,
         "search_intent": {
           "description_line": "This Short explains Birds behavior through the visible ultraviolet vision.",
-          "series": "Earth Engine",
+          "series": "Sky Intelligence",
           "subject": "birds",
           "terms": [
             "birds",
@@ -1442,12 +1429,12 @@
           "thumbnail_text": "UV VISION",
           "title": "Birds see ultraviolet patterns we miss"
         },
-        "series": "Earth Engine #5",
+        "series": "Sky Intelligence #2",
         "series_identity": {
-          "continuity_prompt": "Next in Earth Engine #5: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Earth Engine #5",
-          "series": "Earth Engine #5"
+          "continuity_prompt": "Next in Sky Intelligence: compare this with another force of nature.",
+          "episode": 2,
+          "label": "Sky Intelligence #2",
+          "series": "Sky Intelligence"
         },
         "state": "magnetic",
         "strengths": [
@@ -1461,17 +1448,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.466,
+            "bootstrap_multiplier": 0.395,
             "can_adjust_strategy": false,
-            "confidence_score": 0.287,
+            "confidence_score": 0.193,
             "data_quality": "estimated",
             "data_quality_score": 0.425,
             "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.29.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
             "recommendation_strength": "observe",
-            "sample_size": 9
+            "sample_size": 6
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.29.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -1775,7 +1762,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-03T15:50:31.029262+00:00",
+        "checked_at": "2026-07-03T16:50:28.301769+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1870,7 +1857,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 30,
+          "sample_count": 31,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -2250,641 +2237,6 @@
       }
     },
     {
-      "id": "4406a9b99388f0ba",
-      "title": "Monkeys wash food when grit gets annoying",
-      "category": "primates",
-      "publish_score": {
-        "approved": true,
-        "category": "primates",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.34,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.12,
-          "data_quality": "inferred",
-          "data_quality_score": 0.575,
-          "minimum_sample_size": 25,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.12.",
-          "recommendation_strength": "observe",
-          "sample_size": 9
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.12,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "hand"
-          ],
-          "cue_terms": [
-            "hand",
-            "smart"
-          ],
-          "frame_hook_bridge": [
-            "hand"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "monkeys"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 55,
-          "signals": {
-            "comment_potential": 54,
-            "educational_potential": 58,
-            "emotional_potential": 35,
-            "novelty": 45,
-            "replay_potential": 64,
-            "viral_potential": 50,
-            "visual_potential": 65
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "animal_intelligence",
-        "subscriber_conversion": {
-          "comment_probability": 0.223,
-          "confidence": {
-            "bootstrap_multiplier": 0.36,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.146,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.15.",
-            "recommendation_strength": "observe",
-            "sample_size": 5
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.15.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.261,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-07-03T15:50:31.354315+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 100.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 100.0,
-      "youtube_brain": {
-        "animal": "monkeys",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "hand"
-          ],
-          "cue_terms": [
-            "hand",
-            "smart"
-          ],
-          "frame_hook_bridge": [
-            "hand"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "monkeys"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "animal_intelligence",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "monkeys",
-        "viewer_promise": "See why monkeys animal intelligence matters."
-      },
-      "packaging": {
-        "community_prompt": "Which monkeys clue should Wild Brief compare next in Primate Intelligence?",
-        "cta_prompt": "Want one animal signal a day? Follow for the next intelligence clue.",
-        "curiosity_gap": {
-          "hook": "Why do these monkeys change after the smart hands?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "animal intelligence",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 30,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} can {action} {subject} {subject} in the {subject}"
-          },
-          "winning_experiments": {
-            "cta:specific_question": 40.23,
-            "format:fresh_variant": 40.23,
-            "format:winner_inspired": 38.09,
-            "hook:new_hook": 40.23,
-            "thumbnail:new_thumbnail": 38.47
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "hand"
-            ],
-            "cue_terms": [
-              "hand",
-              "smart"
-            ],
-            "frame_hook_bridge": [
-              "hand"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "monkeys"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Monkeys can change habits to solve small problems",
-          "Monkeys show why the learned habit matters.",
-          "Monkeys show why the learned habit matters.",
-          "Monkeys show why the learned habit matters.",
-          "Monkeys give away the answer through learned habit"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "smart hands",
-          "ending_line": "Which primate trick should come next?",
-          "final_line": "Now the smart hands at the start make sense.",
-          "loop_score": 0.799,
-          "opening_line": "Monkeys can change habits to solve small problems.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "smart hands",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.799,
-        "next_episode_question": "Tomorrow in Primate Intelligence: another animal signal. What part of this feels most impossible?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "hand"
-          ],
-          "cue_terms": [
-            "hand",
-            "smart"
-          ],
-          "frame_hook_bridge": [
-            "hand"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "monkeys"
-        },
-        "pinned_comment": "Watch the hands again. Tomorrow in Primate Intelligence: another animal signal. What part of this feels most impossible?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 16.28,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 18,
-          "first_2s_narration": "Monkeys can change habits to solve small problems Watch the hands near",
-          "first_frame_text": "SMART HANDS",
-          "first_frame_text_words": 2,
-          "hook": "Monkeys can change habits to solve small problems.",
-          "hook_specificity": 0.78,
-          "hook_words": 8,
-          "loop_score": 0.799,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "hand"
-            ],
-            "cue_terms": [
-              "hand",
-              "smart"
-            ],
-            "frame_hook_bridge": [
-              "hand"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "monkeys"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the hands, so viewers rewatch the monkeys clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Monkeys can change habits to solve small problems Watch the hands near",
-          "first_frame_text": "SMART HANDS",
-          "next_episode_question": "Tomorrow in Primate Intelligence: another animal signal. What part of this feels most impossible?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains Monkeys behavior through the visible hands.",
-            "series": "Primate Intelligence",
-            "subject": "monkeys",
-            "terms": [
-              "monkeys",
-              "hands",
-              "primates",
-              "animal intelligence"
-            ],
-            "title_variant": "Monkeys behavior: hands explained",
-            "visible_cue": "hands"
-          },
-          "series": "Primate Intelligence",
-          "subject": "monkeys",
-          "visible_cue": "hands"
-        },
-        "risks": [],
-        "score": 96,
-        "search_intent": {
-          "description_line": "This Short explains Monkeys behavior through the visible hands.",
-          "series": "Primate Intelligence",
-          "subject": "monkeys",
-          "terms": [
-            "monkeys",
-            "hands",
-            "primates",
-            "animal intelligence"
-          ],
-          "title_variant": "Monkeys behavior: hands explained",
-          "visible_cue": "hands"
-        },
-        "selected_variant": {
-          "hook": "Monkeys can change habits to solve small problems",
-          "score": 77,
-          "thumbnail_text": "SMART HANDS",
-          "title": "Monkeys wash food when grit gets annoying"
-        },
-        "series": "Primate Intelligence",
-        "series_identity": {
-          "continuity_prompt": "Next in Primate Intelligence: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Primate Intelligence",
-          "series": "Primate Intelligence"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.223,
-          "confidence": {
-            "bootstrap_multiplier": 0.36,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.146,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.15.",
-            "recommendation_strength": "observe",
-            "sample_size": 5
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.15.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.261,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "SMART HANDS",
-          "LEARNED HABIT",
-          "WATCH LEARNED HABIT",
-          "MONKEYS TRICK",
-          "LEARNED HABIT MATTERS",
-          "LEARNED HABIT FIRST",
-          "LEARNED HABIT REVEAL",
-          "LEARNED HABIT CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Monkeys wash food when grit gets annoying",
-          "Monkeys use learned habit before they trick",
-          "This learned habit gives monkeys away",
-          "Why monkeys trick after one learned habit",
-          "Monkeys reveal the answer with learned habit",
-          "The learned habit that changes the moment",
-          "Monkeys make one learned habit matter",
-          "Monkeys show the hidden answer in seconds",
-          "Monkeys: watch this learned habit",
-          "Watch monkeys after the learned habit"
-        ],
-        "top_variants": [
-          {
-            "hook": "Monkeys can change habits to solve small problems",
-            "score": 77,
-            "thumbnail_text": "SMART HANDS",
-            "title": "Monkeys wash food when grit gets annoying"
-          },
-          {
-            "hook": "Start with the learned habit; it changes the scene",
-            "score": 77,
-            "thumbnail_text": "SMART HANDS",
-            "title": "Monkeys wash food when grit gets annoying"
-          },
-          {
-            "hook": "Watch the learned habit; it explains the behavior",
-            "score": 76,
-            "thumbnail_text": "SMART HANDS",
-            "title": "Monkeys wash food when grit gets annoying"
-          },
-          {
-            "hook": "Monkeys can change habits to solve small problems",
-            "score": 70,
-            "thumbnail_text": "LEARNED HABIT",
-            "title": "Monkeys wash food when grit gets annoying"
-          },
-          {
-            "hook": "Start with the learned habit; it changes the scene",
-            "score": 70,
-            "thumbnail_text": "LEARNED HABIT",
-            "title": "Monkeys wash food when grit gets annoying"
-          },
-          {
-            "hook": "Monkeys can change habits to solve small problems",
-            "score": 70,
-            "thumbnail_text": "WATCH LEARNED HABIT",
-            "title": "Monkeys wash food when grit gets annoying"
-          },
-          {
-            "hook": "Start with the learned habit; it changes the scene",
-            "score": 70,
-            "thumbnail_text": "WATCH LEARNED HABIT",
-            "title": "Monkeys wash food when grit gets annoying"
-          },
-          {
-            "hook": "Monkeys can change habits to solve small problems",
-            "score": 70,
-            "thumbnail_text": "MONKEYS TRICK",
-            "title": "Monkeys wash food when grit gets annoying"
-          },
-          {
-            "hook": "Start with the learned habit; it changes the scene",
-            "score": 70,
-            "thumbnail_text": "MONKEYS TRICK",
-            "title": "Monkeys wash food when grit gets annoying"
-          },
-          {
-            "hook": "Monkeys can change habits to solve small problems",
-            "score": 70,
-            "thumbnail_text": "LEARNED HABIT MATTERS",
-            "title": "Monkeys wash food when grit gets annoying"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "b56baed0627d1611",
       "title": "Magnets make invisible fields visible",
       "category": "physics",
@@ -3061,7 +2413,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-03T15:50:31.672544+00:00",
+        "checked_at": "2026-07-03T16:50:28.326310+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3157,7 +2509,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 30,
+          "sample_count": 31,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -3712,7 +3064,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-03T15:50:31.674513+00:00",
+        "checked_at": "2026-07-03T16:50:28.328590+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3806,7 +3158,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 30,
+          "sample_count": 31,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -4358,7 +3710,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-03T15:50:31.679033+00:00",
+        "checked_at": "2026-07-03T16:50:28.333901+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4454,7 +3806,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 30,
+          "sample_count": 31,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -5015,7 +4367,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-03T15:50:29.715086+00:00",
+        "checked_at": "2026-07-03T16:50:28.276906+00:00",
         "mechanism_cluster": "dance_navigation",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5109,7 +4461,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 30,
+          "sample_count": 31,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -5660,7 +5012,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-03T15:50:30.994778+00:00",
+        "checked_at": "2026-07-03T16:50:28.296161+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5752,7 +5104,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 30,
+          "sample_count": 31,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6299,7 +5651,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-03T15:50:31.032848+00:00",
+        "checked_at": "2026-07-03T16:50:28.304594+00:00",
         "mechanism_cluster": "visual_stabilization",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6391,7 +5743,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 30,
+          "sample_count": 31,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6937,7 +6289,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-03T15:50:31.660137+00:00",
+        "checked_at": "2026-07-03T16:50:28.312985+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7029,7 +6381,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 30,
+          "sample_count": 31,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -7578,7 +6930,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-03T15:50:31.661246+00:00",
+        "checked_at": "2026-07-03T16:50:28.314240+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7672,7 +7024,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 30,
+          "sample_count": 31,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -8227,7 +7579,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-03T15:50:31.677174+00:00",
+        "checked_at": "2026-07-03T16:50:28.331686+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8322,7 +7674,7 @@
           },
           "explore_rate": 0.1,
           "mode": "explore",
-          "sample_count": 30,
+          "sample_count": 31,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -8879,7 +8231,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-03T15:50:31.667607+00:00",
+        "checked_at": "2026-07-03T16:50:28.320520+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8977,7 +8329,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 30,
+          "sample_count": 31,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -9539,7 +8891,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-03T15:50:31.669847+00:00",
+        "checked_at": "2026-07-03T16:50:28.323087+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9638,7 +8990,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 30,
+          "sample_count": 31,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -10198,7 +9550,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-03T15:50:31.681007+00:00",
+        "checked_at": "2026-07-03T16:50:28.336245+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10292,7 +9644,7 @@
           },
           "explore_rate": 0.1,
           "mode": "explore",
-          "sample_count": 30,
+          "sample_count": 31,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -10836,7 +10188,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-03T15:50:28.696117+00:00",
+        "checked_at": "2026-07-03T16:50:28.256188+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -10933,7 +10285,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 30,
+          "sample_count": 31,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -11490,7 +10842,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-03T15:50:28.699448+00:00",
+        "checked_at": "2026-07-03T16:50:28.265647+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -11587,7 +10939,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 30,
+          "sample_count": 31,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -12144,7 +11496,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-03T15:50:28.701748+00:00",
+        "checked_at": "2026-07-03T16:50:28.267529+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -12240,7 +11592,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 30,
+          "sample_count": 31,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -12797,7 +12149,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-03T15:50:28.705361+00:00",
+        "checked_at": "2026-07-03T16:50:28.271762+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -12898,7 +12250,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 30,
+          "sample_count": 31,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -13269,6 +12621,657 @@
             "score": 71,
             "thumbnail_text": "WATCH ROCK LAYER",
             "title": "Rock layers store ancient environments in stripes"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
+      "id": "d8d90627f96566aa",
+      "title": "Rock layers reveal heat moving under the surface",
+      "category": "geology",
+      "publish_score": {
+        "approved": true,
+        "category": "geology",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.493,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.324,
+          "data_quality": "estimated",
+          "data_quality_score": 0.35,
+          "minimum_sample_size": 38,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.32.",
+          "recommendation_strength": "observe",
+          "sample_size": 23
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.324,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "heat",
+            "layer",
+            "rock"
+          ],
+          "cue_terms": [
+            "heat",
+            "layer",
+            "rock"
+          ],
+          "frame_hook_bridge": [
+            "heat"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "rock"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.42,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.227,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+          "reasons": [],
+          "score": 65,
+          "signals": {
+            "comment_potential": 46,
+            "educational_potential": 64,
+            "emotional_potential": 36,
+            "novelty": 51,
+            "replay_potential": 64,
+            "viral_potential": 67,
+            "visual_potential": 100
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.42,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.227,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+          "reasons": [],
+          "score": 78,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 90
+          },
+          "verdict": "ready"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "earth_engine",
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.53,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.373,
+            "data_quality": "estimated",
+            "data_quality_score": 0.425,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.37.",
+            "recommendation_strength": "observe",
+            "sample_size": 12
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.37.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.3,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-07-03T16:50:28.273778+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:observe_before_scaling",
+          "editor_in_chief:subject repeated inside 3-day cooldown"
+        ],
+        "score": 64.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 64.0,
+      "youtube_brain": {
+        "animal": "rock",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "heat",
+            "layer",
+            "rock"
+          ],
+          "cue_terms": [
+            "heat",
+            "layer",
+            "rock"
+          ],
+          "frame_hook_bridge": [
+            "heat"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "rock"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "earth_engine",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "rock",
+        "viewer_promise": "See why this rock earth engine matters."
+      },
+      "packaging": {
+        "community_prompt": "Which rock clue should Wild Brief compare next in Earth Engine?",
+        "cta_prompt": "Want to understand the planet under your feet?",
+        "curiosity_gap": {
+          "hook": "Watch the rock layers; it explains why this rock changes.",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "earth engine",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "specific_question",
+            "format": "fresh_variant",
+            "hook": "new_hook",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "explore",
+          "sample_count": 31,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} can {action} {subject} {subject} in the {subject}"
+          },
+          "winning_experiments": {
+            "cta:specific_question": 40.23,
+            "format:fresh_variant": 40.23,
+            "format:winner_inspired": 38.09,
+            "hook:new_hook": 40.23,
+            "thumbnail:new_thumbnail": 38.47
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "heat",
+              "layer",
+              "rock"
+            ],
+            "cue_terms": [
+              "heat",
+              "layer",
+              "rock"
+            ],
+            "frame_hook_bridge": [
+              "heat"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "rock"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Rock layers can expose heat moving below ground",
+          "Rock shows why the rock layers matters.",
+          "Rock shows why the rock layers matters.",
+          "Rock shows why the rock layers matters.",
+          "Rock layers give away the answer through steam vent"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "heat path",
+          "ending_line": "Which geothermal clue should come next?",
+          "final_line": "Now the heat path at the start makes sense.",
+          "loop_score": 0.725,
+          "opening_line": "Rock layers can expose heat moving below ground.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "heat path",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.725,
+        "next_episode_question": "Tomorrow in Earth Engine: another nature signal. Does this make Earth feel stable or constantly moving?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "heat",
+            "layer",
+            "rock"
+          ],
+          "cue_terms": [
+            "heat",
+            "layer",
+            "rock"
+          ],
+          "frame_hook_bridge": [
+            "heat"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "rock"
+        },
+        "pinned_comment": "Watch the rock layers again. Tomorrow in Earth Engine: another nature signal. Does this make Earth feel stable or constantly moving?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 17.0,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 15,
+          "first_2s_narration": "Rock layers can expose heat moving below ground Watch the steam because",
+          "first_frame_text": "HEAT PATH",
+          "first_frame_text_words": 2,
+          "hook": "Rock layers can expose heat moving below ground.",
+          "hook_specificity": 0.78,
+          "hook_words": 8,
+          "loop_score": 0.725,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "heat",
+              "layer",
+              "rock"
+            ],
+            "cue_terms": [
+              "heat",
+              "layer",
+              "rock"
+            ],
+            "frame_hook_bridge": [
+              "heat"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "rock"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the rock layers, so viewers rewatch the rock clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.42,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.227,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+          "reasons": [],
+          "score": 78,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 90
+          },
+          "verdict": "ready"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Rock layers can expose heat moving below ground Watch the steam because",
+          "first_frame_text": "HEAT PATH",
+          "next_episode_question": "Tomorrow in Earth Engine: another nature signal. Does this make Earth feel stable or constantly moving?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains the visible rock layers behind Rock in a fast nature science story.",
+            "series": "Earth Engine",
+            "subject": "rock",
+            "terms": [
+              "rock",
+              "rock layers",
+              "geology",
+              "earth engine"
+            ],
+            "title_variant": "Rock rock layers explained fast",
+            "visible_cue": "rock layers"
+          },
+          "series": "Earth Engine",
+          "subject": "rock",
+          "visible_cue": "rock layers"
+        },
+        "risks": [],
+        "score": 98,
+        "search_intent": {
+          "description_line": "This Short explains the visible rock layers behind Rock in a fast nature science story.",
+          "series": "Earth Engine",
+          "subject": "rock",
+          "terms": [
+            "rock",
+            "rock layers",
+            "geology",
+            "earth engine"
+          ],
+          "title_variant": "Rock rock layers explained fast",
+          "visible_cue": "rock layers"
+        },
+        "selected_variant": {
+          "hook": "Rock layers can expose heat moving below ground",
+          "score": 80,
+          "thumbnail_text": "HEAT PATH",
+          "title": "Rock layers reveal heat moving under the surface"
+        },
+        "series": "Earth Engine #5",
+        "series_identity": {
+          "continuity_prompt": "Next in Earth Engine: compare this with another force of nature.",
+          "episode": 5,
+          "label": "Earth Engine #5",
+          "series": "Earth Engine"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.53,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.373,
+            "data_quality": "estimated",
+            "data_quality_score": 0.425,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.37.",
+            "recommendation_strength": "observe",
+            "sample_size": 12
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.37.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.3,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "HEAT PATH",
+          "STEAM VENT",
+          "WATCH STEAM VENT",
+          "ROCK LAYERS SIGNAL",
+          "STEAM VENT MATTERS",
+          "STEAM VENT FIRST",
+          "STEAM VENT REVEAL",
+          "STEAM VENT CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Rock layers reveal heat moving under the surface",
+          "Rock layers signal through steam vent",
+          "Rock layers use steam vent before they signal",
+          "This steam vent gives rock layers away",
+          "Why rock layers signal after one steam vent",
+          "Rock layers reveal the answer with steam vent",
+          "The steam vent that changes the moment",
+          "Rock layers make one steam vent matter",
+          "Rock layers show the hidden answer in seconds",
+          "Rock layers: watch this steam vent"
+        ],
+        "top_variants": [
+          {
+            "hook": "Rock layers can expose heat moving below ground",
+            "score": 80,
+            "thumbnail_text": "HEAT PATH",
+            "title": "Rock layers reveal heat moving under the surface"
+          },
+          {
+            "hook": "Start with the steam vent; it changes the scene",
+            "score": 80,
+            "thumbnail_text": "HEAT PATH",
+            "title": "Rock layers reveal heat moving under the surface"
+          },
+          {
+            "hook": "Watch the steam vent; it explains the behavior",
+            "score": 79,
+            "thumbnail_text": "HEAT PATH",
+            "title": "Rock layers reveal heat moving under the surface"
+          },
+          {
+            "hook": "Rock layers can expose heat moving below ground",
+            "score": 74,
+            "thumbnail_text": "HEAT PATH",
+            "title": "Rock layers signal through steam vent"
+          },
+          {
+            "hook": "Start with the steam vent; it changes the scene",
+            "score": 74,
+            "thumbnail_text": "HEAT PATH",
+            "title": "Rock layers signal through steam vent"
+          },
+          {
+            "hook": "Rock layers can expose heat moving below ground",
+            "score": 73,
+            "thumbnail_text": "STEAM VENT",
+            "title": "Rock layers reveal heat moving under the surface"
+          },
+          {
+            "hook": "Start with the steam vent; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "STEAM VENT",
+            "title": "Rock layers reveal heat moving under the surface"
+          },
+          {
+            "hook": "Rock layers can expose heat moving below ground",
+            "score": 73,
+            "thumbnail_text": "WATCH STEAM VENT",
+            "title": "Rock layers reveal heat moving under the surface"
+          },
+          {
+            "hook": "Start with the steam vent; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "WATCH STEAM VENT",
+            "title": "Rock layers reveal heat moving under the surface"
+          },
+          {
+            "hook": "Rock layers can expose heat moving below ground",
+            "score": 73,
+            "thumbnail_text": "ROCK LAYERS SIGNAL",
+            "title": "Rock layers reveal heat moving under the surface"
           }
         ]
       },
