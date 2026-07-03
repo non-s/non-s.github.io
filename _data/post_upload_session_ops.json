@@ -3,17 +3,17 @@
   "fresh_upload_actions": {
     "counts": {
       "automation_safe": 9,
-      "high": 1,
+      "high": 3,
       "manual_review": 1,
       "total": 10,
       "urgent": 2
     },
     "free_only": true,
-    "generated_at": "2026-07-03T19:09:50.491018+00:00",
+    "generated_at": "2026-07-03T19:59:00.748841+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 11.089,
+        "age_hours": 11.908,
         "automation_safe": true,
         "category": "forests",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 8.15,
+        "age_hours": 8.97,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "1h",
@@ -64,8 +64,60 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 6.707,
+        "automation_safe": true,
+        "category": "nocturnal",
+        "checkpoint_label": "6h",
+        "checkpoint_state": "due",
+        "current_views": 0,
+        "due_at": "2026-07-03T19:16:35.241595+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:11T4y_mTyZs:analytics_due:6h",
+        "lane": "measurement",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "high",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 6h sample first.",
+        "series": "Night Shift Nature",
+        "state": "analytics_due",
+        "target_views": 105,
+        "title": "Foxes hear tiny prey under snow",
+        "url": "https://www.youtube.com/shorts/11T4y_mTyZs",
+        "video_id": "11T4y_mTyZs",
+        "wait_until": "",
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
+      },
+      {
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 1.575,
+        "automation_safe": true,
+        "category": "birds",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "due",
+        "current_views": 0,
+        "due_at": "2026-07-03T19:24:31.178599+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:JW9gO7JDkLU:analytics_due:1h",
+        "lane": "measurement",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "high",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
+        "series": "Sky Intelligence",
+        "state": "analytics_due",
+        "target_views": 24,
+        "title": "Birds see ultraviolet patterns we miss",
+        "url": "https://www.youtube.com/shorts/JW9gO7JDkLU",
+        "video_id": "JW9gO7JDkLU",
+        "wait_until": "",
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
+      },
+      {
         "action_type": "prepare_package_rescue",
-        "age_hours": 7.004,
+        "age_hours": 7.824,
         "automation_safe": false,
         "category": "arctic",
         "checkpoint_label": "24h",
@@ -90,60 +142,8 @@
         "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
-        "action_type": "watch_next_checkpoint",
-        "age_hours": 5.888,
-        "automation_safe": true,
-        "category": "nocturnal",
-        "checkpoint_label": "6h",
-        "checkpoint_state": "pending",
-        "current_views": 0,
-        "due_at": "2026-07-03T19:16:35.241595+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:11T4y_mTyZs:watch:6h",
-        "lane": "observe",
-        "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Keep observing through the next checkpoint.",
-        "series": "Night Shift Nature",
-        "state": "watch",
-        "target_views": 105,
-        "title": "Foxes hear tiny prey under snow",
-        "url": "https://www.youtube.com/shorts/11T4y_mTyZs",
-        "video_id": "11T4y_mTyZs",
-        "wait_until": "2026-07-03T19:16:35.241595+00:00",
-        "why": "No intervention signal is strong enough yet."
-      },
-      {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.755,
-        "automation_safe": true,
-        "category": "birds",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "pending",
-        "current_views": 0,
-        "due_at": "2026-07-03T19:24:31.178599+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:JW9gO7JDkLU:awaiting_1h:1h",
-        "lane": "observe",
-        "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "series": "Sky Intelligence",
-        "state": "awaiting_1h",
-        "target_views": 24,
-        "title": "Birds see ultraviolet patterns we miss",
-        "url": "https://www.youtube.com/shorts/JW9gO7JDkLU",
-        "video_id": "JW9gO7JDkLU",
-        "wait_until": "2026-07-03T19:24:31.178599+00:00",
-        "why": "The upload is still inside the no-panic observation window."
-      },
-      {
-        "action_type": "hold_until_first_hour",
-        "age_hours": 0.052,
+        "age_hours": 0.871,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -169,7 +169,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 4.616,
+        "age_hours": 5.436,
         "automation_safe": true,
         "category": "cats",
         "checkpoint_label": "6h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.635,
+        "age_hours": 4.455,
         "automation_safe": true,
         "category": "ocean",
         "checkpoint_label": "6h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.379,
+        "age_hours": 3.199,
         "automation_safe": true,
         "category": "primates",
         "checkpoint_label": "6h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.045,
+        "age_hours": 2.865,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-03T19:09:50.489913+00:00"
+    "source_generated_at": "2026-07-03T19:59:00.747712+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,17 @@
       24
     ],
     "counts": {
-      "analytics_due": 2,
-      "awaiting_1h": 2,
-      "high_priority": 3,
+      "analytics_due": 4,
+      "awaiting_1h": 1,
+      "high_priority": 5,
       "repair_candidates": 1,
       "tracked": 10
     },
-    "generated_at": "2026-07-03T19:09:50.489913+00:00",
+    "generated_at": "2026-07-03T19:59:00.747712+00:00",
     "items": [
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.052,
+        "age_hours": 0.871,
         "category": "insects",
         "checkpoints": [
           {
@@ -346,16 +346,16 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.755,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 1.575,
         "category": "birds",
         "checkpoints": [
           {
-            "delta_to_target": 0,
+            "delta_to_target": -24,
             "due_at": "2026-07-03T19:24:31.178599+00:00",
             "label": "1h",
             "source": "estimated",
-            "state": "pending",
+            "state": "due",
             "target_views": 24,
             "views": 0
           },
@@ -379,21 +379,21 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-03T19:24:31.178599+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 24,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Sky Intelligence",
-        "state": "awaiting_1h",
+        "state": "analytics_due",
         "title": "Birds see ultraviolet patterns we miss",
         "uploaded_at": "2026-07-03T18:24:31.178599+00:00",
         "url": "https://www.youtube.com/shorts/JW9gO7JDkLU",
@@ -402,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.045,
+        "age_hours": 2.865,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -457,7 +457,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.379,
+        "age_hours": 3.199,
         "category": "primates",
         "checkpoints": [
           {
@@ -512,7 +512,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.635,
+        "age_hours": 4.455,
         "category": "ocean",
         "checkpoints": [
           {
@@ -567,7 +567,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 4.616,
+        "age_hours": 5.436,
         "category": "cats",
         "checkpoints": [
           {
@@ -618,11 +618,11 @@
         "uploaded_at": "2026-07-03T14:32:52.669353+00:00",
         "url": "https://www.youtube.com/shorts/vJLRYY9DC2M",
         "video_id": "vJLRYY9DC2M",
-        "views_per_hour": 0.218
+        "views_per_hour": 0.217
       },
       {
-        "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.888,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 6.707,
         "category": "nocturnal",
         "checkpoints": [
           {
@@ -635,11 +635,11 @@
             "views": 0
           },
           {
-            "delta_to_target": 0,
+            "delta_to_target": -105,
             "due_at": "2026-07-03T19:16:35.241595+00:00",
             "label": "6h",
             "source": "estimated",
-            "state": "pending",
+            "state": "due",
             "target_views": 105,
             "views": 0
           },
@@ -654,21 +654,21 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "No intervention signal is strong enough yet.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-07-03T19:16:35.241595+00:00",
           "label": "6h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 105,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Night Shift Nature",
-        "state": "watch",
+        "state": "analytics_due",
         "title": "Foxes hear tiny prey under snow",
         "uploaded_at": "2026-07-03T13:16:35.241595+00:00",
         "url": "https://www.youtube.com/shorts/11T4y_mTyZs",
@@ -677,7 +677,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 7.004,
+        "age_hours": 7.824,
         "category": "arctic",
         "checkpoints": [
           {
@@ -743,7 +743,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 8.15,
+        "age_hours": 8.97,
         "category": "farm",
         "checkpoints": [
           {
@@ -798,7 +798,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 11.089,
+        "age_hours": 11.908,
         "category": "forests",
         "checkpoints": [
           {
@@ -859,7 +859,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-03T19:09:50.491107+00:00",
+  "generated_at": "2026-07-03T19:59:00.748934+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."

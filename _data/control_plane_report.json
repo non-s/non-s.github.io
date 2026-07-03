@@ -2,25 +2,30 @@
   "state": "migration_needed",
   "pressure_score": 86,
   "metrics": {
-    "live_state_files": 160,
-    "data_state_files": 123,
+    "live_state_files": 263,
+    "data_state_files": 227,
     "video_done_markers": 34,
-    "live_state_bytes": 8010721,
-    "stories_queue_bytes": 2624930,
-    "stories_queue_lines": 73418,
+    "live_state_bytes": 11133388,
+    "stories_queue_bytes": 2708500,
+    "stories_queue_lines": 75094,
     "workflow_files": 18,
     "state_path_refs": 282
   },
   "largest_state_files": [
     {
       "path": "_data/stories_queue.json",
-      "bytes": 2624930,
-      "lines": 73418
+      "bytes": 2708500,
+      "lines": 75094
+    },
+    {
+      "path": "_data/repair_queue.jsonl",
+      "bytes": 1474518,
+      "lines": 87
     },
     {
       "path": "_data/rejected_queue.jsonl",
-      "bytes": 800297,
-      "lines": 1000
+      "bytes": 1367693,
+      "lines": 1707
     },
     {
       "path": "_data/queue_audit.json",
@@ -34,28 +39,28 @@
     },
     {
       "path": "_data/early_performance.json",
-      "bytes": 320371,
-      "lines": 12360
+      "bytes": 321558,
+      "lines": 12408
     },
     {
       "path": "_data/autonomous_growth_plan.json",
-      "bytes": 228314,
-      "lines": 6273
+      "bytes": 228077,
+      "lines": 6267
     },
     {
       "path": "_data/provider_stats.jsonl",
-      "bytes": 161650,
-      "lines": 2080
+      "bytes": 163982,
+      "lines": 2110
     },
     {
       "path": "_data/dry_run_publish.json",
-      "bytes": 160684,
+      "bytes": 160683,
       "lines": 4652
     },
     {
       "path": "_data/analytics/api_quota_ledger.jsonl",
-      "bytes": 122815,
-      "lines": 186
+      "bytes": 124052,
+      "lines": 188
     },
     {
       "path": "_data/youtube_brain_report.json",
@@ -66,11 +71,6 @@
       "path": "_data/originality_pack.jsonl",
       "bytes": 73958,
       "lines": 105
-    },
-    {
-      "path": "_data/publish_slot_decisions.jsonl",
-      "bytes": 67481,
-      "lines": 88
     }
   ],
   "migration_lanes": [
