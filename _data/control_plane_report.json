@@ -2,25 +2,30 @@
   "state": "migration_needed",
   "pressure_score": 86,
   "metrics": {
-    "live_state_files": 158,
-    "data_state_files": 121,
+    "live_state_files": 269,
+    "data_state_files": 232,
     "video_done_markers": 35,
-    "live_state_bytes": 8658990,
-    "stories_queue_bytes": 2658142,
-    "stories_queue_lines": 74348,
+    "live_state_bytes": 11374871,
+    "stories_queue_bytes": 2761172,
+    "stories_queue_lines": 76426,
     "workflow_files": 18,
     "state_path_refs": 282
   },
   "largest_state_files": [
     {
       "path": "_data/stories_queue.json",
-      "bytes": 2658142,
-      "lines": 74348
+      "bytes": 2761172,
+      "lines": 76426
+    },
+    {
+      "path": "_data/repair_queue.jsonl",
+      "bytes": 1593741,
+      "lines": 94
     },
     {
       "path": "_data/rejected_queue.jsonl",
-      "bytes": 1385305,
-      "lines": 1729
+      "bytes": 1399658,
+      "lines": 1747
     },
     {
       "path": "_data/queue_audit.json",
@@ -34,18 +39,18 @@
     },
     {
       "path": "_data/early_performance.json",
-      "bytes": 331595,
-      "lines": 12803
+      "bytes": 332592,
+      "lines": 12843
     },
     {
       "path": "_data/autonomous_growth_plan.json",
-      "bytes": 228123,
-      "lines": 6271
+      "bytes": 228351,
+      "lines": 6277
     },
     {
       "path": "_data/provider_stats.jsonl",
-      "bytes": 164059,
-      "lines": 2111
+      "bytes": 169030,
+      "lines": 2175
     },
     {
       "path": "_data/dry_run_publish.json",
@@ -54,8 +59,8 @@
     },
     {
       "path": "_data/analytics/api_quota_ledger.jsonl",
-      "bytes": 124903,
-      "lines": 189
+      "bytes": 127378,
+      "lines": 193
     },
     {
       "path": "_data/youtube_brain_report.json",
@@ -66,11 +71,6 @@
       "path": "_data/originality_pack.jsonl",
       "bytes": 76098,
       "lines": 108
-    },
-    {
-      "path": "_data/publish_slot_decisions.jsonl",
-      "bytes": 69819,
-      "lines": 91
     }
   ],
   "migration_lanes": [
