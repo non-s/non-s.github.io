@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 3,
+    "analytics_due": 2,
     "awaiting_1h": 2,
     "high_priority": 3,
-    "repair_candidates": 0,
+    "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-07-03T22:16:53.512057+00:00",
+  "generated_at": "2026-07-03T22:22:59.470704+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.167,
+      "age_hours": 0.269,
       "category": "plants",
       "checkpoints": [
         {
@@ -70,7 +70,7 @@
     },
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.737,
+      "age_hours": 0.838,
       "category": "plants",
       "checkpoints": [
         {
@@ -125,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.167,
+      "age_hours": 2.269,
       "category": "conservation",
       "checkpoints": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.169,
+      "age_hours": 3.271,
       "category": "insects",
       "checkpoints": [
         {
@@ -231,11 +231,11 @@
       "uploaded_at": "2026-07-03T19:06:43.760986+00:00",
       "url": "https://www.youtube.com/shorts/ZEsLlK_ftDc",
       "video_id": "ZEsLlK_ftDc",
-      "views_per_hour": 0.32
+      "views_per_hour": 0.328
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.873,
+      "age_hours": 3.975,
       "category": "birds",
       "checkpoints": [
         {
@@ -290,7 +290,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.163,
+      "age_hours": 5.264,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -345,7 +345,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.496,
+      "age_hours": 5.598,
       "category": "primates",
       "checkpoints": [
         {
@@ -399,16 +399,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.753,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.854,
       "category": "ocean",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-03T16:31:43.787838+00:00",
           "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -432,30 +432,41 @@
         }
       ],
       "current_views": 1,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-03T16:31:43.787838+00:00",
-        "label": "1h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-04T15:31:43.787838+00:00",
+        "label": "24h",
         "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
+        "state": "pending",
+        "target_views": 300,
+        "views": 1
       },
       "opening_retention_score": 94.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Ocean Mysteries",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Coral reefs are cities built by tiny animals",
       "uploaded_at": "2026-07-03T15:31:43.787838+00:00",
       "url": "https://www.youtube.com/shorts/StWGdOT1uDA",
       "video_id": "StWGdOT1uDA",
-      "views_per_hour": 0.149
+      "views_per_hour": 0.151,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Coral reefs are cities built by tiny animals",
+        "video_id": "StWGdOT1uDA",
+        "views": 1,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 7.734,
+      "age_hours": 7.835,
       "category": "cats",
       "checkpoints": [
         {
@@ -506,11 +517,11 @@
       "uploaded_at": "2026-07-03T14:32:52.669353+00:00",
       "url": "https://www.youtube.com/shorts/vJLRYY9DC2M",
       "video_id": "vJLRYY9DC2M",
-      "views_per_hour": 0.13
+      "views_per_hour": 0.131
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.005,
+      "age_hours": 9.107,
       "category": "nocturnal",
       "checkpoints": [
         {
