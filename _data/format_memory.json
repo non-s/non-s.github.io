@@ -1,7 +1,7 @@
 {
-  "sample_count": 29,
+  "sample_count": 30,
   "category_counts": {
-    "ocean": 2,
+    "ocean": 3,
     "forests": 2,
     "wildlife": 5,
     "trees": 1,
@@ -28,10 +28,11 @@
     "rare_nature": 1,
     "earth_engine": 5,
     "survival_trick": 1,
-    "plant_mechanism": 1
+    "plant_mechanism": 1,
+    "ecosystem_engine": 1
   },
   "series_counts": {
-    "Ocean Mysteries": 2,
+    "Ocean Mysteries": 3,
     "Hidden Network": 4,
     "Animal Superpowers": 5,
     "Night Shift Nature": 1,
@@ -46,7 +47,7 @@
     "Polar Survival": 1
   },
   "category_scores": {
-    "ocean": 46.1,
+    "ocean": 26.1,
     "farm": 47.3,
     "insects": 36.7,
     "reptiles": 48.01,
@@ -58,10 +59,11 @@
     "wildlife": 26.1,
     "earth_from_space": 47.3,
     "weather": 47.3,
-    "forests": 46.1
+    "forests": 46.1,
+    "cats": 46.1
   },
   "format_scores": {
-    "body_superpower": 36.1,
+    "body_superpower": 32.77,
     "animal_intelligence": 36.7,
     "rare_nature": 48.01,
     "earth_engine": 38.82,
@@ -69,7 +71,7 @@
     "single_fact": 36.7
   },
   "category_subscriber_rates": {
-    "ocean": 120.0,
+    "ocean": 0.0,
     "farm": 60.0,
     "insects": 30.0,
     "reptiles": 40.0,
@@ -81,10 +83,11 @@
     "wildlife": 0.0,
     "earth_from_space": 60.0,
     "weather": 60.0,
-    "forests": 120.0
+    "forests": 120.0,
+    "cats": 120.0
   },
   "format_subscriber_rates": {
-    "body_superpower": 60.0,
+    "body_superpower": 40.0,
     "animal_intelligence": 30.0,
     "rare_nature": 40.0,
     "earth_engine": 36.0,
@@ -92,7 +95,7 @@
     "single_fact": 30.0
   },
   "category_weights": {
-    "ocean": 0.968,
+    "ocean": 0.928,
     "farm": 0.971,
     "insects": 0.899,
     "reptiles": 0.972,
@@ -104,10 +107,11 @@
     "wildlife": 0.856,
     "earth_from_space": 0.971,
     "weather": 0.971,
-    "forests": 0.968
+    "forests": 0.968,
+    "cats": 0.968
   },
   "format_weights": {
-    "body_superpower": 0.896,
+    "body_superpower": 0.825,
     "animal_intelligence": 0.798,
     "rare_nature": 0.972,
     "earth_engine": 0.768,
@@ -115,7 +119,7 @@
     "single_fact": 0.899
   },
   "subscriber_category_weights": {
-    "ocean": 1.25,
+    "ocean": 0.97,
     "farm": 1.25,
     "insects": 1.25,
     "reptiles": 1.25,
@@ -127,7 +131,8 @@
     "wildlife": 0.94,
     "earth_from_space": 1.25,
     "weather": 1.25,
-    "forests": 1.25
+    "forests": 1.25,
+    "cats": 1.25
   },
   "subscriber_format_weights": {
     "body_superpower": 1.25,
@@ -139,7 +144,6 @@
   },
   "winning_title_patterns": {
     "{subject} can {action} {subject} {subject} in the {subject}": 3,
-    "{subject} {subject} the {subject} to {subject} the pod": 2,
     "{subject} {subject} {subject} {visual} {subject} {subject} {subject}": 2,
     "{subject} use {subject} {subject} {subject} {subject} {action}": 2,
     "{subject} {subject} {subject} {visual} in {subject}": 2,
@@ -149,13 +153,13 @@
     "{visual} {subject} air {emotion} {subject} {subject}": 2,
     "{action} {subject} a {subject} {subject} a {subject} {subject}": 2,
     "{subject} {action} {subject} {subject} {subject} {subject}": 2,
-    "{subject} {subject} {subject} air {subject} the {visual}": 1
+    "{subject} use {subject} {subject} {subject} in {subject}": 2,
+    "{subject} {subject} the {subject} to {subject} the pod": 1
   },
   "winning_thumbnail_patterns": {},
   "winning_hook_patterns": {
     "{subject} can {action} {subject} {subject} {subject} {subject}": 4,
     "{subject} {action} {subject} {subject} for the {subject}": 3,
-    "{subject} {subject} the {visual} {subject} {subject}": 2,
     "{subject} {subject} {subject} {subject} {subject} {visual}": 2,
     "{subject} {subject} {subject} {visual} in {subject}": 2,
     "{visual} {subject} by {subject} {emotion} {visual}": 2,
@@ -163,12 +167,14 @@
     "{visual} {visual} {subject} {subject} a {visual} is {visual}": 2,
     "{visual} {subject} air {subject} a {subject} {subject}": 2,
     "{action} {subject} a {subject} {subject} a {subject} {subject}": 2,
-    "{subject} can {action} the air {subject} {subject}": 1,
-    "{subject} {subject} {subject} {visual} {subject} {subject} can {action}": 1
+    "{subject} {action} {subject} {subject} {subject} {subject} {subject}": 2,
+    "{subject} {subject} the {visual} {subject} {subject}": 1,
+    "{subject} can {action} the air {subject} {subject}": 1
   },
   "weak_patterns": {
     "{subject} {action} {subject} {subject} for the {subject}": 2,
     "{subject} {subject} {subject} {visual} in {subject}": 2,
+    "{subject} {action} {subject} {subject} {subject} {subject} {subject}": 2,
     "{action} {subject} a {subject} {subject} a {subject} {subject}": 2,
     "{subject} {subject} the {subject} to {subject} the pod": 1,
     "{subject} {subject} the {visual} {subject} {subject}": 1,
@@ -177,14 +183,13 @@
     "{subject} use {subject} {subject} {subject} {subject} {action}": 1,
     "{subject} {subject} mud and {subject} {subject} {subject} {subject}": 1,
     "{subject} {subject} {subject} {subject} {subject} {subject}": 1,
-    "{subject} {action} the {subject} {subject} {subject} {subject}": 1,
-    "{subject} {action} a map {subject} {action}": 1
+    "{subject} {action} the {subject} {subject} {subject} {subject}": 1
   },
   "experiment_scores": {
-    "format:winner_inspired": 39.02,
-    "hook:pattern_reuse": 39.02,
-    "thumbnail:new_thumbnail": 39.24,
-    "cta:follow_for_more": 39.02,
+    "format:winner_inspired": 38.09,
+    "hook:pattern_reuse": 38.09,
+    "thumbnail:new_thumbnail": 38.47,
+    "cta:follow_for_more": 38.09,
     "format:fresh_variant": 40.23,
     "hook:new_hook": 40.23,
     "cta:specific_question": 40.23
@@ -193,15 +198,15 @@
     "format:fresh_variant": 40.23,
     "hook:new_hook": 40.23,
     "cta:specific_question": 40.23,
-    "thumbnail:new_thumbnail": 39.24,
-    "format:winner_inspired": 39.02,
-    "hook:pattern_reuse": 39.02,
-    "cta:follow_for_more": 39.02
+    "thumbnail:new_thumbnail": 38.47,
+    "format:winner_inspired": 38.09,
+    "hook:pattern_reuse": 38.09,
+    "cta:follow_for_more": 38.09
   },
-  "updated_at": "2026-07-03T15:27:17.006843+00:00",
+  "updated_at": "2026-07-03T15:34:40.281400+00:00",
   "data_coverage": {
-    "total_markers": 29,
-    "views": 16,
+    "total_markers": 30,
+    "views": 17,
     "retention": 0,
     "watch_time": 0,
     "subscribers": 0,
