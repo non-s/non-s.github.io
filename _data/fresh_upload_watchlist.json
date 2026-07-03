@@ -5,17 +5,72 @@
     24
   ],
   "counts": {
-    "analytics_due": 7,
-    "awaiting_1h": 0,
-    "high_priority": 7,
+    "analytics_due": 5,
+    "awaiting_1h": 1,
+    "high_priority": 5,
     "repair_candidates": 0,
     "tracked": 10
   },
-  "generated_at": "2026-07-03T04:16:30.562621+00:00",
+  "generated_at": "2026-07-03T04:25:53.071100+00:00",
   "items": [
     {
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.039,
+      "category": "wildlife",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-03T05:23:33.404301+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-03T10:23:33.404301+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-04T04:23:33.404301+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-03T05:23:33.404301+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 92.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Animal Superpowers",
+      "state": "awaiting_1h",
+      "title": "Tigers wear stripe shadows as camouflage",
+      "uploaded_at": "2026-07-03T04:23:33.404301+00:00",
+      "url": "https://www.youtube.com/shorts/t8IoHKd1Puw",
+      "video_id": "t8IoHKd1Puw",
+      "views_per_hour": 0.0
+    },
+    {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 3.117,
+      "age_hours": 3.273,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.072,
+      "age_hours": 4.228,
       "category": "ocean",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.473,
+      "age_hours": 4.629,
       "category": "insects",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.438,
+      "age_hours": 5.594,
       "category": "insects",
       "checkpoints": [
         {
@@ -234,8 +289,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.77,
+      "action": "Queue a sequel or related-video bridge while the session has momentum.",
+      "age_hours": 13.926,
       "category": "farm",
       "checkpoints": [
         {
@@ -263,11 +318,11 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 300,
-          "views": 1
+          "views": 2
         }
       ],
-      "current_views": 1,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "current_views": 2,
+      "hypothesis": "Performance signal is already positive; amplify without changing the opening.",
       "next_checkpoint": {
         "delta_to_target": -24,
         "due_at": "2026-07-02T15:30:19.353303+00:00",
@@ -279,18 +334,27 @@
       },
       "opening_retention_score": 90.0,
       "opening_retention_state": "retention_ready",
-      "priority": "high",
+      "priority": "normal",
       "series": "Farmyard Surprises",
-      "state": "analytics_due",
+      "state": "accelerating",
       "title": "Horses point their ears toward what matters",
       "uploaded_at": "2026-07-02T14:30:19.353303+00:00",
       "url": "https://www.youtube.com/shorts/sldOXcDmZuQ",
       "video_id": "sldOXcDmZuQ",
-      "views_per_hour": 0.092
+      "views_per_hour": 0.144,
+      "warning": {
+        "confidence_score": 0.512,
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.51; observation only.",
+        "score": 0,
+        "state": "accelerating",
+        "title": "Horses point their ears toward what matters",
+        "video_id": "sldOXcDmZuQ",
+        "warning_state": "accelerator"
+      }
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 15.023,
+      "age_hours": 15.18,
       "category": "insects",
       "checkpoints": [
         {
@@ -341,7 +405,7 @@
       "uploaded_at": "2026-07-02T13:15:06.171182+00:00",
       "url": "https://www.youtube.com/shorts/6EQWaar3wBc",
       "video_id": "6EQWaar3wBc",
-      "views_per_hour": 0.165,
+      "views_per_hour": 0.132,
       "warning": {
         "confidence_score": 0.431,
         "reason": "low confidence early signal; keep observing",
@@ -353,7 +417,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.118,
+      "age_hours": 16.274,
       "category": "ocean",
       "checkpoints": [
         {
@@ -404,7 +468,7 @@
       "uploaded_at": "2026-07-02T12:09:27.536080+00:00",
       "url": "https://www.youtube.com/shorts/vUB5OSOv218",
       "video_id": "vUB5OSOv218",
-      "views_per_hour": 0.076,
+      "views_per_hour": 0.062,
       "warning": {
         "confidence_score": 0.431,
         "reason": "low confidence early signal; keep observing",
@@ -416,7 +480,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.884,
+      "age_hours": 17.04,
       "category": "insects",
       "checkpoints": [
         {
@@ -467,7 +531,7 @@
       "uploaded_at": "2026-07-02T11:23:29.746742+00:00",
       "url": "https://www.youtube.com/shorts/zkOPZdHY4i0",
       "video_id": "zkOPZdHY4i0",
-      "views_per_hour": 0.072,
+      "views_per_hour": 0.059,
       "warning": {
         "confidence_score": 0.431,
         "reason": "low confidence early signal; keep observing",
@@ -479,7 +543,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 17.594,
+      "age_hours": 17.751,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -530,76 +594,13 @@
       "uploaded_at": "2026-07-02T10:40:50.370873+00:00",
       "url": "https://www.youtube.com/shorts/p5aVx8ZViPI",
       "video_id": "p5aVx8ZViPI",
-      "views_per_hour": 0.068,
+      "views_per_hour": 0.056,
       "warning": {
         "confidence_score": 0.431,
         "reason": "low confidence early signal; keep observing",
         "state": "dying_early",
         "title": "Wolves read scent posts like a map",
         "video_id": "p5aVx8ZViPI",
-        "warning_state": "low_confidence_watch"
-      }
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 19.873,
-      "category": "dogs",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-02T09:24:08.181149+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-02T14:24:08.181149+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-07-03T08:24:08.181149+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 1
-        }
-      ],
-      "current_views": 1,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-02T09:24:08.181149+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Pet Secrets",
-      "state": "analytics_due",
-      "title": "Dogs read the world through scent maps",
-      "uploaded_at": "2026-07-02T08:24:08.181149+00:00",
-      "url": "https://www.youtube.com/shorts/peeCu1r3K0I",
-      "video_id": "peeCu1r3K0I",
-      "views_per_hour": 0.059,
-      "warning": {
-        "confidence_score": 0.431,
-        "reason": "low confidence early signal; keep observing",
-        "state": "dying_early",
-        "title": "Dogs read the world through scent maps",
-        "video_id": "peeCu1r3K0I",
         "warning_state": "low_confidence_watch"
       }
     }
