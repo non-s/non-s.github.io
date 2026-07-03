@@ -1,11 +1,11 @@
 {
   "items": [
     {
-      "id": "9e22823752beb432",
-      "title": "Plants turn sunlight into stored sugar",
-      "category": "plants",
-      "autonomy_priority": 118.0,
-      "queue_score": 93.8,
+      "id": "02f475952f9bf936",
+      "title": "Leaves turn a forest into a cooler room",
+      "category": "forests",
+      "autonomy_priority": 121.98,
+      "queue_score": 100.0,
       "template_cluster": "",
       "mechanism_cluster": "",
       "objective_reasons": [
@@ -14,21 +14,21 @@
       "lane": "evergreen",
       "mix_adjustment": 5.0,
       "score": {
-        "score": 98.8,
+        "score": 100.0,
         "approved": true,
         "state": "publish_ready",
         "opportunity": {
-          "score": 61,
+          "score": 73,
           "signals": {
-            "viral_potential": 66,
-            "visual_potential": 65,
-            "replay_potential": 72,
+            "viral_potential": 72,
+            "visual_potential": 99,
+            "replay_potential": 82,
             "comment_potential": 54,
-            "educational_potential": 64,
-            "emotional_potential": 44,
-            "novelty": 45
+            "educational_potential": 72,
+            "emotional_potential": 35,
+            "novelty": 69
           },
-          "verdict": "rewrite",
+          "verdict": "produce",
           "reasons": [],
           "confidence": {
             "confidence_score": 0.0,
@@ -44,15 +44,15 @@
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
         },
         "retention": {
-          "score": 71,
+          "score": 79,
           "signals": {
-            "hook_score": 70,
-            "curiosity_score": 71,
-            "visual_score": 66,
-            "replay_score": 62,
-            "completion_prediction": 84
+            "hook_score": 82,
+            "curiosity_score": 79,
+            "visual_score": 82,
+            "replay_score": 72,
+            "completion_prediction": 77
           },
-          "verdict": "rewrite",
+          "verdict": "ready",
           "reasons": [],
           "confidence": {
             "confidence_score": 0.0,
@@ -71,20 +71,18 @@
           "score": 100.0,
           "state": "retention_ready",
           "approved": true,
-          "subject": "plants",
+          "subject": "forest",
           "cue_terms": [
-            "leaf",
-            "light",
-            "sugar",
-            "surface"
+            "canop",
+            "cool",
+            "leave"
           ],
           "frame_hook_bridge": [
-            "light"
+            "canop"
           ],
           "cue_bridge": [
-            "leaf",
-            "light",
-            "surface"
+            "canop",
+            "leave"
           ],
           "strengths": [
             "subject_frontloaded",
@@ -131,32 +129,32 @@
             "series_identity"
           ],
           "confidence": {
-            "confidence_score": 0.033,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
+            "confidence_score": 0.108,
+            "sample_size": 3,
+            "minimum_sample_size": 13,
+            "data_quality": "estimated",
+            "data_quality_score": 0.45,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.274,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+            "bootstrap_multiplier": 0.331,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11."
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11."
         },
         "distribution_adjustment": 0,
         "decision_confidence": {
-          "confidence_score": 0.007,
-          "sample_size": 1,
-          "minimum_sample_size": 15,
+          "confidence_score": 0.044,
+          "sample_size": 4,
+          "minimum_sample_size": 28,
           "data_quality": "inferred",
-          "data_quality_score": 0.65,
+          "data_quality_score": 0.5,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.255,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
+          "bootstrap_multiplier": 0.283,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.04."
         },
-        "category": "plants",
-        "story_format": "plant_mechanism",
+        "category": "forests",
+        "story_format": "hidden_network",
         "hook_score": 86,
         "title_score": 100,
         "phrase_risk": {
@@ -173,7 +171,7 @@
           "reasons": [
             "bootstrap_observe_before_scaling"
           ],
-          "confidence_score": 0.007,
+          "confidence_score": 0.044,
           "scale_ready": false,
           "publish_blocking": false,
           "swipe_risk_band": "low",
@@ -544,187 +542,6 @@
           "payoff_time_s": 0.0,
           "template_cluster": "",
           "mechanism_cluster": "decoy_injury"
-        }
-      }
-    },
-    {
-      "id": "02f475952f9bf936",
-      "title": "Leaves turn a forest into a cooler room",
-      "category": "forests",
-      "autonomy_priority": 117.0,
-      "queue_score": 100.0,
-      "template_cluster": "",
-      "mechanism_cluster": "",
-      "objective_reasons": [
-        "objective_gate:bootstrap_observe_before_scaling"
-      ],
-      "lane": "evergreen",
-      "mix_adjustment": 5.0,
-      "score": {
-        "score": 100.0,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 73,
-          "signals": {
-            "viral_potential": 72,
-            "visual_potential": 99,
-            "replay_potential": 82,
-            "comment_potential": 54,
-            "educational_potential": 72,
-            "emotional_potential": 35,
-            "novelty": 69
-          },
-          "verdict": "produce",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "retention": {
-          "score": 79,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 79,
-            "visual_score": 82,
-            "replay_score": 72,
-            "completion_prediction": 77
-          },
-          "verdict": "ready",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "opening_retention": {
-          "score": 100.0,
-          "state": "retention_ready",
-          "approved": true,
-          "subject": "forest",
-          "cue_terms": [
-            "canop",
-            "cool",
-            "leave"
-          ],
-          "frame_hook_bridge": [
-            "canop"
-          ],
-          "cue_bridge": [
-            "canop",
-            "leave"
-          ],
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "risks": []
-        },
-        "weak_content": {
-          "risk": 0,
-          "state": "clear",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.65,
-            "sample_size": 12,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103,
-          "return_probability": 0.222,
-          "comment_probability": 0.191,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.108,
-            "sample_size": 3,
-            "minimum_sample_size": 13,
-            "data_quality": "estimated",
-            "data_quality_score": 0.45,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.331,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.044,
-          "sample_size": 4,
-          "minimum_sample_size": 28,
-          "data_quality": "inferred",
-          "data_quality_score": 0.5,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.283,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.04."
-        },
-        "category": "forests",
-        "story_format": "hidden_network",
-        "hook_score": 86,
-        "title_score": 100,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 0.0,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "confidence_score": 0.044,
-          "scale_ready": false,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 0.0,
-          "template_cluster": "",
-          "mechanism_cluster": ""
         }
       }
     },
@@ -2186,189 +2003,6 @@
       }
     },
     {
-      "id": "f02e42af190accb5",
-      "title": "Plants use trap hairs to count touches before snapping shut",
-      "category": "plants",
-      "autonomy_priority": 103.0,
-      "queue_score": 100.0,
-      "template_cluster": "",
-      "mechanism_cluster": "",
-      "objective_reasons": [
-        "objective_gate:bootstrap_observe_before_scaling"
-      ],
-      "lane": "evergreen",
-      "mix_adjustment": 5.0,
-      "score": {
-        "score": 100.0,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 60,
-          "signals": {
-            "viral_potential": 63,
-            "visual_potential": 55,
-            "replay_potential": 82,
-            "comment_potential": 54,
-            "educational_potential": 71,
-            "emotional_potential": 35,
-            "novelty": 45
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "retention": {
-          "score": 74,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 79,
-            "visual_score": 58,
-            "replay_score": 72,
-            "completion_prediction": 77
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "opening_retention": {
-          "score": 100.0,
-          "state": "retention_ready",
-          "approved": true,
-          "subject": "plants",
-          "cue_terms": [
-            "hair",
-            "trap"
-          ],
-          "frame_hook_bridge": [
-            "hair",
-            "trap"
-          ],
-          "cue_bridge": [
-            "hair",
-            "trap"
-          ],
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable",
-            "curiosity_shape"
-          ],
-          "risks": []
-        },
-        "weak_content": {
-          "risk": 0,
-          "state": "clear",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.65,
-            "sample_size": 12,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 85,
-          "state": "strong",
-          "subscriber_probability": 0.121,
-          "return_probability": 0.258,
-          "comment_probability": 0.221,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "hook_invites_return",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.033,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.274,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.007,
-          "sample_size": 1,
-          "minimum_sample_size": 15,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.255,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
-        },
-        "category": "plants",
-        "story_format": "plant_mechanism",
-        "hook_score": 100,
-        "title_score": 100,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 0.0,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "confidence_score": 0.007,
-          "scale_ready": false,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 0.0,
-          "template_cluster": "",
-          "mechanism_cluster": ""
-        }
-      }
-    },
-    {
       "id": "b56baed0627d1611",
       "title": "Magnets make invisible fields visible",
       "category": "physics",
@@ -2733,187 +2367,6 @@
           "mechanism_cluster": ""
         }
       }
-    },
-    {
-      "id": "a386b5695dfd9b83",
-      "title": "Plants speed growth under protected glass",
-      "category": "plants",
-      "autonomy_priority": 92.5,
-      "queue_score": 92.5,
-      "template_cluster": "",
-      "mechanism_cluster": "",
-      "objective_reasons": [
-        "objective_gate:bootstrap_observe_before_scaling"
-      ],
-      "lane": "evergreen",
-      "mix_adjustment": 5.0,
-      "score": {
-        "score": 97.5,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 57,
-          "signals": {
-            "viral_potential": 63,
-            "visual_potential": 55,
-            "replay_potential": 72,
-            "comment_potential": 54,
-            "educational_potential": 64,
-            "emotional_potential": 35,
-            "novelty": 45
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "retention": {
-          "score": 73,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 71,
-            "visual_score": 58,
-            "replay_score": 62,
-            "completion_prediction": 84
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "opening_retention": {
-          "score": 90.0,
-          "state": "retention_ready",
-          "approved": true,
-          "subject": "plants",
-          "cue_terms": [
-            "boost",
-            "greenhouse",
-            "leave",
-            "light",
-            "sugar"
-          ],
-          "frame_hook_bridge": [],
-          "cue_bridge": [
-            "leave"
-          ],
-          "strengths": [
-            "subject_frontloaded",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "risks": [
-            "frame_text_not_echoed_early"
-          ]
-        },
-        "weak_content": {
-          "risk": 0,
-          "state": "clear",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.65,
-            "sample_size": 12,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103,
-          "return_probability": 0.222,
-          "comment_probability": 0.191,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.033,
-            "sample_size": 1,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.274,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.007,
-          "sample_size": 1,
-          "minimum_sample_size": 15,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.255,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
-        },
-        "category": "plants",
-        "story_format": "plant_mechanism",
-        "hook_score": 86,
-        "title_score": 100,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 0.0,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "confidence_score": 0.007,
-          "scale_ready": false,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 0.0,
-          "template_cluster": "",
-          "mechanism_cluster": ""
-        }
-      }
     }
   ],
   "editorial_mix": {
@@ -2924,7 +2377,7 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 36,
+      "evergreen": 35,
       "recovery": 6
     },
     "items": [
@@ -2942,7 +2395,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.06
+        "freshness_score": 52.04
       },
       {
         "id": "d8d90627f96566aa",
@@ -2950,7 +2403,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.82
+        "freshness_score": 51.8
       },
       {
         "id": "ef76ad9a8f8a03ae",
@@ -2958,7 +2411,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.14
+        "freshness_score": 52.12
       },
       {
         "id": "09c8f40beafab256",
@@ -2966,7 +2419,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.82
+        "freshness_score": 51.8
       },
       {
         "id": "6070349d168d1d45",
@@ -2982,7 +2435,7 @@
         "category": "insects",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.72
+        "freshness_score": 52.7
       },
       {
         "id": "0ef428432eac25bb",
@@ -3006,7 +2459,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.46
+        "freshness_score": 54.44
       },
       {
         "id": "9eb20513a1ebf366",
@@ -3014,7 +2467,7 @@
         "category": "ocean",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.26
+        "freshness_score": 53.24
       },
       {
         "id": "746750435163b0be",
@@ -3022,7 +2475,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.46
+        "freshness_score": 54.44
       },
       {
         "id": "14f207991dea2fc0",
@@ -3030,7 +2483,23 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.18
+        "freshness_score": 54.16
+      },
+      {
+        "id": "b48d7d5e01b74a64",
+        "title": "Forests can cool the air below them",
+        "category": "forests",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 52.12
+      },
+      {
+        "id": "c77025fd8eca4602",
+        "title": "Forests hold cool fog between the trees",
+        "category": "forests",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 54.98
       },
       {
         "id": "17c87451c802bb11",
@@ -3041,28 +2510,12 @@
         "freshness_score": 52.26
       },
       {
-        "id": "b48d7d5e01b74a64",
-        "title": "Forests can cool the air below them",
-        "category": "forests",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 52.14
-      },
-      {
-        "id": "c77025fd8eca4602",
-        "title": "Forests hold cool fog between the trees",
-        "category": "forests",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 55.0
-      },
-      {
         "id": "16394dd0594f4bd3",
         "title": "Sharks can feel electricity in the water",
         "category": "ocean",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.46
+        "freshness_score": 54.44
       },
       {
         "id": "d7370c6ab147dba8",
@@ -3070,7 +2523,7 @@
         "category": "reptiles",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.14
+        "freshness_score": 52.12
       },
       {
         "id": "f329d4d9415a87cf",
@@ -3078,7 +2531,7 @@
         "category": "birds",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.98
+        "freshness_score": 51.96
       },
       {
         "id": "1f4d4eeb2441657a",
@@ -3094,7 +2547,7 @@
         "category": "birds",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.0
+        "freshness_score": 53.98
       },
       {
         "id": "2da9f8fda07f3d1b",
@@ -3102,7 +2555,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 53.08
+        "freshness_score": 53.06
       },
       {
         "id": "4406a9b99388f0ba",
@@ -3110,7 +2563,7 @@
         "category": "primates",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.82
+        "freshness_score": 51.8
       },
       {
         "id": "0dbd5efac2965abc",
@@ -3118,7 +2571,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 53.08
+        "freshness_score": 53.06
       },
       {
         "id": "ebdbe5c5026628e6",
@@ -3126,7 +2579,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.24
+        "freshness_score": 54.22
       },
       {
         "id": "510258fc6cfb6be9",
@@ -3142,7 +2595,7 @@
         "category": "cats",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 53.48
+        "freshness_score": 53.46
       },
       {
         "id": "cd5660d9f870792d",
@@ -3158,7 +2611,7 @@
         "category": "arctic",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.44
+        "freshness_score": 53.42
       },
       {
         "id": "3018e9a61786a2c5",
@@ -3174,7 +2627,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.86
+        "freshness_score": 53.84
       },
       {
         "id": "4111626a62866b27",
@@ -3182,7 +2635,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.96
+        "freshness_score": 51.94
       },
       {
         "id": "a4ca94af1a59d5df",
@@ -3190,15 +2643,7 @@
         "category": "nocturnal",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.32
-      },
-      {
-        "id": "9e22823752beb432",
-        "title": "Plants turn sunlight into stored sugar",
-        "category": "plants",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 53.94
+        "freshness_score": 53.3
       },
       {
         "id": "f02e42af190accb5",
@@ -3206,7 +2651,39 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.58
+        "freshness_score": 53.56
+      },
+      {
+        "id": "e22c7bfd6c2187b6",
+        "title": "Leaves angle toward the light they can use",
+        "category": "plants",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 51.8
+      },
+      {
+        "id": "ce619185cc5a8b0e",
+        "title": "Plants turn leaf angles into light maps",
+        "category": "plants",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 51.8
+      },
+      {
+        "id": "a386b5695dfd9b83",
+        "title": "Plants speed growth under protected glass",
+        "category": "plants",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 52.16
+      },
+      {
+        "id": "9ee098ecdf0b7d81",
+        "title": "Plant leaves reveal where energy comes from",
+        "category": "plants",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 51.8
       },
       {
         "id": "b56baed0627d1611",
@@ -3230,39 +2707,7 @@
         "category": "space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.74
-      },
-      {
-        "id": "e22c7bfd6c2187b6",
-        "title": "Leaves angle toward the light they can use",
-        "category": "plants",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 51.8
-      },
-      {
-        "id": "ce619185cc5a8b0e",
-        "title": "Plants turn leaf angles into light maps",
-        "category": "plants",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 51.8
-      },
-      {
-        "id": "9ee098ecdf0b7d81",
-        "title": "Plant leaves reveal where energy comes from",
-        "category": "plants",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 51.8
-      },
-      {
-        "id": "a386b5695dfd9b83",
-        "title": "Plants speed growth under protected glass",
-        "category": "plants",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 52.16
+        "freshness_score": 54.72
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -3275,12 +2720,12 @@
       {
         "window": 10,
         "items": 10,
-        "dominant_shape": "{subject} turn sunlight into stored sugar",
+        "dominant_shape": "{subject} turn a forest into a cooler room",
         "dominant_count": 1,
         "dominant_share": 0.1,
         "top_shapes": [
           {
-            "shape": "{subject} turn sunlight into stored sugar",
+            "shape": "{subject} turn a forest into a cooler room",
             "count": 1,
             "share": 0.1
           },
@@ -3295,12 +2740,12 @@
             "share": 0.1
           },
           {
-            "shape": "{subject} turn a forest into a cooler room",
+            "shape": "{subject} track fish trails with whiskers",
             "count": 1,
             "share": 0.1
           },
           {
-            "shape": "{subject} track fish trails with whiskers",
+            "shape": "{subject} hear tiny prey under snow",
             "count": 1,
             "share": 0.1
           }
@@ -3308,35 +2753,35 @@
       },
       {
         "window": 30,
-        "items": 16,
-        "dominant_shape": "{subject} turn sunlight into stored sugar",
+        "items": 13,
+        "dominant_shape": "{subject} turn a forest into a cooler room",
         "dominant_count": 1,
-        "dominant_share": 0.062,
+        "dominant_share": 0.077,
         "top_shapes": [
           {
-            "shape": "{subject} turn sunlight into stored sugar",
+            "shape": "{subject} turn a forest into a cooler room",
             "count": 1,
-            "share": 0.062
+            "share": 0.077
           },
           {
             "shape": "{subject} fake weak {cue} to protect ducklings",
             "count": 1,
-            "share": 0.062
+            "share": 0.077
           },
           {
             "shape": "{subject} fake injuries to protect their young",
             "count": 1,
-            "share": 0.062
-          },
-          {
-            "shape": "{subject} turn a forest into a cooler room",
-            "count": 1,
-            "share": 0.062
+            "share": 0.077
           },
           {
             "shape": "{subject} track fish trails with whiskers",
             "count": 1,
-            "share": 0.062
+            "share": 0.077
+          },
+          {
+            "shape": "{subject} hear tiny prey under snow",
+            "count": 1,
+            "share": 0.077
           }
         ]
       }
@@ -3344,14 +2789,14 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 42,
-    "pending_after": 42,
+    "pending_before": 41,
+    "pending_after": 41,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 1,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 31,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 16,
+      "objective_gate:bootstrap_observe_before_scaling": 30,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 18,
       "objective_gate:observe_before_scaling": 11,
       "editor_in_chief:script quality gate blocked the narration": 5,
       "editor_in_chief:editorial score 46 is below 62": 1

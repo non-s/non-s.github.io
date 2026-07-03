@@ -3,43 +3,17 @@
   "fresh_upload_actions": {
     "counts": {
       "automation_safe": 7,
-      "high": 4,
+      "high": 3,
       "manual_review": 3,
       "total": 10,
       "urgent": 4
     },
     "free_only": true,
-    "generated_at": "2026-07-03T07:47:05.400469+00:00",
+    "generated_at": "2026-07-03T07:57:33.819520+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 20.393,
-        "automation_safe": true,
-        "category": "insects",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "overdue",
-        "current_views": 1,
-        "due_at": "2026-07-02T12:23:29.746742+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:zkOPZdHY4i0:analytics_due:1h",
-        "lane": "measurement",
-        "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "urgent",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
-        "series": "Tiny Worlds",
-        "state": "analytics_due",
-        "target_views": 24,
-        "title": "Beetles can steer by the Milky Way",
-        "url": "https://www.youtube.com/shorts/zkOPZdHY4i0",
-        "video_id": "zkOPZdHY4i0",
-        "wait_until": "",
-        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
-      },
-      {
-        "action_type": "pull_fresh_analytics",
-        "age_hours": 19.627,
+        "age_hours": 19.802,
         "automation_safe": true,
         "category": "ocean",
         "checkpoint_label": "1h",
@@ -65,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 18.533,
+        "age_hours": 18.708,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -91,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 17.279,
+        "age_hours": 17.454,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "1h",
@@ -117,24 +91,24 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 6.626,
+        "age_hours": 6.801,
         "automation_safe": true,
         "category": "wildlife",
-        "checkpoint_label": "6h",
-        "checkpoint_state": "due",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "overdue",
         "current_views": 0,
-        "due_at": "2026-07-03T07:09:30.352703+00:00",
+        "due_at": "2026-07-03T02:09:30.352703+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:jEfCOGWl34M:analytics_due:6h",
+        "id": "fresh-upload:jEfCOGWl34M:analytics_due:1h",
         "lane": "measurement",
         "manual_approval_required": false,
         "opening_retention_score": 100.0,
-        "priority": "high",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 6h sample first.",
+        "priority": "urgent",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
         "series": "Animal Superpowers",
         "state": "analytics_due",
-        "target_views": 105,
+        "target_views": 24,
         "title": "Lions use dark ear marks to guide cubs",
         "url": "https://www.youtube.com/shorts/jEfCOGWl34M",
         "video_id": "jEfCOGWl34M",
@@ -143,7 +117,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 8.948,
+        "age_hours": 9.122,
         "automation_safe": false,
         "category": "insects",
         "checkpoint_label": "24h",
@@ -169,7 +143,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 7.982,
+        "age_hours": 8.157,
         "automation_safe": false,
         "category": "insects",
         "checkpoint_label": "24h",
@@ -195,7 +169,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 7.581,
+        "age_hours": 7.756,
         "automation_safe": false,
         "category": "ocean",
         "checkpoint_label": "24h",
@@ -220,8 +194,34 @@
         "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
+        "action_type": "hold_until_first_hour",
+        "age_hours": 0.048,
+        "automation_safe": true,
+        "category": "plants",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-03T08:54:41.915092+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:8355f3mQPE0:awaiting_1h:1h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "low",
+        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "series": "Biology Brief",
+        "state": "awaiting_1h",
+        "target_views": 24,
+        "title": "Plants turn sunlight into stored sugar",
+        "url": "https://www.youtube.com/shorts/8355f3mQPE0",
+        "video_id": "8355f3mQPE0",
+        "wait_until": "2026-07-03T08:54:41.915092+00:00",
+        "why": "The upload is still inside the no-panic observation window."
+      },
+      {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.392,
+        "age_hours": 3.567,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "6h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.697,
+        "age_hours": 2.871,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-03T07:47:05.399707+00:00"
+    "source_generated_at": "2026-07-03T07:57:33.818700+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,72 @@
       24
     ],
     "counts": {
-      "analytics_due": 5,
-      "awaiting_1h": 0,
-      "high_priority": 8,
+      "analytics_due": 4,
+      "awaiting_1h": 1,
+      "high_priority": 7,
       "repair_candidates": 3,
       "tracked": 10
     },
-    "generated_at": "2026-07-03T07:47:05.399707+00:00",
+    "generated_at": "2026-07-03T07:57:33.818700+00:00",
     "items": [
       {
+        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "age_hours": 0.048,
+        "category": "plants",
+        "checkpoints": [
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-03T08:54:41.915092+00:00",
+            "label": "1h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 24,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-03T13:54:41.915092+00:00",
+            "label": "6h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 105,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-04T07:54:41.915092+00:00",
+            "label": "24h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 300,
+            "views": 0
+          }
+        ],
+        "current_views": 0,
+        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "next_checkpoint": {
+          "delta_to_target": 0,
+          "due_at": "2026-07-03T08:54:41.915092+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        "opening_retention_score": 100.0,
+        "opening_retention_state": "retention_ready",
+        "priority": "low",
+        "series": "Biology Brief",
+        "state": "awaiting_1h",
+        "title": "Plants turn sunlight into stored sugar",
+        "uploaded_at": "2026-07-03T07:54:41.915092+00:00",
+        "url": "https://www.youtube.com/shorts/8355f3mQPE0",
+        "video_id": "8355f3mQPE0",
+        "views_per_hour": 0.0
+      },
+      {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.697,
+        "age_hours": 2.871,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -347,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.392,
+        "age_hours": 3.567,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -402,7 +457,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 6.626,
+        "age_hours": 6.801,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -418,8 +473,8 @@
             "delta_to_target": -105,
             "due_at": "2026-07-03T07:09:30.352703+00:00",
             "label": "6h",
-            "source": "estimated",
-            "state": "due",
+            "source": "observed",
+            "state": "observed",
             "target_views": 105,
             "views": 0
           },
@@ -436,12 +491,12 @@
         "current_views": 0,
         "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": -105,
-          "due_at": "2026-07-03T07:09:30.352703+00:00",
-          "label": "6h",
+          "delta_to_target": -24,
+          "due_at": "2026-07-03T02:09:30.352703+00:00",
+          "label": "1h",
           "source": "estimated",
-          "state": "due",
-          "target_views": 105,
+          "state": "overdue",
+          "target_views": 24,
           "views": 0
         },
         "opening_retention_score": 100.0,
@@ -457,7 +512,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 7.581,
+        "age_hours": 7.756,
         "category": "ocean",
         "checkpoints": [
           {
@@ -513,7 +568,7 @@
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.594,
           "reason": "low early velocity",
-          "reasoning": "video has 23/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+          "reasoning": "video has 26/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
           "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
           "title": "Sharks sense tiny electric fields",
           "video_id": "cg_nDJV45AI",
@@ -523,7 +578,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 7.982,
+        "age_hours": 8.157,
         "category": "insects",
         "checkpoints": [
           {
@@ -579,7 +634,7 @@
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.594,
           "reason": "low early velocity",
-          "reasoning": "video has 29/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+          "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
           "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
           "title": "Dragonflies lock onto prey in midair",
           "video_id": "iobRQwyAWRU",
@@ -589,7 +644,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 8.948,
+        "age_hours": 9.122,
         "category": "insects",
         "checkpoints": [
           {
@@ -655,7 +710,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 17.279,
+        "age_hours": 17.454,
         "category": "farm",
         "checkpoints": [
           {
@@ -706,7 +761,7 @@
         "uploaded_at": "2026-07-02T14:30:19.353303+00:00",
         "url": "https://www.youtube.com/shorts/sldOXcDmZuQ",
         "video_id": "sldOXcDmZuQ",
-        "views_per_hour": 0.123,
+        "views_per_hour": 0.115,
         "warning": {
           "confidence_score": 0.431,
           "reason": "low confidence early signal; keep observing",
@@ -718,7 +773,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 18.533,
+        "age_hours": 18.708,
         "category": "insects",
         "checkpoints": [
           {
@@ -769,7 +824,7 @@
         "uploaded_at": "2026-07-02T13:15:06.171182+00:00",
         "url": "https://www.youtube.com/shorts/6EQWaar3wBc",
         "video_id": "6EQWaar3wBc",
-        "views_per_hour": 0.114,
+        "views_per_hour": 0.107,
         "warning": {
           "confidence_score": 0.431,
           "reason": "low confidence early signal; keep observing",
@@ -781,7 +836,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 19.627,
+        "age_hours": 19.802,
         "category": "ocean",
         "checkpoints": [
           {
@@ -832,76 +887,13 @@
         "uploaded_at": "2026-07-02T12:09:27.536080+00:00",
         "url": "https://www.youtube.com/shorts/vUB5OSOv218",
         "video_id": "vUB5OSOv218",
-        "views_per_hour": 0.054,
+        "views_per_hour": 0.051,
         "warning": {
           "confidence_score": 0.431,
           "reason": "low confidence early signal; keep observing",
           "state": "dying_early",
           "title": "Whales slap the surface to warn the pod",
           "video_id": "vUB5OSOv218",
-          "warning_state": "low_confidence_watch"
-        }
-      },
-      {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 20.393,
-        "category": "insects",
-        "checkpoints": [
-          {
-            "delta_to_target": -24,
-            "due_at": "2026-07-02T12:23:29.746742+00:00",
-            "label": "1h",
-            "source": "estimated",
-            "state": "overdue",
-            "target_views": 24,
-            "views": 0
-          },
-          {
-            "delta_to_target": -105,
-            "due_at": "2026-07-02T17:23:29.746742+00:00",
-            "label": "6h",
-            "source": "estimated",
-            "state": "overdue",
-            "target_views": 105,
-            "views": 0
-          },
-          {
-            "delta_to_target": 0,
-            "due_at": "2026-07-03T11:23:29.746742+00:00",
-            "label": "24h",
-            "source": "estimated",
-            "state": "pending",
-            "target_views": 300,
-            "views": 1
-          }
-        ],
-        "current_views": 1,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-        "next_checkpoint": {
-          "delta_to_target": -24,
-          "due_at": "2026-07-02T12:23:29.746742+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        "opening_retention_score": 100.0,
-        "opening_retention_state": "retention_ready",
-        "priority": "high",
-        "series": "Tiny Worlds",
-        "state": "analytics_due",
-        "title": "Beetles can steer by the Milky Way",
-        "uploaded_at": "2026-07-02T11:23:29.746742+00:00",
-        "url": "https://www.youtube.com/shorts/zkOPZdHY4i0",
-        "video_id": "zkOPZdHY4i0",
-        "views_per_hour": 0.051,
-        "warning": {
-          "confidence_score": 0.431,
-          "reason": "low confidence early signal; keep observing",
-          "state": "dying_early",
-          "title": "Beetles can steer by the Milky Way",
-          "video_id": "zkOPZdHY4i0",
           "warning_state": "low_confidence_watch"
         }
       }
@@ -913,23 +905,12 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-03T07:47:05.400563+00:00",
+  "generated_at": "2026-07-03T07:57:33.819604+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
   ],
   "related_video_recommendations": [
-    {
-      "recommendation": {
-        "reason": "same series/category/format session bridge",
-        "score": 85.0,
-        "title": "Butterflies carry color on tiny wing scales",
-        "url": "https://www.youtube.com/shorts/sUsHD3ixSkA",
-        "video_id": "sUsHD3ixSkA"
-      },
-      "source_title": "Dragonflies lock onto prey in midair",
-      "source_video_id": "iobRQwyAWRU"
-    },
     {
       "recommendation": {
         "reason": "same series/category/format session bridge",
@@ -973,14 +954,20 @@
       },
       "source_title": "Bears smell food from miles away",
       "source_video_id": "z8m33i_Hjr8"
+    },
+    {
+      "recommendation": {
+        "reason": "same series/category/format session bridge",
+        "score": 0.0,
+        "title": "Owls fly silently because feathers break sound",
+        "url": "https://www.youtube.com/shorts/dNBmZyaqKXQ",
+        "video_id": "dNBmZyaqKXQ"
+      },
+      "source_title": "Plants turn sunlight into stored sugar",
+      "source_video_id": "8355f3mQPE0"
     }
   ],
   "sequel_opportunities": [
-    {
-      "prompt": "Make a sequel with a new subject but the same payoff shape: Dragonflies lock onto prey in midair",
-      "title": "Dragonflies lock onto prey in midair",
-      "video_id": "iobRQwyAWRU"
-    },
     {
       "prompt": "Make a sequel with a new subject but the same payoff shape: Sharks sense tiny electric fields",
       "title": "Sharks sense tiny electric fields",
@@ -1000,13 +987,18 @@
       "prompt": "Make a sequel with a new subject but the same payoff shape: Bears smell food from miles away",
       "title": "Bears smell food from miles away",
       "video_id": "z8m33i_Hjr8"
+    },
+    {
+      "prompt": "Make a sequel with a new subject but the same payoff shape: Plants turn sunlight into stored sugar",
+      "title": "Plants turn sunlight into stored sugar",
+      "video_id": "8355f3mQPE0"
     }
   ],
   "session_graph": {
     "action_score_threshold": 55,
     "coverage": 0.55,
     "edges": 20,
-    "nodes": 23,
+    "nodes": 24,
     "target_reuse_limit": 2
   }
 }
