@@ -2,18 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 9,
-      "high": 1,
-      "manual_review": 1,
+      "automation_safe": 10,
+      "high": 0,
+      "manual_review": 0,
       "total": 10,
-      "urgent": 2
+      "urgent": 3
     },
     "free_only": true,
-    "generated_at": "2026-07-03T22:22:59.471928+00:00",
+    "generated_at": "2026-07-03T22:23:36.258849+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 9.107,
+        "age_hours": 9.117,
         "automation_safe": true,
         "category": "nocturnal",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 7.835,
+        "age_hours": 7.845,
         "automation_safe": true,
         "category": "cats",
         "checkpoint_label": "1h",
@@ -64,34 +64,34 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "prepare_package_rescue",
-        "age_hours": 6.854,
-        "automation_safe": false,
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 6.865,
+        "automation_safe": true,
         "category": "ocean",
-        "checkpoint_label": "24h",
-        "checkpoint_state": "pending",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "overdue",
         "current_views": 1,
-        "due_at": "2026-07-04T15:31:43.787838+00:00",
+        "due_at": "2026-07-03T16:31:43.787838+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:StWGdOT1uDA:repair_candidate:24h",
-        "lane": "package_rescue",
-        "manual_approval_required": true,
+        "id": "fresh-upload:StWGdOT1uDA:analytics_due:1h",
+        "lane": "measurement",
+        "manual_approval_required": false,
         "opening_retention_score": 94.0,
-        "priority": "high",
-        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "priority": "urgent",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
         "series": "Ocean Mysteries",
-        "state": "repair_candidate",
-        "target_views": 300,
+        "state": "analytics_due",
+        "target_views": 24,
         "title": "Coral reefs are cities built by tiny animals",
         "url": "https://www.youtube.com/shorts/StWGdOT1uDA",
         "video_id": "StWGdOT1uDA",
         "wait_until": "",
-        "why": "Observed velocity is weak enough to prepare a package intervention."
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.838,
+        "age_hours": 0.849,
         "automation_safe": true,
         "category": "plants",
         "checkpoint_label": "1h",
@@ -117,7 +117,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 5.598,
+        "age_hours": 5.608,
         "automation_safe": true,
         "category": "primates",
         "checkpoint_label": "6h",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.269,
+        "age_hours": 0.279,
         "automation_safe": true,
         "category": "plants",
         "checkpoint_label": "1h",
@@ -169,7 +169,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 5.264,
+        "age_hours": 5.275,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "6h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.975,
+        "age_hours": 3.985,
         "automation_safe": true,
         "category": "birds",
         "checkpoint_label": "6h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.271,
+        "age_hours": 3.281,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "6h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.269,
+        "age_hours": 2.279,
         "automation_safe": true,
         "category": "conservation",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-03T22:22:59.470704+00:00"
+    "source_generated_at": "2026-07-03T22:23:36.257770+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,17 @@
       24
     ],
     "counts": {
-      "analytics_due": 2,
+      "analytics_due": 3,
       "awaiting_1h": 2,
       "high_priority": 3,
-      "repair_candidates": 1,
+      "repair_candidates": 0,
       "tracked": 10
     },
-    "generated_at": "2026-07-03T22:22:59.470704+00:00",
+    "generated_at": "2026-07-03T22:23:36.257770+00:00",
     "items": [
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.269,
+        "age_hours": 0.279,
         "category": "plants",
         "checkpoints": [
           {
@@ -347,7 +347,7 @@
       },
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.838,
+        "age_hours": 0.849,
         "category": "plants",
         "checkpoints": [
           {
@@ -402,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.269,
+        "age_hours": 2.279,
         "category": "conservation",
         "checkpoints": [
           {
@@ -457,7 +457,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.271,
+        "age_hours": 3.281,
         "category": "insects",
         "checkpoints": [
           {
@@ -508,11 +508,11 @@
         "uploaded_at": "2026-07-03T19:06:43.760986+00:00",
         "url": "https://www.youtube.com/shorts/ZEsLlK_ftDc",
         "video_id": "ZEsLlK_ftDc",
-        "views_per_hour": 0.328
+        "views_per_hour": 0.309
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.975,
+        "age_hours": 3.985,
         "category": "birds",
         "checkpoints": [
           {
@@ -567,7 +567,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.264,
+        "age_hours": 5.275,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -622,7 +622,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.598,
+        "age_hours": 5.608,
         "category": "primates",
         "checkpoints": [
           {
@@ -676,16 +676,16 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 6.854,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 6.865,
         "category": "ocean",
         "checkpoints": [
           {
             "delta_to_target": -24,
             "due_at": "2026-07-03T16:31:43.787838+00:00",
             "label": "1h",
-            "source": "observed",
-            "state": "observed",
+            "source": "estimated",
+            "state": "overdue",
             "target_views": 24,
             "views": 0
           },
@@ -709,41 +709,30 @@
           }
         ],
         "current_views": 1,
-        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
-          "due_at": "2026-07-04T15:31:43.787838+00:00",
-          "label": "24h",
+          "delta_to_target": -24,
+          "due_at": "2026-07-03T16:31:43.787838+00:00",
+          "label": "1h",
           "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 1
+          "state": "overdue",
+          "target_views": 24,
+          "views": 0
         },
         "opening_retention_score": 94.0,
         "opening_retention_state": "retention_ready",
         "priority": "high",
         "series": "Ocean Mysteries",
-        "state": "repair_candidate",
+        "state": "analytics_due",
         "title": "Coral reefs are cities built by tiny animals",
         "uploaded_at": "2026-07-03T15:31:43.787838+00:00",
         "url": "https://www.youtube.com/shorts/StWGdOT1uDA",
         "video_id": "StWGdOT1uDA",
-        "views_per_hour": 0.151,
-        "warning": {
-          "action": "TITLE_AUTO_REPAIR_TRIGGER",
-          "confidence_score": 0.594,
-          "reason": "low early velocity",
-          "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-          "title": "Coral reefs are cities built by tiny animals",
-          "video_id": "StWGdOT1uDA",
-          "views": 1,
-          "warning_state": "repair_risk"
-        }
+        "views_per_hour": 0.147
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 7.835,
+        "age_hours": 7.845,
         "category": "cats",
         "checkpoints": [
           {
@@ -794,11 +783,11 @@
         "uploaded_at": "2026-07-03T14:32:52.669353+00:00",
         "url": "https://www.youtube.com/shorts/vJLRYY9DC2M",
         "video_id": "vJLRYY9DC2M",
-        "views_per_hour": 0.131
+        "views_per_hour": 0.128
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 9.107,
+        "age_hours": 9.117,
         "category": "nocturnal",
         "checkpoints": [
           {
@@ -859,7 +848,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-03T22:22:59.472024+00:00",
+  "generated_at": "2026-07-03T22:23:36.258935+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
