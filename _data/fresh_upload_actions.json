@@ -1,17 +1,17 @@
 {
   "counts": {
     "automation_safe": 9,
-    "high": 1,
+    "high": 2,
     "manual_review": 1,
     "total": 10,
     "urgent": 2
   },
   "free_only": true,
-  "generated_at": "2026-07-03T20:26:45.957908+00:00",
+  "generated_at": "2026-07-03T20:33:57.192183+00:00",
   "items": [
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 9.432,
+      "age_hours": 9.552,
       "automation_safe": true,
       "category": "farm",
       "checkpoint_label": "1h",
@@ -37,7 +37,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 8.286,
+      "age_hours": 8.406,
       "automation_safe": true,
       "category": "arctic",
       "checkpoint_label": "1h",
@@ -62,8 +62,34 @@
       "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
+      "action_type": "pull_fresh_analytics",
+      "age_hours": 6.018,
+      "automation_safe": true,
+      "category": "cats",
+      "checkpoint_label": "6h",
+      "checkpoint_state": "due",
+      "current_views": 1,
+      "due_at": "2026-07-03T20:32:52.669353+00:00",
+      "free_only": true,
+      "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+      "id": "fresh-upload:vJLRYY9DC2M:analytics_due:6h",
+      "lane": "measurement",
+      "manual_approval_required": false,
+      "opening_retention_score": 100.0,
+      "priority": "high",
+      "recommended_action": "Run the analytics pull before making a creative decision. Check the 6h sample first.",
+      "series": "Pet Secrets",
+      "state": "analytics_due",
+      "target_views": 105,
+      "title": "Cats use whiskers like built-in rulers",
+      "url": "https://www.youtube.com/shorts/vJLRYY9DC2M",
+      "video_id": "vJLRYY9DC2M",
+      "wait_until": "",
+      "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
+    },
+    {
       "action_type": "prepare_package_rescue",
-      "age_hours": 7.17,
+      "age_hours": 7.289,
       "automation_safe": false,
       "category": "nocturnal",
       "checkpoint_label": "24h",
@@ -88,34 +114,8 @@
       "why": "Observed velocity is weak enough to prepare a package intervention."
     },
     {
-      "action_type": "watch_next_checkpoint",
-      "age_hours": 5.898,
-      "automation_safe": true,
-      "category": "cats",
-      "checkpoint_label": "6h",
-      "checkpoint_state": "pending",
-      "current_views": 1,
-      "due_at": "2026-07-03T20:32:52.669353+00:00",
-      "free_only": true,
-      "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-      "id": "fresh-upload:vJLRYY9DC2M:watch:6h",
-      "lane": "observe",
-      "manual_approval_required": false,
-      "opening_retention_score": 100.0,
-      "priority": "low",
-      "recommended_action": "Keep observing through the next checkpoint.",
-      "series": "Pet Secrets",
-      "state": "watch",
-      "target_views": 105,
-      "title": "Cats use whiskers like built-in rulers",
-      "url": "https://www.youtube.com/shorts/vJLRYY9DC2M",
-      "video_id": "vJLRYY9DC2M",
-      "wait_until": "2026-07-03T20:32:52.669353+00:00",
-      "why": "No intervention signal is strong enough yet."
-    },
-    {
       "action_type": "hold_until_first_hour",
-      "age_hours": 0.332,
+      "age_hours": 0.451,
       "automation_safe": true,
       "category": "conservation",
       "checkpoint_label": "1h",
@@ -141,7 +141,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 4.917,
+      "age_hours": 5.037,
       "automation_safe": true,
       "category": "ocean",
       "checkpoint_label": "6h",
@@ -167,7 +167,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 3.661,
+      "age_hours": 3.781,
       "automation_safe": true,
       "category": "primates",
       "checkpoint_label": "6h",
@@ -193,7 +193,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 3.327,
+      "age_hours": 3.447,
       "automation_safe": true,
       "category": "wildlife",
       "checkpoint_label": "6h",
@@ -219,7 +219,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 2.037,
+      "age_hours": 2.157,
       "automation_safe": true,
       "category": "birds",
       "checkpoint_label": "6h",
@@ -245,7 +245,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 1.334,
+      "age_hours": 1.454,
       "automation_safe": true,
       "category": "insects",
       "checkpoint_label": "6h",
@@ -271,5 +271,5 @@
     }
   ],
   "source": "fresh_upload_watchlist",
-  "source_generated_at": "2026-07-03T20:26:45.956723+00:00"
+  "source_generated_at": "2026-07-03T20:33:57.191115+00:00"
 }
