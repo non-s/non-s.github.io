@@ -5,17 +5,72 @@
     24
   ],
   "counts": {
-    "analytics_due": 4,
-    "awaiting_1h": 1,
-    "high_priority": 7,
+    "analytics_due": 3,
+    "awaiting_1h": 2,
+    "high_priority": 6,
     "repair_candidates": 3,
     "tracked": 10
   },
-  "generated_at": "2026-07-03T07:57:33.818700+00:00",
+  "generated_at": "2026-07-03T08:07:21.604224+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.048,
+      "age_hours": 0.047,
+      "category": "forests",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-03T09:04:31.416658+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-03T14:04:31.416658+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-04T08:04:31.416658+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-03T09:04:31.416658+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Hidden Network",
+      "state": "awaiting_1h",
+      "title": "Leaves turn a forest into a cooler room",
+      "uploaded_at": "2026-07-03T08:04:31.416658+00:00",
+      "url": "https://www.youtube.com/shorts/b4BSE-x_MTE",
+      "video_id": "b4BSE-x_MTE",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.211,
       "category": "plants",
       "checkpoints": [
         {
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.871,
+      "age_hours": 3.035,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.567,
+      "age_hours": 3.73,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.801,
+      "age_hours": 6.964,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -235,7 +290,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 7.756,
+      "age_hours": 7.919,
       "category": "ocean",
       "checkpoints": [
         {
@@ -291,7 +346,7 @@
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.594,
         "reason": "low early velocity",
-        "reasoning": "video has 26/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "reasoning": "video has 29/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
         "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
         "title": "Sharks sense tiny electric fields",
         "video_id": "cg_nDJV45AI",
@@ -301,7 +356,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 8.157,
+      "age_hours": 8.32,
       "category": "insects",
       "checkpoints": [
         {
@@ -367,7 +422,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 9.122,
+      "age_hours": 9.286,
       "category": "insects",
       "checkpoints": [
         {
@@ -433,7 +488,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 17.454,
+      "age_hours": 17.617,
       "category": "farm",
       "checkpoints": [
         {
@@ -484,7 +539,7 @@
       "uploaded_at": "2026-07-02T14:30:19.353303+00:00",
       "url": "https://www.youtube.com/shorts/sldOXcDmZuQ",
       "video_id": "sldOXcDmZuQ",
-      "views_per_hour": 0.115,
+      "views_per_hour": 0.114,
       "warning": {
         "confidence_score": 0.431,
         "reason": "low confidence early signal; keep observing",
@@ -496,7 +551,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 18.708,
+      "age_hours": 18.871,
       "category": "insects",
       "checkpoints": [
         {
@@ -547,76 +602,13 @@
       "uploaded_at": "2026-07-02T13:15:06.171182+00:00",
       "url": "https://www.youtube.com/shorts/6EQWaar3wBc",
       "video_id": "6EQWaar3wBc",
-      "views_per_hour": 0.107,
+      "views_per_hour": 0.106,
       "warning": {
         "confidence_score": 0.431,
         "reason": "low confidence early signal; keep observing",
         "state": "dying_early",
         "title": "Ants use scent road before they change",
         "video_id": "6EQWaar3wBc",
-        "warning_state": "low_confidence_watch"
-      }
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 19.802,
-      "category": "ocean",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-02T13:09:27.536080+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-02T18:09:27.536080+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-07-03T12:09:27.536080+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 1
-        }
-      ],
-      "current_views": 1,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-02T13:09:27.536080+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Ocean Mysteries",
-      "state": "analytics_due",
-      "title": "Whales slap the surface to warn the pod",
-      "uploaded_at": "2026-07-02T12:09:27.536080+00:00",
-      "url": "https://www.youtube.com/shorts/vUB5OSOv218",
-      "video_id": "vUB5OSOv218",
-      "views_per_hour": 0.051,
-      "warning": {
-        "confidence_score": 0.431,
-        "reason": "low confidence early signal; keep observing",
-        "state": "dying_early",
-        "title": "Whales slap the surface to warn the pod",
-        "video_id": "vUB5OSOv218",
         "warning_state": "low_confidence_watch"
       }
     }
