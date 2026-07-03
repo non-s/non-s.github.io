@@ -1275,6 +1275,190 @@
           "mechanism_cluster": ""
         }
       }
+    },
+    {
+      "id": "cf1d867c52e523e4",
+      "title": "Crystals grow by repeating one tiny pattern",
+      "category": "chemistry",
+      "autonomy_priority": 99.9,
+      "queue_score": 99.9,
+      "template_cluster": "",
+      "mechanism_cluster": "",
+      "objective_reasons": [
+        "objective_gate:bootstrap_observe_before_scaling"
+      ],
+      "lane": "evergreen",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 100.0,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 65,
+          "signals": {
+            "viral_potential": 71,
+            "visual_potential": 55,
+            "replay_potential": 72,
+            "comment_potential": 62,
+            "educational_potential": 85,
+            "emotional_potential": 44,
+            "novelty": 55
+          },
+          "verdict": "produce",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "retention": {
+          "score": 74,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 79,
+            "visual_score": 58,
+            "replay_score": 62,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "opening_retention": {
+          "score": 100.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "crystals",
+          "cue_terms": [
+            "crystal",
+            "edge",
+            "growth",
+            "shape"
+          ],
+          "frame_hook_bridge": [
+            "crystal"
+          ],
+          "cue_bridge": [
+            "crystal",
+            "edge",
+            "shape"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": []
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 12,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123,
+          "return_probability": 0.261,
+          "comment_probability": 0.223,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.007,
+          "sample_size": 1,
+          "minimum_sample_size": 15,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.255,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
+        },
+        "category": "chemistry",
+        "story_format": "chemistry_demo",
+        "hook_score": 86,
+        "title_score": 100,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "confidence_score": 0.007,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 0.0,
+          "template_cluster": "",
+          "mechanism_cluster": ""
+        }
+      }
     }
   ],
   "editorial_mix": {
@@ -1285,7 +1469,7 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 36,
+      "evergreen": 37,
       "recovery": 4
     },
     "items": [
@@ -1303,7 +1487,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.48
+        "freshness_score": 51.46
       },
       {
         "id": "d8d90627f96566aa",
@@ -1311,7 +1495,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.24
+        "freshness_score": 51.22
       },
       {
         "id": "ef76ad9a8f8a03ae",
@@ -1319,7 +1503,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.56
+        "freshness_score": 51.54
       },
       {
         "id": "09c8f40beafab256",
@@ -1327,7 +1511,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.24
+        "freshness_score": 51.22
       },
       {
         "id": "6070349d168d1d45",
@@ -1351,7 +1535,7 @@
         "category": "weather",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.68
+        "freshness_score": 54.66
       },
       {
         "id": "a7343d17d7aeb013",
@@ -1359,7 +1543,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 55.0
+        "freshness_score": 54.98
       },
       {
         "id": "14f207991dea2fc0",
@@ -1367,7 +1551,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.6
+        "freshness_score": 53.58
       },
       {
         "id": "c77025fd8eca4602",
@@ -1375,7 +1559,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.42
+        "freshness_score": 54.4
       },
       {
         "id": "0ef428432eac25bb",
@@ -1391,7 +1575,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.5
+        "freshness_score": 54.48
       },
       {
         "id": "82f6c859562fd674",
@@ -1399,7 +1583,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.5
+        "freshness_score": 54.48
       },
       {
         "id": "cdfb416d8c795884",
@@ -1415,7 +1599,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.88
+        "freshness_score": 53.86
       },
       {
         "id": "9eb20513a1ebf366",
@@ -1423,7 +1607,7 @@
         "category": "ocean",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.68
+        "freshness_score": 52.66
       },
       {
         "id": "746750435163b0be",
@@ -1431,7 +1615,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.88
+        "freshness_score": 53.86
       },
       {
         "id": "3a0ca980d49d2202",
@@ -1439,7 +1623,7 @@
         "category": "trees",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.76
+        "freshness_score": 54.74
       },
       {
         "id": "4111626a62866b27",
@@ -1447,7 +1631,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.38
+        "freshness_score": 51.36
       },
       {
         "id": "16394dd0594f4bd3",
@@ -1455,7 +1639,7 @@
         "category": "ocean",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.88
+        "freshness_score": 53.86
       },
       {
         "id": "d7370c6ab147dba8",
@@ -1463,7 +1647,7 @@
         "category": "reptiles",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.56
+        "freshness_score": 51.54
       },
       {
         "id": "f329d4d9415a87cf",
@@ -1471,7 +1655,7 @@
         "category": "birds",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.4
+        "freshness_score": 51.38
       },
       {
         "id": "1f4d4eeb2441657a",
@@ -1487,7 +1671,7 @@
         "category": "birds",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.42
+        "freshness_score": 53.4
       },
       {
         "id": "2da9f8fda07f3d1b",
@@ -1495,7 +1679,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 52.5
+        "freshness_score": 52.48
       },
       {
         "id": "4406a9b99388f0ba",
@@ -1519,7 +1703,7 @@
         "category": "ocean",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 55.0
+        "freshness_score": 54.98
       },
       {
         "id": "0dbd5efac2965abc",
@@ -1527,7 +1711,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 52.5
+        "freshness_score": 52.48
       },
       {
         "id": "fa7c85e672e4ff2a",
@@ -1535,7 +1719,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 55.0
+        "freshness_score": 54.98
       },
       {
         "id": "a4ca94af1a59d5df",
@@ -1543,7 +1727,7 @@
         "category": "nocturnal",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.74
+        "freshness_score": 52.72
       },
       {
         "id": "f02e42af190accb5",
@@ -1551,7 +1735,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.0
+        "freshness_score": 52.98
       },
       {
         "id": "e22c7bfd6c2187b6",
@@ -1607,7 +1791,15 @@
         "category": "space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.16
+        "freshness_score": 54.14
+      },
+      {
+        "id": "cf1d867c52e523e4",
+        "title": "Crystals grow by repeating one tiny pattern",
+        "category": "chemistry",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -1619,69 +1811,69 @@
     "windows": [
       {
         "window": 10,
-        "items": 7,
+        "items": 8,
         "dominant_shape": "{subject} reefs are cities built by tiny animals",
         "dominant_count": 1,
-        "dominant_share": 0.143,
+        "dominant_share": 0.125,
         "top_shapes": [
           {
             "shape": "{subject} reefs are cities built by tiny animals",
             "count": 1,
-            "share": 0.143
+            "share": 0.125
           },
           {
             "shape": "{subject} wash food when grit gets annoying",
             "count": 1,
-            "share": 0.143
+            "share": 0.125
           },
           {
             "shape": "{subject} see ultraviolet patterns we miss",
             "count": 1,
-            "share": 0.143
+            "share": 0.125
           },
           {
             "shape": "{subject} aim their {cue} like sound radar",
             "count": 1,
-            "share": 0.143
+            "share": 0.125
           },
           {
             "shape": "{subject} trap air bubbles under feathers",
             "count": 1,
-            "share": 0.143
+            "share": 0.125
           }
         ]
       },
       {
         "window": 30,
-        "items": 7,
+        "items": 8,
         "dominant_shape": "{subject} reefs are cities built by tiny animals",
         "dominant_count": 1,
-        "dominant_share": 0.143,
+        "dominant_share": 0.125,
         "top_shapes": [
           {
             "shape": "{subject} reefs are cities built by tiny animals",
             "count": 1,
-            "share": 0.143
+            "share": 0.125
           },
           {
             "shape": "{subject} wash food when grit gets annoying",
             "count": 1,
-            "share": 0.143
+            "share": 0.125
           },
           {
             "shape": "{subject} see ultraviolet patterns we miss",
             "count": 1,
-            "share": 0.143
+            "share": 0.125
           },
           {
             "shape": "{subject} aim their {cue} like sound radar",
             "count": 1,
-            "share": 0.143
+            "share": 0.125
           },
           {
             "shape": "{subject} trap air bubbles under feathers",
             "count": 1,
-            "share": 0.143
+            "share": 0.125
           }
         ]
       }
@@ -1689,14 +1881,14 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 41,
-    "pending_after": 40,
+    "pending_before": 42,
+    "pending_after": 41,
     "rejected": 1,
     "repair_needed": 0,
     "repaired": 3,
     "reasons": {
       "editor_in_chief:subject repeated inside 3-day cooldown": 24,
-      "objective_gate:bootstrap_observe_before_scaling": 23,
+      "objective_gate:bootstrap_observe_before_scaling": 24,
       "objective_gate:observe_before_scaling": 17,
       "editor_in_chief:script quality gate blocked the narration": 5,
       "editor_in_chief:editorial score 46 is below 62": 2,

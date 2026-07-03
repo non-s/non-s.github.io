@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-03T14:46:32.099681+00:00",
+  "generated_at": "2026-07-03T14:55:41.249769+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
   "overall_progress_pct": 34.3,
@@ -21,14 +21,14 @@
       "avg_view_percentage": 0.0,
       "top_blockers": [
         {
+          "id": "objective_gate:bootstrap_observe_before_scaling",
+          "count": 49,
+          "operator_translation": "collect more observed signal before scaling this pattern"
+        },
+        {
           "id": "editor_in_chief:subject repeated inside 3-day cooldown",
           "count": 48,
           "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
-        },
-        {
-          "id": "objective_gate:bootstrap_observe_before_scaling",
-          "count": 47,
-          "operator_translation": "collect more observed signal before scaling this pattern"
         },
         {
           "id": "queue_prune:rewrite",
@@ -88,13 +88,13 @@
   "metrics": {
     "health_score": 82,
     "health_state": "watch",
-    "pending": 41,
-    "operational_publish_ready": 7,
-    "apparent_publish_ready": 7,
-    "eligible_count": 7,
+    "pending": 42,
+    "operational_publish_ready": 8,
+    "apparent_publish_ready": 8,
+    "eligible_count": 8,
     "scale_ready_count": 0,
-    "next_shorts_count": 7,
-    "editorial_candidate_count": 40,
+    "next_shorts_count": 8,
+    "editorial_candidate_count": 41,
     "published_count": 29,
     "views_28d": 30314,
     "total_subscribers": 46,
@@ -108,14 +108,14 @@
   },
   "top_blockers": [
     {
+      "id": "objective_gate:bootstrap_observe_before_scaling",
+      "count": 49,
+      "operator_translation": "collect more observed signal before scaling this pattern"
+    },
+    {
       "id": "editor_in_chief:subject repeated inside 3-day cooldown",
       "count": 48,
       "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
-    },
-    {
-      "id": "objective_gate:bootstrap_observe_before_scaling",
-      "count": 47,
-      "operator_translation": "collect more observed signal before scaling this pattern"
     },
     {
       "id": "queue_prune:rewrite",
@@ -134,13 +134,8 @@
     },
     {
       "id": "duplicate_title",
-      "count": 12,
+      "count": 15,
       "operator_translation": "duplicate title"
-    },
-    {
-      "id": "off_topic_visual",
-      "count": 11,
-      "operator_translation": "off topic visual"
     },
     {
       "id": "editor_in_chief:script quality gate blocked the narration",
@@ -149,23 +144,28 @@
     },
     {
       "id": "duplicate_script",
-      "count": 8,
+      "count": 10,
       "operator_translation": "duplicate script"
+    },
+    {
+      "id": "off_topic_visual",
+      "count": 9,
+      "operator_translation": "off topic visual"
+    },
+    {
+      "id": "bootstrap_observe_before_scaling",
+      "count": 7,
+      "operator_translation": "bootstrap observe before scaling"
+    },
+    {
+      "id": "duplicate_angle",
+      "count": 7,
+      "operator_translation": "duplicate angle"
     },
     {
       "id": "publish_score:rewrite",
       "count": 6,
       "operator_translation": "repair the publish score package"
-    },
-    {
-      "id": "bootstrap_observe_before_scaling",
-      "count": 6,
-      "operator_translation": "bootstrap observe before scaling"
-    },
-    {
-      "id": "duplicate_angle",
-      "count": 6,
-      "operator_translation": "duplicate angle"
     }
   ],
   "levels": [
@@ -191,9 +191,9 @@
       "status": "cleared",
       "progress_pct": 100.0,
       "evidence": {
-        "operational_publish_ready": 7,
-        "eligible_count": 7,
-        "pending": 41,
+        "operational_publish_ready": 8,
+        "eligible_count": 8,
+        "pending": 42,
         "target_publish_ready": 6,
         "target_pending": 20
       }
@@ -257,11 +257,11 @@
       "unlock": "One million views per 28 days, excellent health, and ten publish-ready Shorts in reserve.",
       "revenue_job": "Scale the proven system instead of adding random effort.",
       "status": "locked",
-      "progress_pct": 24.3,
+      "progress_pct": 27.7,
       "evidence": {
         "views_28d": 30314,
         "health_state": "watch",
-        "operational_publish_ready": 7
+        "operational_publish_ready": 8
       }
     }
   ],
