@@ -1,6 +1,186 @@
 {
   "items": [
     {
+      "id": "5c4c6a29e004761d",
+      "title": "Coral reefs are cities built by tiny animals",
+      "category": "ocean",
+      "autonomy_priority": 114.98,
+      "queue_score": 100.0,
+      "template_cluster": "",
+      "mechanism_cluster": "",
+      "objective_reasons": [
+        "objective_gate:bootstrap_observe_before_scaling"
+      ],
+      "lane": "evergreen",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 100.0,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 60,
+          "signals": {
+            "viral_potential": 61,
+            "visual_potential": 83,
+            "replay_potential": 58,
+            "comment_potential": 48,
+            "educational_potential": 60,
+            "emotional_potential": 38,
+            "novelty": 53
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.113,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.335,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+        },
+        "retention": {
+          "score": 74,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 71,
+            "visual_score": 74,
+            "replay_score": 62,
+            "completion_prediction": 77
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.113,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.335,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+        },
+        "opening_retention": {
+          "score": 96.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "coral",
+          "cue_terms": [
+            "city",
+            "reef"
+          ],
+          "frame_hook_bridge": [
+            "reef"
+          ],
+          "cue_bridge": [
+            "reef"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": [
+            "missing_early_action"
+          ]
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 12,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 90,
+          "state": "strong",
+          "subscriber_probability": 0.129,
+          "return_probability": 0.272,
+          "comment_probability": 0.233,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.108,
+            "sample_size": 3,
+            "minimum_sample_size": 13,
+            "data_quality": "estimated",
+            "data_quality_score": 0.45,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.331,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.089,
+          "sample_size": 6,
+          "minimum_sample_size": 28,
+          "data_quality": "estimated",
+          "data_quality_score": 0.35,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.317,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.09."
+        },
+        "category": "ocean",
+        "story_format": "ecosystem_engine",
+        "hook_score": 100,
+        "title_score": 90,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "confidence_score": 0.089,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 0.0,
+          "template_cluster": "",
+          "mechanism_cluster": ""
+        }
+      }
+    },
+    {
       "id": "4406a9b99388f0ba",
       "title": "Monkeys wash food when grit gets annoying",
       "category": "primates",
@@ -731,187 +911,6 @@
       }
     },
     {
-      "id": "d1697c106260a35b",
-      "title": "Coral reefs are cities built by tiny animals",
-      "category": "ecosystems",
-      "autonomy_priority": 103.0,
-      "queue_score": 100.0,
-      "template_cluster": "",
-      "mechanism_cluster": "",
-      "objective_reasons": [
-        "objective_gate:bootstrap_observe_before_scaling"
-      ],
-      "lane": "evergreen",
-      "mix_adjustment": 5.0,
-      "score": {
-        "score": 100.0,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 71,
-          "signals": {
-            "viral_potential": 75,
-            "visual_potential": 89,
-            "replay_potential": 72,
-            "comment_potential": 54,
-            "educational_potential": 72,
-            "emotional_potential": 44,
-            "novelty": 69
-          },
-          "verdict": "produce",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "retention": {
-          "score": 76,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 71,
-            "visual_score": 74,
-            "replay_score": 62,
-            "completion_prediction": 84
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-        },
-        "opening_retention": {
-          "score": 100.0,
-          "state": "retention_ready",
-          "approved": true,
-          "subject": "coral",
-          "cue_terms": [
-            "city",
-            "reef"
-          ],
-          "frame_hook_bridge": [
-            "city",
-            "reef"
-          ],
-          "cue_bridge": [
-            "city",
-            "reef"
-          ],
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "risks": []
-        },
-        "weak_content": {
-          "risk": 0,
-          "state": "clear",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.65,
-            "sample_size": 12,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103,
-          "return_probability": 0.222,
-          "comment_probability": 0.191,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.127,
-            "sample_size": 3,
-            "minimum_sample_size": 8,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.345,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.13."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.13."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.025,
-          "sample_size": 3,
-          "minimum_sample_size": 18,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.269,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.03."
-        },
-        "category": "ecosystems",
-        "story_format": "ecosystem_engine",
-        "hook_score": 86,
-        "title_score": 90,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 0.0,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "confidence_score": 0.025,
-          "scale_ready": false,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 0.0,
-          "template_cluster": "",
-          "mechanism_cluster": ""
-        }
-      }
-    },
-    {
       "id": "b56baed0627d1611",
       "title": "Magnets make invisible fields visible",
       "category": "physics",
@@ -1287,7 +1286,7 @@
     },
     "counts": {
       "evergreen": 36,
-      "recovery": 3
+      "recovery": 4
     },
     "items": [
       {
@@ -1296,7 +1295,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.6
+        "freshness_score": 51.58
       },
       {
         "id": "677b330e4980e87d",
@@ -1336,7 +1335,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.78
+        "freshness_score": 52.76
       },
       {
         "id": "33dd6bb0aeba20be",
@@ -1355,12 +1354,12 @@
         "freshness_score": 54.68
       },
       {
-        "id": "a47428cf350de236",
+        "id": "a7343d17d7aeb013",
         "title": "Forests can cool the air below them",
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.5
+        "freshness_score": 55.0
       },
       {
         "id": "14f207991dea2fc0",
@@ -1408,7 +1407,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.12
+        "freshness_score": 53.1
       },
       {
         "id": "d051c1d95735e2ca",
@@ -1480,7 +1479,7 @@
         "category": "birds",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.32
+        "freshness_score": 53.3
       },
       {
         "id": "d99bc3c78a669d88",
@@ -1515,6 +1514,14 @@
         "freshness_score": 51.6
       },
       {
+        "id": "5c4c6a29e004761d",
+        "title": "Coral reefs are cities built by tiny animals",
+        "category": "ocean",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
+      },
+      {
         "id": "0dbd5efac2965abc",
         "title": "Chickens remember familiar faces in the flock",
         "category": "farm",
@@ -1523,20 +1530,20 @@
         "freshness_score": 52.5
       },
       {
+        "id": "fa7c85e672e4ff2a",
+        "title": "Sheep recognize faces across the flock",
+        "category": "farm",
+        "lane": "recovery",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
+      },
+      {
         "id": "a4ca94af1a59d5df",
         "title": "Fox eyes glow at night in a way you didn't expect",
         "category": "nocturnal",
         "lane": "evergreen",
         "adjustment": 5.0,
         "freshness_score": 52.74
-      },
-      {
-        "id": "d1697c106260a35b",
-        "title": "Coral reefs are cities built by tiny animals",
-        "category": "ecosystems",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.9
       },
       {
         "id": "f02e42af190accb5",
@@ -1552,7 +1559,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.24
+        "freshness_score": 51.22
       },
       {
         "id": "ce619185cc5a8b0e",
@@ -1560,7 +1567,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.24
+        "freshness_score": 51.22
       },
       {
         "id": "a386b5695dfd9b83",
@@ -1576,7 +1583,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.24
+        "freshness_score": 51.22
       },
       {
         "id": "b56baed0627d1611",
@@ -1584,7 +1591,7 @@
         "category": "physics",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.24
+        "freshness_score": 51.22
       },
       {
         "id": "8bdc8b70af521eb4",
@@ -1613,10 +1620,15 @@
       {
         "window": 10,
         "items": 7,
-        "dominant_shape": "{subject} wash food when grit gets annoying",
+        "dominant_shape": "{subject} reefs are cities built by tiny animals",
         "dominant_count": 1,
         "dominant_share": 0.143,
         "top_shapes": [
+          {
+            "shape": "{subject} reefs are cities built by tiny animals",
+            "count": 1,
+            "share": 0.143
+          },
           {
             "shape": "{subject} wash food when grit gets annoying",
             "count": 1,
@@ -1634,11 +1646,6 @@
           },
           {
             "shape": "{subject} trap air bubbles under feathers",
-            "count": 1,
-            "share": 0.143
-          },
-          {
-            "shape": "{subject} reefs are cities built by tiny animals",
             "count": 1,
             "share": 0.143
           }
@@ -1647,10 +1654,15 @@
       {
         "window": 30,
         "items": 7,
-        "dominant_shape": "{subject} wash food when grit gets annoying",
+        "dominant_shape": "{subject} reefs are cities built by tiny animals",
         "dominant_count": 1,
         "dominant_share": 0.143,
         "top_shapes": [
+          {
+            "shape": "{subject} reefs are cities built by tiny animals",
+            "count": 1,
+            "share": 0.143
+          },
           {
             "shape": "{subject} wash food when grit gets annoying",
             "count": 1,
@@ -1668,11 +1680,6 @@
           },
           {
             "shape": "{subject} trap air bubbles under feathers",
-            "count": 1,
-            "share": 0.143
-          },
-          {
-            "shape": "{subject} reefs are cities built by tiny animals",
             "count": 1,
             "share": 0.143
           }
@@ -1682,17 +1689,19 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 39,
-    "pending_after": 39,
-    "rejected": 0,
+    "pending_before": 41,
+    "pending_after": 40,
+    "rejected": 1,
     "repair_needed": 0,
-    "repaired": 2,
+    "repaired": 3,
     "reasons": {
       "editor_in_chief:subject repeated inside 3-day cooldown": 24,
-      "objective_gate:bootstrap_observe_before_scaling": 22,
+      "objective_gate:bootstrap_observe_before_scaling": 23,
       "objective_gate:observe_before_scaling": 17,
       "editor_in_chief:script quality gate blocked the narration": 5,
       "editor_in_chief:editorial score 46 is below 62": 2,
+      "copy_subject_mismatch": 1,
+      "duplicate_title": 1,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 1,
       "editor_in_chief:editorial score 40 is below 62": 1
     }

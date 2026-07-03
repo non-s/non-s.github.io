@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-07-03T14:43:08.021113+00:00",
+  "generated_at": "2026-07-03T14:46:02.932670+00:00",
   "floor": 82.0,
-  "pending": 39,
-  "ready": 38,
+  "pending": 41,
+  "ready": 40,
   "held": 1,
   "rewritten": 9,
-  "average_opening_score": 97.44,
+  "average_opening_score": 97.27,
   "render_gate": "hold",
   "counts": {
-    "approved": 38,
+    "approved": 40,
     "rewritten": 9,
     "hold": 1
   },
@@ -67,24 +67,6 @@
       "rewrite_reason": "opening_retention_below_floor",
       "before_score": 74.0,
       "after_score": 100.0,
-      "risks": [],
-      "action": "Use the frame-zero rewrite before rendering."
-    },
-    {
-      "id": "d1697c106260a35b",
-      "title": "Coral reefs are cities built by tiny animals",
-      "category": "ecosystems",
-      "render_gate": "approved",
-      "opening_score": 100.0,
-      "frame_zero_score": 92.0,
-      "opening_state": "retention_ready",
-      "opening_line": "Coral reefs reveal the reef city first.",
-      "first_frame_text": "REEF CITY",
-      "visible_cue": "reef city",
-      "rewrite_applied": true,
-      "rewrite_reason": "opening_retention_below_floor",
-      "before_score": 76.0,
-      "after_score": 94.0,
       "risks": [],
       "action": "Use the frame-zero rewrite before rendering."
     },
@@ -174,6 +156,24 @@
       "rewrite_applied": true,
       "rewrite_reason": "opening_retention_below_floor",
       "before_score": 72.0,
+      "after_score": 100.0,
+      "risks": [],
+      "action": "Use the frame-zero rewrite before rendering."
+    },
+    {
+      "id": "fa7c85e672e4ff2a",
+      "title": "Sheep recognize faces across the flock",
+      "category": "farm",
+      "render_gate": "approved",
+      "opening_score": 100.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Sheep reveal the face memory first.",
+      "first_frame_text": "FLOCK MEMORY",
+      "visible_cue": "face memory",
+      "rewrite_applied": true,
+      "rewrite_reason": "opening_retention_below_floor",
+      "before_score": 70.0,
       "after_score": 100.0,
       "risks": [],
       "action": "Use the frame-zero rewrite before rendering."
@@ -278,6 +278,26 @@
       "action": "Ready to render with current first frame."
     },
     {
+      "id": "21ee776c4c2ead44",
+      "title": "Auroras glow when solar particles hit air",
+      "category": "weather",
+      "render_gate": "approved",
+      "opening_score": 92.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Auroras start with charged particles from the sun.",
+      "first_frame_text": "AURORA GLOW",
+      "visible_cue": "",
+      "rewrite_applied": false,
+      "rewrite_reason": "",
+      "before_score": null,
+      "after_score": 92.0,
+      "risks": [
+        "subject_not_frontloaded"
+      ],
+      "action": "Ready to render with current first frame."
+    },
+    {
       "id": "e22c7bfd6c2187b6",
       "title": "Leaves angle toward the light they can use",
       "category": "plants",
@@ -314,6 +334,26 @@
       "after_score": 92.0,
       "risks": [
         "subject_not_frontloaded"
+      ],
+      "action": "Ready to render with current first frame."
+    },
+    {
+      "id": "5c4c6a29e004761d",
+      "title": "Coral reefs are cities built by tiny animals",
+      "category": "ocean",
+      "render_gate": "approved",
+      "opening_score": 96.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Coral reefs are built by tiny living builders.",
+      "first_frame_text": "REEF CITY",
+      "visible_cue": "",
+      "rewrite_applied": false,
+      "rewrite_reason": "",
+      "before_score": null,
+      "after_score": 96.0,
+      "risks": [
+        "missing_early_action"
       ],
       "action": "Ready to render with current first frame."
     },
@@ -410,7 +450,7 @@
       "action": "Ready to render with current first frame."
     },
     {
-      "id": "a47428cf350de236",
+      "id": "a7343d17d7aeb013",
       "title": "Forests can cool the air below them",
       "category": "forests",
       "render_gate": "approved",

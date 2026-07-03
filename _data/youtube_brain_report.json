@@ -1,13 +1,14 @@
 {
-  "generated_at": "2026-07-03T14:43:08.136233+00:00",
-  "pending": 39,
+  "generated_at": "2026-07-03T14:46:03.037772+00:00",
+  "pending": 41,
   "summary": {
-    "average_score": 99.9,
+    "average_score": 99.76,
     "states": {
-      "publish_minded": 39
+      "publish_minded": 41
     },
     "top_risks": {
-      "missing_visual_cue": 1
+      "missing_visual_cue": 1,
+      "subject_not_immediately_clear": 1
     }
   },
   "publish_ready_summary": {
@@ -261,9 +262,9 @@
       }
     },
     {
-      "id": "d1697c106260a35b",
+      "id": "5c4c6a29e004761d",
       "title": "Coral reefs are cities built by tiny animals",
-      "category": "ecosystems",
+      "category": "ocean",
       "queue_state": "publish_ready",
       "youtube_brain": {
         "score": 100,
@@ -281,7 +282,7 @@
           "last 2s: payoff and follow signal"
         ],
         "opening_retention": {
-          "score": 100.0,
+          "score": 96.0,
           "state": "retention_ready",
           "approved": true,
           "subject": "coral",
@@ -290,11 +291,9 @@
             "reef"
           ],
           "frame_hook_bridge": [
-            "city",
             "reef"
           ],
           "cue_bridge": [
-            "city",
             "reef"
           ],
           "strengths": [
@@ -302,11 +301,12 @@
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
-            "action_promise_early",
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "risks": []
+          "risks": [
+            "missing_early_action"
+          ]
         },
         "risks": [],
         "strengths": [
@@ -946,7 +946,7 @@
       }
     },
     {
-      "id": "a47428cf350de236",
+      "id": "a7343d17d7aeb013",
       "title": "Forests can cool the air below them",
       "category": "forests",
       "queue_state": "rewrite",
@@ -1925,6 +1925,67 @@
       }
     },
     {
+      "id": "fa7c85e672e4ff2a",
+      "title": "Sheep recognize faces across the flock",
+      "category": "farm",
+      "queue_state": "rewrite",
+      "youtube_brain": {
+        "score": 100,
+        "state": "publish_minded",
+        "animal": "sheep",
+        "subject": "sheep",
+        "story_format": "animal_memory",
+        "viewer_promise": "See why sheep animal memory matters.",
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "opening_retention": {
+          "score": 100.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "sheep",
+          "cue_terms": [
+            "face",
+            "flock",
+            "memor"
+          ],
+          "frame_hook_bridge": [
+            "memor"
+          ],
+          "cue_bridge": [
+            "face",
+            "memor"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": []
+        },
+        "risks": [],
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "commands": []
+      }
+    },
+    {
       "id": "a4ca94af1a59d5df",
       "title": "Fox eyes glow at night in a way you didn't expect",
       "category": "nocturnal",
@@ -2231,64 +2292,6 @@
           "shorts_length_fit",
           "thumbnail_text_scannable",
           "retention_opening_aligned"
-        ],
-        "commands": []
-      }
-    },
-    {
-      "id": "9ee098ecdf0b7d81",
-      "title": "Plant leaves reveal where energy comes from",
-      "category": "plants",
-      "queue_state": "rewrite",
-      "youtube_brain": {
-        "score": 100,
-        "state": "publish_minded",
-        "animal": "plant",
-        "subject": "plant",
-        "story_format": "plant_mechanism",
-        "viewer_promise": "See why this plant plant mechanism matters.",
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "opening_retention": {
-          "score": 68.0,
-          "state": "rewrite_opening",
-          "approved": false,
-          "subject": "plants",
-          "cue_terms": [
-            "angle",
-            "leaf",
-            "leave"
-          ],
-          "frame_hook_bridge": [],
-          "cue_bridge": [
-            "leave"
-          ],
-          "strengths": [
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "risks": [
-            "subject_not_frontloaded",
-            "frame_text_not_echoed_early"
-          ]
-        },
-        "risks": [],
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
         ],
         "commands": []
       }
@@ -2794,7 +2797,7 @@
       }
     },
     {
-      "id": "a47428cf350de236",
+      "id": "a7343d17d7aeb013",
       "title": "Forests can cool the air below them",
       "category": "forests",
       "queue_state": "rewrite",
@@ -4015,68 +4018,9 @@
       }
     },
     {
-      "id": "a4ca94af1a59d5df",
-      "title": "Fox eyes glow at night in a way you didn't expect",
-      "category": "nocturnal",
-      "queue_state": "rewrite",
-      "youtube_brain": {
-        "score": 100,
-        "state": "publish_minded",
-        "animal": "fox",
-        "subject": "fox",
-        "story_format": "rare_nature",
-        "viewer_promise": "See why fox rare nature matters.",
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "opening_retention": {
-          "score": 82.0,
-          "state": "retention_ready",
-          "approved": true,
-          "subject": "fox",
-          "cue_terms": [
-            "eyes",
-            "face",
-            "memor"
-          ],
-          "frame_hook_bridge": [],
-          "cue_bridge": [
-            "eyes"
-          ],
-          "strengths": [
-            "subject_frontloaded",
-            "visible_cue_repeated_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "risks": [
-            "frame_text_not_echoed_early",
-            "missing_watch_instruction"
-          ]
-        },
-        "risks": [],
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "commands": []
-      }
-    },
-    {
-      "id": "d1697c106260a35b",
+      "id": "5c4c6a29e004761d",
       "title": "Coral reefs are cities built by tiny animals",
-      "category": "ecosystems",
+      "category": "ocean",
       "queue_state": "publish_ready",
       "youtube_brain": {
         "score": 100,
@@ -4094,7 +4038,7 @@
           "last 2s: payoff and follow signal"
         ],
         "opening_retention": {
-          "score": 100.0,
+          "score": 96.0,
           "state": "retention_ready",
           "approved": true,
           "subject": "coral",
@@ -4103,12 +4047,72 @@
             "reef"
           ],
           "frame_hook_bridge": [
-            "city",
             "reef"
           ],
           "cue_bridge": [
-            "city",
             "reef"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": [
+            "missing_early_action"
+          ]
+        },
+        "risks": [],
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "commands": []
+      }
+    },
+    {
+      "id": "fa7c85e672e4ff2a",
+      "title": "Sheep recognize faces across the flock",
+      "category": "farm",
+      "queue_state": "rewrite",
+      "youtube_brain": {
+        "score": 100,
+        "state": "publish_minded",
+        "animal": "sheep",
+        "subject": "sheep",
+        "story_format": "animal_memory",
+        "viewer_promise": "See why sheep animal memory matters.",
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "opening_retention": {
+          "score": 100.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "sheep",
+          "cue_terms": [
+            "face",
+            "flock",
+            "memor"
+          ],
+          "frame_hook_bridge": [
+            "memor"
+          ],
+          "cue_bridge": [
+            "face",
+            "memor"
           ],
           "strengths": [
             "subject_frontloaded",
