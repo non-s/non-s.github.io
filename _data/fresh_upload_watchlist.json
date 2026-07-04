@@ -11,11 +11,11 @@
     "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-07-04T00:26:26.567025+00:00",
+  "generated_at": "2026-07-04T00:33:43.162680+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.86,
+      "age_hours": 0.981,
       "category": "cats",
       "checkpoints": [
         {
@@ -70,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.326,
+      "age_hours": 2.447,
       "category": "plants",
       "checkpoints": [
         {
@@ -125,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.896,
+      "age_hours": 3.017,
       "category": "plants",
       "checkpoints": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.326,
+      "age_hours": 4.447,
       "category": "conservation",
       "checkpoints": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.329,
+      "age_hours": 5.45,
       "category": "insects",
       "checkpoints": [
         {
@@ -286,11 +286,11 @@
       "uploaded_at": "2026-07-03T19:06:43.760986+00:00",
       "url": "https://www.youtube.com/shorts/ZEsLlK_ftDc",
       "video_id": "ZEsLlK_ftDc",
-      "views_per_hour": 0.193
+      "views_per_hour": 0.185
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.032,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.153,
       "category": "birds",
       "checkpoints": [
         {
@@ -306,8 +306,8 @@
           "delta_to_target": -105,
           "due_at": "2026-07-04T00:24:31.178599+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -322,38 +322,49 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
-        "delta_to_target": -105,
-        "due_at": "2026-07-04T00:24:31.178599+00:00",
-        "label": "6h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-04T18:24:31.178599+00:00",
+        "label": "24h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 105,
+        "state": "pending",
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Sky Intelligence",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Birds see ultraviolet patterns we miss",
       "uploaded_at": "2026-07-03T18:24:31.178599+00:00",
       "url": "https://www.youtube.com/shorts/JW9gO7JDkLU",
       "video_id": "JW9gO7JDkLU",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Birds see ultraviolet patterns we miss",
+        "video_id": "JW9gO7JDkLU",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 7.322,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 7.443,
       "category": "wildlife",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-03T18:07:07.835513+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -377,41 +388,30 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-04T17:07:07.835513+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-03T18:07:07.835513+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "overdue",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 90.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Animal Superpowers",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Deer aim their ears like sound radar",
       "uploaded_at": "2026-07-03T17:07:07.835513+00:00",
       "url": "https://www.youtube.com/shorts/dpahJs0978c",
       "video_id": "dpahJs0978c",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Deer aim their ears like sound radar",
-        "video_id": "dpahJs0978c",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 7.656,
+      "age_hours": 7.777,
       "category": "primates",
       "checkpoints": [
         {
@@ -466,7 +466,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.912,
+      "age_hours": 9.033,
       "category": "ocean",
       "checkpoints": [
         {
@@ -517,11 +517,11 @@
       "uploaded_at": "2026-07-03T15:31:43.787838+00:00",
       "url": "https://www.youtube.com/shorts/StWGdOT1uDA",
       "video_id": "StWGdOT1uDA",
-      "views_per_hour": 0.114
+      "views_per_hour": 0.111
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.893,
+      "age_hours": 10.014,
       "category": "cats",
       "checkpoints": [
         {
@@ -572,7 +572,7 @@
       "uploaded_at": "2026-07-03T14:32:52.669353+00:00",
       "url": "https://www.youtube.com/shorts/vJLRYY9DC2M",
       "video_id": "vJLRYY9DC2M",
-      "views_per_hour": 0.205
+      "views_per_hour": 0.201
     }
   ],
   "targets": {
