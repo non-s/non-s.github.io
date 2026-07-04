@@ -1,26 +1,31 @@
 {
   "state": "migration_needed",
-  "pressure_score": 86,
+  "pressure_score": 93,
   "metrics": {
-    "live_state_files": 172,
-    "data_state_files": 123,
+    "live_state_files": 275,
+    "data_state_files": 226,
     "video_done_markers": 47,
-    "live_state_bytes": 10376922,
-    "stories_queue_bytes": 2839991,
-    "stories_queue_lines": 79356,
+    "live_state_bytes": 12609918,
+    "stories_queue_bytes": 2911369,
+    "stories_queue_lines": 80764,
     "workflow_files": 18,
     "state_path_refs": 282
   },
   "largest_state_files": [
     {
       "path": "_data/stories_queue.json",
-      "bytes": 2839991,
-      "lines": 79356
+      "bytes": 2911369,
+      "lines": 80764
     },
     {
       "path": "_data/rejected_queue.jsonl",
-      "bytes": 1961893,
-      "lines": 2449
+      "bytes": 1977558,
+      "lines": 2469
+    },
+    {
+      "path": "_data/repair_queue.jsonl",
+      "bytes": 1066046,
+      "lines": 61
     },
     {
       "path": "_data/queue_audit.json",
@@ -29,8 +34,8 @@
     },
     {
       "path": "_data/early_performance.json",
-      "bytes": 436605,
-      "lines": 16895
+      "bytes": 437579,
+      "lines": 16935
     },
     {
       "path": "_data/packaging_report.json",
@@ -39,18 +44,18 @@
     },
     {
       "path": "_data/provider_stats.jsonl",
-      "bytes": 247852,
-      "lines": 3189
+      "bytes": 252668,
+      "lines": 3251
     },
     {
       "path": "_data/autonomous_growth_plan.json",
-      "bytes": 228073,
-      "lines": 6259
+      "bytes": 228311,
+      "lines": 6265
     },
     {
       "path": "_data/analytics/api_quota_ledger.jsonl",
-      "bytes": 173033,
-      "lines": 262
+      "bytes": 175508,
+      "lines": 266
     },
     {
       "path": "_data/dry_run_publish.json",
@@ -66,11 +71,6 @@
       "path": "_data/originality_pack.jsonl",
       "bytes": 113819,
       "lines": 158
-    },
-    {
-      "path": "_data/publish_slot_decisions.jsonl",
-      "bytes": 95258,
-      "lines": 124
     }
   ],
   "migration_lanes": [

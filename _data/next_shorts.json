@@ -549,6 +549,189 @@
       }
     },
     {
+      "id": "b84adf9cd30b02c1",
+      "title": "Forests can cool the air below them",
+      "category": "forests",
+      "autonomy_priority": 92.8,
+      "queue_score": 72.0,
+      "template_cluster": "",
+      "mechanism_cluster": "",
+      "objective_reasons": [
+        "objective_gate:observe_before_scaling",
+        "editor_in_chief:subject repeated inside 3-day cooldown",
+        "editorial_cooldown_supply_fallback"
+      ],
+      "lane": "evergreen",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 94.8,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 60,
+          "signals": {
+            "viral_potential": 74,
+            "visual_potential": 71,
+            "replay_potential": 64,
+            "comment_potential": 46,
+            "educational_potential": 64,
+            "emotional_potential": 27,
+            "novelty": 51
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.227,
+            "sample_size": 2,
+            "minimum_sample_size": 5,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.42,
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+          },
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+        },
+        "retention": {
+          "score": 73,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 71,
+            "visual_score": 66,
+            "replay_score": 62,
+            "completion_prediction": 77
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.227,
+            "sample_size": 2,
+            "minimum_sample_size": 5,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.42,
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+          },
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+        },
+        "opening_retention": {
+          "score": 100.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "forests",
+          "cue_terms": [
+            "air",
+            "canop",
+            "cool"
+          ],
+          "frame_hook_bridge": [
+            "cool"
+          ],
+          "cue_bridge": [
+            "air",
+            "cool"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": []
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 12,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 95,
+          "state": "strong",
+          "subscriber_probability": 0.136,
+          "return_probability": 0.286,
+          "comment_probability": 0.244,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.316,
+            "sample_size": 9,
+            "minimum_sample_size": 18,
+            "data_quality": "estimated",
+            "data_quality_score": 0.425,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.487,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.32."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.32."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.267,
+          "sample_size": 18,
+          "minimum_sample_size": 38,
+          "data_quality": "estimated",
+          "data_quality_score": 0.35,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.451,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.27."
+        },
+        "category": "forests",
+        "story_format": "earth_engine",
+        "hook_score": 100,
+        "title_score": 100,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "confidence_score": 0.267,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 0.0,
+          "template_cluster": "",
+          "mechanism_cluster": ""
+        }
+      }
+    },
+    {
       "id": "16394dd0594f4bd3",
       "title": "Sharks can feel electricity in the water",
       "category": "ocean",
@@ -727,189 +910,6 @@
           "payoff_time_s": 0.0,
           "template_cluster": "",
           "mechanism_cluster": "electric_sense"
-        }
-      }
-    },
-    {
-      "id": "8e48e6f1ce6f9886",
-      "title": "Forests can cool the air below them",
-      "category": "forests",
-      "autonomy_priority": 92.3,
-      "queue_score": 72.0,
-      "template_cluster": "",
-      "mechanism_cluster": "",
-      "objective_reasons": [
-        "objective_gate:observe_before_scaling",
-        "editor_in_chief:subject repeated inside 3-day cooldown",
-        "editorial_cooldown_supply_fallback"
-      ],
-      "lane": "evergreen",
-      "mix_adjustment": 5.0,
-      "score": {
-        "score": 94.3,
-        "approved": true,
-        "state": "publish_ready",
-        "opportunity": {
-          "score": 58,
-          "signals": {
-            "viral_potential": 74,
-            "visual_potential": 61,
-            "replay_potential": 64,
-            "comment_potential": 46,
-            "educational_potential": 64,
-            "emotional_potential": 27,
-            "novelty": 51
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.227,
-            "sample_size": 2,
-            "minimum_sample_size": 5,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.42,
-            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
-          },
-          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
-        },
-        "retention": {
-          "score": 71,
-          "signals": {
-            "hook_score": 82,
-            "curiosity_score": 71,
-            "visual_score": 58,
-            "replay_score": 62,
-            "completion_prediction": 77
-          },
-          "verdict": "rewrite",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.227,
-            "sample_size": 2,
-            "minimum_sample_size": 5,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.42,
-            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
-          },
-          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
-        },
-        "opening_retention": {
-          "score": 100.0,
-          "state": "retention_ready",
-          "approved": true,
-          "subject": "forests",
-          "cue_terms": [
-            "air",
-            "canop",
-            "cool"
-          ],
-          "frame_hook_bridge": [
-            "cool"
-          ],
-          "cue_bridge": [
-            "air",
-            "cool"
-          ],
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "risks": []
-        },
-        "weak_content": {
-          "risk": 0,
-          "state": "clear",
-          "reasons": [],
-          "confidence": {
-            "confidence_score": 0.65,
-            "sample_size": 12,
-            "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-        },
-        "subscriber_conversion": {
-          "score": 95,
-          "state": "strong",
-          "subscriber_probability": 0.136,
-          "return_probability": 0.286,
-          "comment_probability": 0.244,
-          "robotic_title": {
-            "risk": 0,
-            "state": "clear",
-            "hits": []
-          },
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "confidence": {
-            "confidence_score": 0.316,
-            "sample_size": 9,
-            "minimum_sample_size": 18,
-            "data_quality": "estimated",
-            "data_quality_score": 0.425,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.487,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.32."
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.32."
-        },
-        "distribution_adjustment": 0,
-        "decision_confidence": {
-          "confidence_score": 0.267,
-          "sample_size": 18,
-          "minimum_sample_size": 38,
-          "data_quality": "estimated",
-          "data_quality_score": 0.35,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.451,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.27."
-        },
-        "category": "forests",
-        "story_format": "earth_engine",
-        "hook_score": 100,
-        "title_score": 100,
-        "phrase_risk": {
-          "penalty": 0,
-          "hits": []
-        },
-        "editorial_guard": {
-          "approved": true,
-          "state": "approved",
-          "issues": []
-        },
-        "objective_gate": {
-          "penalty": 0.0,
-          "reasons": [
-            "observe_before_scaling"
-          ],
-          "confidence_score": 0.267,
-          "scale_ready": false,
-          "publish_blocking": false,
-          "swipe_risk_band": "low",
-          "payoff_time_s": 0.0,
-          "template_cluster": "",
-          "mechanism_cluster": ""
         }
       }
     },
@@ -1113,7 +1113,7 @@
         "category": "insects",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 50.06
+        "freshness_score": 50.04
       },
       {
         "id": "6070349d168d1d45",
@@ -1121,7 +1121,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 50.68
+        "freshness_score": 50.66
       },
       {
         "id": "cdfb416d8c795884",
@@ -1129,7 +1129,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.02
+        "freshness_score": 51.0
       },
       {
         "id": "9eb20513a1ebf366",
@@ -1140,12 +1140,12 @@
         "freshness_score": 50.58
       },
       {
-        "id": "8e48e6f1ce6f9886",
+        "id": "b84adf9cd30b02c1",
         "title": "Forests can cool the air below them",
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.88
+        "freshness_score": 55.0
       },
       {
         "id": "4111626a62866b27",
@@ -1177,7 +1177,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.58
+        "freshness_score": 54.56
       },
       {
         "id": "d5905286e8a38b10",
@@ -1185,7 +1185,7 @@
         "category": "ocean",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.58
+        "freshness_score": 54.56
       },
       {
         "id": "aa9283baa349c5d6",
@@ -1249,7 +1249,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 50.42
+        "freshness_score": 50.4
       },
       {
         "id": "0338c90412792b0d",
@@ -1257,7 +1257,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.92
+        "freshness_score": 54.9
       },
       {
         "id": "0ef428432eac25bb",
@@ -1265,7 +1265,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.42
+        "freshness_score": 51.4
       },
       {
         "id": "81d75c4c30910d0f",
@@ -1273,7 +1273,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.52
+        "freshness_score": 53.5
       },
       {
         "id": "1e1fd2bf8c255b87",
@@ -1289,7 +1289,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.88
+        "freshness_score": 54.86
       },
       {
         "id": "81583794419a09a7",
@@ -1297,7 +1297,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 53.56
+        "freshness_score": 53.54
       },
       {
         "id": "7fdc62557df3560c",
@@ -1305,7 +1305,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.5
+        "freshness_score": 54.48
       },
       {
         "id": "0dbd5efac2965abc",
@@ -1361,7 +1361,7 @@
         "category": "discoveries",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 49.14
+        "freshness_score": 49.12
       },
       {
         "id": "32bc71248738d412",
@@ -1410,12 +1410,12 @@
             "share": 0.167
           },
           {
-            "shape": "{subject} can feel electricity in the water",
+            "shape": "{subject} can cool the air below them",
             "count": 1,
             "share": 0.167
           },
           {
-            "shape": "{subject} can cool the air below them",
+            "shape": "{subject} can feel electricity in the water",
             "count": 1,
             "share": 0.167
           }
@@ -1444,12 +1444,12 @@
             "share": 0.167
           },
           {
-            "shape": "{subject} can feel electricity in the water",
+            "shape": "{subject} can cool the air below them",
             "count": 1,
             "share": 0.167
           },
           {
-            "shape": "{subject} can cool the air below them",
+            "shape": "{subject} can feel electricity in the water",
             "count": 1,
             "share": 0.167
           }
