@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-04T15:46:34.270914+00:00",
+  "generated_at": "2026-07-04T15:50:53.956192+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
   "overall_progress_pct": 36.6,
@@ -22,12 +22,12 @@
       "top_blockers": [
         {
           "id": "editor_in_chief:subject repeated inside 3-day cooldown",
-          "count": 46,
+          "count": 44,
           "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
         },
         {
           "id": "objective_gate:bootstrap_observe_before_scaling",
-          "count": 36,
+          "count": 34,
           "operator_translation": "collect more observed signal before scaling this pattern"
         },
         {
@@ -37,12 +37,12 @@
         },
         {
           "id": "queue_prune:rewrite",
-          "count": 29,
+          "count": 28,
           "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
           "id": "editor_in_chief:cooldown_subject",
-          "count": 19,
+          "count": 18,
           "operator_translation": "pick a fresh subject inside the same lane"
         }
       ]
@@ -88,13 +88,13 @@
   "metrics": {
     "health_score": 92,
     "health_state": "excellent",
-    "pending": 35,
+    "pending": 34,
     "operational_publish_ready": 6,
     "apparent_publish_ready": 6,
     "eligible_count": 6,
-    "scale_ready_count": 0,
+    "scale_ready_count": 1,
     "next_shorts_count": 6,
-    "editorial_candidate_count": 35,
+    "editorial_candidate_count": 34,
     "published_count": 47,
     "views_28d": 30314,
     "total_subscribers": 46,
@@ -109,12 +109,12 @@
   "top_blockers": [
     {
       "id": "editor_in_chief:subject repeated inside 3-day cooldown",
-      "count": 46,
+      "count": 44,
       "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
     },
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
-      "count": 36,
+      "count": 34,
       "operator_translation": "collect more observed signal before scaling this pattern"
     },
     {
@@ -124,18 +124,13 @@
     },
     {
       "id": "queue_prune:rewrite",
-      "count": 29,
+      "count": 28,
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
       "id": "editor_in_chief:cooldown_subject",
-      "count": 19,
+      "count": 18,
       "operator_translation": "pick a fresh subject inside the same lane"
-    },
-    {
-      "id": "duplicate_title",
-      "count": 11,
-      "operator_translation": "duplicate title"
     },
     {
       "id": "publish_score:rewrite",
@@ -163,9 +158,14 @@
       "operator_translation": "editor in chief:story angle repeated inside 10-day cooldown"
     },
     {
-      "id": "duplicate_script",
-      "count": 5,
-      "operator_translation": "duplicate script"
+      "id": "editor_in_chief:editorial score 40 is below 62",
+      "count": 4,
+      "operator_translation": "editor in chief:editorial score 40 is below 62"
+    },
+    {
+      "id": "observe_before_scaling",
+      "count": 3,
+      "operator_translation": "observe before scaling"
     }
   ],
   "levels": [
@@ -193,7 +193,7 @@
       "evidence": {
         "operational_publish_ready": 6,
         "eligible_count": 6,
-        "pending": 35,
+        "pending": 34,
         "target_publish_ready": 6,
         "target_pending": 20
       }
