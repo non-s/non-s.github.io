@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-04T11:56:33.317643+00:00",
+  "generated_at": "2026-07-04T12:03:07.805383+00:00",
   "pending": 36,
   "states": {
     "rewrite": 30,
@@ -17,25 +17,172 @@
     "approved": 36
   },
   "prune_summary": {
-    "pending_before": 36,
+    "pending_before": 51,
     "pending_after": 36,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 4,
+    "rejected": 15,
+    "repair_needed": 5,
+    "repaired": 5,
     "reasons": {
       "editor_in_chief:subject repeated inside 3-day cooldown": 25,
       "objective_gate:observe_before_scaling": 17,
       "objective_gate:bootstrap_observe_before_scaling": 17,
+      "duplicate_title": 7,
+      "queue_score_reject": 5,
+      "duplicate_script": 4,
+      "duplicate_angle": 4,
       "editor_in_chief:script quality gate blocked the narration": 4,
       "editorial_cooldown_supply_fallback": 4,
       "editor_in_chief:editorial score 46 is below 62": 3,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
+      "off_topic_visual": 2,
+      "script_hook_mismatch": 2,
       "editor_in_chief:editorial score 40 is below 62": 2,
+      "copy_subject_mismatch": 1,
+      "script does not expose enough concrete visual detail": 1,
+      "title_shape_weak": 1,
+      "title_needs_stronger_shape": 1,
+      "subject_not_clear": 1,
+      "script_word_loop": 1,
       "editor_in_chief:editorial score 49 is below 62": 1,
       "editor_in_chief:editorial score 42 is below 62": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "279589aa9be259f8",
+      "title": "Coral reefs are built by tiny living builders",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "69d4eabcfe3c588c",
+      "title": "Coral reefs are built by tiny living builders",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "9a484cc2d95615cf",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "493e105571dd037a",
+      "title": "What a cat's tail tells you before it moves that most people miss",
+      "reasons": [
+        "script_word_loop"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "e278bd4744f417ef",
+      "title": "Sheep recognize faces across the flock",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "9a7c392103581685",
+      "title": "Plants use trap hairs to count touches before snapping shut",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "98ce4feb1a6b628a",
+      "title": "Mountains don't erode the way textbooks say",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "11cf6c9bbb42b198",
+      "title": "Insects use wing angle before they change",
+      "reasons": [
+        "title_shape_weak",
+        "title_needs_stronger_shape",
+        "subject_not_clear",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "c12812e9607a0e69",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "a94579b5ae3713cc",
+      "title": "Elephants can feel rumbles through the ground",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "221fcd03d59c7b99",
+      "title": "volcanic crater flames that shouldn't burn",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "fe2f1335549b642d",
+      "title": "Rivers carve bends by stealing from one bank",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "45a95d010874a44e",
+      "title": "Dogs read the world through scent maps",
+      "reasons": [
+        "script does not expose enough concrete visual detail",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "b34f624d915dc16a",
+      "title": "Dogs read human pointing surprisingly well",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "c13b491992bf020c",
+      "title": "Mangroves take power out of waves",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "b56baed0627d1611",
       "title": "Los imanes revelan campos invisibles",
@@ -64,253 +211,105 @@
       "stage": "youtube_brain_rewrite"
     },
     {
-      "id": "cf1d867c52e523e4",
-      "title": "Los cristales crecen con un patrón microscópico",
-      "reasons": [
-        "subject repeated inside 3-day cooldown",
-        "humanity score is too low",
-        "editorial score 29 is below 62"
-      ],
-      "stage": "editor_in_chief"
-    },
-    {
-      "id": "50071ebef0b25f84",
-      "title": "Mangroves can slow waves before they hit land",
-      "reasons": [
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "1dbf61a21fbd49e1",
-      "title": "Mangroves can slow waves before they hit land",
-      "reasons": [
-        "copy_subject_mismatch",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "1418b39c1dd67e3e",
-      "title": "The moon keeps one face turned toward Earth",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "db385f295b21197e",
-      "title": "Coral reefs are built by tiny living builders",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "a3148e12993ca716",
-      "title": "Sheep graze in a way that shocks farmers",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "50fbdbc14230b0fe",
-      "title": "Sheep grazing next to factories aren't lost",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "dbd7e26d1b8a595f",
-      "title": "How dogs cool down without sweating like us when the body freezes",
-      "reasons": [
-        "bad_plural_verb",
-        "script_word_loop"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "8134dd807bd6cff8",
-      "title": "Birds see ultraviolet patterns we miss",
+      "id": "fe23f411cb61182d",
+      "title": "Storm clouds reveal a storm's heat engine",
       "reasons": [
         "duplicate_title"
       ],
-      "stage": "queue_prune"
+      "stage": "queue_prune_final"
     },
     {
-      "id": "a4a3cf32b217356a",
-      "title": "Beetles taste with their feet on flowers",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch",
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "14de317e62d97648",
-      "title": "mangroves turn rivers into nurseries",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch",
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "c6b18e8da4eb5480",
-      "title": "Rivers in Bangladesh hide a shifting secret",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "a345cf229c18195d",
-      "title": "Bees dance directions back to the hive",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "15d6148a14bf2035",
-      "title": "Volcano craters hide this survival trick",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "e7b240f7cae26439",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "ed0a74db91775207",
-      "title": "Iceland’s geothermal river fights winter every day",
+      "id": "cc5354a29ec297d4",
+      "title": "Turtles carry a magnetic map home",
       "reasons": [
         "off_topic_visual"
       ],
-      "stage": "queue_prune"
+      "stage": "queue_prune_final"
     },
     {
-      "id": "ea859a8602c5e105",
+      "id": "e5651d43196c825e",
       "title": "Storm clouds reveal a storm's heat engine",
       "reasons": [
         "copy_subject_mismatch",
         "duplicate_title"
       ],
-      "stage": "queue_prune"
+      "stage": "queue_prune_final"
     },
     {
-      "id": "6282c249f6604ab2",
-      "title": "Coral reefs are built by one tiny animal you’ve never heard ",
+      "id": "ff7779f3a9cacaaf",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "off_topic_visual",
+        "copy_subject_mismatch",
+        "duplicate_title",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "46c0612309bc47c9",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "29ed5cbde4269941",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "c13f3d664a37d54f",
+      "title": "Sheep roads aren't as peaceful as they look",
       "reasons": [
         "off_topic_visual"
       ],
       "stage": "queue_prune"
     },
     {
-      "id": "23cc4a86f71b80f4",
-      "title": "Why dogs remember more than the moment when the body freezes",
+      "id": "18f93a39f843f70f",
+      "title": "Rivers don't flow in straight lines like you think",
       "reasons": [
-        "off_topic_visual",
-        "script_word_loop"
+        "off_topic_visual"
       ],
       "stage": "queue_prune"
     },
     {
-      "id": "cdc63f772f0df85f",
-      "title": "Mangroves can slow waves before they hit land",
+      "id": "d9d9fe81c2e31460",
+      "title": "Istanbul Strait's hidden cleaner boat",
       "reasons": [
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "2f39c52aa9263143",
-      "title": "Sheep recognize faces across the flock",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "1d6ed29748e83bae",
-      "title": "Sheep recognize faces across the flock",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "c1ba2482ca836801",
-      "title": "Storm clouds show air layers changing over time",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "a47359be0e29a294",
-      "title": "Lightning turns air into a shock wave",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "d388951fcaf10d22",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "06d527c3e466e524",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "005b0cd1b28e5bfa",
-      "title": "Why dog paws explain the move in the first second",
-      "reasons": [
-        "rights_guard_person_manual_review",
-        "off_topic_visual",
         "script_subject_mismatch",
         "copy_subject_mismatch",
-        "bad_plural_verb",
-        "non_animal_body_language",
-        "script_word_loop"
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "b96818f62972c293",
+      "title": "Snow leopards survive the cold in plain sight",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "f332fd3443d67c15",
+      "title": "Volcano crater hides rainbow water tricks",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "050be5a6ecb803ab",
+      "title": "Leaf insects don't match the leaf they sit on",
+      "reasons": [
+        "off_topic_visual"
       ],
       "stage": "queue_prune"
     }
@@ -494,7 +493,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T11:55:57.548611+00:00",
+        "checked_at": "2026-07-04T12:02:31.882062+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1141,7 +1140,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T11:55:57.550889+00:00",
+        "checked_at": "2026-07-04T12:02:31.884242+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1786,7 +1785,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T11:55:57.554423+00:00",
+        "checked_at": "2026-07-04T12:02:31.886913+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2434,7 +2433,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T11:55:57.488721+00:00",
+        "checked_at": "2026-07-04T12:02:30.686861+00:00",
         "mechanism_cluster": "dance_navigation",
         "objective_reasons": [],
         "score": 78.0,
@@ -3077,7 +3076,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T11:55:57.493412+00:00",
+        "checked_at": "2026-07-04T12:02:30.690429+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -3716,7 +3715,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T11:55:57.524577+00:00",
+        "checked_at": "2026-07-04T12:02:31.491116+00:00",
         "mechanism_cluster": "visual_stabilization",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4356,7 +4355,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T11:55:57.536621+00:00",
+        "checked_at": "2026-07-04T12:02:31.870065+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5003,7 +5002,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T11:55:57.538636+00:00",
+        "checked_at": "2026-07-04T12:02:31.872375+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5643,7 +5642,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T11:55:57.540026+00:00",
+        "checked_at": "2026-07-04T12:02:31.873681+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6284,7 +6283,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T11:55:57.541285+00:00",
+        "checked_at": "2026-07-04T12:02:31.874943+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6934,7 +6933,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T11:55:57.557362+00:00",
+        "checked_at": "2026-07-04T12:02:31.890051+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7583,7 +7582,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T11:55:57.491121+00:00",
+        "checked_at": "2026-07-04T12:02:30.688334+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -8230,7 +8229,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T11:55:57.512107+00:00",
+        "checked_at": "2026-07-04T12:02:31.117246+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -8876,7 +8875,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T11:55:57.516402+00:00",
+        "checked_at": "2026-07-04T12:02:31.121389+00:00",
         "mechanism_cluster": "electric_sense",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -9517,7 +9516,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T11:55:57.522736+00:00",
+        "checked_at": "2026-07-04T12:02:31.128594+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -10161,7 +10160,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T11:55:57.495876+00:00",
+        "checked_at": "2026-07-04T12:02:30.692759+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -10817,7 +10816,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T11:55:57.499110+00:00",
+        "checked_at": "2026-07-04T12:02:30.695659+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -11479,7 +11478,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T11:55:57.500793+00:00",
+        "checked_at": "2026-07-04T12:02:30.697375+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -12121,7 +12120,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T11:55:57.502909+00:00",
+        "checked_at": "2026-07-04T12:02:30.699540+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -12763,7 +12762,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T11:55:57.504934+00:00",
+        "checked_at": "2026-07-04T12:02:30.701575+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
