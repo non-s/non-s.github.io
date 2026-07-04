@@ -3,17 +3,17 @@
   "fresh_upload_actions": {
     "counts": {
       "automation_safe": 10,
-      "high": 0,
+      "high": 1,
       "manual_review": 0,
       "total": 10,
-      "urgent": 4
+      "urgent": 6
     },
     "free_only": true,
-    "generated_at": "2026-07-04T12:25:14.789432+00:00",
+    "generated_at": "2026-07-04T13:59:17.194537+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 14.876,
+        "age_hours": 16.443,
         "automation_safe": true,
         "category": "plants",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 14.306,
+        "age_hours": 15.874,
         "automation_safe": true,
         "category": "plants",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 12.84,
+        "age_hours": 14.407,
         "automation_safe": true,
         "category": "cats",
         "checkpoint_label": "1h",
@@ -91,7 +91,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 10.828,
+        "age_hours": 12.396,
         "automation_safe": true,
         "category": "forests",
         "checkpoint_label": "1h",
@@ -116,86 +116,86 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "hold_until_first_hour",
-        "age_hours": 0.543,
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 2.11,
         "automation_safe": true,
         "category": "physics",
         "checkpoint_label": "1h",
-        "checkpoint_state": "pending",
+        "checkpoint_state": "overdue",
         "current_views": 0,
         "due_at": "2026-07-04T12:52:41.002348+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:baGG_PVYqfQ:awaiting_1h:1h",
-        "lane": "observe",
+        "id": "fresh-upload:baGG_PVYqfQ:analytics_due:1h",
+        "lane": "measurement",
         "manual_approval_required": false,
         "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "priority": "urgent",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
         "series": "Nature Signals",
-        "state": "awaiting_1h",
+        "state": "analytics_due",
         "target_views": 24,
         "title": "Magnets make invisible fields visible",
         "url": "https://www.youtube.com/shorts/baGG_PVYqfQ",
         "video_id": "baGG_PVYqfQ",
-        "wait_until": "2026-07-04T12:52:41.002348+00:00",
-        "why": "The upload is still inside the no-panic observation window."
+        "wait_until": "",
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "hold_until_first_hour",
-        "age_hours": 0.373,
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 1.94,
         "automation_safe": true,
         "category": "forests",
         "checkpoint_label": "1h",
-        "checkpoint_state": "pending",
+        "checkpoint_state": "overdue",
         "current_views": 0,
         "due_at": "2026-07-04T13:02:52.438702+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:4ipg2QQhpaw:awaiting_1h:1h",
-        "lane": "observe",
+        "id": "fresh-upload:4ipg2QQhpaw:analytics_due:1h",
+        "lane": "measurement",
         "manual_approval_required": false,
         "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "priority": "urgent",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
         "series": "Hidden Network",
-        "state": "awaiting_1h",
+        "state": "analytics_due",
         "target_views": 24,
         "title": "Foxes can hunt sounds hidden under snow",
         "url": "https://www.youtube.com/shorts/4ipg2QQhpaw",
         "video_id": "4ipg2QQhpaw",
-        "wait_until": "2026-07-04T13:02:52.438702+00:00",
-        "why": "The upload is still inside the no-panic observation window."
+        "wait_until": "",
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "watch_next_checkpoint",
-        "age_hours": 5.128,
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 6.696,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "6h",
-        "checkpoint_state": "pending",
+        "checkpoint_state": "due",
         "current_views": 0,
         "due_at": "2026-07-04T13:17:32.706167+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:X0j-m0-Docg:watch:6h",
-        "lane": "observe",
+        "id": "fresh-upload:X0j-m0-Docg:analytics_due:6h",
+        "lane": "measurement",
         "manual_approval_required": false,
         "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Keep observing through the next checkpoint.",
+        "priority": "high",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 6h sample first.",
         "series": "Farmyard Surprises",
-        "state": "watch",
+        "state": "analytics_due",
         "target_views": 105,
         "title": "Ducks fake injuries to protect their young",
         "url": "https://www.youtube.com/shorts/X0j-m0-Docg",
         "video_id": "X0j-m0-Docg",
-        "wait_until": "2026-07-04T13:17:32.706167+00:00",
-        "why": "No intervention signal is strong enough yet."
+        "wait_until": "",
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 4.299,
+        "age_hours": 5.866,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "6h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.819,
+        "age_hours": 4.386,
         "automation_safe": true,
         "category": "reptiles",
         "checkpoint_label": "6h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 1.486,
+        "age_hours": 3.053,
         "automation_safe": true,
         "category": "chemistry",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-04T12:25:14.788077+00:00"
+    "source_generated_at": "2026-07-04T13:59:17.193262+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,25 +282,25 @@
       24
     ],
     "counts": {
-      "analytics_due": 4,
-      "awaiting_1h": 2,
-      "high_priority": 4,
+      "analytics_due": 7,
+      "awaiting_1h": 0,
+      "high_priority": 7,
       "repair_candidates": 0,
       "tracked": 10
     },
-    "generated_at": "2026-07-04T12:25:14.788077+00:00",
+    "generated_at": "2026-07-04T13:59:17.193262+00:00",
     "items": [
       {
-        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.373,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 1.94,
         "category": "forests",
         "checkpoints": [
           {
-            "delta_to_target": 0,
+            "delta_to_target": -24,
             "due_at": "2026-07-04T13:02:52.438702+00:00",
             "label": "1h",
             "source": "estimated",
-            "state": "pending",
+            "state": "overdue",
             "target_views": 24,
             "views": 0
           },
@@ -324,21 +324,21 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-04T13:02:52.438702+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Hidden Network",
-        "state": "awaiting_1h",
+        "state": "analytics_due",
         "title": "Foxes can hunt sounds hidden under snow",
         "uploaded_at": "2026-07-04T12:02:52.438702+00:00",
         "url": "https://www.youtube.com/shorts/4ipg2QQhpaw",
@@ -346,16 +346,16 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.543,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 2.11,
         "category": "physics",
         "checkpoints": [
           {
-            "delta_to_target": 0,
+            "delta_to_target": -24,
             "due_at": "2026-07-04T12:52:41.002348+00:00",
             "label": "1h",
             "source": "estimated",
-            "state": "pending",
+            "state": "overdue",
             "target_views": 24,
             "views": 0
           },
@@ -379,21 +379,21 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-04T12:52:41.002348+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Nature Signals",
-        "state": "awaiting_1h",
+        "state": "analytics_due",
         "title": "Magnets make invisible fields visible",
         "uploaded_at": "2026-07-04T11:52:41.002348+00:00",
         "url": "https://www.youtube.com/shorts/baGG_PVYqfQ",
@@ -402,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 1.486,
+        "age_hours": 3.053,
         "category": "chemistry",
         "checkpoints": [
           {
@@ -457,7 +457,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.819,
+        "age_hours": 4.386,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -512,7 +512,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 4.299,
+        "age_hours": 5.866,
         "category": "geology",
         "checkpoints": [
           {
@@ -563,11 +563,11 @@
         "uploaded_at": "2026-07-04T08:07:18.699682+00:00",
         "url": "https://www.youtube.com/shorts/tt2gmX6cuHo",
         "video_id": "tt2gmX6cuHo",
-        "views_per_hour": 0.962
+        "views_per_hour": 0.93
       },
       {
-        "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.128,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 6.696,
         "category": "farm",
         "checkpoints": [
           {
@@ -580,11 +580,11 @@
             "views": 0
           },
           {
-            "delta_to_target": 0,
+            "delta_to_target": -105,
             "due_at": "2026-07-04T13:17:32.706167+00:00",
             "label": "6h",
             "source": "estimated",
-            "state": "pending",
+            "state": "due",
             "target_views": 105,
             "views": 0
           },
@@ -599,21 +599,21 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "No intervention signal is strong enough yet.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-07-04T13:17:32.706167+00:00",
           "label": "6h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 105,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Farmyard Surprises",
-        "state": "watch",
+        "state": "analytics_due",
         "title": "Ducks fake injuries to protect their young",
         "uploaded_at": "2026-07-04T07:17:32.706167+00:00",
         "url": "https://www.youtube.com/shorts/X0j-m0-Docg",
@@ -622,7 +622,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 10.828,
+        "age_hours": 12.396,
         "category": "forests",
         "checkpoints": [
           {
@@ -673,11 +673,11 @@
         "uploaded_at": "2026-07-04T01:35:32.786321+00:00",
         "url": "https://www.youtube.com/shorts/Jh4XroVWOKk",
         "video_id": "Jh4XroVWOKk",
-        "views_per_hour": 0.094
+        "views_per_hour": 0.092
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 12.84,
+        "age_hours": 14.407,
         "category": "cats",
         "checkpoints": [
           {
@@ -740,7 +740,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 14.306,
+        "age_hours": 15.874,
         "category": "plants",
         "checkpoints": [
           {
@@ -803,7 +803,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 14.876,
+        "age_hours": 16.443,
         "category": "plants",
         "checkpoints": [
           {
@@ -854,7 +854,7 @@
         "uploaded_at": "2026-07-03T21:32:41.232849+00:00",
         "url": "https://www.youtube.com/shorts/ODaf6_f8FCk",
         "video_id": "ODaf6_f8FCk",
-        "views_per_hour": 0.068,
+        "views_per_hour": 0.067,
         "warning": {
           "confidence_score": 0.431,
           "reason": "low confidence early signal; keep observing",
@@ -872,7 +872,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-04T12:25:14.789564+00:00",
+  "generated_at": "2026-07-04T13:59:17.194623+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
