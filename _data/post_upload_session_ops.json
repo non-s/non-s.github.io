@@ -6,40 +6,14 @@
       "high": 2,
       "manual_review": 2,
       "total": 10,
-      "urgent": 4
+      "urgent": 3
     },
     "free_only": true,
-    "generated_at": "2026-07-04T01:28:04.922013+00:00",
+    "generated_at": "2026-07-04T01:38:24.088663+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 10.92,
-        "automation_safe": true,
-        "category": "cats",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "overdue",
-        "current_views": 2,
-        "due_at": "2026-07-03T15:32:52.669353+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:vJLRYY9DC2M:analytics_due:1h",
-        "lane": "measurement",
-        "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "urgent",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
-        "series": "Pet Secrets",
-        "state": "analytics_due",
-        "target_views": 24,
-        "title": "Cats use whiskers like built-in rulers",
-        "url": "https://www.youtube.com/shorts/vJLRYY9DC2M",
-        "video_id": "vJLRYY9DC2M",
-        "wait_until": "",
-        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
-      },
-      {
-        "action_type": "pull_fresh_analytics",
-        "age_hours": 9.939,
+        "age_hours": 10.111,
         "automation_safe": true,
         "category": "ocean",
         "checkpoint_label": "1h",
@@ -65,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 8.683,
+        "age_hours": 8.855,
         "automation_safe": true,
         "category": "primates",
         "checkpoint_label": "1h",
@@ -91,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 8.349,
+        "age_hours": 8.521,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -117,7 +91,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 7.059,
+        "age_hours": 7.231,
         "automation_safe": false,
         "category": "birds",
         "checkpoint_label": "24h",
@@ -143,7 +117,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 6.356,
+        "age_hours": 6.528,
         "automation_safe": false,
         "category": "insects",
         "checkpoint_label": "24h",
@@ -169,7 +143,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 5.354,
+        "age_hours": 5.526,
         "automation_safe": true,
         "category": "conservation",
         "checkpoint_label": "6h",
@@ -194,8 +168,34 @@
         "why": "No intervention signal is strong enough yet."
       },
       {
+        "action_type": "hold_until_first_hour",
+        "age_hours": 0.048,
+        "automation_safe": true,
+        "category": "forests",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-04T02:35:32.786321+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:Jh4XroVWOKk:awaiting_1h:1h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 94.0,
+        "priority": "low",
+        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "series": "Hidden Network",
+        "state": "awaiting_1h",
+        "target_views": 24,
+        "title": "Forests hold cool fog between the trees",
+        "url": "https://www.youtube.com/shorts/Jh4XroVWOKk",
+        "video_id": "Jh4XroVWOKk",
+        "wait_until": "2026-07-04T02:35:32.786321+00:00",
+        "why": "The upload is still inside the no-panic observation window."
+      },
+      {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.923,
+        "age_hours": 4.095,
         "automation_safe": true,
         "category": "plants",
         "checkpoint_label": "6h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.354,
+        "age_hours": 3.525,
         "automation_safe": true,
         "category": "plants",
         "checkpoint_label": "6h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 1.887,
+        "age_hours": 2.059,
         "automation_safe": true,
         "category": "cats",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-04T01:28:04.919734+00:00"
+    "source_generated_at": "2026-07-04T01:38:24.087363+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,72 @@
       24
     ],
     "counts": {
-      "analytics_due": 4,
-      "awaiting_1h": 0,
-      "high_priority": 6,
+      "analytics_due": 3,
+      "awaiting_1h": 1,
+      "high_priority": 5,
       "repair_candidates": 2,
       "tracked": 10
     },
-    "generated_at": "2026-07-04T01:28:04.919734+00:00",
+    "generated_at": "2026-07-04T01:38:24.087363+00:00",
     "items": [
       {
+        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "age_hours": 0.048,
+        "category": "forests",
+        "checkpoints": [
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-04T02:35:32.786321+00:00",
+            "label": "1h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 24,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-04T07:35:32.786321+00:00",
+            "label": "6h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 105,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-05T01:35:32.786321+00:00",
+            "label": "24h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 300,
+            "views": 0
+          }
+        ],
+        "current_views": 0,
+        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "next_checkpoint": {
+          "delta_to_target": 0,
+          "due_at": "2026-07-04T02:35:32.786321+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        "opening_retention_score": 94.0,
+        "opening_retention_state": "retention_ready",
+        "priority": "low",
+        "series": "Hidden Network",
+        "state": "awaiting_1h",
+        "title": "Forests hold cool fog between the trees",
+        "uploaded_at": "2026-07-04T01:35:32.786321+00:00",
+        "url": "https://www.youtube.com/shorts/Jh4XroVWOKk",
+        "video_id": "Jh4XroVWOKk",
+        "views_per_hour": 0.0
+      },
+      {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 1.887,
+        "age_hours": 2.059,
         "category": "cats",
         "checkpoints": [
           {
@@ -347,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.354,
+        "age_hours": 3.525,
         "category": "plants",
         "checkpoints": [
           {
@@ -402,7 +457,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.923,
+        "age_hours": 4.095,
         "category": "plants",
         "checkpoints": [
           {
@@ -457,7 +512,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.354,
+        "age_hours": 5.526,
         "category": "conservation",
         "checkpoints": [
           {
@@ -512,7 +567,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 6.356,
+        "age_hours": 6.528,
         "category": "insects",
         "checkpoints": [
           {
@@ -563,7 +618,7 @@
         "uploaded_at": "2026-07-03T19:06:43.760986+00:00",
         "url": "https://www.youtube.com/shorts/ZEsLlK_ftDc",
         "video_id": "ZEsLlK_ftDc",
-        "views_per_hour": 0.16,
+        "views_per_hour": 0.154,
         "warning": {
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.594,
@@ -578,7 +633,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 7.059,
+        "age_hours": 7.231,
         "category": "birds",
         "checkpoints": [
           {
@@ -644,7 +699,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 8.349,
+        "age_hours": 8.521,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -699,7 +754,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 8.683,
+        "age_hours": 8.855,
         "category": "primates",
         "checkpoints": [
           {
@@ -754,7 +809,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 9.939,
+        "age_hours": 10.111,
         "category": "ocean",
         "checkpoints": [
           {
@@ -805,62 +860,7 @@
         "uploaded_at": "2026-07-03T15:31:43.787838+00:00",
         "url": "https://www.youtube.com/shorts/StWGdOT1uDA",
         "video_id": "StWGdOT1uDA",
-        "views_per_hour": 0.102
-      },
-      {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 10.92,
-        "category": "cats",
-        "checkpoints": [
-          {
-            "delta_to_target": -24,
-            "due_at": "2026-07-03T15:32:52.669353+00:00",
-            "label": "1h",
-            "source": "estimated",
-            "state": "overdue",
-            "target_views": 24,
-            "views": 0
-          },
-          {
-            "delta_to_target": -104,
-            "due_at": "2026-07-03T20:32:52.669353+00:00",
-            "label": "6h",
-            "source": "observed",
-            "state": "observed",
-            "target_views": 105,
-            "views": 1
-          },
-          {
-            "delta_to_target": 0,
-            "due_at": "2026-07-04T14:32:52.669353+00:00",
-            "label": "24h",
-            "source": "estimated",
-            "state": "pending",
-            "target_views": 300,
-            "views": 2
-          }
-        ],
-        "current_views": 2,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-        "next_checkpoint": {
-          "delta_to_target": -24,
-          "due_at": "2026-07-03T15:32:52.669353+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        "opening_retention_score": 100.0,
-        "opening_retention_state": "retention_ready",
-        "priority": "high",
-        "series": "Pet Secrets",
-        "state": "analytics_due",
-        "title": "Cats use whiskers like built-in rulers",
-        "uploaded_at": "2026-07-03T14:32:52.669353+00:00",
-        "url": "https://www.youtube.com/shorts/vJLRYY9DC2M",
-        "video_id": "vJLRYY9DC2M",
-        "views_per_hour": 0.185
+        "views_per_hour": 0.099
       }
     ],
     "targets": {
@@ -870,23 +870,12 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-04T01:28:04.922108+00:00",
+  "generated_at": "2026-07-04T01:38:24.088756+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
   ],
   "related_video_recommendations": [
-    {
-      "recommendation": {
-        "reason": "same series/category/format session bridge",
-        "score": 85.0,
-        "title": "Beetles can steer by the Milky Way",
-        "url": "https://www.youtube.com/shorts/zkOPZdHY4i0",
-        "video_id": "zkOPZdHY4i0"
-      },
-      "source_title": "Mantises judge distance with 3D vision",
-      "source_video_id": "ZEsLlK_ftDc"
-    },
     {
       "recommendation": {
         "reason": "same series/category/format session bridge",
@@ -930,14 +919,20 @@
       },
       "source_title": "Cats measure tight spaces with their whiskers",
       "source_video_id": "8JXU0i_1-7c"
+    },
+    {
+      "recommendation": {
+        "reason": "same series/category/format session bridge",
+        "score": 85.0,
+        "title": "Forests make cooler air under the canopy",
+        "url": "https://www.youtube.com/shorts/T0Wl3m_A7So",
+        "video_id": "T0Wl3m_A7So"
+      },
+      "source_title": "Forests hold cool fog between the trees",
+      "source_video_id": "Jh4XroVWOKk"
     }
   ],
   "sequel_opportunities": [
-    {
-      "prompt": "Make a sequel with a new subject but the same payoff shape: Mantises judge distance with 3D vision",
-      "title": "Mantises judge distance with 3D vision",
-      "video_id": "ZEsLlK_ftDc"
-    },
     {
       "prompt": "Make a sequel with a new subject but the same payoff shape: Fish Mangroves take power out of waves",
       "title": "Fish Mangroves take power out of waves",
@@ -957,13 +952,18 @@
       "prompt": "Make a sequel with a new subject but the same payoff shape: Cats measure tight spaces with their whiskers",
       "title": "Cats measure tight spaces with their whiskers",
       "video_id": "8JXU0i_1-7c"
+    },
+    {
+      "prompt": "Make a sequel with a new subject but the same payoff shape: Forests hold cool fog between the trees",
+      "title": "Forests hold cool fog between the trees",
+      "video_id": "Jh4XroVWOKk"
     }
   ],
   "session_graph": {
     "action_score_threshold": 55,
     "coverage": 0.8,
     "edges": 20,
-    "nodes": 38,
+    "nodes": 39,
     "target_reuse_limit": 2
   }
 }
