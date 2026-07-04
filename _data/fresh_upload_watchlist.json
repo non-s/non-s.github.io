@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 6,
+    "analytics_due": 7,
     "awaiting_1h": 0,
     "high_priority": 7,
-    "repair_candidates": 1,
+    "repair_candidates": 0,
     "tracked": 10
   },
-  "generated_at": "2026-07-04T19:40:47.647468+00:00",
+  "generated_at": "2026-07-04T19:48:10.949021+00:00",
   "items": [
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.393,
+      "age_hours": 3.516,
       "category": "forests",
       "checkpoints": [
         {
@@ -70,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.256,
+      "age_hours": 4.379,
       "category": "forests",
       "checkpoints": [
         {
@@ -125,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.527,
+      "age_hours": 5.65,
       "category": "trees",
       "checkpoints": [
         {
@@ -179,16 +179,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 7.632,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 7.755,
       "category": "forests",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-04T13:02:52.438702+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -212,41 +212,30 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-05T12:02:52.438702+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-04T13:02:52.438702+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "overdue",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Hidden Network",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Foxes can hunt sounds hidden under snow",
       "uploaded_at": "2026-07-04T12:02:52.438702+00:00",
       "url": "https://www.youtube.com/shorts/4ipg2QQhpaw",
       "video_id": "4ipg2QQhpaw",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Foxes can hunt sounds hidden under snow",
-        "video_id": "4ipg2QQhpaw",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 7.802,
+      "age_hours": 7.925,
       "category": "physics",
       "checkpoints": [
         {
@@ -301,7 +290,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.745,
+      "age_hours": 8.868,
       "category": "chemistry",
       "checkpoints": [
         {
@@ -356,7 +345,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 10.078,
+      "age_hours": 10.201,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -411,7 +400,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.558,
+      "age_hours": 11.681,
       "category": "geology",
       "checkpoints": [
         {
@@ -462,11 +451,11 @@
       "uploaded_at": "2026-07-04T08:07:18.699682+00:00",
       "url": "https://www.youtube.com/shorts/tt2gmX6cuHo",
       "video_id": "tt2gmX6cuHo",
-      "views_per_hour": 0.348
+      "views_per_hour": 0.344
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.387,
+      "age_hours": 12.511,
       "category": "farm",
       "checkpoints": [
         {
@@ -482,8 +471,8 @@
           "delta_to_target": -105,
           "due_at": "2026-07-04T13:17:32.706167+00:00",
           "label": "6h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 105,
           "views": 0
         },
@@ -517,11 +506,19 @@
       "uploaded_at": "2026-07-04T07:17:32.706167+00:00",
       "url": "https://www.youtube.com/shorts/X0j-m0-Docg",
       "video_id": "X0j-m0-Docg",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "confidence_score": 0.431,
+        "reason": "low confidence early signal; keep observing",
+        "state": "dying_early",
+        "title": "Ducks fake injuries to protect their young",
+        "video_id": "X0j-m0-Docg",
+        "warning_state": "low_confidence_watch"
+      }
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 18.087,
+      "age_hours": 18.211,
       "category": "forests",
       "checkpoints": [
         {
@@ -572,7 +569,7 @@
       "uploaded_at": "2026-07-04T01:35:32.786321+00:00",
       "url": "https://www.youtube.com/shorts/Jh4XroVWOKk",
       "video_id": "Jh4XroVWOKk",
-      "views_per_hour": 0.056,
+      "views_per_hour": 0.055,
       "warning": {
         "confidence_score": 0.431,
         "reason": "low confidence early signal; keep observing",
