@@ -6,16 +6,71 @@
   ],
   "counts": {
     "analytics_due": 5,
-    "awaiting_1h": 1,
-    "high_priority": 6,
-    "repair_candidates": 1,
+    "awaiting_1h": 2,
+    "high_priority": 5,
+    "repair_candidates": 0,
     "tracked": 10
   },
-  "generated_at": "2026-07-04T11:47:03.415801+00:00",
+  "generated_at": "2026-07-04T11:55:30.099529+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.849,
+      "age_hours": 0.047,
+      "category": "physics",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-04T12:52:41.002348+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-04T17:52:41.002348+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-05T11:52:41.002348+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-04T12:52:41.002348+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Nature Signals",
+      "state": "awaiting_1h",
+      "title": "Magnets make invisible fields visible",
+      "uploaded_at": "2026-07-04T11:52:41.002348+00:00",
+      "url": "https://www.youtube.com/shorts/baGG_PVYqfQ",
+      "video_id": "baGG_PVYqfQ",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.99,
       "category": "chemistry",
       "checkpoints": [
         {
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.182,
+      "age_hours": 2.323,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.662,
+      "age_hours": 3.803,
       "category": "geology",
       "checkpoints": [
         {
@@ -176,11 +231,11 @@
       "uploaded_at": "2026-07-04T08:07:18.699682+00:00",
       "url": "https://www.youtube.com/shorts/tt2gmX6cuHo",
       "video_id": "tt2gmX6cuHo",
-      "views_per_hour": 1.398
+      "views_per_hour": 1.062
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.492,
+      "age_hours": 4.633,
       "category": "farm",
       "checkpoints": [
         {
@@ -234,16 +289,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 10.192,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 10.333,
       "category": "forests",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-04T02:35:32.786321+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -267,41 +322,30 @@
         }
       ],
       "current_views": 1,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-05T01:35:32.786321+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-04T02:35:32.786321+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
-        "views": 1
+        "state": "overdue",
+        "target_views": 24,
+        "views": 0
       },
       "opening_retention_score": 94.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Hidden Network",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Forests hold cool fog between the trees",
       "uploaded_at": "2026-07-04T01:35:32.786321+00:00",
       "url": "https://www.youtube.com/shorts/Jh4XroVWOKk",
       "video_id": "Jh4XroVWOKk",
-      "views_per_hour": 0.106,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Forests hold cool fog between the trees",
-        "video_id": "Jh4XroVWOKk",
-        "views": 1,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.097
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.204,
+      "age_hours": 12.344,
       "category": "cats",
       "checkpoints": [
         {
@@ -356,7 +400,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.67,
+      "age_hours": 13.811,
       "category": "plants",
       "checkpoints": [
         {
@@ -372,8 +416,8 @@
           "delta_to_target": -105,
           "due_at": "2026-07-04T04:06:52.291088+00:00",
           "label": "6h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 105,
           "views": 0
         },
@@ -407,11 +451,19 @@
       "uploaded_at": "2026-07-03T22:06:52.291088+00:00",
       "url": "https://www.youtube.com/shorts/bzhm_MUPS8w",
       "video_id": "bzhm_MUPS8w",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "confidence_score": 0.431,
+        "reason": "low confidence early signal; keep observing",
+        "state": "dying_early",
+        "title": "Plants turn light into food",
+        "video_id": "bzhm_MUPS8w",
+        "warning_state": "low_confidence_watch"
+      }
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 14.239,
+      "age_hours": 14.38,
       "category": "plants",
       "checkpoints": [
         {
@@ -427,8 +479,8 @@
           "delta_to_target": -105,
           "due_at": "2026-07-04T03:32:41.232849+00:00",
           "label": "6h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 105,
           "views": 0
         },
@@ -462,11 +514,19 @@
       "uploaded_at": "2026-07-03T21:32:41.232849+00:00",
       "url": "https://www.youtube.com/shorts/ODaf6_f8FCk",
       "video_id": "ODaf6_f8FCk",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "confidence_score": 0.431,
+        "reason": "low confidence early signal; keep observing",
+        "state": "dying_early",
+        "title": "Plants use trap hairs to count touches before snapping shut",
+        "video_id": "ODaf6_f8FCk",
+        "warning_state": "low_confidence_watch"
+      }
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 15.67,
+      "age_hours": 15.811,
       "category": "conservation",
       "checkpoints": [
         {
@@ -482,8 +542,8 @@
           "delta_to_target": -105,
           "due_at": "2026-07-04T02:06:52.231213+00:00",
           "label": "6h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 105,
           "views": 0
         },
@@ -517,68 +577,13 @@
       "uploaded_at": "2026-07-03T20:06:52.231213+00:00",
       "url": "https://www.youtube.com/shorts/rPhsl7qFRfY",
       "video_id": "rPhsl7qFRfY",
-      "views_per_hour": 0.0
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.672,
-      "category": "insects",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-03T20:06:43.760986+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-04T01:06:43.760986+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-07-04T19:06:43.760986+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 1
-        }
-      ],
-      "current_views": 1,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-03T20:06:43.760986+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Tiny Worlds",
-      "state": "analytics_due",
-      "title": "Mantises judge distance with 3D vision",
-      "uploaded_at": "2026-07-03T19:06:43.760986+00:00",
-      "url": "https://www.youtube.com/shorts/ZEsLlK_ftDc",
-      "video_id": "ZEsLlK_ftDc",
-      "views_per_hour": 0.063,
+      "views_per_hour": 0.0,
       "warning": {
         "confidence_score": 0.431,
         "reason": "low confidence early signal; keep observing",
         "state": "dying_early",
-        "title": "Mantises judge distance with 3D vision",
-        "video_id": "ZEsLlK_ftDc",
+        "title": "Fish Mangroves take power out of waves",
+        "video_id": "rPhsl7qFRfY",
         "warning_state": "low_confidence_watch"
       }
     }
