@@ -5,25 +5,25 @@
     24
   ],
   "counts": {
-    "analytics_due": 6,
+    "analytics_due": 4,
     "awaiting_1h": 0,
     "high_priority": 8,
-    "repair_candidates": 2,
+    "repair_candidates": 4,
     "tracked": 10
   },
-  "generated_at": "2026-07-04T04:01:41.517062+00:00",
+  "generated_at": "2026-07-04T04:10:47.658212+00:00",
   "items": [
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 2.436,
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 2.587,
       "category": "forests",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-04T02:35:32.786321+00:00",
           "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +47,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-04T02:35:32.786321+00:00",
-        "label": "1h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-04T07:35:32.786321+00:00",
+        "label": "6h",
         "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
+        "state": "pending",
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 94.0,
       "opening_retention_state": "retention_ready",
-      "priority": "high",
+      "priority": "low",
       "series": "Hidden Network",
-      "state": "analytics_due",
+      "state": "watch",
       "title": "Forests hold cool fog between the trees",
       "uploaded_at": "2026-07-04T01:35:32.786321+00:00",
       "url": "https://www.youtube.com/shorts/Jh4XroVWOKk",
@@ -70,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.447,
+      "age_hours": 4.599,
       "category": "cats",
       "checkpoints": [
         {
@@ -124,8 +124,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.914,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.065,
       "category": "plants",
       "checkpoints": [
         {
@@ -138,11 +138,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-07-04T04:06:52.291088+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -157,30 +157,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-04T04:06:52.291088+00:00",
-        "label": "6h",
+        "due_at": "2026-07-04T22:06:52.291088+00:00",
+        "label": "24h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 105,
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Biology Brief",
-      "state": "watch",
+      "state": "repair_candidate",
       "title": "Plants turn light into food",
       "uploaded_at": "2026-07-03T22:06:52.291088+00:00",
       "url": "https://www.youtube.com/shorts/bzhm_MUPS8w",
       "video_id": "bzhm_MUPS8w",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 24/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Plants turn light into food",
+        "video_id": "bzhm_MUPS8w",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.483,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.635,
       "category": "plants",
       "checkpoints": [
         {
@@ -196,8 +207,8 @@
           "delta_to_target": -105,
           "due_at": "2026-07-04T03:32:41.232849+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -212,30 +223,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
-        "delta_to_target": -105,
-        "due_at": "2026-07-04T03:32:41.232849+00:00",
-        "label": "6h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-04T21:32:41.232849+00:00",
+        "label": "24h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 105,
+        "state": "pending",
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Biology Brief",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Plants use trap hairs to count touches before snapping shut",
       "uploaded_at": "2026-07-03T21:32:41.232849+00:00",
       "url": "https://www.youtube.com/shorts/ODaf6_f8FCk",
       "video_id": "ODaf6_f8FCk",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Plants use trap hairs to count touches before snapping shut",
+        "video_id": "ODaf6_f8FCk",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 7.914,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 8.065,
       "category": "conservation",
       "checkpoints": [
         {
@@ -251,8 +273,8 @@
           "delta_to_target": -105,
           "due_at": "2026-07-04T02:06:52.231213+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -267,30 +289,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
-        "delta_to_target": -105,
-        "due_at": "2026-07-04T02:06:52.231213+00:00",
-        "label": "6h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-04T20:06:52.231213+00:00",
+        "label": "24h",
         "source": "estimated",
-        "state": "overdue",
-        "target_views": 105,
+        "state": "pending",
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Planet Repair",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Fish Mangroves take power out of waves",
       "uploaded_at": "2026-07-03T20:06:52.231213+00:00",
       "url": "https://www.youtube.com/shorts/rPhsl7qFRfY",
       "video_id": "rPhsl7qFRfY",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Fish Mangroves take power out of waves",
+        "video_id": "rPhsl7qFRfY",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 8.916,
+      "age_hours": 9.068,
       "category": "insects",
       "checkpoints": [
         {
@@ -341,7 +374,7 @@
       "uploaded_at": "2026-07-03T19:06:43.760986+00:00",
       "url": "https://www.youtube.com/shorts/ZEsLlK_ftDc",
       "video_id": "ZEsLlK_ftDc",
-      "views_per_hour": 0.153,
+      "views_per_hour": 0.111,
       "warning": {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.594,
@@ -355,16 +388,16 @@
       }
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 9.62,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 9.771,
       "category": "birds",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-03T19:24:31.178599+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -388,41 +421,30 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-04T18:24:31.178599+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-03T19:24:31.178599+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "overdue",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Sky Intelligence",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Birds see ultraviolet patterns we miss",
       "uploaded_at": "2026-07-03T18:24:31.178599+00:00",
       "url": "https://www.youtube.com/shorts/JW9gO7JDkLU",
       "video_id": "JW9gO7JDkLU",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Birds see ultraviolet patterns we miss",
-        "video_id": "JW9gO7JDkLU",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 10.909,
+      "age_hours": 11.061,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -477,7 +499,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.243,
+      "age_hours": 11.395,
       "category": "primates",
       "checkpoints": [
         {
@@ -532,7 +554,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.499,
+      "age_hours": 12.651,
       "category": "ocean",
       "checkpoints": [
         {
@@ -583,7 +605,7 @@
       "uploaded_at": "2026-07-03T15:31:43.787838+00:00",
       "url": "https://www.youtube.com/shorts/StWGdOT1uDA",
       "video_id": "StWGdOT1uDA",
-      "views_per_hour": 0.099
+      "views_per_hour": 0.079
     }
   ],
   "targets": {
