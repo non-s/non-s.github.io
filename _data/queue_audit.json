@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-04T23:20:53.464753+00:00",
+  "generated_at": "2026-07-04T23:24:56.309653+00:00",
   "pending": 36,
   "states": {
     "rewrite": 28,
@@ -17,11 +17,11 @@
     "approved": 36
   },
   "prune_summary": {
-    "pending_before": 36,
+    "pending_before": 39,
     "pending_after": 36,
-    "rejected": 0,
+    "rejected": 3,
     "repair_needed": 0,
-    "repaired": 5,
+    "repaired": 7,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 33,
       "editor_in_chief:subject repeated inside 3-day cooldown": 20,
@@ -29,14 +29,80 @@
       "objective_gate:observe_before_scaling": 3,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
       "editor_in_chief:editorial score 46 is below 62": 3,
+      "duplicate_title": 2,
+      "off_topic_visual": 1,
+      "script_hook_mismatch": 1,
       "editor_in_chief:editorial score 49 is below 62": 1,
       "editor_in_chief:editorial score 40 is below 62": 1,
+      "script_subject_mismatch": 1,
+      "copy_subject_mismatch": 1,
       "editor_in_chief:editorial score 59 is below 62": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
       "mechanism_cluster_limit:face_recognition": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "54dcb7f4daca5917",
+      "title": "Monkeys wash food when grit gets annoying",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "332f5f080a5ae8fb",
+      "title": "Tigers wear stripe shadows as camouflage",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "f2f9389335ada48d",
+      "title": "Cows don't just chew grass the way you think",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
+      "id": "38f93709f020a15d",
+      "title": "Zebras turn grass into soil faster than you'd guess",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "c4d7875612c6ae42",
+      "title": "Tiger cub survives monsoon ambush",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
     {
       "id": "8bdc8b70af521eb4",
       "title": "Fossils turn old bones into time clues",
@@ -102,6 +168,24 @@
       "stage": "queue_repair"
     },
     {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
       "id": "1be4a1ab6de34735",
       "title": "Cows remember faces across the herd",
       "reasons": [
@@ -145,6 +229,15 @@
         "script_hook_mismatch"
       ],
       "stage": "queue_prune"
+    },
+    {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
     },
     {
       "id": "9cad028de9518da0",
@@ -217,90 +310,6 @@
         "editorial score is below publish threshold"
       ],
       "stage": "pre_publish_audit"
-    },
-    {
-      "id": "5a6241904e5e32d2",
-      "title": "The moon keeps one face turned toward Earth",
-      "reasons": [
-        "low_opportunity_score"
-      ],
-      "stage": "opportunity_score"
-    },
-    {
-      "id": "Sharks sense tiny electric fields",
-      "title": "Sharks sense tiny electric fields",
-      "reasons": [
-        "editorial score is below publish threshold"
-      ],
-      "stage": "pre_publish_audit"
-    },
-    {
-      "id": "Lions hunt better when the pride coordinates",
-      "title": "Lions hunt better when the pride coordinates",
-      "reasons": [
-        "editorial score is below publish threshold"
-      ],
-      "stage": "pre_publish_audit"
-    },
-    {
-      "id": "Coral reefs are cities built by tiny animals",
-      "title": "Coral reefs are cities built by tiny animals",
-      "reasons": [
-        "editorial score is below publish threshold"
-      ],
-      "stage": "pre_publish_audit"
-    },
-    {
-      "id": "5a6241904e5e32d2",
-      "title": "The moon keeps one face turned toward Earth",
-      "reasons": [
-        "low_opportunity_score"
-      ],
-      "stage": "opportunity_score"
-    },
-    {
-      "id": "2cfec50255a576ea",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "1f34fcf762dce0ec",
-      "title": "Cows remember faces across the herd",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "e9560b7b545e9874",
-      "title": "Cows remember faces across the herd",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "5d9731ba3c92d4fc",
-      "title": "Cats groom to reset their scent map",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "3d423cc3b49adaeb",
-      "title": "Plants use trap hairs to count touches before snapping shut",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
     }
   ],
   "top": [
@@ -479,7 +488,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T23:20:17.655787+00:00",
+        "checked_at": "2026-07-04T23:24:20.454156+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1120,7 +1129,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T23:20:17.657864+00:00",
+        "checked_at": "2026-07-04T23:24:20.456255+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1762,7 +1771,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T23:20:17.661735+00:00",
+        "checked_at": "2026-07-04T23:24:20.460176+00:00",
         "mechanism_cluster": "visual_stabilization",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2396,7 +2405,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T23:20:17.669999+00:00",
+        "checked_at": "2026-07-04T23:24:20.468288+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3037,7 +3046,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T23:20:17.671343+00:00",
+        "checked_at": "2026-07-04T23:24:20.469647+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3683,7 +3692,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T23:20:17.673480+00:00",
+        "checked_at": "2026-07-04T23:24:20.471817+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4329,7 +4338,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T23:20:17.685003+00:00",
+        "checked_at": "2026-07-04T23:24:20.483029+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4974,7 +4983,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T23:20:17.686482+00:00",
+        "checked_at": "2026-07-04T23:24:20.484305+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5613,7 +5622,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T23:20:17.663935+00:00",
+        "checked_at": "2026-07-04T23:24:20.462415+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6266,7 +6275,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T23:20:17.675730+00:00",
+        "checked_at": "2026-07-04T23:24:20.474093+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6912,7 +6921,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T23:20:17.687763+00:00",
+        "checked_at": "2026-07-04T23:24:20.485532+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7558,7 +7567,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T23:20:17.627090+00:00",
+        "checked_at": "2026-07-04T23:24:20.043959+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8198,7 +8207,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T23:20:17.628653+00:00",
+        "checked_at": "2026-07-04T23:24:20.045536+00:00",
         "mechanism_cluster": "dance_navigation",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8846,7 +8855,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T23:20:17.677149+00:00",
+        "checked_at": "2026-07-04T23:24:20.475527+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -9494,7 +9503,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T23:20:17.679912+00:00",
+        "checked_at": "2026-07-04T23:24:20.478170+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -10144,7 +10153,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T23:20:17.622715+00:00",
+        "checked_at": "2026-07-04T23:24:19.667340+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -10790,7 +10799,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T23:20:17.626064+00:00",
+        "checked_at": "2026-07-04T23:24:19.670393+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -11438,7 +11447,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T23:20:17.631177+00:00",
+        "checked_at": "2026-07-04T23:24:20.048569+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12084,7 +12093,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T23:20:17.633279+00:00",
+        "checked_at": "2026-07-04T23:24:20.050579+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12723,7 +12732,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T23:20:17.634409+00:00",
+        "checked_at": "2026-07-04T23:24:20.051574+00:00",
         "mechanism_cluster": "electric_sense",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
