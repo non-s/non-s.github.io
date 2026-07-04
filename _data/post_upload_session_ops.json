@@ -2,18 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 6,
-      "high": 4,
-      "manual_review": 4,
+      "automation_safe": 5,
+      "high": 5,
+      "manual_review": 5,
       "total": 10,
       "urgent": 4
     },
     "free_only": true,
-    "generated_at": "2026-07-04T07:32:42.034856+00:00",
+    "generated_at": "2026-07-04T07:58:19.343682+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 14.76,
+        "age_hours": 15.187,
         "automation_safe": true,
         "category": "primates",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 14.426,
+        "age_hours": 14.853,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 13.136,
+        "age_hours": 13.563,
         "automation_safe": true,
         "category": "birds",
         "checkpoint_label": "1h",
@@ -91,7 +91,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 12.433,
+        "age_hours": 12.86,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -117,7 +117,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 11.431,
+        "age_hours": 11.858,
         "automation_safe": false,
         "category": "conservation",
         "checkpoint_label": "24h",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 10.0,
+        "age_hours": 10.427,
         "automation_safe": false,
         "category": "plants",
         "checkpoint_label": "24h",
@@ -169,7 +169,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 9.43,
+        "age_hours": 9.858,
         "automation_safe": false,
         "category": "plants",
         "checkpoint_label": "24h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 7.964,
+        "age_hours": 8.391,
         "automation_safe": false,
         "category": "cats",
         "checkpoint_label": "24h",
@@ -220,34 +220,34 @@
         "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
-        "action_type": "watch_next_checkpoint",
-        "age_hours": 5.953,
-        "automation_safe": true,
+        "action_type": "prepare_package_rescue",
+        "age_hours": 6.38,
+        "automation_safe": false,
         "category": "forests",
-        "checkpoint_label": "6h",
+        "checkpoint_label": "24h",
         "checkpoint_state": "pending",
         "current_views": 1,
-        "due_at": "2026-07-04T07:35:32.786321+00:00",
+        "due_at": "2026-07-05T01:35:32.786321+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:Jh4XroVWOKk:watch:6h",
-        "lane": "observe",
-        "manual_approval_required": false,
+        "id": "fresh-upload:Jh4XroVWOKk:repair_candidate:24h",
+        "lane": "package_rescue",
+        "manual_approval_required": true,
         "opening_retention_score": 94.0,
-        "priority": "low",
-        "recommended_action": "Keep observing through the next checkpoint.",
+        "priority": "high",
+        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
         "series": "Hidden Network",
-        "state": "watch",
-        "target_views": 105,
+        "state": "repair_candidate",
+        "target_views": 300,
         "title": "Forests hold cool fog between the trees",
         "url": "https://www.youtube.com/shorts/Jh4XroVWOKk",
         "video_id": "Jh4XroVWOKk",
-        "wait_until": "2026-07-04T07:35:32.786321+00:00",
-        "why": "No intervention signal is strong enough yet."
+        "wait_until": "",
+        "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.253,
+        "age_hours": 0.68,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "1h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-04T07:32:42.033681+00:00"
+    "source_generated_at": "2026-07-04T07:58:19.342393+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -284,15 +284,15 @@
     "counts": {
       "analytics_due": 4,
       "awaiting_1h": 1,
-      "high_priority": 8,
-      "repair_candidates": 4,
+      "high_priority": 9,
+      "repair_candidates": 5,
       "tracked": 10
     },
-    "generated_at": "2026-07-04T07:32:42.033681+00:00",
+    "generated_at": "2026-07-04T07:58:19.342393+00:00",
     "items": [
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.253,
+        "age_hours": 0.68,
         "category": "farm",
         "checkpoints": [
           {
@@ -346,8 +346,8 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.953,
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "age_hours": 6.38,
         "category": "forests",
         "checkpoints": [
           {
@@ -360,11 +360,11 @@
             "views": 0
           },
           {
-            "delta_to_target": 0,
+            "delta_to_target": -104,
             "due_at": "2026-07-04T07:35:32.786321+00:00",
             "label": "6h",
-            "source": "estimated",
-            "state": "pending",
+            "source": "observed",
+            "state": "observed",
             "target_views": 105,
             "views": 1
           },
@@ -379,30 +379,41 @@
           }
         ],
         "current_views": 1,
-        "hypothesis": "No intervention signal is strong enough yet.",
+        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
         "next_checkpoint": {
           "delta_to_target": 0,
-          "due_at": "2026-07-04T07:35:32.786321+00:00",
-          "label": "6h",
+          "due_at": "2026-07-05T01:35:32.786321+00:00",
+          "label": "24h",
           "source": "estimated",
           "state": "pending",
-          "target_views": 105,
+          "target_views": 300,
           "views": 1
         },
         "opening_retention_score": 94.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Hidden Network",
-        "state": "watch",
+        "state": "repair_candidate",
         "title": "Forests hold cool fog between the trees",
         "uploaded_at": "2026-07-04T01:35:32.786321+00:00",
         "url": "https://www.youtube.com/shorts/Jh4XroVWOKk",
         "video_id": "Jh4XroVWOKk",
-        "views_per_hour": 0.171
+        "views_per_hour": 0.158,
+        "warning": {
+          "action": "TITLE_AUTO_REPAIR_TRIGGER",
+          "confidence_score": 0.594,
+          "reason": "low early velocity",
+          "reasoning": "video has 14/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+          "title": "Forests hold cool fog between the trees",
+          "video_id": "Jh4XroVWOKk",
+          "views": 1,
+          "warning_state": "repair_risk"
+        }
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 7.964,
+        "age_hours": 8.391,
         "category": "cats",
         "checkpoints": [
           {
@@ -458,7 +469,7 @@
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.594,
           "reason": "low early velocity",
-          "reasoning": "video has 25/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+          "reasoning": "video has 27/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
           "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
           "title": "Cats measure tight spaces with their whiskers",
           "video_id": "8JXU0i_1-7c",
@@ -468,7 +479,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 9.43,
+        "age_hours": 9.858,
         "category": "plants",
         "checkpoints": [
           {
@@ -534,7 +545,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 10.0,
+        "age_hours": 10.427,
         "category": "plants",
         "checkpoints": [
           {
@@ -600,7 +611,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 11.431,
+        "age_hours": 11.858,
         "category": "conservation",
         "checkpoints": [
           {
@@ -666,7 +677,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 12.433,
+        "age_hours": 12.86,
         "category": "insects",
         "checkpoints": [
           {
@@ -717,11 +728,11 @@
         "uploaded_at": "2026-07-03T19:06:43.760986+00:00",
         "url": "https://www.youtube.com/shorts/ZEsLlK_ftDc",
         "video_id": "ZEsLlK_ftDc",
-        "views_per_hour": 0.081
+        "views_per_hour": 0.078
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 13.136,
+        "age_hours": 13.563,
         "category": "birds",
         "checkpoints": [
           {
@@ -776,7 +787,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 14.426,
+        "age_hours": 14.853,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -831,7 +842,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 14.76,
+        "age_hours": 15.187,
         "category": "primates",
         "checkpoints": [
           {
@@ -892,7 +903,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-04T07:32:42.034939+00:00",
+  "generated_at": "2026-07-04T07:58:19.343774+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
