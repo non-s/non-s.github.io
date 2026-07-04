@@ -5,25 +5,80 @@
     24
   ],
   "counts": {
-    "analytics_due": 7,
-    "awaiting_1h": 0,
-    "high_priority": 7,
-    "repair_candidates": 0,
+    "analytics_due": 3,
+    "awaiting_1h": 1,
+    "high_priority": 5,
+    "repair_candidates": 2,
     "tracked": 10
   },
-  "generated_at": "2026-07-04T13:59:17.193262+00:00",
+  "generated_at": "2026-07-04T14:14:23.477134+00:00",
   "items": [
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 1.94,
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.087,
+      "category": "trees",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-04T15:09:11.619217+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-04T20:09:11.619217+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-05T14:09:11.619217+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-04T15:09:11.619217+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Hidden Network",
+      "state": "awaiting_1h",
+      "title": "Trees keep weather history in their rings",
+      "uploaded_at": "2026-07-04T14:09:11.619217+00:00",
+      "url": "https://www.youtube.com/shorts/3hQL89pNw-w",
+      "video_id": "3hQL89pNw-w",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 2.192,
       "category": "forests",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-04T13:02:52.438702+00:00",
           "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-04T13:02:52.438702+00:00",
-        "label": "1h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-04T18:02:52.438702+00:00",
+        "label": "6h",
         "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
+        "state": "pending",
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "high",
+      "priority": "low",
       "series": "Hidden Network",
-      "state": "analytics_due",
+      "state": "watch",
       "title": "Foxes can hunt sounds hidden under snow",
       "uploaded_at": "2026-07-04T12:02:52.438702+00:00",
       "url": "https://www.youtube.com/shorts/4ipg2QQhpaw",
@@ -69,16 +124,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 2.11,
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 2.362,
       "category": "physics",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-04T12:52:41.002348+00:00",
           "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -102,21 +157,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-04T12:52:41.002348+00:00",
-        "label": "1h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-04T17:52:41.002348+00:00",
+        "label": "6h",
         "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
+        "state": "pending",
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "high",
+      "priority": "low",
       "series": "Nature Signals",
-      "state": "analytics_due",
+      "state": "watch",
       "title": "Magnets make invisible fields visible",
       "uploaded_at": "2026-07-04T11:52:41.002348+00:00",
       "url": "https://www.youtube.com/shorts/baGG_PVYqfQ",
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.053,
+      "age_hours": 3.305,
       "category": "chemistry",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.386,
+      "age_hours": 4.638,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -234,8 +289,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.866,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.118,
       "category": "geology",
       "checkpoints": [
         {
@@ -248,11 +303,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -101,
           "due_at": "2026-07-04T14:07:18.699682+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 4
         },
@@ -267,30 +322,41 @@
         }
       ],
       "current_views": 4,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-04T14:07:18.699682+00:00",
-        "label": "6h",
+        "due_at": "2026-07-05T08:07:18.699682+00:00",
+        "label": "24h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 105,
+        "target_views": 300,
         "views": 4
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Earth Engine",
-      "state": "watch",
+      "state": "repair_candidate",
       "title": "Rock layers expose erosion in bare open hills",
       "uploaded_at": "2026-07-04T08:07:18.699682+00:00",
       "url": "https://www.youtube.com/shorts/tt2gmX6cuHo",
       "video_id": "tt2gmX6cuHo",
-      "views_per_hour": 0.93
+      "views_per_hour": 0.657,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Rock layers expose erosion in bare open hills",
+        "video_id": "tt2gmX6cuHo",
+        "views": 4,
+        "warning_state": "repair_risk"
+      }
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.696,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.947,
       "category": "farm",
       "checkpoints": [
         {
@@ -306,8 +372,8 @@
           "delta_to_target": -105,
           "due_at": "2026-07-04T13:17:32.706167+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -322,30 +388,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
-        "delta_to_target": -105,
-        "due_at": "2026-07-04T13:17:32.706167+00:00",
-        "label": "6h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-05T07:17:32.706167+00:00",
+        "label": "24h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 105,
+        "state": "pending",
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Farmyard Surprises",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Ducks fake injuries to protect their young",
       "uploaded_at": "2026-07-04T07:17:32.706167+00:00",
       "url": "https://www.youtube.com/shorts/X0j-m0-Docg",
       "video_id": "X0j-m0-Docg",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Ducks fake injuries to protect their young",
+        "video_id": "X0j-m0-Docg",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.396,
+      "age_hours": 12.647,
       "category": "forests",
       "checkpoints": [
         {
@@ -396,11 +473,11 @@
       "uploaded_at": "2026-07-04T01:35:32.786321+00:00",
       "url": "https://www.youtube.com/shorts/Jh4XroVWOKk",
       "video_id": "Jh4XroVWOKk",
-      "views_per_hour": 0.092
+      "views_per_hour": 0.079
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 14.407,
+      "age_hours": 14.659,
       "category": "cats",
       "checkpoints": [
         {
@@ -463,7 +540,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 15.874,
+      "age_hours": 16.125,
       "category": "plants",
       "checkpoints": [
         {
@@ -521,69 +598,6 @@
         "state": "dying_early",
         "title": "Plants turn light into food",
         "video_id": "bzhm_MUPS8w",
-        "warning_state": "low_confidence_watch"
-      }
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.443,
-      "category": "plants",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-03T22:32:41.232849+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-04T03:32:41.232849+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-07-04T21:32:41.232849+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 1
-        }
-      ],
-      "current_views": 1,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-03T22:32:41.232849+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Biology Brief",
-      "state": "analytics_due",
-      "title": "Plants use trap hairs to count touches before snapping shut",
-      "uploaded_at": "2026-07-03T21:32:41.232849+00:00",
-      "url": "https://www.youtube.com/shorts/ODaf6_f8FCk",
-      "video_id": "ODaf6_f8FCk",
-      "views_per_hour": 0.067,
-      "warning": {
-        "confidence_score": 0.431,
-        "reason": "low confidence early signal; keep observing",
-        "state": "dying_early",
-        "title": "Plants use trap hairs to count touches before snapping shut",
-        "video_id": "ODaf6_f8FCk",
         "warning_state": "low_confidence_watch"
       }
     }
