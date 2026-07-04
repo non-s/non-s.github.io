@@ -1,17 +1,17 @@
 {
   "counts": {
-    "automation_safe": 8,
-    "high": 2,
-    "manual_review": 2,
+    "automation_safe": 9,
+    "high": 1,
+    "manual_review": 1,
     "total": 10,
-    "urgent": 2
+    "urgent": 3
   },
   "free_only": true,
-  "generated_at": "2026-07-03T23:51:54.279331+00:00",
+  "generated_at": "2026-07-04T00:18:22.047195+00:00",
   "items": [
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 9.317,
+      "age_hours": 9.758,
       "automation_safe": true,
       "category": "cats",
       "checkpoint_label": "1h",
@@ -37,7 +37,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 8.336,
+      "age_hours": 8.777,
       "automation_safe": true,
       "category": "ocean",
       "checkpoint_label": "1h",
@@ -62,34 +62,34 @@
       "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
-      "action_type": "prepare_package_rescue",
-      "age_hours": 7.08,
-      "automation_safe": false,
+      "action_type": "pull_fresh_analytics",
+      "age_hours": 7.521,
+      "automation_safe": true,
       "category": "primates",
-      "checkpoint_label": "24h",
-      "checkpoint_state": "pending",
+      "checkpoint_label": "1h",
+      "checkpoint_state": "overdue",
       "current_views": 0,
-      "due_at": "2026-07-04T16:47:06.114143+00:00",
+      "due_at": "2026-07-03T17:47:06.114143+00:00",
       "free_only": true,
       "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-      "id": "fresh-upload:5OUjRA_Uevc:repair_candidate:24h",
-      "lane": "package_rescue",
-      "manual_approval_required": true,
+      "id": "fresh-upload:5OUjRA_Uevc:analytics_due:1h",
+      "lane": "measurement",
+      "manual_approval_required": false,
       "opening_retention_score": 100.0,
-      "priority": "high",
-      "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "priority": "urgent",
+      "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
       "series": "Primate Intelligence",
-      "state": "repair_candidate",
-      "target_views": 300,
+      "state": "analytics_due",
+      "target_views": 24,
       "title": "Monkeys wash food when grit gets annoying",
       "url": "https://www.youtube.com/shorts/5OUjRA_Uevc",
       "video_id": "5OUjRA_Uevc",
       "wait_until": "",
-      "why": "Observed velocity is weak enough to prepare a package intervention."
+      "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
       "action_type": "prepare_package_rescue",
-      "age_hours": 6.746,
+      "age_hours": 7.187,
       "automation_safe": false,
       "category": "wildlife",
       "checkpoint_label": "24h",
@@ -115,7 +115,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 5.456,
+      "age_hours": 5.897,
       "automation_safe": true,
       "category": "birds",
       "checkpoint_label": "6h",
@@ -141,7 +141,7 @@
     },
     {
       "action_type": "hold_until_first_hour",
-      "age_hours": 0.284,
+      "age_hours": 0.725,
       "automation_safe": true,
       "category": "cats",
       "checkpoint_label": "1h",
@@ -167,7 +167,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 4.753,
+      "age_hours": 5.194,
       "automation_safe": true,
       "category": "insects",
       "checkpoint_label": "6h",
@@ -193,7 +193,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 3.751,
+      "age_hours": 4.192,
       "automation_safe": true,
       "category": "conservation",
       "checkpoint_label": "6h",
@@ -219,7 +219,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 2.32,
+      "age_hours": 2.761,
       "automation_safe": true,
       "category": "plants",
       "checkpoint_label": "6h",
@@ -245,7 +245,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 1.751,
+      "age_hours": 2.192,
       "automation_safe": true,
       "category": "plants",
       "checkpoint_label": "6h",
@@ -271,5 +271,5 @@
     }
   ],
   "source": "fresh_upload_watchlist",
-  "source_generated_at": "2026-07-03T23:51:54.278079+00:00"
+  "source_generated_at": "2026-07-04T00:18:22.046241+00:00"
 }

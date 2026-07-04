@@ -2,18 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 8,
-      "high": 2,
-      "manual_review": 2,
+      "automation_safe": 9,
+      "high": 1,
+      "manual_review": 1,
       "total": 10,
-      "urgent": 2
+      "urgent": 3
     },
     "free_only": true,
-    "generated_at": "2026-07-03T23:51:54.279331+00:00",
+    "generated_at": "2026-07-04T00:18:22.047195+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 9.317,
+        "age_hours": 9.758,
         "automation_safe": true,
         "category": "cats",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 8.336,
+        "age_hours": 8.777,
         "automation_safe": true,
         "category": "ocean",
         "checkpoint_label": "1h",
@@ -64,34 +64,34 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "prepare_package_rescue",
-        "age_hours": 7.08,
-        "automation_safe": false,
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 7.521,
+        "automation_safe": true,
         "category": "primates",
-        "checkpoint_label": "24h",
-        "checkpoint_state": "pending",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "overdue",
         "current_views": 0,
-        "due_at": "2026-07-04T16:47:06.114143+00:00",
+        "due_at": "2026-07-03T17:47:06.114143+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:5OUjRA_Uevc:repair_candidate:24h",
-        "lane": "package_rescue",
-        "manual_approval_required": true,
+        "id": "fresh-upload:5OUjRA_Uevc:analytics_due:1h",
+        "lane": "measurement",
+        "manual_approval_required": false,
         "opening_retention_score": 100.0,
-        "priority": "high",
-        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "priority": "urgent",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
         "series": "Primate Intelligence",
-        "state": "repair_candidate",
-        "target_views": 300,
+        "state": "analytics_due",
+        "target_views": 24,
         "title": "Monkeys wash food when grit gets annoying",
         "url": "https://www.youtube.com/shorts/5OUjRA_Uevc",
         "video_id": "5OUjRA_Uevc",
         "wait_until": "",
-        "why": "Observed velocity is weak enough to prepare a package intervention."
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 6.746,
+        "age_hours": 7.187,
         "automation_safe": false,
         "category": "wildlife",
         "checkpoint_label": "24h",
@@ -117,7 +117,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 5.456,
+        "age_hours": 5.897,
         "automation_safe": true,
         "category": "birds",
         "checkpoint_label": "6h",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.284,
+        "age_hours": 0.725,
         "automation_safe": true,
         "category": "cats",
         "checkpoint_label": "1h",
@@ -169,7 +169,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 4.753,
+        "age_hours": 5.194,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "6h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.751,
+        "age_hours": 4.192,
         "automation_safe": true,
         "category": "conservation",
         "checkpoint_label": "6h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.32,
+        "age_hours": 2.761,
         "automation_safe": true,
         "category": "plants",
         "checkpoint_label": "6h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 1.751,
+        "age_hours": 2.192,
         "automation_safe": true,
         "category": "plants",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-03T23:51:54.278079+00:00"
+    "source_generated_at": "2026-07-04T00:18:22.046241+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,17 @@
       24
     ],
     "counts": {
-      "analytics_due": 2,
+      "analytics_due": 3,
       "awaiting_1h": 1,
       "high_priority": 4,
-      "repair_candidates": 2,
+      "repair_candidates": 1,
       "tracked": 10
     },
-    "generated_at": "2026-07-03T23:51:54.278079+00:00",
+    "generated_at": "2026-07-04T00:18:22.046241+00:00",
     "items": [
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.284,
+        "age_hours": 0.725,
         "category": "cats",
         "checkpoints": [
           {
@@ -347,7 +347,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 1.751,
+        "age_hours": 2.192,
         "category": "plants",
         "checkpoints": [
           {
@@ -402,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.32,
+        "age_hours": 2.761,
         "category": "plants",
         "checkpoints": [
           {
@@ -457,7 +457,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.751,
+        "age_hours": 4.192,
         "category": "conservation",
         "checkpoints": [
           {
@@ -512,7 +512,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 4.753,
+        "age_hours": 5.194,
         "category": "insects",
         "checkpoints": [
           {
@@ -563,11 +563,11 @@
         "uploaded_at": "2026-07-03T19:06:43.760986+00:00",
         "url": "https://www.youtube.com/shorts/ZEsLlK_ftDc",
         "video_id": "ZEsLlK_ftDc",
-        "views_per_hour": 0.215
+        "views_per_hour": 0.194
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.456,
+        "age_hours": 5.897,
         "category": "birds",
         "checkpoints": [
           {
@@ -622,7 +622,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 6.746,
+        "age_hours": 7.187,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -687,16 +687,16 @@
         }
       },
       {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 7.08,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 7.521,
         "category": "primates",
         "checkpoints": [
           {
             "delta_to_target": -24,
             "due_at": "2026-07-03T17:47:06.114143+00:00",
             "label": "1h",
-            "source": "observed",
-            "state": "observed",
+            "source": "estimated",
+            "state": "overdue",
             "target_views": 24,
             "views": 0
           },
@@ -720,41 +720,30 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
-          "due_at": "2026-07-04T16:47:06.114143+00:00",
-          "label": "24h",
+          "delta_to_target": -24,
+          "due_at": "2026-07-03T17:47:06.114143+00:00",
+          "label": "1h",
           "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
+          "state": "overdue",
+          "target_views": 24,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
         "priority": "high",
         "series": "Primate Intelligence",
-        "state": "repair_candidate",
+        "state": "analytics_due",
         "title": "Monkeys wash food when grit gets annoying",
         "uploaded_at": "2026-07-03T16:47:06.114143+00:00",
         "url": "https://www.youtube.com/shorts/5OUjRA_Uevc",
         "video_id": "5OUjRA_Uevc",
-        "views_per_hour": 0.0,
-        "warning": {
-          "action": "TITLE_AUTO_REPAIR_TRIGGER",
-          "confidence_score": 0.594,
-          "reason": "low early velocity",
-          "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-          "title": "Monkeys wash food when grit gets annoying",
-          "video_id": "5OUjRA_Uevc",
-          "views": 0,
-          "warning_state": "repair_risk"
-        }
+        "views_per_hour": 0.0
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 8.336,
+        "age_hours": 8.777,
         "category": "ocean",
         "checkpoints": [
           {
@@ -805,11 +794,11 @@
         "uploaded_at": "2026-07-03T15:31:43.787838+00:00",
         "url": "https://www.youtube.com/shorts/StWGdOT1uDA",
         "video_id": "StWGdOT1uDA",
-        "views_per_hour": 0.122
+        "views_per_hour": 0.114
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 9.317,
+        "age_hours": 9.758,
         "category": "cats",
         "checkpoints": [
           {
@@ -860,7 +849,7 @@
         "uploaded_at": "2026-07-03T14:32:52.669353+00:00",
         "url": "https://www.youtube.com/shorts/vJLRYY9DC2M",
         "video_id": "vJLRYY9DC2M",
-        "views_per_hour": 0.217
+        "views_per_hour": 0.206
       }
     ],
     "targets": {
@@ -870,7 +859,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-03T23:51:54.279427+00:00",
+  "generated_at": "2026-07-04T00:18:22.047267+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
