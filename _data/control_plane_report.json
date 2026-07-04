@@ -1,36 +1,41 @@
 {
   "state": "migration_needed",
-  "pressure_score": 86,
+  "pressure_score": 93,
   "metrics": {
-    "live_state_files": 173,
-    "data_state_files": 123,
+    "live_state_files": 237,
+    "data_state_files": 187,
     "video_done_markers": 48,
-    "live_state_bytes": 9517347,
-    "stories_queue_bytes": 2936268,
-    "stories_queue_lines": 82087,
+    "live_state_bytes": 13483691,
+    "stories_queue_bytes": 2945045,
+    "stories_queue_lines": 82259,
     "workflow_files": 18,
     "state_path_refs": 282
   },
   "largest_state_files": [
     {
       "path": "_data/stories_queue.json",
-      "bytes": 2936268,
-      "lines": 82087
+      "bytes": 2945045,
+      "lines": 82259
     },
     {
       "path": "_data/rejected_queue.jsonl",
-      "bytes": 800929,
-      "lines": 1000
+      "bytes": 2227279,
+      "lines": 2779
+    },
+    {
+      "path": "_data/repair_queue.jsonl",
+      "bytes": 1509874,
+      "lines": 86
     },
     {
       "path": "_data/early_performance.json",
-      "bytes": 456580,
+      "bytes": 456575,
       "lines": 17682
     },
     {
       "path": "_data/queue_audit.json",
-      "bytes": 447216,
-      "lines": 13198
+      "bytes": 447116,
+      "lines": 13193
     },
     {
       "path": "_data/packaging_report.json",
@@ -39,8 +44,8 @@
     },
     {
       "path": "_data/provider_stats.jsonl",
-      "bytes": 281663,
-      "lines": 3624
+      "bytes": 282285,
+      "lines": 3632
     },
     {
       "path": "_data/autonomous_growth_plan.json",
@@ -49,8 +54,8 @@
     },
     {
       "path": "_data/analytics/api_quota_ledger.jsonl",
-      "bytes": 198635,
-      "lines": 303
+      "bytes": 199873,
+      "lines": 305
     },
     {
       "path": "_data/dry_run_publish.json",
@@ -59,18 +64,13 @@
     },
     {
       "path": "_data/youtube_brain_report.json",
-      "bytes": 120600,
+      "bytes": 120624,
       "lines": 4067
     },
     {
       "path": "_data/originality_pack.jsonl",
       "bytes": 118595,
       "lines": 164
-    },
-    {
-      "path": "_data/publish_slot_decisions.jsonl",
-      "bytes": 115594,
-      "lines": 151
     }
   ],
   "migration_lanes": [
