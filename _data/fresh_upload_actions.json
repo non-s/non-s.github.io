@@ -1,17 +1,17 @@
 {
   "counts": {
-    "automation_safe": 9,
-    "high": 1,
-    "manual_review": 1,
+    "automation_safe": 10,
+    "high": 0,
+    "manual_review": 0,
     "total": 10,
-    "urgent": 8
+    "urgent": 9
   },
   "free_only": true,
-  "generated_at": "2026-07-04T21:37:04.884106+00:00",
+  "generated_at": "2026-07-04T21:47:02.575202+00:00",
   "items": [
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 20.026,
+      "age_hours": 20.192,
       "automation_safe": true,
       "category": "forests",
       "checkpoint_label": "1h",
@@ -37,7 +37,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 14.326,
+      "age_hours": 14.492,
       "automation_safe": true,
       "category": "farm",
       "checkpoint_label": "1h",
@@ -63,7 +63,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 13.496,
+      "age_hours": 13.662,
       "automation_safe": true,
       "category": "geology",
       "checkpoint_label": "1h",
@@ -89,7 +89,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 12.016,
+      "age_hours": 12.182,
       "automation_safe": true,
       "category": "reptiles",
       "checkpoint_label": "1h",
@@ -115,7 +115,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 10.683,
+      "age_hours": 10.849,
       "automation_safe": true,
       "category": "chemistry",
       "checkpoint_label": "1h",
@@ -141,7 +141,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 9.74,
+      "age_hours": 9.906,
       "automation_safe": true,
       "category": "physics",
       "checkpoint_label": "1h",
@@ -167,7 +167,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 9.57,
+      "age_hours": 9.736,
       "automation_safe": true,
       "category": "forests",
       "checkpoint_label": "1h",
@@ -193,7 +193,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 7.465,
+      "age_hours": 7.631,
       "automation_safe": true,
       "category": "trees",
       "checkpoint_label": "1h",
@@ -218,34 +218,34 @@
       "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
-      "action_type": "prepare_package_rescue",
-      "age_hours": 6.194,
-      "automation_safe": false,
+      "action_type": "pull_fresh_analytics",
+      "age_hours": 6.36,
+      "automation_safe": true,
       "category": "forests",
-      "checkpoint_label": "24h",
-      "checkpoint_state": "pending",
+      "checkpoint_label": "1h",
+      "checkpoint_state": "overdue",
       "current_views": 0,
-      "due_at": "2026-07-05T15:25:24.945500+00:00",
+      "due_at": "2026-07-04T16:25:24.945500+00:00",
       "free_only": true,
       "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-      "id": "fresh-upload:ez3hSEWuNws:repair_candidate:24h",
-      "lane": "package_rescue",
-      "manual_approval_required": true,
+      "id": "fresh-upload:ez3hSEWuNws:analytics_due:1h",
+      "lane": "measurement",
+      "manual_approval_required": false,
       "opening_retention_score": 100.0,
-      "priority": "high",
-      "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "priority": "urgent",
+      "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
       "series": "Hidden Network",
-      "state": "repair_candidate",
-      "target_views": 300,
+      "state": "analytics_due",
+      "target_views": 24,
       "title": "Forests reveal edge climates along trails",
       "url": "https://www.youtube.com/shorts/ez3hSEWuNws",
       "video_id": "ez3hSEWuNws",
       "wait_until": "",
-      "why": "Observed velocity is weak enough to prepare a package intervention."
+      "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 5.331,
+      "age_hours": 5.497,
       "automation_safe": true,
       "category": "forests",
       "checkpoint_label": "6h",
@@ -271,5 +271,5 @@
     }
   ],
   "source": "fresh_upload_watchlist",
-  "source_generated_at": "2026-07-04T21:37:04.882663+00:00"
+  "source_generated_at": "2026-07-04T21:47:02.573904+00:00"
 }
