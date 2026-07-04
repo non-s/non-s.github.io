@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 4,
+    "analytics_due": 5,
     "awaiting_1h": 1,
     "high_priority": 7,
-    "repair_candidates": 3,
+    "repair_candidates": 2,
     "tracked": 10
   },
-  "generated_at": "2026-07-04T09:43:19.658141+00:00",
+  "generated_at": "2026-07-04T09:51:47.061849+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.12,
+      "age_hours": 0.261,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -70,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.6,
+      "age_hours": 1.741,
       "category": "geology",
       "checkpoints": [
         {
@@ -121,11 +121,11 @@
       "uploaded_at": "2026-07-04T08:07:18.699682+00:00",
       "url": "https://www.youtube.com/shorts/tt2gmX6cuHo",
       "video_id": "tt2gmX6cuHo",
-      "views_per_hour": 2.558
+      "views_per_hour": 2.5
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.43,
+      "age_hours": 2.571,
       "category": "farm",
       "checkpoints": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 8.13,
+      "age_hours": 8.271,
       "category": "forests",
       "checkpoints": [
         {
@@ -231,12 +231,12 @@
       "uploaded_at": "2026-07-04T01:35:32.786321+00:00",
       "url": "https://www.youtube.com/shorts/Jh4XroVWOKk",
       "video_id": "Jh4XroVWOKk",
-      "views_per_hour": 0.124,
+      "views_per_hour": 0.123,
       "warning": {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.594,
         "reason": "low early velocity",
-        "reasoning": "video has 25/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "reasoning": "video has 26/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
         "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
         "title": "Forests hold cool fog between the trees",
         "video_id": "Jh4XroVWOKk",
@@ -246,7 +246,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 10.141,
+      "age_hours": 10.282,
       "category": "cats",
       "checkpoints": [
         {
@@ -311,16 +311,16 @@
       }
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 11.608,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 11.749,
       "category": "plants",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-03T23:06:52.291088+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -344,41 +344,30 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-04T22:06:52.291088+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-03T23:06:52.291088+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "overdue",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Biology Brief",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Plants turn light into food",
       "uploaded_at": "2026-07-03T22:06:52.291088+00:00",
       "url": "https://www.youtube.com/shorts/bzhm_MUPS8w",
       "video_id": "bzhm_MUPS8w",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Plants turn light into food",
-        "video_id": "bzhm_MUPS8w",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.177,
+      "age_hours": 12.318,
       "category": "plants",
       "checkpoints": [
         {
@@ -433,7 +422,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.608,
+      "age_hours": 13.749,
       "category": "conservation",
       "checkpoints": [
         {
@@ -488,7 +477,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 14.61,
+      "age_hours": 14.751,
       "category": "insects",
       "checkpoints": [
         {
@@ -539,11 +528,11 @@
       "uploaded_at": "2026-07-03T19:06:43.760986+00:00",
       "url": "https://www.youtube.com/shorts/ZEsLlK_ftDc",
       "video_id": "ZEsLlK_ftDc",
-      "views_per_hour": 0.069
+      "views_per_hour": 0.068
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 15.313,
+      "age_hours": 15.454,
       "category": "birds",
       "checkpoints": [
         {

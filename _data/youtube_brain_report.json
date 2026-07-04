@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-07-04T09:44:18.280288+00:00",
-  "pending": 33,
+  "generated_at": "2026-07-04T09:52:46.276062+00:00",
+  "pending": 36,
   "summary": {
-    "average_score": 99.88,
+    "average_score": 99.89,
     "states": {
-      "publish_minded": 33
+      "publish_minded": 36
     },
     "top_risks": {
       "missing_visual_cue": 1
@@ -700,7 +700,7 @@
       }
     },
     {
-      "id": "fc48fe4f00251074",
+      "id": "3565e9cb56c66f14",
       "title": "Forests can cool the air below them",
       "category": "forests",
       "queue_state": "rewrite",
@@ -723,18 +723,18 @@
           "score": 100.0,
           "state": "retention_ready",
           "approved": true,
-          "subject": "forests",
+          "subject": "forest",
           "cue_terms": [
             "air",
             "canop",
-            "cool"
+            "food",
+            "web"
           ],
           "frame_hook_bridge": [
             "cool"
           ],
           "cue_bridge": [
-            "air",
-            "cool"
+            "air"
           ],
           "strengths": [
             "subject_frontloaded",
@@ -1805,6 +1805,65 @@
       }
     },
     {
+      "id": "7fdc62557df3560c",
+      "title": "Sheep can remember familiar faces",
+      "category": "farm",
+      "queue_state": "rewrite",
+      "youtube_brain": {
+        "score": 100,
+        "state": "publish_minded",
+        "animal": "sheep",
+        "subject": "sheep",
+        "story_format": "animal_memory",
+        "viewer_promise": "See why sheep animal memory matters.",
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "opening_retention": {
+          "score": 90.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "sheep",
+          "cue_terms": [
+            "face",
+            "flock",
+            "memor"
+          ],
+          "frame_hook_bridge": [],
+          "cue_bridge": [
+            "face"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": [
+            "frame_text_not_echoed_early"
+          ]
+        },
+        "risks": [],
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "commands": []
+      }
+    },
+    {
       "id": "a4ca94af1a59d5df",
       "title": "Fox eyes glow at night in a way you didn't expect",
       "category": "nocturnal",
@@ -1972,6 +2031,132 @@
             "frame_text_scannable"
           ],
           "risks": []
+        },
+        "risks": [],
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "commands": []
+      }
+    },
+    {
+      "id": "f70863685472ea3a",
+      "title": "Mangroves take power out of waves",
+      "category": "conservation",
+      "queue_state": "rewrite",
+      "youtube_brain": {
+        "score": 100,
+        "state": "publish_minded",
+        "animal": "waves",
+        "subject": "waves",
+        "story_format": "conservation_signal",
+        "viewer_promise": "See why this wave conservation signal matters.",
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "opening_retention": {
+          "score": 100.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "mangroves",
+          "cue_terms": [
+            "buffer",
+            "root",
+            "wave"
+          ],
+          "frame_hook_bridge": [
+            "wave"
+          ],
+          "cue_bridge": [
+            "root",
+            "wave"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable",
+            "curiosity_shape"
+          ],
+          "risks": []
+        },
+        "risks": [],
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "commands": []
+      }
+    },
+    {
+      "id": "eb41118e410e097b",
+      "title": "Ocean edges turn wave motion into patterns",
+      "category": "conservation",
+      "queue_state": "rewrite",
+      "youtube_brain": {
+        "score": 100,
+        "state": "publish_minded",
+        "animal": "ocean",
+        "subject": "ocean",
+        "story_format": "conservation_signal",
+        "viewer_promise": "See why this ocean conservation signal matters.",
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "opening_retention": {
+          "score": 92.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "conservation",
+          "cue_terms": [
+            "edge",
+            "pattern",
+            "wave"
+          ],
+          "frame_hook_bridge": [
+            "edge",
+            "wave"
+          ],
+          "cue_bridge": [
+            "edge",
+            "pattern",
+            "wave"
+          ],
+          "strengths": [
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": [
+            "subject_not_frontloaded"
+          ]
         },
         "risks": [],
         "strengths": [
@@ -2359,7 +2544,7 @@
       }
     },
     {
-      "id": "fc48fe4f00251074",
+      "id": "3565e9cb56c66f14",
       "title": "Forests can cool the air below them",
       "category": "forests",
       "queue_state": "rewrite",
@@ -2382,18 +2567,18 @@
           "score": 100.0,
           "state": "retention_ready",
           "approved": true,
-          "subject": "forests",
+          "subject": "forest",
           "cue_terms": [
             "air",
             "canop",
-            "cool"
+            "food",
+            "web"
           ],
           "frame_hook_bridge": [
             "cool"
           ],
           "cue_bridge": [
-            "air",
-            "cool"
+            "air"
           ],
           "strengths": [
             "subject_frontloaded",
@@ -3585,6 +3770,65 @@
       }
     },
     {
+      "id": "7fdc62557df3560c",
+      "title": "Sheep can remember familiar faces",
+      "category": "farm",
+      "queue_state": "rewrite",
+      "youtube_brain": {
+        "score": 100,
+        "state": "publish_minded",
+        "animal": "sheep",
+        "subject": "sheep",
+        "story_format": "animal_memory",
+        "viewer_promise": "See why sheep animal memory matters.",
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "opening_retention": {
+          "score": 90.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "sheep",
+          "cue_terms": [
+            "face",
+            "flock",
+            "memor"
+          ],
+          "frame_hook_bridge": [],
+          "cue_bridge": [
+            "face"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": [
+            "frame_text_not_echoed_early"
+          ]
+        },
+        "risks": [],
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "commands": []
+      }
+    },
+    {
       "id": "a4ca94af1a59d5df",
       "title": "Fox eyes glow at night in a way you didn't expect",
       "category": "nocturnal",
@@ -3815,67 +4059,6 @@
             "frame_text_scannable"
           ],
           "risks": []
-        },
-        "risks": [],
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "commands": []
-      }
-    },
-    {
-      "id": "32bc71248738d412",
-      "title": "Parrots use their beak like a third foot",
-      "category": "birds",
-      "queue_state": "rewrite",
-      "youtube_brain": {
-        "score": 100,
-        "state": "publish_minded",
-        "animal": "parrots",
-        "subject": "parrots",
-        "story_format": "animal_memory",
-        "viewer_promise": "See why parrots animal memory matters.",
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "opening_retention": {
-          "score": 92.0,
-          "state": "retention_ready",
-          "approved": true,
-          "subject": "birds",
-          "cue_terms": [
-            "beak",
-            "cue",
-            "feather"
-          ],
-          "frame_hook_bridge": [
-            "beak"
-          ],
-          "cue_bridge": [
-            "beak"
-          ],
-          "strengths": [
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "risks": [
-            "subject_not_frontloaded"
-          ]
         },
         "risks": [],
         "strengths": [

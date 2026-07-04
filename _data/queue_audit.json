@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-07-04T09:44:18.336547+00:00",
-  "pending": 33,
+  "generated_at": "2026-07-04T09:52:46.322505+00:00",
+  "pending": 36,
   "states": {
-    "rewrite": 27,
+    "rewrite": 30,
     "publish_ready": 6
   },
   "mechanism_clusters": {
-    "face_recognition": 3,
+    "face_recognition": 4,
     "dance_navigation": 1,
     "call_signal": 1,
     "electric_sense": 1,
@@ -14,26 +14,234 @@
     "beak_signal": 1
   },
   "rights": {
-    "approved": 33
+    "approved": 36
   },
   "prune_summary": {
-    "pending_before": 33,
-    "pending_after": 33,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 5,
+    "pending_before": 59,
+    "pending_after": 36,
+    "rejected": 23,
+    "repair_needed": 3,
+    "repaired": 10,
     "reasons": {
-      "editor_in_chief:subject repeated inside 3-day cooldown": 21,
-      "objective_gate:bootstrap_observe_before_scaling": 16,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 23,
+      "objective_gate:bootstrap_observe_before_scaling": 19,
       "objective_gate:observe_before_scaling": 15,
-      "editor_in_chief:script quality gate blocked the narration": 3,
-      "editor_in_chief:editorial score 46 is below 62": 2,
+      "off_topic_visual": 10,
+      "duplicate_title": 9,
+      "duplicate_script": 4,
+      "duplicate_angle": 4,
+      "editor_in_chief:script quality gate blocked the narration": 4,
+      "queue_score_reject": 3,
+      "copy_subject_mismatch": 3,
+      "editor_in_chief:editorial score 46 is below 62": 3,
+      "script_word_loop": 2,
+      "script_hook_mismatch": 2,
       "editor_in_chief:editorial score 40 is below 62": 2,
       "editorial_cooldown_supply_fallback": 2,
+      "script_subject_mismatch": 1,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "dd815dbcad19180b",
+      "title": "Lightning turns air into a shock wave",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "242c8825c89a8b9b",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "fc48fe4f00251074",
+      "title": "Forests make cooler air under the canopy",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "2d4558fb521bf44f",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "f92732943b17bae3",
+      "title": "Sheep recognize faces across the flock",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "af28b421b9fa9906",
+      "title": "Forests make cooler air under the canopy",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "580f2d4ef46681aa",
+      "title": "Desert dunes shift faster than you see",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "79350ea98d23862b",
+      "title": "Why cats groom after tense moments when the body freezes",
+      "reasons": [
+        "off_topic_visual",
+        "script_word_loop"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "22b15a9e7a54a462",
+      "title": "Cats groom to reset their scent map",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "5f74046ee6b72c9e",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "f347003eccaa614e",
+      "title": "This city looks alive from space",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "4ed071cdd8776765",
+      "title": "Fossil shapes turn rocks into timelines",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "9313238ad0b07edf",
+      "title": "Bees don’t see flowers the way you think",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "6da286bcb67d10d6",
+      "title": "Ladybugs aren’t bugs—they’re beetles",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "875660a86bfdac65",
+      "title": "Lava burns hotter than the myth of fire lakes",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "a15c318596edcd9b",
+      "title": "Coral reefs are cities built by tiny animals",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "dae910030b9392ca",
+      "title": "Volcanoes don't burn forever like you think",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "7b2d6b7a9c5b2a4a",
+      "title": "Dogs read human pointing surprisingly well",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "57f837ecdfb39d2d",
+      "title": "rivers reverse flow without rain",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "9bd5c8759d4f5e59",
+      "title": "Bangladesh rivers build land like time-lapse magic",
+      "reasons": [
+        "copy_subject_mismatch",
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "19f03f591c71d8d5",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "4b69d21cf89487c2",
+      "title": "The moon keeps one face turned toward Earth",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "92aca0e8d4d31240",
+      "title": "Why dog play is more serious than it looks right before the move",
+      "reasons": [
+        "script_word_loop"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "Snakes Las serpientes huelen el aire con la lengua",
       "title": "Snakes Las serpientes huelen el aire con la lengua",
@@ -96,210 +304,6 @@
       "title": "Autumn trees that grow on mosque domes",
       "reasons": [
         "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "a4aada8cf32d5687",
-      "title": "Sheep recognize faces across the flock",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "edaac22027eb5765",
-      "title": "Norwegian forest cats climb like squirrels",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "6545c16f82d23da0",
-      "title": "What a cat's tail tells you before it moves that most people miss",
-      "reasons": [
-        "off_topic_visual",
-        "non_animal_body_language",
-        "script_word_loop"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "c447106ff474acc3",
-      "title": "Birds see ultraviolet patterns we miss",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "d7f8bba6e57ded70",
-      "title": "river deltas shift land faster than you think",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch",
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "9f08be9ba7b15931",
-      "title": "Underwater lava makes shapes like ink",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "91d2ab22bec3f4a4",
-      "title": "Satellites show the lie about Earth's dark side",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "44e0c24b0478ce97",
-      "title": "Weather stations don't measure what you think",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "8baa9d192af33e33",
-      "title": "Insects taste with their feet not their mouth",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "b1f1f06e74733f92",
-      "title": "Tall evergreens hide a forest of lies",
-      "reasons": [
-        "non_animal_body_language"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "fcef58285186d5f9",
-      "title": "forest lakes you never see from the ground",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "c2f278536adb1b8d",
-      "title": "Volcano craters hide a bubbling surprise underwater",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "c39730f5e142d4c3",
-      "title": "Cells copy instructions before splitting",
-      "reasons": [
-        "no_action_promise",
-        "missing_action_word",
-        "missing_visible_cue",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "c2fad3f40dd25a1c",
-      "title": "Cells copy instructions before splitting",
-      "reasons": [
-        "no_action_promise",
-        "missing_action_word",
-        "missing_visible_cue",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "ee895bc535d1d54f",
-      "title": "Birds see ultraviolet patterns we miss",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "d45affc7d1bdc870",
-      "title": "Caterpillars use first move before they change",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "missing_visual_cue",
-        "missing_action_word",
-        "missing_visible_cue",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "d509ee82272b1429",
-      "title": "Ocean waves hide a secret no atlas shows",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "326666addb5d15c3",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "5f3f1d09c71fa717",
-      "title": "Foxes hunt by sound not sight at night",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "abbadef79cf0c154",
-      "title": "Dogs read human pointing surprisingly well",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "0dfdb61b94307ddc",
-      "title": "Salt crystals grow faster than you think",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "d8f8f6fdfe388e41",
-      "title": "Why a dog's nose changes the whole story right before the move",
-      "reasons": [
-        "off_topic_visual",
-        "script_word_loop"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "94e3ee01356914d9",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "copy_subject_mismatch",
-        "duplicate_title"
       ],
       "stage": "queue_prune"
     }
@@ -483,7 +487,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T09:43:45.672478+00:00",
+        "checked_at": "2026-07-04T09:52:19.435322+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1134,7 +1138,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T09:43:45.674182+00:00",
+        "checked_at": "2026-07-04T09:52:19.436821+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1785,7 +1789,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T09:43:45.676359+00:00",
+        "checked_at": "2026-07-04T09:52:19.438530+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2431,7 +2435,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T09:43:45.683518+00:00",
+        "checked_at": "2026-07-04T09:52:19.444258+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3085,7 +3089,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T09:43:45.678598+00:00",
+        "checked_at": "2026-07-04T09:52:19.440450+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3733,7 +3737,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T09:43:45.618791+00:00",
+        "checked_at": "2026-07-04T09:52:17.505887+00:00",
         "mechanism_cluster": "dance_navigation",
         "objective_reasons": [],
         "score": 78.0,
@@ -4376,7 +4380,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T09:43:45.622519+00:00",
+        "checked_at": "2026-07-04T09:52:17.508546+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -5015,7 +5019,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T09:43:45.654940+00:00",
+        "checked_at": "2026-07-04T09:52:19.172410+00:00",
         "mechanism_cluster": "visual_stabilization",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5655,7 +5659,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T09:43:45.666986+00:00",
+        "checked_at": "2026-07-04T09:52:19.186362+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6302,7 +6306,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T09:43:45.668279+00:00",
+        "checked_at": "2026-07-04T09:52:19.187331+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6943,7 +6947,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T09:43:45.669496+00:00",
+        "checked_at": "2026-07-04T09:52:19.188258+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7416,6 +7420,644 @@
       }
     },
     {
+      "id": "7fdc62557df3560c",
+      "title": "Sheep can remember familiar faces",
+      "category": "farm",
+      "publish_score": {
+        "approved": false,
+        "category": "farm",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.31,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.08,
+          "data_quality": "estimated",
+          "data_quality_score": 0.425,
+          "minimum_sample_size": 25,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.08.",
+          "recommendation_strength": "observe",
+          "sample_size": 5
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.08,
+          "mechanism_cluster": "face_recognition",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "face"
+          ],
+          "cue_terms": [
+            "face",
+            "flock",
+            "memor"
+          ],
+          "frame_hook_bridge": [],
+          "risks": [
+            "frame_text_not_echoed_early"
+          ],
+          "score": 90.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "sheep"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [
+            "weak_visual_surface",
+            "low_opportunity_score"
+          ],
+          "score": 49,
+          "signals": {
+            "comment_potential": 49,
+            "educational_potential": 60,
+            "emotional_potential": 30,
+            "novelty": 40,
+            "replay_potential": 59,
+            "viral_potential": 45,
+            "visual_potential": 50
+          },
+          "verdict": "discard"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 71,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "rewrite",
+        "story_format": "animal_memory",
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.296,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.061,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.3,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-07-04T09:52:19.427943+00:00",
+        "mechanism_cluster": "face_recognition",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 78.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 78.0,
+      "youtube_brain": {
+        "animal": "sheep",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "face"
+          ],
+          "cue_terms": [
+            "face",
+            "flock",
+            "memor"
+          ],
+          "frame_hook_bridge": [],
+          "risks": [
+            "frame_text_not_echoed_early"
+          ],
+          "score": 90.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "sheep"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "animal_memory",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "sheep",
+        "viewer_promise": "See why sheep animal memory matters."
+      },
+      "packaging": {
+        "community_prompt": "Which sheep clue should Wild Brief compare next in Animal Memory?",
+        "cta_prompt": "Want one animal signal a day? Follow for tomorrow's farm clue.",
+        "curiosity_gap": {
+          "hook": "Why do these sheep change after the flock memory?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "animal memory",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 42,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} can {action} {subject} {subject} in the {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 37.46,
+            "format:fresh_variant": 26.1,
+            "format:winner_inspired": 37.46,
+            "hook:pattern_reuse": 37.46,
+            "thumbnail:new_thumbnail": 36.89
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "face"
+            ],
+            "cue_terms": [
+              "face",
+              "flock",
+              "memor"
+            ],
+            "frame_hook_bridge": [],
+            "risks": [
+              "frame_text_not_echoed_early"
+            ],
+            "score": 90.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "sheep"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Sheep can remember familiar faces",
+          "Sheep show why the face memory matters.",
+          "Sheep show why the face memory matters.",
+          "Sheep show why the face memory matters.",
+          "Sheep give away the answer through face memory"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "flock memory",
+          "ending_line": "Which farm animal should we compare next?",
+          "final_line": "Now the flock memory at the start makes sense.",
+          "loop_score": 0.812,
+          "opening_line": "Sheep can remember familiar faces.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "flock memory",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.812,
+        "next_episode_question": "Tomorrow in Animal Memory: another animal signal. What part of this feels most impossible?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "face"
+          ],
+          "cue_terms": [
+            "face",
+            "flock",
+            "memor"
+          ],
+          "frame_hook_bridge": [],
+          "risks": [
+            "frame_text_not_echoed_early"
+          ],
+          "score": 90.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "sheep"
+        },
+        "pinned_comment": "Watch the group again. Tomorrow in Animal Memory: another animal signal. What part of this feels most impossible?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 14.78,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 18,
+          "first_2s_narration": "Sheep can remember familiar faces Watch the face and spacing because sheep",
+          "first_frame_text": "FLOCK MEMORY",
+          "first_frame_text_words": 2,
+          "hook": "Sheep can remember familiar faces.",
+          "hook_specificity": 0.78,
+          "hook_words": 5,
+          "loop_score": 0.812,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "face"
+            ],
+            "cue_terms": [
+              "face",
+              "flock",
+              "memor"
+            ],
+            "frame_hook_bridge": [],
+            "risks": [
+              "frame_text_not_echoed_early"
+            ],
+            "score": 90.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "sheep"
+          },
+          "opening_retention_score": 90.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the group, so viewers rewatch the sheep clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 71,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Sheep can remember familiar faces Watch the face and spacing because sheep",
+          "first_frame_text": "FLOCK MEMORY",
+          "next_episode_question": "Tomorrow in Animal Memory: another animal signal. What part of this feels most impossible?",
+          "opening_retention_score": 90.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Sheep behavior through the visible group.",
+            "series": "Animal Memory",
+            "subject": "sheep",
+            "terms": [
+              "sheep",
+              "group",
+              "farm",
+              "animal memory"
+            ],
+            "title_variant": "Sheep behavior: group explained",
+            "visible_cue": "group"
+          },
+          "series": "Animal Memory",
+          "subject": "sheep",
+          "visible_cue": "group"
+        },
+        "risks": [],
+        "score": 95,
+        "search_intent": {
+          "description_line": "This Short explains Sheep behavior through the visible group.",
+          "series": "Animal Memory",
+          "subject": "sheep",
+          "terms": [
+            "sheep",
+            "group",
+            "farm",
+            "animal memory"
+          ],
+          "title_variant": "Sheep behavior: group explained",
+          "visible_cue": "group"
+        },
+        "selected_variant": {
+          "hook": "Sheep can remember familiar faces",
+          "score": 75,
+          "thumbnail_text": "FLOCK MEMORY",
+          "title": "Sheep recognize faces across the flock"
+        },
+        "series": "Animal Memory",
+        "series_identity": {
+          "continuity_prompt": "Next in Animal Memory: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Animal Memory",
+          "series": "Animal Memory"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.296,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.061,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.3,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "FLOCK MEMORY",
+          "FACE MEMORY",
+          "WATCH FACE MEMORY",
+          "SHEEP REMEMBER",
+          "FACE MEMORY MATTERS",
+          "FACE MEMORY FIRST",
+          "FACE MEMORY REVEAL",
+          "FACE MEMORY CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Sheep recognize faces across the flock",
+          "Sheep can remember familiar faces",
+          "Sheep use face memory before they remember",
+          "This face memory gives sheep away",
+          "Why sheep remember after one face memory",
+          "Sheep reveal the answer with face memory",
+          "The face memory that changes the moment",
+          "Sheep make one face memory matter",
+          "Sheep show the hidden answer in seconds",
+          "Sheep: watch this face memory"
+        ],
+        "top_variants": [
+          {
+            "hook": "Sheep can remember familiar faces",
+            "score": 75,
+            "thumbnail_text": "FLOCK MEMORY",
+            "title": "Sheep recognize faces across the flock"
+          },
+          {
+            "hook": "Start with the face memory; it changes the scene",
+            "score": 75,
+            "thumbnail_text": "FLOCK MEMORY",
+            "title": "Sheep recognize faces across the flock"
+          },
+          {
+            "hook": "Watch the face memory; it explains the behavior",
+            "score": 74,
+            "thumbnail_text": "FLOCK MEMORY",
+            "title": "Sheep recognize faces across the flock"
+          },
+          {
+            "hook": "Sheep can remember familiar faces",
+            "score": 68,
+            "thumbnail_text": "FACE MEMORY",
+            "title": "Sheep recognize faces across the flock"
+          },
+          {
+            "hook": "Start with the face memory; it changes the scene",
+            "score": 68,
+            "thumbnail_text": "FACE MEMORY",
+            "title": "Sheep recognize faces across the flock"
+          },
+          {
+            "hook": "Sheep can remember familiar faces",
+            "score": 68,
+            "thumbnail_text": "WATCH FACE MEMORY",
+            "title": "Sheep recognize faces across the flock"
+          },
+          {
+            "hook": "Start with the face memory; it changes the scene",
+            "score": 68,
+            "thumbnail_text": "WATCH FACE MEMORY",
+            "title": "Sheep recognize faces across the flock"
+          },
+          {
+            "hook": "Sheep can remember familiar faces",
+            "score": 68,
+            "thumbnail_text": "SHEEP REMEMBER",
+            "title": "Sheep recognize faces across the flock"
+          },
+          {
+            "hook": "Start with the face memory; it changes the scene",
+            "score": 68,
+            "thumbnail_text": "SHEEP REMEMBER",
+            "title": "Sheep recognize faces across the flock"
+          },
+          {
+            "hook": "Sheep can remember familiar faces",
+            "score": 68,
+            "thumbnail_text": "FACE MEMORY MATTERS",
+            "title": "Sheep recognize faces across the flock"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "5a6241904e5e32d2",
       "title": "The moon keeps one face turned toward Earth",
       "category": "space",
@@ -7592,7 +8234,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T09:43:45.681432+00:00",
+        "checked_at": "2026-07-04T09:52:19.442674+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8242,7 +8884,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T09:43:45.646907+00:00",
+        "checked_at": "2026-07-04T09:52:18.892620+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -8888,7 +9530,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T09:43:45.650883+00:00",
+        "checked_at": "2026-07-04T09:52:18.895833+00:00",
         "mechanism_cluster": "electric_sense",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -9529,7 +10171,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T09:43:45.620394+00:00",
+        "checked_at": "2026-07-04T09:52:17.506974+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown"
@@ -10176,7 +10818,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T09:43:45.624715+00:00",
+        "checked_at": "2026-07-04T09:52:17.510148+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -10832,7 +11474,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T09:43:45.627777+00:00",
+        "checked_at": "2026-07-04T09:52:17.512343+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -11321,7 +11963,7 @@
       }
     },
     {
-      "id": "fc48fe4f00251074",
+      "id": "3565e9cb56c66f14",
       "title": "Forests can cool the air below them",
       "category": "forests",
       "publish_score": {
@@ -11361,13 +12003,13 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "air",
-            "cool"
+            "air"
           ],
           "cue_terms": [
             "air",
             "canop",
-            "cool"
+            "food",
+            "web"
           ],
           "frame_hook_bridge": [
             "cool"
@@ -11384,7 +12026,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "forests"
+          "subject": "forest"
         },
         "opportunity": {
           "confidence": {
@@ -11400,7 +12042,7 @@
           },
           "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
           "reasons": [],
-          "score": 62,
+          "score": 58,
           "signals": {
             "comment_potential": 46,
             "educational_potential": 64,
@@ -11408,7 +12050,7 @@
             "novelty": 51,
             "replay_potential": 64,
             "viral_potential": 74,
-            "visual_potential": 81
+            "visual_potential": 61
           },
           "verdict": "rewrite"
         },
@@ -11430,13 +12072,13 @@
           },
           "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
           "reasons": [],
-          "score": 74,
+          "score": 71,
           "signals": {
             "completion_prediction": 77,
             "curiosity_score": 71,
             "hook_score": 82,
             "replay_score": 62,
-            "visual_score": 74
+            "visual_score": 58
           },
           "verdict": "rewrite"
         },
@@ -11494,7 +12136,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T09:43:45.635674+00:00",
+        "checked_at": "2026-07-04T09:52:17.769236+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -11511,13 +12153,13 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "air",
-            "cool"
+            "air"
           ],
           "cue_terms": [
             "air",
             "canop",
-            "cool"
+            "food",
+            "web"
           ],
           "frame_hook_bridge": [
             "cool"
@@ -11534,7 +12176,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "forests"
+          "subject": "forest"
         },
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
@@ -11564,7 +12206,7 @@
         "community_prompt": "Which forests clue should Wild Brief compare next in Hidden Network?",
         "cta_prompt": "Want to see how forests quietly run the planet?",
         "curiosity_gap": {
-          "hook": "Why do these forests change after the cool canopy?",
+          "hook": "Why does this forest changes after the food web?",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -11609,13 +12251,13 @@
           "retention_opening": {
             "approved": true,
             "cue_bridge": [
-              "air",
-              "cool"
+              "air"
             ],
             "cue_terms": [
               "air",
               "canop",
-              "cool"
+              "food",
+              "web"
             ],
             "frame_hook_bridge": [
               "cool"
@@ -11632,7 +12274,7 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "forests"
+            "subject": "forest"
           },
           "safe_area": {
             "aspect": "4:5",
@@ -11654,7 +12296,7 @@
         "loop_plan": {
           "audio_crossfade_ms": 120,
           "callback_keyword": "cool canopy",
-          "ending_line": "Which forest layer next.",
+          "ending_line": "Which forest layer next?",
           "final_line": "Now the cool canopy at the start makes sense.",
           "loop_score": 0.836,
           "opening_line": "Forests can cool the air below them.",
@@ -11671,13 +12313,13 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "air",
-            "cool"
+            "air"
           ],
           "cue_terms": [
             "air",
             "canop",
-            "cool"
+            "food",
+            "web"
           ],
           "frame_hook_bridge": [
             "cool"
@@ -11694,7 +12336,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "forests"
+          "subject": "forest"
         },
         "pinned_comment": "Watch the cool canopy again. Tomorrow in Hidden Network: another nature signal. Do forests feel more like places, systems, or living machines?",
         "preflight_inputs": {
@@ -11713,13 +12355,13 @@
           "opening_retention": {
             "approved": true,
             "cue_bridge": [
-              "air",
-              "cool"
+              "air"
             ],
             "cue_terms": [
               "air",
               "canop",
-              "cool"
+              "food",
+              "web"
             ],
             "frame_hook_bridge": [
               "cool"
@@ -11736,7 +12378,7 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "forests"
+            "subject": "forest"
           },
           "opening_retention_score": 100.0,
           "payoff_reveal_sentence_index": 0,
@@ -11760,13 +12402,13 @@
           },
           "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
           "reasons": [],
-          "score": 74,
+          "score": 71,
           "signals": {
             "completion_prediction": 77,
             "curiosity_score": 71,
             "hook_score": 82,
             "replay_score": 62,
-            "visual_score": 74
+            "visual_score": 58
           },
           "verdict": "rewrite"
         },
@@ -11793,7 +12435,7 @@
           "visible_cue": "cool canopy"
         },
         "risks": [],
-        "score": 96,
+        "score": 95,
         "search_intent": {
           "description_line": "This Short explains the visible cool canopy behind Forests in a fast nature science story.",
           "series": "Hidden Network",
@@ -11807,17 +12449,17 @@
           "visible_cue": "cool canopy"
         },
         "selected_variant": {
-          "hook": "Start with the cool canopy; it changes the scene",
-          "score": 80,
+          "hook": "Forests can cool the air below them",
+          "score": 77,
           "thumbnail_text": "COOL CANOPY",
           "title": "Forests make cooler air under the canopy"
         },
         "series": "Hidden Network #6",
         "series_identity": {
-          "continuity_prompt": "Next in Hidden Network: compare this with another force of nature.",
-          "episode": 6,
+          "continuity_prompt": "Next in Hidden Network #6: compare this with another force of nature.",
+          "episode": 1,
           "label": "Hidden Network #6",
-          "series": "Hidden Network"
+          "series": "Hidden Network #6"
         },
         "state": "magnetic",
         "strengths": [
@@ -11889,63 +12531,63 @@
         ],
         "top_variants": [
           {
-            "hook": "Start with the cool canopy; it changes the scene",
-            "score": 80,
-            "thumbnail_text": "COOL CANOPY",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
             "hook": "Forests can cool the air below them",
-            "score": 79,
+            "score": 77,
             "thumbnail_text": "COOL CANOPY",
             "title": "Forests make cooler air under the canopy"
           },
           {
             "hook": "Watch the cool canopy; it explains the behavior",
-            "score": 79,
+            "score": 77,
             "thumbnail_text": "COOL CANOPY",
             "title": "Forests make cooler air under the canopy"
           },
           {
             "hook": "Start with the cool canopy; it changes the scene",
-            "score": 73,
+            "score": 77,
+            "thumbnail_text": "COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Start with the cool canopy; it changes the scene",
+            "score": 71,
+            "thumbnail_text": "COOL CANOPY FIRST",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Forests can cool the air below them",
+            "score": 70,
+            "thumbnail_text": "WATCH COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Watch the cool canopy; it explains the behavior",
+            "score": 70,
             "thumbnail_text": "WATCH COOL CANOPY",
             "title": "Forests make cooler air under the canopy"
           },
           {
             "hook": "Start with the cool canopy; it changes the scene",
-            "score": 73,
+            "score": 70,
+            "thumbnail_text": "WATCH COOL CANOPY",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Forests can cool the air below them",
+            "score": 70,
+            "thumbnail_text": "FORESTS COVER",
+            "title": "Forests make cooler air under the canopy"
+          },
+          {
+            "hook": "Watch the cool canopy; it explains the behavior",
+            "score": 70,
             "thumbnail_text": "FORESTS COVER",
             "title": "Forests make cooler air under the canopy"
           },
           {
             "hook": "Start with the cool canopy; it changes the scene",
-            "score": 73,
-            "thumbnail_text": "COOL CANOPY MATTERS",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Forests can cool the air below them",
-            "score": 73,
-            "thumbnail_text": "COOL CANOPY FIRST",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Watch the cool canopy; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "COOL CANOPY FIRST",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Start with the cool canopy; it changes the scene",
-            "score": 73,
-            "thumbnail_text": "COOL CANOPY FIRST",
-            "title": "Forests make cooler air under the canopy"
-          },
-          {
-            "hook": "Forests can cool the air below them",
-            "score": 72,
-            "thumbnail_text": "WATCH COOL CANOPY",
+            "score": 70,
+            "thumbnail_text": "FORESTS COVER",
             "title": "Forests make cooler air under the canopy"
           }
         ]
@@ -12136,7 +12778,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T09:43:45.637821+00:00",
+        "checked_at": "2026-07-04T09:52:18.585158+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -12586,660 +13228,6 @@
             "score": 71,
             "thumbnail_text": "ROCK LAYERS WEAR",
             "title": "Rock layers store ancient environments in stripes"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
-      "id": "14f207991dea2fc0",
-      "title": "Forests reveal edge climates along trails",
-      "category": "forests",
-      "publish_score": {
-        "approved": true,
-        "category": "forests",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.472,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.296,
-          "data_quality": "estimated",
-          "data_quality_score": 0.35,
-          "minimum_sample_size": 38,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.30.",
-          "recommendation_strength": "observe",
-          "sample_size": 20
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 86,
-        "objective_gate": {
-          "confidence_score": 0.296,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "climate",
-            "edge",
-            "trail"
-          ],
-          "cue_terms": [
-            "climate",
-            "edge",
-            "trail"
-          ],
-          "frame_hook_bridge": [
-            "climate",
-            "edge"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "forests"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.42,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.227,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
-          "reasons": [],
-          "score": 58,
-          "signals": {
-            "comment_potential": 46,
-            "educational_potential": 64,
-            "emotional_potential": 27,
-            "novelty": 51,
-            "replay_potential": 64,
-            "viral_potential": 64,
-            "visual_potential": 71
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.42,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.227,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "earth_engine",
-        "subscriber_conversion": {
-          "comment_probability": 0.256,
-          "confidence": {
-            "bootstrap_multiplier": 0.508,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.345,
-            "data_quality": "estimated",
-            "data_quality_score": 0.425,
-            "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.34.",
-            "recommendation_strength": "observe",
-            "sample_size": 10
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.34.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.3,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-07-04T09:43:45.639827+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:observe_before_scaling",
-          "editor_in_chief:subject repeated inside 3-day cooldown"
-        ],
-        "score": 64.0,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 64.0,
-      "youtube_brain": {
-        "animal": "forests",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "climate",
-            "edge",
-            "trail"
-          ],
-          "cue_terms": [
-            "climate",
-            "edge",
-            "trail"
-          ],
-          "frame_hook_bridge": [
-            "climate",
-            "edge"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "forests"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "earth_engine",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "forests",
-        "viewer_promise": "See why this forest earth engine matters."
-      },
-      "packaging": {
-        "community_prompt": "Which forests clue should Wild Brief compare next in Hidden Network?",
-        "cta_prompt": "Want to see how forests quietly run the planet?",
-        "curiosity_gap": {
-          "hook": "Why do these forests change after the edge climate?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "earth engine",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 42,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} can {action} {subject} {subject} in the {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 37.46,
-            "format:fresh_variant": 26.1,
-            "format:winner_inspired": 37.46,
-            "hook:pattern_reuse": 37.46,
-            "thumbnail:new_thumbnail": 36.89
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "climate",
-              "edge",
-              "trail"
-            ],
-            "cue_terms": [
-              "climate",
-              "edge",
-              "trail"
-            ],
-            "frame_hook_bridge": [
-              "climate",
-              "edge"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "forests"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Forests change climate at the trail edge",
-          "Forests show why the trail edge matters.",
-          "Forests show why the trail edge matters.",
-          "Forests show why the trail edge matters.",
-          "Forests give away the answer through trail edge"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "edge climate",
-          "ending_line": "Which edge clue should we compare next?",
-          "final_line": "Now the edge climate at the start makes sense.",
-          "loop_score": 1.0,
-          "opening_line": "Forests change climate at the trail edge.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "edge climate",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 1.0,
-        "next_episode_question": "Tomorrow in Hidden Network: another nature signal. Do forests feel more like places, systems, or living machines?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "climate",
-            "edge",
-            "trail"
-          ],
-          "cue_terms": [
-            "climate",
-            "edge",
-            "trail"
-          ],
-          "frame_hook_bridge": [
-            "climate",
-            "edge"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "forests"
-        },
-        "pinned_comment": "Watch the trail edge again. Tomorrow in Hidden Network: another nature signal. Do forests feel more like places, systems, or living machines?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.12,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 16,
-          "first_2s_narration": "Forests change climate at the trail edge Watch the brighter opening beside",
-          "first_frame_text": "EDGE CLIMATE",
-          "first_frame_text_words": 2,
-          "hook": "Forests change climate at the trail edge.",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 1.0,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "climate",
-              "edge",
-              "trail"
-            ],
-            "cue_terms": [
-              "climate",
-              "edge",
-              "trail"
-            ],
-            "frame_hook_bridge": [
-              "climate",
-              "edge"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "forests"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the trail edge, so viewers rewatch the forests clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.42,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.227,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Forests change climate at the trail edge Watch the brighter opening beside",
-          "first_frame_text": "EDGE CLIMATE",
-          "next_episode_question": "Tomorrow in Hidden Network: another nature signal. Do forests feel more like places, systems, or living machines?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains the visible trail edge behind Forests in a fast nature science story.",
-            "series": "Hidden Network",
-            "subject": "forests",
-            "terms": [
-              "forests",
-              "trail edge",
-              "earth engine"
-            ],
-            "title_variant": "Forests trail edge explained fast",
-            "visible_cue": "trail edge"
-          },
-          "series": "Hidden Network",
-          "subject": "forests",
-          "visible_cue": "trail edge"
-        },
-        "risks": [],
-        "score": 96,
-        "search_intent": {
-          "description_line": "This Short explains the visible trail edge behind Forests in a fast nature science story.",
-          "series": "Hidden Network",
-          "subject": "forests",
-          "terms": [
-            "forests",
-            "trail edge",
-            "earth engine"
-          ],
-          "title_variant": "Forests trail edge explained fast",
-          "visible_cue": "trail edge"
-        },
-        "selected_variant": {
-          "hook": "Forests change climate at the trail edge",
-          "score": 81,
-          "thumbnail_text": "EDGE CLIMATE",
-          "title": "Forests reveal edge climates along trails"
-        },
-        "series": "Hidden Network #6",
-        "series_identity": {
-          "continuity_prompt": "Next in Hidden Network: compare this with another force of nature.",
-          "episode": 6,
-          "label": "Hidden Network #6",
-          "series": "Hidden Network"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.256,
-          "confidence": {
-            "bootstrap_multiplier": 0.508,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.345,
-            "data_quality": "estimated",
-            "data_quality_score": 0.425,
-            "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.34.",
-            "recommendation_strength": "observe",
-            "sample_size": 10
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.34.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.3,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "EDGE CLIMATE",
-          "TRAIL EDGE",
-          "WATCH TRAIL EDGE",
-          "FORESTS COMPARE",
-          "TRAIL EDGE MATTERS",
-          "TRAIL EDGE FIRST",
-          "TRAIL EDGE REVEAL",
-          "TRAIL EDGE CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Forests reveal edge climates along trails",
-          "Forests use trail edge before they compare",
-          "This trail edge gives forests away",
-          "Why forests compare after one trail edge",
-          "Forests reveal the answer with trail edge",
-          "The trail edge that changes the moment",
-          "Forests make one trail edge matter",
-          "Forests show the hidden answer in seconds",
-          "Forests: watch this trail edge",
-          "Watch forests after the trail edge"
-        ],
-        "top_variants": [
-          {
-            "hook": "Forests change climate at the trail edge",
-            "score": 81,
-            "thumbnail_text": "EDGE CLIMATE",
-            "title": "Forests reveal edge climates along trails"
-          },
-          {
-            "hook": "Start with the trail edge; it changes the scene",
-            "score": 81,
-            "thumbnail_text": "EDGE CLIMATE",
-            "title": "Forests reveal edge climates along trails"
-          },
-          {
-            "hook": "Watch the trail edge; it explains the behavior",
-            "score": 79,
-            "thumbnail_text": "EDGE CLIMATE",
-            "title": "Forests reveal edge climates along trails"
-          },
-          {
-            "hook": "Forests change climate at the trail edge",
-            "score": 74,
-            "thumbnail_text": "TRAIL EDGE",
-            "title": "Forests reveal edge climates along trails"
-          },
-          {
-            "hook": "Start with the trail edge; it changes the scene",
-            "score": 74,
-            "thumbnail_text": "TRAIL EDGE",
-            "title": "Forests reveal edge climates along trails"
-          },
-          {
-            "hook": "Forests change climate at the trail edge",
-            "score": 74,
-            "thumbnail_text": "WATCH TRAIL EDGE",
-            "title": "Forests reveal edge climates along trails"
-          },
-          {
-            "hook": "Start with the trail edge; it changes the scene",
-            "score": 74,
-            "thumbnail_text": "WATCH TRAIL EDGE",
-            "title": "Forests reveal edge climates along trails"
-          },
-          {
-            "hook": "Forests change climate at the trail edge",
-            "score": 74,
-            "thumbnail_text": "FORESTS COMPARE",
-            "title": "Forests reveal edge climates along trails"
-          },
-          {
-            "hook": "Start with the trail edge; it changes the scene",
-            "score": 74,
-            "thumbnail_text": "FORESTS COMPARE",
-            "title": "Forests reveal edge climates along trails"
-          },
-          {
-            "hook": "Forests change climate at the trail edge",
-            "score": 74,
-            "thumbnail_text": "TRAIL EDGE MATTERS",
-            "title": "Forests reveal edge climates along trails"
           }
         ]
       },
