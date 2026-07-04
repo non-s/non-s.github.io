@@ -11,19 +11,74 @@
     "repair_candidates": 2,
     "tracked": 10
   },
-  "generated_at": "2026-07-04T16:22:05.155904+00:00",
+  "generated_at": "2026-07-04T16:28:28.223686+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.945,
+      "age_hours": 0.187,
       "category": "forests",
       "checkpoints": [
         {
           "delta_to_target": 0,
+          "due_at": "2026-07-04T17:17:14.296412+00:00",
+          "label": "1h",
+          "source": "missing",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-04T22:17:14.296412+00:00",
+          "label": "6h",
+          "source": "missing",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-05T16:17:14.296412+00:00",
+          "label": "24h",
+          "source": "missing",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-04T17:17:14.296412+00:00",
+        "label": "1h",
+        "source": "missing",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Hidden Network",
+      "state": "awaiting_1h",
+      "title": "Forests can cool the air below them",
+      "uploaded_at": "2026-07-04T16:17:14.296412+00:00",
+      "url": "https://www.youtube.com/shorts/lyyoNBhLDPY",
+      "video_id": "lyyoNBhLDPY",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 1.051,
+      "category": "forests",
+      "checkpoints": [
+        {
+          "delta_to_target": -24,
           "due_at": "2026-07-04T16:25:24.945500+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -24,
         "due_at": "2026-07-04T16:25:24.945500+00:00",
         "label": "1h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Hidden Network",
-      "state": "awaiting_1h",
+      "state": "analytics_due",
       "title": "Forests reveal edge climates along trails",
       "uploaded_at": "2026-07-04T15:25:24.945500+00:00",
       "url": "https://www.youtube.com/shorts/ez3hSEWuNws",
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.215,
+      "age_hours": 2.321,
       "category": "trees",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.32,
+      "age_hours": 4.427,
       "category": "forests",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.49,
+      "age_hours": 4.596,
       "category": "physics",
       "checkpoints": [
         {
@@ -235,7 +290,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.433,
+      "age_hours": 5.539,
       "category": "chemistry",
       "checkpoints": [
         {
@@ -290,7 +345,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.766,
+      "age_hours": 6.872,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -356,7 +411,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 8.246,
+      "age_hours": 8.353,
       "category": "geology",
       "checkpoints": [
         {
@@ -407,7 +462,7 @@
       "uploaded_at": "2026-07-04T08:07:18.699682+00:00",
       "url": "https://www.youtube.com/shorts/tt2gmX6cuHo",
       "video_id": "tt2gmX6cuHo",
-      "views_per_hour": 0.512,
+      "views_per_hour": 0.485,
       "warning": {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.594,
@@ -422,7 +477,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.076,
+      "age_hours": 9.182,
       "category": "farm",
       "checkpoints": [
         {
@@ -477,7 +532,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 14.776,
+      "age_hours": 14.882,
       "category": "forests",
       "checkpoints": [
         {
@@ -528,76 +583,13 @@
       "uploaded_at": "2026-07-04T01:35:32.786321+00:00",
       "url": "https://www.youtube.com/shorts/Jh4XroVWOKk",
       "video_id": "Jh4XroVWOKk",
-      "views_per_hour": 0.07,
+      "views_per_hour": 0.068,
       "warning": {
         "confidence_score": 0.431,
         "reason": "low confidence early signal; keep observing",
         "state": "dying_early",
         "title": "Forests hold cool fog between the trees",
         "video_id": "Jh4XroVWOKk",
-        "warning_state": "low_confidence_watch"
-      }
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.787,
-      "category": "cats",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-04T00:34:50.813546+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-04T05:34:50.813546+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-07-04T23:34:50.813546+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-04T00:34:50.813546+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 96.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Pet Secrets",
-      "state": "analytics_due",
-      "title": "Cats measure tight spaces with their whiskers",
-      "uploaded_at": "2026-07-03T23:34:50.813546+00:00",
-      "url": "https://www.youtube.com/shorts/8JXU0i_1-7c",
-      "video_id": "8JXU0i_1-7c",
-      "views_per_hour": 0.0,
-      "warning": {
-        "confidence_score": 0.431,
-        "reason": "low confidence early signal; keep observing",
-        "state": "dying_early",
-        "title": "Cats measure tight spaces with their whiskers",
-        "video_id": "8JXU0i_1-7c",
         "warning_state": "low_confidence_watch"
       }
     }
