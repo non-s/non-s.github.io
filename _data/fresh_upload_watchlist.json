@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 7,
+    "analytics_due": 8,
     "awaiting_1h": 0,
     "high_priority": 8,
-    "repair_candidates": 1,
+    "repair_candidates": 0,
     "tracked": 10
   },
-  "generated_at": "2026-07-04T20:25:52.760258+00:00",
+  "generated_at": "2026-07-04T20:33:28.338242+00:00",
   "items": [
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.144,
+      "age_hours": 4.271,
       "category": "forests",
       "checkpoints": [
         {
@@ -70,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.008,
+      "age_hours": 5.134,
       "category": "forests",
       "checkpoints": [
         {
@@ -124,16 +124,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.278,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 6.405,
       "category": "trees",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-04T15:09:11.619217+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -157,41 +157,30 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-05T14:09:11.619217+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-04T15:09:11.619217+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "overdue",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Hidden Network",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Trees keep weather history in their rings",
       "uploaded_at": "2026-07-04T14:09:11.619217+00:00",
       "url": "https://www.youtube.com/shorts/3hQL89pNw-w",
       "video_id": "3hQL89pNw-w",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Trees keep weather history in their rings",
-        "video_id": "3hQL89pNw-w",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.383,
+      "age_hours": 8.51,
       "category": "forests",
       "checkpoints": [
         {
@@ -246,7 +235,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.553,
+      "age_hours": 8.68,
       "category": "physics",
       "checkpoints": [
         {
@@ -301,7 +290,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.496,
+      "age_hours": 9.623,
       "category": "chemistry",
       "checkpoints": [
         {
@@ -356,7 +345,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 10.829,
+      "age_hours": 10.956,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -411,7 +400,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.309,
+      "age_hours": 12.436,
       "category": "geology",
       "checkpoints": [
         {
@@ -462,7 +451,7 @@
       "uploaded_at": "2026-07-04T08:07:18.699682+00:00",
       "url": "https://www.youtube.com/shorts/tt2gmX6cuHo",
       "video_id": "tt2gmX6cuHo",
-      "views_per_hour": 0.327,
+      "views_per_hour": 0.323,
       "warning": {
         "confidence_score": 0.431,
         "reason": "low confidence early signal; keep observing",
@@ -474,7 +463,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.139,
+      "age_hours": 13.265,
       "category": "farm",
       "checkpoints": [
         {
@@ -537,7 +526,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 18.839,
+      "age_hours": 18.965,
       "category": "forests",
       "checkpoints": [
         {
