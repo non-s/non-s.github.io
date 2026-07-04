@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-04T22:01:24.465467+00:00",
+  "generated_at": "2026-07-04T22:13:31.032423+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
   "overall_progress_pct": 36.6,
@@ -22,7 +22,7 @@
       "top_blockers": [
         {
           "id": "objective_gate:bootstrap_observe_before_scaling",
-          "count": 52,
+          "count": 64,
           "operator_translation": "collect more observed signal before scaling this pattern"
         },
         {
@@ -37,13 +37,13 @@
         },
         {
           "id": "editor_in_chief:cooldown_subject",
-          "count": 20,
+          "count": 23,
           "operator_translation": "pick a fresh subject inside the same lane"
         },
         {
-          "id": "objective_gate:observe_before_scaling",
-          "count": 14,
-          "operator_translation": "observe this pattern before scaling it"
+          "id": "editor_in_chief:script quality gate blocked the narration",
+          "count": 8,
+          "operator_translation": "editor in chief:script quality gate blocked the narration"
         }
       ]
     }
@@ -92,7 +92,7 @@
     "operational_publish_ready": 6,
     "apparent_publish_ready": 6,
     "eligible_count": 6,
-    "scale_ready_count": 1,
+    "scale_ready_count": 0,
     "next_shorts_count": 6,
     "editorial_candidate_count": 35,
     "published_count": 48,
@@ -109,7 +109,7 @@
   "top_blockers": [
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
-      "count": 52,
+      "count": 64,
       "operator_translation": "collect more observed signal before scaling this pattern"
     },
     {
@@ -124,18 +124,8 @@
     },
     {
       "id": "editor_in_chief:cooldown_subject",
-      "count": 20,
+      "count": 23,
       "operator_translation": "pick a fresh subject inside the same lane"
-    },
-    {
-      "id": "objective_gate:observe_before_scaling",
-      "count": 14,
-      "operator_translation": "observe this pattern before scaling it"
-    },
-    {
-      "id": "publish_score:rewrite",
-      "count": 8,
-      "operator_translation": "repair the publish score package"
     },
     {
       "id": "editor_in_chief:script quality gate blocked the narration",
@@ -143,9 +133,14 @@
       "operator_translation": "editor in chief:script quality gate blocked the narration"
     },
     {
-      "id": "editor_in_chief:editorial score 46 is below 62",
+      "id": "bootstrap_observe_before_scaling",
       "count": 6,
-      "operator_translation": "editor in chief:editorial score 46 is below 62"
+      "operator_translation": "bootstrap observe before scaling"
+    },
+    {
+      "id": "objective_gate:observe_before_scaling",
+      "count": 6,
+      "operator_translation": "observe this pattern before scaling it"
     },
     {
       "id": "editor_in_chief:story angle repeated inside 10-day cooldown",
@@ -153,9 +148,14 @@
       "operator_translation": "editor in chief:story angle repeated inside 10-day cooldown"
     },
     {
-      "id": "editorial_cooldown_supply_fallback",
+      "id": "editor_in_chief:editorial score 46 is below 62",
       "count": 6,
-      "operator_translation": "editorial cooldown supply fallback"
+      "operator_translation": "editor in chief:editorial score 46 is below 62"
+    },
+    {
+      "id": "publish_score:rewrite",
+      "count": 4,
+      "operator_translation": "repair the publish score package"
     },
     {
       "id": "editor_in_chief:editorial score 40 is below 62",
