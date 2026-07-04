@@ -3,17 +3,17 @@
   "fresh_upload_actions": {
     "counts": {
       "automation_safe": 8,
-      "high": 2,
+      "high": 3,
       "manual_review": 2,
       "total": 10,
       "urgent": 3
     },
     "free_only": true,
-    "generated_at": "2026-07-04T14:53:19.674259+00:00",
+    "generated_at": "2026-07-04T15:20:33.153071+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 16.774,
+        "age_hours": 17.228,
         "automation_safe": true,
         "category": "plants",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 15.308,
+        "age_hours": 15.762,
         "automation_safe": true,
         "category": "cats",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 13.296,
+        "age_hours": 13.75,
         "automation_safe": true,
         "category": "forests",
         "checkpoint_label": "1h",
@@ -90,8 +90,34 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 1.189,
+        "automation_safe": true,
+        "category": "trees",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "due",
+        "current_views": 0,
+        "due_at": "2026-07-04T15:09:11.619217+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:3hQL89pNw-w:analytics_due:1h",
+        "lane": "measurement",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "high",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
+        "series": "Hidden Network",
+        "state": "analytics_due",
+        "target_views": 24,
+        "title": "Trees keep weather history in their rings",
+        "url": "https://www.youtube.com/shorts/3hQL89pNw-w",
+        "video_id": "3hQL89pNw-w",
+        "wait_until": "",
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
+      },
+      {
         "action_type": "prepare_package_rescue",
-        "age_hours": 7.596,
+        "age_hours": 8.05,
         "automation_safe": false,
         "category": "farm",
         "checkpoint_label": "24h",
@@ -117,7 +143,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 6.767,
+        "age_hours": 7.221,
         "automation_safe": false,
         "category": "geology",
         "checkpoint_label": "24h",
@@ -142,34 +168,8 @@
         "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
-        "action_type": "hold_until_first_hour",
-        "age_hours": 0.736,
-        "automation_safe": true,
-        "category": "trees",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "pending",
-        "current_views": 0,
-        "due_at": "2026-07-04T15:09:11.619217+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:3hQL89pNw-w:awaiting_1h:1h",
-        "lane": "observe",
-        "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "series": "Hidden Network",
-        "state": "awaiting_1h",
-        "target_views": 24,
-        "title": "Trees keep weather history in their rings",
-        "url": "https://www.youtube.com/shorts/3hQL89pNw-w",
-        "video_id": "3hQL89pNw-w",
-        "wait_until": "2026-07-04T15:09:11.619217+00:00",
-        "why": "The upload is still inside the no-panic observation window."
-      },
-      {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 5.287,
+        "age_hours": 5.74,
         "automation_safe": true,
         "category": "reptiles",
         "checkpoint_label": "6h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.954,
+        "age_hours": 4.407,
         "automation_safe": true,
         "category": "chemistry",
         "checkpoint_label": "6h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.011,
+        "age_hours": 3.464,
         "automation_safe": true,
         "category": "physics",
         "checkpoint_label": "6h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.841,
+        "age_hours": 3.295,
         "automation_safe": true,
         "category": "forests",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-04T14:53:19.672883+00:00"
+    "source_generated_at": "2026-07-04T15:20:33.151655+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,25 +282,25 @@
       24
     ],
     "counts": {
-      "analytics_due": 3,
-      "awaiting_1h": 1,
-      "high_priority": 5,
+      "analytics_due": 4,
+      "awaiting_1h": 0,
+      "high_priority": 6,
       "repair_candidates": 2,
       "tracked": 10
     },
-    "generated_at": "2026-07-04T14:53:19.672883+00:00",
+    "generated_at": "2026-07-04T15:20:33.151655+00:00",
     "items": [
       {
-        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.736,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 1.189,
         "category": "trees",
         "checkpoints": [
           {
-            "delta_to_target": 0,
+            "delta_to_target": -24,
             "due_at": "2026-07-04T15:09:11.619217+00:00",
             "label": "1h",
             "source": "estimated",
-            "state": "pending",
+            "state": "due",
             "target_views": 24,
             "views": 0
           },
@@ -324,21 +324,21 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-04T15:09:11.619217+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 24,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Hidden Network",
-        "state": "awaiting_1h",
+        "state": "analytics_due",
         "title": "Trees keep weather history in their rings",
         "uploaded_at": "2026-07-04T14:09:11.619217+00:00",
         "url": "https://www.youtube.com/shorts/3hQL89pNw-w",
@@ -347,7 +347,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.841,
+        "age_hours": 3.295,
         "category": "forests",
         "checkpoints": [
           {
@@ -402,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.011,
+        "age_hours": 3.464,
         "category": "physics",
         "checkpoints": [
           {
@@ -457,7 +457,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.954,
+        "age_hours": 4.407,
         "category": "chemistry",
         "checkpoints": [
           {
@@ -512,7 +512,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.287,
+        "age_hours": 5.74,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -567,7 +567,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 6.767,
+        "age_hours": 7.221,
         "category": "geology",
         "checkpoints": [
           {
@@ -618,7 +618,7 @@
         "uploaded_at": "2026-07-04T08:07:18.699682+00:00",
         "url": "https://www.youtube.com/shorts/tt2gmX6cuHo",
         "video_id": "tt2gmX6cuHo",
-        "views_per_hour": 0.601,
+        "views_per_hour": 0.591,
         "warning": {
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.594,
@@ -633,7 +633,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 7.596,
+        "age_hours": 8.05,
         "category": "farm",
         "checkpoints": [
           {
@@ -699,7 +699,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 13.296,
+        "age_hours": 13.75,
         "category": "forests",
         "checkpoints": [
           {
@@ -712,13 +712,13 @@
             "views": 0
           },
           {
-            "delta_to_target": -104,
+            "delta_to_target": -105,
             "due_at": "2026-07-04T07:35:32.786321+00:00",
             "label": "6h",
-            "source": "observed",
-            "state": "observed",
+            "source": "estimated",
+            "state": "overdue",
             "target_views": 105,
-            "views": 1
+            "views": 0
           },
           {
             "delta_to_target": 0,
@@ -750,11 +750,19 @@
         "uploaded_at": "2026-07-04T01:35:32.786321+00:00",
         "url": "https://www.youtube.com/shorts/Jh4XroVWOKk",
         "video_id": "Jh4XroVWOKk",
-        "views_per_hour": 0.076
+        "views_per_hour": 0.075,
+        "warning": {
+          "confidence_score": 0.431,
+          "reason": "low confidence early signal; keep observing",
+          "state": "dying_early",
+          "title": "Forests hold cool fog between the trees",
+          "video_id": "Jh4XroVWOKk",
+          "warning_state": "low_confidence_watch"
+        }
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 15.308,
+        "age_hours": 15.762,
         "category": "cats",
         "checkpoints": [
           {
@@ -817,7 +825,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 16.774,
+        "age_hours": 17.228,
         "category": "plants",
         "checkpoints": [
           {
@@ -886,7 +894,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-04T14:53:19.674350+00:00",
+  "generated_at": "2026-07-04T15:20:33.153163+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
