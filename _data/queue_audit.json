@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-07-04T22:19:19.592775+00:00",
-  "pending": 35,
+  "generated_at": "2026-07-04T22:21:51.950060+00:00",
+  "pending": 36,
   "states": {
-    "rewrite": 29,
+    "rewrite": 30,
     "publish_ready": 6
   },
   "mechanism_clusters": {
-    "face_recognition": 5,
+    "face_recognition": 6,
     "call_signal": 1,
     "dance_navigation": 1,
     "electric_sense": 1,
@@ -14,23 +14,27 @@
     "beak_signal": 1
   },
   "rights": {
-    "approved": 35
+    "approved": 36
   },
   "prune_summary": {
-    "pending_before": 35,
-    "pending_after": 35,
-    "rejected": 0,
+    "pending_before": 38,
+    "pending_after": 36,
+    "rejected": 2,
     "repair_needed": 0,
-    "repaired": 5,
+    "repaired": 6,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 32,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 23,
+      "objective_gate:bootstrap_observe_before_scaling": 33,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 24,
       "editor_in_chief:script quality gate blocked the narration": 4,
       "objective_gate:observe_before_scaling": 3,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
       "editor_in_chief:editorial score 46 is below 62": 3,
       "editor_in_chief:editorial score 40 is below 62": 2,
+      "off_topic_visual": 1,
+      "script_hook_mismatch": 1,
       "editor_in_chief:editorial score 49 is below 62": 1,
+      "duplicate_title": 1,
+      "duplicate_script": 1,
       "editor_in_chief:editorial score 59 is below 62": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
       "mechanism_cluster_limit:face_recognition": 1
@@ -38,13 +42,70 @@
   },
   "rejected_preview": [
     {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
+      "id": "eae19e18441399ab",
+      "title": "Coral reefs are built by tiny living builders",
       "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
+        "duplicate_title",
+        "duplicate_script"
       ],
-      "stage": "youtube_brain_rewrite"
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "758e1def429ef0d2",
+      "title": "Cows don’t chew the way you think they do",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "9cad028de9518da0",
+      "title": "Cows remember faces across the herd",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "72b69d887d4f6c83",
+      "title": "Coral reefs are built by tiny living builders",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "c422e16ddc401932",
+      "title": "Cows remember faces across the herd",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "2bfd469f22988451",
+      "title": "Lightning makes air explode into thunder",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "032c11fd2a84398b",
+      "title": "mountain creeks carve valleys faster than you think",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
     },
     {
       "id": "Sharks sense tiny electric fields",
@@ -69,6 +130,15 @@
         "editorial score is below publish threshold"
       ],
       "stage": "pre_publish_audit"
+    },
+    {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
     },
     {
       "id": "5a6241904e5e32d2",
@@ -101,6 +171,15 @@
         "editorial score is below publish threshold"
       ],
       "stage": "pre_publish_audit"
+    },
+    {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
     },
     {
       "id": "5a6241904e5e32d2",
@@ -225,75 +304,6 @@
         "editorial score is below publish threshold"
       ],
       "stage": "pre_publish_audit"
-    },
-    {
-      "id": "5a6241904e5e32d2",
-      "title": "The moon keeps one face turned toward Earth",
-      "reasons": [
-        "low_opportunity_score"
-      ],
-      "stage": "opportunity_score"
-    },
-    {
-      "id": "Sharks sense tiny electric fields",
-      "title": "Sharks sense tiny electric fields",
-      "reasons": [
-        "editorial score is below publish threshold"
-      ],
-      "stage": "pre_publish_audit"
-    },
-    {
-      "id": "Lions hunt better when the pride coordinates",
-      "title": "Lions hunt better when the pride coordinates",
-      "reasons": [
-        "editorial score is below publish threshold"
-      ],
-      "stage": "pre_publish_audit"
-    },
-    {
-      "id": "Coral reefs are cities built by tiny animals",
-      "title": "Coral reefs are cities built by tiny animals",
-      "reasons": [
-        "editorial score is below publish threshold"
-      ],
-      "stage": "pre_publish_audit"
-    },
-    {
-      "id": "5a6241904e5e32d2",
-      "title": "The moon keeps one face turned toward Earth",
-      "reasons": [
-        "low_opportunity_score"
-      ],
-      "stage": "opportunity_score"
-    },
-    {
-      "id": "792fd0974ba3fc11",
-      "title": "Cows remember faces across the herd",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "937d2244a5deb24d",
-      "title": "Bees dance directions back to the hive",
-      "reasons": [
-        "copy_subject_mismatch",
-        "duplicate_title",
-        "duplicate_script"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "3def262388083ecf",
-      "title": "Cows aren't calm—they’re on silent patrol",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -470,7 +480,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T22:18:44.251265+00:00",
+        "checked_at": "2026-07-04T22:21:15.907274+00:00",
         "mechanism_cluster": "visual_stabilization",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1104,7 +1114,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T22:18:44.259629+00:00",
+        "checked_at": "2026-07-04T22:21:15.915598+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1745,7 +1755,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T22:18:44.261001+00:00",
+        "checked_at": "2026-07-04T22:21:15.916974+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2391,7 +2401,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T22:18:44.263192+00:00",
+        "checked_at": "2026-07-04T22:21:15.919250+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3037,7 +3047,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T22:18:44.273534+00:00",
+        "checked_at": "2026-07-04T22:21:15.929616+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3682,7 +3692,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T22:18:44.274829+00:00",
+        "checked_at": "2026-07-04T22:21:15.930885+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4319,7 +4329,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T22:18:44.265566+00:00",
+        "checked_at": "2026-07-04T22:21:15.921773+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4965,7 +4975,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T22:18:44.276250+00:00",
+        "checked_at": "2026-07-04T22:21:15.932091+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5611,7 +5621,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T22:18:44.215764+00:00",
+        "checked_at": "2026-07-04T22:21:15.503825+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6251,7 +6261,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T22:18:44.217354+00:00",
+        "checked_at": "2026-07-04T22:21:15.505419+00:00",
         "mechanism_cluster": "dance_navigation",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6899,7 +6909,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T22:18:44.266992+00:00",
+        "checked_at": "2026-07-04T22:21:15.923209+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7547,7 +7557,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T22:18:44.269899+00:00",
+        "checked_at": "2026-07-04T22:21:15.926035+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8197,7 +8207,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T22:18:44.211114+00:00",
+        "checked_at": "2026-07-04T22:21:15.499610+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -8843,7 +8853,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T22:18:44.214679+00:00",
+        "checked_at": "2026-07-04T22:21:15.502723+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -9491,7 +9501,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T22:18:44.219854+00:00",
+        "checked_at": "2026-07-04T22:21:15.508709+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10137,7 +10147,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T22:18:44.222025+00:00",
+        "checked_at": "2026-07-04T22:21:15.511016+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10776,7 +10786,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T22:18:44.223057+00:00",
+        "checked_at": "2026-07-04T22:21:15.512053+00:00",
         "mechanism_cluster": "electric_sense",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11418,7 +11428,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T22:18:44.224618+00:00",
+        "checked_at": "2026-07-04T22:21:15.513730+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12070,7 +12080,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T22:18:44.226127+00:00",
+        "checked_at": "2026-07-04T22:21:15.515299+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12716,7 +12726,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T22:18:44.229774+00:00",
+        "checked_at": "2026-07-04T22:21:15.886575+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
