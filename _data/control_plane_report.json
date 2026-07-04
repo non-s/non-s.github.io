@@ -1,36 +1,41 @@
 {
   "state": "migration_needed",
-  "pressure_score": 86,
+  "pressure_score": 93,
   "metrics": {
-    "live_state_files": 176,
-    "data_state_files": 126,
+    "live_state_files": 267,
+    "data_state_files": 217,
     "video_done_markers": 48,
-    "live_state_bytes": 9339376,
-    "stories_queue_bytes": 2872554,
-    "stories_queue_lines": 80283,
+    "live_state_bytes": 13180997,
+    "stories_queue_bytes": 2919501,
+    "stories_queue_lines": 81249,
     "workflow_files": 18,
     "state_path_refs": 282
   },
   "largest_state_files": [
     {
       "path": "_data/stories_queue.json",
-      "bytes": 2872554,
-      "lines": 80283
+      "bytes": 2919501,
+      "lines": 81249
     },
     {
       "path": "_data/rejected_queue.jsonl",
-      "bytes": 750697,
-      "lines": 940
+      "bytes": 2117249,
+      "lines": 2643
+    },
+    {
+      "path": "_data/repair_queue.jsonl",
+      "bytes": 1405901,
+      "lines": 80
     },
     {
       "path": "_data/early_performance.json",
-      "bytes": 454824,
-      "lines": 17618
+      "bytes": 455044,
+      "lines": 17626
     },
     {
       "path": "_data/queue_audit.json",
-      "bytes": 447465,
-      "lines": 13193
+      "bytes": 447388,
+      "lines": 13196
     },
     {
       "path": "_data/packaging_report.json",
@@ -39,18 +44,18 @@
     },
     {
       "path": "_data/provider_stats.jsonl",
-      "bytes": 269222,
-      "lines": 3464
+      "bytes": 271006,
+      "lines": 3487
     },
     {
       "path": "_data/autonomous_growth_plan.json",
-      "bytes": 228291,
-      "lines": 6265
+      "bytes": 228055,
+      "lines": 6259
     },
     {
       "path": "_data/analytics/api_quota_ledger.jsonl",
-      "bytes": 186259,
-      "lines": 283
+      "bytes": 187497,
+      "lines": 285
     },
     {
       "path": "_data/dry_run_publish.json",
@@ -66,11 +71,6 @@
       "path": "_data/youtube_brain_report.json",
       "bytes": 116889,
       "lines": 3940
-    },
-    {
-      "path": "_data/publish_slot_decisions.jsonl",
-      "bytes": 103541,
-      "lines": 135
     }
   ],
   "migration_lanes": [
