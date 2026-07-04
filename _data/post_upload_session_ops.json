@@ -3,17 +3,17 @@
   "fresh_upload_actions": {
     "counts": {
       "automation_safe": 8,
-      "high": 3,
+      "high": 2,
       "manual_review": 2,
       "total": 10,
-      "urgent": 2
+      "urgent": 3
     },
     "free_only": true,
-    "generated_at": "2026-07-04T16:28:28.225235+00:00",
+    "generated_at": "2026-07-04T17:34:55.153499+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 14.882,
+        "age_hours": 15.99,
         "automation_safe": true,
         "category": "forests",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 9.182,
+        "age_hours": 10.29,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "1h",
@@ -65,59 +65,33 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 1.051,
+        "age_hours": 9.46,
         "automation_safe": true,
-        "category": "forests",
+        "category": "geology",
         "checkpoint_label": "1h",
-        "checkpoint_state": "due",
-        "current_views": 0,
-        "due_at": "2026-07-04T16:25:24.945500+00:00",
+        "checkpoint_state": "overdue",
+        "current_views": 4,
+        "due_at": "2026-07-04T09:07:18.699682+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:ez3hSEWuNws:analytics_due:1h",
+        "id": "fresh-upload:tt2gmX6cuHo:analytics_due:1h",
         "lane": "measurement",
         "manual_approval_required": false,
         "opening_retention_score": 100.0,
-        "priority": "high",
+        "priority": "urgent",
         "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
-        "series": "Hidden Network",
+        "series": "Earth Engine",
         "state": "analytics_due",
         "target_views": 24,
-        "title": "Forests reveal edge climates along trails",
-        "url": "https://www.youtube.com/shorts/ez3hSEWuNws",
-        "video_id": "ez3hSEWuNws",
+        "title": "Rock layers expose erosion in bare open hills",
+        "url": "https://www.youtube.com/shorts/tt2gmX6cuHo",
+        "video_id": "tt2gmX6cuHo",
         "wait_until": "",
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 8.353,
-        "automation_safe": false,
-        "category": "geology",
-        "checkpoint_label": "24h",
-        "checkpoint_state": "pending",
-        "current_views": 4,
-        "due_at": "2026-07-05T08:07:18.699682+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:tt2gmX6cuHo:repair_candidate:24h",
-        "lane": "package_rescue",
-        "manual_approval_required": true,
-        "opening_retention_score": 100.0,
-        "priority": "high",
-        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "series": "Earth Engine",
-        "state": "repair_candidate",
-        "target_views": 300,
-        "title": "Rock layers expose erosion in bare open hills",
-        "url": "https://www.youtube.com/shorts/tt2gmX6cuHo",
-        "video_id": "tt2gmX6cuHo",
-        "wait_until": "",
-        "why": "Observed velocity is weak enough to prepare a package intervention."
-      },
-      {
-        "action_type": "prepare_package_rescue",
-        "age_hours": 6.872,
+        "age_hours": 7.98,
         "automation_safe": false,
         "category": "reptiles",
         "checkpoint_label": "24h",
@@ -142,60 +116,34 @@
         "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
-        "action_type": "watch_next_checkpoint",
-        "age_hours": 5.539,
-        "automation_safe": true,
+        "action_type": "prepare_package_rescue",
+        "age_hours": 6.647,
+        "automation_safe": false,
         "category": "chemistry",
-        "checkpoint_label": "6h",
+        "checkpoint_label": "24h",
         "checkpoint_state": "pending",
         "current_views": 0,
-        "due_at": "2026-07-04T16:56:06.958652+00:00",
+        "due_at": "2026-07-05T10:56:06.958652+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:NxfTBrgi_ns:watch:6h",
-        "lane": "observe",
-        "manual_approval_required": false,
+        "id": "fresh-upload:NxfTBrgi_ns:repair_candidate:24h",
+        "lane": "package_rescue",
+        "manual_approval_required": true,
         "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Keep observing through the next checkpoint.",
+        "priority": "high",
+        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
         "series": "Nature Signals",
-        "state": "watch",
-        "target_views": 105,
+        "state": "repair_candidate",
+        "target_views": 300,
         "title": "Crystals grow by repeating one tiny pattern",
         "url": "https://www.youtube.com/shorts/NxfTBrgi_ns",
         "video_id": "NxfTBrgi_ns",
-        "wait_until": "2026-07-04T16:56:06.958652+00:00",
-        "why": "No intervention signal is strong enough yet."
-      },
-      {
-        "action_type": "hold_until_first_hour",
-        "age_hours": 0.187,
-        "automation_safe": true,
-        "category": "forests",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "pending",
-        "current_views": 0,
-        "due_at": "2026-07-04T17:17:14.296412+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:lyyoNBhLDPY:awaiting_1h:1h",
-        "lane": "observe",
-        "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "series": "Hidden Network",
-        "state": "awaiting_1h",
-        "target_views": 24,
-        "title": "Forests can cool the air below them",
-        "url": "https://www.youtube.com/shorts/lyyoNBhLDPY",
-        "video_id": "lyyoNBhLDPY",
-        "wait_until": "2026-07-04T17:17:14.296412+00:00",
-        "why": "The upload is still inside the no-panic observation window."
+        "wait_until": "",
+        "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 4.596,
+        "age_hours": 5.704,
         "automation_safe": true,
         "category": "physics",
         "checkpoint_label": "6h",
@@ -221,7 +169,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 4.427,
+        "age_hours": 5.534,
         "automation_safe": true,
         "category": "forests",
         "checkpoint_label": "6h",
@@ -247,7 +195,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.321,
+        "age_hours": 3.429,
         "automation_safe": true,
         "category": "trees",
         "checkpoint_label": "6h",
@@ -270,10 +218,62 @@
         "video_id": "3hQL89pNw-w",
         "wait_until": "2026-07-04T20:09:11.619217+00:00",
         "why": "No intervention signal is strong enough yet."
+      },
+      {
+        "action_type": "watch_next_checkpoint",
+        "age_hours": 2.158,
+        "automation_safe": true,
+        "category": "forests",
+        "checkpoint_label": "6h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-04T21:25:24.945500+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:ez3hSEWuNws:watch:6h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "low",
+        "recommended_action": "Keep observing through the next checkpoint.",
+        "series": "Hidden Network",
+        "state": "watch",
+        "target_views": 105,
+        "title": "Forests reveal edge climates along trails",
+        "url": "https://www.youtube.com/shorts/ez3hSEWuNws",
+        "video_id": "ez3hSEWuNws",
+        "wait_until": "2026-07-04T21:25:24.945500+00:00",
+        "why": "No intervention signal is strong enough yet."
+      },
+      {
+        "action_type": "watch_next_checkpoint",
+        "age_hours": 1.295,
+        "automation_safe": true,
+        "category": "forests",
+        "checkpoint_label": "6h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-04T22:17:14.296412+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:lyyoNBhLDPY:watch:6h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "low",
+        "recommended_action": "Keep observing through the next checkpoint.",
+        "series": "Hidden Network",
+        "state": "watch",
+        "target_views": 105,
+        "title": "Forests can cool the air below them",
+        "url": "https://www.youtube.com/shorts/lyyoNBhLDPY",
+        "video_id": "lyyoNBhLDPY",
+        "wait_until": "2026-07-04T22:17:14.296412+00:00",
+        "why": "No intervention signal is strong enough yet."
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-04T16:28:28.223686+00:00"
+    "source_generated_at": "2026-07-04T17:34:55.151902+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -283,24 +283,24 @@
     ],
     "counts": {
       "analytics_due": 3,
-      "awaiting_1h": 1,
+      "awaiting_1h": 0,
       "high_priority": 5,
       "repair_candidates": 2,
       "tracked": 10
     },
-    "generated_at": "2026-07-04T16:28:28.223686+00:00",
+    "generated_at": "2026-07-04T17:34:55.151902+00:00",
     "items": [
       {
-        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.187,
+        "action": "Keep observing through the next checkpoint.",
+        "age_hours": 1.295,
         "category": "forests",
         "checkpoints": [
           {
-            "delta_to_target": 0,
+            "delta_to_target": -24,
             "due_at": "2026-07-04T17:17:14.296412+00:00",
             "label": "1h",
-            "source": "missing",
-            "state": "pending",
+            "source": "observed",
+            "state": "observed",
             "target_views": 24,
             "views": 0
           },
@@ -308,7 +308,7 @@
             "delta_to_target": 0,
             "due_at": "2026-07-04T22:17:14.296412+00:00",
             "label": "6h",
-            "source": "missing",
+            "source": "estimated",
             "state": "pending",
             "target_views": 105,
             "views": 0
@@ -317,28 +317,28 @@
             "delta_to_target": 0,
             "due_at": "2026-07-05T16:17:14.296412+00:00",
             "label": "24h",
-            "source": "missing",
+            "source": "estimated",
             "state": "pending",
             "target_views": 300,
             "views": 0
           }
         ],
         "current_views": 0,
-        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "hypothesis": "No intervention signal is strong enough yet.",
         "next_checkpoint": {
           "delta_to_target": 0,
-          "due_at": "2026-07-04T17:17:14.296412+00:00",
-          "label": "1h",
-          "source": "missing",
+          "due_at": "2026-07-04T22:17:14.296412+00:00",
+          "label": "6h",
+          "source": "estimated",
           "state": "pending",
-          "target_views": 24,
+          "target_views": 105,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
         "priority": "low",
         "series": "Hidden Network",
-        "state": "awaiting_1h",
+        "state": "watch",
         "title": "Forests can cool the air below them",
         "uploaded_at": "2026-07-04T16:17:14.296412+00:00",
         "url": "https://www.youtube.com/shorts/lyyoNBhLDPY",
@@ -346,16 +346,16 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 1.051,
+        "action": "Keep observing through the next checkpoint.",
+        "age_hours": 2.158,
         "category": "forests",
         "checkpoints": [
           {
             "delta_to_target": -24,
             "due_at": "2026-07-04T16:25:24.945500+00:00",
             "label": "1h",
-            "source": "estimated",
-            "state": "due",
+            "source": "observed",
+            "state": "observed",
             "target_views": 24,
             "views": 0
           },
@@ -379,21 +379,21 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+        "hypothesis": "No intervention signal is strong enough yet.",
         "next_checkpoint": {
-          "delta_to_target": -24,
-          "due_at": "2026-07-04T16:25:24.945500+00:00",
-          "label": "1h",
+          "delta_to_target": 0,
+          "due_at": "2026-07-04T21:25:24.945500+00:00",
+          "label": "6h",
           "source": "estimated",
-          "state": "due",
-          "target_views": 24,
+          "state": "pending",
+          "target_views": 105,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "high",
+        "priority": "low",
         "series": "Hidden Network",
-        "state": "analytics_due",
+        "state": "watch",
         "title": "Forests reveal edge climates along trails",
         "uploaded_at": "2026-07-04T15:25:24.945500+00:00",
         "url": "https://www.youtube.com/shorts/ez3hSEWuNws",
@@ -402,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.321,
+        "age_hours": 3.429,
         "category": "trees",
         "checkpoints": [
           {
@@ -457,7 +457,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 4.427,
+        "age_hours": 5.534,
         "category": "forests",
         "checkpoints": [
           {
@@ -512,7 +512,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 4.596,
+        "age_hours": 5.704,
         "category": "physics",
         "checkpoints": [
           {
@@ -566,8 +566,8 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.539,
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "age_hours": 6.647,
         "category": "chemistry",
         "checkpoints": [
           {
@@ -580,11 +580,11 @@
             "views": 0
           },
           {
-            "delta_to_target": 0,
+            "delta_to_target": -105,
             "due_at": "2026-07-04T16:56:06.958652+00:00",
             "label": "6h",
-            "source": "estimated",
-            "state": "pending",
+            "source": "observed",
+            "state": "observed",
             "target_views": 105,
             "views": 0
           },
@@ -599,30 +599,41 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "No intervention signal is strong enough yet.",
+        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
         "next_checkpoint": {
           "delta_to_target": 0,
-          "due_at": "2026-07-04T16:56:06.958652+00:00",
-          "label": "6h",
+          "due_at": "2026-07-05T10:56:06.958652+00:00",
+          "label": "24h",
           "source": "estimated",
           "state": "pending",
-          "target_views": 105,
+          "target_views": 300,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Nature Signals",
-        "state": "watch",
+        "state": "repair_candidate",
         "title": "Crystals grow by repeating one tiny pattern",
         "uploaded_at": "2026-07-04T10:56:06.958652+00:00",
         "url": "https://www.youtube.com/shorts/NxfTBrgi_ns",
         "video_id": "NxfTBrgi_ns",
-        "views_per_hour": 0.0
+        "views_per_hour": 0.0,
+        "warning": {
+          "action": "TITLE_AUTO_REPAIR_TRIGGER",
+          "confidence_score": 0.594,
+          "reason": "low early velocity",
+          "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+          "title": "Crystals grow by repeating one tiny pattern",
+          "video_id": "NxfTBrgi_ns",
+          "views": 0,
+          "warning_state": "repair_risk"
+        }
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 6.872,
+        "age_hours": 7.98,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -687,18 +698,18 @@
         }
       },
       {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 8.353,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 9.46,
         "category": "geology",
         "checkpoints": [
           {
-            "delta_to_target": -20,
+            "delta_to_target": -24,
             "due_at": "2026-07-04T09:07:18.699682+00:00",
             "label": "1h",
-            "source": "observed",
-            "state": "observed",
+            "source": "estimated",
+            "state": "overdue",
             "target_views": 24,
-            "views": 4
+            "views": 0
           },
           {
             "delta_to_target": -101,
@@ -720,41 +731,30 @@
           }
         ],
         "current_views": 4,
-        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
-          "due_at": "2026-07-05T08:07:18.699682+00:00",
-          "label": "24h",
+          "delta_to_target": -24,
+          "due_at": "2026-07-04T09:07:18.699682+00:00",
+          "label": "1h",
           "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 4
+          "state": "overdue",
+          "target_views": 24,
+          "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
         "priority": "high",
         "series": "Earth Engine",
-        "state": "repair_candidate",
+        "state": "analytics_due",
         "title": "Rock layers expose erosion in bare open hills",
         "uploaded_at": "2026-07-04T08:07:18.699682+00:00",
         "url": "https://www.youtube.com/shorts/tt2gmX6cuHo",
         "video_id": "tt2gmX6cuHo",
-        "views_per_hour": 0.485,
-        "warning": {
-          "action": "TITLE_AUTO_REPAIR_TRIGGER",
-          "confidence_score": 0.594,
-          "reason": "low early velocity",
-          "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-          "title": "Rock layers expose erosion in bare open hills",
-          "video_id": "tt2gmX6cuHo",
-          "views": 4,
-          "warning_state": "repair_risk"
-        }
+        "views_per_hour": 0.426
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 9.182,
+        "age_hours": 10.29,
         "category": "farm",
         "checkpoints": [
           {
@@ -809,7 +809,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 14.882,
+        "age_hours": 15.99,
         "category": "forests",
         "checkpoints": [
           {
@@ -860,7 +860,7 @@
         "uploaded_at": "2026-07-04T01:35:32.786321+00:00",
         "url": "https://www.youtube.com/shorts/Jh4XroVWOKk",
         "video_id": "Jh4XroVWOKk",
-        "views_per_hour": 0.068,
+        "views_per_hour": 0.063,
         "warning": {
           "confidence_score": 0.431,
           "reason": "low confidence early signal; keep observing",
@@ -878,7 +878,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-04T16:28:28.225329+00:00",
+  "generated_at": "2026-07-04T17:34:55.153592+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
