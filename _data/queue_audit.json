@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-04T10:50:05.975343+00:00",
-  "pending": 38,
+  "generated_at": "2026-07-04T11:00:00.974243+00:00",
+  "pending": 37,
   "states": {
-    "rewrite": 32,
+    "rewrite": 31,
     "publish_ready": 6
   },
   "mechanism_clusters": {
@@ -14,36 +14,55 @@
     "beak_signal": 1
   },
   "rights": {
-    "approved": 38
+    "approved": 37
   },
   "prune_summary": {
-    "pending_before": 56,
-    "pending_after": 38,
-    "rejected": 18,
+    "pending_before": 37,
+    "pending_after": 37,
+    "rejected": 0,
     "repair_needed": 0,
-    "repaired": 8,
+    "repaired": 5,
     "reasons": {
       "editor_in_chief:subject repeated inside 3-day cooldown": 25,
-      "objective_gate:bootstrap_observe_before_scaling": 19,
+      "objective_gate:bootstrap_observe_before_scaling": 18,
       "objective_gate:observe_before_scaling": 17,
-      "off_topic_visual": 9,
-      "duplicate_title": 6,
-      "duplicate_script": 5,
-      "duplicate_angle": 5,
-      "copy_subject_mismatch": 4,
       "editor_in_chief:script quality gate blocked the narration": 4,
-      "script_hook_mismatch": 3,
       "editor_in_chief:editorial score 46 is below 62": 3,
-      "script_word_loop": 2,
-      "script_subject_mismatch": 2,
+      "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
+      "editorial_cooldown_supply_fallback": 3,
       "editor_in_chief:editorial score 40 is below 62": 2,
-      "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
-      "editorial_cooldown_supply_fallback": 2,
-      "bad_plural_verb": 1,
+      "editor_in_chief:editorial score 49 is below 62": 1,
       "editor_in_chief:editorial score 42 is below 62": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "cf1d867c52e523e4",
+      "title": "Los cristales crecen con un patrón microscópico",
+      "reasons": [
+        "subject repeated inside 3-day cooldown",
+        "humanity score is too low",
+        "editorial score 29 is below 62"
+      ],
+      "stage": "editor_in_chief"
+    },
+    {
+      "id": "Coral reefs are cities built by tiny animals",
+      "title": "Coral reefs are cities built by tiny animals",
+      "reasons": [
+        "editorial score is below publish threshold"
+      ],
+      "stage": "pre_publish_audit"
+    },
+    {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
     {
       "id": "50071ebef0b25f84",
       "title": "Mangroves can slow waves before they hit land",
@@ -208,15 +227,6 @@
       "stage": "queue_prune"
     },
     {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
-    },
-    {
       "id": "cdc63f772f0df85f",
       "title": "Mangroves can slow waves before they hit land",
       "reasons": [
@@ -299,22 +309,6 @@
       "title": "Birds see ultraviolet patterns we miss",
       "reasons": [
         "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "df419b31b16041db",
-      "title": "Birds see ultraviolet patterns we miss",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "663c19d6ee5042dc",
-      "title": "Volcanic craters dye water red for a reason",
-      "reasons": [
-        "off_topic_visual"
       ],
       "stage": "queue_prune"
     }
@@ -498,7 +492,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T10:49:26.661933+00:00",
+        "checked_at": "2026-07-04T10:59:25.668611+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -593,7 +587,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 42,
+          "sample_count": 43,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1098,7 +1092,7 @@
         "state": "publish_ready",
         "story_format": "physics_demo",
         "subscriber_conversion": {
-          "comment_probability": 0.253,
+          "comment_probability": 0.256,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -1116,17 +1110,18 @@
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.297,
+          "return_probability": 0.3,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 99,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.141
+          "subscriber_probability": 0.143
         },
         "title_score": 100,
         "weak_content": {
@@ -1149,7 +1144,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T10:49:26.663993+00:00",
+        "checked_at": "2026-07-04T10:59:25.670432+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1245,7 +1240,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 42,
+          "sample_count": 43,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1476,12 +1471,12 @@
           "thumbnail_text": "FIELD LINES",
           "title": "Magnets make invisible fields visible"
         },
-        "series": "Nature Signals",
+        "series": "Nature Signals #2",
         "series_identity": {
-          "continuity_prompt": "Next in Nature Signals: compare this with another force of nature.",
+          "continuity_prompt": "Next in Nature Signals #2: compare this with another force of nature.",
           "episode": 1,
-          "label": "Nature Signals",
-          "series": "Nature Signals"
+          "label": "Nature Signals #2",
+          "series": "Nature Signals #2"
         },
         "state": "magnetic",
         "strengths": [
@@ -1493,7 +1488,7 @@
           "retention_opening_aligned"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.253,
+          "comment_probability": 0.256,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -1511,17 +1506,18 @@
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.297,
+          "return_probability": 0.3,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 99,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.141
+          "subscriber_probability": 0.143
         },
         "swipe_risk": {
           "band": "low",
@@ -1800,7 +1796,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T10:49:26.666223+00:00",
+        "checked_at": "2026-07-04T10:59:25.672935+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1894,7 +1890,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 42,
+          "sample_count": 43,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -2271,661 +2267,6 @@
       }
     },
     {
-      "id": "cf1d867c52e523e4",
-      "title": "Crystals grow by repeating one tiny pattern",
-      "category": "chemistry",
-      "publish_score": {
-        "approved": true,
-        "category": "chemistry",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 86,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "crystal",
-            "edge",
-            "shape"
-          ],
-          "cue_terms": [
-            "crystal",
-            "edge",
-            "growth",
-            "shape"
-          ],
-          "frame_hook_bridge": [
-            "crystal"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "crystals"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 65,
-          "signals": {
-            "comment_potential": 62,
-            "educational_potential": 85,
-            "emotional_potential": 44,
-            "novelty": 55,
-            "replay_potential": 72,
-            "viral_potential": 71,
-            "visual_potential": 55
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "score": 99.9,
-        "state": "publish_ready",
-        "story_format": "chemistry_demo",
-        "subscriber_conversion": {
-          "comment_probability": 0.223,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.261,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-07-04T10:49:26.673682+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 99.9,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 99.9,
-      "youtube_brain": {
-        "animal": "crystals",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "crystal",
-            "edge",
-            "shape"
-          ],
-          "cue_terms": [
-            "crystal",
-            "edge",
-            "growth",
-            "shape"
-          ],
-          "frame_hook_bridge": [
-            "crystal"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "crystals"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "chemistry_demo",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "crystals",
-        "viewer_promise": "See why this crystal chemistry demo matters."
-      },
-      "packaging": {
-        "community_prompt": "Which crystals clue should Wild Brief compare next in Nature Signals?",
-        "cta_prompt": "Follow for one animal signal a day.",
-        "curiosity_gap": {
-          "hook": "Why do these crystals change after the crystal growth?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "chemistry demo",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 42,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} can {action} {subject} {subject} in the {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 37.46,
-            "format:fresh_variant": 26.1,
-            "format:winner_inspired": 37.46,
-            "hook:pattern_reuse": 37.46,
-            "thumbnail:new_thumbnail": 36.89
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "crystal",
-              "edge",
-              "shape"
-            ],
-            "cue_terms": [
-              "crystal",
-              "edge",
-              "growth",
-              "shape"
-            ],
-            "frame_hook_bridge": [
-              "crystal"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "crystals"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Crystals build shape from repeating atoms",
-          "Crystals show why the crystal edge matters.",
-          "Crystals show why the crystal edge matters.",
-          "Crystals show why the crystal edge matters.",
-          "Crystals give away the answer through crystal edge"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "crystal growth",
-          "ending_line": "Which reaction should we slow down next?",
-          "final_line": "Now the crystal growth at the start makes sense.",
-          "loop_score": 0.791,
-          "opening_line": "Crystals build shape from repeating atoms.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "crystal growth",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.791,
-        "next_episode_question": "Tomorrow in Nature Signals: another nature signal. What part of this feels most impossible?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "crystal",
-            "edge",
-            "shape"
-          ],
-          "cue_terms": [
-            "crystal",
-            "edge",
-            "growth",
-            "shape"
-          ],
-          "frame_hook_bridge": [
-            "crystal"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "crystals"
-        },
-        "pinned_comment": "Watch the pattern again. Tomorrow in Nature Signals: another nature signal. What part of this feels most impossible?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 16.53,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 17,
-          "first_2s_narration": "Crystals build shape from repeating atoms Watch the edge grow because atoms",
-          "first_frame_text": "CRYSTAL GROWTH",
-          "first_frame_text_words": 2,
-          "hook": "Crystals build shape from repeating atoms.",
-          "hook_specificity": 0.78,
-          "hook_words": 6,
-          "loop_score": 0.791,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "crystal",
-              "edge",
-              "shape"
-            ],
-            "cue_terms": [
-              "crystal",
-              "edge",
-              "growth",
-              "shape"
-            ],
-            "frame_hook_bridge": [
-              "crystal"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "crystals"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the pattern, so viewers rewatch the crystals clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Crystals build shape from repeating atoms Watch the edge grow because atoms",
-          "first_frame_text": "CRYSTAL GROWTH",
-          "next_episode_question": "Tomorrow in Nature Signals: another nature signal. What part of this feels most impossible?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains the visible pattern behind Crystals in a fast nature science story.",
-            "series": "Nature Signals",
-            "subject": "crystals",
-            "terms": [
-              "crystals",
-              "pattern",
-              "chemistry",
-              "chemistry demo"
-            ],
-            "title_variant": "Crystals pattern explained fast",
-            "visible_cue": "pattern"
-          },
-          "series": "Nature Signals",
-          "subject": "crystals",
-          "visible_cue": "pattern"
-        },
-        "risks": [],
-        "score": 96,
-        "search_intent": {
-          "description_line": "This Short explains the visible pattern behind Crystals in a fast nature science story.",
-          "series": "Nature Signals",
-          "subject": "crystals",
-          "terms": [
-            "crystals",
-            "pattern",
-            "chemistry",
-            "chemistry demo"
-          ],
-          "title_variant": "Crystals pattern explained fast",
-          "visible_cue": "pattern"
-        },
-        "selected_variant": {
-          "hook": "Crystals build shape from repeating atoms",
-          "score": 79,
-          "thumbnail_text": "CRYSTAL GROWTH",
-          "title": "Crystals grow by repeating one tiny pattern"
-        },
-        "series": "Nature Signals",
-        "series_identity": {
-          "continuity_prompt": "Next in Nature Signals: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Nature Signals",
-          "series": "Nature Signals"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.223,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.261,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "CRYSTAL GROWTH",
-          "CRYSTAL EDGE",
-          "WATCH CRYSTAL EDGE",
-          "CRYSTALS LOCK",
-          "CRYSTAL EDGE MATTERS",
-          "CRYSTAL EDGE FIRST",
-          "CRYSTAL EDGE REVEAL",
-          "CRYSTAL EDGE CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Crystals grow by repeating one tiny pattern",
-          "Crystals use crystal edge before they lock",
-          "This crystal edge gives crystals away",
-          "Why crystals lock after one crystal edge",
-          "Crystals reveal the answer with crystal edge",
-          "The crystal edge that changes the moment",
-          "Crystals make one crystal edge matter",
-          "Crystals show the hidden answer in seconds",
-          "Crystals: watch this crystal edge",
-          "Watch crystals after the crystal edge"
-        ],
-        "top_variants": [
-          {
-            "hook": "Crystals build shape from repeating atoms",
-            "score": 79,
-            "thumbnail_text": "CRYSTAL GROWTH",
-            "title": "Crystals grow by repeating one tiny pattern"
-          },
-          {
-            "hook": "Watch the crystal edge; it explains the behavior",
-            "score": 79,
-            "thumbnail_text": "CRYSTAL GROWTH",
-            "title": "Crystals grow by repeating one tiny pattern"
-          },
-          {
-            "hook": "Start with the crystal edge; it changes the scene",
-            "score": 79,
-            "thumbnail_text": "CRYSTAL GROWTH",
-            "title": "Crystals grow by repeating one tiny pattern"
-          },
-          {
-            "hook": "Crystals build shape from repeating atoms",
-            "score": 72,
-            "thumbnail_text": "CRYSTAL EDGE",
-            "title": "Crystals grow by repeating one tiny pattern"
-          },
-          {
-            "hook": "Watch the crystal edge; it explains the behavior",
-            "score": 72,
-            "thumbnail_text": "CRYSTAL EDGE",
-            "title": "Crystals grow by repeating one tiny pattern"
-          },
-          {
-            "hook": "Start with the crystal edge; it changes the scene",
-            "score": 72,
-            "thumbnail_text": "CRYSTAL EDGE",
-            "title": "Crystals grow by repeating one tiny pattern"
-          },
-          {
-            "hook": "Crystals build shape from repeating atoms",
-            "score": 72,
-            "thumbnail_text": "WATCH CRYSTAL EDGE",
-            "title": "Crystals grow by repeating one tiny pattern"
-          },
-          {
-            "hook": "Watch the crystal edge; it explains the behavior",
-            "score": 72,
-            "thumbnail_text": "WATCH CRYSTAL EDGE",
-            "title": "Crystals grow by repeating one tiny pattern"
-          },
-          {
-            "hook": "Start with the crystal edge; it changes the scene",
-            "score": 72,
-            "thumbnail_text": "WATCH CRYSTAL EDGE",
-            "title": "Crystals grow by repeating one tiny pattern"
-          },
-          {
-            "hook": "Crystals build shape from repeating atoms",
-            "score": 72,
-            "thumbnail_text": "CRYSTALS LOCK",
-            "title": "Crystals grow by repeating one tiny pattern"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "32bc71248738d412",
       "title": "Parrots use their beak like a third foot",
       "category": "birds",
@@ -3100,7 +2441,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T10:49:26.668777+00:00",
+        "checked_at": "2026-07-04T10:59:25.675301+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3194,7 +2535,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 42,
+          "sample_count": 43,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -3748,7 +3089,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T10:49:25.561303+00:00",
+        "checked_at": "2026-07-04T10:59:25.608686+00:00",
         "mechanism_cluster": "dance_navigation",
         "objective_reasons": [],
         "score": 78.0,
@@ -3840,7 +3181,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 42,
+          "sample_count": 43,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -4391,7 +3732,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T10:49:25.564769+00:00",
+        "checked_at": "2026-07-04T10:59:25.612536+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -4483,7 +3824,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 42,
+          "sample_count": 43,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -5030,7 +4371,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T10:49:26.274685+00:00",
+        "checked_at": "2026-07-04T10:59:25.644269+00:00",
         "mechanism_cluster": "visual_stabilization",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5122,7 +4463,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 42,
+          "sample_count": 43,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -5670,7 +5011,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T10:49:26.287758+00:00",
+        "checked_at": "2026-07-04T10:59:25.656671+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5764,7 +5105,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 42,
+          "sample_count": 43,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6317,7 +5658,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T10:49:26.290095+00:00",
+        "checked_at": "2026-07-04T10:59:25.658764+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6409,7 +5750,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 42,
+          "sample_count": 43,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6957,7 +6298,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T10:49:26.291387+00:00",
+        "checked_at": "2026-07-04T10:59:25.660079+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7049,7 +6390,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 42,
+          "sample_count": 43,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -7598,7 +6939,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T10:49:26.292619+00:00",
+        "checked_at": "2026-07-04T10:59:25.661327+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7692,7 +7033,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 42,
+          "sample_count": 43,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -8197,7 +7538,7 @@
         "state": "rewrite",
         "story_format": "space_science",
         "subscriber_conversion": {
-          "comment_probability": 0.223,
+          "comment_probability": 0.24,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -8214,17 +7555,18 @@
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.261,
+          "return_probability": 0.281,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 86,
+          "score": 93,
           "state": "strong",
-          "subscriber_probability": 0.123
+          "subscriber_probability": 0.133
         },
         "title_score": 100,
         "weak_content": {
@@ -8247,7 +7589,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T10:49:26.671581+00:00",
+        "checked_at": "2026-07-04T10:59:25.678293+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8342,7 +7684,7 @@
           },
           "explore_rate": 0.1,
           "mode": "explore",
-          "sample_count": 42,
+          "sample_count": 43,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -8570,11 +7912,11 @@
           "thumbnail_text": "LOCKED FACE",
           "title": "The moon keeps one face turned toward Earth"
         },
-        "series": "Nature Signals",
+        "series": "Nature Signals #2",
         "series_identity": {
           "continuity_prompt": "Next in Nature Signals: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Nature Signals",
+          "episode": 2,
+          "label": "Nature Signals #2",
           "series": "Nature Signals"
         },
         "state": "magnetic",
@@ -8587,7 +7929,7 @@
           "retention_opening_aligned"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.223,
+          "comment_probability": 0.24,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -8604,17 +7946,18 @@
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.261,
+          "return_probability": 0.281,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 86,
+          "score": 93,
           "state": "strong",
-          "subscriber_probability": 0.123
+          "subscriber_probability": 0.133
         },
         "swipe_risk": {
           "band": "low",
@@ -8897,7 +8240,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T10:49:25.582311+00:00",
+        "checked_at": "2026-07-04T10:59:25.631662+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -8993,7 +8336,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 42,
+          "sample_count": 43,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -9543,7 +8886,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T10:49:25.586266+00:00",
+        "checked_at": "2026-07-04T10:59:25.635833+00:00",
         "mechanism_cluster": "electric_sense",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -9638,7 +8981,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 42,
+          "sample_count": 43,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -10012,6 +9355,647 @@
       }
     },
     {
+      "id": "d5905286e8a38b10",
+      "title": "Coral reefs are built by tiny living builders",
+      "category": "ocean",
+      "publish_score": {
+        "approved": true,
+        "category": "ocean",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.401,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.201,
+          "data_quality": "estimated",
+          "data_quality_score": 0.35,
+          "minimum_sample_size": 38,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.20.",
+          "recommendation_strength": "observe",
+          "sample_size": 13
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.201,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "reef"
+          ],
+          "cue_terms": [
+            "city",
+            "reef"
+          ],
+          "frame_hook_bridge": [
+            "reef"
+          ],
+          "risks": [
+            "missing_early_action"
+          ],
+          "score": 96.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "coral"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.42,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.227,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+          "reasons": [],
+          "score": 58,
+          "signals": {
+            "comment_potential": 46,
+            "educational_potential": 58,
+            "emotional_potential": 36,
+            "novelty": 51,
+            "replay_potential": 56,
+            "viral_potential": 59,
+            "visual_potential": 81
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.42,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.227,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+          "reasons": [],
+          "score": 74,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 74
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "ecosystem_engine",
+        "subscriber_conversion": {
+          "comment_probability": 0.253,
+          "confidence": {
+            "bootstrap_multiplier": 0.409,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.212,
+            "data_quality": "estimated",
+            "data_quality_score": 0.425,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.21.",
+            "recommendation_strength": "observe",
+            "sample_size": 6
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.21.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.297,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 99,
+          "state": "strong",
+          "subscriber_probability": 0.141
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-07-04T10:59:25.642388+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:observe_before_scaling",
+          "editor_in_chief:subject repeated inside 3-day cooldown",
+          "editorial_cooldown_supply_fallback"
+        ],
+        "score": 72.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 72.0,
+      "youtube_brain": {
+        "animal": "coral",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "reef"
+          ],
+          "cue_terms": [
+            "city",
+            "reef"
+          ],
+          "frame_hook_bridge": [
+            "reef"
+          ],
+          "risks": [
+            "missing_early_action"
+          ],
+          "score": 96.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "coral"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "ecosystem_engine",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "coral",
+        "viewer_promise": "See why this coral ecosystem engine matters."
+      },
+      "packaging": {
+        "community_prompt": "Which coral clue should Wild Brief compare next in Ocean Mysteries?",
+        "cta_prompt": "Want to uncover what is still hidden in the ocean?",
+        "curiosity_gap": {
+          "hook": "Why does this coral changes after the reef city?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "ecosystem engine",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 43,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} can {action} {subject} {subject} in the {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 37.46,
+            "format:fresh_variant": 26.1,
+            "format:winner_inspired": 37.46,
+            "hook:pattern_reuse": 37.46,
+            "thumbnail:new_thumbnail": 36.89
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "reef"
+            ],
+            "cue_terms": [
+              "city",
+              "reef"
+            ],
+            "frame_hook_bridge": [
+              "reef"
+            ],
+            "risks": [
+              "missing_early_action"
+            ],
+            "score": 96.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "coral"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Coral reefs are built by tiny living builders",
+          "Coral shows why the reef city matters.",
+          "Coral shows why the reef city matters.",
+          "Coral shows why the reef city matters.",
+          "Coral reefs give away the answer through reef city"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "reef city",
+          "ending_line": "Which habitat next?",
+          "final_line": "Now the reef city at the start makes sense.",
+          "loop_score": 0.751,
+          "opening_line": "Coral reefs are built by tiny living builders.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "reef city",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.751,
+        "next_episode_question": "Tomorrow in Ocean Mysteries: another nature signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "reef"
+          ],
+          "cue_terms": [
+            "city",
+            "reef"
+          ],
+          "frame_hook_bridge": [
+            "reef"
+          ],
+          "risks": [
+            "missing_early_action"
+          ],
+          "score": 96.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "coral"
+        },
+        "pinned_comment": "Watch the reef city again. Tomorrow in Ocean Mysteries: another nature signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 16.24,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 17,
+          "first_2s_narration": "Coral reefs are built by tiny living builders Watch the reef texture",
+          "first_frame_text": "REEF CITY",
+          "first_frame_text_words": 2,
+          "hook": "Coral reefs are built by tiny living builders.",
+          "hook_specificity": 0.78,
+          "hook_words": 8,
+          "loop_score": 0.751,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "reef"
+            ],
+            "cue_terms": [
+              "city",
+              "reef"
+            ],
+            "frame_hook_bridge": [
+              "reef"
+            ],
+            "risks": [
+              "missing_early_action"
+            ],
+            "score": 96.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "coral"
+          },
+          "opening_retention_score": 96.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the reef city, so viewers rewatch the coral clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.42,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.227,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+          "reasons": [],
+          "score": 74,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 74
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Coral reefs are built by tiny living builders Watch the reef texture",
+          "first_frame_text": "REEF CITY",
+          "next_episode_question": "Tomorrow in Ocean Mysteries: another nature signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+          "opening_retention_score": 96.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains the visible reef city behind Coral in a fast nature science story.",
+            "series": "Ocean Mysteries",
+            "subject": "coral",
+            "terms": [
+              "coral",
+              "reef city",
+              "ocean",
+              "ecosystem engine"
+            ],
+            "title_variant": "Coral reef city explained fast",
+            "visible_cue": "reef city"
+          },
+          "series": "Ocean Mysteries",
+          "subject": "coral",
+          "visible_cue": "reef city"
+        },
+        "risks": [],
+        "score": 96,
+        "search_intent": {
+          "description_line": "This Short explains the visible reef city behind Coral in a fast nature science story.",
+          "series": "Ocean Mysteries",
+          "subject": "coral",
+          "terms": [
+            "coral",
+            "reef city",
+            "ocean",
+            "ecosystem engine"
+          ],
+          "title_variant": "Coral reef city explained fast",
+          "visible_cue": "reef city"
+        },
+        "selected_variant": {
+          "hook": "Start with the reef city; it changes the scene",
+          "score": 79,
+          "thumbnail_text": "REEF CITY",
+          "title": "Coral reefs are cities built by tiny animals"
+        },
+        "series": "Ocean Mysteries #4",
+        "series_identity": {
+          "continuity_prompt": "Next in Ocean Mysteries: compare this with another force of nature.",
+          "episode": 4,
+          "label": "Ocean Mysteries #4",
+          "series": "Ocean Mysteries"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.253,
+          "confidence": {
+            "bootstrap_multiplier": 0.409,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.212,
+            "data_quality": "estimated",
+            "data_quality_score": 0.425,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.21.",
+            "recommendation_strength": "observe",
+            "sample_size": 6
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.21.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.297,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 99,
+          "state": "strong",
+          "subscriber_probability": 0.141
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "REEF CITY",
+          "WATCH REEF CITY",
+          "CORAL REEFS BUILD",
+          "REEF CITY MATTERS",
+          "REEF CITY FIRST",
+          "REEF CITY REVEAL",
+          "REEF CITY CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Coral reefs are cities built by tiny animals",
+          "Coral reefs are built by tiny living builders",
+          "Coral reefs use reef city before they build",
+          "This reef city gives coral reefs away",
+          "Why coral reefs build after one reef city",
+          "Coral reefs reveal the answer with reef city",
+          "The reef city that changes the moment",
+          "Coral reefs make one reef city matter",
+          "Coral reefs show the hidden answer in seconds",
+          "Coral reefs: watch this reef city"
+        ],
+        "top_variants": [
+          {
+            "hook": "Start with the reef city; it changes the scene",
+            "score": 79,
+            "thumbnail_text": "REEF CITY",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Coral reefs are built by tiny living builders",
+            "score": 78,
+            "thumbnail_text": "REEF CITY",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Watch the reef city; it explains the behavior",
+            "score": 78,
+            "thumbnail_text": "REEF CITY",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Start with the reef city; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "WATCH REEF CITY",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Start with the reef city; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "CORAL REEFS BUILD",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Start with the reef city; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "REEF CITY MATTERS",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Watch the reef city; it explains the behavior",
+            "score": 72,
+            "thumbnail_text": "REEF CITY FIRST",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Start with the reef city; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "REEF CITY FIRST",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Coral reefs are built by tiny living builders",
+            "score": 71,
+            "thumbnail_text": "WATCH REEF CITY",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Watch the reef city; it explains the behavior",
+            "score": 71,
+            "thumbnail_text": "WATCH REEF CITY",
+            "title": "Coral reefs are cities built by tiny animals"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "6070349d168d1d45",
       "title": "Lions hunt better when the pride coordinates",
       "category": "wildlife",
@@ -10184,7 +10168,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T10:49:25.562716+00:00",
+        "checked_at": "2026-07-04T10:59:25.610267+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown"
@@ -10278,7 +10262,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 42,
+          "sample_count": 43,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -10831,7 +10815,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T10:49:25.567114+00:00",
+        "checked_at": "2026-07-04T10:59:25.615009+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -10928,7 +10912,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 42,
+          "sample_count": 43,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -11487,7 +11471,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T10:49:25.569928+00:00",
+        "checked_at": "2026-07-04T10:59:25.618252+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -11588,7 +11572,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 42,
+          "sample_count": 43,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -12149,7 +12133,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T10:49:25.571519+00:00",
+        "checked_at": "2026-07-04T10:59:25.620034+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -12244,7 +12228,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 42,
+          "sample_count": 43,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -12791,7 +12775,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T10:49:25.573502+00:00",
+        "checked_at": "2026-07-04T10:59:25.622175+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -12885,7 +12869,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 42,
+          "sample_count": 43,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
