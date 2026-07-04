@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-04T17:35:53.662854+00:00",
+  "generated_at": "2026-07-04T17:36:22.192984+00:00",
   "pending": 33,
   "states": {
     "rewrite": 27,
@@ -17,20 +17,30 @@
     "approved": 33
   },
   "prune_summary": {
-    "pending_before": 33,
+    "pending_before": 46,
     "pending_after": 33,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 4,
+    "rejected": 13,
+    "repair_needed": 2,
+    "repaired": 6,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 24,
       "editor_in_chief:subject repeated inside 3-day cooldown": 21,
+      "duplicate_title": 7,
       "objective_gate:observe_before_scaling": 7,
       "editor_in_chief:script quality gate blocked the narration": 4,
       "editor_in_chief:editorial score 46 is below 62": 3,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
       "editorial_cooldown_supply_fallback": 3,
+      "duplicate_script": 2,
+      "duplicate_angle": 2,
+      "queue_score_reject": 2,
+      "rights_guard_person_manual_review": 2,
       "editor_in_chief:editorial score 40 is below 62": 2,
+      "copy_subject_mismatch": 1,
+      "off_topic_visual": 1,
+      "script_word_loop": 1,
+      "thumbnail_text_not_scannable": 1,
+      "thumbnail_not_2_4_words": 1,
       "editor_in_chief:editorial score 49 is below 62": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
       "publish_ready_supply_reserve_fallback": 1
@@ -38,45 +48,115 @@
   },
   "rejected_preview": [
     {
-      "id": "Sharks sense tiny electric fields",
-      "title": "Sharks sense tiny electric fields",
+      "id": "edbe813e62b4682b",
+      "title": "Mangroves can slow waves before they hit land",
       "reasons": [
-        "editorial score is below publish threshold"
+        "duplicate_script",
+        "duplicate_angle"
       ],
-      "stage": "pre_publish_audit"
+      "stage": "queue_prune_final"
     },
     {
-      "id": "Lions hunt better when the pride coordinates",
-      "title": "Lions hunt better when the pride coordinates",
+      "id": "b30a5214eab8b82d",
+      "title": "Forests can cool the air below them",
       "reasons": [
-        "editorial score is below publish threshold"
+        "duplicate_title"
       ],
-      "stage": "pre_publish_audit"
+      "stage": "queue_prune_final"
     },
     {
-      "id": "Coral reefs are cities built by tiny animals",
-      "title": "Coral reefs are cities built by tiny animals",
+      "id": "f0a7574bdf728731",
+      "title": "Forests make cooler air under the canopy",
       "reasons": [
-        "editorial score is below publish threshold"
+        "duplicate_title"
       ],
-      "stage": "pre_publish_audit"
+      "stage": "queue_prune"
     },
     {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
+      "id": "acb4c68e2dd17bec",
+      "title": "Dogs read human pointing surprisingly well",
+      "reasons": [
+        "rights_guard_person_manual_review"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "aafb6b35f5dc470c",
+      "title": "Birds see ultraviolet patterns we miss",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "989407aaee496b6f",
+      "title": "Ducks carry waterproof oil on their feathers",
       "reasons": [
         "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
+        "thumbnail_not_2_4_words",
+        "queue_score_reject"
       ],
-      "stage": "youtube_brain_rewrite"
+      "stage": "queue_repair"
     },
     {
-      "id": "5a6241904e5e32d2",
-      "title": "The moon keeps one face turned toward Earth",
+      "id": "df024bd1c623bb62",
+      "title": "Dogs read human pointing surprisingly well",
       "reasons": [
-        "low_opportunity_score"
+        "rights_guard_person_manual_review"
       ],
-      "stage": "opportunity_score"
+      "stage": "queue_prune"
+    },
+    {
+      "id": "d31afdfd480af417",
+      "title": "Plants use trap hairs to count touches before snapping shut",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "8065ba4787ebc9d0",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "0c8e057615d0037c",
+      "title": "Birds see ultraviolet patterns we miss",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "b054b8f93196b37d",
+      "title": "Why a dog's nose changes the whole story before the obvious moment",
+      "reasons": [
+        "off_topic_visual",
+        "script_word_loop"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "46470df60bd83585",
+      "title": "Coral reefs are cities built by tiny animals",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "8227ed08e93ba08e",
+      "title": "Sharks sense tiny electric fields",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
     },
     {
       "id": "98b64da459ba06a4",
@@ -223,76 +303,6 @@
         "duplicate_script"
       ],
       "stage": "queue_prune_final"
-    },
-    {
-      "id": "71ced66d133b5137",
-      "title": "Bees dance directions back to the hive",
-      "reasons": [
-        "copy_subject_mismatch",
-        "duplicate_title",
-        "duplicate_script"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "c10cad54f29defb2",
-      "title": "fluffy cats aren’t just cute — they’re built to hunt",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "5b1813f11a8ce70d",
-      "title": "Ducks carry waterproof oil on their feathers",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "f121811990fedc74",
-      "title": "Horses remember familiar faces for months",
-      "reasons": [
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "634272f911f0fe02",
-      "title": "Deer detect changes with their eyes",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "b5b560171d7127d4",
-      "title": "Mangroves take power out of waves",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "65b5e13862552ce8",
-      "title": "Birds see ultraviolet patterns we miss",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "64bc3aa9a17ecd3b",
-      "title": "Birds see ultraviolet patterns we miss",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -474,7 +484,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T17:35:20.788433+00:00",
+        "checked_at": "2026-07-04T17:35:48.827098+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1120,7 +1130,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T17:35:20.790659+00:00",
+        "checked_at": "2026-07-04T17:35:48.829292+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1764,7 +1774,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T17:35:20.792968+00:00",
+        "checked_at": "2026-07-04T17:35:48.831563+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2411,7 +2421,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T17:35:20.734577+00:00",
+        "checked_at": "2026-07-04T17:35:48.446354+00:00",
         "mechanism_cluster": "dance_navigation",
         "objective_reasons": [],
         "score": 78.0,
@@ -3053,7 +3063,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T17:35:20.738990+00:00",
+        "checked_at": "2026-07-04T17:35:48.449898+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling"
@@ -3691,7 +3701,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T17:35:20.749517+00:00",
+        "checked_at": "2026-07-04T17:35:48.790354+00:00",
         "mechanism_cluster": "visual_stabilization",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4330,7 +4340,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T17:35:20.768563+00:00",
+        "checked_at": "2026-07-04T17:35:48.807874+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4978,7 +4988,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T17:35:20.770012+00:00",
+        "checked_at": "2026-07-04T17:35:48.809220+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5624,7 +5634,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T17:35:20.772009+00:00",
+        "checked_at": "2026-07-04T17:35:48.810978+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6263,7 +6273,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T17:35:20.773323+00:00",
+        "checked_at": "2026-07-04T17:35:48.812217+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6903,7 +6913,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T17:35:20.774595+00:00",
+        "checked_at": "2026-07-04T17:35:48.813395+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7560,7 +7570,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T17:35:20.795819+00:00",
+        "checked_at": "2026-07-04T17:35:48.834291+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8209,7 +8219,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T17:35:20.736750+00:00",
+        "checked_at": "2026-07-04T17:35:48.447798+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -8853,7 +8863,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T17:35:20.743361+00:00",
+        "checked_at": "2026-07-04T17:35:48.454026+00:00",
         "mechanism_cluster": "electric_sense",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -9493,7 +9503,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-04T17:35:20.747565+00:00",
+        "checked_at": "2026-07-04T17:35:48.788584+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -10136,7 +10146,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T17:35:20.740717+00:00",
+        "checked_at": "2026-07-04T17:35:48.451472+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -10788,7 +10798,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T17:35:20.742337+00:00",
+        "checked_at": "2026-07-04T17:35:48.453030+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -11435,7 +11445,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T17:35:20.745362+00:00",
+        "checked_at": "2026-07-04T17:35:48.455885+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -12083,7 +12093,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T17:35:20.752250+00:00",
+        "checked_at": "2026-07-04T17:35:48.792556+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12729,7 +12739,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-04T17:35:20.754551+00:00",
+        "checked_at": "2026-07-04T17:35:48.794559+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
