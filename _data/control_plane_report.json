@@ -1,36 +1,41 @@
 {
   "state": "migration_needed",
-  "pressure_score": 86,
+  "pressure_score": 93,
   "metrics": {
-    "live_state_files": 176,
-    "data_state_files": 126,
+    "live_state_files": 265,
+    "data_state_files": 215,
     "video_done_markers": 48,
-    "live_state_bytes": 9304963,
-    "stories_queue_bytes": 2839939,
-    "stories_queue_lines": 79349,
+    "live_state_bytes": 13051810,
+    "stories_queue_bytes": 2882852,
+    "stories_queue_lines": 80242,
     "workflow_files": 18,
     "state_path_refs": 282
   },
   "largest_state_files": [
     {
       "path": "_data/stories_queue.json",
-      "bytes": 2839939,
-      "lines": 79349
+      "bytes": 2882852,
+      "lines": 80242
     },
     {
       "path": "_data/rejected_queue.jsonl",
-      "bytes": 761062,
-      "lines": 952
+      "bytes": 2087642,
+      "lines": 2606
+    },
+    {
+      "path": "_data/repair_queue.jsonl",
+      "bytes": 1389857,
+      "lines": 79
     },
     {
       "path": "_data/early_performance.json",
-      "bytes": 452024,
-      "lines": 17506
+      "bytes": 452383,
+      "lines": 17522
     },
     {
       "path": "_data/queue_audit.json",
-      "bytes": 447623,
-      "lines": 13191
+      "bytes": 447434,
+      "lines": 13197
     },
     {
       "path": "_data/packaging_report.json",
@@ -39,8 +44,8 @@
     },
     {
       "path": "_data/provider_stats.jsonl",
-      "bytes": 265490,
-      "lines": 3416
+      "bytes": 267275,
+      "lines": 3439
     },
     {
       "path": "_data/autonomous_growth_plan.json",
@@ -49,8 +54,8 @@
     },
     {
       "path": "_data/analytics/api_quota_ledger.jsonl",
-      "bytes": 183784,
-      "lines": 279
+      "bytes": 185021,
+      "lines": 281
     },
     {
       "path": "_data/dry_run_publish.json",
@@ -66,11 +71,6 @@
       "path": "_data/youtube_brain_report.json",
       "bytes": 115134,
       "lines": 3881
-    },
-    {
-      "path": "_data/publish_slot_decisions.jsonl",
-      "bytes": 101282,
-      "lines": 132
     }
   ],
   "migration_lanes": [
