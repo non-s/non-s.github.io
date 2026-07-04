@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-04T12:03:37.110724+00:00",
+  "generated_at": "2026-07-04T12:07:11.359452+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
   "overall_progress_pct": 36.6,
@@ -22,13 +22,8 @@
       "top_blockers": [
         {
           "id": "editor_in_chief:subject repeated inside 3-day cooldown",
-          "count": 50,
+          "count": 48,
           "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
-        },
-        {
-          "id": "objective_gate:observe_before_scaling",
-          "count": 34,
-          "operator_translation": "observe this pattern before scaling it"
         },
         {
           "id": "objective_gate:bootstrap_observe_before_scaling",
@@ -36,13 +31,18 @@
           "operator_translation": "collect more observed signal before scaling this pattern"
         },
         {
+          "id": "objective_gate:observe_before_scaling",
+          "count": 32,
+          "operator_translation": "observe this pattern before scaling it"
+        },
+        {
           "id": "queue_prune:rewrite",
-          "count": 30,
+          "count": 29,
           "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
           "id": "editor_in_chief:cooldown_subject",
-          "count": 21,
+          "count": 20,
           "operator_translation": "pick a fresh subject inside the same lane"
         }
       ]
@@ -88,14 +88,14 @@
   "metrics": {
     "health_score": 92,
     "health_state": "excellent",
-    "pending": 36,
+    "pending": 35,
     "operational_publish_ready": 6,
     "apparent_publish_ready": 6,
     "eligible_count": 6,
-    "scale_ready_count": 1,
+    "scale_ready_count": 0,
     "next_shorts_count": 6,
-    "editorial_candidate_count": 36,
-    "published_count": 44,
+    "editorial_candidate_count": 35,
+    "published_count": 45,
     "views_28d": 30314,
     "total_subscribers": 46,
     "subs_per_1000_views": 1.221,
@@ -104,18 +104,13 @@
     "recurring_viewer_rate": 0.001,
     "youtube_search_view_rate": 0.017,
     "crosspost_assets": 10,
-    "comments_sampled": 44
+    "comments_sampled": 45
   },
   "top_blockers": [
     {
       "id": "editor_in_chief:subject repeated inside 3-day cooldown",
-      "count": 50,
+      "count": 48,
       "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
-    },
-    {
-      "id": "objective_gate:observe_before_scaling",
-      "count": 34,
-      "operator_translation": "observe this pattern before scaling it"
     },
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
@@ -123,13 +118,18 @@
       "operator_translation": "collect more observed signal before scaling this pattern"
     },
     {
+      "id": "objective_gate:observe_before_scaling",
+      "count": 32,
+      "operator_translation": "observe this pattern before scaling it"
+    },
+    {
       "id": "queue_prune:rewrite",
-      "count": 30,
+      "count": 29,
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
       "id": "editor_in_chief:cooldown_subject",
-      "count": 21,
+      "count": 20,
       "operator_translation": "pick a fresh subject inside the same lane"
     },
     {
@@ -148,11 +148,6 @@
       "operator_translation": "editorial cooldown supply fallback"
     },
     {
-      "id": "duplicate_title",
-      "count": 7,
-      "operator_translation": "duplicate title"
-    },
-    {
       "id": "editor_in_chief:editorial score 46 is below 62",
       "count": 6,
       "operator_translation": "editor in chief:editorial score 46 is below 62"
@@ -163,9 +158,14 @@
       "operator_translation": "editor in chief:story angle repeated inside 10-day cooldown"
     },
     {
-      "id": "queue_score_reject",
-      "count": 5,
-      "operator_translation": "queue score reject"
+      "id": "editor_in_chief:editorial score 40 is below 62",
+      "count": 4,
+      "operator_translation": "editor in chief:editorial score 40 is below 62"
+    },
+    {
+      "id": "observe_before_scaling",
+      "count": 3,
+      "operator_translation": "observe before scaling"
     }
   ],
   "levels": [
@@ -178,7 +178,7 @@
       "status": "cleared",
       "progress_pct": 100.0,
       "evidence": {
-        "published_count": 44,
+        "published_count": 45,
         "health_score": 92
       }
     },
@@ -193,7 +193,7 @@
       "evidence": {
         "operational_publish_ready": 6,
         "eligible_count": 6,
-        "pending": 36,
+        "pending": 35,
         "target_publish_ready": 6,
         "target_pending": 20
       }
@@ -221,7 +221,7 @@
       "progress_pct": 52.5,
       "evidence": {
         "recurring_viewer_rate": 0.001,
-        "comments_sampled": 44
+        "comments_sampled": 45
       }
     },
     {
