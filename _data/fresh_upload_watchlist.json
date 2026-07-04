@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 3,
+    "analytics_due": 4,
     "awaiting_1h": 1,
     "high_priority": 8,
-    "repair_candidates": 5,
+    "repair_candidates": 4,
     "tracked": 10
   },
-  "generated_at": "2026-07-04T07:20:19.367036+00:00",
+  "generated_at": "2026-07-04T07:25:47.268718+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.046,
+      "age_hours": 0.137,
       "category": "farm",
       "checkpoints": [
         {
@@ -69,8 +69,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Queue a sequel or related-video bridge while the session has momentum.",
-      "age_hours": 5.746,
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 5.837,
       "category": "forests",
       "checkpoints": [
         {
@@ -102,7 +102,7 @@
         }
       ],
       "current_views": 1,
-      "hypothesis": "Performance signal is already positive; amplify without changing the opening.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
         "delta_to_target": 0,
         "due_at": "2026-07-04T07:35:32.786321+00:00",
@@ -114,27 +114,18 @@
       },
       "opening_retention_score": 94.0,
       "opening_retention_state": "retention_ready",
-      "priority": "normal",
+      "priority": "low",
       "series": "Hidden Network",
-      "state": "accelerating",
+      "state": "watch",
       "title": "Forests hold cool fog between the trees",
       "uploaded_at": "2026-07-04T01:35:32.786321+00:00",
       "url": "https://www.youtube.com/shorts/Jh4XroVWOKk",
       "video_id": "Jh4XroVWOKk",
-      "views_per_hour": 0.175,
-      "warning": {
-        "confidence_score": 0.512,
-        "reasoning": "video has 9/2 samples, estimated data, confidence 0.51; observation only.",
-        "score": 0,
-        "state": "accelerating",
-        "title": "Forests hold cool fog between the trees",
-        "video_id": "Jh4XroVWOKk",
-        "warning_state": "accelerator"
-      }
+      "views_per_hour": 0.172
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 7.758,
+      "age_hours": 7.849,
       "category": "cats",
       "checkpoints": [
         {
@@ -190,7 +181,7 @@
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.594,
         "reason": "low early velocity",
-        "reasoning": "video has 22/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "reasoning": "video has 24/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
         "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
         "title": "Cats measure tight spaces with their whiskers",
         "video_id": "8JXU0i_1-7c",
@@ -200,7 +191,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 9.224,
+      "age_hours": 9.315,
       "category": "plants",
       "checkpoints": [
         {
@@ -256,7 +247,7 @@
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.594,
         "reason": "low early velocity",
-        "reasoning": "video has 28/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
         "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
         "title": "Plants turn light into food",
         "video_id": "bzhm_MUPS8w",
@@ -266,7 +257,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 9.794,
+      "age_hours": 9.885,
       "category": "plants",
       "checkpoints": [
         {
@@ -332,7 +323,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 11.224,
+      "age_hours": 11.315,
       "category": "conservation",
       "checkpoints": [
         {
@@ -397,18 +388,18 @@
       }
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 12.227,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 12.318,
       "category": "insects",
       "checkpoints": [
         {
-          "delta_to_target": -23,
+          "delta_to_target": -24,
           "due_at": "2026-07-03T20:06:43.760986+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
-          "views": 1
+          "views": 0
         },
         {
           "delta_to_target": -104,
@@ -430,41 +421,30 @@
         }
       ],
       "current_views": 1,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-04T19:06:43.760986+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-03T20:06:43.760986+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
-        "views": 1
+        "state": "overdue",
+        "target_views": 24,
+        "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Tiny Worlds",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Mantises judge distance with 3D vision",
       "uploaded_at": "2026-07-03T19:06:43.760986+00:00",
       "url": "https://www.youtube.com/shorts/ZEsLlK_ftDc",
       "video_id": "ZEsLlK_ftDc",
-      "views_per_hour": 0.082,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Mantises judge distance with 3D vision",
-        "video_id": "ZEsLlK_ftDc",
-        "views": 1,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.081
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.93,
+      "age_hours": 13.021,
       "category": "birds",
       "checkpoints": [
         {
@@ -519,7 +499,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 14.22,
+      "age_hours": 14.311,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -574,7 +554,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 14.554,
+      "age_hours": 14.645,
       "category": "primates",
       "checkpoints": [
         {
