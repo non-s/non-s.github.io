@@ -1,36 +1,41 @@
 {
   "state": "migration_needed",
-  "pressure_score": 86,
+  "pressure_score": 93,
   "metrics": {
-    "live_state_files": 176,
-    "data_state_files": 126,
+    "live_state_files": 265,
+    "data_state_files": 215,
     "video_done_markers": 48,
-    "live_state_bytes": 9309229,
-    "stories_queue_bytes": 2839931,
-    "stories_queue_lines": 79349,
+    "live_state_bytes": 13023159,
+    "stories_queue_bytes": 2888092,
+    "stories_queue_lines": 80318,
     "workflow_files": 18,
     "state_path_refs": 282
   },
   "largest_state_files": [
     {
       "path": "_data/stories_queue.json",
-      "bytes": 2839931,
-      "lines": 79349
+      "bytes": 2888092,
+      "lines": 80318
     },
     {
       "path": "_data/rejected_queue.jsonl",
-      "bytes": 766743,
-      "lines": 959
+      "bytes": 2069774,
+      "lines": 2584
+    },
+    {
+      "path": "_data/repair_queue.jsonl",
+      "bytes": 1372127,
+      "lines": 78
     },
     {
       "path": "_data/early_performance.json",
-      "bytes": 449197,
-      "lines": 17394
+      "bytes": 449850,
+      "lines": 17418
     },
     {
       "path": "_data/queue_audit.json",
-      "bytes": 447765,
-      "lines": 13195
+      "bytes": 447562,
+      "lines": 13201
     },
     {
       "path": "_data/packaging_report.json",
@@ -39,8 +44,8 @@
     },
     {
       "path": "_data/provider_stats.jsonl",
-      "bytes": 263698,
-      "lines": 3393
+      "bytes": 265490,
+      "lines": 3416
     },
     {
       "path": "_data/autonomous_growth_plan.json",
@@ -49,8 +54,8 @@
     },
     {
       "path": "_data/analytics/api_quota_ledger.jsonl",
-      "bytes": 182546,
-      "lines": 277
+      "bytes": 183784,
+      "lines": 279
     },
     {
       "path": "_data/dry_run_publish.json",
@@ -66,11 +71,6 @@
       "path": "_data/youtube_brain_report.json",
       "bytes": 115134,
       "lines": 3881
-    },
-    {
-      "path": "_data/publish_slot_decisions.jsonl",
-      "bytes": 99776,
-      "lines": 130
     }
   ],
   "migration_lanes": [
