@@ -60,11 +60,11 @@
     "geology": 36.7,
     "dogs": 26.1,
     "fungi": 47.3,
-    "birds": 47.3,
     "wildlife": 26.1,
     "earth_from_space": 47.3,
     "weather": 26.1,
     "forests": 26.1,
+    "plants": 47.3,
     "cats": 47.3
   },
   "format_scores": {
@@ -73,7 +73,8 @@
     "rare_nature": 48.01,
     "earth_engine": 34.58,
     "hidden_network": 36.7,
-    "single_fact": 40.47,
+    "single_fact": 37.05,
+    "plant_mechanism": 47.3,
     "ecosystem_engine": 26.1
   },
   "category_subscriber_rates": {
@@ -85,11 +86,11 @@
     "geology": 30.0,
     "dogs": 0.0,
     "fungi": 60.0,
-    "birds": 60.0,
     "wildlife": 0.0,
     "earth_from_space": 60.0,
     "weather": 0.0,
     "forests": 0.0,
+    "plants": 60.0,
     "cats": 60.0
   },
   "format_subscriber_rates": {
@@ -98,7 +99,8 @@
     "rare_nature": 40.0,
     "earth_engine": 24.0,
     "hidden_network": 30.0,
-    "single_fact": 33.33,
+    "single_fact": 20.0,
+    "plant_mechanism": 60.0,
     "ecosystem_engine": 0.0
   },
   "category_weights": {
@@ -110,11 +112,11 @@
     "geology": 0.899,
     "dogs": 0.928,
     "fungi": 0.971,
-    "birds": 0.971,
     "wildlife": 0.785,
     "earth_from_space": 0.971,
     "weather": 0.928,
     "forests": 0.928,
+    "plants": 0.971,
     "cats": 0.971
   },
   "format_weights": {
@@ -123,7 +125,8 @@
     "rare_nature": 0.972,
     "earth_engine": 0.726,
     "hidden_network": 0.899,
-    "single_fact": 0.871,
+    "single_fact": 0.9,
+    "plant_mechanism": 0.971,
     "ecosystem_engine": 0.928
   },
   "subscriber_category_weights": {
@@ -135,11 +138,11 @@
     "geology": 1.25,
     "dogs": 0.97,
     "fungi": 1.25,
-    "birds": 1.25,
     "wildlife": 0.91,
     "earth_from_space": 1.25,
     "weather": 0.97,
     "forests": 0.97,
+    "plants": 1.25,
     "cats": 1.25
   },
   "subscriber_format_weights": {
@@ -149,41 +152,42 @@
     "earth_engine": 1.25,
     "hidden_network": 1.25,
     "single_fact": 1.25,
+    "plant_mechanism": 1.25,
     "ecosystem_engine": 0.97
   },
   "winning_title_patterns": {
     "{subject} can {action} {subject} {subject} in the {subject}": 3,
-    "{subject} {action} {subject} {subject} {subject} {subject} {subject}": 3,
     "{subject} can {action} by the {subject} way": 3,
     "{subject} {subject} the {subject} to {subject} the pod": 2,
     "{subject} {subject} {subject} {visual} {subject} {subject} {subject}": 2,
     "{subject} use {subject} {subject} {subject} {subject} {action}": 2,
     "{subject} {subject} {subject} {visual} in {subject}": 2,
     "{visual} {subject} {visual} {subject} {emotion} {visual}": 2,
+    "{subject} {action} {subject} {subject} {subject} {subject} {subject}": 2,
     "{visual} {visual} {subject} a {subject} {subject} {subject}": 2,
     "{subject} {action} {subject} {subject} {subject} {subject}": 2,
-    "{subject} use {subject} {subject} {subject} in {subject}": 2,
-    "{subject} {subject} {subject} air {subject} the {visual}": 1
+    "{subject} {subject} {subject} {subject} {subject} {subject}": 2,
+    "{subject} use {subject} {subject} {subject} in {subject}": 2
   },
   "winning_thumbnail_patterns": {},
   "winning_hook_patterns": {
     "{subject} can {action} {subject} {subject} {subject} {subject}": 4,
     "{subject} {action} {subject} {subject} for the {subject}": 3,
     "{subject} can use the {subject} sky {subject} a": 3,
+    "{subject} {subject} {subject} {subject} {subject}": 3,
     "{subject} {action} {subject} {subject} {subject} {subject} {subject}": 3,
     "{subject} {subject} the {visual} {subject} {subject}": 2,
     "{subject} {subject} {subject} {subject} {subject} {visual}": 2,
     "{subject} {subject} {subject} {visual} in {subject}": 2,
     "{visual} {subject} by {subject} {emotion} {visual}": 2,
-    "{subject} can {subject} a {action} {subject} {subject}": 2,
     "{visual} {visual} {subject} {subject} a {visual} is {visual}": 2,
-    "{subject} {subject} {subject} {subject} {subject}": 2,
-    "{subject} can {action} the air {subject} {subject}": 1
+    "{subject} can {action} the air {subject} {subject}": 1,
+    "{subject} {subject} {subject} {visual} {subject} {subject} can {action}": 1
   },
   "weak_patterns": {
     "{subject} {action} {subject} {subject} for the {subject}": 2,
+    "{subject} {subject} {subject} {subject} {subject} {subject}": 2,
     "{subject} {subject} {subject} {visual} in {subject}": 2,
-    "{subject} {action} {subject} {subject} {subject} {subject} {subject}": 2,
     "{action} {subject} a {subject} {subject} a {subject} {subject}": 2,
     "{subject} {subject} the {subject} to {subject} the pod": 1,
     "{subject} {subject} the {visual} {subject} {subject}": 1,
@@ -191,28 +195,28 @@
     "{subject} {subject} {subject} {subject} {subject} {visual}": 1,
     "{subject} use {subject} {subject} {subject} {subject} {action}": 1,
     "{subject} {subject} mud and {subject} {subject} {subject} {subject}": 1,
-    "{subject} {subject} {subject} {subject} {subject} {subject}": 1,
-    "{subject} {action} the {subject} {subject} {subject} {subject}": 1
+    "{subject} {action} the {subject} {subject} {subject} {subject}": 1,
+    "{subject} {action} a map {subject} {action}": 1
   },
   "experiment_scores": {
-    "format:winner_inspired": 36.16,
-    "hook:pattern_reuse": 36.16,
+    "format:winner_inspired": 36.78,
+    "hook:pattern_reuse": 36.78,
     "thumbnail:new_thumbnail": 36.77,
-    "cta:follow_for_more": 36.16,
-    "format:fresh_variant": 40.23,
-    "hook:new_hook": 40.23,
-    "cta:specific_question": 40.23
+    "cta:follow_for_more": 36.78,
+    "format:fresh_variant": 36.7,
+    "hook:new_hook": 36.7,
+    "cta:specific_question": 36.7
   },
   "winning_experiments": {
-    "format:fresh_variant": 40.23,
-    "hook:new_hook": 40.23,
-    "cta:specific_question": 40.23,
+    "format:winner_inspired": 36.78,
+    "hook:pattern_reuse": 36.78,
+    "cta:follow_for_more": 36.78,
     "thumbnail:new_thumbnail": 36.77,
-    "format:winner_inspired": 36.16,
-    "hook:pattern_reuse": 36.16,
-    "cta:follow_for_more": 36.16
+    "format:fresh_variant": 36.7,
+    "hook:new_hook": 36.7,
+    "cta:specific_question": 36.7
   },
-  "updated_at": "2026-07-04T00:33:42.721075+00:00",
+  "updated_at": "2026-07-04T01:21:26.502801+00:00",
   "data_coverage": {
     "total_markers": 38,
     "views": 20,

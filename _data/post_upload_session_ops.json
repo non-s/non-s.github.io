@@ -2,18 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 9,
-      "high": 1,
-      "manual_review": 1,
+      "automation_safe": 8,
+      "high": 2,
+      "manual_review": 2,
       "total": 10,
       "urgent": 4
     },
     "free_only": true,
-    "generated_at": "2026-07-04T00:33:43.163928+00:00",
+    "generated_at": "2026-07-04T01:21:26.955987+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 10.014,
+        "age_hours": 10.81,
         "automation_safe": true,
         "category": "cats",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 9.033,
+        "age_hours": 9.829,
         "automation_safe": true,
         "category": "ocean",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 7.777,
+        "age_hours": 8.572,
         "automation_safe": true,
         "category": "primates",
         "checkpoint_label": "1h",
@@ -91,7 +91,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 7.443,
+        "age_hours": 8.239,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -117,7 +117,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 6.153,
+        "age_hours": 6.949,
         "automation_safe": false,
         "category": "birds",
         "checkpoint_label": "24h",
@@ -142,60 +142,34 @@
         "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
-        "action_type": "hold_until_first_hour",
-        "age_hours": 0.981,
-        "automation_safe": true,
-        "category": "cats",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "pending",
-        "current_views": 0,
-        "due_at": "2026-07-04T00:34:50.813546+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:8JXU0i_1-7c:awaiting_1h:1h",
-        "lane": "observe",
-        "manual_approval_required": false,
-        "opening_retention_score": 96.0,
-        "priority": "low",
-        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "series": "Pet Secrets",
-        "state": "awaiting_1h",
-        "target_views": 24,
-        "title": "Cats measure tight spaces with their whiskers",
-        "url": "https://www.youtube.com/shorts/8JXU0i_1-7c",
-        "video_id": "8JXU0i_1-7c",
-        "wait_until": "2026-07-04T00:34:50.813546+00:00",
-        "why": "The upload is still inside the no-panic observation window."
-      },
-      {
-        "action_type": "watch_next_checkpoint",
-        "age_hours": 5.45,
-        "automation_safe": true,
+        "action_type": "prepare_package_rescue",
+        "age_hours": 6.245,
+        "automation_safe": false,
         "category": "insects",
-        "checkpoint_label": "6h",
+        "checkpoint_label": "24h",
         "checkpoint_state": "pending",
         "current_views": 1,
-        "due_at": "2026-07-04T01:06:43.760986+00:00",
+        "due_at": "2026-07-04T19:06:43.760986+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:ZEsLlK_ftDc:watch:6h",
-        "lane": "observe",
-        "manual_approval_required": false,
+        "id": "fresh-upload:ZEsLlK_ftDc:repair_candidate:24h",
+        "lane": "package_rescue",
+        "manual_approval_required": true,
         "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Keep observing through the next checkpoint.",
+        "priority": "high",
+        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
         "series": "Tiny Worlds",
-        "state": "watch",
-        "target_views": 105,
+        "state": "repair_candidate",
+        "target_views": 300,
         "title": "Mantises judge distance with 3D vision",
         "url": "https://www.youtube.com/shorts/ZEsLlK_ftDc",
         "video_id": "ZEsLlK_ftDc",
-        "wait_until": "2026-07-04T01:06:43.760986+00:00",
-        "why": "No intervention signal is strong enough yet."
+        "wait_until": "",
+        "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 4.447,
+        "age_hours": 5.243,
         "automation_safe": true,
         "category": "conservation",
         "checkpoint_label": "6h",
@@ -221,7 +195,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.017,
+        "age_hours": 3.813,
         "automation_safe": true,
         "category": "plants",
         "checkpoint_label": "6h",
@@ -247,7 +221,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.447,
+        "age_hours": 3.243,
         "automation_safe": true,
         "category": "plants",
         "checkpoint_label": "6h",
@@ -270,10 +244,36 @@
         "video_id": "bzhm_MUPS8w",
         "wait_until": "2026-07-04T04:06:52.291088+00:00",
         "why": "No intervention signal is strong enough yet."
+      },
+      {
+        "action_type": "watch_next_checkpoint",
+        "age_hours": 1.777,
+        "automation_safe": true,
+        "category": "cats",
+        "checkpoint_label": "6h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-04T05:34:50.813546+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:8JXU0i_1-7c:watch:6h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 96.0,
+        "priority": "low",
+        "recommended_action": "Keep observing through the next checkpoint.",
+        "series": "Pet Secrets",
+        "state": "watch",
+        "target_views": 105,
+        "title": "Cats measure tight spaces with their whiskers",
+        "url": "https://www.youtube.com/shorts/8JXU0i_1-7c",
+        "video_id": "8JXU0i_1-7c",
+        "wait_until": "2026-07-04T05:34:50.813546+00:00",
+        "why": "No intervention signal is strong enough yet."
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-04T00:33:43.162680+00:00"
+    "source_generated_at": "2026-07-04T01:21:26.953852+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -283,24 +283,24 @@
     ],
     "counts": {
       "analytics_due": 4,
-      "awaiting_1h": 1,
-      "high_priority": 5,
-      "repair_candidates": 1,
+      "awaiting_1h": 0,
+      "high_priority": 6,
+      "repair_candidates": 2,
       "tracked": 10
     },
-    "generated_at": "2026-07-04T00:33:43.162680+00:00",
+    "generated_at": "2026-07-04T01:21:26.953852+00:00",
     "items": [
       {
-        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.981,
+        "action": "Keep observing through the next checkpoint.",
+        "age_hours": 1.777,
         "category": "cats",
         "checkpoints": [
           {
-            "delta_to_target": 0,
+            "delta_to_target": -24,
             "due_at": "2026-07-04T00:34:50.813546+00:00",
             "label": "1h",
-            "source": "estimated",
-            "state": "pending",
+            "source": "observed",
+            "state": "observed",
             "target_views": 24,
             "views": 0
           },
@@ -324,21 +324,21 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "hypothesis": "No intervention signal is strong enough yet.",
         "next_checkpoint": {
           "delta_to_target": 0,
-          "due_at": "2026-07-04T00:34:50.813546+00:00",
-          "label": "1h",
+          "due_at": "2026-07-04T05:34:50.813546+00:00",
+          "label": "6h",
           "source": "estimated",
           "state": "pending",
-          "target_views": 24,
+          "target_views": 105,
           "views": 0
         },
         "opening_retention_score": 96.0,
         "opening_retention_state": "retention_ready",
         "priority": "low",
         "series": "Pet Secrets",
-        "state": "awaiting_1h",
+        "state": "watch",
         "title": "Cats measure tight spaces with their whiskers",
         "uploaded_at": "2026-07-03T23:34:50.813546+00:00",
         "url": "https://www.youtube.com/shorts/8JXU0i_1-7c",
@@ -347,7 +347,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.447,
+        "age_hours": 3.243,
         "category": "plants",
         "checkpoints": [
           {
@@ -402,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.017,
+        "age_hours": 3.813,
         "category": "plants",
         "checkpoints": [
           {
@@ -457,7 +457,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 4.447,
+        "age_hours": 5.243,
         "category": "conservation",
         "checkpoints": [
           {
@@ -511,8 +511,8 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.45,
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "age_hours": 6.245,
         "category": "insects",
         "checkpoints": [
           {
@@ -525,11 +525,11 @@
             "views": 1
           },
           {
-            "delta_to_target": 0,
+            "delta_to_target": -104,
             "due_at": "2026-07-04T01:06:43.760986+00:00",
             "label": "6h",
-            "source": "estimated",
-            "state": "pending",
+            "source": "observed",
+            "state": "observed",
             "target_views": 105,
             "views": 1
           },
@@ -544,30 +544,41 @@
           }
         ],
         "current_views": 1,
-        "hypothesis": "No intervention signal is strong enough yet.",
+        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
         "next_checkpoint": {
           "delta_to_target": 0,
-          "due_at": "2026-07-04T01:06:43.760986+00:00",
-          "label": "6h",
+          "due_at": "2026-07-04T19:06:43.760986+00:00",
+          "label": "24h",
           "source": "estimated",
           "state": "pending",
-          "target_views": 105,
+          "target_views": 300,
           "views": 1
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Tiny Worlds",
-        "state": "watch",
+        "state": "repair_candidate",
         "title": "Mantises judge distance with 3D vision",
         "uploaded_at": "2026-07-03T19:06:43.760986+00:00",
         "url": "https://www.youtube.com/shorts/ZEsLlK_ftDc",
         "video_id": "ZEsLlK_ftDc",
-        "views_per_hour": 0.185
+        "views_per_hour": 0.161,
+        "warning": {
+          "action": "TITLE_AUTO_REPAIR_TRIGGER",
+          "confidence_score": 0.594,
+          "reason": "low early velocity",
+          "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+          "title": "Mantises judge distance with 3D vision",
+          "video_id": "ZEsLlK_ftDc",
+          "views": 1,
+          "warning_state": "repair_risk"
+        }
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 6.153,
+        "age_hours": 6.949,
         "category": "birds",
         "checkpoints": [
           {
@@ -633,7 +644,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 7.443,
+        "age_hours": 8.239,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -688,7 +699,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 7.777,
+        "age_hours": 8.572,
         "category": "primates",
         "checkpoints": [
           {
@@ -743,7 +754,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 9.033,
+        "age_hours": 9.829,
         "category": "ocean",
         "checkpoints": [
           {
@@ -794,11 +805,11 @@
         "uploaded_at": "2026-07-03T15:31:43.787838+00:00",
         "url": "https://www.youtube.com/shorts/StWGdOT1uDA",
         "video_id": "StWGdOT1uDA",
-        "views_per_hour": 0.111
+        "views_per_hour": 0.102
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 10.014,
+        "age_hours": 10.81,
         "category": "cats",
         "checkpoints": [
           {
@@ -849,7 +860,7 @@
         "uploaded_at": "2026-07-03T14:32:52.669353+00:00",
         "url": "https://www.youtube.com/shorts/vJLRYY9DC2M",
         "video_id": "vJLRYY9DC2M",
-        "views_per_hour": 0.201
+        "views_per_hour": 0.186
       }
     ],
     "targets": {
@@ -859,7 +870,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-04T00:33:43.164020+00:00",
+  "generated_at": "2026-07-04T01:21:26.956111+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
