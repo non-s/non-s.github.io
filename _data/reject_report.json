@@ -1,52 +1,144 @@
 {
   "total": 1000,
   "reasons": {
-    "duplicate_title": 455,
-    "off_topic_visual": 225,
-    "duplicate_script": 218,
-    "duplicate_angle": 200,
-    "queue_score_reject": 129,
+    "duplicate_title": 473,
+    "off_topic_visual": 235,
+    "duplicate_script": 229,
+    "duplicate_angle": 211,
+    "queue_score_reject": 136,
+    "script_hook_mismatch": 84,
     "copy_subject_mismatch": 81,
-    "script_hook_mismatch": 80,
     "editorial score is below publish threshold": 69,
-    "thumbnail_text_not_scannable": 50,
-    "thumbnail_not_2_4_words": 49,
+    "script_word_loop": 29,
     "script_subject_mismatch": 28,
-    "script_word_loop": 26,
-    "opening_retention_gap_risk": 24,
-    "rights_guard_person_manual_review": 21,
+    "opening_retention_gap_risk": 25,
+    "rights_guard_person_manual_review": 22,
     "low_opportunity_score": 21,
-    "non_animal_body_language": 19,
+    "non_animal_body_language": 20,
     "subject_not_immediately_clear": 15,
-    "opening promise is not concrete enough": 12,
+    "opening promise is not concrete enough": 13,
     "payoff_not_explicit": 12,
-    "bad_plural_verb": 10,
+    "bad_plural_verb": 11,
+    "thumbnail_text_not_scannable": 10,
+    "thumbnail_not_2_4_words": 9,
     "missing_visual_cue": 8,
     "script does not expose enough concrete visual detail": 7,
     "missing_action_word": 7,
     "title_shape_weak": 6,
     "missing_visible_cue": 5,
+    "subject repeated inside 3-day cooldown": 3,
+    "humanity score is too low": 3,
     "no_action_promise": 3,
     "title_needs_stronger_shape": 2,
     "subject_not_clear": 2,
-    "subject repeated inside 3-day cooldown": 2,
-    "humanity score is too low": 2,
+    "editorial score 39 is below 62": 1,
     "generic_creator_language": 1,
     "hook_shape_weak": 1,
     "editorial score 29 is below 62": 1,
     "editorial score 43 is below 62": 1
   },
   "stages": {
-    "queue_prune": 489,
-    "queue_prune_final": 237,
-    "queue_repair": 129,
+    "queue_prune": 508,
+    "queue_prune_final": 250,
+    "queue_repair": 136,
     "pre_publish_audit": 69,
-    "youtube_brain_rewrite": 41,
     "opportunity_score": 21,
     "youtube_brain": 12,
-    "editor_in_chief": 2
+    "editor_in_chief": 3,
+    "youtube_brain_rewrite": 1
   },
   "latest": [
+    {
+      "story_id": "9c731312eb4e0a03",
+      "stage": "queue_prune",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "title": "Coral reefs are cities built by tiny animals",
+      "category": "ocean",
+      "script_key": "coral reefs are built by tiny living builders watch the reef texture because coral animals build hard skeletons that stack into habitat fish algae and countless small creatures then use that structure like a city the color sits on top of engineering which habitat next",
+      "angle_key": "coral|build|reef city|ocean",
+      "source_url": "https://www.pexels.com/video/vibrant-tropical-fish-swimming-over-coral-reef-32263227/",
+      "pexels_video_id": "32263227",
+      "source_clip_id": "pexels:9c731312eb4e0a03",
+      "recorded_at": "2026-07-04T21:52:23.110643+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "3eac941b68fb0505",
+      "stage": "queue_repair",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "missing_action_word",
+        "queue_score_reject"
+      ],
+      "title": "Tropical forests don't just restore themselves",
+      "category": "forests",
+      "script_key": "trees don t just grow back on their own those misty forests they stay alive because tiny birds carry seeds miles away without them the canopy would stay empty watch this one twice because the birds do the heavy lifting not the wind ever seen a bird move a seed this far",
+      "angle_key": "forests|carry|canopy shift|forests",
+      "source_url": "https://www.pexels.com/video/serene-misty-tropical-forest-scene-34811334/",
+      "pexels_video_id": "34811334",
+      "source_clip_id": "pexels:3eac941b68fb0505",
+      "recorded_at": "2026-07-04T21:52:23.125110+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "797e1bbcc03592c6",
+      "stage": "queue_prune",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "title": "Sea turtles steer with Earth's magnetic field",
+      "category": "physics",
+      "script_key": "this turtle s got built in gps that stripey head s not decoration it s a magnetic compass tiny bits of magnetite in its brain line up with earth s poles that s why it never gets lost miss that and you d think it s just drifting ever wonder how they find the same beach after decades at sea there you go",
+      "angle_key": "turtles|built|coral|physics",
+      "source_url": "https://www.pexels.com/video/sea-turtle-swimming-over-vibrant-coral-reef-32790773/",
+      "pexels_video_id": "32790773",
+      "source_clip_id": "pexels:797e1bbcc03592c6",
+      "recorded_at": "2026-07-04T21:52:23.140308+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "3e84ae1804256f94",
+      "stage": "queue_prune",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch",
+        "non_animal_body_language"
+      ],
+      "title": "Tigers' paws survive the snow better than yours",
+      "category": "weather",
+      "script_key": "tiger paws spread wide like snowshoes the pads are thick enough to handle 100 f temperature swings because blood vessels run deep to keep them warm that s why this cat strolls like it s summer what would you try walking on bare snow without boots",
+      "angle_key": "tiger|keep|paws|weather",
+      "source_url": "https://www.pexels.com/video/majestic-tiger-strolling-in-snowy-enclosure-30428886/",
+      "pexels_video_id": "30428886",
+      "source_clip_id": "pexels:3e84ae1804256f94",
+      "recorded_at": "2026-07-04T21:52:23.155501+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "3d423cc3b49adaeb",
+      "stage": "queue_repair",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "title": "Plants use trap hairs to count touches before snapping shut",
+      "category": "plants",
+      "script_key": "plants use trap hairs to count touches before closing watch the trap hairs because the plant waits for more than one touch before spending energy on a snap that delay helps it ignore rain and debris then close when prey is real which plant trick should we decode next",
+      "angle_key": "plants|trick|trap hairs|plants",
+      "source_url": "https://www.pexels.com/video/a-field-of-flowers-with-the-sun-setting-in-the-background-27684477/",
+      "pexels_video_id": "27684477",
+      "source_clip_id": "pexels:3d423cc3b49adaeb",
+      "recorded_at": "2026-07-04T21:52:23.181851+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
     {
       "story_id": "5d9731ba3c92d4fc",
       "stage": "queue_repair",
@@ -137,24 +229,6 @@
       "rewrite_applied": true
     },
     {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-04T21:57:45.122985+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
       "story_id": "Coral reefs are cities built by tiny animals",
       "stage": "pre_publish_audit",
       "reasons": [
@@ -219,24 +293,6 @@
       "pexels_video_id": "17808011",
       "source_clip_id": "pexels:5a6241904e5e32d2",
       "recorded_at": "2026-07-04T22:09:53.376577+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-04T22:09:53.437137+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     },
@@ -385,24 +441,6 @@
       "rewrite_applied": true
     },
     {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-04T22:17:48.894525+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
       "story_id": "758e1def429ef0d2",
       "stage": "queue_prune",
       "reasons": [
@@ -439,56 +477,20 @@
       "rewrite_applied": true
     },
     {
-      "story_id": "a09ee569acae3803",
-      "stage": "queue_prune",
+      "story_id": "8bdc8b70af521eb4",
+      "stage": "youtube_brain_rewrite",
       "reasons": [
-        "off_topic_visual"
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
       ],
-      "title": "Dairy cows can predict tomorrow's weather",
-      "category": "weather",
-      "script_key": "cows know the weather first watch how they bunch up before a storm their inner clock spots humidity drops that we miss that s why farmers watch them not apps did you learn this wrong too",
-      "angle_key": "cows|close|cue|weather",
-      "source_url": "https://www.pexels.com/video/close-up-of-dairy-cows-feeding-on-farm-31524919/",
-      "pexels_video_id": "31524919",
-      "source_clip_id": "pexels:a09ee569acae3803",
-      "recorded_at": "2026-07-04T22:25:35.248562+00:00",
-      "rewrite_attempted": false,
-      "rewrite_applied": false
-    },
-    {
-      "story_id": "b9bafca1edaab5fe",
-      "stage": "queue_prune_final",
-      "reasons": [
-        "copy_subject_mismatch",
-        "duplicate_title"
-      ],
-      "title": "Storm clouds reveal a storm's heat engine",
-      "category": "earth_from_space",
-      "script_key": "storm clouds show where a storm is feeding watch the spiral shape because warm ocean air rises near the center and releases heat as clouds build rotation organizes that energy into bands from above the storm is not random it is an engine which satellite clue next",
-      "angle_key": "storm|build|clouds|earth_from_space",
-      "source_url": "https://www.pexels.com/video/vibrant-cherry-blossoms-in-osaka-garden-31387610/",
-      "pexels_video_id": "31387610",
-      "source_clip_id": "pexels:b9bafca1edaab5fe",
-      "recorded_at": "2026-07-04T22:25:35.266757+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "1be4a1ab6de34735",
-      "stage": "queue_prune_final",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "title": "Cows remember faces across the herd",
-      "category": "farm",
-      "script_key": "cows can remember who belongs in the herd watch the calm face first because cows can recognize familiar herd members and people that memory lowers stress when the group feels predictable a quiet look can carry more history than it seems which farm animal should we explain next",
-      "angle_key": "cows|remember|herd memory|farm",
-      "source_url": "https://www.pexels.com/video/a-cow-grazing-on-a-grassy-hill-with-mountains-in-the-background-20597703/",
-      "pexels_video_id": "20597703",
-      "source_clip_id": "pexels:1be4a1ab6de34735",
-      "recorded_at": "2026-07-04T22:25:35.281156+00:00",
+      "title": "Fossils turn old bones into time clues",
+      "category": "discoveries",
+      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
+      "angle_key": "fossils|form|pattern|discoveries",
+      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
+      "pexels_video_id": "36118169",
+      "source_clip_id": "pexels:8bdc8b70af521eb4",
+      "recorded_at": "2026-07-04T22:29:05.056675+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     }
