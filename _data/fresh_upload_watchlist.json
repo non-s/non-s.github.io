@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 2,
+    "analytics_due": 3,
     "awaiting_1h": 2,
     "high_priority": 3,
-    "repair_candidates": 1,
+    "repair_candidates": 0,
     "tracked": 10
   },
-  "generated_at": "2026-07-05T18:19:33.055177+00:00",
+  "generated_at": "2026-07-05T18:24:19.367702+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.041,
+      "age_hours": 0.121,
       "category": "rivers",
       "checkpoints": [
         {
@@ -70,7 +70,7 @@
     },
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.872,
+      "age_hours": 0.951,
       "category": "plants",
       "checkpoints": [
         {
@@ -125,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.975,
+      "age_hours": 2.054,
       "category": "dogs",
       "checkpoints": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.229,
+      "age_hours": 3.308,
       "category": "geology",
       "checkpoints": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.235,
+      "age_hours": 4.315,
       "category": "farm",
       "checkpoints": [
         {
@@ -290,7 +290,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.192,
+      "age_hours": 5.271,
       "category": "farm",
       "checkpoints": [
         {
@@ -345,7 +345,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.865,
+      "age_hours": 5.945,
       "category": "birds",
       "checkpoints": [
         {
@@ -399,16 +399,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.939,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 7.019,
       "category": "earth_from_space",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-05T12:23:11.327013+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -432,41 +432,30 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-06T11:23:11.327013+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-05T12:23:11.327013+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "overdue",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Planet Earth",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Storm clouds trace wind bands over the ocean",
       "uploaded_at": "2026-07-05T11:23:11.327013+00:00",
       "url": "https://www.youtube.com/shorts/OQM9BmE7oAA",
       "video_id": "OQM9BmE7oAA",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Storm clouds trace wind bands over the ocean",
-        "video_id": "OQM9BmE7oAA",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 7.826,
+      "age_hours": 7.905,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -521,7 +510,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.928,
+      "age_hours": 9.008,
       "category": "farm",
       "checkpoints": [
         {
