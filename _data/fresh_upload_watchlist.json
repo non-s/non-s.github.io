@@ -5,17 +5,72 @@
     24
   ],
   "counts": {
-    "analytics_due": 4,
-    "awaiting_1h": 1,
-    "high_priority": 4,
+    "analytics_due": 3,
+    "awaiting_1h": 2,
+    "high_priority": 3,
     "repair_candidates": 0,
     "tracked": 10
   },
-  "generated_at": "2026-07-05T13:01:17.682576+00:00",
+  "generated_at": "2026-07-05T13:10:41.958722+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.561,
+      "age_hours": 0.044,
+      "category": "farm",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-05T14:08:03.101276+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-05T19:08:03.101276+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-06T13:08:03.101276+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-05T14:08:03.101276+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Farmyard Surprises",
+      "state": "awaiting_1h",
+      "title": "Horses remember familiar faces for months",
+      "uploaded_at": "2026-07-05T13:08:03.101276+00:00",
+      "url": "https://www.youtube.com/shorts/dKi3CHsrfXQ",
+      "video_id": "dKi3CHsrfXQ",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.718,
       "category": "birds",
       "checkpoints": [
         {
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.635,
+      "age_hours": 1.792,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.521,
+      "age_hours": 2.678,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.624,
+      "age_hours": 3.781,
       "category": "farm",
       "checkpoints": [
         {
@@ -235,7 +290,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.751,
+      "age_hours": 4.908,
       "category": "farm",
       "checkpoints": [
         {
@@ -290,7 +345,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.193,
+      "age_hours": 5.35,
       "category": "farm",
       "checkpoints": [
         {
@@ -345,7 +400,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 7.872,
+      "age_hours": 8.029,
       "category": "farm",
       "checkpoints": [
         {
@@ -400,7 +455,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.641,
+      "age_hours": 8.798,
       "category": "weather",
       "checkpoints": [
         {
@@ -455,7 +510,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 20.734,
+      "age_hours": 20.891,
       "category": "forests",
       "checkpoints": [
         {
@@ -507,69 +562,6 @@
       "url": "https://www.youtube.com/shorts/lyyoNBhLDPY",
       "video_id": "lyyoNBhLDPY",
       "views_per_hour": 0.0
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 21.598,
-      "category": "forests",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-04T16:25:24.945500+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-04T21:25:24.945500+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-07-05T15:25:24.945500+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-04T16:25:24.945500+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Hidden Network",
-      "state": "analytics_due",
-      "title": "Forests reveal edge climates along trails",
-      "uploaded_at": "2026-07-04T15:25:24.945500+00:00",
-      "url": "https://www.youtube.com/shorts/ez3hSEWuNws",
-      "video_id": "ez3hSEWuNws",
-      "views_per_hour": 0.0,
-      "warning": {
-        "confidence_score": 0.431,
-        "reason": "low confidence early signal; keep observing",
-        "state": "dying_early",
-        "title": "Forests reveal edge climates along trails",
-        "video_id": "ez3hSEWuNws",
-        "warning_state": "low_confidence_watch"
-      }
     }
   ],
   "targets": {

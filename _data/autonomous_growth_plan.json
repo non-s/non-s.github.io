@@ -1,18 +1,18 @@
 {
-  "generated_at": "2026-07-05T13:01:52.467492+00:00",
+  "generated_at": "2026-07-05T13:11:17.770656+00:00",
   "state": "fully_autonomous",
   "autonomy_score": 90,
   "operating_mode": "exploit",
   "data_status": {
     "metric_scope": "public_video_statistics",
-    "shorts_tracked": 56,
+    "shorts_tracked": 57,
     "avg_view_pct": 0.0,
     "subs_per_1000_views": 0.0
   },
   "category_priorities": [
     {
       "name": "farm",
-      "score": 114.286
+      "score": 125.0
     },
     {
       "name": "earth_from_space",
@@ -58,14 +58,14 @@
     "almost",
     "bands",
     "bubbles",
-    "canopy",
     "chickens",
     "clouds",
-    "cooler",
     "cows",
     "danger",
     "faces",
-    "familiar"
+    "familiar",
+    "feathers",
+    "goats"
   ],
   "experiment_bank": {
     "winners": {
@@ -178,7 +178,7 @@
         "lane": "proven_category",
         "statement": "Next Shorts in farm, earth_from_space should outperform cold topics.",
         "success_metric": "growth_score",
-        "target": 114.286
+        "target": 125.0
       },
       {
         "id": "H2_SCALE_FORMAT",
@@ -215,12 +215,6 @@
     "variant_count": 5,
     "next_variants": [
       {
-        "id": "remake-04270587e6cbc82b-session-graph-sequel",
-        "title": "The first trap hair cue explains plants' payoff",
-        "variant": "session_graph_sequel",
-        "category": "plants"
-      },
-      {
         "id": "remake-bfc33c44797f1a29-session-graph-sequel",
         "title": "The first whiskers cue explains cats' payoff",
         "variant": "session_graph_sequel",
@@ -243,6 +237,12 @@
         "title": "The first rock layer cue explains rocks' payoff",
         "variant": "session_graph_sequel",
         "category": "geology"
+      },
+      {
+        "id": "remake-083d26fde4005972-session-graph-sequel",
+        "title": "The first tongue smell cue explains snakes' payoff",
+        "variant": "session_graph_sequel",
+        "category": "reptiles"
       }
     ]
   },
@@ -253,7 +253,7 @@
       "Answer this viewer question: Watch the cloud bands again. Tomorrow in Planet Earth: another nature signal. Which planet-scale clue should we compare next?",
       "Answer this viewer question: Watch the sound again. Tomorrow in Earth Engine: another nature signal. Which is scarier: wind, water, lightning, or heat?",
       "Answer this viewer question: Watch the silent wings again. Tomorrow in Watch The Cue: another animal signal. What part of this feels most impossible?",
-      "Answer this viewer question: Watch the herd memory again. Tomorrow in Animal Memory: another animal signal. What part of this feels most impossible?"
+      "Answer this viewer question: Watch the face memory again. Tomorrow in Animal Memory: another animal signal. What part of this feels most impossible?"
     ]
   },
   "visual_policy": {
@@ -261,8 +261,8 @@
     "profiles": [
       {
         "profile": "close_subject|feed_bright|high_contrast",
-        "n": 32,
-        "mean_growth_score": 25.0,
+        "n": 33,
+        "mean_growth_score": 30.303,
         "mean_retention": 0.0,
         "mean_views": 0.0,
         "mean_visual_ctr_score": 100.0
@@ -334,211 +334,13 @@
     "selection_rule": "highest autonomy_priority among non-rejected publish_score candidates"
   },
   "queue": {
-    "pending": 31,
-    "approved_candidates": 31,
+    "pending": 30,
+    "approved_candidates": 30,
     "lane_counts": {
       "fresh_experiment": 13,
-      "proven_category": 18
+      "proven_category": 17
     },
     "top_candidates": [
-      {
-        "id": "1ae7d8f5e6efa42c",
-        "title": "Horses remember familiar faces for months",
-        "category": "farm",
-        "story_format": "animal_memory",
-        "lane": "proven_category",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "opportunity": {
-            "score": 56,
-            "signals": {
-              "viral_potential": 50,
-              "visual_potential": 65,
-              "replay_potential": 64,
-              "comment_potential": 62,
-              "educational_potential": 58,
-              "emotional_potential": 35,
-              "novelty": 45
-            },
-            "verdict": "rewrite",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "retention": {
-            "score": 73,
-            "signals": {
-              "hook_score": 82,
-              "curiosity_score": 71,
-              "visual_score": 66,
-              "replay_score": 62,
-              "completion_prediction": 77
-            },
-            "verdict": "rewrite",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
-          },
-          "opening_retention": {
-            "score": 100.0,
-            "state": "retention_ready",
-            "approved": true,
-            "subject": "horses",
-            "cue_terms": [
-              "ears",
-              "eyes",
-              "face",
-              "memor"
-            ],
-            "frame_hook_bridge": [
-              "face"
-            ],
-            "cue_bridge": [
-              "ears",
-              "eyes",
-              "face"
-            ],
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "risks": []
-          },
-          "weak_content": {
-            "risk": 0,
-            "state": "clear",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.0,
-              "sample_size": 0,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.25,
-              "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 86,
-            "state": "strong",
-            "subscriber_probability": 0.123,
-            "return_probability": 0.261,
-            "comment_probability": 0.223,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "identity_cta",
-              "debate_comment",
-              "return_prompt",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.033,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.274,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.007,
-            "sample_size": 1,
-            "minimum_sample_size": 15,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.255,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
-          },
-          "category": "farm",
-          "story_format": "animal_memory",
-          "hook_score": 100,
-          "title_score": 100,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          },
-          "editorial_guard": {
-            "approved": true,
-            "state": "approved",
-            "issues": []
-          },
-          "objective_gate": {
-            "penalty": 0.0,
-            "reasons": [
-              "bootstrap_observe_before_scaling"
-            ],
-            "confidence_score": 0.007,
-            "scale_ready": false,
-            "publish_blocking": false,
-            "swipe_risk_band": "low",
-            "payoff_time_s": 0.0,
-            "template_cluster": "",
-            "mechanism_cluster": "face_recognition"
-          }
-        },
-        "autonomy_priority": 130.0,
-        "packaging_lab": {
-          "title_variants": [
-            "Horses remember familiar faces for months",
-            "Horses use face memory before they remember",
-            "This face memory gives horses away"
-          ],
-          "thumbnail_variants": [
-            "FACE MEMORY",
-            "WATCH FACE MEMORY",
-            "HORSES REMEMBER"
-          ],
-          "hook_variants": [
-            "Horses can remember familiar faces.",
-            "Horses remember familiar faces for months",
-            "Watch the face memory again. Tomorrow in Farmyard Surprises: another animal signal. What part of this feels mo"
-          ],
-          "pinned_comment": "Watch the face memory again. Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
       {
         "id": "0dbd5efac2965abc",
         "title": "Chickens remember familiar faces in the flock",
@@ -1106,7 +908,7 @@
             "mechanism_cluster": "beak_signal"
           }
         },
-        "autonomy_priority": 125.0,
+        "autonomy_priority": 124.4,
         "packaging_lab": {
           "title_variants": [
             "Parrots use their beak like a third foot",
@@ -1300,7 +1102,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 125.0,
+        "autonomy_priority": 124.4,
         "packaging_lab": {
           "title_variants": [
             "Macaws use beaks like climbing tools",
@@ -1693,7 +1495,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 122.5,
+        "autonomy_priority": 121.6,
         "packaging_lab": {
           "title_variants": [
             "Storm clouds reveal a storm's heat engine",
@@ -1889,7 +1691,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 122.5,
+        "autonomy_priority": 121.6,
         "packaging_lab": {
           "title_variants": [
             "Storm clouds reveal a storm's heat engine",
@@ -2087,7 +1889,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 122.5,
+        "autonomy_priority": 121.6,
         "packaging_lab": {
           "title_variants": [
             "Storm clouds show air layers changing over time",
@@ -2281,7 +2083,7 @@
             "mechanism_cluster": "face_recognition"
           }
         },
-        "autonomy_priority": 120.5,
+        "autonomy_priority": 119.6,
         "packaging_lab": {
           "title_variants": [
             "Fox eyes glow at night in a way you didn't expect",
@@ -6228,6 +6030,204 @@
           "pinned_comment": "Watch the ear marks again. Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
+      },
+      {
+        "id": "eb41118e410e097b",
+        "title": "Ocean edges turn wave motion into patterns",
+        "category": "conservation",
+        "story_format": "conservation_signal",
+        "lane": "fresh_experiment",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+        "publish_score": {
+          "score": 91.7,
+          "approved": true,
+          "state": "publish_ready",
+          "opportunity": {
+            "score": 58,
+            "signals": {
+              "viral_potential": 62,
+              "visual_potential": 59,
+              "replay_potential": 60,
+              "comment_potential": 46,
+              "educational_potential": 66,
+              "emotional_potential": 35,
+              "novelty": 69
+            },
+            "verdict": "rewrite",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "retention": {
+            "score": 67,
+            "signals": {
+              "hook_score": 70,
+              "curiosity_score": 71,
+              "visual_score": 50,
+              "replay_score": 62,
+              "completion_prediction": 77
+            },
+            "verdict": "rewrite",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "opening_retention": {
+            "score": 92.0,
+            "state": "retention_ready",
+            "approved": true,
+            "subject": "conservation",
+            "cue_terms": [
+              "edge",
+              "pattern",
+              "wave"
+            ],
+            "frame_hook_bridge": [
+              "edge",
+              "wave"
+            ],
+            "cue_bridge": [
+              "edge",
+              "pattern",
+              "wave"
+            ],
+            "strengths": [
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "risks": [
+              "subject_not_frontloaded"
+            ]
+          },
+          "weak_content": {
+            "risk": 0,
+            "state": "clear",
+            "reasons": [],
+            "confidence": {
+              "confidence_score": 0.0,
+              "sample_size": 0,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.25,
+              "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
+            },
+            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+          },
+          "subscriber_conversion": {
+            "score": 72,
+            "state": "usable",
+            "subscriber_probability": 0.103,
+            "return_probability": 0.222,
+            "comment_probability": 0.191,
+            "robotic_title": {
+              "risk": 0,
+              "state": "clear",
+              "hits": []
+            },
+            "reasons": [
+              "debate_comment",
+              "return_prompt",
+              "series_identity"
+            ],
+            "confidence": {
+              "confidence_score": 0.033,
+              "sample_size": 1,
+              "minimum_sample_size": 5,
+              "data_quality": "inferred",
+              "data_quality_score": 0.65,
+              "recommendation_strength": "observe",
+              "can_adjust_strategy": false,
+              "bootstrap_multiplier": 0.274,
+              "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+            },
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "distribution_adjustment": 0,
+          "decision_confidence": {
+            "confidence_score": 0.007,
+            "sample_size": 1,
+            "minimum_sample_size": 15,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.255,
+            "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
+          },
+          "category": "conservation",
+          "story_format": "conservation_signal",
+          "hook_score": 86,
+          "title_score": 100,
+          "phrase_risk": {
+            "penalty": 0,
+            "hits": []
+          },
+          "editorial_guard": {
+            "approved": true,
+            "state": "approved",
+            "issues": []
+          },
+          "objective_gate": {
+            "penalty": 0.0,
+            "reasons": [
+              "bootstrap_observe_before_scaling"
+            ],
+            "confidence_score": 0.007,
+            "scale_ready": false,
+            "publish_blocking": false,
+            "swipe_risk_band": "low",
+            "payoff_time_s": 0.0,
+            "template_cluster": "",
+            "mechanism_cluster": ""
+          }
+        },
+        "autonomy_priority": 94.7,
+        "packaging_lab": {
+          "title_variants": [
+            "Mangroves take power out of waves",
+            "Ocean edges turn wave motion into patterns",
+            "Mangroves use mangrove roots before they change"
+          ],
+          "thumbnail_variants": [
+            "WAVE BUFFER",
+            "MANGROVE ROOTS",
+            "WATCH MANGROVE ROOTS"
+          ],
+          "hook_variants": [
+            "Ocean edges turn wave motion into patterns.",
+            "Ocean edges turn wave motion into patterns",
+            "Watch the patterns again. Tomorrow in Planet Repair: another nature signal. Is this proof nature recovers, or "
+          ],
+          "pinned_comment": "Watch the patterns again. Tomorrow in Planet Repair: another nature signal. Is this proof nature recovers, or proof it needs help sooner?",
+          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
+        }
       }
     ]
   },
@@ -6237,6 +6237,6 @@
     "Bias production toward experiment winners: hook_style=outcome_first, script_tone=analytical, narrator_voice=jenny, thumbnail_style=frame_first_side_caption, cta_style=subscribe_channel, opening_visual_pattern=animal_closeup, subtitle_density=low, loop_style=unfinished_mechanism, cta_pattern=question_tease, end_card_style=series_tease, title_shape=impossible_fact, music_bed=light_bed.",
     "Current operating mode: exploit."
   ],
-  "queue_annotations_written": 31,
+  "queue_annotations_written": 30,
   "queue_annotations_changed": 30
 }

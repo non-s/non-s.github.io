@@ -1,27 +1,27 @@
 {
   "total": 1000,
   "reasons": {
-    "duplicate_title": 446,
-    "off_topic_visual": 231,
-    "duplicate_script": 209,
-    "duplicate_angle": 196,
-    "queue_score_reject": 100,
-    "copy_subject_mismatch": 93,
-    "script_hook_mismatch": 79,
+    "duplicate_title": 470,
+    "off_topic_visual": 247,
+    "duplicate_script": 221,
+    "duplicate_angle": 208,
+    "queue_score_reject": 114,
+    "copy_subject_mismatch": 98,
+    "script_hook_mismatch": 82,
     "editorial score is below publish threshold": 69,
-    "thumbnail_text_not_scannable": 66,
-    "thumbnail_not_2_4_words": 65,
-    "script_subject_mismatch": 28,
-    "rights_guard_person_manual_review": 26,
-    "script_word_loop": 22,
+    "script_subject_mismatch": 31,
+    "rights_guard_person_manual_review": 27,
+    "script_word_loop": 23,
     "low_opportunity_score": 21,
-    "non_animal_body_language": 17,
-    "opening_retention_gap_risk": 16,
-    "subject_not_immediately_clear": 11,
+    "non_animal_body_language": 18,
+    "opening_retention_gap_risk": 17,
+    "subject_not_immediately_clear": 12,
+    "payoff_not_explicit": 10,
     "subject repeated inside 3-day cooldown": 10,
     "humanity score is too low": 10,
-    "payoff_not_explicit": 9,
+    "thumbnail_text_not_scannable": 10,
     "bad_plural_verb": 9,
+    "thumbnail_not_2_4_words": 9,
     "missing_visual_cue": 8,
     "opening promise is not concrete enough": 7,
     "script does not expose enough concrete visual detail": 7,
@@ -42,53 +42,16 @@
     "editorial score 35 is below 62": 1
   },
   "stages": {
-    "queue_prune": 461,
-    "queue_prune_final": 270,
-    "queue_repair": 100,
+    "queue_prune": 493,
+    "queue_prune_final": 279,
+    "queue_repair": 114,
     "pre_publish_audit": 69,
-    "youtube_brain_rewrite": 57,
     "opportunity_score": 21,
     "editor_in_chief": 13,
-    "youtube_brain": 9
+    "youtube_brain": 10,
+    "youtube_brain_rewrite": 1
   },
   "latest": [
-    {
-      "story_id": "7248a66b8c65d740",
-      "stage": "queue_prune",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "title": "Bees don’t just pollinate—they’re land surveyors",
-      "category": "plants",
-      "script_key": "bees don t just pollinate they map flowers in seconds watch its feet those yellow dots aren t dust they re flower gps that s why it lands once then flies straight to the next best bloom think you d do better try it with your eyes closed",
-      "angle_key": "bees|close|eyes|plants",
-      "source_url": "https://www.pexels.com/video/close-up-of-a-bee-flying-around-pink-flowers-12216964/",
-      "pexels_video_id": "12216964",
-      "source_clip_id": "pexels:7248a66b8c65d740",
-      "recorded_at": "2026-07-05T12:52:36.062313+00:00",
-      "rewrite_attempted": false,
-      "rewrite_applied": false
-    },
-    {
-      "story_id": "6106b34ab2e95c49",
-      "stage": "queue_prune",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "title": "Rivers carve bends by stealing from one bank",
-      "category": "rivers",
-      "script_key": "rivers move sideways while they flow watch the outside of the bend because faster water cuts that bank while slower water drops sediment inside the curve over time the whole river shifts across the landscape a bend is motion written in mud which water shape next",
-      "angle_key": "rivers|flow|river bend|rivers",
-      "source_url": "https://www.pexels.com/video/beautiful-scenery-of-flowing-waterfalls-and-river-5492238/",
-      "pexels_video_id": "5492238",
-      "source_clip_id": "pexels:6106b34ab2e95c49",
-      "recorded_at": "2026-07-05T12:52:36.078256+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
     {
       "story_id": "9d7900463da820f9",
       "stage": "queue_prune",
@@ -498,6 +461,43 @@
       "recorded_at": "2026-07-05T13:01:44.396661+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
+    },
+    {
+      "story_id": "8bdc8b70af521eb4",
+      "stage": "youtube_brain_rewrite",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "title": "Fossils turn old bones into time clues",
+      "category": "discoveries",
+      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
+      "angle_key": "fossils|form|pattern|discoveries",
+      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
+      "pexels_video_id": "36118169",
+      "source_clip_id": "pexels:8bdc8b70af521eb4",
+      "recorded_at": "2026-07-05T13:06:37.490329+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "Horses Los caballos reconocen caras por meses",
+      "stage": "youtube_brain",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "payoff_not_explicit",
+        "opening_retention_gap_risk"
+      ],
+      "title": "Horses Los caballos reconocen caras por meses",
+      "category": "farm",
+      "script_key": "los caballos reconocen caras conocidas f jate en sus ojos y orejas porque saben qui n les da confianza y qui n no esa memoria los hace acercarse m s tranquilos a personas y caballos la mirada es reconocimiento y decisi n al mismo tiempo cu l ser el siguiente animal de manada now the face memory at the start makes sense",
+      "angle_key": "horses|sense|face memory|farm",
+      "source_url": "https://www.pexels.com/video/gray-bull-grazing-in-lush-meadow-34461235/",
+      "pexels_video_id": "34461235",
+      "source_clip_id": "pexels:1ae7d8f5e6efa42c",
+      "recorded_at": "2026-07-05T13:07:53.881380+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
     }
   ]
 }
