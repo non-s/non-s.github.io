@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-05T16:45:28.463677+00:00",
-  "pending": 28,
+  "generated_at": "2026-07-05T16:49:48.633463+00:00",
+  "pending": 29,
   "states": {
-    "rewrite": 22,
+    "rewrite": 23,
     "publish_ready": 6
   },
   "mechanism_clusters": {
@@ -15,26 +15,86 @@
     "dance_navigation": 1
   },
   "rights": {
-    "approved": 28
+    "approved": 29
   },
   "prune_summary": {
-    "pending_before": 28,
-    "pending_after": 28,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 3,
+    "pending_before": 35,
+    "pending_after": 29,
+    "rejected": 6,
+    "repair_needed": 2,
+    "repaired": 4,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 28,
+      "objective_gate:bootstrap_observe_before_scaling": 29,
       "editor_in_chief:subject repeated inside 3-day cooldown": 22,
       "editor_in_chief:script quality gate blocked the narration": 4,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
       "editor_in_chief:editorial score 40 is below 62": 3,
       "editor_in_chief:editorial score 46 is below 62": 3,
-      "editorial_cooldown_supply_fallback": 2,
-      "editor_in_chief:editorial score 49 is below 62": 1
+      "thumbnail_text_not_scannable": 2,
+      "thumbnail_not_2_4_words": 2,
+      "queue_score_reject": 2,
+      "off_topic_visual": 2,
+      "duplicate_title": 1,
+      "script_subject_mismatch": 1,
+      "copy_subject_mismatch": 1,
+      "editor_in_chief:editorial score 49 is below 62": 1,
+      "editorial_cooldown_supply_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "4684dea5614795ab",
+      "title": "Winter oaks don't sleep like you think",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "e4d82c13a53349e3",
+      "title": "Autumn forests hide a tree army underground",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "0637fa76d9dd2320",
+      "title": "Birds reveal the answer with wing angle",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "25456ab160d8da08",
+      "title": "Rock layers show their timeline inside caves",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "f970ca431c7bf76f",
+      "title": "Ducks carry waterproof oil on their feathers",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "44007a15d4c1fc9e",
+      "title": "Ducks carry waterproof oil on their feathers",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
     {
       "id": "d2f7c923d43180fa",
       "title": "Bees dance directions back to the hive",
@@ -249,59 +309,6 @@
         "thumbnail_not_2_4_words"
       ],
       "stage": "youtube_brain_rewrite"
-    },
-    {
-      "id": "a6121347f9dd7917",
-      "title": "Plants turn sunlight into stored sugar",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "f71c3f77ba2d1381",
-      "title": "Why cats groom after tense moments when the body freezes",
-      "reasons": [
-        "script_word_loop"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "40ff29259ef7099c",
-      "title": "Mangroves take power out of waves",
-      "reasons": [
-        "copy_subject_mismatch",
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "5003e449e94b9212",
-      "title": "Cats aren't scratching for fun—they're mapping the world",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "492133b5a518c00a",
-      "title": "Zoo monkeys don’t need toys to be happy",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "a1d5ba64f173c138",
-      "title": "Monkeys use hammocks the way we use couches",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -481,7 +488,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-05T16:45:00.174325+00:00",
+        "checked_at": "2026-07-05T16:49:18.870523+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1123,7 +1130,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-05T16:45:00.181407+00:00",
+        "checked_at": "2026-07-05T16:49:18.876522+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1755,7 +1762,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-05T16:45:00.183042+00:00",
+        "checked_at": "2026-07-05T16:49:18.878150+00:00",
         "mechanism_cluster": "dance_navigation",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2393,7 +2400,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-05T16:45:00.185311+00:00",
+        "checked_at": "2026-07-05T16:49:18.880411+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2858,6 +2865,642 @@
       }
     },
     {
+      "id": "4e5f98ff12b02a11",
+      "title": "Rivers carve bends by stealing from one bank",
+      "category": "rivers",
+      "publish_score": {
+        "approved": true,
+        "category": "rivers",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 86,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "bend",
+            "river"
+          ],
+          "cue_terms": [
+            "bend",
+            "river"
+          ],
+          "frame_hook_bridge": [
+            "bend",
+            "river"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "rivers"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 58,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 64,
+            "emotional_potential": 35,
+            "novelty": 45,
+            "replay_potential": 72,
+            "viral_potential": 53,
+            "visual_potential": 65
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 74,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 66
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "earth_engine",
+        "subscriber_conversion": {
+          "comment_probability": 0.207,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.242,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-07-05T16:49:18.899406+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "rivers",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "bend",
+            "river"
+          ],
+          "cue_terms": [
+            "bend",
+            "river"
+          ],
+          "frame_hook_bridge": [
+            "bend",
+            "river"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "rivers"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "earth_engine",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "rivers",
+        "viewer_promise": "See why this river earth engine matters."
+      },
+      "packaging": {
+        "community_prompt": "Which rivers clue should Wild Brief compare next in Earth Engine?",
+        "cta_prompt": "Want to see how moving water reshapes the world?",
+        "curiosity_gap": {
+          "hook": "Why do these rivers change after the river bend?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "earth engine",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 60,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {}
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "bend",
+              "river"
+            ],
+            "cue_terms": [
+              "bend",
+              "river"
+            ],
+            "frame_hook_bridge": [
+              "bend",
+              "river"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "rivers"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Rivers move sideways while they flow",
+          "Rivers show why the river bend matters.",
+          "Rivers show why the river bend matters.",
+          "Rivers show why the river bend matters.",
+          "Rivers give away the answer through river bend"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "river bend",
+          "ending_line": "Which water shape next?",
+          "final_line": "Now the river bend at the start makes sense.",
+          "loop_score": 0.755,
+          "opening_line": "Rivers move sideways while they flow.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "river bend",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.755,
+        "next_episode_question": "Tomorrow in Earth Engine: another nature signal. Are rivers more like roads, tools, or engines?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "bend",
+            "river"
+          ],
+          "cue_terms": [
+            "bend",
+            "river"
+          ],
+          "frame_hook_bridge": [
+            "bend",
+            "river"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "rivers"
+        },
+        "pinned_comment": "Watch the river bend again. Tomorrow in Earth Engine: another nature signal. Are rivers more like roads, tools, or engines?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.76,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 17,
+          "first_2s_narration": "Rivers move sideways while they flow Watch the outside of the bend",
+          "first_frame_text": "RIVER BEND",
+          "first_frame_text_words": 2,
+          "hook": "Rivers move sideways while they flow.",
+          "hook_specificity": 0.78,
+          "hook_words": 6,
+          "loop_score": 0.755,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "bend",
+              "river"
+            ],
+            "cue_terms": [
+              "bend",
+              "river"
+            ],
+            "frame_hook_bridge": [
+              "bend",
+              "river"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "rivers"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the river bend, so viewers rewatch the rivers clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 74,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 66
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Rivers move sideways while they flow Watch the outside of the bend",
+          "first_frame_text": "RIVER BEND",
+          "next_episode_question": "Tomorrow in Earth Engine: another nature signal. Are rivers more like roads, tools, or engines?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains the visible river bend behind Rivers in a fast nature science story.",
+            "series": "Earth Engine",
+            "subject": "rivers",
+            "terms": [
+              "rivers",
+              "river bend",
+              "earth engine"
+            ],
+            "title_variant": "Rivers river bend explained fast",
+            "visible_cue": "river bend"
+          },
+          "series": "Earth Engine",
+          "subject": "rivers",
+          "visible_cue": "river bend"
+        },
+        "risks": [],
+        "score": 96,
+        "search_intent": {
+          "description_line": "This Short explains the visible river bend behind Rivers in a fast nature science story.",
+          "series": "Earth Engine",
+          "subject": "rivers",
+          "terms": [
+            "rivers",
+            "river bend",
+            "earth engine"
+          ],
+          "title_variant": "Rivers river bend explained fast",
+          "visible_cue": "river bend"
+        },
+        "selected_variant": {
+          "hook": "Rivers move sideways while they flow",
+          "score": 78,
+          "thumbnail_text": "RIVER BEND",
+          "title": "Rivers carve bends by stealing from one bank"
+        },
+        "series": "Earth Engine #8",
+        "series_identity": {
+          "continuity_prompt": "Next in Earth Engine #8: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Earth Engine #8",
+          "series": "Earth Engine #8"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.207,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.242,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "RIVER BEND",
+          "WATCH RIVER BEND",
+          "RIVERS MOVE",
+          "RIVER BEND MATTERS",
+          "RIVER BEND FIRST",
+          "RIVER BEND REVEAL",
+          "RIVER BEND CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Rivers carve bends by stealing from one bank",
+          "Rivers use river bend before they move",
+          "This river bend gives rivers away",
+          "Why rivers move after one river bend",
+          "Rivers reveal the answer with river bend",
+          "The river bend that changes the moment",
+          "Rivers make one river bend matter",
+          "Rivers show the hidden answer in seconds",
+          "Rivers: watch this river bend",
+          "Watch rivers after the river bend"
+        ],
+        "top_variants": [
+          {
+            "hook": "Rivers move sideways while they flow",
+            "score": 78,
+            "thumbnail_text": "RIVER BEND",
+            "title": "Rivers carve bends by stealing from one bank"
+          },
+          {
+            "hook": "Watch the river bend; it explains the behavior",
+            "score": 78,
+            "thumbnail_text": "RIVER BEND",
+            "title": "Rivers carve bends by stealing from one bank"
+          },
+          {
+            "hook": "Start with the river bend; it changes the scene",
+            "score": 78,
+            "thumbnail_text": "RIVER BEND",
+            "title": "Rivers carve bends by stealing from one bank"
+          },
+          {
+            "hook": "Rivers move sideways while they flow",
+            "score": 71,
+            "thumbnail_text": "WATCH RIVER BEND",
+            "title": "Rivers carve bends by stealing from one bank"
+          },
+          {
+            "hook": "Watch the river bend; it explains the behavior",
+            "score": 71,
+            "thumbnail_text": "WATCH RIVER BEND",
+            "title": "Rivers carve bends by stealing from one bank"
+          },
+          {
+            "hook": "Start with the river bend; it changes the scene",
+            "score": 71,
+            "thumbnail_text": "WATCH RIVER BEND",
+            "title": "Rivers carve bends by stealing from one bank"
+          },
+          {
+            "hook": "Rivers move sideways while they flow",
+            "score": 71,
+            "thumbnail_text": "RIVERS MOVE",
+            "title": "Rivers carve bends by stealing from one bank"
+          },
+          {
+            "hook": "Watch the river bend; it explains the behavior",
+            "score": 71,
+            "thumbnail_text": "RIVERS MOVE",
+            "title": "Rivers carve bends by stealing from one bank"
+          },
+          {
+            "hook": "Start with the river bend; it changes the scene",
+            "score": 71,
+            "thumbnail_text": "RIVERS MOVE",
+            "title": "Rivers carve bends by stealing from one bank"
+          },
+          {
+            "hook": "Rivers move sideways while they flow",
+            "score": 71,
+            "thumbnail_text": "RIVER BEND MATTERS",
+            "title": "Rivers carve bends by stealing from one bank"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "32bc71248738d412",
       "title": "Parrots use their beak like a third foot",
       "category": "birds",
@@ -3032,7 +3675,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T16:45:00.156962+00:00",
+        "checked_at": "2026-07-05T16:49:18.846637+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3676,7 +4319,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T16:45:00.188285+00:00",
+        "checked_at": "2026-07-05T16:49:18.883298+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4320,7 +4963,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-05T16:45:00.176958+00:00",
+        "checked_at": "2026-07-05T16:49:18.872941+00:00",
         "mechanism_cluster": "taste_sensors",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4787,672 +5430,6 @@
       }
     },
     {
-      "id": "76156955fa19e142",
-      "title": "Butterflies are covered in tiny color scales",
-      "category": "insects",
-      "publish_score": {
-        "approved": true,
-        "category": "insects",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "wing_scales",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "color",
-            "scale",
-            "surface",
-            "wing"
-          ],
-          "cue_terms": [
-            "color",
-            "scale",
-            "surface",
-            "wing"
-          ],
-          "frame_hook_bridge": [
-            "scale",
-            "wing"
-          ],
-          "risks": [
-            "missing_early_action"
-          ],
-          "score": 96.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "butterflies"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 69,
-          "signals": {
-            "comment_potential": 62,
-            "educational_potential": 73,
-            "emotional_potential": 44,
-            "novelty": 59,
-            "replay_potential": 72,
-            "viral_potential": 75,
-            "visual_potential": 79
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "body_superpower",
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-07-05T16:45:00.179327+00:00",
-        "mechanism_cluster": "wing_scales",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling",
-          "editor_in_chief:subject repeated inside 3-day cooldown",
-          "editorial_cooldown_supply_fallback"
-        ],
-        "score": 72.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 72.0,
-      "youtube_brain": {
-        "animal": "butterflies",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "color",
-            "scale",
-            "surface",
-            "wing"
-          ],
-          "cue_terms": [
-            "color",
-            "scale",
-            "surface",
-            "wing"
-          ],
-          "frame_hook_bridge": [
-            "scale",
-            "wing"
-          ],
-          "risks": [
-            "missing_early_action"
-          ],
-          "score": 96.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "butterflies"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "body_superpower",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "butterflies",
-        "viewer_promise": "See why butterflies body superpower matters."
-      },
-      "packaging": {
-        "community_prompt": "Which butterflies clue should Wild Brief compare next in Tiny Worlds?",
-        "cta_prompt": "Want more small creatures doing impossible things?",
-        "curiosity_gap": {
-          "hook": "Why do these butterflies change after the wing scales?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "body superpower",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 60,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {}
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "color",
-              "scale",
-              "surface",
-              "wing"
-            ],
-            "cue_terms": [
-              "color",
-              "scale",
-              "surface",
-              "wing"
-            ],
-            "frame_hook_bridge": [
-              "scale",
-              "wing"
-            ],
-            "risks": [
-              "missing_early_action"
-            ],
-            "score": 96.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "butterflies"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Butterflies are covered in tiny color scales",
-          "Butterflies show why the wing scales matters.",
-          "Butterflies show why the wing scales matters.",
-          "Butterflies show why the wing scales matters.",
-          "Butterflies give away the answer through wing scales"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "tiny",
-          "ending_line": "Which tiny detail should we zoom into next?",
-          "final_line": "Which tiny detail should we zoom into next?",
-          "loop_score": 0.754,
-          "opening_line": "Butterflies are covered in tiny color scales.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "tiny",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": false,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.754,
-        "next_episode_question": "Tomorrow in Tiny Worlds: another animal signal. Is this tiny design more impressive than large-animal survival?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "color",
-            "scale",
-            "surface",
-            "wing"
-          ],
-          "cue_terms": [
-            "color",
-            "scale",
-            "surface",
-            "wing"
-          ],
-          "frame_hook_bridge": [
-            "scale",
-            "wing"
-          ],
-          "risks": [
-            "missing_early_action"
-          ],
-          "score": 96.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "butterflies"
-        },
-        "pinned_comment": "Watch the wing scales again. Tomorrow in Tiny Worlds: another animal signal. Is this tiny design more impressive than large-animal survival?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.53,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 19,
-          "first_2s_narration": "Butterflies are covered in tiny color scales Watch the wing surface because",
-          "first_frame_text": "WING SCALES",
-          "first_frame_text_words": 2,
-          "hook": "Butterflies are covered in tiny color scales.",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.754,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "color",
-              "scale",
-              "surface",
-              "wing"
-            ],
-            "cue_terms": [
-              "color",
-              "scale",
-              "surface",
-              "wing"
-            ],
-            "frame_hook_bridge": [
-              "scale",
-              "wing"
-            ],
-            "risks": [
-              "missing_early_action"
-            ],
-            "score": 96.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "butterflies"
-          },
-          "opening_retention_score": 96.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the wing scales, so viewers rewatch the butterflies clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Butterflies are covered in tiny color scales Watch the wing surface because",
-          "first_frame_text": "WING SCALES",
-          "next_episode_question": "Tomorrow in Tiny Worlds: another animal signal. Is this tiny design more impressive than large-animal survival?",
-          "opening_retention_score": 96.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains Butterflies behavior through the visible wing scales.",
-            "series": "Tiny Worlds",
-            "subject": "butterflies",
-            "terms": [
-              "butterflies",
-              "wing scales",
-              "insects",
-              "body superpower"
-            ],
-            "title_variant": "Butterflies behavior: wing scales explained",
-            "visible_cue": "wing scales"
-          },
-          "series": "Tiny Worlds",
-          "subject": "butterflies",
-          "visible_cue": "wing scales"
-        },
-        "risks": [],
-        "score": 96,
-        "search_intent": {
-          "description_line": "This Short explains Butterflies behavior through the visible wing scales.",
-          "series": "Tiny Worlds",
-          "subject": "butterflies",
-          "terms": [
-            "butterflies",
-            "wing scales",
-            "insects",
-            "body superpower"
-          ],
-          "title_variant": "Butterflies behavior: wing scales explained",
-          "visible_cue": "wing scales"
-        },
-        "selected_variant": {
-          "hook": "Butterflies are covered in tiny color scales",
-          "score": 81,
-          "thumbnail_text": "WING SCALES",
-          "title": "Butterflies carry color on tiny wing scales"
-        },
-        "series": "Tiny Worlds #6",
-        "series_identity": {
-          "continuity_prompt": "Next in Tiny Worlds: compare this with another force of nature.",
-          "episode": 6,
-          "label": "Tiny Worlds #6",
-          "series": "Tiny Worlds"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "WING SCALES",
-          "WATCH WING SCALES",
-          "BUTTERFLIES COVERED",
-          "WING SCALES MATTERS",
-          "WING SCALES FIRST",
-          "WING SCALES REVEAL",
-          "WING SCALES CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Butterflies carry color on tiny wing scales",
-          "Butterflies are covered in tiny color scales",
-          "Butterflies use wing scales before they covered",
-          "Why butterflies covered after one wing scales",
-          "Butterflies reveal the answer with wing scales",
-          "The wing scales that changes the moment",
-          "Butterflies make one wing scales matter",
-          "Butterflies show the hidden answer in seconds",
-          "Butterflies: watch this wing scales"
-        ],
-        "top_variants": [
-          {
-            "hook": "Butterflies are covered in tiny color scales",
-            "score": 81,
-            "thumbnail_text": "WING SCALES",
-            "title": "Butterflies carry color on tiny wing scales"
-          },
-          {
-            "hook": "Watch the wing scales; it explains the behavior",
-            "score": 81,
-            "thumbnail_text": "WING SCALES",
-            "title": "Butterflies carry color on tiny wing scales"
-          },
-          {
-            "hook": "Start with the wing scales; it changes the scene",
-            "score": 81,
-            "thumbnail_text": "WING SCALES",
-            "title": "Butterflies carry color on tiny wing scales"
-          },
-          {
-            "hook": "Start with the wing scales; it changes the scene",
-            "score": 75,
-            "thumbnail_text": "WING SCALES FIRST",
-            "title": "Butterflies carry color on tiny wing scales"
-          },
-          {
-            "hook": "Butterflies are covered in tiny color scales",
-            "score": 74,
-            "thumbnail_text": "WATCH WING SCALES",
-            "title": "Butterflies carry color on tiny wing scales"
-          },
-          {
-            "hook": "Watch the wing scales; it explains the behavior",
-            "score": 74,
-            "thumbnail_text": "WATCH WING SCALES",
-            "title": "Butterflies carry color on tiny wing scales"
-          },
-          {
-            "hook": "Start with the wing scales; it changes the scene",
-            "score": 74,
-            "thumbnail_text": "WATCH WING SCALES",
-            "title": "Butterflies carry color on tiny wing scales"
-          },
-          {
-            "hook": "Butterflies are covered in tiny color scales",
-            "score": 74,
-            "thumbnail_text": "BUTTERFLIES COVERED",
-            "title": "Butterflies carry color on tiny wing scales"
-          },
-          {
-            "hook": "Watch the wing scales; it explains the behavior",
-            "score": 74,
-            "thumbnail_text": "BUTTERFLIES COVERED",
-            "title": "Butterflies carry color on tiny wing scales"
-          },
-          {
-            "hook": "Start with the wing scales; it changes the scene",
-            "score": 74,
-            "thumbnail_text": "BUTTERFLIES COVERED",
-            "title": "Butterflies carry color on tiny wing scales"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "fa7c85e672e4ff2a",
       "title": "Sheep recognize faces across the flock",
       "category": "farm",
@@ -5627,7 +5604,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T16:45:00.145236+00:00",
+        "checked_at": "2026-07-05T16:49:18.836289+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6270,7 +6247,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T16:45:00.147339+00:00",
+        "checked_at": "2026-07-05T16:49:18.838167+00:00",
         "mechanism_cluster": "visual_stabilization",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6914,7 +6891,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T16:45:00.149484+00:00",
+        "checked_at": "2026-07-05T16:49:18.839536+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7554,7 +7531,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T16:45:00.152070+00:00",
+        "checked_at": "2026-07-05T16:49:18.841788+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8194,7 +8171,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T16:45:00.161367+00:00",
+        "checked_at": "2026-07-05T16:49:18.857826+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8830,7 +8807,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T16:45:00.163645+00:00",
+        "checked_at": "2026-07-05T16:49:18.860109+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9478,7 +9455,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T16:45:00.165639+00:00",
+        "checked_at": "2026-07-05T16:49:18.862082+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10128,7 +10105,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T16:45:00.168540+00:00",
+        "checked_at": "2026-07-05T16:49:18.864902+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10785,7 +10762,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T16:45:00.170529+00:00",
+        "checked_at": "2026-07-05T16:49:18.866771+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11256,6 +11233,671 @@
       }
     },
     {
+      "id": "76156955fa19e142",
+      "title": "Butterflies are covered in tiny color scales",
+      "category": "insects",
+      "publish_score": {
+        "approved": true,
+        "category": "insects",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "wing_scales",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "color",
+            "scale",
+            "surface",
+            "wing"
+          ],
+          "cue_terms": [
+            "color",
+            "scale",
+            "surface",
+            "wing"
+          ],
+          "frame_hook_bridge": [
+            "scale",
+            "wing"
+          ],
+          "risks": [
+            "missing_early_action"
+          ],
+          "score": 96.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "butterflies"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 69,
+          "signals": {
+            "comment_potential": 62,
+            "educational_potential": 73,
+            "emotional_potential": 44,
+            "novelty": 59,
+            "replay_potential": 72,
+            "viral_potential": 75,
+            "visual_potential": 79
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 74,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 66
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-07-05T16:49:18.874485+00:00",
+        "mechanism_cluster": "wing_scales",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling",
+          "editor_in_chief:subject repeated inside 3-day cooldown"
+        ],
+        "score": 64.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 64.0,
+      "youtube_brain": {
+        "animal": "butterflies",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "color",
+            "scale",
+            "surface",
+            "wing"
+          ],
+          "cue_terms": [
+            "color",
+            "scale",
+            "surface",
+            "wing"
+          ],
+          "frame_hook_bridge": [
+            "scale",
+            "wing"
+          ],
+          "risks": [
+            "missing_early_action"
+          ],
+          "score": 96.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "butterflies"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "butterflies",
+        "viewer_promise": "See why butterflies body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which butterflies clue should Wild Brief compare next in Tiny Worlds?",
+        "cta_prompt": "Want more small creatures doing impossible things?",
+        "curiosity_gap": {
+          "hook": "Why do these butterflies change after the wing scales?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 60,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {}
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "color",
+              "scale",
+              "surface",
+              "wing"
+            ],
+            "cue_terms": [
+              "color",
+              "scale",
+              "surface",
+              "wing"
+            ],
+            "frame_hook_bridge": [
+              "scale",
+              "wing"
+            ],
+            "risks": [
+              "missing_early_action"
+            ],
+            "score": 96.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "butterflies"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Butterflies are covered in tiny color scales",
+          "Butterflies show why the wing scales matters.",
+          "Butterflies show why the wing scales matters.",
+          "Butterflies show why the wing scales matters.",
+          "Butterflies give away the answer through wing scales"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "tiny",
+          "ending_line": "Which tiny detail should we zoom into next?",
+          "final_line": "Which tiny detail should we zoom into next?",
+          "loop_score": 0.754,
+          "opening_line": "Butterflies are covered in tiny color scales.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "tiny",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": false,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.754,
+        "next_episode_question": "Tomorrow in Tiny Worlds: another animal signal. Is this tiny design more impressive than large-animal survival?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "color",
+            "scale",
+            "surface",
+            "wing"
+          ],
+          "cue_terms": [
+            "color",
+            "scale",
+            "surface",
+            "wing"
+          ],
+          "frame_hook_bridge": [
+            "scale",
+            "wing"
+          ],
+          "risks": [
+            "missing_early_action"
+          ],
+          "score": 96.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "butterflies"
+        },
+        "pinned_comment": "Watch the wing scales again. Tomorrow in Tiny Worlds: another animal signal. Is this tiny design more impressive than large-animal survival?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.53,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 19,
+          "first_2s_narration": "Butterflies are covered in tiny color scales Watch the wing surface because",
+          "first_frame_text": "WING SCALES",
+          "first_frame_text_words": 2,
+          "hook": "Butterflies are covered in tiny color scales.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.754,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "color",
+              "scale",
+              "surface",
+              "wing"
+            ],
+            "cue_terms": [
+              "color",
+              "scale",
+              "surface",
+              "wing"
+            ],
+            "frame_hook_bridge": [
+              "scale",
+              "wing"
+            ],
+            "risks": [
+              "missing_early_action"
+            ],
+            "score": 96.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "butterflies"
+          },
+          "opening_retention_score": 96.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the wing scales, so viewers rewatch the butterflies clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 74,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 66
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Butterflies are covered in tiny color scales Watch the wing surface because",
+          "first_frame_text": "WING SCALES",
+          "next_episode_question": "Tomorrow in Tiny Worlds: another animal signal. Is this tiny design more impressive than large-animal survival?",
+          "opening_retention_score": 96.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Butterflies behavior through the visible wing scales.",
+            "series": "Tiny Worlds",
+            "subject": "butterflies",
+            "terms": [
+              "butterflies",
+              "wing scales",
+              "insects",
+              "body superpower"
+            ],
+            "title_variant": "Butterflies behavior: wing scales explained",
+            "visible_cue": "wing scales"
+          },
+          "series": "Tiny Worlds",
+          "subject": "butterflies",
+          "visible_cue": "wing scales"
+        },
+        "risks": [],
+        "score": 96,
+        "search_intent": {
+          "description_line": "This Short explains Butterflies behavior through the visible wing scales.",
+          "series": "Tiny Worlds",
+          "subject": "butterflies",
+          "terms": [
+            "butterflies",
+            "wing scales",
+            "insects",
+            "body superpower"
+          ],
+          "title_variant": "Butterflies behavior: wing scales explained",
+          "visible_cue": "wing scales"
+        },
+        "selected_variant": {
+          "hook": "Butterflies are covered in tiny color scales",
+          "score": 81,
+          "thumbnail_text": "WING SCALES",
+          "title": "Butterflies carry color on tiny wing scales"
+        },
+        "series": "Tiny Worlds #6",
+        "series_identity": {
+          "continuity_prompt": "Next in Tiny Worlds: compare this with another force of nature.",
+          "episode": 6,
+          "label": "Tiny Worlds #6",
+          "series": "Tiny Worlds"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "WING SCALES",
+          "WATCH WING SCALES",
+          "BUTTERFLIES COVERED",
+          "WING SCALES MATTERS",
+          "WING SCALES FIRST",
+          "WING SCALES REVEAL",
+          "WING SCALES CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Butterflies carry color on tiny wing scales",
+          "Butterflies are covered in tiny color scales",
+          "Butterflies use wing scales before they covered",
+          "Why butterflies covered after one wing scales",
+          "Butterflies reveal the answer with wing scales",
+          "The wing scales that changes the moment",
+          "Butterflies make one wing scales matter",
+          "Butterflies show the hidden answer in seconds",
+          "Butterflies: watch this wing scales"
+        ],
+        "top_variants": [
+          {
+            "hook": "Butterflies are covered in tiny color scales",
+            "score": 81,
+            "thumbnail_text": "WING SCALES",
+            "title": "Butterflies carry color on tiny wing scales"
+          },
+          {
+            "hook": "Watch the wing scales; it explains the behavior",
+            "score": 81,
+            "thumbnail_text": "WING SCALES",
+            "title": "Butterflies carry color on tiny wing scales"
+          },
+          {
+            "hook": "Start with the wing scales; it changes the scene",
+            "score": 81,
+            "thumbnail_text": "WING SCALES",
+            "title": "Butterflies carry color on tiny wing scales"
+          },
+          {
+            "hook": "Start with the wing scales; it changes the scene",
+            "score": 75,
+            "thumbnail_text": "WING SCALES FIRST",
+            "title": "Butterflies carry color on tiny wing scales"
+          },
+          {
+            "hook": "Butterflies are covered in tiny color scales",
+            "score": 74,
+            "thumbnail_text": "WATCH WING SCALES",
+            "title": "Butterflies carry color on tiny wing scales"
+          },
+          {
+            "hook": "Watch the wing scales; it explains the behavior",
+            "score": 74,
+            "thumbnail_text": "WATCH WING SCALES",
+            "title": "Butterflies carry color on tiny wing scales"
+          },
+          {
+            "hook": "Start with the wing scales; it changes the scene",
+            "score": 74,
+            "thumbnail_text": "WATCH WING SCALES",
+            "title": "Butterflies carry color on tiny wing scales"
+          },
+          {
+            "hook": "Butterflies are covered in tiny color scales",
+            "score": 74,
+            "thumbnail_text": "BUTTERFLIES COVERED",
+            "title": "Butterflies carry color on tiny wing scales"
+          },
+          {
+            "hook": "Watch the wing scales; it explains the behavior",
+            "score": 74,
+            "thumbnail_text": "BUTTERFLIES COVERED",
+            "title": "Butterflies carry color on tiny wing scales"
+          },
+          {
+            "hook": "Start with the wing scales; it changes the scene",
+            "score": 74,
+            "thumbnail_text": "BUTTERFLIES COVERED",
+            "title": "Butterflies carry color on tiny wing scales"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "16394dd0594f4bd3",
       "title": "Sharks can feel electricity in the water",
       "category": "ocean",
@@ -11428,7 +12070,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T16:45:00.180379+00:00",
+        "checked_at": "2026-07-05T16:49:18.875499+00:00",
         "mechanism_cluster": "electric_sense",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12062,7 +12704,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T16:45:00.190364+00:00",
+        "checked_at": "2026-07-05T16:49:18.885441+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12507,658 +13149,6 @@
             "score": 74,
             "thumbnail_text": "REEF CITY FIRST",
             "title": "Coral reefs are cities built by tiny animals"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
-      "id": "85e7eed92eb218a8",
-      "title": "Crystals build shape from repeating atoms",
-      "category": "chemistry",
-      "publish_score": {
-        "approved": true,
-        "category": "chemistry",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 86,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "crystal",
-            "edge",
-            "shape"
-          ],
-          "cue_terms": [
-            "crystal",
-            "edge",
-            "growth",
-            "shape"
-          ],
-          "frame_hook_bridge": [
-            "crystal"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "crystals"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 62,
-          "signals": {
-            "comment_potential": 62,
-            "educational_potential": 71,
-            "emotional_potential": 35,
-            "novelty": 55,
-            "replay_potential": 72,
-            "viral_potential": 63,
-            "visual_potential": 65
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "chemistry_demo",
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-07-05T16:45:00.192595+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling",
-          "editor_in_chief:subject repeated inside 3-day cooldown"
-        ],
-        "score": 64.0,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 64.0,
-      "youtube_brain": {
-        "animal": "crystals",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "crystal",
-            "edge",
-            "shape"
-          ],
-          "cue_terms": [
-            "crystal",
-            "edge",
-            "growth",
-            "shape"
-          ],
-          "frame_hook_bridge": [
-            "crystal"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "crystals"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "chemistry_demo",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "crystals",
-        "viewer_promise": "See why this crystal chemistry demo matters."
-      },
-      "packaging": {
-        "community_prompt": "Which crystals clue should Wild Brief compare next in Nature Signals?",
-        "cta_prompt": "Follow for one animal signal a day.",
-        "curiosity_gap": {
-          "hook": "Why do these crystals change after the crystal growth?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "chemistry demo",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "specific_question",
-            "format": "fresh_variant",
-            "hook": "new_hook",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "explore",
-          "sample_count": 60,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {}
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "crystal",
-              "edge",
-              "shape"
-            ],
-            "cue_terms": [
-              "crystal",
-              "edge",
-              "growth",
-              "shape"
-            ],
-            "frame_hook_bridge": [
-              "crystal"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "crystals"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Crystals build shape from repeating atoms",
-          "Crystals show why the crystal edge matters.",
-          "Crystals show why the crystal edge matters.",
-          "Crystals show why the crystal edge matters.",
-          "Crystals give away the answer through crystal edge"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "crystal growth",
-          "ending_line": "Which reaction should we slow down next.",
-          "final_line": "Now the crystal growth at the start makes sense.",
-          "loop_score": 0.791,
-          "opening_line": "Crystals build shape from repeating atoms.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "crystal growth",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.791,
-        "next_episode_question": "Tomorrow in Nature Signals: another nature signal. What part of this feels most impossible?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "crystal",
-            "edge",
-            "shape"
-          ],
-          "cue_terms": [
-            "crystal",
-            "edge",
-            "growth",
-            "shape"
-          ],
-          "frame_hook_bridge": [
-            "crystal"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "crystals"
-        },
-        "pinned_comment": "Watch the pattern again. Tomorrow in Nature Signals: another nature signal. What part of this feels most impossible?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 16.53,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 17,
-          "first_2s_narration": "Crystals build shape from repeating atoms Watch the edge grow because atoms",
-          "first_frame_text": "CRYSTAL GROWTH",
-          "first_frame_text_words": 2,
-          "hook": "Crystals build shape from repeating atoms.",
-          "hook_specificity": 0.78,
-          "hook_words": 6,
-          "loop_score": 0.791,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "crystal",
-              "edge",
-              "shape"
-            ],
-            "cue_terms": [
-              "crystal",
-              "edge",
-              "growth",
-              "shape"
-            ],
-            "frame_hook_bridge": [
-              "crystal"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "crystals"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the pattern, so viewers rewatch the crystals clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Crystals build shape from repeating atoms Watch the edge grow because atoms",
-          "first_frame_text": "CRYSTAL GROWTH",
-          "next_episode_question": "Tomorrow in Nature Signals: another nature signal. What part of this feels most impossible?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains the visible pattern behind Crystals in a fast nature science story.",
-            "series": "Nature Signals",
-            "subject": "crystals",
-            "terms": [
-              "crystals",
-              "pattern",
-              "chemistry",
-              "chemistry demo"
-            ],
-            "title_variant": "Crystals pattern explained fast",
-            "visible_cue": "pattern"
-          },
-          "series": "Nature Signals",
-          "subject": "crystals",
-          "visible_cue": "pattern"
-        },
-        "risks": [],
-        "score": 96,
-        "search_intent": {
-          "description_line": "This Short explains the visible pattern behind Crystals in a fast nature science story.",
-          "series": "Nature Signals",
-          "subject": "crystals",
-          "terms": [
-            "crystals",
-            "pattern",
-            "chemistry",
-            "chemistry demo"
-          ],
-          "title_variant": "Crystals pattern explained fast",
-          "visible_cue": "pattern"
-        },
-        "selected_variant": {
-          "hook": "Crystals build shape from repeating atoms",
-          "score": 80,
-          "thumbnail_text": "CRYSTAL GROWTH",
-          "title": "Crystals grow by repeating one tiny pattern"
-        },
-        "series": "Nature Signals #3",
-        "series_identity": {
-          "continuity_prompt": "Next in Nature Signals: compare this with another force of nature.",
-          "episode": 3,
-          "label": "Nature Signals #3",
-          "series": "Nature Signals"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "CRYSTAL GROWTH",
-          "CRYSTAL EDGE",
-          "WATCH CRYSTAL EDGE",
-          "CRYSTALS LOCK",
-          "CRYSTAL EDGE MATTERS",
-          "CRYSTAL EDGE FIRST",
-          "CRYSTAL EDGE REVEAL",
-          "CRYSTAL EDGE CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Crystals grow by repeating one tiny pattern",
-          "Crystals build shape from repeating atoms",
-          "Crystals use crystal edge before they lock",
-          "This crystal edge gives crystals away",
-          "Why crystals lock after one crystal edge",
-          "Crystals reveal the answer with crystal edge",
-          "The crystal edge that changes the moment",
-          "Crystals make one crystal edge matter",
-          "Crystals show the hidden answer in seconds",
-          "Crystals: watch this crystal edge"
-        ],
-        "top_variants": [
-          {
-            "hook": "Crystals build shape from repeating atoms",
-            "score": 80,
-            "thumbnail_text": "CRYSTAL GROWTH",
-            "title": "Crystals grow by repeating one tiny pattern"
-          },
-          {
-            "hook": "Watch the crystal edge; it explains the behavior",
-            "score": 80,
-            "thumbnail_text": "CRYSTAL GROWTH",
-            "title": "Crystals grow by repeating one tiny pattern"
-          },
-          {
-            "hook": "Start with the crystal edge; it changes the scene",
-            "score": 80,
-            "thumbnail_text": "CRYSTAL GROWTH",
-            "title": "Crystals grow by repeating one tiny pattern"
-          },
-          {
-            "hook": "Crystals build shape from repeating atoms",
-            "score": 73,
-            "thumbnail_text": "CRYSTAL EDGE",
-            "title": "Crystals grow by repeating one tiny pattern"
-          },
-          {
-            "hook": "Watch the crystal edge; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "CRYSTAL EDGE",
-            "title": "Crystals grow by repeating one tiny pattern"
-          },
-          {
-            "hook": "Start with the crystal edge; it changes the scene",
-            "score": 73,
-            "thumbnail_text": "CRYSTAL EDGE",
-            "title": "Crystals grow by repeating one tiny pattern"
-          },
-          {
-            "hook": "Crystals build shape from repeating atoms",
-            "score": 73,
-            "thumbnail_text": "WATCH CRYSTAL EDGE",
-            "title": "Crystals grow by repeating one tiny pattern"
-          },
-          {
-            "hook": "Watch the crystal edge; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "WATCH CRYSTAL EDGE",
-            "title": "Crystals grow by repeating one tiny pattern"
-          },
-          {
-            "hook": "Start with the crystal edge; it changes the scene",
-            "score": 73,
-            "thumbnail_text": "WATCH CRYSTAL EDGE",
-            "title": "Crystals grow by repeating one tiny pattern"
-          },
-          {
-            "hook": "Crystals build shape from repeating atoms",
-            "score": 73,
-            "thumbnail_text": "CRYSTALS LOCK",
-            "title": "Crystals grow by repeating one tiny pattern"
           }
         ]
       },

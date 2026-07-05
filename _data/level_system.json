@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-05T16:45:53.931658+00:00",
+  "generated_at": "2026-07-05T16:50:14.958770+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
   "overall_progress_pct": 34.3,
@@ -22,7 +22,7 @@
       "top_blockers": [
         {
           "id": "objective_gate:bootstrap_observe_before_scaling",
-          "count": 56,
+          "count": 58,
           "operator_translation": "collect more observed signal before scaling this pattern"
         },
         {
@@ -32,12 +32,12 @@
         },
         {
           "id": "queue_prune:rewrite",
-          "count": 22,
+          "count": 23,
           "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
           "id": "editor_in_chief:cooldown_subject",
-          "count": 20,
+          "count": 21,
           "operator_translation": "pick a fresh subject inside the same lane"
         },
         {
@@ -82,13 +82,13 @@
   "metrics": {
     "health_score": 82,
     "health_state": "watch",
-    "pending": 28,
+    "pending": 29,
     "operational_publish_ready": 6,
     "apparent_publish_ready": 6,
     "eligible_count": 6,
     "scale_ready_count": 0,
     "next_shorts_count": 6,
-    "editorial_candidate_count": 28,
+    "editorial_candidate_count": 29,
     "published_count": 60,
     "views_28d": 30314,
     "total_subscribers": 46,
@@ -103,7 +103,7 @@
   "top_blockers": [
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
-      "count": 56,
+      "count": 58,
       "operator_translation": "collect more observed signal before scaling this pattern"
     },
     {
@@ -113,12 +113,12 @@
     },
     {
       "id": "queue_prune:rewrite",
-      "count": 22,
+      "count": 23,
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
       "id": "editor_in_chief:cooldown_subject",
-      "count": 20,
+      "count": 21,
       "operator_translation": "pick a fresh subject inside the same lane"
     },
     {
@@ -147,11 +147,6 @@
       "operator_translation": "editor in chief:editorial score 46 is below 62"
     },
     {
-      "id": "editorial_cooldown_supply_fallback",
-      "count": 4,
-      "operator_translation": "editorial cooldown supply fallback"
-    },
-    {
       "id": "packaging:missing_action_word",
       "count": 3,
       "operator_translation": "packaging:missing action word"
@@ -160,6 +155,11 @@
       "id": "editor_in_chief:editorial score 49 is below 62",
       "count": 2,
       "operator_translation": "editor in chief:editorial score 49 is below 62"
+    },
+    {
+      "id": "editorial_cooldown_supply_fallback",
+      "count": 2,
+      "operator_translation": "editorial cooldown supply fallback"
     }
   ],
   "levels": [
@@ -187,7 +187,7 @@
       "evidence": {
         "operational_publish_ready": 6,
         "eligible_count": 6,
-        "pending": 28,
+        "pending": 29,
         "target_publish_ready": 6,
         "target_pending": 20
       }
