@@ -5,80 +5,25 @@
     24
   ],
   "counts": {
-    "analytics_due": 4,
-    "awaiting_1h": 1,
-    "high_priority": 5,
-    "repair_candidates": 1,
+    "analytics_due": 7,
+    "awaiting_1h": 0,
+    "high_priority": 7,
+    "repair_candidates": 0,
     "tracked": 10
   },
-  "generated_at": "2026-07-05T10:32:38.405946+00:00",
+  "generated_at": "2026-07-05T10:33:11.431718+00:00",
   "items": [
     {
-      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.044,
-      "category": "nocturnal",
-      "checkpoints": [
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-07-05T11:30:01.173083+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-07-05T16:30:01.173083+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-07-06T10:30:01.173083+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
-      "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-05T11:30:01.173083+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "pending",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "low",
-      "series": "Night Shift Nature",
-      "state": "awaiting_1h",
-      "title": "Owls can make a hunt almost silent",
-      "uploaded_at": "2026-07-05T10:30:01.173083+00:00",
-      "url": "https://www.youtube.com/shorts/7O3KvRmWSls",
-      "video_id": "7O3KvRmWSls",
-      "views_per_hour": 0.0
-    },
-    {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.146,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 1.155,
       "category": "farm",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-05T10:23:51.670418+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "due",
           "target_views": 24,
           "views": 0
         },
@@ -102,21 +47,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-05T15:23:51.670418+00:00",
-        "label": "6h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-05T10:23:51.670418+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 105,
+        "state": "due",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 90.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Farmyard Surprises",
-      "state": "watch",
+      "state": "analytics_due",
       "title": "Sheep can remember familiar faces",
       "uploaded_at": "2026-07-05T09:23:51.670418+00:00",
       "url": "https://www.youtube.com/shorts/3OjudRl2yHc",
@@ -125,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.274,
+      "age_hours": 2.283,
       "category": "farm",
       "checkpoints": [
         {
@@ -180,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.716,
+      "age_hours": 2.725,
       "category": "farm",
       "checkpoints": [
         {
@@ -235,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.395,
+      "age_hours": 5.404,
       "category": "farm",
       "checkpoints": [
         {
@@ -289,8 +234,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.164,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 6.173,
       "category": "weather",
       "checkpoints": [
         {
@@ -306,8 +251,8 @@
           "delta_to_target": -105,
           "due_at": "2026-07-05T10:22:49.360164+00:00",
           "label": "6h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "due",
           "target_views": 105,
           "views": 0
         },
@@ -322,41 +267,30 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-06T04:22:49.360164+00:00",
-        "label": "24h",
+        "delta_to_target": -105,
+        "due_at": "2026-07-05T10:22:49.360164+00:00",
+        "label": "6h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "due",
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 90.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Earth Engine",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Lightning turns air into a shock wave",
       "uploaded_at": "2026-07-05T04:22:49.360164+00:00",
       "url": "https://www.youtube.com/shorts/UmLIxYglETo",
       "video_id": "UmLIxYglETo",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 29/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Lightning turns air into a shock wave",
-        "video_id": "UmLIxYglETo",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 18.257,
+      "age_hours": 18.266,
       "category": "forests",
       "checkpoints": [
         {
@@ -411,7 +345,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 19.12,
+      "age_hours": 19.13,
       "category": "forests",
       "checkpoints": [
         {
@@ -474,7 +408,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 20.391,
+      "age_hours": 20.4,
       "category": "trees",
       "checkpoints": [
         {
@@ -529,7 +463,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 22.496,
+      "age_hours": 22.505,
       "category": "forests",
       "checkpoints": [
         {
@@ -581,6 +515,69 @@
       "url": "https://www.youtube.com/shorts/4ipg2QQhpaw",
       "video_id": "4ipg2QQhpaw",
       "views_per_hour": 0.0
+    },
+    {
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 22.675,
+      "category": "physics",
+      "checkpoints": [
+        {
+          "delta_to_target": -24,
+          "due_at": "2026-07-04T12:52:41.002348+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "overdue",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": -105,
+          "due_at": "2026-07-04T17:52:41.002348+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "overdue",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-05T11:52:41.002348+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "next_checkpoint": {
+        "delta_to_target": -24,
+        "due_at": "2026-07-04T12:52:41.002348+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "overdue",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "high",
+      "series": "Nature Signals",
+      "state": "analytics_due",
+      "title": "Magnets make invisible fields visible",
+      "uploaded_at": "2026-07-04T11:52:41.002348+00:00",
+      "url": "https://www.youtube.com/shorts/baGG_PVYqfQ",
+      "video_id": "baGG_PVYqfQ",
+      "views_per_hour": 0.0,
+      "warning": {
+        "confidence_score": 0.431,
+        "reason": "low confidence early signal; keep observing",
+        "state": "dying_early",
+        "title": "Magnets make invisible fields visible",
+        "video_id": "baGG_PVYqfQ",
+        "warning_state": "low_confidence_watch"
+      }
     }
   ],
   "targets": {
