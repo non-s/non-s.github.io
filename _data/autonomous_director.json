@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-05T00:22:31.148316+00:00",
-  "autonomy_score": 73,
-  "state": "needs_operator_attention",
+  "generated_at": "2026-07-05T00:28:49.066526+00:00",
+  "autonomy_score": 82,
+  "state": "autonomous_ready",
   "publish_mix": {
     "winner_sequels": 20,
     "proven_categories": 35,
@@ -16,14 +16,16 @@
   },
   "traffic_source": {
     "state": "unavailable",
-    "reason": "traffic_source_report_not_ready",
+    "reason": "<HttpError 500 when requesting https://youtubeanalytics.googleapis.com/v2/reports?ids=channel%3D%3DMINE&startDate=2026-06-08&endDate=2026-07-05&metrics=views%2CestimatedMinutesWatched%2CaverageViewDuration%2CaverageViewPercentage&dimensions",
     "dominant_source": ""
   },
   "quota_budget": {
-    "risk_score": 0,
+    "risk_score": 7,
     "state": "normal",
     "issues": [],
-    "unavailable_reports": [],
+    "unavailable_reports": [
+      "traffic_source"
+    ],
     "policy": "Use read-only reports daily; reserve write quota for scheduled publishing only."
   },
   "category_priorities": [
