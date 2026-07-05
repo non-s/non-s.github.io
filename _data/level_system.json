@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-05T07:53:33.027405+00:00",
+  "generated_at": "2026-07-05T08:14:31.387031+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
   "overall_progress_pct": 34.3,
@@ -22,27 +22,27 @@
       "top_blockers": [
         {
           "id": "objective_gate:bootstrap_observe_before_scaling",
-          "count": 66,
+          "count": 70,
           "operator_translation": "collect more observed signal before scaling this pattern"
         },
         {
           "id": "editor_in_chief:subject repeated inside 3-day cooldown",
-          "count": 40,
+          "count": 42,
           "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
         },
         {
           "id": "queue_prune:rewrite",
-          "count": 24,
+          "count": 25,
           "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
           "id": "editor_in_chief:cooldown_subject",
-          "count": 21,
+          "count": 22,
           "operator_translation": "pick a fresh subject inside the same lane"
         },
         {
           "id": "bootstrap_observe_before_scaling",
-          "count": 9,
+          "count": 10,
           "operator_translation": "bootstrap observe before scaling"
         }
       ]
@@ -82,13 +82,13 @@
   "metrics": {
     "health_score": 82,
     "health_state": "watch",
-    "pending": 33,
-    "operational_publish_ready": 9,
-    "apparent_publish_ready": 9,
-    "eligible_count": 9,
+    "pending": 35,
+    "operational_publish_ready": 10,
+    "apparent_publish_ready": 10,
+    "eligible_count": 10,
     "scale_ready_count": 0,
-    "next_shorts_count": 9,
-    "editorial_candidate_count": 33,
+    "next_shorts_count": 10,
+    "editorial_candidate_count": 35,
     "published_count": 51,
     "views_28d": 30314,
     "total_subscribers": 46,
@@ -103,28 +103,33 @@
   "top_blockers": [
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
-      "count": 66,
+      "count": 70,
       "operator_translation": "collect more observed signal before scaling this pattern"
     },
     {
       "id": "editor_in_chief:subject repeated inside 3-day cooldown",
-      "count": 40,
+      "count": 42,
       "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
     },
     {
       "id": "queue_prune:rewrite",
-      "count": 24,
+      "count": 25,
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
       "id": "editor_in_chief:cooldown_subject",
-      "count": 21,
+      "count": 22,
       "operator_translation": "pick a fresh subject inside the same lane"
     },
     {
       "id": "bootstrap_observe_before_scaling",
-      "count": 9,
+      "count": 10,
       "operator_translation": "bootstrap observe before scaling"
+    },
+    {
+      "id": "duplicate_title",
+      "count": 9,
+      "operator_translation": "duplicate title"
     },
     {
       "id": "editor_in_chief:script quality gate blocked the narration",
@@ -142,6 +147,11 @@
       "operator_translation": "editor in chief:editorial score 46 is below 62"
     },
     {
+      "id": "off_topic_visual",
+      "count": 5,
+      "operator_translation": "off topic visual"
+    },
+    {
       "id": "packaging:missing_action_word",
       "count": 3,
       "operator_translation": "packaging:missing action word"
@@ -150,16 +160,6 @@
       "id": "editor_in_chief:editorial score 42 is below 62",
       "count": 2,
       "operator_translation": "editor in chief:editorial score 42 is below 62"
-    },
-    {
-      "id": "editor_in_chief:editorial score 40 is below 62",
-      "count": 2,
-      "operator_translation": "editor in chief:editorial score 40 is below 62"
-    },
-    {
-      "id": "editor_in_chief:editorial score 49 is below 62",
-      "count": 2,
-      "operator_translation": "editor in chief:editorial score 49 is below 62"
     }
   ],
   "levels": [
@@ -185,9 +185,9 @@
       "status": "cleared",
       "progress_pct": 100.0,
       "evidence": {
-        "operational_publish_ready": 9,
-        "eligible_count": 9,
-        "pending": 33,
+        "operational_publish_ready": 10,
+        "eligible_count": 10,
+        "pending": 35,
         "target_publish_ready": 6,
         "target_pending": 20
       }
@@ -251,11 +251,11 @@
       "unlock": "One million views per 28 days, excellent health, and ten publish-ready Shorts in reserve.",
       "revenue_job": "Scale the proven system instead of adding random effort.",
       "status": "locked",
-      "progress_pct": 31.0,
+      "progress_pct": 34.3,
       "evidence": {
         "views_28d": 30314,
         "health_state": "watch",
-        "operational_publish_ready": 9
+        "operational_publish_ready": 10
       }
     }
   ],
