@@ -2,18 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 10,
-      "high": 2,
-      "manual_review": 0,
+      "automation_safe": 9,
+      "high": 1,
+      "manual_review": 1,
       "total": 10,
       "urgent": 3
     },
     "free_only": true,
-    "generated_at": "2026-07-05T18:28:11.615497+00:00",
+    "generated_at": "2026-07-05T18:35:09.076908+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 9.072,
+        "age_hours": 9.188,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 7.97,
+        "age_hours": 8.086,
         "automation_safe": true,
         "category": "nocturnal",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 7.083,
+        "age_hours": 7.199,
         "automation_safe": true,
         "category": "earth_from_space",
         "checkpoint_label": "1h",
@@ -90,60 +90,34 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "pull_fresh_analytics",
-        "age_hours": 1.016,
-        "automation_safe": true,
-        "category": "plants",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "due",
-        "current_views": 0,
-        "due_at": "2026-07-05T18:27:15.557275+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:IY8YMvgIVpA:analytics_due:1h",
-        "lane": "measurement",
-        "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "high",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
-        "series": "Biology Brief",
-        "state": "analytics_due",
-        "target_views": 24,
-        "title": "Butterflies taste flowers with their feet",
-        "url": "https://www.youtube.com/shorts/IY8YMvgIVpA",
-        "video_id": "IY8YMvgIVpA",
-        "wait_until": "",
-        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
-      },
-      {
-        "action_type": "pull_fresh_analytics",
-        "age_hours": 6.009,
-        "automation_safe": true,
+        "action_type": "prepare_package_rescue",
+        "age_hours": 6.125,
+        "automation_safe": false,
         "category": "birds",
-        "checkpoint_label": "6h",
-        "checkpoint_state": "due",
+        "checkpoint_label": "24h",
+        "checkpoint_state": "pending",
         "current_views": 0,
-        "due_at": "2026-07-05T18:27:37.465211+00:00",
+        "due_at": "2026-07-06T12:27:37.465211+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:_T9c2aLvR5U:analytics_due:6h",
-        "lane": "measurement",
-        "manual_approval_required": false,
+        "id": "fresh-upload:_T9c2aLvR5U:repair_candidate:24h",
+        "lane": "package_rescue",
+        "manual_approval_required": true,
         "opening_retention_score": 96.0,
         "priority": "high",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 6h sample first.",
+        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
         "series": "Sky Intelligence",
-        "state": "analytics_due",
-        "target_views": 105,
+        "state": "repair_candidate",
+        "target_views": 300,
         "title": "Penguins trap air bubbles under feathers",
         "url": "https://www.youtube.com/shorts/_T9c2aLvR5U",
         "video_id": "_T9c2aLvR5U",
         "wait_until": "",
-        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
+        "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 5.336,
+        "age_hours": 5.452,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "6h",
@@ -169,7 +143,7 @@
       },
       {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.185,
+        "age_hours": 0.301,
         "automation_safe": true,
         "category": "rivers",
         "checkpoint_label": "1h",
@@ -195,7 +169,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 4.379,
+        "age_hours": 4.495,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "6h",
@@ -221,7 +195,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.373,
+        "age_hours": 3.489,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "6h",
@@ -247,7 +221,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.119,
+        "age_hours": 2.235,
         "automation_safe": true,
         "category": "dogs",
         "checkpoint_label": "6h",
@@ -270,10 +244,36 @@
         "video_id": "SLlGYXvUeBg",
         "wait_until": "2026-07-05T22:21:03.796497+00:00",
         "why": "No intervention signal is strong enough yet."
+      },
+      {
+        "action_type": "watch_next_checkpoint",
+        "age_hours": 1.132,
+        "automation_safe": true,
+        "category": "plants",
+        "checkpoint_label": "6h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-05T23:27:15.557275+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:IY8YMvgIVpA:watch:6h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "low",
+        "recommended_action": "Keep observing through the next checkpoint.",
+        "series": "Biology Brief",
+        "state": "watch",
+        "target_views": 105,
+        "title": "Butterflies taste flowers with their feet",
+        "url": "https://www.youtube.com/shorts/IY8YMvgIVpA",
+        "video_id": "IY8YMvgIVpA",
+        "wait_until": "2026-07-05T23:27:15.557275+00:00",
+        "why": "No intervention signal is strong enough yet."
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-05T18:28:11.614055+00:00"
+    "source_generated_at": "2026-07-05T18:35:09.075373+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,17 @@
       24
     ],
     "counts": {
-      "analytics_due": 5,
+      "analytics_due": 3,
       "awaiting_1h": 1,
-      "high_priority": 5,
-      "repair_candidates": 0,
+      "high_priority": 4,
+      "repair_candidates": 1,
       "tracked": 10
     },
-    "generated_at": "2026-07-05T18:28:11.614055+00:00",
+    "generated_at": "2026-07-05T18:35:09.075373+00:00",
     "items": [
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.185,
+        "age_hours": 0.301,
         "category": "rivers",
         "checkpoints": [
           {
@@ -346,16 +346,16 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 1.016,
+        "action": "Keep observing through the next checkpoint.",
+        "age_hours": 1.132,
         "category": "plants",
         "checkpoints": [
           {
             "delta_to_target": -24,
             "due_at": "2026-07-05T18:27:15.557275+00:00",
             "label": "1h",
-            "source": "estimated",
-            "state": "due",
+            "source": "observed",
+            "state": "observed",
             "target_views": 24,
             "views": 0
           },
@@ -379,21 +379,21 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+        "hypothesis": "No intervention signal is strong enough yet.",
         "next_checkpoint": {
-          "delta_to_target": -24,
-          "due_at": "2026-07-05T18:27:15.557275+00:00",
-          "label": "1h",
+          "delta_to_target": 0,
+          "due_at": "2026-07-05T23:27:15.557275+00:00",
+          "label": "6h",
           "source": "estimated",
-          "state": "due",
-          "target_views": 24,
+          "state": "pending",
+          "target_views": 105,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "high",
+        "priority": "low",
         "series": "Biology Brief",
-        "state": "analytics_due",
+        "state": "watch",
         "title": "Butterflies taste flowers with their feet",
         "uploaded_at": "2026-07-05T17:27:15.557275+00:00",
         "url": "https://www.youtube.com/shorts/IY8YMvgIVpA",
@@ -402,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.119,
+        "age_hours": 2.235,
         "category": "dogs",
         "checkpoints": [
           {
@@ -457,7 +457,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.373,
+        "age_hours": 3.489,
         "category": "geology",
         "checkpoints": [
           {
@@ -512,7 +512,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 4.379,
+        "age_hours": 4.495,
         "category": "farm",
         "checkpoints": [
           {
@@ -567,7 +567,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.336,
+        "age_hours": 5.452,
         "category": "farm",
         "checkpoints": [
           {
@@ -621,8 +621,8 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 6.009,
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "age_hours": 6.125,
         "category": "birds",
         "checkpoints": [
           {
@@ -638,8 +638,8 @@
             "delta_to_target": -105,
             "due_at": "2026-07-05T18:27:37.465211+00:00",
             "label": "6h",
-            "source": "estimated",
-            "state": "due",
+            "source": "observed",
+            "state": "observed",
             "target_views": 105,
             "views": 0
           },
@@ -654,30 +654,41 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
         "next_checkpoint": {
-          "delta_to_target": -105,
-          "due_at": "2026-07-05T18:27:37.465211+00:00",
-          "label": "6h",
+          "delta_to_target": 0,
+          "due_at": "2026-07-06T12:27:37.465211+00:00",
+          "label": "24h",
           "source": "estimated",
-          "state": "due",
-          "target_views": 105,
+          "state": "pending",
+          "target_views": 300,
           "views": 0
         },
         "opening_retention_score": 96.0,
         "opening_retention_state": "retention_ready",
         "priority": "high",
         "series": "Sky Intelligence",
-        "state": "analytics_due",
+        "state": "repair_candidate",
         "title": "Penguins trap air bubbles under feathers",
         "uploaded_at": "2026-07-05T12:27:37.465211+00:00",
         "url": "https://www.youtube.com/shorts/_T9c2aLvR5U",
         "video_id": "_T9c2aLvR5U",
-        "views_per_hour": 0.0
+        "views_per_hour": 0.0,
+        "warning": {
+          "action": "TITLE_AUTO_REPAIR_TRIGGER",
+          "confidence_score": 0.594,
+          "reason": "low early velocity",
+          "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+          "title": "Penguins trap air bubbles under feathers",
+          "video_id": "_T9c2aLvR5U",
+          "views": 0,
+          "warning_state": "repair_risk"
+        }
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 7.083,
+        "age_hours": 7.199,
         "category": "earth_from_space",
         "checkpoints": [
           {
@@ -732,7 +743,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 7.97,
+        "age_hours": 8.086,
         "category": "nocturnal",
         "checkpoints": [
           {
@@ -787,7 +798,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 9.072,
+        "age_hours": 9.188,
         "category": "farm",
         "checkpoints": [
           {
@@ -848,7 +859,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-05T18:28:11.615609+00:00",
+  "generated_at": "2026-07-05T18:35:09.077001+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
