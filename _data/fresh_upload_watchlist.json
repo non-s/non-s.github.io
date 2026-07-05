@@ -6,16 +6,71 @@
   ],
   "counts": {
     "analytics_due": 9,
-    "awaiting_1h": 0,
-    "high_priority": 10,
-    "repair_candidates": 1,
+    "awaiting_1h": 1,
+    "high_priority": 9,
+    "repair_candidates": 0,
     "tracked": 10
   },
-  "generated_at": "2026-07-05T01:39:20.620768+00:00",
+  "generated_at": "2026-07-05T04:25:34.518617+00:00",
   "items": [
     {
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.046,
+      "category": "weather",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-05T05:22:49.360164+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-05T10:22:49.360164+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-06T04:22:49.360164+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-05T05:22:49.360164+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 90.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Earth Engine",
+      "state": "awaiting_1h",
+      "title": "Lightning turns air into a shock wave",
+      "uploaded_at": "2026-07-05T04:22:49.360164+00:00",
+      "url": "https://www.youtube.com/shorts/UmLIxYglETo",
+      "video_id": "UmLIxYglETo",
+      "views_per_hour": 0.0
+    },
+    {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.368,
+      "age_hours": 12.139,
       "category": "forests",
       "checkpoints": [
         {
@@ -70,7 +125,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 10.232,
+      "age_hours": 13.003,
       "category": "forests",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.503,
+      "age_hours": 14.273,
       "category": "trees",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.608,
+      "age_hours": 16.378,
       "category": "forests",
       "checkpoints": [
         {
@@ -235,7 +290,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.778,
+      "age_hours": 16.548,
       "category": "physics",
       "checkpoints": [
         {
@@ -298,7 +353,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 14.72,
+      "age_hours": 17.491,
       "category": "chemistry",
       "checkpoints": [
         {
@@ -353,7 +408,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.053,
+      "age_hours": 18.824,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -416,7 +471,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 17.534,
+      "age_hours": 20.304,
       "category": "geology",
       "checkpoints": [
         {
@@ -479,7 +534,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 18.363,
+      "age_hours": 21.134,
       "category": "farm",
       "checkpoints": [
         {
@@ -538,72 +593,6 @@
         "title": "Ducks fake injuries to protect their young",
         "video_id": "X0j-m0-Docg",
         "warning_state": "low_confidence_watch"
-      }
-    },
-    {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 24.063,
-      "category": "forests",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-04T02:35:32.786321+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-04T07:35:32.786321+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": -299,
-          "due_at": "2026-07-05T01:35:32.786321+00:00",
-          "label": "24h",
-          "source": "observed",
-          "state": "observed",
-          "target_views": 300,
-          "views": 1
-        }
-      ],
-      "current_views": 1,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-04T02:35:32.786321+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 94.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Hidden Network",
-      "state": "repair_candidate",
-      "title": "Forests hold cool fog between the trees",
-      "uploaded_at": "2026-07-04T01:35:32.786321+00:00",
-      "url": "https://www.youtube.com/shorts/Jh4XroVWOKk",
-      "video_id": "Jh4XroVWOKk",
-      "views_per_hour": 0.042,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.756,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Forests hold cool fog between the trees",
-        "video_id": "Jh4XroVWOKk",
-        "views": 1,
-        "warning_state": "repair_risk"
       }
     }
   ],

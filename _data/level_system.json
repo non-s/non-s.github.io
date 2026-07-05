@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-05T01:40:59.168455+00:00",
+  "generated_at": "2026-07-05T04:27:03.382939+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
-  "overall_progress_pct": 36.6,
+  "overall_progress_pct": 34.3,
   "current_level": {
     "number": 3,
     "name": "Retention packaging",
@@ -10,7 +10,7 @@
     "unlock": "Stayed-to-watch rate at 40% or higher and average view percentage at 62% or higher.",
     "revenue_job": "Convert reach into watch time and proof that the format works.",
     "status": "boss_fight",
-    "progress_pct": 56.2
+    "progress_pct": 39.8
   },
   "boss": {
     "id": "opening_retention_gap",
@@ -18,31 +18,31 @@
     "severity": "critical",
     "evidence": {
       "stayed_to_watch_rate": 0.318,
-      "avg_view_percentage": 20.4,
+      "avg_view_percentage": 0.0,
       "top_blockers": [
         {
           "id": "objective_gate:bootstrap_observe_before_scaling",
-          "count": 70,
+          "count": 68,
           "operator_translation": "collect more observed signal before scaling this pattern"
         },
         {
           "id": "editor_in_chief:subject repeated inside 3-day cooldown",
-          "count": 42,
+          "count": 34,
           "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
         },
         {
           "id": "queue_prune:rewrite",
-          "count": 29,
+          "count": 23,
           "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
           "id": "editor_in_chief:cooldown_subject",
-          "count": 22,
+          "count": 18,
           "operator_translation": "pick a fresh subject inside the same lane"
         },
         {
           "id": "bootstrap_observe_before_scaling",
-          "count": 9,
+          "count": 11,
           "operator_translation": "bootstrap observe before scaling"
         }
       ]
@@ -77,70 +77,59 @@
       "action": "For each winner, add one searchable title/description variant around animal behavior intent.",
       "target": "retention packaging",
       "why": "The scale blueprint marks this as the active bottleneck."
-    },
-    {
-      "priority": "P1",
-      "action": "Use the next publish block to deepen: Pet Signals, Body Clues, Predator tells.",
-      "target": "retention packaging",
-      "why": "The scale blueprint marks this as the active bottleneck."
     }
   ],
   "metrics": {
-    "health_score": 92,
-    "health_state": "excellent",
-    "pending": 38,
-    "operational_publish_ready": 9,
-    "apparent_publish_ready": 9,
-    "eligible_count": 9,
+    "health_score": 82,
+    "health_state": "watch",
+    "pending": 34,
+    "operational_publish_ready": 11,
+    "apparent_publish_ready": 11,
+    "eligible_count": 11,
     "scale_ready_count": 0,
-    "next_shorts_count": 9,
-    "editorial_candidate_count": 38,
-    "published_count": 48,
+    "next_shorts_count": 11,
+    "editorial_candidate_count": 34,
+    "published_count": 49,
     "views_28d": 30314,
     "total_subscribers": 46,
     "subs_per_1000_views": 1.221,
     "stayed_to_watch_rate": 0.318,
-    "avg_view_percentage": 20.4,
+    "avg_view_percentage": 0.0,
     "recurring_viewer_rate": 0.001,
     "youtube_search_view_rate": 0.017,
     "crosspost_assets": 10,
-    "comments_sampled": 48
+    "comments_sampled": 1
   },
   "top_blockers": [
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
-      "count": 70,
+      "count": 68,
       "operator_translation": "collect more observed signal before scaling this pattern"
     },
     {
       "id": "editor_in_chief:subject repeated inside 3-day cooldown",
-      "count": 42,
+      "count": 34,
       "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
     },
     {
       "id": "queue_prune:rewrite",
-      "count": 29,
+      "count": 23,
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
       "id": "editor_in_chief:cooldown_subject",
-      "count": 22,
+      "count": 18,
       "operator_translation": "pick a fresh subject inside the same lane"
     },
     {
       "id": "bootstrap_observe_before_scaling",
-      "count": 9,
+      "count": 11,
       "operator_translation": "bootstrap observe before scaling"
     },
     {
       "id": "editor_in_chief:script quality gate blocked the narration",
       "count": 8,
       "operator_translation": "editor in chief:script quality gate blocked the narration"
-    },
-    {
-      "id": "objective_gate:observe_before_scaling",
-      "count": 6,
-      "operator_translation": "observe this pattern before scaling it"
     },
     {
       "id": "editor_in_chief:story angle repeated inside 10-day cooldown",
@@ -153,19 +142,24 @@
       "operator_translation": "editor in chief:editorial score 46 is below 62"
     },
     {
-      "id": "publish_score:rewrite",
-      "count": 4,
-      "operator_translation": "repair the publish score package"
-    },
-    {
       "id": "packaging:missing_action_word",
       "count": 3,
       "operator_translation": "packaging:missing action word"
     },
     {
-      "id": "editor_in_chief:editorial score 49 is below 62",
+      "id": "publish_score:rewrite",
       "count": 2,
-      "operator_translation": "editor in chief:editorial score 49 is below 62"
+      "operator_translation": "repair the publish score package"
+    },
+    {
+      "id": "editor_in_chief:editorial score 42 is below 62",
+      "count": 2,
+      "operator_translation": "editor in chief:editorial score 42 is below 62"
+    },
+    {
+      "id": "editor_in_chief:editorial score 40 is below 62",
+      "count": 2,
+      "operator_translation": "editor in chief:editorial score 40 is below 62"
     }
   ],
   "levels": [
@@ -178,8 +172,8 @@
       "status": "cleared",
       "progress_pct": 100.0,
       "evidence": {
-        "published_count": 48,
-        "health_score": 92
+        "published_count": 49,
+        "health_score": 82
       }
     },
     {
@@ -191,9 +185,9 @@
       "status": "cleared",
       "progress_pct": 100.0,
       "evidence": {
-        "operational_publish_ready": 9,
-        "eligible_count": 9,
-        "pending": 38,
+        "operational_publish_ready": 11,
+        "eligible_count": 11,
+        "pending": 34,
         "target_publish_ready": 6,
         "target_pending": 20
       }
@@ -205,10 +199,10 @@
       "unlock": "Stayed-to-watch rate at 40% or higher and average view percentage at 62% or higher.",
       "revenue_job": "Convert reach into watch time and proof that the format works.",
       "status": "current",
-      "progress_pct": 56.2,
+      "progress_pct": 39.8,
       "evidence": {
         "stayed_to_watch_rate": 0.318,
-        "avg_view_percentage": 20.4
+        "avg_view_percentage": 0.0
       }
     },
     {
@@ -218,10 +212,10 @@
       "unlock": "Recurring viewer rate reaches 2% and audience comments keep producing usable prompts.",
       "revenue_job": "Build an audience identity instead of isolated viral posts.",
       "status": "locked",
-      "progress_pct": 52.5,
+      "progress_pct": 5.0,
       "evidence": {
         "recurring_viewer_rate": 0.001,
-        "comments_sampled": 48
+        "comments_sampled": 1
       }
     },
     {
@@ -257,11 +251,11 @@
       "unlock": "One million views per 28 days, excellent health, and ten publish-ready Shorts in reserve.",
       "revenue_job": "Scale the proven system instead of adding random effort.",
       "status": "locked",
-      "progress_pct": 64.3,
+      "progress_pct": 34.3,
       "evidence": {
         "views_28d": 30314,
-        "health_state": "excellent",
-        "operational_publish_ready": 9
+        "health_state": "watch",
+        "operational_publish_ready": 11
       }
     }
   ],

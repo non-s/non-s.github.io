@@ -2,44 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 9,
+      "automation_safe": 10,
       "high": 0,
-      "manual_review": 1,
+      "manual_review": 0,
       "total": 10,
-      "urgent": 10
+      "urgent": 9
     },
     "free_only": true,
-    "generated_at": "2026-07-05T01:39:20.622155+00:00",
+    "generated_at": "2026-07-05T04:25:34.520008+00:00",
     "items": [
       {
-        "action_type": "prepare_package_rescue",
-        "age_hours": 24.063,
-        "automation_safe": false,
-        "category": "forests",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "overdue",
-        "current_views": 1,
-        "due_at": "2026-07-04T02:35:32.786321+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:Jh4XroVWOKk:repair_candidate:1h",
-        "lane": "package_rescue",
-        "manual_approval_required": true,
-        "opening_retention_score": 94.0,
-        "priority": "urgent",
-        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "series": "Hidden Network",
-        "state": "repair_candidate",
-        "target_views": 24,
-        "title": "Forests hold cool fog between the trees",
-        "url": "https://www.youtube.com/shorts/Jh4XroVWOKk",
-        "video_id": "Jh4XroVWOKk",
-        "wait_until": "",
-        "why": "Observed velocity is weak enough to prepare a package intervention."
-      },
-      {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 18.363,
+        "age_hours": 21.134,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "1h",
@@ -65,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 17.534,
+        "age_hours": 20.304,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "1h",
@@ -91,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 16.053,
+        "age_hours": 18.824,
         "automation_safe": true,
         "category": "reptiles",
         "checkpoint_label": "1h",
@@ -117,7 +91,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 14.72,
+        "age_hours": 17.491,
         "automation_safe": true,
         "category": "chemistry",
         "checkpoint_label": "1h",
@@ -143,7 +117,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 13.778,
+        "age_hours": 16.548,
         "automation_safe": true,
         "category": "physics",
         "checkpoint_label": "1h",
@@ -169,7 +143,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 13.608,
+        "age_hours": 16.378,
         "automation_safe": true,
         "category": "forests",
         "checkpoint_label": "1h",
@@ -195,7 +169,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 11.503,
+        "age_hours": 14.273,
         "automation_safe": true,
         "category": "trees",
         "checkpoint_label": "1h",
@@ -221,7 +195,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 10.232,
+        "age_hours": 13.003,
         "automation_safe": true,
         "category": "forests",
         "checkpoint_label": "1h",
@@ -247,7 +221,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 9.368,
+        "age_hours": 12.139,
         "automation_safe": true,
         "category": "forests",
         "checkpoint_label": "1h",
@@ -270,10 +244,36 @@
         "video_id": "lyyoNBhLDPY",
         "wait_until": "",
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
+      },
+      {
+        "action_type": "hold_until_first_hour",
+        "age_hours": 0.046,
+        "automation_safe": true,
+        "category": "weather",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-05T05:22:49.360164+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:UmLIxYglETo:awaiting_1h:1h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 90.0,
+        "priority": "low",
+        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "series": "Earth Engine",
+        "state": "awaiting_1h",
+        "target_views": 24,
+        "title": "Lightning turns air into a shock wave",
+        "url": "https://www.youtube.com/shorts/UmLIxYglETo",
+        "video_id": "UmLIxYglETo",
+        "wait_until": "2026-07-05T05:22:49.360164+00:00",
+        "why": "The upload is still inside the no-panic observation window."
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-05T01:39:20.620768+00:00"
+    "source_generated_at": "2026-07-05T04:25:34.518617+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -283,16 +283,71 @@
     ],
     "counts": {
       "analytics_due": 9,
-      "awaiting_1h": 0,
-      "high_priority": 10,
-      "repair_candidates": 1,
+      "awaiting_1h": 1,
+      "high_priority": 9,
+      "repair_candidates": 0,
       "tracked": 10
     },
-    "generated_at": "2026-07-05T01:39:20.620768+00:00",
+    "generated_at": "2026-07-05T04:25:34.518617+00:00",
     "items": [
       {
+        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "age_hours": 0.046,
+        "category": "weather",
+        "checkpoints": [
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-05T05:22:49.360164+00:00",
+            "label": "1h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 24,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-05T10:22:49.360164+00:00",
+            "label": "6h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 105,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-06T04:22:49.360164+00:00",
+            "label": "24h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 300,
+            "views": 0
+          }
+        ],
+        "current_views": 0,
+        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "next_checkpoint": {
+          "delta_to_target": 0,
+          "due_at": "2026-07-05T05:22:49.360164+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        "opening_retention_score": 90.0,
+        "opening_retention_state": "retention_ready",
+        "priority": "low",
+        "series": "Earth Engine",
+        "state": "awaiting_1h",
+        "title": "Lightning turns air into a shock wave",
+        "uploaded_at": "2026-07-05T04:22:49.360164+00:00",
+        "url": "https://www.youtube.com/shorts/UmLIxYglETo",
+        "video_id": "UmLIxYglETo",
+        "views_per_hour": 0.0
+      },
+      {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 9.368,
+        "age_hours": 12.139,
         "category": "forests",
         "checkpoints": [
           {
@@ -347,7 +402,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 10.232,
+        "age_hours": 13.003,
         "category": "forests",
         "checkpoints": [
           {
@@ -402,7 +457,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 11.503,
+        "age_hours": 14.273,
         "category": "trees",
         "checkpoints": [
           {
@@ -457,7 +512,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 13.608,
+        "age_hours": 16.378,
         "category": "forests",
         "checkpoints": [
           {
@@ -512,7 +567,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 13.778,
+        "age_hours": 16.548,
         "category": "physics",
         "checkpoints": [
           {
@@ -575,7 +630,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 14.72,
+        "age_hours": 17.491,
         "category": "chemistry",
         "checkpoints": [
           {
@@ -630,7 +685,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 16.053,
+        "age_hours": 18.824,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -693,7 +748,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 17.534,
+        "age_hours": 20.304,
         "category": "geology",
         "checkpoints": [
           {
@@ -756,7 +811,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 18.363,
+        "age_hours": 21.134,
         "category": "farm",
         "checkpoints": [
           {
@@ -816,72 +871,6 @@
           "video_id": "X0j-m0-Docg",
           "warning_state": "low_confidence_watch"
         }
-      },
-      {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 24.063,
-        "category": "forests",
-        "checkpoints": [
-          {
-            "delta_to_target": -24,
-            "due_at": "2026-07-04T02:35:32.786321+00:00",
-            "label": "1h",
-            "source": "estimated",
-            "state": "overdue",
-            "target_views": 24,
-            "views": 0
-          },
-          {
-            "delta_to_target": -105,
-            "due_at": "2026-07-04T07:35:32.786321+00:00",
-            "label": "6h",
-            "source": "estimated",
-            "state": "overdue",
-            "target_views": 105,
-            "views": 0
-          },
-          {
-            "delta_to_target": -299,
-            "due_at": "2026-07-05T01:35:32.786321+00:00",
-            "label": "24h",
-            "source": "observed",
-            "state": "observed",
-            "target_views": 300,
-            "views": 1
-          }
-        ],
-        "current_views": 1,
-        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
-        "next_checkpoint": {
-          "delta_to_target": -24,
-          "due_at": "2026-07-04T02:35:32.786321+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        "opening_retention_score": 94.0,
-        "opening_retention_state": "retention_ready",
-        "priority": "high",
-        "series": "Hidden Network",
-        "state": "repair_candidate",
-        "title": "Forests hold cool fog between the trees",
-        "uploaded_at": "2026-07-04T01:35:32.786321+00:00",
-        "url": "https://www.youtube.com/shorts/Jh4XroVWOKk",
-        "video_id": "Jh4XroVWOKk",
-        "views_per_hour": 0.042,
-        "warning": {
-          "action": "TITLE_AUTO_REPAIR_TRIGGER",
-          "confidence_score": 0.756,
-          "reason": "low early velocity",
-          "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
-          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-          "title": "Forests hold cool fog between the trees",
-          "video_id": "Jh4XroVWOKk",
-          "views": 1,
-          "warning_state": "repair_risk"
-        }
       }
     ],
     "targets": {
@@ -891,23 +880,12 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-05T01:39:20.622245+00:00",
+  "generated_at": "2026-07-05T04:25:34.520098+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
   ],
   "related_video_recommendations": [
-    {
-      "recommendation": {
-        "reason": "same series/category/format session bridge",
-        "score": 30.0,
-        "title": "Crystals grow by repeating one tiny pattern",
-        "url": "https://www.youtube.com/shorts/NxfTBrgi_ns",
-        "video_id": "NxfTBrgi_ns"
-      },
-      "source_title": "Magnets make invisible fields visible",
-      "source_video_id": "baGG_PVYqfQ"
-    },
     {
       "recommendation": {
         "reason": "same series/category/format session bridge",
@@ -951,14 +929,20 @@
       },
       "source_title": "Forests can cool the air below them",
       "source_video_id": "lyyoNBhLDPY"
+    },
+    {
+      "recommendation": {
+        "reason": "same series/category/format session bridge",
+        "score": 85.0,
+        "title": "Lightning makes air explode into thunder",
+        "url": "https://www.youtube.com/shorts/WbwdERQTz90",
+        "video_id": "WbwdERQTz90"
+      },
+      "source_title": "Lightning turns air into a shock wave",
+      "source_video_id": "UmLIxYglETo"
     }
   ],
   "sequel_opportunities": [
-    {
-      "prompt": "Make a sequel with a new subject but the same payoff shape: Magnets make invisible fields visible",
-      "title": "Magnets make invisible fields visible",
-      "video_id": "baGG_PVYqfQ"
-    },
     {
       "prompt": "Make a sequel with a new subject but the same payoff shape: Foxes can hunt sounds hidden under snow",
       "title": "Foxes can hunt sounds hidden under snow",
@@ -978,13 +962,18 @@
       "prompt": "Make a sequel with a new subject but the same payoff shape: Forests can cool the air below them",
       "title": "Forests can cool the air below them",
       "video_id": "lyyoNBhLDPY"
+    },
+    {
+      "prompt": "Make a sequel with a new subject but the same payoff shape: Lightning turns air into a shock wave",
+      "title": "Lightning turns air into a shock wave",
+      "video_id": "UmLIxYglETo"
     }
   ],
   "session_graph": {
     "action_score_threshold": 55,
     "coverage": 0.8,
     "edges": 20,
-    "nodes": 48,
+    "nodes": 49,
     "target_reuse_limit": 2
   }
 }
