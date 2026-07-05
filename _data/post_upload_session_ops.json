@@ -6,40 +6,14 @@
       "high": 0,
       "manual_review": 0,
       "total": 10,
-      "urgent": 8
+      "urgent": 7
     },
     "free_only": true,
-    "generated_at": "2026-07-05T06:56:37.808430+00:00",
+    "generated_at": "2026-07-05T07:52:13.864867+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 22.822,
-        "automation_safe": true,
-        "category": "geology",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "overdue",
-        "current_views": 0,
-        "due_at": "2026-07-04T09:07:18.699682+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:tt2gmX6cuHo:analytics_due:1h",
-        "lane": "measurement",
-        "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "urgent",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
-        "series": "Earth Engine",
-        "state": "analytics_due",
-        "target_views": 24,
-        "title": "Rock layers expose erosion in bare open hills",
-        "url": "https://www.youtube.com/shorts/tt2gmX6cuHo",
-        "video_id": "tt2gmX6cuHo",
-        "wait_until": "",
-        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
-      },
-      {
-        "action_type": "pull_fresh_analytics",
-        "age_hours": 21.342,
+        "age_hours": 22.268,
         "automation_safe": true,
         "category": "reptiles",
         "checkpoint_label": "1h",
@@ -65,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 20.009,
+        "age_hours": 20.935,
         "automation_safe": true,
         "category": "chemistry",
         "checkpoint_label": "1h",
@@ -91,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 19.066,
+        "age_hours": 19.992,
         "automation_safe": true,
         "category": "physics",
         "checkpoint_label": "1h",
@@ -117,7 +91,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 18.896,
+        "age_hours": 19.823,
         "automation_safe": true,
         "category": "forests",
         "checkpoint_label": "1h",
@@ -143,7 +117,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 16.791,
+        "age_hours": 17.717,
         "automation_safe": true,
         "category": "trees",
         "checkpoint_label": "1h",
@@ -169,7 +143,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 15.52,
+        "age_hours": 16.447,
         "automation_safe": true,
         "category": "forests",
         "checkpoint_label": "1h",
@@ -195,7 +169,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 14.657,
+        "age_hours": 15.583,
         "automation_safe": true,
         "category": "forests",
         "checkpoint_label": "1h",
@@ -220,8 +194,34 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
+        "action_type": "hold_until_first_hour",
+        "age_hours": 0.042,
+        "automation_safe": true,
+        "category": "farm",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-05T08:49:42.448869+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:YGjT2-N5H7Q:awaiting_1h:1h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "low",
+        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "series": "Farmyard Surprises",
+        "state": "awaiting_1h",
+        "target_views": 24,
+        "title": "Goats use wide pupils to watch danger",
+        "url": "https://www.youtube.com/shorts/YGjT2-N5H7Q",
+        "video_id": "YGjT2-N5H7Q",
+        "wait_until": "2026-07-05T08:49:42.448869+00:00",
+        "why": "The upload is still inside the no-panic observation window."
+      },
+      {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.563,
+        "age_hours": 3.49,
         "automation_safe": true,
         "category": "weather",
         "checkpoint_label": "6h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 1.794,
+        "age_hours": 2.721,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-05T06:56:37.807064+00:00"
+    "source_generated_at": "2026-07-05T07:52:13.863665+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,72 @@
       24
     ],
     "counts": {
-      "analytics_due": 8,
-      "awaiting_1h": 0,
-      "high_priority": 8,
+      "analytics_due": 7,
+      "awaiting_1h": 1,
+      "high_priority": 7,
       "repair_candidates": 0,
       "tracked": 10
     },
-    "generated_at": "2026-07-05T06:56:37.807064+00:00",
+    "generated_at": "2026-07-05T07:52:13.863665+00:00",
     "items": [
       {
+        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "age_hours": 0.042,
+        "category": "farm",
+        "checkpoints": [
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-05T08:49:42.448869+00:00",
+            "label": "1h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 24,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-05T13:49:42.448869+00:00",
+            "label": "6h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 105,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-06T07:49:42.448869+00:00",
+            "label": "24h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 300,
+            "views": 0
+          }
+        ],
+        "current_views": 0,
+        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "next_checkpoint": {
+          "delta_to_target": 0,
+          "due_at": "2026-07-05T08:49:42.448869+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        "opening_retention_score": 100.0,
+        "opening_retention_state": "retention_ready",
+        "priority": "low",
+        "series": "Farmyard Surprises",
+        "state": "awaiting_1h",
+        "title": "Goats use wide pupils to watch danger",
+        "uploaded_at": "2026-07-05T07:49:42.448869+00:00",
+        "url": "https://www.youtube.com/shorts/YGjT2-N5H7Q",
+        "video_id": "YGjT2-N5H7Q",
+        "views_per_hour": 0.0
+      },
+      {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 1.794,
+        "age_hours": 2.721,
         "category": "farm",
         "checkpoints": [
           {
@@ -347,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.563,
+        "age_hours": 3.49,
         "category": "weather",
         "checkpoints": [
           {
@@ -402,7 +457,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 14.657,
+        "age_hours": 15.583,
         "category": "forests",
         "checkpoints": [
           {
@@ -457,7 +512,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 15.52,
+        "age_hours": 16.447,
         "category": "forests",
         "checkpoints": [
           {
@@ -473,8 +528,8 @@
             "delta_to_target": -105,
             "due_at": "2026-07-04T21:25:24.945500+00:00",
             "label": "6h",
-            "source": "observed",
-            "state": "observed",
+            "source": "estimated",
+            "state": "overdue",
             "target_views": 105,
             "views": 0
           },
@@ -508,11 +563,19 @@
         "uploaded_at": "2026-07-04T15:25:24.945500+00:00",
         "url": "https://www.youtube.com/shorts/ez3hSEWuNws",
         "video_id": "ez3hSEWuNws",
-        "views_per_hour": 0.0
+        "views_per_hour": 0.0,
+        "warning": {
+          "confidence_score": 0.431,
+          "reason": "low confidence early signal; keep observing",
+          "state": "dying_early",
+          "title": "Forests reveal edge climates along trails",
+          "video_id": "ez3hSEWuNws",
+          "warning_state": "low_confidence_watch"
+        }
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 16.791,
+        "age_hours": 17.717,
         "category": "trees",
         "checkpoints": [
           {
@@ -567,7 +630,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 18.896,
+        "age_hours": 19.823,
         "category": "forests",
         "checkpoints": [
           {
@@ -622,7 +685,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 19.066,
+        "age_hours": 19.992,
         "category": "physics",
         "checkpoints": [
           {
@@ -685,7 +748,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 20.009,
+        "age_hours": 20.935,
         "category": "chemistry",
         "checkpoints": [
           {
@@ -740,7 +803,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 21.342,
+        "age_hours": 22.268,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -800,69 +863,6 @@
           "video_id": "Qqwn4sjbY9E",
           "warning_state": "low_confidence_watch"
         }
-      },
-      {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 22.822,
-        "category": "geology",
-        "checkpoints": [
-          {
-            "delta_to_target": -24,
-            "due_at": "2026-07-04T09:07:18.699682+00:00",
-            "label": "1h",
-            "source": "estimated",
-            "state": "overdue",
-            "target_views": 24,
-            "views": 0
-          },
-          {
-            "delta_to_target": -105,
-            "due_at": "2026-07-04T14:07:18.699682+00:00",
-            "label": "6h",
-            "source": "estimated",
-            "state": "overdue",
-            "target_views": 105,
-            "views": 0
-          },
-          {
-            "delta_to_target": 0,
-            "due_at": "2026-07-05T08:07:18.699682+00:00",
-            "label": "24h",
-            "source": "estimated",
-            "state": "pending",
-            "target_views": 300,
-            "views": 0
-          }
-        ],
-        "current_views": 0,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-        "next_checkpoint": {
-          "delta_to_target": -24,
-          "due_at": "2026-07-04T09:07:18.699682+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        "opening_retention_score": 100.0,
-        "opening_retention_state": "retention_ready",
-        "priority": "high",
-        "series": "Earth Engine",
-        "state": "analytics_due",
-        "title": "Rock layers expose erosion in bare open hills",
-        "uploaded_at": "2026-07-04T08:07:18.699682+00:00",
-        "url": "https://www.youtube.com/shorts/tt2gmX6cuHo",
-        "video_id": "tt2gmX6cuHo",
-        "views_per_hour": 0.0,
-        "warning": {
-          "confidence_score": 0.431,
-          "reason": "low confidence early signal; keep observing",
-          "state": "dying_early",
-          "title": "Rock layers expose erosion in bare open hills",
-          "video_id": "tt2gmX6cuHo",
-          "warning_state": "low_confidence_watch"
-        }
       }
     ],
     "targets": {
@@ -872,23 +872,12 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-05T06:56:37.808524+00:00",
+  "generated_at": "2026-07-05T07:52:13.864949+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
   ],
   "related_video_recommendations": [
-    {
-      "recommendation": {
-        "reason": "same series/category/format session bridge",
-        "score": 85.0,
-        "title": "Trees record wet years inside their rings",
-        "url": "https://www.youtube.com/shorts/Y-dGOykkcBM",
-        "video_id": "Y-dGOykkcBM"
-      },
-      "source_title": "Trees keep weather history in their rings",
-      "source_video_id": "3hQL89pNw-w"
-    },
     {
       "recommendation": {
         "reason": "same series/category/format session bridge",
@@ -925,21 +914,27 @@
     {
       "recommendation": {
         "reason": "same series/category/format session bridge",
-        "score": 65.0,
-        "title": "Horses point their ears toward what matters",
-        "url": "https://www.youtube.com/shorts/sldOXcDmZuQ",
-        "video_id": "sldOXcDmZuQ"
+        "score": 85.0,
+        "title": "Goats use wide pupils to watch danger",
+        "url": "https://www.youtube.com/shorts/YGjT2-N5H7Q",
+        "video_id": "YGjT2-N5H7Q"
       },
       "source_title": "Chickens keep their view steady while walking",
       "source_video_id": "GI3IcTd0TsE"
+    },
+    {
+      "recommendation": {
+        "reason": "same series/category/format session bridge",
+        "score": 85.0,
+        "title": "Chickens keep their view steady while walking",
+        "url": "https://www.youtube.com/shorts/GI3IcTd0TsE",
+        "video_id": "GI3IcTd0TsE"
+      },
+      "source_title": "Goats use wide pupils to watch danger",
+      "source_video_id": "YGjT2-N5H7Q"
     }
   ],
   "sequel_opportunities": [
-    {
-      "prompt": "Make a sequel with a new subject but the same payoff shape: Trees keep weather history in their rings",
-      "title": "Trees keep weather history in their rings",
-      "video_id": "3hQL89pNw-w"
-    },
     {
       "prompt": "Make a sequel with a new subject but the same payoff shape: Forests reveal edge climates along trails",
       "title": "Forests reveal edge climates along trails",
@@ -959,13 +954,18 @@
       "prompt": "Make a sequel with a new subject but the same payoff shape: Chickens keep their view steady while walking",
       "title": "Chickens keep their view steady while walking",
       "video_id": "GI3IcTd0TsE"
+    },
+    {
+      "prompt": "Make a sequel with a new subject but the same payoff shape: Goats use wide pupils to watch danger",
+      "title": "Goats use wide pupils to watch danger",
+      "video_id": "YGjT2-N5H7Q"
     }
   ],
   "session_graph": {
     "action_score_threshold": 55,
-    "coverage": 0.8,
+    "coverage": 0.85,
     "edges": 20,
-    "nodes": 50,
+    "nodes": 51,
     "target_reuse_limit": 2
   }
 }
