@@ -1,17 +1,17 @@
 {
   "counts": {
-    "automation_safe": 9,
+    "automation_safe": 8,
     "high": 2,
-    "manual_review": 1,
+    "manual_review": 2,
     "total": 10,
     "urgent": 2
   },
   "free_only": true,
-  "generated_at": "2026-07-05T14:17:07.544238+00:00",
+  "generated_at": "2026-07-05T14:57:15.409006+00:00",
   "items": [
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 9.905,
+      "age_hours": 10.574,
       "automation_safe": true,
       "category": "weather",
       "checkpoint_label": "1h",
@@ -37,7 +37,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 9.136,
+      "age_hours": 9.805,
       "automation_safe": true,
       "category": "farm",
       "checkpoint_label": "1h",
@@ -62,34 +62,8 @@
       "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
-      "action_type": "pull_fresh_analytics",
-      "age_hours": 6.015,
-      "automation_safe": true,
-      "category": "farm",
-      "checkpoint_label": "6h",
-      "checkpoint_state": "due",
-      "current_views": 0,
-      "due_at": "2026-07-05T14:16:13.369020+00:00",
-      "free_only": true,
-      "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-      "id": "fresh-upload:8jYCCf-lSvc:analytics_due:6h",
-      "lane": "measurement",
-      "manual_approval_required": false,
-      "opening_retention_score": 100.0,
-      "priority": "high",
-      "recommended_action": "Run the analytics pull before making a creative decision. Check the 6h sample first.",
-      "series": "Farmyard Surprises",
-      "state": "analytics_due",
-      "target_views": 105,
-      "title": "Cows remember faces across the herd",
-      "url": "https://www.youtube.com/shorts/8jYCCf-lSvc",
-      "video_id": "8jYCCf-lSvc",
-      "wait_until": "",
-      "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
-    },
-    {
       "action_type": "prepare_package_rescue",
-      "age_hours": 6.457,
+      "age_hours": 7.126,
       "automation_safe": false,
       "category": "farm",
       "checkpoint_label": "24h",
@@ -114,8 +88,34 @@
       "why": "Observed velocity is weak enough to prepare a package intervention."
     },
     {
+      "action_type": "prepare_package_rescue",
+      "age_hours": 6.684,
+      "automation_safe": false,
+      "category": "farm",
+      "checkpoint_label": "24h",
+      "checkpoint_state": "pending",
+      "current_views": 0,
+      "due_at": "2026-07-06T08:16:13.369020+00:00",
+      "free_only": true,
+      "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+      "id": "fresh-upload:8jYCCf-lSvc:repair_candidate:24h",
+      "lane": "package_rescue",
+      "manual_approval_required": true,
+      "opening_retention_score": 100.0,
+      "priority": "high",
+      "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "series": "Farmyard Surprises",
+      "state": "repair_candidate",
+      "target_views": 300,
+      "title": "Cows remember faces across the herd",
+      "url": "https://www.youtube.com/shorts/8jYCCf-lSvc",
+      "video_id": "8jYCCf-lSvc",
+      "wait_until": "",
+      "why": "Observed velocity is weak enough to prepare a package intervention."
+    },
+    {
       "action_type": "hold_until_first_hour",
-      "age_hours": 0.195,
+      "age_hours": 0.863,
       "automation_safe": true,
       "category": "farm",
       "checkpoint_label": "1h",
@@ -141,7 +141,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 4.888,
+      "age_hours": 5.557,
       "automation_safe": true,
       "category": "farm",
       "checkpoint_label": "6h",
@@ -167,7 +167,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 3.785,
+      "age_hours": 4.454,
       "automation_safe": true,
       "category": "nocturnal",
       "checkpoint_label": "6h",
@@ -193,7 +193,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 2.899,
+      "age_hours": 3.568,
       "automation_safe": true,
       "category": "earth_from_space",
       "checkpoint_label": "6h",
@@ -219,7 +219,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 1.825,
+      "age_hours": 2.494,
       "automation_safe": true,
       "category": "birds",
       "checkpoint_label": "6h",
@@ -245,7 +245,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 1.151,
+      "age_hours": 1.82,
       "automation_safe": true,
       "category": "farm",
       "checkpoint_label": "6h",
@@ -271,5 +271,5 @@
     }
   ],
   "source": "fresh_upload_watchlist",
-  "source_generated_at": "2026-07-05T14:17:07.542799+00:00"
+  "source_generated_at": "2026-07-05T14:57:15.407608+00:00"
 }
