@@ -6,14 +6,14 @@
       "high": 1,
       "manual_review": 1,
       "total": 10,
-      "urgent": 2
+      "urgent": 3
     },
     "free_only": true,
-    "generated_at": "2026-07-05T16:23:31.292880+00:00",
+    "generated_at": "2026-07-05T16:32:11.211007+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 8.564,
+        "age_hours": 8.708,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 8.122,
+        "age_hours": 8.266,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "1h",
@@ -64,60 +64,60 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "prepare_package_rescue",
-        "age_hours": 6.994,
-        "automation_safe": false,
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 7.139,
+        "automation_safe": true,
         "category": "farm",
-        "checkpoint_label": "24h",
-        "checkpoint_state": "pending",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "overdue",
         "current_views": 0,
-        "due_at": "2026-07-06T09:23:51.670418+00:00",
+        "due_at": "2026-07-05T10:23:51.670418+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:3OjudRl2yHc:repair_candidate:24h",
-        "lane": "package_rescue",
-        "manual_approval_required": true,
+        "id": "fresh-upload:3OjudRl2yHc:analytics_due:1h",
+        "lane": "measurement",
+        "manual_approval_required": false,
         "opening_retention_score": 90.0,
-        "priority": "high",
-        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "priority": "urgent",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
         "series": "Farmyard Surprises",
-        "state": "repair_candidate",
-        "target_views": 300,
+        "state": "analytics_due",
+        "target_views": 24,
         "title": "Sheep can remember familiar faces",
         "url": "https://www.youtube.com/shorts/3OjudRl2yHc",
         "video_id": "3OjudRl2yHc",
         "wait_until": "",
-        "why": "Observed velocity is weak enough to prepare a package intervention."
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "watch_next_checkpoint",
-        "age_hours": 5.892,
-        "automation_safe": true,
+        "action_type": "prepare_package_rescue",
+        "age_hours": 6.036,
+        "automation_safe": false,
         "category": "nocturnal",
-        "checkpoint_label": "6h",
+        "checkpoint_label": "24h",
         "checkpoint_state": "pending",
         "current_views": 0,
-        "due_at": "2026-07-05T16:30:01.173083+00:00",
+        "due_at": "2026-07-06T10:30:01.173083+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:7O3KvRmWSls:watch:6h",
-        "lane": "observe",
-        "manual_approval_required": false,
+        "id": "fresh-upload:7O3KvRmWSls:repair_candidate:24h",
+        "lane": "package_rescue",
+        "manual_approval_required": true,
         "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Keep observing through the next checkpoint.",
+        "priority": "high",
+        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
         "series": "Night Shift Nature",
-        "state": "watch",
-        "target_views": 105,
+        "state": "repair_candidate",
+        "target_views": 300,
         "title": "Owls can make a hunt almost silent",
         "url": "https://www.youtube.com/shorts/7O3KvRmWSls",
         "video_id": "7O3KvRmWSls",
-        "wait_until": "2026-07-05T16:30:01.173083+00:00",
-        "why": "No intervention signal is strong enough yet."
+        "wait_until": "",
+        "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.041,
+        "age_hours": 0.185,
         "automation_safe": true,
         "category": "dogs",
         "checkpoint_label": "1h",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 5.006,
+        "age_hours": 5.15,
         "automation_safe": true,
         "category": "earth_from_space",
         "checkpoint_label": "6h",
@@ -169,7 +169,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.932,
+        "age_hours": 4.076,
         "automation_safe": true,
         "category": "birds",
         "checkpoint_label": "6h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.258,
+        "age_hours": 3.402,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "6h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.301,
+        "age_hours": 2.446,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "6h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 1.295,
+        "age_hours": 1.439,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-05T16:23:31.291409+00:00"
+    "source_generated_at": "2026-07-05T16:32:11.209095+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,17 @@
       24
     ],
     "counts": {
-      "analytics_due": 2,
+      "analytics_due": 3,
       "awaiting_1h": 1,
-      "high_priority": 3,
+      "high_priority": 4,
       "repair_candidates": 1,
       "tracked": 10
     },
-    "generated_at": "2026-07-05T16:23:31.291409+00:00",
+    "generated_at": "2026-07-05T16:32:11.209095+00:00",
     "items": [
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.041,
+        "age_hours": 0.185,
         "category": "dogs",
         "checkpoints": [
           {
@@ -347,7 +347,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 1.295,
+        "age_hours": 1.439,
         "category": "geology",
         "checkpoints": [
           {
@@ -402,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.301,
+        "age_hours": 2.446,
         "category": "farm",
         "checkpoints": [
           {
@@ -457,7 +457,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.258,
+        "age_hours": 3.402,
         "category": "farm",
         "checkpoints": [
           {
@@ -512,7 +512,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.932,
+        "age_hours": 4.076,
         "category": "birds",
         "checkpoints": [
           {
@@ -567,7 +567,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.006,
+        "age_hours": 5.15,
         "category": "earth_from_space",
         "checkpoints": [
           {
@@ -621,8 +621,8 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.892,
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "age_hours": 6.036,
         "category": "nocturnal",
         "checkpoints": [
           {
@@ -635,11 +635,11 @@
             "views": 0
           },
           {
-            "delta_to_target": 0,
+            "delta_to_target": -105,
             "due_at": "2026-07-05T16:30:01.173083+00:00",
             "label": "6h",
-            "source": "estimated",
-            "state": "pending",
+            "source": "observed",
+            "state": "observed",
             "target_views": 105,
             "views": 0
           },
@@ -654,38 +654,49 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "No intervention signal is strong enough yet.",
+        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
         "next_checkpoint": {
           "delta_to_target": 0,
-          "due_at": "2026-07-05T16:30:01.173083+00:00",
-          "label": "6h",
+          "due_at": "2026-07-06T10:30:01.173083+00:00",
+          "label": "24h",
           "source": "estimated",
           "state": "pending",
-          "target_views": 105,
+          "target_views": 300,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Night Shift Nature",
-        "state": "watch",
+        "state": "repair_candidate",
         "title": "Owls can make a hunt almost silent",
         "uploaded_at": "2026-07-05T10:30:01.173083+00:00",
         "url": "https://www.youtube.com/shorts/7O3KvRmWSls",
         "video_id": "7O3KvRmWSls",
-        "views_per_hour": 0.0
+        "views_per_hour": 0.0,
+        "warning": {
+          "action": "TITLE_AUTO_REPAIR_TRIGGER",
+          "confidence_score": 0.594,
+          "reason": "low early velocity",
+          "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+          "title": "Owls can make a hunt almost silent",
+          "video_id": "7O3KvRmWSls",
+          "views": 0,
+          "warning_state": "repair_risk"
+        }
       },
       {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 6.994,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 7.139,
         "category": "farm",
         "checkpoints": [
           {
             "delta_to_target": -24,
             "due_at": "2026-07-05T10:23:51.670418+00:00",
             "label": "1h",
-            "source": "observed",
-            "state": "observed",
+            "source": "estimated",
+            "state": "overdue",
             "target_views": 24,
             "views": 0
           },
@@ -709,41 +720,30 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
-          "due_at": "2026-07-06T09:23:51.670418+00:00",
-          "label": "24h",
+          "delta_to_target": -24,
+          "due_at": "2026-07-05T10:23:51.670418+00:00",
+          "label": "1h",
           "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
+          "state": "overdue",
+          "target_views": 24,
           "views": 0
         },
         "opening_retention_score": 90.0,
         "opening_retention_state": "retention_ready",
         "priority": "high",
         "series": "Farmyard Surprises",
-        "state": "repair_candidate",
+        "state": "analytics_due",
         "title": "Sheep can remember familiar faces",
         "uploaded_at": "2026-07-05T09:23:51.670418+00:00",
         "url": "https://www.youtube.com/shorts/3OjudRl2yHc",
         "video_id": "3OjudRl2yHc",
-        "views_per_hour": 0.0,
-        "warning": {
-          "action": "TITLE_AUTO_REPAIR_TRIGGER",
-          "confidence_score": 0.594,
-          "reason": "low early velocity",
-          "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-          "title": "Sheep can remember familiar faces",
-          "video_id": "3OjudRl2yHc",
-          "views": 0,
-          "warning_state": "repair_risk"
-        }
+        "views_per_hour": 0.0
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 8.122,
+        "age_hours": 8.266,
         "category": "farm",
         "checkpoints": [
           {
@@ -798,7 +798,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 8.564,
+        "age_hours": 8.708,
         "category": "farm",
         "checkpoints": [
           {
@@ -859,7 +859,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-05T16:23:31.292971+00:00",
+  "generated_at": "2026-07-05T16:32:11.211082+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
