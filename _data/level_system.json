@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-05T09:35:39.707272+00:00",
+  "generated_at": "2026-07-05T09:40:50.180050+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
   "overall_progress_pct": 34.3,
@@ -22,7 +22,7 @@
       "top_blockers": [
         {
           "id": "objective_gate:bootstrap_observe_before_scaling",
-          "count": 64,
+          "count": 65,
           "operator_translation": "collect more observed signal before scaling this pattern"
         },
         {
@@ -32,7 +32,7 @@
         },
         {
           "id": "queue_prune:rewrite",
-          "count": 26,
+          "count": 27,
           "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
@@ -82,7 +82,7 @@
   "metrics": {
     "health_score": 82,
     "health_state": "watch",
-    "pending": 32,
+    "pending": 33,
     "operational_publish_ready": 6,
     "apparent_publish_ready": 6,
     "eligible_count": 6,
@@ -103,7 +103,7 @@
   "top_blockers": [
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
-      "count": 64,
+      "count": 65,
       "operator_translation": "collect more observed signal before scaling this pattern"
     },
     {
@@ -113,7 +113,7 @@
     },
     {
       "id": "queue_prune:rewrite",
-      "count": 26,
+      "count": 27,
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
@@ -142,6 +142,16 @@
       "operator_translation": "editor in chief:editorial score 46 is below 62"
     },
     {
+      "id": "duplicate_title",
+      "count": 5,
+      "operator_translation": "duplicate title"
+    },
+    {
+      "id": "off_topic_visual",
+      "count": 4,
+      "operator_translation": "off topic visual"
+    },
+    {
       "id": "packaging:missing_action_word",
       "count": 3,
       "operator_translation": "packaging:missing action word"
@@ -150,16 +160,6 @@
       "id": "editor_in_chief:editorial score 42 is below 62",
       "count": 2,
       "operator_translation": "editor in chief:editorial score 42 is below 62"
-    },
-    {
-      "id": "editor_in_chief:editorial score 40 is below 62",
-      "count": 2,
-      "operator_translation": "editor in chief:editorial score 40 is below 62"
-    },
-    {
-      "id": "editor_in_chief:editorial score 49 is below 62",
-      "count": 2,
-      "operator_translation": "editor in chief:editorial score 49 is below 62"
     }
   ],
   "levels": [
@@ -187,7 +187,7 @@
       "evidence": {
         "operational_publish_ready": 6,
         "eligible_count": 6,
-        "pending": 32,
+        "pending": 33,
         "target_publish_ready": 6,
         "target_pending": 20
       }
