@@ -2,44 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 10,
-      "high": 0,
-      "manual_review": 0,
+      "automation_safe": 9,
+      "high": 1,
+      "manual_review": 1,
       "total": 10,
-      "urgent": 3
+      "urgent": 2
     },
     "free_only": true,
-    "generated_at": "2026-07-05T13:10:41.960292+00:00",
+    "generated_at": "2026-07-05T14:08:02.412036+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 20.891,
-        "automation_safe": true,
-        "category": "forests",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "overdue",
-        "current_views": 0,
-        "due_at": "2026-07-04T17:17:14.296412+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:lyyoNBhLDPY:analytics_due:1h",
-        "lane": "measurement",
-        "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "urgent",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
-        "series": "Hidden Network",
-        "state": "analytics_due",
-        "target_views": 24,
-        "title": "Forests can cool the air below them",
-        "url": "https://www.youtube.com/shorts/lyyoNBhLDPY",
-        "video_id": "lyyoNBhLDPY",
-        "wait_until": "",
-        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
-      },
-      {
-        "action_type": "pull_fresh_analytics",
-        "age_hours": 8.798,
+        "age_hours": 9.754,
         "automation_safe": true,
         "category": "weather",
         "checkpoint_label": "1h",
@@ -65,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 8.029,
+        "age_hours": 8.985,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "1h",
@@ -90,60 +64,34 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "hold_until_first_hour",
-        "age_hours": 0.718,
-        "automation_safe": true,
-        "category": "birds",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "pending",
-        "current_views": 0,
-        "due_at": "2026-07-05T13:27:37.465211+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:_T9c2aLvR5U:awaiting_1h:1h",
-        "lane": "observe",
-        "manual_approval_required": false,
-        "opening_retention_score": 96.0,
-        "priority": "low",
-        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "series": "Sky Intelligence",
-        "state": "awaiting_1h",
-        "target_views": 24,
-        "title": "Penguins trap air bubbles under feathers",
-        "url": "https://www.youtube.com/shorts/_T9c2aLvR5U",
-        "video_id": "_T9c2aLvR5U",
-        "wait_until": "2026-07-05T13:27:37.465211+00:00",
-        "why": "The upload is still inside the no-panic observation window."
-      },
-      {
-        "action_type": "watch_next_checkpoint",
-        "age_hours": 5.35,
-        "automation_safe": true,
+        "action_type": "prepare_package_rescue",
+        "age_hours": 6.306,
+        "automation_safe": false,
         "category": "farm",
-        "checkpoint_label": "6h",
+        "checkpoint_label": "24h",
         "checkpoint_state": "pending",
         "current_views": 0,
-        "due_at": "2026-07-05T13:49:42.448869+00:00",
+        "due_at": "2026-07-06T07:49:42.448869+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:YGjT2-N5H7Q:watch:6h",
-        "lane": "observe",
-        "manual_approval_required": false,
+        "id": "fresh-upload:YGjT2-N5H7Q:repair_candidate:24h",
+        "lane": "package_rescue",
+        "manual_approval_required": true,
         "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Keep observing through the next checkpoint.",
+        "priority": "high",
+        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
         "series": "Farmyard Surprises",
-        "state": "watch",
-        "target_views": 105,
+        "state": "repair_candidate",
+        "target_views": 300,
         "title": "Goats use wide pupils to watch danger",
         "url": "https://www.youtube.com/shorts/YGjT2-N5H7Q",
         "video_id": "YGjT2-N5H7Q",
-        "wait_until": "2026-07-05T13:49:42.448869+00:00",
-        "why": "No intervention signal is strong enough yet."
+        "wait_until": "",
+        "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.044,
+        "age_hours": 1.0,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "1h",
@@ -169,7 +117,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 4.908,
+        "age_hours": 5.864,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "6h",
@@ -194,8 +142,34 @@
         "why": "No intervention signal is strong enough yet."
       },
       {
+        "action_type": "hold_until_first_hour",
+        "age_hours": 0.043,
+        "automation_safe": true,
+        "category": "farm",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-05T15:05:27.089735+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:J80ks26hJIg:awaiting_1h:1h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "low",
+        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "series": "Farmyard Surprises",
+        "state": "awaiting_1h",
+        "target_views": 24,
+        "title": "Chickens remember familiar faces in the flock",
+        "url": "https://www.youtube.com/shorts/J80ks26hJIg",
+        "video_id": "J80ks26hJIg",
+        "wait_until": "2026-07-05T15:05:27.089735+00:00",
+        "why": "The upload is still inside the no-panic observation window."
+      },
+      {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.781,
+        "age_hours": 4.736,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "6h",
@@ -221,7 +195,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.678,
+        "age_hours": 3.634,
         "automation_safe": true,
         "category": "nocturnal",
         "checkpoint_label": "6h",
@@ -247,7 +221,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 1.792,
+        "age_hours": 2.748,
         "automation_safe": true,
         "category": "earth_from_space",
         "checkpoint_label": "6h",
@@ -270,10 +244,36 @@
         "video_id": "OQM9BmE7oAA",
         "wait_until": "2026-07-05T17:23:11.327013+00:00",
         "why": "No intervention signal is strong enough yet."
+      },
+      {
+        "action_type": "watch_next_checkpoint",
+        "age_hours": 1.674,
+        "automation_safe": true,
+        "category": "birds",
+        "checkpoint_label": "6h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-05T18:27:37.465211+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:_T9c2aLvR5U:watch:6h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 96.0,
+        "priority": "low",
+        "recommended_action": "Keep observing through the next checkpoint.",
+        "series": "Sky Intelligence",
+        "state": "watch",
+        "target_views": 105,
+        "title": "Penguins trap air bubbles under feathers",
+        "url": "https://www.youtube.com/shorts/_T9c2aLvR5U",
+        "video_id": "_T9c2aLvR5U",
+        "wait_until": "2026-07-05T18:27:37.465211+00:00",
+        "why": "No intervention signal is strong enough yet."
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-05T13:10:41.958722+00:00"
+    "source_generated_at": "2026-07-05T14:08:02.410610+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,72 @@
       24
     ],
     "counts": {
-      "analytics_due": 3,
+      "analytics_due": 2,
       "awaiting_1h": 2,
       "high_priority": 3,
-      "repair_candidates": 0,
+      "repair_candidates": 1,
       "tracked": 10
     },
-    "generated_at": "2026-07-05T13:10:41.958722+00:00",
+    "generated_at": "2026-07-05T14:08:02.410610+00:00",
     "items": [
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.044,
+        "age_hours": 0.043,
+        "category": "farm",
+        "checkpoints": [
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-05T15:05:27.089735+00:00",
+            "label": "1h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 24,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-05T20:05:27.089735+00:00",
+            "label": "6h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 105,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-06T14:05:27.089735+00:00",
+            "label": "24h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 300,
+            "views": 0
+          }
+        ],
+        "current_views": 0,
+        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "next_checkpoint": {
+          "delta_to_target": 0,
+          "due_at": "2026-07-05T15:05:27.089735+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        "opening_retention_score": 100.0,
+        "opening_retention_state": "retention_ready",
+        "priority": "low",
+        "series": "Farmyard Surprises",
+        "state": "awaiting_1h",
+        "title": "Chickens remember familiar faces in the flock",
+        "uploaded_at": "2026-07-05T14:05:27.089735+00:00",
+        "url": "https://www.youtube.com/shorts/J80ks26hJIg",
+        "video_id": "J80ks26hJIg",
+        "views_per_hour": 0.0
+      },
+      {
+        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "age_hours": 1.0,
         "category": "farm",
         "checkpoints": [
           {
@@ -346,16 +401,16 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.718,
+        "action": "Keep observing through the next checkpoint.",
+        "age_hours": 1.674,
         "category": "birds",
         "checkpoints": [
           {
-            "delta_to_target": 0,
+            "delta_to_target": -24,
             "due_at": "2026-07-05T13:27:37.465211+00:00",
             "label": "1h",
-            "source": "estimated",
-            "state": "pending",
+            "source": "observed",
+            "state": "observed",
             "target_views": 24,
             "views": 0
           },
@@ -379,21 +434,21 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "hypothesis": "No intervention signal is strong enough yet.",
         "next_checkpoint": {
           "delta_to_target": 0,
-          "due_at": "2026-07-05T13:27:37.465211+00:00",
-          "label": "1h",
+          "due_at": "2026-07-05T18:27:37.465211+00:00",
+          "label": "6h",
           "source": "estimated",
           "state": "pending",
-          "target_views": 24,
+          "target_views": 105,
           "views": 0
         },
         "opening_retention_score": 96.0,
         "opening_retention_state": "retention_ready",
         "priority": "low",
         "series": "Sky Intelligence",
-        "state": "awaiting_1h",
+        "state": "watch",
         "title": "Penguins trap air bubbles under feathers",
         "uploaded_at": "2026-07-05T12:27:37.465211+00:00",
         "url": "https://www.youtube.com/shorts/_T9c2aLvR5U",
@@ -402,7 +457,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 1.792,
+        "age_hours": 2.748,
         "category": "earth_from_space",
         "checkpoints": [
           {
@@ -457,7 +512,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.678,
+        "age_hours": 3.634,
         "category": "nocturnal",
         "checkpoints": [
           {
@@ -512,7 +567,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.781,
+        "age_hours": 4.736,
         "category": "farm",
         "checkpoints": [
           {
@@ -567,7 +622,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 4.908,
+        "age_hours": 5.864,
         "category": "farm",
         "checkpoints": [
           {
@@ -621,8 +676,8 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.35,
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "age_hours": 6.306,
         "category": "farm",
         "checkpoints": [
           {
@@ -635,11 +690,11 @@
             "views": 0
           },
           {
-            "delta_to_target": 0,
+            "delta_to_target": -105,
             "due_at": "2026-07-05T13:49:42.448869+00:00",
             "label": "6h",
-            "source": "estimated",
-            "state": "pending",
+            "source": "observed",
+            "state": "observed",
             "target_views": 105,
             "views": 0
           },
@@ -654,30 +709,41 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "No intervention signal is strong enough yet.",
+        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
         "next_checkpoint": {
           "delta_to_target": 0,
-          "due_at": "2026-07-05T13:49:42.448869+00:00",
-          "label": "6h",
+          "due_at": "2026-07-06T07:49:42.448869+00:00",
+          "label": "24h",
           "source": "estimated",
           "state": "pending",
-          "target_views": 105,
+          "target_views": 300,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Farmyard Surprises",
-        "state": "watch",
+        "state": "repair_candidate",
         "title": "Goats use wide pupils to watch danger",
         "uploaded_at": "2026-07-05T07:49:42.448869+00:00",
         "url": "https://www.youtube.com/shorts/YGjT2-N5H7Q",
         "video_id": "YGjT2-N5H7Q",
-        "views_per_hour": 0.0
+        "views_per_hour": 0.0,
+        "warning": {
+          "action": "TITLE_AUTO_REPAIR_TRIGGER",
+          "confidence_score": 0.594,
+          "reason": "low early velocity",
+          "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+          "title": "Goats use wide pupils to watch danger",
+          "video_id": "YGjT2-N5H7Q",
+          "views": 0,
+          "warning_state": "repair_risk"
+        }
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 8.029,
+        "age_hours": 8.985,
         "category": "farm",
         "checkpoints": [
           {
@@ -732,7 +798,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 8.798,
+        "age_hours": 9.754,
         "category": "weather",
         "checkpoints": [
           {
@@ -784,61 +850,6 @@
         "url": "https://www.youtube.com/shorts/UmLIxYglETo",
         "video_id": "UmLIxYglETo",
         "views_per_hour": 0.0
-      },
-      {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 20.891,
-        "category": "forests",
-        "checkpoints": [
-          {
-            "delta_to_target": -24,
-            "due_at": "2026-07-04T17:17:14.296412+00:00",
-            "label": "1h",
-            "source": "estimated",
-            "state": "overdue",
-            "target_views": 24,
-            "views": 0
-          },
-          {
-            "delta_to_target": -105,
-            "due_at": "2026-07-04T22:17:14.296412+00:00",
-            "label": "6h",
-            "source": "estimated",
-            "state": "overdue",
-            "target_views": 105,
-            "views": 0
-          },
-          {
-            "delta_to_target": 0,
-            "due_at": "2026-07-05T16:17:14.296412+00:00",
-            "label": "24h",
-            "source": "estimated",
-            "state": "pending",
-            "target_views": 300,
-            "views": 0
-          }
-        ],
-        "current_views": 0,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-        "next_checkpoint": {
-          "delta_to_target": -24,
-          "due_at": "2026-07-04T17:17:14.296412+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        "opening_retention_score": 100.0,
-        "opening_retention_state": "retention_ready",
-        "priority": "high",
-        "series": "Hidden Network",
-        "state": "analytics_due",
-        "title": "Forests can cool the air below them",
-        "uploaded_at": "2026-07-04T16:17:14.296412+00:00",
-        "url": "https://www.youtube.com/shorts/lyyoNBhLDPY",
-        "video_id": "lyyoNBhLDPY",
-        "views_per_hour": 0.0
       }
     ],
     "targets": {
@@ -848,23 +859,12 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-05T13:10:41.960385+00:00",
+  "generated_at": "2026-07-05T14:08:02.412128+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
   ],
   "related_video_recommendations": [
-    {
-      "recommendation": {
-        "reason": "same series/category/format session bridge",
-        "score": 85.0,
-        "title": "Cows remember faces across the herd",
-        "url": "https://www.youtube.com/shorts/8jYCCf-lSvc",
-        "video_id": "8jYCCf-lSvc"
-      },
-      "source_title": "Sheep can remember familiar faces",
-      "source_video_id": "3OjudRl2yHc"
-    },
     {
       "recommendation": {
         "reason": "same series/category/format session bridge",
@@ -908,14 +908,20 @@
       },
       "source_title": "Horses remember familiar faces for months",
       "source_video_id": "dKi3CHsrfXQ"
+    },
+    {
+      "recommendation": {
+        "reason": "same series/category/format session bridge",
+        "score": 85.0,
+        "title": "Cows remember faces across the herd",
+        "url": "https://www.youtube.com/shorts/8jYCCf-lSvc",
+        "video_id": "8jYCCf-lSvc"
+      },
+      "source_title": "Chickens remember familiar faces in the flock",
+      "source_video_id": "J80ks26hJIg"
     }
   ],
   "sequel_opportunities": [
-    {
-      "prompt": "Make a sequel with a new subject but the same payoff shape: Sheep can remember familiar faces",
-      "title": "Sheep can remember familiar faces",
-      "video_id": "3OjudRl2yHc"
-    },
     {
       "prompt": "Make a sequel with a new subject but the same payoff shape: Owls can make a hunt almost silent",
       "title": "Owls can make a hunt almost silent",
@@ -935,13 +941,18 @@
       "prompt": "Make a sequel with a new subject but the same payoff shape: Horses remember familiar faces for months",
       "title": "Horses remember familiar faces for months",
       "video_id": "dKi3CHsrfXQ"
+    },
+    {
+      "prompt": "Make a sequel with a new subject but the same payoff shape: Chickens remember familiar faces in the flock",
+      "title": "Chickens remember familiar faces in the flock",
+      "video_id": "J80ks26hJIg"
     }
   ],
   "session_graph": {
     "action_score_threshold": 55,
     "coverage": 0.9,
     "edges": 20,
-    "nodes": 57,
+    "nodes": 58,
     "target_reuse_limit": 2
   }
 }
