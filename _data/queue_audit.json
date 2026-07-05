@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-07-05T10:38:54.838369+00:00",
-  "pending": 31,
+  "generated_at": "2026-07-05T10:43:11.600479+00:00",
+  "pending": 33,
   "states": {
-    "publish_ready": 6,
-    "rewrite": 25
+    "rewrite": 26,
+    "publish_ready": 7
   },
   "mechanism_clusters": {
     "face_recognition": 4,
@@ -14,27 +14,133 @@
     "beak_signal": 1
   },
   "rights": {
-    "approved": 31
+    "approved": 33
   },
   "prune_summary": {
-    "pending_before": 31,
-    "pending_after": 31,
-    "rejected": 0,
+    "pending_before": 38,
+    "pending_after": 33,
+    "rejected": 5,
     "repair_needed": 0,
-    "repaired": 4,
+    "repaired": 5,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 31,
+      "objective_gate:bootstrap_observe_before_scaling": 33,
       "editor_in_chief:subject repeated inside 3-day cooldown": 22,
       "editor_in_chief:script quality gate blocked the narration": 4,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
       "editor_in_chief:editorial score 46 is below 62": 3,
+      "off_topic_visual": 2,
+      "rights_guard_person_manual_review": 2,
+      "duplicate_title": 1,
+      "duplicate_script": 1,
+      "duplicate_angle": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
       "editor_in_chief:editorial score 40 is below 62": 1,
-      "editor_in_chief:editorial score 49 is below 62": 1,
-      "editorial_cooldown_supply_fallback": 1
+      "editor_in_chief:editorial score 49 is below 62": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "2b7f8c79f2a26763",
+      "title": "Dogs read human pointing surprisingly well",
+      "reasons": [
+        "rights_guard_person_manual_review"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "d2c9f8a892941728",
+      "title": "Sheep recognize faces across the flock",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "4075bd05eb1ef338",
+      "title": "Dogs read human pointing surprisingly well",
+      "reasons": [
+        "rights_guard_person_manual_review"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "4f8264be238a411f",
+      "title": "Bees don’t just sip nectar they’re pollen thieves",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "0e1b62eb2a63f73c",
+      "title": "Sheep aren't just cute—they're lawnmowers",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "19b1f2428b4da471",
+      "title": "Dogs read human pointing surprisingly well",
+      "reasons": [
+        "rights_guard_person_manual_review"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "c95b0e58a90ec75e",
+      "title": "Dogs read human pointing surprisingly well",
+      "reasons": [
+        "rights_guard_person_manual_review"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "903ef877b11e42f1",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "0d040683cfc9670e",
+      "title": "Ocean waves show the beach changing shape",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "647cb5aab2761589",
+      "title": "Mangroves take power out of waves",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "eef5570d6edec316",
+      "title": "Sheep milk lets lambs grow faster than you think",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "d8afbd9ebddb2e37",
+      "title": "Sheep stand still for a surprising reason",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "bf614a3044a31d53",
       "title": "Owls Lechuzas vuelan en silencio para cazar",
@@ -192,109 +298,646 @@
         "off_topic_visual"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "7fdc62557df3560c",
-      "title": "Sheep Ovejas reconocen rostros familiares",
-      "reasons": [
-        "subject repeated inside 3-day cooldown",
-        "humanity score is too low",
-        "editorial score 37 is below 62"
-      ],
-      "stage": "editor_in_chief"
-    },
-    {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
-    },
-    {
-      "id": "13f0993c71cc083a",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "2d6e6fe198b2dad2",
-      "title": "Magnets make invisible fields visible",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "e20f37c9833460c1",
-      "title": "Magnets make invisible fields visible",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "e9bf7fe143830af3",
-      "title": "Chickens keep their view steady while walking",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "e914397d93736d8f",
-      "title": "Trees don't grow roots the way you think",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "de7435e787e55e29",
-      "title": "Rainbow on a tree root. Here's why",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "de4f8e2f593674ed",
-      "title": "Pelicans use rocks to sharpen their beaks",
-      "reasons": [
-        "non_animal_body_language"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "76540f2f3a9aa0ed",
-      "title": "Iron filings reveal a water fountain's hidden force",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "f43f32de08dfe2ca",
-      "title": "Birds see ultraviolet patterns we miss",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "ce12e060ba06e234",
-      "title": "Hot air balloons light up at dusk for a reason",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
+    {
+      "id": "84997a5c639c2c74",
+      "title": "Rivers carve bends by stealing from one bank",
+      "category": "rivers",
+      "publish_score": {
+        "approved": true,
+        "category": "rivers",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 86,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "bend",
+            "river"
+          ],
+          "cue_terms": [
+            "bend",
+            "river"
+          ],
+          "frame_hook_bridge": [
+            "bend",
+            "river"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "rivers"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 56,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 64,
+            "emotional_potential": 35,
+            "novelty": 45,
+            "replay_potential": 72,
+            "viral_potential": 53,
+            "visual_potential": 55
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "earth_engine",
+        "subscriber_conversion": {
+          "comment_probability": 0.207,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.242,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-07-05T10:42:41.482084+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "rivers",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "bend",
+            "river"
+          ],
+          "cue_terms": [
+            "bend",
+            "river"
+          ],
+          "frame_hook_bridge": [
+            "bend",
+            "river"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "rivers"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "earth_engine",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "rivers",
+        "viewer_promise": "See why this river earth engine matters."
+      },
+      "packaging": {
+        "community_prompt": "Which rivers clue should Wild Brief compare next in Earth Engine?",
+        "cta_prompt": "Want to see how moving water reshapes the world?",
+        "curiosity_gap": {
+          "hook": "Why do these rivers change after the river bend?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "earth engine",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 54,
+          "winners": {
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {}
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "bend",
+              "river"
+            ],
+            "cue_terms": [
+              "bend",
+              "river"
+            ],
+            "frame_hook_bridge": [
+              "bend",
+              "river"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "rivers"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Rivers sort sediment while they bend",
+          "Rivers move sideways while they flow",
+          "Rivers show why the river bank matters.",
+          "Rivers show why the river bank matters.",
+          "Rivers show why the river bank matters."
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "river bend",
+          "ending_line": "Which water shape next?",
+          "final_line": "Now the river bend at the start makes sense.",
+          "loop_score": 0.755,
+          "opening_line": "Rivers move sideways while they flow.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "river bend",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.755,
+        "next_episode_question": "Tomorrow in Earth Engine: another nature signal. Are rivers more like roads, tools, or engines?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "bend",
+            "river"
+          ],
+          "cue_terms": [
+            "bend",
+            "river"
+          ],
+          "frame_hook_bridge": [
+            "bend",
+            "river"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "rivers"
+        },
+        "pinned_comment": "Watch the river bend again. Tomorrow in Earth Engine: another nature signal. Are rivers more like roads, tools, or engines?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.76,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 17,
+          "first_2s_narration": "Rivers move sideways while they flow Watch the outside of the bend",
+          "first_frame_text": "RIVER BEND",
+          "first_frame_text_words": 2,
+          "hook": "Rivers move sideways while they flow.",
+          "hook_specificity": 0.78,
+          "hook_words": 6,
+          "loop_score": 0.755,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "bend",
+              "river"
+            ],
+            "cue_terms": [
+              "bend",
+              "river"
+            ],
+            "frame_hook_bridge": [
+              "bend",
+              "river"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "rivers"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the river bend, so viewers rewatch the rivers clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Rivers move sideways while they flow Watch the outside of the bend",
+          "first_frame_text": "RIVER BEND",
+          "next_episode_question": "Tomorrow in Earth Engine: another nature signal. Are rivers more like roads, tools, or engines?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains the visible river bend behind Rivers in a fast nature science story.",
+            "series": "Earth Engine",
+            "subject": "rivers",
+            "terms": [
+              "rivers",
+              "river bend",
+              "earth engine"
+            ],
+            "title_variant": "Rivers river bend explained fast",
+            "visible_cue": "river bend"
+          },
+          "series": "Earth Engine",
+          "subject": "rivers",
+          "visible_cue": "river bend"
+        },
+        "risks": [],
+        "score": 96,
+        "search_intent": {
+          "description_line": "This Short explains the visible river bend behind Rivers in a fast nature science story.",
+          "series": "Earth Engine",
+          "subject": "rivers",
+          "terms": [
+            "rivers",
+            "river bend",
+            "earth engine"
+          ],
+          "title_variant": "Rivers river bend explained fast",
+          "visible_cue": "river bend"
+        },
+        "selected_variant": {
+          "hook": "Rivers move sideways while they flow",
+          "score": 77,
+          "thumbnail_text": "BANK SORTING",
+          "title": "Rivers sort mud and sand along each bank"
+        },
+        "series": "Earth Engine #7",
+        "series_identity": {
+          "continuity_prompt": "Next in Earth Engine: compare this with another force of nature.",
+          "episode": 7,
+          "label": "Earth Engine #7",
+          "series": "Earth Engine"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.207,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.242,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "BANK SORTING",
+          "RIVER BANK",
+          "WATCH RIVER BANK",
+          "RIVERS MOVE",
+          "RIVER BANK MATTERS",
+          "RIVER BANK FIRST",
+          "RIVER BANK REVEAL",
+          "RIVER BANK CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Rivers sort mud and sand along each bank",
+          "Rivers carve bends by stealing from one bank",
+          "Rivers use river bank before they move",
+          "This river bank gives rivers away",
+          "Why rivers move after one river bank",
+          "Rivers reveal the answer with river bank",
+          "The river bank that changes the moment",
+          "Rivers make one river bank matter",
+          "Rivers show the hidden answer in seconds",
+          "Rivers: watch this river bank"
+        ],
+        "top_variants": [
+          {
+            "hook": "Rivers move sideways while they flow",
+            "score": 77,
+            "thumbnail_text": "BANK SORTING",
+            "title": "Rivers sort mud and sand along each bank"
+          },
+          {
+            "hook": "Watch the river bank; it explains the behavior",
+            "score": 77,
+            "thumbnail_text": "BANK SORTING",
+            "title": "Rivers sort mud and sand along each bank"
+          },
+          {
+            "hook": "Rivers sort sediment while they bend",
+            "score": 76,
+            "thumbnail_text": "BANK SORTING",
+            "title": "Rivers sort mud and sand along each bank"
+          },
+          {
+            "hook": "Rivers move sideways while they flow",
+            "score": 70,
+            "thumbnail_text": "RIVER BANK",
+            "title": "Rivers sort mud and sand along each bank"
+          },
+          {
+            "hook": "Watch the river bank; it explains the behavior",
+            "score": 70,
+            "thumbnail_text": "RIVER BANK",
+            "title": "Rivers sort mud and sand along each bank"
+          },
+          {
+            "hook": "Rivers move sideways while they flow",
+            "score": 70,
+            "thumbnail_text": "WATCH RIVER BANK",
+            "title": "Rivers sort mud and sand along each bank"
+          },
+          {
+            "hook": "Watch the river bank; it explains the behavior",
+            "score": 70,
+            "thumbnail_text": "WATCH RIVER BANK",
+            "title": "Rivers sort mud and sand along each bank"
+          },
+          {
+            "hook": "Rivers move sideways while they flow",
+            "score": 70,
+            "thumbnail_text": "RIVERS MOVE",
+            "title": "Rivers sort mud and sand along each bank"
+          },
+          {
+            "hook": "Watch the river bank; it explains the behavior",
+            "score": 70,
+            "thumbnail_text": "RIVERS MOVE",
+            "title": "Rivers sort mud and sand along each bank"
+          },
+          {
+            "hook": "Rivers move sideways while they flow",
+            "score": 70,
+            "thumbnail_text": "RIVER BANK MATTERS",
+            "title": "Rivers sort mud and sand along each bank"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
     {
       "id": "cc36bb34a58ff920",
       "title": "Storm clouds trace wind bands over the ocean",
@@ -472,7 +1115,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-05T10:38:23.439470+00:00",
+        "checked_at": "2026-07-05T10:42:41.484378+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1116,7 +1759,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-05T10:38:23.458932+00:00",
+        "checked_at": "2026-07-05T10:42:41.502056+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1748,7 +2391,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-05T10:38:23.460516+00:00",
+        "checked_at": "2026-07-05T10:42:41.503471+00:00",
         "mechanism_cluster": "dance_navigation",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2386,7 +3029,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-05T10:38:23.462657+00:00",
+        "checked_at": "2026-07-05T10:42:41.505409+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3028,7 +3671,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-05T10:38:23.478238+00:00",
+        "checked_at": "2026-07-05T10:42:41.519325+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3497,6 +4140,652 @@
       }
     },
     {
+      "id": "f607d95b7c13be14",
+      "title": "Rivers sort sediment while they bend",
+      "category": "rivers",
+      "publish_score": {
+        "approved": true,
+        "category": "rivers",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 86,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "edge",
+            "river",
+            "sort"
+          ],
+          "cue_terms": [
+            "bank",
+            "edge",
+            "river",
+            "sort"
+          ],
+          "frame_hook_bridge": [
+            "sort"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "rivers"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 56,
+          "signals": {
+            "comment_potential": 62,
+            "educational_potential": 64,
+            "emotional_potential": 35,
+            "novelty": 45,
+            "replay_potential": 72,
+            "viral_potential": 53,
+            "visual_potential": 55
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 68,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "earth_engine",
+        "subscriber_conversion": {
+          "comment_probability": 0.207,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.242,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-07-05T10:42:41.835564+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "rivers",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "edge",
+            "river",
+            "sort"
+          ],
+          "cue_terms": [
+            "bank",
+            "edge",
+            "river",
+            "sort"
+          ],
+          "frame_hook_bridge": [
+            "sort"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "rivers"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "earth_engine",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "rivers",
+        "viewer_promise": "See why this river earth engine matters."
+      },
+      "packaging": {
+        "community_prompt": "Which rivers clue should Wild Brief compare next in Earth Engine?",
+        "cta_prompt": "Want to see how moving water reshapes the world?",
+        "curiosity_gap": {
+          "hook": "Why do these rivers change after the river bank?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "earth engine",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "specific_question",
+            "format": "fresh_variant",
+            "hook": "new_hook",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "explore",
+          "sample_count": 54,
+          "winners": {
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {}
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "edge",
+              "river",
+              "sort"
+            ],
+            "cue_terms": [
+              "bank",
+              "edge",
+              "river",
+              "sort"
+            ],
+            "frame_hook_bridge": [
+              "sort"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "rivers"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Rivers move sideways while they flow",
+          "Rivers sort sediment while they bend",
+          "Rivers show why the river bend matters.",
+          "Rivers show why the river bend matters.",
+          "Rivers show why the river bend matters."
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "bank sorting",
+          "ending_line": "Which river edge should we compare next?",
+          "final_line": "Now the bank sorting at the start makes sense.",
+          "loop_score": 0.792,
+          "opening_line": "Rivers sort sediment while they bend.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "bank sorting",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.792,
+        "next_episode_question": "Tomorrow in Earth Engine: another nature signal. Are rivers more like roads, tools, or engines?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "edge",
+            "river",
+            "sort"
+          ],
+          "cue_terms": [
+            "bank",
+            "edge",
+            "river",
+            "sort"
+          ],
+          "frame_hook_bridge": [
+            "sort"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "rivers"
+        },
+        "pinned_comment": "Watch the sediment again. Tomorrow in Earth Engine: another nature signal. Are rivers more like roads, tools, or engines?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 16.07,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 15,
+          "first_2s_narration": "Rivers sort sediment while they bend Watch the edge of the flow",
+          "first_frame_text": "BANK SORTING",
+          "first_frame_text_words": 2,
+          "hook": "Rivers sort sediment while they bend.",
+          "hook_specificity": 0.78,
+          "hook_words": 6,
+          "loop_score": 0.792,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "edge",
+              "river",
+              "sort"
+            ],
+            "cue_terms": [
+              "bank",
+              "edge",
+              "river",
+              "sort"
+            ],
+            "frame_hook_bridge": [
+              "sort"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "rivers"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the sediment, so viewers rewatch the rivers clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 68,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Rivers sort sediment while they bend Watch the edge of the flow",
+          "first_frame_text": "BANK SORTING",
+          "next_episode_question": "Tomorrow in Earth Engine: another nature signal. Are rivers more like roads, tools, or engines?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains the visible sediment behind Rivers in a fast nature science story.",
+            "series": "Earth Engine",
+            "subject": "rivers",
+            "terms": [
+              "rivers",
+              "sediment",
+              "earth engine"
+            ],
+            "title_variant": "Rivers sediment explained fast",
+            "visible_cue": "sediment"
+          },
+          "series": "Earth Engine",
+          "subject": "rivers",
+          "visible_cue": "sediment"
+        },
+        "risks": [],
+        "score": 94,
+        "search_intent": {
+          "description_line": "This Short explains the visible sediment behind Rivers in a fast nature science story.",
+          "series": "Earth Engine",
+          "subject": "rivers",
+          "terms": [
+            "rivers",
+            "sediment",
+            "earth engine"
+          ],
+          "title_variant": "Rivers sediment explained fast",
+          "visible_cue": "sediment"
+        },
+        "selected_variant": {
+          "hook": "Rivers move sideways while they flow",
+          "score": 77,
+          "thumbnail_text": "RIVER BEND",
+          "title": "Rivers carve bends by stealing from one bank"
+        },
+        "series": "Earth Engine #7",
+        "series_identity": {
+          "continuity_prompt": "Next in Earth Engine #7: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Earth Engine #7",
+          "series": "Earth Engine #7"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.207,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.242,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "RIVER BEND",
+          "WATCH RIVER BEND",
+          "RIVERS COMPARE",
+          "RIVER BEND MATTERS",
+          "RIVER BEND FIRST",
+          "RIVER BEND REVEAL",
+          "RIVER BEND CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Rivers carve bends by stealing from one bank",
+          "Rivers sort sediment while they bend",
+          "Rivers use river bend before they compare",
+          "This river bend gives rivers away",
+          "Why rivers compare after one river bend",
+          "Rivers reveal the answer with river bend",
+          "The river bend that changes the moment",
+          "Rivers make one river bend matter",
+          "Rivers show the hidden answer in seconds",
+          "Rivers: watch this river bend"
+        ],
+        "top_variants": [
+          {
+            "hook": "Rivers move sideways while they flow",
+            "score": 77,
+            "thumbnail_text": "RIVER BEND",
+            "title": "Rivers carve bends by stealing from one bank"
+          },
+          {
+            "hook": "Watch the river bend; it explains the behavior",
+            "score": 77,
+            "thumbnail_text": "RIVER BEND",
+            "title": "Rivers carve bends by stealing from one bank"
+          },
+          {
+            "hook": "Rivers sort sediment while they bend",
+            "score": 76,
+            "thumbnail_text": "RIVER BEND",
+            "title": "Rivers carve bends by stealing from one bank"
+          },
+          {
+            "hook": "Rivers move sideways while they flow",
+            "score": 70,
+            "thumbnail_text": "WATCH RIVER BEND",
+            "title": "Rivers carve bends by stealing from one bank"
+          },
+          {
+            "hook": "Watch the river bend; it explains the behavior",
+            "score": 70,
+            "thumbnail_text": "WATCH RIVER BEND",
+            "title": "Rivers carve bends by stealing from one bank"
+          },
+          {
+            "hook": "Rivers move sideways while they flow",
+            "score": 70,
+            "thumbnail_text": "RIVERS COMPARE",
+            "title": "Rivers carve bends by stealing from one bank"
+          },
+          {
+            "hook": "Watch the river bend; it explains the behavior",
+            "score": 70,
+            "thumbnail_text": "RIVERS COMPARE",
+            "title": "Rivers carve bends by stealing from one bank"
+          },
+          {
+            "hook": "Rivers move sideways while they flow",
+            "score": 70,
+            "thumbnail_text": "RIVER BEND MATTERS",
+            "title": "Rivers carve bends by stealing from one bank"
+          },
+          {
+            "hook": "Watch the river bend; it explains the behavior",
+            "score": 70,
+            "thumbnail_text": "RIVER BEND MATTERS",
+            "title": "Rivers carve bends by stealing from one bank"
+          },
+          {
+            "hook": "Rivers move sideways while they flow",
+            "score": 70,
+            "thumbnail_text": "RIVER BEND FIRST",
+            "title": "Rivers carve bends by stealing from one bank"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "d28a276ff0822870",
       "title": "Storm clouds show air layers changing over time",
       "category": "earth_from_space",
@@ -3673,7 +4962,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T10:38:23.441823+00:00",
+        "checked_at": "2026-07-05T10:42:41.486577+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4321,7 +5610,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T10:38:23.480701+00:00",
+        "checked_at": "2026-07-05T10:42:41.521357+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4965,7 +6254,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T10:38:23.465593+00:00",
+        "checked_at": "2026-07-05T10:42:41.507910+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5610,20 +6899,19 @@
           "state": "clear"
         }
       },
-      "editorial_state": "publish_ready",
+      "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T10:38:23.421029+00:00",
+        "checked_at": "2026-07-05T10:42:41.198758+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
-          "editor_in_chief:subject repeated inside 3-day cooldown",
-          "editorial_cooldown_supply_fallback"
+          "editor_in_chief:subject repeated inside 3-day cooldown"
         ],
-        "score": 72.0,
-        "state": "publish_ready",
+        "score": 64.0,
+        "state": "rewrite",
         "template_cluster": ""
       },
-      "queue_score": 72.0,
+      "queue_score": 64.0,
       "youtube_brain": {
         "animal": "horses",
         "commands": [],
@@ -6262,7 +7550,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T10:38:23.428809+00:00",
+        "checked_at": "2026-07-05T10:42:41.199917+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6895,7 +8183,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T10:38:23.430107+00:00",
+        "checked_at": "2026-07-05T10:42:41.200996+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7538,7 +8826,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T10:38:23.432324+00:00",
+        "checked_at": "2026-07-05T10:42:41.203077+00:00",
         "mechanism_cluster": "visual_stabilization",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8187,7 +9475,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T10:38:23.435534+00:00",
+        "checked_at": "2026-07-05T10:42:41.478403+00:00",
         "mechanism_cluster": "wing_scales",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8845,7 +10133,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T10:38:23.436504+00:00",
+        "checked_at": "2026-07-05T10:42:41.479292+00:00",
         "mechanism_cluster": "electric_sense",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9481,7 +10769,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T10:38:23.443140+00:00",
+        "checked_at": "2026-07-05T10:42:41.487757+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10122,7 +11410,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T10:38:23.444835+00:00",
+        "checked_at": "2026-07-05T10:42:41.489269+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10764,7 +12052,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T10:38:23.446831+00:00",
+        "checked_at": "2026-07-05T10:42:41.491066+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11400,7 +12688,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T10:38:23.448961+00:00",
+        "checked_at": "2026-07-05T10:42:41.493039+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11855,1294 +13143,6 @@
             "hook": "Rock layers store old environments in stripes",
             "score": 74,
             "thumbnail_text": "ROCK LAYERS CHANGE",
-            "title": "Rock layers store ancient environments in stripes"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
-      "id": "1e1fd2bf8c255b87",
-      "title": "Storm clouds reveal weather from above the clouds",
-      "category": "earth_from_space",
-      "publish_score": {
-        "approved": true,
-        "category": "earth_from_space",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 86,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "cloud",
-            "tops"
-          ],
-          "cue_terms": [
-            "cloud",
-            "tops"
-          ],
-          "frame_hook_bridge": [
-            "cloud",
-            "tops"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "clouds"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 62,
-          "signals": {
-            "comment_potential": 54,
-            "educational_potential": 64,
-            "emotional_potential": 35,
-            "novelty": 45,
-            "replay_potential": 72,
-            "viral_potential": 58,
-            "visual_potential": 85
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 77,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 82
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "earth_engine",
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-07-05T10:38:23.451113+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling",
-          "editor_in_chief:story angle repeated inside 10-day cooldown"
-        ],
-        "score": 64.0,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 64.0,
-      "youtube_brain": {
-        "animal": "storm",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "cloud",
-            "tops"
-          ],
-          "cue_terms": [
-            "cloud",
-            "tops"
-          ],
-          "frame_hook_bridge": [
-            "cloud",
-            "tops"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "clouds"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "earth_engine",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "storm",
-        "viewer_promise": "See why this storm earth engine matters."
-      },
-      "packaging": {
-        "community_prompt": "Which storm clue should Wild Brief compare next in Planet Earth?",
-        "cta_prompt": "Want more planet-scale nature explained fast?",
-        "curiosity_gap": {
-          "hook": "Storm clouds look different when seen from above.",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "story"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "earth engine",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 54,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {}
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "cloud",
-              "tops"
-            ],
-            "cue_terms": [
-              "cloud",
-              "tops"
-            ],
-            "frame_hook_bridge": [
-              "cloud",
-              "tops"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "clouds"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Storm clouds show where a storm is feeding",
-          "Storm clouds look different when seen from above",
-          "Storm shows why the cloud spiral matters.",
-          "Storm shows why the cloud spiral matters.",
-          "Storm shows why the cloud spiral matters."
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "cloud tops",
-          "ending_line": "Which above-cloud clue should we compare next.",
-          "final_line": "Now the cloud tops at the start make sense.",
-          "loop_score": 0.786,
-          "opening_line": "Storm clouds look different when seen from above.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "cloud tops",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.786,
-        "next_episode_question": "Tomorrow in Planet Earth: another nature signal. Which planet-scale clue should we compare next?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "cloud",
-            "tops"
-          ],
-          "cue_terms": [
-            "cloud",
-            "tops"
-          ],
-          "frame_hook_bridge": [
-            "cloud",
-            "tops"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "clouds"
-        },
-        "pinned_comment": "Watch the cloud tops again. Tomorrow in Planet Earth: another nature signal. Which planet-scale clue should we compare next?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 16.44,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 16,
-          "first_2s_narration": "Storm clouds look different when seen from above Watch the cloud tops",
-          "first_frame_text": "CLOUD TOPS",
-          "first_frame_text_words": 2,
-          "hook": "Storm clouds look different when seen from above.",
-          "hook_specificity": 0.78,
-          "hook_words": 8,
-          "loop_score": 0.786,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "cloud",
-              "tops"
-            ],
-            "cue_terms": [
-              "cloud",
-              "tops"
-            ],
-            "frame_hook_bridge": [
-              "cloud",
-              "tops"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "clouds"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the cloud tops, so viewers rewatch the storm clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 77,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 82
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Storm clouds look different when seen from above Watch the cloud tops",
-          "first_frame_text": "CLOUD TOPS",
-          "next_episode_question": "Tomorrow in Planet Earth: another nature signal. Which planet-scale clue should we compare next?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains the visible cloud tops behind Storm in a fast nature science story.",
-            "series": "Planet Earth",
-            "subject": "storm",
-            "terms": [
-              "storm",
-              "cloud tops",
-              "earth_from_space",
-              "earth engine"
-            ],
-            "title_variant": "Storm cloud tops explained fast",
-            "visible_cue": "cloud tops"
-          },
-          "series": "Planet Earth",
-          "subject": "storm",
-          "visible_cue": "cloud tops"
-        },
-        "risks": [],
-        "score": 97,
-        "search_intent": {
-          "description_line": "This Short explains the visible cloud tops behind Storm in a fast nature science story.",
-          "series": "Planet Earth",
-          "subject": "storm",
-          "terms": [
-            "storm",
-            "cloud tops",
-            "earth_from_space",
-            "earth engine"
-          ],
-          "title_variant": "Storm cloud tops explained fast",
-          "visible_cue": "cloud tops"
-        },
-        "selected_variant": {
-          "hook": "Storm clouds show where a storm is feeding",
-          "score": 81,
-          "thumbnail_text": "STORM ENGINE",
-          "title": "Storm clouds reveal a storm's heat engine"
-        },
-        "series": "Planet Earth #2",
-        "series_identity": {
-          "continuity_prompt": "Next in Planet Earth: compare this with another force of nature.",
-          "episode": 2,
-          "label": "Planet Earth #2",
-          "series": "Planet Earth"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "STORM ENGINE",
-          "CLOUD SPIRAL",
-          "WATCH CLOUD SPIRAL",
-          "STORM CLOUDS COVERED",
-          "CLOUD SPIRAL MATTERS",
-          "CLOUD SPIRAL FIRST",
-          "CLOUD SPIRAL REVEAL",
-          "CLOUD SPIRAL CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Storm clouds reveal a storm's heat engine",
-          "Storm clouds reveal weather from above the clouds",
-          "Storm clouds use cloud spiral before they covered",
-          "This cloud spiral gives storm clouds away",
-          "Storm clouds reveal the answer with cloud spiral",
-          "The cloud spiral that changes the moment",
-          "Storm clouds show the hidden answer in seconds",
-          "Storm clouds: watch this cloud spiral"
-        ],
-        "top_variants": [
-          {
-            "hook": "Storm clouds show where a storm is feeding",
-            "score": 81,
-            "thumbnail_text": "STORM ENGINE",
-            "title": "Storm clouds reveal a storm's heat engine"
-          },
-          {
-            "hook": "Storm clouds look different when seen from above",
-            "score": 80,
-            "thumbnail_text": "STORM ENGINE",
-            "title": "Storm clouds reveal a storm's heat engine"
-          },
-          {
-            "hook": "Watch the cloud spiral; it explains the behavior",
-            "score": 80,
-            "thumbnail_text": "STORM ENGINE",
-            "title": "Storm clouds reveal a storm's heat engine"
-          },
-          {
-            "hook": "Storm clouds show where a storm is feeding",
-            "score": 74,
-            "thumbnail_text": "CLOUD SPIRAL",
-            "title": "Storm clouds reveal a storm's heat engine"
-          },
-          {
-            "hook": "Storm clouds show where a storm is feeding",
-            "score": 74,
-            "thumbnail_text": "WATCH CLOUD SPIRAL",
-            "title": "Storm clouds reveal a storm's heat engine"
-          },
-          {
-            "hook": "Storm clouds show where a storm is feeding",
-            "score": 74,
-            "thumbnail_text": "STORM CLOUDS COVERED",
-            "title": "Storm clouds reveal a storm's heat engine"
-          },
-          {
-            "hook": "Storm clouds show where a storm is feeding",
-            "score": 74,
-            "thumbnail_text": "CLOUD SPIRAL MATTERS",
-            "title": "Storm clouds reveal a storm's heat engine"
-          },
-          {
-            "hook": "Storm clouds look different when seen from above",
-            "score": 73,
-            "thumbnail_text": "CLOUD SPIRAL",
-            "title": "Storm clouds reveal a storm's heat engine"
-          },
-          {
-            "hook": "Watch the cloud spiral; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "CLOUD SPIRAL",
-            "title": "Storm clouds reveal a storm's heat engine"
-          },
-          {
-            "hook": "Storm clouds look different when seen from above",
-            "score": 73,
-            "thumbnail_text": "WATCH CLOUD SPIRAL",
-            "title": "Storm clouds reveal a storm's heat engine"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
-      "id": "677b330e4980e87d",
-      "title": "Rock layers preserve the history of water",
-      "category": "geology",
-      "publish_score": {
-        "approved": true,
-        "category": "geology",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 86,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "pattern",
-            "rock",
-            "stripe"
-          ],
-          "cue_terms": [
-            "pattern",
-            "rock",
-            "stripe",
-            "timeline"
-          ],
-          "frame_hook_bridge": [
-            "rock"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "rock"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 64,
-          "signals": {
-            "comment_potential": 46,
-            "educational_potential": 66,
-            "emotional_potential": 35,
-            "novelty": 69,
-            "replay_potential": 60,
-            "viral_potential": 62,
-            "visual_potential": 89
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 74
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "earth_engine",
-        "subscriber_conversion": {
-          "comment_probability": 0.207,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.242,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 79,
-          "state": "strong",
-          "subscriber_probability": 0.113
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-07-05T10:38:23.453005+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling",
-          "editor_in_chief:subject repeated inside 3-day cooldown"
-        ],
-        "score": 64.0,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 64.0,
-      "youtube_brain": {
-        "animal": "rock",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "pattern",
-            "rock",
-            "stripe"
-          ],
-          "cue_terms": [
-            "pattern",
-            "rock",
-            "stripe",
-            "timeline"
-          ],
-          "frame_hook_bridge": [
-            "rock"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "rock"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "earth_engine",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "rock",
-        "viewer_promise": "See why this rock earth engine matters."
-      },
-      "packaging": {
-        "community_prompt": "Which rock clue should Wild Brief compare next in Earth Engine?",
-        "cta_prompt": "Want to understand the planet under your feet?",
-        "curiosity_gap": {
-          "hook": "Watch the rock timeline; it explains why this rock changes.",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "earth engine",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 54,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {}
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "pattern",
-              "rock",
-              "stripe"
-            ],
-            "cue_terms": [
-              "pattern",
-              "rock",
-              "stripe",
-              "timeline"
-            ],
-            "frame_hook_bridge": [
-              "rock"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "rock"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Rock layers are time stamps made of stone",
-          "Rock layers preserve the history of water",
-          "Watch the rock layers; it explains the behavior",
-          "Start with the rock layer; it changes the scene",
-          "The rock layer is the detail most people miss"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "rock timeline",
-          "ending_line": "Which rock clue should we decode next?",
-          "final_line": "Now the rock timeline at the start makes sense.",
-          "loop_score": 0.948,
-          "opening_line": "Rock layers preserve the history of water.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "rock timeline",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.948,
-        "next_episode_question": "Tomorrow in Earth Engine: another nature signal. Does this make Earth feel stable or constantly moving?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "pattern",
-            "rock",
-            "stripe"
-          ],
-          "cue_terms": [
-            "pattern",
-            "rock",
-            "stripe",
-            "timeline"
-          ],
-          "frame_hook_bridge": [
-            "rock"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "rock"
-        },
-        "pinned_comment": "Watch the rock layers again. Tomorrow in Earth Engine: another nature signal. Does this make Earth feel stable or constantly moving?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.27,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 15,
-          "first_2s_narration": "Rock layers preserve the history of water Watch the stripe pattern first",
-          "first_frame_text": "ROCK TIMELINE",
-          "first_frame_text_words": 2,
-          "hook": "Rock layers preserve the history of water.",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.948,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "pattern",
-              "rock",
-              "stripe"
-            ],
-            "cue_terms": [
-              "pattern",
-              "rock",
-              "stripe",
-              "timeline"
-            ],
-            "frame_hook_bridge": [
-              "rock"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "rock"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the rock layers, so viewers rewatch the rock clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 74
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Rock layers preserve the history of water Watch the stripe pattern first",
-          "first_frame_text": "ROCK TIMELINE",
-          "next_episode_question": "Tomorrow in Earth Engine: another nature signal. Does this make Earth feel stable or constantly moving?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains the visible rock layers behind Rock in a fast nature science story.",
-            "series": "Earth Engine",
-            "subject": "rock",
-            "terms": [
-              "rock",
-              "rock layers",
-              "geology",
-              "earth engine"
-            ],
-            "title_variant": "Rock rock layers explained fast",
-            "visible_cue": "rock layers"
-          },
-          "series": "Earth Engine",
-          "subject": "rock",
-          "visible_cue": "rock layers"
-        },
-        "risks": [],
-        "score": 96,
-        "search_intent": {
-          "description_line": "This Short explains the visible rock layers behind Rock in a fast nature science story.",
-          "series": "Earth Engine",
-          "subject": "rock",
-          "terms": [
-            "rock",
-            "rock layers",
-            "geology",
-            "earth engine"
-          ],
-          "title_variant": "Rock rock layers explained fast",
-          "visible_cue": "rock layers"
-        },
-        "selected_variant": {
-          "hook": "Rock layers are time stamps made of stone",
-          "score": 80,
-          "thumbnail_text": "ROCK TIME",
-          "title": "Rock layers store ancient environments in stripes"
-        },
-        "series": "Earth Engine #7",
-        "series_identity": {
-          "continuity_prompt": "Next in Earth Engine: compare this with another force of nature.",
-          "episode": 7,
-          "label": "Earth Engine #7",
-          "series": "Earth Engine"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.207,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.242,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 79,
-          "state": "strong",
-          "subscriber_probability": 0.113
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "ROCK TIME",
-          "ROCK LAYER",
-          "WATCH ROCK LAYER",
-          "ROCK LAYERS CHANGE",
-          "ROCK LAYER MATTERS",
-          "ROCK LAYER FIRST",
-          "ROCK LAYER REVEAL",
-          "ROCK LAYER CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Rock layers store ancient environments in stripes",
-          "Rock layers preserve the history of water",
-          "Rock layers use rock layers before they change",
-          "This rock layer gives rock layers away",
-          "Rock layers reveal the answer with rock layers",
-          "The rock layer that changes the moment",
-          "Rock layers show the hidden answer in seconds",
-          "Rock layers: watch this rock layer"
-        ],
-        "top_variants": [
-          {
-            "hook": "Rock layers are time stamps made of stone",
-            "score": 80,
-            "thumbnail_text": "ROCK TIME",
-            "title": "Rock layers store ancient environments in stripes"
-          },
-          {
-            "hook": "Rock layers preserve the history of water",
-            "score": 80,
-            "thumbnail_text": "ROCK TIME",
-            "title": "Rock layers store ancient environments in stripes"
-          },
-          {
-            "hook": "Watch the rock layers; it explains the behavior",
-            "score": 80,
-            "thumbnail_text": "ROCK TIME",
-            "title": "Rock layers store ancient environments in stripes"
-          },
-          {
-            "hook": "Rock layers are time stamps made of stone",
-            "score": 74,
-            "thumbnail_text": "ROCK LAYERS CHANGE",
-            "title": "Rock layers store ancient environments in stripes"
-          },
-          {
-            "hook": "Rock layers preserve the history of water",
-            "score": 74,
-            "thumbnail_text": "ROCK LAYERS CHANGE",
-            "title": "Rock layers store ancient environments in stripes"
-          },
-          {
-            "hook": "Watch the rock layers; it explains the behavior",
-            "score": 74,
-            "thumbnail_text": "ROCK LAYERS CHANGE",
-            "title": "Rock layers store ancient environments in stripes"
-          },
-          {
-            "hook": "Rock layers are time stamps made of stone",
-            "score": 73,
-            "thumbnail_text": "ROCK LAYER",
-            "title": "Rock layers store ancient environments in stripes"
-          },
-          {
-            "hook": "Rock layers preserve the history of water",
-            "score": 73,
-            "thumbnail_text": "ROCK LAYER",
-            "title": "Rock layers store ancient environments in stripes"
-          },
-          {
-            "hook": "Watch the rock layers; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "ROCK LAYER",
-            "title": "Rock layers store ancient environments in stripes"
-          },
-          {
-            "hook": "Rock layers are time stamps made of stone",
-            "score": 73,
-            "thumbnail_text": "WATCH ROCK LAYER",
             "title": "Rock layers store ancient environments in stripes"
           }
         ]
