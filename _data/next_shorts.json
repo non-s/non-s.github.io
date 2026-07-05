@@ -1112,7 +1112,7 @@
     },
     "counts": {
       "recovery": 2,
-      "evergreen": 23
+      "evergreen": 24
     },
     "items": [
       {
@@ -1121,7 +1121,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 50.58
+        "freshness_score": 50.56
       },
       {
         "id": "008cd80bfc76cc82",
@@ -1138,6 +1138,14 @@
         "lane": "evergreen",
         "adjustment": 5.0,
         "freshness_score": 53.84
+      },
+      {
+        "id": "1c71e6782da2e335",
+        "title": "Rivers carve bends by stealing from one bank",
+        "category": "rivers",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       },
       {
         "id": "1e1fd2bf8c255b87",
@@ -1185,7 +1193,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 50.8
+        "freshness_score": 50.78
       },
       {
         "id": "677b330e4980e87d",
@@ -1217,7 +1225,7 @@
         "category": "nocturnal",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 42.32
+        "freshness_score": 42.3
       },
       {
         "id": "33dd6bb0aeba20be",
@@ -1257,7 +1265,7 @@
         "category": "space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.9
+        "freshness_score": 54.88
       },
       {
         "id": "d5905286e8a38b10",
@@ -1265,7 +1273,7 @@
         "category": "ocean",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.26
+        "freshness_score": 52.24
       },
       {
         "id": "85e7eed92eb218a8",
@@ -1313,7 +1321,7 @@
         "category": "conservation",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.18
+        "freshness_score": 52.16
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -1395,19 +1403,20 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 25,
-    "pending_after": 25,
+    "pending_before": 26,
+    "pending_after": 26,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 3,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 25,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 21,
+      "objective_gate:bootstrap_observe_before_scaling": 26,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 22,
       "editor_in_chief:script quality gate blocked the narration": 4,
       "editorial_cooldown_supply_fallback": 4,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
       "editor_in_chief:editorial score 40 is below 62": 3,
       "editor_in_chief:editorial score 46 is below 62": 3,
+      "editor_in_chief:editorial score 61 is below 62": 1,
       "editor_in_chief:editorial score 49 is below 62": 1
     }
   }
