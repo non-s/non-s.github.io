@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 3,
+    "analytics_due": 4,
     "awaiting_1h": 1,
     "high_priority": 4,
-    "repair_candidates": 1,
+    "repair_candidates": 0,
     "tracked": 10
   },
-  "generated_at": "2026-07-05T12:46:22.378179+00:00",
+  "generated_at": "2026-07-05T12:52:00.429987+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.312,
+      "age_hours": 0.406,
       "category": "birds",
       "checkpoints": [
         {
@@ -70,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.386,
+      "age_hours": 1.48,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -125,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.273,
+      "age_hours": 2.366,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.375,
+      "age_hours": 3.469,
       "category": "farm",
       "checkpoints": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.503,
+      "age_hours": 4.596,
       "category": "farm",
       "checkpoints": [
         {
@@ -290,7 +290,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.944,
+      "age_hours": 5.038,
       "category": "farm",
       "checkpoints": [
         {
@@ -344,16 +344,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 7.624,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 7.717,
       "category": "farm",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-05T06:08:57.723777+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -377,41 +377,30 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-06T05:08:57.723777+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-05T06:08:57.723777+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "overdue",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Farmyard Surprises",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Chickens keep their view steady while walking",
       "uploaded_at": "2026-07-05T05:08:57.723777+00:00",
       "url": "https://www.youtube.com/shorts/GI3IcTd0TsE",
       "video_id": "GI3IcTd0TsE",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Chickens keep their view steady while walking",
-        "video_id": "GI3IcTd0TsE",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.393,
+      "age_hours": 8.486,
       "category": "weather",
       "checkpoints": [
         {
@@ -466,7 +455,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 20.486,
+      "age_hours": 20.579,
       "category": "forests",
       "checkpoints": [
         {
@@ -521,7 +510,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 21.349,
+      "age_hours": 21.443,
       "category": "forests",
       "checkpoints": [
         {
