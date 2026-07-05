@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-05T15:42:38.991266+00:00",
+  "generated_at": "2026-07-05T16:24:46.451502+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
   "overall_progress_pct": 34.3,
@@ -22,7 +22,7 @@
       "top_blockers": [
         {
           "id": "objective_gate:bootstrap_observe_before_scaling",
-          "count": 58,
+          "count": 54,
           "operator_translation": "collect more observed signal before scaling this pattern"
         },
         {
@@ -32,12 +32,12 @@
         },
         {
           "id": "queue_prune:rewrite",
-          "count": 23,
+          "count": 21,
           "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
           "id": "editor_in_chief:cooldown_subject",
-          "count": 21,
+          "count": 19,
           "operator_translation": "pick a fresh subject inside the same lane"
         },
         {
@@ -82,14 +82,14 @@
   "metrics": {
     "health_score": 82,
     "health_state": "watch",
-    "pending": 29,
+    "pending": 27,
     "operational_publish_ready": 6,
     "apparent_publish_ready": 6,
     "eligible_count": 6,
     "scale_ready_count": 0,
     "next_shorts_count": 6,
-    "editorial_candidate_count": 29,
-    "published_count": 59,
+    "editorial_candidate_count": 27,
+    "published_count": 60,
     "views_28d": 30314,
     "total_subscribers": 46,
     "subs_per_1000_views": 1.221,
@@ -98,12 +98,12 @@
     "recurring_viewer_rate": 0.001,
     "youtube_search_view_rate": 0.017,
     "crosspost_assets": 10,
-    "comments_sampled": 11
+    "comments_sampled": 12
   },
   "top_blockers": [
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
-      "count": 58,
+      "count": 54,
       "operator_translation": "collect more observed signal before scaling this pattern"
     },
     {
@@ -113,12 +113,12 @@
     },
     {
       "id": "queue_prune:rewrite",
-      "count": 23,
+      "count": 21,
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
       "id": "editor_in_chief:cooldown_subject",
-      "count": 21,
+      "count": 19,
       "operator_translation": "pick a fresh subject inside the same lane"
     },
     {
@@ -147,6 +147,11 @@
       "operator_translation": "editor in chief:editorial score 40 is below 62"
     },
     {
+      "id": "editorial_cooldown_supply_fallback",
+      "count": 4,
+      "operator_translation": "editorial cooldown supply fallback"
+    },
+    {
       "id": "packaging:missing_action_word",
       "count": 3,
       "operator_translation": "packaging:missing action word"
@@ -155,11 +160,6 @@
       "id": "editor_in_chief:editorial score 42 is below 62",
       "count": 2,
       "operator_translation": "editor in chief:editorial score 42 is below 62"
-    },
-    {
-      "id": "editor_in_chief:editorial score 49 is below 62",
-      "count": 2,
-      "operator_translation": "editor in chief:editorial score 49 is below 62"
     }
   ],
   "levels": [
@@ -172,7 +172,7 @@
       "status": "cleared",
       "progress_pct": 100.0,
       "evidence": {
-        "published_count": 59,
+        "published_count": 60,
         "health_score": 82
       }
     },
@@ -187,7 +187,7 @@
       "evidence": {
         "operational_publish_ready": 6,
         "eligible_count": 6,
-        "pending": 29,
+        "pending": 27,
         "target_publish_ready": 6,
         "target_pending": 20
       }
@@ -212,10 +212,10 @@
       "unlock": "Recurring viewer rate reaches 2% and audience comments keep producing usable prompts.",
       "revenue_job": "Build an audience identity instead of isolated viral posts.",
       "status": "locked",
-      "progress_pct": 30.0,
+      "progress_pct": 32.5,
       "evidence": {
         "recurring_viewer_rate": 0.001,
-        "comments_sampled": 11
+        "comments_sampled": 12
       }
     },
     {
