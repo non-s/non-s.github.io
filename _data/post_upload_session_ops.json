@@ -3,17 +3,17 @@
   "fresh_upload_actions": {
     "counts": {
       "automation_safe": 8,
-      "high": 2,
+      "high": 3,
       "manual_review": 2,
       "total": 10,
       "urgent": 3
     },
     "free_only": true,
-    "generated_at": "2026-07-05T11:50:25.062934+00:00",
+    "generated_at": "2026-07-05T12:27:08.593298+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 21.687,
+        "age_hours": 22.299,
         "automation_safe": true,
         "category": "trees",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 20.417,
+        "age_hours": 21.029,
         "automation_safe": true,
         "category": "forests",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 19.553,
+        "age_hours": 20.165,
         "automation_safe": true,
         "category": "forests",
         "checkpoint_label": "1h",
@@ -90,8 +90,34 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 1.066,
+        "automation_safe": true,
+        "category": "earth_from_space",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "due",
+        "current_views": 0,
+        "due_at": "2026-07-05T12:23:11.327013+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:OQM9BmE7oAA:analytics_due:1h",
+        "lane": "measurement",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "high",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
+        "series": "Planet Earth",
+        "state": "analytics_due",
+        "target_views": 24,
+        "title": "Storm clouds trace wind bands over the ocean",
+        "url": "https://www.youtube.com/shorts/OQM9BmE7oAA",
+        "video_id": "OQM9BmE7oAA",
+        "wait_until": "",
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
+      },
+      {
         "action_type": "prepare_package_rescue",
-        "age_hours": 7.46,
+        "age_hours": 8.072,
         "automation_safe": false,
         "category": "weather",
         "checkpoint_label": "24h",
@@ -117,7 +143,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 6.691,
+        "age_hours": 7.303,
         "automation_safe": false,
         "category": "farm",
         "checkpoint_label": "24h",
@@ -142,34 +168,8 @@
         "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
-        "action_type": "hold_until_first_hour",
-        "age_hours": 0.454,
-        "automation_safe": true,
-        "category": "earth_from_space",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "pending",
-        "current_views": 0,
-        "due_at": "2026-07-05T12:23:11.327013+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:OQM9BmE7oAA:awaiting_1h:1h",
-        "lane": "observe",
-        "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "series": "Planet Earth",
-        "state": "awaiting_1h",
-        "target_views": 24,
-        "title": "Storm clouds trace wind bands over the ocean",
-        "url": "https://www.youtube.com/shorts/OQM9BmE7oAA",
-        "video_id": "OQM9BmE7oAA",
-        "wait_until": "2026-07-05T12:23:11.327013+00:00",
-        "why": "The upload is still inside the no-panic observation window."
-      },
-      {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 4.012,
+        "age_hours": 4.624,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "6h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.57,
+        "age_hours": 4.182,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "6h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.443,
+        "age_hours": 3.055,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "6h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 1.34,
+        "age_hours": 1.952,
         "automation_safe": true,
         "category": "nocturnal",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-05T11:50:25.061568+00:00"
+    "source_generated_at": "2026-07-05T12:27:08.592179+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,25 +282,25 @@
       24
     ],
     "counts": {
-      "analytics_due": 3,
-      "awaiting_1h": 1,
-      "high_priority": 5,
+      "analytics_due": 4,
+      "awaiting_1h": 0,
+      "high_priority": 6,
       "repair_candidates": 2,
       "tracked": 10
     },
-    "generated_at": "2026-07-05T11:50:25.061568+00:00",
+    "generated_at": "2026-07-05T12:27:08.592179+00:00",
     "items": [
       {
-        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.454,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 1.066,
         "category": "earth_from_space",
         "checkpoints": [
           {
-            "delta_to_target": 0,
+            "delta_to_target": -24,
             "due_at": "2026-07-05T12:23:11.327013+00:00",
             "label": "1h",
             "source": "estimated",
-            "state": "pending",
+            "state": "due",
             "target_views": 24,
             "views": 0
           },
@@ -324,21 +324,21 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-05T12:23:11.327013+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 24,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Planet Earth",
-        "state": "awaiting_1h",
+        "state": "analytics_due",
         "title": "Storm clouds trace wind bands over the ocean",
         "uploaded_at": "2026-07-05T11:23:11.327013+00:00",
         "url": "https://www.youtube.com/shorts/OQM9BmE7oAA",
@@ -347,7 +347,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 1.34,
+        "age_hours": 1.952,
         "category": "nocturnal",
         "checkpoints": [
           {
@@ -402,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.443,
+        "age_hours": 3.055,
         "category": "farm",
         "checkpoints": [
           {
@@ -457,7 +457,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.57,
+        "age_hours": 4.182,
         "category": "farm",
         "checkpoints": [
           {
@@ -512,7 +512,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 4.012,
+        "age_hours": 4.624,
         "category": "farm",
         "checkpoints": [
           {
@@ -567,7 +567,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 6.691,
+        "age_hours": 7.303,
         "category": "farm",
         "checkpoints": [
           {
@@ -633,7 +633,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 7.46,
+        "age_hours": 8.072,
         "category": "weather",
         "checkpoints": [
           {
@@ -699,7 +699,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 19.553,
+        "age_hours": 20.165,
         "category": "forests",
         "checkpoints": [
           {
@@ -754,7 +754,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 20.417,
+        "age_hours": 21.029,
         "category": "forests",
         "checkpoints": [
           {
@@ -817,7 +817,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 21.687,
+        "age_hours": 22.299,
         "category": "trees",
         "checkpoints": [
           {
@@ -878,7 +878,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-05T11:50:25.063032+00:00",
+  "generated_at": "2026-07-05T12:27:08.593372+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
