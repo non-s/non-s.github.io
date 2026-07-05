@@ -1,36 +1,41 @@
 {
   "state": "migration_needed",
-  "pressure_score": 86,
+  "pressure_score": 93,
   "metrics": {
-    "live_state_files": 179,
-    "data_state_files": 126,
+    "live_state_files": 265,
+    "data_state_files": 213,
     "video_done_markers": 50,
-    "live_state_bytes": 9608676,
-    "stories_queue_bytes": 2958910,
-    "stories_queue_lines": 82776,
+    "live_state_bytes": 13790280,
+    "stories_queue_bytes": 3002596,
+    "stories_queue_lines": 0,
     "workflow_files": 18,
     "state_path_refs": 282
   },
   "largest_state_files": [
     {
       "path": "_data/stories_queue.json",
-      "bytes": 2958910,
-      "lines": 82776
+      "bytes": 3002596,
+      "lines": 0
     },
     {
       "path": "_data/rejected_queue.jsonl",
-      "bytes": 800993,
-      "lines": 1000
+      "bytes": 2303647,
+      "lines": 2875
+    },
+    {
+      "path": "_data/repair_queue.jsonl",
+      "bytes": 1611087,
+      "lines": 92
     },
     {
       "path": "_data/early_performance.json",
-      "bytes": 460767,
-      "lines": 17850
+      "bytes": 461148,
+      "lines": 17866
     },
     {
       "path": "_data/queue_audit.json",
-      "bytes": 444346,
-      "lines": 13165
+      "bytes": 444315,
+      "lines": 13164
     },
     {
       "path": "_data/packaging_report.json",
@@ -39,13 +44,13 @@
     },
     {
       "path": "_data/provider_stats.jsonl",
-      "bytes": 292395,
-      "lines": 3762
+      "bytes": 293950,
+      "lines": 3782
     },
     {
       "path": "_data/autonomous_growth_plan.json",
-      "bytes": 226817,
-      "lines": 6260
+      "bytes": 226781,
+      "lines": 6259
     },
     {
       "path": "_data/dry_run_publish.json",
@@ -54,8 +59,8 @@
     },
     {
       "path": "_data/analytics/api_quota_ledger.jsonl",
-      "bytes": 211469,
-      "lines": 323
+      "bytes": 212707,
+      "lines": 325
     },
     {
       "path": "_data/publish_slot_decisions.jsonl",
@@ -66,11 +71,6 @@
       "path": "_data/originality_pack.jsonl",
       "bytes": 122876,
       "lines": 170
-    },
-    {
-      "path": "_data/youtube_brain_report.json",
-      "bytes": 115539,
-      "lines": 3908
     }
   ],
   "migration_lanes": [
