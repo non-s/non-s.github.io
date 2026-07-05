@@ -5,25 +5,80 @@
     24
   ],
   "counts": {
-    "analytics_due": 3,
+    "analytics_due": 2,
     "awaiting_1h": 1,
     "high_priority": 4,
-    "repair_candidates": 1,
+    "repair_candidates": 2,
     "tracked": 10
   },
-  "generated_at": "2026-07-05T18:35:09.075373+00:00",
+  "generated_at": "2026-07-05T19:44:59.432379+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.301,
-      "category": "rivers",
+      "age_hours": 0.042,
+      "category": "ocean",
       "checkpoints": [
         {
           "delta_to_target": 0,
-          "due_at": "2026-07-05T19:17:04.262059+00:00",
+          "due_at": "2026-07-05T20:42:29.615977+00:00",
           "label": "1h",
           "source": "estimated",
           "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-06T01:42:29.615977+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-06T19:42:29.615977+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-05T20:42:29.615977+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 94.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Ocean Mysteries",
+      "state": "awaiting_1h",
+      "title": "Dolphins use signature whistles like names",
+      "uploaded_at": "2026-07-05T19:42:29.615977+00:00",
+      "url": "https://www.youtube.com/shorts/iMu5K1YL2Bo",
+      "video_id": "iMu5K1YL2Bo",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 1.465,
+      "category": "rivers",
+      "checkpoints": [
+        {
+          "delta_to_target": -24,
+          "due_at": "2026-07-05T19:17:04.262059+00:00",
+          "label": "1h",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-05T19:17:04.262059+00:00",
-        "label": "1h",
+        "due_at": "2026-07-06T00:17:04.262059+00:00",
+        "label": "6h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 24,
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "low",
       "series": "Earth Engine",
-      "state": "awaiting_1h",
+      "state": "watch",
       "title": "Rivers sort sediment while they bend",
       "uploaded_at": "2026-07-05T18:17:04.262059+00:00",
       "url": "https://www.youtube.com/shorts/CV5SwGiSehk",
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.132,
+      "age_hours": 2.296,
       "category": "plants",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.235,
+      "age_hours": 3.399,
       "category": "dogs",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.489,
+      "age_hours": 4.653,
       "category": "geology",
       "checkpoints": [
         {
@@ -235,7 +290,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.495,
+      "age_hours": 5.659,
       "category": "farm",
       "checkpoints": [
         {
@@ -289,8 +344,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.452,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.616,
       "category": "farm",
       "checkpoints": [
         {
@@ -303,11 +358,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-07-05T19:08:03.101276+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -322,30 +377,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-05T19:08:03.101276+00:00",
-        "label": "6h",
+        "due_at": "2026-07-06T13:08:03.101276+00:00",
+        "label": "24h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 105,
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Farmyard Surprises",
-      "state": "watch",
+      "state": "repair_candidate",
       "title": "Horses remember familiar faces for months",
       "uploaded_at": "2026-07-05T13:08:03.101276+00:00",
       "url": "https://www.youtube.com/shorts/dKi3CHsrfXQ",
       "video_id": "dKi3CHsrfXQ",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Horses remember familiar faces for months",
+        "video_id": "dKi3CHsrfXQ",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.125,
+      "age_hours": 7.289,
       "category": "birds",
       "checkpoints": [
         {
@@ -411,7 +477,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 7.199,
+      "age_hours": 8.363,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -466,7 +532,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.086,
+      "age_hours": 9.25,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -517,61 +583,6 @@
       "uploaded_at": "2026-07-05T10:30:01.173083+00:00",
       "url": "https://www.youtube.com/shorts/7O3KvRmWSls",
       "video_id": "7O3KvRmWSls",
-      "views_per_hour": 0.0
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.188,
-      "category": "farm",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-05T10:23:51.670418+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-05T15:23:51.670418+00:00",
-          "label": "6h",
-          "source": "observed",
-          "state": "observed",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-07-06T09:23:51.670418+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-05T10:23:51.670418+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 90.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Farmyard Surprises",
-      "state": "analytics_due",
-      "title": "Sheep can remember familiar faces",
-      "uploaded_at": "2026-07-05T09:23:51.670418+00:00",
-      "url": "https://www.youtube.com/shorts/3OjudRl2yHc",
-      "video_id": "3OjudRl2yHc",
       "views_per_hour": 0.0
     }
   ],
