@@ -5,17 +5,72 @@
     24
   ],
   "counts": {
-    "analytics_due": 4,
-    "awaiting_1h": 1,
+    "analytics_due": 3,
+    "awaiting_1h": 2,
     "high_priority": 5,
-    "repair_candidates": 1,
+    "repair_candidates": 2,
     "tracked": 10
   },
-  "generated_at": "2026-07-05T10:42:15.691112+00:00",
+  "generated_at": "2026-07-05T11:25:51.112186+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.204,
+      "age_hours": 0.044,
+      "category": "earth_from_space",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-05T12:23:11.327013+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-05T17:23:11.327013+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-06T11:23:11.327013+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-05T12:23:11.327013+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Planet Earth",
+      "state": "awaiting_1h",
+      "title": "Storm clouds trace wind bands over the ocean",
+      "uploaded_at": "2026-07-05T11:23:11.327013+00:00",
+      "url": "https://www.youtube.com/shorts/OQM9BmE7oAA",
+      "video_id": "OQM9BmE7oAA",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.931,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.307,
+      "age_hours": 2.033,
       "category": "farm",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.434,
+      "age_hours": 3.16,
       "category": "farm",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.876,
+      "age_hours": 3.602,
       "category": "farm",
       "checkpoints": [
         {
@@ -234,8 +289,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.555,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.281,
       "category": "farm",
       "checkpoints": [
         {
@@ -248,11 +303,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-07-05T11:08:57.723777+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -267,30 +322,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-05T11:08:57.723777+00:00",
-        "label": "6h",
+        "due_at": "2026-07-06T05:08:57.723777+00:00",
+        "label": "24h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 105,
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Farmyard Surprises",
-      "state": "watch",
+      "state": "repair_candidate",
       "title": "Chickens keep their view steady while walking",
       "uploaded_at": "2026-07-05T05:08:57.723777+00:00",
       "url": "https://www.youtube.com/shorts/GI3IcTd0TsE",
       "video_id": "GI3IcTd0TsE",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Chickens keep their view steady while walking",
+        "video_id": "GI3IcTd0TsE",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.324,
+      "age_hours": 7.05,
       "category": "weather",
       "checkpoints": [
         {
@@ -356,7 +422,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 18.417,
+      "age_hours": 19.144,
       "category": "forests",
       "checkpoints": [
         {
@@ -411,7 +477,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 19.281,
+      "age_hours": 20.007,
       "category": "forests",
       "checkpoints": [
         {
@@ -474,7 +540,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 20.551,
+      "age_hours": 21.278,
       "category": "trees",
       "checkpoints": [
         {
@@ -525,61 +591,6 @@
       "uploaded_at": "2026-07-04T14:09:11.619217+00:00",
       "url": "https://www.youtube.com/shorts/3hQL89pNw-w",
       "video_id": "3hQL89pNw-w",
-      "views_per_hour": 0.0
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 22.656,
-      "category": "forests",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-04T13:02:52.438702+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-04T18:02:52.438702+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-07-05T12:02:52.438702+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-04T13:02:52.438702+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Hidden Network",
-      "state": "analytics_due",
-      "title": "Foxes can hunt sounds hidden under snow",
-      "uploaded_at": "2026-07-04T12:02:52.438702+00:00",
-      "url": "https://www.youtube.com/shorts/4ipg2QQhpaw",
-      "video_id": "4ipg2QQhpaw",
       "views_per_hour": 0.0
     }
   ],
