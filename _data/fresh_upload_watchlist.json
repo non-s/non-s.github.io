@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 3,
-    "awaiting_1h": 2,
-    "high_priority": 3,
+    "analytics_due": 5,
+    "awaiting_1h": 1,
+    "high_priority": 5,
     "repair_candidates": 0,
     "tracked": 10
   },
-  "generated_at": "2026-07-05T18:24:19.367702+00:00",
+  "generated_at": "2026-07-05T18:28:11.614055+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.121,
+      "age_hours": 0.185,
       "category": "rivers",
       "checkpoints": [
         {
@@ -69,16 +69,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.951,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 1.016,
       "category": "plants",
       "checkpoints": [
         {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-05T18:27:15.557275+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 24,
           "views": 0
         },
@@ -102,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -24,
         "due_at": "2026-07-05T18:27:15.557275+00:00",
         "label": "1h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Biology Brief",
-      "state": "awaiting_1h",
+      "state": "analytics_due",
       "title": "Butterflies taste flowers with their feet",
       "uploaded_at": "2026-07-05T17:27:15.557275+00:00",
       "url": "https://www.youtube.com/shorts/IY8YMvgIVpA",
@@ -125,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.054,
+      "age_hours": 2.119,
       "category": "dogs",
       "checkpoints": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.308,
+      "age_hours": 3.373,
       "category": "geology",
       "checkpoints": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.315,
+      "age_hours": 4.379,
       "category": "farm",
       "checkpoints": [
         {
@@ -290,7 +290,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.271,
+      "age_hours": 5.336,
       "category": "farm",
       "checkpoints": [
         {
@@ -344,8 +344,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.945,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 6.009,
       "category": "birds",
       "checkpoints": [
         {
@@ -358,11 +358,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-07-05T18:27:37.465211+00:00",
           "label": "6h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 105,
           "views": 0
         },
@@ -377,21 +377,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -105,
         "due_at": "2026-07-05T18:27:37.465211+00:00",
         "label": "6h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 96.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Sky Intelligence",
-      "state": "watch",
+      "state": "analytics_due",
       "title": "Penguins trap air bubbles under feathers",
       "uploaded_at": "2026-07-05T12:27:37.465211+00:00",
       "url": "https://www.youtube.com/shorts/_T9c2aLvR5U",
@@ -400,7 +400,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 7.019,
+      "age_hours": 7.083,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -455,7 +455,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 7.905,
+      "age_hours": 7.97,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -510,7 +510,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.008,
+      "age_hours": 9.072,
       "category": "farm",
       "checkpoints": [
         {
