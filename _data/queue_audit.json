@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-05T23:16:15.185353+00:00",
+  "generated_at": "2026-07-05T23:19:11.627446+00:00",
   "pending": 22,
   "states": {
     "rewrite": 18,
@@ -15,11 +15,11 @@
     "approved": 22
   },
   "prune_summary": {
-    "pending_before": 22,
+    "pending_before": 23,
     "pending_after": 22,
-    "rejected": 0,
+    "rejected": 1,
     "repair_needed": 0,
-    "repaired": 3,
+    "repaired": 4,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 22,
       "editor_in_chief:subject repeated inside 3-day cooldown": 19,
@@ -29,10 +29,23 @@
       "editor_in_chief:editorial score 46 is below 62": 3,
       "editorial_cooldown_supply_fallback": 2,
       "editor_in_chief:editorial score 49 is below 62": 1,
+      "copy_subject_mismatch": 1,
+      "duplicate_title": 1,
+      "duplicate_script": 1,
       "publish_ready_supply_reserve_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "4e4ef766c821b689",
+      "title": "Coral reefs are built by tiny living builders",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title",
+        "duplicate_script"
+      ],
+      "stage": "queue_prune_final"
+    },
     {
       "id": "8bdc8b70af521eb4",
       "title": "Fossils turn old bones into time clues",
@@ -61,6 +74,15 @@
         "editorial score is below publish threshold"
       ],
       "stage": "pre_publish_audit"
+    },
+    {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
     },
     {
       "id": "32e7c05ac406a760",
@@ -109,6 +131,15 @@
       "stage": "pre_publish_audit"
     },
     {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
       "id": "f582f8e1325addd3",
       "title": "Lightning turns air into a shock wave",
       "reasons": [
@@ -125,6 +156,15 @@
         "editorial score 39 is below 62"
       ],
       "stage": "editor_in_chief"
+    },
+    {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
     },
     {
       "id": "3b4a42f10f5dd99e",
@@ -203,6 +243,15 @@
       "stage": "editor_in_chief"
     },
     {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
       "id": "344b0e305f1df2f8",
       "title": "Rock layers show their timeline inside caves",
       "reasons": [
@@ -252,48 +301,6 @@
         "duplicate_title"
       ],
       "stage": "queue_prune_final"
-    },
-    {
-      "id": "68259fe28e1a9288",
-      "title": "Lightning turns air into a shock wave",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "5a6241904e5e32d2",
-      "title": "The moon keeps one face turned toward Earth",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "a5ab4ba02933dedf",
-      "title": "rainbow between the mountains isn't where you think",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "cb9c33f6f4d3c775",
-      "title": "Solar flares aren’t what you think they look like",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "f5e950f2a96a5b7c",
-      "title": "Forests make cooler air under the canopy",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -470,7 +477,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-05T23:15:51.802814+00:00",
+        "checked_at": "2026-07-05T23:18:50.497430+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1109,7 +1116,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T23:15:51.785990+00:00",
+        "checked_at": "2026-07-05T23:18:50.481881+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1763,7 +1770,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-05T23:15:51.805499+00:00",
+        "checked_at": "2026-07-05T23:18:50.500012+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -2407,7 +2414,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-05T23:15:51.807670+00:00",
+        "checked_at": "2026-07-05T23:18:50.501828+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -3042,7 +3049,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-05T23:15:51.810345+00:00",
+        "checked_at": "2026-07-05T23:18:50.504082+00:00",
         "mechanism_cluster": "electric_sense",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -3679,7 +3686,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T23:15:51.774540+00:00",
+        "checked_at": "2026-07-05T23:18:50.472563+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4321,7 +4328,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T23:15:51.777008+00:00",
+        "checked_at": "2026-07-05T23:18:50.473822+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4961,7 +4968,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T23:15:51.779575+00:00",
+        "checked_at": "2026-07-05T23:18:50.475987+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5604,7 +5611,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T23:15:51.783741+00:00",
+        "checked_at": "2026-07-05T23:18:50.479826+00:00",
         "mechanism_cluster": "visual_stabilization",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6246,7 +6253,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T23:15:51.790328+00:00",
+        "checked_at": "2026-07-05T23:18:50.485852+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6882,7 +6889,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T23:15:51.792545+00:00",
+        "checked_at": "2026-07-05T23:18:50.487828+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7530,7 +7537,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T23:15:51.794434+00:00",
+        "checked_at": "2026-07-05T23:18:50.489534+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8180,7 +8187,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T23:15:51.797112+00:00",
+        "checked_at": "2026-07-05T23:18:50.492227+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8837,7 +8844,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T23:15:51.798929+00:00",
+        "checked_at": "2026-07-05T23:18:50.493915+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9481,7 +9488,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T23:15:51.809313+00:00",
+        "checked_at": "2026-07-05T23:18:50.503205+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10124,7 +10131,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T23:15:51.811953+00:00",
+        "checked_at": "2026-07-05T23:18:50.505488+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10773,7 +10780,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T23:15:51.814104+00:00",
+        "checked_at": "2026-07-05T23:18:50.507458+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11422,7 +11429,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T23:15:51.781977+00:00",
+        "checked_at": "2026-07-05T23:18:50.478211+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12069,7 +12076,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T23:15:51.788159+00:00",
+        "checked_at": "2026-07-05T23:18:50.483972+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12701,7 +12708,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-05T23:15:51.800583+00:00",
+        "checked_at": "2026-07-05T23:18:50.495450+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
