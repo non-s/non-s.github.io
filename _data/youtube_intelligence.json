@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-07-05T05:11:17.113286+00:00",
+  "generated_at": "2026-07-05T06:54:39.883225+00:00",
   "window": {
     "start_date": "2026-06-08",
     "end_date": "2026-07-05"
   },
-  "coverage_score": 80,
+  "coverage_score": 40,
   "quota_strategy": [
     "Batch videos.list in groups of 50.",
     "Avoid search.list for routine automation because it is expensive and trend discovery already uses cheaper public sources.",
@@ -77,7 +77,7 @@
       "coverage": "implemented",
       "use": "Channel identity, uploads playlist, subscriber/view/video totals, branding/status audit.",
       "risk": "read_only",
-      "last_run": "ok"
+      "last_run": "attempted"
     },
     {
       "id": "uploaded_video_inventory",
@@ -86,7 +86,7 @@
       "coverage": "implemented",
       "use": "Compare YouTube uploads against local .done markers and detect missing local memory.",
       "risk": "read_only",
-      "last_run": "ok"
+      "last_run": "attempted"
     },
     {
       "id": "video_metadata_statistics",
@@ -95,7 +95,7 @@
       "coverage": "implemented",
       "use": "Public stats, title/description/tag/status/duration audit for every tracked Short.",
       "risk": "read_only",
-      "last_run": "ok"
+      "last_run": "attempted"
     },
     {
       "id": "comment_threads",
@@ -153,9 +153,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,likes,comments,shares,subscribersGained",
       "sort": "-views",
       "use": "Rank videos by growth, engagement, retention and subscriber conversion.",
-      "status": "ok",
+      "status": "not_authorized",
       "rows": 0,
-      "error": ""
+      "error": "yt-analytics.readonly scope missing"
     },
     {
       "id": "daily_channel",
@@ -163,9 +163,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
       "sort": "day",
       "use": "Daily pacing and anomaly detection.",
-      "status": "ok",
-      "rows": 25,
-      "error": ""
+      "status": "not_authorized",
+      "rows": 0,
+      "error": "yt-analytics.readonly scope missing"
     },
     {
       "id": "country",
@@ -173,9 +173,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
       "sort": "-views",
       "use": "Geo demand and publish timing hints.",
-      "status": "ok",
-      "rows": 19,
-      "error": ""
+      "status": "not_authorized",
+      "rows": 0,
+      "error": "yt-analytics.readonly scope missing"
     },
     {
       "id": "traffic_source",
@@ -183,9 +183,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Detect whether Shorts feed, search, browse, external or channel surfaces are driving growth.",
-      "status": "ok",
-      "rows": 9,
-      "error": ""
+      "status": "not_authorized",
+      "rows": 0,
+      "error": "yt-analytics.readonly scope missing"
     },
     {
       "id": "device_type",
@@ -193,9 +193,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Tune caption size, pacing and visual density for device mix.",
-      "status": "ok",
-      "rows": 4,
-      "error": ""
+      "status": "not_authorized",
+      "rows": 0,
+      "error": "yt-analytics.readonly scope missing"
     },
     {
       "id": "subscriber_status",
@@ -203,10 +203,12 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Separate existing subscriber behavior from discovery behavior.",
-      "status": "ok",
-      "rows": 2,
-      "error": ""
+      "status": "not_authorized",
+      "rows": 0,
+      "error": "yt-analytics.readonly scope missing"
     }
   ],
-  "issues": []
+  "issues": [
+    "youtube_analytics_scope_missing"
+  ]
 }
