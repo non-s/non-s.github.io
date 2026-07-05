@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 3,
+    "analytics_due": 4,
     "awaiting_1h": 1,
     "high_priority": 4,
-    "repair_candidates": 1,
+    "repair_candidates": 0,
     "tracked": 10
   },
-  "generated_at": "2026-07-05T23:18:31.338041+00:00",
+  "generated_at": "2026-07-05T23:23:35.368582+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.592,
+      "age_hours": 0.676,
       "category": "chemistry",
       "checkpoints": [
         {
@@ -70,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.004,
+      "age_hours": 2.088,
       "category": "insects",
       "checkpoints": [
         {
@@ -125,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.181,
+      "age_hours": 3.265,
       "category": "insects",
       "checkpoints": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.6,
+      "age_hours": 3.685,
       "category": "ocean",
       "checkpoints": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.024,
+      "age_hours": 5.109,
       "category": "rivers",
       "checkpoints": [
         {
@@ -290,7 +290,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.854,
+      "age_hours": 5.939,
       "category": "plants",
       "checkpoints": [
         {
@@ -344,16 +344,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.958,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 7.042,
       "category": "dogs",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-05T17:21:03.796497+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -377,41 +377,30 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-06T16:21:03.796497+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-05T17:21:03.796497+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "overdue",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Pet Secrets",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Dogs build a map with smell",
       "uploaded_at": "2026-07-05T16:21:03.796497+00:00",
       "url": "https://www.youtube.com/shorts/SLlGYXvUeBg",
       "video_id": "SLlGYXvUeBg",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Dogs build a map with smell",
-        "video_id": "SLlGYXvUeBg",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.211,
+      "age_hours": 8.296,
       "category": "geology",
       "checkpoints": [
         {
@@ -466,7 +455,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.218,
+      "age_hours": 9.302,
       "category": "farm",
       "checkpoints": [
         {
@@ -521,7 +510,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 10.175,
+      "age_hours": 10.259,
       "category": "farm",
       "checkpoints": [
         {
