@@ -2,18 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 9,
-      "high": 1,
-      "manual_review": 1,
+      "automation_safe": 10,
+      "high": 0,
+      "manual_review": 0,
       "total": 10,
-      "urgent": 3
+      "urgent": 4
     },
     "free_only": true,
-    "generated_at": "2026-07-05T19:53:44.755850+00:00",
+    "generated_at": "2026-07-05T19:58:40.315861+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 9.395,
+        "age_hours": 9.478,
         "automation_safe": true,
         "category": "nocturnal",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 8.509,
+        "age_hours": 8.591,
         "automation_safe": true,
         "category": "earth_from_space",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 7.435,
+        "age_hours": 7.517,
         "automation_safe": true,
         "category": "birds",
         "checkpoint_label": "1h",
@@ -90,34 +90,34 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "prepare_package_rescue",
-        "age_hours": 6.762,
-        "automation_safe": false,
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 6.844,
+        "automation_safe": true,
         "category": "farm",
-        "checkpoint_label": "24h",
-        "checkpoint_state": "pending",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "overdue",
         "current_views": 0,
-        "due_at": "2026-07-06T13:08:03.101276+00:00",
+        "due_at": "2026-07-05T14:08:03.101276+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:dKi3CHsrfXQ:repair_candidate:24h",
-        "lane": "package_rescue",
-        "manual_approval_required": true,
+        "id": "fresh-upload:dKi3CHsrfXQ:analytics_due:1h",
+        "lane": "measurement",
+        "manual_approval_required": false,
         "opening_retention_score": 100.0,
-        "priority": "high",
-        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "priority": "urgent",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
         "series": "Farmyard Surprises",
-        "state": "repair_candidate",
-        "target_views": 300,
+        "state": "analytics_due",
+        "target_views": 24,
         "title": "Horses remember familiar faces for months",
         "url": "https://www.youtube.com/shorts/dKi3CHsrfXQ",
         "video_id": "dKi3CHsrfXQ",
         "wait_until": "",
-        "why": "Observed velocity is weak enough to prepare a package intervention."
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 5.805,
+        "age_hours": 5.887,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "6h",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.188,
+        "age_hours": 0.27,
         "automation_safe": true,
         "category": "ocean",
         "checkpoint_label": "1h",
@@ -169,7 +169,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 4.798,
+        "age_hours": 4.881,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "6h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.545,
+        "age_hours": 3.627,
         "automation_safe": true,
         "category": "dogs",
         "checkpoint_label": "6h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.441,
+        "age_hours": 2.524,
         "automation_safe": true,
         "category": "plants",
         "checkpoint_label": "6h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 1.611,
+        "age_hours": 1.693,
         "automation_safe": true,
         "category": "rivers",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-05T19:53:44.754473+00:00"
+    "source_generated_at": "2026-07-05T19:58:40.314381+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,17 @@
       24
     ],
     "counts": {
-      "analytics_due": 3,
+      "analytics_due": 4,
       "awaiting_1h": 1,
       "high_priority": 4,
-      "repair_candidates": 1,
+      "repair_candidates": 0,
       "tracked": 10
     },
-    "generated_at": "2026-07-05T19:53:44.754473+00:00",
+    "generated_at": "2026-07-05T19:58:40.314381+00:00",
     "items": [
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.188,
+        "age_hours": 0.27,
         "category": "ocean",
         "checkpoints": [
           {
@@ -347,7 +347,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 1.611,
+        "age_hours": 1.693,
         "category": "rivers",
         "checkpoints": [
           {
@@ -402,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.441,
+        "age_hours": 2.524,
         "category": "plants",
         "checkpoints": [
           {
@@ -457,7 +457,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.545,
+        "age_hours": 3.627,
         "category": "dogs",
         "checkpoints": [
           {
@@ -512,7 +512,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 4.798,
+        "age_hours": 4.881,
         "category": "geology",
         "checkpoints": [
           {
@@ -567,7 +567,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.805,
+        "age_hours": 5.887,
         "category": "farm",
         "checkpoints": [
           {
@@ -621,16 +621,16 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 6.762,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 6.844,
         "category": "farm",
         "checkpoints": [
           {
             "delta_to_target": -24,
             "due_at": "2026-07-05T14:08:03.101276+00:00",
             "label": "1h",
-            "source": "observed",
-            "state": "observed",
+            "source": "estimated",
+            "state": "overdue",
             "target_views": 24,
             "views": 0
           },
@@ -654,41 +654,30 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
-          "due_at": "2026-07-06T13:08:03.101276+00:00",
-          "label": "24h",
+          "delta_to_target": -24,
+          "due_at": "2026-07-05T14:08:03.101276+00:00",
+          "label": "1h",
           "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
+          "state": "overdue",
+          "target_views": 24,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
         "priority": "high",
         "series": "Farmyard Surprises",
-        "state": "repair_candidate",
+        "state": "analytics_due",
         "title": "Horses remember familiar faces for months",
         "uploaded_at": "2026-07-05T13:08:03.101276+00:00",
         "url": "https://www.youtube.com/shorts/dKi3CHsrfXQ",
         "video_id": "dKi3CHsrfXQ",
-        "views_per_hour": 0.0,
-        "warning": {
-          "action": "TITLE_AUTO_REPAIR_TRIGGER",
-          "confidence_score": 0.594,
-          "reason": "low early velocity",
-          "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-          "title": "Horses remember familiar faces for months",
-          "video_id": "dKi3CHsrfXQ",
-          "views": 0,
-          "warning_state": "repair_risk"
-        }
+        "views_per_hour": 0.0
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 7.435,
+        "age_hours": 7.517,
         "category": "birds",
         "checkpoints": [
           {
@@ -743,7 +732,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 8.509,
+        "age_hours": 8.591,
         "category": "earth_from_space",
         "checkpoints": [
           {
@@ -798,7 +787,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 9.395,
+        "age_hours": 9.478,
         "category": "nocturnal",
         "checkpoints": [
           {
@@ -859,7 +848,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-05T19:53:44.755942+00:00",
+  "generated_at": "2026-07-05T19:58:40.315955+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
