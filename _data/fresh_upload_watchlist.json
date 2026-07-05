@@ -5,25 +5,80 @@
     24
   ],
   "counts": {
-    "analytics_due": 5,
-    "awaiting_1h": 0,
-    "high_priority": 6,
-    "repair_candidates": 1,
+    "analytics_due": 2,
+    "awaiting_1h": 1,
+    "high_priority": 4,
+    "repair_candidates": 2,
     "tracked": 10
   },
-  "generated_at": "2026-07-05T17:24:13.773374+00:00",
+  "generated_at": "2026-07-05T17:29:44.772728+00:00",
   "items": [
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 1.053,
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.041,
+      "category": "plants",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-05T18:27:15.557275+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-05T23:27:15.557275+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-06T17:27:15.557275+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-05T18:27:15.557275+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Biology Brief",
+      "state": "awaiting_1h",
+      "title": "Butterflies taste flowers with their feet",
+      "uploaded_at": "2026-07-05T17:27:15.557275+00:00",
+      "url": "https://www.youtube.com/shorts/IY8YMvgIVpA",
+      "video_id": "IY8YMvgIVpA",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 1.145,
       "category": "dogs",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-05T17:21:03.796497+00:00",
           "label": "1h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-05T17:21:03.796497+00:00",
-        "label": "1h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-05T22:21:03.796497+00:00",
+        "label": "6h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 24,
+        "state": "pending",
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "high",
+      "priority": "low",
       "series": "Pet Secrets",
-      "state": "analytics_due",
+      "state": "watch",
       "title": "Dogs build a map with smell",
       "uploaded_at": "2026-07-05T16:21:03.796497+00:00",
       "url": "https://www.youtube.com/shorts/SLlGYXvUeBg",
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.306,
+      "age_hours": 2.398,
       "category": "geology",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.313,
+      "age_hours": 3.405,
       "category": "farm",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.27,
+      "age_hours": 4.362,
       "category": "farm",
       "checkpoints": [
         {
@@ -235,7 +290,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.943,
+      "age_hours": 5.035,
       "category": "birds",
       "checkpoints": [
         {
@@ -289,8 +344,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.017,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.109,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -306,8 +361,8 @@
           "delta_to_target": -105,
           "due_at": "2026-07-05T17:23:11.327013+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -322,30 +377,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
-        "delta_to_target": -105,
-        "due_at": "2026-07-05T17:23:11.327013+00:00",
-        "label": "6h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-06T11:23:11.327013+00:00",
+        "label": "24h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 105,
+        "state": "pending",
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Planet Earth",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Storm clouds trace wind bands over the ocean",
       "uploaded_at": "2026-07-05T11:23:11.327013+00:00",
       "url": "https://www.youtube.com/shorts/OQM9BmE7oAA",
       "video_id": "OQM9BmE7oAA",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Storm clouds trace wind bands over the ocean",
+        "video_id": "OQM9BmE7oAA",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.904,
+      "age_hours": 6.995,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -411,7 +477,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.006,
+      "age_hours": 8.098,
       "category": "farm",
       "checkpoints": [
         {
@@ -466,7 +532,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.133,
+      "age_hours": 9.225,
       "category": "farm",
       "checkpoints": [
         {
@@ -517,61 +583,6 @@
       "uploaded_at": "2026-07-05T08:16:13.369020+00:00",
       "url": "https://www.youtube.com/shorts/8jYCCf-lSvc",
       "video_id": "8jYCCf-lSvc",
-      "views_per_hour": 0.0
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.575,
-      "category": "farm",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-05T08:49:42.448869+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-05T13:49:42.448869+00:00",
-          "label": "6h",
-          "source": "observed",
-          "state": "observed",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-07-06T07:49:42.448869+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-05T08:49:42.448869+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Farmyard Surprises",
-      "state": "analytics_due",
-      "title": "Goats use wide pupils to watch danger",
-      "uploaded_at": "2026-07-05T07:49:42.448869+00:00",
-      "url": "https://www.youtube.com/shorts/YGjT2-N5H7Q",
-      "video_id": "YGjT2-N5H7Q",
       "views_per_hour": 0.0
     }
   ],
