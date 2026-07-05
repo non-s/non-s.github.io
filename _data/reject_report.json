@@ -1,28 +1,28 @@
 {
   "total": 1000,
   "reasons": {
-    "duplicate_title": 457,
-    "duplicate_script": 221,
-    "off_topic_visual": 220,
-    "duplicate_angle": 205,
-    "queue_score_reject": 118,
-    "copy_subject_mismatch": 89,
-    "script_hook_mismatch": 78,
+    "duplicate_title": 485,
+    "duplicate_script": 235,
+    "off_topic_visual": 233,
+    "duplicate_angle": 219,
+    "queue_score_reject": 128,
+    "copy_subject_mismatch": 92,
+    "script_hook_mismatch": 82,
     "editorial score is below publish threshold": 69,
-    "thumbnail_text_not_scannable": 62,
-    "thumbnail_not_2_4_words": 61,
-    "script_subject_mismatch": 31,
-    "script_word_loop": 24,
-    "opening_retention_gap_risk": 22,
+    "script_subject_mismatch": 34,
+    "opening_retention_gap_risk": 25,
+    "script_word_loop": 25,
     "rights_guard_person_manual_review": 21,
     "low_opportunity_score": 21,
     "non_animal_body_language": 19,
-    "subject_not_immediately_clear": 14,
-    "payoff_not_explicit": 11,
-    "opening promise is not concrete enough": 11,
+    "subject_not_immediately_clear": 15,
+    "opening promise is not concrete enough": 13,
+    "payoff_not_explicit": 12,
     "bad_plural_verb": 10,
+    "thumbnail_text_not_scannable": 10,
+    "thumbnail_not_2_4_words": 9,
+    "missing_action_word": 8,
     "missing_visual_cue": 8,
-    "missing_action_word": 7,
     "script does not expose enough concrete visual detail": 7,
     "title_shape_weak": 6,
     "missing_visible_cue": 6,
@@ -37,16 +37,34 @@
     "editorial score 43 is below 62": 1
   },
   "stages": {
-    "queue_prune": 475,
-    "queue_prune_final": 251,
-    "queue_repair": 118,
+    "queue_prune": 503,
+    "queue_prune_final": 264,
+    "queue_repair": 128,
     "pre_publish_audit": 69,
-    "youtube_brain_rewrite": 53,
     "opportunity_score": 21,
-    "youtube_brain": 11,
-    "editor_in_chief": 2
+    "youtube_brain": 12,
+    "editor_in_chief": 2,
+    "youtube_brain_rewrite": 1
   },
   "latest": [
+    {
+      "story_id": "896faa0e38eb1f87",
+      "stage": "queue_prune",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "title": "Snow monkeys bathe together to beat the cold",
+      "category": "conservation",
+      "script_key": "watch their thick fur trap heat like a blanket that s why they cuddle in tight packs when it s below freezing newborns get carried in the center so none freeze would you trade a hot tub for this trick",
+      "angle_key": "monkeys|trick|cue|conservation",
+      "source_url": "https://www.pexels.com/video/japan-snow-monkey-6-17621619/",
+      "pexels_video_id": "17621619",
+      "source_clip_id": "pexels:896faa0e38eb1f87",
+      "recorded_at": "2026-07-05T00:33:54.485872+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
     {
       "story_id": "0621db87c63748af",
       "stage": "queue_prune",
@@ -334,42 +352,6 @@
       "rewrite_applied": true
     },
     {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-05T00:39:38.895352+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-05T01:28:09.590002+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
       "story_id": "9c242abb28bc8905",
       "stage": "queue_prune",
       "reasons": [
@@ -495,6 +477,24 @@
       "pexels_video_id": "8088575",
       "source_clip_id": "pexels:2a2a558be0bba41e",
       "recorded_at": "2026-07-05T01:33:22.400724+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "8bdc8b70af521eb4",
+      "stage": "youtube_brain_rewrite",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "title": "Fossils turn old bones into time clues",
+      "category": "discoveries",
+      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
+      "angle_key": "fossils|form|pattern|discoveries",
+      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
+      "pexels_video_id": "36118169",
+      "source_clip_id": "pexels:8bdc8b70af521eb4",
+      "recorded_at": "2026-07-05T01:38:51.296710+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     }

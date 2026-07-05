@@ -2,19 +2,19 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 10,
+      "automation_safe": 9,
       "high": 0,
-      "manual_review": 0,
+      "manual_review": 1,
       "total": 10,
       "urgent": 10
     },
     "free_only": true,
-    "generated_at": "2026-07-05T01:32:45.564456+00:00",
+    "generated_at": "2026-07-05T01:39:20.622155+00:00",
     "items": [
       {
-        "action_type": "pull_fresh_analytics",
-        "age_hours": 23.954,
-        "automation_safe": true,
+        "action_type": "prepare_package_rescue",
+        "age_hours": 24.063,
+        "automation_safe": false,
         "category": "forests",
         "checkpoint_label": "1h",
         "checkpoint_state": "overdue",
@@ -22,24 +22,24 @@
         "due_at": "2026-07-04T02:35:32.786321+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:Jh4XroVWOKk:analytics_due:1h",
-        "lane": "measurement",
-        "manual_approval_required": false,
+        "id": "fresh-upload:Jh4XroVWOKk:repair_candidate:1h",
+        "lane": "package_rescue",
+        "manual_approval_required": true,
         "opening_retention_score": 94.0,
         "priority": "urgent",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
+        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
         "series": "Hidden Network",
-        "state": "analytics_due",
+        "state": "repair_candidate",
         "target_views": 24,
         "title": "Forests hold cool fog between the trees",
         "url": "https://www.youtube.com/shorts/Jh4XroVWOKk",
         "video_id": "Jh4XroVWOKk",
         "wait_until": "",
-        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
+        "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 18.254,
+        "age_hours": 18.363,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 17.424,
+        "age_hours": 17.534,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "1h",
@@ -91,7 +91,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 15.944,
+        "age_hours": 16.053,
         "automation_safe": true,
         "category": "reptiles",
         "checkpoint_label": "1h",
@@ -117,7 +117,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 14.611,
+        "age_hours": 14.72,
         "automation_safe": true,
         "category": "chemistry",
         "checkpoint_label": "1h",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 13.668,
+        "age_hours": 13.778,
         "automation_safe": true,
         "category": "physics",
         "checkpoint_label": "1h",
@@ -169,7 +169,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 13.498,
+        "age_hours": 13.608,
         "automation_safe": true,
         "category": "forests",
         "checkpoint_label": "1h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 11.393,
+        "age_hours": 11.503,
         "automation_safe": true,
         "category": "trees",
         "checkpoint_label": "1h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 10.122,
+        "age_hours": 10.232,
         "automation_safe": true,
         "category": "forests",
         "checkpoint_label": "1h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 9.259,
+        "age_hours": 9.368,
         "automation_safe": true,
         "category": "forests",
         "checkpoint_label": "1h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-05T01:32:45.563173+00:00"
+    "source_generated_at": "2026-07-05T01:39:20.620768+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,17 @@
       24
     ],
     "counts": {
-      "analytics_due": 10,
+      "analytics_due": 9,
       "awaiting_1h": 0,
       "high_priority": 10,
-      "repair_candidates": 0,
+      "repair_candidates": 1,
       "tracked": 10
     },
-    "generated_at": "2026-07-05T01:32:45.563173+00:00",
+    "generated_at": "2026-07-05T01:39:20.620768+00:00",
     "items": [
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 9.259,
+        "age_hours": 9.368,
         "category": "forests",
         "checkpoints": [
           {
@@ -347,7 +347,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 10.122,
+        "age_hours": 10.232,
         "category": "forests",
         "checkpoints": [
           {
@@ -402,7 +402,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 11.393,
+        "age_hours": 11.503,
         "category": "trees",
         "checkpoints": [
           {
@@ -418,8 +418,8 @@
             "delta_to_target": -105,
             "due_at": "2026-07-04T20:09:11.619217+00:00",
             "label": "6h",
-            "source": "observed",
-            "state": "observed",
+            "source": "estimated",
+            "state": "overdue",
             "target_views": 105,
             "views": 0
           },
@@ -457,7 +457,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 13.498,
+        "age_hours": 13.608,
         "category": "forests",
         "checkpoints": [
           {
@@ -512,7 +512,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 13.668,
+        "age_hours": 13.778,
         "category": "physics",
         "checkpoints": [
           {
@@ -575,7 +575,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 14.611,
+        "age_hours": 14.72,
         "category": "chemistry",
         "checkpoints": [
           {
@@ -630,7 +630,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 15.944,
+        "age_hours": 16.053,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -693,7 +693,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 17.424,
+        "age_hours": 17.534,
         "category": "geology",
         "checkpoints": [
           {
@@ -756,7 +756,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 18.254,
+        "age_hours": 18.363,
         "category": "farm",
         "checkpoints": [
           {
@@ -818,8 +818,8 @@
         }
       },
       {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 23.954,
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "age_hours": 24.063,
         "category": "forests",
         "checkpoints": [
           {
@@ -841,17 +841,17 @@
             "views": 0
           },
           {
-            "delta_to_target": 0,
+            "delta_to_target": -299,
             "due_at": "2026-07-05T01:35:32.786321+00:00",
             "label": "24h",
-            "source": "estimated",
-            "state": "pending",
+            "source": "observed",
+            "state": "observed",
             "target_views": 300,
             "views": 1
           }
         ],
         "current_views": 1,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
         "next_checkpoint": {
           "delta_to_target": -24,
           "due_at": "2026-07-04T02:35:32.786321+00:00",
@@ -865,12 +865,23 @@
         "opening_retention_state": "retention_ready",
         "priority": "high",
         "series": "Hidden Network",
-        "state": "analytics_due",
+        "state": "repair_candidate",
         "title": "Forests hold cool fog between the trees",
         "uploaded_at": "2026-07-04T01:35:32.786321+00:00",
         "url": "https://www.youtube.com/shorts/Jh4XroVWOKk",
         "video_id": "Jh4XroVWOKk",
-        "views_per_hour": 0.042
+        "views_per_hour": 0.042,
+        "warning": {
+          "action": "TITLE_AUTO_REPAIR_TRIGGER",
+          "confidence_score": 0.756,
+          "reason": "low early velocity",
+          "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
+          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+          "title": "Forests hold cool fog between the trees",
+          "video_id": "Jh4XroVWOKk",
+          "views": 1,
+          "warning_state": "repair_risk"
+        }
       }
     ],
     "targets": {
@@ -880,7 +891,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-05T01:32:45.564546+00:00",
+  "generated_at": "2026-07-05T01:39:20.622245+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
