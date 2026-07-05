@@ -5,17 +5,72 @@
     24
   ],
   "counts": {
-    "analytics_due": 3,
-    "awaiting_1h": 1,
-    "high_priority": 4,
+    "analytics_due": 2,
+    "awaiting_1h": 2,
+    "high_priority": 3,
     "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-07-05T17:52:06.583767+00:00",
+  "generated_at": "2026-07-05T18:19:33.055177+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.414,
+      "age_hours": 0.041,
+      "category": "rivers",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-05T19:17:04.262059+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-06T00:17:04.262059+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-06T18:17:04.262059+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-05T19:17:04.262059+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Earth Engine",
+      "state": "awaiting_1h",
+      "title": "Rivers sort sediment while they bend",
+      "uploaded_at": "2026-07-05T18:17:04.262059+00:00",
+      "url": "https://www.youtube.com/shorts/CV5SwGiSehk",
+      "video_id": "CV5SwGiSehk",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.872,
       "category": "plants",
       "checkpoints": [
         {
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.517,
+      "age_hours": 1.975,
       "category": "dogs",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.771,
+      "age_hours": 3.229,
       "category": "geology",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.778,
+      "age_hours": 4.235,
       "category": "farm",
       "checkpoints": [
         {
@@ -235,7 +290,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.734,
+      "age_hours": 5.192,
       "category": "farm",
       "checkpoints": [
         {
@@ -290,7 +345,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.408,
+      "age_hours": 5.865,
       "category": "birds",
       "checkpoints": [
         {
@@ -345,7 +400,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.482,
+      "age_hours": 6.939,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -411,7 +466,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 7.368,
+      "age_hours": 7.826,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -466,7 +521,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.471,
+      "age_hours": 8.928,
       "category": "farm",
       "checkpoints": [
         {
@@ -517,61 +572,6 @@
       "uploaded_at": "2026-07-05T09:23:51.670418+00:00",
       "url": "https://www.youtube.com/shorts/3OjudRl2yHc",
       "video_id": "3OjudRl2yHc",
-      "views_per_hour": 0.0
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.598,
-      "category": "farm",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-05T09:16:13.369020+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-05T14:16:13.369020+00:00",
-          "label": "6h",
-          "source": "observed",
-          "state": "observed",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-07-06T08:16:13.369020+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-05T09:16:13.369020+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Farmyard Surprises",
-      "state": "analytics_due",
-      "title": "Cows remember faces across the herd",
-      "uploaded_at": "2026-07-05T08:16:13.369020+00:00",
-      "url": "https://www.youtube.com/shorts/8jYCCf-lSvc",
-      "video_id": "8jYCCf-lSvc",
       "views_per_hour": 0.0
     }
   ],
