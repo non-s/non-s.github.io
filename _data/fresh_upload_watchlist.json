@@ -5,25 +5,80 @@
     24
   ],
   "counts": {
-    "analytics_due": 4,
-    "awaiting_1h": 0,
-    "high_priority": 6,
-    "repair_candidates": 2,
+    "analytics_due": 3,
+    "awaiting_1h": 1,
+    "high_priority": 4,
+    "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-07-05T12:27:08.592179+00:00",
+  "generated_at": "2026-07-05T12:30:16.968208+00:00",
   "items": [
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 1.066,
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.044,
+      "category": "birds",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-05T13:27:37.465211+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-05T18:27:37.465211+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-06T12:27:37.465211+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-05T13:27:37.465211+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 96.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Sky Intelligence",
+      "state": "awaiting_1h",
+      "title": "Penguins trap air bubbles under feathers",
+      "uploaded_at": "2026-07-05T12:27:37.465211+00:00",
+      "url": "https://www.youtube.com/shorts/_T9c2aLvR5U",
+      "video_id": "_T9c2aLvR5U",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 1.118,
       "category": "earth_from_space",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-05T12:23:11.327013+00:00",
           "label": "1h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-05T12:23:11.327013+00:00",
-        "label": "1h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-05T17:23:11.327013+00:00",
+        "label": "6h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 24,
+        "state": "pending",
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "high",
+      "priority": "low",
       "series": "Planet Earth",
-      "state": "analytics_due",
+      "state": "watch",
       "title": "Storm clouds trace wind bands over the ocean",
       "uploaded_at": "2026-07-05T11:23:11.327013+00:00",
       "url": "https://www.youtube.com/shorts/OQM9BmE7oAA",
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.952,
+      "age_hours": 2.004,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.055,
+      "age_hours": 3.107,
       "category": "farm",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.182,
+      "age_hours": 4.234,
       "category": "farm",
       "checkpoints": [
         {
@@ -235,7 +290,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.624,
+      "age_hours": 4.676,
       "category": "farm",
       "checkpoints": [
         {
@@ -290,7 +345,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 7.303,
+      "age_hours": 7.355,
       "category": "farm",
       "checkpoints": [
         {
@@ -355,16 +410,16 @@
       }
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 8.072,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 8.124,
       "category": "weather",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-05T05:22:49.360164+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -388,41 +443,30 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-06T04:22:49.360164+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-05T05:22:49.360164+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "overdue",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 90.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Earth Engine",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Lightning turns air into a shock wave",
       "uploaded_at": "2026-07-05T04:22:49.360164+00:00",
       "url": "https://www.youtube.com/shorts/UmLIxYglETo",
       "video_id": "UmLIxYglETo",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Lightning turns air into a shock wave",
-        "video_id": "UmLIxYglETo",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 20.165,
+      "age_hours": 20.217,
       "category": "forests",
       "checkpoints": [
         {
@@ -477,7 +521,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 21.029,
+      "age_hours": 21.081,
       "category": "forests",
       "checkpoints": [
         {
@@ -537,61 +581,6 @@
         "video_id": "ez3hSEWuNws",
         "warning_state": "low_confidence_watch"
       }
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 22.299,
-      "category": "trees",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-04T15:09:11.619217+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-04T20:09:11.619217+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-07-05T14:09:11.619217+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-04T15:09:11.619217+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Hidden Network",
-      "state": "analytics_due",
-      "title": "Trees keep weather history in their rings",
-      "uploaded_at": "2026-07-04T14:09:11.619217+00:00",
-      "url": "https://www.youtube.com/shorts/3hQL89pNw-w",
-      "video_id": "3hQL89pNw-w",
-      "views_per_hour": 0.0
     }
   ],
   "targets": {

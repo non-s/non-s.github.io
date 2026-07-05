@@ -1,34 +1,36 @@
 {
   "items": [
     {
-      "id": "d99bc3c78a669d88",
-      "title": "Penguins trap air bubbles under feathers",
-      "category": "birds",
-      "autonomy_priority": 118.0,
-      "queue_score": 100.0,
+      "id": "1ae7d8f5e6efa42c",
+      "title": "Horses remember familiar faces for months",
+      "category": "farm",
+      "autonomy_priority": 130.0,
+      "queue_score": 72.0,
       "template_cluster": "",
-      "mechanism_cluster": "",
+      "mechanism_cluster": "face_recognition",
       "objective_reasons": [
-        "objective_gate:bootstrap_observe_before_scaling"
+        "objective_gate:bootstrap_observe_before_scaling",
+        "editor_in_chief:subject repeated inside 3-day cooldown",
+        "editorial_cooldown_supply_fallback"
       ],
-      "lane": "evergreen",
+      "lane": "recovery",
       "mix_adjustment": 5.0,
       "score": {
         "score": 100.0,
         "approved": true,
         "state": "publish_ready",
         "opportunity": {
-          "score": 67,
+          "score": 56,
           "signals": {
-            "viral_potential": 90,
-            "visual_potential": 59,
-            "replay_potential": 82,
-            "comment_potential": 54,
-            "educational_potential": 66,
-            "emotional_potential": 44,
-            "novelty": 59
+            "viral_potential": 50,
+            "visual_potential": 65,
+            "replay_potential": 64,
+            "comment_potential": 62,
+            "educational_potential": 58,
+            "emotional_potential": 35,
+            "novelty": 45
           },
-          "verdict": "produce",
+          "verdict": "rewrite",
           "reasons": [],
           "confidence": {
             "confidence_score": 0.0,
@@ -44,13 +46,13 @@
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
         },
         "retention": {
-          "score": 75,
+          "score": 73,
           "signals": {
             "hook_score": 82,
-            "curiosity_score": 79,
-            "visual_score": 50,
-            "replay_score": 72,
-            "completion_prediction": 84
+            "curiosity_score": 71,
+            "visual_score": 66,
+            "replay_score": 62,
+            "completion_prediction": 77
           },
           "verdict": "rewrite",
           "reasons": [],
@@ -68,40 +70,39 @@
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
         },
         "opening_retention": {
-          "score": 96.0,
+          "score": 100.0,
           "state": "retention_ready",
           "approved": true,
-          "subject": "penguins",
+          "subject": "horses",
           "cue_terms": [
-            "air",
-            "bubble",
-            "feather"
+            "ears",
+            "eyes",
+            "face",
+            "memor"
           ],
           "frame_hook_bridge": [
-            "air"
+            "face"
           ],
           "cue_bridge": [
-            "air",
-            "feather"
+            "ears",
+            "eyes",
+            "face"
           ],
           "strengths": [
             "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
+            "action_promise_early",
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "risks": [
-            "missing_early_action"
-          ]
+          "risks": []
         },
         "weak_content": {
-          "risk": 22,
+          "risk": 0,
           "state": "clear",
-          "reasons": [
-            "repetitive_script"
-          ],
+          "reasons": [],
           "confidence": {
             "confidence_score": 0.0,
             "sample_size": 0,
@@ -157,10 +158,10 @@
           "bootstrap_multiplier": 0.255,
           "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
         },
-        "category": "birds",
+        "category": "farm",
         "story_format": "animal_memory",
         "hook_score": 100,
-        "title_score": 90,
+        "title_score": 100,
         "phrase_risk": {
           "penalty": 0,
           "hits": []
@@ -181,7 +182,7 @@
           "swipe_risk_band": "low",
           "payoff_time_s": 0.0,
           "template_cluster": "",
-          "mechanism_cluster": ""
+          "mechanism_cluster": "face_recognition"
         }
       }
     },
@@ -1101,7 +1102,7 @@
     },
     "counts": {
       "recovery": 4,
-      "evergreen": 28
+      "evergreen": 27
     },
     "items": [
       {
@@ -1129,6 +1130,22 @@
         "freshness_score": 51.18
       },
       {
+        "id": "32bc71248738d412",
+        "title": "Parrots use their beak like a third foot",
+        "category": "birds",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 52.58
+      },
+      {
+        "id": "7297fa80243db8ee",
+        "title": "Macaws use beaks like climbing tools",
+        "category": "birds",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 53.52
+      },
+      {
         "id": "008cd80bfc76cc82",
         "title": "Chickens lock their view between steps",
         "category": "farm",
@@ -1142,7 +1159,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.46
+        "freshness_score": 54.44
       },
       {
         "id": "1e1fd2bf8c255b87",
@@ -1158,7 +1175,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.46
+        "freshness_score": 54.44
       },
       {
         "id": "a4ca94af1a59d5df",
@@ -1167,30 +1184,6 @@
         "lane": "evergreen",
         "adjustment": 5.0,
         "freshness_score": 42.92
-      },
-      {
-        "id": "d99bc3c78a669d88",
-        "title": "Penguins trap air bubbles under feathers",
-        "category": "birds",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 49.6
-      },
-      {
-        "id": "32bc71248738d412",
-        "title": "Parrots use their beak like a third foot",
-        "category": "birds",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 52.58
-      },
-      {
-        "id": "7297fa80243db8ee",
-        "title": "Macaws use beaks like climbing tools",
-        "category": "birds",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 53.52
       },
       {
         "id": "6f23dba40dbfdcf3",
@@ -1254,7 +1247,7 @@
         "category": "rivers",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.86
+        "freshness_score": 54.84
       },
       {
         "id": "76156955fa19e142",
@@ -1262,7 +1255,7 @@
         "category": "insects",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.36
+        "freshness_score": 54.34
       },
       {
         "id": "16394dd0594f4bd3",
@@ -1302,7 +1295,7 @@
         "category": "space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 50.36
+        "freshness_score": 50.34
       },
       {
         "id": "d5905286e8a38b10",
@@ -1371,12 +1364,12 @@
       {
         "window": 10,
         "items": 6,
-        "dominant_shape": "{subject} trap air bubbles under feathers",
+        "dominant_shape": "{subject} remember familiar {cue} for months",
         "dominant_count": 1,
         "dominant_share": 0.167,
         "top_shapes": [
           {
-            "shape": "{subject} trap air bubbles under feathers",
+            "shape": "{subject} remember familiar {cue} for months",
             "count": 1,
             "share": 0.167
           },
@@ -1405,12 +1398,12 @@
       {
         "window": 30,
         "items": 6,
-        "dominant_shape": "{subject} trap air bubbles under feathers",
+        "dominant_shape": "{subject} remember familiar {cue} for months",
         "dominant_count": 1,
         "dominant_share": 0.167,
         "top_shapes": [
           {
-            "shape": "{subject} trap air bubbles under feathers",
+            "shape": "{subject} remember familiar {cue} for months",
             "count": 1,
             "share": 0.167
           },
@@ -1440,20 +1433,21 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 32,
-    "pending_after": 32,
+    "pending_before": 31,
+    "pending_after": 31,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 3,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 32,
+      "objective_gate:bootstrap_observe_before_scaling": 31,
       "editor_in_chief:subject repeated inside 3-day cooldown": 24,
       "editor_in_chief:script quality gate blocked the narration": 4,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
       "editor_in_chief:editorial score 46 is below 62": 3,
       "editor_in_chief:editorial score 40 is below 62": 2,
       "editor_in_chief:editorial score 42 is below 62": 1,
-      "editor_in_chief:editorial score 49 is below 62": 1
+      "editor_in_chief:editorial score 49 is below 62": 1,
+      "editorial_cooldown_supply_fallback": 1
     }
   }
 }
