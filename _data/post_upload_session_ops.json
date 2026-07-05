@@ -2,44 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 10,
-      "high": 0,
-      "manual_review": 0,
+      "automation_safe": 9,
+      "high": 1,
+      "manual_review": 1,
       "total": 10,
-      "urgent": 4
+      "urgent": 3
     },
     "free_only": true,
-    "generated_at": "2026-07-05T20:02:00.989986+00:00",
+    "generated_at": "2026-07-05T20:10:06.994243+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 9.533,
-        "automation_safe": true,
-        "category": "nocturnal",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "overdue",
-        "current_views": 0,
-        "due_at": "2026-07-05T11:30:01.173083+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:7O3KvRmWSls:analytics_due:1h",
-        "lane": "measurement",
-        "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "urgent",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
-        "series": "Night Shift Nature",
-        "state": "analytics_due",
-        "target_views": 24,
-        "title": "Owls can make a hunt almost silent",
-        "url": "https://www.youtube.com/shorts/7O3KvRmWSls",
-        "video_id": "7O3KvRmWSls",
-        "wait_until": "",
-        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
-      },
-      {
-        "action_type": "pull_fresh_analytics",
-        "age_hours": 8.647,
+        "age_hours": 8.782,
         "automation_safe": true,
         "category": "earth_from_space",
         "checkpoint_label": "1h",
@@ -65,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 7.573,
+        "age_hours": 7.708,
         "automation_safe": true,
         "category": "birds",
         "checkpoint_label": "1h",
@@ -91,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 6.899,
+        "age_hours": 7.034,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "1h",
@@ -116,34 +90,34 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "watch_next_checkpoint",
-        "age_hours": 5.943,
-        "automation_safe": true,
+        "action_type": "prepare_package_rescue",
+        "age_hours": 6.078,
+        "automation_safe": false,
         "category": "farm",
-        "checkpoint_label": "6h",
+        "checkpoint_label": "24h",
         "checkpoint_state": "pending",
         "current_views": 0,
-        "due_at": "2026-07-05T20:05:27.089735+00:00",
+        "due_at": "2026-07-06T14:05:27.089735+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:J80ks26hJIg:watch:6h",
-        "lane": "observe",
-        "manual_approval_required": false,
+        "id": "fresh-upload:J80ks26hJIg:repair_candidate:24h",
+        "lane": "package_rescue",
+        "manual_approval_required": true,
         "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Keep observing through the next checkpoint.",
+        "priority": "high",
+        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
         "series": "Farmyard Surprises",
-        "state": "watch",
-        "target_views": 105,
+        "state": "repair_candidate",
+        "target_views": 300,
         "title": "Chickens remember familiar faces in the flock",
         "url": "https://www.youtube.com/shorts/J80ks26hJIg",
         "video_id": "J80ks26hJIg",
-        "wait_until": "2026-07-05T20:05:27.089735+00:00",
-        "why": "No intervention signal is strong enough yet."
+        "wait_until": "",
+        "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.325,
+        "age_hours": 0.46,
         "automation_safe": true,
         "category": "ocean",
         "checkpoint_label": "1h",
@@ -169,7 +143,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 4.936,
+        "age_hours": 5.071,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "6h",
@@ -194,8 +168,34 @@
         "why": "No intervention signal is strong enough yet."
       },
       {
+        "action_type": "hold_until_first_hour",
+        "age_hours": 0.041,
+        "automation_safe": true,
+        "category": "insects",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-05T21:07:40.550229+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:qgE9xwLOE-w:awaiting_1h:1h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 90.0,
+        "priority": "low",
+        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "series": "Tiny Worlds",
+        "state": "awaiting_1h",
+        "target_views": 24,
+        "title": "Bees dance directions back to the hive",
+        "url": "https://www.youtube.com/shorts/qgE9xwLOE-w",
+        "video_id": "qgE9xwLOE-w",
+        "wait_until": "2026-07-05T21:07:40.550229+00:00",
+        "why": "The upload is still inside the no-panic observation window."
+      },
+      {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.683,
+        "age_hours": 3.818,
         "automation_safe": true,
         "category": "dogs",
         "checkpoint_label": "6h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.579,
+        "age_hours": 2.714,
         "automation_safe": true,
         "category": "plants",
         "checkpoint_label": "6h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 1.749,
+        "age_hours": 1.884,
         "automation_safe": true,
         "category": "rivers",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-05T20:02:00.988604+00:00"
+    "source_generated_at": "2026-07-05T20:10:06.992426+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,72 @@
       24
     ],
     "counts": {
-      "analytics_due": 4,
-      "awaiting_1h": 1,
+      "analytics_due": 3,
+      "awaiting_1h": 2,
       "high_priority": 4,
-      "repair_candidates": 0,
+      "repair_candidates": 1,
       "tracked": 10
     },
-    "generated_at": "2026-07-05T20:02:00.988604+00:00",
+    "generated_at": "2026-07-05T20:10:06.992426+00:00",
     "items": [
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.325,
+        "age_hours": 0.041,
+        "category": "insects",
+        "checkpoints": [
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-05T21:07:40.550229+00:00",
+            "label": "1h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 24,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-06T02:07:40.550229+00:00",
+            "label": "6h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 105,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-06T20:07:40.550229+00:00",
+            "label": "24h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 300,
+            "views": 0
+          }
+        ],
+        "current_views": 0,
+        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "next_checkpoint": {
+          "delta_to_target": 0,
+          "due_at": "2026-07-05T21:07:40.550229+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        "opening_retention_score": 90.0,
+        "opening_retention_state": "retention_ready",
+        "priority": "low",
+        "series": "Tiny Worlds",
+        "state": "awaiting_1h",
+        "title": "Bees dance directions back to the hive",
+        "uploaded_at": "2026-07-05T20:07:40.550229+00:00",
+        "url": "https://www.youtube.com/shorts/qgE9xwLOE-w",
+        "video_id": "qgE9xwLOE-w",
+        "views_per_hour": 0.0
+      },
+      {
+        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "age_hours": 0.46,
         "category": "ocean",
         "checkpoints": [
           {
@@ -347,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 1.749,
+        "age_hours": 1.884,
         "category": "rivers",
         "checkpoints": [
           {
@@ -402,7 +457,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.579,
+        "age_hours": 2.714,
         "category": "plants",
         "checkpoints": [
           {
@@ -457,7 +512,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.683,
+        "age_hours": 3.818,
         "category": "dogs",
         "checkpoints": [
           {
@@ -512,7 +567,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 4.936,
+        "age_hours": 5.071,
         "category": "geology",
         "checkpoints": [
           {
@@ -566,8 +621,8 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.943,
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "age_hours": 6.078,
         "category": "farm",
         "checkpoints": [
           {
@@ -580,11 +635,11 @@
             "views": 0
           },
           {
-            "delta_to_target": 0,
+            "delta_to_target": -105,
             "due_at": "2026-07-05T20:05:27.089735+00:00",
             "label": "6h",
-            "source": "estimated",
-            "state": "pending",
+            "source": "observed",
+            "state": "observed",
             "target_views": 105,
             "views": 0
           },
@@ -599,30 +654,41 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "No intervention signal is strong enough yet.",
+        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
         "next_checkpoint": {
           "delta_to_target": 0,
-          "due_at": "2026-07-05T20:05:27.089735+00:00",
-          "label": "6h",
+          "due_at": "2026-07-06T14:05:27.089735+00:00",
+          "label": "24h",
           "source": "estimated",
           "state": "pending",
-          "target_views": 105,
+          "target_views": 300,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Farmyard Surprises",
-        "state": "watch",
+        "state": "repair_candidate",
         "title": "Chickens remember familiar faces in the flock",
         "uploaded_at": "2026-07-05T14:05:27.089735+00:00",
         "url": "https://www.youtube.com/shorts/J80ks26hJIg",
         "video_id": "J80ks26hJIg",
-        "views_per_hour": 0.0
+        "views_per_hour": 0.0,
+        "warning": {
+          "action": "TITLE_AUTO_REPAIR_TRIGGER",
+          "confidence_score": 0.594,
+          "reason": "low early velocity",
+          "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+          "title": "Chickens remember familiar faces in the flock",
+          "video_id": "J80ks26hJIg",
+          "views": 0,
+          "warning_state": "repair_risk"
+        }
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 6.899,
+        "age_hours": 7.034,
         "category": "farm",
         "checkpoints": [
           {
@@ -677,7 +743,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 7.573,
+        "age_hours": 7.708,
         "category": "birds",
         "checkpoints": [
           {
@@ -732,7 +798,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 8.647,
+        "age_hours": 8.782,
         "category": "earth_from_space",
         "checkpoints": [
           {
@@ -784,61 +850,6 @@
         "url": "https://www.youtube.com/shorts/OQM9BmE7oAA",
         "video_id": "OQM9BmE7oAA",
         "views_per_hour": 0.0
-      },
-      {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 9.533,
-        "category": "nocturnal",
-        "checkpoints": [
-          {
-            "delta_to_target": -24,
-            "due_at": "2026-07-05T11:30:01.173083+00:00",
-            "label": "1h",
-            "source": "estimated",
-            "state": "overdue",
-            "target_views": 24,
-            "views": 0
-          },
-          {
-            "delta_to_target": -105,
-            "due_at": "2026-07-05T16:30:01.173083+00:00",
-            "label": "6h",
-            "source": "observed",
-            "state": "observed",
-            "target_views": 105,
-            "views": 0
-          },
-          {
-            "delta_to_target": 0,
-            "due_at": "2026-07-06T10:30:01.173083+00:00",
-            "label": "24h",
-            "source": "estimated",
-            "state": "pending",
-            "target_views": 300,
-            "views": 0
-          }
-        ],
-        "current_views": 0,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-        "next_checkpoint": {
-          "delta_to_target": -24,
-          "due_at": "2026-07-05T11:30:01.173083+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        "opening_retention_score": 100.0,
-        "opening_retention_state": "retention_ready",
-        "priority": "high",
-        "series": "Night Shift Nature",
-        "state": "analytics_due",
-        "title": "Owls can make a hunt almost silent",
-        "uploaded_at": "2026-07-05T10:30:01.173083+00:00",
-        "url": "https://www.youtube.com/shorts/7O3KvRmWSls",
-        "video_id": "7O3KvRmWSls",
-        "views_per_hour": 0.0
       }
     ],
     "targets": {
@@ -848,23 +859,12 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-05T20:02:00.990073+00:00",
+  "generated_at": "2026-07-05T20:10:06.994342+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
   ],
   "related_video_recommendations": [
-    {
-      "recommendation": {
-        "reason": "same series/category/format session bridge",
-        "score": 85.0,
-        "title": "Rock layers store ancient environments in stripes",
-        "url": "https://www.youtube.com/shorts/FEAbi2e-yas",
-        "video_id": "FEAbi2e-yas"
-      },
-      "source_title": "Rock layers show their timeline inside caves",
-      "source_video_id": "c_jUW1tjDb4"
-    },
     {
       "recommendation": {
         "reason": "same series/category/format session bridge",
@@ -908,14 +908,20 @@
       },
       "source_title": "Dolphins use signature whistles like names",
       "source_video_id": "iMu5K1YL2Bo"
+    },
+    {
+      "recommendation": {
+        "reason": "same series/category/format session bridge",
+        "score": 85.0,
+        "title": "Ants use scent road before they change",
+        "url": "https://www.youtube.com/shorts/6EQWaar3wBc",
+        "video_id": "6EQWaar3wBc"
+      },
+      "source_title": "Bees dance directions back to the hive",
+      "source_video_id": "qgE9xwLOE-w"
     }
   ],
   "sequel_opportunities": [
-    {
-      "prompt": "Make a sequel with a new subject but the same payoff shape: Rock layers show their timeline inside caves",
-      "title": "Rock layers show their timeline inside caves",
-      "video_id": "c_jUW1tjDb4"
-    },
     {
       "prompt": "Make a sequel with a new subject but the same payoff shape: Dogs build a map with smell",
       "title": "Dogs build a map with smell",
@@ -935,13 +941,18 @@
       "prompt": "Make a sequel with a new subject but the same payoff shape: Dolphins use signature whistles like names",
       "title": "Dolphins use signature whistles like names",
       "video_id": "iMu5K1YL2Bo"
+    },
+    {
+      "prompt": "Make a sequel with a new subject but the same payoff shape: Bees dance directions back to the hive",
+      "title": "Bees dance directions back to the hive",
+      "video_id": "qgE9xwLOE-w"
     }
   ],
   "session_graph": {
     "action_score_threshold": 55,
-    "coverage": 0.95,
+    "coverage": 1.0,
     "edges": 20,
-    "nodes": 63,
+    "nodes": 64,
     "target_reuse_limit": 2
   }
 }
