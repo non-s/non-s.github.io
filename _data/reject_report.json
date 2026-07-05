@@ -1,30 +1,30 @@
 {
   "total": 1000,
   "reasons": {
-    "duplicate_title": 451,
-    "off_topic_visual": 226,
-    "duplicate_script": 215,
-    "duplicate_angle": 198,
-    "queue_score_reject": 124,
+    "duplicate_title": 474,
+    "off_topic_visual": 237,
+    "duplicate_script": 227,
+    "duplicate_angle": 209,
+    "queue_score_reject": 135,
+    "script_hook_mismatch": 86,
     "copy_subject_mismatch": 83,
-    "script_hook_mismatch": 81,
     "editorial score is below publish threshold": 69,
-    "thumbnail_text_not_scannable": 58,
-    "thumbnail_not_2_4_words": 57,
     "script_subject_mismatch": 29,
+    "script_word_loop": 28,
     "opening_retention_gap_risk": 25,
-    "script_word_loop": 25,
     "rights_guard_person_manual_review": 21,
     "low_opportunity_score": 21,
-    "non_animal_body_language": 19,
+    "non_animal_body_language": 20,
     "subject_not_immediately_clear": 15,
     "opening promise is not concrete enough": 13,
     "payoff_not_explicit": 12,
     "bad_plural_verb": 10,
+    "thumbnail_text_not_scannable": 10,
+    "thumbnail_not_2_4_words": 9,
     "missing_visual_cue": 8,
+    "script does not expose enough concrete visual detail": 7,
     "missing_action_word": 7,
     "title_shape_weak": 6,
-    "script does not expose enough concrete visual detail": 6,
     "missing_visible_cue": 5,
     "no_action_promise": 3,
     "title_needs_stronger_shape": 2,
@@ -37,49 +37,247 @@
     "editorial score 43 is below 62": 1
   },
   "stages": {
-    "queue_prune": 485,
-    "queue_prune_final": 238,
-    "queue_repair": 124,
+    "queue_prune": 504,
+    "queue_prune_final": 256,
+    "queue_repair": 135,
     "pre_publish_audit": 69,
-    "youtube_brain_rewrite": 49,
     "opportunity_score": 21,
     "youtube_brain": 12,
-    "editor_in_chief": 2
+    "editor_in_chief": 2,
+    "youtube_brain_rewrite": 1
   },
   "latest": [
     {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
+      "story_id": "Coral reefs are cities built by tiny animals",
+      "stage": "pre_publish_audit",
       "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
+        "editorial score is below publish threshold"
       ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-04T22:29:05.056675+00:00",
+      "title": "Coral reefs are cities built by tiny animals",
+      "category": "ocean",
+      "script_key": "coral reefs reveal the reef city first watch closely because coral animals build hard skeletons that stack into habitat fish algae and countless small creatures then use that structure like a city the color sits on top of engineering which habitat next now the reef city at the start makes sense",
+      "angle_key": "coral|build|reef city|ocean",
+      "source_url": "https://www.pexels.com/video/close-up-of-amphibious-fish-in-natural-habitat-34617332/",
+      "pexels_video_id": "34617332",
+      "source_clip_id": "pexels:d5905286e8a38b10",
+      "recorded_at": "2026-07-04T22:10:26.449491+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "Lions hunt better when the pride coordinates",
+      "stage": "pre_publish_audit",
+      "reasons": [
+        "editorial score is below publish threshold"
+      ],
+      "title": "Lions hunt better when the pride coordinates",
+      "category": "wildlife",
+      "script_key": "lions reveal the pride plan first watch closely because lions can use different positions in a group hunt one animal pressures while another blocks the escape path the power is not just muscle which predator tactic should we break down next now the pride plan at the start makes sense",
+      "angle_key": "lions|escape|pride plan|wildlife",
+      "source_url": "https://www.pexels.com/video/adorable-lion-cubs-playing-in-nature-37358035/",
+      "pexels_video_id": "37358035",
+      "source_clip_id": "pexels:6070349d168d1d45",
+      "recorded_at": "2026-07-04T22:11:03.643678+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "Sharks sense tiny electric fields",
+      "stage": "pre_publish_audit",
+      "reasons": [
+        "editorial score is below publish threshold"
+      ],
+      "title": "Sharks sense tiny electric fields",
+      "category": "ocean",
+      "script_key": "sharks reveal the electric sense first watch closely because sharks have sensory pores that detect tiny electric fields from other animals that helps them hunt when sight is limited the ocean is full of signals we cannot feel would you swim differently now the electric sense at the start makes sense",
+      "angle_key": "sharks|hunt|electric sense|ocean",
+      "source_url": "https://www.pexels.com/video/diver-swims-with-sharks-in-aquarium-30720810/",
+      "pexels_video_id": "30720810",
+      "source_clip_id": "pexels:16394dd0594f4bd3",
+      "recorded_at": "2026-07-04T22:11:35.292688+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "032c11fd2a84398b",
+      "stage": "queue_prune",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "title": "mountain creeks carve valleys faster than you think",
+      "category": "geology",
+      "script_key": "these little creeks are the real bulldozers watch the rocks split in real time they don t just flow over stone they snap it that s why every valley you see started as a crack like this ever stood in a dry creek bed you re walking on rock that used to be a mountain",
+      "angle_key": "mountain|flow|rocks|geology",
+      "source_url": "https://www.pexels.com/video/mountain-creek-flowing-through-rocky-terrain-38042057/",
+      "pexels_video_id": "38042057",
+      "source_clip_id": "pexels:032c11fd2a84398b",
+      "recorded_at": "2026-07-04T22:17:01.129030+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "2bfd469f22988451",
+      "stage": "queue_prune",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "title": "Lightning makes air explode into thunder",
+      "category": "weather",
+      "script_key": "lightning turns air into a shock wave watch the flash first because lightning heats a narrow path of air extremely fast that air expands suddenly and the pressure wave reaches us as thunder the sound is the atmosphere snapping back which storm signal next",
+      "angle_key": "lightning|signal|sound|weather",
+      "source_url": "https://www.pexels.com/video/blooming-spring-blossoms-against-clear-sky-31773510/",
+      "pexels_video_id": "31773510",
+      "source_clip_id": "pexels:2bfd469f22988451",
+      "recorded_at": "2026-07-04T22:17:01.146013+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     },
     {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
+      "story_id": "c422e16ddc401932",
+      "stage": "queue_prune",
       "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
       ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-04T22:41:10.601441+00:00",
+      "title": "Cows remember faces across the herd",
+      "category": "farm",
+      "script_key": "cows can remember who belongs in the herd watch the calm face first because cows can recognize familiar herd members and people that memory lowers stress when the group feels predictable a quiet look can carry more history than it seems which farm animal should we explain next",
+      "angle_key": "cows|remember|herd memory|farm",
+      "source_url": "https://www.pexels.com/video/brown-cow-grazing-outdoors-in-rocky-landscape-37160397/",
+      "pexels_video_id": "37160397",
+      "source_clip_id": "pexels:c422e16ddc401932",
+      "recorded_at": "2026-07-04T22:17:01.160754+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "72b69d887d4f6c83",
+      "stage": "queue_prune_final",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script"
+      ],
+      "title": "Coral reefs are built by tiny living builders",
+      "category": "ecosystems",
+      "script_key": "coral reefs are built by tiny living builders watch the reef texture because coral animals build hard skeletons that stack into habitat fish algae and countless small creatures then use that structure like a city the color sits on top of engineering which habitat next",
+      "angle_key": "coral|build|reef city|ecosystems",
+      "source_url": "https://www.pexels.com/video/explore-vibrant-coral-reefs-underwater-35752548/",
+      "pexels_video_id": "35752548",
+      "source_clip_id": "pexels:72b69d887d4f6c83",
+      "recorded_at": "2026-07-04T22:17:01.175694+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "9cad028de9518da0",
+      "stage": "queue_prune_final",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "title": "Cows remember faces across the herd",
+      "category": "farm",
+      "script_key": "cows can remember who belongs in the herd watch the calm face first because cows can recognize familiar herd members and people that memory lowers stress when the group feels predictable a quiet look can carry more history than it seems which farm animal should we explain next",
+      "angle_key": "cows|remember|herd memory|farm",
+      "source_url": "https://www.pexels.com/video/a-brown-cow-walking-down-a-dirt-road-17427612/",
+      "pexels_video_id": "17427612",
+      "source_clip_id": "pexels:9cad028de9518da0",
+      "recorded_at": "2026-07-04T22:17:01.189868+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "758e1def429ef0d2",
+      "stage": "queue_prune",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "title": "Cows don’t chew the way you think they do",
+      "category": "conservation",
+      "script_key": "cows don t chew the way you think that slow jaw motion you see isn t chewing at all they re slicing the hay into tiny pieces so their stomach can break it down later that s why they swallow half chewed mouthfuls you feel that that s the cow s stomach already getting to work",
+      "angle_key": "cows|slow|group|conservation",
+      "source_url": "https://www.pexels.com/video/a-group-of-cows-eating-hay-in-a-barn-16288737/",
+      "pexels_video_id": "16288737",
+      "source_clip_id": "pexels:758e1def429ef0d2",
+      "recorded_at": "2026-07-04T22:21:15.956106+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "eae19e18441399ab",
+      "stage": "queue_prune_final",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script"
+      ],
+      "title": "Coral reefs are built by tiny living builders",
+      "category": "ecosystems",
+      "script_key": "coral reefs are built by tiny living builders watch the reef texture because coral animals build hard skeletons that stack into habitat fish algae and countless small creatures then use that structure like a city the color sits on top of engineering which habitat next",
+      "angle_key": "coral|build|reef city|ecosystems",
+      "source_url": "https://www.pexels.com/video/vibrant-tropical-reef-with-diverse-marine-life-34911495/",
+      "pexels_video_id": "34911495",
+      "source_clip_id": "pexels:eae19e18441399ab",
+      "recorded_at": "2026-07-04T22:21:15.973289+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "a09ee569acae3803",
+      "stage": "queue_prune",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "title": "Dairy cows can predict tomorrow's weather",
+      "category": "weather",
+      "script_key": "cows know the weather first watch how they bunch up before a storm their inner clock spots humidity drops that we miss that s why farmers watch them not apps did you learn this wrong too",
+      "angle_key": "cows|close|cue|weather",
+      "source_url": "https://www.pexels.com/video/close-up-of-dairy-cows-feeding-on-farm-31524919/",
+      "pexels_video_id": "31524919",
+      "source_clip_id": "pexels:a09ee569acae3803",
+      "recorded_at": "2026-07-04T22:25:35.248562+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "b9bafca1edaab5fe",
+      "stage": "queue_prune_final",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "title": "Storm clouds reveal a storm's heat engine",
+      "category": "earth_from_space",
+      "script_key": "storm clouds show where a storm is feeding watch the spiral shape because warm ocean air rises near the center and releases heat as clouds build rotation organizes that energy into bands from above the storm is not random it is an engine which satellite clue next",
+      "angle_key": "storm|build|clouds|earth_from_space",
+      "source_url": "https://www.pexels.com/video/vibrant-cherry-blossoms-in-osaka-garden-31387610/",
+      "pexels_video_id": "31387610",
+      "source_clip_id": "pexels:b9bafca1edaab5fe",
+      "recorded_at": "2026-07-04T22:25:35.266757+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "1be4a1ab6de34735",
+      "stage": "queue_prune_final",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "title": "Cows remember faces across the herd",
+      "category": "farm",
+      "script_key": "cows can remember who belongs in the herd watch the calm face first because cows can recognize familiar herd members and people that memory lowers stress when the group feels predictable a quiet look can carry more history than it seems which farm animal should we explain next",
+      "angle_key": "cows|remember|herd memory|farm",
+      "source_url": "https://www.pexels.com/video/a-cow-grazing-on-a-grassy-hill-with-mountains-in-the-background-20597703/",
+      "pexels_video_id": "20597703",
+      "source_clip_id": "pexels:1be4a1ab6de34735",
+      "recorded_at": "2026-07-04T22:25:35.281156+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     },
@@ -193,42 +391,6 @@
       "rewrite_applied": true
     },
     {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-04T22:51:53.485729+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-04T23:12:39.985096+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
       "story_id": "c4d7875612c6ae42",
       "stage": "queue_prune",
       "reasons": [
@@ -261,24 +423,6 @@
       "recorded_at": "2026-07-04T23:18:48.473246+00:00",
       "rewrite_attempted": false,
       "rewrite_applied": false
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-04T23:19:22.185636+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
     },
     {
       "story_id": "f2f9389335ada48d",
@@ -348,152 +492,7 @@
       "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
       "pexels_video_id": "36118169",
       "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-04T23:29:58.964118+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-04T23:44:56.774686+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-04T23:54:16.393823+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "16633fbbaaf9b6c3",
-      "stage": "queue_prune",
-      "reasons": [
-        "copy_subject_mismatch"
-      ],
-      "title": "Storm clouds trace wind bands over the ocean",
-      "category": "earth_from_space",
-      "script_key": "storm clouds can trace wind moving over water watch the long cloud bands because wind moisture and temperature shape where air rises over the ocean the pattern is not random scenery it is atmosphere in motion which ocean sky clue should come next",
-      "angle_key": "storm|trace|cloud bands|earth_from_space",
-      "source_url": "https://www.pexels.com/video/aerial-view-of-arid-desert-landscape-37662603/",
-      "pexels_video_id": "37662603",
-      "source_clip_id": "pexels:16633fbbaaf9b6c3",
-      "recorded_at": "2026-07-05T00:18:18.749634+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "29beb09687822b73",
-      "stage": "queue_repair",
-      "reasons": [
-        "opening_retention_gap_risk",
-        "opening promise is not concrete enough",
-        "queue_score_reject"
-      ],
-      "title": "Coral reefs are cities built by tiny animals",
-      "category": "ecosystems",
-      "script_key": "coral reefs are built by tiny living builders watch the reef texture because coral animals build hard skeletons that stack into habitat fish algae and countless small creatures then use that structure like a city the color sits on top of engineering which habitat next",
-      "angle_key": "coral|build|reef city|ecosystems",
-      "source_url": "https://www.pexels.com/video/scenic-rocky-beach-during-clear-day-35586953/",
-      "pexels_video_id": "35586953",
-      "source_clip_id": "pexels:29beb09687822b73",
-      "recorded_at": "2026-07-05T00:18:18.767521+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "e23e4fd1c5a9a0b0",
-      "stage": "queue_prune",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_angle"
-      ],
-      "title": "Rock layers store ancient environments in stripes",
-      "category": "geology",
-      "script_key": "rock layers are time stamps made of stone watch the stripe pattern because each layer can mark a different setting river mud ocean floor windblown sand or volcanic ash stack enough layers and the cliff becomes a timeline which rock clue should we read next",
-      "angle_key": "rock|store|rock layers|geology",
-      "source_url": "https://www.pexels.com/video/mysterious-rock-formation-in-cave-tunnel-29065930/",
-      "pexels_video_id": "29065930",
-      "source_clip_id": "pexels:e23e4fd1c5a9a0b0",
-      "recorded_at": "2026-07-05T00:18:18.782504+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "473ce5c26c258cc9",
-      "stage": "queue_prune_final",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "title": "Forests can cool the air below them",
-      "category": "forests",
-      "script_key": "forests can cool the air below them watch the shade and mist because leaves block direct sun and release water vapor that combination can make the forest floor feel like a different climate the canopy is a cooling machine not just cover which forest layer next",
-      "angle_key": "forests|cover|cool canopy|forests",
-      "source_url": "https://www.pexels.com/video/waterfall-forest-river-nature-20674422/",
-      "pexels_video_id": "20674422",
-      "source_clip_id": "pexels:473ce5c26c258cc9",
-      "recorded_at": "2026-07-05T00:18:18.796895+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "306024d2cdca558e",
-      "stage": "queue_prune_final",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "title": "Sheep recognize faces across the flock",
-      "category": "farm",
-      "script_key": "sheep can remember familiar faces watch the face and spacing because sheep can learn who is familiar in the flock that recognition helps them stay near safe partners and avoid stress the group is not just a blur to them which farm animal should we compare next",
-      "angle_key": "sheep|remember|group|farm",
-      "source_url": "https://www.pexels.com/video/friendly-sheep-at-the-farm-fence-35288543/",
-      "pexels_video_id": "35288543",
-      "source_clip_id": "pexels:306024d2cdca558e",
-      "recorded_at": "2026-07-05T00:18:18.811811+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "e028a370407c8bde",
-      "stage": "queue_prune_final",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "title": "Sheep recognize faces across the flock",
-      "category": "farm",
-      "script_key": "sheep can remember familiar faces watch the face and spacing because sheep can learn who is familiar in the flock that recognition helps them stay near safe partners and avoid stress the group is not just a blur to them which farm animal should we compare next",
-      "angle_key": "sheep|remember|group|farm",
-      "source_url": "https://www.pexels.com/video/herd-of-sheep-grazing-in-a-meadow-12601294/",
-      "pexels_video_id": "12601294",
-      "source_clip_id": "pexels:e028a370407c8bde",
-      "recorded_at": "2026-07-05T00:18:18.836829+00:00",
+      "recorded_at": "2026-07-05T00:19:53.247507+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     }
