@@ -1,44 +1,55 @@
 {
-  "generated_at": "2026-07-06T16:55:35.799607+00:00",
-  "pending": 23,
+  "generated_at": "2026-07-06T17:02:49.802233+00:00",
+  "pending": 22,
   "states": {
     "rewrite": 21,
-    "publish_ready": 2
+    "publish_ready": 1
   },
   "mechanism_clusters": {
     "face_recognition": 2,
     "beak_signal": 1,
     "visual_stabilization": 1,
-    "call_signal": 1,
-    "scent_map": 1
+    "call_signal": 1
   },
   "rights": {
-    "approved": 23
+    "approved": 22
   },
   "prune_summary": {
-    "pending_before": 31,
-    "pending_after": 23,
-    "rejected": 8,
-    "repair_needed": 1,
-    "repaired": 8,
+    "pending_before": 22,
+    "pending_after": 22,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 4,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 23,
+      "objective_gate:bootstrap_observe_before_scaling": 22,
       "editor_in_chief:subject repeated inside 3-day cooldown": 17,
-      "off_topic_visual": 4,
       "editor_in_chief:script quality gate blocked the narration": 4,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 4,
-      "duplicate_title": 3,
       "editor_in_chief:editorial score 46 is below 62": 3,
-      "script_hook_mismatch": 2,
       "editor_in_chief:editorial score 40 is below 62": 2,
-      "opening_retention_gap_risk": 1,
-      "opening promise is not concrete enough": 1,
-      "queue_score_reject": 1,
-      "duplicate_angle": 1,
       "editor_in_chief:editorial score 49 is below 62": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "2e92a0746eabcbfe",
+      "title": "Bears Los osos huelen comida a kilómetros de distancia",
+      "reasons": [
+        "subject repeated inside 3-day cooldown",
+        "humanity score is too low",
+        "editorial score 35 is below 62"
+      ],
+      "stage": "editor_in_chief"
+    },
+    {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
     {
       "id": "52d1385383f17416",
       "title": "Orangutans use leaves like rain umbrellas",
@@ -107,24 +118,6 @@
         "off_topic_visual"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
-    },
-    {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
     },
     {
       "id": "e73fe7b34f0a1ee9",
@@ -204,30 +197,12 @@
       "stage": "queue_prune"
     },
     {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
-    },
-    {
       "id": "d5905286e8a38b10",
       "title": "Coral reefs are cities built by tiny animals",
       "reasons": [
         "story angle repeated inside 10-day cooldown"
       ],
       "stage": "editor_in_chief"
-    },
-    {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
     },
     {
       "id": "1c62b059568c059c",
@@ -301,6 +276,22 @@
         "editorial score is below publish threshold"
       ],
       "stage": "pre_publish_audit"
+    },
+    {
+      "id": "Coral reefs are cities built by tiny animals",
+      "title": "Coral reefs are cities built by tiny animals",
+      "reasons": [
+        "editorial score is below publish threshold"
+      ],
+      "stage": "pre_publish_audit"
+    },
+    {
+      "id": "89d2f4407036ed3a",
+      "title": "Beetles can steer by the Milky Way",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
     }
   ],
   "top": [
@@ -459,15 +450,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.542,
+            "bootstrap_multiplier": 0.445,
             "can_adjust_strategy": false,
-            "confidence_score": 0.39,
+            "confidence_score": 0.26,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 2
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -477,7 +468,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-06T16:55:11.783949+00:00",
+        "checked_at": "2026-07-06T17:02:32.357495+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -571,7 +562,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 67,
+          "sample_count": 68,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -580,9 +571,8 @@
           "winning_experiments": {
             "cta:specific_question": 46.1,
             "format:fresh_variant": 46.1,
-            "format:winner_inspired": 26.1,
             "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 39.43
+            "thumbnail:new_thumbnail": 46.1
           }
         },
         "frame_zero": {
@@ -1104,15 +1094,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.542,
+            "bootstrap_multiplier": 0.445,
             "can_adjust_strategy": false,
-            "confidence_score": 0.39,
+            "confidence_score": 0.26,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 2
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -1122,7 +1112,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T16:55:11.777621+00:00",
+        "checked_at": "2026-07-06T17:02:32.352833+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1216,7 +1206,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 67,
+          "sample_count": 68,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1225,9 +1215,8 @@
           "winning_experiments": {
             "cta:specific_question": 46.1,
             "format:fresh_variant": 46.1,
-            "format:winner_inspired": 26.1,
             "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 39.43
+            "thumbnail:new_thumbnail": 46.1
           }
         },
         "frame_zero": {
@@ -1595,657 +1584,6 @@
       }
     },
     {
-      "id": "2e92a0746eabcbfe",
-      "title": "Bears can smell a meal long before seeing it",
-      "category": "wildlife",
-      "publish_score": {
-        "approved": true,
-        "category": "wildlife",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "scent_map",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "nose"
-          ],
-          "cue_terms": [
-            "layer",
-            "map",
-            "nose",
-            "rock",
-            "scent"
-          ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early"
-          ],
-          "score": 94.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable",
-            "curiosity_shape"
-          ],
-          "subject": "bears"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 66,
-          "signals": {
-            "comment_potential": 46,
-            "educational_potential": 73,
-            "emotional_potential": 35,
-            "novelty": 69,
-            "replay_potential": 82,
-            "viral_potential": 72,
-            "visual_potential": 69
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "score": 95.8,
-        "state": "publish_ready",
-        "story_format": "body_superpower",
-        "subscriber_conversion": {
-          "comment_probability": 0.253,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "hook_invites_return",
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.297,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 99,
-          "state": "strong",
-          "subscriber_probability": 0.141
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.542,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.39,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-07-06T16:55:12.482321+00:00",
-        "mechanism_cluster": "scent_map",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 95.8,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 95.8,
-      "youtube_brain": {
-        "animal": "bears",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "nose"
-          ],
-          "cue_terms": [
-            "layer",
-            "map",
-            "nose",
-            "rock",
-            "scent"
-          ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early"
-          ],
-          "score": 94.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable",
-            "curiosity_shape"
-          ],
-          "subject": "bears"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "body_superpower",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "bears",
-        "viewer_promise": "See why bears body superpower matters."
-      },
-      "packaging": {
-        "community_prompt": "Which bears clue should Wild Brief compare next in Watch The Cue?",
-        "cta_prompt": "Want more wild behavior explained without the fluff?",
-        "curiosity_gap": {
-          "hook": "Bears can smell a meal long before seeing it.",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "story"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "body superpower",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 67,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:specific_question": 46.1,
-            "format:fresh_variant": 46.1,
-            "format:winner_inspired": 26.1,
-            "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 39.43
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "nose"
-            ],
-            "cue_terms": [
-              "layer",
-              "map",
-              "nose",
-              "rock",
-              "scent"
-            ],
-            "frame_hook_bridge": [],
-            "risks": [
-              "frame_text_not_echoed_early"
-            ],
-            "score": 94.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable",
-              "curiosity_shape"
-            ],
-            "subject": "bears"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Bears can smell a meal long before seeing it",
-          "Bears show why the scent map matters.",
-          "Bears show why the scent map matters.",
-          "Bears show why the scent map matters.",
-          "Bears give away the answer through scent map"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "scent map",
-          "ending_line": "Would you trust your nose that much?",
-          "final_line": "Now the scent map at the start makes sense.",
-          "loop_score": 0.753,
-          "opening_line": "Bears can smell a meal long before seeing it.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "scent map",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.753,
-        "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. Is this adaptation, instinct, or intelligence?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "nose"
-          ],
-          "cue_terms": [
-            "layer",
-            "map",
-            "nose",
-            "rock",
-            "scent"
-          ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early"
-          ],
-          "score": 94.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable",
-            "curiosity_shape"
-          ],
-          "subject": "bears"
-        },
-        "pinned_comment": "Watch the scent map again. Tomorrow in Watch The Cue: another animal signal. Is this adaptation, instinct, or intelligence?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 14.44,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 18,
-          "first_2s_narration": "Bears can smell meal long before seeing it Watch the nose first",
-          "first_frame_text": "SCENT MAP",
-          "first_frame_text_words": 2,
-          "hook": "Bears can smell a meal long before seeing it.",
-          "hook_specificity": 0.78,
-          "hook_words": 8,
-          "loop_score": 0.753,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "nose"
-            ],
-            "cue_terms": [
-              "layer",
-              "map",
-              "nose",
-              "rock",
-              "scent"
-            ],
-            "frame_hook_bridge": [],
-            "risks": [
-              "frame_text_not_echoed_early"
-            ],
-            "score": 94.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable",
-              "curiosity_shape"
-            ],
-            "subject": "bears"
-          },
-          "opening_retention_score": 94.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the scent map, so viewers rewatch the bears clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Bears can smell a meal long before seeing it Watch the nose",
-          "first_frame_text": "SCENT MAP",
-          "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. Is this adaptation, instinct, or intelligence?",
-          "opening_retention_score": 94.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains Bears behavior through the visible scent map.",
-            "series": "Watch The Cue",
-            "subject": "bears",
-            "terms": [
-              "bears",
-              "scent map",
-              "wildlife",
-              "body superpower"
-            ],
-            "title_variant": "Bears behavior: scent map explained",
-            "visible_cue": "scent map"
-          },
-          "series": "Watch The Cue",
-          "subject": "bears",
-          "visible_cue": "scent map"
-        },
-        "risks": [],
-        "score": 96,
-        "search_intent": {
-          "description_line": "This Short explains Bears behavior through the visible scent map.",
-          "series": "Watch The Cue",
-          "subject": "bears",
-          "terms": [
-            "bears",
-            "scent map",
-            "wildlife",
-            "body superpower"
-          ],
-          "title_variant": "Bears behavior: scent map explained",
-          "visible_cue": "scent map"
-        },
-        "selected_variant": {
-          "hook": "Bears can smell a meal long before seeing it",
-          "score": 84,
-          "thumbnail_text": "SCENT MAP",
-          "title": "Bears smell food from miles away"
-        },
-        "series": "Watch The Cue",
-        "series_identity": {
-          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Watch The Cue",
-          "series": "Watch The Cue"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.253,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "hook_invites_return",
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.297,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 99,
-          "state": "strong",
-          "subscriber_probability": 0.141
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "SCENT MAP",
-          "WATCH SCENT MAP",
-          "BEARS SMELL",
-          "SCENT MAP MATTERS",
-          "SCENT MAP FIRST",
-          "SCENT MAP REVEAL",
-          "SCENT MAP CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Bears smell food from miles away",
-          "Bears can smell a meal long before seeing it",
-          "Bears use scent map before they smell",
-          "This scent map gives bears away",
-          "Why bears smell after one scent map",
-          "Bears reveal the answer with scent map",
-          "The scent map that changes the moment",
-          "Bears make one scent map matter",
-          "Bears show the hidden answer in seconds",
-          "Bears: watch this scent map"
-        ],
-        "top_variants": [
-          {
-            "hook": "Bears can smell a meal long before seeing it",
-            "score": 84,
-            "thumbnail_text": "SCENT MAP",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Start with the scent map; it changes the scene",
-            "score": 84,
-            "thumbnail_text": "SCENT MAP",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Watch the scent map; it explains the behavior",
-            "score": 83,
-            "thumbnail_text": "SCENT MAP",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Bears can smell a meal long before seeing it",
-            "score": 77,
-            "thumbnail_text": "WATCH SCENT MAP",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Start with the scent map; it changes the scene",
-            "score": 77,
-            "thumbnail_text": "WATCH SCENT MAP",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Bears can smell a meal long before seeing it",
-            "score": 77,
-            "thumbnail_text": "BEARS SMELL",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Start with the scent map; it changes the scene",
-            "score": 77,
-            "thumbnail_text": "BEARS SMELL",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Bears can smell a meal long before seeing it",
-            "score": 77,
-            "thumbnail_text": "SCENT MAP MATTERS",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Start with the scent map; it changes the scene",
-            "score": 77,
-            "thumbnail_text": "SCENT MAP MATTERS",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Bears can smell a meal long before seeing it",
-            "score": 77,
-            "thumbnail_text": "SCENT MAP FIRST",
-            "title": "Bears smell food from miles away"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "9a8154784d708141",
       "title": "Elephants can feel rumbles through the ground",
       "category": "wildlife",
@@ -2362,7 +1700,7 @@
           },
           "verdict": "rewrite"
         },
-        "score": 95.1,
+        "score": 100,
         "state": "publish_ready",
         "story_format": "body_superpower",
         "subscriber_conversion": {
@@ -2399,15 +1737,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.542,
+            "bootstrap_multiplier": 0.445,
             "can_adjust_strategy": false,
-            "confidence_score": 0.39,
+            "confidence_score": 0.26,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 2
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -2417,16 +1755,16 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T16:55:11.785057+00:00",
+        "checked_at": "2026-07-06T17:02:32.358318+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
         ],
-        "score": 89.1,
+        "score": 94.0,
         "state": "rewrite",
         "template_cluster": ""
       },
-      "queue_score": 89.1,
+      "queue_score": 94.0,
       "youtube_brain": {
         "animal": "elephants",
         "commands": [
@@ -2511,7 +1849,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 67,
+          "sample_count": 68,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -2520,9 +1858,8 @@
           "winning_experiments": {
             "cta:specific_question": 46.1,
             "format:fresh_variant": 46.1,
-            "format:winner_inspired": 26.1,
             "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 39.43
+            "thumbnail:new_thumbnail": 46.1
           }
         },
         "frame_zero": {
@@ -2727,12 +2064,12 @@
           "thumbnail_text": "GROUND SIGNAL",
           "title": "Elephants can feel rumbles through the ground"
         },
-        "series": "Animal Superpowers #7",
+        "series": "Animal Superpowers #8",
         "series_identity": {
-          "continuity_prompt": "Next in Animal Superpowers #7: compare this with another force of nature.",
+          "continuity_prompt": "Next in Animal Superpowers #8: compare this with another force of nature.",
           "episode": 1,
-          "label": "Animal Superpowers #7",
-          "series": "Animal Superpowers #7"
+          "label": "Animal Superpowers #8",
+          "series": "Animal Superpowers #8"
         },
         "state": "magnetic",
         "strengths": [
@@ -3035,15 +2372,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.542,
+            "bootstrap_multiplier": 0.445,
             "can_adjust_strategy": false,
-            "confidence_score": 0.39,
+            "confidence_score": 0.26,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 2
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -3053,7 +2390,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T16:55:11.786667+00:00",
+        "checked_at": "2026-07-06T17:02:32.359503+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -3148,7 +2485,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 67,
+          "sample_count": 68,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -3157,9 +2494,8 @@
           "winning_experiments": {
             "cta:specific_question": 46.1,
             "format:fresh_variant": 46.1,
-            "format:winner_inspired": 26.1,
             "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 39.43
+            "thumbnail:new_thumbnail": 46.1
           }
         },
         "frame_zero": {
@@ -3682,15 +3018,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.542,
+            "bootstrap_multiplier": 0.445,
             "can_adjust_strategy": false,
-            "confidence_score": 0.39,
+            "confidence_score": 0.26,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 2
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -3700,7 +3036,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T16:55:11.788268+00:00",
+        "checked_at": "2026-07-06T17:02:32.360697+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -3797,7 +3133,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 67,
+          "sample_count": 68,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -3806,9 +3142,8 @@
           "winning_experiments": {
             "cta:specific_question": 46.1,
             "format:fresh_variant": 46.1,
-            "format:winner_inspired": 26.1,
             "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 39.43
+            "thumbnail:new_thumbnail": 46.1
           }
         },
         "frame_zero": {
@@ -4332,15 +3667,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.542,
+            "bootstrap_multiplier": 0.445,
             "can_adjust_strategy": false,
-            "confidence_score": 0.39,
+            "confidence_score": 0.26,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 2
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -4350,7 +3685,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T16:55:11.756399+00:00",
+        "checked_at": "2026-07-06T17:02:32.336831+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4444,7 +3779,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 67,
+          "sample_count": 68,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -4453,9 +3788,8 @@
           "winning_experiments": {
             "cta:specific_question": 46.1,
             "format:fresh_variant": 46.1,
-            "format:winner_inspired": 26.1,
             "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 39.43
+            "thumbnail:new_thumbnail": 46.1
           }
         },
         "frame_zero": {
@@ -4974,15 +4308,15 @@
         "title_score": 90,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.542,
+            "bootstrap_multiplier": 0.445,
             "can_adjust_strategy": false,
-            "confidence_score": 0.39,
+            "confidence_score": 0.26,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 2
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -4992,7 +4326,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T16:55:11.758875+00:00",
+        "checked_at": "2026-07-06T17:02:32.338611+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5089,7 +4423,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 67,
+          "sample_count": 68,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -5098,9 +4432,8 @@
           "winning_experiments": {
             "cta:specific_question": 46.1,
             "format:fresh_variant": 46.1,
-            "format:winner_inspired": 26.1,
             "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 39.43
+            "thumbnail:new_thumbnail": 46.1
           }
         },
         "frame_zero": {
@@ -5628,15 +4961,15 @@
         "title_score": 90,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.542,
+            "bootstrap_multiplier": 0.445,
             "can_adjust_strategy": false,
-            "confidence_score": 0.39,
+            "confidence_score": 0.26,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 2
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -5646,7 +4979,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T16:55:11.760915+00:00",
+        "checked_at": "2026-07-06T17:02:32.340136+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5743,7 +5076,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 67,
+          "sample_count": 68,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -5752,9 +5085,8 @@
           "winning_experiments": {
             "cta:specific_question": 46.1,
             "format:fresh_variant": 46.1,
-            "format:winner_inspired": 26.1,
             "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 39.43
+            "thumbnail:new_thumbnail": 46.1
           }
         },
         "frame_zero": {
@@ -6284,15 +5616,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.542,
+            "bootstrap_multiplier": 0.445,
             "can_adjust_strategy": false,
-            "confidence_score": 0.39,
+            "confidence_score": 0.26,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 2
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -6302,7 +5634,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T16:55:11.764370+00:00",
+        "checked_at": "2026-07-06T17:02:32.342890+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6403,7 +5735,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 67,
+          "sample_count": 68,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6412,9 +5744,8 @@
           "winning_experiments": {
             "cta:specific_question": 46.1,
             "format:fresh_variant": 46.1,
-            "format:winner_inspired": 26.1,
             "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 39.43
+            "thumbnail:new_thumbnail": 46.1
           }
         },
         "frame_zero": {
@@ -6947,15 +6278,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.542,
+            "bootstrap_multiplier": 0.445,
             "can_adjust_strategy": false,
-            "confidence_score": 0.39,
+            "confidence_score": 0.26,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 2
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -6965,7 +6296,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T16:55:11.766347+00:00",
+        "checked_at": "2026-07-06T17:02:32.344393+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7061,7 +6392,7 @@
           },
           "explore_rate": 0.1,
           "mode": "explore",
-          "sample_count": 67,
+          "sample_count": 68,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -7070,9 +6401,8 @@
           "winning_experiments": {
             "cta:specific_question": 46.1,
             "format:fresh_variant": 46.1,
-            "format:winner_inspired": 26.1,
             "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 39.43
+            "thumbnail:new_thumbnail": 46.1
           }
         },
         "frame_zero": {
@@ -7598,15 +6928,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.542,
+            "bootstrap_multiplier": 0.445,
             "can_adjust_strategy": false,
-            "confidence_score": 0.39,
+            "confidence_score": 0.26,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 2
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -7616,7 +6946,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T16:55:11.767756+00:00",
+        "checked_at": "2026-07-06T17:02:32.345464+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7711,7 +7041,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 67,
+          "sample_count": 68,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -7720,9 +7050,8 @@
           "winning_experiments": {
             "cta:specific_question": 46.1,
             "format:fresh_variant": 46.1,
-            "format:winner_inspired": 26.1,
             "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 39.43
+            "thumbnail:new_thumbnail": 46.1
           }
         },
         "frame_zero": {
@@ -8244,15 +7573,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.542,
+            "bootstrap_multiplier": 0.445,
             "can_adjust_strategy": false,
-            "confidence_score": 0.39,
+            "confidence_score": 0.26,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 2
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -8262,7 +7591,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T16:55:11.770036+00:00",
+        "checked_at": "2026-07-06T17:02:32.347181+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8359,7 +7688,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 67,
+          "sample_count": 68,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -8368,9 +7697,8 @@
           "winning_experiments": {
             "cta:specific_question": 46.1,
             "format:fresh_variant": 46.1,
-            "format:winner_inspired": 26.1,
             "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 39.43
+            "thumbnail:new_thumbnail": 46.1
           }
         },
         "frame_zero": {
@@ -8892,15 +8220,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.542,
+            "bootstrap_multiplier": 0.445,
             "can_adjust_strategy": false,
-            "confidence_score": 0.39,
+            "confidence_score": 0.26,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 2
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -8910,7 +8238,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T16:55:11.773766+00:00",
+        "checked_at": "2026-07-06T17:02:32.349978+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9005,7 +8333,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 67,
+          "sample_count": 68,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -9014,9 +8342,8 @@
           "winning_experiments": {
             "cta:specific_question": 46.1,
             "format:fresh_variant": 46.1,
-            "format:winner_inspired": 26.1,
             "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 39.43
+            "thumbnail:new_thumbnail": 46.1
           }
         },
         "frame_zero": {
@@ -9540,15 +8867,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.542,
+            "bootstrap_multiplier": 0.445,
             "can_adjust_strategy": false,
-            "confidence_score": 0.39,
+            "confidence_score": 0.26,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 2
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -9558,7 +8885,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T16:55:11.775256+00:00",
+        "checked_at": "2026-07-06T17:02:32.351082+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9653,7 +8980,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 67,
+          "sample_count": 68,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -9662,9 +8989,8 @@
           "winning_experiments": {
             "cta:specific_question": 46.1,
             "format:fresh_variant": 46.1,
-            "format:winner_inspired": 26.1,
             "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 39.43
+            "thumbnail:new_thumbnail": 46.1
           }
         },
         "frame_zero": {
@@ -10188,15 +9514,15 @@
         "title_score": 90,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.542,
+            "bootstrap_multiplier": 0.445,
             "can_adjust_strategy": false,
-            "confidence_score": 0.39,
+            "confidence_score": 0.26,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 2
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [
@@ -10209,7 +9535,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T16:55:11.779437+00:00",
+        "checked_at": "2026-07-06T17:02:32.354162+00:00",
         "mechanism_cluster": "visual_stabilization",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10305,7 +9631,7 @@
           },
           "explore_rate": 0.1,
           "mode": "explore",
-          "sample_count": 67,
+          "sample_count": 68,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -10314,9 +9640,8 @@
           "winning_experiments": {
             "cta:specific_question": 46.1,
             "format:fresh_variant": 46.1,
-            "format:winner_inspired": 26.1,
             "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 39.43
+            "thumbnail:new_thumbnail": 46.1
           }
         },
         "frame_zero": {
@@ -10685,6 +10010,653 @@
       }
     },
     {
+      "id": "d82a645314765f17",
+      "title": "Lions have dark ear marks cubs can follow",
+      "category": "wildlife",
+      "publish_score": {
+        "approved": true,
+        "category": "wildlife",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ear",
+            "mark"
+          ],
+          "cue_terms": [
+            "ear",
+            "mark"
+          ],
+          "frame_hook_bridge": [
+            "ear",
+            "mark"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "lions"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 68,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 73,
+            "emotional_potential": 35,
+            "novelty": 59,
+            "replay_potential": 82,
+            "viral_potential": 72,
+            "visual_potential": 79
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 76,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 66
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "survival_trick",
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.445,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.26,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-07-06T17:02:32.362129+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling",
+          "editor_in_chief:subject repeated inside 3-day cooldown",
+          "editor_in_chief:story angle repeated inside 10-day cooldown",
+          "editor_in_chief:editorial score 49 is below 62"
+        ],
+        "score": 64.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 64.0,
+      "youtube_brain": {
+        "animal": "lions",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ear",
+            "mark"
+          ],
+          "cue_terms": [
+            "ear",
+            "mark"
+          ],
+          "frame_hook_bridge": [
+            "ear",
+            "mark"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "lions"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "survival_trick",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "lions",
+        "viewer_promise": "See why lions survival trick matters."
+      },
+      "packaging": {
+        "community_prompt": "Which lions clue should Wild Brief compare next in Animal Superpowers?",
+        "cta_prompt": "Want more wild behavior explained without the fluff?",
+        "curiosity_gap": {
+          "hook": "Why do these lions change after the ear marks?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "survival trick",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 68,
+          "winners": {
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:specific_question": 46.1,
+            "format:fresh_variant": 46.1,
+            "hook:new_hook": 46.1,
+            "thumbnail:new_thumbnail": 46.1
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "ear",
+              "mark"
+            ],
+            "cue_terms": [
+              "ear",
+              "mark"
+            ],
+            "frame_hook_bridge": [
+              "ear",
+              "mark"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "lions"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Lions have dark ear marks cubs can follow",
+          "Lions show why the ear marks matters.",
+          "Lions show why the ear marks matters.",
+          "Lions show why the ear marks matters.",
+          "Lions give away the answer through ear marks"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "ear marks",
+          "ending_line": "Would you spot it?",
+          "final_line": "Now the ear marks at the start make sense.",
+          "loop_score": 0.739,
+          "opening_line": "Lions have dark ear marks cubs can follow.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "ear marks",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.739,
+        "next_episode_question": "Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ear",
+            "mark"
+          ],
+          "cue_terms": [
+            "ear",
+            "mark"
+          ],
+          "frame_hook_bridge": [
+            "ear",
+            "mark"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "lions"
+        },
+        "pinned_comment": "Watch the ear marks again. Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 14.68,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 19,
+          "first_2s_narration": "Lions have dark ear marks cubs can follow Watch the backs of",
+          "first_frame_text": "EAR MARKS",
+          "first_frame_text_words": 2,
+          "hook": "Lions have dark ear marks cubs can follow.",
+          "hook_specificity": 0.78,
+          "hook_words": 8,
+          "loop_score": 0.739,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "ear",
+              "mark"
+            ],
+            "cue_terms": [
+              "ear",
+              "mark"
+            ],
+            "frame_hook_bridge": [
+              "ear",
+              "mark"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "lions"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the ear marks, so viewers rewatch the lions clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 76,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 66
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Lions have dark ear marks cubs can follow Watch the backs of",
+          "first_frame_text": "EAR MARKS",
+          "next_episode_question": "Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Lions behavior through the visible ear marks.",
+            "series": "Animal Superpowers",
+            "subject": "lions",
+            "terms": [
+              "lions",
+              "ear marks",
+              "wildlife",
+              "survival trick"
+            ],
+            "title_variant": "Lions behavior: ear marks explained",
+            "visible_cue": "ear marks"
+          },
+          "series": "Animal Superpowers",
+          "subject": "lions",
+          "visible_cue": "ear marks"
+        },
+        "risks": [],
+        "score": 97,
+        "search_intent": {
+          "description_line": "This Short explains Lions behavior through the visible ear marks.",
+          "series": "Animal Superpowers",
+          "subject": "lions",
+          "terms": [
+            "lions",
+            "ear marks",
+            "wildlife",
+            "survival trick"
+          ],
+          "title_variant": "Lions behavior: ear marks explained",
+          "visible_cue": "ear marks"
+        },
+        "selected_variant": {
+          "hook": "Lions have dark ear marks cubs can follow",
+          "score": 82,
+          "thumbnail_text": "EAR MARKS",
+          "title": "Lions use dark ear marks to guide cubs"
+        },
+        "series": "Animal Superpowers #8",
+        "series_identity": {
+          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature.",
+          "episode": 8,
+          "label": "Animal Superpowers #8",
+          "series": "Animal Superpowers"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "EAR MARKS",
+          "WATCH EAR MARKS",
+          "LIONS FOLLOW",
+          "EAR MARKS MATTERS",
+          "EAR MARKS FIRST",
+          "EAR MARKS REVEAL",
+          "EAR MARKS CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Lions use dark ear marks to guide cubs",
+          "Lions have dark ear marks cubs can follow",
+          "Lions use ear marks before they follow",
+          "Why lions follow after one ear marks",
+          "Lions reveal the answer with ear marks",
+          "The ear marks that changes the moment",
+          "Lions make one ear marks matter",
+          "Lions show the hidden answer in seconds",
+          "Lions: watch this ear marks"
+        ],
+        "top_variants": [
+          {
+            "hook": "Lions have dark ear marks cubs can follow",
+            "score": 82,
+            "thumbnail_text": "EAR MARKS",
+            "title": "Lions use dark ear marks to guide cubs"
+          },
+          {
+            "hook": "Watch the ear marks; it explains the behavior",
+            "score": 82,
+            "thumbnail_text": "EAR MARKS",
+            "title": "Lions use dark ear marks to guide cubs"
+          },
+          {
+            "hook": "Start with the ear marks; it changes the scene",
+            "score": 82,
+            "thumbnail_text": "EAR MARKS",
+            "title": "Lions use dark ear marks to guide cubs"
+          },
+          {
+            "hook": "Start with the ear marks; it changes the scene",
+            "score": 76,
+            "thumbnail_text": "EAR MARKS FIRST",
+            "title": "Lions use dark ear marks to guide cubs"
+          },
+          {
+            "hook": "Lions have dark ear marks cubs can follow",
+            "score": 75,
+            "thumbnail_text": "WATCH EAR MARKS",
+            "title": "Lions use dark ear marks to guide cubs"
+          },
+          {
+            "hook": "Watch the ear marks; it explains the behavior",
+            "score": 75,
+            "thumbnail_text": "WATCH EAR MARKS",
+            "title": "Lions use dark ear marks to guide cubs"
+          },
+          {
+            "hook": "Start with the ear marks; it changes the scene",
+            "score": 75,
+            "thumbnail_text": "WATCH EAR MARKS",
+            "title": "Lions use dark ear marks to guide cubs"
+          },
+          {
+            "hook": "Lions have dark ear marks cubs can follow",
+            "score": 75,
+            "thumbnail_text": "LIONS FOLLOW",
+            "title": "Lions use dark ear marks to guide cubs"
+          },
+          {
+            "hook": "Watch the ear marks; it explains the behavior",
+            "score": 75,
+            "thumbnail_text": "LIONS FOLLOW",
+            "title": "Lions use dark ear marks to guide cubs"
+          },
+          {
+            "hook": "Start with the ear marks; it changes the scene",
+            "score": 75,
+            "thumbnail_text": "LIONS FOLLOW",
+            "title": "Lions use dark ear marks to guide cubs"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "8e9710036cf1db90",
       "title": "Plants use trap hairs to count touches before closing",
       "category": "plants",
@@ -10842,15 +10814,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.542,
+            "bootstrap_multiplier": 0.445,
             "can_adjust_strategy": false,
-            "confidence_score": 0.39,
+            "confidence_score": 0.26,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 2
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -10860,7 +10832,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T16:55:11.790294+00:00",
+        "checked_at": "2026-07-06T17:02:32.363643+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10958,7 +10930,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 67,
+          "sample_count": 68,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -10967,9 +10939,8 @@
           "winning_experiments": {
             "cta:specific_question": 46.1,
             "format:fresh_variant": 46.1,
-            "format:winner_inspired": 26.1,
             "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 39.43
+            "thumbnail:new_thumbnail": 46.1
           }
         },
         "frame_zero": {
@@ -11493,15 +11464,15 @@
         "title_score": 74,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.542,
+            "bootstrap_multiplier": 0.445,
             "can_adjust_strategy": false,
-            "confidence_score": 0.39,
+            "confidence_score": 0.26,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 2
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -11511,7 +11482,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T16:55:11.792667+00:00",
+        "checked_at": "2026-07-06T17:02:32.365382+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11609,7 +11580,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 67,
+          "sample_count": 68,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -11618,9 +11589,8 @@
           "winning_experiments": {
             "cta:specific_question": 46.1,
             "format:fresh_variant": 46.1,
-            "format:winner_inspired": 26.1,
             "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 39.43
+            "thumbnail:new_thumbnail": 46.1
           }
         },
         "frame_zero": {
@@ -11990,649 +11960,6 @@
       }
     },
     {
-      "id": "a4ca94af1a59d5df",
-      "title": "Fox eyes glow at night in a way you didn't expect",
-      "category": "nocturnal",
-      "publish_score": {
-        "approved": true,
-        "category": "nocturnal",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.317,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.089,
-          "data_quality": "estimated",
-          "data_quality_score": 0.35,
-          "minimum_sample_size": 28,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.09.",
-          "recommendation_strength": "observe",
-          "sample_size": 6
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 86,
-        "objective_gate": {
-          "confidence_score": 0.089,
-          "mechanism_cluster": "face_recognition",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "eyes"
-          ],
-          "cue_terms": [
-            "eyes",
-            "face",
-            "memor"
-          ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early",
-            "missing_watch_instruction"
-          ],
-          "score": 82.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "visible_cue_repeated_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "fox"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.335,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-          "reasons": [
-            "borderline_opportunity_observe"
-          ],
-          "score": 54,
-          "signals": {
-            "comment_potential": 54,
-            "educational_potential": 50,
-            "emotional_potential": 27,
-            "novelty": 37,
-            "replay_potential": 76,
-            "viral_potential": 37,
-            "visual_potential": 77
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.335,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-          "reasons": [],
-          "score": 82,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 82,
-            "visual_score": 82
-          },
-          "verdict": "ready"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "rare_nature",
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.331,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.108,
-            "data_quality": "estimated",
-            "data_quality_score": 0.45,
-            "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.542,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.39,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-07-06T16:55:11.754067+00:00",
-        "mechanism_cluster": "face_recognition",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling",
-          "editor_in_chief:subject repeated inside 3-day cooldown"
-        ],
-        "score": 60.0,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 60.0,
-      "youtube_brain": {
-        "animal": "fox",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "eyes"
-          ],
-          "cue_terms": [
-            "eyes",
-            "face",
-            "memor"
-          ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early",
-            "missing_watch_instruction"
-          ],
-          "score": 82.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "visible_cue_repeated_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "fox"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "rare_nature",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "fox",
-        "viewer_promise": "See why fox rare nature matters."
-      },
-      "packaging": {
-        "community_prompt": "Which fox clue should Wild Brief compare next in Night Shift Nature?",
-        "cta_prompt": "Follow for one animal signal a day.",
-        "curiosity_gap": {
-          "hook": "Why does this fox changes after the face memory?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": false,
-          "notes": [],
-          "recommended_duration_s": 18,
-          "recommended_format": "rare nature",
-          "score": 100.0,
-          "violations": [
-            "script does not expose enough concrete visual detail"
-          ]
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 67,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:specific_question": 46.1,
-            "format:fresh_variant": 46.1,
-            "format:winner_inspired": 26.1,
-            "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 39.43
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "eyes"
-            ],
-            "cue_terms": [
-              "eyes",
-              "face",
-              "memor"
-            ],
-            "frame_hook_bridge": [],
-            "risks": [
-              "frame_text_not_echoed_early",
-              "missing_watch_instruction"
-            ],
-            "score": 82.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "visible_cue_repeated_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "fox"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 3
-        },
-        "hook_options": [
-          "Fox eyes don't look human",
-          "Fox shows why the face memory matters.",
-          "Fox shows why the face memory matters.",
-          "Fox shows why the face memory matters.",
-          "Fox shows why the face memory matters."
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "watch face memory",
-          "ending_line": "Would you have guessed their pupils are built for stealth hunts.",
-          "final_line": "Now the watch face memory at the start makes sense.",
-          "loop_score": 1.0,
-          "opening_line": "Fox eyes don't look human",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "watch face memory",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 1.0,
-        "next_episode_question": "Tomorrow in Night Shift Nature: another animal signal. What part of this feels most impossible?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "eyes"
-          ],
-          "cue_terms": [
-            "eyes",
-            "face",
-            "memor"
-          ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early",
-            "missing_watch_instruction"
-          ],
-          "score": 82.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "visible_cue_repeated_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "fox"
-        },
-        "pinned_comment": "Watch the face memory again. Tomorrow in Night Shift Nature: another animal signal. What part of this feels most impossible?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 14.74,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 19,
-          "first_2s_narration": "Fox eyes don't look human See those dark pupils They're vertical slits",
-          "first_frame_text": "WATCH FACE MEMORY",
-          "first_frame_text_words": 3,
-          "hook": "Fox eyes don't look human",
-          "hook_specificity": 0.78,
-          "hook_words": 5,
-          "loop_score": 1.0,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "eyes"
-            ],
-            "cue_terms": [
-              "eyes",
-              "face",
-              "memor"
-            ],
-            "frame_hook_bridge": [],
-            "risks": [
-              "frame_text_not_echoed_early",
-              "missing_watch_instruction"
-            ],
-            "score": 82.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "visible_cue_repeated_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "fox"
-          },
-          "opening_retention_score": 82.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the face memory, so viewers rewatch the fox clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.335,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
-          "reasons": [],
-          "score": 82,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 82,
-            "visual_score": 82
-          },
-          "verdict": "ready"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Fox eyes don't look human See those dark pupils They're vertical slits",
-          "first_frame_text": "WATCH FACE MEMORY",
-          "next_episode_question": "Tomorrow in Night Shift Nature: another animal signal. What part of this feels most impossible?",
-          "opening_retention_score": 82.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains Fox behavior through the visible face memory.",
-            "series": "Night Shift Nature",
-            "subject": "fox",
-            "terms": [
-              "fox",
-              "face memory",
-              "nocturnal",
-              "rare nature"
-            ],
-            "title_variant": "Fox behavior: face memory explained",
-            "visible_cue": "face memory"
-          },
-          "series": "Night Shift Nature",
-          "subject": "fox",
-          "visible_cue": "face memory"
-        },
-        "risks": [
-          "script does not expose enough concrete visual detail"
-        ],
-        "score": 99,
-        "search_intent": {
-          "description_line": "This Short explains Fox behavior through the visible face memory.",
-          "series": "Night Shift Nature",
-          "subject": "fox",
-          "terms": [
-            "fox",
-            "face memory",
-            "nocturnal",
-            "rare nature"
-          ],
-          "title_variant": "Fox behavior: face memory explained",
-          "visible_cue": "face memory"
-        },
-        "selected_variant": {
-          "hook": "Fox eyes don't look human",
-          "score": 61,
-          "thumbnail_text": "WATCH FACE MEMORY",
-          "title": "Fox eyes glow at night in a way you didn't expect"
-        },
-        "series": "Night Shift Nature #3",
-        "series_identity": {
-          "continuity_prompt": "Next in Night Shift Nature: compare this with another force of nature.",
-          "episode": 3,
-          "label": "Night Shift Nature #3",
-          "series": "Night Shift Nature"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.331,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.108,
-            "data_quality": "estimated",
-            "data_quality_score": 0.45,
-            "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "FACE MEMORY",
-          "WATCH FACE MEMORY",
-          "FOXES GLOW",
-          "FACE MEMORY MATTERS",
-          "FACE MEMORY FIRST",
-          "FACE MEMORY REVEAL",
-          "FACE MEMORY CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Fox eyes glow at night in a way you didn't expect",
-          "Foxes use eye contact before they glow",
-          "This eye contact gives foxes away",
-          "Why foxes glow after one eye contact",
-          "Foxes reveal the answer with eye contact",
-          "The eye contact that changes the moment",
-          "Foxes make one eye contact matter",
-          "Foxes show the hidden answer in seconds",
-          "Foxes: watch this eye contact",
-          "Watch foxes after the eye contact"
-        ],
-        "top_variants": [
-          {
-            "hook": "Fox eyes don't look human",
-            "score": 61,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "Fox eyes glow at night in a way you didn't expect"
-          },
-          {
-            "hook": "Start with the eye contact; it changes the scene",
-            "score": 61,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "Fox eyes glow at night in a way you didn't expect"
-          },
-          {
-            "hook": "Fox eyes don't look human",
-            "score": 61,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "Foxes use eye contact before they glow"
-          },
-          {
-            "hook": "Start with the eye contact; it changes the scene",
-            "score": 61,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "Foxes use eye contact before they glow"
-          },
-          {
-            "hook": "Fox eyes don't look human",
-            "score": 61,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "Why foxes glow after one eye contact"
-          },
-          {
-            "hook": "Start with the eye contact; it changes the scene",
-            "score": 61,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "Why foxes glow after one eye contact"
-          },
-          {
-            "hook": "Fox eyes don't look human",
-            "score": 60,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Fox eyes glow at night in a way you didn't expect"
-          },
-          {
-            "hook": "Watch the eye contact; it explains the behavior",
-            "score": 60,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Fox eyes glow at night in a way you didn't expect"
-          },
-          {
-            "hook": "Start with the eye contact; it changes the scene",
-            "score": 60,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Fox eyes glow at night in a way you didn't expect"
-          },
-          {
-            "hook": "Watch the eye contact; it explains the behavior",
-            "score": 60,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "Fox eyes glow at night in a way you didn't expect"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "d28a276ff0822870",
       "title": "Storm clouds show air layers changing over time",
       "category": "earth_from_space",
@@ -12791,15 +12118,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.542,
+            "bootstrap_multiplier": 0.445,
             "can_adjust_strategy": false,
-            "confidence_score": 0.39,
+            "confidence_score": 0.26,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 2
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -12809,7 +12136,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T16:55:11.772466+00:00",
+        "checked_at": "2026-07-06T17:02:32.349000+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12906,7 +12233,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 67,
+          "sample_count": 68,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -12915,9 +12242,8 @@
           "winning_experiments": {
             "cta:specific_question": 46.1,
             "format:fresh_variant": 46.1,
-            "format:winner_inspired": 26.1,
             "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 39.43
+            "thumbnail:new_thumbnail": 46.1
           }
         },
         "frame_zero": {
@@ -13273,6 +12599,643 @@
             "score": 73,
             "thumbnail_text": "CLOUD DECK MATTERS",
             "title": "Storm clouds show air layers changing over time"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
+      "id": "7297fa80243db8ee",
+      "title": "Macaws use beaks like climbing tools",
+      "category": "birds",
+      "publish_score": {
+        "approved": true,
+        "category": "birds",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 88,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "beak"
+          ],
+          "cue_terms": [
+            "beak",
+            "tool"
+          ],
+          "frame_hook_bridge": [
+            "beak"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "macaws"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 66,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 66,
+            "emotional_potential": 35,
+            "novelty": 59,
+            "replay_potential": 82,
+            "viral_potential": 67,
+            "visual_potential": 79
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 77,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 66
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "animal_memory",
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "title_score": 84,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.445,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.26,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-07-06T17:02:32.355829+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling",
+          "editor_in_chief:subject repeated inside 3-day cooldown"
+        ],
+        "score": 60.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 60.0,
+      "youtube_brain": {
+        "animal": "macaws",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "beak"
+          ],
+          "cue_terms": [
+            "beak",
+            "tool"
+          ],
+          "frame_hook_bridge": [
+            "beak"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "macaws"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "animal_memory",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "macaws",
+        "viewer_promise": "See why macaws animal memory matters."
+      },
+      "packaging": {
+        "community_prompt": "Which macaws clue should Wild Brief compare next in Sky Intelligence?",
+        "cta_prompt": "Want one animal signal a day? Follow for the next clue.",
+        "curiosity_gap": {
+          "hook": "Why do these macaws change after the beak tool?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "animal memory",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 68,
+          "winners": {
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:specific_question": 46.1,
+            "format:fresh_variant": 46.1,
+            "hook:new_hook": 46.1,
+            "thumbnail:new_thumbnail": 46.1
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "beak"
+            ],
+            "cue_terms": [
+              "beak",
+              "tool"
+            ],
+            "frame_hook_bridge": [
+              "beak"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "macaws"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Macaws use their beak like a third foot",
+          "Macaws show why the beak tool matters.",
+          "Macaws show why the beak tool matters.",
+          "Macaws show why the beak tool matters.",
+          "Macaws give away the answer through beak tool"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "beak tool",
+          "ending_line": "Which bird tool should come next?",
+          "final_line": "Now the beak tool at the start makes sense.",
+          "loop_score": 0.92,
+          "opening_line": "Macaws use their beak like a third foot.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "beak tool",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.92,
+        "next_episode_question": "Tomorrow in Sky Intelligence: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "beak"
+          ],
+          "cue_terms": [
+            "beak",
+            "tool"
+          ],
+          "frame_hook_bridge": [
+            "beak"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "macaws"
+        },
+        "pinned_comment": "Watch the beak tool again. Tomorrow in Sky Intelligence: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 14.71,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 17,
+          "first_2s_narration": "Macaws use their beak like third foot Watch the beak touch before",
+          "first_frame_text": "BEAK TOOL",
+          "first_frame_text_words": 2,
+          "hook": "Macaws use their beak like a third foot.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.92,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "beak"
+            ],
+            "cue_terms": [
+              "beak",
+              "tool"
+            ],
+            "frame_hook_bridge": [
+              "beak"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "macaws"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the beak tool, so viewers rewatch the macaws clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 77,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 66
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Macaws use their beak like a third foot Watch the beak touch",
+          "first_frame_text": "BEAK TOOL",
+          "next_episode_question": "Tomorrow in Sky Intelligence: another animal signal. Is this adaptation, instinct, or intelligence?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Macaws behavior through the visible beak tool.",
+            "series": "Sky Intelligence",
+            "subject": "macaws",
+            "terms": [
+              "macaws",
+              "beak tool",
+              "birds",
+              "animal memory"
+            ],
+            "title_variant": "Macaws behavior: beak tool explained",
+            "visible_cue": "beak tool"
+          },
+          "series": "Sky Intelligence",
+          "subject": "macaws",
+          "visible_cue": "beak tool"
+        },
+        "risks": [
+          "missing_action_word"
+        ],
+        "score": 89,
+        "search_intent": {
+          "description_line": "This Short explains Macaws behavior through the visible beak tool.",
+          "series": "Sky Intelligence",
+          "subject": "macaws",
+          "terms": [
+            "macaws",
+            "beak tool",
+            "birds",
+            "animal memory"
+          ],
+          "title_variant": "Macaws behavior: beak tool explained",
+          "visible_cue": "beak tool"
+        },
+        "selected_variant": {
+          "hook": "Macaws use their beak like a third foot",
+          "score": 81,
+          "thumbnail_text": "BEAK TOOL",
+          "title": "Macaws use beaks like climbing tools"
+        },
+        "series": "Sky Intelligence #4",
+        "series_identity": {
+          "continuity_prompt": "Next in Sky Intelligence #4: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Sky Intelligence #4",
+          "series": "Sky Intelligence #4"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "BEAK TOOL",
+          "WATCH BEAK TOOL",
+          "MACAWS MOVE",
+          "BEAK TOOL MATTERS",
+          "BEAK TOOL FIRST",
+          "BEAK TOOL REVEAL",
+          "BEAK TOOL CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Macaws use beaks like climbing tools",
+          "Macaws use beak tool before they move",
+          "This beak tool gives macaws away",
+          "Why macaws move after one beak tool",
+          "Macaws reveal the answer with beak tool",
+          "The beak tool that changes the moment",
+          "Macaws make one beak tool matter",
+          "Macaws show the hidden answer in seconds",
+          "Macaws: watch this beak tool",
+          "Watch macaws after the beak tool"
+        ],
+        "top_variants": [
+          {
+            "hook": "Macaws use their beak like a third foot",
+            "score": 81,
+            "thumbnail_text": "BEAK TOOL",
+            "title": "Macaws use beaks like climbing tools"
+          },
+          {
+            "hook": "Watch the beak tool; it explains the behavior",
+            "score": 81,
+            "thumbnail_text": "BEAK TOOL",
+            "title": "Macaws use beaks like climbing tools"
+          },
+          {
+            "hook": "Start with the beak tool; it changes the scene",
+            "score": 81,
+            "thumbnail_text": "BEAK TOOL",
+            "title": "Macaws use beaks like climbing tools"
+          },
+          {
+            "hook": "Macaws use their beak like a third foot",
+            "score": 74,
+            "thumbnail_text": "WATCH BEAK TOOL",
+            "title": "Macaws use beaks like climbing tools"
+          },
+          {
+            "hook": "Watch the beak tool; it explains the behavior",
+            "score": 74,
+            "thumbnail_text": "WATCH BEAK TOOL",
+            "title": "Macaws use beaks like climbing tools"
+          },
+          {
+            "hook": "Start with the beak tool; it changes the scene",
+            "score": 74,
+            "thumbnail_text": "WATCH BEAK TOOL",
+            "title": "Macaws use beaks like climbing tools"
+          },
+          {
+            "hook": "Macaws use their beak like a third foot",
+            "score": 74,
+            "thumbnail_text": "MACAWS MOVE",
+            "title": "Macaws use beaks like climbing tools"
+          },
+          {
+            "hook": "Watch the beak tool; it explains the behavior",
+            "score": 74,
+            "thumbnail_text": "MACAWS MOVE",
+            "title": "Macaws use beaks like climbing tools"
+          },
+          {
+            "hook": "Start with the beak tool; it changes the scene",
+            "score": 74,
+            "thumbnail_text": "MACAWS MOVE",
+            "title": "Macaws use beaks like climbing tools"
+          },
+          {
+            "hook": "Macaws use their beak like a third foot",
+            "score": 74,
+            "thumbnail_text": "BEAK TOOL MATTERS",
+            "title": "Macaws use beaks like climbing tools"
           }
         ]
       },

@@ -1,29 +1,30 @@
 {
   "total": 1000,
   "reasons": {
-    "duplicate_title": 438,
-    "off_topic_visual": 209,
-    "duplicate_script": 174,
-    "duplicate_angle": 165,
-    "thumbnail_text_not_scannable": 100,
-    "thumbnail_not_2_4_words": 99,
-    "queue_score_reject": 91,
-    "editorial score is below publish threshold": 78,
-    "copy_subject_mismatch": 76,
-    "script_hook_mismatch": 75,
-    "opening_retention_gap_risk": 24,
-    "rights_guard_person_manual_review": 24,
-    "script_subject_mismatch": 21,
+    "duplicate_title": 471,
+    "off_topic_visual": 245,
+    "duplicate_script": 192,
+    "duplicate_angle": 184,
+    "queue_score_reject": 96,
+    "copy_subject_mismatch": 90,
+    "script_hook_mismatch": 84,
+    "editorial score is below publish threshold": 79,
+    "script_subject_mismatch": 28,
+    "rights_guard_person_manual_review": 26,
+    "opening_retention_gap_risk": 25,
     "low_opportunity_score": 21,
-    "non_animal_body_language": 15,
-    "subject repeated inside 3-day cooldown": 14,
-    "humanity score is too low": 14,
+    "thumbnail_text_not_scannable": 17,
+    "script_word_loop": 16,
+    "non_animal_body_language": 16,
+    "subject repeated inside 3-day cooldown": 16,
+    "humanity score is too low": 16,
+    "thumbnail_not_2_4_words": 16,
     "opening promise is not concrete enough": 14,
-    "subject_not_immediately_clear": 11,
-    "script_word_loop": 10,
-    "payoff_not_explicit": 10,
-    "script does not expose enough concrete visual detail": 6,
+    "subject_not_immediately_clear": 12,
+    "payoff_not_explicit": 11,
+    "script does not expose enough concrete visual detail": 7,
     "editorial score 37 is below 62": 6,
+    "bad_plural_verb": 5,
     "title_shape_weak": 5,
     "missing_visual_cue": 5,
     "script quality gate blocked the narration": 4,
@@ -31,25 +32,60 @@
     "no_action_promise": 3,
     "missing_action_word": 3,
     "story angle repeated inside 10-day cooldown": 3,
-    "bad_plural_verb": 3,
     "missing_visible_cue": 2,
     "editorial score 31 is below 62": 2,
+    "editorial score 35 is below 62": 2,
+    "editorial score 29 is below 62": 1,
     "editorial score 43 is below 62": 1,
     "title_needs_stronger_shape": 1,
-    "subject_not_clear": 1,
-    "editorial score 35 is below 62": 1
+    "subject_not_clear": 1
   },
   "stages": {
-    "queue_prune": 413,
-    "queue_prune_final": 282,
-    "queue_repair": 91,
-    "youtube_brain_rewrite": 84,
-    "pre_publish_audit": 78,
-    "editor_in_chief": 21,
+    "queue_prune": 466,
+    "queue_prune_final": 303,
+    "queue_repair": 96,
+    "pre_publish_audit": 79,
+    "editor_in_chief": 23,
     "opportunity_score": 21,
-    "youtube_brain": 10
+    "youtube_brain": 11,
+    "youtube_brain_rewrite": 1
   },
   "latest": [
+    {
+      "story_id": "f02fc0a7debd05c3",
+      "stage": "queue_prune",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "title": "Mountains don't just sit still they're eating themselves",
+      "category": "earth_from_space",
+      "script_key": "mountains aren t just sitting there because glaciers are literally carving them down that s why those jagged peaks look so sharp they re being eaten from the inside watch the ice grind those cracks wider every year did you learn this wrong too",
+      "angle_key": "mountains|show|ice|earth_from_space",
+      "source_url": "https://www.pexels.com/video/stunning-aerial-view-of-majestic-mountain-range-38262025/",
+      "pexels_video_id": "38262025",
+      "source_clip_id": "pexels:f02fc0a7debd05c3",
+      "recorded_at": "2026-07-06T16:29:44.176453+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "fc7f1789273594fb",
+      "stage": "queue_prune_final",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "title": "Mushrooms release spores from hidden gills",
+      "category": "fungi",
+      "script_key": "mushrooms spread by releasing tiny spores watch under the cap because many mushrooms carry spore producing surfaces there when conditions are right those tiny particles move out to start the next fungal network which hidden structure should we look under next",
+      "angle_key": "mushrooms|carry|spores|fungi",
+      "source_url": "https://www.pexels.com/video/close-up-of-mold-growth-on-surface-34617328/",
+      "pexels_video_id": "34617328",
+      "source_clip_id": "pexels:fc7f1789273594fb",
+      "recorded_at": "2026-07-06T16:29:44.192100+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
     {
       "story_id": "1df243e3308a2cb1",
       "stage": "queue_prune_final",
@@ -108,24 +144,6 @@
       "rewrite_applied": true
     },
     {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-06T16:31:13.665259+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
       "story_id": "d5905286e8a38b10",
       "stage": "editor_in_chief",
       "reasons": [
@@ -139,24 +157,6 @@
       "pexels_video_id": "34617332",
       "source_clip_id": "pexels:d5905286e8a38b10",
       "recorded_at": "2026-07-06T16:31:13.730252+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-06T16:35:52.712377+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     },
@@ -319,42 +319,6 @@
       "rewrite_applied": true
     },
     {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-06T16:44:56.443276+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-06T16:50:02.810473+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
       "story_id": "c49041e4b05def6e",
       "stage": "queue_prune",
       "reasons": [
@@ -492,6 +456,43 @@
       "pexels_video_id": "35458358",
       "source_clip_id": "pexels:52d1385383f17416",
       "recorded_at": "2026-07-06T16:55:13.002758+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "8bdc8b70af521eb4",
+      "stage": "youtube_brain_rewrite",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "title": "Fossils turn old bones into time clues",
+      "category": "discoveries",
+      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
+      "angle_key": "fossils|form|pattern|discoveries",
+      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
+      "pexels_video_id": "36118169",
+      "source_clip_id": "pexels:8bdc8b70af521eb4",
+      "recorded_at": "2026-07-06T16:59:44.306178+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "2e92a0746eabcbfe",
+      "stage": "editor_in_chief",
+      "reasons": [
+        "subject repeated inside 3-day cooldown",
+        "humanity score is too low",
+        "editorial score 35 is below 62"
+      ],
+      "title": "Bears Los osos huelen comida a kilómetros de distancia",
+      "category": "wildlife",
+      "script_key": "los osos huelen comida a kil metros de distancia mira primero la nariz porque el olfato gu a sus decisiones antes que la vista ese mapa de olores enorme les ayuda a encontrar comida evitar peligros y saber qui n pas por ah t confiar as tanto en tu nariz now the scent map at the start makes sense",
+      "angle_key": "bears|sense|scent map|wildlife",
+      "source_url": "https://www.pexels.com/video/playful-bears-at-zoo-habitat-enclosure-34510472/",
+      "pexels_video_id": "34510472",
+      "source_clip_id": "pexels:2e92a0746eabcbfe",
+      "recorded_at": "2026-07-06T17:00:14.748223+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     }
