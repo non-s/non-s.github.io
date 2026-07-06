@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-06T09:16:55.092727+00:00",
-  "pending": 24,
+  "generated_at": "2026-07-06T09:20:37.293058+00:00",
+  "pending": 25,
   "states": {
-    "rewrite": 20,
+    "rewrite": 21,
     "publish_ready": 4
   },
   "mechanism_clusters": {
@@ -12,27 +12,109 @@
     "electric_sense": 1
   },
   "rights": {
-    "approved": 24
+    "approved": 25
   },
   "prune_summary": {
-    "pending_before": 24,
-    "pending_after": 24,
-    "rejected": 0,
+    "pending_before": 29,
+    "pending_after": 25,
+    "rejected": 4,
     "repair_needed": 0,
-    "repaired": 3,
+    "repaired": 5,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 24,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 18,
+      "objective_gate:bootstrap_observe_before_scaling": 25,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 19,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 4,
       "editor_in_chief:script quality gate blocked the narration": 4,
+      "duplicate_title": 3,
       "editor_in_chief:editorial score 46 is below 62": 3,
+      "duplicate_script": 2,
+      "duplicate_angle": 2,
       "editor_in_chief:editorial score 40 is below 62": 2,
+      "off_topic_visual": 1,
       "editor_in_chief:editorial score 49 is below 62": 1,
       "editorial_cooldown_supply_fallback": 1,
       "publish_ready_supply_reserve_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "c62ce8098cdc6a6c",
+      "title": "Macaws use beaks like climbing tools",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "38958bf3d781e9a5",
+      "title": "Forests make cooler air under the canopy",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "3885ea046cb55ff9",
+      "title": "Ocean waves hide a flicker of light you missed",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "008c0be743f6e25f",
+      "title": "Parrots use their beak like a third foot",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
+      "id": "511125877e8e5d0a",
+      "title": "Rivers sort mud and sand along each bank",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "dd2c25b02d4bf88e",
+      "title": "Rain is how the ocean breathes",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "2fe78255364d0f09",
+      "title": "Volcanic crater flames you haven't seen before",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "90476357d22d4387",
+      "title": "Big waves don't just look cool they do this",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "8bdc8b70af521eb4",
       "title": "Fossils turn old bones into time clues",
@@ -199,6 +281,15 @@
       "stage": "queue_prune"
     },
     {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
       "id": "b057971dad7d7c38",
       "title": "Bees dance directions back to the hive",
       "reasons": [
@@ -206,100 +297,6 @@
         "duplicate_title"
       ],
       "stage": "queue_prune_final"
-    },
-    {
-      "id": "4e4ef766c821b689",
-      "title": "Coral reefs are built by tiny living builders",
-      "reasons": [
-        "copy_subject_mismatch",
-        "duplicate_title",
-        "duplicate_script"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "Los cristales crecen con átomos que se repiten",
-      "title": "Los cristales crecen con átomos que se repiten",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "missing_visual_cue",
-        "payoff_not_explicit",
-        "title_shape_weak",
-        "opening_retention_gap_risk"
-      ],
-      "stage": "youtube_brain"
-    },
-    {
-      "id": "Sharks sense tiny electric fields",
-      "title": "Sharks sense tiny electric fields",
-      "reasons": [
-        "editorial score is below publish threshold"
-      ],
-      "stage": "pre_publish_audit"
-    },
-    {
-      "id": "32e7c05ac406a760",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "copy_subject_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "ec1ebb8d9b73917d",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "54371d2609e5e6e1",
-      "title": "The moon keeps one face turned toward Earth",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "Butterflies Mariposas tienen escamas de colores en sus alas",
-      "title": "Butterflies Mariposas tienen escamas de colores en sus alas",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "no_action_promise",
-        "payoff_not_explicit",
-        "opening_retention_gap_risk"
-      ],
-      "stage": "youtube_brain"
-    },
-    {
-      "id": "Sharks sense tiny electric fields",
-      "title": "Sharks sense tiny electric fields",
-      "reasons": [
-        "editorial score is below publish threshold"
-      ],
-      "stage": "pre_publish_audit"
-    },
-    {
-      "id": "f582f8e1325addd3",
-      "title": "Lightning turns air into a shock wave",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "33dd6bb0aeba20be",
-      "title": "Bees Abejas bailan para guiar a sus compañeras al alimento",
-      "reasons": [
-        "subject repeated inside 3-day cooldown",
-        "humanity score is too low",
-        "editorial score 39 is below 62"
-      ],
-      "stage": "editor_in_chief"
     }
   ],
   "top": [
@@ -476,7 +473,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:16:30.430721+00:00",
+        "checked_at": "2026-07-06T09:20:11.065497+00:00",
         "mechanism_cluster": "electric_sense",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1114,7 +1111,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:16:30.432870+00:00",
+        "checked_at": "2026-07-06T09:20:11.067635+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1758,7 +1755,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:16:30.416700+00:00",
+        "checked_at": "2026-07-06T09:20:11.051760+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2417,7 +2414,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:16:30.435867+00:00",
+        "checked_at": "2026-07-06T09:20:11.070393+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -3066,7 +3063,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:16:30.440921+00:00",
+        "checked_at": "2026-07-06T09:20:11.075408+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -3707,7 +3704,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:16:30.437429+00:00",
+        "checked_at": "2026-07-06T09:20:11.071943+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4353,7 +4350,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:16:30.438957+00:00",
+        "checked_at": "2026-07-06T09:20:11.073477+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5004,7 +5001,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:16:30.396806+00:00",
+        "checked_at": "2026-07-06T09:20:11.039693+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5651,7 +5648,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:16:30.398438+00:00",
+        "checked_at": "2026-07-06T09:20:11.041129+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6297,7 +6294,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:16:30.400586+00:00",
+        "checked_at": "2026-07-06T09:20:11.042449+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6942,7 +6939,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:16:30.403125+00:00",
+        "checked_at": "2026-07-06T09:20:11.045027+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7590,7 +7587,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:16:30.413950+00:00",
+        "checked_at": "2026-07-06T09:20:11.049379+00:00",
         "mechanism_cluster": "visual_stabilization",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8237,7 +8234,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:16:30.420887+00:00",
+        "checked_at": "2026-07-06T09:20:11.056057+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8878,7 +8875,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:16:30.423018+00:00",
+        "checked_at": "2026-07-06T09:20:11.058181+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9531,7 +9528,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:16:30.424877+00:00",
+        "checked_at": "2026-07-06T09:20:11.060081+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10186,7 +10183,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:16:30.427874+00:00",
+        "checked_at": "2026-07-06T09:20:11.062723+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10848,7 +10845,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:16:30.429752+00:00",
+        "checked_at": "2026-07-06T09:20:11.064524+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11499,7 +11496,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:16:30.442868+00:00",
+        "checked_at": "2026-07-06T09:20:11.077300+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12149,7 +12146,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:16:30.445113+00:00",
+        "checked_at": "2026-07-06T09:20:11.079416+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12627,22 +12624,22 @@
       }
     },
     {
-      "id": "a4ca94af1a59d5df",
-      "title": "Fox eyes glow at night in a way you didn't expect",
-      "category": "nocturnal",
+      "id": "c223130cb8ac9cb7",
+      "title": "Rivers carve bends by stealing from one bank",
+      "category": "rivers",
       "publish_score": {
         "approved": true,
-        "category": "nocturnal",
+        "category": "rivers",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.317,
+          "bootstrap_multiplier": 0.255,
           "can_adjust_strategy": false,
-          "confidence_score": 0.089,
-          "data_quality": "estimated",
-          "data_quality_score": 0.35,
-          "minimum_sample_size": 28,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.09.",
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
           "recommendation_strength": "observe",
-          "sample_size": 6
+          "sample_size": 1
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -12652,8 +12649,8 @@
         },
         "hook_score": 86,
         "objective_gate": {
-          "confidence_score": 0.089,
-          "mechanism_cluster": "face_recognition",
+          "confidence_score": 0.007,
+          "mechanism_cluster": "",
           "payoff_time_s": 0.0,
           "penalty": 0.0,
           "publish_blocking": false,
@@ -12667,52 +12664,54 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "eyes"
+            "bend",
+            "river"
           ],
           "cue_terms": [
-            "eyes",
-            "face",
-            "memor"
+            "bend",
+            "river"
           ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early",
-            "missing_watch_instruction"
+          "frame_hook_bridge": [
+            "bend",
+            "river"
           ],
-          "score": 82.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
             "subject_frontloaded",
+            "frame_hook_bridge",
             "visible_cue_repeated_early",
+            "watch_instruction_early",
             "action_promise_early",
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "fox"
+          "subject": "rivers"
         },
         "opportunity": {
           "confidence": {
-            "bootstrap_multiplier": 0.335,
+            "bootstrap_multiplier": 0.25,
             "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 1
+            "sample_size": 0
           },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
           "score": 56,
           "signals": {
-            "comment_potential": 56,
-            "educational_potential": 52,
-            "emotional_potential": 29,
-            "novelty": 39,
-            "replay_potential": 78,
-            "viral_potential": 39,
-            "visual_potential": 79
+            "comment_potential": 54,
+            "educational_potential": 64,
+            "emotional_potential": 35,
+            "novelty": 45,
+            "replay_potential": 72,
+            "viral_potential": 53,
+            "visual_potential": 55
           },
           "verdict": "rewrite"
         },
@@ -12722,63 +12721,62 @@
         },
         "retention": {
           "confidence": {
-            "bootstrap_multiplier": 0.335,
+            "bootstrap_multiplier": 0.25,
             "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 1
+            "sample_size": 0
           },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 82,
+          "score": 73,
           "signals": {
             "completion_prediction": 84,
-            "curiosity_score": 79,
+            "curiosity_score": 71,
             "hook_score": 82,
-            "replay_score": 82,
-            "visual_score": 82
+            "replay_score": 62,
+            "visual_score": 58
           },
-          "verdict": "ready"
+          "verdict": "rewrite"
         },
         "score": 100,
         "state": "publish_ready",
-        "story_format": "rare_nature",
+        "story_format": "earth_engine",
         "subscriber_conversion": {
-          "comment_probability": 0.24,
+          "comment_probability": 0.207,
           "confidence": {
-            "bootstrap_multiplier": 0.331,
+            "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
-            "confidence_score": 0.108,
-            "data_quality": "estimated",
-            "data_quality_score": 0.45,
-            "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 1
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
           "reasons": [
-            "identity_cta",
             "debate_comment",
             "return_prompt",
             "series_identity",
             "episode_continuity"
           ],
-          "return_probability": 0.281,
+          "return_probability": 0.242,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 93,
+          "score": 79,
           "state": "strong",
-          "subscriber_probability": 0.133
+          "subscriber_probability": 0.113
         },
-        "title_score": 100,
+        "title_score": 90,
         "weak_content": {
           "confidence": {
             "bootstrap_multiplier": 0.348,
@@ -12799,45 +12797,47 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:16:30.395487+00:00",
-        "mechanism_cluster": "face_recognition",
+        "checked_at": "2026-07-06T09:20:11.418616+00:00",
+        "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
           "editor_in_chief:subject repeated inside 3-day cooldown"
         ],
-        "score": 60.0,
+        "score": 64.0,
         "state": "rewrite",
         "template_cluster": ""
       },
-      "queue_score": 60.0,
+      "queue_score": 64.0,
       "youtube_brain": {
-        "animal": "fox",
+        "animal": "rivers",
         "commands": [],
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "eyes"
+            "bend",
+            "river"
           ],
           "cue_terms": [
-            "eyes",
-            "face",
-            "memor"
+            "bend",
+            "river"
           ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early",
-            "missing_watch_instruction"
+          "frame_hook_bridge": [
+            "bend",
+            "river"
           ],
-          "score": 82.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
             "subject_frontloaded",
+            "frame_hook_bridge",
             "visible_cue_repeated_early",
+            "watch_instruction_early",
             "action_promise_early",
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "fox"
+          "subject": "rivers"
         },
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
@@ -12847,10 +12847,10 @@
           "last 2s: payoff and follow signal"
         ],
         "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
         "score": 100,
         "state": "publish_minded",
-        "story_format": "rare_nature",
+        "story_format": "earth_engine",
         "strengths": [
           "subject_visible_in_first_sentence",
           "action_driven_promise",
@@ -12860,14 +12860,14 @@
           "thumbnail_text_scannable",
           "retention_opening_aligned"
         ],
-        "subject": "fox",
-        "viewer_promise": "See why fox rare nature matters."
+        "subject": "rivers",
+        "viewer_promise": "See why this river earth engine matters."
       },
       "packaging": {
-        "community_prompt": "Which fox clue should Wild Brief compare next in Night Shift Nature?",
-        "cta_prompt": "Follow for one animal signal a day.",
+        "community_prompt": "Which rivers clue should Wild Brief compare next in Earth Engine?",
+        "cta_prompt": "Want to see how moving water reshapes the world?",
         "curiosity_gap": {
-          "hook": "Why does this fox changes after the face memory?",
+          "hook": "Why do these rivers change after the river bend?",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -12876,14 +12876,12 @@
           "source": "template"
         },
         "editorial_rulebook": {
-          "approved": false,
+          "approved": true,
           "notes": [],
-          "recommended_duration_s": 18,
-          "recommended_format": "rare nature",
+          "recommended_duration_s": 24,
+          "recommended_format": "earth engine",
           "score": 100.0,
-          "violations": [
-            "script does not expose enough concrete visual detail"
-          ]
+          "violations": []
         },
         "experiment": {
           "assignment": {
@@ -12913,28 +12911,30 @@
           "retention_opening": {
             "approved": true,
             "cue_bridge": [
-              "eyes"
+              "bend",
+              "river"
             ],
             "cue_terms": [
-              "eyes",
-              "face",
-              "memor"
+              "bend",
+              "river"
             ],
-            "frame_hook_bridge": [],
-            "risks": [
-              "frame_text_not_echoed_early",
-              "missing_watch_instruction"
+            "frame_hook_bridge": [
+              "bend",
+              "river"
             ],
-            "score": 82.0,
+            "risks": [],
+            "score": 100.0,
             "state": "retention_ready",
             "strengths": [
               "subject_frontloaded",
+              "frame_hook_bridge",
               "visible_cue_repeated_early",
+              "watch_instruction_early",
               "action_promise_early",
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "fox"
+            "subject": "rivers"
           },
           "safe_area": {
             "aspect": "4:5",
@@ -12944,182 +12944,182 @@
             "y": 285
           },
           "score": 92,
-          "word_count": 3
+          "word_count": 2
         },
         "hook_options": [
-          "Fox eyes don't look human",
-          "Fox shows why the face memory matters.",
-          "Fox shows why the face memory matters.",
-          "Fox shows why the face memory matters.",
-          "Fox shows why the face memory matters."
+          "Rivers move sideways while they flow",
+          "Rivers show why the river bend matters.",
+          "Rivers show why the river bend matters.",
+          "Rivers show why the river bend matters.",
+          "Rivers give away the answer through river bend"
         ],
         "loop_plan": {
           "audio_crossfade_ms": 120,
-          "callback_keyword": "watch face memory",
-          "ending_line": "Would you have guessed their pupils are built for stealth hunts.",
-          "final_line": "Now the watch face memory at the start makes sense.",
-          "loop_score": 1.0,
-          "opening_line": "Fox eyes don't look human",
+          "callback_keyword": "river bend",
+          "ending_line": "Which water shape next?",
+          "final_line": "Now the river bend at the start makes sense.",
+          "loop_score": 0.755,
+          "opening_line": "Rivers move sideways while they flow.",
           "render_hints": {
             "avoid_hard_stop": true,
-            "carry_keyword": "watch face memory",
+            "carry_keyword": "river bend",
             "subtle_audio_tail": true
           },
           "rewrite_applied": true,
           "subtitle_tail_mode": "carry-forward"
         },
-        "loop_score": 1.0,
-        "next_episode_question": "Tomorrow in Night Shift Nature: another animal signal. What part of this feels most impossible?",
+        "loop_score": 0.755,
+        "next_episode_question": "Tomorrow in Earth Engine: another nature signal. Are rivers more like roads, tools, or engines?",
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "eyes"
+            "bend",
+            "river"
           ],
           "cue_terms": [
-            "eyes",
-            "face",
-            "memor"
+            "bend",
+            "river"
           ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early",
-            "missing_watch_instruction"
+          "frame_hook_bridge": [
+            "bend",
+            "river"
           ],
-          "score": 82.0,
+          "risks": [],
+          "score": 100.0,
           "state": "retention_ready",
           "strengths": [
             "subject_frontloaded",
+            "frame_hook_bridge",
             "visible_cue_repeated_early",
+            "watch_instruction_early",
             "action_promise_early",
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "fox"
+          "subject": "rivers"
         },
-        "pinned_comment": "Watch the face memory again. Tomorrow in Night Shift Nature: another animal signal. What part of this feels most impossible?",
+        "pinned_comment": "Watch the river bend again. Tomorrow in Earth Engine: another nature signal. Are rivers more like roads, tools, or engines?",
         "preflight_inputs": {
-          "caption_chars_per_second": 14.74,
+          "caption_chars_per_second": 15.76,
           "contrast_score": 0.74,
           "cta_count": 1,
-          "duration_hint_s": 19,
-          "first_2s_narration": "Fox eyes don't look human See those dark pupils They're vertical slits",
-          "first_frame_text": "WATCH FACE MEMORY",
-          "first_frame_text_words": 3,
-          "hook": "Fox eyes don't look human",
+          "duration_hint_s": 17,
+          "first_2s_narration": "Rivers move sideways while they flow Watch the outside of the bend",
+          "first_frame_text": "RIVER BEND",
+          "first_frame_text_words": 2,
+          "hook": "Rivers move sideways while they flow.",
           "hook_specificity": 0.78,
-          "hook_words": 5,
-          "loop_score": 1.0,
+          "hook_words": 6,
+          "loop_score": 0.755,
           "novelty_score": 0.58,
           "opening_retention": {
             "approved": true,
             "cue_bridge": [
-              "eyes"
+              "bend",
+              "river"
             ],
             "cue_terms": [
-              "eyes",
-              "face",
-              "memor"
+              "bend",
+              "river"
             ],
-            "frame_hook_bridge": [],
-            "risks": [
-              "frame_text_not_echoed_early",
-              "missing_watch_instruction"
+            "frame_hook_bridge": [
+              "bend",
+              "river"
             ],
-            "score": 82.0,
+            "risks": [],
+            "score": 100.0,
             "state": "retention_ready",
             "strengths": [
               "subject_frontloaded",
+              "frame_hook_bridge",
               "visible_cue_repeated_early",
+              "watch_instruction_early",
               "action_promise_early",
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "fox"
+            "subject": "rivers"
           },
-          "opening_retention_score": 82.0,
+          "opening_retention_score": 100.0,
           "payoff_reveal_sentence_index": 0,
           "payoff_score": 75,
           "payoff_time_s": 0,
           "visual_motion_score": 0.76
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the face memory, so viewers rewatch the fox clip.",
+        "replay_prompt": "End by pointing back to the river bend, so viewers rewatch the rivers clip.",
         "retention": {
           "confidence": {
-            "bootstrap_multiplier": 0.335,
+            "bootstrap_multiplier": 0.25,
             "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 1
+            "sample_size": 0
           },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 82,
+          "score": 73,
           "signals": {
             "completion_prediction": 84,
-            "curiosity_score": 79,
+            "curiosity_score": 71,
             "hook_score": 82,
-            "replay_score": 82,
-            "visual_score": 82
+            "replay_score": 62,
+            "visual_score": 58
           },
-          "verdict": "ready"
+          "verdict": "rewrite"
         },
         "retention_contract": {
-          "first_2s_narration": "Fox eyes don't look human See those dark pupils They're vertical slits",
-          "first_frame_text": "WATCH FACE MEMORY",
-          "next_episode_question": "Tomorrow in Night Shift Nature: another animal signal. What part of this feels most impossible?",
-          "opening_retention_score": 82.0,
+          "first_2s_narration": "Rivers move sideways while they flow Watch the outside of the bend",
+          "first_frame_text": "RIVER BEND",
+          "next_episode_question": "Tomorrow in Earth Engine: another nature signal. Are rivers more like roads, tools, or engines?",
+          "opening_retention_score": 100.0,
           "opening_retention_state": "retention_ready",
           "search_intent": {
-            "description_line": "This Short explains Fox behavior through the visible face memory.",
-            "series": "Night Shift Nature",
-            "subject": "fox",
+            "description_line": "This Short explains the visible river bend behind Rivers in a fast nature science story.",
+            "series": "Earth Engine",
+            "subject": "rivers",
             "terms": [
-              "fox",
-              "face memory",
-              "nocturnal",
-              "rare nature"
+              "rivers",
+              "river bend",
+              "earth engine"
             ],
-            "title_variant": "Fox behavior: face memory explained",
-            "visible_cue": "face memory"
+            "title_variant": "Rivers river bend explained fast",
+            "visible_cue": "river bend"
           },
-          "series": "Night Shift Nature",
-          "subject": "fox",
-          "visible_cue": "face memory"
+          "series": "Earth Engine",
+          "subject": "rivers",
+          "visible_cue": "river bend"
         },
-        "risks": [
-          "script does not expose enough concrete visual detail"
-        ],
-        "score": 99,
+        "risks": [],
+        "score": 96,
         "search_intent": {
-          "description_line": "This Short explains Fox behavior through the visible face memory.",
-          "series": "Night Shift Nature",
-          "subject": "fox",
+          "description_line": "This Short explains the visible river bend behind Rivers in a fast nature science story.",
+          "series": "Earth Engine",
+          "subject": "rivers",
           "terms": [
-            "fox",
-            "face memory",
-            "nocturnal",
-            "rare nature"
+            "rivers",
+            "river bend",
+            "earth engine"
           ],
-          "title_variant": "Fox behavior: face memory explained",
-          "visible_cue": "face memory"
+          "title_variant": "Rivers river bend explained fast",
+          "visible_cue": "river bend"
         },
         "selected_variant": {
-          "hook": "Fox eyes don't look human",
-          "score": 62,
-          "thumbnail_text": "WATCH FACE MEMORY",
-          "title": "Fox eyes glow at night in a way you didn't expect"
+          "hook": "Rivers move sideways while they flow",
+          "score": 77,
+          "thumbnail_text": "RIVER BEND",
+          "title": "Rivers carve bends by stealing from one bank"
         },
-        "series": "Night Shift Nature #3",
+        "series": "Earth Engine #9",
         "series_identity": {
-          "continuity_prompt": "Next in Night Shift Nature: compare this with another force of nature.",
-          "episode": 3,
-          "label": "Night Shift Nature #3",
-          "series": "Night Shift Nature"
+          "continuity_prompt": "Next in Earth Engine: compare this with another force of nature.",
+          "episode": 9,
+          "label": "Earth Engine #9",
+          "series": "Earth Engine"
         },
         "state": "magnetic",
         "strengths": [
@@ -13131,35 +13131,34 @@
           "retention_opening_aligned"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.24,
+          "comment_probability": 0.207,
           "confidence": {
-            "bootstrap_multiplier": 0.331,
+            "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
-            "confidence_score": 0.108,
-            "data_quality": "estimated",
-            "data_quality_score": 0.45,
-            "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 1
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
           "reasons": [
-            "identity_cta",
             "debate_comment",
             "return_prompt",
             "series_identity",
             "episode_continuity"
           ],
-          "return_probability": 0.281,
+          "return_probability": 0.242,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 93,
+          "score": 79,
           "state": "strong",
-          "subscriber_probability": 0.133
+          "subscriber_probability": 0.113
         },
         "swipe_risk": {
           "band": "low",
@@ -13168,88 +13167,88 @@
           "score": 0
         },
         "thumbnail_options": [
-          "FACE MEMORY",
-          "WATCH FACE MEMORY",
-          "FOXES GLOW",
-          "FACE MEMORY MATTERS",
-          "FACE MEMORY FIRST",
-          "FACE MEMORY REVEAL",
-          "FACE MEMORY CLUE",
+          "RIVER BEND",
+          "WATCH RIVER BEND",
+          "RIVERS MOVE",
+          "RIVER BEND MATTERS",
+          "RIVER BEND FIRST",
+          "RIVER BEND REVEAL",
+          "RIVER BEND CLUE",
           "WATCH THE MOVE",
           "SPOT THE CLUE"
         ],
         "title_options": [
-          "Fox eyes glow at night in a way you didn't expect",
-          "Foxes use eye contact before they glow",
-          "This eye contact gives foxes away",
-          "Why foxes glow after one eye contact",
-          "Foxes reveal the answer with eye contact",
-          "The eye contact that changes the moment",
-          "Foxes make one eye contact matter",
-          "Foxes show the hidden answer in seconds",
-          "Foxes: watch this eye contact",
-          "Watch foxes after the eye contact"
+          "Rivers carve bends by stealing from one bank",
+          "Rivers use river bend before they move",
+          "This river bend gives rivers away",
+          "Why rivers move after one river bend",
+          "Rivers reveal the answer with river bend",
+          "The river bend that changes the moment",
+          "Rivers make one river bend matter",
+          "Rivers show the hidden answer in seconds",
+          "Rivers: watch this river bend",
+          "Watch rivers after the river bend"
         ],
         "top_variants": [
           {
-            "hook": "Fox eyes don't look human",
-            "score": 62,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "Fox eyes glow at night in a way you didn't expect"
+            "hook": "Rivers move sideways while they flow",
+            "score": 77,
+            "thumbnail_text": "RIVER BEND",
+            "title": "Rivers carve bends by stealing from one bank"
           },
           {
-            "hook": "Start with the eye contact; it changes the scene",
-            "score": 62,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "Fox eyes glow at night in a way you didn't expect"
+            "hook": "Watch the river bend; it explains the behavior",
+            "score": 77,
+            "thumbnail_text": "RIVER BEND",
+            "title": "Rivers carve bends by stealing from one bank"
           },
           {
-            "hook": "Fox eyes don't look human",
-            "score": 62,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "Foxes use eye contact before they glow"
+            "hook": "Start with the river bend; it changes the scene",
+            "score": 77,
+            "thumbnail_text": "RIVER BEND",
+            "title": "Rivers carve bends by stealing from one bank"
           },
           {
-            "hook": "Start with the eye contact; it changes the scene",
-            "score": 62,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "Foxes use eye contact before they glow"
+            "hook": "Rivers move sideways while they flow",
+            "score": 70,
+            "thumbnail_text": "WATCH RIVER BEND",
+            "title": "Rivers carve bends by stealing from one bank"
           },
           {
-            "hook": "Fox eyes don't look human",
-            "score": 62,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "Why foxes glow after one eye contact"
+            "hook": "Watch the river bend; it explains the behavior",
+            "score": 70,
+            "thumbnail_text": "WATCH RIVER BEND",
+            "title": "Rivers carve bends by stealing from one bank"
           },
           {
-            "hook": "Start with the eye contact; it changes the scene",
-            "score": 62,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "Why foxes glow after one eye contact"
+            "hook": "Start with the river bend; it changes the scene",
+            "score": 70,
+            "thumbnail_text": "WATCH RIVER BEND",
+            "title": "Rivers carve bends by stealing from one bank"
           },
           {
-            "hook": "Watch the eye contact; it explains the behavior",
-            "score": 61,
-            "thumbnail_text": "FACE MEMORY FIRST",
-            "title": "Fox eyes glow at night in a way you didn't expect"
+            "hook": "Rivers move sideways while they flow",
+            "score": 70,
+            "thumbnail_text": "RIVERS MOVE",
+            "title": "Rivers carve bends by stealing from one bank"
           },
           {
-            "hook": "Watch the eye contact; it explains the behavior",
-            "score": 61,
-            "thumbnail_text": "FACE MEMORY FIRST",
-            "title": "Foxes use eye contact before they glow"
+            "hook": "Watch the river bend; it explains the behavior",
+            "score": 70,
+            "thumbnail_text": "RIVERS MOVE",
+            "title": "Rivers carve bends by stealing from one bank"
           },
           {
-            "hook": "Start with the eye contact; it changes the scene",
-            "score": 61,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "This eye contact gives foxes away"
+            "hook": "Start with the river bend; it changes the scene",
+            "score": 70,
+            "thumbnail_text": "RIVERS MOVE",
+            "title": "Rivers carve bends by stealing from one bank"
           },
           {
-            "hook": "Watch the eye contact; it explains the behavior",
-            "score": 61,
-            "thumbnail_text": "FACE MEMORY FIRST",
-            "title": "Why foxes glow after one eye contact"
+            "hook": "Rivers move sideways while they flow",
+            "score": 70,
+            "thumbnail_text": "RIVER BEND MATTERS",
+            "title": "Rivers carve bends by stealing from one bank"
           }
         ]
       },
