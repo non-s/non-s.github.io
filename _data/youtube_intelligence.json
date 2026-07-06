@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-07-05T23:53:48.087754+00:00",
+  "generated_at": "2026-07-06T08:03:19.881455+00:00",
   "window": {
-    "start_date": "2026-06-08",
-    "end_date": "2026-07-05"
+    "start_date": "2026-06-09",
+    "end_date": "2026-07-06"
   },
-  "coverage_score": 80,
+  "coverage_score": 40,
   "quota_strategy": [
     "Batch videos.list in groups of 50.",
     "Avoid search.list for routine automation because it is expensive and trend discovery already uses cheaper public sources.",
@@ -139,12 +139,21 @@
   },
   "video_audit": {
     "videos_checked": 18,
-    "total_views": 0,
+    "total_views": 1,
     "total_likes": 0,
     "total_comments": 18,
     "private_or_unlisted": 0,
     "shorts_like": 18,
     "top_public_videos": [
+      {
+        "video_id": "7O3KvRmWSls",
+        "title": "Owls can make a hunt almost silent",
+        "views": 1,
+        "likes": 0,
+        "comments": 1,
+        "privacy_status": "public",
+        "published_at": "2026-07-05T10:30:23Z"
+      },
       {
         "video_id": "Izp-1oqlkyk",
         "title": "Crystals build shape from repeating atoms",
@@ -225,15 +234,6 @@
         "comments": 1,
         "privacy_status": "public",
         "published_at": "2026-07-05T14:05:46Z"
-      },
-      {
-        "video_id": "dKi3CHsrfXQ",
-        "title": "Horses remember familiar faces for months",
-        "views": 0,
-        "likes": 0,
-        "comments": 1,
-        "privacy_status": "public",
-        "published_at": "2026-07-05T13:08:25Z"
       }
     ]
   },
@@ -245,7 +245,7 @@
       "coverage": "implemented",
       "use": "Channel identity, uploads playlist, subscriber/view/video totals, branding/status audit.",
       "risk": "read_only",
-      "last_run": "ok"
+      "last_run": "attempted"
     },
     {
       "id": "uploaded_video_inventory",
@@ -254,7 +254,7 @@
       "coverage": "implemented",
       "use": "Compare YouTube uploads against local .done markers and detect missing local memory.",
       "risk": "read_only",
-      "last_run": "ok"
+      "last_run": "attempted"
     },
     {
       "id": "video_metadata_statistics",
@@ -263,7 +263,7 @@
       "coverage": "implemented",
       "use": "Public stats, title/description/tag/status/duration audit for every tracked Short.",
       "risk": "read_only",
-      "last_run": "ok"
+      "last_run": "attempted"
     },
     {
       "id": "comment_threads",
@@ -321,9 +321,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,likes,comments,shares,subscribersGained",
       "sort": "-views",
       "use": "Rank videos by growth, engagement, retention and subscriber conversion.",
-      "status": "ok",
+      "status": "not_authorized",
       "rows": 0,
-      "error": ""
+      "error": "yt-analytics.readonly scope missing"
     },
     {
       "id": "daily_channel",
@@ -331,9 +331,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
       "sort": "day",
       "use": "Daily pacing and anomaly detection.",
-      "status": "ok",
-      "rows": 26,
-      "error": ""
+      "status": "not_authorized",
+      "rows": 0,
+      "error": "yt-analytics.readonly scope missing"
     },
     {
       "id": "country",
@@ -341,9 +341,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
       "sort": "-views",
       "use": "Geo demand and publish timing hints.",
-      "status": "ok",
-      "rows": 19,
-      "error": ""
+      "status": "not_authorized",
+      "rows": 0,
+      "error": "yt-analytics.readonly scope missing"
     },
     {
       "id": "traffic_source",
@@ -351,9 +351,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Detect whether Shorts feed, search, browse, external or channel surfaces are driving growth.",
-      "status": "ok",
-      "rows": 9,
-      "error": ""
+      "status": "not_authorized",
+      "rows": 0,
+      "error": "yt-analytics.readonly scope missing"
     },
     {
       "id": "device_type",
@@ -361,9 +361,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Tune caption size, pacing and visual density for device mix.",
-      "status": "ok",
-      "rows": 4,
-      "error": ""
+      "status": "not_authorized",
+      "rows": 0,
+      "error": "yt-analytics.readonly scope missing"
     },
     {
       "id": "subscriber_status",
@@ -371,10 +371,12 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Separate existing subscriber behavior from discovery behavior.",
-      "status": "ok",
-      "rows": 2,
-      "error": ""
+      "status": "not_authorized",
+      "rows": 0,
+      "error": "yt-analytics.readonly scope missing"
     }
   ],
-  "issues": []
+  "issues": [
+    "youtube_analytics_scope_missing"
+  ]
 }
