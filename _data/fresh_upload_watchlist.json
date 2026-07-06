@@ -5,17 +5,72 @@
     24
   ],
   "counts": {
-    "analytics_due": 9,
-    "awaiting_1h": 0,
-    "high_priority": 10,
+    "analytics_due": 7,
+    "awaiting_1h": 1,
+    "high_priority": 8,
     "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-07-06T11:48:26.530132+00:00",
+  "generated_at": "2026-07-06T11:56:06.871821+00:00",
   "items": [
     {
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.039,
+      "category": "space",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-06T12:53:47.108347+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-06T17:53:47.108347+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-07T11:53:47.108347+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-06T12:53:47.108347+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Nature Signals",
+      "state": "awaiting_1h",
+      "title": "The moon keeps one face turned toward Earth",
+      "uploaded_at": "2026-07-06T11:53:47.108347+00:00",
+      "url": "https://www.youtube.com/shorts/GfY4m0L2rRA",
+      "video_id": "GfY4m0L2rRA",
+      "views_per_hour": 0.0
+    },
+    {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.09,
+      "age_hours": 13.218,
       "category": "chemistry",
       "checkpoints": [
         {
@@ -70,7 +125,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 14.502,
+      "age_hours": 14.63,
       "category": "insects",
       "checkpoints": [
         {
@@ -136,7 +191,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 15.679,
+      "age_hours": 15.807,
       "category": "insects",
       "checkpoints": [
         {
@@ -191,7 +246,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.099,
+      "age_hours": 16.227,
       "category": "ocean",
       "checkpoints": [
         {
@@ -245,8 +300,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 17.523,
+      "action": "Queue a sequel or related-video bridge while the session has momentum.",
+      "age_hours": 17.651,
       "category": "rivers",
       "checkpoints": [
         {
@@ -274,11 +329,11 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 300,
-          "views": 0
+          "views": 1
         }
       ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "current_views": 1,
+      "hypothesis": "Performance signal is already positive; amplify without changing the opening.",
       "next_checkpoint": {
         "delta_to_target": -24,
         "due_at": "2026-07-05T19:17:04.262059+00:00",
@@ -290,18 +345,27 @@
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "high",
+      "priority": "normal",
       "series": "Earth Engine",
-      "state": "analytics_due",
+      "state": "accelerating",
       "title": "Rivers sort sediment while they bend",
       "uploaded_at": "2026-07-05T18:17:04.262059+00:00",
       "url": "https://www.youtube.com/shorts/CV5SwGiSehk",
       "video_id": "CV5SwGiSehk",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.057,
+      "warning": {
+        "confidence_score": 0.512,
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.51; observation only.",
+        "score": 0,
+        "state": "accelerating",
+        "title": "Rivers sort sediment while they bend",
+        "video_id": "CV5SwGiSehk",
+        "warning_state": "accelerator"
+      }
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 18.353,
+      "age_hours": 18.481,
       "category": "plants",
       "checkpoints": [
         {
@@ -356,7 +420,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 19.456,
+      "age_hours": 19.584,
       "category": "dogs",
       "checkpoints": [
         {
@@ -411,7 +475,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 20.71,
+      "age_hours": 20.838,
       "category": "geology",
       "checkpoints": [
         {
@@ -466,7 +530,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 21.717,
+      "age_hours": 21.844,
       "category": "farm",
       "checkpoints": [
         {
@@ -526,61 +590,6 @@
         "video_id": "J80ks26hJIg",
         "warning_state": "low_confidence_watch"
       }
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 22.673,
-      "category": "farm",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-05T14:08:03.101276+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-05T19:08:03.101276+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-07-06T13:08:03.101276+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-05T14:08:03.101276+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Farmyard Surprises",
-      "state": "analytics_due",
-      "title": "Horses remember familiar faces for months",
-      "uploaded_at": "2026-07-05T13:08:03.101276+00:00",
-      "url": "https://www.youtube.com/shorts/dKi3CHsrfXQ",
-      "video_id": "dKi3CHsrfXQ",
-      "views_per_hour": 0.0
     }
   ],
   "targets": {
