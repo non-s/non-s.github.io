@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-06T14:38:22.282374+00:00",
+  "generated_at": "2026-07-06T16:30:07.511713+00:00",
   "pending": 23,
   "states": {
     "rewrite": 21,
@@ -15,23 +15,114 @@
     "approved": 23
   },
   "prune_summary": {
-    "pending_before": 23,
+    "pending_before": 30,
     "pending_after": 23,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 4,
+    "rejected": 7,
+    "repair_needed": 1,
+    "repaired": 7,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 23,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 18,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 17,
       "editor_in_chief:script quality gate blocked the narration": 4,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 4,
       "editor_in_chief:editorial score 46 is below 62": 3,
+      "duplicate_title": 3,
+      "off_topic_visual": 2,
+      "script_hook_mismatch": 2,
       "editor_in_chief:editorial score 40 is below 62": 2,
+      "duplicate_script": 2,
+      "duplicate_angle": 2,
+      "opening_retention_gap_risk": 1,
+      "opening promise is not concrete enough": 1,
+      "queue_score_reject": 1,
       "editor_in_chief:editorial score 49 is below 62": 1,
-      "editorial_cooldown_supply_fallback": 1
+      "script_subject_mismatch": 1,
+      "copy_subject_mismatch": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "1c62b059568c059c",
+      "title": "Lions use dark ear marks to guide cubs",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "c6f8cfffe1992db5",
+      "title": "Elephants can feel rumbles through the ground",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "1df243e3308a2cb1",
+      "title": "This scent road gives ants away",
+      "reasons": [
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "fc7f1789273594fb",
+      "title": "Mushrooms release spores from hidden gills",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "f02fc0a7debd05c3",
+      "title": "Mountains don't just sit still they're eating themselves",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "ac1f704435485a32",
+      "title": "Mushrooms trade nutrients through underground threads",
+      "reasons": [
+        "opening_retention_gap_risk",
+        "opening promise is not concrete enough",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "886d2adaebc576c2",
+      "title": "Lava builds land when ice melts",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "Coral reefs are cities built by tiny animals",
+      "title": "Coral reefs are cities built by tiny animals",
+      "reasons": [
+        "editorial score is below publish threshold"
+      ],
+      "stage": "pre_publish_audit"
+    },
+    {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
     {
       "id": "Coral reefs are cities built by tiny animals",
       "title": "Coral reefs are cities built by tiny animals",
@@ -114,6 +205,40 @@
       "stage": "queue_prune"
     },
     {
+      "id": "Coral reefs are cities built by tiny animals",
+      "title": "Coral reefs are cities built by tiny animals",
+      "reasons": [
+        "editorial score is below publish threshold"
+      ],
+      "stage": "pre_publish_audit"
+    },
+    {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
+      "id": "Coral reefs are cities built by tiny animals",
+      "title": "Coral reefs are cities built by tiny animals",
+      "reasons": [
+        "editorial score is below publish threshold"
+      ],
+      "stage": "pre_publish_audit"
+    },
+    {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
       "id": "a4cab90e32a211f5",
       "title": "Beetles can steer by the Milky Way",
       "reasons": [
@@ -168,117 +293,648 @@
         "duplicate_title"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "7dbb74169c4efb7c",
-      "title": "Magnets make invisible fields visible",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "ca4630d689006b29",
-      "title": "Mont Veyrier’s invisible glacier engine",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "7e93e8b3d4031e46",
-      "title": "Asian elephants don't forget like we think",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "c7180d33b9a01bbe",
-      "title": "volcanic crater looks like a bowl but isn’t",
-      "reasons": [
-        "copy_subject_mismatch",
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "9f0d6c541fa9613e",
-      "title": "Magnets make invisible fields visible",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "fbb687d09421b9ac",
-      "title": "Beetles can steer by the Milky Way",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "cb83e4b7ba894f62",
-      "title": "Magnets make invisible fields visible",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "7039a12d48384eab",
-      "title": "Beetles can steer by the Milky Way",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "c16151398323c180",
-      "title": "Elephants cool blood through giant ears",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "15fc6023f3676b39",
-      "title": "Forests can cool the air below them",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "33059ad5d8716027",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "off_topic_visual",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "66f59249e7fdf801",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "43abed6330f6ee52",
-      "title": "Painted elephants aren't what you think in India",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
+    {
+      "id": "d5905286e8a38b10",
+      "title": "Coral reefs are built by tiny living builders",
+      "category": "ocean",
+      "publish_score": {
+        "approved": true,
+        "category": "ocean",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "reef"
+          ],
+          "cue_terms": [
+            "city",
+            "reef"
+          ],
+          "frame_hook_bridge": [
+            "reef"
+          ],
+          "risks": [
+            "missing_early_action"
+          ],
+          "score": 96.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "coral"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 69,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 66,
+            "emotional_potential": 44,
+            "novelty": 59,
+            "replay_potential": 72,
+            "viral_potential": 75,
+            "visual_potential": 89
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 74,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 74
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "ecosystem_engine",
+        "subscriber_conversion": {
+          "comment_probability": 0.207,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.242,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.445,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.26,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-07-06T16:29:43.262823+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "coral",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "reef"
+          ],
+          "cue_terms": [
+            "city",
+            "reef"
+          ],
+          "frame_hook_bridge": [
+            "reef"
+          ],
+          "risks": [
+            "missing_early_action"
+          ],
+          "score": 96.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "coral"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "ecosystem_engine",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "coral",
+        "viewer_promise": "See why this coral ecosystem engine matters."
+      },
+      "packaging": {
+        "community_prompt": "Which coral clue should Wild Brief compare next in Ocean Mysteries?",
+        "cta_prompt": "Want to uncover what is still hidden in the ocean?",
+        "curiosity_gap": {
+          "hook": "Why does this coral changes after the reef city?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "ecosystem engine",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 67,
+          "winners": {
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 46.1,
+            "format:fresh_variant": 46.1,
+            "format:winner_inspired": 46.1,
+            "hook:pattern_reuse": 46.1,
+            "thumbnail:new_thumbnail": 46.1
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "reef"
+            ],
+            "cue_terms": [
+              "city",
+              "reef"
+            ],
+            "frame_hook_bridge": [
+              "reef"
+            ],
+            "risks": [
+              "missing_early_action"
+            ],
+            "score": 96.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "coral"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Coral reefs are built by tiny living builders",
+          "Coral shows why the reef city matters.",
+          "Coral shows why the reef city matters.",
+          "Coral shows why the reef city matters.",
+          "Coral reefs give away the answer through reef city"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "reef city",
+          "ending_line": "Which habitat next?",
+          "final_line": "Now the reef city at the start makes sense.",
+          "loop_score": 0.751,
+          "opening_line": "Coral reefs are built by tiny living builders.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "reef city",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.751,
+        "next_episode_question": "Tomorrow in Ocean Mysteries: another nature signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "reef"
+          ],
+          "cue_terms": [
+            "city",
+            "reef"
+          ],
+          "frame_hook_bridge": [
+            "reef"
+          ],
+          "risks": [
+            "missing_early_action"
+          ],
+          "score": 96.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "coral"
+        },
+        "pinned_comment": "Watch the reef city again. Tomorrow in Ocean Mysteries: another nature signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 16.24,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 17,
+          "first_2s_narration": "Coral reefs are built by tiny living builders Watch the reef texture",
+          "first_frame_text": "REEF CITY",
+          "first_frame_text_words": 2,
+          "hook": "Coral reefs are built by tiny living builders.",
+          "hook_specificity": 0.78,
+          "hook_words": 8,
+          "loop_score": 0.751,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "reef"
+            ],
+            "cue_terms": [
+              "city",
+              "reef"
+            ],
+            "frame_hook_bridge": [
+              "reef"
+            ],
+            "risks": [
+              "missing_early_action"
+            ],
+            "score": 96.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "coral"
+          },
+          "opening_retention_score": 96.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the reef city, so viewers rewatch the coral clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 74,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 74
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Coral reefs are built by tiny living builders Watch the reef texture",
+          "first_frame_text": "REEF CITY",
+          "next_episode_question": "Tomorrow in Ocean Mysteries: another nature signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+          "opening_retention_score": 96.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains the visible reef city behind Coral in a fast nature science story.",
+            "series": "Ocean Mysteries",
+            "subject": "coral",
+            "terms": [
+              "coral",
+              "reef city",
+              "ocean",
+              "ecosystem engine"
+            ],
+            "title_variant": "Coral reef city explained fast",
+            "visible_cue": "reef city"
+          },
+          "series": "Ocean Mysteries",
+          "subject": "coral",
+          "visible_cue": "reef city"
+        },
+        "risks": [],
+        "score": 96,
+        "search_intent": {
+          "description_line": "This Short explains the visible reef city behind Coral in a fast nature science story.",
+          "series": "Ocean Mysteries",
+          "subject": "coral",
+          "terms": [
+            "coral",
+            "reef city",
+            "ocean",
+            "ecosystem engine"
+          ],
+          "title_variant": "Coral reef city explained fast",
+          "visible_cue": "reef city"
+        },
+        "selected_variant": {
+          "hook": "Watch the reef city; it explains the behavior",
+          "score": 81,
+          "thumbnail_text": "REEF CITY",
+          "title": "Coral reefs are cities built by tiny animals"
+        },
+        "series": "Ocean Mysteries #5",
+        "series_identity": {
+          "continuity_prompt": "Next in Ocean Mysteries: compare this with another force of nature.",
+          "episode": 5,
+          "label": "Ocean Mysteries #5",
+          "series": "Ocean Mysteries"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.207,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.242,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "REEF CITY",
+          "WATCH REEF CITY",
+          "CORAL REEFS BUILD",
+          "REEF CITY MATTERS",
+          "REEF CITY FIRST",
+          "REEF CITY REVEAL",
+          "REEF CITY CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Coral reefs are cities built by tiny animals",
+          "Coral reefs are built by tiny living builders",
+          "Coral reefs use reef city before they build",
+          "This reef city gives coral reefs away",
+          "Why coral reefs build after one reef city",
+          "Coral reefs reveal the answer with reef city",
+          "The reef city that changes the moment",
+          "Coral reefs make one reef city matter",
+          "Coral reefs show the hidden answer in seconds",
+          "Coral reefs: watch this reef city"
+        ],
+        "top_variants": [
+          {
+            "hook": "Watch the reef city; it explains the behavior",
+            "score": 81,
+            "thumbnail_text": "REEF CITY",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Start with the reef city; it changes the scene",
+            "score": 81,
+            "thumbnail_text": "REEF CITY",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Coral reefs are built by tiny living builders",
+            "score": 80,
+            "thumbnail_text": "REEF CITY",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Watch the reef city; it explains the behavior",
+            "score": 74,
+            "thumbnail_text": "WATCH REEF CITY",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Start with the reef city; it changes the scene",
+            "score": 74,
+            "thumbnail_text": "WATCH REEF CITY",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Watch the reef city; it explains the behavior",
+            "score": 74,
+            "thumbnail_text": "CORAL REEFS BUILD",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Start with the reef city; it changes the scene",
+            "score": 74,
+            "thumbnail_text": "CORAL REEFS BUILD",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Watch the reef city; it explains the behavior",
+            "score": 74,
+            "thumbnail_text": "REEF CITY MATTERS",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Start with the reef city; it changes the scene",
+            "score": 74,
+            "thumbnail_text": "REEF CITY MATTERS",
+            "title": "Coral reefs are cities built by tiny animals"
+          },
+          {
+            "hook": "Watch the reef city; it explains the behavior",
+            "score": 74,
+            "thumbnail_text": "REEF CITY FIRST",
+            "title": "Coral reefs are cities built by tiny animals"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
     {
       "id": "8bdc8b70af521eb4",
       "title": "Fossils turn old bones into time clues",
@@ -452,7 +1108,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-06T14:37:58.093181+00:00",
+        "checked_at": "2026-07-06T16:29:43.655909+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1097,7 +1753,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T14:37:58.080613+00:00",
+        "checked_at": "2026-07-06T16:29:43.256977+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1741,7 +2397,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T14:37:58.094262+00:00",
+        "checked_at": "2026-07-06T16:29:43.695676+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2204,647 +2860,6 @@
       }
     },
     {
-      "id": "d5905286e8a38b10",
-      "title": "Coral reefs are built by tiny living builders",
-      "category": "ocean",
-      "publish_score": {
-        "approved": true,
-        "category": "ocean",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "reef"
-          ],
-          "cue_terms": [
-            "city",
-            "reef"
-          ],
-          "frame_hook_bridge": [
-            "reef"
-          ],
-          "risks": [
-            "missing_early_action"
-          ],
-          "score": 96.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "coral"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 69,
-          "signals": {
-            "comment_potential": 54,
-            "educational_potential": 66,
-            "emotional_potential": 44,
-            "novelty": 59,
-            "replay_potential": 72,
-            "viral_potential": 75,
-            "visual_potential": 89
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 74
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "ecosystem_engine",
-        "subscriber_conversion": {
-          "comment_probability": 0.207,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.242,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 79,
-          "state": "strong",
-          "subscriber_probability": 0.113
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.445,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.26,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-07-06T14:37:58.099454+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling",
-          "editor_in_chief:subject repeated inside 3-day cooldown",
-          "editorial_cooldown_supply_fallback"
-        ],
-        "score": 72.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 72.0,
-      "youtube_brain": {
-        "animal": "coral",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "reef"
-          ],
-          "cue_terms": [
-            "city",
-            "reef"
-          ],
-          "frame_hook_bridge": [
-            "reef"
-          ],
-          "risks": [
-            "missing_early_action"
-          ],
-          "score": 96.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "coral"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "ecosystem_engine",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "coral",
-        "viewer_promise": "See why this coral ecosystem engine matters."
-      },
-      "packaging": {
-        "community_prompt": "Which coral clue should Wild Brief compare next in Ocean Mysteries?",
-        "cta_prompt": "Want to uncover what is still hidden in the ocean?",
-        "curiosity_gap": {
-          "hook": "Why does this coral changes after the reef city?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "ecosystem engine",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 67,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 46.1,
-            "format:fresh_variant": 46.1,
-            "format:winner_inspired": 46.1,
-            "hook:pattern_reuse": 46.1,
-            "thumbnail:new_thumbnail": 46.1
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "reef"
-            ],
-            "cue_terms": [
-              "city",
-              "reef"
-            ],
-            "frame_hook_bridge": [
-              "reef"
-            ],
-            "risks": [
-              "missing_early_action"
-            ],
-            "score": 96.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "coral"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Coral reefs are built by tiny living builders",
-          "Coral shows why the reef city matters.",
-          "Coral shows why the reef city matters.",
-          "Coral shows why the reef city matters.",
-          "Coral reefs give away the answer through reef city"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "reef city",
-          "ending_line": "Which habitat next?",
-          "final_line": "Now the reef city at the start makes sense.",
-          "loop_score": 0.751,
-          "opening_line": "Coral reefs are built by tiny living builders.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "reef city",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.751,
-        "next_episode_question": "Tomorrow in Ocean Mysteries: another nature signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "reef"
-          ],
-          "cue_terms": [
-            "city",
-            "reef"
-          ],
-          "frame_hook_bridge": [
-            "reef"
-          ],
-          "risks": [
-            "missing_early_action"
-          ],
-          "score": 96.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "coral"
-        },
-        "pinned_comment": "Watch the reef city again. Tomorrow in Ocean Mysteries: another nature signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 16.24,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 17,
-          "first_2s_narration": "Coral reefs are built by tiny living builders Watch the reef texture",
-          "first_frame_text": "REEF CITY",
-          "first_frame_text_words": 2,
-          "hook": "Coral reefs are built by tiny living builders.",
-          "hook_specificity": 0.78,
-          "hook_words": 8,
-          "loop_score": 0.751,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "reef"
-            ],
-            "cue_terms": [
-              "city",
-              "reef"
-            ],
-            "frame_hook_bridge": [
-              "reef"
-            ],
-            "risks": [
-              "missing_early_action"
-            ],
-            "score": 96.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "coral"
-          },
-          "opening_retention_score": 96.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the reef city, so viewers rewatch the coral clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 74
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Coral reefs are built by tiny living builders Watch the reef texture",
-          "first_frame_text": "REEF CITY",
-          "next_episode_question": "Tomorrow in Ocean Mysteries: another nature signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-          "opening_retention_score": 96.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains the visible reef city behind Coral in a fast nature science story.",
-            "series": "Ocean Mysteries",
-            "subject": "coral",
-            "terms": [
-              "coral",
-              "reef city",
-              "ocean",
-              "ecosystem engine"
-            ],
-            "title_variant": "Coral reef city explained fast",
-            "visible_cue": "reef city"
-          },
-          "series": "Ocean Mysteries",
-          "subject": "coral",
-          "visible_cue": "reef city"
-        },
-        "risks": [],
-        "score": 96,
-        "search_intent": {
-          "description_line": "This Short explains the visible reef city behind Coral in a fast nature science story.",
-          "series": "Ocean Mysteries",
-          "subject": "coral",
-          "terms": [
-            "coral",
-            "reef city",
-            "ocean",
-            "ecosystem engine"
-          ],
-          "title_variant": "Coral reef city explained fast",
-          "visible_cue": "reef city"
-        },
-        "selected_variant": {
-          "hook": "Watch the reef city; it explains the behavior",
-          "score": 81,
-          "thumbnail_text": "REEF CITY",
-          "title": "Coral reefs are cities built by tiny animals"
-        },
-        "series": "Ocean Mysteries #5",
-        "series_identity": {
-          "continuity_prompt": "Next in Ocean Mysteries: compare this with another force of nature.",
-          "episode": 5,
-          "label": "Ocean Mysteries #5",
-          "series": "Ocean Mysteries"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.207,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.242,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 79,
-          "state": "strong",
-          "subscriber_probability": 0.113
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "REEF CITY",
-          "WATCH REEF CITY",
-          "CORAL REEFS BUILD",
-          "REEF CITY MATTERS",
-          "REEF CITY FIRST",
-          "REEF CITY REVEAL",
-          "REEF CITY CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Coral reefs are cities built by tiny animals",
-          "Coral reefs are built by tiny living builders",
-          "Coral reefs use reef city before they build",
-          "This reef city gives coral reefs away",
-          "Why coral reefs build after one reef city",
-          "Coral reefs reveal the answer with reef city",
-          "The reef city that changes the moment",
-          "Coral reefs make one reef city matter",
-          "Coral reefs show the hidden answer in seconds",
-          "Coral reefs: watch this reef city"
-        ],
-        "top_variants": [
-          {
-            "hook": "Watch the reef city; it explains the behavior",
-            "score": 81,
-            "thumbnail_text": "REEF CITY",
-            "title": "Coral reefs are cities built by tiny animals"
-          },
-          {
-            "hook": "Start with the reef city; it changes the scene",
-            "score": 81,
-            "thumbnail_text": "REEF CITY",
-            "title": "Coral reefs are cities built by tiny animals"
-          },
-          {
-            "hook": "Coral reefs are built by tiny living builders",
-            "score": 80,
-            "thumbnail_text": "REEF CITY",
-            "title": "Coral reefs are cities built by tiny animals"
-          },
-          {
-            "hook": "Watch the reef city; it explains the behavior",
-            "score": 74,
-            "thumbnail_text": "WATCH REEF CITY",
-            "title": "Coral reefs are cities built by tiny animals"
-          },
-          {
-            "hook": "Start with the reef city; it changes the scene",
-            "score": 74,
-            "thumbnail_text": "WATCH REEF CITY",
-            "title": "Coral reefs are cities built by tiny animals"
-          },
-          {
-            "hook": "Watch the reef city; it explains the behavior",
-            "score": 74,
-            "thumbnail_text": "CORAL REEFS BUILD",
-            "title": "Coral reefs are cities built by tiny animals"
-          },
-          {
-            "hook": "Start with the reef city; it changes the scene",
-            "score": 74,
-            "thumbnail_text": "CORAL REEFS BUILD",
-            "title": "Coral reefs are cities built by tiny animals"
-          },
-          {
-            "hook": "Watch the reef city; it explains the behavior",
-            "score": 74,
-            "thumbnail_text": "REEF CITY MATTERS",
-            "title": "Coral reefs are cities built by tiny animals"
-          },
-          {
-            "hook": "Start with the reef city; it changes the scene",
-            "score": 74,
-            "thumbnail_text": "REEF CITY MATTERS",
-            "title": "Coral reefs are cities built by tiny animals"
-          },
-          {
-            "hook": "Watch the reef city; it explains the behavior",
-            "score": 74,
-            "thumbnail_text": "REEF CITY FIRST",
-            "title": "Coral reefs are cities built by tiny animals"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "53958248afcfe49f",
       "title": "Forest canopies slow heat near the ground",
       "category": "forests",
@@ -3018,7 +3033,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T14:37:58.095826+00:00",
+        "checked_at": "2026-07-06T16:29:43.697882+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -3665,7 +3680,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T14:37:58.097438+00:00",
+        "checked_at": "2026-07-06T16:29:43.699724+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4315,7 +4330,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T14:37:58.060326+00:00",
+        "checked_at": "2026-07-06T16:29:43.236475+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4957,7 +4972,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T14:37:58.062565+00:00",
+        "checked_at": "2026-07-06T16:29:43.238731+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5611,7 +5626,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T14:37:58.064502+00:00",
+        "checked_at": "2026-07-06T16:29:43.240679+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6267,7 +6282,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T14:37:58.067691+00:00",
+        "checked_at": "2026-07-06T16:29:43.244223+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6930,7 +6945,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T14:37:58.069641+00:00",
+        "checked_at": "2026-07-06T16:29:43.246106+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7581,7 +7596,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T14:37:58.070991+00:00",
+        "checked_at": "2026-07-06T16:29:43.247485+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8227,7 +8242,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T14:37:58.073253+00:00",
+        "checked_at": "2026-07-06T16:29:43.249783+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8875,7 +8890,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T14:37:58.076926+00:00",
+        "checked_at": "2026-07-06T16:29:43.253332+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9523,7 +9538,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T14:37:58.078370+00:00",
+        "checked_at": "2026-07-06T16:29:43.254745+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10171,7 +10186,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T14:37:58.088708+00:00",
+        "checked_at": "2026-07-06T16:29:43.258708+00:00",
         "mechanism_cluster": "visual_stabilization",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10822,7 +10837,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T14:37:58.101371+00:00",
+        "checked_at": "2026-07-06T16:29:43.701768+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11473,7 +11488,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T14:37:58.103615+00:00",
+        "checked_at": "2026-07-06T16:29:43.704449+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12124,7 +12139,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T14:37:58.057408+00:00",
+        "checked_at": "2026-07-06T16:29:43.233347+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12769,7 +12784,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T14:37:58.075590+00:00",
+        "checked_at": "2026-07-06T16:29:43.252077+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
