@@ -734,6 +734,21 @@ def test_load_pending_stories_enforces_publish_window_soft_held_candidate(monkey
     assert candidates[0]["agency_gate"]["reasons"] == ["success_recovery_hook_required"]
 
 
+def test_publish_window_falls_back_to_gate_survivors_when_target_vanished(monkeypatch):
+    import generate_shorts as gs
+
+    monkeypatch.setattr(gs, "PUBLISH_WINDOW_SELECTED_ONLY", True)
+    survivors = [{"id": "survivor-a"}, {"id": "survivor-b"}]
+    assert gs._prioritize_publish_window_candidate(survivors, "vanished-id") == survivors
+
+
+def test_publish_window_returns_empty_when_no_candidate_survived(monkeypatch):
+    import generate_shorts as gs
+
+    monkeypatch.setattr(gs, "PUBLISH_WINDOW_SELECTED_ONLY", True)
+    assert gs._prioritize_publish_window_candidate([], "vanished-id") == []
+
+
 def test_load_pending_stories_blocks_publish_window_hard_held_candidate(monkeypatch, tmp_path):
     import importlib
     import json

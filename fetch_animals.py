@@ -65,13 +65,15 @@ from typing import TYPE_CHECKING, Any
 
 from utils.ai_cache import prune as ai_cache_prune
 from utils.ai_helper import ai_text
-from utils.prompt_safety import wrap_untrusted
 from utils.animal_enrichment import enrich_subject, taxonomy_prompt
 from utils.api_quota_budget import estimate_fetch_content_cost, write_quota_ledger_row
 from utils.broll import fetch_pexels
+from utils.channel_memory import recent_publish_texts
+from utils.editorial import SUBJECT_COOLDOWN_DAYS
 from utils.growth_strategy import ops_guardian_enforced, paused_categories
 from utils.growth_studio import studio_brief_for_story
 from utils.nature_strategy import NATURE_TERMS, NATURE_TOPICS
+from utils.prompt_safety import wrap_untrusted
 from utils.queue_readiness import publish_quality_verdict, publish_ready_verdict
 from utils.rejected_queue import load_rejections
 from utils.topic_freshness import annotate_queue, freshness_report
@@ -122,6 +124,17 @@ MAX_PER_TOPIC = int(os.environ.get("NATURE_MAX_PER_TOPIC") or os.environ.get("AN
 KEEP_DAYS = int(os.environ.get("NATURE_KEEP_DAYS") or os.environ.get("ANIMALS_KEEP_DAYS", "14"))
 QUEUE_TARGET_PENDING = int(os.environ.get("QUEUE_TARGET_PENDING", "1"))
 QUEUE_TARGET_PUBLISH_READY = _env_int("QUEUE_TARGET_PUBLISH_READY", 2, minimum=0, maximum=24)
+# Supply diversity: never enqueue a subject the channel just published
+# (it would sit unpublishable behind the editorial cooldown) and cap how
+# many pending stories may share one subject, so a single upload cannot
+# cooldown half the queue at once. Both knobs can be disabled via env.
+SUBJECT_SUPPLY_COOLDOWN_ENABLED = str(os.environ.get("FETCH_SUBJECT_COOLDOWN_ENABLED", "1")).strip().lower() in {
+    "1",
+    "true",
+    "yes",
+    "on",
+}
+MAX_PENDING_PER_SUBJECT = _env_int("FETCH_MAX_PENDING_PER_SUBJECT", 2, minimum=0, maximum=24)
 QUEUE_READY_RECOVERY_BATCH = _env_int("QUEUE_READY_RECOVERY_BATCH", 12, minimum=1, maximum=72)
 PEXELS_SEARCH_PER_PAGE = _env_int("PEXELS_SEARCH_PER_PAGE", 32, minimum=4, maximum=80)
 PEXELS_DISCOVERY_PAGES = _env_int("PEXELS_DISCOVERY_PAGES", 2, minimum=1, maximum=5)
@@ -850,6 +863,44 @@ def _strict_animal_terms(text: str) -> set[str]:
     return {term for term in _animal_terms(text) if term in _STRICT_ANIMAL_SUBJECTS}
 
 
+def _recent_publish_animal_terms(days: int = SUBJECT_COOLDOWN_DAYS) -> set[str]:
+    """Canonical animal subjects published inside the editorial cooldown window."""
+    terms: set[str] = set()
+    for text in recent_publish_texts(days=days):
+        terms |= _animal_terms(text)
+    return terms
+
+
+def _pending_subject_term_sets(stories: list[dict]) -> list[set[str]]:
+    """Canonical animal subjects of every pending (unconsumed) queue story."""
+    out: list[set[str]] = []
+    for story in stories:
+        if not isinstance(story, dict) or story.get("consumed"):
+            continue
+        terms = _animal_terms(f"{story.get('title') or ''} {story.get('script') or ''}")
+        if terms:
+            out.append(terms)
+    return out
+
+
+def _subject_supply_block_reason(
+    candidate_terms: set[str],
+    cooldown_terms: set[str],
+    pending_term_sets: list[set[str]],
+    max_pending_per_subject: int,
+) -> str:
+    """Explain why a candidate subject should not be enqueued, or return ''."""
+    if not candidate_terms:
+        return ""
+    if candidate_terms & cooldown_terms:
+        return "publish_cooldown"
+    if max_pending_per_subject > 0:
+        overlap = sum(1 for pending in pending_term_sets if candidate_terms & pending)
+        if overlap >= max_pending_per_subject:
+            return "queue_saturated"
+    return ""
+
+
 def _script_matches_visible_subject(subject: str, script: str) -> bool:
     """Reject narration that changes visible subject when the clip is explicit."""
     visible_animals = _strict_animal_terms(subject)
@@ -1043,7 +1094,7 @@ def _validate_and_repair_json(data: dict, subject: str) -> dict | None:
             trimmed_script = " ".join(trimmed_words)
             last_period = trimmed_script.rfind(".")
             if last_period != -1 and last_period > len(trimmed_script) * 0.7:
-                data["script"] = trimmed_script[:last_period + 1]
+                data["script"] = trimmed_script[: last_period + 1]
             else:
                 data["script"] = trimmed_script
         else:
@@ -1607,11 +1658,7 @@ def _fallback_subject(subject: str, topic_key: str) -> tuple[str, str, str]:
 def _fallback_variants(package: dict | None) -> list[dict]:
     if not package:
         return []
-    base = {
-        key: package[key]
-        for key in ("title", "hook", "body", "thumb", "tags")
-        if key in package
-    }
+    base = {key: package[key] for key in ("title", "hook", "body", "thumb", "tags") if key in package}
     variants: list[dict] = []
     if {"title", "hook", "body", "thumb"} <= set(base):
         variants.append(base)
@@ -1873,7 +1920,9 @@ def _ai_enhance_animal(
         "production_mode": growth_studio.get("production_mode", ""),
         "trend_context": trend_context,
     }
-    if not _copy_matches_visible_subject(subject, out["seo_title"], out["hook"], out["script"], strict_expected=strict_expected):
+    if not _copy_matches_visible_subject(
+        subject, out["seo_title"], out["hook"], out["script"], strict_expected=strict_expected
+    ):
         log.warning(
             "AI copy changed or hid visible subject: subject=%r title=%r hook=%r script=%r",
             subject[:100],
@@ -2083,7 +2132,7 @@ def load_published_copy_keys(root: Path | None = None) -> dict[str, set[str]]:
                 continue
             if isinstance(marker, dict):
                 _add_story_copy_keys(keys, marker)
-    
+
     # Also load from permanent upload intents ledger since .done files are ephemeral
     intents_path = root / "_data" / "upload_intents.jsonl"
     if intents_path.exists():
@@ -2096,7 +2145,7 @@ def load_published_copy_keys(root: Path | None = None) -> dict[str, set[str]]:
                 title_key = _copy_key(row.get("title") or "")
                 if title_key:
                     keys["titles"].add(title_key)
-                    
+
     return keys
 
 
@@ -2511,7 +2560,7 @@ def _topic_fetch_plan(
             weight = float(weights.get(topic_key, 1.0) or 1.0)
         except (TypeError, ValueError):
             weight = 1.0
-            
+
         # Growth Hack: Apply true proportional scaling based on analytics views
         if weight > 1.0:
             budget = max(budget + 1, int(budget * weight))
@@ -2653,6 +2702,15 @@ def main() -> int:
         if isinstance(story, dict):
             _add_story_copy_keys(queue_copy_keys, story)
     copy_keys = _merge_copy_keys(queue_copy_keys, load_published_copy_keys(), load_rejected_copy_keys())
+    supply_cooldown_terms = _recent_publish_animal_terms() if SUBJECT_SUPPLY_COOLDOWN_ENABLED else set()
+    pending_term_sets = _pending_subject_term_sets(queue["stories"])
+    log.info(
+        "Supply diversity: %d subject(s) in %d-day publish cooldown, %d pending subject set(s), cap %d per subject",
+        len(supply_cooldown_terms),
+        SUBJECT_COOLDOWN_DAYS,
+        len(pending_term_sets),
+        MAX_PENDING_PER_SUBJECT,
+    )
     log.info(
         "🧮 Dedup keyset: %d queue ids + %d published clips = %d total",
         len(queue_ids),
@@ -2734,6 +2792,18 @@ def main() -> int:
             if not _topic_accepts_subject(story_topic_cfg, subject):
                 log.warning("  skipping off-topic video clip for %s: %s", story_topic_key, subject[:80])
                 continue
+            candidate_terms = _animal_terms(subject)
+            supply_block = _subject_supply_block_reason(
+                candidate_terms, supply_cooldown_terms, pending_term_sets, MAX_PENDING_PER_SUBJECT
+            )
+            if supply_block:
+                log.info(
+                    "  skipping %s subject for supply diversity (%s): %s",
+                    story_topic_key,
+                    supply_block,
+                    subject[:80],
+                )
+                continue
             enrichment = enrich_subject(subject)
             context = story_topic_cfg.get("description_prefix", "an animal clip")
             taxonomy = taxonomy_prompt(enrichment)
@@ -2780,6 +2850,8 @@ def main() -> int:
                 continue
             new_entries.append(story)
             topic_new_entries += 1
+            if candidate_terms:
+                pending_term_sets.append(candidate_terms)
             _add_story_copy_keys(copy_keys, story)
             dedupe_keys.add(story["id"])
             if pid:

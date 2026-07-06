@@ -3,28 +3,13 @@
 from __future__ import annotations
 
 import json
-import re
 from pathlib import Path
 
 import fetch_animals
+from utils.legacy_terms import BLOCKED_TERMS, matches_blocked_term
 
 ROOT = Path(__file__).resolve().parents[1]
 SKIP_DIRS = {".git", ".pytest_cache", ".venv", ".venv-latest", "__pycache__", "env", "venv", ".agents"}
-BLOCKED = (
-    "tik" + "tok",
-    "f" + "yp",
-    "for" + "you",
-    "cat" + "tok",
-    "dog" + "tok",
-    "bird" + "tok",
-    "farm" + "tok",
-    "@wildbrief" + "_x",
-    "feed" + "parser",
-    "feed_" + "cache",
-    "feed_" + "health",
-    "pol" + "linations",
-    "na" + "sa",
-)
 
 
 def test_repository_is_focused_on_youtube():
@@ -35,12 +20,8 @@ def test_repository_is_focused_on_youtube():
         if path.suffix.lower() not in {".py", ".md", ".html", ".yml", ".yaml", ".json", ".jsonl", ".example"}:
             continue
         text = path.read_text(encoding="utf-8", errors="ignore").lower()
-        for term in BLOCKED:
-            if term == "na" + "sa":
-                matched = re.search(r"\bnasa\b", text) is not None
-            else:
-                matched = term in text
-            if matched:
+        for term in BLOCKED_TERMS:
+            if matches_blocked_term(text, term):
                 hits.append(f"{path.relative_to(ROOT)}: {term}")
     assert hits == [], "legacy platform references found:\n" + "\n".join(hits)
 

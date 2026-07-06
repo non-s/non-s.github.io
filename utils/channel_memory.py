@@ -120,6 +120,18 @@ def _iter_recent(path: Path = MEMORY_LOG, days: int = LOOKBACK_DAYS):
         return
 
 
+def recent_publish_texts(days: int = LOOKBACK_DAYS, path: Path | None = None) -> list[str]:
+    """Subject and entity text of Shorts published inside the window."""
+    out: list[str] = []
+    for past in _iter_recent(path or MEMORY_LOG, days=days):
+        subject = str(past.get("subject") or "")
+        entities = " ".join(str(entity) for entity in (past.get("entities") or []))
+        text = f"{subject} {entities}".strip()
+        if text:
+            out.append(text)
+    return out
+
+
 _WORD_RE = re.compile(r"[A-Za-z][A-Za-z\-']{2,}")
 
 

@@ -7,6 +7,8 @@ import re
 from datetime import datetime, timezone
 from pathlib import Path
 
+from utils.legacy_terms import scrub_legacy_terms
+
 REJECTED_QUEUE = Path("_data/rejected_queue.jsonl")
 LEGACY_REJECTED_QUEUE = Path("_data/rejected_queue.json")
 FINAL_PUBLISH_BLOCKING_STAGES = {
@@ -72,7 +74,7 @@ def _read(path: Path | None = None) -> list[dict]:
 
 
 def _script_key(script: object) -> str:
-    return re.sub(r"[^a-z0-9]+", " ", str(script or "").lower()).strip()
+    return re.sub(r"[^a-z0-9]+", " ", scrub_legacy_terms(str(script or "")).lower()).strip()
 
 
 def _story_angle_key(story: dict) -> str:
@@ -108,13 +110,13 @@ def record_rejection(
     )
     rewrite_applied = bool(quality_repair.get("applied") or queue_repair.get("applied") or local_rewrite.get("applied"))
     script_key = _script_key(story.get("script"))
-    angle_key = _story_angle_key(story)
+    angle_key = scrub_legacy_terms(_story_angle_key(story))
     items.append(
         {
             "story_id": story_id,
             "stage": stage,
             "reasons": list(dict.fromkeys(str(r) for r in reasons)),
-            "title": story.get("seo_title") or story.get("title") or "",
+            "title": scrub_legacy_terms(story.get("seo_title") or story.get("title") or ""),
             "category": story.get("category") or "",
             "script_key": script_key,
             "angle_key": angle_key,

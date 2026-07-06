@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 
-from utils import studio_rewrite
+from utils import editorial, studio_rewrite
 
 
 def _needs_rewrite_story() -> dict:
@@ -27,6 +27,7 @@ def _needs_rewrite_story() -> dict:
 
 
 def test_ai_rewrite_accepts_better_script(monkeypatch):
+    monkeypatch.setattr(editorial.channel_memory, "_iter_recent", lambda days: iter(()))
     monkeypatch.setattr(studio_rewrite, "ENABLED", True)
     monkeypatch.setenv("MISTRAL_API_KEY", "test-key")
     monkeypatch.setattr(
@@ -53,6 +54,7 @@ def test_ai_rewrite_accepts_better_script(monkeypatch):
 
 
 def test_ai_rewrite_rejects_invalid_json(monkeypatch):
+    monkeypatch.setattr(editorial.channel_memory, "_iter_recent", lambda days: iter(()))
     monkeypatch.setattr(studio_rewrite, "ENABLED", True)
     monkeypatch.setenv("MISTRAL_API_KEY", "test-key")
     monkeypatch.setattr(studio_rewrite, "ai_text", lambda *a, **k: "not json")

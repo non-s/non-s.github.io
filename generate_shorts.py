@@ -1557,8 +1557,20 @@ def _prioritize_publish_window_candidate(candidates: list[dict], target_id: str 
         return candidates
     selected = [item for item in candidates if _matches_publish_window_candidate(item, target)]
     if not selected:
+        if candidates:
+            # The window picked its candidate from queue annotations that can
+            # go stale between runs; every story here already cleared the live
+            # generator gates, so publishing the best survivor beats starving
+            # the slot and failing the run.
+            log.warning(
+                "Publish window selected %s, but it did not survive generator gates; "
+                "falling back to %d gate-approved candidate(s).",
+                target,
+                len(candidates),
+            )
+            return candidates
         log.error("Publish window selected %s, but no matching candidate survived generator gates.", target)
-        return [] if PUBLISH_WINDOW_SELECTED_ONLY else candidates
+        return []
     if PUBLISH_WINDOW_SELECTED_ONLY:
         reserve = [item for item in candidates if not _matches_publish_window_candidate(item, target)]
         log.info(
