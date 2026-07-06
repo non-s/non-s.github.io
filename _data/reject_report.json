@@ -1,34 +1,34 @@
 {
   "total": 1000,
   "reasons": {
-    "duplicate_title": 438,
-    "off_topic_visual": 228,
-    "duplicate_script": 189,
-    "duplicate_angle": 179,
-    "queue_score_reject": 93,
-    "copy_subject_mismatch": 90,
-    "thumbnail_text_not_scannable": 85,
-    "thumbnail_not_2_4_words": 84,
-    "script_hook_mismatch": 74,
+    "duplicate_title": 473,
+    "off_topic_visual": 244,
+    "duplicate_script": 210,
+    "duplicate_angle": 197,
+    "queue_score_reject": 106,
+    "copy_subject_mismatch": 96,
+    "script_hook_mismatch": 81,
     "editorial score is below publish threshold": 71,
-    "script_subject_mismatch": 27,
+    "script_subject_mismatch": 28,
     "rights_guard_person_manual_review": 25,
+    "script_word_loop": 22,
     "low_opportunity_score": 21,
-    "opening_retention_gap_risk": 19,
-    "script_word_loop": 18,
-    "non_animal_body_language": 17,
+    "opening_retention_gap_risk": 20,
+    "thumbnail_text_not_scannable": 17,
+    "non_animal_body_language": 16,
+    "thumbnail_not_2_4_words": 16,
+    "subject_not_immediately_clear": 14,
     "subject repeated inside 3-day cooldown": 14,
     "humanity score is too low": 14,
-    "subject_not_immediately_clear": 13,
-    "payoff_not_explicit": 11,
+    "payoff_not_explicit": 12,
+    "bad_plural_verb": 8,
     "opening promise is not concrete enough": 8,
+    "missing_visual_cue": 7,
     "script does not expose enough concrete visual detail": 7,
-    "missing_visual_cue": 6,
+    "title_shape_weak": 6,
     "missing_action_word": 6,
     "missing_visible_cue": 5,
     "no_action_promise": 5,
-    "bad_plural_verb": 5,
-    "title_shape_weak": 5,
     "editorial score 37 is below 62": 5,
     "script quality gate blocked the narration": 4,
     "editorial score 39 is below 62": 4,
@@ -41,16 +41,145 @@
     "editorial score 35 is below 62": 1
   },
   "stages": {
-    "queue_prune": 443,
-    "queue_prune_final": 273,
-    "queue_repair": 93,
+    "queue_prune": 478,
+    "queue_prune_final": 292,
+    "queue_repair": 106,
     "pre_publish_audit": 71,
-    "youtube_brain_rewrite": 69,
     "opportunity_score": 21,
     "editor_in_chief": 19,
-    "youtube_brain": 11
+    "youtube_brain": 12,
+    "youtube_brain_rewrite": 1
   },
   "latest": [
+    {
+      "story_id": "Sharks sense tiny electric fields",
+      "stage": "pre_publish_audit",
+      "reasons": [
+        "editorial score is below publish threshold"
+      ],
+      "title": "Sharks sense tiny electric fields",
+      "category": "ocean",
+      "script_key": "sharks reveal the electric sense first watch closely because sharks have sensory pores that detect tiny electric fields from other animals that helps them hunt when sight is limited the ocean is full of signals we cannot feel would you swim differently now the electric sense at the start makes sense",
+      "angle_key": "sharks|hunt|electric sense|ocean",
+      "source_url": "https://www.pexels.com/video/diver-swims-with-sharks-in-aquarium-30720810/",
+      "pexels_video_id": "30720810",
+      "source_clip_id": "pexels:16394dd0594f4bd3",
+      "recorded_at": "2026-07-05T21:17:04.832270+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "Butterflies Mariposas tienen escamas de colores en sus alas",
+      "stage": "youtube_brain",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "no_action_promise",
+        "payoff_not_explicit",
+        "opening_retention_gap_risk"
+      ],
+      "title": "Butterflies Mariposas tienen escamas de colores en sus alas",
+      "category": "insects",
+      "script_key": "las mariposas tienen escamas de colores en sus alas f jate en la superficie de las alas porque el color a menudo viene de miles de escamas superpuestas algunas usan pigmento y otras doblan la luz por eso una ala parece pintada de cerca a qu detalle debemos acercarnos despu s which tiny detail should we zoom into next",
+      "angle_key": "butterflies|use|cue|insects",
+      "source_url": "https://www.pexels.com/video/common-blue-butterflies-mating-5972761/",
+      "pexels_video_id": "5972761",
+      "source_clip_id": "pexels:76156955fa19e142",
+      "recorded_at": "2026-07-05T21:18:10.167263+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "54371d2609e5e6e1",
+      "stage": "queue_prune",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "title": "The moon keeps one face turned toward Earth",
+      "category": "space",
+      "script_key": "the moon shows us one face for a reason watch the moon s position because its rotation and orbit are locked together it spins once in about the same time it circles earth so the same side keeps facing us that is synchronized motion not stillness which orbit clue next",
+      "angle_key": "moon|keeps|face|space",
+      "source_url": "https://www.pexels.com/video/messier106-galaxy-27975940/",
+      "pexels_video_id": "27975940",
+      "source_clip_id": "pexels:54371d2609e5e6e1",
+      "recorded_at": "2026-07-05T21:32:13.336753+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "ec1ebb8d9b73917d",
+      "stage": "queue_prune_final",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "title": "Storm clouds reveal a storm's heat engine",
+      "category": "earth_from_space",
+      "script_key": "storm clouds show where a storm is feeding watch the spiral shape because warm ocean air rises near the center and releases heat as clouds build rotation organizes that energy into bands from above the storm is not random it is an engine which satellite clue next",
+      "angle_key": "storm|build|clouds|earth_from_space",
+      "source_url": "https://www.pexels.com/video/majestic-mountain-peaks-in-misty-clouds-30744365/",
+      "pexels_video_id": "30744365",
+      "source_clip_id": "pexels:ec1ebb8d9b73917d",
+      "recorded_at": "2026-07-05T21:32:13.354608+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "32e7c05ac406a760",
+      "stage": "queue_prune_final",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "title": "Storm clouds reveal a storm's heat engine",
+      "category": "earth_from_space",
+      "script_key": "storm clouds show where a storm is feeding watch the spiral shape because warm ocean air rises near the center and releases heat as clouds build rotation organizes that energy into bands from above the storm is not random it is an engine which satellite clue next",
+      "angle_key": "storm|build|clouds|earth_from_space",
+      "source_url": "https://www.pexels.com/video/aerial-view-of-rugged-cliffs-in-sierra-landscape-36628442/",
+      "pexels_video_id": "36628442",
+      "source_clip_id": "pexels:32e7c05ac406a760",
+      "recorded_at": "2026-07-05T21:32:13.369610+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "Sharks sense tiny electric fields",
+      "stage": "pre_publish_audit",
+      "reasons": [
+        "editorial score is below publish threshold"
+      ],
+      "title": "Sharks sense tiny electric fields",
+      "category": "ocean",
+      "script_key": "sharks reveal the electric sense first watch closely because sharks have sensory pores that detect tiny electric fields from other animals that helps them hunt when sight is limited the ocean is full of signals we cannot feel would you swim differently now the electric sense at the start makes sense",
+      "angle_key": "sharks|hunt|electric sense|ocean",
+      "source_url": "https://www.pexels.com/video/diver-swims-with-sharks-in-aquarium-30720810/",
+      "pexels_video_id": "30720810",
+      "source_clip_id": "pexels:16394dd0594f4bd3",
+      "recorded_at": "2026-07-05T22:41:50.474279+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "Los cristales crecen con átomos que se repiten",
+      "stage": "youtube_brain",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "missing_visual_cue",
+        "payoff_not_explicit",
+        "title_shape_weak",
+        "opening_retention_gap_risk"
+      ],
+      "title": "Los cristales crecen con átomos que se repiten",
+      "category": "chemistry",
+      "script_key": "los cristales crecen siguiendo patrones de tomos mira c mo el borde se expande porque los tomos o mol culas se acomodan en un orden repetitivo una vez que empieza el patr n las nuevas piezas encajan mejor en el mismo orden por eso parecen dise ados qu reacci n deber amos ver despu s now the crystal growth at the start makes sense",
+      "angle_key": "crystal|sense|cue|chemistry",
+      "source_url": "https://www.pexels.com/video/pouring-water-over-dry-ice-8327348/",
+      "pexels_video_id": "8327348",
+      "source_clip_id": "pexels:85e7eed92eb218a8",
+      "recorded_at": "2026-07-05T22:42:54.286585+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
     {
       "story_id": "4e4ef766c821b689",
       "stage": "queue_prune_final",
@@ -71,78 +200,6 @@
       "rewrite_applied": true
     },
     {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-05T23:23:15.975491+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-05T23:33:26.828601+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-05T23:41:09.157483+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-05T23:45:54.936043+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
       "story_id": "b057971dad7d7c38",
       "stage": "queue_prune_final",
       "reasons": [
@@ -157,24 +214,6 @@
       "pexels_video_id": "7140072",
       "source_clip_id": "pexels:b057971dad7d7c38",
       "recorded_at": "2026-07-05T23:49:36.968913+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-05T23:53:45.599860+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     },
@@ -443,56 +482,20 @@
       "rewrite_applied": true
     },
     {
-      "story_id": "7671e4c60f34cf0f",
-      "stage": "queue_repair",
+      "story_id": "8bdc8b70af521eb4",
+      "stage": "youtube_brain_rewrite",
       "reasons": [
-        "opening_retention_gap_risk",
-        "opening promise is not concrete enough",
-        "queue_score_reject"
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
       ],
-      "title": "Mushrooms trade nutrients through underground threads",
-      "category": "fungi",
-      "script_key": "mushrooms connect through threads under the soil watch the mushroom cap then imagine the hidden part below it mycelium spreads through soil as fine threads moving nutrients while breaking down dead material that is why the real fungal story is usually underground which tiny network next",
-      "angle_key": "mushrooms|connect|underground threads|fungi",
-      "source_url": "https://www.pexels.com/video/vibrant-abstract-purple-particle-movement-34890030/",
-      "pexels_video_id": "34890030",
-      "source_clip_id": "pexels:7671e4c60f34cf0f",
-      "recorded_at": "2026-07-06T09:10:48.534375+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "cca00e7ceba855ad",
-      "stage": "queue_prune",
-      "reasons": [
-        "off_topic_visual",
-        "non_animal_body_language"
-      ],
-      "title": "Bald ibis feathers don't match its bald head",
-      "category": "forests",
-      "script_key": "i love this one notice how the feathers on its back are almost purple in sunlight that s not dust bald ibises preen with iron rich mud to dye their feathers because it protects their skin from sunburn that s why their heads stay bare ever tried putting mud on your face for sunscreen",
-      "angle_key": "tree|show|feathers|forests",
-      "source_url": "https://www.pexels.com/video/northern-bald-ibis-on-tree-branch-in-zoo-34637060/",
-      "pexels_video_id": "34637060",
-      "source_clip_id": "pexels:cca00e7ceba855ad",
-      "recorded_at": "2026-07-06T09:10:48.552581+00:00",
-      "rewrite_attempted": false,
-      "rewrite_applied": false
-    },
-    {
-      "story_id": "4637192565a943dc",
-      "stage": "queue_prune_final",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "title": "Birds see ultraviolet patterns we miss",
-      "category": "birds",
-      "script_key": "birds reveal the ultraviolet vision first watch closely because many birds see ultraviolet detail hidden from us that extra color can help with mates food and navigation the same scene is richer to them than it is to us which bird fact next",
-      "angle_key": "birds|reveal|ultraviolet vision|birds",
-      "source_url": "https://www.pexels.com/video/elegant-silver-pheasant-in-enclosure-34249871/",
-      "pexels_video_id": "34249871",
-      "source_clip_id": "pexels:4637192565a943dc",
-      "recorded_at": "2026-07-06T09:10:48.566877+00:00",
+      "title": "Fossils turn old bones into time clues",
+      "category": "discoveries",
+      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
+      "angle_key": "fossils|form|pattern|discoveries",
+      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
+      "pexels_video_id": "36118169",
+      "source_clip_id": "pexels:8bdc8b70af521eb4",
+      "recorded_at": "2026-07-06T09:10:49.028252+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     }
