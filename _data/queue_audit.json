@@ -1,37 +1,55 @@
 {
-  "generated_at": "2026-07-06T19:37:58.639475+00:00",
-  "pending": 20,
+  "generated_at": "2026-07-06T20:15:29.802765+00:00",
+  "pending": 18,
   "states": {
-    "rewrite": 19,
+    "rewrite": 17,
     "publish_ready": 1
   },
   "mechanism_clusters": {
-    "beak_signal": 1,
     "call_signal": 1,
+    "beak_signal": 1,
     "face_recognition": 1
   },
   "rights": {
-    "approved": 20
+    "approved": 18
   },
   "prune_summary": {
-    "pending_before": 20,
-    "pending_after": 20,
+    "pending_before": 18,
+    "pending_after": 18,
     "rejected": 0,
     "repair_needed": 0,
-    "repaired": 5,
+    "repaired": 4,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 19,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 13,
+      "objective_gate:bootstrap_observe_before_scaling": 18,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 12,
       "editor_in_chief:script quality gate blocked the narration": 4,
-      "editor_in_chief:story angle repeated inside 10-day cooldown": 4,
+      "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
       "editor_in_chief:editorial score 46 is below 62": 3,
-      "editor_in_chief:editorial score 40 is below 62": 2,
-      "duplicate_title": 1,
       "editor_in_chief:editorial score 49 is below 62": 1,
-      "inventory_reserve_fallback": 1
+      "editor_in_chief:editorial score 40 is below 62": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "99243d5d89a18fff",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "Los manglares frenan el poder de las olas",
+      "title": "Los manglares frenan el poder de las olas",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "payoff_not_explicit",
+        "hook_shape_weak",
+        "title_shape_weak",
+        "opening_retention_gap_risk"
+      ],
+      "stage": "youtube_brain"
+    },
     {
       "id": "8bdc8b70af521eb4",
       "title": "Fossils turn old bones into time clues",
@@ -278,22 +296,6 @@
         "queue_score_reject"
       ],
       "stage": "queue_repair"
-    },
-    {
-      "id": "5dfc2d106d14ca62",
-      "title": "Lava paints land while you watch",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "010fd1fc496f2107",
-      "title": "Monkeys wash food when grit gets annoying",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
     }
   ],
   "top": [
@@ -452,15 +454,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.52,
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 5
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -470,7 +472,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-06T19:37:37.054801+00:00",
+        "checked_at": "2026-07-06T20:15:15.354560+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -564,7 +566,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1095,15 +1097,15 @@
         "title_score": 84,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.52,
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 5
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -1113,7 +1115,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T19:37:37.044392+00:00",
+        "checked_at": "2026-07-06T20:15:15.344913+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1205,7 +1207,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1734,15 +1736,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.52,
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 5
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -1752,7 +1754,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T19:37:37.046726+00:00",
+        "checked_at": "2026-07-06T20:15:15.346695+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1846,7 +1848,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -2232,15 +2234,15 @@
         "approved": true,
         "category": "wildlife",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
+          "bootstrap_multiplier": 0.317,
           "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "confidence_score": 0.089,
+          "data_quality": "estimated",
+          "data_quality_score": 0.35,
+          "minimum_sample_size": 28,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.09.",
           "recommendation_strength": "observe",
-          "sample_size": 1
+          "sample_size": 6
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -2250,7 +2252,7 @@
         },
         "hook_score": 86,
         "objective_gate": {
-          "confidence_score": 0.007,
+          "confidence_score": 0.089,
           "mechanism_cluster": "call_signal",
           "payoff_time_s": 0.0,
           "penalty": 0.0,
@@ -2289,29 +2291,31 @@
         },
         "opportunity": {
           "confidence": {
-            "bootstrap_multiplier": 0.25,
+            "bootstrap_multiplier": 0.335,
             "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
             "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 0
+            "sample_size": 1
           },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 66,
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [
+            "weak_visual_surface"
+          ],
+          "score": 58,
           "signals": {
-            "comment_potential": 54,
-            "educational_potential": 66,
-            "emotional_potential": 35,
-            "novelty": 69,
-            "replay_potential": 92,
-            "viral_potential": 77,
-            "visual_potential": 59
+            "comment_potential": 48,
+            "educational_potential": 60,
+            "emotional_potential": 29,
+            "novelty": 63,
+            "replay_potential": 78,
+            "viral_potential": 63,
+            "visual_potential": 53
           },
-          "verdict": "produce"
+          "verdict": "rewrite"
         },
         "phrase_risk": {
           "hits": [],
@@ -2319,17 +2323,17 @@
         },
         "retention": {
           "confidence": {
-            "bootstrap_multiplier": 0.25,
+            "bootstrap_multiplier": 0.335,
             "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
             "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 0
+            "sample_size": 1
           },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
           "reasons": [],
           "score": 76,
           "signals": {
@@ -2347,17 +2351,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.24,
           "confidence": {
-            "bootstrap_multiplier": 0.274,
+            "bootstrap_multiplier": 0.331,
             "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "confidence_score": 0.108,
+            "data_quality": "estimated",
+            "data_quality_score": 0.45,
+            "minimum_sample_size": 13,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
             "recommendation_strength": "observe",
-            "sample_size": 1
+            "sample_size": 3
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -2378,15 +2382,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.52,
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 5
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -2396,7 +2400,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T19:37:37.055876+00:00",
+        "checked_at": "2026-07-06T20:15:15.331840+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2490,7 +2494,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -2640,17 +2644,17 @@
         "replay_prompt": "End by pointing back to the ground signal, so viewers rewatch the elephants clip.",
         "retention": {
           "confidence": {
-            "bootstrap_multiplier": 0.25,
+            "bootstrap_multiplier": 0.335,
             "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
             "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 0
+            "sample_size": 1
           },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
           "reasons": [],
           "score": 76,
           "signals": {
@@ -2702,7 +2706,7 @@
         },
         "selected_variant": {
           "hook": "Elephants can sense low rumbles underfoot",
-          "score": 80,
+          "score": 79,
           "thumbnail_text": "GROUND SIGNAL",
           "title": "Elephants can feel rumbles through the ground"
         },
@@ -2725,17 +2729,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.24,
           "confidence": {
-            "bootstrap_multiplier": 0.274,
+            "bootstrap_multiplier": 0.331,
             "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "confidence_score": 0.108,
+            "data_quality": "estimated",
+            "data_quality_score": 0.45,
+            "minimum_sample_size": 13,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
             "recommendation_strength": "observe",
-            "sample_size": 1
+            "sample_size": 3
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -2785,727 +2789,63 @@
         "top_variants": [
           {
             "hook": "Elephants can sense low rumbles underfoot",
-            "score": 80,
+            "score": 79,
             "thumbnail_text": "GROUND SIGNAL",
             "title": "Elephants can feel rumbles through the ground"
           },
           {
             "hook": "Elephants reveal the ground signal first",
-            "score": 80,
+            "score": 78,
             "thumbnail_text": "GROUND SIGNAL",
             "title": "Elephants can feel rumbles through the ground"
           },
           {
             "hook": "Watch the ground signal; it explains the behavior",
-            "score": 80,
+            "score": 78,
             "thumbnail_text": "GROUND SIGNAL",
             "title": "Elephants can feel rumbles through the ground"
           },
           {
             "hook": "Elephants can sense low rumbles underfoot",
-            "score": 73,
-            "thumbnail_text": "WATCH GROUND SIGNAL",
-            "title": "Elephants can feel rumbles through the ground"
-          },
-          {
-            "hook": "Elephants reveal the ground signal first",
-            "score": 73,
-            "thumbnail_text": "WATCH GROUND SIGNAL",
-            "title": "Elephants can feel rumbles through the ground"
-          },
-          {
-            "hook": "Watch the ground signal; it explains the behavior",
-            "score": 73,
+            "score": 72,
             "thumbnail_text": "WATCH GROUND SIGNAL",
             "title": "Elephants can feel rumbles through the ground"
           },
           {
             "hook": "Elephants can sense low rumbles underfoot",
-            "score": 73,
-            "thumbnail_text": "ELEPHANTS SIGNAL",
-            "title": "Elephants can feel rumbles through the ground"
-          },
-          {
-            "hook": "Elephants reveal the ground signal first",
-            "score": 73,
-            "thumbnail_text": "ELEPHANTS SIGNAL",
-            "title": "Elephants can feel rumbles through the ground"
-          },
-          {
-            "hook": "Watch the ground signal; it explains the behavior",
-            "score": 73,
+            "score": 72,
             "thumbnail_text": "ELEPHANTS SIGNAL",
             "title": "Elephants can feel rumbles through the ground"
           },
           {
             "hook": "Elephants can sense low rumbles underfoot",
-            "score": 73,
+            "score": 72,
             "thumbnail_text": "GROUND SIGNAL MATTERS",
             "title": "Elephants can feel rumbles through the ground"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
-      "id": "99243d5d89a18fff",
-      "title": "Rock layers use rock layers before they change",
-      "category": "geology",
-      "publish_score": {
-        "approved": true,
-        "category": "geology",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.283,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.044,
-          "data_quality": "inferred",
-          "data_quality_score": 0.5,
-          "minimum_sample_size": 28,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.04.",
-          "recommendation_strength": "observe",
-          "sample_size": 4
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.044,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "pattern",
-            "rock",
-            "stripe",
-            "time"
-          ],
-          "cue_terms": [
-            "pattern",
-            "rock",
-            "stripe",
-            "time"
-          ],
-          "frame_hook_bridge": [
-            "rock",
-            "time"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "rock"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 70,
-          "signals": {
-            "comment_potential": 54,
-            "educational_potential": 72,
-            "emotional_potential": 44,
-            "novelty": 59,
-            "replay_potential": 72,
-            "viral_potential": 75,
-            "visual_potential": 89
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 76,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 74
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "earth_engine",
-        "subscriber_conversion": {
-          "comment_probability": 0.207,
-          "confidence": {
-            "bootstrap_multiplier": 0.331,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.108,
-            "data_quality": "estimated",
-            "data_quality_score": 0.45,
-            "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.242,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 79,
-          "state": "strong",
-          "subscriber_probability": 0.113
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.52,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-07-06T19:37:37.118817+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "inventory_reserve_fallback",
-          "inventory_reserve:duplicate_title"
-        ],
-        "score": 72.0,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 72.0,
-      "youtube_brain": {
-        "animal": "rock",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "pattern",
-            "rock",
-            "stripe",
-            "time"
-          ],
-          "cue_terms": [
-            "pattern",
-            "rock",
-            "stripe",
-            "time"
-          ],
-          "frame_hook_bridge": [
-            "rock",
-            "time"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "rock"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "earth_engine",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "rock",
-        "viewer_promise": "See why this rock earth engine matters."
-      },
-      "packaging": {
-        "community_prompt": "Which rock clue should Wild Brief compare next in Earth Engine?",
-        "cta_prompt": "Want to understand the planet under your feet?",
-        "curiosity_gap": {
-          "hook": "Watch the rock time; it explains why this rock changes.",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "earth engine",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 68,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:specific_question": 46.1,
-            "format:fresh_variant": 46.1,
-            "format:winner_inspired": 46.1,
-            "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 46.1
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "pattern",
-              "rock",
-              "stripe",
-              "time"
-            ],
-            "cue_terms": [
-              "pattern",
-              "rock",
-              "stripe",
-              "time"
-            ],
-            "frame_hook_bridge": [
-              "rock",
-              "time"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "rock"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Rock layers are time stamps made of stone",
-          "Watch the rock layers; it explains the behavior",
-          "Start with the rock layer; it changes the scene",
-          "The rock layer is the detail most people miss",
-          "Rock layers give away the answer through rock layers"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "rock time",
-          "ending_line": "Which rock clue should we read next?",
-          "final_line": "Now the rock time at the start makes sense.",
-          "loop_score": 0.973,
-          "opening_line": "Rock layers are time stamps made of stone.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "rock time",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.973,
-        "next_episode_question": "Tomorrow in Earth Engine: another nature signal. Does this make Earth feel stable or constantly moving?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "pattern",
-            "rock",
-            "stripe",
-            "time"
-          ],
-          "cue_terms": [
-            "pattern",
-            "rock",
-            "stripe",
-            "time"
-          ],
-          "frame_hook_bridge": [
-            "rock",
-            "time"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "rock"
-        },
-        "pinned_comment": "Watch the rock layers again. Tomorrow in Earth Engine: another nature signal. Does this make Earth feel stable or constantly moving?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.59,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 17,
-          "first_2s_narration": "Rock layers are time stamps made of stone Watch the stripe pattern",
-          "first_frame_text": "ROCK TIME",
-          "first_frame_text_words": 2,
-          "hook": "Rock layers are time stamps made of stone.",
-          "hook_specificity": 0.78,
-          "hook_words": 8,
-          "loop_score": 0.973,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "pattern",
-              "rock",
-              "stripe",
-              "time"
-            ],
-            "cue_terms": [
-              "pattern",
-              "rock",
-              "stripe",
-              "time"
-            ],
-            "frame_hook_bridge": [
-              "rock",
-              "time"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "rock"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the rock layers, so viewers rewatch the rock clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 76,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 74
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Rock layers are time stamps made of stone Watch the stripe pattern",
-          "first_frame_text": "ROCK TIME",
-          "next_episode_question": "Tomorrow in Earth Engine: another nature signal. Does this make Earth feel stable or constantly moving?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains the visible rock layers behind Rock in a fast nature science story.",
-            "series": "Earth Engine",
-            "subject": "rock",
-            "terms": [
-              "rock",
-              "rock layers",
-              "geology",
-              "earth engine"
-            ],
-            "title_variant": "Rock rock layers explained fast",
-            "visible_cue": "rock layers"
-          },
-          "series": "Earth Engine",
-          "subject": "rock",
-          "visible_cue": "rock layers"
-        },
-        "risks": [],
-        "score": 97,
-        "search_intent": {
-          "description_line": "This Short explains the visible rock layers behind Rock in a fast nature science story.",
-          "series": "Earth Engine",
-          "subject": "rock",
-          "terms": [
-            "rock",
-            "rock layers",
-            "geology",
-            "earth engine"
-          ],
-          "title_variant": "Rock rock layers explained fast",
-          "visible_cue": "rock layers"
-        },
-        "selected_variant": {
-          "hook": "Rock layers are time stamps made of stone",
-          "score": 81,
-          "thumbnail_text": "ROCK TIME",
-          "title": "Rock layers store ancient environments in stripes"
-        },
-        "series": "Earth Engine #9",
-        "series_identity": {
-          "continuity_prompt": "Next in Earth Engine #9: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Earth Engine #9",
-          "series": "Earth Engine #9"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.207,
-          "confidence": {
-            "bootstrap_multiplier": 0.331,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.108,
-            "data_quality": "estimated",
-            "data_quality_score": 0.45,
-            "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.242,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 79,
-          "state": "strong",
-          "subscriber_probability": 0.113
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "ROCK TIME",
-          "ROCK LAYER",
-          "WATCH ROCK LAYER",
-          "ROCK LAYERS CHANGE",
-          "ROCK LAYER MATTERS",
-          "ROCK LAYER FIRST",
-          "ROCK LAYER REVEAL",
-          "ROCK LAYER CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Rock layers store ancient environments in stripes",
-          "Rock layers use rock layers before they change",
-          "This rock layer gives rock layers away",
-          "Rock layers reveal the answer with rock layers",
-          "The rock layer that changes the moment",
-          "Rock layers show the hidden answer in seconds",
-          "Rock layers: watch this rock layer",
-          "Watch rock layers after the rock layer"
-        ],
-        "top_variants": [
-          {
-            "hook": "Rock layers are time stamps made of stone",
-            "score": 81,
-            "thumbnail_text": "ROCK TIME",
-            "title": "Rock layers store ancient environments in stripes"
           },
           {
-            "hook": "Watch the rock layers; it explains the behavior",
-            "score": 81,
-            "thumbnail_text": "ROCK TIME",
-            "title": "Rock layers store ancient environments in stripes"
+            "hook": "Elephants can sense low rumbles underfoot",
+            "score": 72,
+            "thumbnail_text": "GROUND SIGNAL FIRST",
+            "title": "Elephants can feel rumbles through the ground"
           },
           {
-            "hook": "Start with the rock layer; it changes the scene",
-            "score": 81,
-            "thumbnail_text": "ROCK TIME",
-            "title": "Rock layers store ancient environments in stripes"
+            "hook": "Elephants reveal the ground signal first",
+            "score": 71,
+            "thumbnail_text": "WATCH GROUND SIGNAL",
+            "title": "Elephants can feel rumbles through the ground"
           },
           {
-            "hook": "Rock layers are time stamps made of stone",
-            "score": 74,
-            "thumbnail_text": "ROCK LAYER",
-            "title": "Rock layers store ancient environments in stripes"
+            "hook": "Watch the ground signal; it explains the behavior",
+            "score": 71,
+            "thumbnail_text": "WATCH GROUND SIGNAL",
+            "title": "Elephants can feel rumbles through the ground"
           },
           {
-            "hook": "Watch the rock layers; it explains the behavior",
-            "score": 74,
-            "thumbnail_text": "ROCK LAYER",
-            "title": "Rock layers store ancient environments in stripes"
-          },
-          {
-            "hook": "Start with the rock layer; it changes the scene",
-            "score": 74,
-            "thumbnail_text": "ROCK LAYER",
-            "title": "Rock layers store ancient environments in stripes"
-          },
-          {
-            "hook": "Rock layers are time stamps made of stone",
-            "score": 74,
-            "thumbnail_text": "WATCH ROCK LAYER",
-            "title": "Rock layers store ancient environments in stripes"
-          },
-          {
-            "hook": "Watch the rock layers; it explains the behavior",
-            "score": 74,
-            "thumbnail_text": "WATCH ROCK LAYER",
-            "title": "Rock layers store ancient environments in stripes"
-          },
-          {
-            "hook": "Start with the rock layer; it changes the scene",
-            "score": 74,
-            "thumbnail_text": "WATCH ROCK LAYER",
-            "title": "Rock layers store ancient environments in stripes"
-          },
-          {
-            "hook": "Rock layers are time stamps made of stone",
-            "score": 74,
-            "thumbnail_text": "ROCK LAYERS CHANGE",
-            "title": "Rock layers store ancient environments in stripes"
+            "hook": "Elephants reveal the ground signal first",
+            "score": 71,
+            "thumbnail_text": "ELEPHANTS SIGNAL",
+            "title": "Elephants can feel rumbles through the ground"
           }
         ]
       },
@@ -3678,15 +3018,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.52,
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 5
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -3696,7 +3036,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T19:37:37.057423+00:00",
+        "checked_at": "2026-07-06T20:15:15.355787+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -3791,7 +3131,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -4325,15 +3665,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.52,
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 5
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -4343,7 +3683,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T19:37:37.058984+00:00",
+        "checked_at": "2026-07-06T20:15:15.357008+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4440,7 +3780,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -4821,6 +4161,654 @@
       }
     },
     {
+      "id": "d82a645314765f17",
+      "title": "Lions have dark ear marks cubs can follow",
+      "category": "wildlife",
+      "publish_score": {
+        "approved": true,
+        "category": "wildlife",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.317,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.089,
+          "data_quality": "estimated",
+          "data_quality_score": 0.35,
+          "minimum_sample_size": 28,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.09.",
+          "recommendation_strength": "observe",
+          "sample_size": 6
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.089,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ear",
+            "mark"
+          ],
+          "cue_terms": [
+            "ear",
+            "mark"
+          ],
+          "frame_hook_bridge": [
+            "ear",
+            "mark"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "lions"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 62,
+          "signals": {
+            "comment_potential": 48,
+            "educational_potential": 67,
+            "emotional_potential": 29,
+            "novelty": 53,
+            "replay_potential": 76,
+            "viral_potential": 66,
+            "visual_potential": 73
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 76,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 66
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "survival_trick",
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.331,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.108,
+            "data_quality": "estimated",
+            "data_quality_score": 0.45,
+            "minimum_sample_size": 13,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
+            "recommendation_strength": "observe",
+            "sample_size": 3
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 5
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-07-06T20:15:15.333542+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling",
+          "editor_in_chief:subject repeated inside 3-day cooldown",
+          "editor_in_chief:story angle repeated inside 10-day cooldown",
+          "editor_in_chief:editorial score 49 is below 62"
+        ],
+        "score": 64.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 64.0,
+      "youtube_brain": {
+        "animal": "lions",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ear",
+            "mark"
+          ],
+          "cue_terms": [
+            "ear",
+            "mark"
+          ],
+          "frame_hook_bridge": [
+            "ear",
+            "mark"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "lions"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "survival_trick",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "lions",
+        "viewer_promise": "See why lions survival trick matters."
+      },
+      "packaging": {
+        "community_prompt": "Which lions clue should Wild Brief compare next in Animal Superpowers?",
+        "cta_prompt": "Want more wild behavior explained without the fluff?",
+        "curiosity_gap": {
+          "hook": "Why do these lions change after the ear marks?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "survival trick",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 69,
+          "winners": {
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:specific_question": 46.1,
+            "format:fresh_variant": 46.1,
+            "format:winner_inspired": 46.1,
+            "hook:new_hook": 46.1,
+            "thumbnail:new_thumbnail": 46.1
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "ear",
+              "mark"
+            ],
+            "cue_terms": [
+              "ear",
+              "mark"
+            ],
+            "frame_hook_bridge": [
+              "ear",
+              "mark"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "lions"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Lions have dark ear marks cubs can follow",
+          "Lions show why the ear marks matters.",
+          "Lions show why the ear marks matters.",
+          "Lions show why the ear marks matters.",
+          "Lions give away the answer through ear marks"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "ear marks",
+          "ending_line": "Would you spot it?",
+          "final_line": "Now the ear marks at the start make sense.",
+          "loop_score": 0.739,
+          "opening_line": "Lions have dark ear marks cubs can follow.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "ear marks",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.739,
+        "next_episode_question": "Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ear",
+            "mark"
+          ],
+          "cue_terms": [
+            "ear",
+            "mark"
+          ],
+          "frame_hook_bridge": [
+            "ear",
+            "mark"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "lions"
+        },
+        "pinned_comment": "Watch the ear marks again. Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 14.68,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 19,
+          "first_2s_narration": "Lions have dark ear marks cubs can follow Watch the backs of",
+          "first_frame_text": "EAR MARKS",
+          "first_frame_text_words": 2,
+          "hook": "Lions have dark ear marks cubs can follow.",
+          "hook_specificity": 0.78,
+          "hook_words": 8,
+          "loop_score": 0.739,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "ear",
+              "mark"
+            ],
+            "cue_terms": [
+              "ear",
+              "mark"
+            ],
+            "frame_hook_bridge": [
+              "ear",
+              "mark"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "lions"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the ear marks, so viewers rewatch the lions clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 76,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 66
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Lions have dark ear marks cubs can follow Watch the backs of",
+          "first_frame_text": "EAR MARKS",
+          "next_episode_question": "Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Lions behavior through the visible ear marks.",
+            "series": "Animal Superpowers",
+            "subject": "lions",
+            "terms": [
+              "lions",
+              "ear marks",
+              "wildlife",
+              "survival trick"
+            ],
+            "title_variant": "Lions behavior: ear marks explained",
+            "visible_cue": "ear marks"
+          },
+          "series": "Animal Superpowers",
+          "subject": "lions",
+          "visible_cue": "ear marks"
+        },
+        "risks": [],
+        "score": 97,
+        "search_intent": {
+          "description_line": "This Short explains Lions behavior through the visible ear marks.",
+          "series": "Animal Superpowers",
+          "subject": "lions",
+          "terms": [
+            "lions",
+            "ear marks",
+            "wildlife",
+            "survival trick"
+          ],
+          "title_variant": "Lions behavior: ear marks explained",
+          "visible_cue": "ear marks"
+        },
+        "selected_variant": {
+          "hook": "Watch the ear marks; it explains the behavior",
+          "score": 81,
+          "thumbnail_text": "EAR MARKS",
+          "title": "Lions use dark ear marks to guide cubs"
+        },
+        "series": "Animal Superpowers #8",
+        "series_identity": {
+          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature.",
+          "episode": 8,
+          "label": "Animal Superpowers #8",
+          "series": "Animal Superpowers"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.331,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.108,
+            "data_quality": "estimated",
+            "data_quality_score": 0.45,
+            "minimum_sample_size": 13,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
+            "recommendation_strength": "observe",
+            "sample_size": 3
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "EAR MARKS",
+          "WATCH EAR MARKS",
+          "LIONS FOLLOW",
+          "EAR MARKS MATTERS",
+          "EAR MARKS FIRST",
+          "EAR MARKS REVEAL",
+          "EAR MARKS CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Lions use dark ear marks to guide cubs",
+          "Lions have dark ear marks cubs can follow",
+          "Lions use ear marks before they follow",
+          "Why lions follow after one ear marks",
+          "Lions reveal the answer with ear marks",
+          "The ear marks that changes the moment",
+          "Lions make one ear marks matter",
+          "Lions show the hidden answer in seconds",
+          "Lions: watch this ear marks"
+        ],
+        "top_variants": [
+          {
+            "hook": "Watch the ear marks; it explains the behavior",
+            "score": 81,
+            "thumbnail_text": "EAR MARKS",
+            "title": "Lions use dark ear marks to guide cubs"
+          },
+          {
+            "hook": "Start with the ear marks; it changes the scene",
+            "score": 81,
+            "thumbnail_text": "EAR MARKS",
+            "title": "Lions use dark ear marks to guide cubs"
+          },
+          {
+            "hook": "Lions have dark ear marks cubs can follow",
+            "score": 80,
+            "thumbnail_text": "EAR MARKS",
+            "title": "Lions use dark ear marks to guide cubs"
+          },
+          {
+            "hook": "Watch the ear marks; it explains the behavior",
+            "score": 74,
+            "thumbnail_text": "WATCH EAR MARKS",
+            "title": "Lions use dark ear marks to guide cubs"
+          },
+          {
+            "hook": "Start with the ear marks; it changes the scene",
+            "score": 74,
+            "thumbnail_text": "WATCH EAR MARKS",
+            "title": "Lions use dark ear marks to guide cubs"
+          },
+          {
+            "hook": "Watch the ear marks; it explains the behavior",
+            "score": 74,
+            "thumbnail_text": "LIONS FOLLOW",
+            "title": "Lions use dark ear marks to guide cubs"
+          },
+          {
+            "hook": "Start with the ear marks; it changes the scene",
+            "score": 74,
+            "thumbnail_text": "LIONS FOLLOW",
+            "title": "Lions use dark ear marks to guide cubs"
+          },
+          {
+            "hook": "Watch the ear marks; it explains the behavior",
+            "score": 74,
+            "thumbnail_text": "EAR MARKS MATTERS",
+            "title": "Lions use dark ear marks to guide cubs"
+          },
+          {
+            "hook": "Start with the ear marks; it changes the scene",
+            "score": 74,
+            "thumbnail_text": "EAR MARKS MATTERS",
+            "title": "Lions use dark ear marks to guide cubs"
+          },
+          {
+            "hook": "Lions have dark ear marks cubs can follow",
+            "score": 74,
+            "thumbnail_text": "EAR MARKS FIRST",
+            "title": "Lions use dark ear marks to guide cubs"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "044f781f8d21d65c",
       "title": "Rock layers reveal flood paths carved into stone",
       "category": "geology",
@@ -4975,15 +4963,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.52,
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 5
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -4993,7 +4981,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T19:37:37.032074+00:00",
+        "checked_at": "2026-07-06T20:15:15.335416+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5087,7 +5075,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -5617,15 +5605,15 @@
         "title_score": 90,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.52,
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 5
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -5635,7 +5623,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T19:37:37.034355+00:00",
+        "checked_at": "2026-07-06T20:15:15.337478+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5732,7 +5720,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6271,15 +6259,15 @@
         "title_score": 90,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.52,
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 5
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -6289,7 +6277,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T19:37:37.036325+00:00",
+        "checked_at": "2026-07-06T20:15:15.339109+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6386,7 +6374,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6927,15 +6915,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.52,
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 5
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -6945,7 +6933,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T19:37:37.039927+00:00",
+        "checked_at": "2026-07-06T20:15:15.341514+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7046,7 +7034,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -7590,15 +7578,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.52,
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 5
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -7608,7 +7596,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T19:37:37.041983+00:00",
+        "checked_at": "2026-07-06T20:15:15.343115+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7704,7 +7692,7 @@
           },
           "explore_rate": 0.1,
           "mode": "explore",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -8241,15 +8229,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.52,
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 5
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -8259,7 +8247,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T19:37:37.048135+00:00",
+        "checked_at": "2026-07-06T20:15:15.347766+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8354,7 +8342,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -8887,15 +8875,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.52,
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 5
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -8905,7 +8893,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T19:37:37.050315+00:00",
+        "checked_at": "2026-07-06T20:15:15.349518+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9002,7 +8990,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -9379,12 +9367,12 @@
       }
     },
     {
-      "id": "d82a645314765f17",
-      "title": "Lions have dark ear marks cubs can follow",
-      "category": "wildlife",
+      "id": "eb41118e410e097b",
+      "title": "Ocean edges turn wave motion into patterns",
+      "category": "conservation",
       "publish_score": {
         "approved": true,
-        "category": "wildlife",
+        "category": "conservation",
         "decision_confidence": {
           "bootstrap_multiplier": 0.255,
           "can_adjust_strategy": false,
@@ -9402,7 +9390,7 @@
           "issues": [],
           "state": "approved"
         },
-        "hook_score": 100,
+        "hook_score": 86,
         "objective_gate": {
           "confidence_score": 0.007,
           "mechanism_cluster": "",
@@ -9419,22 +9407,25 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "ear",
-            "mark"
+            "edge",
+            "pattern",
+            "wave"
           ],
           "cue_terms": [
-            "ear",
-            "mark"
+            "edge",
+            "pattern",
+            "wave"
           ],
           "frame_hook_bridge": [
-            "ear",
-            "mark"
+            "edge",
+            "wave"
           ],
-          "risks": [],
-          "score": 100.0,
+          "risks": [
+            "subject_not_frontloaded"
+          ],
+          "score": 92.0,
           "state": "retention_ready",
           "strengths": [
-            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -9442,7 +9433,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "lions"
+          "subject": "conservation"
         },
         "opportunity": {
           "confidence": {
@@ -9458,17 +9449,17 @@
           },
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 68,
+          "score": 58,
           "signals": {
-            "comment_potential": 54,
-            "educational_potential": 73,
+            "comment_potential": 46,
+            "educational_potential": 66,
             "emotional_potential": 35,
-            "novelty": 59,
-            "replay_potential": 82,
-            "viral_potential": 72,
-            "visual_potential": 79
+            "novelty": 69,
+            "replay_potential": 60,
+            "viral_potential": 62,
+            "visual_potential": 59
           },
-          "verdict": "produce"
+          "verdict": "rewrite"
         },
         "phrase_risk": {
           "hits": [],
@@ -9488,21 +9479,21 @@
           },
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 76,
+          "score": 67,
           "signals": {
             "completion_prediction": 77,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 66
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 50
           },
           "verdict": "rewrite"
         },
         "score": 100,
         "state": "publish_ready",
-        "story_format": "survival_trick",
+        "story_format": "conservation_signal",
         "subscriber_conversion": {
-          "comment_probability": 0.24,
+          "comment_probability": 0.207,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -9516,34 +9507,33 @@
           },
           "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
           "reasons": [
-            "identity_cta",
             "debate_comment",
             "return_prompt",
             "series_identity",
             "episode_continuity"
           ],
-          "return_probability": 0.281,
+          "return_probability": 0.242,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 93,
+          "score": 79,
           "state": "strong",
-          "subscriber_probability": 0.133
+          "subscriber_probability": 0.113
         },
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.52,
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 5
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -9553,13 +9543,13 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T19:37:37.060873+00:00",
+        "checked_at": "2026-07-06T20:15:15.352813+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
           "editor_in_chief:subject repeated inside 3-day cooldown",
-          "editor_in_chief:story angle repeated inside 10-day cooldown",
-          "editor_in_chief:editorial score 49 is below 62"
+          "editor_in_chief:script quality gate blocked the narration",
+          "editor_in_chief:editorial score 46 is below 62"
         ],
         "score": 64.0,
         "state": "rewrite",
@@ -9567,27 +9557,30 @@
       },
       "queue_score": 64.0,
       "youtube_brain": {
-        "animal": "lions",
+        "animal": "ocean",
         "commands": [],
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "ear",
-            "mark"
+            "edge",
+            "pattern",
+            "wave"
           ],
           "cue_terms": [
-            "ear",
-            "mark"
+            "edge",
+            "pattern",
+            "wave"
           ],
           "frame_hook_bridge": [
-            "ear",
-            "mark"
+            "edge",
+            "wave"
           ],
-          "risks": [],
-          "score": 100.0,
+          "risks": [
+            "subject_not_frontloaded"
+          ],
+          "score": 92.0,
           "state": "retention_ready",
           "strengths": [
-            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -9595,7 +9588,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "lions"
+          "subject": "conservation"
         },
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
@@ -9605,10 +9598,10 @@
           "last 2s: payoff and follow signal"
         ],
         "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
         "score": 100,
         "state": "publish_minded",
-        "story_format": "survival_trick",
+        "story_format": "conservation_signal",
         "strengths": [
           "subject_visible_in_first_sentence",
           "action_driven_promise",
@@ -9618,14 +9611,14 @@
           "thumbnail_text_scannable",
           "retention_opening_aligned"
         ],
-        "subject": "lions",
-        "viewer_promise": "See why lions survival trick matters."
+        "subject": "ocean",
+        "viewer_promise": "See why this ocean conservation signal matters."
       },
       "packaging": {
-        "community_prompt": "Which lions clue should Wild Brief compare next in Animal Superpowers?",
-        "cta_prompt": "Want more wild behavior explained without the fluff?",
+        "community_prompt": "Which ocean clue should Wild Brief compare next in Planet Repair?",
+        "cta_prompt": "Want real examples of nature fighting back?",
         "curiosity_gap": {
-          "hook": "Why do these lions change after the ear marks?",
+          "hook": "Why does this conservation changes after the wave edge?",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -9637,7 +9630,7 @@
           "approved": true,
           "notes": [],
           "recommended_duration_s": 24,
-          "recommended_format": "survival trick",
+          "recommended_format": "conservation signal",
           "score": 100.0,
           "violations": []
         },
@@ -9650,7 +9643,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -9670,22 +9663,25 @@
           "retention_opening": {
             "approved": true,
             "cue_bridge": [
-              "ear",
-              "mark"
+              "edge",
+              "pattern",
+              "wave"
             ],
             "cue_terms": [
-              "ear",
-              "mark"
+              "edge",
+              "pattern",
+              "wave"
             ],
             "frame_hook_bridge": [
-              "ear",
-              "mark"
+              "edge",
+              "wave"
             ],
-            "risks": [],
-            "score": 100.0,
+            "risks": [
+              "subject_not_frontloaded"
+            ],
+            "score": 92.0,
             "state": "retention_ready",
             "strengths": [
-              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -9693,7 +9689,7 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "lions"
+            "subject": "conservation"
           },
           "safe_area": {
             "aspect": "4:5",
@@ -9706,48 +9702,51 @@
           "word_count": 2
         },
         "hook_options": [
-          "Lions have dark ear marks cubs can follow",
-          "Lions show why the ear marks matters.",
-          "Lions show why the ear marks matters.",
-          "Lions show why the ear marks matters.",
-          "Lions give away the answer through ear marks"
+          "Ocean shows why the patterns matters.",
+          "Ocean edges turn wave motion into patterns",
+          "Ocean shows why the mangrove roots matters.",
+          "Ocean shows why the mangrove roots matters.",
+          "Ocean shows why the mangrove roots matters."
         ],
         "loop_plan": {
           "audio_crossfade_ms": 120,
-          "callback_keyword": "ear marks",
-          "ending_line": "Would you spot it?",
-          "final_line": "Now the ear marks at the start make sense.",
-          "loop_score": 0.739,
-          "opening_line": "Lions have dark ear marks cubs can follow.",
+          "callback_keyword": "ocean",
+          "ending_line": "Which ocean clue should we decode next?",
+          "final_line": "Which ocean clue should we decode next?",
+          "loop_score": 0.791,
+          "opening_line": "Ocean edges turn wave motion into patterns.",
           "render_hints": {
             "avoid_hard_stop": true,
-            "carry_keyword": "ear marks",
+            "carry_keyword": "ocean",
             "subtle_audio_tail": true
           },
-          "rewrite_applied": true,
+          "rewrite_applied": false,
           "subtitle_tail_mode": "carry-forward"
         },
-        "loop_score": 0.739,
-        "next_episode_question": "Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "loop_score": 0.791,
+        "next_episode_question": "Tomorrow in Planet Repair: another nature signal. Is this proof nature recovers, or proof it needs help sooner?",
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "ear",
-            "mark"
+            "edge",
+            "pattern",
+            "wave"
           ],
           "cue_terms": [
-            "ear",
-            "mark"
+            "edge",
+            "pattern",
+            "wave"
           ],
           "frame_hook_bridge": [
-            "ear",
-            "mark"
+            "edge",
+            "wave"
           ],
-          "risks": [],
-          "score": 100.0,
+          "risks": [
+            "subject_not_frontloaded"
+          ],
+          "score": 92.0,
           "state": "retention_ready",
           "strengths": [
-            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -9755,41 +9754,44 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "lions"
+          "subject": "conservation"
         },
-        "pinned_comment": "Watch the ear marks again. Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "pinned_comment": "Watch the patterns again. Tomorrow in Planet Repair: another nature signal. Is this proof nature recovers, or proof it needs help sooner?",
         "preflight_inputs": {
-          "caption_chars_per_second": 14.68,
+          "caption_chars_per_second": 14.73,
           "contrast_score": 0.74,
           "cta_count": 1,
-          "duration_hint_s": 19,
-          "first_2s_narration": "Lions have dark ear marks cubs can follow Watch the backs of",
-          "first_frame_text": "EAR MARKS",
+          "duration_hint_s": 15,
+          "first_2s_narration": "Ocean edges turn wave motion into patterns Watch the wave edge first",
+          "first_frame_text": "WAVE EDGE",
           "first_frame_text_words": 2,
-          "hook": "Lions have dark ear marks cubs can follow.",
+          "hook": "Ocean edges turn wave motion into patterns.",
           "hook_specificity": 0.78,
-          "hook_words": 8,
-          "loop_score": 0.739,
+          "hook_words": 7,
+          "loop_score": 0.791,
           "novelty_score": 0.58,
           "opening_retention": {
             "approved": true,
             "cue_bridge": [
-              "ear",
-              "mark"
+              "edge",
+              "pattern",
+              "wave"
             ],
             "cue_terms": [
-              "ear",
-              "mark"
+              "edge",
+              "pattern",
+              "wave"
             ],
             "frame_hook_bridge": [
-              "ear",
-              "mark"
+              "edge",
+              "wave"
             ],
-            "risks": [],
-            "score": 100.0,
+            "risks": [
+              "subject_not_frontloaded"
+            ],
+            "score": 92.0,
             "state": "retention_ready",
             "strengths": [
-              "subject_frontloaded",
               "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
@@ -9797,16 +9799,16 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "lions"
+            "subject": "conservation"
           },
-          "opening_retention_score": 100.0,
+          "opening_retention_score": 92.0,
           "payoff_reveal_sentence_index": 0,
           "payoff_score": 75,
           "payoff_time_s": 0,
           "visual_motion_score": 0.76
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the ear marks, so viewers rewatch the lions clip.",
+        "replay_prompt": "End by pointing back to the patterns, so viewers rewatch the ocean clip.",
         "retention": {
           "confidence": {
             "bootstrap_multiplier": 0.25,
@@ -9821,66 +9823,66 @@
           },
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 76,
+          "score": 67,
           "signals": {
             "completion_prediction": 77,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 66
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 50
           },
           "verdict": "rewrite"
         },
         "retention_contract": {
-          "first_2s_narration": "Lions have dark ear marks cubs can follow Watch the backs of",
-          "first_frame_text": "EAR MARKS",
-          "next_episode_question": "Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
-          "opening_retention_score": 100.0,
+          "first_2s_narration": "Ocean edges turn wave motion into patterns Watch the wave edge first",
+          "first_frame_text": "WAVE EDGE",
+          "next_episode_question": "Tomorrow in Planet Repair: another nature signal. Is this proof nature recovers, or proof it needs help sooner?",
+          "opening_retention_score": 92.0,
           "opening_retention_state": "retention_ready",
           "search_intent": {
-            "description_line": "This Short explains Lions behavior through the visible ear marks.",
-            "series": "Animal Superpowers",
-            "subject": "lions",
+            "description_line": "This Short explains the visible patterns behind Ocean in a fast nature science story.",
+            "series": "Planet Repair",
+            "subject": "ocean",
             "terms": [
-              "lions",
-              "ear marks",
-              "wildlife",
-              "survival trick"
+              "ocean",
+              "patterns",
+              "conservation",
+              "conservation signal"
             ],
-            "title_variant": "Lions behavior: ear marks explained",
-            "visible_cue": "ear marks"
+            "title_variant": "Ocean patterns explained fast",
+            "visible_cue": "patterns"
           },
-          "series": "Animal Superpowers",
-          "subject": "lions",
-          "visible_cue": "ear marks"
+          "series": "Planet Repair",
+          "subject": "ocean",
+          "visible_cue": "patterns"
         },
         "risks": [],
-        "score": 97,
+        "score": 94,
         "search_intent": {
-          "description_line": "This Short explains Lions behavior through the visible ear marks.",
-          "series": "Animal Superpowers",
-          "subject": "lions",
+          "description_line": "This Short explains the visible patterns behind Ocean in a fast nature science story.",
+          "series": "Planet Repair",
+          "subject": "ocean",
           "terms": [
-            "lions",
-            "ear marks",
-            "wildlife",
-            "survival trick"
+            "ocean",
+            "patterns",
+            "conservation",
+            "conservation signal"
           ],
-          "title_variant": "Lions behavior: ear marks explained",
-          "visible_cue": "ear marks"
+          "title_variant": "Ocean patterns explained fast",
+          "visible_cue": "patterns"
         },
         "selected_variant": {
-          "hook": "Lions have dark ear marks cubs can follow",
-          "score": 82,
-          "thumbnail_text": "EAR MARKS",
-          "title": "Lions use dark ear marks to guide cubs"
+          "hook": "Mangroves can slow waves before they hit land",
+          "score": 79,
+          "thumbnail_text": "WAVE BUFFER",
+          "title": "Mangroves take power out of waves"
         },
-        "series": "Animal Superpowers #8",
+        "series": "Planet Repair #3",
         "series_identity": {
-          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature.",
-          "episode": 8,
-          "label": "Animal Superpowers #8",
-          "series": "Animal Superpowers"
+          "continuity_prompt": "Next in Planet Repair: compare this with another force of nature.",
+          "episode": 3,
+          "label": "Planet Repair #3",
+          "series": "Planet Repair"
         },
         "state": "magnetic",
         "strengths": [
@@ -9892,7 +9894,7 @@
           "retention_opening_aligned"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.24,
+          "comment_probability": 0.207,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -9906,21 +9908,20 @@
           },
           "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
           "reasons": [
-            "identity_cta",
             "debate_comment",
             "return_prompt",
             "series_identity",
             "episode_continuity"
           ],
-          "return_probability": 0.281,
+          "return_probability": 0.242,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 93,
+          "score": 79,
           "state": "strong",
-          "subscriber_probability": 0.133
+          "subscriber_probability": 0.113
         },
         "swipe_risk": {
           "band": "low",
@@ -9929,87 +9930,88 @@
           "score": 0
         },
         "thumbnail_options": [
-          "EAR MARKS",
-          "WATCH EAR MARKS",
-          "LIONS FOLLOW",
-          "EAR MARKS MATTERS",
-          "EAR MARKS FIRST",
-          "EAR MARKS REVEAL",
-          "EAR MARKS CLUE",
+          "WAVE BUFFER",
+          "MANGROVE ROOTS",
+          "WATCH MANGROVE ROOTS",
+          "MANGROVES CHANGE",
+          "MANGROVE ROOTS MATTERS",
+          "MANGROVE ROOTS FIRST",
+          "MANGROVE ROOTS REVEAL",
+          "MANGROVE ROOTS CLUE",
           "WATCH THE MOVE",
           "SPOT THE CLUE"
         ],
         "title_options": [
-          "Lions use dark ear marks to guide cubs",
-          "Lions have dark ear marks cubs can follow",
-          "Lions use ear marks before they follow",
-          "Why lions follow after one ear marks",
-          "Lions reveal the answer with ear marks",
-          "The ear marks that changes the moment",
-          "Lions make one ear marks matter",
-          "Lions show the hidden answer in seconds",
-          "Lions: watch this ear marks"
+          "Mangroves take power out of waves",
+          "Ocean edges turn wave motion into patterns",
+          "Mangroves use mangrove roots before they change",
+          "Why mangroves change after one mangrove roots",
+          "Mangroves reveal the answer with mangrove roots",
+          "The mangrove roots that changes the moment",
+          "Mangroves make one mangrove roots matter",
+          "Mangroves show the hidden answer in seconds",
+          "Mangroves: watch this mangrove roots"
         ],
         "top_variants": [
           {
-            "hook": "Lions have dark ear marks cubs can follow",
-            "score": 82,
-            "thumbnail_text": "EAR MARKS",
-            "title": "Lions use dark ear marks to guide cubs"
+            "hook": "Mangroves can slow waves before they hit land",
+            "score": 79,
+            "thumbnail_text": "WAVE BUFFER",
+            "title": "Mangroves take power out of waves"
           },
           {
-            "hook": "Watch the ear marks; it explains the behavior",
-            "score": 82,
-            "thumbnail_text": "EAR MARKS",
-            "title": "Lions use dark ear marks to guide cubs"
+            "hook": "Watch the mangrove roots; it explains the behavior",
+            "score": 79,
+            "thumbnail_text": "WAVE BUFFER",
+            "title": "Mangroves take power out of waves"
           },
           {
-            "hook": "Start with the ear marks; it changes the scene",
-            "score": 82,
-            "thumbnail_text": "EAR MARKS",
-            "title": "Lions use dark ear marks to guide cubs"
-          },
-          {
-            "hook": "Start with the ear marks; it changes the scene",
+            "hook": "Ocean edges turn wave motion into patterns",
             "score": 76,
-            "thumbnail_text": "EAR MARKS FIRST",
-            "title": "Lions use dark ear marks to guide cubs"
+            "thumbnail_text": "WAVE BUFFER",
+            "title": "Mangroves take power out of waves"
           },
           {
-            "hook": "Lions have dark ear marks cubs can follow",
-            "score": 75,
-            "thumbnail_text": "WATCH EAR MARKS",
-            "title": "Lions use dark ear marks to guide cubs"
+            "hook": "Mangroves can slow waves before they hit land",
+            "score": 73,
+            "thumbnail_text": "MANGROVE ROOTS",
+            "title": "Mangroves take power out of waves"
           },
           {
-            "hook": "Watch the ear marks; it explains the behavior",
-            "score": 75,
-            "thumbnail_text": "WATCH EAR MARKS",
-            "title": "Lions use dark ear marks to guide cubs"
+            "hook": "Mangroves can slow waves before they hit land",
+            "score": 73,
+            "thumbnail_text": "WATCH MANGROVE ROOTS",
+            "title": "Mangroves take power out of waves"
           },
           {
-            "hook": "Start with the ear marks; it changes the scene",
-            "score": 75,
-            "thumbnail_text": "WATCH EAR MARKS",
-            "title": "Lions use dark ear marks to guide cubs"
+            "hook": "Mangroves can slow waves before they hit land",
+            "score": 73,
+            "thumbnail_text": "MANGROVES CHANGE",
+            "title": "Mangroves take power out of waves"
           },
           {
-            "hook": "Lions have dark ear marks cubs can follow",
-            "score": 75,
-            "thumbnail_text": "LIONS FOLLOW",
-            "title": "Lions use dark ear marks to guide cubs"
+            "hook": "Mangroves can slow waves before they hit land",
+            "score": 73,
+            "thumbnail_text": "MANGROVE ROOTS MATTERS",
+            "title": "Mangroves take power out of waves"
           },
           {
-            "hook": "Watch the ear marks; it explains the behavior",
-            "score": 75,
-            "thumbnail_text": "LIONS FOLLOW",
-            "title": "Lions use dark ear marks to guide cubs"
+            "hook": "Watch the mangrove roots; it explains the behavior",
+            "score": 72,
+            "thumbnail_text": "MANGROVE ROOTS",
+            "title": "Mangroves take power out of waves"
           },
           {
-            "hook": "Start with the ear marks; it changes the scene",
-            "score": 75,
-            "thumbnail_text": "LIONS FOLLOW",
-            "title": "Lions use dark ear marks to guide cubs"
+            "hook": "Watch the mangrove roots; it explains the behavior",
+            "score": 72,
+            "thumbnail_text": "WATCH MANGROVE ROOTS",
+            "title": "Mangroves take power out of waves"
+          },
+          {
+            "hook": "Watch the mangrove roots; it explains the behavior",
+            "score": 72,
+            "thumbnail_text": "MANGROVES CHANGE",
+            "title": "Mangroves take power out of waves"
           }
         ]
       },
@@ -10184,15 +10186,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.52,
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 5
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -10202,7 +10204,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T19:37:37.062842+00:00",
+        "checked_at": "2026-07-06T20:15:15.358580+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10300,7 +10302,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -10678,660 +10680,6 @@
       }
     },
     {
-      "id": "502c424149be58ae",
-      "title": "Mangroves take power out of waves",
-      "category": "conservation",
-      "publish_score": {
-        "approved": true,
-        "category": "conservation",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "root",
-            "wave"
-          ],
-          "cue_terms": [
-            "buffer",
-            "root",
-            "wave"
-          ],
-          "frame_hook_bridge": [
-            "wave"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable",
-            "curiosity_shape"
-          ],
-          "subject": "mangroves"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 62,
-          "signals": {
-            "comment_potential": 46,
-            "educational_potential": 66,
-            "emotional_potential": 35,
-            "novelty": 59,
-            "replay_potential": 70,
-            "viral_potential": 62,
-            "visual_potential": 79
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 77,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "conservation_signal",
-        "subscriber_conversion": {
-          "comment_probability": 0.237,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "hook_invites_return",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.278,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 92,
-          "state": "strong",
-          "subscriber_probability": 0.131
-        },
-        "title_score": 74,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.52,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-07-06T19:37:37.065235+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling",
-          "editor_in_chief:subject repeated inside 3-day cooldown",
-          "editor_in_chief:story angle repeated inside 10-day cooldown",
-          "editor_in_chief:editorial score 40 is below 62"
-        ],
-        "score": 64.0,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 64.0,
-      "youtube_brain": {
-        "animal": "waves",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "root",
-            "wave"
-          ],
-          "cue_terms": [
-            "buffer",
-            "root",
-            "wave"
-          ],
-          "frame_hook_bridge": [
-            "wave"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable",
-            "curiosity_shape"
-          ],
-          "subject": "mangroves"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "conservation_signal",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "waves",
-        "viewer_promise": "See why this wave conservation signal matters."
-      },
-      "packaging": {
-        "community_prompt": "Which waves clue should Wild Brief compare next in Planet Repair?",
-        "cta_prompt": "Want real examples of nature fighting back?",
-        "curiosity_gap": {
-          "hook": "Mangroves can slow waves before they hit land.",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "story"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "conservation signal",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 68,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:specific_question": 46.1,
-            "format:fresh_variant": 46.1,
-            "format:winner_inspired": 46.1,
-            "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 46.1
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "root",
-              "wave"
-            ],
-            "cue_terms": [
-              "buffer",
-              "root",
-              "wave"
-            ],
-            "frame_hook_bridge": [
-              "wave"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable",
-              "curiosity_shape"
-            ],
-            "subject": "mangroves"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Mangroves can slow waves before they hit land",
-          "Waves show why the mangrove roots matters.",
-          "Waves show why the mangrove roots matters.",
-          "Waves show why the mangrove roots matters.",
-          "Waves show why the mangrove roots matters."
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "wave buffer",
-          "ending_line": "Which repair story next?",
-          "final_line": "Now the wave buffer at the start makes sense.",
-          "loop_score": 0.786,
-          "opening_line": "Mangroves can slow waves before they hit land.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "wave buffer",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.786,
-        "next_episode_question": "Tomorrow in Planet Repair: another nature signal. Is this proof nature recovers, or proof it needs help sooner?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "root",
-            "wave"
-          ],
-          "cue_terms": [
-            "buffer",
-            "root",
-            "wave"
-          ],
-          "frame_hook_bridge": [
-            "wave"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable",
-            "curiosity_shape"
-          ],
-          "subject": "mangroves"
-        },
-        "pinned_comment": "Watch the roots again. Tomorrow in Planet Repair: another nature signal. Is this proof nature recovers, or proof it needs help sooner?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 16.71,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 17,
-          "first_2s_narration": "Mangroves can slow waves before they hit land Watch the roots in",
-          "first_frame_text": "WAVE BUFFER",
-          "first_frame_text_words": 2,
-          "hook": "Mangroves can slow waves before they hit land.",
-          "hook_specificity": 0.78,
-          "hook_words": 8,
-          "loop_score": 0.786,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "root",
-              "wave"
-            ],
-            "cue_terms": [
-              "buffer",
-              "root",
-              "wave"
-            ],
-            "frame_hook_bridge": [
-              "wave"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable",
-              "curiosity_shape"
-            ],
-            "subject": "mangroves"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the roots, so viewers rewatch the waves clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 77,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Mangroves can slow waves before they hit land Watch the roots in",
-          "first_frame_text": "WAVE BUFFER",
-          "next_episode_question": "Tomorrow in Planet Repair: another nature signal. Is this proof nature recovers, or proof it needs help sooner?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains the visible roots behind Waves in a fast nature science story.",
-            "series": "Planet Repair",
-            "subject": "waves",
-            "terms": [
-              "waves",
-              "roots",
-              "conservation",
-              "conservation signal"
-            ],
-            "title_variant": "Waves roots explained fast",
-            "visible_cue": "roots"
-          },
-          "series": "Planet Repair",
-          "subject": "waves",
-          "visible_cue": "roots"
-        },
-        "risks": [],
-        "score": 97,
-        "search_intent": {
-          "description_line": "This Short explains the visible roots behind Waves in a fast nature science story.",
-          "series": "Planet Repair",
-          "subject": "waves",
-          "terms": [
-            "waves",
-            "roots",
-            "conservation",
-            "conservation signal"
-          ],
-          "title_variant": "Waves roots explained fast",
-          "visible_cue": "roots"
-        },
-        "selected_variant": {
-          "hook": "Start with the mangrove roots; it changes the scene",
-          "score": 81,
-          "thumbnail_text": "WAVE BUFFER",
-          "title": "Mangroves take power out of waves"
-        },
-        "series": "Planet Repair #2",
-        "series_identity": {
-          "continuity_prompt": "Next in Planet Repair: compare this with another force of nature.",
-          "episode": 2,
-          "label": "Planet Repair #2",
-          "series": "Planet Repair"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.237,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "hook_invites_return",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.278,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 92,
-          "state": "strong",
-          "subscriber_probability": 0.131
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "WAVE BUFFER",
-          "MANGROVE ROOTS",
-          "WATCH MANGROVE ROOTS",
-          "MANGROVES CHANGE",
-          "MANGROVE ROOTS MATTERS",
-          "MANGROVE ROOTS FIRST",
-          "MANGROVE ROOTS REVEAL",
-          "MANGROVE ROOTS CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Mangroves take power out of waves",
-          "Mangroves use mangrove roots before they change",
-          "Why mangroves change after one mangrove roots",
-          "Mangroves reveal the answer with mangrove roots",
-          "The mangrove roots that changes the moment",
-          "Mangroves make one mangrove roots matter",
-          "Mangroves show the hidden answer in seconds",
-          "Mangroves: watch this mangrove roots",
-          "Watch mangroves after the mangrove roots"
-        ],
-        "top_variants": [
-          {
-            "hook": "Start with the mangrove roots; it changes the scene",
-            "score": 81,
-            "thumbnail_text": "WAVE BUFFER",
-            "title": "Mangroves take power out of waves"
-          },
-          {
-            "hook": "Mangroves can slow waves before they hit land",
-            "score": 80,
-            "thumbnail_text": "WAVE BUFFER",
-            "title": "Mangroves take power out of waves"
-          },
-          {
-            "hook": "Watch the mangrove roots; it explains the behavior",
-            "score": 80,
-            "thumbnail_text": "WAVE BUFFER",
-            "title": "Mangroves take power out of waves"
-          },
-          {
-            "hook": "Start with the mangrove roots; it changes the scene",
-            "score": 74,
-            "thumbnail_text": "MANGROVE ROOTS",
-            "title": "Mangroves take power out of waves"
-          },
-          {
-            "hook": "Start with the mangrove roots; it changes the scene",
-            "score": 74,
-            "thumbnail_text": "WATCH MANGROVE ROOTS",
-            "title": "Mangroves take power out of waves"
-          },
-          {
-            "hook": "Mangroves can slow waves before they hit land",
-            "score": 74,
-            "thumbnail_text": "MANGROVES CHANGE",
-            "title": "Mangroves take power out of waves"
-          },
-          {
-            "hook": "Watch the mangrove roots; it explains the behavior",
-            "score": 74,
-            "thumbnail_text": "MANGROVES CHANGE",
-            "title": "Mangroves take power out of waves"
-          },
-          {
-            "hook": "Start with the mangrove roots; it changes the scene",
-            "score": 74,
-            "thumbnail_text": "MANGROVES CHANGE",
-            "title": "Mangroves take power out of waves"
-          },
-          {
-            "hook": "Start with the mangrove roots; it changes the scene",
-            "score": 74,
-            "thumbnail_text": "MANGROVE ROOTS MATTERS",
-            "title": "Mangroves take power out of waves"
-          },
-          {
-            "hook": "Mangroves can slow waves before they hit land",
-            "score": 73,
-            "thumbnail_text": "MANGROVE ROOTS",
-            "title": "Mangroves take power out of waves"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "d28a276ff0822870",
       "title": "Storm clouds show air layers changing over time",
       "category": "earth_from_space",
@@ -11490,15 +10838,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.52,
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 5
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -11508,7 +10856,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T19:37:37.052571+00:00",
+        "checked_at": "2026-07-06T20:15:15.351372+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11605,7 +10953,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -12143,15 +11491,15 @@
         "title_score": 100,
         "weak_content": {
           "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.52,
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 5
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
           "reasons": [],
@@ -12161,7 +11509,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T19:37:37.067108+00:00",
+        "checked_at": "2026-07-06T20:15:15.359969+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12256,7 +11604,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 68,
+          "sample_count": 69,
           "winners": {
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -12613,668 +11961,6 @@
             "score": 62,
             "thumbnail_text": "FACE MEMORY MATTERS",
             "title": "Fox eyes glow at night in a way you didn't expect"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
-      "id": "eb41118e410e097b",
-      "title": "Ocean edges turn wave motion into patterns",
-      "category": "conservation",
-      "publish_score": {
-        "approved": true,
-        "category": "conservation",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 86,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "edge",
-            "pattern",
-            "wave"
-          ],
-          "cue_terms": [
-            "edge",
-            "pattern",
-            "wave"
-          ],
-          "frame_hook_bridge": [
-            "edge",
-            "wave"
-          ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
-          "state": "retention_ready",
-          "strengths": [
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "conservation"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 58,
-          "signals": {
-            "comment_potential": 46,
-            "educational_potential": 66,
-            "emotional_potential": 35,
-            "novelty": 69,
-            "replay_potential": 60,
-            "viral_potential": 62,
-            "visual_potential": 59
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 67,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 70,
-            "replay_score": 62,
-            "visual_score": 50
-          },
-          "verdict": "rewrite"
-        },
-        "score": 92.5,
-        "state": "publish_ready",
-        "story_format": "conservation_signal",
-        "subscriber_conversion": {
-          "comment_probability": 0.207,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.242,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 79,
-          "state": "strong",
-          "subscriber_probability": 0.113
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.55,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.52,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 4/5 samples, inferred data, confidence 0.52; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-07-06T19:37:37.068970+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling",
-          "editor_in_chief:subject repeated inside 3-day cooldown",
-          "editor_in_chief:script quality gate blocked the narration",
-          "editor_in_chief:editorial score 46 is below 62"
-        ],
-        "score": 56.5,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 56.5,
-      "youtube_brain": {
-        "animal": "ocean",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "edge",
-            "pattern",
-            "wave"
-          ],
-          "cue_terms": [
-            "edge",
-            "pattern",
-            "wave"
-          ],
-          "frame_hook_bridge": [
-            "edge",
-            "wave"
-          ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
-          "state": "retention_ready",
-          "strengths": [
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "conservation"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "conservation_signal",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "ocean",
-        "viewer_promise": "See why this ocean conservation signal matters."
-      },
-      "packaging": {
-        "community_prompt": "Which ocean clue should Wild Brief compare next in Planet Repair?",
-        "cta_prompt": "Want real examples of nature fighting back?",
-        "curiosity_gap": {
-          "hook": "Why does this conservation changes after the wave edge?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "conservation signal",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 68,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:specific_question": 46.1,
-            "format:fresh_variant": 46.1,
-            "format:winner_inspired": 46.1,
-            "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 46.1
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "edge",
-              "pattern",
-              "wave"
-            ],
-            "cue_terms": [
-              "edge",
-              "pattern",
-              "wave"
-            ],
-            "frame_hook_bridge": [
-              "edge",
-              "wave"
-            ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
-            "state": "retention_ready",
-            "strengths": [
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "conservation"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Ocean shows why the patterns matters.",
-          "Ocean edges turn wave motion into patterns",
-          "Ocean shows why the mangrove roots matters.",
-          "Ocean shows why the mangrove roots matters.",
-          "Ocean shows why the mangrove roots matters."
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "ocean",
-          "ending_line": "Which ocean clue should we decode next?",
-          "final_line": "Which ocean clue should we decode next?",
-          "loop_score": 0.791,
-          "opening_line": "Ocean edges turn wave motion into patterns.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "ocean",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": false,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.791,
-        "next_episode_question": "Tomorrow in Planet Repair: another nature signal. Is this proof nature recovers, or proof it needs help sooner?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "edge",
-            "pattern",
-            "wave"
-          ],
-          "cue_terms": [
-            "edge",
-            "pattern",
-            "wave"
-          ],
-          "frame_hook_bridge": [
-            "edge",
-            "wave"
-          ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
-          "state": "retention_ready",
-          "strengths": [
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "conservation"
-        },
-        "pinned_comment": "Watch the patterns again. Tomorrow in Planet Repair: another nature signal. Is this proof nature recovers, or proof it needs help sooner?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 14.73,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 15,
-          "first_2s_narration": "Ocean edges turn wave motion into patterns Watch the wave edge first",
-          "first_frame_text": "WAVE EDGE",
-          "first_frame_text_words": 2,
-          "hook": "Ocean edges turn wave motion into patterns.",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.791,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "edge",
-              "pattern",
-              "wave"
-            ],
-            "cue_terms": [
-              "edge",
-              "pattern",
-              "wave"
-            ],
-            "frame_hook_bridge": [
-              "edge",
-              "wave"
-            ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
-            "state": "retention_ready",
-            "strengths": [
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "conservation"
-          },
-          "opening_retention_score": 92.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the patterns, so viewers rewatch the ocean clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 67,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 70,
-            "replay_score": 62,
-            "visual_score": 50
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Ocean edges turn wave motion into patterns Watch the wave edge first",
-          "first_frame_text": "WAVE EDGE",
-          "next_episode_question": "Tomorrow in Planet Repair: another nature signal. Is this proof nature recovers, or proof it needs help sooner?",
-          "opening_retention_score": 92.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains the visible patterns behind Ocean in a fast nature science story.",
-            "series": "Planet Repair",
-            "subject": "ocean",
-            "terms": [
-              "ocean",
-              "patterns",
-              "conservation",
-              "conservation signal"
-            ],
-            "title_variant": "Ocean patterns explained fast",
-            "visible_cue": "patterns"
-          },
-          "series": "Planet Repair",
-          "subject": "ocean",
-          "visible_cue": "patterns"
-        },
-        "risks": [],
-        "score": 94,
-        "search_intent": {
-          "description_line": "This Short explains the visible patterns behind Ocean in a fast nature science story.",
-          "series": "Planet Repair",
-          "subject": "ocean",
-          "terms": [
-            "ocean",
-            "patterns",
-            "conservation",
-            "conservation signal"
-          ],
-          "title_variant": "Ocean patterns explained fast",
-          "visible_cue": "patterns"
-        },
-        "selected_variant": {
-          "hook": "Mangroves can slow waves before they hit land",
-          "score": 79,
-          "thumbnail_text": "WAVE BUFFER",
-          "title": "Mangroves take power out of waves"
-        },
-        "series": "Planet Repair #2",
-        "series_identity": {
-          "continuity_prompt": "Next in Planet Repair: compare this with another force of nature.",
-          "episode": 2,
-          "label": "Planet Repair #2",
-          "series": "Planet Repair"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.207,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.242,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 79,
-          "state": "strong",
-          "subscriber_probability": 0.113
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "WAVE BUFFER",
-          "MANGROVE ROOTS",
-          "WATCH MANGROVE ROOTS",
-          "MANGROVES CHANGE",
-          "MANGROVE ROOTS MATTERS",
-          "MANGROVE ROOTS FIRST",
-          "MANGROVE ROOTS REVEAL",
-          "MANGROVE ROOTS CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Mangroves take power out of waves",
-          "Ocean edges turn wave motion into patterns",
-          "Mangroves use mangrove roots before they change",
-          "Why mangroves change after one mangrove roots",
-          "Mangroves reveal the answer with mangrove roots",
-          "The mangrove roots that changes the moment",
-          "Mangroves make one mangrove roots matter",
-          "Mangroves show the hidden answer in seconds",
-          "Mangroves: watch this mangrove roots"
-        ],
-        "top_variants": [
-          {
-            "hook": "Mangroves can slow waves before they hit land",
-            "score": 79,
-            "thumbnail_text": "WAVE BUFFER",
-            "title": "Mangroves take power out of waves"
-          },
-          {
-            "hook": "Watch the mangrove roots; it explains the behavior",
-            "score": 79,
-            "thumbnail_text": "WAVE BUFFER",
-            "title": "Mangroves take power out of waves"
-          },
-          {
-            "hook": "Ocean edges turn wave motion into patterns",
-            "score": 76,
-            "thumbnail_text": "WAVE BUFFER",
-            "title": "Mangroves take power out of waves"
-          },
-          {
-            "hook": "Mangroves can slow waves before they hit land",
-            "score": 73,
-            "thumbnail_text": "MANGROVE ROOTS",
-            "title": "Mangroves take power out of waves"
-          },
-          {
-            "hook": "Mangroves can slow waves before they hit land",
-            "score": 73,
-            "thumbnail_text": "WATCH MANGROVE ROOTS",
-            "title": "Mangroves take power out of waves"
-          },
-          {
-            "hook": "Mangroves can slow waves before they hit land",
-            "score": 73,
-            "thumbnail_text": "MANGROVES CHANGE",
-            "title": "Mangroves take power out of waves"
-          },
-          {
-            "hook": "Mangroves can slow waves before they hit land",
-            "score": 73,
-            "thumbnail_text": "MANGROVE ROOTS MATTERS",
-            "title": "Mangroves take power out of waves"
-          },
-          {
-            "hook": "Watch the mangrove roots; it explains the behavior",
-            "score": 72,
-            "thumbnail_text": "MANGROVE ROOTS",
-            "title": "Mangroves take power out of waves"
-          },
-          {
-            "hook": "Watch the mangrove roots; it explains the behavior",
-            "score": 72,
-            "thumbnail_text": "WATCH MANGROVE ROOTS",
-            "title": "Mangroves take power out of waves"
-          },
-          {
-            "hook": "Watch the mangrove roots; it explains the behavior",
-            "score": 72,
-            "thumbnail_text": "MANGROVES CHANGE",
-            "title": "Mangroves take power out of waves"
           }
         ]
       },

@@ -1,21 +1,22 @@
 {
-  "generated_at": "2026-07-06T19:29:25.849840+00:00",
-  "score": 82,
-  "state": "watch",
+  "generated_at": "2026-07-06T20:14:42.320389+00:00",
+  "score": 67,
+  "state": "needs_work",
   "issues": [
+    "queue_inventory_low",
     "youtube_analytics_scope_incomplete",
     "average_retention_needs_attention"
   ],
   "queue": {
-    "pending": 20,
+    "pending": 18,
     "publish_ready": 1,
     "categories": {
       "birds": 2,
-      "conservation": 2,
+      "conservation": 1,
       "discoveries": 1,
       "earth_from_space": 3,
       "forests": 2,
-      "geology": 6,
+      "geology": 5,
       "nocturnal": 1,
       "plants": 1,
       "wildlife": 2
@@ -24,8 +25,8 @@
     "missing_scripts": 0,
     "missing_source": 0,
     "held_reasons": {
-      "queue_prune:rewrite": 19,
-      "editor_in_chief:cooldown_subject": 14,
+      "queue_prune:rewrite": 17,
+      "editor_in_chief:cooldown_subject": 12,
       "packaging:missing_action_word": 3,
       "editor_in_chief:needs_ai_rewrite": 2,
       "youtube_brain:missing_visual_cue": 1,
@@ -38,26 +39,28 @@
     "subject_frontloaded_pct": 100.0
   },
   "agency": {
-    "average_score": 45.0,
+    "average_score": 46.3,
     "decisions": {
-      "hold": 16,
-      "strong_candidate": 4
+      "hold": 14,
+      "publish_now": 1,
+      "strong_candidate": 3
     },
     "top": [
       {
         "title": "Parrots use their beak like a third foot",
         "category": "birds",
-        "score": 80,
-        "decision": "strong_candidate",
+        "score": 82,
+        "decision": "publish_now",
         "strengths": [
           "strong_quality",
+          "matches_channel_learning",
           "fresh_inventory"
         ]
       },
       {
         "title": "Elephants can feel rumbles through the ground",
         "category": "wildlife",
-        "score": 79,
+        "score": 81,
         "decision": "strong_candidate",
         "strengths": [
           "strong_quality",
@@ -67,10 +70,11 @@
       {
         "title": "Macaws use beaks like climbing tools",
         "category": "birds",
-        "score": 78,
+        "score": 80,
         "decision": "strong_candidate",
         "strengths": [
           "strong_quality",
+          "matches_channel_learning",
           "fresh_inventory"
         ]
       },
@@ -81,17 +85,6 @@
         "decision": "strong_candidate",
         "strengths": [
           "strong_quality"
-        ]
-      },
-      {
-        "title": "Rock layers use rock layers before they change",
-        "category": "geology",
-        "score": 42,
-        "decision": "hold",
-        "strengths": [
-          "strong_quality",
-          "fresh_angle",
-          "fresh_inventory"
         ]
       },
       {
@@ -116,26 +109,34 @@
         ]
       },
       {
-        "title": "Rock layers store old environments in stripes",
-        "category": "geology",
+        "title": "Forests hold cool air under the canopy",
+        "category": "forests",
         "score": 38,
         "decision": "hold",
         "strengths": [
-          "strong_quality",
-          "fresh_angle"
+          "strong_quality"
+        ]
+      },
+      {
+        "title": "Fox eyes glow at night in a way you didn't expect",
+        "category": "nocturnal",
+        "score": 37,
+        "decision": "hold",
+        "strengths": [
+          "strong_quality"
         ]
       }
     ]
   },
   "analytics": {
-    "pulled_at": "2026-07-06T17:00:24.644241+00:00",
+    "pulled_at": "2026-07-06T20:13:20.131506+00:00",
     "metric_scope": "public_video_statistics",
-    "total_views": 2,
+    "total_views": 4,
     "avg_view_pct": 0.0,
-    "shorts_tracked": 68
+    "shorts_tracked": 69
   },
   "comments": {
-    "comments_sampled": 20,
-    "question_count": 20
+    "comments_sampled": 21,
+    "question_count": 21
   }
 }

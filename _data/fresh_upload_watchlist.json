@@ -5,17 +5,72 @@
     24
   ],
   "counts": {
-    "analytics_due": 4,
-    "awaiting_1h": 0,
-    "high_priority": 9,
-    "repair_candidates": 5,
+    "analytics_due": 2,
+    "awaiting_1h": 1,
+    "high_priority": 8,
+    "repair_candidates": 6,
     "tracked": 10
   },
-  "generated_at": "2026-07-06T19:37:17.133472+00:00",
+  "generated_at": "2026-07-06T20:15:02.180471+00:00",
   "items": [
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.615,
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.029,
+      "category": "conservation",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-06T21:13:18.524048+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-07T02:13:18.524048+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-07T20:13:18.524048+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-06T21:13:18.524048+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Planet Repair",
+      "state": "awaiting_1h",
+      "title": "Fish Mangroves take power out of waves | Roots",
+      "uploaded_at": "2026-07-06T20:13:18.524048+00:00",
+      "url": "https://www.youtube.com/shorts/cLMEOp9HnM0",
+      "video_id": "cLMEOp9HnM0",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Queue a sequel or related-video bridge while the session has momentum.",
+      "age_hours": 3.244,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -34,7 +89,7 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 105,
-          "views": 0
+          "views": 1
         },
         {
           "delta_to_target": 0,
@@ -43,11 +98,11 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 300,
-          "views": 0
+          "views": 1
         }
       ],
-      "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "current_views": 1,
+      "hypothesis": "Performance signal is already positive; amplify without changing the opening.",
       "next_checkpoint": {
         "delta_to_target": 0,
         "due_at": "2026-07-06T23:00:23.228565+00:00",
@@ -55,22 +110,31 @@
         "source": "estimated",
         "state": "pending",
         "target_views": 105,
-        "views": 0
+        "views": 1
       },
       "opening_retention_score": 94.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "normal",
       "series": "Animal Superpowers",
-      "state": "watch",
+      "state": "accelerating",
       "title": "Bears can smell a meal long before seeing it",
       "uploaded_at": "2026-07-06T17:00:23.228565+00:00",
       "url": "https://www.youtube.com/shorts/FfM3i7ikJb4",
       "video_id": "FfM3i7ikJb4",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.31,
+      "warning": {
+        "confidence_score": 0.512,
+        "reasoning": "video has 18/2 samples, estimated data, confidence 0.51; observation only.",
+        "score": 2,
+        "state": "accelerating",
+        "title": "Bears can smell a meal long before seeing it",
+        "video_id": "FfM3i7ikJb4",
+        "warning_state": "accelerator"
+      }
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 7.725,
+      "age_hours": 8.354,
       "category": "space",
       "checkpoints": [
         {
@@ -136,7 +200,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 20.904,
+      "age_hours": 21.534,
       "category": "chemistry",
       "checkpoints": [
         {
@@ -187,11 +251,11 @@
       "uploaded_at": "2026-07-05T22:43:01.080480+00:00",
       "url": "https://www.youtube.com/shorts/Izp-1oqlkyk",
       "video_id": "Izp-1oqlkyk",
-      "views_per_hour": 0.048
+      "views_per_hour": 0.046
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 22.316,
+      "age_hours": 22.946,
       "category": "insects",
       "checkpoints": [
         {
@@ -245,8 +309,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 23.493,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 24.123,
       "category": "insects",
       "checkpoints": [
         {
@@ -268,17 +332,17 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -300,
           "due_at": "2026-07-06T20:07:40.550229+00:00",
           "label": "24h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 300,
           "views": 0
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": -24,
         "due_at": "2026-07-05T21:07:40.550229+00:00",
@@ -292,16 +356,27 @@
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Tiny Worlds",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Bees dance directions back to the hive",
       "uploaded_at": "2026-07-05T20:07:40.550229+00:00",
       "url": "https://www.youtube.com/shorts/qgE9xwLOE-w",
       "video_id": "qgE9xwLOE-w",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.756,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Bees dance directions back to the hive",
+        "video_id": "qgE9xwLOE-w",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 23.913,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 24.542,
       "category": "ocean",
       "checkpoints": [
         {
@@ -323,17 +398,17 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -300,
           "due_at": "2026-07-06T19:42:29.615977+00:00",
           "label": "24h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 300,
           "views": 0
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": -24,
         "due_at": "2026-07-05T20:42:29.615977+00:00",
@@ -347,16 +422,27 @@
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Ocean Mysteries",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Dolphins use signature whistles like names",
       "uploaded_at": "2026-07-05T19:42:29.615977+00:00",
       "url": "https://www.youtube.com/shorts/iMu5K1YL2Bo",
       "video_id": "iMu5K1YL2Bo",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.756,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Dolphins use signature whistles like names",
+        "video_id": "iMu5K1YL2Bo",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 25.337,
+      "age_hours": 25.966,
       "category": "rivers",
       "checkpoints": [
         {
@@ -407,7 +493,7 @@
       "uploaded_at": "2026-07-05T18:17:04.262059+00:00",
       "url": "https://www.youtube.com/shorts/CV5SwGiSehk",
       "video_id": "CV5SwGiSehk",
-      "views_per_hour": 0.04,
+      "views_per_hour": 0.039,
       "warning": {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.756,
@@ -422,7 +508,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 26.167,
+      "age_hours": 26.796,
       "category": "plants",
       "checkpoints": [
         {
@@ -488,7 +574,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 27.27,
+      "age_hours": 27.9,
       "category": "dogs",
       "checkpoints": [
         {
@@ -548,72 +634,6 @@
         "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
         "title": "Dogs build a map with smell",
         "video_id": "SLlGYXvUeBg",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
-    },
-    {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 28.524,
-      "category": "geology",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-05T16:05:50.407358+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-05T21:05:50.407358+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": -300,
-          "due_at": "2026-07-06T15:05:50.407358+00:00",
-          "label": "24h",
-          "source": "observed",
-          "state": "observed",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-05T16:05:50.407358+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Earth Engine",
-      "state": "repair_candidate",
-      "title": "Rock layers show their timeline inside caves",
-      "uploaded_at": "2026-07-05T15:05:50.407358+00:00",
-      "url": "https://www.youtube.com/shorts/c_jUW1tjDb4",
-      "video_id": "c_jUW1tjDb4",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.756,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Rock layers show their timeline inside caves",
-        "video_id": "c_jUW1tjDb4",
         "views": 0,
         "warning_state": "repair_risk"
       }
