@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-06T14:01:32.135060+00:00",
+  "generated_at": "2026-07-06T14:05:52.647965+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
   "overall_progress_pct": 25.4,
@@ -20,13 +20,13 @@
       "eligible_count": 2,
       "operational_publish_ready": 2,
       "apparent_publish_ready": 2,
-      "pending": 22,
+      "pending": 23,
       "target_publish_ready": 6,
       "target_pending": 20,
       "top_blockers": [
         {
           "id": "objective_gate:bootstrap_observe_before_scaling",
-          "count": 44,
+          "count": 46,
           "operator_translation": "collect more observed signal before scaling this pattern"
         },
         {
@@ -36,7 +36,7 @@
         },
         {
           "id": "queue_prune:rewrite",
-          "count": 20,
+          "count": 21,
           "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
@@ -86,20 +86,20 @@
     {
       "priority": "P1",
       "action": "Refresh free discovery only after the current repair batch is clean.",
-      "target": "pending 22/20",
+      "target": "pending 23/20",
       "why": "Bigger inventory helps only when the gate can accept winners."
     }
   ],
   "metrics": {
     "health_score": 82,
     "health_state": "watch",
-    "pending": 22,
+    "pending": 23,
     "operational_publish_ready": 2,
     "apparent_publish_ready": 2,
     "eligible_count": 2,
     "scale_ready_count": 0,
     "next_shorts_count": 2,
-    "editorial_candidate_count": 22,
+    "editorial_candidate_count": 23,
     "published_count": 67,
     "views_28d": 30314,
     "total_subscribers": 46,
@@ -114,7 +114,7 @@
   "top_blockers": [
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
-      "count": 44,
+      "count": 46,
       "operator_translation": "collect more observed signal before scaling this pattern"
     },
     {
@@ -124,7 +124,7 @@
     },
     {
       "id": "queue_prune:rewrite",
-      "count": 20,
+      "count": 21,
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
@@ -153,6 +153,16 @@
       "operator_translation": "editor in chief:editorial score 40 is below 62"
     },
     {
+      "id": "off_topic_visual",
+      "count": 4,
+      "operator_translation": "off topic visual"
+    },
+    {
+      "id": "duplicate_title",
+      "count": 4,
+      "operator_translation": "duplicate title"
+    },
+    {
       "id": "packaging:missing_action_word",
       "count": 3,
       "operator_translation": "packaging:missing action word"
@@ -161,16 +171,6 @@
       "id": "editor_in_chief:needs_ai_rewrite",
       "count": 2,
       "operator_translation": "editor in chief:needs ai rewrite"
-    },
-    {
-      "id": "bootstrap_observe_before_scaling",
-      "count": 2,
-      "operator_translation": "bootstrap observe before scaling"
-    },
-    {
-      "id": "editor_in_chief:editorial score 49 is below 62",
-      "count": 2,
-      "operator_translation": "editor in chief:editorial score 49 is below 62"
     }
   ],
   "levels": [
@@ -198,7 +198,7 @@
       "evidence": {
         "operational_publish_ready": 2,
         "eligible_count": 2,
-        "pending": 22,
+        "pending": 23,
         "target_publish_ready": 6,
         "target_pending": 20
       }
