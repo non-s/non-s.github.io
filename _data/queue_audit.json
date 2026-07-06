@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-06T21:21:12.742425+00:00",
+  "generated_at": "2026-07-06T22:23:58.905485+00:00",
   "pending": 20,
   "states": {
     "rewrite": 17,
@@ -8,35 +8,78 @@
   "mechanism_clusters": {
     "call_signal": 1,
     "beak_signal": 1,
-    "face_recognition": 1,
-    "tongue_smell": 1
+    "tongue_smell": 1,
+    "face_recognition": 1
   },
   "rights": {
     "approved": 20
   },
   "prune_summary": {
-    "pending_before": 28,
+    "pending_before": 25,
     "pending_after": 20,
-    "rejected": 8,
+    "rejected": 5,
     "repair_needed": 0,
-    "repaired": 7,
+    "repaired": 6,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 20,
       "editor_in_chief:subject repeated inside 3-day cooldown": 13,
-      "duplicate_title": 5,
       "editor_in_chief:script quality gate blocked the narration": 4,
-      "off_topic_visual": 3,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
       "editor_in_chief:editorial score 46 is below 62": 3,
-      "duplicate_angle": 2,
-      "script_hook_mismatch": 1,
+      "duplicate_title": 3,
+      "off_topic_visual": 2,
       "editor_in_chief:editorial score 49 is below 62": 1,
+      "duplicate_angle": 1,
       "editor_in_chief:editorial score 40 is below 62": 1,
-      "duplicate_script": 1,
+      "script_subject_mismatch": 1,
+      "copy_subject_mismatch": 1,
       "editorial_cooldown_supply_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "90892e8f771d41ad",
+      "title": "Monkeys wash food when grit gets annoying",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "f03ebf353c4f0f1e",
+      "title": "Monkeys wash food when grit gets annoying",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "9a1d3a4c7e87cbc0",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "995b504f4f89730f",
+      "title": "Smoking mountain isn’t dying, it’s building",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "c09abb383f486b39",
+      "title": "Alpine glaciers carve mountains faster than you think",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "a5f8187ebaa4e05f",
       "title": "Snakes sample the air with a tongue flick",
@@ -253,57 +296,646 @@
         "off_topic_visual"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "f009604ed68a0b2f",
-      "title": "Coral reefs are cities built by tiny animals",
-      "reasons": [
-        "opening_retention_gap_risk",
-        "opening promise is not concrete enough",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "99243d5d89a18fff",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "Los manglares frenan el poder de las olas",
-      "title": "Los manglares frenan el poder de las olas",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "payoff_not_explicit",
-        "hook_shape_weak",
-        "title_shape_weak",
-        "opening_retention_gap_risk"
-      ],
-      "stage": "youtube_brain"
-    },
-    {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
-    },
-    {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
     }
   ],
   "top": [
+    {
+      "id": "4d34ad4bed0a32bb",
+      "title": "Mantises can measure a strike in 3D",
+      "category": "insects",
+      "publish_score": {
+        "approved": true,
+        "category": "insects",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "strike"
+          ],
+          "cue_terms": [
+            "strike"
+          ],
+          "frame_hook_bridge": [
+            "strike"
+          ],
+          "risks": [
+            "missing_early_action"
+          ],
+          "score": 96.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "mantises"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 65,
+          "signals": {
+            "comment_potential": 46,
+            "educational_potential": 66,
+            "emotional_potential": 44,
+            "novelty": 69,
+            "replay_potential": 72,
+            "viral_potential": 75,
+            "visual_potential": 69
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 5
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-07-06T22:23:38.731338+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "mantises",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "strike"
+          ],
+          "cue_terms": [
+            "strike"
+          ],
+          "frame_hook_bridge": [
+            "strike"
+          ],
+          "risks": [
+            "missing_early_action"
+          ],
+          "score": 96.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "mantises"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "mantises",
+        "viewer_promise": "See why mantises body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which mantises clue should Wild Brief compare next in Tiny Worlds?",
+        "cta_prompt": "Want more small creatures doing impossible things?",
+        "curiosity_gap": {
+          "hook": "Why do these mantises change after the 3d strike?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 70,
+          "winners": {
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:specific_question": 46.1,
+            "format:fresh_variant": 46.1,
+            "format:winner_inspired": 46.1,
+            "hook:new_hook": 46.1,
+            "thumbnail:new_thumbnail": 46.1
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "strike"
+            ],
+            "cue_terms": [
+              "strike"
+            ],
+            "frame_hook_bridge": [
+              "strike"
+            ],
+            "risks": [
+              "missing_early_action"
+            ],
+            "score": 96.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "mantises"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Mantises can measure a strike in 3D",
+          "Mantises show why the 3d vision matters.",
+          "Mantises show why the 3d vision matters.",
+          "Mantises show why the 3d vision matters.",
+          "Mantises give away the answer through 3d vision"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "3d strike",
+          "ending_line": "Would you see the setup.",
+          "final_line": "Now the 3d strike at the start makes sense.",
+          "loop_score": 0.762,
+          "opening_line": "Mantises can measure a strike in 3D.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "3d strike",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.762,
+        "next_episode_question": "Tomorrow in Tiny Worlds: another animal signal. Is this tiny design more impressive than large-animal survival?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "strike"
+          ],
+          "cue_terms": [
+            "strike"
+          ],
+          "frame_hook_bridge": [
+            "strike"
+          ],
+          "risks": [
+            "missing_early_action"
+          ],
+          "score": 96.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "mantises"
+        },
+        "pinned_comment": "Watch the head again. Tomorrow in Tiny Worlds: another animal signal. Is this tiny design more impressive than large-animal survival?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 16.0,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 17,
+          "first_2s_narration": "Mantises can measure strike in Watch the head and front legs because",
+          "first_frame_text": "3D STRIKE",
+          "first_frame_text_words": 2,
+          "hook": "Mantises can measure a strike in 3D.",
+          "hook_specificity": 0.78,
+          "hook_words": 5,
+          "loop_score": 0.762,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "strike"
+            ],
+            "cue_terms": [
+              "strike"
+            ],
+            "frame_hook_bridge": [
+              "strike"
+            ],
+            "risks": [
+              "missing_early_action"
+            ],
+            "score": 96.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "mantises"
+          },
+          "opening_retention_score": 96.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 71,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the head, so viewers rewatch the mantises clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Mantises can measure a strike in 3D Watch the head and front",
+          "first_frame_text": "3D STRIKE",
+          "next_episode_question": "Tomorrow in Tiny Worlds: another animal signal. Is this tiny design more impressive than large-animal survival?",
+          "opening_retention_score": 96.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Mantises behavior through the visible head.",
+            "series": "Tiny Worlds",
+            "subject": "mantises",
+            "terms": [
+              "mantises",
+              "head",
+              "insects",
+              "body superpower"
+            ],
+            "title_variant": "Mantises behavior: head explained",
+            "visible_cue": "head"
+          },
+          "series": "Tiny Worlds",
+          "subject": "mantises",
+          "visible_cue": "head"
+        },
+        "risks": [],
+        "score": 96,
+        "search_intent": {
+          "description_line": "This Short explains Mantises behavior through the visible head.",
+          "series": "Tiny Worlds",
+          "subject": "mantises",
+          "terms": [
+            "mantises",
+            "head",
+            "insects",
+            "body superpower"
+          ],
+          "title_variant": "Mantises behavior: head explained",
+          "visible_cue": "head"
+        },
+        "selected_variant": {
+          "hook": "Mantises can measure a strike in 3D",
+          "score": 79,
+          "thumbnail_text": "3D STRIKE",
+          "title": "Mantises judge distance with 3D vision"
+        },
+        "series": "Tiny Worlds #8",
+        "series_identity": {
+          "continuity_prompt": "Next in Tiny Worlds: compare this with another force of nature.",
+          "episode": 8,
+          "label": "Tiny Worlds #8",
+          "series": "Tiny Worlds"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "3D STRIKE",
+          "3D VISION",
+          "WATCH 3D VISION",
+          "MANTISES MEASURE",
+          "3D VISION MATTERS",
+          "3D VISION FIRST",
+          "3D VISION REVEAL",
+          "3D VISION CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Mantises judge distance with 3D vision",
+          "Mantises can measure a strike in 3D",
+          "Mantises use 3d vision before they measure",
+          "This 3d vision gives mantises away",
+          "Why mantises measure after one 3d vision",
+          "Mantises reveal the answer with 3d vision",
+          "The 3d vision that changes the moment",
+          "Mantises make one 3d vision matter",
+          "Mantises show the hidden answer in seconds",
+          "Mantises: watch this 3d vision"
+        ],
+        "top_variants": [
+          {
+            "hook": "Mantises can measure a strike in 3D",
+            "score": 79,
+            "thumbnail_text": "3D STRIKE",
+            "title": "Mantises judge distance with 3D vision"
+          },
+          {
+            "hook": "Start with the 3d vision; it changes the scene",
+            "score": 79,
+            "thumbnail_text": "3D STRIKE",
+            "title": "Mantises judge distance with 3D vision"
+          },
+          {
+            "hook": "Watch the 3d vision; it explains the behavior",
+            "score": 78,
+            "thumbnail_text": "3D STRIKE",
+            "title": "Mantises judge distance with 3D vision"
+          },
+          {
+            "hook": "Mantises can measure a strike in 3D",
+            "score": 72,
+            "thumbnail_text": "3D VISION",
+            "title": "Mantises judge distance with 3D vision"
+          },
+          {
+            "hook": "Start with the 3d vision; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "3D VISION",
+            "title": "Mantises judge distance with 3D vision"
+          },
+          {
+            "hook": "Mantises can measure a strike in 3D",
+            "score": 72,
+            "thumbnail_text": "WATCH 3D VISION",
+            "title": "Mantises judge distance with 3D vision"
+          },
+          {
+            "hook": "Start with the 3d vision; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "WATCH 3D VISION",
+            "title": "Mantises judge distance with 3D vision"
+          },
+          {
+            "hook": "Mantises can measure a strike in 3D",
+            "score": 72,
+            "thumbnail_text": "MANTISES MEASURE",
+            "title": "Mantises judge distance with 3D vision"
+          },
+          {
+            "hook": "Start with the 3d vision; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "MANTISES MEASURE",
+            "title": "Mantises judge distance with 3D vision"
+          },
+          {
+            "hook": "Mantises can measure a strike in 3D",
+            "score": 72,
+            "thumbnail_text": "3D VISION MATTERS",
+            "title": "Mantises judge distance with 3D vision"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
     {
       "id": "8bdc8b70af521eb4",
       "title": "Fossils turn old bones into time clues",
@@ -477,7 +1109,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:20:51.387903+00:00",
+        "checked_at": "2026-07-06T22:23:38.733575+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -948,641 +1580,6 @@
       }
     },
     {
-      "id": "4d34ad4bed0a32bb",
-      "title": "Mantises can measure a strike in 3D",
-      "category": "insects",
-      "publish_score": {
-        "approved": true,
-        "category": "insects",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "strike"
-          ],
-          "cue_terms": [
-            "strike"
-          ],
-          "frame_hook_bridge": [
-            "strike"
-          ],
-          "risks": [
-            "missing_early_action"
-          ],
-          "score": 96.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "mantises"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 65,
-          "signals": {
-            "comment_potential": 46,
-            "educational_potential": 66,
-            "emotional_potential": 44,
-            "novelty": 69,
-            "replay_potential": 72,
-            "viral_potential": 75,
-            "visual_potential": 69
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "body_superpower",
-        "subscriber_conversion": {
-          "comment_probability": 0.223,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.261,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 5
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-07-06T21:20:52.051664+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 100.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 100.0,
-      "youtube_brain": {
-        "animal": "mantises",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "strike"
-          ],
-          "cue_terms": [
-            "strike"
-          ],
-          "frame_hook_bridge": [
-            "strike"
-          ],
-          "risks": [
-            "missing_early_action"
-          ],
-          "score": 96.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "mantises"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "body_superpower",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "mantises",
-        "viewer_promise": "See why mantises body superpower matters."
-      },
-      "packaging": {
-        "community_prompt": "Which mantises clue should Wild Brief compare next in Watch The Cue?",
-        "cta_prompt": "Want more small creatures doing impossible things?",
-        "curiosity_gap": {
-          "hook": "Why do these mantises change after the 3d strike?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "body superpower",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 70,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:specific_question": 46.1,
-            "format:fresh_variant": 46.1,
-            "format:winner_inspired": 46.1,
-            "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 46.1
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "strike"
-            ],
-            "cue_terms": [
-              "strike"
-            ],
-            "frame_hook_bridge": [
-              "strike"
-            ],
-            "risks": [
-              "missing_early_action"
-            ],
-            "score": 96.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "mantises"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Mantises can measure a strike in 3D",
-          "Mantises show why the 3d vision matters.",
-          "Mantises show why the 3d vision matters.",
-          "Mantises show why the 3d vision matters.",
-          "Mantises give away the answer through 3d vision"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "3d strike",
-          "ending_line": "Would you see the setup?",
-          "final_line": "Now the 3d strike at the start makes sense.",
-          "loop_score": 0.762,
-          "opening_line": "Mantises can measure a strike in 3D.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "3d strike",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.762,
-        "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. Is this tiny design more impressive than large-animal survival?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "strike"
-          ],
-          "cue_terms": [
-            "strike"
-          ],
-          "frame_hook_bridge": [
-            "strike"
-          ],
-          "risks": [
-            "missing_early_action"
-          ],
-          "score": 96.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "mantises"
-        },
-        "pinned_comment": "Watch the head again. Tomorrow in Watch The Cue: another animal signal. Is this tiny design more impressive than large-animal survival?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 16.0,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 17,
-          "first_2s_narration": "Mantises can measure strike in Watch the head and front legs because",
-          "first_frame_text": "3D STRIKE",
-          "first_frame_text_words": 2,
-          "hook": "Mantises can measure a strike in 3D.",
-          "hook_specificity": 0.78,
-          "hook_words": 5,
-          "loop_score": 0.762,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "strike"
-            ],
-            "cue_terms": [
-              "strike"
-            ],
-            "frame_hook_bridge": [
-              "strike"
-            ],
-            "risks": [
-              "missing_early_action"
-            ],
-            "score": 96.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "mantises"
-          },
-          "opening_retention_score": 96.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 71,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the head, so viewers rewatch the mantises clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Mantises can measure a strike in 3D Watch the head and front",
-          "first_frame_text": "3D STRIKE",
-          "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. Is this tiny design more impressive than large-animal survival?",
-          "opening_retention_score": 96.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains Mantises behavior through the visible head.",
-            "series": "Watch The Cue",
-            "subject": "mantises",
-            "terms": [
-              "mantises",
-              "head",
-              "insects",
-              "body superpower"
-            ],
-            "title_variant": "Mantises behavior: head explained",
-            "visible_cue": "head"
-          },
-          "series": "Watch The Cue",
-          "subject": "mantises",
-          "visible_cue": "head"
-        },
-        "risks": [],
-        "score": 96,
-        "search_intent": {
-          "description_line": "This Short explains Mantises behavior through the visible head.",
-          "series": "Watch The Cue",
-          "subject": "mantises",
-          "terms": [
-            "mantises",
-            "head",
-            "insects",
-            "body superpower"
-          ],
-          "title_variant": "Mantises behavior: head explained",
-          "visible_cue": "head"
-        },
-        "selected_variant": {
-          "hook": "Mantises can measure a strike in 3D",
-          "score": 79,
-          "thumbnail_text": "3D STRIKE",
-          "title": "Mantises judge distance with 3D vision"
-        },
-        "series": "Watch The Cue",
-        "series_identity": {
-          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Watch The Cue",
-          "series": "Watch The Cue"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.223,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.261,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "3D STRIKE",
-          "3D VISION",
-          "WATCH 3D VISION",
-          "MANTISES MEASURE",
-          "3D VISION MATTERS",
-          "3D VISION FIRST",
-          "3D VISION REVEAL",
-          "3D VISION CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Mantises judge distance with 3D vision",
-          "Mantises can measure a strike in 3D",
-          "Mantises use 3d vision before they measure",
-          "This 3d vision gives mantises away",
-          "Why mantises measure after one 3d vision",
-          "Mantises reveal the answer with 3d vision",
-          "The 3d vision that changes the moment",
-          "Mantises make one 3d vision matter",
-          "Mantises show the hidden answer in seconds",
-          "Mantises: watch this 3d vision"
-        ],
-        "top_variants": [
-          {
-            "hook": "Mantises can measure a strike in 3D",
-            "score": 79,
-            "thumbnail_text": "3D STRIKE",
-            "title": "Mantises judge distance with 3D vision"
-          },
-          {
-            "hook": "Start with the 3d vision; it changes the scene",
-            "score": 79,
-            "thumbnail_text": "3D STRIKE",
-            "title": "Mantises judge distance with 3D vision"
-          },
-          {
-            "hook": "Watch the 3d vision; it explains the behavior",
-            "score": 78,
-            "thumbnail_text": "3D STRIKE",
-            "title": "Mantises judge distance with 3D vision"
-          },
-          {
-            "hook": "Mantises can measure a strike in 3D",
-            "score": 72,
-            "thumbnail_text": "3D VISION",
-            "title": "Mantises judge distance with 3D vision"
-          },
-          {
-            "hook": "Start with the 3d vision; it changes the scene",
-            "score": 72,
-            "thumbnail_text": "3D VISION",
-            "title": "Mantises judge distance with 3D vision"
-          },
-          {
-            "hook": "Mantises can measure a strike in 3D",
-            "score": 72,
-            "thumbnail_text": "WATCH 3D VISION",
-            "title": "Mantises judge distance with 3D vision"
-          },
-          {
-            "hook": "Start with the 3d vision; it changes the scene",
-            "score": 72,
-            "thumbnail_text": "WATCH 3D VISION",
-            "title": "Mantises judge distance with 3D vision"
-          },
-          {
-            "hook": "Mantises can measure a strike in 3D",
-            "score": 72,
-            "thumbnail_text": "MANTISES MEASURE",
-            "title": "Mantises judge distance with 3D vision"
-          },
-          {
-            "hook": "Start with the 3d vision; it changes the scene",
-            "score": 72,
-            "thumbnail_text": "MANTISES MEASURE",
-            "title": "Mantises judge distance with 3D vision"
-          },
-          {
-            "hook": "Mantises can measure a strike in 3D",
-            "score": 72,
-            "thumbnail_text": "3D VISION MATTERS",
-            "title": "Mantises judge distance with 3D vision"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "7297fa80243db8ee",
       "title": "Macaws use beaks like climbing tools",
       "category": "birds",
@@ -1755,7 +1752,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:20:51.374738+00:00",
+        "checked_at": "2026-07-06T22:23:37.996991+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2394,7 +2391,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:20:51.377063+00:00",
+        "checked_at": "2026-07-06T22:23:37.999228+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3040,7 +3037,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:20:50.977501+00:00",
+        "checked_at": "2026-07-06T22:23:37.225410+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3625,11 +3622,11 @@
           },
           "verdict": "rewrite"
         },
-        "score": 96.1,
+        "score": 96.8,
         "state": "publish_ready",
         "story_format": "body_superpower",
         "subscriber_conversion": {
-          "comment_probability": 0.223,
+          "comment_probability": 0.24,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -3646,17 +3643,18 @@
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.261,
+          "return_probability": 0.281,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 86,
+          "score": 93,
           "state": "strong",
-          "subscriber_probability": 0.123
+          "subscriber_probability": 0.133
         },
         "title_score": 90,
         "weak_content": {
@@ -3679,7 +3677,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:20:51.725719+00:00",
+        "checked_at": "2026-07-06T22:23:38.741710+00:00",
         "mechanism_cluster": "tongue_smell",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -3750,7 +3748,7 @@
         "viewer_promise": "See why snakes body superpower matters."
       },
       "packaging": {
-        "community_prompt": "Which snakes clue should Wild Brief compare next in Watch The Cue?",
+        "community_prompt": "Which snakes clue should Wild Brief compare next in Cold-Blooded Secrets?",
         "cta_prompt": "Want more survival tricks from ancient designs?",
         "curiosity_gap": {
           "hook": "Why does this rock changes after the foot grip?",
@@ -3846,7 +3844,7 @@
         "loop_plan": {
           "audio_crossfade_ms": 120,
           "callback_keyword": "tongue smell",
-          "ending_line": "Would you notice the trail?",
+          "ending_line": "Would you notice the trail.",
           "final_line": "Now the tongue smell at the start makes sense.",
           "loop_score": 0.79,
           "opening_line": "Snakes sample the air with a tongue flick.",
@@ -3859,7 +3857,7 @@
           "subtitle_tail_mode": "carry-forward"
         },
         "loop_score": 0.79,
-        "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. Is this ancient design underrated?",
+        "next_episode_question": "Tomorrow in Cold-Blooded Secrets: another animal signal. Is this ancient design underrated?",
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
@@ -3891,7 +3889,7 @@
           ],
           "subject": "rock"
         },
-        "pinned_comment": "Watch the tongue smell again. Tomorrow in Watch The Cue: another animal signal. Is this ancient design underrated?",
+        "pinned_comment": "Watch the tongue smell again. Tomorrow in Cold-Blooded Secrets: another animal signal. Is this ancient design underrated?",
         "preflight_inputs": {
           "caption_chars_per_second": 15.56,
           "contrast_score": 0.74,
@@ -3971,12 +3969,12 @@
         "retention_contract": {
           "first_2s_narration": "Snakes sample the air with a tongue flick Watch the tongue flick",
           "first_frame_text": "TONGUE SMELL",
-          "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. Is this ancient design underrated?",
+          "next_episode_question": "Tomorrow in Cold-Blooded Secrets: another animal signal. Is this ancient design underrated?",
           "opening_retention_score": 92.0,
           "opening_retention_state": "retention_ready",
           "search_intent": {
             "description_line": "This Short explains Snakes behavior through the visible tongue smell.",
-            "series": "Watch The Cue",
+            "series": "Cold-Blooded Secrets",
             "subject": "snakes",
             "terms": [
               "snakes",
@@ -3987,7 +3985,7 @@
             "title_variant": "Snakes behavior: tongue smell explained",
             "visible_cue": "tongue smell"
           },
-          "series": "Watch The Cue",
+          "series": "Cold-Blooded Secrets",
           "subject": "snakes",
           "visible_cue": "tongue smell"
         },
@@ -3995,7 +3993,7 @@
         "score": 96,
         "search_intent": {
           "description_line": "This Short explains Snakes behavior through the visible tongue smell.",
-          "series": "Watch The Cue",
+          "series": "Cold-Blooded Secrets",
           "subject": "snakes",
           "terms": [
             "snakes",
@@ -4012,12 +4010,12 @@
           "thumbnail_text": "TONGUE SMELL",
           "title": "Snakes smell the air with their tongues"
         },
-        "series": "Watch The Cue",
+        "series": "Cold-Blooded Secrets #3",
         "series_identity": {
-          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Watch The Cue",
-          "series": "Watch The Cue"
+          "continuity_prompt": "Next in Cold-Blooded Secrets: compare this with another force of nature.",
+          "episode": 3,
+          "label": "Cold-Blooded Secrets #3",
+          "series": "Cold-Blooded Secrets"
         },
         "state": "magnetic",
         "strengths": [
@@ -4029,7 +4027,7 @@
           "retention_opening_aligned"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.223,
+          "comment_probability": 0.24,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -4046,17 +4044,18 @@
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.261,
+          "return_probability": 0.281,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 86,
+          "score": 93,
           "state": "strong",
-          "subscriber_probability": 0.123
+          "subscriber_probability": 0.133
         },
         "swipe_risk": {
           "band": "low",
@@ -4337,7 +4336,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:20:51.389519+00:00",
+        "checked_at": "2026-07-06T22:23:38.735872+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4984,7 +4983,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:20:51.391116+00:00",
+        "checked_at": "2026-07-06T22:23:38.737469+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5636,7 +5635,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:20:50.979458+00:00",
+        "checked_at": "2026-07-06T22:23:37.227329+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6282,7 +6281,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:20:50.981607+00:00",
+        "checked_at": "2026-07-06T22:23:37.229397+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6924,7 +6923,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:20:50.983886+00:00",
+        "checked_at": "2026-07-06T22:23:37.231595+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7578,7 +7577,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:20:50.985883+00:00",
+        "checked_at": "2026-07-06T22:23:37.233547+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8234,7 +8233,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:20:50.988701+00:00",
+        "checked_at": "2026-07-06T22:23:37.236264+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8897,7 +8896,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:20:50.990614+00:00",
+        "checked_at": "2026-07-06T22:23:37.238108+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9548,7 +9547,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:20:51.379107+00:00",
+        "checked_at": "2026-07-06T22:23:38.000608+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10194,7 +10193,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:20:51.381384+00:00",
+        "checked_at": "2026-07-06T22:23:38.002793+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10844,7 +10843,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:20:51.385639+00:00",
+        "checked_at": "2026-07-06T22:23:38.728711+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11505,7 +11504,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:20:51.393145+00:00",
+        "checked_at": "2026-07-06T22:23:38.739465+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12157,7 +12156,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:20:51.383763+00:00",
+        "checked_at": "2026-07-06T22:23:38.005048+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12810,7 +12809,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:20:51.394888+00:00",
+        "checked_at": "2026-07-06T22:23:38.743511+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
