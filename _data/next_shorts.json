@@ -370,7 +370,7 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 19
+      "evergreen": 20
     },
     "items": [
       {
@@ -395,7 +395,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 49.02
+        "freshness_score": 49.0
       },
       {
         "id": "625bc2903a3e3385",
@@ -411,7 +411,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 38.84
+        "freshness_score": 38.82
       },
       {
         "id": "09c8f40beafab256",
@@ -419,7 +419,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 38.6
+        "freshness_score": 38.58
       },
       {
         "id": "d8d90627f96566aa",
@@ -427,7 +427,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 38.6
+        "freshness_score": 38.58
       },
       {
         "id": "7297fa80243db8ee",
@@ -443,7 +443,7 @@
         "category": "birds",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 49.76
+        "freshness_score": 49.74
       },
       {
         "id": "b03cb41b62e7193b",
@@ -499,7 +499,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 42.68
+        "freshness_score": 42.66
       },
       {
         "id": "4111626a62866b27",
@@ -507,7 +507,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 38.74
+        "freshness_score": 38.72
       },
       {
         "id": "8e9710036cf1db90",
@@ -515,7 +515,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.12
+        "freshness_score": 53.1
       },
       {
         "id": "a4ca94af1a59d5df",
@@ -524,6 +524,14 @@
         "lane": "evergreen",
         "adjustment": 5.0,
         "freshness_score": 40.08
+      },
+      {
+        "id": "f5c7dd86d989ec1b",
+        "title": "Rock layers use rock layers before they change",
+        "category": "geology",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -575,11 +583,11 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 19,
-    "pending_after": 19,
+    "pending_before": 20,
+    "pending_after": 20,
     "rejected": 0,
     "repair_needed": 0,
-    "repaired": 4,
+    "repaired": 5,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 19,
       "editor_in_chief:subject repeated inside 3-day cooldown": 12,
@@ -587,7 +595,9 @@
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
       "editor_in_chief:editorial score 46 is below 62": 3,
       "editor_in_chief:editorial score 49 is below 62": 1,
-      "editor_in_chief:editorial score 40 is below 62": 1
+      "duplicate_title": 1,
+      "editor_in_chief:editorial score 40 is below 62": 1,
+      "inventory_reserve_fallback": 1
     }
   }
 }
