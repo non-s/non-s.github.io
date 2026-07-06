@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-07-06T21:15:59.185055+00:00",
-  "pending": 20,
+  "generated_at": "2026-07-06T21:17:26.223164+00:00",
+  "pending": 18,
   "states": {
-    "rewrite": 18,
-    "publish_ready": 2
+    "rewrite": 17,
+    "publish_ready": 1
   },
   "mechanism_clusters": {
     "call_signal": 1,
@@ -11,92 +11,25 @@
     "face_recognition": 1
   },
   "rights": {
-    "approved": 20
+    "approved": 18
   },
   "prune_summary": {
-    "pending_before": 27,
-    "pending_after": 20,
-    "rejected": 7,
+    "pending_before": 18,
+    "pending_after": 18,
+    "rejected": 0,
     "repair_needed": 0,
-    "repaired": 8,
+    "repaired": 4,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 19,
+      "objective_gate:bootstrap_observe_before_scaling": 18,
       "editor_in_chief:subject repeated inside 3-day cooldown": 12,
-      "duplicate_title": 4,
       "editor_in_chief:script quality gate blocked the narration": 4,
-      "off_topic_visual": 3,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
       "editor_in_chief:editorial score 46 is below 62": 3,
-      "copy_subject_mismatch": 2,
-      "rights_guard_person_manual_review": 1,
-      "script_hook_mismatch": 1,
       "editor_in_chief:editorial score 49 is below 62": 1,
-      "script_subject_mismatch": 1,
-      "editor_in_chief:editorial score 40 is below 62": 1,
-      "inventory_reserve_fallback": 1
+      "editor_in_chief:editorial score 40 is below 62": 1
     }
   },
   "rejected_preview": [
-    {
-      "id": "ce5139367a6c69fd",
-      "title": "Monkeys wash food when grit gets annoying",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "a4a315544b0f2f8b",
-      "title": "Monkeys wash food when grit gets annoying",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "4ca49bbfe1a69107",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "0b82af12f4691e8a",
-      "title": "Mountains shrink before your eyes",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "2285e19afbfffa67",
-      "title": "Lizards don't just sit there—they plan their escape",
-      "reasons": [
-        "rights_guard_person_manual_review"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "5793f6e991a8d77f",
-      "title": "Mountains are younger than the rocks they sit on",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "1f11831beb14b9bd",
-      "title": "chameleons change color in half a second",
-      "reasons": [
-        "copy_subject_mismatch",
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
     {
       "id": "791a8f05168ef1b7",
       "title": "Elephants cool blood through giant ears",
@@ -303,651 +236,71 @@
         "thumbnail_not_2_4_words"
       ],
       "stage": "youtube_brain_rewrite"
+    },
+    {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
+      "id": "849e2983f40b9af9",
+      "title": "Monkeys wash food when grit gets annoying",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "387deeb6994d7079",
+      "title": "Fossils can preserve a clue from deep time",
+      "reasons": [
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "0e4c7407a75e82e3",
+      "title": "Lightning turns air into a shock wave",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "6a28ab80a029f1e9",
+      "title": "Rock layers store ancient environments in stripes",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "0c814f8d394aeb4c",
+      "title": "Monkeys wash food when grit gets annoying",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "f4d358a67ead9074",
+      "title": "Alpine lakes hide a melting myth",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
     }
   ],
   "top": [
-    {
-      "id": "4d34ad4bed0a32bb",
-      "title": "Mantises can measure a strike in 3D",
-      "category": "insects",
-      "publish_score": {
-        "approved": true,
-        "category": "insects",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.262,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.016,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 18,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.02.",
-          "recommendation_strength": "observe",
-          "sample_size": 2
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.016,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "strike"
-          ],
-          "cue_terms": [
-            "lightn",
-            "strike"
-          ],
-          "frame_hook_bridge": [
-            "strike"
-          ],
-          "risks": [
-            "missing_early_action"
-          ],
-          "score": 96.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "mantis"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 65,
-          "signals": {
-            "comment_potential": 46,
-            "educational_potential": 66,
-            "emotional_potential": 44,
-            "novelty": 69,
-            "replay_potential": 72,
-            "viral_potential": 75,
-            "visual_potential": 69
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "body_superpower",
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.31,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.08,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 8,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.08.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.08.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 5
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-07-06T21:15:37.947029+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 100.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 100.0,
-      "youtube_brain": {
-        "animal": "mantises",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "strike"
-          ],
-          "cue_terms": [
-            "lightn",
-            "strike"
-          ],
-          "frame_hook_bridge": [
-            "strike"
-          ],
-          "risks": [
-            "missing_early_action"
-          ],
-          "score": 96.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "mantis"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "body_superpower",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "mantises",
-        "viewer_promise": "See why mantises body superpower matters."
-      },
-      "packaging": {
-        "community_prompt": "Which mantises clue should Wild Brief compare next in Earth Engine?",
-        "cta_prompt": "Want more small creatures doing impossible things?",
-        "curiosity_gap": {
-          "hook": "Why do these mantis change after the lightning?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "body superpower",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 70,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:specific_question": 46.1,
-            "format:fresh_variant": 46.1,
-            "format:winner_inspired": 46.1,
-            "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 46.1
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "strike"
-            ],
-            "cue_terms": [
-              "lightn",
-              "strike"
-            ],
-            "frame_hook_bridge": [
-              "strike"
-            ],
-            "risks": [
-              "missing_early_action"
-            ],
-            "score": 96.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "mantis"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Mantises can measure a strike in 3D",
-          "Mantises show why the 3d vision matters.",
-          "Mantises show why the 3d vision matters.",
-          "Mantises show why the 3d vision matters.",
-          "Mantises give away the answer through 3d vision"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "3d strike",
-          "ending_line": "Would you see the setup?",
-          "final_line": "Now the 3d strike at the start makes sense.",
-          "loop_score": 0.762,
-          "opening_line": "Mantises can measure a strike in 3D.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "3d strike",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.762,
-        "next_episode_question": "Tomorrow in Earth Engine: another animal signal. Is this tiny design more impressive than large-animal survival?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "strike"
-          ],
-          "cue_terms": [
-            "lightn",
-            "strike"
-          ],
-          "frame_hook_bridge": [
-            "strike"
-          ],
-          "risks": [
-            "missing_early_action"
-          ],
-          "score": 96.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "mantis"
-        },
-        "pinned_comment": "Watch the head again. Tomorrow in Earth Engine: another animal signal. Is this tiny design more impressive than large-animal survival?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 16.0,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 17,
-          "first_2s_narration": "Mantises can measure strike in Watch the head and front legs because",
-          "first_frame_text": "3D STRIKE",
-          "first_frame_text_words": 2,
-          "hook": "Mantises can measure a strike in 3D.",
-          "hook_specificity": 0.78,
-          "hook_words": 5,
-          "loop_score": 0.762,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "strike"
-            ],
-            "cue_terms": [
-              "lightn",
-              "strike"
-            ],
-            "frame_hook_bridge": [
-              "strike"
-            ],
-            "risks": [
-              "missing_early_action"
-            ],
-            "score": 96.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "mantis"
-          },
-          "opening_retention_score": 96.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 71,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the head, so viewers rewatch the mantises clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Mantises can measure a strike in 3D Watch the head and front",
-          "first_frame_text": "3D STRIKE",
-          "next_episode_question": "Tomorrow in Earth Engine: another animal signal. Is this tiny design more impressive than large-animal survival?",
-          "opening_retention_score": 96.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains Mantises behavior through the visible head.",
-            "series": "Earth Engine",
-            "subject": "mantises",
-            "terms": [
-              "mantises",
-              "head",
-              "insects",
-              "body superpower"
-            ],
-            "title_variant": "Mantises behavior: head explained",
-            "visible_cue": "head"
-          },
-          "series": "Earth Engine",
-          "subject": "mantises",
-          "visible_cue": "head"
-        },
-        "risks": [],
-        "score": 96,
-        "search_intent": {
-          "description_line": "This Short explains Mantises behavior through the visible head.",
-          "series": "Earth Engine",
-          "subject": "mantises",
-          "terms": [
-            "mantises",
-            "head",
-            "insects",
-            "body superpower"
-          ],
-          "title_variant": "Mantises behavior: head explained",
-          "visible_cue": "head"
-        },
-        "selected_variant": {
-          "hook": "Mantises can measure a strike in 3D",
-          "score": 79,
-          "thumbnail_text": "3D STRIKE",
-          "title": "Mantises judge distance with 3D vision"
-        },
-        "series": "Earth Engine #9",
-        "series_identity": {
-          "continuity_prompt": "Next in Earth Engine #9: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Earth Engine #9",
-          "series": "Earth Engine #9"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.31,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.08,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 8,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.08.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.08.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "3D STRIKE",
-          "3D VISION",
-          "WATCH 3D VISION",
-          "MANTISES MEASURE",
-          "3D VISION MATTERS",
-          "3D VISION FIRST",
-          "3D VISION REVEAL",
-          "3D VISION CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Mantises judge distance with 3D vision",
-          "Mantises can measure a strike in 3D",
-          "Mantises use 3d vision before they measure",
-          "This 3d vision gives mantises away",
-          "Why mantises measure after one 3d vision",
-          "Mantises reveal the answer with 3d vision",
-          "The 3d vision that changes the moment",
-          "Mantises make one 3d vision matter",
-          "Mantises show the hidden answer in seconds",
-          "Mantises: watch this 3d vision"
-        ],
-        "top_variants": [
-          {
-            "hook": "Mantises can measure a strike in 3D",
-            "score": 79,
-            "thumbnail_text": "3D STRIKE",
-            "title": "Mantises judge distance with 3D vision"
-          },
-          {
-            "hook": "Start with the 3d vision; it changes the scene",
-            "score": 79,
-            "thumbnail_text": "3D STRIKE",
-            "title": "Mantises judge distance with 3D vision"
-          },
-          {
-            "hook": "Watch the 3d vision; it explains the behavior",
-            "score": 78,
-            "thumbnail_text": "3D STRIKE",
-            "title": "Mantises judge distance with 3D vision"
-          },
-          {
-            "hook": "Mantises can measure a strike in 3D",
-            "score": 72,
-            "thumbnail_text": "3D VISION",
-            "title": "Mantises judge distance with 3D vision"
-          },
-          {
-            "hook": "Start with the 3d vision; it changes the scene",
-            "score": 72,
-            "thumbnail_text": "3D VISION",
-            "title": "Mantises judge distance with 3D vision"
-          },
-          {
-            "hook": "Mantises can measure a strike in 3D",
-            "score": 72,
-            "thumbnail_text": "WATCH 3D VISION",
-            "title": "Mantises judge distance with 3D vision"
-          },
-          {
-            "hook": "Start with the 3d vision; it changes the scene",
-            "score": 72,
-            "thumbnail_text": "WATCH 3D VISION",
-            "title": "Mantises judge distance with 3D vision"
-          },
-          {
-            "hook": "Mantises can measure a strike in 3D",
-            "score": 72,
-            "thumbnail_text": "MANTISES MEASURE",
-            "title": "Mantises judge distance with 3D vision"
-          },
-          {
-            "hook": "Start with the 3d vision; it changes the scene",
-            "score": 72,
-            "thumbnail_text": "MANTISES MEASURE",
-            "title": "Mantises judge distance with 3D vision"
-          },
-          {
-            "hook": "Mantises can measure a strike in 3D",
-            "score": 72,
-            "thumbnail_text": "3D VISION MATTERS",
-            "title": "Mantises judge distance with 3D vision"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
     {
       "id": "8bdc8b70af521eb4",
       "title": "Fossils turn old bones into time clues",
@@ -1121,7 +474,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:15:37.951483+00:00",
+        "checked_at": "2026-07-06T21:17:06.856297+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1764,7 +1117,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:15:36.926480+00:00",
+        "checked_at": "2026-07-06T21:17:06.844165+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2403,7 +1756,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:15:36.928584+00:00",
+        "checked_at": "2026-07-06T21:17:06.846535+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3049,7 +2402,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:15:36.483256+00:00",
+        "checked_at": "2026-07-06T21:17:06.820753+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3512,670 +2865,6 @@
       }
     },
     {
-      "id": "08a55f3240d65335",
-      "title": "Rock layers use rock layers before they change",
-      "category": "geology",
-      "publish_score": {
-        "approved": true,
-        "category": "geology",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.283,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.044,
-          "data_quality": "inferred",
-          "data_quality_score": 0.5,
-          "minimum_sample_size": 28,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.04.",
-          "recommendation_strength": "observe",
-          "sample_size": 4
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.044,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "pattern",
-            "rock",
-            "stripe",
-            "time"
-          ],
-          "cue_terms": [
-            "pattern",
-            "rock",
-            "stripe",
-            "time"
-          ],
-          "frame_hook_bridge": [
-            "rock",
-            "time"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "rock"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "comment_potential": 54,
-            "educational_potential": 72,
-            "emotional_potential": 53,
-            "novelty": 59,
-            "replay_potential": 72,
-            "viral_potential": 83,
-            "visual_potential": 100
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 78,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 90
-          },
-          "verdict": "ready"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "earth_engine",
-        "subscriber_conversion": {
-          "comment_probability": 0.207,
-          "confidence": {
-            "bootstrap_multiplier": 0.331,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.108,
-            "data_quality": "estimated",
-            "data_quality_score": 0.45,
-            "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.242,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 79,
-          "state": "strong",
-          "subscriber_probability": 0.113
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 5
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-07-06T21:15:38.363863+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "inventory_reserve_fallback",
-          "inventory_reserve:duplicate_title"
-        ],
-        "score": 72.0,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 72.0,
-      "youtube_brain": {
-        "animal": "rock",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "pattern",
-            "rock",
-            "stripe",
-            "time"
-          ],
-          "cue_terms": [
-            "pattern",
-            "rock",
-            "stripe",
-            "time"
-          ],
-          "frame_hook_bridge": [
-            "rock",
-            "time"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "rock"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "earth_engine",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "rock",
-        "viewer_promise": "See why this rock earth engine matters."
-      },
-      "packaging": {
-        "community_prompt": "Which rock clue should Wild Brief compare next in Earth Engine?",
-        "cta_prompt": "Want to understand the planet under your feet?",
-        "curiosity_gap": {
-          "hook": "Watch the rock time; it explains why this rock changes.",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "earth engine",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 70,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:specific_question": 46.1,
-            "format:fresh_variant": 46.1,
-            "format:winner_inspired": 46.1,
-            "hook:new_hook": 46.1,
-            "thumbnail:new_thumbnail": 46.1
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "pattern",
-              "rock",
-              "stripe",
-              "time"
-            ],
-            "cue_terms": [
-              "pattern",
-              "rock",
-              "stripe",
-              "time"
-            ],
-            "frame_hook_bridge": [
-              "rock",
-              "time"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "rock"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Rock layers are time stamps made of stone",
-          "Watch the rock layers; it explains the behavior",
-          "Start with the rock layer; it changes the scene",
-          "The rock layer is the detail most people miss",
-          "Rock layers give away the answer through rock layers"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "rock time",
-          "ending_line": "Which rock clue should we read next?",
-          "final_line": "Now the rock time at the start makes sense.",
-          "loop_score": 0.973,
-          "opening_line": "Rock layers are time stamps made of stone.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "rock time",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.973,
-        "next_episode_question": "Tomorrow in Earth Engine: another nature signal. Does this make Earth feel stable or constantly moving?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "pattern",
-            "rock",
-            "stripe",
-            "time"
-          ],
-          "cue_terms": [
-            "pattern",
-            "rock",
-            "stripe",
-            "time"
-          ],
-          "frame_hook_bridge": [
-            "rock",
-            "time"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "rock"
-        },
-        "pinned_comment": "Watch the rock layers again. Tomorrow in Earth Engine: another nature signal. Does this make Earth feel stable or constantly moving?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.59,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 17,
-          "first_2s_narration": "Rock layers are time stamps made of stone Watch the stripe pattern",
-          "first_frame_text": "ROCK TIME",
-          "first_frame_text_words": 2,
-          "hook": "Rock layers are time stamps made of stone.",
-          "hook_specificity": 0.78,
-          "hook_words": 8,
-          "loop_score": 0.973,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "pattern",
-              "rock",
-              "stripe",
-              "time"
-            ],
-            "cue_terms": [
-              "pattern",
-              "rock",
-              "stripe",
-              "time"
-            ],
-            "frame_hook_bridge": [
-              "rock",
-              "time"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "rock"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the rock layers, so viewers rewatch the rock clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 78,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 90
-          },
-          "verdict": "ready"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Rock layers are time stamps made of stone Watch the stripe pattern",
-          "first_frame_text": "ROCK TIME",
-          "next_episode_question": "Tomorrow in Earth Engine: another nature signal. Does this make Earth feel stable or constantly moving?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains the visible rock layers behind Rock in a fast nature science story.",
-            "series": "Earth Engine",
-            "subject": "rock",
-            "terms": [
-              "rock",
-              "rock layers",
-              "geology",
-              "earth engine"
-            ],
-            "title_variant": "Rock rock layers explained fast",
-            "visible_cue": "rock layers"
-          },
-          "series": "Earth Engine",
-          "subject": "rock",
-          "visible_cue": "rock layers"
-        },
-        "risks": [],
-        "score": 98,
-        "search_intent": {
-          "description_line": "This Short explains the visible rock layers behind Rock in a fast nature science story.",
-          "series": "Earth Engine",
-          "subject": "rock",
-          "terms": [
-            "rock",
-            "rock layers",
-            "geology",
-            "earth engine"
-          ],
-          "title_variant": "Rock rock layers explained fast",
-          "visible_cue": "rock layers"
-        },
-        "selected_variant": {
-          "hook": "Rock layers are time stamps made of stone",
-          "score": 83,
-          "thumbnail_text": "ROCK TIME",
-          "title": "Rock layers store ancient environments in stripes"
-        },
-        "series": "Earth Engine #9",
-        "series_identity": {
-          "continuity_prompt": "Next in Earth Engine: compare this with another force of nature.",
-          "episode": 9,
-          "label": "Earth Engine #9",
-          "series": "Earth Engine"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.207,
-          "confidence": {
-            "bootstrap_multiplier": 0.331,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.108,
-            "data_quality": "estimated",
-            "data_quality_score": 0.45,
-            "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.242,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 79,
-          "state": "strong",
-          "subscriber_probability": 0.113
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "ROCK TIME",
-          "ROCK LAYER",
-          "WATCH ROCK LAYER",
-          "ROCK LAYERS CHANGE",
-          "ROCK LAYER MATTERS",
-          "ROCK LAYER FIRST",
-          "ROCK LAYER REVEAL",
-          "ROCK LAYER CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Rock layers store ancient environments in stripes",
-          "Rock layers use rock layers before they change",
-          "This rock layer gives rock layers away",
-          "Rock layers reveal the answer with rock layers",
-          "The rock layer that changes the moment",
-          "Rock layers show the hidden answer in seconds",
-          "Rock layers: watch this rock layer",
-          "Watch rock layers after the rock layer"
-        ],
-        "top_variants": [
-          {
-            "hook": "Rock layers are time stamps made of stone",
-            "score": 83,
-            "thumbnail_text": "ROCK TIME",
-            "title": "Rock layers store ancient environments in stripes"
-          },
-          {
-            "hook": "Watch the rock layers; it explains the behavior",
-            "score": 83,
-            "thumbnail_text": "ROCK TIME",
-            "title": "Rock layers store ancient environments in stripes"
-          },
-          {
-            "hook": "Start with the rock layer; it changes the scene",
-            "score": 83,
-            "thumbnail_text": "ROCK TIME",
-            "title": "Rock layers store ancient environments in stripes"
-          },
-          {
-            "hook": "Rock layers are time stamps made of stone",
-            "score": 76,
-            "thumbnail_text": "ROCK LAYER",
-            "title": "Rock layers store ancient environments in stripes"
-          },
-          {
-            "hook": "Watch the rock layers; it explains the behavior",
-            "score": 76,
-            "thumbnail_text": "ROCK LAYER",
-            "title": "Rock layers store ancient environments in stripes"
-          },
-          {
-            "hook": "Start with the rock layer; it changes the scene",
-            "score": 76,
-            "thumbnail_text": "ROCK LAYER",
-            "title": "Rock layers store ancient environments in stripes"
-          },
-          {
-            "hook": "Rock layers are time stamps made of stone",
-            "score": 76,
-            "thumbnail_text": "WATCH ROCK LAYER",
-            "title": "Rock layers store ancient environments in stripes"
-          },
-          {
-            "hook": "Watch the rock layers; it explains the behavior",
-            "score": 76,
-            "thumbnail_text": "WATCH ROCK LAYER",
-            "title": "Rock layers store ancient environments in stripes"
-          },
-          {
-            "hook": "Start with the rock layer; it changes the scene",
-            "score": 76,
-            "thumbnail_text": "WATCH ROCK LAYER",
-            "title": "Rock layers store ancient environments in stripes"
-          },
-          {
-            "hook": "Rock layers are time stamps made of stone",
-            "score": 76,
-            "thumbnail_text": "ROCK LAYERS CHANGE",
-            "title": "Rock layers store ancient environments in stripes"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "53958248afcfe49f",
       "title": "Forest canopies slow heat near the ground",
       "category": "forests",
@@ -4349,7 +3038,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:15:37.959764+00:00",
+        "checked_at": "2026-07-06T21:17:06.857828+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4996,7 +3685,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:15:37.961483+00:00",
+        "checked_at": "2026-07-06T21:17:06.859448+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5648,7 +4337,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:15:36.486492+00:00",
+        "checked_at": "2026-07-06T21:17:06.823833+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6294,7 +4983,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:15:36.915624+00:00",
+        "checked_at": "2026-07-06T21:17:06.826038+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6936,7 +5625,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:15:36.917692+00:00",
+        "checked_at": "2026-07-06T21:17:06.828294+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7590,7 +6279,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:15:36.919486+00:00",
+        "checked_at": "2026-07-06T21:17:06.830203+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8246,7 +6935,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:15:36.922625+00:00",
+        "checked_at": "2026-07-06T21:17:06.833333+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8909,7 +7598,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:15:36.924414+00:00",
+        "checked_at": "2026-07-06T21:17:06.835363+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9560,7 +8249,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:15:37.279586+00:00",
+        "checked_at": "2026-07-06T21:17:06.847923+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10206,7 +8895,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:15:37.281667+00:00",
+        "checked_at": "2026-07-06T21:17:06.850119+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10856,7 +9545,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:15:37.949039+00:00",
+        "checked_at": "2026-07-06T21:17:06.854155+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11517,7 +10206,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:15:37.963869+00:00",
+        "checked_at": "2026-07-06T21:17:06.861367+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12169,7 +10858,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:15:37.283834+00:00",
+        "checked_at": "2026-07-06T21:17:06.852354+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12822,7 +11511,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T21:15:37.965648+00:00",
+        "checked_at": "2026-07-06T21:17:06.863042+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
