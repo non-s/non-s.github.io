@@ -6,16 +6,71 @@
   ],
   "counts": {
     "analytics_due": 3,
-    "awaiting_1h": 1,
-    "high_priority": 8,
-    "repair_candidates": 5,
+    "awaiting_1h": 2,
+    "high_priority": 7,
+    "repair_candidates": 4,
     "tracked": 10
   },
-  "generated_at": "2026-07-06T20:58:38.564678+00:00",
+  "generated_at": "2026-07-06T21:07:05.936911+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.756,
+      "age_hours": 0.037,
+      "category": "forests",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-06T22:04:53.916088+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-07T03:04:53.916088+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-07T21:04:53.916088+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-06T22:04:53.916088+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Hidden Network",
+      "state": "awaiting_1h",
+      "title": "Forests use cool canopy before they cover",
+      "uploaded_at": "2026-07-06T21:04:53.916088+00:00",
+      "url": "https://www.youtube.com/shorts/Xmt0ZKQl5cw",
+      "video_id": "Xmt0ZKQl5cw",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.897,
       "category": "conservation",
       "checkpoints": [
         {
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.971,
+      "age_hours": 4.112,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -121,11 +176,11 @@
       "uploaded_at": "2026-07-06T17:00:23.228565+00:00",
       "url": "https://www.youtube.com/shorts/FfM3i7ikJb4",
       "video_id": "FfM3i7ikJb4",
-      "views_per_hour": 0.299
+      "views_per_hour": 0.245
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.081,
+      "age_hours": 9.222,
       "category": "space",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 22.26,
+      "age_hours": 22.401,
       "category": "chemistry",
       "checkpoints": [
         {
@@ -231,11 +286,11 @@
       "uploaded_at": "2026-07-05T22:43:01.080480+00:00",
       "url": "https://www.youtube.com/shorts/Izp-1oqlkyk",
       "video_id": "Izp-1oqlkyk",
-      "views_per_hour": 0.046
+      "views_per_hour": 0.045
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 23.672,
+      "age_hours": 23.813,
       "category": "insects",
       "checkpoints": [
         {
@@ -290,7 +345,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 24.849,
+      "age_hours": 24.99,
       "category": "insects",
       "checkpoints": [
         {
@@ -356,7 +411,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 25.269,
+      "age_hours": 25.41,
       "category": "ocean",
       "checkpoints": [
         {
@@ -422,7 +477,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 26.693,
+      "age_hours": 26.834,
       "category": "rivers",
       "checkpoints": [
         {
@@ -473,7 +528,7 @@
       "uploaded_at": "2026-07-05T18:17:04.262059+00:00",
       "url": "https://www.youtube.com/shorts/CV5SwGiSehk",
       "video_id": "CV5SwGiSehk",
-      "views_per_hour": 0.038,
+      "views_per_hour": 0.037,
       "warning": {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.756,
@@ -488,7 +543,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 27.523,
+      "age_hours": 27.664,
       "category": "plants",
       "checkpoints": [
         {
@@ -548,72 +603,6 @@
         "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
         "title": "Butterflies taste flowers with their feet",
         "video_id": "IY8YMvgIVpA",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
-    },
-    {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 28.626,
-      "category": "dogs",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-05T17:21:03.796497+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-05T22:21:03.796497+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": -300,
-          "due_at": "2026-07-06T16:21:03.796497+00:00",
-          "label": "24h",
-          "source": "observed",
-          "state": "observed",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-05T17:21:03.796497+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Pet Secrets",
-      "state": "repair_candidate",
-      "title": "Dogs build a map with smell",
-      "uploaded_at": "2026-07-05T16:21:03.796497+00:00",
-      "url": "https://www.youtube.com/shorts/SLlGYXvUeBg",
-      "video_id": "SLlGYXvUeBg",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.756,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Dogs build a map with smell",
-        "video_id": "SLlGYXvUeBg",
         "views": 0,
         "warning_state": "repair_risk"
       }
