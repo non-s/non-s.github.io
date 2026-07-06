@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-06T22:50:53.816445+00:00",
+  "generated_at": "2026-07-06T22:54:13.294450+00:00",
   "pending": 20,
   "states": {
     "rewrite": 18,
@@ -14,24 +14,70 @@
     "approved": 20
   },
   "prune_summary": {
-    "pending_before": 20,
+    "pending_before": 22,
     "pending_after": 20,
-    "rejected": 0,
+    "rejected": 2,
     "repair_needed": 0,
     "repaired": 5,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 19,
       "editor_in_chief:subject repeated inside 3-day cooldown": 12,
       "editor_in_chief:script quality gate blocked the narration": 4,
+      "duplicate_title": 3,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
       "editor_in_chief:editorial score 46 is below 62": 3,
+      "copy_subject_mismatch": 2,
       "editor_in_chief:editorial score 49 is below 62": 1,
-      "duplicate_title": 1,
       "editor_in_chief:editorial score 40 is below 62": 1,
       "inventory_reserve_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "cfa3563dfe06e940",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "a62b7a43171b54d3",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "4200f0c770078a7d",
+      "title": "Rock layers reveal heat moving under the surface",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "6cbe299a34d09aeb",
+      "title": "Camels survive deserts without water for weeks",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "9a49386e3a1dbc0b",
+      "title": "Greek mountains hide a slow-burning secret",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "08a55f3240d65335",
       "title": "Rock layers store ancient environments in stripes",
@@ -246,51 +292,6 @@
         "off_topic_visual"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "791a8f05168ef1b7",
-      "title": "Elephants cool blood through giant ears",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "Los bosques enfrían el aire con sus copas",
-      "title": "Los bosques enfrían el aire con sus copas",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "payoff_not_explicit",
-        "title_shape_weak",
-        "opening_retention_gap_risk"
-      ],
-      "stage": "youtube_brain"
-    },
-    {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
-    },
-    {
-      "id": "c94b4e381f5ba234",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "a3e226b398cce05a",
-      "title": "Monkeys wash food when grit gets annoying",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
     }
   ],
   "top": [
@@ -467,7 +468,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-06T22:50:32.497807+00:00",
+        "checked_at": "2026-07-06T22:53:51.450748+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1104,7 +1105,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-06T22:50:32.499866+00:00",
+        "checked_at": "2026-07-06T22:53:51.452896+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1747,7 +1748,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T22:50:32.486020+00:00",
+        "checked_at": "2026-07-06T22:53:51.438641+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2386,7 +2387,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T22:50:32.488138+00:00",
+        "checked_at": "2026-07-06T22:53:51.440798+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3032,7 +3033,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T22:50:32.077338+00:00",
+        "checked_at": "2026-07-06T22:53:51.030301+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3672,7 +3673,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T22:50:32.563840+00:00",
+        "checked_at": "2026-07-06T22:53:51.519163+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "inventory_reserve_fallback",
@@ -4332,7 +4333,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T22:50:32.501445+00:00",
+        "checked_at": "2026-07-06T22:53:51.454396+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4979,7 +4980,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T22:50:32.502987+00:00",
+        "checked_at": "2026-07-06T22:53:51.455958+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5631,7 +5632,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T22:50:32.080601+00:00",
+        "checked_at": "2026-07-06T22:53:51.032336+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6277,7 +6278,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T22:50:32.474423+00:00",
+        "checked_at": "2026-07-06T22:53:51.426306+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6919,7 +6920,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T22:50:32.476621+00:00",
+        "checked_at": "2026-07-06T22:53:51.428528+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7573,7 +7574,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T22:50:32.478519+00:00",
+        "checked_at": "2026-07-06T22:53:51.430406+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8229,7 +8230,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T22:50:32.482058+00:00",
+        "checked_at": "2026-07-06T22:53:51.433756+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8892,7 +8893,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T22:50:32.483911+00:00",
+        "checked_at": "2026-07-06T22:53:51.436515+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9543,7 +9544,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T22:50:32.489425+00:00",
+        "checked_at": "2026-07-06T22:53:51.442126+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10189,7 +10190,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T22:50:32.491474+00:00",
+        "checked_at": "2026-07-06T22:53:51.444203+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10839,7 +10840,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T22:50:32.495342+00:00",
+        "checked_at": "2026-07-06T22:53:51.448104+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11500,7 +11501,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T22:50:32.504882+00:00",
+        "checked_at": "2026-07-06T22:53:51.457833+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12152,7 +12153,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T22:50:32.493608+00:00",
+        "checked_at": "2026-07-06T22:53:51.446353+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12805,7 +12806,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T22:50:32.506565+00:00",
+        "checked_at": "2026-07-06T22:53:51.459477+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
