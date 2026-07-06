@@ -190,7 +190,7 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 19
+      "evergreen": 20
     },
     "items": [
       {
@@ -255,7 +255,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.9
+        "freshness_score": 51.88
       },
       {
         "id": "1e1fd2bf8c255b87",
@@ -279,7 +279,7 @@
         "category": "discoveries",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 38.86
+        "freshness_score": 38.84
       },
       {
         "id": "0e502a4c25c63c42",
@@ -311,7 +311,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 50.3
+        "freshness_score": 50.28
       },
       {
         "id": "8e9710036cf1db90",
@@ -344,6 +344,14 @@
         "lane": "evergreen",
         "adjustment": 5.0,
         "freshness_score": 50.22
+      },
+      {
+        "id": "24676a371cda636e",
+        "title": "Elephants signal through ground signal",
+        "category": "wildlife",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -385,8 +393,8 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 19,
-    "pending_after": 19,
+    "pending_before": 20,
+    "pending_after": 20,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 4,
@@ -397,7 +405,10 @@
       "editor_in_chief:story angle repeated inside 10-day cooldown": 4,
       "editor_in_chief:editorial score 46 is below 62": 3,
       "editor_in_chief:editorial score 40 is below 62": 2,
-      "editor_in_chief:editorial score 49 is below 62": 1
+      "duplicate_title": 1,
+      "duplicate_angle": 1,
+      "editor_in_chief:editorial score 49 is below 62": 1,
+      "inventory_reserve_fallback": 1
     }
   }
 }
