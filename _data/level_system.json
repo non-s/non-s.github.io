@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-06T23:36:18.095395+00:00",
+  "generated_at": "2026-07-06T23:42:08.799398+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
-  "overall_progress_pct": 25.4,
+  "overall_progress_pct": 24.1,
   "current_level": {
     "number": 2,
     "name": "Publish supply engine",
@@ -10,23 +10,23 @@
     "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
     "revenue_job": "Turn production from lucky shots into repeatable inventory.",
     "status": "boss_fight",
-    "progress_pct": 77.8
+    "progress_pct": 68.9
   },
   "boss": {
     "id": "publish_ready_reserve_low",
     "label": "Publish-ready reserve is below target",
     "severity": "critical",
     "evidence": {
-      "eligible_count": 2,
-      "operational_publish_ready": 2,
-      "apparent_publish_ready": 2,
-      "pending": 20,
+      "eligible_count": 1,
+      "operational_publish_ready": 1,
+      "apparent_publish_ready": 1,
+      "pending": 18,
       "target_publish_ready": 6,
       "target_pending": 20,
       "top_blockers": [
         {
           "id": "objective_gate:bootstrap_observe_before_scaling",
-          "count": 38,
+          "count": 36,
           "operator_translation": "collect more observed signal before scaling this pattern"
         },
         {
@@ -36,12 +36,12 @@
         },
         {
           "id": "queue_prune:rewrite",
-          "count": 18,
+          "count": 17,
           "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
           "id": "editor_in_chief:cooldown_subject",
-          "count": 13,
+          "count": 12,
           "operator_translation": "pick a fresh subject inside the same lane"
         },
         {
@@ -80,27 +80,27 @@
     {
       "priority": "P1",
       "action": "Build the reserve to six operational publish-ready Shorts.",
-      "target": "2/6",
+      "target": "1/6",
       "why": "One upload slot should never depend on one fragile candidate."
     },
     {
       "priority": "P1",
       "action": "Refresh free discovery only after the current repair batch is clean.",
-      "target": "pending 20/20",
+      "target": "pending 18/20",
       "why": "Bigger inventory helps only when the gate can accept winners."
     }
   ],
   "metrics": {
-    "health_score": 82,
-    "health_state": "watch",
-    "pending": 20,
-    "operational_publish_ready": 2,
-    "apparent_publish_ready": 2,
-    "eligible_count": 2,
+    "health_score": 67,
+    "health_state": "needs_work",
+    "pending": 18,
+    "operational_publish_ready": 1,
+    "apparent_publish_ready": 1,
+    "eligible_count": 1,
     "scale_ready_count": 0,
-    "next_shorts_count": 2,
-    "editorial_candidate_count": 20,
-    "published_count": 71,
+    "next_shorts_count": 1,
+    "editorial_candidate_count": 18,
+    "published_count": 72,
     "views_28d": 30314,
     "total_subscribers": 46,
     "subs_per_1000_views": 1.221,
@@ -109,12 +109,12 @@
     "recurring_viewer_rate": 0.001,
     "youtube_search_view_rate": 0.017,
     "crosspost_assets": 10,
-    "comments_sampled": 23
+    "comments_sampled": 24
   },
   "top_blockers": [
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
-      "count": 38,
+      "count": 36,
       "operator_translation": "collect more observed signal before scaling this pattern"
     },
     {
@@ -124,12 +124,12 @@
     },
     {
       "id": "queue_prune:rewrite",
-      "count": 18,
+      "count": 17,
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
       "id": "editor_in_chief:cooldown_subject",
-      "count": 13,
+      "count": 12,
       "operator_translation": "pick a fresh subject inside the same lane"
     },
     {
@@ -158,19 +158,19 @@
       "operator_translation": "editor in chief:needs ai rewrite"
     },
     {
-      "id": "bootstrap_observe_before_scaling",
-      "count": 2,
-      "operator_translation": "bootstrap observe before scaling"
-    },
-    {
       "id": "editor_in_chief:editorial score 49 is below 62",
       "count": 2,
       "operator_translation": "editor in chief:editorial score 49 is below 62"
     },
     {
-      "id": "duplicate_title",
+      "id": "editor_in_chief:editorial score 40 is below 62",
       "count": 2,
-      "operator_translation": "duplicate title"
+      "operator_translation": "editor in chief:editorial score 40 is below 62"
+    },
+    {
+      "id": "youtube_brain:missing_visual_cue",
+      "count": 1,
+      "operator_translation": "youtube brain:missing visual cue"
     }
   ],
   "levels": [
@@ -183,8 +183,8 @@
       "status": "cleared",
       "progress_pct": 100.0,
       "evidence": {
-        "published_count": 71,
-        "health_score": 82
+        "published_count": 72,
+        "health_score": 67
       }
     },
     {
@@ -194,11 +194,11 @@
       "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
       "revenue_job": "Turn production from lucky shots into repeatable inventory.",
       "status": "current",
-      "progress_pct": 77.8,
+      "progress_pct": 68.9,
       "evidence": {
-        "operational_publish_ready": 2,
-        "eligible_count": 2,
-        "pending": 20,
+        "operational_publish_ready": 1,
+        "eligible_count": 1,
+        "pending": 18,
         "target_publish_ready": 6,
         "target_pending": 20
       }
@@ -226,7 +226,7 @@
       "progress_pct": 52.5,
       "evidence": {
         "recurring_viewer_rate": 0.001,
-        "comments_sampled": 23
+        "comments_sampled": 24
       }
     },
     {
@@ -262,11 +262,11 @@
       "unlock": "One million views per 28 days, excellent health, and ten publish-ready Shorts in reserve.",
       "revenue_job": "Scale the proven system instead of adding random effort.",
       "status": "locked",
-      "progress_pct": 7.7,
+      "progress_pct": 4.3,
       "evidence": {
         "views_28d": 30314,
-        "health_state": "watch",
-        "operational_publish_ready": 2
+        "health_state": "needs_work",
+        "operational_publish_ready": 1
       }
     }
   ],
