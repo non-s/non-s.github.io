@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-06T09:45:11.923108+00:00",
+  "generated_at": "2026-07-06T09:49:04.941253+00:00",
   "pending": 25,
   "states": {
     "rewrite": 21,
@@ -15,18 +15,21 @@
     "approved": 25
   },
   "prune_summary": {
-    "pending_before": 25,
+    "pending_before": 29,
     "pending_after": 25,
-    "rejected": 0,
+    "rejected": 4,
     "repair_needed": 0,
-    "repaired": 3,
+    "repaired": 4,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 25,
       "editor_in_chief:subject repeated inside 3-day cooldown": 19,
+      "duplicate_title": 4,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 4,
       "editor_in_chief:script quality gate blocked the narration": 4,
       "editor_in_chief:editorial score 46 is below 62": 3,
       "editor_in_chief:editorial score 40 is below 62": 2,
+      "duplicate_script": 1,
+      "duplicate_angle": 1,
       "editor_in_chief:editorial score 61 is below 62": 1,
       "editor_in_chief:editorial score 49 is below 62": 1,
       "editorial_cooldown_supply_fallback": 1,
@@ -34,6 +37,49 @@
     }
   },
   "rejected_preview": [
+    {
+      "id": "eb584a36212767f3",
+      "title": "Rivers sort mud and sand along each bank",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "8f520d0a10732f47",
+      "title": "Beetles can steer by the Milky Way",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "f53ee1333768b992",
+      "title": "Rivers carve bends by stealing from one bank",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "d73aeeb203b72251",
+      "title": "Storm clouds trace wind bands over the ocean",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
     {
       "id": "8bdc8b70af521eb4",
       "title": "Fossils turn old bones into time clues",
@@ -80,6 +126,15 @@
       "stage": "queue_prune"
     },
     {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
       "id": "511125877e8e5d0a",
       "title": "Rivers sort mud and sand along each bank",
       "reasons": [
@@ -111,6 +166,15 @@
         "off_topic_visual"
       ],
       "stage": "queue_prune"
+    },
+    {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
     },
     {
       "id": "4637192565a943dc",
@@ -229,75 +293,6 @@
         "duplicate_title"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "2e9d95ecbec9a5b3",
-      "title": "Mushrooms trade nutrients through underground threads",
-      "reasons": [
-        "opening_retention_gap_risk",
-        "opening promise is not concrete enough",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "f1a9300f2f60217c",
-      "title": "Mushrooms trade nutrients through underground threads",
-      "reasons": [
-        "opening_retention_gap_risk",
-        "opening promise is not concrete enough",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "e44c0a9f34267900",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "5ddc246fc3b9e7f2",
-      "title": "Sheep herding is way more organized than you think",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "b057971dad7d7c38",
-      "title": "Bees dance directions back to the hive",
-      "reasons": [
-        "copy_subject_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "4e4ef766c821b689",
-      "title": "Coral reefs are built by tiny living builders",
-      "reasons": [
-        "copy_subject_mismatch",
-        "duplicate_title",
-        "duplicate_script"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "Los cristales crecen con átomos que se repiten",
-      "title": "Los cristales crecen con átomos que se repiten",
-      "reasons": [
-        "subject_not_immediately_clear",
-        "missing_visual_cue",
-        "payoff_not_explicit",
-        "title_shape_weak",
-        "opening_retention_gap_risk"
-      ],
-      "stage": "youtube_brain"
     }
   ],
   "top": [
@@ -474,7 +469,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:44:45.697116+00:00",
+        "checked_at": "2026-07-06T09:48:37.747620+00:00",
         "mechanism_cluster": "electric_sense",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1112,7 +1107,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:44:45.699383+00:00",
+        "checked_at": "2026-07-06T09:48:37.749903+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1756,7 +1751,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:44:45.680635+00:00",
+        "checked_at": "2026-07-06T09:48:37.731132+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2415,7 +2410,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:44:45.702372+00:00",
+        "checked_at": "2026-07-06T09:48:37.752822+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -3064,7 +3059,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:44:45.707596+00:00",
+        "checked_at": "2026-07-06T09:48:37.758145+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -3705,7 +3700,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:44:45.703978+00:00",
+        "checked_at": "2026-07-06T09:48:37.754468+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4351,7 +4346,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:44:45.705582+00:00",
+        "checked_at": "2026-07-06T09:48:37.756111+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5002,7 +4997,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:44:45.667369+00:00",
+        "checked_at": "2026-07-06T09:48:37.718761+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5649,7 +5644,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:44:45.668909+00:00",
+        "checked_at": "2026-07-06T09:48:37.720314+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6295,7 +6290,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:44:45.671114+00:00",
+        "checked_at": "2026-07-06T09:48:37.721754+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6940,7 +6935,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:44:45.673548+00:00",
+        "checked_at": "2026-07-06T09:48:37.724089+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7588,7 +7583,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:44:45.678213+00:00",
+        "checked_at": "2026-07-06T09:48:37.728708+00:00",
         "mechanism_cluster": "visual_stabilization",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8236,7 +8231,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:44:45.684876+00:00",
+        "checked_at": "2026-07-06T09:48:37.735434+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8878,7 +8873,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:44:45.686992+00:00",
+        "checked_at": "2026-07-06T09:48:37.737547+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9519,7 +9514,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:44:45.689213+00:00",
+        "checked_at": "2026-07-06T09:48:37.739790+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10172,7 +10167,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:44:45.691157+00:00",
+        "checked_at": "2026-07-06T09:48:37.741761+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10827,7 +10822,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:44:45.694155+00:00",
+        "checked_at": "2026-07-06T09:48:37.744676+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11489,7 +11484,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:44:45.696093+00:00",
+        "checked_at": "2026-07-06T09:48:37.746589+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12140,7 +12135,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:44:45.709577+00:00",
+        "checked_at": "2026-07-06T09:48:37.760183+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12790,7 +12785,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-06T09:44:45.711748+00:00",
+        "checked_at": "2026-07-06T09:48:37.762448+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
