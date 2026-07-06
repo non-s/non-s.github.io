@@ -5,25 +5,25 @@
     24
   ],
   "counts": {
-    "analytics_due": 8,
-    "awaiting_1h": 1,
-    "high_priority": 9,
+    "analytics_due": 9,
+    "awaiting_1h": 0,
+    "high_priority": 10,
     "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-07-06T12:06:37.218050+00:00",
+  "generated_at": "2026-07-06T12:59:51.056318+00:00",
   "items": [
     {
-      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.214,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 1.101,
       "category": "space",
       "checkpoints": [
         {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-06T12:53:47.108347+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +47,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -24,
         "due_at": "2026-07-06T12:53:47.108347+00:00",
         "label": "1h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Nature Signals",
-      "state": "awaiting_1h",
+      "state": "analytics_due",
       "title": "The moon keeps one face turned toward Earth",
       "uploaded_at": "2026-07-06T11:53:47.108347+00:00",
       "url": "https://www.youtube.com/shorts/GfY4m0L2rRA",
@@ -70,7 +70,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.393,
+      "age_hours": 14.281,
       "category": "chemistry",
       "checkpoints": [
         {
@@ -125,7 +125,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 14.805,
+      "age_hours": 15.693,
       "category": "insects",
       "checkpoints": [
         {
@@ -191,7 +191,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 15.982,
+      "age_hours": 16.87,
       "category": "insects",
       "checkpoints": [
         {
@@ -246,7 +246,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.402,
+      "age_hours": 17.289,
       "category": "ocean",
       "checkpoints": [
         {
@@ -301,7 +301,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 17.826,
+      "age_hours": 18.713,
       "category": "rivers",
       "checkpoints": [
         {
@@ -356,7 +356,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 18.656,
+      "age_hours": 19.543,
       "category": "plants",
       "checkpoints": [
         {
@@ -411,7 +411,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 19.759,
+      "age_hours": 20.646,
       "category": "dogs",
       "checkpoints": [
         {
@@ -466,7 +466,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 21.013,
+      "age_hours": 21.9,
       "category": "geology",
       "checkpoints": [
         {
@@ -521,7 +521,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 22.019,
+      "age_hours": 22.907,
       "category": "farm",
       "checkpoints": [
         {
