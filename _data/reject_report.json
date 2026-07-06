@@ -1,37 +1,37 @@
 {
   "total": 1000,
   "reasons": {
-    "duplicate_title": 443,
-    "off_topic_visual": 224,
-    "duplicate_script": 191,
-    "duplicate_angle": 181,
-    "thumbnail_text_not_scannable": 89,
-    "copy_subject_mismatch": 88,
-    "thumbnail_not_2_4_words": 88,
-    "queue_score_reject": 88,
-    "script_hook_mismatch": 74,
+    "duplicate_title": 475,
+    "off_topic_visual": 243,
+    "duplicate_script": 211,
+    "duplicate_angle": 199,
+    "queue_score_reject": 104,
+    "copy_subject_mismatch": 94,
+    "script_hook_mismatch": 79,
     "editorial score is below publish threshold": 71,
-    "script_subject_mismatch": 27,
+    "script_subject_mismatch": 28,
     "rights_guard_person_manual_review": 25,
+    "script_word_loop": 21,
+    "opening_retention_gap_risk": 21,
     "low_opportunity_score": 21,
-    "opening_retention_gap_risk": 19,
-    "script_word_loop": 17,
-    "non_animal_body_language": 16,
+    "non_animal_body_language": 17,
+    "thumbnail_text_not_scannable": 17,
+    "thumbnail_not_2_4_words": 16,
+    "subject_not_immediately_clear": 14,
     "subject repeated inside 3-day cooldown": 14,
     "humanity score is too low": 14,
-    "subject_not_immediately_clear": 12,
-    "payoff_not_explicit": 11,
-    "opening promise is not concrete enough": 8,
+    "payoff_not_explicit": 12,
+    "opening promise is not concrete enough": 9,
+    "bad_plural_verb": 7,
+    "missing_visual_cue": 7,
     "script does not expose enough concrete visual detail": 7,
-    "bad_plural_verb": 5,
-    "title_shape_weak": 5,
-    "missing_visual_cue": 5,
+    "title_shape_weak": 6,
+    "missing_action_word": 6,
+    "missing_visible_cue": 5,
+    "no_action_promise": 5,
     "editorial score 37 is below 62": 5,
     "script quality gate blocked the narration": 4,
     "editorial score 39 is below 62": 4,
-    "no_action_promise": 3,
-    "missing_action_word": 3,
-    "missing_visible_cue": 2,
     "editorial score 31 is below 62": 2,
     "editorial score 29 is below 62": 1,
     "editorial score 43 is below 62": 1,
@@ -41,16 +41,68 @@
     "editorial score 35 is below 62": 1
   },
   "stages": {
-    "queue_prune": 441,
-    "queue_prune_final": 276,
-    "queue_repair": 88,
-    "youtube_brain_rewrite": 73,
+    "queue_prune": 475,
+    "queue_prune_final": 297,
+    "queue_repair": 104,
     "pre_publish_audit": 71,
     "opportunity_score": 21,
     "editor_in_chief": 19,
-    "youtube_brain": 11
+    "youtube_brain": 12,
+    "youtube_brain_rewrite": 1
   },
   "latest": [
+    {
+      "story_id": "adb4c1026c18290e",
+      "stage": "queue_prune_final",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_angle"
+      ],
+      "title": "Rock layers store ancient environments in stripes",
+      "category": "geology",
+      "script_key": "rock layers are time stamps made of stone watch the stripe pattern because each layer can mark a different setting river mud ocean floor windblown sand or volcanic ash stack enough layers and the cliff becomes a timeline which rock clue should we read next",
+      "angle_key": "rock|store|rock layers|geology",
+      "source_url": "https://www.pexels.com/video/scenic-rock-formation-overlooking-blue-ocean-31117953/",
+      "pexels_video_id": "31117953",
+      "source_clip_id": "pexels:adb4c1026c18290e",
+      "recorded_at": "2026-07-06T00:21:20.852498+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "6bff9977830ce1d4",
+      "stage": "queue_prune",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "title": "Cows remember faces better than you think",
+      "category": "conservation",
+      "script_key": "they remember you watch the ears when a cow tilts her head like this she s scanning your face scientists found cows can tell humans apart from photos even years later that s why they react differently to strangers did you learn this wrong too",
+      "angle_key": "cows|remember|ears|conservation",
+      "source_url": "https://www.pexels.com/video/cow-by-fence-12474826/",
+      "pexels_video_id": "12474826",
+      "source_clip_id": "pexels:6bff9977830ce1d4",
+      "recorded_at": "2026-07-06T04:29:09.682512+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "ae9cd4becd9dccc1",
+      "stage": "queue_prune",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "title": "Owls hunt on rainy highways and why they love it",
+      "category": "nocturnal",
+      "script_key": "these owls love the rain watch the headlights catch their eyes two tiny dots floating above the wet asphalt they re not scared of traffic they hunt here because every headlight is a beacon for mice rain muffles footsteps so they can t hear the owl coming that s why they wait it out would you survive this hunt",
+      "angle_key": "owls|hear|eyes|nocturnal",
+      "source_url": "https://www.pexels.com/video/rainy-night-highway-traffic-scene-36820213/",
+      "pexels_video_id": "36820213",
+      "source_clip_id": "pexels:ae9cd4becd9dccc1",
+      "recorded_at": "2026-07-06T04:29:09.702890+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
     {
       "story_id": "188b374938bfb4df",
       "stage": "queue_prune",
@@ -210,24 +262,6 @@
       "rewrite_applied": true
     },
     {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-06T09:10:49.028252+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
       "story_id": "90476357d22d4387",
       "stage": "queue_prune",
       "reasons": [
@@ -293,24 +327,6 @@
       "pexels_video_id": "29640720",
       "source_clip_id": "pexels:511125877e8e5d0a",
       "recorded_at": "2026-07-06T09:15:33.478558+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-06T09:15:48.213962+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     },
@@ -387,42 +403,6 @@
       "rewrite_applied": true
     },
     {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-06T09:24:46.374905+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-06T09:44:01.479575+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
       "story_id": "d73aeeb203b72251",
       "stage": "queue_prune",
       "reasons": [
@@ -489,6 +469,24 @@
       "pexels_video_id": "11283731",
       "source_clip_id": "pexels:eb584a36212767f3",
       "recorded_at": "2026-07-06T09:48:38.827784+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "8bdc8b70af521eb4",
+      "stage": "youtube_brain_rewrite",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "title": "Fossils turn old bones into time clues",
+      "category": "discoveries",
+      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
+      "angle_key": "fossils|form|pattern|discoveries",
+      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
+      "pexels_video_id": "36118169",
+      "source_clip_id": "pexels:8bdc8b70af521eb4",
+      "recorded_at": "2026-07-06T09:53:10.427871+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     }
