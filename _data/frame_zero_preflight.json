@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-07-07T07:03:45.697864+00:00",
+  "generated_at": "2026-07-07T07:57:06.048301+00:00",
   "floor": 82.0,
   "pending": 20,
   "ready": 20,
   "held": 0,
-  "rewritten": 4,
-  "average_opening_score": 97.0,
+  "rewritten": 5,
+  "average_opening_score": 97.4,
   "render_gate": "approved",
   "counts": {
     "approved": 20,
-    "rewritten": 4
+    "rewritten": 5
   },
   "items": [
     {
@@ -62,6 +62,24 @@
       "rewrite_applied": true,
       "rewrite_reason": "opening_retention_below_floor",
       "before_score": 74.0,
+      "after_score": 100.0,
+      "risks": [],
+      "action": "Use the frame-zero rewrite before rendering."
+    },
+    {
+      "id": "d02b7dbe2f69aa15",
+      "title": "Mushrooms use mushroom gills before they carry",
+      "category": "fungi",
+      "render_gate": "approved",
+      "opening_score": 100.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Mushrooms spread by releasing tiny spores.",
+      "first_frame_text": "SPORE GILLS",
+      "visible_cue": "mushroom gills",
+      "rewrite_applied": true,
+      "rewrite_reason": "generic_opening_copy",
+      "before_score": 100.0,
       "after_score": 100.0,
       "risks": [],
       "action": "Use the frame-zero rewrite before rendering."
@@ -122,26 +140,6 @@
       "after_score": 90.0,
       "risks": [
         "frame_text_not_echoed_early"
-      ],
-      "action": "Ready to render with current first frame."
-    },
-    {
-      "id": "1a7e84409ce4e024",
-      "title": "Magnets use field lines before they change",
-      "category": "physics",
-      "render_gate": "approved",
-      "opening_score": 92.0,
-      "frame_zero_score": 92.0,
-      "opening_state": "retention_ready",
-      "opening_line": "Magnets can show a hidden force map.",
-      "first_frame_text": "FIELD LINES",
-      "visible_cue": "",
-      "rewrite_applied": false,
-      "rewrite_reason": "",
-      "before_score": null,
-      "after_score": 92.0,
-      "risks": [
-        "subject_not_frontloaded"
       ],
       "action": "Ready to render with current first frame."
     },

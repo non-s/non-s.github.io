@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-07T07:03:20.594517+00:00",
+  "generated_at": "2026-07-07T07:57:06.224949+00:00",
   "pending": 20,
   "states": {
     "rewrite": 17,
@@ -16,25 +16,92 @@
     "approved": 20
   },
   "prune_summary": {
-    "pending_before": 20,
+    "pending_before": 26,
     "pending_after": 20,
-    "rejected": 0,
-    "repair_needed": 0,
+    "rejected": 6,
+    "repair_needed": 2,
     "repaired": 5,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 19,
       "editor_in_chief:subject repeated inside 3-day cooldown": 12,
       "editor_in_chief:script quality gate blocked the narration": 4,
+      "off_topic_visual": 3,
+      "duplicate_title": 3,
       "editor_in_chief:editorial score 46 is below 62": 3,
+      "queue_score_reject": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
+      "duplicate_script": 1,
+      "title_shape_weak": 1,
+      "title_needs_stronger_shape": 1,
+      "subject_not_clear": 1,
+      "missing_action_word": 1,
+      "missing_visible_cue": 1,
+      "thumbnail_text_not_scannable": 1,
+      "thumbnail_not_2_4_words": 1,
       "editor_in_chief:editorial score 40 is below 62": 1,
-      "duplicate_title": 1,
       "editorial_cooldown_supply_fallback": 1,
       "publish_ready_supply_reserve_fallback": 1,
       "inventory_reserve_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "1a7e84409ce4e024",
+      "title": "Magnets make invisible fields visible",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "16b5b211aa04c19d",
+      "title": "Ducks carry waterproof oil on their feathers",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "360ee44c08cacd01",
+      "title": "Bats use first move before they change",
+      "reasons": [
+        "title_shape_weak",
+        "title_needs_stronger_shape",
+        "subject_not_clear",
+        "missing_action_word",
+        "missing_visible_cue",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "8ca2fb7990a77813",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "off_topic_visual",
+        "duplicate_title",
+        "duplicate_script"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "42a6f9916910ce9a",
+      "title": "Desert mountains fool your brain",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "59c7951763bf41f6",
+      "title": "Llamas survive these mountains better than we do",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "3aaeac0100f48555",
       "title": "Geysers make land faster than lava",
@@ -256,58 +323,6 @@
         "script_hook_mismatch"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "8dd20fe074e63acd",
-      "title": "Milky Way hides a mountain secret you missed",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "f4bd285be5dcce47",
-      "title": "Utah's volcano smoke plumes don't mean fire",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "6fad0bfa13daa3a6",
-      "title": "Yellowstone geyser isn’t a volcano at all",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
-    },
-    {
-      "id": "5492c4505c453345",
-      "title": "Cats groom to reset their scent map",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
-    },
-    {
-      "id": "daf80c3db3fef301",
-      "title": "Desert hikers found a fossil without digging",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch",
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -484,7 +499,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-07T07:03:19.713390+00:00",
+        "checked_at": "2026-07-07T07:56:45.061700+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -955,6 +970,653 @@
       }
     },
     {
+      "id": "d02b7dbe2f69aa15",
+      "title": "Mushrooms use mushroom gills before they carry",
+      "category": "fungi",
+      "publish_score": {
+        "approved": true,
+        "category": "fungi",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 86,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "mushroom",
+            "spore"
+          ],
+          "cue_terms": [
+            "gill",
+            "mushroom",
+            "spore"
+          ],
+          "frame_hook_bridge": [
+            "spore"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "mushrooms"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 75,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 72,
+            "emotional_potential": 53,
+            "novelty": 59,
+            "replay_potential": 72,
+            "viral_potential": 88,
+            "visual_potential": 100
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 80,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 98
+          },
+          "verdict": "ready"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "hidden_network",
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 8/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 8
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-07-07T07:56:45.464626+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "inventory_reserve_fallback",
+          "inventory_reserve:duplicate_title"
+        ],
+        "score": 100.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "mushrooms",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "mushroom",
+            "spore"
+          ],
+          "cue_terms": [
+            "gill",
+            "mushroom",
+            "spore"
+          ],
+          "frame_hook_bridge": [
+            "spore"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "mushrooms"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "hidden_network",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "mushrooms",
+        "viewer_promise": "See why this mushroom hidden network matters."
+      },
+      "packaging": {
+        "community_prompt": "Which mushrooms clue should Wild Brief compare next in Hidden Network?",
+        "cta_prompt": "Want more nature that feels like science fiction but is real?",
+        "curiosity_gap": {
+          "hook": "Why do these mushrooms change after the mushroom gills?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "hidden network",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 75,
+          "winners": {
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 46.1,
+            "format:fresh_variant": 46.1,
+            "format:winner_inspired": 46.1,
+            "hook:pattern_reuse": 46.1,
+            "thumbnail:new_thumbnail": 46.1
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "mushroom",
+              "spore"
+            ],
+            "cue_terms": [
+              "gill",
+              "mushroom",
+              "spore"
+            ],
+            "frame_hook_bridge": [
+              "spore"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "mushrooms"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Mushrooms spread by releasing tiny spores",
+          "Mushrooms show why the mushroom gills matters.",
+          "Mushrooms show why the mushroom gills matters.",
+          "Mushrooms show why the mushroom gills matters.",
+          "Mushrooms give away the answer through mushroom gills"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "spore gills",
+          "ending_line": "Which hidden structure should we look under next?",
+          "final_line": "Now the spore gills at the start make sense.",
+          "loop_score": 0.787,
+          "opening_line": "Mushrooms spread by releasing tiny spores.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "spore gills",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.787,
+        "next_episode_question": "Tomorrow in Hidden Network: another nature signal. Is this closer to a network, a warning system, or something stranger?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "mushroom",
+            "spore"
+          ],
+          "cue_terms": [
+            "gill",
+            "mushroom",
+            "spore"
+          ],
+          "frame_hook_bridge": [
+            "spore"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "mushrooms"
+        },
+        "pinned_comment": "Watch the spores again. Tomorrow in Hidden Network: another nature signal. Is this closer to a network, a warning system, or something stranger?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 17.67,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 15,
+          "first_2s_narration": "Mushrooms spread by releasing tiny spores Watch under the cap because many",
+          "first_frame_text": "SPORE GILLS",
+          "first_frame_text_words": 2,
+          "hook": "Mushrooms spread by releasing tiny spores.",
+          "hook_specificity": 0.78,
+          "hook_words": 6,
+          "loop_score": 0.787,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "mushroom",
+              "spore"
+            ],
+            "cue_terms": [
+              "gill",
+              "mushroom",
+              "spore"
+            ],
+            "frame_hook_bridge": [
+              "spore"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "mushrooms"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the spores, so viewers rewatch the mushrooms clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 80,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 98
+          },
+          "verdict": "ready"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Mushrooms spread by releasing tiny spores Watch under the cap because many",
+          "first_frame_text": "SPORE GILLS",
+          "next_episode_question": "Tomorrow in Hidden Network: another nature signal. Is this closer to a network, a warning system, or something stranger?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains the visible spores behind Mushrooms in a fast nature science story.",
+            "series": "Hidden Network",
+            "subject": "mushrooms",
+            "terms": [
+              "mushrooms",
+              "spores",
+              "fungi",
+              "hidden network"
+            ],
+            "title_variant": "Mushrooms spores explained fast",
+            "visible_cue": "spores"
+          },
+          "series": "Hidden Network",
+          "subject": "mushrooms",
+          "visible_cue": "spores"
+        },
+        "risks": [],
+        "score": 98,
+        "search_intent": {
+          "description_line": "This Short explains the visible spores behind Mushrooms in a fast nature science story.",
+          "series": "Hidden Network",
+          "subject": "mushrooms",
+          "terms": [
+            "mushrooms",
+            "spores",
+            "fungi",
+            "hidden network"
+          ],
+          "title_variant": "Mushrooms spores explained fast",
+          "visible_cue": "spores"
+        },
+        "selected_variant": {
+          "hook": "Mushrooms spread by releasing tiny spores",
+          "score": 84,
+          "thumbnail_text": "SPORE GILLS",
+          "title": "Mushrooms release spores from hidden gills"
+        },
+        "series": "Hidden Network #11",
+        "series_identity": {
+          "continuity_prompt": "Next in Hidden Network #11: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Hidden Network #11",
+          "series": "Hidden Network #11"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "SPORE GILLS",
+          "MUSHROOM GILLS",
+          "WATCH MUSHROOM GILLS",
+          "MUSHROOMS CARRY",
+          "MUSHROOM GILLS MATTERS",
+          "MUSHROOM GILLS FIRST",
+          "MUSHROOM GILLS REVEAL",
+          "MUSHROOM GILLS CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Mushrooms release spores from hidden gills",
+          "Mushrooms use mushroom gills before they carry",
+          "Why mushrooms carry after one mushroom gills",
+          "Mushrooms reveal the answer with mushroom gills",
+          "The mushroom gills that changes the moment",
+          "Mushrooms make one mushroom gills matter",
+          "Mushrooms show the hidden answer in seconds",
+          "Mushrooms: watch this mushroom gills",
+          "Watch mushrooms after the mushroom gills"
+        ],
+        "top_variants": [
+          {
+            "hook": "Mushrooms spread by releasing tiny spores",
+            "score": 84,
+            "thumbnail_text": "SPORE GILLS",
+            "title": "Mushrooms release spores from hidden gills"
+          },
+          {
+            "hook": "Watch the mushroom gills; it explains the behavior",
+            "score": 84,
+            "thumbnail_text": "SPORE GILLS",
+            "title": "Mushrooms release spores from hidden gills"
+          },
+          {
+            "hook": "Start with the mushroom gills; it changes the scene",
+            "score": 84,
+            "thumbnail_text": "SPORE GILLS",
+            "title": "Mushrooms release spores from hidden gills"
+          },
+          {
+            "hook": "Mushrooms spread by releasing tiny spores",
+            "score": 77,
+            "thumbnail_text": "MUSHROOM GILLS",
+            "title": "Mushrooms release spores from hidden gills"
+          },
+          {
+            "hook": "Watch the mushroom gills; it explains the behavior",
+            "score": 77,
+            "thumbnail_text": "MUSHROOM GILLS",
+            "title": "Mushrooms release spores from hidden gills"
+          },
+          {
+            "hook": "Start with the mushroom gills; it changes the scene",
+            "score": 77,
+            "thumbnail_text": "MUSHROOM GILLS",
+            "title": "Mushrooms release spores from hidden gills"
+          },
+          {
+            "hook": "Mushrooms spread by releasing tiny spores",
+            "score": 77,
+            "thumbnail_text": "WATCH MUSHROOM GILLS",
+            "title": "Mushrooms release spores from hidden gills"
+          },
+          {
+            "hook": "Watch the mushroom gills; it explains the behavior",
+            "score": 77,
+            "thumbnail_text": "WATCH MUSHROOM GILLS",
+            "title": "Mushrooms release spores from hidden gills"
+          },
+          {
+            "hook": "Start with the mushroom gills; it changes the scene",
+            "score": 77,
+            "thumbnail_text": "WATCH MUSHROOM GILLS",
+            "title": "Mushrooms release spores from hidden gills"
+          },
+          {
+            "hook": "Mushrooms spread by releasing tiny spores",
+            "score": 77,
+            "thumbnail_text": "MUSHROOMS CARRY",
+            "title": "Mushrooms release spores from hidden gills"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "7297fa80243db8ee",
       "title": "Macaws use beaks like climbing tools",
       "category": "birds",
@@ -1127,7 +1789,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T07:03:19.683084+00:00",
+        "checked_at": "2026-07-07T07:56:44.632810+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1766,7 +2428,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T07:03:19.685530+00:00",
+        "checked_at": "2026-07-07T07:56:44.641614+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2412,7 +3074,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T07:03:19.680350+00:00",
+        "checked_at": "2026-07-07T07:56:44.629399+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3066,7 +3728,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-07T07:03:19.714495+00:00",
+        "checked_at": "2026-07-07T07:56:45.062807+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -3734,7 +4396,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-07T07:03:20.064834+00:00",
+        "checked_at": "2026-07-07T07:56:45.413156+00:00",
         "mechanism_cluster": "tongue_smell",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4220,677 +4882,6 @@
       }
     },
     {
-      "id": "1a7e84409ce4e024",
-      "title": "Magnets use field lines before they change",
-      "category": "physics",
-      "publish_score": {
-        "approved": true,
-        "category": "physics",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "filing",
-            "line",
-            "map"
-          ],
-          "cue_terms": [
-            "field",
-            "filing",
-            "leaf",
-            "line",
-            "map",
-            "move"
-          ],
-          "frame_hook_bridge": [
-            "line"
-          ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
-          "state": "retention_ready",
-          "strengths": [
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "physics"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 60,
-          "signals": {
-            "comment_potential": 46,
-            "educational_potential": 58,
-            "emotional_potential": 53,
-            "novelty": 45,
-            "replay_potential": 60,
-            "viral_potential": 64,
-            "visual_potential": 75
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 72,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 70,
-            "replay_score": 62,
-            "visual_score": 74
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "physics_demo",
-        "subscriber_conversion": {
-          "comment_probability": 0.253,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "hook_invites_return",
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.297,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 99,
-          "state": "strong",
-          "subscriber_probability": 0.141
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 8/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 8
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-07-07T07:03:20.118912+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "inventory_reserve_fallback",
-          "inventory_reserve:duplicate_title"
-        ],
-        "score": 72.0,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 72.0,
-      "youtube_brain": {
-        "animal": "magnets",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "filing",
-            "line",
-            "map"
-          ],
-          "cue_terms": [
-            "field",
-            "filing",
-            "leaf",
-            "line",
-            "map",
-            "move"
-          ],
-          "frame_hook_bridge": [
-            "line"
-          ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
-          "state": "retention_ready",
-          "strengths": [
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "physics"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "physics_demo",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "magnets",
-        "viewer_promise": "See why this magnet physics demo matters."
-      },
-      "packaging": {
-        "community_prompt": "Which magnets clue should Wild Brief compare next in Physics Brief?",
-        "cta_prompt": "Follow for one animal signal a day.",
-        "curiosity_gap": {
-          "hook": "Why do these physics change after the leaf move?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "physics demo",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "specific_question",
-            "format": "fresh_variant",
-            "hook": "new_hook",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "explore",
-          "sample_count": 75,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 46.1,
-            "format:fresh_variant": 46.1,
-            "format:winner_inspired": 46.1,
-            "hook:pattern_reuse": 46.1,
-            "thumbnail:new_thumbnail": 46.1
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "filing",
-              "line",
-              "map"
-            ],
-            "cue_terms": [
-              "field",
-              "filing",
-              "leaf",
-              "line",
-              "map",
-              "move"
-            ],
-            "frame_hook_bridge": [
-              "line"
-            ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
-            "state": "retention_ready",
-            "strengths": [
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "physics"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Magnets can show a hidden force map",
-          "Magnets show why the field lines matters.",
-          "Magnets show why the field lines matters.",
-          "Magnets show why the field lines matters.",
-          "Magnets give away the answer through field lines"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "force",
-          "ending_line": "Which force next?",
-          "final_line": "Which force next?",
-          "loop_score": 0.769,
-          "opening_line": "Magnets can show a hidden force map.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "force",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": false,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.769,
-        "next_episode_question": "Tomorrow in Physics Brief: another nature signal. What part of this feels most impossible?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "filing",
-            "line",
-            "map"
-          ],
-          "cue_terms": [
-            "field",
-            "filing",
-            "leaf",
-            "line",
-            "map",
-            "move"
-          ],
-          "frame_hook_bridge": [
-            "line"
-          ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
-          "state": "retention_ready",
-          "strengths": [
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "physics"
-        },
-        "pinned_comment": "Watch the field lines again. Tomorrow in Physics Brief: another nature signal. What part of this feels most impossible?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.44,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 16,
-          "first_2s_narration": "Magnets can show hidden force map Watch the filings line up because",
-          "first_frame_text": "FIELD LINES",
-          "first_frame_text_words": 2,
-          "hook": "Magnets can show a hidden force map.",
-          "hook_specificity": 0.78,
-          "hook_words": 6,
-          "loop_score": 0.769,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "filing",
-              "line",
-              "map"
-            ],
-            "cue_terms": [
-              "field",
-              "filing",
-              "leaf",
-              "line",
-              "map",
-              "move"
-            ],
-            "frame_hook_bridge": [
-              "line"
-            ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
-            "state": "retention_ready",
-            "strengths": [
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "physics"
-          },
-          "opening_retention_score": 92.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the field lines, so viewers rewatch the magnets clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 72,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 70,
-            "replay_score": 62,
-            "visual_score": 74
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Magnets can show a hidden force map Watch the filings line up",
-          "first_frame_text": "FIELD LINES",
-          "next_episode_question": "Tomorrow in Physics Brief: another nature signal. What part of this feels most impossible?",
-          "opening_retention_score": 92.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains the visible field lines behind Magnets in a fast nature science story.",
-            "series": "Physics Brief",
-            "subject": "magnets",
-            "terms": [
-              "magnets",
-              "field lines",
-              "physics",
-              "physics demo"
-            ],
-            "title_variant": "Magnets field lines explained fast",
-            "visible_cue": "field lines"
-          },
-          "series": "Physics Brief",
-          "subject": "magnets",
-          "visible_cue": "field lines"
-        },
-        "risks": [],
-        "score": 95,
-        "search_intent": {
-          "description_line": "This Short explains the visible field lines behind Magnets in a fast nature science story.",
-          "series": "Physics Brief",
-          "subject": "magnets",
-          "terms": [
-            "magnets",
-            "field lines",
-            "physics",
-            "physics demo"
-          ],
-          "title_variant": "Magnets field lines explained fast",
-          "visible_cue": "field lines"
-        },
-        "selected_variant": {
-          "hook": "Start with the field lines; it changes the scene",
-          "score": 82,
-          "thumbnail_text": "FIELD LINES",
-          "title": "Magnets make invisible fields visible"
-        },
-        "series": "Physics Brief",
-        "series_identity": {
-          "continuity_prompt": "Next in Physics Brief: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Physics Brief",
-          "series": "Physics Brief"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.253,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "hook_invites_return",
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.297,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 99,
-          "state": "strong",
-          "subscriber_probability": 0.141
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "FIELD LINES",
-          "WATCH FIELD LINES",
-          "MAGNETS CHANGE",
-          "FIELD LINES MATTERS",
-          "FIELD LINES FIRST",
-          "FIELD LINES REVEAL",
-          "FIELD LINES CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Magnets make invisible fields visible",
-          "Magnets use field lines before they change",
-          "Why magnets change after one field lines",
-          "Magnets reveal the answer with field lines",
-          "The field lines that changes the moment",
-          "Magnets make one field lines matter",
-          "Magnets show the hidden answer in seconds",
-          "Magnets: watch this field lines",
-          "Watch magnets after the field lines"
-        ],
-        "top_variants": [
-          {
-            "hook": "Start with the field lines; it changes the scene",
-            "score": 82,
-            "thumbnail_text": "FIELD LINES",
-            "title": "Magnets make invisible fields visible"
-          },
-          {
-            "hook": "Watch the field lines; it explains the behavior",
-            "score": 81,
-            "thumbnail_text": "FIELD LINES",
-            "title": "Magnets make invisible fields visible"
-          },
-          {
-            "hook": "Magnets can show a hidden force map",
-            "score": 79,
-            "thumbnail_text": "FIELD LINES",
-            "title": "Magnets make invisible fields visible"
-          },
-          {
-            "hook": "Start with the field lines; it changes the scene",
-            "score": 75,
-            "thumbnail_text": "WATCH FIELD LINES",
-            "title": "Magnets make invisible fields visible"
-          },
-          {
-            "hook": "Watch the field lines; it explains the behavior",
-            "score": 75,
-            "thumbnail_text": "MAGNETS CHANGE",
-            "title": "Magnets make invisible fields visible"
-          },
-          {
-            "hook": "Start with the field lines; it changes the scene",
-            "score": 75,
-            "thumbnail_text": "MAGNETS CHANGE",
-            "title": "Magnets make invisible fields visible"
-          },
-          {
-            "hook": "Start with the field lines; it changes the scene",
-            "score": 75,
-            "thumbnail_text": "FIELD LINES MATTERS",
-            "title": "Magnets make invisible fields visible"
-          },
-          {
-            "hook": "Start with the field lines; it changes the scene",
-            "score": 75,
-            "thumbnail_text": "FIELD LINES FIRST",
-            "title": "Magnets make invisible fields visible"
-          },
-          {
-            "hook": "Watch the field lines; it explains the behavior",
-            "score": 74,
-            "thumbnail_text": "WATCH FIELD LINES",
-            "title": "Magnets make invisible fields visible"
-          },
-          {
-            "hook": "Watch the field lines; it explains the behavior",
-            "score": 74,
-            "thumbnail_text": "FIELD LINES MATTERS",
-            "title": "Magnets make invisible fields visible"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "53958248afcfe49f",
       "title": "Forest canopies slow heat near the ground",
       "category": "forests",
@@ -5064,7 +5055,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T07:03:19.716146+00:00",
+        "checked_at": "2026-07-07T07:56:45.064377+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5711,7 +5702,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T07:03:19.718094+00:00",
+        "checked_at": "2026-07-07T07:56:45.065958+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6361,7 +6352,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T07:03:19.694167+00:00",
+        "checked_at": "2026-07-07T07:56:44.644552+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7003,7 +6994,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T07:03:19.696518+00:00",
+        "checked_at": "2026-07-07T07:56:44.646983+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7657,7 +7648,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T07:03:19.698472+00:00",
+        "checked_at": "2026-07-07T07:56:44.649038+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8313,7 +8304,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T07:03:19.701640+00:00",
+        "checked_at": "2026-07-07T07:56:44.652098+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8976,7 +8967,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T07:03:19.703540+00:00",
+        "checked_at": "2026-07-07T07:56:44.654123+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9627,7 +9618,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T07:03:19.704918+00:00",
+        "checked_at": "2026-07-07T07:56:44.655547+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10273,7 +10264,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T07:03:19.707100+00:00",
+        "checked_at": "2026-07-07T07:56:44.657865+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10923,7 +10914,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T07:03:19.711195+00:00",
+        "checked_at": "2026-07-07T07:56:44.662102+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11584,7 +11575,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T07:03:20.068321+00:00",
+        "checked_at": "2026-07-07T07:56:45.416489+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12236,7 +12227,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T07:03:19.709354+00:00",
+        "checked_at": "2026-07-07T07:56:44.660236+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12889,7 +12880,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T07:03:20.076479+00:00",
+        "checked_at": "2026-07-07T07:56:45.418243+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
