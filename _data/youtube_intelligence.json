@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-07-07T07:01:21.906480+00:00",
+  "generated_at": "2026-07-07T08:03:30.424168+00:00",
   "window": {
     "start_date": "2026-06-10",
     "end_date": "2026-07-07"
   },
-  "coverage_score": 40,
+  "coverage_score": 80,
   "quota_strategy": [
     "Batch videos.list in groups of 50.",
     "Avoid search.list for routine automation because it is expensive and trend discovery already uses cheaper public sources.",
@@ -19,14 +19,20 @@
     "uploads_playlist": "UUWrQoappAOOxsaQK-43MbdQ",
     "subscriber_count": 49,
     "view_count": 3,
-    "video_count": 27,
+    "video_count": 28,
     "privacy_status": "public",
     "made_for_kids": false,
     "self_declared_made_for_kids": false
   },
   "uploads_inventory": {
-    "uploads_checked": 27,
+    "uploads_checked": 28,
     "latest_uploads": [
+      {
+        "video_id": "uoVylVB2fQI",
+        "title": "Mushrooms use mushroom gills before they carry",
+        "published_at": "2026-07-07T08:01:52Z",
+        "playlist_item_id": "VVVXclFvYXBwQU9PeHNhUUstNDNNYmRRLnVvVnlsVkIyZlFJ"
+      },
       {
         "video_id": "73fySwPKvvA",
         "title": "Deer use sound radar before they aim",
@@ -170,27 +176,21 @@
         "title": "Cows remember faces across the herd",
         "published_at": "2026-07-05T08:16:31Z",
         "playlist_item_id": "VVVXclFvYXBwQU9PeHNhUUstNDNNYmRRLjhqWUNDZi1sU3Zj"
-      },
-      {
-        "video_id": "YGjT2-N5H7Q",
-        "title": "Goats use wide pupils to watch danger",
-        "published_at": "2026-07-05T07:49:55Z",
-        "playlist_item_id": "VVVXclFvYXBwQU9PeHNhUUstNDNNYmRRLllHalQyLU41SDdR"
       }
     ]
   },
   "video_audit": {
-    "videos_checked": 27,
-    "total_views": 6,
+    "videos_checked": 28,
+    "total_views": 7,
     "total_likes": 0,
-    "total_comments": 27,
+    "total_comments": 28,
     "private_or_unlisted": 0,
-    "shorts_like": 27,
+    "shorts_like": 28,
     "top_public_videos": [
       {
         "video_id": "FfM3i7ikJb4",
         "title": "Bears can smell a meal long before seeing it",
-        "views": 1,
+        "views": 2,
         "likes": 0,
         "comments": 1,
         "privacy_status": "public",
@@ -242,6 +242,15 @@
         "published_at": "2026-07-05T08:16:31Z"
       },
       {
+        "video_id": "uoVylVB2fQI",
+        "title": "Mushrooms use mushroom gills before they carry",
+        "views": 0,
+        "likes": 0,
+        "comments": 1,
+        "privacy_status": "public",
+        "published_at": "2026-07-07T08:01:52Z"
+      },
+      {
         "video_id": "73fySwPKvvA",
         "title": "Deer use sound radar before they aim",
         "views": 0,
@@ -267,15 +276,6 @@
         "comments": 1,
         "privacy_status": "public",
         "published_at": "2026-07-07T00:29:26Z"
-      },
-      {
-        "video_id": "BdIu_W6JmUw",
-        "title": "Mantises can measure a strike in 3D",
-        "views": 0,
-        "likes": 0,
-        "comments": 1,
-        "privacy_status": "public",
-        "published_at": "2026-07-06T23:39:20Z"
       }
     ]
   },
@@ -287,7 +287,7 @@
       "coverage": "implemented",
       "use": "Channel identity, uploads playlist, subscriber/view/video totals, branding/status audit.",
       "risk": "read_only",
-      "last_run": "attempted"
+      "last_run": "ok"
     },
     {
       "id": "uploaded_video_inventory",
@@ -296,7 +296,7 @@
       "coverage": "implemented",
       "use": "Compare YouTube uploads against local .done markers and detect missing local memory.",
       "risk": "read_only",
-      "last_run": "attempted"
+      "last_run": "ok"
     },
     {
       "id": "video_metadata_statistics",
@@ -305,7 +305,7 @@
       "coverage": "implemented",
       "use": "Public stats, title/description/tag/status/duration audit for every tracked Short.",
       "risk": "read_only",
-      "last_run": "attempted"
+      "last_run": "ok"
     },
     {
       "id": "comment_threads",
@@ -363,9 +363,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,likes,comments,shares,subscribersGained",
       "sort": "-views",
       "use": "Rank videos by growth, engagement, retention and subscriber conversion.",
-      "status": "not_authorized",
+      "status": "ok",
       "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "error": ""
     },
     {
       "id": "daily_channel",
@@ -373,9 +373,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
       "sort": "day",
       "use": "Daily pacing and anomaly detection.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 25,
+      "error": ""
     },
     {
       "id": "country",
@@ -383,9 +383,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
       "sort": "-views",
       "use": "Geo demand and publish timing hints.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 17,
+      "error": ""
     },
     {
       "id": "traffic_source",
@@ -393,9 +393,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Detect whether Shorts feed, search, browse, external or channel surfaces are driving growth.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 9,
+      "error": ""
     },
     {
       "id": "device_type",
@@ -403,9 +403,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Tune caption size, pacing and visual density for device mix.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 4,
+      "error": ""
     },
     {
       "id": "subscriber_status",
@@ -413,12 +413,10 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Separate existing subscriber behavior from discovery behavior.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 2,
+      "error": ""
     }
   ],
-  "issues": [
-    "youtube_analytics_scope_missing"
-  ]
+  "issues": []
 }
