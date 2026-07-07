@@ -2,44 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 10,
-      "high": 0,
-      "manual_review": 0,
+      "automation_safe": 9,
+      "high": 1,
+      "manual_review": 1,
       "total": 10,
-      "urgent": 8
+      "urgent": 7
     },
     "free_only": true,
-    "generated_at": "2026-07-07T16:15:41.410906+00:00",
+    "generated_at": "2026-07-07T16:23:06.052166+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 20.04,
-        "automation_safe": true,
-        "category": "conservation",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "overdue",
-        "current_views": 0,
-        "due_at": "2026-07-06T21:13:18.524048+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:cLMEOp9HnM0:analytics_due:1h",
-        "lane": "measurement",
-        "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "urgent",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
-        "series": "Planet Repair",
-        "state": "analytics_due",
-        "target_views": 24,
-        "title": "Fish Mangroves take power out of waves | Roots",
-        "url": "https://www.youtube.com/shorts/cLMEOp9HnM0",
-        "video_id": "cLMEOp9HnM0",
-        "wait_until": "",
-        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
-      },
-      {
-        "action_type": "pull_fresh_analytics",
-        "age_hours": 19.18,
+        "age_hours": 19.303,
         "automation_safe": true,
         "category": "forests",
         "checkpoint_label": "1h",
@@ -65,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 17.838,
+        "age_hours": 17.961,
         "automation_safe": true,
         "category": "reptiles",
         "checkpoint_label": "1h",
@@ -91,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 16.611,
+        "age_hours": 16.735,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -117,7 +91,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 15.776,
+        "age_hours": 15.899,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -143,7 +117,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 11.948,
+        "age_hours": 12.071,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -169,7 +143,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 11.039,
+        "age_hours": 11.163,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -195,7 +169,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 8.236,
+        "age_hours": 8.36,
         "automation_safe": true,
         "category": "fungi",
         "checkpoint_label": "1h",
@@ -220,34 +194,60 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "watch_next_checkpoint",
-        "age_hours": 5.997,
-        "automation_safe": true,
+        "action_type": "prepare_package_rescue",
+        "age_hours": 6.12,
+        "automation_safe": false,
         "category": "reptiles",
-        "checkpoint_label": "6h",
+        "checkpoint_label": "24h",
         "checkpoint_state": "pending",
-        "current_views": 0,
-        "due_at": "2026-07-07T16:15:52.640295+00:00",
+        "current_views": 1,
+        "due_at": "2026-07-08T10:15:52.640295+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:gnDKpwxV42s:watch:6h",
-        "lane": "observe",
-        "manual_approval_required": false,
+        "id": "fresh-upload:gnDKpwxV42s:repair_candidate:24h",
+        "lane": "package_rescue",
+        "manual_approval_required": true,
         "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Keep observing through the next checkpoint.",
+        "priority": "high",
+        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
         "series": "Cold-Blooded Secrets",
-        "state": "watch",
-        "target_views": 105,
+        "state": "repair_candidate",
+        "target_views": 300,
         "title": "Snakes use tongue smell before they smell",
         "url": "https://www.youtube.com/shorts/gnDKpwxV42s",
         "video_id": "gnDKpwxV42s",
-        "wait_until": "2026-07-07T16:15:52.640295+00:00",
-        "why": "No intervention signal is strong enough yet."
+        "wait_until": "",
+        "why": "Observed velocity is weak enough to prepare a package intervention."
+      },
+      {
+        "action_type": "hold_until_first_hour",
+        "age_hours": 0.037,
+        "automation_safe": true,
+        "category": "wildlife",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-07T17:20:51.532065+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:ELHX7Rr_oL4:awaiting_1h:1h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 92.0,
+        "priority": "low",
+        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "series": "Animal Superpowers",
+        "state": "awaiting_1h",
+        "target_views": 24,
+        "title": "Tigers use stripe camouflage before they wear",
+        "url": "https://www.youtube.com/shorts/ELHX7Rr_oL4",
+        "video_id": "ELHX7Rr_oL4",
+        "wait_until": "2026-07-07T17:20:51.532065+00:00",
+        "why": "The upload is still inside the no-panic observation window."
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 4.862,
+        "age_hours": 4.986,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-07T16:15:41.409509+00:00"
+    "source_generated_at": "2026-07-07T16:23:06.050890+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,72 @@
       24
     ],
     "counts": {
-      "analytics_due": 8,
-      "awaiting_1h": 0,
+      "analytics_due": 7,
+      "awaiting_1h": 1,
       "high_priority": 8,
-      "repair_candidates": 0,
+      "repair_candidates": 1,
       "tracked": 10
     },
-    "generated_at": "2026-07-07T16:15:41.409509+00:00",
+    "generated_at": "2026-07-07T16:23:06.050890+00:00",
     "items": [
       {
+        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "age_hours": 0.037,
+        "category": "wildlife",
+        "checkpoints": [
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-07T17:20:51.532065+00:00",
+            "label": "1h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 24,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-07T22:20:51.532065+00:00",
+            "label": "6h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 105,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-08T16:20:51.532065+00:00",
+            "label": "24h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 300,
+            "views": 0
+          }
+        ],
+        "current_views": 0,
+        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "next_checkpoint": {
+          "delta_to_target": 0,
+          "due_at": "2026-07-07T17:20:51.532065+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        "opening_retention_score": 92.0,
+        "opening_retention_state": "retention_ready",
+        "priority": "low",
+        "series": "Animal Superpowers",
+        "state": "awaiting_1h",
+        "title": "Tigers use stripe camouflage before they wear",
+        "uploaded_at": "2026-07-07T16:20:51.532065+00:00",
+        "url": "https://www.youtube.com/shorts/ELHX7Rr_oL4",
+        "video_id": "ELHX7Rr_oL4",
+        "views_per_hour": 0.0
+      },
+      {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 4.862,
+        "age_hours": 4.986,
         "category": "insects",
         "checkpoints": [
           {
@@ -346,8 +401,8 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.997,
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "age_hours": 6.12,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -360,11 +415,11 @@
             "views": 0
           },
           {
-            "delta_to_target": 0,
+            "delta_to_target": -105,
             "due_at": "2026-07-07T16:15:52.640295+00:00",
             "label": "6h",
-            "source": "estimated",
-            "state": "pending",
+            "source": "observed",
+            "state": "observed",
             "target_views": 105,
             "views": 0
           },
@@ -375,34 +430,45 @@
             "source": "estimated",
             "state": "pending",
             "target_views": 300,
-            "views": 0
+            "views": 1
           }
         ],
-        "current_views": 0,
-        "hypothesis": "No intervention signal is strong enough yet.",
+        "current_views": 1,
+        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
         "next_checkpoint": {
           "delta_to_target": 0,
-          "due_at": "2026-07-07T16:15:52.640295+00:00",
-          "label": "6h",
+          "due_at": "2026-07-08T10:15:52.640295+00:00",
+          "label": "24h",
           "source": "estimated",
           "state": "pending",
-          "target_views": 105,
-          "views": 0
+          "target_views": 300,
+          "views": 1
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Cold-Blooded Secrets",
-        "state": "watch",
+        "state": "repair_candidate",
         "title": "Snakes use tongue smell before they smell",
         "uploaded_at": "2026-07-07T10:15:52.640295+00:00",
         "url": "https://www.youtube.com/shorts/gnDKpwxV42s",
         "video_id": "gnDKpwxV42s",
-        "views_per_hour": 0.0
+        "views_per_hour": 0.164,
+        "warning": {
+          "action": "TITLE_AUTO_REPAIR_TRIGGER",
+          "confidence_score": 0.594,
+          "reason": "low early velocity",
+          "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+          "title": "Snakes use tongue smell before they smell",
+          "video_id": "gnDKpwxV42s",
+          "views": 1,
+          "warning_state": "repair_risk"
+        }
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 8.236,
+        "age_hours": 8.36,
         "category": "fungi",
         "checkpoints": [
           {
@@ -457,7 +523,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 11.039,
+        "age_hours": 11.163,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -512,7 +578,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 11.948,
+        "age_hours": 12.071,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -567,7 +633,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 15.776,
+        "age_hours": 15.899,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -622,7 +688,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 16.611,
+        "age_hours": 16.735,
         "category": "insects",
         "checkpoints": [
           {
@@ -677,7 +743,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 17.838,
+        "age_hours": 17.961,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -732,7 +798,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 19.18,
+        "age_hours": 19.303,
         "category": "forests",
         "checkpoints": [
           {
@@ -784,61 +850,6 @@
         "url": "https://www.youtube.com/shorts/Xmt0ZKQl5cw",
         "video_id": "Xmt0ZKQl5cw",
         "views_per_hour": 0.0
-      },
-      {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 20.04,
-        "category": "conservation",
-        "checkpoints": [
-          {
-            "delta_to_target": -24,
-            "due_at": "2026-07-06T21:13:18.524048+00:00",
-            "label": "1h",
-            "source": "estimated",
-            "state": "overdue",
-            "target_views": 24,
-            "views": 0
-          },
-          {
-            "delta_to_target": -105,
-            "due_at": "2026-07-07T02:13:18.524048+00:00",
-            "label": "6h",
-            "source": "estimated",
-            "state": "overdue",
-            "target_views": 105,
-            "views": 0
-          },
-          {
-            "delta_to_target": 0,
-            "due_at": "2026-07-07T20:13:18.524048+00:00",
-            "label": "24h",
-            "source": "estimated",
-            "state": "pending",
-            "target_views": 300,
-            "views": 0
-          }
-        ],
-        "current_views": 0,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-        "next_checkpoint": {
-          "delta_to_target": -24,
-          "due_at": "2026-07-06T21:13:18.524048+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        "opening_retention_score": 100.0,
-        "opening_retention_state": "retention_ready",
-        "priority": "high",
-        "series": "Planet Repair",
-        "state": "analytics_due",
-        "title": "Fish Mangroves take power out of waves | Roots",
-        "uploaded_at": "2026-07-06T20:13:18.524048+00:00",
-        "url": "https://www.youtube.com/shorts/cLMEOp9HnM0",
-        "video_id": "cLMEOp9HnM0",
-        "views_per_hour": 0.0
       }
     ],
     "targets": {
@@ -848,23 +859,12 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-07T16:15:41.410997+00:00",
+  "generated_at": "2026-07-07T16:23:06.052260+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
   ],
   "related_video_recommendations": [
-    {
-      "recommendation": {
-        "reason": "same series/category/format session bridge",
-        "score": 85.0,
-        "title": "Elephants cool blood through giant ears",
-        "url": "https://www.youtube.com/shorts/HDQAh3KSdtY",
-        "video_id": "HDQAh3KSdtY"
-      },
-      "source_title": "Lions have dark ear marks cubs can follow",
-      "source_video_id": "ziHkq3EE5jk"
-    },
     {
       "recommendation": {
         "reason": "same series/category/format session bridge",
@@ -908,14 +908,20 @@
       },
       "source_title": "Beetles use star compass before they steer",
       "source_video_id": "bACT5pBWOBw"
+    },
+    {
+      "recommendation": {
+        "reason": "same series/category/format session bridge",
+        "score": 85.0,
+        "title": "Tigers wear stripe shadows as camouflage",
+        "url": "https://www.youtube.com/shorts/t8IoHKd1Puw",
+        "video_id": "t8IoHKd1Puw"
+      },
+      "source_title": "Tigers use stripe camouflage before they wear",
+      "source_video_id": "ELHX7Rr_oL4"
     }
   ],
   "sequel_opportunities": [
-    {
-      "prompt": "Make a sequel with a new subject but the same payoff shape: Lions have dark ear marks cubs can follow",
-      "title": "Lions have dark ear marks cubs can follow",
-      "video_id": "ziHkq3EE5jk"
-    },
     {
       "prompt": "Make a sequel with a new subject but the same payoff shape: Deer use sound radar before they aim",
       "title": "Deer use sound radar before they aim",
@@ -935,13 +941,18 @@
       "prompt": "Make a sequel with a new subject but the same payoff shape: Beetles use star compass before they steer",
       "title": "Beetles use star compass before they steer",
       "video_id": "bACT5pBWOBw"
+    },
+    {
+      "prompt": "Make a sequel with a new subject but the same payoff shape: Tigers use stripe camouflage before they wear",
+      "title": "Tigers use stripe camouflage before they wear",
+      "video_id": "ELHX7Rr_oL4"
     }
   ],
   "session_graph": {
     "action_score_threshold": 55,
     "coverage": 0.95,
     "edges": 20,
-    "nodes": 78,
+    "nodes": 79,
     "target_reuse_limit": 2
   }
 }
