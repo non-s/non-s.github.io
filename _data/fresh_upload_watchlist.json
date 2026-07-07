@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 8,
+    "analytics_due": 9,
     "awaiting_1h": 0,
     "high_priority": 9,
-    "repair_candidates": 1,
+    "repair_candidates": 0,
     "tracked": 10
   },
-  "generated_at": "2026-07-07T18:18:08.772611+00:00",
+  "generated_at": "2026-07-07T18:22:43.541137+00:00",
   "items": [
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.955,
+      "age_hours": 2.031,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -69,16 +69,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.903,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 6.98,
       "category": "insects",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-07T12:23:56.530372+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -102,41 +102,30 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-08T11:23:56.530372+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-07T12:23:56.530372+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "overdue",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Tiny Worlds",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Beetles use star compass before they steer",
       "uploaded_at": "2026-07-07T11:23:56.530372+00:00",
       "url": "https://www.youtube.com/shorts/bACT5pBWOBw",
       "video_id": "bACT5pBWOBw",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Beetles use star compass before they steer",
-        "video_id": "bACT5pBWOBw",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.038,
+      "age_hours": 8.114,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -187,11 +176,11 @@
       "uploaded_at": "2026-07-07T10:15:52.640295+00:00",
       "url": "https://www.youtube.com/shorts/gnDKpwxV42s",
       "video_id": "gnDKpwxV42s",
-      "views_per_hour": 0.125
+      "views_per_hour": 0.124
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 10.277,
+      "age_hours": 10.354,
       "category": "fungi",
       "checkpoints": [
         {
@@ -246,7 +235,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.08,
+      "age_hours": 13.157,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -301,7 +290,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.988,
+      "age_hours": 14.065,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -356,7 +345,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 17.817,
+      "age_hours": 17.893,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -411,7 +400,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 18.652,
+      "age_hours": 18.729,
       "category": "insects",
       "checkpoints": [
         {
@@ -466,7 +455,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 19.879,
+      "age_hours": 19.955,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -521,7 +510,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 21.221,
+      "age_hours": 21.297,
       "category": "forests",
       "checkpoints": [
         {
