@@ -1,35 +1,122 @@
 {
-  "generated_at": "2026-07-07T00:20:49.502774+00:00",
-  "pending": 18,
+  "generated_at": "2026-07-07T00:24:42.208384+00:00",
+  "pending": 20,
   "states": {
     "rewrite": 17,
-    "publish_ready": 1
+    "publish_ready": 3
   },
   "mechanism_clusters": {
     "call_signal": 1,
     "beak_signal": 1,
-    "face_recognition": 1
+    "face_recognition": 1,
+    "scent_map": 1
   },
   "rights": {
-    "approved": 18
+    "approved": 20
   },
   "prune_summary": {
-    "pending_before": 18,
-    "pending_after": 18,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 4,
+    "pending_before": 28,
+    "pending_after": 20,
+    "rejected": 8,
+    "repair_needed": 1,
+    "repaired": 7,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 18,
+      "objective_gate:bootstrap_observe_before_scaling": 20,
       "editor_in_chief:subject repeated inside 3-day cooldown": 12,
+      "duplicate_title": 4,
       "editor_in_chief:script quality gate blocked the narration": 4,
+      "copy_subject_mismatch": 3,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
       "editor_in_chief:editorial score 46 is below 62": 3,
+      "duplicate_script": 2,
+      "duplicate_angle": 2,
+      "opening_retention_gap_risk": 1,
+      "opening promise is not concrete enough": 1,
+      "queue_score_reject": 1,
+      "off_topic_visual": 1,
+      "script_subject_mismatch": 1,
+      "script_hook_mismatch": 1,
+      "non_animal_body_language": 1,
       "editor_in_chief:editorial score 49 is below 62": 1,
-      "editor_in_chief:editorial score 40 is below 62": 1
+      "editor_in_chief:editorial score 40 is below 62": 1,
+      "publish_ready_supply_reserve_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "0c9d9617a3e7e804",
+      "title": "Fossils can preserve a clue from deep time",
+      "reasons": [
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "ebc2321aaefe18b7",
+      "title": "Mushrooms release spores from hidden gills",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "0e502a4c25c63c42",
+      "title": "Elephants can feel rumbles through the ground",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "d5d76f0b0d7cf679",
+      "title": "Egret hunts differently than you think",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "script_hook_mismatch",
+        "non_animal_body_language"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "a52bc6f2248a6a1a",
+      "title": "Mountains aren’t just rocks sliding down",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "b0354b5434f97ea4",
+      "title": "Storm clouds trace wind bands over the ocean",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "750e6a3d522e9fca",
+      "title": "Coral reefs are cities built by tiny animals",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "a9eeb68dd726375a",
+      "title": "Mushrooms trade nutrients through underground threads",
+      "reasons": [
+        "opening_retention_gap_risk",
+        "opening promise is not concrete enough",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
     {
       "id": "8bdc8b70af521eb4",
       "title": "Fossils turn old bones into time clues",
@@ -56,6 +143,15 @@
         "editorial score 39 is below 62"
       ],
       "stage": "editor_in_chief"
+    },
+    {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
     },
     {
       "id": "47bd103996be2c43",
@@ -147,6 +243,15 @@
       "stage": "youtube_brain"
     },
     {
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
       "id": "90892e8f771d41ad",
       "title": "Monkeys wash food when grit gets annoying",
       "reasons": [
@@ -206,94 +311,653 @@
         "duplicate_title"
       ],
       "stage": "queue_prune_final"
-    },
-    {
-      "id": "a7e9149ac9b622c3",
-      "title": "Tortoises build highways through wildlands",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "feaa539270b615c6",
-      "title": "Monkeys wash food when grit gets annoying",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "34388c84733d6636",
-      "title": "Mountains don’t just slide—they whisper first",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "4ff301c75f6f61a8",
-      "title": "Mountains wear their scars from ice and time",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "a49472ef482efed7",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "e1d01ae8cffc7540",
-      "title": "Elephants cool blood through giant ears",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "ce5139367a6c69fd",
-      "title": "Monkeys wash food when grit gets annoying",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "a4a315544b0f2f8b",
-      "title": "Monkeys wash food when grit gets annoying",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "4ca49bbfe1a69107",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "0b82af12f4691e8a",
-      "title": "Mountains shrink before your eyes",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
+    {
+      "id": "17da210e2fc50ce4",
+      "title": "Deer can aim each ear toward danger",
+      "category": "wildlife",
+      "publish_score": {
+        "approved": true,
+        "category": "wildlife",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.31,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.08,
+          "data_quality": "estimated",
+          "data_quality_score": 0.425,
+          "minimum_sample_size": 25,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.08.",
+          "recommendation_strength": "observe",
+          "sample_size": 5
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.08,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ear",
+            "ears"
+          ],
+          "cue_terms": [
+            "ear",
+            "ears",
+            "radar",
+            "sound"
+          ],
+          "frame_hook_bridge": [],
+          "risks": [
+            "frame_text_not_echoed_early"
+          ],
+          "score": 90.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "deer"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 64,
+          "signals": {
+            "comment_potential": 48,
+            "educational_potential": 67,
+            "emotional_potential": 29,
+            "novelty": 63,
+            "replay_potential": 66,
+            "viral_potential": 71,
+            "visual_potential": 83
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 74,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 74
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.296,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.061,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 5
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-07-07T00:24:20.248231+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "deer",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ear",
+            "ears"
+          ],
+          "cue_terms": [
+            "ear",
+            "ears",
+            "radar",
+            "sound"
+          ],
+          "frame_hook_bridge": [],
+          "risks": [
+            "frame_text_not_echoed_early"
+          ],
+          "score": 90.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "deer"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "deer",
+        "viewer_promise": "See why deer body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which deer clue should Wild Brief compare next in Rare Earth?",
+        "cta_prompt": "Want more wild behavior explained without the fluff?",
+        "curiosity_gap": {
+          "hook": "Why do these deer change after the sound radar?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "specific_question",
+            "format": "fresh_variant",
+            "hook": "new_hook",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "explore",
+          "sample_count": 72,
+          "winners": {
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:specific_question": 46.1,
+            "format:fresh_variant": 46.1,
+            "format:winner_inspired": 46.1,
+            "hook:new_hook": 46.1,
+            "thumbnail:new_thumbnail": 46.1
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "ear",
+              "ears"
+            ],
+            "cue_terms": [
+              "ear",
+              "ears",
+              "radar",
+              "sound"
+            ],
+            "frame_hook_bridge": [],
+            "risks": [
+              "frame_text_not_echoed_early"
+            ],
+            "score": 90.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "deer"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Deer can aim each ear toward danger",
+          "Deer show why the sound radar matters.",
+          "Deer show why the sound radar matters.",
+          "Deer show why the sound radar matters.",
+          "Deer give away the answer through sound radar"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "sound radar",
+          "ending_line": "Would you freeze?",
+          "final_line": "Now the sound radar at the start makes sense.",
+          "loop_score": 0.8,
+          "opening_line": "Deer can aim each ear toward danger.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "sound radar",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.8,
+        "next_episode_question": "Tomorrow in Rare Earth: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ear",
+            "ears"
+          ],
+          "cue_terms": [
+            "ear",
+            "ears",
+            "radar",
+            "sound"
+          ],
+          "frame_hook_bridge": [],
+          "risks": [
+            "frame_text_not_echoed_early"
+          ],
+          "score": 90.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "deer"
+        },
+        "pinned_comment": "Watch the sound radar again. Tomorrow in Rare Earth: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 14.89,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 19,
+          "first_2s_narration": "Deer can aim each ear toward danger Watch the ears first because",
+          "first_frame_text": "SOUND RADAR",
+          "first_frame_text_words": 2,
+          "hook": "Deer can aim each ear toward danger.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.8,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "ear",
+              "ears"
+            ],
+            "cue_terms": [
+              "ear",
+              "ears",
+              "radar",
+              "sound"
+            ],
+            "frame_hook_bridge": [],
+            "risks": [
+              "frame_text_not_echoed_early"
+            ],
+            "score": 90.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "deer"
+          },
+          "opening_retention_score": 90.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the sound radar, so viewers rewatch the deer clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 74,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 74
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Deer can aim each ear toward danger Watch the ears first because",
+          "first_frame_text": "SOUND RADAR",
+          "next_episode_question": "Tomorrow in Rare Earth: another animal signal. Is this adaptation, instinct, or intelligence?",
+          "opening_retention_score": 90.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Deer behavior through the visible sound radar.",
+            "series": "Rare Earth",
+            "subject": "deer",
+            "terms": [
+              "deer",
+              "sound radar",
+              "wildlife",
+              "body superpower"
+            ],
+            "title_variant": "Deer behavior: sound radar explained",
+            "visible_cue": "sound radar"
+          },
+          "series": "Rare Earth",
+          "subject": "deer",
+          "visible_cue": "sound radar"
+        },
+        "risks": [],
+        "score": 96,
+        "search_intent": {
+          "description_line": "This Short explains Deer behavior through the visible sound radar.",
+          "series": "Rare Earth",
+          "subject": "deer",
+          "terms": [
+            "deer",
+            "sound radar",
+            "wildlife",
+            "body superpower"
+          ],
+          "title_variant": "Deer behavior: sound radar explained",
+          "visible_cue": "sound radar"
+        },
+        "selected_variant": {
+          "hook": "Deer can aim each ear toward danger",
+          "score": 80,
+          "thumbnail_text": "SOUND RADAR",
+          "title": "Deer aim their ears like sound radar"
+        },
+        "series": "Rare Earth",
+        "series_identity": {
+          "continuity_prompt": "Next in Rare Earth: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Rare Earth",
+          "series": "Rare Earth"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.296,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.061,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "SOUND RADAR",
+          "WATCH SOUND RADAR",
+          "DEER AIM",
+          "SOUND RADAR MATTERS",
+          "SOUND RADAR FIRST",
+          "SOUND RADAR REVEAL",
+          "SOUND RADAR CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Deer aim their ears like sound radar",
+          "Deer can aim each ear toward danger",
+          "Deer use sound radar before they aim",
+          "This sound radar gives deer away",
+          "Why deer aim after one sound radar",
+          "Deer reveal the answer with sound radar",
+          "The sound radar that changes the moment",
+          "Deer make one sound radar matter",
+          "Deer show the hidden answer in seconds",
+          "Deer: watch this sound radar"
+        ],
+        "top_variants": [
+          {
+            "hook": "Deer can aim each ear toward danger",
+            "score": 80,
+            "thumbnail_text": "SOUND RADAR",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Start with the sound radar; it changes the scene",
+            "score": 80,
+            "thumbnail_text": "SOUND RADAR",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Watch the sound radar; it explains the behavior",
+            "score": 78,
+            "thumbnail_text": "SOUND RADAR",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Deer can aim each ear toward danger",
+            "score": 73,
+            "thumbnail_text": "WATCH SOUND RADAR",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Start with the sound radar; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "WATCH SOUND RADAR",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Deer can aim each ear toward danger",
+            "score": 73,
+            "thumbnail_text": "DEER AIM",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Start with the sound radar; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "DEER AIM",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Deer can aim each ear toward danger",
+            "score": 73,
+            "thumbnail_text": "SOUND RADAR MATTERS",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Start with the sound radar; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "SOUND RADAR MATTERS",
+            "title": "Deer aim their ears like sound radar"
+          },
+          {
+            "hook": "Deer can aim each ear toward danger",
+            "score": 73,
+            "thumbnail_text": "SOUND RADAR FIRST",
+            "title": "Deer aim their ears like sound radar"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
     {
       "id": "8bdc8b70af521eb4",
       "title": "Fossils turn old bones into time clues",
@@ -467,7 +1131,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-07T00:20:30.209582+00:00",
+        "checked_at": "2026-07-07T00:24:20.669023+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1110,7 +1774,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T00:20:30.197773+00:00",
+        "checked_at": "2026-07-07T00:24:20.264042+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1749,7 +2413,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T00:20:30.199981+00:00",
+        "checked_at": "2026-07-07T00:24:20.266669+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2222,22 +2886,22 @@
       }
     },
     {
-      "id": "0e502a4c25c63c42",
+      "id": "44adf45c1e4cade9",
       "title": "Elephants can feel rumbles through the ground",
       "category": "wildlife",
       "publish_score": {
         "approved": true,
         "category": "wildlife",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.317,
+          "bootstrap_multiplier": 0.31,
           "can_adjust_strategy": false,
-          "confidence_score": 0.089,
+          "confidence_score": 0.08,
           "data_quality": "estimated",
-          "data_quality_score": 0.35,
-          "minimum_sample_size": 28,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.09.",
+          "data_quality_score": 0.425,
+          "minimum_sample_size": 25,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.08.",
           "recommendation_strength": "observe",
-          "sample_size": 6
+          "sample_size": 5
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -2247,7 +2911,7 @@
         },
         "hook_score": 86,
         "objective_gate": {
-          "confidence_score": 0.089,
+          "confidence_score": 0.08,
           "mechanism_cluster": "call_signal",
           "payoff_time_s": 0.0,
           "penalty": 0.0,
@@ -2344,35 +3008,34 @@
         "state": "publish_ready",
         "story_format": "body_superpower",
         "subscriber_conversion": {
-          "comment_probability": 0.24,
+          "comment_probability": 0.223,
           "confidence": {
-            "bootstrap_multiplier": 0.331,
+            "bootstrap_multiplier": 0.296,
             "can_adjust_strategy": false,
-            "confidence_score": 0.108,
-            "data_quality": "estimated",
-            "data_quality_score": 0.45,
-            "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
+            "confidence_score": 0.061,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 2
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
           "reasons": [
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity",
-            "episode_continuity"
+            "series_identity"
           ],
-          "return_probability": 0.281,
+          "return_probability": 0.261,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 93,
+          "score": 86,
           "state": "strong",
-          "subscriber_probability": 0.133
+          "subscriber_probability": 0.123
         },
         "title_score": 100,
         "weak_content": {
@@ -2395,7 +3058,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T00:20:30.181901+00:00",
+        "checked_at": "2026-07-07T00:24:19.861801+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2461,7 +3124,7 @@
         "viewer_promise": "See why elephants body superpower matters."
       },
       "packaging": {
-        "community_prompt": "Which elephants clue should Wild Brief compare next in Animal Superpowers?",
+        "community_prompt": "Which elephants clue should Wild Brief compare next in Animal Memory?",
         "cta_prompt": "Want more wild behavior explained without the fluff?",
         "curiosity_gap": {
           "hook": "Why do these elephants change after the ground signal?",
@@ -2564,7 +3227,7 @@
           "subtitle_tail_mode": "carry-forward"
         },
         "loop_score": 0.908,
-        "next_episode_question": "Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "next_episode_question": "Tomorrow in Animal Memory: another animal signal. Is this adaptation, instinct, or intelligence?",
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
@@ -2590,7 +3253,7 @@
           ],
           "subject": "elephants"
         },
-        "pinned_comment": "Watch the ground signal again. Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "pinned_comment": "Watch the ground signal again. Tomorrow in Animal Memory: another animal signal. Is this adaptation, instinct, or intelligence?",
         "preflight_inputs": {
           "caption_chars_per_second": 16.12,
           "contrast_score": 0.74,
@@ -2664,12 +3327,12 @@
         "retention_contract": {
           "first_2s_narration": "Elephants reveal the ground signal first Watch closely because low elephant calls",
           "first_frame_text": "GROUND SIGNAL",
-          "next_episode_question": "Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
+          "next_episode_question": "Tomorrow in Animal Memory: another animal signal. Is this adaptation, instinct, or intelligence?",
           "opening_retention_score": 100.0,
           "opening_retention_state": "retention_ready",
           "search_intent": {
             "description_line": "This Short explains Elephants behavior through the visible ground signal.",
-            "series": "Animal Superpowers",
+            "series": "Animal Memory",
             "subject": "elephants",
             "terms": [
               "elephants",
@@ -2680,7 +3343,7 @@
             "title_variant": "Elephants behavior: ground signal explained",
             "visible_cue": "ground signal"
           },
-          "series": "Animal Superpowers",
+          "series": "Animal Memory",
           "subject": "elephants",
           "visible_cue": "ground signal"
         },
@@ -2688,7 +3351,7 @@
         "score": 97,
         "search_intent": {
           "description_line": "This Short explains Elephants behavior through the visible ground signal.",
-          "series": "Animal Superpowers",
+          "series": "Animal Memory",
           "subject": "elephants",
           "terms": [
             "elephants",
@@ -2705,12 +3368,12 @@
           "thumbnail_text": "GROUND SIGNAL",
           "title": "Elephants can feel rumbles through the ground"
         },
-        "series": "Animal Superpowers #8",
+        "series": "Animal Memory",
         "series_identity": {
-          "continuity_prompt": "Next in Animal Superpowers #8: compare this with another force of nature.",
+          "continuity_prompt": "Next in Animal Memory: compare this with another force of nature.",
           "episode": 1,
-          "label": "Animal Superpowers #8",
-          "series": "Animal Superpowers #8"
+          "label": "Animal Memory",
+          "series": "Animal Memory"
         },
         "state": "magnetic",
         "strengths": [
@@ -2722,35 +3385,34 @@
           "retention_opening_aligned"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.24,
+          "comment_probability": 0.223,
           "confidence": {
-            "bootstrap_multiplier": 0.331,
+            "bootstrap_multiplier": 0.296,
             "can_adjust_strategy": false,
-            "confidence_score": 0.108,
-            "data_quality": "estimated",
-            "data_quality_score": 0.45,
-            "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
+            "confidence_score": 0.061,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 2
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
           "reasons": [
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity",
-            "episode_continuity"
+            "series_identity"
           ],
-          "return_probability": 0.281,
+          "return_probability": 0.261,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 93,
+          "score": 86,
           "state": "strong",
-          "subscriber_probability": 0.133
+          "subscriber_probability": 0.123
         },
         "swipe_risk": {
           "band": "low",
@@ -2841,6 +3503,686 @@
             "score": 71,
             "thumbnail_text": "ELEPHANTS SIGNAL",
             "title": "Elephants can feel rumbles through the ground"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
+      "id": "5492c4505c453345",
+      "title": "Cats groom to reset their scent map",
+      "category": "cats",
+      "publish_score": {
+        "approved": true,
+        "category": "cats",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "scent_map",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "groom",
+            "map",
+            "scent",
+            "tongue"
+          ],
+          "cue_terms": [
+            "grip",
+            "groom",
+            "map",
+            "paw",
+            "scent",
+            "tongue"
+          ],
+          "frame_hook_bridge": [
+            "groom"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "cats"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [
+            "weak_visual_surface",
+            "low_opportunity_score"
+          ],
+          "score": 51,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 58,
+            "emotional_potential": 35,
+            "novelty": 45,
+            "replay_potential": 64,
+            "viral_potential": 50,
+            "visual_potential": 45
+          },
+          "verdict": "discard"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "reserve_override": {
+          "original_approved": false,
+          "original_opportunity_reasons": [
+            "weak_visual_surface",
+            "low_opportunity_score"
+          ],
+          "original_state": "rewrite",
+          "reason": "publish_ready_supply_reserve_fallback"
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 68,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 50
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 5/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 5
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-07-07T00:24:21.021808+00:00",
+        "mechanism_cluster": "scent_map",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling",
+          "publish_ready_supply_reserve_fallback"
+        ],
+        "score": 78.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 78.0,
+      "youtube_brain": {
+        "animal": "cats",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "groom",
+            "map",
+            "scent",
+            "tongue"
+          ],
+          "cue_terms": [
+            "grip",
+            "groom",
+            "map",
+            "paw",
+            "scent",
+            "tongue"
+          ],
+          "frame_hook_bridge": [
+            "groom"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "cats"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "cats",
+        "viewer_promise": "See why cats body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which cats clue should Wild Brief compare next in Watch The Cue?",
+        "cta_prompt": "Want one animal signal a day? Follow for the next pet clue.",
+        "curiosity_gap": {
+          "hook": "Why do these cats change after the paw grip?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 72,
+          "winners": {
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} {subject} {subject} {subject} {subject} {subject}"
+          },
+          "winning_experiments": {
+            "cta:specific_question": 46.1,
+            "format:fresh_variant": 46.1,
+            "format:winner_inspired": 46.1,
+            "hook:new_hook": 46.1,
+            "thumbnail:new_thumbnail": 46.1
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "groom",
+              "map",
+              "scent",
+              "tongue"
+            ],
+            "cue_terms": [
+              "grip",
+              "groom",
+              "map",
+              "paw",
+              "scent",
+              "tongue"
+            ],
+            "frame_hook_bridge": [
+              "groom"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "cats"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Cats use grooming to reset their scent map",
+          "Cats show why the grooming signal matters.",
+          "Cats show why the grooming signal matters.",
+          "Cats show why the grooming signal matters.",
+          "Cats give away the answer through grooming signal"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "grooming signal",
+          "ending_line": "Which pet behavior should we decode next?",
+          "final_line": "Now the grooming signal at the start makes sense.",
+          "loop_score": 0.835,
+          "opening_line": "Cats use grooming to reset their scent map.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "grooming signal",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.835,
+        "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. What part of this feels most impossible?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "groom",
+            "map",
+            "scent",
+            "tongue"
+          ],
+          "cue_terms": [
+            "grip",
+            "groom",
+            "map",
+            "paw",
+            "scent",
+            "tongue"
+          ],
+          "frame_hook_bridge": [
+            "groom"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "cats"
+        },
+        "pinned_comment": "Watch the grooming signal again. Tomorrow in Watch The Cue: another animal signal. What part of this feels most impossible?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 14.9,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 20,
+          "first_2s_narration": "Cats use grooming to reset their scent map Watch the tongue and",
+          "first_frame_text": "GROOMING SIGNAL",
+          "first_frame_text_words": 2,
+          "hook": "Cats use grooming to reset their scent map.",
+          "hook_specificity": 0.78,
+          "hook_words": 8,
+          "loop_score": 0.835,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "groom",
+              "map",
+              "scent",
+              "tongue"
+            ],
+            "cue_terms": [
+              "grip",
+              "groom",
+              "map",
+              "paw",
+              "scent",
+              "tongue"
+            ],
+            "frame_hook_bridge": [
+              "groom"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "cats"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the grooming signal, so viewers rewatch the cats clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 68,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 50
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Cats use grooming to reset their scent map Watch the tongue and",
+          "first_frame_text": "GROOMING SIGNAL",
+          "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. What part of this feels most impossible?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Cats behavior through the visible grooming signal.",
+            "series": "Watch The Cue",
+            "subject": "cats",
+            "terms": [
+              "cats",
+              "grooming signal",
+              "body superpower"
+            ],
+            "title_variant": "Cats behavior: grooming signal explained",
+            "visible_cue": "grooming signal"
+          },
+          "series": "Watch The Cue",
+          "subject": "cats",
+          "visible_cue": "grooming signal"
+        },
+        "risks": [],
+        "score": 94,
+        "search_intent": {
+          "description_line": "This Short explains Cats behavior through the visible grooming signal.",
+          "series": "Watch The Cue",
+          "subject": "cats",
+          "terms": [
+            "cats",
+            "grooming signal",
+            "body superpower"
+          ],
+          "title_variant": "Cats behavior: grooming signal explained",
+          "visible_cue": "grooming signal"
+        },
+        "selected_variant": {
+          "hook": "Watch the grooming signal; it explains the behavior",
+          "score": 75,
+          "thumbnail_text": "GROOMING SIGNAL",
+          "title": "Cats groom to reset their scent map"
+        },
+        "series": "Watch The Cue",
+        "series_identity": {
+          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Watch The Cue",
+          "series": "Watch The Cue"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "GROOMING SIGNAL",
+          "WATCH GROOMING SIGNAL",
+          "CATS SIGNAL",
+          "GROOMING SIGNAL MATTERS",
+          "GROOMING SIGNAL FIRST",
+          "GROOMING SIGNAL REVEAL",
+          "GROOMING SIGNAL CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Cats groom to reset their scent map",
+          "Cats signal through grooming signal",
+          "Cats use grooming signal before they signal",
+          "This grooming signal gives cats away",
+          "Why cats signal after one grooming signal",
+          "Cats reveal the answer with grooming signal",
+          "The grooming signal that changes the moment",
+          "Cats make one grooming signal matter",
+          "Cats show the hidden answer in seconds",
+          "Cats: watch this grooming signal"
+        ],
+        "top_variants": [
+          {
+            "hook": "Watch the grooming signal; it explains the behavior",
+            "score": 75,
+            "thumbnail_text": "GROOMING SIGNAL",
+            "title": "Cats groom to reset their scent map"
+          },
+          {
+            "hook": "Start with the grooming signal; it changes the scene",
+            "score": 75,
+            "thumbnail_text": "GROOMING SIGNAL",
+            "title": "Cats groom to reset their scent map"
+          },
+          {
+            "hook": "Cats use grooming to reset their scent map",
+            "score": 74,
+            "thumbnail_text": "GROOMING SIGNAL",
+            "title": "Cats groom to reset their scent map"
+          },
+          {
+            "hook": "Watch the grooming signal; it explains the behavior",
+            "score": 68,
+            "thumbnail_text": "WATCH GROOMING SIGNAL",
+            "title": "Cats groom to reset their scent map"
+          },
+          {
+            "hook": "Start with the grooming signal; it changes the scene",
+            "score": 68,
+            "thumbnail_text": "WATCH GROOMING SIGNAL",
+            "title": "Cats groom to reset their scent map"
+          },
+          {
+            "hook": "Watch the grooming signal; it explains the behavior",
+            "score": 68,
+            "thumbnail_text": "CATS SIGNAL",
+            "title": "Cats groom to reset their scent map"
+          },
+          {
+            "hook": "Start with the grooming signal; it changes the scene",
+            "score": 68,
+            "thumbnail_text": "CATS SIGNAL",
+            "title": "Cats groom to reset their scent map"
+          },
+          {
+            "hook": "Watch the grooming signal; it explains the behavior",
+            "score": 68,
+            "thumbnail_text": "GROOMING SIGNAL MATTERS",
+            "title": "Cats groom to reset their scent map"
+          },
+          {
+            "hook": "Start with the grooming signal; it changes the scene",
+            "score": 68,
+            "thumbnail_text": "GROOMING SIGNAL MATTERS",
+            "title": "Cats groom to reset their scent map"
+          },
+          {
+            "hook": "Watch the grooming signal; it explains the behavior",
+            "score": 68,
+            "thumbnail_text": "GROOMING SIGNAL FIRST",
+            "title": "Cats groom to reset their scent map"
           }
         ]
       },
@@ -3031,7 +4373,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T00:20:30.211119+00:00",
+        "checked_at": "2026-07-07T00:24:20.670558+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -3678,7 +5020,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T00:20:30.212657+00:00",
+        "checked_at": "2026-07-07T00:24:20.672102+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4330,7 +5672,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T00:20:30.183975+00:00",
+        "checked_at": "2026-07-07T00:24:19.924776+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4976,7 +6318,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T00:20:30.186242+00:00",
+        "checked_at": "2026-07-07T00:24:20.251930+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5618,7 +6960,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T00:20:30.188893+00:00",
+        "checked_at": "2026-07-07T00:24:20.254559+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6272,7 +7614,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T00:20:30.190852+00:00",
+        "checked_at": "2026-07-07T00:24:20.256580+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6928,7 +8270,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T00:20:30.193740+00:00",
+        "checked_at": "2026-07-07T00:24:20.259811+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7591,7 +8933,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T00:20:30.195561+00:00",
+        "checked_at": "2026-07-07T00:24:20.261722+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8242,7 +9584,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T00:20:30.201303+00:00",
+        "checked_at": "2026-07-07T00:24:20.268318+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8888,7 +10230,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T00:20:30.203433+00:00",
+        "checked_at": "2026-07-07T00:24:20.271552+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9538,7 +10880,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T00:20:30.207427+00:00",
+        "checked_at": "2026-07-07T00:24:20.276091+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10199,7 +11541,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T00:20:30.214560+00:00",
+        "checked_at": "2026-07-07T00:24:20.673989+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10851,7 +12193,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T00:20:30.205639+00:00",
+        "checked_at": "2026-07-07T00:24:20.273873+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11504,7 +12846,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T00:20:30.216222+00:00",
+        "checked_at": "2026-07-07T00:24:20.675639+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
