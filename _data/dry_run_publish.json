@@ -121,14 +121,14 @@
           "reasons": [],
           "confidence": {
             "confidence_score": 0.65,
-            "sample_size": 8,
+            "sample_size": 10,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "test",
             "can_adjust_strategy": true,
             "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 8/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -400,11 +400,11 @@
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
           },
           "winning_experiments": {
-            "format:winner_inspired": 46.4,
-            "hook:pattern_reuse": 46.4,
-            "cta:follow_for_more": 46.4,
-            "thumbnail:new_thumbnail": 46.3,
-            "format:fresh_variant": 46.1
+            "format:fresh_variant": 46.5,
+            "hook:new_hook": 46.5,
+            "cta:specific_question": 46.5,
+            "thumbnail:new_thumbnail": 46.44,
+            "format:winner_inspired": 46.4
           },
           "sample_count": 78,
           "assignment": {
@@ -779,14 +779,14 @@
           "reasons": [],
           "confidence": {
             "confidence_score": 0.65,
-            "sample_size": 8,
+            "sample_size": 10,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "test",
             "can_adjust_strategy": true,
             "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 8/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -1057,11 +1057,11 @@
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
           },
           "winning_experiments": {
-            "format:winner_inspired": 46.4,
-            "hook:pattern_reuse": 46.4,
-            "cta:follow_for_more": 46.4,
-            "thumbnail:new_thumbnail": 46.3,
-            "format:fresh_variant": 46.1
+            "format:fresh_variant": 46.5,
+            "hook:new_hook": 46.5,
+            "cta:specific_question": 46.5,
+            "thumbnail:new_thumbnail": 46.44,
+            "format:winner_inspired": 46.4
           },
           "sample_count": 78,
           "assignment": {
@@ -1442,14 +1442,14 @@
           "reasons": [],
           "confidence": {
             "confidence_score": 0.65,
-            "sample_size": 8,
+            "sample_size": 10,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "test",
             "can_adjust_strategy": true,
             "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 8/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -1735,11 +1735,11 @@
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
           },
           "winning_experiments": {
-            "format:winner_inspired": 46.4,
-            "hook:pattern_reuse": 46.4,
-            "cta:follow_for_more": 46.4,
-            "thumbnail:new_thumbnail": 46.3,
-            "format:fresh_variant": 46.1
+            "format:fresh_variant": 46.5,
+            "hook:new_hook": 46.5,
+            "cta:specific_question": 46.5,
+            "thumbnail:new_thumbnail": 46.44,
+            "format:winner_inspired": 46.4
           },
           "sample_count": 78,
           "assignment": {
@@ -2015,23 +2015,30 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 20,
-    "pending_after": 20,
-    "rejected": 0,
+    "pending_before": 18,
+    "pending_after": 17,
+    "rejected": 1,
     "repair_needed": 0,
-    "repaired": 5,
+    "repaired": 4,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 19,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 11,
+      "objective_gate:bootstrap_observe_before_scaling": 17,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 9,
       "editor_in_chief:script quality gate blocked the narration": 4,
       "editor_in_chief:editorial score 46 is below 62": 3,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
       "editor_in_chief:editorial score 40 is below 62": 1,
       "duplicate_title": 1,
       "editorial_cooldown_supply_fallback": 1,
-      "publish_ready_supply_reserve_fallback": 1,
-      "inventory_reserve_fallback": 1
+      "publish_ready_supply_reserve_fallback": 1
     }
   },
-  "rejected_preview": []
+  "rejected_preview": [
+    {
+      "id": "c42cf1fc339600fa",
+      "title": "Magnets make invisible fields visible",
+      "reasons": [
+        "duplicate_title"
+      ]
+    }
+  ]
 }

@@ -103,14 +103,14 @@
           "reasons": [],
           "confidence": {
             "confidence_score": 0.65,
-            "sample_size": 8,
+            "sample_size": 10,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "test",
             "can_adjust_strategy": true,
             "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 8/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -285,14 +285,14 @@
           "reasons": [],
           "confidence": {
             "confidence_score": 0.65,
-            "sample_size": 8,
+            "sample_size": 10,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "test",
             "can_adjust_strategy": true,
             "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 8/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -475,14 +475,14 @@
           "reasons": [],
           "confidence": {
             "confidence_score": 0.65,
-            "sample_size": 8,
+            "sample_size": 10,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "test",
             "can_adjust_strategy": true,
             "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 8/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -574,10 +574,18 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 19,
+      "evergreen": 16,
       "recovery": 1
     },
     "items": [
+      {
+        "id": "1e1fd2bf8c255b87",
+        "title": "Storm clouds reveal weather from above the clouds",
+        "category": "earth_from_space",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 40.44
+      },
       {
         "id": "44adf45c1e4cade9",
         "title": "Elephants can feel rumbles through the ground",
@@ -587,28 +595,12 @@
         "freshness_score": 53.76
       },
       {
-        "id": "7297fa80243db8ee",
-        "title": "Macaws use beaks like climbing tools",
-        "category": "birds",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 49.3
-      },
-      {
-        "id": "32bc71248738d412",
-        "title": "Parrots use their beak like a third foot",
-        "category": "birds",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 42.36
-      },
-      {
         "id": "044f781f8d21d65c",
         "title": "Rock layers reveal flood paths carved into stone",
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 41.62
+        "freshness_score": 41.6
       },
       {
         "id": "625bc2903a3e3385",
@@ -616,7 +608,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 41.18
+        "freshness_score": 41.16
       },
       {
         "id": "677b330e4980e87d",
@@ -624,7 +616,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 37.44
+        "freshness_score": 37.42
       },
       {
         "id": "09c8f40beafab256",
@@ -632,7 +624,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 37.2
+        "freshness_score": 37.18
       },
       {
         "id": "d8d90627f96566aa",
@@ -640,31 +632,23 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 37.2
+        "freshness_score": 37.18
       },
       {
-        "id": "b03cb41b62e7193b",
-        "title": "Lightning reveal air layers moving at different speeds",
-        "category": "earth_from_space",
+        "id": "7297fa80243db8ee",
+        "title": "Macaws use beaks like climbing tools",
+        "category": "birds",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 50.22
+        "freshness_score": 49.28
       },
       {
-        "id": "1e1fd2bf8c255b87",
-        "title": "Storm clouds reveal weather from above the clouds",
-        "category": "earth_from_space",
+        "id": "32bc71248738d412",
+        "title": "Parrots use their beak like a third foot",
+        "category": "birds",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 40.46
-      },
-      {
-        "id": "d28a276ff0822870",
-        "title": "Storm clouds show air layers changing over time",
-        "category": "earth_from_space",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 50.22
+        "freshness_score": 42.34
       },
       {
         "id": "eb41118e410e097b",
@@ -672,7 +656,7 @@
         "category": "conservation",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 42.56
+        "freshness_score": 42.54
       },
       {
         "id": "8bdc8b70af521eb4",
@@ -688,7 +672,7 @@
         "category": "nocturnal",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 38.7
+        "freshness_score": 38.68
       },
       {
         "id": "5492c4505c453345",
@@ -704,7 +688,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 41.28
+        "freshness_score": 41.26
       },
       {
         "id": "4111626a62866b27",
@@ -712,7 +696,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 37.34
+        "freshness_score": 37.32
       },
       {
         "id": "d839beca3c1cf8ba",
@@ -720,7 +704,7 @@
         "category": "reptiles",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.76
+        "freshness_score": 54.74
       },
       {
         "id": "8e9710036cf1db90",
@@ -728,15 +712,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.72
-      },
-      {
-        "id": "c42cf1fc339600fa",
-        "title": "Magnets use field lines before they change",
-        "category": "physics",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 54.76
+        "freshness_score": 51.7
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -798,22 +774,21 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 20,
-    "pending_after": 20,
-    "rejected": 0,
+    "pending_before": 18,
+    "pending_after": 17,
+    "rejected": 1,
     "repair_needed": 0,
-    "repaired": 5,
+    "repaired": 4,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 19,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 11,
+      "objective_gate:bootstrap_observe_before_scaling": 17,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 9,
       "editor_in_chief:script quality gate blocked the narration": 4,
       "editor_in_chief:editorial score 46 is below 62": 3,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
       "editor_in_chief:editorial score 40 is below 62": 1,
       "duplicate_title": 1,
       "editorial_cooldown_supply_fallback": 1,
-      "publish_ready_supply_reserve_fallback": 1,
-      "inventory_reserve_fallback": 1
+      "publish_ready_supply_reserve_fallback": 1
     }
   }
 }
