@@ -5,25 +5,25 @@
     24
   ],
   "counts": {
-    "analytics_due": 7,
-    "awaiting_1h": 1,
-    "high_priority": 7,
-    "repair_candidates": 0,
+    "analytics_due": 8,
+    "awaiting_1h": 0,
+    "high_priority": 9,
+    "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-07-07T10:21:29.514752+00:00",
+  "generated_at": "2026-07-07T11:18:57.316227+00:00",
   "items": [
     {
-      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.094,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 1.051,
       "category": "reptiles",
       "checkpoints": [
         {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-07T11:15:52.640295+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +47,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -24,
         "due_at": "2026-07-07T11:15:52.640295+00:00",
         "label": "1h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Cold-Blooded Secrets",
-      "state": "awaiting_1h",
+      "state": "analytics_due",
       "title": "Snakes use tongue smell before they smell",
       "uploaded_at": "2026-07-07T10:15:52.640295+00:00",
       "url": "https://www.youtube.com/shorts/gnDKpwxV42s",
@@ -70,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.333,
+      "age_hours": 3.291,
       "category": "fungi",
       "checkpoints": [
         {
@@ -124,8 +124,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.136,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 6.094,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -138,11 +138,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-07-07T11:13:20.112660+00:00",
           "label": "6h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 105,
           "views": 0
         },
@@ -157,21 +157,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -105,
         "due_at": "2026-07-07T11:13:20.112660+00:00",
         "label": "6h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 90.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Animal Superpowers",
-      "state": "watch",
+      "state": "analytics_due",
       "title": "Deer use sound radar before they aim",
       "uploaded_at": "2026-07-07T05:13:20.112660+00:00",
       "url": "https://www.youtube.com/shorts/73fySwPKvvA",
@@ -179,8 +179,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.044,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 7.002,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -196,8 +196,8 @@
           "delta_to_target": -105,
           "due_at": "2026-07-07T10:18:50.283998+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -212,30 +212,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
-        "delta_to_target": -105,
-        "due_at": "2026-07-07T10:18:50.283998+00:00",
-        "label": "6h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-08T04:18:50.283998+00:00",
+        "label": "24h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 105,
+        "state": "pending",
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Animal Superpowers",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Lions have dark ear marks cubs can follow",
       "uploaded_at": "2026-07-07T04:18:50.283998+00:00",
       "url": "https://www.youtube.com/shorts/ziHkq3EE5jk",
       "video_id": "ziHkq3EE5jk",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 29/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Lions have dark ear marks cubs can follow",
+        "video_id": "ziHkq3EE5jk",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.873,
+      "age_hours": 10.83,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -290,7 +301,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 10.708,
+      "age_hours": 11.666,
       "category": "insects",
       "checkpoints": [
         {
@@ -345,7 +356,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.935,
+      "age_hours": 12.892,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -400,7 +411,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.277,
+      "age_hours": 14.234,
       "category": "forests",
       "checkpoints": [
         {
@@ -455,7 +466,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 14.136,
+      "age_hours": 15.094,
       "category": "conservation",
       "checkpoints": [
         {
@@ -510,7 +521,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 17.352,
+      "age_hours": 18.309,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -561,7 +572,7 @@
       "uploaded_at": "2026-07-06T17:00:23.228565+00:00",
       "url": "https://www.youtube.com/shorts/FfM3i7ikJb4",
       "video_id": "FfM3i7ikJb4",
-      "views_per_hour": 0.116
+      "views_per_hour": 0.115
     }
   ],
   "targets": {
