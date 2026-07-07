@@ -1,45 +1,37 @@
 {
-  "generated_at": "2026-07-07T05:27:00.872320+00:00",
+  "generated_at": "2026-07-07T05:53:26.725143+00:00",
   "pending": 20,
   "states": {
-    "rewrite": 18,
-    "publish_ready": 2
+    "rewrite": 17,
+    "publish_ready": 3
   },
   "mechanism_clusters": {
     "call_signal": 1,
     "beak_signal": 1,
     "scent_map": 1,
-    "face_recognition": 1,
-    "tongue_smell": 1
+    "tongue_smell": 1,
+    "face_recognition": 1
   },
   "rights": {
     "approved": 20
   },
   "prune_summary": {
-    "pending_before": 31,
+    "pending_before": 20,
     "pending_after": 20,
-    "rejected": 11,
-    "repair_needed": 2,
-    "repaired": 8,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 5,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 18,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 11,
-      "duplicate_title": 7,
-      "off_topic_visual": 5,
+      "objective_gate:bootstrap_observe_before_scaling": 19,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 12,
       "editor_in_chief:script quality gate blocked the narration": 4,
       "editor_in_chief:editorial score 46 is below 62": 3,
-      "script_subject_mismatch": 2,
-      "copy_subject_mismatch": 2,
-      "script_hook_mismatch": 2,
-      "no_action_promise": 2,
-      "missing_action_word": 2,
-      "missing_visible_cue": 2,
-      "queue_score_reject": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
-      "inventory_reserve_fallback": 2,
       "editor_in_chief:editorial score 40 is below 62": 1,
-      "duplicate_script": 1,
-      "publish_ready_supply_reserve_fallback": 1
+      "duplicate_title": 1,
+      "editorial_cooldown_supply_fallback": 1,
+      "publish_ready_supply_reserve_fallback": 1,
+      "inventory_reserve_fallback": 1
     }
   },
   "rejected_preview": [
@@ -492,7 +484,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-07T05:26:39.887947+00:00",
+        "checked_at": "2026-07-07T05:53:06.209941+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1135,7 +1127,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T05:26:39.445618+00:00",
+        "checked_at": "2026-07-07T05:53:06.185815+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1774,7 +1766,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T05:26:39.448369+00:00",
+        "checked_at": "2026-07-07T05:53:06.188511+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2420,7 +2412,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T05:26:39.081806+00:00",
+        "checked_at": "2026-07-07T05:53:06.182004+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3074,7 +3066,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-07T05:26:39.889071+00:00",
+        "checked_at": "2026-07-07T05:53:06.211005+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -3647,13 +3639,13 @@
           },
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 69,
+          "score": 71,
           "signals": {
             "comment_potential": 54,
             "educational_potential": 73,
             "emotional_potential": 44,
             "novelty": 59,
-            "replay_potential": 82,
+            "replay_potential": 92,
             "viral_potential": 85,
             "visual_potential": 69
           },
@@ -3677,21 +3669,21 @@
           },
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 73,
+          "score": 78,
           "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
+            "completion_prediction": 84,
+            "curiosity_score": 79,
             "hook_score": 82,
-            "replay_score": 72,
+            "replay_score": 82,
             "visual_score": 58
           },
-          "verdict": "rewrite"
+          "verdict": "ready"
         },
         "score": 100,
         "state": "publish_ready",
         "story_format": "body_superpower",
         "subscriber_conversion": {
-          "comment_probability": 0.223,
+          "comment_probability": 0.24,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -3708,19 +3700,20 @@
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.261,
+          "return_probability": 0.281,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 86,
+          "score": 93,
           "state": "strong",
-          "subscriber_probability": 0.123
+          "subscriber_probability": 0.133
         },
-        "title_score": 90,
+        "title_score": 100,
         "weak_content": {
           "confidence": {
             "bootstrap_multiplier": 0.738,
@@ -3739,16 +3732,17 @@
           "state": "clear"
         }
       },
-      "editorial_state": "rewrite",
+      "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-07T05:26:40.608674+00:00",
+        "checked_at": "2026-07-07T05:53:06.575898+00:00",
         "mechanism_cluster": "tongue_smell",
         "objective_reasons": [
-          "inventory_reserve_fallback",
-          "inventory_reserve:duplicate_title"
+          "objective_gate:bootstrap_observe_before_scaling",
+          "editor_in_chief:subject repeated inside 3-day cooldown",
+          "editorial_cooldown_supply_fallback"
         ],
         "score": 72.0,
-        "state": "rewrite",
+        "state": "publish_ready",
         "template_cluster": ""
       },
       "queue_score": 72.0,
@@ -3811,7 +3805,7 @@
         "viewer_promise": "See why snakes body superpower matters."
       },
       "packaging": {
-        "community_prompt": "Which snakes clue should Wild Brief compare next in Watch The Cue?",
+        "community_prompt": "Which snakes clue should Wild Brief compare next in Cold-Blooded Secrets?",
         "cta_prompt": "Want more survival tricks from ancient designs?",
         "curiosity_gap": {
           "hook": "Why do these layers change after the face memory?",
@@ -3907,7 +3901,7 @@
         "loop_plan": {
           "audio_crossfade_ms": 120,
           "callback_keyword": "tongue smell",
-          "ending_line": "Would you notice the trail?",
+          "ending_line": "Would you notice the trail.",
           "final_line": "Now the tongue smell at the start makes sense.",
           "loop_score": 0.79,
           "opening_line": "Snakes sample the air with a tongue flick.",
@@ -3920,7 +3914,7 @@
           "subtitle_tail_mode": "carry-forward"
         },
         "loop_score": 0.79,
-        "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. Is this ancient design underrated?",
+        "next_episode_question": "Tomorrow in Cold-Blooded Secrets: another animal signal. Is this ancient design underrated?",
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
@@ -3952,7 +3946,7 @@
           ],
           "subject": "layers"
         },
-        "pinned_comment": "Watch the tongue smell again. Tomorrow in Watch The Cue: another animal signal. Is this ancient design underrated?",
+        "pinned_comment": "Watch the tongue smell again. Tomorrow in Cold-Blooded Secrets: another animal signal. Is this ancient design underrated?",
         "preflight_inputs": {
           "caption_chars_per_second": 15.56,
           "contrast_score": 0.74,
@@ -4019,25 +4013,25 @@
           },
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 73,
+          "score": 78,
           "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
+            "completion_prediction": 84,
+            "curiosity_score": 79,
             "hook_score": 82,
-            "replay_score": 72,
+            "replay_score": 82,
             "visual_score": 58
           },
-          "verdict": "rewrite"
+          "verdict": "ready"
         },
         "retention_contract": {
           "first_2s_narration": "Snakes sample the air with a tongue flick Watch the tongue flick",
           "first_frame_text": "TONGUE SMELL",
-          "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. Is this ancient design underrated?",
+          "next_episode_question": "Tomorrow in Cold-Blooded Secrets: another animal signal. Is this ancient design underrated?",
           "opening_retention_score": 92.0,
           "opening_retention_state": "retention_ready",
           "search_intent": {
             "description_line": "This Short explains Snakes behavior through the visible tongue smell.",
-            "series": "Watch The Cue",
+            "series": "Cold-Blooded Secrets",
             "subject": "snakes",
             "terms": [
               "snakes",
@@ -4048,15 +4042,15 @@
             "title_variant": "Snakes behavior: tongue smell explained",
             "visible_cue": "tongue smell"
           },
-          "series": "Watch The Cue",
+          "series": "Cold-Blooded Secrets",
           "subject": "snakes",
           "visible_cue": "tongue smell"
         },
         "risks": [],
-        "score": 96,
+        "score": 98,
         "search_intent": {
           "description_line": "This Short explains Snakes behavior through the visible tongue smell.",
-          "series": "Watch The Cue",
+          "series": "Cold-Blooded Secrets",
           "subject": "snakes",
           "terms": [
             "snakes",
@@ -4073,12 +4067,12 @@
           "thumbnail_text": "TONGUE SMELL",
           "title": "Snakes smell the air with their tongues"
         },
-        "series": "Watch The Cue",
+        "series": "Cold-Blooded Secrets #4",
         "series_identity": {
-          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Watch The Cue",
-          "series": "Watch The Cue"
+          "continuity_prompt": "Next in Cold-Blooded Secrets: compare this with another force of nature.",
+          "episode": 4,
+          "label": "Cold-Blooded Secrets #4",
+          "series": "Cold-Blooded Secrets"
         },
         "state": "magnetic",
         "strengths": [
@@ -4090,7 +4084,7 @@
           "retention_opening_aligned"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.223,
+          "comment_probability": 0.24,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -4107,17 +4101,18 @@
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.261,
+          "return_probability": 0.281,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 86,
+          "score": 93,
           "state": "strong",
-          "subscriber_probability": 0.123
+          "subscriber_probability": 0.133
         },
         "swipe_risk": {
           "band": "low",
@@ -4138,7 +4133,6 @@
         ],
         "title_options": [
           "Snakes smell the air with their tongues",
-          "Snakes sample the air with a tongue flick",
           "Snakes use tongue smell before they smell",
           "This tongue smell gives snakes away",
           "Why snakes smell after one tongue smell",
@@ -4146,7 +4140,8 @@
           "The tongue smell that changes the moment",
           "Snakes make one tongue smell matter",
           "Snakes show the hidden answer in seconds",
-          "Snakes: watch this tongue smell"
+          "Snakes: watch this tongue smell",
+          "Watch snakes after the tongue smell"
         ],
         "top_variants": [
           {
@@ -4404,7 +4399,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T05:26:40.636927+00:00",
+        "checked_at": "2026-07-07T05:53:06.622225+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "inventory_reserve_fallback",
@@ -5069,7 +5064,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T05:26:39.890708+00:00",
+        "checked_at": "2026-07-07T05:53:06.212546+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5716,7 +5711,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T05:26:39.892314+00:00",
+        "checked_at": "2026-07-07T05:53:06.214067+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6366,7 +6361,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T05:26:39.868005+00:00",
+        "checked_at": "2026-07-07T05:53:06.190718+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7008,7 +7003,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T05:26:39.870293+00:00",
+        "checked_at": "2026-07-07T05:53:06.192935+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7662,7 +7657,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T05:26:39.872294+00:00",
+        "checked_at": "2026-07-07T05:53:06.194837+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8318,7 +8313,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T05:26:39.875679+00:00",
+        "checked_at": "2026-07-07T05:53:06.197747+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8981,7 +8976,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T05:26:39.877701+00:00",
+        "checked_at": "2026-07-07T05:53:06.200161+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9632,7 +9627,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T05:26:39.879133+00:00",
+        "checked_at": "2026-07-07T05:53:06.201523+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10278,7 +10273,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T05:26:39.881412+00:00",
+        "checked_at": "2026-07-07T05:53:06.203728+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10928,7 +10923,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T05:26:39.885670+00:00",
+        "checked_at": "2026-07-07T05:53:06.207776+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11589,7 +11584,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T05:26:40.225579+00:00",
+        "checked_at": "2026-07-07T05:53:06.579057+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12241,7 +12236,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T05:26:39.883799+00:00",
+        "checked_at": "2026-07-07T05:53:06.205980+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12894,7 +12889,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-07T05:26:40.227556+00:00",
+        "checked_at": "2026-07-07T05:53:06.580915+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
