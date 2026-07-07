@@ -5,17 +5,72 @@
     24
   ],
   "counts": {
-    "analytics_due": 1,
-    "awaiting_1h": 1,
-    "high_priority": 6,
-    "repair_candidates": 5,
+    "analytics_due": 2,
+    "awaiting_1h": 2,
+    "high_priority": 5,
+    "repair_candidates": 3,
     "tracked": 10
   },
-  "generated_at": "2026-07-07T00:23:55.313099+00:00",
+  "generated_at": "2026-07-07T00:31:20.955074+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.749,
+      "age_hours": 0.037,
+      "category": "wildlife",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-07T01:29:08.349800+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-07T06:29:08.349800+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-08T00:29:08.349800+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-07T01:29:08.349800+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 90.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Animal Superpowers",
+      "state": "awaiting_1h",
+      "title": "Deer can aim each ear toward danger",
+      "uploaded_at": "2026-07-07T00:29:08.349800+00:00",
+      "url": "https://www.youtube.com/shorts/XGrYnV-uJaQ",
+      "video_id": "XGrYnV-uJaQ",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.872,
       "category": "insects",
       "checkpoints": [
         {
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.975,
+      "age_hours": 2.099,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.317,
+      "age_hours": 3.441,
       "category": "forests",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.177,
+      "age_hours": 4.301,
       "category": "conservation",
       "checkpoints": [
         {
@@ -234,16 +289,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 7.392,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 7.516,
       "category": "wildlife",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-06T18:00:23.228565+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -267,41 +322,30 @@
         }
       ],
       "current_views": 1,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-07T17:00:23.228565+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-06T18:00:23.228565+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
-        "views": 1
+        "state": "overdue",
+        "target_views": 24,
+        "views": 0
       },
       "opening_retention_score": 94.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Animal Superpowers",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Bears can smell a meal long before seeing it",
       "uploaded_at": "2026-07-06T17:00:23.228565+00:00",
       "url": "https://www.youtube.com/shorts/FfM3i7ikJb4",
       "video_id": "FfM3i7ikJb4",
-      "views_per_hour": 0.136,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Bears can smell a meal long before seeing it",
-        "video_id": "FfM3i7ikJb4",
-        "views": 1,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.134
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.502,
+      "age_hours": 12.626,
       "category": "space",
       "checkpoints": [
         {
@@ -317,8 +361,8 @@
           "delta_to_target": -105,
           "due_at": "2026-07-06T17:53:47.108347+00:00",
           "label": "6h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 105,
           "views": 0
         },
@@ -356,7 +400,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 25.682,
+      "age_hours": 25.806,
       "category": "chemistry",
       "checkpoints": [
         {
@@ -422,7 +466,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 27.094,
+      "age_hours": 27.218,
       "category": "insects",
       "checkpoints": [
         {
@@ -488,7 +532,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 28.271,
+      "age_hours": 28.395,
       "category": "insects",
       "checkpoints": [
         {
@@ -548,72 +592,6 @@
         "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
         "title": "Bees dance directions back to the hive",
         "video_id": "qgE9xwLOE-w",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
-    },
-    {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 28.69,
-      "category": "ocean",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-05T20:42:29.615977+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-06T01:42:29.615977+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": -300,
-          "due_at": "2026-07-06T19:42:29.615977+00:00",
-          "label": "24h",
-          "source": "observed",
-          "state": "observed",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-05T20:42:29.615977+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 94.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Ocean Mysteries",
-      "state": "repair_candidate",
-      "title": "Dolphins use signature whistles like names",
-      "uploaded_at": "2026-07-05T19:42:29.615977+00:00",
-      "url": "https://www.youtube.com/shorts/iMu5K1YL2Bo",
-      "video_id": "iMu5K1YL2Bo",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.756,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Dolphins use signature whistles like names",
-        "video_id": "iMu5K1YL2Bo",
         "views": 0,
         "warning_state": "repair_risk"
       }

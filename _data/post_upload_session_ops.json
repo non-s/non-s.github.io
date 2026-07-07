@@ -2,44 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 5,
-      "high": 1,
-      "manual_review": 5,
+      "automation_safe": 7,
+      "high": 0,
+      "manual_review": 3,
       "total": 10,
       "urgent": 5
     },
     "free_only": true,
-    "generated_at": "2026-07-07T00:23:55.314538+00:00",
+    "generated_at": "2026-07-07T00:31:20.956454+00:00",
     "items": [
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 28.69,
-        "automation_safe": false,
-        "category": "ocean",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "overdue",
-        "current_views": 0,
-        "due_at": "2026-07-05T20:42:29.615977+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:iMu5K1YL2Bo:repair_candidate:1h",
-        "lane": "package_rescue",
-        "manual_approval_required": true,
-        "opening_retention_score": 94.0,
-        "priority": "urgent",
-        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "series": "Ocean Mysteries",
-        "state": "repair_candidate",
-        "target_views": 24,
-        "title": "Dolphins use signature whistles like names",
-        "url": "https://www.youtube.com/shorts/iMu5K1YL2Bo",
-        "video_id": "iMu5K1YL2Bo",
-        "wait_until": "",
-        "why": "Observed velocity is weak enough to prepare a package intervention."
-      },
-      {
-        "action_type": "prepare_package_rescue",
-        "age_hours": 28.271,
+        "age_hours": 28.395,
         "automation_safe": false,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -65,7 +39,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 27.094,
+        "age_hours": 27.218,
         "automation_safe": false,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -91,7 +65,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 25.682,
+        "age_hours": 25.806,
         "automation_safe": false,
         "category": "chemistry",
         "checkpoint_label": "1h",
@@ -117,7 +91,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 12.502,
+        "age_hours": 12.626,
         "automation_safe": true,
         "category": "space",
         "checkpoint_label": "1h",
@@ -142,34 +116,34 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "prepare_package_rescue",
-        "age_hours": 7.392,
-        "automation_safe": false,
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 7.516,
+        "automation_safe": true,
         "category": "wildlife",
-        "checkpoint_label": "24h",
-        "checkpoint_state": "pending",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "overdue",
         "current_views": 1,
-        "due_at": "2026-07-07T17:00:23.228565+00:00",
+        "due_at": "2026-07-06T18:00:23.228565+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:FfM3i7ikJb4:repair_candidate:24h",
-        "lane": "package_rescue",
-        "manual_approval_required": true,
+        "id": "fresh-upload:FfM3i7ikJb4:analytics_due:1h",
+        "lane": "measurement",
+        "manual_approval_required": false,
         "opening_retention_score": 94.0,
-        "priority": "high",
-        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "priority": "urgent",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
         "series": "Animal Superpowers",
-        "state": "repair_candidate",
-        "target_views": 300,
+        "state": "analytics_due",
+        "target_views": 24,
         "title": "Bears can smell a meal long before seeing it",
         "url": "https://www.youtube.com/shorts/FfM3i7ikJb4",
         "video_id": "FfM3i7ikJb4",
         "wait_until": "",
-        "why": "Observed velocity is weak enough to prepare a package intervention."
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.749,
+        "age_hours": 0.872,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -194,8 +168,34 @@
         "why": "The upload is still inside the no-panic observation window."
       },
       {
+        "action_type": "hold_until_first_hour",
+        "age_hours": 0.037,
+        "automation_safe": true,
+        "category": "wildlife",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-07T01:29:08.349800+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:XGrYnV-uJaQ:awaiting_1h:1h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 90.0,
+        "priority": "low",
+        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "series": "Animal Superpowers",
+        "state": "awaiting_1h",
+        "target_views": 24,
+        "title": "Deer can aim each ear toward danger",
+        "url": "https://www.youtube.com/shorts/XGrYnV-uJaQ",
+        "video_id": "XGrYnV-uJaQ",
+        "wait_until": "2026-07-07T01:29:08.349800+00:00",
+        "why": "The upload is still inside the no-panic observation window."
+      },
+      {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 4.177,
+        "age_hours": 4.301,
         "automation_safe": true,
         "category": "conservation",
         "checkpoint_label": "6h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.317,
+        "age_hours": 3.441,
         "automation_safe": true,
         "category": "forests",
         "checkpoint_label": "6h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 1.975,
+        "age_hours": 2.099,
         "automation_safe": true,
         "category": "reptiles",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-07T00:23:55.313099+00:00"
+    "source_generated_at": "2026-07-07T00:31:20.955074+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,72 @@
       24
     ],
     "counts": {
-      "analytics_due": 1,
-      "awaiting_1h": 1,
-      "high_priority": 6,
-      "repair_candidates": 5,
+      "analytics_due": 2,
+      "awaiting_1h": 2,
+      "high_priority": 5,
+      "repair_candidates": 3,
       "tracked": 10
     },
-    "generated_at": "2026-07-07T00:23:55.313099+00:00",
+    "generated_at": "2026-07-07T00:31:20.955074+00:00",
     "items": [
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.749,
+        "age_hours": 0.037,
+        "category": "wildlife",
+        "checkpoints": [
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-07T01:29:08.349800+00:00",
+            "label": "1h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 24,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-07T06:29:08.349800+00:00",
+            "label": "6h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 105,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-08T00:29:08.349800+00:00",
+            "label": "24h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 300,
+            "views": 0
+          }
+        ],
+        "current_views": 0,
+        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "next_checkpoint": {
+          "delta_to_target": 0,
+          "due_at": "2026-07-07T01:29:08.349800+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        "opening_retention_score": 90.0,
+        "opening_retention_state": "retention_ready",
+        "priority": "low",
+        "series": "Animal Superpowers",
+        "state": "awaiting_1h",
+        "title": "Deer can aim each ear toward danger",
+        "uploaded_at": "2026-07-07T00:29:08.349800+00:00",
+        "url": "https://www.youtube.com/shorts/XGrYnV-uJaQ",
+        "video_id": "XGrYnV-uJaQ",
+        "views_per_hour": 0.0
+      },
+      {
+        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "age_hours": 0.872,
         "category": "insects",
         "checkpoints": [
           {
@@ -347,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 1.975,
+        "age_hours": 2.099,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -402,7 +457,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.317,
+        "age_hours": 3.441,
         "category": "forests",
         "checkpoints": [
           {
@@ -457,7 +512,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 4.177,
+        "age_hours": 4.301,
         "category": "conservation",
         "checkpoints": [
           {
@@ -511,16 +566,16 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 7.392,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 7.516,
         "category": "wildlife",
         "checkpoints": [
           {
             "delta_to_target": -24,
             "due_at": "2026-07-06T18:00:23.228565+00:00",
             "label": "1h",
-            "source": "observed",
-            "state": "observed",
+            "source": "estimated",
+            "state": "overdue",
             "target_views": 24,
             "views": 0
           },
@@ -544,41 +599,30 @@
           }
         ],
         "current_views": 1,
-        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
-          "due_at": "2026-07-07T17:00:23.228565+00:00",
-          "label": "24h",
+          "delta_to_target": -24,
+          "due_at": "2026-07-06T18:00:23.228565+00:00",
+          "label": "1h",
           "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 1
+          "state": "overdue",
+          "target_views": 24,
+          "views": 0
         },
         "opening_retention_score": 94.0,
         "opening_retention_state": "retention_ready",
         "priority": "high",
         "series": "Animal Superpowers",
-        "state": "repair_candidate",
+        "state": "analytics_due",
         "title": "Bears can smell a meal long before seeing it",
         "uploaded_at": "2026-07-06T17:00:23.228565+00:00",
         "url": "https://www.youtube.com/shorts/FfM3i7ikJb4",
         "video_id": "FfM3i7ikJb4",
-        "views_per_hour": 0.136,
-        "warning": {
-          "action": "TITLE_AUTO_REPAIR_TRIGGER",
-          "confidence_score": 0.594,
-          "reason": "low early velocity",
-          "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-          "title": "Bears can smell a meal long before seeing it",
-          "video_id": "FfM3i7ikJb4",
-          "views": 1,
-          "warning_state": "repair_risk"
-        }
+        "views_per_hour": 0.134
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 12.502,
+        "age_hours": 12.626,
         "category": "space",
         "checkpoints": [
           {
@@ -594,8 +638,8 @@
             "delta_to_target": -105,
             "due_at": "2026-07-06T17:53:47.108347+00:00",
             "label": "6h",
-            "source": "observed",
-            "state": "observed",
+            "source": "estimated",
+            "state": "overdue",
             "target_views": 105,
             "views": 0
           },
@@ -633,7 +677,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 25.682,
+        "age_hours": 25.806,
         "category": "chemistry",
         "checkpoints": [
           {
@@ -699,7 +743,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 27.094,
+        "age_hours": 27.218,
         "category": "insects",
         "checkpoints": [
           {
@@ -765,7 +809,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 28.271,
+        "age_hours": 28.395,
         "category": "insects",
         "checkpoints": [
           {
@@ -828,72 +872,6 @@
           "views": 0,
           "warning_state": "repair_risk"
         }
-      },
-      {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 28.69,
-        "category": "ocean",
-        "checkpoints": [
-          {
-            "delta_to_target": -24,
-            "due_at": "2026-07-05T20:42:29.615977+00:00",
-            "label": "1h",
-            "source": "estimated",
-            "state": "overdue",
-            "target_views": 24,
-            "views": 0
-          },
-          {
-            "delta_to_target": -105,
-            "due_at": "2026-07-06T01:42:29.615977+00:00",
-            "label": "6h",
-            "source": "estimated",
-            "state": "overdue",
-            "target_views": 105,
-            "views": 0
-          },
-          {
-            "delta_to_target": -300,
-            "due_at": "2026-07-06T19:42:29.615977+00:00",
-            "label": "24h",
-            "source": "observed",
-            "state": "observed",
-            "target_views": 300,
-            "views": 0
-          }
-        ],
-        "current_views": 0,
-        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
-        "next_checkpoint": {
-          "delta_to_target": -24,
-          "due_at": "2026-07-05T20:42:29.615977+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        "opening_retention_score": 94.0,
-        "opening_retention_state": "retention_ready",
-        "priority": "high",
-        "series": "Ocean Mysteries",
-        "state": "repair_candidate",
-        "title": "Dolphins use signature whistles like names",
-        "uploaded_at": "2026-07-05T19:42:29.615977+00:00",
-        "url": "https://www.youtube.com/shorts/iMu5K1YL2Bo",
-        "video_id": "iMu5K1YL2Bo",
-        "views_per_hour": 0.0,
-        "warning": {
-          "action": "TITLE_AUTO_REPAIR_TRIGGER",
-          "confidence_score": 0.756,
-          "reason": "low early velocity",
-          "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
-          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-          "title": "Dolphins use signature whistles like names",
-          "video_id": "iMu5K1YL2Bo",
-          "views": 0,
-          "warning_state": "repair_risk"
-        }
       }
     ],
     "targets": {
@@ -903,23 +881,12 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-07T00:23:55.314633+00:00",
+  "generated_at": "2026-07-07T00:31:20.956547+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
   ],
   "related_video_recommendations": [
-    {
-      "recommendation": {
-        "reason": "same series/category/format session bridge",
-        "score": 85.0,
-        "title": "Wolves read scent posts like a map",
-        "url": "https://www.youtube.com/shorts/p5aVx8ZViPI",
-        "video_id": "p5aVx8ZViPI"
-      },
-      "source_title": "Bears can smell a meal long before seeing it",
-      "source_video_id": "FfM3i7ikJb4"
-    },
     {
       "recommendation": {
         "reason": "same series/category/format session bridge",
@@ -963,14 +930,20 @@
       },
       "source_title": "Mantises can measure a strike in 3D",
       "source_video_id": "BdIu_W6JmUw"
+    },
+    {
+      "recommendation": {
+        "reason": "same series/category/format session bridge",
+        "score": 65.0,
+        "title": "Elephants cool blood through giant ears",
+        "url": "https://www.youtube.com/shorts/HDQAh3KSdtY",
+        "video_id": "HDQAh3KSdtY"
+      },
+      "source_title": "Deer can aim each ear toward danger",
+      "source_video_id": "XGrYnV-uJaQ"
     }
   ],
   "sequel_opportunities": [
-    {
-      "prompt": "Make a sequel with a new subject but the same payoff shape: Bears can smell a meal long before seeing it",
-      "title": "Bears can smell a meal long before seeing it",
-      "video_id": "FfM3i7ikJb4"
-    },
     {
       "prompt": "Make a sequel with a new subject but the same payoff shape: Fish Mangroves take power out of waves | Roots",
       "title": "Fish Mangroves take power out of waves | Roots",
@@ -990,13 +963,18 @@
       "prompt": "Make a sequel with a new subject but the same payoff shape: Mantises can measure a strike in 3D",
       "title": "Mantises can measure a strike in 3D",
       "video_id": "BdIu_W6JmUw"
+    },
+    {
+      "prompt": "Make a sequel with a new subject but the same payoff shape: Deer can aim each ear toward danger",
+      "title": "Deer can aim each ear toward danger",
+      "video_id": "XGrYnV-uJaQ"
     }
   ],
   "session_graph": {
     "action_score_threshold": 55,
     "coverage": 0.95,
     "edges": 20,
-    "nodes": 72,
+    "nodes": 73,
     "target_reuse_limit": 2
   }
 }
