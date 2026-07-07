@@ -1,26 +1,26 @@
 {
-  "total": 1000,
+  "total": 901,
   "reasons": {
-    "duplicate_title": 408,
+    "duplicate_title": 416,
     "off_topic_visual": 229,
-    "duplicate_script": 139,
-    "duplicate_angle": 136,
-    "thumbnail_text_not_scannable": 126,
-    "thumbnail_not_2_4_words": 126,
+    "duplicate_script": 142,
+    "duplicate_angle": 139,
+    "copy_subject_mismatch": 80,
     "script_hook_mismatch": 80,
     "queue_score_reject": 80,
-    "copy_subject_mismatch": 79,
     "editorial score is below publish threshold": 75,
-    "opening_retention_gap_risk": 32,
+    "opening_retention_gap_risk": 33,
     "script_subject_mismatch": 29,
     "rights_guard_person_manual_review": 21,
     "low_opportunity_score": 21,
     "opening promise is not concrete enough": 19,
+    "thumbnail_text_not_scannable": 18,
+    "thumbnail_not_2_4_words": 18,
     "subject repeated inside 3-day cooldown": 17,
     "humanity score is too low": 17,
-    "subject_not_immediately_clear": 14,
+    "subject_not_immediately_clear": 15,
+    "payoff_not_explicit": 14,
     "non_animal_body_language": 13,
-    "payoff_not_explicit": 13,
     "script_word_loop": 8,
     "title_shape_weak": 6,
     "editorial score 37 is below 62": 6,
@@ -33,42 +33,24 @@
     "script quality gate blocked the narration": 4,
     "story angle repeated inside 10-day cooldown": 3,
     "bad_plural_verb": 3,
+    "hook_shape_weak": 3,
     "editorial score 31 is below 62": 2,
     "editorial score 35 is below 62": 2,
-    "hook_shape_weak": 2,
     "editorial score 41 is below 62": 2,
     "title_needs_stronger_shape": 1,
     "subject_not_clear": 1
   },
   "stages": {
     "queue_prune": 403,
-    "queue_prune_final": 274,
-    "youtube_brain_rewrite": 110,
+    "queue_prune_final": 282,
     "queue_repair": 80,
     "pre_publish_audit": 75,
     "editor_in_chief": 24,
     "opportunity_score": 21,
-    "youtube_brain": 13
+    "youtube_brain": 14,
+    "youtube_brain_rewrite": 2
   },
   "latest": [
-    {
-      "story_id": "077b0e0acca1b09e",
-      "stage": "queue_prune",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "title": "Mountains aren’t as solid as they look",
-      "category": "geology",
-      "script_key": "watch this one twice those smooth snow patches they re sandpaper glaciers drag rocks that scrape mountains down not up that s why valleys look carved not built i love this one ever wonder why the alps aren t taller they re eroding faster than they grow would you survive a million years of this",
-      "angle_key": "mountains|grow|rocks|geology",
-      "source_url": "https://www.pexels.com/video/skier-descends-snowy-mountain-slope-in-winter-30783549/",
-      "pexels_video_id": "30783549",
-      "source_clip_id": "pexels:077b0e0acca1b09e",
-      "recorded_at": "2026-07-07T05:26:40.702414+00:00",
-      "rewrite_attempted": false,
-      "rewrite_applied": false
-    },
     {
       "story_id": "e3cb5b4c9ab68c04",
       "stage": "queue_prune",
@@ -345,42 +327,6 @@
       "rewrite_applied": true
     },
     {
-      "story_id": "5492c4505c453345",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Cats groom to reset their scent map",
-      "category": "cats",
-      "script_key": "cats use grooming to reset their scent map watch the tongue and paw movements because grooming spreads familiar scent across the coat that can help a cat settle after a tense moment and keep the fur ready for the next move the cleanup is also a signal which pet behavior should we decode next",
-      "angle_key": "cats|signal|scent map|cats",
-      "source_url": "https://www.pexels.com/video/curious-stray-cat-exploring-urban-street-35595015/",
-      "pexels_video_id": "35595015",
-      "source_clip_id": "pexels:5492c4505c453345",
-      "recorded_at": "2026-07-07T08:00:50.919670+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-07T08:00:51.000449+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
       "story_id": "d02b7dbe2f69aa15",
       "stage": "editor_in_chief",
       "reasons": [
@@ -505,6 +451,62 @@
       "pexels_video_id": "32928952",
       "source_clip_id": "pexels:b6c11a6103fc9b46",
       "recorded_at": "2026-07-07T08:51:27.832396+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "5492c4505c453345",
+      "stage": "youtube_brain_rewrite",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "title": "Cats groom to reset their scent map",
+      "category": "cats",
+      "script_key": "cats use grooming to reset their scent map watch the tongue and paw movements because grooming spreads familiar scent across the coat that can help a cat settle after a tense moment and keep the fur ready for the next move the cleanup is also a signal which pet behavior should we decode next",
+      "angle_key": "cats|signal|scent map|cats",
+      "source_url": "https://www.pexels.com/video/curious-stray-cat-exploring-urban-street-35595015/",
+      "pexels_video_id": "35595015",
+      "source_clip_id": "pexels:5492c4505c453345",
+      "recorded_at": "2026-07-07T10:14:30.172017+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "8bdc8b70af521eb4",
+      "stage": "youtube_brain_rewrite",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "title": "Fossils turn old bones into time clues",
+      "category": "discoveries",
+      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
+      "angle_key": "fossils|form|pattern|discoveries",
+      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
+      "pexels_video_id": "36118169",
+      "source_clip_id": "pexels:8bdc8b70af521eb4",
+      "recorded_at": "2026-07-07T10:14:30.225012+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "Snakes Las víboras huelen con la lengua antes que con la...",
+      "stage": "youtube_brain",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "payoff_not_explicit",
+        "hook_shape_weak",
+        "opening_retention_gap_risk"
+      ],
+      "title": "Snakes Las víboras huelen con la lengua antes que con la...",
+      "category": "reptiles",
+      "script_key": "las v boras huelen con la lengua antes que con la nariz cada vez que sacan la lengua capturan olores del aire y los llevan a un rgano especial en la boca as encuentran presa pareja o peligro sin hacer ruido el aire es pura informaci n t lo notar as now the tongue smell at the start makes sense",
+      "angle_key": "snakes|sense|tongue smell|reptiles",
+      "source_url": "https://www.pexels.com/video/rocky-landscape-with-hidden-wildlife-38332762/",
+      "pexels_video_id": "38332762",
+      "source_clip_id": "pexels:6e23824056132e17",
+      "recorded_at": "2026-07-07T10:15:43.378701+00:00",
       "rewrite_attempted": false,
       "rewrite_applied": false
     }
