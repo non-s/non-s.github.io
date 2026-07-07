@@ -1,6 +1,190 @@
 {
   "items": [
     {
+      "id": "d839beca3c1cf8ba",
+      "title": "This tongue smell gives snakes away",
+      "category": "reptiles",
+      "autonomy_priority": 103.0,
+      "queue_score": 72.0,
+      "template_cluster": "",
+      "mechanism_cluster": "tongue_smell",
+      "objective_reasons": [
+        "objective_gate:bootstrap_observe_before_scaling",
+        "editor_in_chief:subject repeated inside 3-day cooldown",
+        "editorial_cooldown_supply_fallback"
+      ],
+      "lane": "evergreen",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 100.0,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 67,
+          "signals": {
+            "viral_potential": 77,
+            "visual_potential": 69,
+            "replay_potential": 82,
+            "comment_potential": 54,
+            "educational_potential": 73,
+            "emotional_potential": 35,
+            "novelty": 59
+          },
+          "verdict": "produce",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "retention": {
+          "score": 75,
+          "signals": {
+            "hook_score": 82,
+            "curiosity_score": 71,
+            "visual_score": 58,
+            "replay_score": 72,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "opening_retention": {
+          "score": 100.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "snakes",
+          "cue_terms": [
+            "air",
+            "smell",
+            "tongue"
+          ],
+          "frame_hook_bridge": [
+            "tongue"
+          ],
+          "cue_bridge": [
+            "air",
+            "tongue"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": []
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 8,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 8/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123,
+          "return_probability": 0.261,
+          "comment_probability": 0.223,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.033,
+            "sample_size": 1,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.274,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.007,
+          "sample_size": 1,
+          "minimum_sample_size": 15,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.255,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
+        },
+        "category": "reptiles",
+        "story_format": "body_superpower",
+        "hook_score": 100,
+        "title_score": 74,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "confidence_score": 0.007,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 0.0,
+          "template_cluster": "",
+          "mechanism_cluster": "tongue_smell"
+        }
+      }
+    },
+    {
       "id": "8bdc8b70af521eb4",
       "title": "Fossils turn old bones into time clues",
       "category": "discoveries",
@@ -390,7 +574,7 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 17,
+      "evergreen": 19,
       "recovery": 1
     },
     "items": [
@@ -400,7 +584,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.02
+        "freshness_score": 54.0
       },
       {
         "id": "7297fa80243db8ee",
@@ -464,7 +648,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 50.48
+        "freshness_score": 50.46
       },
       {
         "id": "1e1fd2bf8c255b87",
@@ -512,7 +696,7 @@
         "category": "cats",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.02
+        "freshness_score": 54.0
       },
       {
         "id": "53958248afcfe49f",
@@ -531,12 +715,28 @@
         "freshness_score": 37.58
       },
       {
+        "id": "d839beca3c1cf8ba",
+        "title": "This tongue smell gives snakes away",
+        "category": "reptiles",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
+      },
+      {
         "id": "8e9710036cf1db90",
         "title": "Plants use trap hairs to count touches before closing",
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
         "freshness_score": 51.96
+      },
+      {
+        "id": "c42cf1fc339600fa",
+        "title": "Magnets use field lines before they change",
+        "category": "physics",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -548,39 +748,49 @@
     "windows": [
       {
         "window": 10,
-        "items": 2,
-        "dominant_shape": "{subject} turn old bones into time clues",
+        "items": 3,
+        "dominant_shape": "{subject} tongue smell gives snakes away",
         "dominant_count": 1,
-        "dominant_share": 0.5,
+        "dominant_share": 0.333,
         "top_shapes": [
+          {
+            "shape": "{subject} tongue smell gives snakes away",
+            "count": 1,
+            "share": 0.333
+          },
           {
             "shape": "{subject} turn old bones into time clues",
             "count": 1,
-            "share": 0.5
+            "share": 0.333
           },
           {
             "shape": "{subject} groom to reset their scent map",
             "count": 1,
-            "share": 0.5
+            "share": 0.333
           }
         ]
       },
       {
         "window": 30,
-        "items": 2,
-        "dominant_shape": "{subject} turn old bones into time clues",
+        "items": 3,
+        "dominant_shape": "{subject} tongue smell gives snakes away",
         "dominant_count": 1,
-        "dominant_share": 0.5,
+        "dominant_share": 0.333,
         "top_shapes": [
+          {
+            "shape": "{subject} tongue smell gives snakes away",
+            "count": 1,
+            "share": 0.333
+          },
           {
             "shape": "{subject} turn old bones into time clues",
             "count": 1,
-            "share": 0.5
+            "share": 0.333
           },
           {
             "shape": "{subject} groom to reset their scent map",
             "count": 1,
-            "share": 0.5
+            "share": 0.333
           }
         ]
       }
@@ -588,19 +798,22 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 18,
-    "pending_after": 18,
+    "pending_before": 20,
+    "pending_after": 20,
     "rejected": 0,
     "repair_needed": 0,
-    "repaired": 4,
+    "repaired": 6,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 18,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 10,
+      "objective_gate:bootstrap_observe_before_scaling": 19,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 11,
       "editor_in_chief:script quality gate blocked the narration": 4,
       "editor_in_chief:editorial score 46 is below 62": 3,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
       "editor_in_chief:editorial score 40 is below 62": 1,
-      "publish_ready_supply_reserve_fallback": 1
+      "duplicate_title": 1,
+      "editorial_cooldown_supply_fallback": 1,
+      "publish_ready_supply_reserve_fallback": 1,
+      "inventory_reserve_fallback": 1
     }
   }
 }
