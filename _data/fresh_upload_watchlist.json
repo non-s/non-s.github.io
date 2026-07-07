@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 8,
+    "analytics_due": 7,
     "awaiting_1h": 0,
     "high_priority": 10,
-    "repair_candidates": 2,
+    "repair_candidates": 3,
     "tracked": 10
   },
-  "generated_at": "2026-07-07T22:24:25.583035+00:00",
+  "generated_at": "2026-07-07T22:28:58.910712+00:00",
   "items": [
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.059,
+      "age_hours": 6.135,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -81,7 +81,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.008,
+      "age_hours": 11.084,
       "category": "insects",
       "checkpoints": [
         {
@@ -136,7 +136,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.142,
+      "age_hours": 12.218,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -187,11 +187,11 @@
       "uploaded_at": "2026-07-07T10:15:52.640295+00:00",
       "url": "https://www.youtube.com/shorts/gnDKpwxV42s",
       "video_id": "gnDKpwxV42s",
-      "views_per_hour": 0.083
+      "views_per_hour": 0.082
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 14.382,
+      "age_hours": 14.458,
       "category": "fungi",
       "checkpoints": [
         {
@@ -242,11 +242,11 @@
       "uploaded_at": "2026-07-07T08:01:30.868882+00:00",
       "url": "https://www.youtube.com/shorts/uoVylVB2fQI",
       "video_id": "uoVylVB2fQI",
-      "views_per_hour": 0.14
+      "views_per_hour": 0.139
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 17.185,
+      "age_hours": 17.261,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -301,7 +301,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 18.093,
+      "age_hours": 18.169,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -356,7 +356,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 21.921,
+      "age_hours": 21.997,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -411,7 +411,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 22.757,
+      "age_hours": 22.833,
       "category": "insects",
       "checkpoints": [
         {
@@ -465,8 +465,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 23.984,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 24.059,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -488,17 +488,17 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -300,
           "due_at": "2026-07-07T22:25:24.850930+00:00",
           "label": "24h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 300,
           "views": 0
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": -24,
         "due_at": "2026-07-06T23:25:24.850930+00:00",
@@ -512,16 +512,27 @@
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Cold-Blooded Secrets",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Snakes sample the air with a tongue flick",
       "uploaded_at": "2026-07-06T22:25:24.850930+00:00",
       "url": "https://www.youtube.com/shorts/MLBBAeh3r9U",
       "video_id": "MLBBAeh3r9U",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.756,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Snakes sample the air with a tongue flick",
+        "video_id": "MLBBAeh3r9U",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 25.325,
+      "age_hours": 25.401,
       "category": "forests",
       "checkpoints": [
         {
