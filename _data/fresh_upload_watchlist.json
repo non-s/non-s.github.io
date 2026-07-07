@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 6,
+    "analytics_due": 7,
     "awaiting_1h": 0,
-    "high_priority": 7,
+    "high_priority": 8,
     "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-07-07T13:42:28.289509+00:00",
+  "generated_at": "2026-07-07T15:13:11.580875+00:00",
   "items": [
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.309,
+      "age_hours": 3.821,
       "category": "insects",
       "checkpoints": [
         {
@@ -70,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.443,
+      "age_hours": 4.955,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -124,8 +124,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.683,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 7.195,
       "category": "fungi",
       "checkpoints": [
         {
@@ -138,11 +138,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-07-07T14:01:30.868882+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -157,38 +157,49 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-07T14:01:30.868882+00:00",
-        "label": "6h",
+        "due_at": "2026-07-08T08:01:30.868882+00:00",
+        "label": "24h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 105,
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Hidden Network",
-      "state": "watch",
+      "state": "repair_candidate",
       "title": "Mushrooms use mushroom gills before they carry",
       "uploaded_at": "2026-07-07T08:01:30.868882+00:00",
       "url": "https://www.youtube.com/shorts/uoVylVB2fQI",
       "video_id": "uoVylVB2fQI",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Mushrooms use mushroom gills before they carry",
+        "video_id": "uoVylVB2fQI",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 8.486,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 9.998,
       "category": "wildlife",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-07T06:13:20.112660+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -212,41 +223,30 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-08T05:13:20.112660+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-07T06:13:20.112660+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "overdue",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 90.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Animal Superpowers",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Deer use sound radar before they aim",
       "uploaded_at": "2026-07-07T05:13:20.112660+00:00",
       "url": "https://www.youtube.com/shorts/73fySwPKvvA",
       "video_id": "73fySwPKvvA",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Deer use sound radar before they aim",
-        "video_id": "73fySwPKvvA",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.394,
+      "age_hours": 10.906,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -301,7 +301,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.222,
+      "age_hours": 14.734,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -317,8 +317,8 @@
           "delta_to_target": -105,
           "due_at": "2026-07-07T06:29:08.349800+00:00",
           "label": "6h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 105,
           "views": 0
         },
@@ -356,7 +356,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 14.058,
+      "age_hours": 15.57,
       "category": "insects",
       "checkpoints": [
         {
@@ -411,7 +411,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 15.284,
+      "age_hours": 16.796,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -466,7 +466,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.626,
+      "age_hours": 18.138,
       "category": "forests",
       "checkpoints": [
         {
@@ -521,7 +521,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 17.486,
+      "age_hours": 18.998,
       "category": "conservation",
       "checkpoints": [
         {
