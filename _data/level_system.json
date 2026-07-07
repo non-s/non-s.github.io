@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-07T11:19:59.912190+00:00",
+  "generated_at": "2026-07-07T11:27:06.141554+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
-  "overall_progress_pct": 26.0,
+  "overall_progress_pct": 24.9,
   "current_level": {
     "number": 2,
     "name": "Publish supply engine",
@@ -10,23 +10,23 @@
     "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
     "revenue_job": "Turn production from lucky shots into repeatable inventory.",
     "status": "boss_fight",
-    "progress_pct": 81.7
+    "progress_pct": 74.4
   },
   "boss": {
     "id": "publish_ready_reserve_low",
     "label": "Publish-ready reserve is below target",
     "severity": "critical",
     "evidence": {
-      "eligible_count": 3,
-      "operational_publish_ready": 3,
-      "apparent_publish_ready": 3,
-      "pending": 19,
+      "eligible_count": 2,
+      "operational_publish_ready": 2,
+      "apparent_publish_ready": 2,
+      "pending": 18,
       "target_publish_ready": 6,
       "target_pending": 20,
       "top_blockers": [
         {
           "id": "objective_gate:bootstrap_observe_before_scaling",
-          "count": 38,
+          "count": 36,
           "operator_translation": "collect more observed signal before scaling this pattern"
         },
         {
@@ -80,27 +80,27 @@
     {
       "priority": "P1",
       "action": "Build the reserve to six operational publish-ready Shorts.",
-      "target": "3/6",
+      "target": "2/6",
       "why": "One upload slot should never depend on one fragile candidate."
     },
     {
       "priority": "P1",
       "action": "Refresh free discovery only after the current repair batch is clean.",
-      "target": "pending 19/20",
+      "target": "pending 18/20",
       "why": "Bigger inventory helps only when the gate can accept winners."
     }
   ],
   "metrics": {
     "health_score": 67,
     "health_state": "needs_work",
-    "pending": 19,
-    "operational_publish_ready": 3,
-    "apparent_publish_ready": 3,
-    "eligible_count": 3,
+    "pending": 18,
+    "operational_publish_ready": 2,
+    "apparent_publish_ready": 2,
+    "eligible_count": 2,
     "scale_ready_count": 0,
-    "next_shorts_count": 3,
-    "editorial_candidate_count": 19,
-    "published_count": 77,
+    "next_shorts_count": 2,
+    "editorial_candidate_count": 18,
+    "published_count": 78,
     "views_28d": 30314,
     "total_subscribers": 46,
     "subs_per_1000_views": 1.221,
@@ -109,12 +109,12 @@
     "recurring_viewer_rate": 0.001,
     "youtube_search_view_rate": 0.017,
     "crosspost_assets": 10,
-    "comments_sampled": 29
+    "comments_sampled": 30
   },
   "top_blockers": [
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
-      "count": 38,
+      "count": 36,
       "operator_translation": "collect more observed signal before scaling this pattern"
     },
     {
@@ -148,19 +148,9 @@
       "operator_translation": "editor in chief:story angle repeated inside 10-day cooldown"
     },
     {
-      "id": "off_topic_visual",
-      "count": 4,
-      "operator_translation": "off topic visual"
-    },
-    {
       "id": "packaging:missing_action_word",
       "count": 3,
       "operator_translation": "packaging:missing action word"
-    },
-    {
-      "id": "bootstrap_observe_before_scaling",
-      "count": 3,
-      "operator_translation": "bootstrap observe before scaling"
     },
     {
       "id": "editor_in_chief:needs_ai_rewrite",
@@ -168,9 +158,19 @@
       "operator_translation": "editor in chief:needs ai rewrite"
     },
     {
+      "id": "bootstrap_observe_before_scaling",
+      "count": 2,
+      "operator_translation": "bootstrap observe before scaling"
+    },
+    {
       "id": "editor_in_chief:editorial score 40 is below 62",
       "count": 2,
       "operator_translation": "editor in chief:editorial score 40 is below 62"
+    },
+    {
+      "id": "publish_ready_supply_reserve_fallback",
+      "count": 2,
+      "operator_translation": "publish ready supply reserve fallback"
     }
   ],
   "levels": [
@@ -183,7 +183,7 @@
       "status": "cleared",
       "progress_pct": 100.0,
       "evidence": {
-        "published_count": 77,
+        "published_count": 78,
         "health_score": 67
       }
     },
@@ -194,11 +194,11 @@
       "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
       "revenue_job": "Turn production from lucky shots into repeatable inventory.",
       "status": "current",
-      "progress_pct": 81.7,
+      "progress_pct": 74.4,
       "evidence": {
-        "operational_publish_ready": 3,
-        "eligible_count": 3,
-        "pending": 19,
+        "operational_publish_ready": 2,
+        "eligible_count": 2,
+        "pending": 18,
         "target_publish_ready": 6,
         "target_pending": 20
       }
@@ -226,7 +226,7 @@
       "progress_pct": 52.5,
       "evidence": {
         "recurring_viewer_rate": 0.001,
-        "comments_sampled": 29
+        "comments_sampled": 30
       }
     },
     {
@@ -262,11 +262,11 @@
       "unlock": "One million views per 28 days, excellent health, and ten publish-ready Shorts in reserve.",
       "revenue_job": "Scale the proven system instead of adding random effort.",
       "status": "locked",
-      "progress_pct": 11.0,
+      "progress_pct": 7.7,
       "evidence": {
         "views_28d": 30314,
         "health_state": "needs_work",
-        "operational_publish_ready": 3
+        "operational_publish_ready": 2
       }
     }
   ],
