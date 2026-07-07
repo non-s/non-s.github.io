@@ -5,25 +5,25 @@
     24
   ],
   "counts": {
-    "analytics_due": 7,
+    "analytics_due": 8,
     "awaiting_1h": 0,
     "high_priority": 10,
-    "repair_candidates": 3,
+    "repair_candidates": 2,
     "tracked": 10
   },
-  "generated_at": "2026-07-07T22:28:58.910712+00:00",
+  "generated_at": "2026-07-07T22:56:18.016853+00:00",
   "items": [
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.135,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 6.591,
       "category": "wildlife",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-07T17:20:51.532065+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -47,41 +47,30 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-08T16:20:51.532065+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-07T17:20:51.532065+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "overdue",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 92.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Animal Superpowers",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Tigers use stripe camouflage before they wear",
       "uploaded_at": "2026-07-07T16:20:51.532065+00:00",
       "url": "https://www.youtube.com/shorts/ELHX7Rr_oL4",
       "video_id": "ELHX7Rr_oL4",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Tigers use stripe camouflage before they wear",
-        "video_id": "ELHX7Rr_oL4",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.084,
+      "age_hours": 11.539,
       "category": "insects",
       "checkpoints": [
         {
@@ -97,8 +86,8 @@
           "delta_to_target": -105,
           "due_at": "2026-07-07T17:23:56.530372+00:00",
           "label": "6h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 105,
           "views": 0
         },
@@ -136,7 +125,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.218,
+      "age_hours": 12.674,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -187,11 +176,11 @@
       "uploaded_at": "2026-07-07T10:15:52.640295+00:00",
       "url": "https://www.youtube.com/shorts/gnDKpwxV42s",
       "video_id": "gnDKpwxV42s",
-      "views_per_hour": 0.082
+      "views_per_hour": 0.079
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 14.458,
+      "age_hours": 14.913,
       "category": "fungi",
       "checkpoints": [
         {
@@ -242,11 +231,11 @@
       "uploaded_at": "2026-07-07T08:01:30.868882+00:00",
       "url": "https://www.youtube.com/shorts/uoVylVB2fQI",
       "video_id": "uoVylVB2fQI",
-      "views_per_hour": 0.139
+      "views_per_hour": 0.134
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 17.261,
+      "age_hours": 17.716,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -301,7 +290,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 18.169,
+      "age_hours": 18.624,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -356,7 +345,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 21.997,
+      "age_hours": 22.453,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -411,7 +400,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 22.833,
+      "age_hours": 23.288,
       "category": "insects",
       "checkpoints": [
         {
@@ -466,7 +455,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 24.059,
+      "age_hours": 24.515,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -532,7 +521,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 25.401,
+      "age_hours": 25.857,
       "category": "forests",
       "checkpoints": [
         {

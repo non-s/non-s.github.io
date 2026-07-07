@@ -2,18 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 7,
-      "high": 1,
-      "manual_review": 3,
+      "automation_safe": 8,
+      "high": 0,
+      "manual_review": 2,
       "total": 10,
-      "urgent": 9
+      "urgent": 10
     },
     "free_only": true,
-    "generated_at": "2026-07-07T22:28:58.911907+00:00",
+    "generated_at": "2026-07-07T22:56:18.018111+00:00",
     "items": [
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 25.401,
+        "age_hours": 25.857,
         "automation_safe": false,
         "category": "forests",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 24.059,
+        "age_hours": 24.515,
         "automation_safe": false,
         "category": "reptiles",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 22.833,
+        "age_hours": 23.288,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -91,7 +91,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 21.997,
+        "age_hours": 22.453,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -117,7 +117,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 18.169,
+        "age_hours": 18.624,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 17.261,
+        "age_hours": 17.716,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -169,7 +169,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 14.458,
+        "age_hours": 14.913,
         "automation_safe": true,
         "category": "fungi",
         "checkpoint_label": "1h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 12.218,
+        "age_hours": 12.674,
         "automation_safe": true,
         "category": "reptiles",
         "checkpoint_label": "1h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 11.084,
+        "age_hours": 11.539,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -246,34 +246,34 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "prepare_package_rescue",
-        "age_hours": 6.135,
-        "automation_safe": false,
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 6.591,
+        "automation_safe": true,
         "category": "wildlife",
-        "checkpoint_label": "24h",
-        "checkpoint_state": "pending",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "overdue",
         "current_views": 0,
-        "due_at": "2026-07-08T16:20:51.532065+00:00",
+        "due_at": "2026-07-07T17:20:51.532065+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:ELHX7Rr_oL4:repair_candidate:24h",
-        "lane": "package_rescue",
-        "manual_approval_required": true,
+        "id": "fresh-upload:ELHX7Rr_oL4:analytics_due:1h",
+        "lane": "measurement",
+        "manual_approval_required": false,
         "opening_retention_score": 92.0,
-        "priority": "high",
-        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "priority": "urgent",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
         "series": "Animal Superpowers",
-        "state": "repair_candidate",
-        "target_views": 300,
+        "state": "analytics_due",
+        "target_views": 24,
         "title": "Tigers use stripe camouflage before they wear",
         "url": "https://www.youtube.com/shorts/ELHX7Rr_oL4",
         "video_id": "ELHX7Rr_oL4",
         "wait_until": "",
-        "why": "Observed velocity is weak enough to prepare a package intervention."
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-07T22:28:58.910712+00:00"
+    "source_generated_at": "2026-07-07T22:56:18.016853+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,25 +282,25 @@
       24
     ],
     "counts": {
-      "analytics_due": 7,
+      "analytics_due": 8,
       "awaiting_1h": 0,
       "high_priority": 10,
-      "repair_candidates": 3,
+      "repair_candidates": 2,
       "tracked": 10
     },
-    "generated_at": "2026-07-07T22:28:58.910712+00:00",
+    "generated_at": "2026-07-07T22:56:18.016853+00:00",
     "items": [
       {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 6.135,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 6.591,
         "category": "wildlife",
         "checkpoints": [
           {
             "delta_to_target": -24,
             "due_at": "2026-07-07T17:20:51.532065+00:00",
             "label": "1h",
-            "source": "observed",
-            "state": "observed",
+            "source": "estimated",
+            "state": "overdue",
             "target_views": 24,
             "views": 0
           },
@@ -324,41 +324,30 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
-          "due_at": "2026-07-08T16:20:51.532065+00:00",
-          "label": "24h",
+          "delta_to_target": -24,
+          "due_at": "2026-07-07T17:20:51.532065+00:00",
+          "label": "1h",
           "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
+          "state": "overdue",
+          "target_views": 24,
           "views": 0
         },
         "opening_retention_score": 92.0,
         "opening_retention_state": "retention_ready",
         "priority": "high",
         "series": "Animal Superpowers",
-        "state": "repair_candidate",
+        "state": "analytics_due",
         "title": "Tigers use stripe camouflage before they wear",
         "uploaded_at": "2026-07-07T16:20:51.532065+00:00",
         "url": "https://www.youtube.com/shorts/ELHX7Rr_oL4",
         "video_id": "ELHX7Rr_oL4",
-        "views_per_hour": 0.0,
-        "warning": {
-          "action": "TITLE_AUTO_REPAIR_TRIGGER",
-          "confidence_score": 0.594,
-          "reason": "low early velocity",
-          "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-          "title": "Tigers use stripe camouflage before they wear",
-          "video_id": "ELHX7Rr_oL4",
-          "views": 0,
-          "warning_state": "repair_risk"
-        }
+        "views_per_hour": 0.0
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 11.084,
+        "age_hours": 11.539,
         "category": "insects",
         "checkpoints": [
           {
@@ -374,8 +363,8 @@
             "delta_to_target": -105,
             "due_at": "2026-07-07T17:23:56.530372+00:00",
             "label": "6h",
-            "source": "observed",
-            "state": "observed",
+            "source": "estimated",
+            "state": "overdue",
             "target_views": 105,
             "views": 0
           },
@@ -413,7 +402,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 12.218,
+        "age_hours": 12.674,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -464,11 +453,11 @@
         "uploaded_at": "2026-07-07T10:15:52.640295+00:00",
         "url": "https://www.youtube.com/shorts/gnDKpwxV42s",
         "video_id": "gnDKpwxV42s",
-        "views_per_hour": 0.082
+        "views_per_hour": 0.079
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 14.458,
+        "age_hours": 14.913,
         "category": "fungi",
         "checkpoints": [
           {
@@ -519,11 +508,11 @@
         "uploaded_at": "2026-07-07T08:01:30.868882+00:00",
         "url": "https://www.youtube.com/shorts/uoVylVB2fQI",
         "video_id": "uoVylVB2fQI",
-        "views_per_hour": 0.139
+        "views_per_hour": 0.134
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 17.261,
+        "age_hours": 17.716,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -578,7 +567,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 18.169,
+        "age_hours": 18.624,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -633,7 +622,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 21.997,
+        "age_hours": 22.453,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -688,7 +677,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 22.833,
+        "age_hours": 23.288,
         "category": "insects",
         "checkpoints": [
           {
@@ -743,7 +732,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 24.059,
+        "age_hours": 24.515,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -809,7 +798,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 25.401,
+        "age_hours": 25.857,
         "category": "forests",
         "checkpoints": [
           {
@@ -881,7 +870,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-07T22:28:58.912000+00:00",
+  "generated_at": "2026-07-07T22:56:18.018207+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
