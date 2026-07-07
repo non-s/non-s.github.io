@@ -1,21 +1,21 @@
 {
-  "total": 1000,
+  "total": 896,
   "reasons": {
-    "duplicate_title": 399,
-    "off_topic_visual": 236,
-    "thumbnail_text_not_scannable": 133,
-    "thumbnail_not_2_4_words": 133,
-    "duplicate_script": 130,
-    "duplicate_angle": 128,
-    "copy_subject_mismatch": 80,
+    "duplicate_title": 406,
+    "off_topic_visual": 235,
+    "duplicate_script": 135,
+    "duplicate_angle": 133,
+    "copy_subject_mismatch": 82,
+    "queue_score_reject": 80,
     "script_hook_mismatch": 80,
     "editorial score is below publish threshold": 75,
-    "queue_score_reject": 74,
+    "opening_retention_gap_risk": 33,
     "script_subject_mismatch": 33,
-    "opening_retention_gap_risk": 32,
     "rights_guard_person_manual_review": 21,
     "low_opportunity_score": 21,
-    "opening promise is not concrete enough": 18,
+    "opening promise is not concrete enough": 19,
+    "thumbnail_text_not_scannable": 18,
+    "thumbnail_not_2_4_words": 18,
     "subject repeated inside 3-day cooldown": 18,
     "humanity score is too low": 18,
     "subject_not_immediately_clear": 15,
@@ -27,10 +27,10 @@
     "missing_visual_cue": 5,
     "missing_action_word": 5,
     "editorial score 39 is below 62": 5,
+    "script does not expose enough concrete visual detail": 4,
     "no_action_promise": 4,
     "missing_visible_cue": 4,
     "script quality gate blocked the narration": 4,
-    "script does not expose enough concrete visual detail": 3,
     "story angle repeated inside 10-day cooldown": 3,
     "bad_plural_verb": 3,
     "hook_shape_weak": 3,
@@ -42,16 +42,179 @@
     "editorial score 45 is below 62": 1
   },
   "stages": {
-    "queue_prune": 400,
+    "queue_prune": 406,
     "queue_prune_final": 273,
-    "youtube_brain_rewrite": 118,
+    "queue_repair": 80,
     "pre_publish_audit": 75,
-    "queue_repair": 74,
     "editor_in_chief": 25,
     "opportunity_score": 21,
-    "youtube_brain": 14
+    "youtube_brain": 14,
+    "youtube_brain_rewrite": 2
   },
   "latest": [
+    {
+      "story_id": "9135a03bfdcca7c5",
+      "stage": "queue_prune",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "title": "desert mountains erode faster than you think",
+      "category": "geology",
+      "script_key": "these peaks disappear fast notice the jagged ridges that s because water doesn t just flow downhill it carves like a sculptor a single storm can strip away inches in hours that s why some desert ranges look like they re melting would you guess this whole mountain used to be twice as tall",
+      "angle_key": "mountains|flow|cue|geology",
+      "source_url": "https://www.pexels.com/video/stunning-desert-mountain-aerial-scenery-34912713/",
+      "pexels_video_id": "34912713",
+      "source_clip_id": "pexels:9135a03bfdcca7c5",
+      "recorded_at": "2026-07-07T08:41:43.511232+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "06d8e6829b62627d",
+      "stage": "queue_prune_final",
+      "reasons": [
+        "off_topic_visual",
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "title": "Lightning makes air explode into thunder",
+      "category": "weather",
+      "script_key": "lightning turns air into a shock wave watch the flash first because lightning heats a narrow path of air extremely fast that air expands suddenly and the pressure wave reaches us as thunder the sound is the atmosphere snapping back which storm signal next",
+      "angle_key": "lightning|signal|sound|weather",
+      "source_url": "https://www.pexels.com/video/smiling-pumpkin-balloon-and-bat-on-wall-9706419/",
+      "pexels_video_id": "9706419",
+      "source_clip_id": "pexels:06d8e6829b62627d",
+      "recorded_at": "2026-07-07T08:41:43.526512+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "12bc66b4553380b2",
+      "stage": "queue_repair",
+      "reasons": [
+        "opening_retention_gap_risk",
+        "opening promise is not concrete enough",
+        "queue_score_reject"
+      ],
+      "title": "Coral reefs are cities built by tiny animals",
+      "category": "ecosystems",
+      "script_key": "coral reefs are built by tiny living builders watch the reef texture because coral animals build hard skeletons that stack into habitat fish algae and countless small creatures then use that structure like a city the color sits on top of engineering which habitat next",
+      "angle_key": "coral|build|reef city|ecosystems",
+      "source_url": "https://www.pexels.com/video/serene-desert-landscape-with-palm-fronds-32018899/",
+      "pexels_video_id": "32018899",
+      "source_clip_id": "pexels:12bc66b4553380b2",
+      "recorded_at": "2026-07-07T08:51:27.799661+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "5bfe6fd1b64a1416",
+      "stage": "queue_prune",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "title": "Bats aren't blind but their face decorations tell a real sto",
+      "category": "nocturnal",
+      "script_key": "watch this one twice notice those leaf like nose flaps that s not decoration those flaps focus the sound bats use to hunt that s why bats with smoother faces often miss prey did you learn this wrong too",
+      "angle_key": "nocturnal|hunt|sound|nocturnal",
+      "source_url": "https://www.pexels.com/video/a-girl-wearing-halloween-face-decorations-9720885/",
+      "pexels_video_id": "9720885",
+      "source_clip_id": "pexels:5bfe6fd1b64a1416",
+      "recorded_at": "2026-07-07T08:51:27.817493+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "b6c11a6103fc9b46",
+      "stage": "queue_prune",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "title": "Bats hunt crickets with sound not sight",
+      "category": "nocturnal",
+      "script_key": "bats see with their ears watch this cricket s wings blur but the bat still nails it that s echolocation sound bounces off prey faster than light that s why the bat never misses in the dark did you think bats were blind",
+      "angle_key": "light|hunt|wings|nocturnal",
+      "source_url": "https://www.pexels.com/video/dynamic-cricket-practice-session-outdoors-32928952/",
+      "pexels_video_id": "32928952",
+      "source_clip_id": "pexels:b6c11a6103fc9b46",
+      "recorded_at": "2026-07-07T08:51:27.832396+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "Snakes Las víboras huelen con la lengua antes que con la...",
+      "stage": "youtube_brain",
+      "reasons": [
+        "subject_not_immediately_clear",
+        "payoff_not_explicit",
+        "hook_shape_weak",
+        "opening_retention_gap_risk"
+      ],
+      "title": "Snakes Las víboras huelen con la lengua antes que con la...",
+      "category": "reptiles",
+      "script_key": "las v boras huelen con la lengua antes que con la nariz cada vez que sacan la lengua capturan olores del aire y los llevan a un rgano especial en la boca as encuentran presa pareja o peligro sin hacer ruido el aire es pura informaci n t lo notar as now the tongue smell at the start makes sense",
+      "angle_key": "snakes|sense|tongue smell|reptiles",
+      "source_url": "https://www.pexels.com/video/rocky-landscape-with-hidden-wildlife-38332762/",
+      "pexels_video_id": "38332762",
+      "source_clip_id": "pexels:6e23824056132e17",
+      "recorded_at": "2026-07-07T10:15:43.378701+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "806f6e522215343e",
+      "stage": "queue_prune",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "off_topic_visual"
+      ],
+      "title": "Snail beetles don’t move like you think",
+      "category": "microscopy",
+      "script_key": "this beetle rides a shell look at those back legs see how they grip the snail s foot like handles that s why it can steer the snail like a tiny tractor school books say beetles crawl but this one drives would you climb aboard",
+      "angle_key": "beetles|close|legs|microscopy",
+      "source_url": "https://www.pexels.com/video/close-up-video-of-a-snail-6675671/",
+      "pexels_video_id": "6675671",
+      "source_clip_id": "pexels:806f6e522215343e",
+      "recorded_at": "2026-07-07T10:21:49.542359+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "136ca73cf81d1cd1",
+      "stage": "queue_prune",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "title": "Bangladesh's hidden volcanic crater surprise",
+      "category": "geology",
+      "script_key": "bangladesh has a volcano crater with green hills all around that s why the inside looks like a bowl of fresh salad look closer the rim isn t just dirt it s cooled lava rock tough enough to hold the forest up did you think volcanic craters were always barren watch this one twice",
+      "angle_key": "volcano|show|crater|geology",
+      "source_url": "https://www.pexels.com/video/scenic-view-of-lush-green-hills-in-bangladesh-33929861/",
+      "pexels_video_id": "33929861",
+      "source_clip_id": "pexels:136ca73cf81d1cd1",
+      "recorded_at": "2026-07-07T10:21:49.563910+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "f292ac0a6b8bf74e",
+      "stage": "queue_prune",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "title": "Himalayan lake hides a volcanic secret",
+      "category": "geology",
+      "script_key": "this lake shouldn t exist it s perched above 17 000 feet in the himalayas where glaciers usually carve valleys not hold water that s because it s sitting inside an ancient volcanic crater not carved by ice watch the steep walls drop straight down that s the volcano talking not the glacier did you learn this wrong too",
+      "angle_key": "volcano|carve|glacier|geology",
+      "source_url": "https://www.pexels.com/video/majestic-himalayan-glacial-lake-37086860/",
+      "pexels_video_id": "37086860",
+      "source_clip_id": "pexels:f292ac0a6b8bf74e",
+      "recorded_at": "2026-07-07T10:21:49.580308+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
     {
       "story_id": "6c654ca7500580e5",
       "stage": "queue_prune",
@@ -141,42 +304,6 @@
       "rewrite_applied": true
     },
     {
-      "story_id": "5492c4505c453345",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Cats groom to reset their scent map",
-      "category": "cats",
-      "script_key": "cats use grooming to reset their scent map watch the tongue and paw movements because grooming spreads familiar scent across the coat that can help a cat settle after a tense moment and keep the fur ready for the next move the cleanup is also a signal which pet behavior should we decode next",
-      "angle_key": "cats|signal|scent map|cats",
-      "source_url": "https://www.pexels.com/video/curious-stray-cat-exploring-urban-street-35595015/",
-      "pexels_video_id": "35595015",
-      "source_clip_id": "pexels:5492c4505c453345",
-      "recorded_at": "2026-07-07T11:23:16.640227+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-07T11:23:16.687966+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
       "story_id": "47da46a3c966dfe6",
       "stage": "editor_in_chief",
       "reasons": [
@@ -192,78 +319,6 @@
       "pexels_video_id": "11468987",
       "source_clip_id": "pexels:47da46a3c966dfe6",
       "recorded_at": "2026-07-07T11:23:49.104858+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "5492c4505c453345",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Cats groom to reset their scent map",
-      "category": "cats",
-      "script_key": "cats use grooming to reset their scent map watch the tongue and paw movements because grooming spreads familiar scent across the coat that can help a cat settle after a tense moment and keep the fur ready for the next move the cleanup is also a signal which pet behavior should we decode next",
-      "angle_key": "cats|signal|scent map|cats",
-      "source_url": "https://www.pexels.com/video/curious-stray-cat-exploring-urban-street-35595015/",
-      "pexels_video_id": "35595015",
-      "source_clip_id": "pexels:5492c4505c453345",
-      "recorded_at": "2026-07-07T12:09:03.994910+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-07T12:09:04.058988+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "5492c4505c453345",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Cats groom to reset their scent map",
-      "category": "cats",
-      "script_key": "cats use grooming to reset their scent map watch the tongue and paw movements because grooming spreads familiar scent across the coat that can help a cat settle after a tense moment and keep the fur ready for the next move the cleanup is also a signal which pet behavior should we decode next",
-      "angle_key": "cats|signal|scent map|cats",
-      "source_url": "https://www.pexels.com/video/curious-stray-cat-exploring-urban-street-35595015/",
-      "pexels_video_id": "35595015",
-      "source_clip_id": "pexels:5492c4505c453345",
-      "recorded_at": "2026-07-07T12:13:49.668170+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-07T12:13:49.731262+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     },
@@ -411,89 +466,38 @@
       "rewrite_applied": true
     },
     {
-      "story_id": "a4eb1d997f3eab4a",
-      "stage": "queue_prune",
+      "story_id": "5492c4505c453345",
+      "stage": "youtube_brain_rewrite",
       "reasons": [
-        "off_topic_visual"
-      ],
-      "title": "Snowy mountains hide a slow-motion disaster",
-      "category": "earth_from_space",
-      "script_key": "watch these mountains vanish those dark stripes aren t shadows they re rock being ground away by ice a glacier moves slower than fingernails grow but it s always eating the mountain because the ice is packed with grit that acts like sandpaper that s why valleys get deeper over centuries",
-      "angle_key": "mountains|hide|glacier|earth_from_space",
-      "source_url": "https://www.pexels.com/video/breathtaking-aerial-view-of-snowy-mountains-29747812/",
-      "pexels_video_id": "29747812",
-      "source_clip_id": "pexels:a4eb1d997f3eab4a",
-      "recorded_at": "2026-07-07T12:19:39.739371+00:00",
-      "rewrite_attempted": false,
-      "rewrite_applied": false
-    },
-    {
-      "story_id": "41674159c16b45c2",
-      "stage": "queue_prune",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "title": "Snakes smell the air with their tongues",
-      "category": "reptiles",
-      "script_key": "snakes sample the air with a tongue flick watch the tongue flick because it collects scent particles and sends them to a special organ in the mouth that helps snakes track prey mates and danger without needing a loud chase the air is information would you notice the trail",
-      "angle_key": "snakes|sample|tongue smell|reptiles",
-      "source_url": "https://www.pexels.com/video/walking-at-the-beach-17147857/",
-      "pexels_video_id": "17147857",
-      "source_clip_id": "pexels:41674159c16b45c2",
-      "recorded_at": "2026-07-07T12:19:39.759507+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "fe06ace652b478c7",
-      "stage": "queue_prune_final",
-      "reasons": [
-        "off_topic_visual"
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
       ],
       "title": "Cats groom to reset their scent map",
-      "category": "wildlife",
-      "script_key": "cats reveal the grooming signal first watch closely because grooming spreads familiar scent across the coat that can help a cat settle after a tense moment and keep the fur ready for the next move the cleanup is also a signal which pet behavior should we decode next",
-      "angle_key": "cats|signal|grooming signal|wildlife",
-      "source_url": "https://www.pexels.com/video/natural-encounter-with-kangaroos-in-the-wild-35899748/",
-      "pexels_video_id": "35899748",
-      "source_clip_id": "pexels:fe06ace652b478c7",
-      "recorded_at": "2026-07-07T12:19:39.774807+00:00",
-      "rewrite_attempted": false,
-      "rewrite_applied": false
-    },
-    {
-      "story_id": "c42cf1fc339600fa",
-      "stage": "queue_prune_final",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "title": "Magnets make invisible fields visible",
-      "category": "physics",
-      "script_key": "magnets can show a hidden force map watch the filings line up because each tiny piece becomes a small magnet in the field together they trace the direction of the force around the magnet the pattern is physics drawing itself which force next",
-      "angle_key": "magnets|make|field lines|physics",
-      "source_url": "https://www.pexels.com/video/a-pink-ball-with-swirls-on-it-15283135/",
-      "pexels_video_id": "15283135",
-      "source_clip_id": "pexels:c42cf1fc339600fa",
-      "recorded_at": "2026-07-07T12:19:39.790272+00:00",
+      "category": "cats",
+      "script_key": "cats use grooming to reset their scent map watch the tongue and paw movements because grooming spreads familiar scent across the coat that can help a cat settle after a tense moment and keep the fur ready for the next move the cleanup is also a signal which pet behavior should we decode next",
+      "angle_key": "cats|signal|scent map|cats",
+      "source_url": "https://www.pexels.com/video/curious-stray-cat-exploring-urban-street-35595015/",
+      "pexels_video_id": "35595015",
+      "source_clip_id": "pexels:5492c4505c453345",
+      "recorded_at": "2026-07-07T12:20:21.217831+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     },
     {
-      "story_id": "d484e9fc78d16924",
-      "stage": "queue_prune_final",
+      "story_id": "8bdc8b70af521eb4",
+      "stage": "youtube_brain_rewrite",
       "reasons": [
-        "duplicate_title"
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
       ],
-      "title": "Magnets make invisible fields visible",
-      "category": "physics",
-      "script_key": "magnets can show a hidden force map watch the filings line up because each tiny piece becomes a small magnet in the field together they trace the direction of the force around the magnet the pattern is physics drawing itself which force next",
-      "angle_key": "magnets|make|field lines|physics",
-      "source_url": "https://www.pexels.com/video/a-black-background-with-the-words-the-world-s-first-3d-17040189/",
-      "pexels_video_id": "17040189",
-      "source_clip_id": "pexels:d484e9fc78d16924",
-      "recorded_at": "2026-07-07T12:19:39.805660+00:00",
+      "title": "Fossils turn old bones into time clues",
+      "category": "discoveries",
+      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
+      "angle_key": "fossils|form|pattern|discoveries",
+      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
+      "pexels_video_id": "36118169",
+      "source_clip_id": "pexels:8bdc8b70af521eb4",
+      "recorded_at": "2026-07-07T12:20:21.262297+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     }
