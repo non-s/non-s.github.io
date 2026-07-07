@@ -5,17 +5,72 @@
     24
   ],
   "counts": {
-    "analytics_due": 4,
-    "awaiting_1h": 0,
-    "high_priority": 7,
-    "repair_candidates": 3,
+    "analytics_due": 2,
+    "awaiting_1h": 1,
+    "high_priority": 6,
+    "repair_candidates": 4,
     "tracked": 10
   },
-  "generated_at": "2026-07-07T04:13:08.348416+00:00",
+  "generated_at": "2026-07-07T04:20:58.254088+00:00",
   "items": [
     {
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.036,
+      "category": "wildlife",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-07T05:18:50.283998+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-07T10:18:50.283998+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-08T04:18:50.283998+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-07T05:18:50.283998+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Animal Superpowers",
+      "state": "awaiting_1h",
+      "title": "Lions have dark ear marks cubs can follow",
+      "uploaded_at": "2026-07-07T04:18:50.283998+00:00",
+      "url": "https://www.youtube.com/shorts/ziHkq3EE5jk",
+      "video_id": "ziHkq3EE5jk",
+      "views_per_hour": 0.0
+    },
+    {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.733,
+      "age_hours": 3.864,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.569,
+      "age_hours": 4.699,
       "category": "insects",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.795,
+      "age_hours": 5.926,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -179,8 +234,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 7.137,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 7.268,
       "category": "forests",
       "checkpoints": [
         {
@@ -196,8 +251,8 @@
           "delta_to_target": -105,
           "due_at": "2026-07-07T03:04:53.916088+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -212,30 +267,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
-        "delta_to_target": -105,
-        "due_at": "2026-07-07T03:04:53.916088+00:00",
-        "label": "6h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-07T21:04:53.916088+00:00",
+        "label": "24h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 105,
+        "state": "pending",
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Hidden Network",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Forests use cool canopy before they cover",
       "uploaded_at": "2026-07-06T21:04:53.916088+00:00",
       "url": "https://www.youtube.com/shorts/Xmt0ZKQl5cw",
       "video_id": "Xmt0ZKQl5cw",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Forests use cool canopy before they cover",
+        "video_id": "Xmt0ZKQl5cw",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 7.997,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 8.128,
       "category": "conservation",
       "checkpoints": [
         {
@@ -251,8 +317,8 @@
           "delta_to_target": -105,
           "due_at": "2026-07-07T02:13:18.524048+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -267,30 +333,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
-        "delta_to_target": -105,
-        "due_at": "2026-07-07T02:13:18.524048+00:00",
-        "label": "6h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-07T20:13:18.524048+00:00",
+        "label": "24h",
         "source": "estimated",
-        "state": "overdue",
-        "target_views": 105,
+        "state": "pending",
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Planet Repair",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Fish Mangroves take power out of waves | Roots",
       "uploaded_at": "2026-07-06T20:13:18.524048+00:00",
       "url": "https://www.youtube.com/shorts/cLMEOp9HnM0",
       "video_id": "cLMEOp9HnM0",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Fish Mangroves take power out of waves | Roots",
+        "video_id": "cLMEOp9HnM0",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.213,
+      "age_hours": 11.343,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -341,11 +418,11 @@
       "uploaded_at": "2026-07-06T17:00:23.228565+00:00",
       "url": "https://www.youtube.com/shorts/FfM3i7ikJb4",
       "video_id": "FfM3i7ikJb4",
-      "views_per_hour": 0.117
+      "views_per_hour": 0.088
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.323,
+      "age_hours": 16.453,
       "category": "space",
       "checkpoints": [
         {
@@ -373,10 +450,10 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 300,
-          "views": 0
+          "views": 1
         }
       ],
-      "current_views": 0,
+      "current_views": 1,
       "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
         "delta_to_target": -24,
@@ -396,11 +473,11 @@
       "uploaded_at": "2026-07-06T11:53:47.108347+00:00",
       "url": "https://www.youtube.com/shorts/GfY4m0L2rRA",
       "video_id": "GfY4m0L2rRA",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.061
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 29.502,
+      "age_hours": 29.633,
       "category": "chemistry",
       "checkpoints": [
         {
@@ -451,7 +528,7 @@
       "uploaded_at": "2026-07-05T22:43:01.080480+00:00",
       "url": "https://www.youtube.com/shorts/Izp-1oqlkyk",
       "video_id": "Izp-1oqlkyk",
-      "views_per_hour": 0.037,
+      "views_per_hour": 0.034,
       "warning": {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.756,
@@ -466,7 +543,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 30.914,
+      "age_hours": 31.045,
       "category": "insects",
       "checkpoints": [
         {
@@ -526,72 +603,6 @@
         "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
         "title": "Butterflies are covered in tiny color scales",
         "video_id": "p_xz0W_T-fk",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
-    },
-    {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 32.091,
-      "category": "insects",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-05T21:07:40.550229+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-06T02:07:40.550229+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": -300,
-          "due_at": "2026-07-06T20:07:40.550229+00:00",
-          "label": "24h",
-          "source": "observed",
-          "state": "observed",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-05T21:07:40.550229+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 90.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Tiny Worlds",
-      "state": "repair_candidate",
-      "title": "Bees dance directions back to the hive",
-      "uploaded_at": "2026-07-05T20:07:40.550229+00:00",
-      "url": "https://www.youtube.com/shorts/qgE9xwLOE-w",
-      "video_id": "qgE9xwLOE-w",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.756,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Bees dance directions back to the hive",
-        "video_id": "qgE9xwLOE-w",
         "views": 0,
         "warning_state": "repair_risk"
       }
