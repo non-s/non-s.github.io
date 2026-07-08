@@ -6,40 +6,14 @@
       "high": 0,
       "manual_review": 5,
       "total": 10,
-      "urgent": 10
+      "urgent": 9
     },
     "free_only": true,
-    "generated_at": "2026-07-08T14:55:18.977645+00:00",
+    "generated_at": "2026-07-08T15:35:41.773199+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 41.84,
-        "automation_safe": true,
-        "category": "forests",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "overdue",
-        "current_views": 0,
-        "due_at": "2026-07-06T22:04:53.916088+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:Xmt0ZKQl5cw:analytics_due:1h",
-        "lane": "measurement",
-        "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "urgent",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
-        "series": "Hidden Network",
-        "state": "analytics_due",
-        "target_views": 24,
-        "title": "Forests use cool canopy before they cover",
-        "url": "https://www.youtube.com/shorts/Xmt0ZKQl5cw",
-        "video_id": "Xmt0ZKQl5cw",
-        "wait_until": "",
-        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
-      },
-      {
-        "action_type": "pull_fresh_analytics",
-        "age_hours": 40.498,
+        "age_hours": 41.171,
         "automation_safe": true,
         "category": "reptiles",
         "checkpoint_label": "1h",
@@ -65,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 39.272,
+        "age_hours": 39.945,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -91,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 38.436,
+        "age_hours": 39.109,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -117,7 +91,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 34.608,
+        "age_hours": 35.281,
         "automation_safe": false,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -143,7 +117,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 33.7,
+        "age_hours": 34.373,
         "automation_safe": false,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -169,7 +143,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 30.897,
+        "age_hours": 31.57,
         "automation_safe": false,
         "category": "fungi",
         "checkpoint_label": "1h",
@@ -195,7 +169,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 28.657,
+        "age_hours": 29.33,
         "automation_safe": false,
         "category": "reptiles",
         "checkpoint_label": "1h",
@@ -221,7 +195,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 27.523,
+        "age_hours": 28.196,
         "automation_safe": false,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -247,7 +221,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 22.574,
+        "age_hours": 23.247,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -270,10 +244,36 @@
         "video_id": "ELHX7Rr_oL4",
         "wait_until": "",
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
+      },
+      {
+        "action_type": "hold_until_first_hour",
+        "age_hours": 0.04,
+        "automation_safe": true,
+        "category": "primates",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-08T16:33:16.067043+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:jYJWjLCw3JU:awaiting_1h:1h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "low",
+        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "series": "Primate Intelligence",
+        "state": "awaiting_1h",
+        "target_views": 24,
+        "title": "Monkeys use learned habit before they trick",
+        "url": "https://www.youtube.com/shorts/jYJWjLCw3JU",
+        "video_id": "jYJWjLCw3JU",
+        "wait_until": "2026-07-08T16:33:16.067043+00:00",
+        "why": "The upload is still inside the no-panic observation window."
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-08T14:55:18.976319+00:00"
+    "source_generated_at": "2026-07-08T15:35:41.771948+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,72 @@
       24
     ],
     "counts": {
-      "analytics_due": 5,
-      "awaiting_1h": 0,
-      "high_priority": 10,
+      "analytics_due": 4,
+      "awaiting_1h": 1,
+      "high_priority": 9,
       "repair_candidates": 5,
       "tracked": 10
     },
-    "generated_at": "2026-07-08T14:55:18.976319+00:00",
+    "generated_at": "2026-07-08T15:35:41.771948+00:00",
     "items": [
       {
+        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "age_hours": 0.04,
+        "category": "primates",
+        "checkpoints": [
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-08T16:33:16.067043+00:00",
+            "label": "1h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 24,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-08T21:33:16.067043+00:00",
+            "label": "6h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 105,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-09T15:33:16.067043+00:00",
+            "label": "24h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 300,
+            "views": 0
+          }
+        ],
+        "current_views": 0,
+        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "next_checkpoint": {
+          "delta_to_target": 0,
+          "due_at": "2026-07-08T16:33:16.067043+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        "opening_retention_score": 100.0,
+        "opening_retention_state": "retention_ready",
+        "priority": "low",
+        "series": "Primate Intelligence",
+        "state": "awaiting_1h",
+        "title": "Monkeys use learned habit before they trick",
+        "uploaded_at": "2026-07-08T15:33:16.067043+00:00",
+        "url": "https://www.youtube.com/shorts/jYJWjLCw3JU",
+        "video_id": "jYJWjLCw3JU",
+        "views_per_hour": 0.0
+      },
+      {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 22.574,
+        "age_hours": 23.247,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -343,11 +398,11 @@
         "uploaded_at": "2026-07-07T16:20:51.532065+00:00",
         "url": "https://www.youtube.com/shorts/ELHX7Rr_oL4",
         "video_id": "ELHX7Rr_oL4",
-        "views_per_hour": 0.089
+        "views_per_hour": 0.086
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 27.523,
+        "age_hours": 28.196,
         "category": "insects",
         "checkpoints": [
           {
@@ -413,7 +468,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 28.657,
+        "age_hours": 29.33,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -464,7 +519,7 @@
         "uploaded_at": "2026-07-07T10:15:52.640295+00:00",
         "url": "https://www.youtube.com/shorts/gnDKpwxV42s",
         "video_id": "gnDKpwxV42s",
-        "views_per_hour": 0.035,
+        "views_per_hour": 0.034,
         "warning": {
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.756,
@@ -479,7 +534,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 30.897,
+        "age_hours": 31.57,
         "category": "fungi",
         "checkpoints": [
           {
@@ -530,7 +585,7 @@
         "uploaded_at": "2026-07-07T08:01:30.868882+00:00",
         "url": "https://www.youtube.com/shorts/uoVylVB2fQI",
         "video_id": "uoVylVB2fQI",
-        "views_per_hour": 0.065,
+        "views_per_hour": 0.063,
         "warning": {
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.756,
@@ -545,7 +600,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 33.7,
+        "age_hours": 34.373,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -611,7 +666,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 34.608,
+        "age_hours": 35.281,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -677,7 +732,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 38.436,
+        "age_hours": 39.109,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -732,7 +787,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 39.272,
+        "age_hours": 39.945,
         "category": "insects",
         "checkpoints": [
           {
@@ -787,7 +842,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 40.498,
+        "age_hours": 41.171,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -839,61 +894,6 @@
         "url": "https://www.youtube.com/shorts/MLBBAeh3r9U",
         "video_id": "MLBBAeh3r9U",
         "views_per_hour": 0.0
-      },
-      {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 41.84,
-        "category": "forests",
-        "checkpoints": [
-          {
-            "delta_to_target": -24,
-            "due_at": "2026-07-06T22:04:53.916088+00:00",
-            "label": "1h",
-            "source": "estimated",
-            "state": "overdue",
-            "target_views": 24,
-            "views": 0
-          },
-          {
-            "delta_to_target": -105,
-            "due_at": "2026-07-07T03:04:53.916088+00:00",
-            "label": "6h",
-            "source": "estimated",
-            "state": "overdue",
-            "target_views": 105,
-            "views": 0
-          },
-          {
-            "delta_to_target": -300,
-            "due_at": "2026-07-07T21:04:53.916088+00:00",
-            "label": "24h",
-            "source": "estimated",
-            "state": "overdue",
-            "target_views": 300,
-            "views": 0
-          }
-        ],
-        "current_views": 0,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-        "next_checkpoint": {
-          "delta_to_target": -24,
-          "due_at": "2026-07-06T22:04:53.916088+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        "opening_retention_score": 100.0,
-        "opening_retention_state": "retention_ready",
-        "priority": "high",
-        "series": "Hidden Network",
-        "state": "analytics_due",
-        "title": "Forests use cool canopy before they cover",
-        "uploaded_at": "2026-07-06T21:04:53.916088+00:00",
-        "url": "https://www.youtube.com/shorts/Xmt0ZKQl5cw",
-        "video_id": "Xmt0ZKQl5cw",
-        "views_per_hour": 0.0
       }
     ],
     "targets": {
@@ -903,23 +903,12 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-08T14:55:18.977743+00:00",
+  "generated_at": "2026-07-08T15:35:41.773293+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
   ],
   "related_video_recommendations": [
-    {
-      "recommendation": {
-        "reason": "same series/category/format session bridge",
-        "score": 85.0,
-        "title": "Deer can aim each ear toward danger",
-        "url": "https://www.youtube.com/shorts/XGrYnV-uJaQ",
-        "video_id": "XGrYnV-uJaQ"
-      },
-      "source_title": "Deer use sound radar before they aim",
-      "source_video_id": "73fySwPKvvA"
-    },
     {
       "recommendation": {
         "reason": "same series/category/format session bridge",
@@ -963,14 +952,20 @@
       },
       "source_title": "Tigers use stripe camouflage before they wear",
       "source_video_id": "ELHX7Rr_oL4"
+    },
+    {
+      "recommendation": {
+        "reason": "same series/category/format session bridge",
+        "score": 85.0,
+        "title": "Monkeys wash food when grit gets annoying",
+        "url": "https://www.youtube.com/shorts/5OUjRA_Uevc",
+        "video_id": "5OUjRA_Uevc"
+      },
+      "source_title": "Monkeys use learned habit before they trick",
+      "source_video_id": "jYJWjLCw3JU"
     }
   ],
   "sequel_opportunities": [
-    {
-      "prompt": "Make a sequel with a new subject but the same payoff shape: Deer use sound radar before they aim",
-      "title": "Deer use sound radar before they aim",
-      "video_id": "73fySwPKvvA"
-    },
     {
       "prompt": "Make a sequel with a new subject but the same payoff shape: Mushrooms use mushroom gills before they carry",
       "title": "Mushrooms use mushroom gills before they carry",
@@ -990,13 +985,18 @@
       "prompt": "Make a sequel with a new subject but the same payoff shape: Tigers use stripe camouflage before they wear",
       "title": "Tigers use stripe camouflage before they wear",
       "video_id": "ELHX7Rr_oL4"
+    },
+    {
+      "prompt": "Make a sequel with a new subject but the same payoff shape: Monkeys use learned habit before they trick",
+      "title": "Monkeys use learned habit before they trick",
+      "video_id": "jYJWjLCw3JU"
     }
   ],
   "session_graph": {
     "action_score_threshold": 55,
     "coverage": 0.95,
     "edges": 20,
-    "nodes": 79,
+    "nodes": 80,
     "target_reuse_limit": 2
   }
 }
