@@ -185,13 +185,13 @@
       }
     },
     {
-      "id": "04c776e0bf710bc5",
-      "title": "Cows can remember who belongs in the herd",
+      "id": "9f46c225c8ea24d5",
+      "title": "Horses sort familiar clues with face memory",
       "category": "farm",
-      "autonomy_priority": 109.88,
+      "autonomy_priority": 113.98,
       "queue_score": 78.0,
       "template_cluster": "",
-      "mechanism_cluster": "",
+      "mechanism_cluster": "face_recognition",
       "objective_reasons": [
         "objective_gate:observe_before_scaling",
         "publish_ready_supply_reserve_fallback"
@@ -205,11 +205,11 @@
         "opportunity": {
           "score": 48,
           "signals": {
-            "viral_potential": 44,
-            "visual_potential": 49,
-            "replay_potential": 58,
-            "comment_potential": 48,
-            "educational_potential": 52,
+            "viral_potential": 39,
+            "visual_potential": 39,
+            "replay_potential": 68,
+            "comment_potential": 56,
+            "educational_potential": 59,
             "emotional_potential": 29,
             "novelty": 49
           },
@@ -232,12 +232,12 @@
           "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
         },
         "retention": {
-          "score": 71,
+          "score": 70,
           "signals": {
-            "hook_score": 82,
-            "curiosity_score": 71,
-            "visual_score": 58,
-            "replay_score": 62,
+            "hook_score": 70,
+            "curiosity_score": 79,
+            "visual_score": 50,
+            "replay_score": 72,
             "completion_prediction": 77
           },
           "verdict": "rewrite",
@@ -259,18 +259,18 @@
           "score": 100.0,
           "state": "retention_ready",
           "approved": true,
-          "subject": "cows",
+          "subject": "horses",
           "cue_terms": [
             "face",
-            "first",
-            "memor",
-            "move"
+            "memor"
           ],
           "frame_hook_bridge": [
-            "herd"
+            "face",
+            "memor"
           ],
           "cue_bridge": [
-            "face"
+            "face",
+            "memor"
           ],
           "strengths": [
             "subject_frontloaded",
@@ -366,7 +366,7 @@
           "swipe_risk_band": "low",
           "payoff_time_s": 0.0,
           "template_cluster": "",
-          "mechanism_cluster": ""
+          "mechanism_cluster": "face_recognition"
         },
         "reserve_override": {
           "reason": "publish_ready_supply_reserve_fallback",
@@ -1119,17 +1119,25 @@
       "recovery": 0.15
     },
     "counts": {
-      "recovery": 2,
+      "recovery": 3,
       "evergreen": 19
     },
     "items": [
+      {
+        "id": "9f46c225c8ea24d5",
+        "title": "Horses sort familiar clues with face memory",
+        "category": "farm",
+        "lane": "recovery",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
+      },
       {
         "id": "04c776e0bf710bc5",
         "title": "Cows can remember who belongs in the herd",
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.78
+        "freshness_score": 54.7
       },
       {
         "id": "44adf45c1e4cade9",
@@ -1137,7 +1145,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.9
+        "freshness_score": 51.82
       },
       {
         "id": "1e1fd2bf8c255b87",
@@ -1145,7 +1153,7 @@
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 38.6
+        "freshness_score": 38.5
       },
       {
         "id": "d839beca3c1cf8ba",
@@ -1153,7 +1161,7 @@
         "category": "reptiles",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.9
+        "freshness_score": 52.8
       },
       {
         "id": "044f781f8d21d65c",
@@ -1161,7 +1169,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 39.76
+        "freshness_score": 39.66
       },
       {
         "id": "d8d90627f96566aa",
@@ -1169,7 +1177,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 35.34
+        "freshness_score": 35.24
       },
       {
         "id": "defb0646798be33d",
@@ -1177,7 +1185,7 @@
         "category": "trees",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.24
+        "freshness_score": 53.14
       },
       {
         "id": "09c8f40beafab256",
@@ -1185,7 +1193,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 35.34
+        "freshness_score": 35.24
       },
       {
         "id": "625bc2903a3e3385",
@@ -1193,7 +1201,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 39.32
+        "freshness_score": 39.22
       },
       {
         "id": "677b330e4980e87d",
@@ -1201,7 +1209,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 35.58
+        "freshness_score": 35.48
       },
       {
         "id": "7297fa80243db8ee",
@@ -1209,7 +1217,7 @@
         "category": "birds",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 41.44
+        "freshness_score": 41.36
       },
       {
         "id": "32bc71248738d412",
@@ -1217,7 +1225,7 @@
         "category": "birds",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 40.5
+        "freshness_score": 40.4
       },
       {
         "id": "53958248afcfe49f",
@@ -1225,7 +1233,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 39.42
+        "freshness_score": 39.32
       },
       {
         "id": "4111626a62866b27",
@@ -1233,7 +1241,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 35.48
+        "freshness_score": 35.38
       },
       {
         "id": "d2a2a55b1db6c495",
@@ -1241,7 +1249,7 @@
         "category": "primates",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.72
+        "freshness_score": 53.62
       },
       {
         "id": "5492c4505c453345",
@@ -1249,7 +1257,7 @@
         "category": "cats",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 51.9
+        "freshness_score": 51.82
       },
       {
         "id": "47e7da81bc75d158",
@@ -1257,7 +1265,7 @@
         "category": "arctic",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.54
+        "freshness_score": 54.46
       },
       {
         "id": "8bdc8b70af521eb4",
@@ -1265,7 +1273,7 @@
         "category": "discoveries",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 35.34
+        "freshness_score": 35.24
       },
       {
         "id": "a4ca94af1a59d5df",
@@ -1273,7 +1281,7 @@
         "category": "nocturnal",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 36.84
+        "freshness_score": 36.74
       },
       {
         "id": "8e9710036cf1db90",
@@ -1281,7 +1289,7 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 49.86
+        "freshness_score": 49.76
       },
       {
         "id": "eb41118e410e097b",
@@ -1289,7 +1297,7 @@
         "category": "conservation",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 40.7
+        "freshness_score": 40.6
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -1312,7 +1320,7 @@
             "share": 0.167
           },
           {
-            "shape": "{subject} can remember who belongs in the herd",
+            "shape": "{subject} sort familiar clues with {cue} memory",
             "count": 1,
             "share": 0.167
           },
@@ -1346,7 +1354,7 @@
             "share": 0.167
           },
           {
-            "shape": "{subject} can remember who belongs in the herd",
+            "shape": "{subject} sort familiar clues with {cue} memory",
             "count": 1,
             "share": 0.167
           },
@@ -1371,19 +1379,20 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 21,
-    "pending_after": 21,
-    "rejected": 0,
-    "repair_needed": 0,
+    "pending_before": 23,
+    "pending_after": 22,
+    "rejected": 1,
+    "repair_needed": 1,
     "repaired": 3,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 19,
       "editor_in_chief:subject repeated inside 3-day cooldown": 8,
       "editor_in_chief:script quality gate blocked the narration": 4,
+      "objective_gate:observe_before_scaling": 3,
       "editor_in_chief:editorial score 46 is below 62": 3,
-      "objective_gate:observe_before_scaling": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
       "editorial_cooldown_supply_fallback": 2,
+      "queue_score_reject": 1,
       "publish_ready_supply_reserve_fallback": 1
     }
   }
