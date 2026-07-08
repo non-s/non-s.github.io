@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-08T10:52:08.232204+00:00",
+  "generated_at": "2026-07-08T10:55:03.579173+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
   "overall_progress_pct": 34.3,
@@ -32,7 +32,7 @@
         },
         {
           "id": "queue_prune:rewrite",
-          "count": 14,
+          "count": 15,
           "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
@@ -82,13 +82,13 @@
   "metrics": {
     "health_score": 82,
     "health_state": "watch",
-    "pending": 20,
+    "pending": 21,
     "operational_publish_ready": 6,
     "apparent_publish_ready": 6,
     "eligible_count": 6,
     "scale_ready_count": 0,
     "next_shorts_count": 6,
-    "editorial_candidate_count": 20,
+    "editorial_candidate_count": 21,
     "published_count": 79,
     "views_28d": 30314,
     "total_subscribers": 46,
@@ -113,7 +113,7 @@
     },
     {
       "id": "queue_prune:rewrite",
-      "count": 14,
+      "count": 15,
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
@@ -127,14 +127,19 @@
       "operator_translation": "editor in chief:script quality gate blocked the narration"
     },
     {
-      "id": "bootstrap_observe_before_scaling",
-      "count": 6,
-      "operator_translation": "bootstrap observe before scaling"
-    },
-    {
       "id": "editor_in_chief:editorial score 46 is below 62",
       "count": 6,
       "operator_translation": "editor in chief:editorial score 46 is below 62"
+    },
+    {
+      "id": "bootstrap_observe_before_scaling",
+      "count": 5,
+      "operator_translation": "bootstrap observe before scaling"
+    },
+    {
+      "id": "objective_gate:observe_before_scaling",
+      "count": 4,
+      "operator_translation": "observe this pattern before scaling it"
     },
     {
       "id": "editor_in_chief:story angle repeated inside 10-day cooldown",
@@ -155,11 +160,6 @@
       "id": "editor_in_chief:needs_ai_rewrite",
       "count": 2,
       "operator_translation": "editor in chief:needs ai rewrite"
-    },
-    {
-      "id": "objective_gate:observe_before_scaling",
-      "count": 2,
-      "operator_translation": "observe this pattern before scaling it"
     }
   ],
   "levels": [
@@ -187,7 +187,7 @@
       "evidence": {
         "operational_publish_ready": 6,
         "eligible_count": 6,
-        "pending": 20,
+        "pending": 21,
         "target_publish_ready": 6,
         "target_pending": 20
       }
