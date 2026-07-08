@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 4,
+    "analytics_due": 3,
     "awaiting_1h": 0,
     "high_priority": 10,
-    "repair_candidates": 6,
+    "repair_candidates": 7,
     "tracked": 10
   },
-  "generated_at": "2026-07-08T08:04:49.981485+00:00",
+  "generated_at": "2026-07-08T08:09:45.553138+00:00",
   "items": [
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 15.733,
+      "age_hours": 15.815,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -66,11 +66,11 @@
       "uploaded_at": "2026-07-07T16:20:51.532065+00:00",
       "url": "https://www.youtube.com/shorts/ELHX7Rr_oL4",
       "video_id": "ELHX7Rr_oL4",
-      "views_per_hour": 0.064
+      "views_per_hour": 0.063
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 20.682,
+      "age_hours": 20.764,
       "category": "insects",
       "checkpoints": [
         {
@@ -125,7 +125,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 21.816,
+      "age_hours": 21.898,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -179,8 +179,8 @@
       "views_per_hour": 0.046
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 24.055,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 24.137,
       "category": "fungi",
       "checkpoints": [
         {
@@ -205,37 +205,48 @@
           "delta_to_target": -298,
           "due_at": "2026-07-08T08:01:30.868882+00:00",
           "label": "24h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 300,
           "views": 2
         }
       ],
       "current_views": 2,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
-        "delta_to_target": -298,
-        "due_at": "2026-07-08T08:01:30.868882+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-07T09:01:30.868882+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 300,
-        "views": 2
+        "state": "overdue",
+        "target_views": 24,
+        "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Hidden Network",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Mushrooms use mushroom gills before they carry",
       "uploaded_at": "2026-07-07T08:01:30.868882+00:00",
       "url": "https://www.youtube.com/shorts/uoVylVB2fQI",
       "video_id": "uoVylVB2fQI",
-      "views_per_hour": 0.083
+      "views_per_hour": 0.083,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.756,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Mushrooms use mushroom gills before they carry",
+        "video_id": "uoVylVB2fQI",
+        "views": 2,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 26.858,
+      "age_hours": 26.94,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -301,7 +312,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 27.767,
+      "age_hours": 27.849,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -367,7 +378,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 31.595,
+      "age_hours": 31.677,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -433,7 +444,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 32.43,
+      "age_hours": 32.513,
       "category": "insects",
       "checkpoints": [
         {
@@ -499,7 +510,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 33.657,
+      "age_hours": 33.739,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -565,7 +576,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 34.999,
+      "age_hours": 35.081,
       "category": "forests",
       "checkpoints": [
         {
