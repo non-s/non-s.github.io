@@ -3,17 +3,17 @@
   "fresh_upload_actions": {
     "counts": {
       "automation_safe": 5,
-      "high": 2,
+      "high": 0,
       "manual_review": 5,
       "total": 10,
-      "urgent": 7
+      "urgent": 8
     },
     "free_only": true,
-    "generated_at": "2026-07-08T16:47:47.672934+00:00",
+    "generated_at": "2026-07-08T16:54:37.394665+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 41.146,
+        "age_hours": 41.26,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 40.311,
+        "age_hours": 40.425,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -64,9 +64,9 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "prepare_package_rescue",
-        "age_hours": 36.483,
-        "automation_safe": false,
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 36.596,
+        "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
         "checkpoint_state": "overdue",
@@ -74,24 +74,24 @@
         "due_at": "2026-07-07T05:18:50.283998+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:ziHkq3EE5jk:repair_candidate:1h",
-        "lane": "package_rescue",
-        "manual_approval_required": true,
+        "id": "fresh-upload:ziHkq3EE5jk:analytics_due:1h",
+        "lane": "measurement",
+        "manual_approval_required": false,
         "opening_retention_score": 100.0,
         "priority": "urgent",
-        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
         "series": "Animal Superpowers",
-        "state": "repair_candidate",
+        "state": "analytics_due",
         "target_views": 24,
         "title": "Lions have dark ear marks cubs can follow",
         "url": "https://www.youtube.com/shorts/ziHkq3EE5jk",
         "video_id": "ziHkq3EE5jk",
         "wait_until": "",
-        "why": "Observed velocity is weak enough to prepare a package intervention."
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 35.574,
+        "age_hours": 35.688,
         "automation_safe": false,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -117,7 +117,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 32.771,
+        "age_hours": 32.885,
         "automation_safe": false,
         "category": "fungi",
         "checkpoint_label": "1h",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 30.532,
+        "age_hours": 30.646,
         "automation_safe": false,
         "category": "reptiles",
         "checkpoint_label": "1h",
@@ -169,7 +169,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 29.398,
+        "age_hours": 29.511,
         "automation_safe": false,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -194,60 +194,34 @@
         "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
-        "action_type": "pull_fresh_analytics",
-        "age_hours": 24.449,
-        "automation_safe": true,
+        "action_type": "prepare_package_rescue",
+        "age_hours": 24.563,
+        "automation_safe": false,
         "category": "wildlife",
-        "checkpoint_label": "24h",
-        "checkpoint_state": "due",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "overdue",
         "current_views": 2,
-        "due_at": "2026-07-08T16:20:51.532065+00:00",
+        "due_at": "2026-07-07T17:20:51.532065+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:ELHX7Rr_oL4:analytics_due:24h",
-        "lane": "measurement",
-        "manual_approval_required": false,
+        "id": "fresh-upload:ELHX7Rr_oL4:repair_candidate:1h",
+        "lane": "package_rescue",
+        "manual_approval_required": true,
         "opening_retention_score": 92.0,
-        "priority": "high",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 24h sample first.",
+        "priority": "urgent",
+        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
         "series": "Animal Superpowers",
-        "state": "analytics_due",
-        "target_views": 300,
+        "state": "repair_candidate",
+        "target_views": 24,
         "title": "Tigers use stripe camouflage before they wear",
         "url": "https://www.youtube.com/shorts/ELHX7Rr_oL4",
         "video_id": "ELHX7Rr_oL4",
         "wait_until": "",
-        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
-      },
-      {
-        "action_type": "pull_fresh_analytics",
-        "age_hours": 1.242,
-        "automation_safe": true,
-        "category": "primates",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "due",
-        "current_views": 0,
-        "due_at": "2026-07-08T16:33:16.067043+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:jYJWjLCw3JU:analytics_due:1h",
-        "lane": "measurement",
-        "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "high",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
-        "series": "Primate Intelligence",
-        "state": "analytics_due",
-        "target_views": 24,
-        "title": "Monkeys use learned habit before they trick",
-        "url": "https://www.youtube.com/shorts/jYJWjLCw3JU",
-        "video_id": "jYJWjLCw3JU",
-        "wait_until": "",
-        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
+        "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.7,
+        "age_hours": 0.814,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "1h",
@@ -270,10 +244,36 @@
         "video_id": "75cqVLi_8WA",
         "wait_until": "2026-07-08T17:05:46.066408+00:00",
         "why": "The upload is still inside the no-panic observation window."
+      },
+      {
+        "action_type": "watch_next_checkpoint",
+        "age_hours": 1.356,
+        "automation_safe": true,
+        "category": "primates",
+        "checkpoint_label": "6h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-08T21:33:16.067043+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:jYJWjLCw3JU:watch:6h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "low",
+        "recommended_action": "Keep observing through the next checkpoint.",
+        "series": "Primate Intelligence",
+        "state": "watch",
+        "target_views": 105,
+        "title": "Monkeys use learned habit before they trick",
+        "url": "https://www.youtube.com/shorts/jYJWjLCw3JU",
+        "video_id": "jYJWjLCw3JU",
+        "wait_until": "2026-07-08T21:33:16.067043+00:00",
+        "why": "No intervention signal is strong enough yet."
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-08T16:47:47.671896+00:00"
+    "source_generated_at": "2026-07-08T16:54:37.393589+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,17 @@
       24
     ],
     "counts": {
-      "analytics_due": 4,
+      "analytics_due": 3,
       "awaiting_1h": 1,
-      "high_priority": 9,
+      "high_priority": 8,
       "repair_candidates": 5,
       "tracked": 10
     },
-    "generated_at": "2026-07-08T16:47:47.671896+00:00",
+    "generated_at": "2026-07-08T16:54:37.393589+00:00",
     "items": [
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.7,
+        "age_hours": 0.814,
         "category": "geology",
         "checkpoints": [
           {
@@ -346,16 +346,16 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 1.242,
+        "action": "Keep observing through the next checkpoint.",
+        "age_hours": 1.356,
         "category": "primates",
         "checkpoints": [
           {
             "delta_to_target": -24,
             "due_at": "2026-07-08T16:33:16.067043+00:00",
             "label": "1h",
-            "source": "estimated",
-            "state": "due",
+            "source": "observed",
+            "state": "observed",
             "target_views": 24,
             "views": 0
           },
@@ -379,21 +379,21 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+        "hypothesis": "No intervention signal is strong enough yet.",
         "next_checkpoint": {
-          "delta_to_target": -24,
-          "due_at": "2026-07-08T16:33:16.067043+00:00",
-          "label": "1h",
+          "delta_to_target": 0,
+          "due_at": "2026-07-08T21:33:16.067043+00:00",
+          "label": "6h",
           "source": "estimated",
-          "state": "due",
-          "target_views": 24,
+          "state": "pending",
+          "target_views": 105,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "high",
+        "priority": "low",
         "series": "Primate Intelligence",
-        "state": "analytics_due",
+        "state": "watch",
         "title": "Monkeys use learned habit before they trick",
         "uploaded_at": "2026-07-08T15:33:16.067043+00:00",
         "url": "https://www.youtube.com/shorts/jYJWjLCw3JU",
@@ -401,8 +401,8 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 24.449,
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "age_hours": 24.563,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -427,37 +427,48 @@
             "delta_to_target": -298,
             "due_at": "2026-07-08T16:20:51.532065+00:00",
             "label": "24h",
-            "source": "estimated",
-            "state": "due",
+            "source": "observed",
+            "state": "observed",
             "target_views": 300,
             "views": 2
           }
         ],
         "current_views": 2,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
         "next_checkpoint": {
-          "delta_to_target": -298,
-          "due_at": "2026-07-08T16:20:51.532065+00:00",
-          "label": "24h",
+          "delta_to_target": -24,
+          "due_at": "2026-07-07T17:20:51.532065+00:00",
+          "label": "1h",
           "source": "estimated",
-          "state": "due",
-          "target_views": 300,
-          "views": 2
+          "state": "overdue",
+          "target_views": 24,
+          "views": 0
         },
         "opening_retention_score": 92.0,
         "opening_retention_state": "retention_ready",
         "priority": "high",
         "series": "Animal Superpowers",
-        "state": "analytics_due",
+        "state": "repair_candidate",
         "title": "Tigers use stripe camouflage before they wear",
         "uploaded_at": "2026-07-07T16:20:51.532065+00:00",
         "url": "https://www.youtube.com/shorts/ELHX7Rr_oL4",
         "video_id": "ELHX7Rr_oL4",
-        "views_per_hour": 0.084
+        "views_per_hour": 0.082,
+        "warning": {
+          "action": "TITLE_AUTO_REPAIR_TRIGGER",
+          "confidence_score": 0.756,
+          "reason": "low early velocity",
+          "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
+          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+          "title": "Tigers use stripe camouflage before they wear",
+          "video_id": "ELHX7Rr_oL4",
+          "views": 2,
+          "warning_state": "repair_risk"
+        }
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 29.398,
+        "age_hours": 29.511,
         "category": "insects",
         "checkpoints": [
           {
@@ -523,7 +534,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 30.532,
+        "age_hours": 30.646,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -589,7 +600,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 32.771,
+        "age_hours": 32.885,
         "category": "fungi",
         "checkpoints": [
           {
@@ -640,7 +651,7 @@
         "uploaded_at": "2026-07-07T08:01:30.868882+00:00",
         "url": "https://www.youtube.com/shorts/uoVylVB2fQI",
         "video_id": "uoVylVB2fQI",
-        "views_per_hour": 0.062,
+        "views_per_hour": 0.061,
         "warning": {
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.756,
@@ -655,7 +666,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 35.574,
+        "age_hours": 35.688,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -720,8 +731,8 @@
         }
       },
       {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 36.483,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 36.596,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -746,14 +757,14 @@
             "delta_to_target": -300,
             "due_at": "2026-07-08T04:18:50.283998+00:00",
             "label": "24h",
-            "source": "observed",
-            "state": "observed",
+            "source": "estimated",
+            "state": "overdue",
             "target_views": 300,
             "views": 0
           }
         ],
         "current_views": 0,
-        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
           "delta_to_target": -24,
           "due_at": "2026-07-07T05:18:50.283998+00:00",
@@ -767,27 +778,16 @@
         "opening_retention_state": "retention_ready",
         "priority": "high",
         "series": "Animal Superpowers",
-        "state": "repair_candidate",
+        "state": "analytics_due",
         "title": "Lions have dark ear marks cubs can follow",
         "uploaded_at": "2026-07-07T04:18:50.283998+00:00",
         "url": "https://www.youtube.com/shorts/ziHkq3EE5jk",
         "video_id": "ziHkq3EE5jk",
-        "views_per_hour": 0.0,
-        "warning": {
-          "action": "TITLE_AUTO_REPAIR_TRIGGER",
-          "confidence_score": 0.756,
-          "reason": "low early velocity",
-          "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
-          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-          "title": "Lions have dark ear marks cubs can follow",
-          "video_id": "ziHkq3EE5jk",
-          "views": 0,
-          "warning_state": "repair_risk"
-        }
+        "views_per_hour": 0.0
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 40.311,
+        "age_hours": 40.425,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -842,7 +842,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 41.146,
+        "age_hours": 41.26,
         "category": "insects",
         "checkpoints": [
           {
@@ -903,7 +903,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-08T16:47:47.673031+00:00",
+  "generated_at": "2026-07-08T16:54:37.394758+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
