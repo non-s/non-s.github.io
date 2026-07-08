@@ -1,17 +1,17 @@
 {
   "counts": {
-    "automation_safe": 6,
+    "automation_safe": 7,
     "high": 0,
-    "manual_review": 4,
+    "manual_review": 3,
     "total": 10,
     "urgent": 8
   },
   "free_only": true,
-  "generated_at": "2026-07-08T19:59:01.929298+00:00",
+  "generated_at": "2026-07-08T20:10:38.726793+00:00",
   "items": [
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 44.334,
+      "age_hours": 44.527,
       "automation_safe": true,
       "category": "insects",
       "checkpoint_label": "1h",
@@ -37,7 +37,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 43.498,
+      "age_hours": 43.692,
       "automation_safe": true,
       "category": "wildlife",
       "checkpoint_label": "1h",
@@ -63,7 +63,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 39.67,
+      "age_hours": 39.863,
       "automation_safe": true,
       "category": "wildlife",
       "checkpoint_label": "1h",
@@ -89,7 +89,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 38.762,
+      "age_hours": 38.955,
       "automation_safe": true,
       "category": "wildlife",
       "checkpoint_label": "1h",
@@ -114,9 +114,9 @@
       "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
-      "action_type": "prepare_package_rescue",
-      "age_hours": 35.959,
-      "automation_safe": false,
+      "action_type": "pull_fresh_analytics",
+      "age_hours": 36.152,
+      "automation_safe": true,
       "category": "fungi",
       "checkpoint_label": "1h",
       "checkpoint_state": "overdue",
@@ -124,24 +124,24 @@
       "due_at": "2026-07-07T09:01:30.868882+00:00",
       "free_only": true,
       "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-      "id": "fresh-upload:uoVylVB2fQI:repair_candidate:1h",
-      "lane": "package_rescue",
-      "manual_approval_required": true,
+      "id": "fresh-upload:uoVylVB2fQI:analytics_due:1h",
+      "lane": "measurement",
+      "manual_approval_required": false,
       "opening_retention_score": 100.0,
       "priority": "urgent",
-      "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
       "series": "Hidden Network",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "target_views": 24,
       "title": "Mushrooms use mushroom gills before they carry",
       "url": "https://www.youtube.com/shorts/uoVylVB2fQI",
       "video_id": "uoVylVB2fQI",
       "wait_until": "",
-      "why": "Observed velocity is weak enough to prepare a package intervention."
+      "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
       "action_type": "prepare_package_rescue",
-      "age_hours": 33.719,
+      "age_hours": 33.913,
       "automation_safe": false,
       "category": "reptiles",
       "checkpoint_label": "1h",
@@ -167,7 +167,7 @@
     },
     {
       "action_type": "prepare_package_rescue",
-      "age_hours": 32.585,
+      "age_hours": 32.778,
       "automation_safe": false,
       "category": "insects",
       "checkpoint_label": "1h",
@@ -193,7 +193,7 @@
     },
     {
       "action_type": "prepare_package_rescue",
-      "age_hours": 27.636,
+      "age_hours": 27.83,
       "automation_safe": false,
       "category": "wildlife",
       "checkpoint_label": "1h",
@@ -219,7 +219,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 4.429,
+      "age_hours": 4.623,
       "automation_safe": true,
       "category": "primates",
       "checkpoint_label": "6h",
@@ -245,7 +245,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 3.888,
+      "age_hours": 4.081,
       "automation_safe": true,
       "category": "geology",
       "checkpoint_label": "6h",
@@ -271,5 +271,5 @@
     }
   ],
   "source": "fresh_upload_watchlist",
-  "source_generated_at": "2026-07-08T19:59:01.928305+00:00"
+  "source_generated_at": "2026-07-08T20:10:38.725830+00:00"
 }
