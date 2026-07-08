@@ -1104,7 +1104,7 @@
       "recovery": 0.15
     },
     "counts": {
-      "recovery": 2,
+      "recovery": 3,
       "evergreen": 17
     },
     "items": [
@@ -1114,7 +1114,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.4
+        "freshness_score": 54.38
       },
       {
         "id": "44adf45c1e4cade9",
@@ -1154,7 +1154,7 @@
         "category": "birds",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 40.12
+        "freshness_score": 40.1
       },
       {
         "id": "defb0646798be33d",
@@ -1170,7 +1170,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 39.04
+        "freshness_score": 39.02
       },
       {
         "id": "4111626a62866b27",
@@ -1178,7 +1178,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 35.1
+        "freshness_score": 35.08
       },
       {
         "id": "044f781f8d21d65c",
@@ -1186,7 +1186,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 39.38
+        "freshness_score": 39.36
       },
       {
         "id": "d8d90627f96566aa",
@@ -1194,7 +1194,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 34.96
+        "freshness_score": 34.94
       },
       {
         "id": "625bc2903a3e3385",
@@ -1210,7 +1210,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 34.96
+        "freshness_score": 34.94
       },
       {
         "id": "5492c4505c453345",
@@ -1258,7 +1258,15 @@
         "category": "plants",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 49.48
+        "freshness_score": 49.46
+      },
+      {
+        "id": "9c379f918b10d2f1",
+        "title": "Horses use ear focus before they change",
+        "category": "farm",
+        "lane": "recovery",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -1340,11 +1348,11 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 19,
-    "pending_after": 19,
+    "pending_before": 20,
+    "pending_after": 20,
     "rejected": 0,
     "repair_needed": 0,
-    "repaired": 3,
+    "repaired": 4,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 17,
       "editor_in_chief:subject repeated inside 3-day cooldown": 4,
@@ -1352,7 +1360,9 @@
       "objective_gate:observe_before_scaling": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
       "editor_in_chief:editorial score 46 is below 62": 2,
-      "editorial_cooldown_supply_fallback": 2
+      "editorial_cooldown_supply_fallback": 2,
+      "duplicate_title": 1,
+      "inventory_reserve_fallback": 1
     }
   }
 }
