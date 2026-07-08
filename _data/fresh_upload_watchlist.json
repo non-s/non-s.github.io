@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 3,
-    "awaiting_1h": 2,
-    "high_priority": 8,
+    "analytics_due": 4,
+    "awaiting_1h": 1,
+    "high_priority": 9,
     "repair_candidates": 5,
     "tracked": 10
   },
-  "generated_at": "2026-07-08T16:08:06.333734+00:00",
+  "generated_at": "2026-07-08T16:47:47.671896+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.039,
+      "age_hours": 0.7,
       "category": "geology",
       "checkpoints": [
         {
@@ -69,16 +69,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.581,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 1.242,
       "category": "primates",
       "checkpoints": [
         {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-08T16:33:16.067043+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 24,
           "views": 0
         },
@@ -102,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -24,
         "due_at": "2026-07-08T16:33:16.067043+00:00",
         "label": "1h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Primate Intelligence",
-      "state": "awaiting_1h",
+      "state": "analytics_due",
       "title": "Monkeys use learned habit before they trick",
       "uploaded_at": "2026-07-08T15:33:16.067043+00:00",
       "url": "https://www.youtube.com/shorts/jYJWjLCw3JU",
@@ -125,7 +125,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 23.787,
+      "age_hours": 24.449,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -147,11 +147,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -298,
           "due_at": "2026-07-08T16:20:51.532065+00:00",
           "label": "24h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 300,
           "views": 2
         }
@@ -159,13 +159,13 @@
       "current_views": 2,
       "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-07T17:20:51.532065+00:00",
-        "label": "1h",
+        "delta_to_target": -298,
+        "due_at": "2026-07-08T16:20:51.532065+00:00",
+        "label": "24h",
         "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
+        "state": "due",
+        "target_views": 300,
+        "views": 2
       },
       "opening_retention_score": 92.0,
       "opening_retention_state": "retention_ready",
@@ -180,7 +180,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 28.736,
+      "age_hours": 29.398,
       "category": "insects",
       "checkpoints": [
         {
@@ -246,7 +246,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 29.87,
+      "age_hours": 30.532,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -297,7 +297,7 @@
       "uploaded_at": "2026-07-07T10:15:52.640295+00:00",
       "url": "https://www.youtube.com/shorts/gnDKpwxV42s",
       "video_id": "gnDKpwxV42s",
-      "views_per_hour": 0.034,
+      "views_per_hour": 0.033,
       "warning": {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.756,
@@ -312,7 +312,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 32.11,
+      "age_hours": 32.771,
       "category": "fungi",
       "checkpoints": [
         {
@@ -378,7 +378,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 34.913,
+      "age_hours": 35.574,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -444,7 +444,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 35.821,
+      "age_hours": 36.483,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -510,7 +510,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 39.649,
+      "age_hours": 40.311,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -565,7 +565,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 40.485,
+      "age_hours": 41.146,
       "category": "insects",
       "checkpoints": [
         {
