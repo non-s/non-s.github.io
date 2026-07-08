@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-08T20:44:15.844615+00:00",
+  "generated_at": "2026-07-08T20:47:15.562754+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
   "overall_progress_pct": 34.3,
@@ -22,12 +22,12 @@
       "top_blockers": [
         {
           "id": "objective_gate:bootstrap_observe_before_scaling",
-          "count": 34,
+          "count": 36,
           "operator_translation": "collect more observed signal before scaling this pattern"
         },
         {
           "id": "queue_prune:rewrite",
-          "count": 14,
+          "count": 15,
           "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
@@ -82,13 +82,13 @@
   "metrics": {
     "health_score": 92,
     "health_state": "excellent",
-    "pending": 20,
+    "pending": 21,
     "operational_publish_ready": 6,
     "apparent_publish_ready": 6,
     "eligible_count": 6,
     "scale_ready_count": 0,
     "next_shorts_count": 6,
-    "editorial_candidate_count": 20,
+    "editorial_candidate_count": 21,
     "published_count": 81,
     "views_28d": 30314,
     "total_subscribers": 46,
@@ -103,12 +103,12 @@
   "top_blockers": [
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
-      "count": 34,
+      "count": 36,
       "operator_translation": "collect more observed signal before scaling this pattern"
     },
     {
       "id": "queue_prune:rewrite",
-      "count": 14,
+      "count": 15,
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
@@ -137,14 +137,14 @@
       "operator_translation": "repair the publish score package"
     },
     {
+      "id": "editor_in_chief:cooldown_subject",
+      "count": 4,
+      "operator_translation": "pick a fresh subject inside the same lane"
+    },
+    {
       "id": "editor_in_chief:story angle repeated inside 10-day cooldown",
       "count": 4,
       "operator_translation": "editor in chief:story angle repeated inside 10-day cooldown"
-    },
-    {
-      "id": "editorial_cooldown_supply_fallback",
-      "count": 4,
-      "operator_translation": "editorial cooldown supply fallback"
     },
     {
       "id": "editor_in_chief:needs_ai_rewrite",
@@ -152,14 +152,14 @@
       "operator_translation": "editor in chief:needs ai rewrite"
     },
     {
-      "id": "editor_in_chief:cooldown_subject",
-      "count": 3,
-      "operator_translation": "pick a fresh subject inside the same lane"
-    },
-    {
       "id": "packaging:missing_action_word",
       "count": 2,
       "operator_translation": "packaging:missing action word"
+    },
+    {
+      "id": "editor_in_chief:editorial score 46 is below 62",
+      "count": 2,
+      "operator_translation": "editor in chief:editorial score 46 is below 62"
     }
   ],
   "levels": [
@@ -187,7 +187,7 @@
       "evidence": {
         "operational_publish_ready": 6,
         "eligible_count": 6,
-        "pending": 20,
+        "pending": 21,
         "target_publish_ready": 6,
         "target_pending": 20
       }
