@@ -2,11 +2,11 @@
   "state": "migration_needed",
   "pressure_score": 93,
   "metrics": {
-    "live_state_files": 240,
-    "data_state_files": 159,
+    "live_state_files": 211,
+    "data_state_files": 130,
     "video_done_markers": 79,
-    "live_state_bytes": 15911559,
-    "stories_queue_bytes": 3634589,
+    "live_state_bytes": 12014882,
+    "stories_queue_bytes": 3634286,
     "stories_queue_lines": 0,
     "workflow_files": 18,
     "state_path_refs": 282
@@ -14,13 +14,8 @@
   "largest_state_files": [
     {
       "path": "_data/stories_queue.json",
-      "bytes": 3634589,
+      "bytes": 3634286,
       "lines": 0
-    },
-    {
-      "path": "_data/rejected_queue.jsonl",
-      "bytes": 2856624,
-      "lines": 3562
     },
     {
       "path": "_data/early_performance.json",
@@ -28,9 +23,14 @@
       "lines": 27943
     },
     {
+      "path": "_data/rejected_queue.jsonl",
+      "bytes": 688106,
+      "lines": 860
+    },
+    {
       "path": "_data/queue_audit.json",
-      "bytes": 429076,
-      "lines": 12663
+      "bytes": 429559,
+      "lines": 12668
     },
     {
       "path": "_data/provider_stats.jsonl",
@@ -49,18 +49,13 @@
     },
     {
       "path": "_data/publish_slot_decisions.jsonl",
-      "bytes": 223682,
-      "lines": 293
+      "bytes": 224436,
+      "lines": 294
     },
     {
       "path": "_data/originality_pack.jsonl",
       "bytes": 194509,
       "lines": 267
-    },
-    {
-      "path": "_data/repair_queue.jsonl",
-      "bytes": 170462,
-      "lines": 9
     },
     {
       "path": "_data/autonomous_growth_plan.json",
@@ -71,6 +66,11 @@
       "path": "_data/dry_run_publish.json",
       "bytes": 115948,
       "lines": 3363
+    },
+    {
+      "path": "_data/fact_sources.jsonl",
+      "bytes": 97030,
+      "lines": 311
     }
   ],
   "migration_lanes": [
