@@ -1121,7 +1121,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 37.7
+        "freshness_score": 37.68
       },
       {
         "id": "09c8f40beafab256",
@@ -1161,7 +1161,7 @@
         "category": "birds",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 38.44
+        "freshness_score": 38.42
       },
       {
         "id": "53958248afcfe49f",
@@ -1169,7 +1169,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 37.36
+        "freshness_score": 37.34
       },
       {
         "id": "4111626a62866b27",
@@ -1233,7 +1233,7 @@
         "category": "nocturnal",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 34.78
+        "freshness_score": 34.76
       },
       {
         "id": "eb41118e410e097b",
@@ -1241,7 +1241,7 @@
         "category": "conservation",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 38.64
+        "freshness_score": 38.62
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -1323,15 +1323,16 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 16,
+    "pending_before": 17,
     "pending_after": 16,
-    "rejected": 0,
-    "repair_needed": 0,
+    "rejected": 1,
+    "repair_needed": 1,
     "repaired": 2,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 16,
       "editor_in_chief:subject repeated inside 3-day cooldown": 5,
       "editor_in_chief:script quality gate blocked the narration": 4,
+      "queue_score_reject": 1,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
