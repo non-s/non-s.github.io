@@ -2,18 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 8,
+      "automation_safe": 9,
       "high": 0,
-      "manual_review": 2,
+      "manual_review": 1,
       "total": 10,
       "urgent": 9
     },
     "free_only": true,
-    "generated_at": "2026-07-09T04:20:56.792188+00:00",
+    "generated_at": "2026-07-09T04:24:53.399836+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 51.863,
+        "age_hours": 51.929,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 48.035,
+        "age_hours": 48.101,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 47.127,
+        "age_hours": 47.193,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -91,7 +91,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 44.324,
+        "age_hours": 44.39,
         "automation_safe": true,
         "category": "fungi",
         "checkpoint_label": "1h",
@@ -117,7 +117,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 42.084,
+        "age_hours": 42.15,
         "automation_safe": true,
         "category": "reptiles",
         "checkpoint_label": "1h",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 40.95,
+        "age_hours": 41.016,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -169,7 +169,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 36.001,
+        "age_hours": 36.067,
         "automation_safe": false,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 12.795,
+        "age_hours": 12.86,
         "automation_safe": true,
         "category": "primates",
         "checkpoint_label": "1h",
@@ -220,9 +220,9 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "queue_sequel_bridge",
-        "age_hours": 12.253,
-        "automation_safe": false,
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 12.319,
+        "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "1h",
         "checkpoint_state": "overdue",
@@ -230,24 +230,24 @@
         "due_at": "2026-07-08T17:05:46.066408+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:75cqVLi_8WA:accelerating:1h",
-        "lane": "amplify",
-        "manual_approval_required": true,
+        "id": "fresh-upload:75cqVLi_8WA:analytics_due:1h",
+        "lane": "measurement",
+        "manual_approval_required": false,
         "opening_retention_score": 100.0,
         "priority": "urgent",
-        "recommended_action": "Queue a sequel or related-video bridge while the session has momentum.",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
         "series": "Earth Engine",
-        "state": "accelerating",
+        "state": "analytics_due",
         "target_views": 24,
         "title": "Rock layers preserve the history of water",
         "url": "https://www.youtube.com/shorts/75cqVLi_8WA",
         "video_id": "75cqVLi_8WA",
         "wait_until": "",
-        "why": "Performance signal is already positive; amplify without changing the opening."
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.032,
+        "age_hours": 0.097,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "1h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-09T04:20:56.791488+00:00"
+    "source_generated_at": "2026-07-09T04:24:53.398916+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,17 @@
       24
     ],
     "counts": {
-      "analytics_due": 7,
+      "analytics_due": 8,
       "awaiting_1h": 1,
-      "high_priority": 8,
+      "high_priority": 9,
       "repair_candidates": 1,
       "tracked": 10
     },
-    "generated_at": "2026-07-09T04:20:56.791488+00:00",
+    "generated_at": "2026-07-09T04:24:53.398916+00:00",
     "items": [
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.032,
+        "age_hours": 0.097,
         "category": "geology",
         "checkpoints": [
           {
@@ -346,8 +346,8 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "Queue a sequel or related-video bridge while the session has momentum.",
-        "age_hours": 12.253,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 12.319,
         "category": "geology",
         "checkpoints": [
           {
@@ -379,7 +379,7 @@
           }
         ],
         "current_views": 1,
-        "hypothesis": "Performance signal is already positive; amplify without changing the opening.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
           "delta_to_target": -24,
           "due_at": "2026-07-08T17:05:46.066408+00:00",
@@ -391,27 +391,18 @@
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "normal",
+        "priority": "high",
         "series": "Earth Engine",
-        "state": "accelerating",
+        "state": "analytics_due",
         "title": "Rock layers preserve the history of water",
         "uploaded_at": "2026-07-08T16:05:46.066408+00:00",
         "url": "https://www.youtube.com/shorts/75cqVLi_8WA",
         "video_id": "75cqVLi_8WA",
-        "views_per_hour": 0.082,
-        "warning": {
-          "confidence_score": 0.512,
-          "reasoning": "video has 30/2 samples, estimated data, confidence 0.51; observation only.",
-          "score": 0,
-          "state": "accelerating",
-          "title": "Rock layers preserve the history of water",
-          "video_id": "75cqVLi_8WA",
-          "warning_state": "accelerator"
-        }
+        "views_per_hour": 0.081
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 12.795,
+        "age_hours": 12.86,
         "category": "primates",
         "checkpoints": [
           {
@@ -466,7 +457,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 36.001,
+        "age_hours": 36.067,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -517,7 +508,7 @@
         "uploaded_at": "2026-07-07T16:20:51.532065+00:00",
         "url": "https://www.youtube.com/shorts/ELHX7Rr_oL4",
         "video_id": "ELHX7Rr_oL4",
-        "views_per_hour": 0.056,
+        "views_per_hour": 0.055,
         "warning": {
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.756,
@@ -532,7 +523,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 40.95,
+        "age_hours": 41.016,
         "category": "insects",
         "checkpoints": [
           {
@@ -587,7 +578,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 42.084,
+        "age_hours": 42.15,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -642,7 +633,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 44.324,
+        "age_hours": 44.39,
         "category": "fungi",
         "checkpoints": [
           {
@@ -697,7 +688,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 47.127,
+        "age_hours": 47.193,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -752,7 +743,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 48.035,
+        "age_hours": 48.101,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -807,7 +798,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 51.863,
+        "age_hours": 51.929,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -868,7 +859,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-09T04:20:56.792264+00:00",
+  "generated_at": "2026-07-09T04:24:53.399930+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
