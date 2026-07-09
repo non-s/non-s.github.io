@@ -1,15 +1,17 @@
 {
   "items": [
     {
-      "id": "defb0646798be33d",
-      "title": "Trees use tree rings before they leaves",
-      "category": "trees",
+      "id": "1e1fd2bf8c255b87",
+      "title": "Storm clouds reveal weather from above the clouds",
+      "category": "earth_from_space",
       "autonomy_priority": 106.52,
-      "queue_score": 98.2,
+      "queue_score": 72.0,
       "template_cluster": "",
       "mechanism_cluster": "",
       "objective_reasons": [
-        "objective_gate:bootstrap_observe_before_scaling"
+        "objective_gate:bootstrap_observe_before_scaling",
+        "editor_in_chief:story angle repeated inside 10-day cooldown",
+        "editorial_cooldown_supply_fallback"
       ],
       "lane": "evergreen",
       "mix_adjustment": 5.0,
@@ -18,75 +20,74 @@
         "approved": true,
         "state": "publish_ready",
         "opportunity": {
-          "score": 62,
+          "score": 55,
           "signals": {
-            "viral_potential": 61,
-            "visual_potential": 55,
-            "replay_potential": 82,
-            "comment_potential": 62,
-            "educational_potential": 71,
-            "emotional_potential": 44,
-            "novelty": 55
+            "viral_potential": 45,
+            "visual_potential": 80,
+            "replay_potential": 59,
+            "comment_potential": 49,
+            "educational_potential": 59,
+            "emotional_potential": 30,
+            "novelty": 40
           },
           "verdict": "rewrite",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
+            "confidence_score": 0.113,
+            "sample_size": 1,
             "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            "bootstrap_multiplier": 0.335,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
           },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
         },
         "retention": {
-          "score": 74,
+          "score": 77,
           "signals": {
-            "hook_score": 70,
-            "curiosity_score": 87,
-            "visual_score": 58,
-            "replay_score": 72,
+            "hook_score": 82,
+            "curiosity_score": 71,
+            "visual_score": 82,
+            "replay_score": 62,
             "completion_prediction": 84
           },
           "verdict": "rewrite",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
+            "confidence_score": 0.113,
+            "sample_size": 1,
             "minimum_sample_size": 5,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+            "bootstrap_multiplier": 0.335,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
           },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
         },
         "opening_retention": {
-          "score": 92.0,
+          "score": 100.0,
           "state": "retention_ready",
           "approved": true,
-          "subject": "rock",
+          "subject": "clouds",
           "cue_terms": [
-            "layer",
-            "pattern",
-            "ring",
-            "rock"
+            "cloud",
+            "tops"
           ],
           "frame_hook_bridge": [
-            "ring",
-            "tree"
+            "cloud",
+            "tops"
           ],
           "cue_bridge": [
-            "pattern",
-            "ring"
+            "cloud",
+            "tops"
           ],
           "strengths": [
+            "subject_frontloaded",
             "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
@@ -94,9 +95,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "risks": [
-            "subject_not_frontloaded"
-          ]
+          "risks": []
         },
         "weak_content": {
           "risk": 0,
@@ -116,47 +115,48 @@
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
         "subscriber_conversion": {
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103,
-          "return_probability": 0.222,
-          "comment_probability": 0.191,
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143,
+          "return_probability": 0.3,
+          "comment_probability": 0.256,
           "robotic_title": {
             "risk": 0,
             "state": "clear",
             "hits": []
           },
           "reasons": [
+            "identity_cta",
             "debate_comment",
             "return_prompt",
             "series_identity"
           ],
           "confidence": {
-            "confidence_score": 0.137,
-            "sample_size": 4,
-            "minimum_sample_size": 13,
+            "confidence_score": 0.165,
+            "sample_size": 5,
+            "minimum_sample_size": 18,
             "data_quality": "estimated",
-            "data_quality_score": 0.45,
+            "data_quality_score": 0.425,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.352,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.14."
+            "bootstrap_multiplier": 0.374,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.16."
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.14."
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.16."
         },
         "distribution_adjustment": 0,
         "decision_confidence": {
-          "confidence_score": 0.073,
-          "sample_size": 6,
-          "minimum_sample_size": 28,
-          "data_quality": "inferred",
-          "data_quality_score": 0.5,
+          "confidence_score": 0.146,
+          "sample_size": 10,
+          "minimum_sample_size": 38,
+          "data_quality": "estimated",
+          "data_quality_score": 0.35,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.305,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.07."
+          "bootstrap_multiplier": 0.36,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.15."
         },
-        "category": "trees",
+        "category": "earth_from_space",
         "story_format": "earth_engine",
         "hook_score": 86,
         "title_score": 100,
@@ -174,7 +174,7 @@
           "reasons": [
             "bootstrap_observe_before_scaling"
           ],
-          "confidence_score": 0.073,
+          "confidence_score": 0.146,
           "scale_ready": false,
           "publish_blocking": false,
           "swipe_risk_band": "low",
@@ -1102,7 +1102,7 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 18,
+      "evergreen": 17,
       "recovery": 2
     },
     "items": [
@@ -1152,7 +1152,7 @@
         "category": "birds",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 39.92
+        "freshness_score": 39.9
       },
       {
         "id": "32bc71248738d412",
@@ -1161,22 +1161,6 @@
         "lane": "evergreen",
         "adjustment": 5.0,
         "freshness_score": 38.96
-      },
-      {
-        "id": "defb0646798be33d",
-        "title": "Trees use tree rings before they leaves",
-        "category": "trees",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 51.7
-      },
-      {
-        "id": "bf05f42deae60056",
-        "title": "Foxes use snow hearing before they hunt",
-        "category": "nocturnal",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 55.0
       },
       {
         "id": "53958248afcfe49f",
@@ -1195,12 +1179,20 @@
         "freshness_score": 33.94
       },
       {
+        "id": "bf05f42deae60056",
+        "title": "Foxes use snow hearing before they hunt",
+        "category": "nocturnal",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 54.98
+      },
+      {
         "id": "5043804314b88ae3",
         "title": "Dragonflies use motion lock before they lock",
         "category": "insects",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 55.0
+        "freshness_score": 54.98
       },
       {
         "id": "3268aaf3a1138a4f",
@@ -1208,7 +1200,7 @@
         "category": "ocean",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.08
+        "freshness_score": 54.06
       },
       {
         "id": "187099f563fd2b2d",
@@ -1216,15 +1208,7 @@
         "category": "dogs",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 55.0
-      },
-      {
-        "id": "5492c4505c453345",
-        "title": "Cats groom to reset their scent map",
-        "category": "cats",
-        "lane": "recovery",
-        "adjustment": 5.0,
-        "freshness_score": 50.38
+        "freshness_score": 54.98
       },
       {
         "id": "47e7da81bc75d158",
@@ -1232,7 +1216,15 @@
         "category": "arctic",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.02
+        "freshness_score": 53.0
+      },
+      {
+        "id": "5492c4505c453345",
+        "title": "Cats groom to reset their scent map",
+        "category": "cats",
+        "lane": "recovery",
+        "adjustment": 5.0,
+        "freshness_score": 50.36
       },
       {
         "id": "8bdc8b70af521eb4",
@@ -1240,7 +1232,7 @@
         "category": "discoveries",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 33.8
+        "freshness_score": 33.78
       },
       {
         "id": "a4ca94af1a59d5df",
@@ -1277,12 +1269,12 @@
       {
         "window": 10,
         "items": 6,
-        "dominant_shape": "{subject} use tree rings before they leaves",
+        "dominant_shape": "{subject} clouds reveal weather from above the clouds",
         "dominant_count": 1,
         "dominant_share": 0.167,
         "top_shapes": [
           {
-            "shape": "{subject} use tree rings before they leaves",
+            "shape": "{subject} clouds reveal weather from above the clouds",
             "count": 1,
             "share": 0.167
           },
@@ -1311,12 +1303,12 @@
       {
         "window": 30,
         "items": 6,
-        "dominant_shape": "{subject} use tree rings before they leaves",
+        "dominant_shape": "{subject} clouds reveal weather from above the clouds",
         "dominant_count": 1,
         "dominant_share": 0.167,
         "top_shapes": [
           {
-            "shape": "{subject} use tree rings before they leaves",
+            "shape": "{subject} clouds reveal weather from above the clouds",
             "count": 1,
             "share": 0.167
           },
@@ -1346,18 +1338,19 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 20,
-    "pending_after": 20,
+    "pending_before": 19,
+    "pending_after": 19,
     "rejected": 0,
     "repair_needed": 0,
-    "repaired": 5,
+    "repaired": 2,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 20,
+      "objective_gate:bootstrap_observe_before_scaling": 19,
       "editor_in_chief:subject repeated inside 3-day cooldown": 4,
       "editor_in_chief:script quality gate blocked the narration": 4,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
       "editor_in_chief:editorial score 42 is below 62": 1,
-      "editor_in_chief:editorial score 46 is below 62": 1
+      "editor_in_chief:editorial score 46 is below 62": 1,
+      "editorial_cooldown_supply_fallback": 1
     }
   }
 }

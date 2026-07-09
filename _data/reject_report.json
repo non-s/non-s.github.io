@@ -1,41 +1,42 @@
 {
   "total": 1000,
   "reasons": {
-    "off_topic_visual": 280,
-    "duplicate_title": 279,
-    "thumbnail_text_not_scannable": 271,
-    "thumbnail_not_2_4_words": 271,
-    "script_hook_mismatch": 88,
-    "copy_subject_mismatch": 73,
-    "duplicate_angle": 69,
-    "duplicate_script": 68,
-    "queue_score_reject": 62,
+    "duplicate_title": 362,
+    "off_topic_visual": 309,
+    "duplicate_script": 114,
+    "duplicate_angle": 113,
+    "script_hook_mismatch": 101,
+    "thumbnail_text_not_scannable": 89,
+    "thumbnail_not_2_4_words": 89,
+    "copy_subject_mismatch": 88,
+    "queue_score_reject": 73,
+    "editorial score is below publish threshold": 49,
     "rights_guard_person_manual_review": 40,
-    "opening_retention_gap_risk": 37,
-    "script_subject_mismatch": 32,
-    "opening promise is not concrete enough": 25,
-    "subject repeated inside 3-day cooldown": 23,
-    "humanity score is too low": 23,
+    "script_subject_mismatch": 38,
+    "opening_retention_gap_risk": 38,
+    "opening promise is not concrete enough": 26,
+    "subject repeated inside 3-day cooldown": 24,
+    "humanity score is too low": 24,
     "script_word_loop": 20,
-    "subject_not_immediately_clear": 12,
+    "non_animal_body_language": 14,
+    "low_opportunity_score": 13,
+    "subject_not_immediately_clear": 13,
     "payoff_not_explicit": 12,
-    "non_animal_body_language": 10,
-    "editorial score is below publish threshold": 10,
+    "editorial score 37 is below 62": 9,
     "bad_plural_verb": 8,
-    "editorial score 37 is below 62": 8,
+    "missing_action_word": 6,
     "editorial score 39 is below 62": 6,
     "title_shape_weak": 5,
+    "script does not expose enough concrete visual detail": 4,
+    "no_action_promise": 4,
+    "missing_visible_cue": 4,
     "script quality gate blocked the narration": 4,
     "missing_visual_cue": 4,
-    "missing_action_word": 4,
     "story angle repeated inside 10-day cooldown": 3,
-    "no_action_promise": 3,
     "hook_shape_weak": 3,
     "editorial score 41 is below 62": 3,
-    "missing_visible_cue": 3,
     "editorial score 31 is below 62": 2,
     "editorial score 35 is below 62": 2,
-    "script does not expose enough concrete visual detail": 2,
     "title_needs_stronger_shape": 1,
     "subject_not_clear": 1,
     "editorial score 45 is below 62": 1,
@@ -43,34 +44,16 @@
     "editorial score 43 is below 62": 1
   },
   "stages": {
-    "queue_prune": 401,
-    "youtube_brain_rewrite": 261,
-    "queue_prune_final": 224,
-    "queue_repair": 62,
-    "editor_in_chief": 30,
-    "youtube_brain": 12,
-    "pre_publish_audit": 10
+    "queue_prune": 465,
+    "queue_prune_final": 278,
+    "youtube_brain_rewrite": 79,
+    "queue_repair": 73,
+    "pre_publish_audit": 49,
+    "editor_in_chief": 31,
+    "opportunity_score": 13,
+    "youtube_brain": 12
   },
   "latest": [
-    {
-      "story_id": "e6ddb4fb30de58b2",
-      "stage": "queue_prune_final",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch",
-        "duplicate_title"
-      ],
-      "title": "Monkeys wash food when grit gets annoying",
-      "category": "primates",
-      "script_key": "monkeys can change habits to solve small problems watch the hands near the food because some monkeys learn useful routines from their group washing or handling food differently can remove grit and make eating easier the habit spreads because it works which primate trick should come next",
-      "angle_key": "monkeys|trick|hands|primates",
-      "source_url": "https://www.pexels.com/video/chimpanzee-exploring-enclosure-at-zoo-35356742/",
-      "pexels_video_id": "35356742",
-      "source_clip_id": "pexels:e6ddb4fb30de58b2",
-      "recorded_at": "2026-07-09T04:30:20.147219+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
     {
       "story_id": "e017d50721a64250",
       "stage": "queue_repair",
@@ -294,24 +277,6 @@
       "rewrite_applied": true
     },
     {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-09T05:11:13.532172+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
       "story_id": "d8d90627f96566aa",
       "stage": "editor_in_chief",
       "reasons": [
@@ -490,6 +455,43 @@
       "recorded_at": "2026-07-09T07:53:15.020074+00:00",
       "rewrite_attempted": false,
       "rewrite_applied": false
+    },
+    {
+      "story_id": "8bdc8b70af521eb4",
+      "stage": "youtube_brain_rewrite",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "title": "Fossils turn old bones into time clues",
+      "category": "discoveries",
+      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
+      "angle_key": "fossils|form|pattern|discoveries",
+      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
+      "pexels_video_id": "36118169",
+      "source_clip_id": "pexels:8bdc8b70af521eb4",
+      "recorded_at": "2026-07-09T07:57:45.654439+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "defb0646798be33d",
+      "stage": "editor_in_chief",
+      "reasons": [
+        "subject repeated inside 3-day cooldown",
+        "humanity score is too low",
+        "editorial score 37 is below 62"
+      ],
+      "title": "Los árboles guardan historia climática en sus anillos",
+      "category": "trees",
+      "script_key": "los rboles escriben el clima en sus anillos observa el patr n del tronco cada temporada de crecimiento deja una nueva capa los anillos gruesos suelen indicar crecimiento f cil mientras que los delgados marcan estr s por eso un rbol viejo puede ser un diario del clima qu registro oculto deber amos ver ahora now the tree rings at the start make sense",
+      "angle_key": "tree|make|tree rings|trees",
+      "source_url": "https://www.pexels.com/video/a-lake-surrounded-by-mountains-and-trees-18761150/",
+      "pexels_video_id": "18761150",
+      "source_clip_id": "pexels:defb0646798be33d",
+      "recorded_at": "2026-07-09T07:58:21.411063+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
     }
   ]
 }

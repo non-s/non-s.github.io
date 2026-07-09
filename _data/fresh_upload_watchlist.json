@@ -5,17 +5,72 @@
     24
   ],
   "counts": {
-    "analytics_due": 7,
-    "awaiting_1h": 0,
-    "high_priority": 8,
+    "analytics_due": 6,
+    "awaiting_1h": 1,
+    "high_priority": 7,
     "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-07-09T07:52:54.136687+00:00",
+  "generated_at": "2026-07-09T08:00:49.360864+00:00",
   "items": [
     {
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.039,
+      "category": "trees",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-09T08:58:28.453849+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-09T13:58:28.453849+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-10T07:58:28.453849+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-09T08:58:28.453849+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Hidden Network",
+      "state": "awaiting_1h",
+      "title": "Trees use tree rings before they leaves",
+      "uploaded_at": "2026-07-09T07:58:28.453849+00:00",
+      "url": "https://www.youtube.com/shorts/C9gC410D64o",
+      "video_id": "C9gC410D64o",
+      "views_per_hour": 0.0
+    },
+    {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.683,
+      "age_hours": 2.815,
       "category": "geology",
       "checkpoints": [
         {
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.564,
+      "age_hours": 3.696,
       "category": "geology",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 15.786,
+      "age_hours": 15.918,
       "category": "geology",
       "checkpoints": [
         {
@@ -176,11 +231,11 @@
       "uploaded_at": "2026-07-08T16:05:46.066408+00:00",
       "url": "https://www.youtube.com/shorts/75cqVLi_8WA",
       "video_id": "75cqVLi_8WA",
-      "views_per_hour": 0.066
+      "views_per_hour": 0.063
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.327,
+      "age_hours": 16.459,
       "category": "primates",
       "checkpoints": [
         {
@@ -196,8 +251,8 @@
           "delta_to_target": -105,
           "due_at": "2026-07-08T21:33:16.067043+00:00",
           "label": "6h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 105,
           "views": 0
         },
@@ -235,7 +290,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 39.534,
+      "age_hours": 39.666,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -286,7 +341,7 @@
       "uploaded_at": "2026-07-07T16:20:51.532065+00:00",
       "url": "https://www.youtube.com/shorts/ELHX7Rr_oL4",
       "video_id": "ELHX7Rr_oL4",
-      "views_per_hour": 0.051,
+      "views_per_hour": 0.05,
       "warning": {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.756,
@@ -301,7 +356,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 44.483,
+      "age_hours": 44.615,
       "category": "insects",
       "checkpoints": [
         {
@@ -356,7 +411,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 45.617,
+      "age_hours": 45.749,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -411,7 +466,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 47.856,
+      "age_hours": 47.988,
       "category": "fungi",
       "checkpoints": [
         {
@@ -466,7 +521,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 50.659,
+      "age_hours": 50.791,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -517,61 +572,6 @@
       "uploaded_at": "2026-07-07T05:13:20.112660+00:00",
       "url": "https://www.youtube.com/shorts/73fySwPKvvA",
       "video_id": "73fySwPKvvA",
-      "views_per_hour": 0.0
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 51.568,
-      "category": "wildlife",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-07T05:18:50.283998+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-07T10:18:50.283998+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": -300,
-          "due_at": "2026-07-08T04:18:50.283998+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-07T05:18:50.283998+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Animal Superpowers",
-      "state": "analytics_due",
-      "title": "Lions have dark ear marks cubs can follow",
-      "uploaded_at": "2026-07-07T04:18:50.283998+00:00",
-      "url": "https://www.youtube.com/shorts/ziHkq3EE5jk",
-      "video_id": "ziHkq3EE5jk",
       "views_per_hour": 0.0
     }
   ],

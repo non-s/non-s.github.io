@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-07-09T07:12:01.150537+00:00",
+  "generated_at": "2026-07-09T08:00:34.279839+00:00",
   "window": {
     "start_date": "2026-06-12",
     "end_date": "2026-07-09"
   },
-  "coverage_score": 40,
+  "coverage_score": 80,
   "quota_strategy": [
     "Batch videos.list in groups of 50.",
     "Avoid search.list for routine automation because it is expensive and trend discovery already uses cheaper public sources.",
@@ -19,14 +19,20 @@
     "uploads_playlist": "UUWrQoappAOOxsaQK-43MbdQ",
     "subscriber_count": 49,
     "view_count": 16,
-    "video_count": 35,
+    "video_count": 36,
     "privacy_status": "public",
     "made_for_kids": false,
     "self_declared_made_for_kids": false
   },
   "uploads_inventory": {
-    "uploads_checked": 35,
+    "uploads_checked": 36,
     "latest_uploads": [
+      {
+        "video_id": "C9gC410D64o",
+        "title": "Trees use tree rings before they leaves",
+        "published_at": "2026-07-09T07:58:46Z",
+        "playlist_item_id": "VVVXclFvYXBwQU9PeHNhUUstNDNNYmRRLkM5Z0M0MTBENjRv"
+      },
       {
         "video_id": "hpcdCLeyIpg",
         "title": "Rock layers reveal heat moving under the surface",
@@ -170,23 +176,26 @@
         "title": "Dogs build a map with smell",
         "published_at": "2026-07-05T16:21:42Z",
         "playlist_item_id": "VVVXclFvYXBwQU9PeHNhUUstNDNNYmRRLlNMbEdZWHZVZUJn"
-      },
-      {
-        "video_id": "c_jUW1tjDb4",
-        "title": "Rock layers show their timeline inside caves",
-        "published_at": "2026-07-05T15:06:02Z",
-        "playlist_item_id": "VVVXclFvYXBwQU9PeHNhUUstNDNNYmRRLmNfalVXMXRqRGI0"
       }
     ]
   },
   "video_audit": {
-    "videos_checked": 35,
-    "total_views": 17,
+    "videos_checked": 36,
+    "total_views": 18,
     "total_likes": 0,
-    "total_comments": 35,
+    "total_comments": 36,
     "private_or_unlisted": 0,
-    "shorts_like": 35,
+    "shorts_like": 36,
     "top_public_videos": [
+      {
+        "video_id": "ELHX7Rr_oL4",
+        "title": "Tigers use stripe camouflage before they wear",
+        "views": 3,
+        "likes": 0,
+        "comments": 1,
+        "privacy_status": "public",
+        "published_at": "2026-07-07T16:21:42Z"
+      },
       {
         "video_id": "3OjudRl2yHc",
         "title": "Sheep can remember familiar faces",
@@ -195,15 +204,6 @@
         "comments": 1,
         "privacy_status": "public",
         "published_at": "2026-07-05T09:24:04Z"
-      },
-      {
-        "video_id": "ELHX7Rr_oL4",
-        "title": "Tigers use stripe camouflage before they wear",
-        "views": 2,
-        "likes": 0,
-        "comments": 1,
-        "privacy_status": "public",
-        "published_at": "2026-07-07T16:21:42Z"
       },
       {
         "video_id": "uoVylVB2fQI",
@@ -287,7 +287,7 @@
       "coverage": "implemented",
       "use": "Channel identity, uploads playlist, subscriber/view/video totals, branding/status audit.",
       "risk": "read_only",
-      "last_run": "attempted"
+      "last_run": "ok"
     },
     {
       "id": "uploaded_video_inventory",
@@ -296,7 +296,7 @@
       "coverage": "implemented",
       "use": "Compare YouTube uploads against local .done markers and detect missing local memory.",
       "risk": "read_only",
-      "last_run": "attempted"
+      "last_run": "ok"
     },
     {
       "id": "video_metadata_statistics",
@@ -305,7 +305,7 @@
       "coverage": "implemented",
       "use": "Public stats, title/description/tag/status/duration audit for every tracked Short.",
       "risk": "read_only",
-      "last_run": "attempted"
+      "last_run": "ok"
     },
     {
       "id": "comment_threads",
@@ -363,9 +363,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,likes,comments,shares,subscribersGained",
       "sort": "-views",
       "use": "Rank videos by growth, engagement, retention and subscriber conversion.",
-      "status": "not_authorized",
+      "status": "ok",
       "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "error": ""
     },
     {
       "id": "daily_channel",
@@ -373,9 +373,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
       "sort": "day",
       "use": "Daily pacing and anomaly detection.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 25,
+      "error": ""
     },
     {
       "id": "country",
@@ -383,9 +383,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
       "sort": "-views",
       "use": "Geo demand and publish timing hints.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 9,
+      "error": ""
     },
     {
       "id": "traffic_source",
@@ -393,9 +393,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Detect whether Shorts feed, search, browse, external or channel surfaces are driving growth.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 7,
+      "error": ""
     },
     {
       "id": "device_type",
@@ -403,9 +403,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Tune caption size, pacing and visual density for device mix.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 4,
+      "error": ""
     },
     {
       "id": "subscriber_status",
@@ -413,12 +413,10 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Separate existing subscriber behavior from discovery behavior.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 2,
+      "error": ""
     }
   ],
-  "issues": [
-    "youtube_analytics_scope_missing"
-  ]
+  "issues": []
 }
