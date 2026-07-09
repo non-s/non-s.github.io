@@ -1,16 +1,15 @@
 {
-  "generated_at": "2026-07-09T08:16:44.191256+00:00",
-  "score": 77,
-  "state": "watch",
+  "generated_at": "2026-07-09T08:48:04.075801+00:00",
+  "score": 92,
+  "state": "excellent",
   "issues": [
-    "queue_inventory_low",
     "average_retention_needs_attention"
   ],
   "queue": {
-    "pending": 19,
+    "pending": 20,
     "publish_ready": 6,
     "categories": {
-      "arctic": 1,
+      "arctic": 2,
       "birds": 2,
       "cats": 1,
       "conservation": 1,
@@ -29,11 +28,11 @@
     "missing_scripts": 0,
     "missing_source": 0,
     "held_reasons": {
-      "queue_prune:rewrite": 13,
+      "queue_prune:rewrite": 14,
       "editor_in_chief:cooldown_subject": 5,
       "editor_in_chief:needs_ai_rewrite": 3,
+      "publish_score:rewrite": 3,
       "packaging:missing_action_word": 2,
-      "publish_score:rewrite": 2,
       "packaging:script does not expose enough concrete visual detail": 1
     }
   },
@@ -43,10 +42,10 @@
     "subject_frontloaded_pct": 100.0
   },
   "agency": {
-    "average_score": 60.8,
+    "average_score": 62.0,
     "decisions": {
       "hold": 8,
-      "publish_now": 2,
+      "publish_now": 3,
       "strong_candidate": 9
     },
     "top": [
@@ -59,6 +58,17 @@
           "strong_quality",
           "timely_trend",
           "matches_channel_learning",
+          "fresh_inventory"
+        ]
+      },
+      {
+        "title": "Birds use ultraviolet vision before they change",
+        "category": "arctic",
+        "score": 84,
+        "decision": "publish_now",
+        "strengths": [
+          "strong_quality",
+          "timely_trend",
           "fresh_inventory"
         ]
       },
@@ -76,6 +86,16 @@
       {
         "title": "Foxes use snow hearing before they hunt",
         "category": "nocturnal",
+        "score": 79,
+        "decision": "strong_candidate",
+        "strengths": [
+          "strong_quality",
+          "fresh_inventory"
+        ]
+      },
+      {
+        "title": "Seals can follow wakes with their whiskers",
+        "category": "arctic",
         "score": 79,
         "decision": "strong_candidate",
         "strengths": [
@@ -111,25 +131,6 @@
         "strengths": [
           "strong_quality",
           "fresh_inventory"
-        ]
-      },
-      {
-        "title": "Seals can follow wakes with their whiskers",
-        "category": "arctic",
-        "score": 77,
-        "decision": "strong_candidate",
-        "strengths": [
-          "strong_quality",
-          "fresh_inventory"
-        ]
-      },
-      {
-        "title": "Macaws use beaks like climbing tools",
-        "category": "birds",
-        "score": 76,
-        "decision": "strong_candidate",
-        "strengths": [
-          "strong_quality"
         ]
       }
     ]

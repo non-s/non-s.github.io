@@ -182,6 +182,188 @@
       }
     },
     {
+      "id": "2dd56526f6c58bb5",
+      "title": "Birds use ultraviolet vision before they change",
+      "category": "arctic",
+      "autonomy_priority": 103.0,
+      "queue_score": 100.0,
+      "template_cluster": "",
+      "mechanism_cluster": "",
+      "objective_reasons": [
+        "objective_gate:bootstrap_observe_before_scaling"
+      ],
+      "lane": "evergreen",
+      "mix_adjustment": 5.0,
+      "score": {
+        "score": 100.0,
+        "approved": true,
+        "state": "publish_ready",
+        "opportunity": {
+          "score": 57,
+          "signals": {
+            "viral_potential": 53,
+            "visual_potential": 55,
+            "replay_potential": 74,
+            "comment_potential": 54,
+            "educational_potential": 58,
+            "emotional_potential": 44,
+            "novelty": 55
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "retention": {
+          "score": 73,
+          "signals": {
+            "hook_score": 70,
+            "curiosity_score": 79,
+            "visual_score": 58,
+            "replay_score": 72,
+            "completion_prediction": 84
+          },
+          "verdict": "rewrite",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "opening_retention": {
+          "score": 100.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "bird",
+          "cue_terms": [
+            "first",
+            "move",
+            "vision"
+          ],
+          "frame_hook_bridge": [
+            "vision"
+          ],
+          "cue_bridge": [
+            "first",
+            "vision"
+          ],
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": []
+        },
+        "weak_content": {
+          "risk": 0,
+          "state": "clear",
+          "reasons": [],
+          "confidence": {
+            "confidence_score": 0.65,
+            "sample_size": 12,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "test",
+            "can_adjust_strategy": true,
+            "bootstrap_multiplier": 0.738,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
+        },
+        "subscriber_conversion": {
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123,
+          "return_probability": 0.261,
+          "comment_probability": 0.223,
+          "robotic_title": {
+            "risk": 0,
+            "state": "clear",
+            "hits": []
+          },
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "confidence": {
+            "confidence_score": 0.061,
+            "sample_size": 2,
+            "minimum_sample_size": 10,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.296,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06."
+        },
+        "distribution_adjustment": 0,
+        "decision_confidence": {
+          "confidence_score": 0.035,
+          "sample_size": 3,
+          "minimum_sample_size": 25,
+          "data_quality": "inferred",
+          "data_quality_score": 0.575,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.276,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.03."
+        },
+        "category": "arctic",
+        "story_format": "body_superpower",
+        "hook_score": 86,
+        "title_score": 100,
+        "phrase_risk": {
+          "penalty": 0,
+          "hits": []
+        },
+        "editorial_guard": {
+          "approved": true,
+          "state": "approved",
+          "issues": []
+        },
+        "objective_gate": {
+          "penalty": 0.0,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "confidence_score": 0.035,
+          "scale_ready": false,
+          "publish_blocking": false,
+          "swipe_risk_band": "low",
+          "payoff_time_s": 0.0,
+          "template_cluster": "",
+          "mechanism_cluster": ""
+        }
+      }
+    },
+    {
       "id": "bf05f42deae60056",
       "title": "Foxes use snow hearing before they hunt",
       "category": "nocturnal",
@@ -1099,7 +1281,7 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 17,
+      "evergreen": 18,
       "recovery": 2
     },
     "items": [
@@ -1125,7 +1307,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 37.72
+        "freshness_score": 37.7
       },
       {
         "id": "d839beca3c1cf8ba",
@@ -1133,7 +1315,7 @@
         "category": "reptiles",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.3
+        "freshness_score": 51.28
       },
       {
         "id": "7297fa80243db8ee",
@@ -1160,6 +1342,14 @@
         "freshness_score": 54.96
       },
       {
+        "id": "2dd56526f6c58bb5",
+        "title": "Birds use ultraviolet vision before they change",
+        "category": "arctic",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
+      },
+      {
         "id": "53958248afcfe49f",
         "title": "Forest canopies slow heat near the ground",
         "category": "forests",
@@ -1181,7 +1371,7 @@
         "category": "nocturnal",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.94
+        "freshness_score": 54.92
       },
       {
         "id": "5043804314b88ae3",
@@ -1189,7 +1379,7 @@
         "category": "insects",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 54.94
+        "freshness_score": 54.92
       },
       {
         "id": "3268aaf3a1138a4f",
@@ -1205,7 +1395,7 @@
         "category": "dogs",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 54.94
+        "freshness_score": 54.92
       },
       {
         "id": "47e7da81bc75d158",
@@ -1213,7 +1403,7 @@
         "category": "arctic",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.96
+        "freshness_score": 52.94
       },
       {
         "id": "5492c4505c453345",
@@ -1229,7 +1419,7 @@
         "category": "discoveries",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 33.74
+        "freshness_score": 33.72
       },
       {
         "id": "a4ca94af1a59d5df",
@@ -1237,7 +1427,7 @@
         "category": "nocturnal",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 35.24
+        "freshness_score": 35.22
       },
       {
         "id": "8e9710036cf1db90",
@@ -1253,7 +1443,7 @@
         "category": "conservation",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 39.1
+        "freshness_score": 39.08
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -1265,69 +1455,69 @@
     "windows": [
       {
         "window": 10,
-        "items": 6,
+        "items": 7,
         "dominant_shape": "{subject} carve bends by stealing from one bank",
         "dominant_count": 1,
-        "dominant_share": 0.167,
+        "dominant_share": 0.143,
         "top_shapes": [
           {
             "shape": "{subject} carve bends by stealing from one bank",
             "count": 1,
-            "share": 0.167
+            "share": 0.143
+          },
+          {
+            "shape": "{subject} use ultraviolet vision before they change",
+            "count": 1,
+            "share": 0.143
           },
           {
             "shape": "{subject} use snow hearing before they hunt",
             "count": 1,
-            "share": 0.167
+            "share": 0.143
           },
           {
             "shape": "{subject} use motion lock before they lock",
             "count": 1,
-            "share": 0.167
+            "share": 0.143
           },
           {
             "shape": "{subject} use scent map before they smell",
             "count": 1,
-            "share": 0.167
-          },
-          {
-            "shape": "{subject} can call each other with signature whistles",
-            "count": 1,
-            "share": 0.167
+            "share": 0.143
           }
         ]
       },
       {
         "window": 30,
-        "items": 6,
+        "items": 7,
         "dominant_shape": "{subject} carve bends by stealing from one bank",
         "dominant_count": 1,
-        "dominant_share": 0.167,
+        "dominant_share": 0.143,
         "top_shapes": [
           {
             "shape": "{subject} carve bends by stealing from one bank",
             "count": 1,
-            "share": 0.167
+            "share": 0.143
+          },
+          {
+            "shape": "{subject} use ultraviolet vision before they change",
+            "count": 1,
+            "share": 0.143
           },
           {
             "shape": "{subject} use snow hearing before they hunt",
             "count": 1,
-            "share": 0.167
+            "share": 0.143
           },
           {
             "shape": "{subject} use motion lock before they lock",
             "count": 1,
-            "share": 0.167
+            "share": 0.143
           },
           {
             "shape": "{subject} use scent map before they smell",
             "count": 1,
-            "share": 0.167
-          },
-          {
-            "shape": "{subject} can call each other with signature whistles",
-            "count": 1,
-            "share": 0.167
+            "share": 0.143
           }
         ]
       }
@@ -1335,13 +1525,13 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 19,
-    "pending_after": 19,
+    "pending_before": 20,
+    "pending_after": 20,
     "rejected": 0,
     "repair_needed": 0,
-    "repaired": 2,
+    "repaired": 3,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 19,
+      "objective_gate:bootstrap_observe_before_scaling": 20,
       "editor_in_chief:subject repeated inside 3-day cooldown": 4,
       "editor_in_chief:script quality gate blocked the narration": 4,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
