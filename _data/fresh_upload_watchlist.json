@@ -5,25 +5,25 @@
     24
   ],
   "counts": {
-    "analytics_due": 5,
-    "awaiting_1h": 2,
-    "high_priority": 6,
+    "analytics_due": 9,
+    "awaiting_1h": 0,
+    "high_priority": 10,
     "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-07-09T08:46:56.839545+00:00",
+  "generated_at": "2026-07-09T11:16:46.455795+00:00",
   "items": [
     {
-      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.614,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 3.111,
       "category": "earth_from_space",
       "checkpoints": [
         {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-09T09:10:08.162636+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +47,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -24,
         "due_at": "2026-07-09T09:10:08.162636+00:00",
         "label": "1h",
         "source": "estimated",
-        "state": "pending",
+        "state": "overdue",
         "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Planet Earth",
-      "state": "awaiting_1h",
+      "state": "analytics_due",
       "title": "Storm clouds reveal weather from above the clouds",
       "uploaded_at": "2026-07-09T08:10:08.162636+00:00",
       "url": "https://www.youtube.com/shorts/9VYA8vVR5NI",
@@ -69,16 +69,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.808,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 3.305,
       "category": "trees",
       "checkpoints": [
         {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-09T08:58:28.453849+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -102,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -24,
         "due_at": "2026-07-09T08:58:28.453849+00:00",
         "label": "1h",
         "source": "estimated",
-        "state": "pending",
+        "state": "overdue",
         "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Hidden Network",
-      "state": "awaiting_1h",
+      "state": "analytics_due",
       "title": "Trees use tree rings before they leaves",
       "uploaded_at": "2026-07-09T07:58:28.453849+00:00",
       "url": "https://www.youtube.com/shorts/C9gC410D64o",
@@ -124,8 +124,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.584,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 6.081,
       "category": "geology",
       "checkpoints": [
         {
@@ -138,11 +138,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-07-09T11:11:53.582365+00:00",
           "label": "6h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 105,
           "views": 0
         },
@@ -157,21 +157,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -105,
         "due_at": "2026-07-09T11:11:53.582365+00:00",
         "label": "6h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Earth Engine",
-      "state": "watch",
+      "state": "analytics_due",
       "title": "Rock layers reveal heat moving under the surface",
       "uploaded_at": "2026-07-09T05:11:53.582365+00:00",
       "url": "https://www.youtube.com/shorts/hpcdCLeyIpg",
@@ -179,8 +179,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.465,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 6.962,
       "category": "geology",
       "checkpoints": [
         {
@@ -193,11 +193,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-07-09T10:19:03.082953+00:00",
           "label": "6h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 105,
           "views": 0
         },
@@ -212,21 +212,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -105,
         "due_at": "2026-07-09T10:19:03.082953+00:00",
         "label": "6h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Earth Engine",
-      "state": "watch",
+      "state": "analytics_due",
       "title": "Crystal edges build the same pattern again",
       "uploaded_at": "2026-07-09T04:19:03.082953+00:00",
       "url": "https://www.youtube.com/shorts/dAkoh1xnJjA",
@@ -235,7 +235,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.686,
+      "age_hours": 19.183,
       "category": "geology",
       "checkpoints": [
         {
@@ -298,7 +298,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 17.228,
+      "age_hours": 19.725,
       "category": "primates",
       "checkpoints": [
         {
@@ -353,7 +353,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 40.435,
+      "age_hours": 42.932,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -419,7 +419,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 45.383,
+      "age_hours": 47.881,
       "category": "insects",
       "checkpoints": [
         {
@@ -474,7 +474,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 46.518,
+      "age_hours": 49.015,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -525,11 +525,11 @@
       "uploaded_at": "2026-07-07T10:15:52.640295+00:00",
       "url": "https://www.youtube.com/shorts/gnDKpwxV42s",
       "video_id": "gnDKpwxV42s",
-      "views_per_hour": 0.022
+      "views_per_hour": 0.021
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 48.757,
+      "age_hours": 51.254,
       "category": "fungi",
       "checkpoints": [
         {
