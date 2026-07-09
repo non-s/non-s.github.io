@@ -6,24 +6,79 @@
   ],
   "counts": {
     "analytics_due": 6,
-    "awaiting_1h": 2,
+    "awaiting_1h": 1,
     "high_priority": 7,
     "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-07-09T19:16:49.740013+00:00",
+  "generated_at": "2026-07-09T20:06:28.187571+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.204,
-      "category": "nocturnal",
+      "age_hours": 0.035,
+      "category": "arctic",
       "checkpoints": [
         {
           "delta_to_target": 0,
-          "due_at": "2026-07-09T20:04:33.771351+00:00",
+          "due_at": "2026-07-09T21:04:23.188358+00:00",
           "label": "1h",
           "source": "estimated",
           "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-10T02:04:23.188358+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-10T20:04:23.188358+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-09T21:04:23.188358+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 94.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Polar Survival",
+      "state": "awaiting_1h",
+      "title": "Seals can follow wakes with their whiskers",
+      "uploaded_at": "2026-07-09T20:04:23.188358+00:00",
+      "url": "https://www.youtube.com/shorts/XZIAdzI-njM",
+      "video_id": "XZIAdzI-njM",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 1.032,
+      "category": "nocturnal",
+      "checkpoints": [
+        {
+          "delta_to_target": -24,
+          "due_at": "2026-07-09T20:04:33.771351+00:00",
+          "label": "1h",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-09T20:04:33.771351+00:00",
-        "label": "1h",
+        "due_at": "2026-07-10T01:04:33.771351+00:00",
+        "label": "6h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 24,
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "low",
       "series": "Night Shift Nature",
-      "state": "awaiting_1h",
+      "state": "watch",
       "title": "Foxes use snow hearing before they hunt",
       "uploaded_at": "2026-07-09T19:04:33.771351+00:00",
       "url": "https://www.youtube.com/shorts/LdYL1w1rf0g",
@@ -69,16 +124,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.308,
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 1.136,
       "category": "insects",
       "checkpoints": [
         {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-09T19:58:19.695164+00:00",
           "label": "1h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -102,21 +157,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-09T19:58:19.695164+00:00",
-        "label": "1h",
+        "due_at": "2026-07-10T00:58:19.695164+00:00",
+        "label": "6h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 24,
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "low",
       "series": "Tiny Worlds",
-      "state": "awaiting_1h",
+      "state": "watch",
       "title": "Dragonflies use motion lock before they lock",
       "uploaded_at": "2026-07-09T18:58:19.695164+00:00",
       "url": "https://www.youtube.com/shorts/WCATjnYNSYo",
@@ -124,8 +179,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.203,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.03,
       "category": "dogs",
       "checkpoints": [
         {
@@ -138,11 +193,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-07-09T20:04:39.316623+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -157,30 +212,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-09T20:04:39.316623+00:00",
-        "label": "6h",
+        "due_at": "2026-07-10T14:04:39.316623+00:00",
+        "label": "24h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 105,
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Pet Secrets",
-      "state": "watch",
+      "state": "repair_candidate",
       "title": "Dogs use scent map before they smell",
       "uploaded_at": "2026-07-09T14:04:39.316623+00:00",
       "url": "https://www.youtube.com/shorts/8LrEpWspyK8",
       "video_id": "8LrEpWspyK8",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Dogs use scent map before they smell",
+        "video_id": "8LrEpWspyK8",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.992,
+      "age_hours": 7.819,
       "category": "plants",
       "checkpoints": [
         {
@@ -235,7 +301,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 7.911,
+      "age_hours": 8.738,
       "category": "arctic",
       "checkpoints": [
         {
@@ -286,11 +352,11 @@
       "uploaded_at": "2026-07-09T11:22:11.609762+00:00",
       "url": "https://www.youtube.com/shorts/FauBvdeAeU8",
       "video_id": "FauBvdeAeU8",
-      "views_per_hour": 0.127
+      "views_per_hour": 0.115
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.112,
+      "age_hours": 11.939,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -306,8 +372,8 @@
           "delta_to_target": -105,
           "due_at": "2026-07-09T14:10:08.162636+00:00",
           "label": "6h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 105,
           "views": 0
         },
@@ -345,7 +411,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.306,
+      "age_hours": 12.133,
       "category": "trees",
       "checkpoints": [
         {
@@ -400,7 +466,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 14.082,
+      "age_hours": 14.91,
       "category": "geology",
       "checkpoints": [
         {
@@ -455,7 +521,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 14.963,
+      "age_hours": 15.79,
       "category": "geology",
       "checkpoints": [
         {
@@ -507,72 +573,6 @@
       "url": "https://www.youtube.com/shorts/dAkoh1xnJjA",
       "video_id": "dAkoh1xnJjA",
       "views_per_hour": 0.0
-    },
-    {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 27.184,
-      "category": "geology",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-08T17:05:46.066408+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-08T22:05:46.066408+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": -298,
-          "due_at": "2026-07-09T16:05:46.066408+00:00",
-          "label": "24h",
-          "source": "observed",
-          "state": "observed",
-          "target_views": 300,
-          "views": 2
-        }
-      ],
-      "current_views": 2,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-08T17:05:46.066408+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Earth Engine",
-      "state": "repair_candidate",
-      "title": "Rock layers preserve the history of water",
-      "uploaded_at": "2026-07-08T16:05:46.066408+00:00",
-      "url": "https://www.youtube.com/shorts/75cqVLi_8WA",
-      "video_id": "75cqVLi_8WA",
-      "views_per_hour": 0.074,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.756,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Rock layers preserve the history of water",
-        "video_id": "75cqVLi_8WA",
-        "views": 2,
-        "warning_state": "repair_risk"
-      }
     }
   ],
   "targets": {
