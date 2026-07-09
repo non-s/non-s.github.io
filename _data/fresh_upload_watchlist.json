@@ -5,17 +5,72 @@
     24
   ],
   "counts": {
-    "analytics_due": 6,
-    "awaiting_1h": 1,
-    "high_priority": 7,
+    "analytics_due": 5,
+    "awaiting_1h": 2,
+    "high_priority": 6,
     "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-07-09T08:04:31.317944+00:00",
+  "generated_at": "2026-07-09T08:12:22.996787+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.101,
+      "age_hours": 0.037,
+      "category": "earth_from_space",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-09T09:10:08.162636+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-09T14:10:08.162636+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-10T08:10:08.162636+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-09T09:10:08.162636+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Planet Earth",
+      "state": "awaiting_1h",
+      "title": "Storm clouds reveal weather from above the clouds",
+      "uploaded_at": "2026-07-09T08:10:08.162636+00:00",
+      "url": "https://www.youtube.com/shorts/9VYA8vVR5NI",
+      "video_id": "9VYA8vVR5NI",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.232,
       "category": "trees",
       "checkpoints": [
         {
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.877,
+      "age_hours": 3.008,
       "category": "geology",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.758,
+      "age_hours": 3.889,
       "category": "geology",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 15.979,
+      "age_hours": 16.11,
       "category": "geology",
       "checkpoints": [
         {
@@ -231,11 +286,11 @@
       "uploaded_at": "2026-07-08T16:05:46.066408+00:00",
       "url": "https://www.youtube.com/shorts/75cqVLi_8WA",
       "video_id": "75cqVLi_8WA",
-      "views_per_hour": 0.063
+      "views_per_hour": 0.062
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.521,
+      "age_hours": 16.652,
       "category": "primates",
       "checkpoints": [
         {
@@ -290,7 +345,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 39.728,
+      "age_hours": 39.859,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -341,7 +396,7 @@
       "uploaded_at": "2026-07-07T16:20:51.532065+00:00",
       "url": "https://www.youtube.com/shorts/ELHX7Rr_oL4",
       "video_id": "ELHX7Rr_oL4",
-      "views_per_hour": 0.076,
+      "views_per_hour": 0.075,
       "warning": {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.756,
@@ -356,7 +411,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 44.676,
+      "age_hours": 44.807,
       "category": "insects",
       "checkpoints": [
         {
@@ -411,7 +466,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 45.811,
+      "age_hours": 45.942,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -466,7 +521,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 48.05,
+      "age_hours": 48.181,
       "category": "fungi",
       "checkpoints": [
         {
@@ -488,13 +543,13 @@
           "views": 0
         },
         {
-          "delta_to_target": -299,
+          "delta_to_target": -300,
           "due_at": "2026-07-08T08:01:30.868882+00:00",
           "label": "24h",
           "source": "estimated",
           "state": "overdue",
           "target_views": 300,
-          "views": 1
+          "views": 0
         }
       ],
       "current_views": 2,
@@ -518,61 +573,6 @@
       "url": "https://www.youtube.com/shorts/uoVylVB2fQI",
       "video_id": "uoVylVB2fQI",
       "views_per_hour": 0.042
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 50.853,
-      "category": "wildlife",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-07T06:13:20.112660+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-07T11:13:20.112660+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": -300,
-          "due_at": "2026-07-08T05:13:20.112660+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-07T06:13:20.112660+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 90.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Animal Superpowers",
-      "state": "analytics_due",
-      "title": "Deer use sound radar before they aim",
-      "uploaded_at": "2026-07-07T05:13:20.112660+00:00",
-      "url": "https://www.youtube.com/shorts/73fySwPKvvA",
-      "video_id": "73fySwPKvvA",
-      "views_per_hour": 0.0
     }
   ],
   "targets": {

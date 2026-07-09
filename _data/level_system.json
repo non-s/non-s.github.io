@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-09T08:05:35.716737+00:00",
+  "generated_at": "2026-07-09T08:13:22.279601+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
-  "overall_progress_pct": 28.3,
+  "overall_progress_pct": 28.1,
   "current_level": {
     "number": 2,
     "name": "Publish supply engine",
@@ -10,7 +10,7 @@
     "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
     "revenue_job": "Turn production from lucky shots into repeatable inventory.",
     "status": "boss_fight",
-    "progress_pct": 98.3
+    "progress_pct": 96.7
   },
   "boss": {
     "id": "pending_queue_low",
@@ -20,18 +20,18 @@
       "eligible_count": 6,
       "operational_publish_ready": 6,
       "apparent_publish_ready": 6,
-      "pending": 19,
+      "pending": 18,
       "target_publish_ready": 6,
       "target_pending": 20,
       "top_blockers": [
         {
           "id": "objective_gate:bootstrap_observe_before_scaling",
-          "count": 38,
+          "count": 36,
           "operator_translation": "collect more observed signal before scaling this pattern"
         },
         {
           "id": "queue_prune:rewrite",
-          "count": 13,
+          "count": 12,
           "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
@@ -86,21 +86,21 @@
     {
       "priority": "P1",
       "action": "Refresh free discovery only after the current repair batch is clean.",
-      "target": "pending 19/20",
+      "target": "pending 18/20",
       "why": "Bigger inventory helps only when the gate can accept winners."
     }
   ],
   "metrics": {
     "health_score": 77,
     "health_state": "watch",
-    "pending": 19,
+    "pending": 18,
     "operational_publish_ready": 6,
     "apparent_publish_ready": 6,
     "eligible_count": 6,
     "scale_ready_count": 0,
     "next_shorts_count": 6,
-    "editorial_candidate_count": 19,
-    "published_count": 84,
+    "editorial_candidate_count": 18,
+    "published_count": 85,
     "views_28d": 30314,
     "total_subscribers": 46,
     "subs_per_1000_views": 1.221,
@@ -109,17 +109,17 @@
     "recurring_viewer_rate": 0.001,
     "youtube_search_view_rate": 0.017,
     "crosspost_assets": 10,
-    "comments_sampled": 34
+    "comments_sampled": 35
   },
   "top_blockers": [
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
-      "count": 38,
+      "count": 36,
       "operator_translation": "collect more observed signal before scaling this pattern"
     },
     {
       "id": "queue_prune:rewrite",
-      "count": 13,
+      "count": 12,
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
@@ -138,24 +138,14 @@
       "operator_translation": "bootstrap observe before scaling"
     },
     {
-      "id": "editor_in_chief:story angle repeated inside 10-day cooldown",
-      "count": 6,
-      "operator_translation": "editor in chief:story angle repeated inside 10-day cooldown"
-    },
-    {
       "id": "editor_in_chief:cooldown_subject",
-      "count": 5,
+      "count": 4,
       "operator_translation": "pick a fresh subject inside the same lane"
     },
     {
-      "id": "off_topic_visual",
+      "id": "editor_in_chief:story angle repeated inside 10-day cooldown",
       "count": 4,
-      "operator_translation": "off topic visual"
-    },
-    {
-      "id": "script_hook_mismatch",
-      "count": 4,
-      "operator_translation": "script hook mismatch"
+      "operator_translation": "editor in chief:story angle repeated inside 10-day cooldown"
     },
     {
       "id": "editor_in_chief:needs_ai_rewrite",
@@ -171,6 +161,16 @@
       "id": "publish_score:rewrite",
       "count": 2,
       "operator_translation": "repair the publish score package"
+    },
+    {
+      "id": "editor_in_chief:editorial score 42 is below 62",
+      "count": 2,
+      "operator_translation": "editor in chief:editorial score 42 is below 62"
+    },
+    {
+      "id": "editor_in_chief:editorial score 46 is below 62",
+      "count": 2,
+      "operator_translation": "editor in chief:editorial score 46 is below 62"
     }
   ],
   "levels": [
@@ -183,7 +183,7 @@
       "status": "cleared",
       "progress_pct": 100.0,
       "evidence": {
-        "published_count": 84,
+        "published_count": 85,
         "health_score": 77
       }
     },
@@ -194,11 +194,11 @@
       "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
       "revenue_job": "Turn production from lucky shots into repeatable inventory.",
       "status": "current",
-      "progress_pct": 98.3,
+      "progress_pct": 96.7,
       "evidence": {
         "operational_publish_ready": 6,
         "eligible_count": 6,
-        "pending": 19,
+        "pending": 18,
         "target_publish_ready": 6,
         "target_pending": 20
       }
@@ -226,7 +226,7 @@
       "progress_pct": 52.5,
       "evidence": {
         "recurring_viewer_rate": 0.001,
-        "comments_sampled": 34
+        "comments_sampled": 35
       }
     },
     {

@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-07-09T08:05:00.996226+00:00",
+  "generated_at": "2026-07-09T08:12:48.262409+00:00",
   "state": "fully_autonomous",
   "autonomy_score": 90,
   "operating_mode": "repair_retention",
   "data_status": {
     "metric_scope": "youtube_analytics_and_public_statistics",
-    "shorts_tracked": 84,
+    "shorts_tracked": 85,
     "avg_view_pct": 31.523,
     "subs_per_1000_views": 0.0
   },
@@ -20,15 +20,15 @@
     },
     {
       "name": "geology",
-      "score": 114.347
+      "score": 114.346
+    },
+    {
+      "name": "earth_from_space",
+      "score": 100.077
     },
     {
       "name": "reptiles",
       "score": 100.046
-    },
-    {
-      "name": "conservation",
-      "score": 100.0
     }
   ],
   "format_priorities": [
@@ -46,7 +46,7 @@
     },
     {
       "name": "earth_engine",
-      "score": 100.051
+      "score": 107.19
     },
     {
       "name": "conservation_signal",
@@ -188,7 +188,7 @@
       {
         "id": "H5_RECOVER_OR_PAUSE",
         "lane": "recovery",
-        "statement": "reptiles, conservation should only run with stronger hooks or remakes.",
+        "statement": "earth_from_space, reptiles should only run with stronger hooks or remakes.",
         "success_metric": "view_pct",
         "target": 55
       },
@@ -202,9 +202,9 @@
       {
         "id": "H8_VISUAL_PROFILE",
         "lane": "visual_ctr",
-        "statement": "Favor frame profile close_subject|feed_bright|medium_contrast for stronger click and retention signals.",
+        "statement": "Favor frame profile close_subject|usable_light|high_contrast for stronger click and retention signals.",
         "success_metric": "growth_score_plus_retention",
-        "target": "close_subject|feed_bright|medium_contrast"
+        "target": "close_subject|usable_light|high_contrast"
       }
     ]
   },
@@ -212,12 +212,6 @@
     "source_winners": 0,
     "variant_count": 6,
     "next_variants": [
-      {
-        "id": "remake-e2b8a5f62dc9ad32-session-graph-sequel",
-        "title": "The first color scale cue explains butterflies' payoff",
-        "variant": "session_graph_sequel",
-        "category": "insects"
-      },
       {
         "id": "remake-e3ec7e400564a345-session-graph-sequel",
         "title": "The first pattern cue explains crystals' payoff",
@@ -243,6 +237,12 @@
         "category": "conservation"
       },
       {
+        "id": "remake-28807dc184477807-session-graph-sequel",
+        "title": "The first cool canopy cue explains forests' payoff",
+        "variant": "session_graph_sequel",
+        "category": "forests"
+      },
+      {
         "id": "remake-ff8062c91da0da00-fresh-upload-package-rescue",
         "title": "The first stripe camouflage cue explains tigers' payoff",
         "variant": "fresh_upload_package_rescue",
@@ -261,8 +261,16 @@
     ]
   },
   "visual_policy": {
-    "winner": "close_subject|feed_bright|medium_contrast",
+    "winner": "close_subject|usable_light|high_contrast",
     "profiles": [
+      {
+        "profile": "close_subject|usable_light|high_contrast",
+        "n": 20,
+        "mean_growth_score": 101.168,
+        "mean_retention": 1.265,
+        "mean_views": 0.2,
+        "mean_visual_ctr_score": 99.9
+      },
       {
         "profile": "close_subject|feed_bright|medium_contrast",
         "n": 6,
@@ -272,17 +280,9 @@
         "mean_visual_ctr_score": 97.667
       },
       {
-        "profile": "close_subject|usable_light|high_contrast",
-        "n": 19,
-        "mean_growth_score": 95.966,
-        "mean_retention": 1.331,
-        "mean_views": 0.211,
-        "mean_visual_ctr_score": 99.895
-      },
-      {
         "profile": "close_subject|feed_bright|high_contrast",
         "n": 45,
-        "mean_growth_score": 68.857,
+        "mean_growth_score": 68.856,
         "mean_retention": 1.562,
         "mean_views": 0.244,
         "mean_visual_ctr_score": 100.0
@@ -338,12 +338,12 @@
     "selection_rule": "highest autonomy_priority among non-rejected publish_score candidates"
   },
   "queue": {
-    "pending": 19,
-    "approved_candidates": 19,
+    "pending": 18,
+    "approved_candidates": 18,
     "lane_counts": {
       "fresh_experiment": 12,
       "proven_category": 5,
-      "recovery": 2
+      "recovery": 1
     },
     "top_candidates": [
       {
@@ -519,7 +519,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 119.55,
+        "autonomy_priority": 119.8,
         "packaging_lab": {
           "title_variants": [
             "Rock layers store ancient environments in stripes",
@@ -718,7 +718,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 119.25,
+        "autonomy_priority": 119.5,
         "packaging_lab": {
           "title_variants": [
             "Rock layers store ancient environments in stripes",
@@ -915,7 +915,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 117.95,
+        "autonomy_priority": 118.2,
         "packaging_lab": {
           "title_variants": [
             "Rock layers store ancient environments in stripes",
@@ -1323,202 +1323,6 @@
             "Watch the beak grip again. Tomorrow in Sky Intelligence: another animal signal. Is this adaptation, instinct, "
           ],
           "pinned_comment": "Watch the beak grip again. Tomorrow in Sky Intelligence: another animal signal. Is this adaptation, instinct, or intelligence?",
-          "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
-        }
-      },
-      {
-        "id": "1e1fd2bf8c255b87",
-        "title": "Storm clouds reveal weather from above the clouds",
-        "category": "earth_from_space",
-        "story_format": "earth_engine",
-        "lane": "fresh_experiment",
-        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
-        "publish_score": {
-          "score": 100,
-          "approved": true,
-          "state": "publish_ready",
-          "opportunity": {
-            "score": 55,
-            "signals": {
-              "viral_potential": 45,
-              "visual_potential": 80,
-              "replay_potential": 59,
-              "comment_potential": 49,
-              "educational_potential": 59,
-              "emotional_potential": 30,
-              "novelty": 40
-            },
-            "verdict": "rewrite",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.113,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "estimated",
-              "data_quality_score": 0.567,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.335,
-              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-            },
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-          },
-          "retention": {
-            "score": 77,
-            "signals": {
-              "hook_score": 82,
-              "curiosity_score": 71,
-              "visual_score": 82,
-              "replay_score": 62,
-              "completion_prediction": 84
-            },
-            "verdict": "rewrite",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.113,
-              "sample_size": 1,
-              "minimum_sample_size": 5,
-              "data_quality": "estimated",
-              "data_quality_score": 0.567,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.335,
-              "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-            },
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
-          },
-          "opening_retention": {
-            "score": 100.0,
-            "state": "retention_ready",
-            "approved": true,
-            "subject": "clouds",
-            "cue_terms": [
-              "cloud",
-              "tops"
-            ],
-            "frame_hook_bridge": [
-              "cloud",
-              "tops"
-            ],
-            "cue_bridge": [
-              "cloud",
-              "tops"
-            ],
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "risks": []
-          },
-          "weak_content": {
-            "risk": 0,
-            "state": "clear",
-            "reasons": [],
-            "confidence": {
-              "confidence_score": 0.65,
-              "sample_size": 12,
-              "minimum_sample_size": 5,
-              "data_quality": "inferred",
-              "data_quality_score": 0.65,
-              "recommendation_strength": "test",
-              "can_adjust_strategy": true,
-              "bootstrap_multiplier": 0.738,
-              "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
-            },
-            "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
-          },
-          "subscriber_conversion": {
-            "score": 100,
-            "state": "strong",
-            "subscriber_probability": 0.143,
-            "return_probability": 0.3,
-            "comment_probability": 0.256,
-            "robotic_title": {
-              "risk": 0,
-              "state": "clear",
-              "hits": []
-            },
-            "reasons": [
-              "identity_cta",
-              "debate_comment",
-              "return_prompt",
-              "series_identity"
-            ],
-            "confidence": {
-              "confidence_score": 0.165,
-              "sample_size": 5,
-              "minimum_sample_size": 18,
-              "data_quality": "estimated",
-              "data_quality_score": 0.425,
-              "recommendation_strength": "observe",
-              "can_adjust_strategy": false,
-              "bootstrap_multiplier": 0.374,
-              "reasoning": "Combined 4 evidence source(s) with average confidence 0.16."
-            },
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.16."
-          },
-          "distribution_adjustment": 0,
-          "decision_confidence": {
-            "confidence_score": 0.146,
-            "sample_size": 10,
-            "minimum_sample_size": 38,
-            "data_quality": "estimated",
-            "data_quality_score": 0.35,
-            "recommendation_strength": "observe",
-            "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.36,
-            "reasoning": "Combined 5 evidence source(s) with average confidence 0.15."
-          },
-          "category": "earth_from_space",
-          "story_format": "earth_engine",
-          "hook_score": 86,
-          "title_score": 100,
-          "phrase_risk": {
-            "penalty": 0,
-            "hits": []
-          },
-          "editorial_guard": {
-            "approved": true,
-            "state": "approved",
-            "issues": []
-          },
-          "objective_gate": {
-            "penalty": 0.0,
-            "reasons": [
-              "bootstrap_observe_before_scaling"
-            ],
-            "confidence_score": 0.146,
-            "scale_ready": false,
-            "publish_blocking": false,
-            "swipe_risk_band": "low",
-            "payoff_time_s": 0.0,
-            "template_cluster": "",
-            "mechanism_cluster": ""
-          }
-        },
-        "autonomy_priority": 106.52,
-        "packaging_lab": {
-          "title_variants": [
-            "Storm clouds reveal a storm's heat engine",
-            "Storm clouds reveal weather from above the clouds",
-            "Storm clouds use cloud spiral before they covered"
-          ],
-          "thumbnail_variants": [
-            "STORM ENGINE",
-            "CLOUD SPIRAL",
-            "WATCH CLOUD SPIRAL"
-          ],
-          "hook_variants": [
-            "Storm clouds look different when seen from above.",
-            "Storm clouds reveal weather from above the clouds",
-            "Watch the cloud tops again. Tomorrow in Planet Earth: another nature signal. Which planet-scale clue should we"
-          ],
-          "pinned_comment": "Watch the cloud tops again. Tomorrow in Planet Earth: another nature signal. Which planet-scale clue should we compare next?",
           "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
         }
       },
@@ -3886,8 +3690,8 @@
         "title": "Ocean edges turn wave motion into patterns",
         "category": "conservation",
         "story_format": "conservation_signal",
-        "lane": "recovery",
-        "hypothesis_id": "H5_RECOVER_OR_PAUSE",
+        "lane": "fresh_experiment",
+        "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
         "publish_score": {
           "score": 91.7,
           "approved": true,
@@ -4058,7 +3862,7 @@
             "mechanism_cluster": ""
           }
         },
-        "autonomy_priority": 94.49,
+        "autonomy_priority": 98.21,
         "packaging_lab": {
           "title_variants": [
             "Mangroves take power out of waves",
@@ -4084,10 +3888,10 @@
   "decisions": [
     "Prioritize categories: space, farm, geology.",
     "Use formats first: space_engine, animal_memory, single_fact.",
-    "Keep weak categories in recovery mode: reptiles, conservation.",
+    "Keep weak categories in recovery mode: earth_from_space, reptiles.",
     "Bias production toward experiment winners: hook_style=question, script_tone=analytical, narrator_voice=jenny, thumbnail_style=frame_first_side_caption, cta_style=subscribe_channel, opening_visual_pattern=animal_closeup, subtitle_density=low, loop_style=callback, cta_pattern=question_tease, end_card_style=loop_callback, title_shape=impossible_fact, music_bed=light_bed.",
     "Current operating mode: repair_retention."
   ],
-  "queue_annotations_written": 19,
-  "queue_annotations_changed": 19
+  "queue_annotations_written": 18,
+  "queue_annotations_changed": 18
 }

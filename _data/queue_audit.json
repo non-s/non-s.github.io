@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-09T08:05:13.523116+00:00",
-  "pending": 19,
+  "generated_at": "2026-07-09T08:13:00.789587+00:00",
+  "pending": 18,
   "states": {
-    "rewrite": 13,
+    "rewrite": 12,
     "publish_ready": 6
   },
   "mechanism_clusters": {
@@ -12,84 +12,44 @@
     "face_recognition": 1
   },
   "rights": {
-    "approved": 19
+    "approved": 18
   },
   "prune_summary": {
-    "pending_before": 25,
-    "pending_after": 19,
-    "rejected": 6,
+    "pending_before": 18,
+    "pending_after": 18,
+    "rejected": 0,
     "repair_needed": 0,
-    "repaired": 3,
+    "repaired": 2,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 19,
-      "off_topic_visual": 4,
-      "script_hook_mismatch": 4,
+      "objective_gate:bootstrap_observe_before_scaling": 18,
       "editor_in_chief:subject repeated inside 3-day cooldown": 4,
       "editor_in_chief:script quality gate blocked the narration": 4,
-      "editor_in_chief:story angle repeated inside 10-day cooldown": 3,
+      "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
       "editor_in_chief:editorial score 42 is below 62": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
-      "duplicate_title": 1,
-      "duplicate_script": 1,
-      "duplicate_angle": 1,
-      "rights_guard_person_manual_review": 1,
       "editorial_cooldown_supply_fallback": 1
     }
   },
   "rejected_preview": [
     {
-      "id": "dd198dd371520f02",
-      "title": "Dogs read human pointing surprisingly well",
+      "id": "Nubes de tormenta vistas desde arriba",
+      "title": "Nubes de tormenta vistas desde arriba",
       "reasons": [
-        "rights_guard_person_manual_review"
+        "subject_not_immediately_clear",
+        "payoff_not_explicit",
+        "title_shape_weak",
+        "opening_retention_gap_risk"
       ],
-      "stage": "queue_prune_final"
+      "stage": "youtube_brain"
     },
     {
-      "id": "d5898030ae162b45",
-      "title": "Dragonflies lock onto prey in midair",
+      "id": "8bdc8b70af521eb4",
+      "title": "Fossils turn old bones into time clues",
       "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
       ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "740e2eb0f6eb2303",
-      "title": "Alpine cliffs that don’t erode the way you learned",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "92864ee138178d87",
-      "title": "Baseball bat in the wrong hands at night",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "f436e0ef6e007521",
-      "title": "bats hunt like cricket captains",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "f3bbf12729caea77",
-      "title": "Camels survive Sahara without water for weeks",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
+      "stage": "youtube_brain_rewrite"
     },
     {
       "id": "defb0646798be33d",
@@ -100,15 +60,6 @@
         "editorial score 37 is below 62"
       ],
       "stage": "editor_in_chief"
-    },
-    {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
     },
     {
       "id": "9610b5778d6939bb",
@@ -201,15 +152,6 @@
       "stage": "editor_in_chief"
     },
     {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
-    },
-    {
       "id": "7ca81cf2ea31483b",
       "title": "Rock layers store ancient environments in stripes",
       "reasons": [
@@ -297,6 +239,60 @@
         "off_topic_visual"
       ],
       "stage": "queue_prune"
+    },
+    {
+      "id": "f3763d1d49f80224",
+      "title": "Orangutans use leaves like rain umbrellas",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "e017d50721a64250",
+      "title": "Magnets make invisible fields visible",
+      "reasons": [
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "e6ddb4fb30de58b2",
+      "title": "Monkeys wash food when grit gets annoying",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "79473a20b6c7711f",
+      "title": "Orangutans use leaves like rain umbrellas",
+      "reasons": [
+        "off_topic_visual",
+        "duplicate_title",
+        "duplicate_script"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "0a10ea2662af75ef",
+      "title": "Dogs build a map with smell",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "51809926b9c7bc2a",
+      "title": "Snakes sample the air with a tongue flick",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
     }
   ],
   "top": [
@@ -476,7 +472,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-09T08:04:53.416628+00:00",
+        "checked_at": "2026-07-09T08:12:41.404781+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -570,7 +566,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 84,
+          "sample_count": 85,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1123,7 +1119,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-09T08:04:53.418429+00:00",
+        "checked_at": "2026-07-09T08:12:41.406586+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1217,7 +1213,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 84,
+          "sample_count": 85,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1766,7 +1762,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-09T08:04:53.419473+00:00",
+        "checked_at": "2026-07-09T08:12:41.407610+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1858,7 +1854,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 84,
+          "sample_count": 85,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -2406,7 +2402,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-09T08:04:53.421294+00:00",
+        "checked_at": "2026-07-09T08:12:41.409357+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2500,7 +2496,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 84,
+          "sample_count": 85,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -3048,7 +3044,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-09T08:04:53.741481+00:00",
+        "checked_at": "2026-07-09T08:12:41.414361+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3142,7 +3138,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 84,
+          "sample_count": 85,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -3691,7 +3687,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T08:04:53.410083+00:00",
+        "checked_at": "2026-07-09T08:12:41.398329+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3783,7 +3779,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 84,
+          "sample_count": 85,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -4330,7 +4326,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T08:04:53.412351+00:00",
+        "checked_at": "2026-07-09T08:12:41.400543+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4424,7 +4420,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 84,
+          "sample_count": 85,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -4975,7 +4971,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T08:04:53.743448+00:00",
+        "checked_at": "2026-07-09T08:12:41.416050+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5069,7 +5065,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 84,
+          "sample_count": 85,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -5618,7 +5614,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T08:04:53.423024+00:00",
+        "checked_at": "2026-07-09T08:12:41.411105+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5710,7 +5706,7 @@
           },
           "explore_rate": 0.1,
           "mode": "explore",
-          "sample_count": 84,
+          "sample_count": 85,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6265,7 +6261,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T08:04:53.424091+00:00",
+        "checked_at": "2026-07-09T08:12:41.412217+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6364,7 +6360,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 84,
+          "sample_count": 85,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6755,22 +6751,22 @@
       }
     },
     {
-      "id": "1e1fd2bf8c255b87",
-      "title": "Storm clouds reveal weather from above the clouds",
-      "category": "earth_from_space",
+      "id": "8e9710036cf1db90",
+      "title": "Plants use trap hairs to count touches before closing",
+      "category": "plants",
       "publish_score": {
         "approved": true,
-        "category": "earth_from_space",
+        "category": "plants",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.36,
+          "bootstrap_multiplier": 0.255,
           "can_adjust_strategy": false,
-          "confidence_score": 0.146,
-          "data_quality": "estimated",
-          "data_quality_score": 0.35,
-          "minimum_sample_size": 38,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.15.",
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
           "recommendation_strength": "observe",
-          "sample_size": 10
+          "sample_size": 1
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -6778,9 +6774,9 @@
           "issues": [],
           "state": "approved"
         },
-        "hook_score": 86,
+        "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.146,
+          "confidence_score": 0.007,
           "mechanism_cluster": "",
           "payoff_time_s": 0.0,
           "penalty": 0.0,
@@ -6795,16 +6791,16 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "cloud",
-            "tops"
+            "hair",
+            "trap"
           ],
           "cue_terms": [
-            "cloud",
-            "tops"
+            "hair",
+            "trap"
           ],
           "frame_hook_bridge": [
-            "cloud",
-            "tops"
+            "hair",
+            "trap"
           ],
           "risks": [],
           "score": 100.0,
@@ -6816,33 +6812,34 @@
             "watch_instruction_early",
             "action_promise_early",
             "reason_arrives_early",
-            "frame_text_scannable"
+            "frame_text_scannable",
+            "curiosity_shape"
           ],
-          "subject": "clouds"
+          "subject": "plants"
         },
         "opportunity": {
           "confidence": {
-            "bootstrap_multiplier": 0.335,
+            "bootstrap_multiplier": 0.25,
             "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 1
+            "sample_size": 0
           },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 55,
+          "score": 60,
           "signals": {
-            "comment_potential": 49,
-            "educational_potential": 59,
-            "emotional_potential": 30,
-            "novelty": 40,
-            "replay_potential": 59,
-            "viral_potential": 45,
-            "visual_potential": 80
+            "comment_potential": 54,
+            "educational_potential": 71,
+            "emotional_potential": 35,
+            "novelty": 45,
+            "replay_potential": 82,
+            "viral_potential": 63,
+            "visual_potential": 55
           },
           "verdict": "rewrite"
         },
@@ -6852,61 +6849,61 @@
         },
         "retention": {
           "confidence": {
-            "bootstrap_multiplier": 0.335,
+            "bootstrap_multiplier": 0.25,
             "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 1
+            "sample_size": 0
           },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 77,
+          "score": 74,
           "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
+            "completion_prediction": 77,
+            "curiosity_score": 79,
             "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 82
+            "replay_score": 72,
+            "visual_score": 58
           },
           "verdict": "rewrite"
         },
         "score": 100,
         "state": "publish_ready",
-        "story_format": "earth_engine",
+        "story_format": "plant_mechanism",
         "subscriber_conversion": {
-          "comment_probability": 0.256,
+          "comment_probability": 0.237,
           "confidence": {
-            "bootstrap_multiplier": 0.374,
+            "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
-            "confidence_score": 0.165,
-            "data_quality": "estimated",
-            "data_quality_score": 0.425,
-            "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
             "recommendation_strength": "observe",
-            "sample_size": 5
+            "sample_size": 1
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
           "reasons": [
-            "identity_cta",
+            "hook_invites_return",
             "debate_comment",
             "return_prompt",
             "series_identity",
             "episode_continuity"
           ],
-          "return_probability": 0.3,
+          "return_probability": 0.278,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 100,
+          "score": 92,
           "state": "strong",
-          "subscriber_probability": 0.143
+          "subscriber_probability": 0.131
         },
         "title_score": 100,
         "weak_content": {
@@ -6929,7 +6926,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-09T08:04:53.406012+00:00",
+        "checked_at": "2026-07-09T08:12:41.417988+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6942,21 +6939,21 @@
       },
       "queue_score": 72.0,
       "youtube_brain": {
-        "animal": "storm",
+        "animal": "plants",
         "commands": [],
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "cloud",
-            "tops"
+            "hair",
+            "trap"
           ],
           "cue_terms": [
-            "cloud",
-            "tops"
+            "hair",
+            "trap"
           ],
           "frame_hook_bridge": [
-            "cloud",
-            "tops"
+            "hair",
+            "trap"
           ],
           "risks": [],
           "score": 100.0,
@@ -6968,9 +6965,10 @@
             "watch_instruction_early",
             "action_promise_early",
             "reason_arrives_early",
-            "frame_text_scannable"
+            "frame_text_scannable",
+            "curiosity_shape"
           ],
-          "subject": "clouds"
+          "subject": "plants"
         },
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
@@ -6983,7 +6981,7 @@
         "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
         "score": 100,
         "state": "publish_minded",
-        "story_format": "earth_engine",
+        "story_format": "plant_mechanism",
         "strengths": [
           "subject_visible_in_first_sentence",
           "action_driven_promise",
@@ -6993,14 +6991,14 @@
           "thumbnail_text_scannable",
           "retention_opening_aligned"
         ],
-        "subject": "storm",
-        "viewer_promise": "See why this storm earth engine matters."
+        "subject": "plants",
+        "viewer_promise": "See why this plant plant mechanism matters."
       },
       "packaging": {
-        "community_prompt": "Which storm clue should Wild Brief compare next in Planet Earth?",
-        "cta_prompt": "Want more planet-scale nature explained fast?",
+        "community_prompt": "Which plants clue should Wild Brief compare next in Biology Brief?",
+        "cta_prompt": "Want to see how plants quietly engineer survival?",
         "curiosity_gap": {
-          "hook": "Storm clouds look different when seen from above.",
+          "hook": "Plants use trap hairs to count touches before closing.",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -7012,7 +7010,7 @@
           "approved": true,
           "notes": [],
           "recommended_duration_s": 24,
-          "recommended_format": "earth engine",
+          "recommended_format": "plant mechanism",
           "score": 100.0,
           "violations": []
         },
@@ -7025,7 +7023,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 84,
+          "sample_count": 85,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -7045,16 +7043,16 @@
           "retention_opening": {
             "approved": true,
             "cue_bridge": [
-              "cloud",
-              "tops"
+              "hair",
+              "trap"
             ],
             "cue_terms": [
-              "cloud",
-              "tops"
+              "hair",
+              "trap"
             ],
             "frame_hook_bridge": [
-              "cloud",
-              "tops"
+              "hair",
+              "trap"
             ],
             "risks": [],
             "score": 100.0,
@@ -7066,9 +7064,10 @@
               "watch_instruction_early",
               "action_promise_early",
               "reason_arrives_early",
-              "frame_text_scannable"
+              "frame_text_scannable",
+              "curiosity_shape"
             ],
-            "subject": "clouds"
+            "subject": "plants"
           },
           "safe_area": {
             "aspect": "4:5",
@@ -7081,42 +7080,42 @@
           "word_count": 2
         },
         "hook_options": [
-          "Storm clouds show where a storm is feeding",
-          "Storm clouds look different when seen from above",
-          "Storm shows why the cloud spiral matters.",
-          "Storm shows why the cloud spiral matters.",
-          "Storm shows why the cloud spiral matters."
+          "Plants use trap hairs to count touches before closing",
+          "Plants show why the trap hairs matters.",
+          "Plants show why the trap hairs matters.",
+          "Plants show why the trap hairs matters.",
+          "Plants give away the answer through trap hairs"
         ],
         "loop_plan": {
           "audio_crossfade_ms": 120,
-          "callback_keyword": "cloud tops",
-          "ending_line": "Which above-cloud clue should we compare next.",
-          "final_line": "Now the cloud tops at the start make sense.",
-          "loop_score": 0.786,
-          "opening_line": "Storm clouds look different when seen from above.",
+          "callback_keyword": "trap hairs",
+          "ending_line": "Which plant trick should we decode next?",
+          "final_line": "Now the trap hairs at the start make sense.",
+          "loop_score": 0.815,
+          "opening_line": "Plants use trap hairs to count touches before closing.",
           "render_hints": {
             "avoid_hard_stop": true,
-            "carry_keyword": "cloud tops",
+            "carry_keyword": "trap hairs",
             "subtle_audio_tail": true
           },
           "rewrite_applied": true,
           "subtitle_tail_mode": "carry-forward"
         },
-        "loop_score": 0.786,
-        "next_episode_question": "Tomorrow in Planet Earth: another nature signal. Which planet-scale clue should we compare next?",
+        "loop_score": 0.815,
+        "next_episode_question": "Tomorrow in Biology Brief: another nature signal. Do plants feel more passive, reactive, or strategic here?",
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "cloud",
-            "tops"
+            "hair",
+            "trap"
           ],
           "cue_terms": [
-            "cloud",
-            "tops"
+            "hair",
+            "trap"
           ],
           "frame_hook_bridge": [
-            "cloud",
-            "tops"
+            "hair",
+            "trap"
           ],
           "risks": [],
           "score": 100.0,
@@ -7128,37 +7127,38 @@
             "watch_instruction_early",
             "action_promise_early",
             "reason_arrives_early",
-            "frame_text_scannable"
+            "frame_text_scannable",
+            "curiosity_shape"
           ],
-          "subject": "clouds"
+          "subject": "plants"
         },
-        "pinned_comment": "Watch the cloud tops again. Tomorrow in Planet Earth: another nature signal. Which planet-scale clue should we compare next?",
+        "pinned_comment": "Watch the trap hairs again. Tomorrow in Biology Brief: another nature signal. Do plants feel more passive, reactive, or strategic here?",
         "preflight_inputs": {
-          "caption_chars_per_second": 16.44,
+          "caption_chars_per_second": 15.17,
           "contrast_score": 0.74,
           "cta_count": 1,
-          "duration_hint_s": 16,
-          "first_2s_narration": "Storm clouds look different when seen from above Watch the cloud tops",
-          "first_frame_text": "CLOUD TOPS",
+          "duration_hint_s": 18,
+          "first_2s_narration": "Plants use trap hairs to count touches before closing Watch the trap",
+          "first_frame_text": "TRAP HAIRS",
           "first_frame_text_words": 2,
-          "hook": "Storm clouds look different when seen from above.",
+          "hook": "Plants use trap hairs to count touches before closing.",
           "hook_specificity": 0.78,
-          "hook_words": 8,
-          "loop_score": 0.786,
+          "hook_words": 9,
+          "loop_score": 0.815,
           "novelty_score": 0.58,
           "opening_retention": {
             "approved": true,
             "cue_bridge": [
-              "cloud",
-              "tops"
+              "hair",
+              "trap"
             ],
             "cue_terms": [
-              "cloud",
-              "tops"
+              "hair",
+              "trap"
             ],
             "frame_hook_bridge": [
-              "cloud",
-              "tops"
+              "hair",
+              "trap"
             ],
             "risks": [],
             "score": 100.0,
@@ -7170,9 +7170,10 @@
               "watch_instruction_early",
               "action_promise_early",
               "reason_arrives_early",
-              "frame_text_scannable"
+              "frame_text_scannable",
+              "curiosity_shape"
             ],
-            "subject": "clouds"
+            "subject": "plants"
           },
           "opening_retention_score": 100.0,
           "payoff_reveal_sentence_index": 0,
@@ -7181,81 +7182,79 @@
           "visual_motion_score": 0.76
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the cloud tops, so viewers rewatch the storm clip.",
+        "replay_prompt": "End by pointing back to the trap hairs, so viewers rewatch the plants clip.",
         "retention": {
           "confidence": {
-            "bootstrap_multiplier": 0.335,
+            "bootstrap_multiplier": 0.25,
             "can_adjust_strategy": false,
-            "confidence_score": 0.113,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
             "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 1
+            "sample_size": 0
           },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 77,
+          "score": 74,
           "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
+            "completion_prediction": 77,
+            "curiosity_score": 79,
             "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 82
+            "replay_score": 72,
+            "visual_score": 58
           },
           "verdict": "rewrite"
         },
         "retention_contract": {
-          "first_2s_narration": "Storm clouds look different when seen from above Watch the cloud tops",
-          "first_frame_text": "CLOUD TOPS",
-          "next_episode_question": "Tomorrow in Planet Earth: another nature signal. Which planet-scale clue should we compare next?",
+          "first_2s_narration": "Plants use trap hairs to count touches before closing Watch the trap",
+          "first_frame_text": "TRAP HAIRS",
+          "next_episode_question": "Tomorrow in Biology Brief: another nature signal. Do plants feel more passive, reactive, or strategic here?",
           "opening_retention_score": 100.0,
           "opening_retention_state": "retention_ready",
           "search_intent": {
-            "description_line": "This Short explains the visible cloud tops behind Storm in a fast nature science story.",
-            "series": "Planet Earth",
-            "subject": "storm",
+            "description_line": "This Short explains the visible trap hairs behind Plants in a fast nature science story.",
+            "series": "Biology Brief",
+            "subject": "plants",
             "terms": [
-              "storm",
-              "cloud tops",
-              "earth_from_space",
-              "earth engine"
+              "plants",
+              "trap hairs",
+              "plant mechanism"
             ],
-            "title_variant": "Storm cloud tops explained fast",
-            "visible_cue": "cloud tops"
+            "title_variant": "Plants trap hairs explained fast",
+            "visible_cue": "trap hairs"
           },
-          "series": "Planet Earth",
-          "subject": "storm",
-          "visible_cue": "cloud tops"
+          "series": "Biology Brief",
+          "subject": "plants",
+          "visible_cue": "trap hairs"
         },
         "risks": [],
-        "score": 97,
+        "score": 96,
         "search_intent": {
-          "description_line": "This Short explains the visible cloud tops behind Storm in a fast nature science story.",
-          "series": "Planet Earth",
-          "subject": "storm",
+          "description_line": "This Short explains the visible trap hairs behind Plants in a fast nature science story.",
+          "series": "Biology Brief",
+          "subject": "plants",
           "terms": [
-            "storm",
-            "cloud tops",
-            "earth_from_space",
-            "earth engine"
+            "plants",
+            "trap hairs",
+            "plant mechanism"
           ],
-          "title_variant": "Storm cloud tops explained fast",
-          "visible_cue": "cloud tops"
+          "title_variant": "Plants trap hairs explained fast",
+          "visible_cue": "trap hairs"
         },
         "selected_variant": {
-          "hook": "Storm clouds show where a storm is feeding",
+          "hook": "Watch the trap hairs; it explains the behavior",
           "score": 79,
-          "thumbnail_text": "STORM ENGINE",
-          "title": "Storm clouds reveal a storm's heat engine"
+          "thumbnail_text": "TRAP HAIRS",
+          "title": "Plants use trap hairs to count touches before snapping shut"
         },
-        "series": "Planet Earth #3",
+        "series": "Biology Brief #5",
         "series_identity": {
-          "continuity_prompt": "Next in Planet Earth: compare this with another force of nature.",
-          "episode": 3,
-          "label": "Planet Earth #3",
-          "series": "Planet Earth"
+          "continuity_prompt": "Next in Biology Brief: compare this with another force of nature.",
+          "episode": 5,
+          "label": "Biology Brief #5",
+          "series": "Biology Brief"
         },
         "state": "magnetic",
         "strengths": [
@@ -7267,35 +7266,35 @@
           "retention_opening_aligned"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.256,
+          "comment_probability": 0.237,
           "confidence": {
-            "bootstrap_multiplier": 0.374,
+            "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
-            "confidence_score": 0.165,
-            "data_quality": "estimated",
-            "data_quality_score": 0.425,
-            "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
             "recommendation_strength": "observe",
-            "sample_size": 5
+            "sample_size": 1
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
           "reasons": [
-            "identity_cta",
+            "hook_invites_return",
             "debate_comment",
             "return_prompt",
             "series_identity",
             "episode_continuity"
           ],
-          "return_probability": 0.3,
+          "return_probability": 0.278,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 100,
+          "score": 92,
           "state": "strong",
-          "subscriber_probability": 0.143
+          "subscriber_probability": 0.131
         },
         "swipe_risk": {
           "band": "low",
@@ -7304,87 +7303,87 @@
           "score": 0
         },
         "thumbnail_options": [
-          "STORM ENGINE",
-          "CLOUD SPIRAL",
-          "WATCH CLOUD SPIRAL",
-          "STORM CLOUDS COVERED",
-          "CLOUD SPIRAL MATTERS",
-          "CLOUD SPIRAL FIRST",
-          "CLOUD SPIRAL REVEAL",
-          "CLOUD SPIRAL CLUE",
+          "TRAP HAIRS",
+          "WATCH TRAP HAIRS",
+          "PLANTS TRICK",
+          "TRAP HAIRS MATTERS",
+          "TRAP HAIRS FIRST",
+          "TRAP HAIRS REVEAL",
+          "TRAP HAIRS CLUE",
           "WATCH THE MOVE",
           "SPOT THE CLUE"
         ],
         "title_options": [
-          "Storm clouds reveal a storm's heat engine",
-          "Storm clouds reveal weather from above the clouds",
-          "Storm clouds use cloud spiral before they covered",
-          "This cloud spiral gives storm clouds away",
-          "Storm clouds reveal the answer with cloud spiral",
-          "The cloud spiral that changes the moment",
-          "Storm clouds show the hidden answer in seconds",
-          "Storm clouds: watch this cloud spiral"
+          "Plants use trap hairs to count touches before snapping shut",
+          "Plants use trap hairs to count touches before closing",
+          "Plants use trap hairs before they trick",
+          "Why plants trick after one trap hairs",
+          "Plants reveal the answer with trap hairs",
+          "The trap hairs that changes the moment",
+          "Plants make one trap hairs matter",
+          "Plants show the hidden answer in seconds",
+          "Plants: watch this trap hairs"
         ],
         "top_variants": [
           {
-            "hook": "Storm clouds show where a storm is feeding",
+            "hook": "Watch the trap hairs; it explains the behavior",
             "score": 79,
-            "thumbnail_text": "STORM ENGINE",
-            "title": "Storm clouds reveal a storm's heat engine"
+            "thumbnail_text": "TRAP HAIRS",
+            "title": "Plants use trap hairs to count touches before snapping shut"
           },
           {
-            "hook": "Storm clouds look different when seen from above",
+            "hook": "Start with the trap hairs; it changes the scene",
+            "score": 79,
+            "thumbnail_text": "TRAP HAIRS",
+            "title": "Plants use trap hairs to count touches before snapping shut"
+          },
+          {
+            "hook": "Plants use trap hairs to count touches before closing",
             "score": 78,
-            "thumbnail_text": "STORM ENGINE",
-            "title": "Storm clouds reveal a storm's heat engine"
+            "thumbnail_text": "TRAP HAIRS",
+            "title": "Plants use trap hairs to count touches before snapping shut"
           },
           {
-            "hook": "Watch the cloud spiral; it explains the behavior",
-            "score": 78,
-            "thumbnail_text": "STORM ENGINE",
-            "title": "Storm clouds reveal a storm's heat engine"
-          },
-          {
-            "hook": "Storm clouds show where a storm is feeding",
+            "hook": "Watch the trap hairs; it explains the behavior",
             "score": 72,
-            "thumbnail_text": "CLOUD SPIRAL",
-            "title": "Storm clouds reveal a storm's heat engine"
+            "thumbnail_text": "WATCH TRAP HAIRS",
+            "title": "Plants use trap hairs to count touches before snapping shut"
           },
           {
-            "hook": "Storm clouds show where a storm is feeding",
+            "hook": "Start with the trap hairs; it changes the scene",
             "score": 72,
-            "thumbnail_text": "WATCH CLOUD SPIRAL",
-            "title": "Storm clouds reveal a storm's heat engine"
+            "thumbnail_text": "WATCH TRAP HAIRS",
+            "title": "Plants use trap hairs to count touches before snapping shut"
           },
           {
-            "hook": "Storm clouds show where a storm is feeding",
+            "hook": "Watch the trap hairs; it explains the behavior",
             "score": 72,
-            "thumbnail_text": "STORM CLOUDS COVERED",
-            "title": "Storm clouds reveal a storm's heat engine"
+            "thumbnail_text": "PLANTS TRICK",
+            "title": "Plants use trap hairs to count touches before snapping shut"
           },
           {
-            "hook": "Storm clouds show where a storm is feeding",
+            "hook": "Start with the trap hairs; it changes the scene",
             "score": 72,
-            "thumbnail_text": "CLOUD SPIRAL MATTERS",
-            "title": "Storm clouds reveal a storm's heat engine"
+            "thumbnail_text": "PLANTS TRICK",
+            "title": "Plants use trap hairs to count touches before snapping shut"
           },
           {
-            "hook": "Storm clouds look different when seen from above",
-            "score": 71,
-            "thumbnail_text": "CLOUD SPIRAL",
-            "title": "Storm clouds reveal a storm's heat engine"
+            "hook": "Watch the trap hairs; it explains the behavior",
+            "score": 72,
+            "thumbnail_text": "TRAP HAIRS MATTERS",
+            "title": "Plants use trap hairs to count touches before snapping shut"
           },
           {
-            "hook": "Watch the cloud spiral; it explains the behavior",
-            "score": 71,
-            "thumbnail_text": "CLOUD SPIRAL",
-            "title": "Storm clouds reveal a storm's heat engine"
+            "hook": "Start with the trap hairs; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "TRAP HAIRS MATTERS",
+            "title": "Plants use trap hairs to count touches before snapping shut"
           },
           {
-            "hook": "Storm clouds look different when seen from above",
-            "score": 71,
-            "thumbnail_text": "WATCH CLOUD SPIRAL",
-            "title": "Storm clouds reveal a storm's heat engine"
+            "hook": "Watch the trap hairs; it explains the behavior",
+            "score": 72,
+            "thumbnail_text": "TRAP HAIRS FIRST",
+            "title": "Plants use trap hairs to count touches before snapping shut"
           }
         ]
       },
@@ -7575,7 +7574,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T08:04:53.413870+00:00",
+        "checked_at": "2026-07-09T08:12:41.402062+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7670,7 +7669,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 84,
+          "sample_count": 85,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -8222,7 +8221,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T08:04:53.415427+00:00",
+        "checked_at": "2026-07-09T08:12:41.403596+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8319,7 +8318,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 84,
+          "sample_count": 85,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -8876,7 +8875,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T08:04:53.748004+00:00",
+        "checked_at": "2026-07-09T08:12:41.419766+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8974,7 +8973,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 84,
+          "sample_count": 85,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -9532,7 +9531,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T08:04:53.398078+00:00",
+        "checked_at": "2026-07-09T08:12:41.388999+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9628,7 +9627,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 84,
+          "sample_count": 85,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -10178,7 +10177,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T08:04:53.401182+00:00",
+        "checked_at": "2026-07-09T08:12:41.392185+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10279,7 +10278,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 84,
+          "sample_count": 85,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -10842,7 +10841,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T08:04:53.403618+00:00",
+        "checked_at": "2026-07-09T08:12:41.394387+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10939,7 +10938,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 84,
+          "sample_count": 85,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -11495,7 +11494,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T08:04:53.407833+00:00",
+        "checked_at": "2026-07-09T08:12:41.396127+00:00",
         "mechanism_cluster": "tongue_smell",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11590,7 +11589,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 84,
+          "sample_count": 85,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -11951,655 +11950,6 @@
             "score": 72,
             "thumbnail_text": "TONGUE SMELL FIRST",
             "title": "Snakes smell the air with their tongues"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
-      "id": "8e9710036cf1db90",
-      "title": "Plants use trap hairs to count touches before closing",
-      "category": "plants",
-      "publish_score": {
-        "approved": true,
-        "category": "plants",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "hair",
-            "trap"
-          ],
-          "cue_terms": [
-            "hair",
-            "trap"
-          ],
-          "frame_hook_bridge": [
-            "hair",
-            "trap"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable",
-            "curiosity_shape"
-          ],
-          "subject": "plants"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 60,
-          "signals": {
-            "comment_potential": 54,
-            "educational_potential": 71,
-            "emotional_potential": 35,
-            "novelty": 45,
-            "replay_potential": 82,
-            "viral_potential": 63,
-            "visual_potential": 55
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "plant_mechanism",
-        "subscriber_conversion": {
-          "comment_probability": 0.237,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "hook_invites_return",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.278,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 92,
-          "state": "strong",
-          "subscriber_probability": 0.131
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-07-09T08:04:53.746215+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling",
-          "editor_in_chief:story angle repeated inside 10-day cooldown"
-        ],
-        "score": 64.0,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 64.0,
-      "youtube_brain": {
-        "animal": "plants",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "hair",
-            "trap"
-          ],
-          "cue_terms": [
-            "hair",
-            "trap"
-          ],
-          "frame_hook_bridge": [
-            "hair",
-            "trap"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable",
-            "curiosity_shape"
-          ],
-          "subject": "plants"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "plant_mechanism",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "plants",
-        "viewer_promise": "See why this plant plant mechanism matters."
-      },
-      "packaging": {
-        "community_prompt": "Which plants clue should Wild Brief compare next in Biology Brief?",
-        "cta_prompt": "Want to see how plants quietly engineer survival?",
-        "curiosity_gap": {
-          "hook": "Plants use trap hairs to count touches before closing.",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "story"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "plant mechanism",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 84,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
-          },
-          "winning_experiments": {
-            "cta:specific_question": 47.3,
-            "format:fresh_variant": 47.3,
-            "format:winner_inspired": 45.76,
-            "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 46.06
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "hair",
-              "trap"
-            ],
-            "cue_terms": [
-              "hair",
-              "trap"
-            ],
-            "frame_hook_bridge": [
-              "hair",
-              "trap"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable",
-              "curiosity_shape"
-            ],
-            "subject": "plants"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Plants use trap hairs to count touches before closing",
-          "Plants show why the trap hairs matters.",
-          "Plants show why the trap hairs matters.",
-          "Plants show why the trap hairs matters.",
-          "Plants give away the answer through trap hairs"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "trap hairs",
-          "ending_line": "Which plant trick should we decode next?",
-          "final_line": "Now the trap hairs at the start make sense.",
-          "loop_score": 0.815,
-          "opening_line": "Plants use trap hairs to count touches before closing.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "trap hairs",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.815,
-        "next_episode_question": "Tomorrow in Biology Brief: another nature signal. Do plants feel more passive, reactive, or strategic here?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "hair",
-            "trap"
-          ],
-          "cue_terms": [
-            "hair",
-            "trap"
-          ],
-          "frame_hook_bridge": [
-            "hair",
-            "trap"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable",
-            "curiosity_shape"
-          ],
-          "subject": "plants"
-        },
-        "pinned_comment": "Watch the trap hairs again. Tomorrow in Biology Brief: another nature signal. Do plants feel more passive, reactive, or strategic here?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.17,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 18,
-          "first_2s_narration": "Plants use trap hairs to count touches before closing Watch the trap",
-          "first_frame_text": "TRAP HAIRS",
-          "first_frame_text_words": 2,
-          "hook": "Plants use trap hairs to count touches before closing.",
-          "hook_specificity": 0.78,
-          "hook_words": 9,
-          "loop_score": 0.815,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "hair",
-              "trap"
-            ],
-            "cue_terms": [
-              "hair",
-              "trap"
-            ],
-            "frame_hook_bridge": [
-              "hair",
-              "trap"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable",
-              "curiosity_shape"
-            ],
-            "subject": "plants"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the trap hairs, so viewers rewatch the plants clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 74,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Plants use trap hairs to count touches before closing Watch the trap",
-          "first_frame_text": "TRAP HAIRS",
-          "next_episode_question": "Tomorrow in Biology Brief: another nature signal. Do plants feel more passive, reactive, or strategic here?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains the visible trap hairs behind Plants in a fast nature science story.",
-            "series": "Biology Brief",
-            "subject": "plants",
-            "terms": [
-              "plants",
-              "trap hairs",
-              "plant mechanism"
-            ],
-            "title_variant": "Plants trap hairs explained fast",
-            "visible_cue": "trap hairs"
-          },
-          "series": "Biology Brief",
-          "subject": "plants",
-          "visible_cue": "trap hairs"
-        },
-        "risks": [],
-        "score": 96,
-        "search_intent": {
-          "description_line": "This Short explains the visible trap hairs behind Plants in a fast nature science story.",
-          "series": "Biology Brief",
-          "subject": "plants",
-          "terms": [
-            "plants",
-            "trap hairs",
-            "plant mechanism"
-          ],
-          "title_variant": "Plants trap hairs explained fast",
-          "visible_cue": "trap hairs"
-        },
-        "selected_variant": {
-          "hook": "Watch the trap hairs; it explains the behavior",
-          "score": 79,
-          "thumbnail_text": "TRAP HAIRS",
-          "title": "Plants use trap hairs to count touches before snapping shut"
-        },
-        "series": "Biology Brief #5",
-        "series_identity": {
-          "continuity_prompt": "Next in Biology Brief: compare this with another force of nature.",
-          "episode": 5,
-          "label": "Biology Brief #5",
-          "series": "Biology Brief"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.237,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "hook_invites_return",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.278,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 92,
-          "state": "strong",
-          "subscriber_probability": 0.131
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "TRAP HAIRS",
-          "WATCH TRAP HAIRS",
-          "PLANTS TRICK",
-          "TRAP HAIRS MATTERS",
-          "TRAP HAIRS FIRST",
-          "TRAP HAIRS REVEAL",
-          "TRAP HAIRS CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Plants use trap hairs to count touches before snapping shut",
-          "Plants use trap hairs to count touches before closing",
-          "Plants use trap hairs before they trick",
-          "Why plants trick after one trap hairs",
-          "Plants reveal the answer with trap hairs",
-          "The trap hairs that changes the moment",
-          "Plants make one trap hairs matter",
-          "Plants show the hidden answer in seconds",
-          "Plants: watch this trap hairs"
-        ],
-        "top_variants": [
-          {
-            "hook": "Watch the trap hairs; it explains the behavior",
-            "score": 79,
-            "thumbnail_text": "TRAP HAIRS",
-            "title": "Plants use trap hairs to count touches before snapping shut"
-          },
-          {
-            "hook": "Start with the trap hairs; it changes the scene",
-            "score": 79,
-            "thumbnail_text": "TRAP HAIRS",
-            "title": "Plants use trap hairs to count touches before snapping shut"
-          },
-          {
-            "hook": "Plants use trap hairs to count touches before closing",
-            "score": 78,
-            "thumbnail_text": "TRAP HAIRS",
-            "title": "Plants use trap hairs to count touches before snapping shut"
-          },
-          {
-            "hook": "Watch the trap hairs; it explains the behavior",
-            "score": 72,
-            "thumbnail_text": "WATCH TRAP HAIRS",
-            "title": "Plants use trap hairs to count touches before snapping shut"
-          },
-          {
-            "hook": "Start with the trap hairs; it changes the scene",
-            "score": 72,
-            "thumbnail_text": "WATCH TRAP HAIRS",
-            "title": "Plants use trap hairs to count touches before snapping shut"
-          },
-          {
-            "hook": "Watch the trap hairs; it explains the behavior",
-            "score": 72,
-            "thumbnail_text": "PLANTS TRICK",
-            "title": "Plants use trap hairs to count touches before snapping shut"
-          },
-          {
-            "hook": "Start with the trap hairs; it changes the scene",
-            "score": 72,
-            "thumbnail_text": "PLANTS TRICK",
-            "title": "Plants use trap hairs to count touches before snapping shut"
-          },
-          {
-            "hook": "Watch the trap hairs; it explains the behavior",
-            "score": 72,
-            "thumbnail_text": "TRAP HAIRS MATTERS",
-            "title": "Plants use trap hairs to count touches before snapping shut"
-          },
-          {
-            "hook": "Start with the trap hairs; it changes the scene",
-            "score": 72,
-            "thumbnail_text": "TRAP HAIRS MATTERS",
-            "title": "Plants use trap hairs to count touches before snapping shut"
-          },
-          {
-            "hook": "Watch the trap hairs; it explains the behavior",
-            "score": 72,
-            "thumbnail_text": "TRAP HAIRS FIRST",
-            "title": "Plants use trap hairs to count touches before snapping shut"
           }
         ]
       },
