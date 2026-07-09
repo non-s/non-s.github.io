@@ -1,38 +1,42 @@
 {
-  "generated_at": "2026-07-09T11:17:50.215924+00:00",
+  "generated_at": "2026-07-09T11:25:30.209851+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
-  "overall_progress_pct": 37.9,
+  "overall_progress_pct": 28.1,
   "current_level": {
-    "number": 3,
-    "name": "Retention packaging",
-    "mission": "Make the opening frame and first sentence clear enough that strangers keep watching.",
-    "unlock": "Stayed-to-watch rate at 40% or higher and average view percentage at 62% or higher.",
-    "revenue_job": "Convert reach into watch time and proof that the format works.",
+    "number": 2,
+    "name": "Publish supply engine",
+    "mission": "Maintain enough final-eligible Shorts that every publish window has a strong option.",
+    "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
+    "revenue_job": "Turn production from lucky shots into repeatable inventory.",
     "status": "boss_fight",
-    "progress_pct": 65.2
+    "progress_pct": 96.7
   },
   "boss": {
-    "id": "opening_retention_gap",
-    "label": "Opening retention is below scale floor",
+    "id": "pending_queue_low",
+    "label": "Pending queue is below target",
     "severity": "critical",
     "evidence": {
-      "stayed_to_watch_rate": 0.318,
-      "avg_view_percentage": 31.523,
+      "eligible_count": 6,
+      "operational_publish_ready": 6,
+      "apparent_publish_ready": 6,
+      "pending": 18,
+      "target_publish_ready": 6,
+      "target_pending": 20,
       "top_blockers": [
         {
           "id": "objective_gate:bootstrap_observe_before_scaling",
-          "count": 40,
+          "count": 36,
           "operator_translation": "collect more observed signal before scaling this pattern"
         },
         {
           "id": "queue_prune:rewrite",
-          "count": 13,
+          "count": 12,
           "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
           "id": "editor_in_chief:subject repeated inside 3-day cooldown",
-          "count": 8,
+          "count": 10,
           "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
         },
         {
@@ -42,54 +46,61 @@
         },
         {
           "id": "bootstrap_observe_before_scaling",
-          "count": 7,
+          "count": 6,
           "operator_translation": "bootstrap observe before scaling"
         }
       ]
     }
   },
   "next_upgrade": {
-    "id": "raise_opening_retention",
-    "title": "Make every opening instantly legible",
-    "why": "The channel needs stronger first-second clarity before volume compounds.",
-    "success_gate": "stayed_to_watch_rate >= 0.40 and avg_view_percentage >= 62",
+    "id": "repair_final_publish_supply",
+    "title": "Turn held strong candidates into final-eligible reserve",
+    "why": "The automation can publish safely, but the final gate has zero eligible candidates.",
+    "success_gate": "eligible_count >= 1, operational_publish_ready >= 6, pending >= 20",
     "free_only": true,
     "primary_files": [
-      "_data/scale_blueprint.json",
-      "_data/opening_audit_report.json"
+      "_data/automation_health.json",
+      "_data/dry_run_publish.json",
+      "_data/queue_audit.json"
     ]
   },
   "action_plan": [
     {
       "priority": "P0",
-      "action": "Before rendering, run every candidate through a frame-zero rewrite: animal + visible cue + payoff.",
-      "target": "retention packaging",
-      "why": "The scale blueprint marks this as the active bottleneck."
+      "action": "Repair one held high-score story until dry-run eligible_count reaches one.",
+      "target": "eligible_count >= 1",
+      "why": "Pending queue is below target"
+    },
+    {
+      "priority": "P0",
+      "action": "Batch-fix the top blocker reasons before fetching a larger queue.",
+      "target": "objective_gate:bootstrap_observe_before_scaling, queue_prune:rewrite, editor_in_chief:subject repeated inside 3-day cooldown",
+      "why": "Current supply has strong ideas but fails late gates."
     },
     {
       "priority": "P1",
-      "action": "Attach a named series lane and next-episode pinned question to every strong candidate.",
-      "target": "retention packaging",
-      "why": "The scale blueprint marks this as the active bottleneck."
+      "action": "Build the reserve to six operational publish-ready Shorts.",
+      "target": "6/6",
+      "why": "One upload slot should never depend on one fragile candidate."
     },
     {
       "priority": "P1",
-      "action": "For each winner, add one searchable title/description variant around animal behavior intent.",
-      "target": "retention packaging",
-      "why": "The scale blueprint marks this as the active bottleneck."
+      "action": "Refresh free discovery only after the current repair batch is clean.",
+      "target": "pending 18/20",
+      "why": "Bigger inventory helps only when the gate can accept winners."
     }
   ],
   "metrics": {
-    "health_score": 92,
-    "health_state": "excellent",
-    "pending": 20,
-    "operational_publish_ready": 7,
-    "apparent_publish_ready": 7,
-    "eligible_count": 7,
+    "health_score": 77,
+    "health_state": "watch",
+    "pending": 18,
+    "operational_publish_ready": 6,
+    "apparent_publish_ready": 6,
+    "eligible_count": 6,
     "scale_ready_count": 0,
-    "next_shorts_count": 7,
-    "editorial_candidate_count": 20,
-    "published_count": 85,
+    "next_shorts_count": 6,
+    "editorial_candidate_count": 18,
+    "published_count": 86,
     "views_28d": 30314,
     "total_subscribers": 46,
     "subs_per_1000_views": 1.221,
@@ -98,22 +109,22 @@
     "recurring_viewer_rate": 0.001,
     "youtube_search_view_rate": 0.017,
     "crosspost_assets": 10,
-    "comments_sampled": 35
+    "comments_sampled": 36
   },
   "top_blockers": [
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
-      "count": 40,
+      "count": 36,
       "operator_translation": "collect more observed signal before scaling this pattern"
     },
     {
       "id": "queue_prune:rewrite",
-      "count": 13,
+      "count": 12,
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
       "id": "editor_in_chief:subject repeated inside 3-day cooldown",
-      "count": 8,
+      "count": 10,
       "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
     },
     {
@@ -123,7 +134,7 @@
     },
     {
       "id": "bootstrap_observe_before_scaling",
-      "count": 7,
+      "count": 6,
       "operator_translation": "bootstrap observe before scaling"
     },
     {
@@ -172,8 +183,8 @@
       "status": "cleared",
       "progress_pct": 100.0,
       "evidence": {
-        "published_count": 85,
-        "health_score": 92
+        "published_count": 86,
+        "health_score": 77
       }
     },
     {
@@ -182,12 +193,12 @@
       "mission": "Maintain enough final-eligible Shorts that every publish window has a strong option.",
       "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
       "revenue_job": "Turn production from lucky shots into repeatable inventory.",
-      "status": "cleared",
-      "progress_pct": 100.0,
+      "status": "current",
+      "progress_pct": 96.7,
       "evidence": {
-        "operational_publish_ready": 7,
-        "eligible_count": 7,
-        "pending": 20,
+        "operational_publish_ready": 6,
+        "eligible_count": 6,
+        "pending": 18,
         "target_publish_ready": 6,
         "target_pending": 20
       }
@@ -198,7 +209,7 @@
       "mission": "Make the opening frame and first sentence clear enough that strangers keep watching.",
       "unlock": "Stayed-to-watch rate at 40% or higher and average view percentage at 62% or higher.",
       "revenue_job": "Convert reach into watch time and proof that the format works.",
-      "status": "current",
+      "status": "locked",
       "progress_pct": 65.2,
       "evidence": {
         "stayed_to_watch_rate": 0.318,
@@ -215,7 +226,7 @@
       "progress_pct": 52.5,
       "evidence": {
         "recurring_viewer_rate": 0.001,
-        "comments_sampled": 35
+        "comments_sampled": 36
       }
     },
     {
@@ -251,18 +262,18 @@
       "unlock": "One million views per 28 days, excellent health, and ten publish-ready Shorts in reserve.",
       "revenue_job": "Scale the proven system instead of adding random effort.",
       "status": "locked",
-      "progress_pct": 57.7,
+      "progress_pct": 21.0,
       "evidence": {
         "views_28d": 30314,
-        "health_state": "excellent",
-        "operational_publish_ready": 7
+        "health_state": "watch",
+        "operational_publish_ready": 6
       }
     }
   ],
   "game_loop": {
-    "now": "Before rendering, run every candidate through a frame-zero rewrite: animal + visible cue + payoff.",
-    "next": "Repeat audience loop",
-    "after_next": "Free distribution mesh"
+    "now": "Repair one held high-score story until dry-run eligible_count reaches one.",
+    "next": "Retention packaging",
+    "after_next": "Repeat audience loop"
   },
   "free_resource_policy": {
     "paid_tools_required": false,

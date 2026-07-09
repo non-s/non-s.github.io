@@ -5,17 +5,72 @@
     24
   ],
   "counts": {
-    "analytics_due": 9,
-    "awaiting_1h": 0,
-    "high_priority": 10,
-    "repair_candidates": 1,
+    "analytics_due": 7,
+    "awaiting_1h": 1,
+    "high_priority": 9,
+    "repair_candidates": 2,
     "tracked": 10
   },
-  "generated_at": "2026-07-09T11:16:46.455795+00:00",
+  "generated_at": "2026-07-09T11:24:31.186381+00:00",
   "items": [
     {
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.039,
+      "category": "arctic",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-09T12:22:11.609762+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-09T17:22:11.609762+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-10T11:22:11.609762+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-09T12:22:11.609762+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Polar Survival",
+      "state": "awaiting_1h",
+      "title": "Birds use ultraviolet vision before they change",
+      "uploaded_at": "2026-07-09T11:22:11.609762+00:00",
+      "url": "https://www.youtube.com/shorts/FauBvdeAeU8",
+      "video_id": "FauBvdeAeU8",
+      "views_per_hour": 0.0
+    },
+    {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 3.111,
+      "age_hours": 3.24,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -70,7 +125,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 3.305,
+      "age_hours": 3.434,
       "category": "trees",
       "checkpoints": [
         {
@@ -124,8 +179,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.081,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.21,
       "category": "geology",
       "checkpoints": [
         {
@@ -141,8 +196,8 @@
           "delta_to_target": -105,
           "due_at": "2026-07-09T11:11:53.582365+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -157,30 +212,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
-        "delta_to_target": -105,
-        "due_at": "2026-07-09T11:11:53.582365+00:00",
-        "label": "6h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-10T05:11:53.582365+00:00",
+        "label": "24h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 105,
+        "state": "pending",
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Earth Engine",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Rock layers reveal heat moving under the surface",
       "uploaded_at": "2026-07-09T05:11:53.582365+00:00",
       "url": "https://www.youtube.com/shorts/hpcdCLeyIpg",
       "video_id": "hpcdCLeyIpg",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 17/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Rock layers reveal heat moving under the surface",
+        "video_id": "hpcdCLeyIpg",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.962,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 7.091,
       "category": "geology",
       "checkpoints": [
         {
@@ -196,8 +262,8 @@
           "delta_to_target": -105,
           "due_at": "2026-07-09T10:19:03.082953+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -212,30 +278,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
-        "delta_to_target": -105,
-        "due_at": "2026-07-09T10:19:03.082953+00:00",
-        "label": "6h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-10T04:19:03.082953+00:00",
+        "label": "24h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 105,
+        "state": "pending",
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Earth Engine",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Crystal edges build the same pattern again",
       "uploaded_at": "2026-07-09T04:19:03.082953+00:00",
       "url": "https://www.youtube.com/shorts/dAkoh1xnJjA",
       "video_id": "dAkoh1xnJjA",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 26/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Crystal edges build the same pattern again",
+        "video_id": "dAkoh1xnJjA",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 19.183,
+      "age_hours": 19.313,
       "category": "geology",
       "checkpoints": [
         {
@@ -263,10 +340,10 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 300,
-          "views": 1
+          "views": 2
         }
       ],
-      "current_views": 1,
+      "current_views": 2,
       "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
         "delta_to_target": -24,
@@ -286,11 +363,11 @@
       "uploaded_at": "2026-07-08T16:05:46.066408+00:00",
       "url": "https://www.youtube.com/shorts/75cqVLi_8WA",
       "video_id": "75cqVLi_8WA",
-      "views_per_hour": 0.06,
+      "views_per_hour": 0.104,
       "warning": {
         "confidence_score": 0.431,
         "reason": "low confidence early signal; keep observing",
-        "state": "dying_early",
+        "state": "accelerating",
         "title": "Rock layers preserve the history of water",
         "video_id": "75cqVLi_8WA",
         "warning_state": "low_confidence_watch"
@@ -298,7 +375,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 19.725,
+      "age_hours": 19.854,
       "category": "primates",
       "checkpoints": [
         {
@@ -352,8 +429,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 42.932,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 43.061,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -375,17 +452,17 @@
           "views": 0
         },
         {
-          "delta_to_target": -298,
+          "delta_to_target": -299,
           "due_at": "2026-07-08T16:20:51.532065+00:00",
           "label": "24h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 300,
-          "views": 2
+          "views": 1
         }
       ],
       "current_views": 3,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
         "delta_to_target": -24,
         "due_at": "2026-07-07T17:20:51.532065+00:00",
@@ -399,27 +476,16 @@
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Animal Superpowers",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Tigers use stripe camouflage before they wear",
       "uploaded_at": "2026-07-07T16:20:51.532065+00:00",
       "url": "https://www.youtube.com/shorts/ELHX7Rr_oL4",
       "video_id": "ELHX7Rr_oL4",
-      "views_per_hour": 0.074,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.756,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Tigers use stripe camouflage before they wear",
-        "video_id": "ELHX7Rr_oL4",
-        "views": 3,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.07
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 47.881,
+      "age_hours": 48.01,
       "category": "insects",
       "checkpoints": [
         {
@@ -474,7 +540,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 49.015,
+      "age_hours": 49.144,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -525,62 +591,7 @@
       "uploaded_at": "2026-07-07T10:15:52.640295+00:00",
       "url": "https://www.youtube.com/shorts/gnDKpwxV42s",
       "video_id": "gnDKpwxV42s",
-      "views_per_hour": 0.021
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 51.254,
-      "category": "fungi",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-07T09:01:30.868882+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-07T14:01:30.868882+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": -300,
-          "due_at": "2026-07-08T08:01:30.868882+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 2,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-07T09:01:30.868882+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Hidden Network",
-      "state": "analytics_due",
-      "title": "Mushrooms use mushroom gills before they carry",
-      "uploaded_at": "2026-07-07T08:01:30.868882+00:00",
-      "url": "https://www.youtube.com/shorts/uoVylVB2fQI",
-      "video_id": "uoVylVB2fQI",
-      "views_per_hour": 0.041
+      "views_per_hour": 0.02
     }
   ],
   "targets": {
