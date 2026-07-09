@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-09T19:02:05.522341+00:00",
+  "generated_at": "2026-07-09T19:06:33.841020+00:00",
   "risk": {
     "level": "critical",
     "score": 65,
@@ -8,10 +8,16 @@
       "average_retention_below_52",
       "multiple_topics_paused"
     ],
-    "weak_retention_ratio": 0.079,
-    "avg_retention": 31.523
+    "weak_retention_ratio": 0.122,
+    "avg_retention": 45.957
   },
   "paused_topics": [
+    {
+      "category": "wildlife",
+      "reason": "retention_below_45",
+      "retention": 16.94,
+      "growth_score": 72.539
+    },
     {
       "category": "chemistry",
       "reason": "retention_below_45",
@@ -19,16 +25,16 @@
       "growth_score": 61.496
     },
     {
-      "category": "wildlife",
-      "reason": "retention_below_45",
-      "retention": 26.28,
-      "growth_score": 71.917
-    },
-    {
       "category": "farm",
       "reason": "retention_below_45",
+      "retention": 34.8,
+      "growth_score": 125.525
+    },
+    {
+      "category": "reptiles",
+      "reason": "retention_below_45",
       "retention": 44.0,
-      "growth_score": 122.965
+      "growth_score": 109.94
     }
   ],
   "scheduler": {
@@ -319,9 +325,9 @@
     "policy": "Publish in recommended windows; widen spacing while risk is watch/critical."
   },
   "inventory_forecast": {
-    "pending": 17,
+    "pending": 14,
     "daily_posts": 24,
-    "days_remaining": 0.7,
+    "days_remaining": 0.6,
     "state": "thin"
   },
   "visual_quality": {
@@ -334,10 +340,10 @@
   },
   "series_plan": {
     "top_series": [
+      "Night Shift Nature",
       "Farmyard Surprises",
       "Cold-Blooded Secrets",
       "Earth Engine",
-      "Night Shift Nature",
       "Planet Earth"
     ],
     "queue_categories": {
@@ -348,14 +354,13 @@
       "discoveries": 1,
       "forests": 2,
       "geology": 3,
-      "nocturnal": 3,
-      "ocean": 1,
-      "reptiles": 1
+      "nocturnal": 1,
+      "ocean": 1
     },
     "series_to_scale": [
+      "Night Shift Nature",
       "Farmyard Surprises",
-      "Cold-Blooded Secrets",
-      "Earth Engine"
+      "Cold-Blooded Secrets"
     ],
     "identity_rule": "Keep series labels stable so viewers feel a programmed channel, not random uploads."
   },
@@ -363,14 +368,33 @@
     "summary": "Automation is running, but editorial risk needs attention.",
     "what_to_scale": [
       "space",
-      "dogs"
+      "dogs",
+      "nocturnal"
     ],
     "what_to_pause": [
-      "chemistry",
       "wildlife",
-      "farm"
+      "chemistry",
+      "farm",
+      "reptiles"
     ],
-    "what_to_remake": [],
+    "what_to_remake": [
+      {
+        "video_id": "uoVylVB2fQI",
+        "title": "Mushrooms use mushroom gills before they carry",
+        "views": 2,
+        "retention": 108.0,
+        "growth_score": 197.504,
+        "action": "remake with sharper title and first-second visual text"
+      },
+      {
+        "video_id": "OQM9BmE7oAA",
+        "title": "Storm clouds trace wind bands over the ocean",
+        "views": 2,
+        "retention": 102.32,
+        "growth_score": 192.302,
+        "action": "remake with sharper title and first-second visual text"
+      }
+    ],
     "inventory_state": "thin",
     "next_actions": [
       "Favor high-retention categories and formats in the next queue refresh.",
