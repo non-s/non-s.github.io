@@ -5,25 +5,25 @@
     24
   ],
   "counts": {
-    "analytics_due": 6,
-    "awaiting_1h": 1,
+    "analytics_due": 4,
+    "awaiting_1h": 0,
     "high_priority": 7,
-    "repair_candidates": 1,
+    "repair_candidates": 3,
     "tracked": 10
   },
-  "generated_at": "2026-07-09T14:19:20.612381+00:00",
+  "generated_at": "2026-07-09T16:09:58.853847+00:00",
   "items": [
     {
-      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.245,
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 2.089,
       "category": "dogs",
       "checkpoints": [
         {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-09T15:04:39.316623+00:00",
           "label": "1h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +47,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-09T15:04:39.316623+00:00",
-        "label": "1h",
+        "due_at": "2026-07-09T20:04:39.316623+00:00",
+        "label": "6h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 24,
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "low",
       "series": "Pet Secrets",
-      "state": "awaiting_1h",
+      "state": "watch",
       "title": "Dogs use scent map before they smell",
       "uploaded_at": "2026-07-09T14:04:39.316623+00:00",
       "url": "https://www.youtube.com/shorts/8LrEpWspyK8",
@@ -70,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.034,
+      "age_hours": 3.878,
       "category": "plants",
       "checkpoints": [
         {
@@ -125,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.953,
+      "age_hours": 4.796,
       "category": "arctic",
       "checkpoints": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.153,
+      "age_hours": 7.997,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.348,
+      "age_hours": 8.192,
       "category": "trees",
       "checkpoints": [
         {
@@ -290,7 +290,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 9.124,
+      "age_hours": 10.968,
       "category": "geology",
       "checkpoints": [
         {
@@ -356,7 +356,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 10.005,
+      "age_hours": 11.849,
       "category": "geology",
       "checkpoints": [
         {
@@ -410,8 +410,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 22.226,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 24.07,
       "category": "geology",
       "checkpoints": [
         {
@@ -433,17 +433,17 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -298,
           "due_at": "2026-07-09T16:05:46.066408+00:00",
           "label": "24h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 300,
           "views": 2
         }
       ],
       "current_views": 2,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": -24,
         "due_at": "2026-07-08T17:05:46.066408+00:00",
@@ -457,24 +457,27 @@
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Earth Engine",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Rock layers preserve the history of water",
       "uploaded_at": "2026-07-08T16:05:46.066408+00:00",
       "url": "https://www.youtube.com/shorts/75cqVLi_8WA",
       "video_id": "75cqVLi_8WA",
-      "views_per_hour": 0.09,
+      "views_per_hour": 0.083,
       "warning": {
-        "confidence_score": 0.431,
-        "reason": "low confidence early signal; keep observing",
-        "state": "dying_early",
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.756,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
         "title": "Rock layers preserve the history of water",
         "video_id": "75cqVLi_8WA",
-        "warning_state": "low_confidence_watch"
+        "views": 2,
+        "warning_state": "repair_risk"
       }
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 22.768,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 24.612,
       "category": "primates",
       "checkpoints": [
         {
@@ -496,17 +499,17 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -300,
           "due_at": "2026-07-09T15:33:16.067043+00:00",
           "label": "24h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 300,
           "views": 0
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": -24,
         "due_at": "2026-07-08T16:33:16.067043+00:00",
@@ -520,16 +523,27 @@
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Primate Intelligence",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Monkeys use learned habit before they trick",
       "uploaded_at": "2026-07-08T15:33:16.067043+00:00",
       "url": "https://www.youtube.com/shorts/jYJWjLCw3JU",
       "video_id": "jYJWjLCw3JU",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.756,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Monkeys use learned habit before they trick",
+        "video_id": "jYJWjLCw3JU",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 45.975,
+      "age_hours": 47.819,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -580,7 +594,7 @@
       "uploaded_at": "2026-07-07T16:20:51.532065+00:00",
       "url": "https://www.youtube.com/shorts/ELHX7Rr_oL4",
       "video_id": "ELHX7Rr_oL4",
-      "views_per_hour": 0.065
+      "views_per_hour": 0.063
     }
   ],
   "targets": {
