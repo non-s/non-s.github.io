@@ -3945,20 +3945,29 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 17,
+    "pending_before": 18,
     "pending_after": 17,
-    "rejected": 0,
-    "repair_needed": 0,
+    "rejected": 1,
+    "repair_needed": 1,
     "repaired": 2,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 17,
       "editor_in_chief:subject repeated inside 3-day cooldown": 5,
       "editor_in_chief:script quality gate blocked the narration": 4,
+      "queue_score_reject": 1,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
       "editorial_cooldown_supply_fallback": 1
     }
   },
-  "rejected_preview": []
+  "rejected_preview": [
+    {
+      "id": "83d5e99f3145c9d3",
+      "title": "Magnets make invisible fields visible",
+      "reasons": [
+        "queue_score_reject"
+      ]
+    }
+  ]
 }
