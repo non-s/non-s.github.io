@@ -3279,12 +3279,12 @@
       }
     },
     {
-      "id": "47e7da81bc75d158",
-      "title": "Seals can follow wakes with their whiskers",
+      "id": "ce3b2fc76a336a95",
+      "title": "This scent map gives bears away",
       "category": "arctic",
-      "queue_score": 78.0,
+      "queue_score": 100.0,
       "template_cluster": "",
-      "mechanism_cluster": "",
+      "mechanism_cluster": "scent_map",
       "objective_reasons": [
         "bootstrap_observe_before_scaling"
       ],
@@ -3294,21 +3294,20 @@
       "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
       "packaging_lab": {
         "title_variants": [
-          "Seals track fish trails with whiskers",
-          "Seals can follow wakes with their whiskers",
-          "Seals use whisker wake before they follow"
+          "Bears smell food from miles away",
+          "This scent map gives bears away",
+          "Bears use scent map before they smell"
         ],
         "thumbnail_variants": [
-          "WAKE TRACKER",
-          "WHISKER WAKE",
-          "WATCH WHISKER WAKE"
+          "SCENT MAP",
+          "WATCH SCENT MAP",
+          "BEARS SMELL"
         ],
         "hook_variants": [
-          "Seals can follow wakes with their whiskers.",
-          "Seals can follow wakes with their whiskers",
-          "Watch the whiskers again. Tomorrow in Polar Survival: another animal signal. What part of this feels most impo"
+          "Bears can smell a meal long before seeing it.",
+          "This scent map gives bears away"
         ],
-        "pinned_comment": "Watch the whiskers again. Tomorrow in Polar Survival: another animal signal. What part of this feels most impossible?",
+        "pinned_comment": "Watch the scent map again. Tomorrow in Watch The Cue: another animal signal. What part of this feels most impossible?",
         "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
       },
       "publish_score": {
@@ -3316,21 +3315,18 @@
         "approved": true,
         "state": "publish_ready",
         "opportunity": {
-          "score": 54,
+          "score": 58,
           "signals": {
-            "viral_potential": 63,
-            "visual_potential": 45,
-            "replay_potential": 64,
-            "comment_potential": 54,
-            "educational_potential": 58,
-            "emotional_potential": 44,
-            "novelty": 45
+            "viral_potential": 58,
+            "visual_potential": 55,
+            "replay_potential": 82,
+            "comment_potential": 46,
+            "educational_potential": 65,
+            "emotional_potential": 35,
+            "novelty": 55
           },
-          "verdict": "discard",
-          "reasons": [
-            "weak_visual_surface",
-            "low_opportunity_score"
-          ],
+          "verdict": "rewrite",
+          "reasons": [],
           "confidence": {
             "confidence_score": 0.0,
             "sample_size": 0,
@@ -3345,13 +3341,13 @@
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
         },
         "retention": {
-          "score": 70,
+          "score": 76,
           "signals": {
             "hook_score": 82,
-            "curiosity_score": 71,
-            "visual_score": 50,
-            "replay_score": 62,
-            "completion_prediction": 77
+            "curiosity_score": 79,
+            "visual_score": 58,
+            "replay_score": 72,
+            "completion_prediction": 84
           },
           "verdict": "rewrite",
           "reasons": [],
@@ -3369,35 +3365,38 @@
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
         },
         "opening_retention": {
-          "score": 100.0,
+          "score": 94.0,
           "state": "retention_ready",
           "approved": true,
-          "subject": "seals",
+          "subject": "bears",
           "cue_terms": [
-            "tracker",
-            "wake"
+            "map",
+            "nose",
+            "scent"
           ],
-          "frame_hook_bridge": [
-            "wake"
-          ],
+          "frame_hook_bridge": [],
           "cue_bridge": [
-            "wake"
+            "nose"
           ],
           "strengths": [
             "subject_frontloaded",
-            "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
             "action_promise_early",
             "reason_arrives_early",
-            "frame_text_scannable"
+            "frame_text_scannable",
+            "curiosity_shape"
           ],
-          "risks": []
+          "risks": [
+            "frame_text_not_echoed_early"
+          ]
         },
         "weak_content": {
-          "risk": 0,
+          "risk": 14,
           "state": "clear",
-          "reasons": [],
+          "reasons": [
+            "weak_hook_pattern"
+          ],
           "confidence": {
             "confidence_score": 0.65,
             "sample_size": 12,
@@ -3412,22 +3411,22 @@
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
         "subscriber_conversion": {
-          "score": 93,
+          "score": 99,
           "state": "strong",
-          "subscriber_probability": 0.133,
-          "return_probability": 0.281,
-          "comment_probability": 0.24,
+          "subscriber_probability": 0.141,
+          "return_probability": 0.297,
+          "comment_probability": 0.253,
           "robotic_title": {
             "risk": 0,
             "state": "clear",
             "hits": []
           },
           "reasons": [
+            "hook_invites_return",
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity",
-            "episode_continuity"
+            "series_identity"
           ],
           "confidence": {
             "confidence_score": 0.061,
@@ -3457,7 +3456,7 @@
         "category": "arctic",
         "story_format": "body_superpower",
         "hook_score": 100,
-        "title_score": 100,
+        "title_score": 84,
         "phrase_risk": {
           "penalty": 0,
           "hits": []
@@ -3478,25 +3477,16 @@
           "swipe_risk_band": "low",
           "payoff_time_s": 0.0,
           "template_cluster": "",
-          "mechanism_cluster": ""
-        },
-        "reserve_override": {
-          "reason": "publish_ready_supply_reserve_fallback",
-          "original_approved": false,
-          "original_state": "rewrite",
-          "original_opportunity_reasons": [
-            "weak_visual_surface",
-            "low_opportunity_score"
-          ]
+          "mechanism_cluster": "scent_map"
         }
       },
       "youtube_brain": {
         "score": 100,
         "state": "publish_minded",
-        "animal": "seals",
-        "subject": "seals",
+        "animal": "bears",
+        "subject": "bears",
         "story_format": "body_superpower",
-        "viewer_promise": "See why seals body superpower matters.",
+        "viewer_promise": "See why bears body superpower matters.",
         "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
@@ -3506,30 +3496,31 @@
           "last 2s: payoff and follow signal"
         ],
         "opening_retention": {
-          "score": 100.0,
+          "score": 94.0,
           "state": "retention_ready",
           "approved": true,
-          "subject": "seals",
+          "subject": "bears",
           "cue_terms": [
-            "tracker",
-            "wake"
+            "map",
+            "nose",
+            "scent"
           ],
-          "frame_hook_bridge": [
-            "wake"
-          ],
+          "frame_hook_bridge": [],
           "cue_bridge": [
-            "wake"
+            "nose"
           ],
           "strengths": [
             "subject_frontloaded",
-            "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
             "action_promise_early",
             "reason_arrives_early",
-            "frame_text_scannable"
+            "frame_text_scannable",
+            "curiosity_shape"
           ],
-          "risks": []
+          "risks": [
+            "frame_text_not_echoed_early"
+          ]
         },
         "risks": [],
         "strengths": [
@@ -3544,7 +3535,7 @@
         "commands": []
       },
       "packaging": {
-        "score": 95,
+        "score": 97,
         "state": "magnetic",
         "strengths": [
           "title_shape",
@@ -3556,112 +3547,111 @@
         ],
         "risks": [],
         "title_options": [
-          "Seals track fish trails with whiskers",
-          "Seals can follow wakes with their whiskers",
-          "Seals use whisker wake before they follow",
-          "This whisker wake gives seals away",
-          "Why seals follow after one whisker wake",
-          "Seals reveal the answer with whisker wake",
-          "The whisker wake that changes the moment",
-          "Seals make one whisker wake matter",
-          "Seals show the hidden answer in seconds",
-          "Seals: watch this whisker wake"
+          "Bears smell food from miles away",
+          "This scent map gives bears away",
+          "Bears use scent map before they smell",
+          "Why bears smell after one scent map",
+          "Bears reveal the answer with scent map",
+          "The scent map that changes the moment",
+          "Bears make one scent map matter",
+          "Bears show the hidden answer in seconds",
+          "Bears: watch this scent map",
+          "Watch bears after the scent map"
         ],
         "thumbnail_options": [
-          "WAKE TRACKER",
-          "WHISKER WAKE",
-          "WATCH WHISKER WAKE",
-          "SEALS FOLLOW",
-          "WHISKER WAKE MATTERS",
-          "WHISKER WAKE FIRST",
-          "WHISKER WAKE REVEAL",
-          "WHISKER WAKE CLUE",
+          "SCENT MAP",
+          "WATCH SCENT MAP",
+          "BEARS SMELL",
+          "SCENT MAP MATTERS",
+          "SCENT MAP FIRST",
+          "SCENT MAP REVEAL",
+          "SCENT MAP CLUE",
           "WATCH THE MOVE",
           "SPOT THE CLUE"
         ],
         "hook_options": [
-          "Seals can follow wakes with their whiskers",
-          "Seals show why the whisker wake matters.",
-          "Seals show why the whisker wake matters.",
-          "Seals show why the whisker wake matters.",
-          "Seals give away the answer through whisker wake"
+          "Bears can smell a meal long before seeing it",
+          "Bears show why the scent map matters.",
+          "Bears show why the scent map matters.",
+          "Bears show why the scent map matters.",
+          "Bears give away the answer through scent map"
         ],
         "selected_variant": {
-          "score": 80,
-          "title": "Seals track fish trails with whiskers",
-          "thumbnail_text": "WAKE TRACKER",
-          "hook": "Seals can follow wakes with their whiskers"
+          "score": 83,
+          "title": "Bears smell food from miles away",
+          "thumbnail_text": "SCENT MAP",
+          "hook": "Start with the scent map; it changes the scene"
         },
         "top_variants": [
           {
-            "score": 80,
-            "title": "Seals track fish trails with whiskers",
-            "thumbnail_text": "WAKE TRACKER",
-            "hook": "Seals can follow wakes with their whiskers"
+            "score": 83,
+            "title": "Bears smell food from miles away",
+            "thumbnail_text": "SCENT MAP",
+            "hook": "Start with the scent map; it changes the scene"
           },
           {
-            "score": 80,
-            "title": "Seals track fish trails with whiskers",
-            "thumbnail_text": "WAKE TRACKER",
-            "hook": "Start with the whisker wake; it changes the scene"
+            "score": 82,
+            "title": "Bears smell food from miles away",
+            "thumbnail_text": "SCENT MAP",
+            "hook": "Bears can smell a meal long before seeing it"
           },
           {
-            "score": 78,
-            "title": "Seals track fish trails with whiskers",
-            "thumbnail_text": "WAKE TRACKER",
-            "hook": "Watch the whisker wake; it explains the behavior"
+            "score": 81,
+            "title": "Bears smell food from miles away",
+            "thumbnail_text": "SCENT MAP",
+            "hook": "Watch the scent map; it explains the behavior"
           },
           {
-            "score": 73,
-            "title": "Seals track fish trails with whiskers",
-            "thumbnail_text": "WHISKER WAKE",
-            "hook": "Seals can follow wakes with their whiskers"
+            "score": 76,
+            "title": "Bears smell food from miles away",
+            "thumbnail_text": "WATCH SCENT MAP",
+            "hook": "Start with the scent map; it changes the scene"
           },
           {
-            "score": 73,
-            "title": "Seals track fish trails with whiskers",
-            "thumbnail_text": "WHISKER WAKE",
-            "hook": "Start with the whisker wake; it changes the scene"
+            "score": 76,
+            "title": "Bears smell food from miles away",
+            "thumbnail_text": "BEARS SMELL",
+            "hook": "Start with the scent map; it changes the scene"
           },
           {
-            "score": 73,
-            "title": "Seals track fish trails with whiskers",
-            "thumbnail_text": "WATCH WHISKER WAKE",
-            "hook": "Seals can follow wakes with their whiskers"
+            "score": 76,
+            "title": "Bears smell food from miles away",
+            "thumbnail_text": "SCENT MAP MATTERS",
+            "hook": "Start with the scent map; it changes the scene"
           },
           {
-            "score": 73,
-            "title": "Seals track fish trails with whiskers",
-            "thumbnail_text": "WATCH WHISKER WAKE",
-            "hook": "Start with the whisker wake; it changes the scene"
+            "score": 76,
+            "title": "Bears smell food from miles away",
+            "thumbnail_text": "SCENT MAP FIRST",
+            "hook": "Start with the scent map; it changes the scene"
           },
           {
-            "score": 73,
-            "title": "Seals track fish trails with whiskers",
-            "thumbnail_text": "SEALS FOLLOW",
-            "hook": "Seals can follow wakes with their whiskers"
+            "score": 75,
+            "title": "Bears smell food from miles away",
+            "thumbnail_text": "WATCH SCENT MAP",
+            "hook": "Bears can smell a meal long before seeing it"
           },
           {
-            "score": 73,
-            "title": "Seals track fish trails with whiskers",
-            "thumbnail_text": "SEALS FOLLOW",
-            "hook": "Start with the whisker wake; it changes the scene"
+            "score": 75,
+            "title": "Bears smell food from miles away",
+            "thumbnail_text": "BEARS SMELL",
+            "hook": "Bears can smell a meal long before seeing it"
           },
           {
-            "score": 73,
-            "title": "Seals track fish trails with whiskers",
-            "thumbnail_text": "WHISKER WAKE MATTERS",
-            "hook": "Seals can follow wakes with their whiskers"
+            "score": 75,
+            "title": "Bears smell food from miles away",
+            "thumbnail_text": "SCENT MAP MATTERS",
+            "hook": "Bears can smell a meal long before seeing it"
           }
         ],
         "retention": {
-          "score": 70,
+          "score": 76,
           "signals": {
             "hook_score": 82,
-            "curiosity_score": 71,
-            "visual_score": 50,
-            "replay_score": 62,
-            "completion_prediction": 77
+            "curiosity_score": 79,
+            "visual_score": 58,
+            "replay_score": 72,
+            "completion_prediction": 84
           },
           "verdict": "rewrite",
           "reasons": [],
@@ -3679,7 +3669,7 @@
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
         },
         "experiment": {
-          "mode": "explore",
+          "mode": "exploit",
           "explore_rate": 0.1,
           "winners": {
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}",
@@ -3695,77 +3685,77 @@
           },
           "sample_count": 88,
           "assignment": {
-            "format": "fresh_variant",
-            "hook": "new_hook",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
             "thumbnail": "new_thumbnail",
-            "cta": "specific_question"
+            "cta": "follow_for_more"
           }
         },
         "series_identity": {
-          "series": "Polar Survival",
-          "episode": 3,
-          "label": "Polar Survival #3",
-          "continuity_prompt": "Next in Polar Survival: compare this with another force of nature."
+          "series": "Watch The Cue",
+          "episode": 1,
+          "label": "Watch The Cue",
+          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature."
         },
-        "pinned_comment": "Watch the whiskers again. Tomorrow in Polar Survival: another animal signal. What part of this feels most impossible?",
-        "community_prompt": "Which seals clue should Wild Brief compare next in Polar Survival?",
-        "series": "Polar Survival #3",
-        "next_episode_question": "Tomorrow in Polar Survival: another animal signal. What part of this feels most impossible?",
+        "pinned_comment": "Watch the scent map again. Tomorrow in Watch The Cue: another animal signal. What part of this feels most impossible?",
+        "community_prompt": "Which bears clue should Wild Brief compare next in Watch The Cue?",
+        "series": "Watch The Cue",
+        "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. What part of this feels most impossible?",
         "search_intent": {
-          "subject": "seals",
-          "visible_cue": "whiskers",
-          "series": "Polar Survival",
-          "title_variant": "Seals behavior: whiskers explained",
-          "description_line": "This Short explains Seals behavior through the visible whiskers.",
+          "subject": "bears",
+          "visible_cue": "scent map",
+          "series": "Watch The Cue",
+          "title_variant": "Bears behavior: scent map explained",
+          "description_line": "This Short explains Bears behavior through the visible scent map.",
           "terms": [
-            "seals",
-            "whiskers",
+            "bears",
+            "scent map",
             "arctic",
             "body superpower"
           ]
         },
         "retention_contract": {
-          "subject": "seals",
-          "visible_cue": "whiskers",
-          "first_frame_text": "WAKE TRACKER",
-          "first_2s_narration": "Seals can follow wakes with their whiskers Watch the whiskers near the",
-          "series": "Polar Survival",
-          "next_episode_question": "Tomorrow in Polar Survival: another animal signal. What part of this feels most impossible?",
+          "subject": "bears",
+          "visible_cue": "scent map",
+          "first_frame_text": "SCENT MAP",
+          "first_2s_narration": "Bears can smell a meal long before seeing it Watch the nose",
+          "series": "Watch The Cue",
+          "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. What part of this feels most impossible?",
           "search_intent": {
-            "subject": "seals",
-            "visible_cue": "whiskers",
-            "series": "Polar Survival",
-            "title_variant": "Seals behavior: whiskers explained",
-            "description_line": "This Short explains Seals behavior through the visible whiskers.",
+            "subject": "bears",
+            "visible_cue": "scent map",
+            "series": "Watch The Cue",
+            "title_variant": "Bears behavior: scent map explained",
+            "description_line": "This Short explains Bears behavior through the visible scent map.",
             "terms": [
-              "seals",
-              "whiskers",
+              "bears",
+              "scent map",
               "arctic",
               "body superpower"
             ]
           },
-          "opening_retention_score": 100.0,
+          "opening_retention_score": 94.0,
           "opening_retention_state": "retention_ready"
         },
         "cta_prompt": "Follow for one animal signal a day.",
-        "replay_prompt": "End by pointing back to the whiskers, so viewers rewatch the seals clip.",
+        "replay_prompt": "End by pointing back to the scent map, so viewers rewatch the bears clip.",
         "subscriber_conversion": {
-          "score": 93,
+          "score": 99,
           "state": "strong",
-          "subscriber_probability": 0.133,
-          "return_probability": 0.281,
-          "comment_probability": 0.24,
+          "subscriber_probability": 0.141,
+          "return_probability": 0.297,
+          "comment_probability": 0.253,
           "robotic_title": {
             "risk": 0,
             "state": "clear",
             "hits": []
           },
           "reasons": [
+            "hook_invites_return",
             "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity",
-            "episode_continuity"
+            "series_identity"
           ],
           "confidence": {
             "confidence_score": 0.061,
@@ -3793,35 +3783,36 @@
           "word_count": 2,
           "approved": true,
           "retention_opening": {
-            "score": 100.0,
+            "score": 94.0,
             "state": "retention_ready",
             "approved": true,
-            "subject": "seals",
+            "subject": "bears",
             "cue_terms": [
-              "tracker",
-              "wake"
+              "map",
+              "nose",
+              "scent"
             ],
-            "frame_hook_bridge": [
-              "wake"
-            ],
+            "frame_hook_bridge": [],
             "cue_bridge": [
-              "wake"
+              "nose"
             ],
             "strengths": [
               "subject_frontloaded",
-              "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
               "action_promise_early",
               "reason_arrives_early",
-              "frame_text_scannable"
+              "frame_text_scannable",
+              "curiosity_shape"
             ],
-            "risks": []
+            "risks": [
+              "frame_text_not_echoed_early"
+            ]
           }
         },
         "curiosity_gap": {
-          "hook": "Why do these seals change after the wake tracker?",
-          "source": "template",
+          "hook": "Bears can smell a meal long before seeing it.",
+          "source": "story",
           "score": 78.0,
           "reasons": [
             "specific_detail",
@@ -3829,30 +3820,31 @@
           ]
         },
         "opening_retention": {
-          "score": 100.0,
+          "score": 94.0,
           "state": "retention_ready",
           "approved": true,
-          "subject": "seals",
+          "subject": "bears",
           "cue_terms": [
-            "tracker",
-            "wake"
+            "map",
+            "nose",
+            "scent"
           ],
-          "frame_hook_bridge": [
-            "wake"
-          ],
+          "frame_hook_bridge": [],
           "cue_bridge": [
-            "wake"
+            "nose"
           ],
           "strengths": [
             "subject_frontloaded",
-            "frame_hook_bridge",
             "visible_cue_repeated_early",
             "watch_instruction_early",
             "action_promise_early",
             "reason_arrives_early",
-            "frame_text_scannable"
+            "frame_text_scannable",
+            "curiosity_shape"
           ],
-          "risks": []
+          "risks": [
+            "frame_text_not_echoed_early"
+          ]
         },
         "swipe_risk": {
           "score": 0,
@@ -3861,21 +3853,21 @@
           "fixes": []
         },
         "loop_plan": {
-          "callback_keyword": "wake tracker",
-          "opening_line": "Seals can follow wakes with their whiskers.",
-          "ending_line": "Which ocean sense next?",
-          "final_line": "Now the wake tracker at the start makes sense.",
+          "callback_keyword": "scent map",
+          "opening_line": "Bears can smell a meal long before seeing it.",
+          "ending_line": "Would you trust your nose that much?",
+          "final_line": "Now the scent map at the start makes sense.",
           "rewrite_applied": true,
           "audio_crossfade_ms": 120,
           "subtitle_tail_mode": "carry-forward",
-          "loop_score": 0.81,
+          "loop_score": 0.753,
           "render_hints": {
-            "carry_keyword": "wake tracker",
+            "carry_keyword": "scent map",
             "subtle_audio_tail": true,
             "avoid_hard_stop": true
           }
         },
-        "loop_score": 0.81,
+        "loop_score": 0.753,
         "editorial_rulebook": {
           "approved": true,
           "score": 100.0,
@@ -3885,49 +3877,50 @@
           "recommended_duration_s": 24
         },
         "preflight_inputs": {
-          "first_frame_text": "WAKE TRACKER",
+          "first_frame_text": "SCENT MAP",
           "first_frame_text_words": 2,
-          "hook": "Seals can follow wakes with their whiskers.",
-          "hook_words": 7,
-          "first_2s_narration": "Seals can follow wakes with their whiskers Watch the whiskers near the",
-          "caption_chars_per_second": 15.65,
+          "hook": "Bears can smell a meal long before seeing it.",
+          "hook_words": 8,
+          "first_2s_narration": "Bears can smell meal long before seeing it Watch the nose first",
+          "caption_chars_per_second": 14.44,
           "visual_motion_score": 0.76,
           "contrast_score": 0.74,
           "hook_specificity": 0.78,
           "novelty_score": 0.58,
-          "duration_hint_s": 17,
+          "duration_hint_s": 18,
           "payoff_time_s": 0,
           "payoff_score": 75,
           "payoff_reveal_sentence_index": 0,
           "cta_count": 1,
           "opening_retention": {
-            "score": 100.0,
+            "score": 94.0,
             "state": "retention_ready",
             "approved": true,
-            "subject": "seals",
+            "subject": "bears",
             "cue_terms": [
-              "tracker",
-              "wake"
+              "map",
+              "nose",
+              "scent"
             ],
-            "frame_hook_bridge": [
-              "wake"
-            ],
+            "frame_hook_bridge": [],
             "cue_bridge": [
-              "wake"
+              "nose"
             ],
             "strengths": [
               "subject_frontloaded",
-              "frame_hook_bridge",
               "visible_cue_repeated_early",
               "watch_instruction_early",
               "action_promise_early",
               "reason_arrives_early",
-              "frame_text_scannable"
+              "frame_text_scannable",
+              "curiosity_shape"
             ],
-            "risks": []
+            "risks": [
+              "frame_text_not_echoed_early"
+            ]
           },
-          "opening_retention_score": 100.0,
-          "loop_score": 0.81
+          "opening_retention_score": 94.0,
+          "loop_score": 0.753
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast."
       },
@@ -3948,21 +3941,33 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 16,
-    "pending_after": 16,
-    "rejected": 0,
+    "pending_before": 18,
+    "pending_after": 17,
+    "rejected": 1,
     "repair_needed": 0,
-    "repaired": 2,
+    "repaired": 3,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 16,
+      "objective_gate:bootstrap_observe_before_scaling": 17,
       "editor_in_chief:subject repeated inside 3-day cooldown": 5,
       "editor_in_chief:script quality gate blocked the narration": 4,
+      "duplicate_title": 1,
+      "duplicate_script": 1,
+      "duplicate_angle": 1,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
-      "editorial_cooldown_supply_fallback": 1,
-      "publish_ready_supply_reserve_fallback": 1
+      "editorial_cooldown_supply_fallback": 1
     }
   },
-  "rejected_preview": []
+  "rejected_preview": [
+    {
+      "id": "ff6c4d17f43936eb",
+      "title": "Bears smell food from miles away",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ]
+    }
+  ]
 }

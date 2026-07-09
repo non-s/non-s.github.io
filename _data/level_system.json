@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-09T17:11:25.782727+00:00",
+  "generated_at": "2026-07-09T17:14:12.062958+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
-  "overall_progress_pct": 27.6,
+  "overall_progress_pct": 28.1,
   "current_level": {
     "number": 2,
     "name": "Publish supply engine",
@@ -10,7 +10,7 @@
     "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
     "revenue_job": "Turn production from lucky shots into repeatable inventory.",
     "status": "boss_fight",
-    "progress_pct": 93.3
+    "progress_pct": 96.7
   },
   "boss": {
     "id": "pending_queue_low",
@@ -20,18 +20,18 @@
       "eligible_count": 6,
       "operational_publish_ready": 6,
       "apparent_publish_ready": 6,
-      "pending": 16,
+      "pending": 18,
       "target_publish_ready": 6,
       "target_pending": 20,
       "top_blockers": [
         {
           "id": "objective_gate:bootstrap_observe_before_scaling",
-          "count": 32,
+          "count": 33,
           "operator_translation": "collect more observed signal before scaling this pattern"
         },
         {
           "id": "queue_prune:rewrite",
-          "count": 10,
+          "count": 12,
           "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
@@ -86,20 +86,20 @@
     {
       "priority": "P1",
       "action": "Refresh free discovery only after the current repair batch is clean.",
-      "target": "pending 16/20",
+      "target": "pending 18/20",
       "why": "Bigger inventory helps only when the gate can accept winners."
     }
   ],
   "metrics": {
-    "health_score": 77,
-    "health_state": "watch",
-    "pending": 16,
+    "health_score": 73,
+    "health_state": "needs_work",
+    "pending": 18,
     "operational_publish_ready": 6,
     "apparent_publish_ready": 6,
     "eligible_count": 6,
     "scale_ready_count": 0,
     "next_shorts_count": 6,
-    "editorial_candidate_count": 16,
+    "editorial_candidate_count": 17,
     "published_count": 88,
     "views_28d": 30314,
     "total_subscribers": 46,
@@ -114,12 +114,12 @@
   "top_blockers": [
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
-      "count": 32,
+      "count": 33,
       "operator_translation": "collect more observed signal before scaling this pattern"
     },
     {
       "id": "queue_prune:rewrite",
-      "count": 10,
+      "count": 12,
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
@@ -148,6 +148,11 @@
       "operator_translation": "editor in chief:needs ai rewrite"
     },
     {
+      "id": "duplicate_title",
+      "count": 3,
+      "operator_translation": "duplicate title"
+    },
+    {
       "id": "packaging:missing_action_word",
       "count": 2,
       "operator_translation": "packaging:missing action word"
@@ -166,11 +171,6 @@
       "id": "editor_in_chief:editorial score 46 is below 62",
       "count": 2,
       "operator_translation": "editor in chief:editorial score 46 is below 62"
-    },
-    {
-      "id": "editorial_cooldown_supply_fallback",
-      "count": 2,
-      "operator_translation": "editorial cooldown supply fallback"
     }
   ],
   "levels": [
@@ -184,7 +184,7 @@
       "progress_pct": 100.0,
       "evidence": {
         "published_count": 88,
-        "health_score": 77
+        "health_score": 73
       }
     },
     {
@@ -194,11 +194,11 @@
       "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
       "revenue_job": "Turn production from lucky shots into repeatable inventory.",
       "status": "current",
-      "progress_pct": 93.3,
+      "progress_pct": 96.7,
       "evidence": {
         "operational_publish_ready": 6,
         "eligible_count": 6,
-        "pending": 16,
+        "pending": 18,
         "target_publish_ready": 6,
         "target_pending": 20
       }
@@ -265,7 +265,7 @@
       "progress_pct": 21.0,
       "evidence": {
         "views_28d": 30314,
-        "health_state": "watch",
+        "health_state": "needs_work",
         "operational_publish_ready": 6
       }
     }
