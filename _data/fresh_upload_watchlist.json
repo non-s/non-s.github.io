@@ -11,19 +11,74 @@
     "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-07-09T21:00:47.057561+00:00",
+  "generated_at": "2026-07-09T21:04:45.817001+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.94,
-      "category": "arctic",
+      "age_hours": 0.034,
+      "category": "ocean",
       "checkpoints": [
         {
           "delta_to_target": 0,
-          "due_at": "2026-07-09T21:04:23.188358+00:00",
+          "due_at": "2026-07-09T22:02:44.518371+00:00",
           "label": "1h",
           "source": "estimated",
           "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-10T03:02:44.518371+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-10T21:02:44.518371+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-09T22:02:44.518371+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 94.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Ocean Mysteries",
+      "state": "awaiting_1h",
+      "title": "Dolphins can call each other with signature whistles",
+      "uploaded_at": "2026-07-09T21:02:44.518371+00:00",
+      "url": "https://www.youtube.com/shorts/xxal3t3p9K0",
+      "video_id": "xxal3t3p9K0",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 1.006,
+      "category": "arctic",
+      "checkpoints": [
+        {
+          "delta_to_target": -24,
+          "due_at": "2026-07-09T21:04:23.188358+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "due",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -24,
         "due_at": "2026-07-09T21:04:23.188358+00:00",
         "label": "1h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 94.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Polar Survival",
-      "state": "awaiting_1h",
+      "state": "analytics_due",
       "title": "Seals can follow wakes with their whiskers",
       "uploaded_at": "2026-07-09T20:04:23.188358+00:00",
       "url": "https://www.youtube.com/shorts/XZIAdzI-njM",
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.937,
+      "age_hours": 2.003,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.041,
+      "age_hours": 2.107,
       "category": "insects",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.935,
+      "age_hours": 7.002,
       "category": "dogs",
       "checkpoints": [
         {
@@ -246,7 +301,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.725,
+      "age_hours": 8.791,
       "category": "plants",
       "checkpoints": [
         {
@@ -301,7 +356,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.643,
+      "age_hours": 9.71,
       "category": "arctic",
       "checkpoints": [
         {
@@ -352,11 +407,11 @@
       "uploaded_at": "2026-07-09T11:22:11.609762+00:00",
       "url": "https://www.youtube.com/shorts/FauBvdeAeU8",
       "video_id": "FauBvdeAeU8",
-      "views_per_hour": 0.104
+      "views_per_hour": 0.103
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.844,
+      "age_hours": 12.91,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -411,7 +466,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.039,
+      "age_hours": 13.105,
       "category": "trees",
       "checkpoints": [
         {
@@ -439,10 +494,10 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 300,
-          "views": 0
+          "views": 1
         }
       ],
-      "current_views": 0,
+      "current_views": 1,
       "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
         "delta_to_target": -24,
@@ -462,11 +517,11 @@
       "uploaded_at": "2026-07-09T07:58:28.453849+00:00",
       "url": "https://www.youtube.com/shorts/C9gC410D64o",
       "video_id": "C9gC410D64o",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.076
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 15.815,
+      "age_hours": 15.881,
       "category": "geology",
       "checkpoints": [
         {
@@ -517,61 +572,6 @@
       "uploaded_at": "2026-07-09T05:11:53.582365+00:00",
       "url": "https://www.youtube.com/shorts/hpcdCLeyIpg",
       "video_id": "hpcdCLeyIpg",
-      "views_per_hour": 0.0
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.696,
-      "category": "geology",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-09T05:19:03.082953+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-09T10:19:03.082953+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-07-10T04:19:03.082953+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-09T05:19:03.082953+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Earth Engine",
-      "state": "analytics_due",
-      "title": "Crystal edges build the same pattern again",
-      "uploaded_at": "2026-07-09T04:19:03.082953+00:00",
-      "url": "https://www.youtube.com/shorts/dAkoh1xnJjA",
-      "video_id": "dAkoh1xnJjA",
       "views_per_hour": 0.0
     }
   ],
