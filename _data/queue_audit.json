@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-09T11:29:22.071034+00:00",
+  "generated_at": "2026-07-09T11:37:17.045293+00:00",
   "pending": 18,
   "states": {
     "rewrite": 12,
@@ -15,22 +15,64 @@
     "approved": 18
   },
   "prune_summary": {
-    "pending_before": 18,
+    "pending_before": 22,
     "pending_after": 18,
-    "rejected": 0,
+    "rejected": 4,
     "repair_needed": 0,
     "repaired": 2,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 18,
       "editor_in_chief:subject repeated inside 3-day cooldown": 5,
       "editor_in_chief:script quality gate blocked the narration": 4,
+      "off_topic_visual": 2,
+      "copy_subject_mismatch": 2,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
+      "script_hook_mismatch": 1,
+      "script_word_loop": 1,
+      "duplicate_title": 1,
+      "script_subject_mismatch": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
       "editorial_cooldown_supply_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "da0c26113940f8b7",
+      "title": "Desert hikers found fossils that aren't fossils",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "72d5ec76d2d7a852",
+      "title": "Coral reefs are cities built by tiny animals",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "da21c8cbd3546836",
+      "title": "What a dog's tail says before the bark when the body freezes",
+      "reasons": [
+        "script_word_loop"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "3564c5f36930f60e",
+      "title": "Snow makes mountains younger not older",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "2dd56526f6c58bb5",
       "title": "Birds Aves ven ultravioleta antes de cambiar",
@@ -265,41 +307,6 @@
         "off_topic_visual"
       ],
       "stage": "queue_prune_final"
-    },
-    {
-      "id": "63b10afce16cda57",
-      "title": "How dogs cool down without sweating like us before the obvious moment",
-      "reasons": [
-        "bad_plural_verb",
-        "script_word_loop"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "1ff2d6d26cc94318",
-      "title": "Mountains aren’t forever snowcapped but always changing",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "f462c3148a90b175",
-      "title": "Halloween bats hate the dark myth",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "afa631e3e7a8b855",
-      "title": "Coral reefs are cities built by tiny animals",
-      "reasons": [
-        "opening_retention_gap_risk",
-        "opening promise is not concrete enough",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
     }
   ],
   "top": [
@@ -479,7 +486,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-09T11:29:03.246873+00:00",
+        "checked_at": "2026-07-09T11:36:58.208184+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1126,7 +1133,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-09T11:29:03.248660+00:00",
+        "checked_at": "2026-07-09T11:36:58.209988+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1769,7 +1776,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-09T11:29:03.249695+00:00",
+        "checked_at": "2026-07-09T11:36:58.211005+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2409,7 +2416,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-09T11:29:03.251480+00:00",
+        "checked_at": "2026-07-09T11:36:58.212700+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3051,7 +3058,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-09T11:29:03.256560+00:00",
+        "checked_at": "2026-07-09T11:36:58.217570+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3696,7 +3703,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T11:29:03.242538+00:00",
+        "checked_at": "2026-07-09T11:36:58.203905+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4341,7 +4348,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T11:29:03.258224+00:00",
+        "checked_at": "2026-07-09T11:36:58.219225+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4984,7 +4991,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T11:29:03.253259+00:00",
+        "checked_at": "2026-07-09T11:36:58.214435+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5631,7 +5638,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T11:29:03.254357+00:00",
+        "checked_at": "2026-07-09T11:36:58.215481+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6296,7 +6303,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-09T11:29:03.260185+00:00",
+        "checked_at": "2026-07-09T11:36:58.221173+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6944,7 +6951,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T11:29:03.244119+00:00",
+        "checked_at": "2026-07-09T11:36:58.205445+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7591,7 +7598,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T11:29:03.245678+00:00",
+        "checked_at": "2026-07-09T11:36:58.207005+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8245,7 +8252,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T11:29:03.261978+00:00",
+        "checked_at": "2026-07-09T11:36:58.222935+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8901,7 +8908,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T11:29:03.230891+00:00",
+        "checked_at": "2026-07-09T11:36:58.192664+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9547,7 +9554,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T11:29:03.234074+00:00",
+        "checked_at": "2026-07-09T11:36:58.195443+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10211,7 +10218,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T11:29:03.236314+00:00",
+        "checked_at": "2026-07-09T11:36:58.197644+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10864,7 +10871,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T11:29:03.238066+00:00",
+        "checked_at": "2026-07-09T11:36:58.199396+00:00",
         "mechanism_cluster": "tongue_smell",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11509,7 +11516,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T11:29:03.240304+00:00",
+        "checked_at": "2026-07-09T11:36:58.201652+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
