@@ -1,5 +1,5 @@
 {
-  "sample_count": 10,
+  "sample_count": 11,
   "bootstrap_mode": true,
   "minimum_sample_rules": {
     "category": 5,
@@ -43,8 +43,8 @@
       "avg_retention": 44.0,
       "avg_watch_time": 11.0,
       "subs_per_1k": 0.0,
-      "comments_per_1k": 666.667,
-      "return_proxy": 1356.134,
+      "comments_per_1k": 166.667,
+      "return_proxy": 356.134,
       "confidence": {
         "confidence_score": 0.313,
         "sample_size": 2,
@@ -188,6 +188,28 @@
         "bootstrap_multiplier": 0.335,
         "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
       }
+    },
+    "arctic": {
+      "n": 1,
+      "views": 1,
+      "retention_samples": 0,
+      "watch_time_samples": 0,
+      "avg_retention": 0.0,
+      "avg_watch_time": 0.0,
+      "subs_per_1k": 0.0,
+      "comments_per_1k": 1000.0,
+      "return_proxy": 2001.5,
+      "confidence": {
+        "confidence_score": 0.113,
+        "sample_size": 1,
+        "minimum_sample_size": 5,
+        "data_quality": "estimated",
+        "data_quality_score": 0.567,
+        "recommendation_strength": "observe",
+        "can_adjust_strategy": false,
+        "bootstrap_multiplier": 0.335,
+        "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
+      }
     }
   },
   "format": {
@@ -221,8 +243,8 @@
       "avg_retention": 44.0,
       "avg_watch_time": 11.0,
       "subs_per_1k": 0.0,
-      "comments_per_1k": 666.667,
-      "return_proxy": 1356.134,
+      "comments_per_1k": 166.667,
+      "return_proxy": 356.134,
       "confidence": {
         "confidence_score": 0.313,
         "sample_size": 2,
@@ -302,25 +324,25 @@
       }
     },
     "body_superpower": {
-      "n": 1,
-      "views": 1,
+      "n": 2,
+      "views": 2,
       "retention_samples": 0,
       "watch_time_samples": 0,
       "avg_retention": 0.0,
       "avg_watch_time": 0.0,
       "subs_per_1k": 0.0,
       "comments_per_1k": 1000.0,
-      "return_proxy": 2001.5,
+      "return_proxy": 2003.0,
       "confidence": {
-        "confidence_score": 0.113,
-        "sample_size": 1,
+        "confidence_score": 0.227,
+        "sample_size": 2,
         "minimum_sample_size": 5,
         "data_quality": "estimated",
         "data_quality_score": 0.567,
         "recommendation_strength": "observe",
         "can_adjust_strategy": false,
-        "bootstrap_multiplier": 0.335,
-        "reasoning": "format has 1/5 samples, estimated data, confidence 0.11; observation only."
+        "bootstrap_multiplier": 0.42,
+        "reasoning": "format has 2/5 samples, estimated data, confidence 0.23; observation only."
       }
     },
     "hidden_network": {
@@ -399,8 +421,8 @@
       "avg_retention": 44.0,
       "avg_watch_time": 11.0,
       "subs_per_1k": 0.0,
-      "comments_per_1k": 666.667,
-      "return_proxy": 1356.134,
+      "comments_per_1k": 166.667,
+      "return_proxy": 356.134,
       "confidence": {
         "confidence_score": 0.522,
         "sample_size": 2,
@@ -522,6 +544,28 @@
         "bootstrap_multiplier": 0.392,
         "reasoning": "series has 1/3 samples, estimated data, confidence 0.19; observation only."
       }
+    },
+    "Polar Survival": {
+      "n": 1,
+      "views": 1,
+      "retention_samples": 0,
+      "watch_time_samples": 0,
+      "avg_retention": 0.0,
+      "avg_watch_time": 0.0,
+      "subs_per_1k": 0.0,
+      "comments_per_1k": 1000.0,
+      "return_proxy": 2001.5,
+      "confidence": {
+        "confidence_score": 0.189,
+        "sample_size": 1,
+        "minimum_sample_size": 3,
+        "data_quality": "estimated",
+        "data_quality_score": 0.567,
+        "recommendation_strength": "observe",
+        "can_adjust_strategy": false,
+        "bootstrap_multiplier": 0.392,
+        "reasoning": "series has 1/3 samples, estimated data, confidence 0.19; observation only."
+      }
     }
   },
   "weights": {
@@ -581,26 +625,26 @@
         }
       },
       {
-        "value": "farm",
-        "n": 2,
-        "views": 4,
-        "retention_samples": 1,
-        "watch_time_samples": 1,
-        "avg_retention": 44.0,
-        "avg_watch_time": 11.0,
+        "value": "arctic",
+        "n": 1,
+        "views": 1,
+        "retention_samples": 0,
+        "watch_time_samples": 0,
+        "avg_retention": 0.0,
+        "avg_watch_time": 0.0,
         "subs_per_1k": 0.0,
-        "comments_per_1k": 666.667,
-        "return_proxy": 1356.134,
+        "comments_per_1k": 1000.0,
+        "return_proxy": 2001.5,
         "confidence": {
-          "confidence_score": 0.313,
-          "sample_size": 2,
+          "confidence_score": 0.113,
+          "sample_size": 1,
           "minimum_sample_size": 5,
-          "data_quality": "observed",
-          "data_quality_score": 0.783,
+          "data_quality": "estimated",
+          "data_quality_score": 0.567,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.485,
-          "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only."
+          "bootstrap_multiplier": 0.335,
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
         }
       },
       {
@@ -699,48 +743,25 @@
       },
       {
         "value": "body_superpower",
-        "n": 1,
-        "views": 1,
+        "n": 2,
+        "views": 2,
         "retention_samples": 0,
         "watch_time_samples": 0,
         "avg_retention": 0.0,
         "avg_watch_time": 0.0,
         "subs_per_1k": 0.0,
         "comments_per_1k": 1000.0,
-        "return_proxy": 2001.5,
+        "return_proxy": 2003.0,
         "confidence": {
-          "confidence_score": 0.113,
-          "sample_size": 1,
+          "confidence_score": 0.227,
+          "sample_size": 2,
           "minimum_sample_size": 5,
           "data_quality": "estimated",
           "data_quality_score": 0.567,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.335,
-          "reasoning": "format has 1/5 samples, estimated data, confidence 0.11; observation only."
-        }
-      },
-      {
-        "value": "animal_memory",
-        "n": 2,
-        "views": 4,
-        "retention_samples": 1,
-        "watch_time_samples": 1,
-        "avg_retention": 44.0,
-        "avg_watch_time": 11.0,
-        "subs_per_1k": 0.0,
-        "comments_per_1k": 666.667,
-        "return_proxy": 1356.134,
-        "confidence": {
-          "confidence_score": 0.313,
-          "sample_size": 2,
-          "minimum_sample_size": 5,
-          "data_quality": "observed",
-          "data_quality_score": 0.783,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.485,
-          "reasoning": "format has 2/5 samples, observed data, confidence 0.31; observation only."
+          "bootstrap_multiplier": 0.42,
+          "reasoning": "format has 2/5 samples, estimated data, confidence 0.23; observation only."
         }
       },
       {
@@ -811,11 +832,57 @@
           "bootstrap_multiplier": 0.335,
           "reasoning": "format has 1/5 samples, estimated data, confidence 0.11; observation only."
         }
+      },
+      {
+        "value": "hidden_network",
+        "n": 1,
+        "views": 2,
+        "retention_samples": 0,
+        "watch_time_samples": 0,
+        "avg_retention": 0.0,
+        "avg_watch_time": 0.0,
+        "subs_per_1k": 0.0,
+        "comments_per_1k": 500.0,
+        "return_proxy": 1001.5,
+        "confidence": {
+          "confidence_score": 0.113,
+          "sample_size": 1,
+          "minimum_sample_size": 5,
+          "data_quality": "estimated",
+          "data_quality_score": 0.567,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.335,
+          "reasoning": "format has 1/5 samples, estimated data, confidence 0.11; observation only."
+        }
       }
     ],
     "series": [
       {
         "value": "Cold-Blooded Secrets",
+        "n": 1,
+        "views": 1,
+        "retention_samples": 0,
+        "watch_time_samples": 0,
+        "avg_retention": 0.0,
+        "avg_watch_time": 0.0,
+        "subs_per_1k": 0.0,
+        "comments_per_1k": 1000.0,
+        "return_proxy": 2001.5,
+        "confidence": {
+          "confidence_score": 0.189,
+          "sample_size": 1,
+          "minimum_sample_size": 3,
+          "data_quality": "estimated",
+          "data_quality_score": 0.567,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.392,
+          "reasoning": "series has 1/3 samples, estimated data, confidence 0.19; observation only."
+        }
+      },
+      {
+        "value": "Polar Survival",
         "n": 1,
         "views": 1,
         "retention_samples": 0,
@@ -848,29 +915,6 @@
         "subs_per_1k": 0.0,
         "comments_per_1k": 750.0,
         "return_proxy": 1516.734,
-        "confidence": {
-          "confidence_score": 0.522,
-          "sample_size": 2,
-          "minimum_sample_size": 3,
-          "data_quality": "observed",
-          "data_quality_score": 0.783,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.55,
-          "reasoning": "series has 2/3 samples, observed data, confidence 0.52; observation only."
-        }
-      },
-      {
-        "value": "Farmyard Surprises",
-        "n": 2,
-        "views": 4,
-        "retention_samples": 1,
-        "watch_time_samples": 1,
-        "avg_retention": 44.0,
-        "avg_watch_time": 11.0,
-        "subs_per_1k": 0.0,
-        "comments_per_1k": 666.667,
-        "return_proxy": 1356.134,
         "confidence": {
           "confidence_score": 0.522,
           "sample_size": 2,
@@ -956,6 +1000,29 @@
   },
   "losers": {
     "category": [
+      {
+        "value": "farm",
+        "n": 2,
+        "views": 4,
+        "retention_samples": 1,
+        "watch_time_samples": 1,
+        "avg_retention": 44.0,
+        "avg_watch_time": 11.0,
+        "subs_per_1k": 0.0,
+        "comments_per_1k": 166.667,
+        "return_proxy": 356.134,
+        "confidence": {
+          "confidence_score": 0.313,
+          "sample_size": 2,
+          "minimum_sample_size": 5,
+          "data_quality": "observed",
+          "data_quality_score": 0.783,
+          "recommendation_strength": "observe",
+          "can_adjust_strategy": false,
+          "bootstrap_multiplier": 0.485,
+          "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only."
+        }
+      },
       {
         "value": "wildlife",
         "n": 2,
@@ -1070,9 +1137,11 @@
           "bootstrap_multiplier": 0.335,
           "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only."
         }
-      },
+      }
+    ],
+    "format": [
       {
-        "value": "farm",
+        "value": "animal_memory",
         "n": 2,
         "views": 4,
         "retention_samples": 1,
@@ -1080,8 +1149,8 @@
         "avg_retention": 44.0,
         "avg_watch_time": 11.0,
         "subs_per_1k": 0.0,
-        "comments_per_1k": 666.667,
-        "return_proxy": 1356.134,
+        "comments_per_1k": 166.667,
+        "return_proxy": 356.134,
         "confidence": {
           "confidence_score": 0.313,
           "sample_size": 2,
@@ -1091,11 +1160,9 @@
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
           "bootstrap_multiplier": 0.485,
-          "reasoning": "category has 2/5 samples, observed data, confidence 0.31; observation only."
+          "reasoning": "format has 2/5 samples, observed data, confidence 0.31; observation only."
         }
-      }
-    ],
-    "format": [
+      },
       {
         "value": "survival_trick",
         "n": 1,
@@ -1210,9 +1277,11 @@
           "bootstrap_multiplier": 0.42,
           "reasoning": "format has 2/5 samples, estimated data, confidence 0.23; observation only."
         }
-      },
+      }
+    ],
+    "series": [
       {
-        "value": "animal_memory",
+        "value": "Farmyard Surprises",
         "n": 2,
         "views": 4,
         "retention_samples": 1,
@@ -1220,22 +1289,20 @@
         "avg_retention": 44.0,
         "avg_watch_time": 11.0,
         "subs_per_1k": 0.0,
-        "comments_per_1k": 666.667,
-        "return_proxy": 1356.134,
+        "comments_per_1k": 166.667,
+        "return_proxy": 356.134,
         "confidence": {
-          "confidence_score": 0.313,
+          "confidence_score": 0.522,
           "sample_size": 2,
-          "minimum_sample_size": 5,
+          "minimum_sample_size": 3,
           "data_quality": "observed",
           "data_quality_score": 0.783,
           "recommendation_strength": "observe",
           "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.485,
-          "reasoning": "format has 2/5 samples, observed data, confidence 0.31; observation only."
+          "bootstrap_multiplier": 0.55,
+          "reasoning": "series has 2/3 samples, observed data, confidence 0.52; observation only."
         }
-      }
-    ],
-    "series": [
+      },
       {
         "value": "Animal Superpowers",
         "n": 2,
@@ -1326,29 +1393,6 @@
           "can_adjust_strategy": false,
           "bootstrap_multiplier": 0.392,
           "reasoning": "series has 1/3 samples, estimated data, confidence 0.19; observation only."
-        }
-      },
-      {
-        "value": "Farmyard Surprises",
-        "n": 2,
-        "views": 4,
-        "retention_samples": 1,
-        "watch_time_samples": 1,
-        "avg_retention": 44.0,
-        "avg_watch_time": 11.0,
-        "subs_per_1k": 0.0,
-        "comments_per_1k": 666.667,
-        "return_proxy": 1356.134,
-        "confidence": {
-          "confidence_score": 0.522,
-          "sample_size": 2,
-          "minimum_sample_size": 3,
-          "data_quality": "observed",
-          "data_quality_score": 0.783,
-          "recommendation_strength": "observe",
-          "can_adjust_strategy": false,
-          "bootstrap_multiplier": 0.55,
-          "reasoning": "series has 2/3 samples, observed data, confidence 0.52; observation only."
         }
       },
       {

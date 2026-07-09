@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-07-09T17:18:00.921132+00:00",
+  "generated_at": "2026-07-09T18:09:53.667645+00:00",
   "pending": 17,
   "states": {
-    "rewrite": 11,
-    "publish_ready": 6
+    "publish_ready": 6,
+    "rewrite": 11
   },
   "mechanism_clusters": {
     "scent_map": 2,
@@ -27,7 +27,8 @@
       "editor_in_chief:story angle repeated inside 10-day cooldown": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
-      "editorial_cooldown_supply_fallback": 1
+      "editorial_cooldown_supply_fallback": 1,
+      "publish_ready_supply_reserve_fallback": 1
     }
   },
   "rejected_preview": [
@@ -301,15 +302,15 @@
         "approved": true,
         "category": "nocturnal",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.276,
+          "bootstrap_multiplier": 0.297,
           "can_adjust_strategy": false,
-          "confidence_score": 0.035,
+          "confidence_score": 0.063,
           "data_quality": "inferred",
           "data_quality_score": 0.575,
           "minimum_sample_size": 25,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.03.",
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.06.",
           "recommendation_strength": "observe",
-          "sample_size": 3
+          "sample_size": 5
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -319,7 +320,7 @@
         },
         "hook_score": 88,
         "objective_gate": {
-          "confidence_score": 0.035,
+          "confidence_score": 0.063,
           "mechanism_cluster": "",
           "payoff_time_s": 0.0,
           "penalty": 0.0,
@@ -419,17 +420,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.296,
+            "bootstrap_multiplier": 0.317,
             "can_adjust_strategy": false,
-            "confidence_score": 0.061,
+            "confidence_score": 0.089,
             "data_quality": "inferred",
             "data_quality_score": 0.5,
             "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
             "recommendation_strength": "observe",
-            "sample_size": 2
+            "sample_size": 3
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
           "reasons": [
             "hook_invites_return",
             "identity_cta",
@@ -469,7 +470,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-09T17:17:46.468240+00:00",
+        "checked_at": "2026-07-09T18:09:37.917883+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -572,9 +573,9 @@
           "winning_experiments": {
             "cta:specific_question": 47.3,
             "format:fresh_variant": 47.3,
-            "format:winner_inspired": 45.91,
+            "format:winner_inspired": 43.7,
             "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 46.18
+            "thumbnail:new_thumbnail": 44.36
           }
         },
         "frame_zero": {
@@ -807,17 +808,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.296,
+            "bootstrap_multiplier": 0.317,
             "can_adjust_strategy": false,
-            "confidence_score": 0.061,
+            "confidence_score": 0.089,
             "data_quality": "inferred",
             "data_quality_score": 0.5,
             "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
             "recommendation_strength": "observe",
-            "sample_size": 2
+            "sample_size": 3
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
           "reasons": [
             "hook_invites_return",
             "identity_cta",
@@ -885,6 +886,18 @@
             "title": "Foxes hear tiny prey under snow"
           },
           {
+            "hook": "Foxes can hunt sounds hidden under snow",
+            "score": 73,
+            "thumbnail_text": "SNOW HEARING",
+            "title": "Foxes use snow hearing before they hunt"
+          },
+          {
+            "hook": "Start with the snow hearing; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "SNOW HEARING",
+            "title": "Foxes use snow hearing before they hunt"
+          },
+          {
             "hook": "Start with the snow hearing; it changes the scene",
             "score": 72,
             "thumbnail_text": "WATCH SNOW HEARING",
@@ -913,18 +926,6 @@
             "score": 72,
             "thumbnail_text": "SNOW HEARING FIRST",
             "title": "Foxes hear tiny prey under snow"
-          },
-          {
-            "hook": "Foxes can hunt sounds hidden under snow",
-            "score": 72,
-            "thumbnail_text": "SNOW HEARING",
-            "title": "Foxes use snow hearing before they hunt"
-          },
-          {
-            "hook": "Start with the snow hearing; it changes the scene",
-            "score": 72,
-            "thumbnail_text": "SNOW HEARING",
-            "title": "Foxes use snow hearing before they hunt"
           }
         ]
       },
@@ -949,15 +950,15 @@
         "approved": true,
         "category": "insects",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.276,
+          "bootstrap_multiplier": 0.297,
           "can_adjust_strategy": false,
-          "confidence_score": 0.035,
+          "confidence_score": 0.063,
           "data_quality": "inferred",
           "data_quality_score": 0.575,
           "minimum_sample_size": 25,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.03.",
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.06.",
           "recommendation_strength": "observe",
-          "sample_size": 3
+          "sample_size": 5
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -967,7 +968,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.035,
+          "confidence_score": 0.063,
           "mechanism_cluster": "",
           "payoff_time_s": 0.0,
           "penalty": 0.0,
@@ -1067,17 +1068,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.24,
           "confidence": {
-            "bootstrap_multiplier": 0.296,
+            "bootstrap_multiplier": 0.317,
             "can_adjust_strategy": false,
-            "confidence_score": 0.061,
+            "confidence_score": 0.089,
             "data_quality": "inferred",
             "data_quality_score": 0.5,
             "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
             "recommendation_strength": "observe",
-            "sample_size": 2
+            "sample_size": 3
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -1116,7 +1117,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-09T17:17:46.469826+00:00",
+        "checked_at": "2026-07-09T18:09:37.919519+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1219,9 +1220,9 @@
           "winning_experiments": {
             "cta:specific_question": 47.3,
             "format:fresh_variant": 47.3,
-            "format:winner_inspired": 45.91,
+            "format:winner_inspired": 43.7,
             "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 46.18
+            "thumbnail:new_thumbnail": 44.36
           }
         },
         "frame_zero": {
@@ -1454,17 +1455,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.24,
           "confidence": {
-            "bootstrap_multiplier": 0.296,
+            "bootstrap_multiplier": 0.317,
             "can_adjust_strategy": false,
-            "confidence_score": 0.061,
+            "confidence_score": 0.089,
             "data_quality": "inferred",
             "data_quality_score": 0.5,
             "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
             "recommendation_strength": "observe",
-            "sample_size": 2
+            "sample_size": 3
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -1759,7 +1760,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-09T17:17:46.470724+00:00",
+        "checked_at": "2026-07-09T18:09:37.924056+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1860,9 +1861,9 @@
           "winning_experiments": {
             "cta:specific_question": 47.3,
             "format:fresh_variant": 47.3,
-            "format:winner_inspired": 45.91,
+            "format:winner_inspired": 43.7,
             "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 46.18
+            "thumbnail:new_thumbnail": 44.36
           }
         },
         "frame_zero": {
@@ -2167,19 +2168,19 @@
           },
           {
             "hook": "Start with the signature whistle; it changes the scene",
-            "score": 74,
+            "score": 75,
             "thumbnail_text": "DOLPHIN NAME",
             "title": "Dolphins use signature whistle before they track"
           },
           {
             "hook": "Dolphins can call each other with signature whistles",
-            "score": 73,
+            "score": 74,
             "thumbnail_text": "DOLPHIN NAME",
             "title": "Dolphins use signature whistle before they track"
           },
           {
             "hook": "Watch the signature whistle; it explains the behavior",
-            "score": 73,
+            "score": 74,
             "thumbnail_text": "DOLPHIN NAME",
             "title": "Dolphins use signature whistle before they track"
           },
@@ -2206,651 +2207,6 @@
             "score": 71,
             "thumbnail_text": "SIGNATURE WHISTLE MATTERS",
             "title": "Dolphins use signature whistles like names"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
-      "id": "ce3b2fc76a336a95",
-      "title": "This scent map gives bears away",
-      "category": "arctic",
-      "publish_score": {
-        "approved": true,
-        "category": "arctic",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.276,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.035,
-          "data_quality": "inferred",
-          "data_quality_score": 0.575,
-          "minimum_sample_size": 25,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.03.",
-          "recommendation_strength": "observe",
-          "sample_size": 3
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.035,
-          "mechanism_cluster": "scent_map",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "nose"
-          ],
-          "cue_terms": [
-            "map",
-            "nose",
-            "scent"
-          ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early"
-          ],
-          "score": 94.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable",
-            "curiosity_shape"
-          ],
-          "subject": "bears"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 58,
-          "signals": {
-            "comment_potential": 46,
-            "educational_potential": 65,
-            "emotional_potential": 35,
-            "novelty": 55,
-            "replay_potential": 82,
-            "viral_potential": 58,
-            "visual_potential": 55
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 76,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "body_superpower",
-        "subscriber_conversion": {
-          "comment_probability": 0.256,
-          "confidence": {
-            "bootstrap_multiplier": 0.296,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.061,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
-          "reasons": [
-            "hook_invites_return",
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.3,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143
-        },
-        "title_score": 84,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [
-            "weak_hook_pattern"
-          ],
-          "risk": 14,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-07-09T17:17:46.472541+00:00",
-        "mechanism_cluster": "scent_map",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 100.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 100.0,
-      "youtube_brain": {
-        "animal": "bears",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "nose"
-          ],
-          "cue_terms": [
-            "map",
-            "nose",
-            "scent"
-          ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early"
-          ],
-          "score": 94.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable",
-            "curiosity_shape"
-          ],
-          "subject": "bears"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "body_superpower",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "bears",
-        "viewer_promise": "See why bears body superpower matters."
-      },
-      "packaging": {
-        "community_prompt": "Which bears clue should Wild Brief compare next in Polar Survival?",
-        "cta_prompt": "Follow for one animal signal a day.",
-        "curiosity_gap": {
-          "hook": "Bears can smell a meal long before seeing it.",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "story"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "body superpower",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 88,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
-          },
-          "winning_experiments": {
-            "cta:specific_question": 47.3,
-            "format:fresh_variant": 47.3,
-            "format:winner_inspired": 45.91,
-            "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 46.18
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "nose"
-            ],
-            "cue_terms": [
-              "map",
-              "nose",
-              "scent"
-            ],
-            "frame_hook_bridge": [],
-            "risks": [
-              "frame_text_not_echoed_early"
-            ],
-            "score": 94.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable",
-              "curiosity_shape"
-            ],
-            "subject": "bears"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Bears can smell a meal long before seeing it",
-          "Bears show why the scent map matters.",
-          "Bears show why the scent map matters.",
-          "Bears show why the scent map matters.",
-          "Bears give away the answer through scent map"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "scent map",
-          "ending_line": "Would you trust your nose that much?",
-          "final_line": "Now the scent map at the start makes sense.",
-          "loop_score": 0.753,
-          "opening_line": "Bears can smell a meal long before seeing it.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "scent map",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.753,
-        "next_episode_question": "Tomorrow in Polar Survival: another animal signal. What part of this feels most impossible?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "nose"
-          ],
-          "cue_terms": [
-            "map",
-            "nose",
-            "scent"
-          ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early"
-          ],
-          "score": 94.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable",
-            "curiosity_shape"
-          ],
-          "subject": "bears"
-        },
-        "pinned_comment": "Watch the scent map again. Tomorrow in Polar Survival: another animal signal. What part of this feels most impossible?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 14.44,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 18,
-          "first_2s_narration": "Bears can smell meal long before seeing it Watch the nose first",
-          "first_frame_text": "SCENT MAP",
-          "first_frame_text_words": 2,
-          "hook": "Bears can smell a meal long before seeing it.",
-          "hook_specificity": 0.78,
-          "hook_words": 8,
-          "loop_score": 0.753,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "nose"
-            ],
-            "cue_terms": [
-              "map",
-              "nose",
-              "scent"
-            ],
-            "frame_hook_bridge": [],
-            "risks": [
-              "frame_text_not_echoed_early"
-            ],
-            "score": 94.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable",
-              "curiosity_shape"
-            ],
-            "subject": "bears"
-          },
-          "opening_retention_score": 94.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the scent map, so viewers rewatch the bears clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 76,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Bears can smell a meal long before seeing it Watch the nose",
-          "first_frame_text": "SCENT MAP",
-          "next_episode_question": "Tomorrow in Polar Survival: another animal signal. What part of this feels most impossible?",
-          "opening_retention_score": 94.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains Bears behavior through the visible scent map.",
-            "series": "Polar Survival",
-            "subject": "bears",
-            "terms": [
-              "bears",
-              "scent map",
-              "arctic",
-              "body superpower"
-            ],
-            "title_variant": "Bears behavior: scent map explained",
-            "visible_cue": "scent map"
-          },
-          "series": "Polar Survival",
-          "subject": "bears",
-          "visible_cue": "scent map"
-        },
-        "risks": [],
-        "score": 97,
-        "search_intent": {
-          "description_line": "This Short explains Bears behavior through the visible scent map.",
-          "series": "Polar Survival",
-          "subject": "bears",
-          "terms": [
-            "bears",
-            "scent map",
-            "arctic",
-            "body superpower"
-          ],
-          "title_variant": "Bears behavior: scent map explained",
-          "visible_cue": "scent map"
-        },
-        "selected_variant": {
-          "hook": "Start with the scent map; it changes the scene",
-          "score": 83,
-          "thumbnail_text": "SCENT MAP",
-          "title": "Bears smell food from miles away"
-        },
-        "series": "Polar Survival #3",
-        "series_identity": {
-          "continuity_prompt": "Next in Polar Survival: compare this with another force of nature.",
-          "episode": 3,
-          "label": "Polar Survival #3",
-          "series": "Polar Survival"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.256,
-          "confidence": {
-            "bootstrap_multiplier": 0.296,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.061,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
-          "reasons": [
-            "hook_invites_return",
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.3,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "SCENT MAP",
-          "WATCH SCENT MAP",
-          "BEARS SMELL",
-          "SCENT MAP MATTERS",
-          "SCENT MAP FIRST",
-          "SCENT MAP REVEAL",
-          "SCENT MAP CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Bears smell food from miles away",
-          "This scent map gives bears away",
-          "Bears use scent map before they smell",
-          "Why bears smell after one scent map",
-          "Bears reveal the answer with scent map",
-          "The scent map that changes the moment",
-          "Bears make one scent map matter",
-          "Bears show the hidden answer in seconds",
-          "Bears: watch this scent map",
-          "Watch bears after the scent map"
-        ],
-        "top_variants": [
-          {
-            "hook": "Start with the scent map; it changes the scene",
-            "score": 83,
-            "thumbnail_text": "SCENT MAP",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Bears can smell a meal long before seeing it",
-            "score": 82,
-            "thumbnail_text": "SCENT MAP",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Watch the scent map; it explains the behavior",
-            "score": 81,
-            "thumbnail_text": "SCENT MAP",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Start with the scent map; it changes the scene",
-            "score": 76,
-            "thumbnail_text": "WATCH SCENT MAP",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Start with the scent map; it changes the scene",
-            "score": 76,
-            "thumbnail_text": "BEARS SMELL",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Start with the scent map; it changes the scene",
-            "score": 76,
-            "thumbnail_text": "SCENT MAP MATTERS",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Start with the scent map; it changes the scene",
-            "score": 76,
-            "thumbnail_text": "SCENT MAP FIRST",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Bears can smell a meal long before seeing it",
-            "score": 75,
-            "thumbnail_text": "WATCH SCENT MAP",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Bears can smell a meal long before seeing it",
-            "score": 75,
-            "thumbnail_text": "BEARS SMELL",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Bears can smell a meal long before seeing it",
-            "score": 75,
-            "thumbnail_text": "SCENT MAP MATTERS",
-            "title": "Bears smell food from miles away"
           }
         ]
       },
@@ -3040,7 +2396,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-09T17:17:46.476923+00:00",
+        "checked_at": "2026-07-09T18:09:37.925966+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3143,9 +2499,9 @@
           "winning_experiments": {
             "cta:specific_question": 47.3,
             "format:fresh_variant": 47.3,
-            "format:winner_inspired": 45.91,
+            "format:winner_inspired": 43.7,
             "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 46.18
+            "thumbnail:new_thumbnail": 44.36
           }
         },
         "frame_zero": {
@@ -3455,19 +2811,19 @@
           },
           {
             "hook": "Start with the fossil shape; it changes the scene",
-            "score": 76,
+            "score": 77,
             "thumbnail_text": "FOSSIL CLUE",
             "title": "Fossils use fossil shape before they leave"
           },
           {
             "hook": "Fossils can preserve a clue from deep time",
-            "score": 75,
+            "score": 76,
             "thumbnail_text": "FOSSIL CLUE",
             "title": "Fossils use fossil shape before they leave"
           },
           {
             "hook": "Watch the fossil shape; it explains the behavior",
-            "score": 75,
+            "score": 76,
             "thumbnail_text": "FOSSIL CLUE",
             "title": "Fossils use fossil shape before they leave"
           },
@@ -3685,7 +3041,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T17:17:46.464687+00:00",
+        "checked_at": "2026-07-09T18:09:37.916816+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3788,9 +3144,9 @@
           "winning_experiments": {
             "cta:specific_question": 47.3,
             "format:fresh_variant": 47.3,
-            "format:winner_inspired": 45.91,
+            "format:winner_inspired": 43.7,
             "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 46.18
+            "thumbnail:new_thumbnail": 44.36
           }
         },
         "frame_zero": {
@@ -4330,7 +3686,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T17:17:46.478295+00:00",
+        "checked_at": "2026-07-09T18:09:37.927446+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4433,9 +3789,9 @@
           "winning_experiments": {
             "cta:specific_question": 47.3,
             "format:fresh_variant": 47.3,
-            "format:winner_inspired": 45.91,
+            "format:winner_inspired": 43.7,
             "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 46.18
+            "thumbnail:new_thumbnail": 44.36
           }
         },
         "frame_zero": {
@@ -4802,18 +4158,18 @@
       "title": "Seals can follow wakes with their whiskers",
       "category": "arctic",
       "publish_score": {
-        "approved": false,
+        "approved": true,
         "category": "arctic",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.276,
+          "bootstrap_multiplier": 0.36,
           "can_adjust_strategy": false,
-          "confidence_score": 0.035,
-          "data_quality": "inferred",
-          "data_quality_score": 0.575,
-          "minimum_sample_size": 25,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.03.",
+          "confidence_score": 0.146,
+          "data_quality": "estimated",
+          "data_quality_score": 0.35,
+          "minimum_sample_size": 38,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.15.",
           "recommendation_strength": "observe",
-          "sample_size": 3
+          "sample_size": 10
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -4823,7 +4179,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.035,
+          "confidence_score": 0.146,
           "mechanism_cluster": "",
           "payoff_time_s": 0.0,
           "penalty": 0.0,
@@ -4863,30 +4219,30 @@
         },
         "opportunity": {
           "confidence": {
-            "bootstrap_multiplier": 0.25,
+            "bootstrap_multiplier": 0.335,
             "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
             "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 0
+            "sample_size": 1
           },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
           "reasons": [
             "weak_visual_surface",
             "low_opportunity_score"
           ],
-          "score": 54,
+          "score": 48,
           "signals": {
-            "comment_potential": 54,
-            "educational_potential": 58,
-            "emotional_potential": 44,
-            "novelty": 45,
-            "replay_potential": 64,
-            "viral_potential": 63,
-            "visual_potential": 45
+            "comment_potential": 48,
+            "educational_potential": 52,
+            "emotional_potential": 38,
+            "novelty": 39,
+            "replay_potential": 58,
+            "viral_potential": 57,
+            "visual_potential": 39
           },
           "verdict": "discard"
         },
@@ -4894,19 +4250,28 @@
           "hits": [],
           "penalty": 0
         },
+        "reserve_override": {
+          "original_approved": false,
+          "original_opportunity_reasons": [
+            "weak_visual_surface",
+            "low_opportunity_score"
+          ],
+          "original_state": "rewrite",
+          "reason": "publish_ready_supply_reserve_fallback"
+        },
         "retention": {
           "confidence": {
-            "bootstrap_multiplier": 0.25,
+            "bootstrap_multiplier": 0.335,
             "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
             "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 0
+            "sample_size": 1
           },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
           "reasons": [],
           "score": 70,
           "signals": {
@@ -4919,22 +4284,22 @@
           "verdict": "rewrite"
         },
         "score": 100,
-        "state": "rewrite",
+        "state": "publish_ready",
         "story_format": "body_superpower",
         "subscriber_conversion": {
-          "comment_probability": 0.24,
+          "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.296,
+            "bootstrap_multiplier": 0.374,
             "can_adjust_strategy": false,
-            "confidence_score": 0.061,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "confidence_score": 0.165,
+            "data_quality": "estimated",
+            "data_quality_score": 0.425,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
             "recommendation_strength": "observe",
-            "sample_size": 2
+            "sample_size": 5
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -4942,15 +4307,15 @@
             "series_identity",
             "episode_continuity"
           ],
-          "return_probability": 0.281,
+          "return_probability": 0.3,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 93,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.133
+          "subscriber_probability": 0.143
         },
         "title_score": 100,
         "weak_content": {
@@ -4971,15 +4336,16 @@
           "state": "clear"
         }
       },
-      "editorial_state": "rewrite",
+      "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-09T17:17:46.474091+00:00",
+        "checked_at": "2026-07-09T18:09:37.902072+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
+          "objective_gate:bootstrap_observe_before_scaling",
+          "publish_ready_supply_reserve_fallback"
         ],
         "score": 78.0,
-        "state": "rewrite",
+        "state": "publish_ready",
         "template_cluster": ""
       },
       "queue_score": 78.0,
@@ -5074,9 +4440,9 @@
           "winning_experiments": {
             "cta:specific_question": 47.3,
             "format:fresh_variant": 47.3,
-            "format:winner_inspired": 45.91,
+            "format:winner_inspired": 43.7,
             "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 46.18
+            "thumbnail:new_thumbnail": 44.36
           }
         },
         "frame_zero": {
@@ -5218,17 +4584,17 @@
         "replay_prompt": "End by pointing back to the whiskers, so viewers rewatch the seals clip.",
         "retention": {
           "confidence": {
-            "bootstrap_multiplier": 0.25,
+            "bootstrap_multiplier": 0.335,
             "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
             "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 0
+            "sample_size": 1
           },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
           "reasons": [],
           "score": 70,
           "signals": {
@@ -5279,8 +4645,8 @@
           "visible_cue": "whiskers"
         },
         "selected_variant": {
-          "hook": "Seals can follow wakes with their whiskers",
-          "score": 80,
+          "hook": "Start with the whisker wake; it changes the scene",
+          "score": 79,
           "thumbnail_text": "WAKE TRACKER",
           "title": "Seals track fish trails with whiskers"
         },
@@ -5301,19 +4667,19 @@
           "retention_opening_aligned"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.24,
+          "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.296,
+            "bootstrap_multiplier": 0.374,
             "can_adjust_strategy": false,
-            "confidence_score": 0.061,
-            "data_quality": "inferred",
-            "data_quality_score": 0.5,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "confidence_score": 0.165,
+            "data_quality": "estimated",
+            "data_quality_score": 0.425,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
             "recommendation_strength": "observe",
-            "sample_size": 2
+            "sample_size": 5
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -5321,15 +4687,15 @@
             "series_identity",
             "episode_continuity"
           ],
-          "return_probability": 0.281,
+          "return_probability": 0.3,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 93,
+          "score": 100,
           "state": "strong",
-          "subscriber_probability": 0.133
+          "subscriber_probability": 0.143
         },
         "swipe_risk": {
           "band": "low",
@@ -5363,64 +4729,712 @@
         ],
         "top_variants": [
           {
-            "hook": "Seals can follow wakes with their whiskers",
-            "score": 80,
-            "thumbnail_text": "WAKE TRACKER",
-            "title": "Seals track fish trails with whiskers"
-          },
-          {
             "hook": "Start with the whisker wake; it changes the scene",
-            "score": 80,
+            "score": 79,
             "thumbnail_text": "WAKE TRACKER",
             "title": "Seals track fish trails with whiskers"
           },
           {
-            "hook": "Watch the whisker wake; it explains the behavior",
+            "hook": "Seals can follow wakes with their whiskers",
             "score": 78,
             "thumbnail_text": "WAKE TRACKER",
             "title": "Seals track fish trails with whiskers"
           },
           {
-            "hook": "Seals can follow wakes with their whiskers",
-            "score": 73,
+            "hook": "Watch the whisker wake; it explains the behavior",
+            "score": 77,
+            "thumbnail_text": "WAKE TRACKER",
+            "title": "Seals track fish trails with whiskers"
+          },
+          {
+            "hook": "Start with the whisker wake; it changes the scene",
+            "score": 72,
             "thumbnail_text": "WHISKER WAKE",
             "title": "Seals track fish trails with whiskers"
           },
           {
             "hook": "Start with the whisker wake; it changes the scene",
-            "score": 73,
-            "thumbnail_text": "WHISKER WAKE",
-            "title": "Seals track fish trails with whiskers"
-          },
-          {
-            "hook": "Seals can follow wakes with their whiskers",
-            "score": 73,
+            "score": 72,
             "thumbnail_text": "WATCH WHISKER WAKE",
             "title": "Seals track fish trails with whiskers"
           },
           {
             "hook": "Start with the whisker wake; it changes the scene",
-            "score": 73,
-            "thumbnail_text": "WATCH WHISKER WAKE",
-            "title": "Seals track fish trails with whiskers"
-          },
-          {
-            "hook": "Seals can follow wakes with their whiskers",
-            "score": 73,
+            "score": 72,
             "thumbnail_text": "SEALS FOLLOW",
             "title": "Seals track fish trails with whiskers"
           },
           {
             "hook": "Start with the whisker wake; it changes the scene",
-            "score": 73,
-            "thumbnail_text": "SEALS FOLLOW",
-            "title": "Seals track fish trails with whiskers"
-          },
-          {
-            "hook": "Seals can follow wakes with their whiskers",
-            "score": 73,
+            "score": 72,
             "thumbnail_text": "WHISKER WAKE MATTERS",
             "title": "Seals track fish trails with whiskers"
+          },
+          {
+            "hook": "Start with the whisker wake; it changes the scene",
+            "score": 72,
+            "thumbnail_text": "WAKE TRACKER",
+            "title": "Seals use whisker wake before they follow"
+          },
+          {
+            "hook": "Seals can follow wakes with their whiskers",
+            "score": 71,
+            "thumbnail_text": "WHISKER WAKE",
+            "title": "Seals track fish trails with whiskers"
+          },
+          {
+            "hook": "Seals can follow wakes with their whiskers",
+            "score": 71,
+            "thumbnail_text": "WATCH WHISKER WAKE",
+            "title": "Seals track fish trails with whiskers"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
+      "id": "ce3b2fc76a336a95",
+      "title": "This scent map gives bears away",
+      "category": "arctic",
+      "publish_score": {
+        "approved": false,
+        "category": "arctic",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.36,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.146,
+          "data_quality": "estimated",
+          "data_quality_score": 0.35,
+          "minimum_sample_size": 38,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.15.",
+          "recommendation_strength": "observe",
+          "sample_size": 10
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.146,
+          "mechanism_cluster": "scent_map",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "nose"
+          ],
+          "cue_terms": [
+            "map",
+            "nose",
+            "scent"
+          ],
+          "frame_hook_bridge": [],
+          "risks": [
+            "frame_text_not_echoed_early"
+          ],
+          "score": 94.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable",
+            "curiosity_shape"
+          ],
+          "subject": "bears"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [
+            "weak_visual_surface",
+            "low_opportunity_score"
+          ],
+          "score": 49,
+          "signals": {
+            "comment_potential": 40,
+            "educational_potential": 59,
+            "emotional_potential": 29,
+            "novelty": 49,
+            "replay_potential": 68,
+            "viral_potential": 44,
+            "visual_potential": 49
+          },
+          "verdict": "discard"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 76,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "rewrite",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.374,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.165,
+            "data_quality": "estimated",
+            "data_quality_score": 0.425,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
+            "recommendation_strength": "observe",
+            "sample_size": 5
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
+          "reasons": [
+            "hook_invites_return",
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.3,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143
+        },
+        "title_score": 84,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [
+            "weak_hook_pattern"
+          ],
+          "risk": 14,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-07-09T18:09:37.912865+00:00",
+        "mechanism_cluster": "scent_map",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 78.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 78.0,
+      "youtube_brain": {
+        "animal": "bears",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "nose"
+          ],
+          "cue_terms": [
+            "map",
+            "nose",
+            "scent"
+          ],
+          "frame_hook_bridge": [],
+          "risks": [
+            "frame_text_not_echoed_early"
+          ],
+          "score": 94.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable",
+            "curiosity_shape"
+          ],
+          "subject": "bears"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "bears",
+        "viewer_promise": "See why bears body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which bears clue should Wild Brief compare next in Polar Survival?",
+        "cta_prompt": "Follow for one animal signal a day.",
+        "curiosity_gap": {
+          "hook": "Bears can smell a meal long before seeing it.",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "story"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 88,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
+          },
+          "winning_experiments": {
+            "cta:specific_question": 47.3,
+            "format:fresh_variant": 47.3,
+            "format:winner_inspired": 43.7,
+            "hook:new_hook": 47.3,
+            "thumbnail:new_thumbnail": 44.36
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "nose"
+            ],
+            "cue_terms": [
+              "map",
+              "nose",
+              "scent"
+            ],
+            "frame_hook_bridge": [],
+            "risks": [
+              "frame_text_not_echoed_early"
+            ],
+            "score": 94.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable",
+              "curiosity_shape"
+            ],
+            "subject": "bears"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Bears can smell a meal long before seeing it",
+          "Bears show why the scent map matters.",
+          "Bears show why the scent map matters.",
+          "Bears show why the scent map matters.",
+          "Bears give away the answer through scent map"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "scent map",
+          "ending_line": "Would you trust your nose that much?",
+          "final_line": "Now the scent map at the start makes sense.",
+          "loop_score": 0.753,
+          "opening_line": "Bears can smell a meal long before seeing it.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "scent map",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.753,
+        "next_episode_question": "Tomorrow in Polar Survival: another animal signal. What part of this feels most impossible?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "nose"
+          ],
+          "cue_terms": [
+            "map",
+            "nose",
+            "scent"
+          ],
+          "frame_hook_bridge": [],
+          "risks": [
+            "frame_text_not_echoed_early"
+          ],
+          "score": 94.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable",
+            "curiosity_shape"
+          ],
+          "subject": "bears"
+        },
+        "pinned_comment": "Watch the scent map again. Tomorrow in Polar Survival: another animal signal. What part of this feels most impossible?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 14.44,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 18,
+          "first_2s_narration": "Bears can smell meal long before seeing it Watch the nose first",
+          "first_frame_text": "SCENT MAP",
+          "first_frame_text_words": 2,
+          "hook": "Bears can smell a meal long before seeing it.",
+          "hook_specificity": 0.78,
+          "hook_words": 8,
+          "loop_score": 0.753,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "nose"
+            ],
+            "cue_terms": [
+              "map",
+              "nose",
+              "scent"
+            ],
+            "frame_hook_bridge": [],
+            "risks": [
+              "frame_text_not_echoed_early"
+            ],
+            "score": 94.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable",
+              "curiosity_shape"
+            ],
+            "subject": "bears"
+          },
+          "opening_retention_score": 94.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the scent map, so viewers rewatch the bears clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 76,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Bears can smell a meal long before seeing it Watch the nose",
+          "first_frame_text": "SCENT MAP",
+          "next_episode_question": "Tomorrow in Polar Survival: another animal signal. What part of this feels most impossible?",
+          "opening_retention_score": 94.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Bears behavior through the visible scent map.",
+            "series": "Polar Survival",
+            "subject": "bears",
+            "terms": [
+              "bears",
+              "scent map",
+              "arctic",
+              "body superpower"
+            ],
+            "title_variant": "Bears behavior: scent map explained",
+            "visible_cue": "scent map"
+          },
+          "series": "Polar Survival",
+          "subject": "bears",
+          "visible_cue": "scent map"
+        },
+        "risks": [],
+        "score": 97,
+        "search_intent": {
+          "description_line": "This Short explains Bears behavior through the visible scent map.",
+          "series": "Polar Survival",
+          "subject": "bears",
+          "terms": [
+            "bears",
+            "scent map",
+            "arctic",
+            "body superpower"
+          ],
+          "title_variant": "Bears behavior: scent map explained",
+          "visible_cue": "scent map"
+        },
+        "selected_variant": {
+          "hook": "Start with the scent map; it changes the scene",
+          "score": 81,
+          "thumbnail_text": "SCENT MAP",
+          "title": "Bears smell food from miles away"
+        },
+        "series": "Polar Survival #3",
+        "series_identity": {
+          "continuity_prompt": "Next in Polar Survival: compare this with another force of nature.",
+          "episode": 3,
+          "label": "Polar Survival #3",
+          "series": "Polar Survival"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.374,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.165,
+            "data_quality": "estimated",
+            "data_quality_score": 0.425,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
+            "recommendation_strength": "observe",
+            "sample_size": 5
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
+          "reasons": [
+            "hook_invites_return",
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.3,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "SCENT MAP",
+          "WATCH SCENT MAP",
+          "BEARS SMELL",
+          "SCENT MAP MATTERS",
+          "SCENT MAP FIRST",
+          "SCENT MAP REVEAL",
+          "SCENT MAP CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Bears smell food from miles away",
+          "This scent map gives bears away",
+          "Bears use scent map before they smell",
+          "Why bears smell after one scent map",
+          "Bears reveal the answer with scent map",
+          "The scent map that changes the moment",
+          "Bears make one scent map matter",
+          "Bears show the hidden answer in seconds",
+          "Bears: watch this scent map",
+          "Watch bears after the scent map"
+        ],
+        "top_variants": [
+          {
+            "hook": "Start with the scent map; it changes the scene",
+            "score": 81,
+            "thumbnail_text": "SCENT MAP",
+            "title": "Bears smell food from miles away"
+          },
+          {
+            "hook": "Bears can smell a meal long before seeing it",
+            "score": 80,
+            "thumbnail_text": "SCENT MAP",
+            "title": "Bears smell food from miles away"
+          },
+          {
+            "hook": "Watch the scent map; it explains the behavior",
+            "score": 79,
+            "thumbnail_text": "SCENT MAP",
+            "title": "Bears smell food from miles away"
+          },
+          {
+            "hook": "Start with the scent map; it changes the scene",
+            "score": 74,
+            "thumbnail_text": "WATCH SCENT MAP",
+            "title": "Bears smell food from miles away"
+          },
+          {
+            "hook": "Start with the scent map; it changes the scene",
+            "score": 74,
+            "thumbnail_text": "BEARS SMELL",
+            "title": "Bears smell food from miles away"
+          },
+          {
+            "hook": "Start with the scent map; it changes the scene",
+            "score": 74,
+            "thumbnail_text": "SCENT MAP MATTERS",
+            "title": "Bears smell food from miles away"
+          },
+          {
+            "hook": "Start with the scent map; it changes the scene",
+            "score": 74,
+            "thumbnail_text": "SCENT MAP FIRST",
+            "title": "Bears smell food from miles away"
+          },
+          {
+            "hook": "Bears can smell a meal long before seeing it",
+            "score": 73,
+            "thumbnail_text": "WATCH SCENT MAP",
+            "title": "Bears smell food from miles away"
+          },
+          {
+            "hook": "Bears can smell a meal long before seeing it",
+            "score": 73,
+            "thumbnail_text": "BEARS SMELL",
+            "title": "Bears smell food from miles away"
+          },
+          {
+            "hook": "Bears can smell a meal long before seeing it",
+            "score": 73,
+            "thumbnail_text": "SCENT MAP MATTERS",
+            "title": "Bears smell food from miles away"
           }
         ]
       },
@@ -5445,15 +5459,15 @@
         "approved": false,
         "category": "cats",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.276,
+          "bootstrap_multiplier": 0.297,
           "can_adjust_strategy": false,
-          "confidence_score": 0.035,
+          "confidence_score": 0.063,
           "data_quality": "inferred",
           "data_quality_score": 0.575,
           "minimum_sample_size": 25,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.03.",
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.06.",
           "recommendation_strength": "observe",
-          "sample_size": 3
+          "sample_size": 5
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -5463,7 +5477,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.035,
+          "confidence_score": 0.063,
           "mechanism_cluster": "scent_map",
           "payoff_time_s": 0.0,
           "penalty": 0.0,
@@ -5571,17 +5585,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.24,
           "confidence": {
-            "bootstrap_multiplier": 0.296,
+            "bootstrap_multiplier": 0.317,
             "can_adjust_strategy": false,
-            "confidence_score": 0.061,
+            "confidence_score": 0.089,
             "data_quality": "inferred",
             "data_quality_score": 0.5,
             "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
             "recommendation_strength": "observe",
-            "sample_size": 2
+            "sample_size": 3
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -5620,7 +5634,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T17:17:46.475024+00:00",
+        "checked_at": "2026-07-09T18:09:37.920456+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5728,9 +5742,9 @@
           "winning_experiments": {
             "cta:specific_question": 47.3,
             "format:fresh_variant": 47.3,
-            "format:winner_inspired": 45.91,
+            "format:winner_inspired": 43.7,
             "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 46.18
+            "thumbnail:new_thumbnail": 44.36
           }
         },
         "frame_zero": {
@@ -5976,17 +5990,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.24,
           "confidence": {
-            "bootstrap_multiplier": 0.296,
+            "bootstrap_multiplier": 0.317,
             "can_adjust_strategy": false,
-            "confidence_score": 0.061,
+            "confidence_score": 0.089,
             "data_quality": "inferred",
             "data_quality_score": 0.5,
             "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
             "recommendation_strength": "observe",
-            "sample_size": 2
+            "sample_size": 3
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.09.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -6117,15 +6131,15 @@
         "approved": true,
         "category": "reptiles",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.338,
+          "bootstrap_multiplier": 0.36,
           "can_adjust_strategy": false,
-          "confidence_score": 0.118,
+          "confidence_score": 0.146,
           "data_quality": "estimated",
           "data_quality_score": 0.35,
           "minimum_sample_size": 38,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.12.",
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.15.",
           "recommendation_strength": "observe",
-          "sample_size": 8
+          "sample_size": 10
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -6135,7 +6149,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.118,
+          "confidence_score": 0.146,
           "mechanism_cluster": "tongue_smell",
           "payoff_time_s": 0.0,
           "penalty": 0.0,
@@ -6235,17 +6249,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.352,
+            "bootstrap_multiplier": 0.374,
             "can_adjust_strategy": false,
-            "confidence_score": 0.136,
+            "confidence_score": 0.165,
             "data_quality": "estimated",
             "data_quality_score": 0.425,
             "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.14.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
             "recommendation_strength": "observe",
-            "sample_size": 4
+            "sample_size": 5
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.14.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -6284,7 +6298,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-09T17:17:46.460760+00:00",
+        "checked_at": "2026-07-09T18:09:37.903874+00:00",
         "mechanism_cluster": "tongue_smell",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6389,9 +6403,9 @@
           "winning_experiments": {
             "cta:specific_question": 47.3,
             "format:fresh_variant": 47.3,
-            "format:winner_inspired": 45.91,
+            "format:winner_inspired": 43.7,
             "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 46.18
+            "thumbnail:new_thumbnail": 44.36
           }
         },
         "frame_zero": {
@@ -6624,17 +6638,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.352,
+            "bootstrap_multiplier": 0.374,
             "can_adjust_strategy": false,
-            "confidence_score": 0.136,
+            "confidence_score": 0.165,
             "data_quality": "estimated",
             "data_quality_score": 0.425,
             "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.14.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
             "recommendation_strength": "observe",
-            "sample_size": 4
+            "sample_size": 5
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.14.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -6931,7 +6945,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T17:17:46.465941+00:00",
+        "checked_at": "2026-07-09T18:09:37.921791+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7035,9 +7049,9 @@
           "winning_experiments": {
             "cta:specific_question": 47.3,
             "format:fresh_variant": 47.3,
-            "format:winner_inspired": 45.91,
+            "format:winner_inspired": 43.7,
             "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 46.18
+            "thumbnail:new_thumbnail": 44.36
           }
         },
         "frame_zero": {
@@ -7578,7 +7592,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T17:17:46.467204+00:00",
+        "checked_at": "2026-07-09T18:09:37.923162+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7684,9 +7698,9 @@
           "winning_experiments": {
             "cta:specific_question": 47.3,
             "format:fresh_variant": 47.3,
-            "format:winner_inspired": 45.91,
+            "format:winner_inspired": 43.7,
             "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 46.18
+            "thumbnail:new_thumbnail": 44.36
           }
         },
         "frame_zero": {
@@ -8232,7 +8246,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T17:17:46.479726+00:00",
+        "checked_at": "2026-07-09T18:09:37.929022+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8339,9 +8353,9 @@
           "winning_experiments": {
             "cta:specific_question": 47.3,
             "format:fresh_variant": 47.3,
-            "format:winner_inspired": 45.91,
+            "format:winner_inspired": 43.7,
             "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 46.18
+            "thumbnail:new_thumbnail": 44.36
           }
         },
         "frame_zero": {
@@ -8888,7 +8902,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T17:17:46.454534+00:00",
+        "checked_at": "2026-07-09T18:09:37.906431+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8993,9 +9007,9 @@
           "winning_experiments": {
             "cta:specific_question": 47.3,
             "format:fresh_variant": 47.3,
-            "format:winner_inspired": 45.91,
+            "format:winner_inspired": 43.7,
             "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 46.18
+            "thumbnail:new_thumbnail": 44.36
           }
         },
         "frame_zero": {
@@ -9534,7 +9548,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T17:17:46.457323+00:00",
+        "checked_at": "2026-07-09T18:09:37.909052+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9644,9 +9658,9 @@
           "winning_experiments": {
             "cta:specific_question": 47.3,
             "format:fresh_variant": 47.3,
-            "format:winner_inspired": 45.91,
+            "format:winner_inspired": 43.7,
             "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 46.18
+            "thumbnail:new_thumbnail": 44.36
           }
         },
         "frame_zero": {
@@ -10198,7 +10212,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T17:17:46.459206+00:00",
+        "checked_at": "2026-07-09T18:09:37.911029+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10304,9 +10318,9 @@
           "winning_experiments": {
             "cta:specific_question": 47.3,
             "format:fresh_variant": 47.3,
-            "format:winner_inspired": 45.91,
+            "format:winner_inspired": 43.7,
             "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 46.18
+            "thumbnail:new_thumbnail": 44.36
           }
         },
         "frame_zero": {
@@ -10849,7 +10863,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T17:17:46.462729+00:00",
+        "checked_at": "2026-07-09T18:09:37.914850+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10951,9 +10965,9 @@
           "winning_experiments": {
             "cta:specific_question": 47.3,
             "format:fresh_variant": 47.3,
-            "format:winner_inspired": 45.91,
+            "format:winner_inspired": 43.7,
             "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 46.18
+            "thumbnail:new_thumbnail": 44.36
           }
         },
         "frame_zero": {
