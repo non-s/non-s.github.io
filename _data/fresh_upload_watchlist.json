@@ -5,17 +5,72 @@
     24
   ],
   "counts": {
-    "analytics_due": 9,
-    "awaiting_1h": 0,
-    "high_priority": 10,
+    "analytics_due": 7,
+    "awaiting_1h": 1,
+    "high_priority": 8,
     "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-07-09T04:13:55.412152+00:00",
+  "generated_at": "2026-07-09T04:20:56.791488+00:00",
   "items": [
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.136,
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.032,
+      "category": "geology",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-09T05:19:03.082953+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-09T10:19:03.082953+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-10T04:19:03.082953+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-09T05:19:03.082953+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Earth Engine",
+      "state": "awaiting_1h",
+      "title": "Crystal edges build the same pattern again",
+      "uploaded_at": "2026-07-09T04:19:03.082953+00:00",
+      "url": "https://www.youtube.com/shorts/dAkoh1xnJjA",
+      "video_id": "dAkoh1xnJjA",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Queue a sequel or related-video bridge while the session has momentum.",
+      "age_hours": 12.253,
       "category": "geology",
       "checkpoints": [
         {
@@ -43,11 +98,11 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 300,
-          "views": 0
+          "views": 1
         }
       ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "current_views": 1,
+      "hypothesis": "Performance signal is already positive; amplify without changing the opening.",
       "next_checkpoint": {
         "delta_to_target": -24,
         "due_at": "2026-07-08T17:05:46.066408+00:00",
@@ -59,18 +114,27 @@
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "high",
+      "priority": "normal",
       "series": "Earth Engine",
-      "state": "analytics_due",
+      "state": "accelerating",
       "title": "Rock layers preserve the history of water",
       "uploaded_at": "2026-07-08T16:05:46.066408+00:00",
       "url": "https://www.youtube.com/shorts/75cqVLi_8WA",
       "video_id": "75cqVLi_8WA",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.082,
+      "warning": {
+        "confidence_score": 0.512,
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.51; observation only.",
+        "score": 0,
+        "state": "accelerating",
+        "title": "Rock layers preserve the history of water",
+        "video_id": "75cqVLi_8WA",
+        "warning_state": "accelerator"
+      }
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.678,
+      "age_hours": 12.795,
       "category": "primates",
       "checkpoints": [
         {
@@ -125,7 +189,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 35.884,
+      "age_hours": 36.001,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -191,7 +255,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 40.833,
+      "age_hours": 40.95,
       "category": "insects",
       "checkpoints": [
         {
@@ -246,7 +310,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 41.967,
+      "age_hours": 42.084,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -301,7 +365,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 44.207,
+      "age_hours": 44.324,
       "category": "fungi",
       "checkpoints": [
         {
@@ -356,7 +420,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 47.01,
+      "age_hours": 47.127,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -411,7 +475,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 47.918,
+      "age_hours": 48.035,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -466,7 +530,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 51.746,
+      "age_hours": 51.863,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -517,61 +581,6 @@
       "uploaded_at": "2026-07-07T00:29:08.349800+00:00",
       "url": "https://www.youtube.com/shorts/XGrYnV-uJaQ",
       "video_id": "XGrYnV-uJaQ",
-      "views_per_hour": 0.0
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 52.582,
-      "category": "insects",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-07T00:39:00.307799+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-07T05:39:00.307799+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": -300,
-          "due_at": "2026-07-07T23:39:00.307799+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-07T00:39:00.307799+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 96.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Tiny Worlds",
-      "state": "analytics_due",
-      "title": "Mantises can measure a strike in 3D",
-      "uploaded_at": "2026-07-06T23:39:00.307799+00:00",
-      "url": "https://www.youtube.com/shorts/BdIu_W6JmUw",
-      "video_id": "BdIu_W6JmUw",
       "views_per_hour": 0.0
     }
   ],

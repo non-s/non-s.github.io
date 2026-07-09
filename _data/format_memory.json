@@ -1,5 +1,5 @@
 {
-  "sample_count": 81,
+  "sample_count": 82,
   "category_counts": {
     "ocean": 4,
     "forests": 7,
@@ -11,7 +11,7 @@
     "insects": 9,
     "reptiles": 4,
     "rivers": 2,
-    "geology": 5,
+    "geology": 6,
     "dogs": 2,
     "fungi": 2,
     "birds": 3,
@@ -32,7 +32,7 @@
     "animal_intelligence": 12,
     "cute_behavior": 1,
     "rare_nature": 1,
-    "earth_engine": 11,
+    "earth_engine": 12,
     "physics_demo": 1,
     "animal_memory": 5,
     "survival_trick": 2,
@@ -51,7 +51,7 @@
     "Primate Intelligence": 2,
     "Tiny Worlds": 9,
     "Cold-Blooded Secrets": 4,
-    "Earth Engine": 9,
+    "Earth Engine": 10,
     "Pet Secrets": 4,
     "Sky Intelligence": 3,
     "Nature Signals": 4,
@@ -61,8 +61,9 @@
     "Planet Repair": 2
   },
   "category_scores": {
-    "farm": 47.05,
-    "space": 46.1,
+    "geology": 46.1,
+    "farm": 46.77,
+    "space": 37.7,
     "chemistry": 47.3,
     "earth_from_space": 47.3,
     "wildlife": 47.3,
@@ -70,16 +71,17 @@
     "fungi": 47.3
   },
   "format_scores": {
-    "animal_memory": 47.05,
-    "space_engine": 46.1,
+    "earth_engine": 46.7,
+    "animal_memory": 46.77,
+    "space_engine": 37.7,
     "chemistry_reaction": 47.3,
-    "earth_engine": 47.3,
     "animal_intelligence": 47.3,
     "body_superpower": 46.1,
     "hidden_network": 47.3,
     "survival_trick": 47.3
   },
   "category_subscriber_rates": {
+    "geology": 120.0,
     "farm": 80.0,
     "space": 120.0,
     "chemistry": 60.0,
@@ -89,18 +91,19 @@
     "fungi": 60.0
   },
   "format_subscriber_rates": {
+    "earth_engine": 90.0,
     "animal_memory": 80.0,
     "space_engine": 120.0,
     "chemistry_reaction": 60.0,
-    "earth_engine": 60.0,
     "animal_intelligence": 60.0,
     "body_superpower": 120.0,
     "hidden_network": 60.0,
     "survival_trick": 60.0
   },
   "category_weights": {
-    "farm": 0.94,
-    "space": 0.968,
+    "geology": 0.968,
+    "farm": 0.939,
+    "space": 0.951,
     "chemistry": 0.971,
     "earth_from_space": 0.971,
     "wildlife": 0.941,
@@ -108,16 +111,17 @@
     "fungi": 0.971
   },
   "format_weights": {
-    "animal_memory": 0.94,
-    "space_engine": 0.968,
+    "earth_engine": 0.939,
+    "animal_memory": 0.939,
+    "space_engine": 0.951,
     "chemistry_reaction": 0.971,
-    "earth_engine": 0.971,
     "animal_intelligence": 0.971,
     "body_superpower": 0.968,
     "hidden_network": 0.971,
     "survival_trick": 0.971
   },
   "subscriber_category_weights": {
+    "geology": 1.25,
     "farm": 1.25,
     "space": 1.25,
     "chemistry": 1.25,
@@ -127,10 +131,10 @@
     "fungi": 1.25
   },
   "subscriber_format_weights": {
+    "earth_engine": 1.25,
     "animal_memory": 1.25,
     "space_engine": 1.25,
     "chemistry_reaction": 1.25,
-    "earth_engine": 1.25,
     "animal_intelligence": 1.25,
     "body_superpower": 1.25,
     "hidden_network": 1.25,
@@ -142,13 +146,13 @@
     "{subject} {subject} {subject} {subject} {subject} {subject}": 3,
     "{subject} can {action} {subject} {subject}": 3,
     "{subject} {subject} {subject} {subject} {subject} {subject} {subject}": 2,
+    "{visual} {subject} {subject} the {subject} of {subject}": 2,
     "{subject} {action} {subject} {subject} {subject} {subject} {subject}": 2,
     "{subject} {subject} {subject} {subject} {subject}": 2,
     "the {subject} {subject} one {subject} {subject} {subject} {subject}": 2,
     "{visual} {visual} {subject} {subject} {subject} {subject} the {subject}": 2,
     "{subject} {action} {subject} {subject} the {subject}": 2,
-    "{subject} can {action} a {subject} {subject} {subject} {subject}": 2,
-    "{subject} use {subject} {action} {subject} {subject} {action}": 2
+    "{subject} can {action} a {subject} {subject} {subject} {subject}": 2
   },
   "winning_thumbnail_patterns": {},
   "winning_hook_patterns": {
@@ -166,6 +170,7 @@
     "{subject} can {action} {subject} to {subject} {subject} {subject}": 2
   },
   "weak_patterns": {
+    "{visual} {subject} {subject} the {subject} of {subject}": 2,
     "{subject} {action} {subject} {subject} {subject} {subject}": 2,
     "{subject} can {action} a {subject} {subject} {subject} {subject}": 2,
     "the {subject} {subject} one {subject} {subject} {subject} {subject}": 1,
@@ -176,14 +181,13 @@
     "{subject} can {action} who {subject} in the {subject}": 1,
     "{subject} use {subject} {action} {subject} {subject} {action}": 1,
     "{subject} {action} the air {subject} a {subject} {subject}": 1,
-    "{visual} use {visual} {visual} {subject} {subject} {action}": 1,
-    "{visual} {subject} by {subject} {emotion} {visual}": 1
+    "{visual} use {visual} {visual} {subject} {subject} {action}": 1
   },
   "experiment_scores": {
-    "format:winner_inspired": 46.89,
-    "hook:pattern_reuse": 46.89,
-    "thumbnail:new_thumbnail": 46.98,
-    "cta:follow_for_more": 46.89,
+    "format:winner_inspired": 45.67,
+    "hook:pattern_reuse": 45.67,
+    "thumbnail:new_thumbnail": 45.99,
+    "cta:follow_for_more": 45.67,
     "format:fresh_variant": 47.3,
     "hook:new_hook": 47.3,
     "cta:specific_question": 47.3
@@ -192,17 +196,17 @@
     "format:fresh_variant": 47.3,
     "hook:new_hook": 47.3,
     "cta:specific_question": 47.3,
-    "thumbnail:new_thumbnail": 46.98,
-    "format:winner_inspired": 46.89,
-    "hook:pattern_reuse": 46.89,
-    "cta:follow_for_more": 46.89
+    "thumbnail:new_thumbnail": 45.99,
+    "format:winner_inspired": 45.67,
+    "hook:pattern_reuse": 45.67,
+    "cta:follow_for_more": 45.67
   },
-  "updated_at": "2026-07-09T04:13:54.680516+00:00",
+  "updated_at": "2026-07-09T04:20:56.332929+00:00",
   "data_coverage": {
-    "total_markers": 81,
-    "views": 9,
-    "retention": 0,
-    "watch_time": 0,
+    "total_markers": 82,
+    "views": 10,
+    "retention": 2,
+    "watch_time": 2,
     "subscribers": 0,
     "comments": 10
   }
