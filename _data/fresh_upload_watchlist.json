@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 5,
+    "analytics_due": 6,
     "awaiting_1h": 1,
     "high_priority": 6,
-    "repair_candidates": 1,
+    "repair_candidates": 0,
     "tracked": 10
   },
-  "generated_at": "2026-07-09T21:08:27.338150+00:00",
+  "generated_at": "2026-07-09T21:12:15.547103+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.095,
+      "age_hours": 0.159,
       "category": "ocean",
       "checkpoints": [
         {
@@ -70,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.068,
+      "age_hours": 1.131,
       "category": "arctic",
       "checkpoints": [
         {
@@ -125,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.065,
+      "age_hours": 2.128,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.169,
+      "age_hours": 2.232,
       "category": "insects",
       "checkpoints": [
         {
@@ -234,16 +234,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 7.063,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 7.127,
       "category": "dogs",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-09T15:04:39.316623+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -267,41 +267,30 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-10T14:04:39.316623+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-09T15:04:39.316623+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "overdue",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Pet Secrets",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Dogs use scent map before they smell",
       "uploaded_at": "2026-07-09T14:04:39.316623+00:00",
       "url": "https://www.youtube.com/shorts/8LrEpWspyK8",
       "video_id": "8LrEpWspyK8",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Dogs use scent map before they smell",
-        "video_id": "8LrEpWspyK8",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.852,
+      "age_hours": 8.916,
       "category": "plants",
       "checkpoints": [
         {
@@ -356,7 +345,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.771,
+      "age_hours": 9.834,
       "category": "arctic",
       "checkpoints": [
         {
@@ -407,11 +396,11 @@
       "uploaded_at": "2026-07-09T11:22:11.609762+00:00",
       "url": "https://www.youtube.com/shorts/FauBvdeAeU8",
       "video_id": "FauBvdeAeU8",
-      "views_per_hour": 0.103
+      "views_per_hour": 0.102
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.972,
+      "age_hours": 13.035,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -466,7 +455,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.166,
+      "age_hours": 13.23,
       "category": "trees",
       "checkpoints": [
         {
@@ -521,7 +510,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 15.943,
+      "age_hours": 16.006,
       "category": "geology",
       "checkpoints": [
         {
