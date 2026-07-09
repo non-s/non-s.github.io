@@ -1099,7 +1099,7 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 17,
+      "evergreen": 18,
       "recovery": 1
     },
     "items": [
@@ -1173,7 +1173,7 @@
         "category": "trees",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.96
+        "freshness_score": 51.94
       },
       {
         "id": "53958248afcfe49f",
@@ -1221,7 +1221,7 @@
         "category": "discoveries",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 34.06
+        "freshness_score": 34.04
       },
       {
         "id": "a4ca94af1a59d5df",
@@ -1246,6 +1246,14 @@
         "lane": "evergreen",
         "adjustment": 5.0,
         "freshness_score": 39.42
+      },
+      {
+        "id": "7ca81cf2ea31483b",
+        "title": "Rock layers use rock layers before they change",
+        "category": "geology",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -1327,18 +1335,21 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 18,
-    "pending_after": 18,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 2,
+    "pending_before": 20,
+    "pending_after": 19,
+    "rejected": 1,
+    "repair_needed": 1,
+    "repaired": 3,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 18,
       "editor_in_chief:script quality gate blocked the narration": 4,
       "editor_in_chief:subject repeated inside 3-day cooldown": 3,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 2,
+      "queue_score_reject": 1,
+      "duplicate_title": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
-      "editorial_cooldown_supply_fallback": 1
+      "editorial_cooldown_supply_fallback": 1,
+      "inventory_reserve_fallback": 1
     }
   }
 }
