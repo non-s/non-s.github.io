@@ -1,42 +1,45 @@
 {
-  "generated_at": "2026-07-09T14:10:17.806942+00:00",
-  "pending": 17,
+  "generated_at": "2026-07-09T14:17:13.647305+00:00",
+  "pending": 16,
   "states": {
-    "publish_ready": 7,
-    "rewrite": 10
+    "rewrite": 10,
+    "publish_ready": 6
   },
   "mechanism_clusters": {
-    "ear_signal": 1,
     "tongue_smell": 1,
     "beak_signal": 1,
     "scent_map": 1,
     "face_recognition": 1
   },
   "rights": {
-    "approved": 17
+    "approved": 16
   },
   "prune_summary": {
-    "pending_before": 19,
-    "pending_after": 17,
-    "rejected": 2,
+    "pending_before": 16,
+    "pending_after": 16,
+    "rejected": 0,
     "repair_needed": 0,
-    "repaired": 3,
+    "repaired": 2,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 16,
       "editor_in_chief:subject repeated inside 3-day cooldown": 5,
       "editor_in_chief:script quality gate blocked the narration": 4,
-      "off_topic_visual": 1,
-      "script_hook_mismatch": 1,
-      "objective_gate:observe_before_scaling": 1,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
-      "duplicate_title": 1,
       "editorial_cooldown_supply_fallback": 1,
       "publish_ready_supply_reserve_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "f0b06e0eb9c2cbc3",
+      "title": "Elephant make the ear direction matter first",
+      "reasons": [
+        "script_word_loop"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "b72da8748e45fdd1",
       "title": "Magnets make invisible fields visible",
@@ -290,672 +293,9 @@
         "rights_guard_person_manual_review"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "46ab1f9da3819f94",
-      "title": "Dragonflies don't use their legs like we think",
-      "reasons": [
-        "off_topic_visual",
-        "script_subject_mismatch",
-        "copy_subject_mismatch",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
-    {
-      "id": "f0b06e0eb9c2cbc3",
-      "title": "Elephant make the ear direction matter first",
-      "category": "wildlife",
-      "publish_score": {
-        "approved": true,
-        "category": "wildlife",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.387,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.182,
-          "data_quality": "estimated",
-          "data_quality_score": 0.35,
-          "minimum_sample_size": 35,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.18.",
-          "recommendation_strength": "observe",
-          "sample_size": 11
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 86,
-        "objective_gate": {
-          "confidence_score": 0.182,
-          "mechanism_cluster": "ear_signal",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "direction",
-            "ear"
-          ],
-          "cue_terms": [
-            "direction",
-            "ear"
-          ],
-          "frame_hook_bridge": [
-            "direction",
-            "ear"
-          ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
-          "state": "retention_ready",
-          "strengths": [
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "wildlife"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.42,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.227,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
-          "reasons": [],
-          "score": 56,
-          "signals": {
-            "comment_potential": 25,
-            "educational_potential": 55,
-            "emotional_potential": 30,
-            "novelty": 64,
-            "replay_potential": 65,
-            "viral_potential": 57,
-            "visual_potential": 74
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.42,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.227,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
-          "reasons": [],
-          "score": 76,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "body_superpower",
-        "subscriber_conversion": {
-          "comment_probability": 0.256,
-          "confidence": {
-            "bootstrap_multiplier": 0.338,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.118,
-            "data_quality": "estimated",
-            "data_quality_score": 0.45,
-            "minimum_sample_size": 15,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.12.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.12.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.3,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.738,
-            "can_adjust_strategy": true,
-            "confidence_score": 0.65,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
-            "recommendation_strength": "test",
-            "sample_size": 12
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [
-            "repetitive_script"
-          ],
-          "risk": 22,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-07-09T14:09:59.451983+00:00",
-        "mechanism_cluster": "ear_signal",
-        "objective_reasons": [
-          "objective_gate:observe_before_scaling"
-        ],
-        "score": 100.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 100.0,
-      "youtube_brain": {
-        "animal": "elephant",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "direction",
-            "ear"
-          ],
-          "cue_terms": [
-            "direction",
-            "ear"
-          ],
-          "frame_hook_bridge": [
-            "direction",
-            "ear"
-          ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
-          "state": "retention_ready",
-          "strengths": [
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "wildlife"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "body_superpower",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "elephant",
-        "viewer_promise": "See why elephant body superpower matters."
-      },
-      "packaging": {
-        "community_prompt": "Which elephant clue should Wild Brief compare next in Watch The Cue?",
-        "cta_prompt": "Want more wild behavior explained without the fluff?",
-        "curiosity_gap": {
-          "hook": "Why do these wildlife change after the ear direction?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "body superpower",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 88,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
-          },
-          "winning_experiments": {
-            "cta:specific_question": 47.3,
-            "format:fresh_variant": 47.3,
-            "format:winner_inspired": 45.91,
-            "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 46.18
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "direction",
-              "ear"
-            ],
-            "cue_terms": [
-              "direction",
-              "ear"
-            ],
-            "frame_hook_bridge": [
-              "direction",
-              "ear"
-            ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
-            "state": "retention_ready",
-            "strengths": [
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "wildlife"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Elephant shows why the ears matters.",
-          "Elephant make the ear direction matter first",
-          "Elephant shows why the ear radiator matters.",
-          "Elephant shows why the ear radiator matters.",
-          "Elephant shows why the ear radiator matters."
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "ear direction",
-          "ending_line": "By the last line, the opening detail has a job viewers can name.",
-          "final_line": "Now the ear direction at the start makes sense.",
-          "loop_score": 0.81,
-          "opening_line": "Elephant make the ear direction matter first.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "ear direction",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.81,
-        "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. Is this adaptation, instinct, or intelligence?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "direction",
-            "ear"
-          ],
-          "cue_terms": [
-            "direction",
-            "ear"
-          ],
-          "frame_hook_bridge": [
-            "direction",
-            "ear"
-          ],
-          "risks": [
-            "subject_not_frontloaded"
-          ],
-          "score": 92.0,
-          "state": "retention_ready",
-          "strengths": [
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "wildlife"
-        },
-        "pinned_comment": "Watch the ear again. Tomorrow in Watch The Cue: another animal signal. Is this adaptation, instinct, or intelligence?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.87,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 23,
-          "first_2s_narration": "Elephant make the ear direction matter first Watch the ear direction first",
-          "first_frame_text": "EAR DIRECTION",
-          "first_frame_text_words": 2,
-          "hook": "Elephant make the ear direction matter first.",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.81,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "direction",
-              "ear"
-            ],
-            "cue_terms": [
-              "direction",
-              "ear"
-            ],
-            "frame_hook_bridge": [
-              "direction",
-              "ear"
-            ],
-            "risks": [
-              "subject_not_frontloaded"
-            ],
-            "score": 92.0,
-            "state": "retention_ready",
-            "strengths": [
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "wildlife"
-          },
-          "opening_retention_score": 92.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the ear, so viewers rewatch the elephant clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.42,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.227,
-            "data_quality": "estimated",
-            "data_quality_score": 0.567,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
-          "reasons": [],
-          "score": 76,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Elephant make the ear direction matter first Watch the ear direction first",
-          "first_frame_text": "EAR DIRECTION",
-          "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. Is this adaptation, instinct, or intelligence?",
-          "opening_retention_score": 92.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains Elephant behavior through the visible ear.",
-            "series": "Watch The Cue",
-            "subject": "elephant",
-            "terms": [
-              "elephant",
-              "ear",
-              "wildlife",
-              "body superpower"
-            ],
-            "title_variant": "Elephant behavior: ear explained",
-            "visible_cue": "ear"
-          },
-          "series": "Watch The Cue",
-          "subject": "elephant",
-          "visible_cue": "ear"
-        },
-        "risks": [],
-        "score": 97,
-        "search_intent": {
-          "description_line": "This Short explains Elephant behavior through the visible ear.",
-          "series": "Watch The Cue",
-          "subject": "elephant",
-          "terms": [
-            "elephant",
-            "ear",
-            "wildlife",
-            "body superpower"
-          ],
-          "title_variant": "Elephant behavior: ear explained",
-          "visible_cue": "ear"
-        },
-        "selected_variant": {
-          "hook": "Elephants use their ears as living radiators",
-          "score": 81,
-          "thumbnail_text": "EAR RADIATOR",
-          "title": "Elephants cool blood through giant ears"
-        },
-        "series": "Watch The Cue",
-        "series_identity": {
-          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Watch The Cue",
-          "series": "Watch The Cue"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.256,
-          "confidence": {
-            "bootstrap_multiplier": 0.338,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.118,
-            "data_quality": "estimated",
-            "data_quality_score": 0.45,
-            "minimum_sample_size": 15,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.12.",
-            "recommendation_strength": "observe",
-            "sample_size": 4
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.12.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.3,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "EAR RADIATOR",
-          "EAR DIRECTION",
-          "WATCH EAR RADIATOR",
-          "ELEPHANTS CHANGE",
-          "EAR RADIATOR MATTERS",
-          "EAR RADIATOR FIRST",
-          "EAR RADIATOR REVEAL",
-          "EAR RADIATOR CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Elephants cool blood through giant ears",
-          "Elephant make the ear direction matter first",
-          "Elephants use ear radiator before they change",
-          "This ear radiator gives elephants away",
-          "Why elephants change after one ear radiator",
-          "Elephants reveal the answer with ear radiator",
-          "The ear radiator that changes the moment",
-          "Elephants make one ear radiator matter",
-          "Elephants show the hidden answer in seconds",
-          "Elephants: watch this ear radiator"
-        ],
-        "top_variants": [
-          {
-            "hook": "Elephants use their ears as living radiators",
-            "score": 81,
-            "thumbnail_text": "EAR RADIATOR",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Elephant make the ear direction matter first",
-            "score": 81,
-            "thumbnail_text": "EAR RADIATOR",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Watch the ear radiator; it explains the behavior",
-            "score": 81,
-            "thumbnail_text": "EAR RADIATOR",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Elephants use their ears as living radiators",
-            "score": 74,
-            "thumbnail_text": "EAR DIRECTION",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Elephant make the ear direction matter first",
-            "score": 74,
-            "thumbnail_text": "EAR DIRECTION",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Watch the ear radiator; it explains the behavior",
-            "score": 74,
-            "thumbnail_text": "EAR DIRECTION",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Elephants use their ears as living radiators",
-            "score": 74,
-            "thumbnail_text": "WATCH EAR RADIATOR",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Elephant make the ear direction matter first",
-            "score": 74,
-            "thumbnail_text": "WATCH EAR RADIATOR",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Watch the ear radiator; it explains the behavior",
-            "score": 74,
-            "thumbnail_text": "WATCH EAR RADIATOR",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Elephants use their ears as living radiators",
-            "score": 74,
-            "thumbnail_text": "ELEPHANTS CHANGE",
-            "title": "Elephants cool blood through giant ears"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
     {
       "id": "bf05f42deae60056",
       "title": "Foxes use snow hearing before they hunt",
@@ -1132,7 +472,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-09T14:09:59.478334+00:00",
+        "checked_at": "2026-07-09T14:16:56.690887+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1779,7 +1119,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-09T14:09:59.480214+00:00",
+        "checked_at": "2026-07-09T14:16:56.692708+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2422,7 +1762,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-09T14:09:59.481269+00:00",
+        "checked_at": "2026-07-09T14:16:56.693737+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3058,7 +2398,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-09T14:09:59.839424+00:00",
+        "checked_at": "2026-07-09T14:16:56.698706+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3703,7 +3043,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T14:09:59.473755+00:00",
+        "checked_at": "2026-07-09T14:16:56.686551+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4348,7 +3688,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T14:09:59.841195+00:00",
+        "checked_at": "2026-07-09T14:16:56.700360+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5000,7 +4340,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-09T14:09:59.483034+00:00",
+        "checked_at": "2026-07-09T14:16:56.695480+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5648,7 +4988,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T14:09:59.484114+00:00",
+        "checked_at": "2026-07-09T14:16:56.696551+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6312,7 +5652,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-09T14:09:59.469133+00:00",
+        "checked_at": "2026-07-09T14:16:56.682036+00:00",
         "mechanism_cluster": "tongue_smell",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6959,7 +6299,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T14:09:59.475452+00:00",
+        "checked_at": "2026-07-09T14:16:56.688122+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7606,7 +6946,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T14:09:59.477079+00:00",
+        "checked_at": "2026-07-09T14:16:56.689681+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8260,7 +7600,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T14:09:59.843142+00:00",
+        "checked_at": "2026-07-09T14:16:56.702213+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8916,7 +8256,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T14:09:59.462120+00:00",
+        "checked_at": "2026-07-09T14:16:56.673645+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9562,7 +8902,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T14:09:59.465111+00:00",
+        "checked_at": "2026-07-09T14:16:56.677911+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10226,7 +9566,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T14:09:59.467353+00:00",
+        "checked_at": "2026-07-09T14:16:56.680210+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10877,7 +10217,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-09T14:09:59.471437+00:00",
+        "checked_at": "2026-07-09T14:16:56.684305+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",

@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-09T14:10:39.434294+00:00",
+  "generated_at": "2026-07-09T14:17:34.806772+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
-  "overall_progress_pct": 27.9,
+  "overall_progress_pct": 27.6,
   "current_level": {
     "number": 2,
     "name": "Publish supply engine",
@@ -10,7 +10,7 @@
     "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
     "revenue_job": "Turn production from lucky shots into repeatable inventory.",
     "status": "boss_fight",
-    "progress_pct": 95.0
+    "progress_pct": 93.3
   },
   "boss": {
     "id": "pending_queue_low",
@@ -19,8 +19,8 @@
     "evidence": {
       "eligible_count": 6,
       "operational_publish_ready": 6,
-      "apparent_publish_ready": 7,
-      "pending": 17,
+      "apparent_publish_ready": 6,
+      "pending": 16,
       "target_publish_ready": 6,
       "target_pending": 20,
       "top_blockers": [
@@ -86,20 +86,20 @@
     {
       "priority": "P1",
       "action": "Refresh free discovery only after the current repair batch is clean.",
-      "target": "pending 17/20",
+      "target": "pending 16/20",
       "why": "Bigger inventory helps only when the gate can accept winners."
     }
   ],
   "metrics": {
     "health_score": 77,
     "health_state": "watch",
-    "pending": 17,
+    "pending": 16,
     "operational_publish_ready": 6,
-    "apparent_publish_ready": 7,
+    "apparent_publish_ready": 6,
     "eligible_count": 6,
     "scale_ready_count": 0,
     "next_shorts_count": 6,
-    "editorial_candidate_count": 17,
+    "editorial_candidate_count": 16,
     "published_count": 88,
     "views_28d": 30314,
     "total_subscribers": 46,
@@ -153,11 +153,6 @@
       "operator_translation": "packaging:missing action word"
     },
     {
-      "id": "objective_gate:observe_before_scaling",
-      "count": 2,
-      "operator_translation": "observe this pattern before scaling it"
-    },
-    {
       "id": "editor_in_chief:story angle repeated inside 10-day cooldown",
       "count": 2,
       "operator_translation": "editor in chief:story angle repeated inside 10-day cooldown"
@@ -171,6 +166,11 @@
       "id": "editor_in_chief:editorial score 46 is below 62",
       "count": 2,
       "operator_translation": "editor in chief:editorial score 46 is below 62"
+    },
+    {
+      "id": "editorial_cooldown_supply_fallback",
+      "count": 2,
+      "operator_translation": "editorial cooldown supply fallback"
     }
   ],
   "levels": [
@@ -194,11 +194,11 @@
       "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
       "revenue_job": "Turn production from lucky shots into repeatable inventory.",
       "status": "current",
-      "progress_pct": 95.0,
+      "progress_pct": 93.3,
       "evidence": {
         "operational_publish_ready": 6,
         "eligible_count": 6,
-        "pending": 17,
+        "pending": 16,
         "target_publish_ready": 6,
         "target_pending": 20
       }
