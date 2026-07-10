@@ -5,17 +5,72 @@
     24
   ],
   "counts": {
-    "analytics_due": 6,
-    "awaiting_1h": 0,
-    "high_priority": 10,
+    "analytics_due": 5,
+    "awaiting_1h": 1,
+    "high_priority": 9,
     "repair_candidates": 4,
     "tracked": 10
   },
-  "generated_at": "2026-07-10T12:18:53.984017+00:00",
+  "generated_at": "2026-07-10T12:26:32.700479+00:00",
   "items": [
     {
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.033,
+      "category": "insects",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-10T13:24:33.044741+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-10T18:24:33.044741+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-11T12:24:33.044741+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-10T13:24:33.044741+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Tiny Worlds",
+      "state": "awaiting_1h",
+      "title": "Beetles steer after one star compass",
+      "uploaded_at": "2026-07-10T12:24:33.044741+00:00",
+      "url": "https://www.youtube.com/shorts/VYPvTU9WqGE",
+      "video_id": "VYPvTU9WqGE",
+      "views_per_hour": 0.0
+    },
+    {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 15.269,
+      "age_hours": 15.397,
       "category": "ocean",
       "checkpoints": [
         {
@@ -66,11 +121,11 @@
       "uploaded_at": "2026-07-09T21:02:44.518371+00:00",
       "url": "https://www.youtube.com/shorts/xxal3t3p9K0",
       "video_id": "xxal3t3p9K0",
-      "views_per_hour": 0.066
+      "views_per_hour": 0.065
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.242,
+      "age_hours": 16.369,
       "category": "arctic",
       "checkpoints": [
         {
@@ -121,11 +176,11 @@
       "uploaded_at": "2026-07-09T20:04:23.188358+00:00",
       "url": "https://www.youtube.com/shorts/XZIAdzI-njM",
       "video_id": "XZIAdzI-njM",
-      "views_per_hour": 0.062
+      "views_per_hour": 0.061
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 17.239,
+      "age_hours": 17.366,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -153,10 +208,10 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 300,
-          "views": 0
+          "views": 1
         }
       ],
-      "current_views": 0,
+      "current_views": 1,
       "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
         "delta_to_target": -24,
@@ -176,11 +231,11 @@
       "uploaded_at": "2026-07-09T19:04:33.771351+00:00",
       "url": "https://www.youtube.com/shorts/LdYL1w1rf0g",
       "video_id": "LdYL1w1rf0g",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.058
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 17.343,
+      "age_hours": 17.47,
       "category": "insects",
       "checkpoints": [
         {
@@ -235,7 +290,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 22.237,
+      "age_hours": 22.365,
       "category": "dogs",
       "checkpoints": [
         {
@@ -263,10 +318,10 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 300,
-          "views": 0
+          "views": 1
         }
       ],
-      "current_views": 0,
+      "current_views": 1,
       "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
         "delta_to_target": -24,
@@ -286,11 +341,11 @@
       "uploaded_at": "2026-07-09T14:04:39.316623+00:00",
       "url": "https://www.youtube.com/shorts/8LrEpWspyK8",
       "video_id": "8LrEpWspyK8",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.045
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 24.026,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 24.154,
       "category": "plants",
       "checkpoints": [
         {
@@ -315,37 +370,48 @@
           "delta_to_target": -300,
           "due_at": "2026-07-10T12:17:18.643262+00:00",
           "label": "24h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 300,
           "views": 0
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
-        "delta_to_target": -300,
-        "due_at": "2026-07-10T12:17:18.643262+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-09T13:17:18.643262+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 300,
+        "state": "overdue",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Biology Brief",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Plants use trap hairs to count touches before closing",
       "uploaded_at": "2026-07-09T12:17:18.643262+00:00",
       "url": "https://www.youtube.com/shorts/jaUOVwj0oo4",
       "video_id": "jaUOVwj0oo4",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.756,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Plants use trap hairs to count touches before closing",
+        "video_id": "jaUOVwj0oo4",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 24.945,
+      "age_hours": 25.073,
       "category": "arctic",
       "checkpoints": [
         {
@@ -411,7 +477,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 28.146,
+      "age_hours": 28.273,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -477,7 +543,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 28.34,
+      "age_hours": 28.468,
       "category": "trees",
       "checkpoints": [
         {
@@ -508,7 +574,7 @@
           "views": 0
         }
       ],
-      "current_views": 0,
+      "current_views": 1,
       "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": -24,
@@ -528,7 +594,7 @@
       "uploaded_at": "2026-07-09T07:58:28.453849+00:00",
       "url": "https://www.youtube.com/shorts/C9gC410D64o",
       "video_id": "C9gC410D64o",
-      "views_per_hour": 0.0,
+      "views_per_hour": 0.035,
       "warning": {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.756,
@@ -537,73 +603,7 @@
         "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
         "title": "Trees use tree rings before they leaves",
         "video_id": "C9gC410D64o",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
-    },
-    {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 31.117,
-      "category": "geology",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-09T06:11:53.582365+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-09T11:11:53.582365+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": -300,
-          "due_at": "2026-07-10T05:11:53.582365+00:00",
-          "label": "24h",
-          "source": "observed",
-          "state": "observed",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-09T06:11:53.582365+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Earth Engine",
-      "state": "repair_candidate",
-      "title": "Rock layers reveal heat moving under the surface",
-      "uploaded_at": "2026-07-09T05:11:53.582365+00:00",
-      "url": "https://www.youtube.com/shorts/hpcdCLeyIpg",
-      "video_id": "hpcdCLeyIpg",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.756,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Rock layers reveal heat moving under the surface",
-        "video_id": "hpcdCLeyIpg",
-        "views": 0,
+        "views": 1,
         "warning_state": "repair_risk"
       }
     }
