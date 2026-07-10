@@ -9,11 +9,11 @@
       "urgent": 9
     },
     "free_only": true,
-    "generated_at": "2026-07-10T13:21:58.077456+00:00",
+    "generated_at": "2026-07-10T13:26:08.304469+00:00",
     "items": [
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 29.392,
+        "age_hours": 29.461,
         "automation_safe": false,
         "category": "trees",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 29.197,
+        "age_hours": 29.267,
         "automation_safe": false,
         "category": "earth_from_space",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 25.996,
+        "age_hours": 26.066,
         "automation_safe": false,
         "category": "arctic",
         "checkpoint_label": "1h",
@@ -91,7 +91,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 25.078,
+        "age_hours": 25.147,
         "automation_safe": false,
         "category": "plants",
         "checkpoint_label": "1h",
@@ -117,7 +117,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 23.289,
+        "age_hours": 23.358,
         "automation_safe": true,
         "category": "dogs",
         "checkpoint_label": "1h",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 18.394,
+        "age_hours": 18.464,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -169,7 +169,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 18.29,
+        "age_hours": 18.36,
         "automation_safe": true,
         "category": "nocturnal",
         "checkpoint_label": "1h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 17.293,
+        "age_hours": 17.363,
         "automation_safe": true,
         "category": "arctic",
         "checkpoint_label": "1h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 16.32,
+        "age_hours": 16.39,
         "automation_safe": true,
         "category": "ocean",
         "checkpoint_label": "1h",
@@ -246,34 +246,34 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "hold_until_first_hour",
-        "age_hours": 0.957,
+        "action_type": "watch_next_checkpoint",
+        "age_hours": 1.026,
         "automation_safe": true,
         "category": "insects",
-        "checkpoint_label": "1h",
+        "checkpoint_label": "6h",
         "checkpoint_state": "pending",
         "current_views": 0,
-        "due_at": "2026-07-10T13:24:33.044741+00:00",
+        "due_at": "2026-07-10T18:24:33.044741+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:VYPvTU9WqGE:awaiting_1h:1h",
+        "id": "fresh-upload:VYPvTU9WqGE:watch:6h",
         "lane": "observe",
         "manual_approval_required": false,
         "opening_retention_score": 100.0,
         "priority": "low",
-        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "recommended_action": "Keep observing through the next checkpoint.",
         "series": "Tiny Worlds",
-        "state": "awaiting_1h",
-        "target_views": 24,
+        "state": "watch",
+        "target_views": 105,
         "title": "Beetles steer after one star compass",
         "url": "https://www.youtube.com/shorts/VYPvTU9WqGE",
         "video_id": "VYPvTU9WqGE",
-        "wait_until": "2026-07-10T13:24:33.044741+00:00",
-        "why": "The upload is still inside the no-panic observation window."
+        "wait_until": "2026-07-10T18:24:33.044741+00:00",
+        "why": "No intervention signal is strong enough yet."
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-10T13:21:58.076496+00:00"
+    "source_generated_at": "2026-07-10T13:26:08.303721+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -283,24 +283,24 @@
     ],
     "counts": {
       "analytics_due": 5,
-      "awaiting_1h": 1,
+      "awaiting_1h": 0,
       "high_priority": 9,
       "repair_candidates": 4,
       "tracked": 10
     },
-    "generated_at": "2026-07-10T13:21:58.076496+00:00",
+    "generated_at": "2026-07-10T13:26:08.303721+00:00",
     "items": [
       {
-        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.957,
+        "action": "Keep observing through the next checkpoint.",
+        "age_hours": 1.026,
         "category": "insects",
         "checkpoints": [
           {
-            "delta_to_target": 0,
+            "delta_to_target": -24,
             "due_at": "2026-07-10T13:24:33.044741+00:00",
             "label": "1h",
-            "source": "estimated",
-            "state": "pending",
+            "source": "observed",
+            "state": "observed",
             "target_views": 24,
             "views": 0
           },
@@ -324,21 +324,21 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "hypothesis": "No intervention signal is strong enough yet.",
         "next_checkpoint": {
           "delta_to_target": 0,
-          "due_at": "2026-07-10T13:24:33.044741+00:00",
-          "label": "1h",
+          "due_at": "2026-07-10T18:24:33.044741+00:00",
+          "label": "6h",
           "source": "estimated",
           "state": "pending",
-          "target_views": 24,
+          "target_views": 105,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
         "priority": "low",
         "series": "Tiny Worlds",
-        "state": "awaiting_1h",
+        "state": "watch",
         "title": "Beetles steer after one star compass",
         "uploaded_at": "2026-07-10T12:24:33.044741+00:00",
         "url": "https://www.youtube.com/shorts/VYPvTU9WqGE",
@@ -347,7 +347,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 16.32,
+        "age_hours": 16.39,
         "category": "ocean",
         "checkpoints": [
           {
@@ -398,11 +398,11 @@
         "uploaded_at": "2026-07-09T21:02:44.518371+00:00",
         "url": "https://www.youtube.com/shorts/xxal3t3p9K0",
         "video_id": "xxal3t3p9K0",
-        "views_per_hour": 0.062
+        "views_per_hour": 0.061
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 17.293,
+        "age_hours": 17.363,
         "category": "arctic",
         "checkpoints": [
           {
@@ -453,11 +453,11 @@
         "uploaded_at": "2026-07-09T20:04:23.188358+00:00",
         "url": "https://www.youtube.com/shorts/XZIAdzI-njM",
         "video_id": "XZIAdzI-njM",
-        "views_per_hour": 0.059
+        "views_per_hour": 0.058
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 18.29,
+        "age_hours": 18.36,
         "category": "nocturnal",
         "checkpoints": [
           {
@@ -512,7 +512,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 18.394,
+        "age_hours": 18.464,
         "category": "insects",
         "checkpoints": [
           {
@@ -567,7 +567,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 23.289,
+        "age_hours": 23.358,
         "category": "dogs",
         "checkpoints": [
           {
@@ -622,7 +622,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 25.078,
+        "age_hours": 25.147,
         "category": "plants",
         "checkpoints": [
           {
@@ -688,7 +688,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 25.996,
+        "age_hours": 26.066,
         "category": "arctic",
         "checkpoints": [
           {
@@ -739,7 +739,7 @@
         "uploaded_at": "2026-07-09T11:22:11.609762+00:00",
         "url": "https://www.youtube.com/shorts/FauBvdeAeU8",
         "video_id": "FauBvdeAeU8",
-        "views_per_hour": 0.039,
+        "views_per_hour": 0.038,
         "warning": {
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.756,
@@ -754,7 +754,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 29.197,
+        "age_hours": 29.267,
         "category": "earth_from_space",
         "checkpoints": [
           {
@@ -820,7 +820,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 29.392,
+        "age_hours": 29.461,
         "category": "trees",
         "checkpoints": [
           {
@@ -892,7 +892,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-10T13:21:58.077548+00:00",
+  "generated_at": "2026-07-10T13:26:08.304542+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
