@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 6,
+    "analytics_due": 7,
     "awaiting_1h": 0,
-    "high_priority": 6,
-    "repair_candidates": 0,
+    "high_priority": 8,
+    "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-07-10T00:22:57.200934+00:00",
+  "generated_at": "2026-07-10T01:04:59.697928+00:00",
   "items": [
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.337,
+      "age_hours": 4.038,
       "category": "ocean",
       "checkpoints": [
         {
@@ -70,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.309,
+      "age_hours": 5.01,
       "category": "arctic",
       "checkpoints": [
         {
@@ -124,8 +124,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.307,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 6.007,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -138,11 +138,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -104,
           "due_at": "2026-07-10T01:04:33.771351+00:00",
           "label": "6h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 105,
           "views": 1
         },
@@ -157,30 +157,30 @@
         }
       ],
       "current_views": 1,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -104,
         "due_at": "2026-07-10T01:04:33.771351+00:00",
         "label": "6h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 105,
         "views": 1
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Night Shift Nature",
-      "state": "watch",
+      "state": "analytics_due",
       "title": "Foxes use snow hearing before they hunt",
       "uploaded_at": "2026-07-09T19:04:33.771351+00:00",
       "url": "https://www.youtube.com/shorts/LdYL1w1rf0g",
       "video_id": "LdYL1w1rf0g",
-      "views_per_hour": 0.189
+      "views_per_hour": 0.167
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.41,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.111,
       "category": "insects",
       "checkpoints": [
         {
@@ -193,11 +193,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-07-10T00:58:19.695164+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -212,30 +212,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-10T00:58:19.695164+00:00",
-        "label": "6h",
+        "due_at": "2026-07-10T18:58:19.695164+00:00",
+        "label": "24h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 105,
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Tiny Worlds",
-      "state": "watch",
+      "state": "repair_candidate",
       "title": "Dragonflies use motion lock before they lock",
       "uploaded_at": "2026-07-09T18:58:19.695164+00:00",
       "url": "https://www.youtube.com/shorts/WCATjnYNSYo",
       "video_id": "WCATjnYNSYo",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Dragonflies use motion lock before they lock",
+        "video_id": "WCATjnYNSYo",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 10.305,
+      "age_hours": 11.006,
       "category": "dogs",
       "checkpoints": [
         {
@@ -290,7 +301,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.094,
+      "age_hours": 12.795,
       "category": "plants",
       "checkpoints": [
         {
@@ -345,7 +356,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.013,
+      "age_hours": 13.713,
       "category": "arctic",
       "checkpoints": [
         {
@@ -396,11 +407,11 @@
       "uploaded_at": "2026-07-09T11:22:11.609762+00:00",
       "url": "https://www.youtube.com/shorts/FauBvdeAeU8",
       "video_id": "FauBvdeAeU8",
-      "views_per_hour": 0.077
+      "views_per_hour": 0.073
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.214,
+      "age_hours": 16.914,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -455,7 +466,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.408,
+      "age_hours": 17.109,
       "category": "trees",
       "checkpoints": [
         {
@@ -506,11 +517,11 @@
       "uploaded_at": "2026-07-09T07:58:28.453849+00:00",
       "url": "https://www.youtube.com/shorts/C9gC410D64o",
       "video_id": "C9gC410D64o",
-      "views_per_hour": 0.061
+      "views_per_hour": 0.059
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 19.184,
+      "age_hours": 19.885,
       "category": "geology",
       "checkpoints": [
         {
