@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 8,
+    "analytics_due": 9,
     "awaiting_1h": 0,
-    "high_priority": 8,
-    "repair_candidates": 0,
+    "high_priority": 10,
+    "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-07-10T01:23:57.404199+00:00",
+  "generated_at": "2026-07-10T04:11:52.311642+00:00",
   "items": [
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.354,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 7.152,
       "category": "ocean",
       "checkpoints": [
         {
@@ -28,11 +28,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-07-10T03:02:44.518371+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -47,30 +47,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-10T03:02:44.518371+00:00",
-        "label": "6h",
+        "due_at": "2026-07-10T21:02:44.518371+00:00",
+        "label": "24h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 105,
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 94.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Ocean Mysteries",
-      "state": "watch",
+      "state": "repair_candidate",
       "title": "Dolphins can call each other with signature whistles",
       "uploaded_at": "2026-07-09T21:02:44.518371+00:00",
       "url": "https://www.youtube.com/shorts/xxal3t3p9K0",
       "video_id": "xxal3t3p9K0",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Dolphins can call each other with signature whistles",
+        "video_id": "xxal3t3p9K0",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.326,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 8.125,
       "category": "arctic",
       "checkpoints": [
         {
@@ -83,11 +94,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-07-10T02:04:23.188358+00:00",
           "label": "6h",
           "source": "estimated",
-          "state": "pending",
+          "state": "overdue",
           "target_views": 105,
           "views": 0
         },
@@ -102,21 +113,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -105,
         "due_at": "2026-07-10T02:04:23.188358+00:00",
         "label": "6h",
         "source": "estimated",
-        "state": "pending",
+        "state": "overdue",
         "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 94.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Polar Survival",
-      "state": "watch",
+      "state": "analytics_due",
       "title": "Seals can follow wakes with their whiskers",
       "uploaded_at": "2026-07-09T20:04:23.188358+00:00",
       "url": "https://www.youtube.com/shorts/XZIAdzI-njM",
@@ -125,7 +136,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.323,
+      "age_hours": 9.122,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -176,11 +187,11 @@
       "uploaded_at": "2026-07-09T19:04:33.771351+00:00",
       "url": "https://www.youtube.com/shorts/LdYL1w1rf0g",
       "video_id": "LdYL1w1rf0g",
-      "views_per_hour": 0.159
+      "views_per_hour": 0.11
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.427,
+      "age_hours": 9.226,
       "category": "insects",
       "checkpoints": [
         {
@@ -235,7 +246,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.322,
+      "age_hours": 14.12,
       "category": "dogs",
       "checkpoints": [
         {
@@ -290,7 +301,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.111,
+      "age_hours": 15.909,
       "category": "plants",
       "checkpoints": [
         {
@@ -345,7 +356,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 14.029,
+      "age_hours": 16.828,
       "category": "arctic",
       "checkpoints": [
         {
@@ -396,11 +407,11 @@
       "uploaded_at": "2026-07-09T11:22:11.609762+00:00",
       "url": "https://www.youtube.com/shorts/FauBvdeAeU8",
       "video_id": "FauBvdeAeU8",
-      "views_per_hour": 0.071
+      "views_per_hour": 0.06
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 17.23,
+      "age_hours": 20.029,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -455,7 +466,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 17.425,
+      "age_hours": 20.223,
       "category": "trees",
       "checkpoints": [
         {
@@ -506,11 +517,11 @@
       "uploaded_at": "2026-07-09T07:58:28.453849+00:00",
       "url": "https://www.youtube.com/shorts/C9gC410D64o",
       "video_id": "C9gC410D64o",
-      "views_per_hour": 0.057
+      "views_per_hour": 0.05
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 20.201,
+      "age_hours": 23.0,
       "category": "geology",
       "checkpoints": [
         {

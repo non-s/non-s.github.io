@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-10T01:24:25.493226+00:00",
+  "generated_at": "2026-07-10T04:12:20.567991+00:00",
   "pending": 12,
   "states": {
     "publish_ready": 2,
@@ -20,10 +20,11 @@
     "repair_needed": 0,
     "repaired": 2,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 12,
+      "objective_gate:bootstrap_observe_before_scaling": 11,
       "editor_in_chief:subject repeated inside 3-day cooldown": 6,
       "editor_in_chief:script quality gate blocked the narration": 4,
       "editor_in_chief:editorial score 46 is below 62": 2,
+      "objective_gate:observe_before_scaling": 1,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
       "publish_ready_supply_reserve_fallback": 1
@@ -467,7 +468,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-10T01:24:12.349369+00:00",
+        "checked_at": "2026-07-10T04:12:07.309730+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -568,11 +569,11 @@
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
           "winning_experiments": {
-            "cta:specific_question": 47.3,
-            "format:fresh_variant": 47.3,
-            "format:winner_inspired": 40.45,
-            "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 41.5
+            "cta:specific_question": 46.9,
+            "format:fresh_variant": 46.9,
+            "format:winner_inspired": 38.63,
+            "hook:new_hook": 46.9,
+            "thumbnail:new_thumbnail": 40.4
           }
         },
         "frame_zero": {
@@ -1112,7 +1113,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-10T01:24:12.343206+00:00",
+        "checked_at": "2026-07-10T04:12:07.304128+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1213,11 +1214,11 @@
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
           "winning_experiments": {
-            "cta:specific_question": 47.3,
-            "format:fresh_variant": 47.3,
-            "format:winner_inspired": 40.45,
-            "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 41.5
+            "cta:specific_question": 46.9,
+            "format:fresh_variant": 46.9,
+            "format:winner_inspired": 38.63,
+            "hook:new_hook": 46.9,
+            "thumbnail:new_thumbnail": 40.4
           }
         },
         "frame_zero": {
@@ -1592,15 +1593,15 @@
         "approved": true,
         "category": "arctic",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.376,
+          "bootstrap_multiplier": 0.46,
           "can_adjust_strategy": false,
-          "confidence_score": 0.168,
+          "confidence_score": 0.28,
           "data_quality": "estimated",
           "data_quality_score": 0.48,
           "minimum_sample_size": 38,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.17.",
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.28.",
           "recommendation_strength": "observe",
-          "sample_size": 10
+          "sample_size": 17
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -1610,13 +1611,13 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.168,
+          "confidence_score": 0.28,
           "mechanism_cluster": "scent_map",
           "payoff_time_s": 0.0,
           "penalty": 0.0,
           "publish_blocking": false,
           "reasons": [
-            "bootstrap_observe_before_scaling"
+            "observe_before_scaling"
           ],
           "scale_ready": false,
           "swipe_risk_band": "low",
@@ -1651,30 +1652,30 @@
         },
         "opportunity": {
           "confidence": {
-            "bootstrap_multiplier": 0.335,
+            "bootstrap_multiplier": 0.42,
             "can_adjust_strategy": false,
-            "confidence_score": 0.113,
+            "confidence_score": 0.227,
             "data_quality": "estimated",
             "data_quality_score": 0.567,
             "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 1
+            "sample_size": 2
           },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
           "reasons": [
             "weak_visual_surface",
             "low_opportunity_score"
           ],
-          "score": 49,
+          "score": 47,
           "signals": {
-            "comment_potential": 40,
-            "educational_potential": 59,
-            "emotional_potential": 29,
-            "novelty": 49,
-            "replay_potential": 68,
-            "viral_potential": 44,
-            "visual_potential": 49
+            "comment_potential": 38,
+            "educational_potential": 57,
+            "emotional_potential": 27,
+            "novelty": 47,
+            "replay_potential": 66,
+            "viral_potential": 42,
+            "visual_potential": 47
           },
           "verdict": "discard"
         },
@@ -1693,17 +1694,17 @@
         },
         "retention": {
           "confidence": {
-            "bootstrap_multiplier": 0.335,
+            "bootstrap_multiplier": 0.42,
             "can_adjust_strategy": false,
-            "confidence_score": 0.113,
+            "confidence_score": 0.227,
             "data_quality": "estimated",
             "data_quality_score": 0.567,
             "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 1
+            "sample_size": 2
           },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
           "reasons": [],
           "score": 76,
           "signals": {
@@ -1721,17 +1722,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.39,
+            "bootstrap_multiplier": 0.468,
             "can_adjust_strategy": false,
-            "confidence_score": 0.186,
+            "confidence_score": 0.29,
             "data_quality": "estimated",
             "data_quality_score": 0.587,
             "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.29.",
             "recommendation_strength": "observe",
-            "sample_size": 5
+            "sample_size": 8
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.29.",
           "reasons": [
             "hook_invites_return",
             "identity_cta",
@@ -1773,10 +1774,10 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-10T01:24:12.328512+00:00",
+        "checked_at": "2026-07-10T04:12:07.280303+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling",
+          "objective_gate:observe_before_scaling",
           "publish_ready_supply_reserve_fallback"
         ],
         "score": 78.0,
@@ -1874,11 +1875,11 @@
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
           "winning_experiments": {
-            "cta:specific_question": 47.3,
-            "format:fresh_variant": 47.3,
-            "format:winner_inspired": 40.45,
-            "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 41.5
+            "cta:specific_question": 46.9,
+            "format:fresh_variant": 46.9,
+            "format:winner_inspired": 38.63,
+            "hook:new_hook": 46.9,
+            "thumbnail:new_thumbnail": 40.4
           }
         },
         "frame_zero": {
@@ -2023,17 +2024,17 @@
         "replay_prompt": "End by pointing back to the scent map, so viewers rewatch the bears clip.",
         "retention": {
           "confidence": {
-            "bootstrap_multiplier": 0.335,
+            "bootstrap_multiplier": 0.42,
             "can_adjust_strategy": false,
-            "confidence_score": 0.113,
+            "confidence_score": 0.227,
             "data_quality": "estimated",
             "data_quality_score": 0.567,
             "minimum_sample_size": 5,
-            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
             "recommendation_strength": "observe",
-            "sample_size": 1
+            "sample_size": 2
           },
-          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
           "reasons": [],
           "score": 76,
           "signals": {
@@ -2084,8 +2085,8 @@
           "visible_cue": "scent map"
         },
         "selected_variant": {
-          "hook": "Start with the scent map; it changes the scene",
-          "score": 81,
+          "hook": "Bears can smell a meal long before seeing it",
+          "score": 80,
           "thumbnail_text": "SCENT MAP",
           "title": "Bears smell food from miles away"
         },
@@ -2108,17 +2109,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.256,
           "confidence": {
-            "bootstrap_multiplier": 0.39,
+            "bootstrap_multiplier": 0.468,
             "can_adjust_strategy": false,
-            "confidence_score": 0.186,
+            "confidence_score": 0.29,
             "data_quality": "estimated",
             "data_quality_score": 0.587,
             "minimum_sample_size": 18,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.29.",
             "recommendation_strength": "observe",
-            "sample_size": 5
+            "sample_size": 8
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.29.",
           "reasons": [
             "hook_invites_return",
             "identity_cta",
@@ -2168,13 +2169,13 @@
         ],
         "top_variants": [
           {
-            "hook": "Start with the scent map; it changes the scene",
-            "score": 81,
+            "hook": "Bears can smell a meal long before seeing it",
+            "score": 80,
             "thumbnail_text": "SCENT MAP",
             "title": "Bears smell food from miles away"
           },
           {
-            "hook": "Bears can smell a meal long before seeing it",
+            "hook": "Start with the scent map; it changes the scene",
             "score": 80,
             "thumbnail_text": "SCENT MAP",
             "title": "Bears smell food from miles away"
@@ -2186,45 +2187,45 @@
             "title": "Bears smell food from miles away"
           },
           {
-            "hook": "Start with the scent map; it changes the scene",
-            "score": 74,
+            "hook": "Bears can smell a meal long before seeing it",
+            "score": 73,
             "thumbnail_text": "WATCH SCENT MAP",
             "title": "Bears smell food from miles away"
           },
           {
             "hook": "Start with the scent map; it changes the scene",
-            "score": 74,
+            "score": 73,
+            "thumbnail_text": "WATCH SCENT MAP",
+            "title": "Bears smell food from miles away"
+          },
+          {
+            "hook": "Bears can smell a meal long before seeing it",
+            "score": 73,
             "thumbnail_text": "BEARS SMELL",
             "title": "Bears smell food from miles away"
           },
           {
             "hook": "Start with the scent map; it changes the scene",
-            "score": 74,
+            "score": 73,
+            "thumbnail_text": "BEARS SMELL",
+            "title": "Bears smell food from miles away"
+          },
+          {
+            "hook": "Bears can smell a meal long before seeing it",
+            "score": 73,
             "thumbnail_text": "SCENT MAP MATTERS",
             "title": "Bears smell food from miles away"
           },
           {
             "hook": "Start with the scent map; it changes the scene",
-            "score": 74,
+            "score": 73,
+            "thumbnail_text": "SCENT MAP MATTERS",
+            "title": "Bears smell food from miles away"
+          },
+          {
+            "hook": "Bears can smell a meal long before seeing it",
+            "score": 73,
             "thumbnail_text": "SCENT MAP FIRST",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Bears can smell a meal long before seeing it",
-            "score": 73,
-            "thumbnail_text": "WATCH SCENT MAP",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Bears can smell a meal long before seeing it",
-            "score": 73,
-            "thumbnail_text": "BEARS SMELL",
-            "title": "Bears smell food from miles away"
-          },
-          {
-            "hook": "Bears can smell a meal long before seeing it",
-            "score": 73,
-            "thumbnail_text": "SCENT MAP MATTERS",
             "title": "Bears smell food from miles away"
           }
         ]
@@ -2250,15 +2251,15 @@
         "approved": false,
         "category": "cats",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.314,
+          "bootstrap_multiplier": 0.342,
           "can_adjust_strategy": false,
-          "confidence_score": 0.085,
+          "confidence_score": 0.123,
           "data_quality": "observed",
           "data_quality_score": 0.825,
-          "minimum_sample_size": 25,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.08.",
+          "minimum_sample_size": 28,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.12.",
           "recommendation_strength": "observe",
-          "sample_size": 5
+          "sample_size": 8
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -2268,7 +2269,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.085,
+          "confidence_score": 0.123,
           "mechanism_cluster": "scent_map",
           "payoff_time_s": 0.0,
           "penalty": 0.0,
@@ -2376,17 +2377,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.24,
           "confidence": {
-            "bootstrap_multiplier": 0.333,
+            "bootstrap_multiplier": 0.39,
             "can_adjust_strategy": false,
-            "confidence_score": 0.111,
+            "confidence_score": 0.186,
             "data_quality": "observed",
-            "data_quality_score": 0.825,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
+            "data_quality_score": 0.667,
+            "minimum_sample_size": 13,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 5
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -2425,7 +2426,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-10T01:24:12.344266+00:00",
+        "checked_at": "2026-07-10T04:12:07.297453+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2531,11 +2532,11 @@
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
           "winning_experiments": {
-            "cta:specific_question": 47.3,
-            "format:fresh_variant": 47.3,
-            "format:winner_inspired": 40.45,
-            "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 41.5
+            "cta:specific_question": 46.9,
+            "format:fresh_variant": 46.9,
+            "format:winner_inspired": 38.63,
+            "hook:new_hook": 46.9,
+            "thumbnail:new_thumbnail": 40.4
           }
         },
         "frame_zero": {
@@ -2781,17 +2782,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.24,
           "confidence": {
-            "bootstrap_multiplier": 0.333,
+            "bootstrap_multiplier": 0.39,
             "can_adjust_strategy": false,
-            "confidence_score": 0.111,
+            "confidence_score": 0.186,
             "data_quality": "observed",
-            "data_quality_score": 0.825,
-            "minimum_sample_size": 10,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
+            "data_quality_score": 0.667,
+            "minimum_sample_size": 13,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
             "recommendation_strength": "observe",
-            "sample_size": 3
+            "sample_size": 5
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
           "reasons": [
             "identity_cta",
             "debate_comment",
@@ -2922,15 +2923,15 @@
         "approved": true,
         "category": "forests",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.312,
+          "bootstrap_multiplier": 0.283,
           "can_adjust_strategy": false,
-          "confidence_score": 0.082,
+          "confidence_score": 0.044,
           "data_quality": "inferred",
           "data_quality_score": 0.5,
           "minimum_sample_size": 28,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.08.",
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.04.",
           "recommendation_strength": "observe",
-          "sample_size": 7
+          "sample_size": 4
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -2940,7 +2941,7 @@
         },
         "hook_score": 86,
         "objective_gate": {
-          "confidence_score": 0.082,
+          "confidence_score": 0.044,
           "mechanism_cluster": "",
           "payoff_time_s": 0.0,
           "penalty": 0.0,
@@ -3040,17 +3041,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.207,
           "confidence": {
-            "bootstrap_multiplier": 0.388,
+            "bootstrap_multiplier": 0.331,
             "can_adjust_strategy": false,
-            "confidence_score": 0.184,
+            "confidence_score": 0.108,
             "data_quality": "estimated",
             "data_quality_score": 0.45,
             "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.18.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
             "recommendation_strength": "observe",
-            "sample_size": 5
+            "sample_size": 3
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.18.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
           "reasons": [
             "debate_comment",
             "return_prompt",
@@ -3088,7 +3089,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-10T01:24:12.345762+00:00",
+        "checked_at": "2026-07-10T04:12:07.305756+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -3190,11 +3191,11 @@
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
           "winning_experiments": {
-            "cta:specific_question": 47.3,
-            "format:fresh_variant": 47.3,
-            "format:winner_inspired": 40.45,
-            "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 41.5
+            "cta:specific_question": 46.9,
+            "format:fresh_variant": 46.9,
+            "format:winner_inspired": 38.63,
+            "hook:new_hook": 46.9,
+            "thumbnail:new_thumbnail": 40.4
           }
         },
         "frame_zero": {
@@ -3427,17 +3428,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.207,
           "confidence": {
-            "bootstrap_multiplier": 0.388,
+            "bootstrap_multiplier": 0.331,
             "can_adjust_strategy": false,
-            "confidence_score": 0.184,
+            "confidence_score": 0.108,
             "data_quality": "estimated",
             "data_quality_score": 0.45,
             "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.18.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
             "recommendation_strength": "observe",
-            "sample_size": 5
+            "sample_size": 3
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.18.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
           "reasons": [
             "debate_comment",
             "return_prompt",
@@ -3567,15 +3568,15 @@
         "approved": true,
         "category": "forests",
         "decision_confidence": {
-          "bootstrap_multiplier": 0.312,
+          "bootstrap_multiplier": 0.283,
           "can_adjust_strategy": false,
-          "confidence_score": 0.082,
+          "confidence_score": 0.044,
           "data_quality": "inferred",
           "data_quality_score": 0.5,
           "minimum_sample_size": 28,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.08.",
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.04.",
           "recommendation_strength": "observe",
-          "sample_size": 7
+          "sample_size": 4
         },
         "distribution_adjustment": 0,
         "editorial_guard": {
@@ -3585,7 +3586,7 @@
         },
         "hook_score": 100,
         "objective_gate": {
-          "confidence_score": 0.082,
+          "confidence_score": 0.044,
           "mechanism_cluster": "",
           "payoff_time_s": 0.0,
           "penalty": 0.0,
@@ -3687,17 +3688,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.207,
           "confidence": {
-            "bootstrap_multiplier": 0.388,
+            "bootstrap_multiplier": 0.331,
             "can_adjust_strategy": false,
-            "confidence_score": 0.184,
+            "confidence_score": 0.108,
             "data_quality": "estimated",
             "data_quality_score": 0.45,
             "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.18.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
             "recommendation_strength": "observe",
-            "sample_size": 5
+            "sample_size": 3
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.18.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
           "reasons": [
             "debate_comment",
             "return_prompt",
@@ -3735,7 +3736,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-10T01:24:12.347273+00:00",
+        "checked_at": "2026-07-10T04:12:07.307381+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -3839,11 +3840,11 @@
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
           "winning_experiments": {
-            "cta:specific_question": 47.3,
-            "format:fresh_variant": 47.3,
-            "format:winner_inspired": 40.45,
-            "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 41.5
+            "cta:specific_question": 46.9,
+            "format:fresh_variant": 46.9,
+            "format:winner_inspired": 38.63,
+            "hook:new_hook": 46.9,
+            "thumbnail:new_thumbnail": 40.4
           }
         },
         "frame_zero": {
@@ -4080,17 +4081,17 @@
         "subscriber_conversion": {
           "comment_probability": 0.207,
           "confidence": {
-            "bootstrap_multiplier": 0.388,
+            "bootstrap_multiplier": 0.331,
             "can_adjust_strategy": false,
-            "confidence_score": 0.184,
+            "confidence_score": 0.108,
             "data_quality": "estimated",
             "data_quality_score": 0.45,
             "minimum_sample_size": 13,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.18.",
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
             "recommendation_strength": "observe",
-            "sample_size": 5
+            "sample_size": 3
           },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.18.",
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.11.",
           "reasons": [
             "debate_comment",
             "return_prompt",
@@ -4385,7 +4386,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-10T01:24:12.331611+00:00",
+        "checked_at": "2026-07-10T04:12:07.283776+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4488,11 +4489,11 @@
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
           "winning_experiments": {
-            "cta:specific_question": 47.3,
-            "format:fresh_variant": 47.3,
-            "format:winner_inspired": 40.45,
-            "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 41.5
+            "cta:specific_question": 46.9,
+            "format:fresh_variant": 46.9,
+            "format:winner_inspired": 38.63,
+            "hook:new_hook": 46.9,
+            "thumbnail:new_thumbnail": 40.4
           }
         },
         "frame_zero": {
@@ -5031,7 +5032,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-10T01:24:12.334570+00:00",
+        "checked_at": "2026-07-10T04:12:07.293612+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5139,11 +5140,11 @@
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
           "winning_experiments": {
-            "cta:specific_question": 47.3,
-            "format:fresh_variant": 47.3,
-            "format:winner_inspired": 40.45,
-            "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 41.5
+            "cta:specific_question": 46.9,
+            "format:fresh_variant": 46.9,
+            "format:winner_inspired": 38.63,
+            "hook:new_hook": 46.9,
+            "thumbnail:new_thumbnail": 40.4
           }
         },
         "frame_zero": {
@@ -5695,7 +5696,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-10T01:24:12.336860+00:00",
+        "checked_at": "2026-07-10T04:12:07.296198+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5799,11 +5800,11 @@
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
           "winning_experiments": {
-            "cta:specific_question": 47.3,
-            "format:fresh_variant": 47.3,
-            "format:winner_inspired": 40.45,
-            "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 41.5
+            "cta:specific_question": 46.9,
+            "format:fresh_variant": 46.9,
+            "format:winner_inspired": 38.63,
+            "hook:new_hook": 46.9,
+            "thumbnail:new_thumbnail": 40.4
           }
         },
         "frame_zero": {
@@ -6350,7 +6351,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-10T01:24:12.351108+00:00",
+        "checked_at": "2026-07-10T04:12:07.311595+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6457,11 +6458,11 @@
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
           "winning_experiments": {
-            "cta:specific_question": 47.3,
-            "format:fresh_variant": 47.3,
-            "format:winner_inspired": 40.45,
-            "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 41.5
+            "cta:specific_question": 46.9,
+            "format:fresh_variant": 46.9,
+            "format:winner_inspired": 38.63,
+            "hook:new_hook": 46.9,
+            "thumbnail:new_thumbnail": 40.4
           }
         },
         "frame_zero": {
@@ -7008,7 +7009,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-10T01:24:12.338602+00:00",
+        "checked_at": "2026-07-10T04:12:07.299244+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7110,11 +7111,11 @@
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
           "winning_experiments": {
-            "cta:specific_question": 47.3,
-            "format:fresh_variant": 47.3,
-            "format:winner_inspired": 40.45,
-            "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 41.5
+            "cta:specific_question": 46.9,
+            "format:fresh_variant": 46.9,
+            "format:winner_inspired": 38.63,
+            "hook:new_hook": 46.9,
+            "thumbnail:new_thumbnail": 40.4
           }
         },
         "frame_zero": {
@@ -7649,7 +7650,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-10T01:24:12.340930+00:00",
+        "checked_at": "2026-07-10T04:12:07.301791+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7749,11 +7750,11 @@
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
           "winning_experiments": {
-            "cta:specific_question": 47.3,
-            "format:fresh_variant": 47.3,
-            "format:winner_inspired": 40.45,
-            "hook:new_hook": 47.3,
-            "thumbnail:new_thumbnail": 41.5
+            "cta:specific_question": 46.9,
+            "format:fresh_variant": 46.9,
+            "format:winner_inspired": 38.63,
+            "hook:new_hook": 46.9,
+            "thumbnail:new_thumbnail": 40.4
           }
         },
         "frame_zero": {
