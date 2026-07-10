@@ -1,28 +1,26 @@
 {
-  "total": 1000,
+  "total": 798,
   "reasons": {
-    "thumbnail_text_not_scannable": 290,
-    "thumbnail_not_2_4_words": 290,
-    "off_topic_visual": 271,
-    "duplicate_title": 251,
-    "script_hook_mismatch": 92,
-    "copy_subject_mismatch": 72,
+    "off_topic_visual": 274,
+    "duplicate_title": 254,
+    "script_hook_mismatch": 93,
+    "thumbnail_text_not_scannable": 89,
+    "thumbnail_not_2_4_words": 89,
+    "copy_subject_mismatch": 71,
     "queue_score_reject": 62,
     "duplicate_script": 61,
-    "duplicate_angle": 57,
-    "rights_guard_person_manual_review": 44,
+    "duplicate_angle": 58,
+    "rights_guard_person_manual_review": 45,
     "opening_retention_gap_risk": 40,
     "script_subject_mismatch": 30,
+    "subject repeated inside 3-day cooldown": 26,
+    "humanity score is too low": 26,
     "opening promise is not concrete enough": 26,
-    "subject repeated inside 3-day cooldown": 25,
-    "humanity score is too low": 25,
-    "script_word_loop": 23,
+    "script_word_loop": 25,
     "subject_not_immediately_clear": 14,
     "payoff_not_explicit": 14,
-    "weak_visual_surface": 11,
-    "low_opportunity_score": 11,
+    "editorial score 37 is below 62": 10,
     "editorial score is below publish threshold": 10,
-    "editorial score 37 is below 62": 9,
     "non_animal_body_language": 9,
     "bad_plural_verb": 8,
     "editorial score 39 is below 62": 6,
@@ -44,52 +42,341 @@
     "stitched_repeated_animal_title": 1,
     "editorial score 50 is below 62": 1,
     "thumbnail copy must contain 2-4 readable words": 1,
-    "editorial score 29 is below 62": 1
+    "editorial score 29 is below 62": 1,
+    "weak_visual_surface": 1,
+    "low_opportunity_score": 1
   },
   "stages": {
-    "queue_prune": 388,
-    "youtube_brain_rewrite": 280,
-    "queue_prune_final": 203,
+    "queue_prune": 392,
+    "queue_prune_final": 207,
+    "youtube_brain_rewrite": 79,
     "queue_repair": 62,
-    "editor_in_chief": 32,
+    "editor_in_chief": 33,
     "youtube_brain": 14,
-    "opportunity_score": 11,
-    "pre_publish_audit": 10
+    "pre_publish_audit": 10,
+    "opportunity_score": 1
   },
   "latest": [
     {
-      "story_id": "ce3b2fc76a336a95",
-      "stage": "opportunity_score",
+      "story_id": "34f59564f3cb85c0",
+      "stage": "queue_prune",
       "reasons": [
-        "weak_visual_surface",
-        "low_opportunity_score"
+        "off_topic_visual"
       ],
-      "title": "Bears This scent map gives bears away",
-      "category": "arctic",
-      "script_key": "bears can smell a meal long before seeing it watch the nose first because smell drives many bear decisions before the eyes do that huge scent map helps them find food avoid danger and read who crossed the area earlier would you trust your nose that much",
-      "angle_key": "bears|smell|scent map|arctic",
-      "source_url": "https://www.pexels.com/video/polar-bear-swimming-in-outdoor-zoo-enclosure-34154636/",
-      "pexels_video_id": "34154636",
-      "source_clip_id": "pexels:ce3b2fc76a336a95",
-      "recorded_at": "2026-07-09T21:01:54.916668+00:00",
+      "title": "Lava flows aren't red just because they're hot",
+      "category": "geology",
+      "script_key": "this isn t red hot lava that s just the camera lying to us what you re seeing is indigo fermentation iron in the rock glowing as it cools the camera overexposes the real color which is closer to dull orange that s why we think lava s red our eyes get fooled",
+      "angle_key": "lava|flow|eyes|geology",
+      "source_url": "https://www.pexels.com/video/close-up-shot-of-indigo-fermentation-6842633/",
+      "pexels_video_id": "6842633",
+      "source_clip_id": "pexels:34f59564f3cb85c0",
+      "recorded_at": "2026-07-09T16:13:11.981210+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "0ee0c37ee7a5bdce",
+      "stage": "queue_prune_final",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "title": "Bees dance directions back to the hive",
+      "category": "insects",
+      "script_key": "bees reveal the dance map first watch closely because a bee dance can carry direction and distance the hive reads that pattern like a living map then sends more workers to the same flowers tiny body huge navigation system which insect should we decode next",
+      "angle_key": "bees|carry|dance map|insects",
+      "source_url": "https://www.pexels.com/video/bee-pollinates-blossoms-in-a-sunny-garden-33047925/",
+      "pexels_video_id": "33047925",
+      "source_clip_id": "pexels:0ee0c37ee7a5bdce",
+      "recorded_at": "2026-07-09T16:13:11.998736+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     },
     {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
+      "story_id": "9f4a9964079e54da",
+      "stage": "queue_repair",
       "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
+        "opening_retention_gap_risk",
+        "opening promise is not concrete enough",
+        "queue_score_reject"
       ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-09T21:01:54.991751+00:00",
+      "title": "Coral reefs are cities built by tiny animals",
+      "category": "ecosystems",
+      "script_key": "coral reefs are built by tiny living builders watch the reef texture because coral animals build hard skeletons that stack into habitat fish algae and countless small creatures then use that structure like a city the color sits on top of engineering which habitat next",
+      "angle_key": "coral|build|reef city|ecosystems",
+      "source_url": "https://www.pexels.com/video/majestic-giraffes-grazing-in-open-savanna-38479188/",
+      "pexels_video_id": "38479188",
+      "source_clip_id": "pexels:9f4a9964079e54da",
+      "recorded_at": "2026-07-09T16:34:37.233810+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "16a747cceb132b05",
+      "stage": "queue_prune_final",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_angle"
+      ],
+      "title": "Rock layers store ancient environments in stripes",
+      "category": "geology",
+      "script_key": "rock layers are time stamps made of stone watch the stripe pattern because each layer can mark a different setting river mud ocean floor windblown sand or volcanic ash stack enough layers and the cliff becomes a timeline which rock clue should we read next",
+      "angle_key": "rock|store|rock layers|geology",
+      "source_url": "https://www.pexels.com/video/hiking-around-and-droning-17421694/",
+      "pexels_video_id": "17421694",
+      "source_clip_id": "pexels:16a747cceb132b05",
+      "recorded_at": "2026-07-09T16:34:37.252162+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "604681f13ae589a0",
+      "stage": "queue_prune",
+      "reasons": [
+        "script_word_loop"
+      ],
+      "title": "Farm animals make the pupil shape matter first",
+      "category": "farm",
+      "script_key": "farm animals make the pupil shape matter first watch the pupil shape first because that detail shows the mechanism in motion the source moment is sheep recognize faces across the flock the visible cue inside sheep recognize faces across the flock gives the viewer one clear reason to keep watching by the last line the opening detail has a job viewers can name",
+      "angle_key": "sheep|recognize|pupil|farm",
+      "source_url": "https://www.pexels.com/video/flock-of-sheep-grazing-in-rocky-landscape-38477570/",
+      "pexels_video_id": "38477570",
+      "source_clip_id": "pexels:604681f13ae589a0",
+      "recorded_at": "2026-07-09T16:37:24.401134+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "be26fdadcb946000",
+      "stage": "queue_prune",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "title": "Lava turns seawater into boiling rock",
+      "category": "geology",
+      "script_key": "new land in 30 seconds watch that red river hit the water it doesn t just cool it explodes the lava s outer crust hardens fast that s why it looks like glass shards popping off that steam cloud isn t just steam it s superheated salt and minerals blasting out would you walk on this in an hour",
+      "angle_key": "lava|flow|cloud|geology",
+      "source_url": "https://www.pexels.com/video/colored-liquid-mixing-in-the-water-7565443/",
+      "pexels_video_id": "7565443",
+      "source_clip_id": "pexels:be26fdadcb946000",
+      "recorded_at": "2026-07-09T17:13:32.398373+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "62a5d15c91a13219",
+      "stage": "queue_prune",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "title": "Lava waterfalls build land faster than you think",
+      "category": "geology",
+      "script_key": "lava waterfalls like pamukkale don t just look cool they pour calcium rich water that hardens into solid terraces that s why the pools stack up faster than you d think up to 13 centimeters a year see how the water glows blue under sunlight that s not magic it s the way light bends through minerals",
+      "angle_key": "lava|flow|bends|geology",
+      "source_url": "https://www.pexels.com/video/flowing-waters-of-pamukkale-thermal-pools-6047896/",
+      "pexels_video_id": "6047896",
+      "source_clip_id": "pexels:62a5d15c91a13219",
+      "recorded_at": "2026-07-09T17:13:32.419074+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "ff6c4d17f43936eb",
+      "stage": "queue_prune",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "title": "Bears smell food from miles away",
+      "category": "arctic",
+      "script_key": "bears can smell a meal long before seeing it watch the nose first because smell drives many bear decisions before the eyes do that huge scent map helps them find food avoid danger and read who crossed the area earlier would you trust your nose that much",
+      "angle_key": "bears|smell|scent map|arctic",
+      "source_url": "https://www.pexels.com/video/playful-polar-bear-rolling-snowball-in-winter-35570637/",
+      "pexels_video_id": "35570637",
+      "source_clip_id": "pexels:ff6c4d17f43936eb",
+      "recorded_at": "2026-07-09T17:15:49.090892+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "e17199381548a4ba",
+      "stage": "queue_prune",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "title": "Mountains shrink faster than we think",
+      "category": "geology",
+      "script_key": "look at the streaks on the rock those aren t shadows they re water paths carving the mountain down rain mixes with co2 and eats the stone like soda on chalk that s why whole valleys disappear over time ever noticed how cliffs look weathered but never see it happen what s right in front of you every hike",
+      "angle_key": "mountains|see|rocks|geology",
+      "source_url": "https://www.pexels.com/video/lush-greenery-in-misty-mountain-landscape-37291489/",
+      "pexels_video_id": "37291489",
+      "source_clip_id": "pexels:e17199381548a4ba",
+      "recorded_at": "2026-07-09T18:57:38.329501+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "5043804314b88ae3",
+      "stage": "editor_in_chief",
+      "reasons": [
+        "subject repeated inside 3-day cooldown",
+        "humanity score is too low",
+        "editorial score 43 is below 62"
+      ],
+      "title": "Dragonflies Libélulas predicen el movimiento antes de atr...",
+      "category": "insects",
+      "script_key": "las lib lulas predicen el movimiento primero f jate bien porque procesan el movimiento rapid simo predicen a d nde va su presa y ajustan el vuelo como un interceptor en miniatura por eso el ataque parece imposible de esquivar lo habr as visto venir now the motion lock at the start makes sense",
+      "angle_key": "dragonflies|lock|motion lock|insects",
+      "source_url": "https://www.pexels.com/video/sunlight-glimmering-on-fresh-green-grass-37227672/",
+      "pexels_video_id": "37227672",
+      "source_clip_id": "pexels:5043804314b88ae3",
+      "recorded_at": "2026-07-09T18:58:13.244331+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "34b2b93c5044354c",
+      "stage": "queue_prune",
+      "reasons": [
+        "rights_guard_person_manual_review",
+        "off_topic_visual"
+      ],
+      "title": "Hedgehogs aren't just cute they're silent alarms",
+      "category": "nocturnal",
+      "script_key": "this tiny alarm walks barefoot those spines aren t decoration they re built like silent tripwires each spine s tip has a special muscle that locks it straight when touched that s why you ll never hear a hedgehog squeak until it s too late did you think they were just prickly pets",
+      "angle_key": "nocturnal|hear|cue|nocturnal",
+      "source_url": "https://www.pexels.com/video/person-walking-in-grass-barefoot-6624081/",
+      "pexels_video_id": "6624081",
+      "source_clip_id": "pexels:34b2b93c5044354c",
+      "recorded_at": "2026-07-09T19:02:35.991857+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "bf05f42deae60056",
+      "stage": "editor_in_chief",
+      "reasons": [
+        "thumbnail copy must contain 2-4 readable words",
+        "subject repeated inside 3-day cooldown",
+        "humanity score is too low",
+        "editorial score 29 is below 62"
+      ],
+      "title": "Foxes Zorros escuchan bajo la nieve para cazar",
+      "category": "nocturnal",
+      "script_key": "los zorros escuchan bajo la nieve antes de cazar f jate en esa pausa antes del salto pueden apuntar a presas que ni ven sus orejas triangulan ruidos d biles bajo la nieve o hierba el brinco es el ltimo paso de un rompecabezas de sonidos lo escuchar as t now the snow hearing at the start makes sense",
+      "angle_key": "foxes|sense|snow hearing|nocturnal",
+      "source_url": "https://www.pexels.com/video/grey-headed-flying-foxes-are-amazing-27787008/",
+      "pexels_video_id": "27787008",
+      "source_clip_id": "pexels:bf05f42deae60056",
+      "recorded_at": "2026-07-09T19:04:26.514286+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "d839beca3c1cf8ba",
+      "stage": "queue_prune_final",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "title": "Snakes sample the air with a tongue flick",
+      "category": "reptiles",
+      "script_key": "snakes sample the air with a tongue flick watch the tongue flick because it collects scent particles and sends them to a special organ in the mouth that helps snakes track prey mates and danger without needing a loud chase the air is information would you notice the trail",
+      "angle_key": "snakes|sample|tongue smell|reptiles",
+      "source_url": "https://www.pexels.com/video/squirrel-on-ground-at-park-11653658/",
+      "pexels_video_id": "11653658",
+      "source_clip_id": "pexels:d839beca3c1cf8ba",
+      "recorded_at": "2026-07-09T19:05:51.131590+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "58485f9bb3a3cac1",
+      "stage": "queue_prune",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "title": "Lava flames dance—but they don't burn like fire",
+      "category": "geology",
+      "script_key": "flames dance but lava cools that red river isn t fire it s molten rock pushing up from 30 miles down because the mantle s always on the move bright edges glow at 2 100 f that s why it hardens into new land overnight you ever stood this close what would you grab first",
+      "angle_key": "lava|glow|lava|geology",
+      "source_url": "https://www.pexels.com/video/captivating-flames-dance-in-the-night-38008002/",
+      "pexels_video_id": "38008002",
+      "source_clip_id": "pexels:58485f9bb3a3cac1",
+      "recorded_at": "2026-07-09T19:09:41.868819+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "124a22469f3b3677",
+      "stage": "queue_prune",
+      "reasons": [
+        "off_topic_visual",
+        "script_subject_mismatch",
+        "copy_subject_mismatch"
+      ],
+      "title": "Great whites hunt like stealth hunters in clear water",
+      "category": "ocean",
+      "script_key": "this looks cute isn t it that s the great white you re seeing watch how it glides no splashing no chase that s because it s silent like a shadow it s not fast it s patient because once the seal spots the shark the hunt is over so it hides in plain sight ever seen a predator just disappear",
+      "angle_key": "shark|hunt|cue|ocean",
+      "source_url": "https://www.pexels.com/video/atlantis-hotel-19462597/",
+      "pexels_video_id": "19462597",
+      "source_clip_id": "pexels:124a22469f3b3677",
+      "recorded_at": "2026-07-09T19:09:41.888479+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "74bb0812fc0e37d9",
+      "stage": "editor_in_chief",
+      "reasons": [
+        "script quality gate blocked the narration"
+      ],
+      "title": "Rivers carve bends by stealing from one bank",
+      "category": "rivers",
+      "script_key": "rivers move sideways while they flow watch the outside of the bend because faster water cuts that bank while slower water drops sediment inside the curve over time the whole river shifts across the landscape a bend is motion written in mud which water shape next now the river bend at the start makes sense",
+      "angle_key": "rivers|flow|river bend|rivers",
+      "source_url": "https://www.pexels.com/video/video-of-a-boots-moving-6628142/",
+      "pexels_video_id": "6628142",
+      "source_clip_id": "pexels:74bb0812fc0e37d9",
+      "recorded_at": "2026-07-09T20:03:39.406237+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "47e7da81bc75d158",
+      "stage": "editor_in_chief",
+      "reasons": [
+        "subject repeated inside 3-day cooldown",
+        "humanity score is too low",
+        "editorial score 41 is below 62"
+      ],
+      "title": "Seals Focas rastrean presas con sus bigotes",
+      "category": "arctic",
+      "script_key": "las focas siguen rastros con sus bigotes mira c mo vibran sus bigotes cerca del agua detectan movimientos de peces aunque el agua est turbia el hocico se vuelve detector de corrientes qu otro sentido marino nos falta now the wake tracker at the start makes sense",
+      "angle_key": "seals|sense|cue|arctic",
+      "source_url": "https://www.pexels.com/video/lone-seal-swimming-by-rocky-shoreline-34954308/",
+      "pexels_video_id": "34954308",
+      "source_clip_id": "pexels:47e7da81bc75d158",
+      "recorded_at": "2026-07-09T20:04:16.267274+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "86db764620dd2138",
+      "stage": "queue_prune",
+      "reasons": [
+        "copy_subject_mismatch"
+      ],
+      "title": "Rivers carry stone grains while they flow",
+      "category": "ocean",
+      "script_key": "rivers move tiny pieces of stone downstream watch the water near the rocks because moving current can lift sand roll pebbles and grind larger stones over time the stream is carrying the landscape in small pieces which water clue should we follow next",
+      "angle_key": "rivers|carry|current|ocean",
+      "source_url": "https://www.pexels.com/video/fish-in-water-14200835/",
+      "pexels_video_id": "14200835",
+      "source_clip_id": "pexels:86db764620dd2138",
+      "recorded_at": "2026-07-09T20:55:23.068191+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     },
@@ -148,42 +435,6 @@
       "rewrite_applied": false
     },
     {
-      "story_id": "ce3b2fc76a336a95",
-      "stage": "opportunity_score",
-      "reasons": [
-        "weak_visual_surface",
-        "low_opportunity_score"
-      ],
-      "title": "Bears This scent map gives bears away",
-      "category": "arctic",
-      "script_key": "bears can smell a meal long before seeing it watch the nose first because smell drives many bear decisions before the eyes do that huge scent map helps them find food avoid danger and read who crossed the area earlier would you trust your nose that much",
-      "angle_key": "bears|smell|scent map|arctic",
-      "source_url": "https://www.pexels.com/video/polar-bear-swimming-in-outdoor-zoo-enclosure-34154636/",
-      "pexels_video_id": "34154636",
-      "source_clip_id": "pexels:ce3b2fc76a336a95",
-      "recorded_at": "2026-07-09T22:19:28.946296+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-09T22:19:28.994453+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
       "story_id": "37f050ce64a2fd6a",
       "stage": "queue_prune",
       "reasons": [
@@ -198,150 +449,6 @@
       "pexels_video_id": "17282486",
       "source_clip_id": "pexels:37f050ce64a2fd6a",
       "recorded_at": "2026-07-09T22:41:19.046689+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "ce3b2fc76a336a95",
-      "stage": "opportunity_score",
-      "reasons": [
-        "weak_visual_surface",
-        "low_opportunity_score"
-      ],
-      "title": "Bears This scent map gives bears away",
-      "category": "arctic",
-      "script_key": "bears can smell a meal long before seeing it watch the nose first because smell drives many bear decisions before the eyes do that huge scent map helps them find food avoid danger and read who crossed the area earlier would you trust your nose that much",
-      "angle_key": "bears|smell|scent map|arctic",
-      "source_url": "https://www.pexels.com/video/polar-bear-swimming-in-outdoor-zoo-enclosure-34154636/",
-      "pexels_video_id": "34154636",
-      "source_clip_id": "pexels:ce3b2fc76a336a95",
-      "recorded_at": "2026-07-09T22:41:57.905054+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-09T22:41:57.951858+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "ce3b2fc76a336a95",
-      "stage": "opportunity_score",
-      "reasons": [
-        "weak_visual_surface",
-        "low_opportunity_score"
-      ],
-      "title": "Bears This scent map gives bears away",
-      "category": "arctic",
-      "script_key": "bears can smell a meal long before seeing it watch the nose first because smell drives many bear decisions before the eyes do that huge scent map helps them find food avoid danger and read who crossed the area earlier would you trust your nose that much",
-      "angle_key": "bears|smell|scent map|arctic",
-      "source_url": "https://www.pexels.com/video/polar-bear-swimming-in-outdoor-zoo-enclosure-34154636/",
-      "pexels_video_id": "34154636",
-      "source_clip_id": "pexels:ce3b2fc76a336a95",
-      "recorded_at": "2026-07-09T22:46:52.796583+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-09T22:46:52.840784+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "ce3b2fc76a336a95",
-      "stage": "opportunity_score",
-      "reasons": [
-        "weak_visual_surface",
-        "low_opportunity_score"
-      ],
-      "title": "Bears This scent map gives bears away",
-      "category": "arctic",
-      "script_key": "bears can smell a meal long before seeing it watch the nose first because smell drives many bear decisions before the eyes do that huge scent map helps them find food avoid danger and read who crossed the area earlier would you trust your nose that much",
-      "angle_key": "bears|smell|scent map|arctic",
-      "source_url": "https://www.pexels.com/video/polar-bear-swimming-in-outdoor-zoo-enclosure-34154636/",
-      "pexels_video_id": "34154636",
-      "source_clip_id": "pexels:ce3b2fc76a336a95",
-      "recorded_at": "2026-07-09T22:53:30.882492+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-09T22:53:30.930391+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "ce3b2fc76a336a95",
-      "stage": "opportunity_score",
-      "reasons": [
-        "weak_visual_surface",
-        "low_opportunity_score"
-      ],
-      "title": "Bears This scent map gives bears away",
-      "category": "arctic",
-      "script_key": "bears can smell a meal long before seeing it watch the nose first because smell drives many bear decisions before the eyes do that huge scent map helps them find food avoid danger and read who crossed the area earlier would you trust your nose that much",
-      "angle_key": "bears|smell|scent map|arctic",
-      "source_url": "https://www.pexels.com/video/polar-bear-swimming-in-outdoor-zoo-enclosure-34154636/",
-      "pexels_video_id": "34154636",
-      "source_clip_id": "pexels:ce3b2fc76a336a95",
-      "recorded_at": "2026-07-09T22:57:32.457365+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-09T22:57:32.506853+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     },
@@ -376,7 +483,7 @@
       "source_url": "https://www.pexels.com/video/polar-bear-swimming-in-outdoor-zoo-enclosure-34154636/",
       "pexels_video_id": "34154636",
       "source_clip_id": "pexels:ce3b2fc76a336a95",
-      "recorded_at": "2026-07-09T23:03:37.294334+00:00",
+      "recorded_at": "2026-07-10T00:16:13.269588+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     },
@@ -394,116 +501,9 @@
       "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
       "pexels_video_id": "36118169",
       "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-09T23:03:37.338950+00:00",
+      "recorded_at": "2026-07-10T00:16:13.313406+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
-    },
-    {
-      "story_id": "ce3b2fc76a336a95",
-      "stage": "opportunity_score",
-      "reasons": [
-        "weak_visual_surface",
-        "low_opportunity_score"
-      ],
-      "title": "Bears This scent map gives bears away",
-      "category": "arctic",
-      "script_key": "bears can smell a meal long before seeing it watch the nose first because smell drives many bear decisions before the eyes do that huge scent map helps them find food avoid danger and read who crossed the area earlier would you trust your nose that much",
-      "angle_key": "bears|smell|scent map|arctic",
-      "source_url": "https://www.pexels.com/video/polar-bear-swimming-in-outdoor-zoo-enclosure-34154636/",
-      "pexels_video_id": "34154636",
-      "source_clip_id": "pexels:ce3b2fc76a336a95",
-      "recorded_at": "2026-07-09T23:26:50.090012+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-09T23:26:50.143002+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "ce3b2fc76a336a95",
-      "stage": "opportunity_score",
-      "reasons": [
-        "weak_visual_surface",
-        "low_opportunity_score"
-      ],
-      "title": "Bears This scent map gives bears away",
-      "category": "arctic",
-      "script_key": "bears can smell a meal long before seeing it watch the nose first because smell drives many bear decisions before the eyes do that huge scent map helps them find food avoid danger and read who crossed the area earlier would you trust your nose that much",
-      "angle_key": "bears|smell|scent map|arctic",
-      "source_url": "https://www.pexels.com/video/polar-bear-swimming-in-outdoor-zoo-enclosure-34154636/",
-      "pexels_video_id": "34154636",
-      "source_clip_id": "pexels:ce3b2fc76a336a95",
-      "recorded_at": "2026-07-09T23:42:45.005624+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "8bdc8b70af521eb4",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/close-up-of-aldabra-giant-tortoise-in-nature-38053029/",
-      "pexels_video_id": "36118169",
-      "source_clip_id": "pexels:8bdc8b70af521eb4",
-      "recorded_at": "2026-07-09T23:42:45.055338+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "86040a29b0f57429",
-      "stage": "queue_prune",
-      "reasons": [
-        "copy_subject_mismatch",
-        "duplicate_title"
-      ],
-      "title": "Magnets make invisible fields visible",
-      "category": "ocean",
-      "script_key": "magnets can show a hidden force map watch the filings line up because each tiny piece becomes a small magnet in the field together they trace the direction of the force around the magnet the pattern is physics drawing itself which force next",
-      "angle_key": "magnets|make|field lines|ocean",
-      "source_url": "https://www.pexels.com/video/vibrant-underwater-tropical-fish-scene-37202977/",
-      "pexels_video_id": "37202977",
-      "source_clip_id": "pexels:86040a29b0f57429",
-      "recorded_at": "2026-07-10T00:16:19.450067+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "f3833eb423f20ed0",
-      "stage": "queue_prune",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "title": "Fish in a tank aren't just swimming randomly",
-      "category": "conservation",
-      "script_key": "this fish isn t just swimming watch its fins it s steering with its tail like a rudder but that s not all it s using its pectoral fins to feel the water s currents that s why it swims so smoothly most people think fish just flap and go but this one s actually reading the room",
-      "angle_key": "conservation|feel|currents|conservation",
-      "source_url": "https://www.pexels.com/video/a-fish-swimming-in-an-aquarium-16063616/",
-      "pexels_video_id": "16063616",
-      "source_clip_id": "pexels:f3833eb423f20ed0",
-      "recorded_at": "2026-07-10T00:16:19.467669+00:00",
-      "rewrite_attempted": false,
-      "rewrite_applied": false
     }
   ]
 }
