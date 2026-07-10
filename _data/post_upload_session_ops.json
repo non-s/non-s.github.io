@@ -2,18 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 8,
+      "automation_safe": 9,
       "high": 1,
-      "manual_review": 2,
+      "manual_review": 1,
       "total": 10,
       "urgent": 9
     },
     "free_only": true,
-    "generated_at": "2026-07-10T04:19:56.771745+00:00",
+    "generated_at": "2026-07-10T04:23:51.465006+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 23.134,
+        "age_hours": 23.199,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 20.358,
+        "age_hours": 20.423,
         "automation_safe": true,
         "category": "trees",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 20.164,
+        "age_hours": 20.229,
         "automation_safe": true,
         "category": "earth_from_space",
         "checkpoint_label": "1h",
@@ -91,7 +91,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 16.963,
+        "age_hours": 17.028,
         "automation_safe": true,
         "category": "arctic",
         "checkpoint_label": "1h",
@@ -117,7 +117,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 16.044,
+        "age_hours": 16.109,
         "automation_safe": true,
         "category": "plants",
         "checkpoint_label": "1h",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 14.255,
+        "age_hours": 14.32,
         "automation_safe": true,
         "category": "dogs",
         "checkpoint_label": "1h",
@@ -169,7 +169,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 9.36,
+        "age_hours": 9.425,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 9.256,
+        "age_hours": 9.322,
         "automation_safe": true,
         "category": "nocturnal",
         "checkpoint_label": "1h",
@@ -220,9 +220,9 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "queue_sequel_bridge",
-        "age_hours": 8.259,
-        "automation_safe": false,
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 8.325,
+        "automation_safe": true,
         "category": "arctic",
         "checkpoint_label": "6h",
         "checkpoint_state": "overdue",
@@ -230,24 +230,24 @@
         "due_at": "2026-07-10T02:04:23.188358+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:XZIAdzI-njM:accelerating:6h",
-        "lane": "amplify",
-        "manual_approval_required": true,
+        "id": "fresh-upload:XZIAdzI-njM:analytics_due:6h",
+        "lane": "measurement",
+        "manual_approval_required": false,
         "opening_retention_score": 94.0,
         "priority": "urgent",
-        "recommended_action": "Queue a sequel or related-video bridge while the session has momentum.",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 6h sample first.",
         "series": "Polar Survival",
-        "state": "accelerating",
+        "state": "analytics_due",
         "target_views": 105,
         "title": "Seals can follow wakes with their whiskers",
         "url": "https://www.youtube.com/shorts/XZIAdzI-njM",
         "video_id": "XZIAdzI-njM",
         "wait_until": "",
-        "why": "Performance signal is already positive; amplify without changing the opening."
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 7.287,
+        "age_hours": 7.352,
         "automation_safe": false,
         "category": "ocean",
         "checkpoint_label": "24h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-10T04:19:56.770784+00:00"
+    "source_generated_at": "2026-07-10T04:23:51.464104+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,17 @@
       24
     ],
     "counts": {
-      "analytics_due": 8,
+      "analytics_due": 9,
       "awaiting_1h": 0,
-      "high_priority": 9,
+      "high_priority": 10,
       "repair_candidates": 1,
       "tracked": 10
     },
-    "generated_at": "2026-07-10T04:19:56.770784+00:00",
+    "generated_at": "2026-07-10T04:23:51.464104+00:00",
     "items": [
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 7.287,
+        "age_hours": 7.352,
         "category": "ocean",
         "checkpoints": [
           {
@@ -357,8 +357,8 @@
         }
       },
       {
-        "action": "Queue a sequel or related-video bridge while the session has momentum.",
-        "age_hours": 8.259,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 8.325,
         "category": "arctic",
         "checkpoints": [
           {
@@ -390,7 +390,7 @@
           }
         ],
         "current_views": 1,
-        "hypothesis": "Performance signal is already positive; amplify without changing the opening.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
           "delta_to_target": -105,
           "due_at": "2026-07-10T02:04:23.188358+00:00",
@@ -402,27 +402,18 @@
         },
         "opening_retention_score": 94.0,
         "opening_retention_state": "retention_ready",
-        "priority": "normal",
+        "priority": "high",
         "series": "Polar Survival",
-        "state": "accelerating",
+        "state": "analytics_due",
         "title": "Seals can follow wakes with their whiskers",
         "uploaded_at": "2026-07-09T20:04:23.188358+00:00",
         "url": "https://www.youtube.com/shorts/XZIAdzI-njM",
         "video_id": "XZIAdzI-njM",
-        "views_per_hour": 0.123,
-        "warning": {
-          "confidence_score": 0.512,
-          "reasoning": "video has 30/2 samples, estimated data, confidence 0.51; observation only.",
-          "score": 0,
-          "state": "accelerating",
-          "title": "Seals can follow wakes with their whiskers",
-          "video_id": "XZIAdzI-njM",
-          "warning_state": "accelerator"
-        }
+        "views_per_hour": 0.12
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 9.256,
+        "age_hours": 9.322,
         "category": "nocturnal",
         "checkpoints": [
           {
@@ -473,11 +464,11 @@
         "uploaded_at": "2026-07-09T19:04:33.771351+00:00",
         "url": "https://www.youtube.com/shorts/LdYL1w1rf0g",
         "video_id": "LdYL1w1rf0g",
-        "views_per_hour": 0.11
+        "views_per_hour": 0.108
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 9.36,
+        "age_hours": 9.425,
         "category": "insects",
         "checkpoints": [
           {
@@ -532,7 +523,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 14.255,
+        "age_hours": 14.32,
         "category": "dogs",
         "checkpoints": [
           {
@@ -583,11 +574,11 @@
         "uploaded_at": "2026-07-09T14:04:39.316623+00:00",
         "url": "https://www.youtube.com/shorts/8LrEpWspyK8",
         "video_id": "8LrEpWspyK8",
-        "views_per_hour": 0.071
+        "views_per_hour": 0.07
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 16.044,
+        "age_hours": 16.109,
         "category": "plants",
         "checkpoints": [
           {
@@ -642,7 +633,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 16.963,
+        "age_hours": 17.028,
         "category": "arctic",
         "checkpoints": [
           {
@@ -697,7 +688,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 20.164,
+        "age_hours": 20.229,
         "category": "earth_from_space",
         "checkpoints": [
           {
@@ -752,7 +743,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 20.358,
+        "age_hours": 20.423,
         "category": "trees",
         "checkpoints": [
           {
@@ -807,7 +798,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 23.134,
+        "age_hours": 23.199,
         "category": "geology",
         "checkpoints": [
           {
@@ -868,7 +859,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-10T04:19:56.771834+00:00",
+  "generated_at": "2026-07-10T04:23:51.465095+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
