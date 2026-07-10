@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-07-10T12:09:43.145296+00:00",
-  "pending": 12,
+  "generated_at": "2026-07-10T12:13:08.383004+00:00",
+  "pending": 15,
   "states": {
-    "publish_ready": 2,
-    "rewrite": 10
+    "publish_ready": 3,
+    "rewrite": 12
   },
   "mechanism_clusters": {
     "scent_map": 2,
@@ -11,26 +11,132 @@
     "face_recognition": 1
   },
   "rights": {
-    "approved": 12
+    "approved": 15
   },
   "prune_summary": {
-    "pending_before": 12,
-    "pending_after": 12,
-    "rejected": 0,
+    "pending_before": 20,
+    "pending_after": 15,
+    "rejected": 5,
     "repair_needed": 0,
-    "repaired": 2,
+    "repaired": 5,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 11,
       "editor_in_chief:subject repeated inside 3-day cooldown": 6,
       "editor_in_chief:script quality gate blocked the narration": 4,
+      "off_topic_visual": 3,
+      "copy_subject_mismatch": 3,
+      "duplicate_title": 3,
+      "objective_gate:observe_before_scaling": 2,
       "editor_in_chief:editorial score 46 is below 62": 2,
-      "objective_gate:observe_before_scaling": 1,
+      "inventory_reserve_fallback": 2,
+      "script_subject_mismatch": 1,
+      "duplicate_script": 1,
+      "duplicate_angle": 1,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
       "publish_ready_supply_reserve_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "2a44984c0cf489c0",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "off_topic_visual",
+        "copy_subject_mismatch"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "055aa3718a307773",
+      "title": "Lions hunt better when the pride coordinates",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "5bd1602ea1f6e6c1",
+      "title": "Mangroves take power out of waves",
+      "reasons": [
+        "copy_subject_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "933ad08da42be371",
+      "title": "Beetles taste like wine and you already stepped on them",
+      "reasons": [
+        "off_topic_visual",
+        "script_subject_mismatch",
+        "copy_subject_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "15cf46333d9d958b",
+      "title": "Beetle rolls like a rock at lightning speed",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "ce3b2fc76a336a95",
+      "title": "Bears This scent map gives bears away",
+      "reasons": [
+        "weak_visual_surface",
+        "low_opportunity_score"
+      ],
+      "stage": "opportunity_score"
+    },
+    {
+      "id": "2b314bb55137e91b",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
+      "id": "ce3b2fc76a336a95",
+      "title": "Bears This scent map gives bears away",
+      "reasons": [
+        "weak_visual_surface",
+        "low_opportunity_score"
+      ],
+      "stage": "opportunity_score"
+    },
+    {
+      "id": "2b314bb55137e91b",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
+      "id": "ce3b2fc76a336a95",
+      "title": "Bears This scent map gives bears away",
+      "reasons": [
+        "weak_visual_surface",
+        "low_opportunity_score"
+      ],
+      "stage": "opportunity_score"
+    },
+    {
+      "id": "2b314bb55137e91b",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
     {
       "id": "ce3b2fc76a336a95",
       "title": "Bears This scent map gives bears away",
@@ -72,6 +178,42 @@
       "stage": "queue_prune"
     },
     {
+      "id": "ce3b2fc76a336a95",
+      "title": "Bears This scent map gives bears away",
+      "reasons": [
+        "weak_visual_surface",
+        "low_opportunity_score"
+      ],
+      "stage": "opportunity_score"
+    },
+    {
+      "id": "2b314bb55137e91b",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
+      "id": "ce3b2fc76a336a95",
+      "title": "Bears This scent map gives bears away",
+      "reasons": [
+        "weak_visual_surface",
+        "low_opportunity_score"
+      ],
+      "stage": "opportunity_score"
+    },
+    {
+      "id": "2b314bb55137e91b",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
       "id": "b22dcc38f2ba2cce",
       "title": "Coral reefs are cities built by tiny animals",
       "reasons": [
@@ -95,6 +237,42 @@
         "off_topic_visual"
       ],
       "stage": "queue_prune"
+    },
+    {
+      "id": "ce3b2fc76a336a95",
+      "title": "Bears This scent map gives bears away",
+      "reasons": [
+        "weak_visual_surface",
+        "low_opportunity_score"
+      ],
+      "stage": "opportunity_score"
+    },
+    {
+      "id": "2b314bb55137e91b",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
+    },
+    {
+      "id": "ce3b2fc76a336a95",
+      "title": "Bears This scent map gives bears away",
+      "reasons": [
+        "weak_visual_surface",
+        "low_opportunity_score"
+      ],
+      "stage": "opportunity_score"
+    },
+    {
+      "id": "2b314bb55137e91b",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "stage": "youtube_brain_rewrite"
     },
     {
       "id": "8bdc8b70af521eb4",
@@ -134,177 +312,653 @@
         "queue_score_reject"
       ],
       "stage": "queue_repair"
-    },
-    {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
-    },
-    {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
-    },
-    {
-      "id": "dd2875ff3bf5f21a",
-      "title": "Lightning turns air into a shock wave",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "5e29527c26a1396c",
-      "title": "Desert ripples aren't just random sand",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "63d997c9fda04ddb",
-      "title": "bats use sonar to hunt above speed",
-      "reasons": [
-        "rights_guard_person_manual_review",
-        "off_topic_visual",
-        "script_subject_mismatch",
-        "copy_subject_mismatch",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
-    },
-    {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
-    },
-    {
-      "id": "6326fde731107ef3",
-      "title": "Magnets make invisible fields visible",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "4e60cc6e725ddb93",
-      "title": "Volcano eruptions paint the sky in real time",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
-    },
-    {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
-    },
-    {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
-    },
-    {
-      "id": "228bc5d14bca9c82",
-      "title": "Magnets make invisible fields visible",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "d4fa7ef6a81d5be5",
-      "title": "Snowy mountains hide a moving secret",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
-    },
-    {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
-    },
-    {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
-    },
-    {
-      "id": "8bdc8b70af521eb4",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "stage": "youtube_brain_rewrite"
-    },
-    {
-      "id": "4075200f37558bd2",
-      "title": "Mangroves take power out of waves",
-      "reasons": [
-        "copy_subject_mismatch"
-      ],
-      "stage": "queue_prune_final"
     }
   ],
   "top": [
+    {
+      "id": "d6f8cc77f5972deb",
+      "title": "Lions hunt better when the pride coordinates",
+      "category": "wildlife",
+      "publish_score": {
+        "approved": true,
+        "category": "wildlife",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.446,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.261,
+          "data_quality": "estimated",
+          "data_quality_score": 0.61,
+          "minimum_sample_size": 35,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.26.",
+          "recommendation_strength": "observe",
+          "sample_size": 15
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.261,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "pride"
+          ],
+          "cue_terms": [
+            "paw",
+            "placement",
+            "pride"
+          ],
+          "frame_hook_bridge": [
+            "plan",
+            "pride"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "lion"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.42,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.227,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+          "reasons": [],
+          "score": 63,
+          "signals": {
+            "comment_potential": 49,
+            "educational_potential": 61,
+            "emotional_potential": 30,
+            "novelty": 64,
+            "replay_potential": 67,
+            "viral_potential": 67,
+            "visual_potential": 84
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.42,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.227,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+          "reasons": [],
+          "score": 72,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 74
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.397,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.196,
+            "data_quality": "observed",
+            "data_quality_score": 0.667,
+            "minimum_sample_size": 15,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.20.",
+            "recommendation_strength": "observe",
+            "sample_size": 6
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.20.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.3,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-07-10T12:12:52.922926+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:observe_before_scaling"
+        ],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "lions",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "pride"
+          ],
+          "cue_terms": [
+            "paw",
+            "placement",
+            "pride"
+          ],
+          "frame_hook_bridge": [
+            "plan",
+            "pride"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "lion"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "lions",
+        "viewer_promise": "See why lions body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which lions clue should Wild Brief compare next in Watch The Cue?",
+        "cta_prompt": "Want more wild behavior explained without the fluff?",
+        "curiosity_gap": {
+          "hook": "Why does this lion changes after the paw placement?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 92,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
+          },
+          "winning_experiments": {
+            "cta:specific_question": 46.9,
+            "format:fresh_variant": 46.9,
+            "format:winner_inspired": 39.89,
+            "hook:new_hook": 46.9,
+            "thumbnail:new_thumbnail": 41.5
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "pride"
+            ],
+            "cue_terms": [
+              "paw",
+              "placement",
+              "pride"
+            ],
+            "frame_hook_bridge": [
+              "plan",
+              "pride"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "lion"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Lions turn hunting into a team problem",
+          "Lions reveal the pride plan first",
+          "Lions show why the pride plan matters.",
+          "Lions show why the pride plan matters.",
+          "Lions show why the pride plan matters."
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "pride plan",
+          "ending_line": "Which predator tactic should we break down next?",
+          "final_line": "Now the pride plan at the start makes sense.",
+          "loop_score": 0.8,
+          "opening_line": "Lions reveal the pride plan first.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "pride plan",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.8,
+        "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "pride"
+          ],
+          "cue_terms": [
+            "paw",
+            "placement",
+            "pride"
+          ],
+          "frame_hook_bridge": [
+            "plan",
+            "pride"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "lion"
+        },
+        "pinned_comment": "Watch the pride plan again. Tomorrow in Watch The Cue: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 16.4,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 15,
+          "first_2s_narration": "Lions reveal the pride plan first Watch closely because lions can use",
+          "first_frame_text": "PRIDE PLAN",
+          "first_frame_text_words": 2,
+          "hook": "Lions reveal the pride plan first.",
+          "hook_specificity": 0.78,
+          "hook_words": 6,
+          "loop_score": 0.8,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "pride"
+            ],
+            "cue_terms": [
+              "paw",
+              "placement",
+              "pride"
+            ],
+            "frame_hook_bridge": [
+              "plan",
+              "pride"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "lion"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the pride plan, so viewers rewatch the lions clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.42,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.227,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only.",
+          "reasons": [],
+          "score": 72,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 74
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Lions reveal the pride plan first Watch closely because lions can use",
+          "first_frame_text": "PRIDE PLAN",
+          "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. Is this adaptation, instinct, or intelligence?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Lions behavior through the visible pride plan.",
+            "series": "Watch The Cue",
+            "subject": "lions",
+            "terms": [
+              "lions",
+              "pride plan",
+              "wildlife",
+              "body superpower"
+            ],
+            "title_variant": "Lions behavior: pride plan explained",
+            "visible_cue": "pride plan"
+          },
+          "series": "Watch The Cue",
+          "subject": "lions",
+          "visible_cue": "pride plan"
+        },
+        "risks": [],
+        "score": 95,
+        "search_intent": {
+          "description_line": "This Short explains Lions behavior through the visible pride plan.",
+          "series": "Watch The Cue",
+          "subject": "lions",
+          "terms": [
+            "lions",
+            "pride plan",
+            "wildlife",
+            "body superpower"
+          ],
+          "title_variant": "Lions behavior: pride plan explained",
+          "visible_cue": "pride plan"
+        },
+        "selected_variant": {
+          "hook": "Lions turn hunting into a team problem",
+          "score": 78,
+          "thumbnail_text": "PRIDE PLAN",
+          "title": "Lions hunt better when the pride coordinates"
+        },
+        "series": "Watch The Cue",
+        "series_identity": {
+          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Watch The Cue",
+          "series": "Watch The Cue"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.397,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.196,
+            "data_quality": "observed",
+            "data_quality_score": 0.667,
+            "minimum_sample_size": 15,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.20.",
+            "recommendation_strength": "observe",
+            "sample_size": 6
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.20.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.3,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "PRIDE PLAN",
+          "WATCH PRIDE PLAN",
+          "LIONS ESCAPE",
+          "PRIDE PLAN MATTERS",
+          "PRIDE PLAN FIRST",
+          "PRIDE PLAN REVEAL",
+          "PRIDE PLAN CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Lions hunt better when the pride coordinates",
+          "Lions use pride plan before they escape",
+          "This pride plan gives lions away",
+          "Why lions escape after one pride plan",
+          "Lions reveal the answer with pride plan",
+          "The pride plan that changes the moment",
+          "Lions make one pride plan matter",
+          "Lions show the hidden answer in seconds",
+          "Lions: watch this pride plan",
+          "Watch lions after the pride plan"
+        ],
+        "top_variants": [
+          {
+            "hook": "Lions turn hunting into a team problem",
+            "score": 78,
+            "thumbnail_text": "PRIDE PLAN",
+            "title": "Lions hunt better when the pride coordinates"
+          },
+          {
+            "hook": "Lions reveal the pride plan first",
+            "score": 78,
+            "thumbnail_text": "PRIDE PLAN",
+            "title": "Lions hunt better when the pride coordinates"
+          },
+          {
+            "hook": "Watch the pride plan; it explains the behavior",
+            "score": 78,
+            "thumbnail_text": "PRIDE PLAN",
+            "title": "Lions hunt better when the pride coordinates"
+          },
+          {
+            "hook": "Lions turn hunting into a team problem",
+            "score": 75,
+            "thumbnail_text": "PRIDE PLAN",
+            "title": "Lions use pride plan before they escape"
+          },
+          {
+            "hook": "Lions reveal the pride plan first",
+            "score": 75,
+            "thumbnail_text": "PRIDE PLAN",
+            "title": "Lions use pride plan before they escape"
+          },
+          {
+            "hook": "Watch the pride plan; it explains the behavior",
+            "score": 75,
+            "thumbnail_text": "PRIDE PLAN",
+            "title": "Lions use pride plan before they escape"
+          },
+          {
+            "hook": "Lions turn hunting into a team problem",
+            "score": 71,
+            "thumbnail_text": "WATCH PRIDE PLAN",
+            "title": "Lions hunt better when the pride coordinates"
+          },
+          {
+            "hook": "Lions reveal the pride plan first",
+            "score": 71,
+            "thumbnail_text": "WATCH PRIDE PLAN",
+            "title": "Lions hunt better when the pride coordinates"
+          },
+          {
+            "hook": "Watch the pride plan; it explains the behavior",
+            "score": 71,
+            "thumbnail_text": "WATCH PRIDE PLAN",
+            "title": "Lions hunt better when the pride coordinates"
+          },
+          {
+            "hook": "Lions turn hunting into a team problem",
+            "score": 71,
+            "thumbnail_text": "LIONS ESCAPE",
+            "title": "Lions hunt better when the pride coordinates"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
     {
       "id": "2b314bb55137e91b",
       "title": "Fossils turn old bones into time clues",
@@ -480,7 +1134,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-10T12:09:29.951752+00:00",
+        "checked_at": "2026-07-10T12:12:53.277294+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -959,6 +1613,653 @@
       }
     },
     {
+      "id": "5b8590a7b6536e13",
+      "title": "Snakes use heat pits before they sense",
+      "category": "reptiles",
+      "publish_score": {
+        "approved": true,
+        "category": "reptiles",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.432,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.243,
+          "data_quality": "observed",
+          "data_quality_score": 1.0,
+          "minimum_sample_size": 35,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.24.",
+          "recommendation_strength": "observe",
+          "sample_size": 11
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.243,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "heat",
+            "light"
+          ],
+          "cue_terms": [
+            "heat",
+            "light",
+            "vision"
+          ],
+          "frame_hook_bridge": [
+            "heat"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "snakes"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.4,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.2,
+            "data_quality": "observed",
+            "data_quality_score": 1.0,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only.",
+          "reasons": [],
+          "score": 56,
+          "signals": {
+            "comment_potential": 48,
+            "educational_potential": 60,
+            "emotional_potential": 29,
+            "novelty": 53,
+            "replay_potential": 68,
+            "viral_potential": 58,
+            "visual_potential": 63
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.4,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.2,
+            "data_quality": "observed",
+            "data_quality_score": 1.0,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only.",
+          "reasons": [],
+          "score": 76,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.392,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.189,
+            "data_quality": "observed",
+            "data_quality_score": 0.883,
+            "minimum_sample_size": 15,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
+            "recommendation_strength": "observe",
+            "sample_size": 5
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.3,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [
+            "weak_hook_pattern"
+          ],
+          "risk": 14,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-07-10T12:12:53.907843+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "inventory_reserve_fallback",
+          "inventory_reserve:duplicate_title"
+        ],
+        "score": 100.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "snakes",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "heat",
+            "light"
+          ],
+          "cue_terms": [
+            "heat",
+            "light",
+            "vision"
+          ],
+          "frame_hook_bridge": [
+            "heat"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "snakes"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "snakes",
+        "viewer_promise": "See why snakes body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which snakes clue should Wild Brief compare next in Rare Earth?",
+        "cta_prompt": "Want more survival tricks from ancient designs?",
+        "curiosity_gap": {
+          "hook": "Snakes can sense heat when light disappears.",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "story"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 92,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
+          },
+          "winning_experiments": {
+            "cta:specific_question": 46.9,
+            "format:fresh_variant": 46.9,
+            "format:winner_inspired": 39.89,
+            "hook:new_hook": 46.9,
+            "thumbnail:new_thumbnail": 41.5
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "heat",
+              "light"
+            ],
+            "cue_terms": [
+              "heat",
+              "light",
+              "vision"
+            ],
+            "frame_hook_bridge": [
+              "heat"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "snakes"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Snakes can sense heat when light disappears",
+          "Snakes show why the heat vision matters.",
+          "Snakes show why the heat vision matters.",
+          "Snakes show why the heat vision matters.",
+          "Snakes give away the answer through heat pits"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "sense",
+          "ending_line": "Which reptile sense next?",
+          "final_line": "Which reptile sense next?",
+          "loop_score": 0.79,
+          "opening_line": "Snakes can sense heat when light disappears.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "sense",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": false,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.79,
+        "next_episode_question": "Tomorrow in Rare Earth: another animal signal. Is this ancient design underrated?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "heat",
+            "light"
+          ],
+          "cue_terms": [
+            "heat",
+            "light",
+            "vision"
+          ],
+          "frame_hook_bridge": [
+            "heat"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "snakes"
+        },
+        "pinned_comment": "Watch the heat vision again. Tomorrow in Rare Earth: another animal signal. Is this ancient design underrated?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 16.0,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 17,
+          "first_2s_narration": "Snakes can sense heat when light disappears Watch the head before the",
+          "first_frame_text": "HEAT VISION",
+          "first_frame_text_words": 2,
+          "hook": "Snakes can sense heat when light disappears.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.79,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "heat",
+              "light"
+            ],
+            "cue_terms": [
+              "heat",
+              "light",
+              "vision"
+            ],
+            "frame_hook_bridge": [
+              "heat"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "snakes"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the heat vision, so viewers rewatch the snakes clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.4,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.2,
+            "data_quality": "observed",
+            "data_quality_score": 1.0,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, observed data, confidence 0.20; observation only.",
+          "reasons": [],
+          "score": 76,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Snakes can sense heat when light disappears Watch the head before the",
+          "first_frame_text": "HEAT VISION",
+          "next_episode_question": "Tomorrow in Rare Earth: another animal signal. Is this ancient design underrated?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Snakes behavior through the visible heat vision.",
+            "series": "Rare Earth",
+            "subject": "snakes",
+            "terms": [
+              "snakes",
+              "heat vision",
+              "reptiles",
+              "body superpower"
+            ],
+            "title_variant": "Snakes behavior: heat vision explained",
+            "visible_cue": "heat vision"
+          },
+          "series": "Rare Earth",
+          "subject": "snakes",
+          "visible_cue": "heat vision"
+        },
+        "risks": [],
+        "score": 97,
+        "search_intent": {
+          "description_line": "This Short explains Snakes behavior through the visible heat vision.",
+          "series": "Rare Earth",
+          "subject": "snakes",
+          "terms": [
+            "snakes",
+            "heat vision",
+            "reptiles",
+            "body superpower"
+          ],
+          "title_variant": "Snakes behavior: heat vision explained",
+          "visible_cue": "heat vision"
+        },
+        "selected_variant": {
+          "hook": "Snakes can sense heat when light disappears",
+          "score": 78,
+          "thumbnail_text": "HEAT VISION",
+          "title": "Snakes can detect warm prey in the dark"
+        },
+        "series": "Rare Earth",
+        "series_identity": {
+          "continuity_prompt": "Next in Rare Earth: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Rare Earth",
+          "series": "Rare Earth"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.392,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.189,
+            "data_quality": "observed",
+            "data_quality_score": 0.883,
+            "minimum_sample_size": 15,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
+            "recommendation_strength": "observe",
+            "sample_size": 5
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.19.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.3,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "HEAT VISION",
+          "HEAT PITS",
+          "WATCH HEAT PITS",
+          "SNAKES SENSE",
+          "HEAT PITS MATTERS",
+          "HEAT PITS FIRST",
+          "HEAT PITS REVEAL",
+          "HEAT PITS CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Snakes can detect warm prey in the dark",
+          "Snakes use heat pits before they sense",
+          "Why snakes sense after one heat pits",
+          "Snakes reveal the answer with heat pits",
+          "The heat pits that changes the moment",
+          "Snakes make one heat pits matter",
+          "Snakes show the hidden answer in seconds",
+          "Snakes: watch this heat pits",
+          "Watch snakes after the heat pits"
+        ],
+        "top_variants": [
+          {
+            "hook": "Snakes can sense heat when light disappears",
+            "score": 78,
+            "thumbnail_text": "HEAT VISION",
+            "title": "Snakes can detect warm prey in the dark"
+          },
+          {
+            "hook": "Start with the heat pits; it changes the scene",
+            "score": 78,
+            "thumbnail_text": "HEAT VISION",
+            "title": "Snakes can detect warm prey in the dark"
+          },
+          {
+            "hook": "Watch the heat pits; it explains the behavior",
+            "score": 77,
+            "thumbnail_text": "HEAT VISION",
+            "title": "Snakes can detect warm prey in the dark"
+          },
+          {
+            "hook": "Snakes can sense heat when light disappears",
+            "score": 73,
+            "thumbnail_text": "HEAT VISION",
+            "title": "Snakes use heat pits before they sense"
+          },
+          {
+            "hook": "Start with the heat pits; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "HEAT VISION",
+            "title": "Snakes use heat pits before they sense"
+          },
+          {
+            "hook": "Watch the heat pits; it explains the behavior",
+            "score": 72,
+            "thumbnail_text": "HEAT VISION",
+            "title": "Snakes use heat pits before they sense"
+          },
+          {
+            "hook": "Snakes can sense heat when light disappears",
+            "score": 71,
+            "thumbnail_text": "HEAT PITS",
+            "title": "Snakes can detect warm prey in the dark"
+          },
+          {
+            "hook": "Start with the heat pits; it changes the scene",
+            "score": 71,
+            "thumbnail_text": "HEAT PITS",
+            "title": "Snakes can detect warm prey in the dark"
+          },
+          {
+            "hook": "Snakes can sense heat when light disappears",
+            "score": 71,
+            "thumbnail_text": "WATCH HEAT PITS",
+            "title": "Snakes can detect warm prey in the dark"
+          },
+          {
+            "hook": "Start with the heat pits; it changes the scene",
+            "score": 71,
+            "thumbnail_text": "WATCH HEAT PITS",
+            "title": "Snakes can detect warm prey in the dark"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "32bc71248738d412",
       "title": "Parrots use their beak like a third foot",
       "category": "birds",
@@ -1133,7 +2434,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-10T12:09:29.944507+00:00",
+        "checked_at": "2026-07-10T12:12:53.270189+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1606,6 +2907,677 @@
       }
     },
     {
+      "id": "9bcf0dcc0c218511",
+      "title": "Magnets use field lines before they change",
+      "category": "physics",
+      "publish_score": {
+        "approved": true,
+        "category": "physics",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "filing",
+            "line",
+            "map"
+          ],
+          "cue_terms": [
+            "field",
+            "filing",
+            "first",
+            "line",
+            "map",
+            "move"
+          ],
+          "frame_hook_bridge": [
+            "line"
+          ],
+          "risks": [
+            "subject_not_frontloaded"
+          ],
+          "score": 92.0,
+          "state": "retention_ready",
+          "strengths": [
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "physics"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 60,
+          "signals": {
+            "comment_potential": 46,
+            "educational_potential": 58,
+            "emotional_potential": 53,
+            "novelty": 45,
+            "replay_potential": 60,
+            "viral_potential": 64,
+            "visual_potential": 75
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 72,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 74
+          },
+          "verdict": "rewrite"
+        },
+        "score": 79.9,
+        "state": "publish_ready",
+        "story_format": "physics_demo",
+        "subscriber_conversion": {
+          "comment_probability": 0.253,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "hook_invites_return",
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.297,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 99,
+          "state": "strong",
+          "subscriber_probability": 0.141
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 12
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-07-10T12:12:53.637519+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "inventory_reserve_fallback",
+          "inventory_reserve:duplicate_title"
+        ],
+        "score": 79.9,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 79.9,
+      "youtube_brain": {
+        "animal": "magnets",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "filing",
+            "line",
+            "map"
+          ],
+          "cue_terms": [
+            "field",
+            "filing",
+            "first",
+            "line",
+            "map",
+            "move"
+          ],
+          "frame_hook_bridge": [
+            "line"
+          ],
+          "risks": [
+            "subject_not_frontloaded"
+          ],
+          "score": 92.0,
+          "state": "retention_ready",
+          "strengths": [
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "physics"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "physics_demo",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "magnets",
+        "viewer_promise": "See why this magnet physics demo matters."
+      },
+      "packaging": {
+        "community_prompt": "Which magnets clue should Wild Brief compare next in Physics Brief?",
+        "cta_prompt": "Follow for one animal signal a day.",
+        "curiosity_gap": {
+          "hook": "Why do these physics change after the first move?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "physics demo",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 92,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
+          },
+          "winning_experiments": {
+            "cta:specific_question": 46.9,
+            "format:fresh_variant": 46.9,
+            "format:winner_inspired": 39.89,
+            "hook:new_hook": 46.9,
+            "thumbnail:new_thumbnail": 41.5
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "filing",
+              "line",
+              "map"
+            ],
+            "cue_terms": [
+              "field",
+              "filing",
+              "first",
+              "line",
+              "map",
+              "move"
+            ],
+            "frame_hook_bridge": [
+              "line"
+            ],
+            "risks": [
+              "subject_not_frontloaded"
+            ],
+            "score": 92.0,
+            "state": "retention_ready",
+            "strengths": [
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "physics"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Magnets can show a hidden force map",
+          "Magnets show why the field lines matters.",
+          "Magnets show why the field lines matters.",
+          "Magnets show why the field lines matters.",
+          "Magnets give away the answer through field lines"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "force",
+          "ending_line": "Which force next?",
+          "final_line": "Which force next?",
+          "loop_score": 0.769,
+          "opening_line": "Magnets can show a hidden force map.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "force",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": false,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.769,
+        "next_episode_question": "Tomorrow in Physics Brief: another nature signal. What part of this feels most impossible?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "filing",
+            "line",
+            "map"
+          ],
+          "cue_terms": [
+            "field",
+            "filing",
+            "first",
+            "line",
+            "map",
+            "move"
+          ],
+          "frame_hook_bridge": [
+            "line"
+          ],
+          "risks": [
+            "subject_not_frontloaded"
+          ],
+          "score": 92.0,
+          "state": "retention_ready",
+          "strengths": [
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "physics"
+        },
+        "pinned_comment": "Watch the field lines again. Tomorrow in Physics Brief: another nature signal. What part of this feels most impossible?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.44,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 16,
+          "first_2s_narration": "Magnets can show hidden force map Watch the filings line up because",
+          "first_frame_text": "FIELD LINES",
+          "first_frame_text_words": 2,
+          "hook": "Magnets can show a hidden force map.",
+          "hook_specificity": 0.78,
+          "hook_words": 6,
+          "loop_score": 0.769,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "filing",
+              "line",
+              "map"
+            ],
+            "cue_terms": [
+              "field",
+              "filing",
+              "first",
+              "line",
+              "map",
+              "move"
+            ],
+            "frame_hook_bridge": [
+              "line"
+            ],
+            "risks": [
+              "subject_not_frontloaded"
+            ],
+            "score": 92.0,
+            "state": "retention_ready",
+            "strengths": [
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "physics"
+          },
+          "opening_retention_score": 92.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the field lines, so viewers rewatch the magnets clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 72,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 74
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Magnets can show a hidden force map Watch the filings line up",
+          "first_frame_text": "FIELD LINES",
+          "next_episode_question": "Tomorrow in Physics Brief: another nature signal. What part of this feels most impossible?",
+          "opening_retention_score": 92.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains the visible field lines behind Magnets in a fast nature science story.",
+            "series": "Physics Brief",
+            "subject": "magnets",
+            "terms": [
+              "magnets",
+              "field lines",
+              "physics",
+              "physics demo"
+            ],
+            "title_variant": "Magnets field lines explained fast",
+            "visible_cue": "field lines"
+          },
+          "series": "Physics Brief",
+          "subject": "magnets",
+          "visible_cue": "field lines"
+        },
+        "risks": [],
+        "score": 95,
+        "search_intent": {
+          "description_line": "This Short explains the visible field lines behind Magnets in a fast nature science story.",
+          "series": "Physics Brief",
+          "subject": "magnets",
+          "terms": [
+            "magnets",
+            "field lines",
+            "physics",
+            "physics demo"
+          ],
+          "title_variant": "Magnets field lines explained fast",
+          "visible_cue": "field lines"
+        },
+        "selected_variant": {
+          "hook": "Start with the field lines; it changes the scene",
+          "score": 82,
+          "thumbnail_text": "FIELD LINES",
+          "title": "Magnets make invisible fields visible"
+        },
+        "series": "Physics Brief",
+        "series_identity": {
+          "continuity_prompt": "Next in Physics Brief: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Physics Brief",
+          "series": "Physics Brief"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.253,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "hook_invites_return",
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.297,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 99,
+          "state": "strong",
+          "subscriber_probability": 0.141
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "FIELD LINES",
+          "WATCH FIELD LINES",
+          "MAGNETS CHANGE",
+          "FIELD LINES MATTERS",
+          "FIELD LINES FIRST",
+          "FIELD LINES REVEAL",
+          "FIELD LINES CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Magnets make invisible fields visible",
+          "Magnets use field lines before they change",
+          "Why magnets change after one field lines",
+          "Magnets reveal the answer with field lines",
+          "The field lines that changes the moment",
+          "Magnets make one field lines matter",
+          "Magnets show the hidden answer in seconds",
+          "Magnets: watch this field lines",
+          "Watch magnets after the field lines"
+        ],
+        "top_variants": [
+          {
+            "hook": "Start with the field lines; it changes the scene",
+            "score": 82,
+            "thumbnail_text": "FIELD LINES",
+            "title": "Magnets make invisible fields visible"
+          },
+          {
+            "hook": "Watch the field lines; it explains the behavior",
+            "score": 81,
+            "thumbnail_text": "FIELD LINES",
+            "title": "Magnets make invisible fields visible"
+          },
+          {
+            "hook": "Magnets can show a hidden force map",
+            "score": 79,
+            "thumbnail_text": "FIELD LINES",
+            "title": "Magnets make invisible fields visible"
+          },
+          {
+            "hook": "Start with the field lines; it changes the scene",
+            "score": 75,
+            "thumbnail_text": "WATCH FIELD LINES",
+            "title": "Magnets make invisible fields visible"
+          },
+          {
+            "hook": "Watch the field lines; it explains the behavior",
+            "score": 75,
+            "thumbnail_text": "MAGNETS CHANGE",
+            "title": "Magnets make invisible fields visible"
+          },
+          {
+            "hook": "Start with the field lines; it changes the scene",
+            "score": 75,
+            "thumbnail_text": "MAGNETS CHANGE",
+            "title": "Magnets make invisible fields visible"
+          },
+          {
+            "hook": "Start with the field lines; it changes the scene",
+            "score": 75,
+            "thumbnail_text": "FIELD LINES MATTERS",
+            "title": "Magnets make invisible fields visible"
+          },
+          {
+            "hook": "Start with the field lines; it changes the scene",
+            "score": 75,
+            "thumbnail_text": "FIELD LINES FIRST",
+            "title": "Magnets make invisible fields visible"
+          },
+          {
+            "hook": "Watch the field lines; it explains the behavior",
+            "score": 74,
+            "thumbnail_text": "WATCH FIELD LINES",
+            "title": "Magnets make invisible fields visible"
+          },
+          {
+            "hook": "Watch the field lines; it explains the behavior",
+            "score": 74,
+            "thumbnail_text": "FIELD LINES MATTERS",
+            "title": "Magnets make invisible fields visible"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "ce3b2fc76a336a95",
       "title": "This scent map gives bears away",
       "category": "arctic",
@@ -1794,7 +3766,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-10T12:09:29.929176+00:00",
+        "checked_at": "2026-07-10T12:12:52.921343+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -2446,7 +4418,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-10T12:09:29.939809+00:00",
+        "checked_at": "2026-07-10T12:12:52.972587+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3109,7 +5081,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-10T12:09:29.946141+00:00",
+        "checked_at": "2026-07-10T12:12:53.272260+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -3756,7 +5728,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-10T12:09:29.947753+00:00",
+        "checked_at": "2026-07-10T12:12:53.273666+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4406,7 +6378,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-10T12:09:29.932487+00:00",
+        "checked_at": "2026-07-10T12:12:52.966327+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5052,7 +7024,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-10T12:09:29.936237+00:00",
+        "checked_at": "2026-07-10T12:12:52.969631+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5716,7 +7688,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-10T12:09:29.938676+00:00",
+        "checked_at": "2026-07-10T12:12:52.971610+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6371,7 +8343,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-10T12:09:29.953623+00:00",
+        "checked_at": "2026-07-10T12:12:53.278897+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7029,7 +9001,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-10T12:09:29.942147+00:00",
+        "checked_at": "2026-07-10T12:12:53.268209+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7667,7 +9639,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-10T12:09:29.949512+00:00",
+        "checked_at": "2026-07-10T12:12:53.275168+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",

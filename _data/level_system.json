@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-10T12:10:01.441180+00:00",
+  "generated_at": "2026-07-10T12:13:27.061557+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
-  "overall_progress_pct": 23.5,
+  "overall_progress_pct": 24.2,
   "current_level": {
     "number": 2,
     "name": "Publish supply engine",
@@ -10,7 +10,7 @@
     "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
     "revenue_job": "Turn production from lucky shots into repeatable inventory.",
     "status": "boss_fight",
-    "progress_pct": 64.4
+    "progress_pct": 69.4
   },
   "boss": {
     "id": "publish_ready_reserve_low",
@@ -19,8 +19,8 @@
     "evidence": {
       "eligible_count": 2,
       "operational_publish_ready": 2,
-      "apparent_publish_ready": 2,
-      "pending": 12,
+      "apparent_publish_ready": 3,
+      "pending": 15,
       "target_publish_ready": 6,
       "target_pending": 20,
       "top_blockers": [
@@ -30,14 +30,14 @@
           "operator_translation": "collect more observed signal before scaling this pattern"
         },
         {
+          "id": "queue_prune:rewrite",
+          "count": 12,
+          "operator_translation": "rewrite the held candidate until queue prune clears"
+        },
+        {
           "id": "editor_in_chief:subject repeated inside 3-day cooldown",
           "count": 12,
           "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
-        },
-        {
-          "id": "queue_prune:rewrite",
-          "count": 10,
-          "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
           "id": "editor_in_chief:script quality gate blocked the narration",
@@ -74,7 +74,7 @@
     {
       "priority": "P0",
       "action": "Batch-fix the top blocker reasons before fetching a larger queue.",
-      "target": "objective_gate:bootstrap_observe_before_scaling, editor_in_chief:subject repeated inside 3-day cooldown, queue_prune:rewrite",
+      "target": "objective_gate:bootstrap_observe_before_scaling, queue_prune:rewrite, editor_in_chief:subject repeated inside 3-day cooldown",
       "why": "Current supply has strong ideas but fails late gates."
     },
     {
@@ -86,20 +86,20 @@
     {
       "priority": "P1",
       "action": "Refresh free discovery only after the current repair batch is clean.",
-      "target": "pending 12/20",
+      "target": "pending 15/20",
       "why": "Bigger inventory helps only when the gate can accept winners."
     }
   ],
   "metrics": {
     "health_score": 77,
     "health_state": "watch",
-    "pending": 12,
+    "pending": 15,
     "operational_publish_ready": 2,
-    "apparent_publish_ready": 2,
+    "apparent_publish_ready": 3,
     "eligible_count": 2,
     "scale_ready_count": 0,
     "next_shorts_count": 2,
-    "editorial_candidate_count": 12,
+    "editorial_candidate_count": 14,
     "published_count": 92,
     "views_28d": 30314,
     "total_subscribers": 46,
@@ -118,14 +118,14 @@
       "operator_translation": "collect more observed signal before scaling this pattern"
     },
     {
+      "id": "queue_prune:rewrite",
+      "count": 12,
+      "operator_translation": "rewrite the held candidate until queue prune clears"
+    },
+    {
       "id": "editor_in_chief:subject repeated inside 3-day cooldown",
       "count": 12,
       "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
-    },
-    {
-      "id": "queue_prune:rewrite",
-      "count": 10,
-      "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
       "id": "editor_in_chief:script quality gate blocked the narration",
@@ -138,9 +138,29 @@
       "operator_translation": "pick a fresh subject inside the same lane"
     },
     {
+      "id": "objective_gate:observe_before_scaling",
+      "count": 5,
+      "operator_translation": "observe this pattern before scaling it"
+    },
+    {
       "id": "editor_in_chief:editorial score 46 is below 62",
       "count": 4,
       "operator_translation": "editor in chief:editorial score 46 is below 62"
+    },
+    {
+      "id": "off_topic_visual",
+      "count": 3,
+      "operator_translation": "off topic visual"
+    },
+    {
+      "id": "copy_subject_mismatch",
+      "count": 3,
+      "operator_translation": "copy subject mismatch"
+    },
+    {
+      "id": "duplicate_title",
+      "count": 3,
+      "operator_translation": "duplicate title"
     },
     {
       "id": "packaging:missing_action_word",
@@ -151,26 +171,6 @@
       "id": "editor_in_chief:needs_ai_rewrite",
       "count": 2,
       "operator_translation": "editor in chief:needs ai rewrite"
-    },
-    {
-      "id": "objective_gate:observe_before_scaling",
-      "count": 2,
-      "operator_translation": "observe this pattern before scaling it"
-    },
-    {
-      "id": "editor_in_chief:story angle repeated inside 10-day cooldown",
-      "count": 2,
-      "operator_translation": "editor in chief:story angle repeated inside 10-day cooldown"
-    },
-    {
-      "id": "editor_in_chief:editorial score 42 is below 62",
-      "count": 2,
-      "operator_translation": "editor in chief:editorial score 42 is below 62"
-    },
-    {
-      "id": "publish_ready_supply_reserve_fallback",
-      "count": 2,
-      "operator_translation": "publish ready supply reserve fallback"
     }
   ],
   "levels": [
@@ -194,11 +194,11 @@
       "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
       "revenue_job": "Turn production from lucky shots into repeatable inventory.",
       "status": "current",
-      "progress_pct": 64.4,
+      "progress_pct": 69.4,
       "evidence": {
         "operational_publish_ready": 2,
         "eligible_count": 2,
-        "pending": 12,
+        "pending": 15,
         "target_publish_ready": 6,
         "target_pending": 20
       }

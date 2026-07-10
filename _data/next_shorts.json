@@ -389,7 +389,7 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 11,
+      "evergreen": 13,
       "recovery": 1
     },
     "items": [
@@ -402,12 +402,28 @@
         "freshness_score": 53.42
       },
       {
+        "id": "d6f8cc77f5972deb",
+        "title": "Lions hunt better when the pride coordinates",
+        "category": "wildlife",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
+      },
+      {
+        "id": "5b8590a7b6536e13",
+        "title": "Snakes use heat pits before they sense",
+        "category": "reptiles",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 55.0
+      },
+      {
         "id": "044f781f8d21d65c",
         "title": "Rock layers reveal flood paths carved into stone",
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 35.88
+        "freshness_score": 35.86
       },
       {
         "id": "09c8f40beafab256",
@@ -415,7 +431,7 @@
         "category": "geology",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 31.46
+        "freshness_score": 31.44
       },
       {
         "id": "625bc2903a3e3385",
@@ -455,7 +471,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 35.54
+        "freshness_score": 35.52
       },
       {
         "id": "4111626a62866b27",
@@ -463,7 +479,7 @@
         "category": "forests",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 31.6
+        "freshness_score": 31.58
       },
       {
         "id": "a4ca94af1a59d5df",
@@ -539,17 +555,18 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 12,
-    "pending_after": 12,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 2,
+    "pending_before": 15,
+    "pending_after": 14,
+    "rejected": 1,
+    "repair_needed": 1,
+    "repaired": 3,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 11,
       "editor_in_chief:subject repeated inside 3-day cooldown": 6,
       "editor_in_chief:script quality gate blocked the narration": 4,
+      "objective_gate:observe_before_scaling": 3,
       "editor_in_chief:editorial score 46 is below 62": 2,
-      "objective_gate:observe_before_scaling": 1,
+      "queue_score_reject": 1,
       "editor_in_chief:story angle repeated inside 10-day cooldown": 1,
       "editor_in_chief:editorial score 42 is below 62": 1,
       "publish_ready_supply_reserve_fallback": 1
