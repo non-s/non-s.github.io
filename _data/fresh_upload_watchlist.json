@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 9,
+    "analytics_due": 8,
     "awaiting_1h": 0,
     "high_priority": 10,
-    "repair_candidates": 1,
+    "repair_candidates": 2,
     "tracked": 10
   },
-  "generated_at": "2026-07-10T05:10:30.749755+00:00",
+  "generated_at": "2026-07-10T05:14:38.633012+00:00",
   "items": [
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 8.13,
+      "age_hours": 8.198,
       "category": "ocean",
       "checkpoints": [
         {
@@ -81,15 +81,15 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.102,
+      "age_hours": 9.171,
       "category": "arctic",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-09T21:04:23.188358+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -115,12 +115,12 @@
       "current_views": 1,
       "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": -105,
-        "due_at": "2026-07-10T02:04:23.188358+00:00",
-        "label": "6h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-09T21:04:23.188358+00:00",
+        "label": "1h",
         "source": "estimated",
         "state": "overdue",
-        "target_views": 105,
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 94.0,
@@ -132,11 +132,11 @@
       "uploaded_at": "2026-07-09T20:04:23.188358+00:00",
       "url": "https://www.youtube.com/shorts/XZIAdzI-njM",
       "video_id": "XZIAdzI-njM",
-      "views_per_hour": 0.11
+      "views_per_hour": 0.109
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 10.099,
+      "age_hours": 10.168,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -191,7 +191,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 10.203,
+      "age_hours": 10.272,
       "category": "insects",
       "checkpoints": [
         {
@@ -246,7 +246,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 15.098,
+      "age_hours": 15.166,
       "category": "dogs",
       "checkpoints": [
         {
@@ -301,7 +301,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.887,
+      "age_hours": 16.956,
       "category": "plants",
       "checkpoints": [
         {
@@ -356,7 +356,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 17.805,
+      "age_hours": 17.874,
       "category": "arctic",
       "checkpoints": [
         {
@@ -411,7 +411,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 21.006,
+      "age_hours": 21.075,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -466,7 +466,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 21.201,
+      "age_hours": 21.269,
       "category": "trees",
       "checkpoints": [
         {
@@ -520,8 +520,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 23.977,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 24.046,
       "category": "geology",
       "checkpoints": [
         {
@@ -543,17 +543,17 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -300,
           "due_at": "2026-07-10T05:11:53.582365+00:00",
           "label": "24h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 300,
           "views": 0
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": -24,
         "due_at": "2026-07-09T06:11:53.582365+00:00",
@@ -567,12 +567,23 @@
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Earth Engine",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Rock layers reveal heat moving under the surface",
       "uploaded_at": "2026-07-09T05:11:53.582365+00:00",
       "url": "https://www.youtube.com/shorts/hpcdCLeyIpg",
       "video_id": "hpcdCLeyIpg",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.756,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Rock layers reveal heat moving under the surface",
+        "video_id": "hpcdCLeyIpg",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     }
   ],
   "targets": {
