@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 4,
+    "analytics_due": 3,
     "awaiting_1h": 0,
     "high_priority": 10,
-    "repair_candidates": 6,
+    "repair_candidates": 7,
     "tracked": 10
   },
-  "generated_at": "2026-07-10T21:15:51.202142+00:00",
+  "generated_at": "2026-07-10T21:17:58.842200+00:00",
   "items": [
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.855,
+      "age_hours": 8.89,
       "category": "insects",
       "checkpoints": [
         {
@@ -69,8 +69,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 24.219,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 24.254,
       "category": "ocean",
       "checkpoints": [
         {
@@ -95,37 +95,48 @@
           "delta_to_target": -299,
           "due_at": "2026-07-10T21:02:44.518371+00:00",
           "label": "24h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 300,
           "views": 1
         }
       ],
       "current_views": 1,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
-        "delta_to_target": -299,
-        "due_at": "2026-07-10T21:02:44.518371+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-09T22:02:44.518371+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 300,
-        "views": 1
+        "state": "overdue",
+        "target_views": 24,
+        "views": 0
       },
       "opening_retention_score": 94.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Ocean Mysteries",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Dolphins can call each other with signature whistles",
       "uploaded_at": "2026-07-09T21:02:44.518371+00:00",
       "url": "https://www.youtube.com/shorts/xxal3t3p9K0",
       "video_id": "xxal3t3p9K0",
-      "views_per_hour": 0.042
+      "views_per_hour": 0.041,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.756,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Dolphins can call each other with signature whistles",
+        "video_id": "xxal3t3p9K0",
+        "views": 1,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 25.191,
+      "age_hours": 25.227,
       "category": "arctic",
       "checkpoints": [
         {
@@ -191,7 +202,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 26.188,
+      "age_hours": 26.224,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -242,7 +253,7 @@
       "uploaded_at": "2026-07-09T19:04:33.771351+00:00",
       "url": "https://www.youtube.com/shorts/LdYL1w1rf0g",
       "video_id": "LdYL1w1rf0g",
-      "views_per_hour": 0.039,
+      "views_per_hour": 0.038,
       "warning": {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.756,
@@ -257,7 +268,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 26.292,
+      "age_hours": 26.328,
       "category": "insects",
       "checkpoints": [
         {
@@ -323,7 +334,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 31.187,
+      "age_hours": 31.222,
       "category": "dogs",
       "checkpoints": [
         {
@@ -389,7 +400,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 32.976,
+      "age_hours": 33.011,
       "category": "plants",
       "checkpoints": [
         {
@@ -455,7 +466,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 33.894,
+      "age_hours": 33.93,
       "category": "arctic",
       "checkpoints": [
         {
@@ -506,7 +517,7 @@
       "uploaded_at": "2026-07-09T11:22:11.609762+00:00",
       "url": "https://www.youtube.com/shorts/FauBvdeAeU8",
       "video_id": "FauBvdeAeU8",
-      "views_per_hour": 0.03,
+      "views_per_hour": 0.029,
       "warning": {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.756,
@@ -521,7 +532,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 37.095,
+      "age_hours": 37.131,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -576,7 +587,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 37.29,
+      "age_hours": 37.325,
       "category": "trees",
       "checkpoints": [
         {
