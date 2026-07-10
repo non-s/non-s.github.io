@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 7,
+    "analytics_due": 6,
     "awaiting_1h": 0,
     "high_priority": 8,
-    "repair_candidates": 1,
+    "repair_candidates": 2,
     "tracked": 10
   },
-  "generated_at": "2026-07-10T01:04:59.697928+00:00",
+  "generated_at": "2026-07-10T01:07:33.702722+00:00",
   "items": [
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.038,
+      "age_hours": 4.08,
       "category": "ocean",
       "checkpoints": [
         {
@@ -70,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.01,
+      "age_hours": 5.053,
       "category": "arctic",
       "checkpoints": [
         {
@@ -124,8 +124,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.007,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.05,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -141,8 +141,8 @@
           "delta_to_target": -104,
           "due_at": "2026-07-10T01:04:33.771351+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 1
         },
@@ -157,30 +157,41 @@
         }
       ],
       "current_views": 1,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
-        "delta_to_target": -104,
-        "due_at": "2026-07-10T01:04:33.771351+00:00",
-        "label": "6h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-10T19:04:33.771351+00:00",
+        "label": "24h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 105,
+        "state": "pending",
+        "target_views": 300,
         "views": 1
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Night Shift Nature",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Foxes use snow hearing before they hunt",
       "uploaded_at": "2026-07-09T19:04:33.771351+00:00",
       "url": "https://www.youtube.com/shorts/LdYL1w1rf0g",
       "video_id": "LdYL1w1rf0g",
-      "views_per_hour": 0.167
+      "views_per_hour": 0.166,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Foxes use snow hearing before they hunt",
+        "video_id": "LdYL1w1rf0g",
+        "views": 1,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.111,
+      "age_hours": 6.154,
       "category": "insects",
       "checkpoints": [
         {
@@ -246,7 +257,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.006,
+      "age_hours": 11.048,
       "category": "dogs",
       "checkpoints": [
         {
@@ -301,7 +312,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 12.795,
+      "age_hours": 12.838,
       "category": "plants",
       "checkpoints": [
         {
@@ -356,7 +367,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 13.713,
+      "age_hours": 13.756,
       "category": "arctic",
       "checkpoints": [
         {
@@ -411,7 +422,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 16.914,
+      "age_hours": 16.957,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -466,7 +477,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 17.109,
+      "age_hours": 17.151,
       "category": "trees",
       "checkpoints": [
         {
@@ -517,11 +528,11 @@
       "uploaded_at": "2026-07-09T07:58:28.453849+00:00",
       "url": "https://www.youtube.com/shorts/C9gC410D64o",
       "video_id": "C9gC410D64o",
-      "views_per_hour": 0.059
+      "views_per_hour": 0.058
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 19.885,
+      "age_hours": 19.928,
       "category": "geology",
       "checkpoints": [
         {
