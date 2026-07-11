@@ -2,18 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 9,
+      "automation_safe": 10,
       "high": 0,
-      "manual_review": 1,
+      "manual_review": 0,
       "total": 10,
       "urgent": 10
     },
     "free_only": true,
-    "generated_at": "2026-07-11T09:09:19.758974+00:00",
+    "generated_at": "2026-07-11T09:13:07.288155+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 49.181,
+        "age_hours": 49.244,
         "automation_safe": true,
         "category": "trees",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 48.987,
+        "age_hours": 49.05,
         "automation_safe": true,
         "category": "earth_from_space",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 45.786,
+        "age_hours": 45.849,
         "automation_safe": true,
         "category": "arctic",
         "checkpoint_label": "1h",
@@ -91,7 +91,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 44.867,
+        "age_hours": 44.93,
         "automation_safe": true,
         "category": "plants",
         "checkpoint_label": "1h",
@@ -117,7 +117,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 43.078,
+        "age_hours": 43.141,
         "automation_safe": true,
         "category": "dogs",
         "checkpoint_label": "1h",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 38.183,
+        "age_hours": 38.247,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -169,7 +169,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 38.079,
+        "age_hours": 38.143,
         "automation_safe": true,
         "category": "nocturnal",
         "checkpoint_label": "1h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 37.082,
+        "age_hours": 37.146,
         "automation_safe": true,
         "category": "arctic",
         "checkpoint_label": "1h",
@@ -220,9 +220,9 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "prepare_package_rescue",
-        "age_hours": 36.11,
-        "automation_safe": false,
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 36.173,
+        "automation_safe": true,
         "category": "ocean",
         "checkpoint_label": "1h",
         "checkpoint_state": "overdue",
@@ -230,24 +230,24 @@
         "due_at": "2026-07-09T22:02:44.518371+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:xxal3t3p9K0:repair_candidate:1h",
-        "lane": "package_rescue",
-        "manual_approval_required": true,
+        "id": "fresh-upload:xxal3t3p9K0:analytics_due:1h",
+        "lane": "measurement",
+        "manual_approval_required": false,
         "opening_retention_score": 94.0,
         "priority": "urgent",
-        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
         "series": "Ocean Mysteries",
-        "state": "repair_candidate",
+        "state": "analytics_due",
         "target_views": 24,
         "title": "Dolphins can call each other with signature whistles",
         "url": "https://www.youtube.com/shorts/xxal3t3p9K0",
         "video_id": "xxal3t3p9K0",
         "wait_until": "",
-        "why": "Observed velocity is weak enough to prepare a package intervention."
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 20.746,
+        "age_hours": 20.81,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-11T09:09:19.758034+00:00"
+    "source_generated_at": "2026-07-11T09:13:07.287192+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,17 @@
       24
     ],
     "counts": {
-      "analytics_due": 9,
+      "analytics_due": 10,
       "awaiting_1h": 0,
       "high_priority": 10,
-      "repair_candidates": 1,
+      "repair_candidates": 0,
       "tracked": 10
     },
-    "generated_at": "2026-07-11T09:09:19.758034+00:00",
+    "generated_at": "2026-07-11T09:13:07.287192+00:00",
     "items": [
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 20.746,
+        "age_hours": 20.81,
         "category": "insects",
         "checkpoints": [
           {
@@ -346,8 +346,8 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 36.11,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 36.173,
         "category": "ocean",
         "checkpoints": [
           {
@@ -369,17 +369,17 @@
             "views": 0
           },
           {
-            "delta_to_target": -299,
+            "delta_to_target": -300,
             "due_at": "2026-07-10T21:02:44.518371+00:00",
             "label": "24h",
-            "source": "observed",
-            "state": "observed",
+            "source": "estimated",
+            "state": "overdue",
             "target_views": 300,
-            "views": 1
+            "views": 0
           }
         ],
         "current_views": 1,
-        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
           "delta_to_target": -24,
           "due_at": "2026-07-09T22:02:44.518371+00:00",
@@ -393,27 +393,16 @@
         "opening_retention_state": "retention_ready",
         "priority": "high",
         "series": "Ocean Mysteries",
-        "state": "repair_candidate",
+        "state": "analytics_due",
         "title": "Dolphins can call each other with signature whistles",
         "uploaded_at": "2026-07-09T21:02:44.518371+00:00",
         "url": "https://www.youtube.com/shorts/xxal3t3p9K0",
         "video_id": "xxal3t3p9K0",
-        "views_per_hour": 0.028,
-        "warning": {
-          "action": "TITLE_AUTO_REPAIR_TRIGGER",
-          "confidence_score": 0.756,
-          "reason": "low early velocity",
-          "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
-          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-          "title": "Dolphins can call each other with signature whistles",
-          "video_id": "xxal3t3p9K0",
-          "views": 1,
-          "warning_state": "repair_risk"
-        }
+        "views_per_hour": 0.028
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 37.082,
+        "age_hours": 37.146,
         "category": "arctic",
         "checkpoints": [
           {
@@ -468,7 +457,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 38.079,
+        "age_hours": 38.143,
         "category": "nocturnal",
         "checkpoints": [
           {
@@ -523,7 +512,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 38.183,
+        "age_hours": 38.247,
         "category": "insects",
         "checkpoints": [
           {
@@ -578,7 +567,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 43.078,
+        "age_hours": 43.141,
         "category": "dogs",
         "checkpoints": [
           {
@@ -633,7 +622,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 44.867,
+        "age_hours": 44.93,
         "category": "plants",
         "checkpoints": [
           {
@@ -688,7 +677,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 45.786,
+        "age_hours": 45.849,
         "category": "arctic",
         "checkpoints": [
           {
@@ -743,7 +732,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 48.987,
+        "age_hours": 49.05,
         "category": "earth_from_space",
         "checkpoints": [
           {
@@ -798,7 +787,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 49.181,
+        "age_hours": 49.244,
         "category": "trees",
         "checkpoints": [
           {
@@ -859,7 +848,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-11T09:09:19.759066+00:00",
+  "generated_at": "2026-07-11T09:13:07.288249+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
