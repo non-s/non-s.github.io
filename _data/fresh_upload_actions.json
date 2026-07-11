@@ -1,17 +1,17 @@
 {
   "counts": {
-    "automation_safe": 5,
+    "automation_safe": 6,
     "high": 0,
-    "manual_review": 5,
+    "manual_review": 4,
     "total": 10,
     "urgent": 10
   },
   "free_only": true,
-  "generated_at": "2026-07-11T01:34:22.762163+00:00",
+  "generated_at": "2026-07-11T03:40:48.898567+00:00",
   "items": [
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 41.598,
+      "age_hours": 43.706,
       "automation_safe": true,
       "category": "trees",
       "checkpoint_label": "1h",
@@ -37,7 +37,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 41.404,
+      "age_hours": 43.511,
       "automation_safe": true,
       "category": "earth_from_space",
       "checkpoint_label": "1h",
@@ -63,7 +63,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 38.203,
+      "age_hours": 40.31,
       "automation_safe": true,
       "category": "arctic",
       "checkpoint_label": "1h",
@@ -89,7 +89,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 37.284,
+      "age_hours": 39.392,
       "automation_safe": true,
       "category": "plants",
       "checkpoint_label": "1h",
@@ -114,9 +114,9 @@
       "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
-      "action_type": "prepare_package_rescue",
-      "age_hours": 35.495,
-      "automation_safe": false,
+      "action_type": "pull_fresh_analytics",
+      "age_hours": 37.603,
+      "automation_safe": true,
       "category": "dogs",
       "checkpoint_label": "1h",
       "checkpoint_state": "overdue",
@@ -124,24 +124,24 @@
       "due_at": "2026-07-09T15:04:39.316623+00:00",
       "free_only": true,
       "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-      "id": "fresh-upload:8LrEpWspyK8:repair_candidate:1h",
-      "lane": "package_rescue",
-      "manual_approval_required": true,
+      "id": "fresh-upload:8LrEpWspyK8:analytics_due:1h",
+      "lane": "measurement",
+      "manual_approval_required": false,
       "opening_retention_score": 100.0,
       "priority": "urgent",
-      "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
       "series": "Pet Secrets",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "target_views": 24,
       "title": "Dogs use scent map before they smell",
       "url": "https://www.youtube.com/shorts/8LrEpWspyK8",
       "video_id": "8LrEpWspyK8",
       "wait_until": "",
-      "why": "Observed velocity is weak enough to prepare a package intervention."
+      "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
       "action_type": "prepare_package_rescue",
-      "age_hours": 30.601,
+      "age_hours": 32.708,
       "automation_safe": false,
       "category": "insects",
       "checkpoint_label": "1h",
@@ -167,7 +167,7 @@
     },
     {
       "action_type": "prepare_package_rescue",
-      "age_hours": 30.497,
+      "age_hours": 32.604,
       "automation_safe": false,
       "category": "nocturnal",
       "checkpoint_label": "1h",
@@ -193,7 +193,7 @@
     },
     {
       "action_type": "prepare_package_rescue",
-      "age_hours": 29.5,
+      "age_hours": 31.607,
       "automation_safe": false,
       "category": "arctic",
       "checkpoint_label": "1h",
@@ -219,7 +219,7 @@
     },
     {
       "action_type": "prepare_package_rescue",
-      "age_hours": 28.527,
+      "age_hours": 30.635,
       "automation_safe": false,
       "category": "ocean",
       "checkpoint_label": "1h",
@@ -245,7 +245,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 13.164,
+      "age_hours": 15.271,
       "automation_safe": true,
       "category": "insects",
       "checkpoint_label": "1h",
@@ -271,5 +271,5 @@
     }
   ],
   "source": "fresh_upload_watchlist",
-  "source_generated_at": "2026-07-11T01:34:22.761302+00:00"
+  "source_generated_at": "2026-07-11T03:40:48.897657+00:00"
 }
