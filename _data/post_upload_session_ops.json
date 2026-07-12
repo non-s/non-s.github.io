@@ -6,14 +6,14 @@
       "high": 0,
       "manual_review": 0,
       "total": 8,
-      "urgent": 7
+      "urgent": 8
     },
     "free_only": true,
-    "generated_at": "2026-07-12T12:19:08.982376+00:00",
+    "generated_at": "2026-07-12T12:41:40.974872+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 70.242,
+        "age_hours": 70.617,
         "automation_safe": true,
         "category": "dogs",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 65.347,
+        "age_hours": 65.723,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 65.243,
+        "age_hours": 65.619,
         "automation_safe": true,
         "category": "nocturnal",
         "checkpoint_label": "1h",
@@ -91,7 +91,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 64.246,
+        "age_hours": 64.622,
         "automation_safe": true,
         "category": "arctic",
         "checkpoint_label": "1h",
@@ -117,7 +117,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 63.273,
+        "age_hours": 63.649,
         "automation_safe": true,
         "category": "ocean",
         "checkpoint_label": "1h",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 47.91,
+        "age_hours": 48.286,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -169,7 +169,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 17.921,
+        "age_hours": 18.297,
         "automation_safe": true,
         "category": "microscopy",
         "checkpoint_label": "1h",
@@ -194,34 +194,34 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "watch_next_checkpoint",
-        "age_hours": 5.544,
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 5.92,
         "automation_safe": true,
         "category": "geology",
-        "checkpoint_label": "6h",
-        "checkpoint_state": "pending",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "overdue",
         "current_views": 0,
-        "due_at": "2026-07-12T12:46:30.181782+00:00",
+        "due_at": "2026-07-12T07:46:30.181782+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:6Xko5TJwEdw:watch:6h",
-        "lane": "observe",
+        "id": "fresh-upload:6Xko5TJwEdw:analytics_due:1h",
+        "lane": "measurement",
         "manual_approval_required": false,
         "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Keep observing through the next checkpoint.",
+        "priority": "urgent",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
         "series": "Earth Engine",
-        "state": "watch",
-        "target_views": 105,
+        "state": "analytics_due",
+        "target_views": 24,
         "title": "Rock layers store ancient environments in stripes | Earth engine",
         "url": "https://www.youtube.com/shorts/6Xko5TJwEdw",
         "video_id": "6Xko5TJwEdw",
-        "wait_until": "2026-07-12T12:46:30.181782+00:00",
-        "why": "No intervention signal is strong enough yet."
+        "wait_until": "",
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-12T12:19:08.981536+00:00"
+    "source_generated_at": "2026-07-12T12:41:40.974129+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -230,25 +230,25 @@
       24
     ],
     "counts": {
-      "analytics_due": 7,
+      "analytics_due": 8,
       "awaiting_1h": 0,
-      "high_priority": 7,
+      "high_priority": 8,
       "repair_candidates": 0,
       "tracked": 8
     },
-    "generated_at": "2026-07-12T12:19:08.981536+00:00",
+    "generated_at": "2026-07-12T12:41:40.974129+00:00",
     "items": [
       {
-        "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.544,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 5.92,
         "category": "geology",
         "checkpoints": [
           {
             "delta_to_target": -24,
             "due_at": "2026-07-12T07:46:30.181782+00:00",
             "label": "1h",
-            "source": "observed",
-            "state": "observed",
+            "source": "estimated",
+            "state": "overdue",
             "target_views": 24,
             "views": 0
           },
@@ -272,21 +272,21 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "No intervention signal is strong enough yet.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
-          "due_at": "2026-07-12T12:46:30.181782+00:00",
-          "label": "6h",
+          "delta_to_target": -24,
+          "due_at": "2026-07-12T07:46:30.181782+00:00",
+          "label": "1h",
           "source": "estimated",
-          "state": "pending",
-          "target_views": 105,
+          "state": "overdue",
+          "target_views": 24,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Earth Engine",
-        "state": "watch",
+        "state": "analytics_due",
         "title": "Rock layers store ancient environments in stripes | Earth engine",
         "uploaded_at": "2026-07-12T06:46:30.181782+00:00",
         "url": "https://www.youtube.com/shorts/6Xko5TJwEdw",
@@ -295,7 +295,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 17.921,
+        "age_hours": 18.297,
         "category": "microscopy",
         "checkpoints": [
           {
@@ -350,7 +350,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 47.91,
+        "age_hours": 48.286,
         "category": "insects",
         "checkpoints": [
           {
@@ -405,7 +405,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 63.273,
+        "age_hours": 63.649,
         "category": "ocean",
         "checkpoints": [
           {
@@ -456,11 +456,11 @@
         "uploaded_at": "2026-07-09T21:02:44.518371+00:00",
         "url": "https://www.youtube.com/shorts/xxal3t3p9K0",
         "video_id": "xxal3t3p9K0",
-        "views_per_hour": 0.032
+        "views_per_hour": 0.031
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 64.246,
+        "age_hours": 64.622,
         "category": "arctic",
         "checkpoints": [
           {
@@ -515,7 +515,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 65.243,
+        "age_hours": 65.619,
         "category": "nocturnal",
         "checkpoints": [
           {
@@ -570,7 +570,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 65.347,
+        "age_hours": 65.723,
         "category": "insects",
         "checkpoints": [
           {
@@ -625,7 +625,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 70.242,
+        "age_hours": 70.617,
         "category": "dogs",
         "checkpoints": [
           {
@@ -676,7 +676,7 @@
         "uploaded_at": "2026-07-09T14:04:39.316623+00:00",
         "url": "https://www.youtube.com/shorts/8LrEpWspyK8",
         "video_id": "8LrEpWspyK8",
-        "views_per_hour": 0.043
+        "views_per_hour": 0.042
       }
     ],
     "targets": {
@@ -686,7 +686,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-12T12:19:08.982459+00:00",
+  "generated_at": "2026-07-12T12:41:40.974947+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
