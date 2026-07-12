@@ -3,18 +3,18 @@
   "reasons": {
     "thumbnail_text_not_scannable": 255,
     "thumbnail_not_2_4_words": 255,
-    "off_topic_visual": 225,
+    "off_topic_visual": 226,
     "weak_visual_surface": 192,
     "low_opportunity_score": 192,
-    "duplicate_title": 156,
+    "duplicate_title": 153,
     "copy_subject_mismatch": 82,
     "script_hook_mismatch": 66,
     "rights_guard_person_manual_review": 55,
-    "queue_score_reject": 42,
+    "queue_score_reject": 43,
+    "script_word_loop": 37,
     "duplicate_script": 36,
-    "script_word_loop": 36,
     "script_subject_mismatch": 34,
-    "duplicate_angle": 32,
+    "duplicate_angle": 30,
     "opening_retention_gap_risk": 25,
     "subject repeated inside 3-day cooldown": 18,
     "humanity score is too low": 18,
@@ -34,76 +34,25 @@
     "title_needs_stronger_shape": 2,
     "editorial score 45 is below 62": 2,
     "editorial score 43 is below 62": 2,
+    "script does not expose enough concrete visual detail": 2,
     "script quality gate blocked the narration": 2,
     "missing_visual_cue": 1,
     "subject_not_clear": 1,
     "stitched_repeated_animal_title": 1,
-    "script does not expose enough concrete visual detail": 1,
     "editorial score 50 is below 62": 1,
     "thumbnail copy must contain 2-4 readable words": 1,
     "editorial score 29 is below 62": 1
   },
   "stages": {
-    "queue_prune": 338,
+    "queue_prune": 340,
     "youtube_brain_rewrite": 252,
     "opportunity_score": 192,
-    "queue_prune_final": 148,
-    "queue_repair": 42,
+    "queue_prune_final": 145,
+    "queue_repair": 43,
     "editor_in_chief": 20,
     "youtube_brain": 8
   },
   "latest": [
-    {
-      "story_id": "6e2733fb0faf8ce7",
-      "stage": "queue_prune",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "title": "Trees don't spread roots the way you think",
-      "category": "forests",
-      "script_key": "trees don t stretch roots wide that s why you see those curves in trunks those aren t mistakes they re the tree s way of hugging its own roots tighter watch this one twice and count the bends did you learn this wrong too",
-      "angle_key": "trees|count|bends|forests",
-      "source_url": "https://www.pexels.com/video/serene-green-hills-with-isolated-trees-34762876/",
-      "pexels_video_id": "34762876",
-      "source_clip_id": "pexels:6e2733fb0faf8ce7",
-      "recorded_at": "2026-07-12T16:20:27.323167+00:00",
-      "rewrite_attempted": false,
-      "rewrite_applied": false
-    },
-    {
-      "story_id": "6e188fd336518620",
-      "stage": "queue_prune_final",
-      "reasons": [
-        "rights_guard_person_manual_review"
-      ],
-      "title": "Dogs read human pointing surprisingly well",
-      "category": "dogs",
-      "script_key": "dogs can follow a human point fast watch the eyes check the person because dogs are unusually good at using human gestures that skill helps them cooperate with us before any command gets repeated the small glance is social intelligence not random obedience what dog skill should come next",
-      "angle_key": "dogs|follow|human pointing|dogs",
-      "source_url": "https://www.pexels.com/video/puppies-in-cage-12768725/",
-      "pexels_video_id": "12768725",
-      "source_clip_id": "pexels:6e188fd336518620",
-      "recorded_at": "2026-07-12T16:20:27.337373+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "3ec8d5218f7ceaf5",
-      "stage": "queue_prune",
-      "reasons": [
-        "script_word_loop"
-      ],
-      "title": "Why a dog's nose changes the whole story that most people miss",
-      "category": "dogs",
-      "script_key": "dogs read the world through scent before sight watch the first second the body pauses then the nose gives the clue in this clip the recovery angle is three puppies with red most viewers watch the face but the useful signal is smaller that visible cue is the whole story so the short opens on the dog instead of stretching the setup that small detail gives the video a reason to exist",
-      "angle_key": "dog|signal|body|dogs",
-      "source_url": "https://www.pexels.com/video/three-puppies-with-red-ribbons-on-a-tartan-blanket-15376955/",
-      "pexels_video_id": "15376955",
-      "source_clip_id": "pexels:3ec8d5218f7ceaf5",
-      "recorded_at": "2026-07-12T16:40:00.236426+00:00",
-      "rewrite_attempted": false,
-      "rewrite_applied": false
-    },
     {
       "story_id": "6ab403fe404cab72",
       "stage": "queue_prune_final",
@@ -463,6 +412,58 @@
       "rewrite_applied": true
     },
     {
+      "story_id": "e4baa5f3ffea93c4",
+      "stage": "queue_prune",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "title": "Hedgehogs run faster than we think",
+      "category": "nocturnal",
+      "script_key": "that s not a blur a hedgehog can hit 4 mph in a dead sprint watch those little legs go each step s got all four paws off the ground like a tiny cheetah that s why they cover ground fast when they re avoiding a predator ever seen one charge at you now you have",
+      "angle_key": "nocturnal|cover|paws|nocturnal",
+      "source_url": "https://www.pexels.com/video/time-lapse-of-a-woman-running-8849376/",
+      "pexels_video_id": "8849376",
+      "source_clip_id": "pexels:e4baa5f3ffea93c4",
+      "recorded_at": "2026-07-12T19:53:12.760859+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "ce8b8ef478017f5f",
+      "stage": "queue_prune",
+      "reasons": [
+        "script_word_loop"
+      ],
+      "title": "Why dog play is more serious than it looks that most people miss",
+      "category": "dogs",
+      "script_key": "dogs use play to practice timing trust and control watch the first second the body pauses then the first playful move gives the clue in this clip the recovery angle is a dog playing indoors most viewers watch the face but the useful signal is smaller that visible cue is the whole story so the short opens on the dog instead of stretching the setup that small detail gives the video a reason to exist",
+      "angle_key": "dog|signal|body|dogs",
+      "source_url": "https://www.pexels.com/video/a-dog-playing-indoors-7117646/",
+      "pexels_video_id": "7117646",
+      "source_clip_id": "pexels:ce8b8ef478017f5f",
+      "recorded_at": "2026-07-12T19:53:12.780699+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "59c2db6fd85ca7e2",
+      "stage": "queue_repair",
+      "reasons": [
+        "script does not expose enough concrete visual detail",
+        "queue_score_reject"
+      ],
+      "title": "Dogs read human pointing surprisingly well",
+      "category": "dogs",
+      "script_key": "dogs aren t just being weird when they sniff butts that s their id scan each butt gland releases a unique scent cloud with health mood even what they ate today that s why they circle before deciding play or postpone did you learn this wrong too",
+      "angle_key": "dogs|follow|human pointing|dogs",
+      "source_url": "https://www.pexels.com/video/dogs-playing-in-town-12803343/",
+      "pexels_video_id": "12803343",
+      "source_clip_id": "pexels:59c2db6fd85ca7e2",
+      "recorded_at": "2026-07-12T19:53:12.795371+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
       "story_id": "2b314bb55137e91b",
       "stage": "youtube_brain_rewrite",
       "reasons": [
@@ -476,7 +477,7 @@
       "source_url": "https://www.pexels.com/video/exciting-day-at-the-baseball-field-37743527/",
       "pexels_video_id": "37743527",
       "source_clip_id": "pexels:2b314bb55137e91b",
-      "recorded_at": "2026-07-12T19:55:55.569728+00:00",
+      "recorded_at": "2026-07-12T20:39:22.458811+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     }
