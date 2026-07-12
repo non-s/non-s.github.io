@@ -54,7 +54,12 @@ def test_queue_ready_count_requires_editorial_and_publish_approval():
     assert payload["held_reasons"]["youtube_brain:subject_not_immediately_clear"] == 1
 
 
-def test_queue_ready_count_accepts_editorial_cooldown_supply_fallback():
+def test_queue_ready_count_accepts_editorial_cooldown_supply_fallback(monkeypatch):
+    # Isolate from the live ops_guardian paused-category list — this test
+    # exercises the editorial cooldown fallback, not category pausing, and
+    # "reptiles" may or may not be paused in whatever `_data/ops_guardian.json`
+    # currently says.
+    monkeypatch.setattr("utils.queue_readiness.paused_categories", lambda *a, **k: {})
     queue = {
         "stories": [
             {

@@ -938,6 +938,11 @@ def test_prune_queue_fills_v1_publish_ready_reserve_target(monkeypatch):
 
     monkeypatch.setattr("utils.queue_pruner.quality_issues", fake_quality_issues)
     monkeypatch.setattr("utils.queue_pruner.enriched_score", fake_enriched_score)
+    # Isolate from the live ops_guardian paused-category list — this test
+    # exercises the reserve-fill fallback, not category pausing, and the
+    # `_story()` default category ("farm") may or may not be paused in
+    # whatever `_data/ops_guardian.json` currently says.
+    monkeypatch.setattr("utils.queue_pruner.paused_categories", lambda: {})
     queue = {
         "stories": [
             _story(str(idx), title=f"Reserve story {idx}", seo_title=f"Reserve story {idx}")

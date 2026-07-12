@@ -89,6 +89,25 @@ def test_write_ass_empty_returns_false(tmp_path):
     assert not write_ass([], out)
 
 
+def test_write_ass_never_leaks_karaoke_tags_as_visible_text(tmp_path):
+    """Regression test for a join/replace bug that stripped the opening
+    `{` off a \\k tag whenever a silent gap preceded a word, leaving
+    raw codes like `\\k45}DROPS` burned into the video as literal text."""
+    caps = [[
+        _w("Drops", 0.0, 0.5),
+        _w("visibility", 1.42, 1.87),  # gap > 0 before this word
+        _w("when", 1.87, 2.1),
+    ]]
+    out = tmp_path / "subs.ass"
+    write_ass(caps, out)
+    body = out.read_text(encoding="utf-8")
+    events = body.split("[Events]")[1]
+    plain = _strip_ass_overrides(events)
+    assert "\\k" not in plain
+    assert "{" not in plain and "}" not in plain
+    assert "DROPS VISIBILITY WHEN" in plain.upper()
+
+
 # â”€â”€ transcribe_groq â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 

@@ -10,6 +10,11 @@ def test_dry_run_publish_counts_editorial_cooldown_supply_fallback(monkeypatch):
         lambda queue: (queue, [], {"pending_before": 1, "pending_after": 1, "rejected": 0}),
     )
     monkeypatch.setattr(dry_run_publish, "_agency_held_reasons", lambda path=None: {})
+    # Isolate from the live ops_guardian paused-category list — this test
+    # exercises the editorial cooldown fallback, not category pausing, and
+    # "reptiles" may or may not be paused in whatever `_data/ops_guardian.json`
+    # currently says.
+    monkeypatch.setattr(dry_run_publish, "paused_categories", lambda *a, **k: {})
     queue = {
         "stories": [
             {
