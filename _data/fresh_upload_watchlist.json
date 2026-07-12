@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 7,
+    "analytics_due": 6,
     "awaiting_1h": 0,
     "high_priority": 7,
-    "repair_candidates": 0,
+    "repair_candidates": 1,
     "tracked": 7
   },
-  "generated_at": "2026-07-12T18:16:32.388904+00:00",
+  "generated_at": "2026-07-12T18:40:24.173060+00:00",
   "items": [
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 11.501,
+      "age_hours": 11.898,
       "category": "geology",
       "checkpoints": [
         {
@@ -69,8 +69,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 23.878,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 24.276,
       "category": "microscopy",
       "checkpoints": [
         {
@@ -92,17 +92,17 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -300,
           "due_at": "2026-07-12T18:23:51.980992+00:00",
           "label": "24h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 300,
           "views": 0
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": -24,
         "due_at": "2026-07-11T19:23:51.980992+00:00",
@@ -116,16 +116,27 @@
       "opening_retention_state": "needs_tightening",
       "priority": "high",
       "series": "Nature Signals",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Cells copy instructions before splitting",
       "uploaded_at": "2026-07-11T18:23:51.980992+00:00",
       "url": "https://www.youtube.com/shorts/PJXOHbhndt4",
       "video_id": "PJXOHbhndt4",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.756,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Cells copy instructions before splitting",
+        "video_id": "PJXOHbhndt4",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 53.866,
+      "age_hours": 54.264,
       "category": "insects",
       "checkpoints": [
         {
@@ -176,11 +187,11 @@
       "uploaded_at": "2026-07-10T12:24:33.044741+00:00",
       "url": "https://www.youtube.com/shorts/VYPvTU9WqGE",
       "video_id": "VYPvTU9WqGE",
-      "views_per_hour": 0.019
+      "views_per_hour": 0.018
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 69.23,
+      "age_hours": 69.628,
       "category": "ocean",
       "checkpoints": [
         {
@@ -235,7 +246,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 70.203,
+      "age_hours": 70.6,
       "category": "arctic",
       "checkpoints": [
         {
@@ -290,7 +301,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 71.2,
+      "age_hours": 71.597,
       "category": "nocturnal",
       "checkpoints": [
         {
@@ -345,7 +356,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 71.304,
+      "age_hours": 71.701,
       "category": "insects",
       "checkpoints": [
         {
