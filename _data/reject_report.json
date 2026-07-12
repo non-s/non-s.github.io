@@ -1,54 +1,211 @@
 {
   "total": 1000,
   "reasons": {
-    "thumbnail_text_not_scannable": 397,
-    "thumbnail_not_2_4_words": 397,
+    "thumbnail_text_not_scannable": 255,
+    "thumbnail_not_2_4_words": 255,
+    "off_topic_visual": 225,
     "weak_visual_surface": 192,
     "low_opportunity_score": 192,
-    "off_topic_visual": 159,
-    "duplicate_title": 105,
-    "copy_subject_mismatch": 58,
-    "rights_guard_person_manual_review": 52,
-    "script_hook_mismatch": 47,
+    "duplicate_title": 156,
+    "copy_subject_mismatch": 82,
+    "script_hook_mismatch": 66,
+    "rights_guard_person_manual_review": 55,
+    "queue_score_reject": 42,
+    "duplicate_script": 36,
     "script_word_loop": 36,
-    "queue_score_reject": 32,
-    "duplicate_script": 23,
-    "script_subject_mismatch": 22,
-    "duplicate_angle": 18,
-    "opening_retention_gap_risk": 16,
-    "opening promise is not concrete enough": 13,
-    "subject repeated inside 3-day cooldown": 13,
-    "humanity score is too low": 13,
+    "script_subject_mismatch": 34,
+    "duplicate_angle": 32,
+    "opening_retention_gap_risk": 25,
+    "subject repeated inside 3-day cooldown": 18,
+    "humanity score is too low": 18,
+    "opening promise is not concrete enough": 17,
     "bad_plural_verb": 11,
-    "non_animal_body_language": 6,
+    "non_animal_body_language": 9,
+    "subject_not_immediately_clear": 8,
+    "payoff_not_explicit": 8,
+    "missing_action_word": 6,
+    "missing_visible_cue": 5,
+    "title_shape_weak": 4,
+    "editorial score 39 is below 62": 4,
+    "editorial score 41 is below 62": 4,
+    "no_action_promise": 4,
     "editorial score 37 is below 62": 4,
-    "editorial score 39 is below 62": 3,
-    "subject_not_immediately_clear": 3,
-    "payoff_not_explicit": 3,
-    "editorial score 41 is below 62": 2,
-    "title_shape_weak": 2,
+    "hook_shape_weak": 2,
+    "title_needs_stronger_shape": 2,
+    "editorial score 45 is below 62": 2,
+    "editorial score 43 is below 62": 2,
     "script quality gate blocked the narration": 2,
-    "no_action_promise": 2,
-    "missing_action_word": 2,
-    "missing_visible_cue": 2,
+    "missing_visual_cue": 1,
+    "subject_not_clear": 1,
+    "stitched_repeated_animal_title": 1,
     "script does not expose enough concrete visual detail": 1,
     "editorial score 50 is below 62": 1,
-    "editorial score 43 is below 62": 1,
     "thumbnail copy must contain 2-4 readable words": 1,
-    "editorial score 29 is below 62": 1,
-    "editorial score 45 is below 62": 1,
-    "title_needs_stronger_shape": 1
+    "editorial score 29 is below 62": 1
   },
   "stages": {
-    "youtube_brain_rewrite": 395,
-    "queue_prune": 252,
+    "queue_prune": 338,
+    "youtube_brain_rewrite": 252,
     "opportunity_score": 192,
-    "queue_prune_final": 111,
-    "queue_repair": 32,
-    "editor_in_chief": 15,
-    "youtube_brain": 3
+    "queue_prune_final": 148,
+    "queue_repair": 42,
+    "editor_in_chief": 20,
+    "youtube_brain": 8
   },
   "latest": [
+    {
+      "story_id": "6e2733fb0faf8ce7",
+      "stage": "queue_prune",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "title": "Trees don't spread roots the way you think",
+      "category": "forests",
+      "script_key": "trees don t stretch roots wide that s why you see those curves in trunks those aren t mistakes they re the tree s way of hugging its own roots tighter watch this one twice and count the bends did you learn this wrong too",
+      "angle_key": "trees|count|bends|forests",
+      "source_url": "https://www.pexels.com/video/serene-green-hills-with-isolated-trees-34762876/",
+      "pexels_video_id": "34762876",
+      "source_clip_id": "pexels:6e2733fb0faf8ce7",
+      "recorded_at": "2026-07-12T16:20:27.323167+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "6e188fd336518620",
+      "stage": "queue_prune_final",
+      "reasons": [
+        "rights_guard_person_manual_review"
+      ],
+      "title": "Dogs read human pointing surprisingly well",
+      "category": "dogs",
+      "script_key": "dogs can follow a human point fast watch the eyes check the person because dogs are unusually good at using human gestures that skill helps them cooperate with us before any command gets repeated the small glance is social intelligence not random obedience what dog skill should come next",
+      "angle_key": "dogs|follow|human pointing|dogs",
+      "source_url": "https://www.pexels.com/video/puppies-in-cage-12768725/",
+      "pexels_video_id": "12768725",
+      "source_clip_id": "pexels:6e188fd336518620",
+      "recorded_at": "2026-07-12T16:20:27.337373+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "3ec8d5218f7ceaf5",
+      "stage": "queue_prune",
+      "reasons": [
+        "script_word_loop"
+      ],
+      "title": "Why a dog's nose changes the whole story that most people miss",
+      "category": "dogs",
+      "script_key": "dogs read the world through scent before sight watch the first second the body pauses then the nose gives the clue in this clip the recovery angle is three puppies with red most viewers watch the face but the useful signal is smaller that visible cue is the whole story so the short opens on the dog instead of stretching the setup that small detail gives the video a reason to exist",
+      "angle_key": "dog|signal|body|dogs",
+      "source_url": "https://www.pexels.com/video/three-puppies-with-red-ribbons-on-a-tartan-blanket-15376955/",
+      "pexels_video_id": "15376955",
+      "source_clip_id": "pexels:3ec8d5218f7ceaf5",
+      "recorded_at": "2026-07-12T16:40:00.236426+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "6ab403fe404cab72",
+      "stage": "queue_prune_final",
+      "reasons": [
+        "rights_guard_person_manual_review"
+      ],
+      "title": "Dogs read human pointing surprisingly well",
+      "category": "dogs",
+      "script_key": "dogs can follow a human point fast watch the eyes check the person because dogs are unusually good at using human gestures that skill helps them cooperate with us before any command gets repeated the small glance is social intelligence not random obedience what dog skill should come next",
+      "angle_key": "dogs|follow|human pointing|dogs",
+      "source_url": "https://www.pexels.com/video/a-puppy-on-cobblestone-floor-5877820/",
+      "pexels_video_id": "5877820",
+      "source_clip_id": "pexels:6ab403fe404cab72",
+      "recorded_at": "2026-07-12T16:40:00.254287+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "fee9583a47c6fb61",
+      "stage": "queue_prune",
+      "reasons": [
+        "script_word_loop"
+      ],
+      "title": "What a dog's tail says before the bark before the obvious moment",
+      "category": "dogs",
+      "script_key": "a dog s tail is a signal not a simple happiness meter watch the first second the body pauses then the tail gives the clue in this clip the recovery angle is dog on grass the best part is the tiny pause before the action starts that visible cue is the whole story so the short opens on the dog instead of stretching the setup that is the difference between a pet clip and a real animal read",
+      "angle_key": "dog|signal|tail|dogs",
+      "source_url": "https://www.pexels.com/video/dog-on-the-grass-5877837/",
+      "pexels_video_id": "5877837",
+      "source_clip_id": "pexels:fee9583a47c6fb61",
+      "recorded_at": "2026-07-12T17:14:09.867863+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "e6b614c3ee4808fd",
+      "stage": "queue_prune",
+      "reasons": [
+        "rights_guard_person_manual_review"
+      ],
+      "title": "Dogs read human pointing surprisingly well",
+      "category": "dogs",
+      "script_key": "dogs can follow a human point fast watch the eyes check the person because dogs are unusually good at using human gestures that skill helps them cooperate with us before any command gets repeated the small glance is social intelligence not random obedience what dog skill should come next",
+      "angle_key": "dogs|follow|human pointing|dogs",
+      "source_url": "https://www.pexels.com/video/close-up-of-puppy-dog-11622181/",
+      "pexels_video_id": "11622181",
+      "source_clip_id": "pexels:e6b614c3ee4808fd",
+      "recorded_at": "2026-07-12T17:14:09.889806+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "19d11df3b63083af",
+      "stage": "queue_prune",
+      "reasons": [
+        "script_word_loop"
+      ],
+      "title": "Why dog play is more serious than it looks before the obvious moment",
+      "category": "dogs",
+      "script_key": "dogs use play to practice timing trust and control watch the first second the body pauses then the first playful move gives the clue in this clip the recovery angle is puppies playing on grass the best part is the tiny pause before the action starts that visible cue is the whole story so the short opens on the dog instead of stretching the setup that is the difference between a pet clip and a real animal read",
+      "angle_key": "dog|show|body|dogs",
+      "source_url": "https://www.pexels.com/video/puppies-playing-on-the-grass-9159497/",
+      "pexels_video_id": "9159497",
+      "source_clip_id": "pexels:19d11df3b63083af",
+      "recorded_at": "2026-07-12T17:16:41.140939+00:00",
+      "rewrite_attempted": false,
+      "rewrite_applied": false
+    },
+    {
+      "story_id": "3b482ae257b4175f",
+      "stage": "queue_prune",
+      "reasons": [
+        "rights_guard_person_manual_review"
+      ],
+      "title": "Dogs read human pointing surprisingly well",
+      "category": "dogs",
+      "script_key": "dogs can follow a human point fast watch the eyes check the person because dogs are unusually good at using human gestures that skill helps them cooperate with us before any command gets repeated the small glance is social intelligence not random obedience what dog skill should come next",
+      "angle_key": "dogs|follow|human pointing|dogs",
+      "source_url": "https://www.pexels.com/video/a-little-girl-caressing-dogs-behind-a-fence-12306307/",
+      "pexels_video_id": "12306307",
+      "source_clip_id": "pexels:3b482ae257b4175f",
+      "recorded_at": "2026-07-12T17:16:41.160190+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "bd677f8f43f261f5",
+      "stage": "queue_prune",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "title": "Dogs read the world through scent maps",
+      "category": "dogs",
+      "script_key": "dogs build a map with smell watch the nose before the feet because every sniff samples layers of scent dogs can learn who passed where they moved and what changed since the last check the ground is basically a news feed what should they sniff next",
+      "angle_key": "dogs|build|scent map|dogs",
+      "source_url": "https://www.pexels.com/video/dog-by-gate-in-garden-10841170/",
+      "pexels_video_id": "10841170",
+      "source_clip_id": "pexels:bd677f8f43f261f5",
+      "recorded_at": "2026-07-12T17:33:01.963613+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
     {
       "story_id": "04f1993990dd93b2",
       "stage": "queue_prune_final",
@@ -63,42 +220,6 @@
       "pexels_video_id": "9137111",
       "source_clip_id": "pexels:04f1993990dd93b2",
       "recorded_at": "2026-07-12T17:33:01.982002+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "2b314bb55137e91b",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/exciting-day-at-the-baseball-field-37743527/",
-      "pexels_video_id": "37743527",
-      "source_clip_id": "pexels:2b314bb55137e91b",
-      "recorded_at": "2026-07-12T17:36:44.315038+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "2b314bb55137e91b",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/exciting-day-at-the-baseball-field-37743527/",
-      "pexels_video_id": "37743527",
-      "source_clip_id": "pexels:2b314bb55137e91b",
-      "recorded_at": "2026-07-12T17:43:17.751041+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     },
@@ -134,42 +255,6 @@
       "pexels_video_id": "34672207",
       "source_clip_id": "pexels:55dede17fa751b49",
       "recorded_at": "2026-07-12T17:46:13.907380+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "2b314bb55137e91b",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/exciting-day-at-the-baseball-field-37743527/",
-      "pexels_video_id": "37743527",
-      "source_clip_id": "pexels:2b314bb55137e91b",
-      "recorded_at": "2026-07-12T17:50:08.082117+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "2b314bb55137e91b",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/exciting-day-at-the-baseball-field-37743527/",
-      "pexels_video_id": "37743527",
-      "source_clip_id": "pexels:2b314bb55137e91b",
-      "recorded_at": "2026-07-12T18:10:23.630831+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     },
@@ -225,42 +310,6 @@
       "rewrite_applied": false
     },
     {
-      "story_id": "2b314bb55137e91b",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/exciting-day-at-the-baseball-field-37743527/",
-      "pexels_video_id": "37743527",
-      "source_clip_id": "pexels:2b314bb55137e91b",
-      "recorded_at": "2026-07-12T18:16:19.437596+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "2b314bb55137e91b",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/exciting-day-at-the-baseball-field-37743527/",
-      "pexels_video_id": "37743527",
-      "source_clip_id": "pexels:2b314bb55137e91b",
-      "recorded_at": "2026-07-12T18:40:11.959686+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
       "story_id": "518d482736ac4b68",
       "stage": "queue_prune_final",
       "reasons": [
@@ -291,42 +340,6 @@
       "pexels_video_id": "7197650",
       "source_clip_id": "pexels:c7c56f9e2464cc28",
       "recorded_at": "2026-07-12T18:42:59.157293+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "2b314bb55137e91b",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/exciting-day-at-the-baseball-field-37743527/",
-      "pexels_video_id": "37743527",
-      "source_clip_id": "pexels:2b314bb55137e91b",
-      "recorded_at": "2026-07-12T18:46:25.760765+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
-      "story_id": "2b314bb55137e91b",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/exciting-day-at-the-baseball-field-37743527/",
-      "pexels_video_id": "37743527",
-      "source_clip_id": "pexels:2b314bb55137e91b",
-      "recorded_at": "2026-07-12T19:20:16.324360+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     },
@@ -382,24 +395,6 @@
       "rewrite_applied": true
     },
     {
-      "story_id": "2b314bb55137e91b",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/exciting-day-at-the-baseball-field-37743527/",
-      "pexels_video_id": "37743527",
-      "source_clip_id": "pexels:2b314bb55137e91b",
-      "recorded_at": "2026-07-12T19:27:00.991124+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
       "story_id": "108e1ffee288b707",
       "stage": "queue_prune",
       "reasons": [
@@ -434,24 +429,6 @@
       "rewrite_applied": true
     },
     {
-      "story_id": "2b314bb55137e91b",
-      "stage": "youtube_brain_rewrite",
-      "reasons": [
-        "thumbnail_text_not_scannable",
-        "thumbnail_not_2_4_words"
-      ],
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
-      "angle_key": "fossils|form|pattern|discoveries",
-      "source_url": "https://www.pexels.com/video/exciting-day-at-the-baseball-field-37743527/",
-      "pexels_video_id": "37743527",
-      "source_clip_id": "pexels:2b314bb55137e91b",
-      "recorded_at": "2026-07-12T19:36:03.795919+00:00",
-      "rewrite_attempted": true,
-      "rewrite_applied": true
-    },
-    {
       "story_id": "cab5f7e7e10f75d7",
       "stage": "queue_prune",
       "reasons": [
@@ -482,6 +459,24 @@
       "pexels_video_id": "7628753",
       "source_clip_id": "pexels:34e7761032c45c7a",
       "recorded_at": "2026-07-12T19:38:51.072722+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
+    },
+    {
+      "story_id": "2b314bb55137e91b",
+      "stage": "youtube_brain_rewrite",
+      "reasons": [
+        "thumbnail_text_not_scannable",
+        "thumbnail_not_2_4_words"
+      ],
+      "title": "Fossils turn old bones into time clues",
+      "category": "discoveries",
+      "script_key": "fossils can preserve a clue from deep time watch the shape in the rock because fossils form when buried remains leave mineral records behind the original body is gone but the pattern can reveal age habitat and behavior which ancient clue should we read next",
+      "angle_key": "fossils|form|pattern|discoveries",
+      "source_url": "https://www.pexels.com/video/exciting-day-at-the-baseball-field-37743527/",
+      "pexels_video_id": "37743527",
+      "source_clip_id": "pexels:2b314bb55137e91b",
+      "recorded_at": "2026-07-12T19:42:16.323425+00:00",
       "rewrite_attempted": true,
       "rewrite_applied": true
     }
