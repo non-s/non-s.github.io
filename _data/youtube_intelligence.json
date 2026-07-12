@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-07-12T06:18:01.342172+00:00",
+  "generated_at": "2026-07-12T06:48:19.802785+00:00",
   "window": {
     "start_date": "2026-06-15",
     "end_date": "2026-07-12"
   },
-  "coverage_score": 40,
+  "coverage_score": 80,
   "quota_strategy": [
     "Batch videos.list in groups of 50.",
     "Avoid search.list for routine automation because it is expensive and trend discovery already uses cheaper public sources.",
@@ -18,15 +18,21 @@
     "published_at": "2024-05-08T11:58:22.022654Z",
     "uploads_playlist": "UUWrQoappAOOxsaQK-43MbdQ",
     "subscriber_count": 49,
-    "view_count": 30,
-    "video_count": 46,
+    "view_count": 31,
+    "video_count": 47,
     "privacy_status": "public",
     "made_for_kids": false,
     "self_declared_made_for_kids": false
   },
   "uploads_inventory": {
-    "uploads_checked": 46,
+    "uploads_checked": 47,
     "latest_uploads": [
+      {
+        "video_id": "6Xko5TJwEdw",
+        "title": "Rock layers store ancient environments in stripes | Earth engine",
+        "published_at": "2026-07-12T06:46:42Z",
+        "playlist_item_id": "VVVXclFvYXBwQU9PeHNhUUstNDNNYmRRLjZYa281VEp3RWR3"
+      },
       {
         "video_id": "PJXOHbhndt4",
         "title": "Cells copy instructions before splitting",
@@ -170,22 +176,16 @@
         "title": "Snakes sample the air with a tongue flick",
         "published_at": "2026-07-06T22:25:36Z",
         "playlist_item_id": "VVVXclFvYXBwQU9PeHNhUUstNDNNYmRRLk1MQkJBZWgzcjlV"
-      },
-      {
-        "video_id": "Xmt0ZKQl5cw",
-        "title": "Forests use cool canopy before they cover",
-        "published_at": "2026-07-06T21:05:11Z",
-        "playlist_item_id": "VVVXclFvYXBwQU9PeHNhUUstNDNNYmRRLlhtdDBaS1FsNWN3"
       }
     ]
   },
   "video_audit": {
-    "videos_checked": 46,
-    "total_views": 31,
+    "videos_checked": 47,
+    "total_views": 32,
     "total_likes": 0,
-    "total_comments": 46,
+    "total_comments": 47,
     "private_or_unlisted": 0,
-    "shorts_like": 46,
+    "shorts_like": 47,
     "top_public_videos": [
       {
         "video_id": "8LrEpWspyK8",
@@ -195,6 +195,15 @@
         "comments": 1,
         "privacy_status": "public",
         "published_at": "2026-07-09T14:05:12Z"
+      },
+      {
+        "video_id": "75cqVLi_8WA",
+        "title": "Rock layers preserve the history of water",
+        "views": 3,
+        "likes": 0,
+        "comments": 1,
+        "privacy_status": "public",
+        "published_at": "2026-07-08T16:06:44Z"
       },
       {
         "video_id": "ELHX7Rr_oL4",
@@ -231,15 +240,6 @@
         "comments": 1,
         "privacy_status": "public",
         "published_at": "2026-07-09T20:04:41Z"
-      },
-      {
-        "video_id": "75cqVLi_8WA",
-        "title": "Rock layers preserve the history of water",
-        "views": 2,
-        "likes": 0,
-        "comments": 1,
-        "privacy_status": "public",
-        "published_at": "2026-07-08T16:06:44Z"
       },
       {
         "video_id": "gnDKpwxV42s",
@@ -287,7 +287,7 @@
       "coverage": "implemented",
       "use": "Channel identity, uploads playlist, subscriber/view/video totals, branding/status audit.",
       "risk": "read_only",
-      "last_run": "attempted"
+      "last_run": "ok"
     },
     {
       "id": "uploaded_video_inventory",
@@ -296,7 +296,7 @@
       "coverage": "implemented",
       "use": "Compare YouTube uploads against local .done markers and detect missing local memory.",
       "risk": "read_only",
-      "last_run": "attempted"
+      "last_run": "ok"
     },
     {
       "id": "video_metadata_statistics",
@@ -305,7 +305,7 @@
       "coverage": "implemented",
       "use": "Public stats, title/description/tag/status/duration audit for every tracked Short.",
       "risk": "read_only",
-      "last_run": "attempted"
+      "last_run": "ok"
     },
     {
       "id": "comment_threads",
@@ -363,9 +363,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,likes,comments,shares,subscribersGained",
       "sort": "-views",
       "use": "Rank videos by growth, engagement, retention and subscriber conversion.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 5,
+      "error": ""
     },
     {
       "id": "daily_channel",
@@ -373,9 +373,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
       "sort": "day",
       "use": "Daily pacing and anomaly detection.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 25,
+      "error": ""
     },
     {
       "id": "country",
@@ -383,9 +383,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
       "sort": "-views",
       "use": "Geo demand and publish timing hints.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 1,
+      "error": ""
     },
     {
       "id": "traffic_source",
@@ -393,9 +393,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Detect whether Shorts feed, search, browse, external or channel surfaces are driving growth.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 6,
+      "error": ""
     },
     {
       "id": "device_type",
@@ -403,9 +403,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Tune caption size, pacing and visual density for device mix.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 4,
+      "error": ""
     },
     {
       "id": "subscriber_status",
@@ -413,12 +413,10 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Separate existing subscriber behavior from discovery behavior.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 2,
+      "error": ""
     }
   ],
-  "issues": [
-    "youtube_analytics_scope_missing"
-  ]
+  "issues": []
 }

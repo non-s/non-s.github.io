@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-07-12T06:43:47.536815+00:00",
-  "count": 2,
+  "generated_at": "2026-07-12T06:48:20.008259+00:00",
+  "count": 3,
   "remakes": [
     {
       "source_video_id": "uoVylVB2fQI",
       "source_title": "Mushrooms use mushroom gills before they carry",
       "views": 2,
       "retention": 108.0,
-      "growth_score": 197.414,
+      "growth_score": 197.402,
       "action": "remake with sharper title and first-second visual text",
       "instructions": [
         "Keep the winning subject promise, but change the first sentence.",
@@ -77,7 +77,7 @@
       "source_title": "Storm clouds trace wind bands over the ocean",
       "views": 2,
       "retention": 102.32,
-      "growth_score": 192.266,
+      "growth_score": 192.26,
       "action": "remake with sharper title and first-second visual text",
       "instructions": [
         "Keep the winning subject promise, but change the first sentence.",
@@ -136,6 +136,76 @@
           "short_hook"
         ],
         "suggested_hook": "Storm changes for one visible reason."
+      },
+      "rewrite_instructions": [
+        "Open with the subject plus outcome in the first two seconds.",
+        "Remove setup; explain only the mechanism viewers can see or imagine.",
+        "Keep the remake shorter than the original if retention was below 62%.",
+        "Change the thumbnail promise, not just the wording."
+      ]
+    },
+    {
+      "source_video_id": "8LrEpWspyK8",
+      "source_title": "Dogs use scent map before they smell",
+      "views": 3,
+      "retention": 64.0,
+      "growth_score": 124.693,
+      "action": "remake with sharper title and first-second visual text",
+      "instructions": [
+        "Keep the winning subject promise, but change the first sentence.",
+        "Use a different animal or a visibly different angle when possible.",
+        "Try another narrative template and narrator variant.",
+        "Do not reuse the same source clip."
+      ],
+      "candidate_titles": [
+        "Dogs use scent map before they smell - the part viewers missed",
+        "Dogs use scent map before they smell explained in one detail",
+        "Why Dogs use scent map before they smell works"
+      ],
+      "retention_surgery": {
+        "score": 57,
+        "growth_retention": {
+          "score": 49,
+          "signals": {
+            "hook_score": 8,
+            "curiosity_score": 63,
+            "visual_score": 50,
+            "replay_score": 62,
+            "completion_prediction": 72
+          },
+          "verdict": "discard",
+          "reasons": [
+            "hook_below_threshold"
+          ],
+          "confidence": {
+            "confidence_score": 0.0,
+            "sample_size": 0,
+            "minimum_sample_size": 5,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
+        },
+        "verdict": "rewrite",
+        "issues": [
+          "hook_repeats_title",
+          "script_too_short",
+          "missing_because"
+        ],
+        "fixes": [
+          "Let the hook advance the title instead of repeating it.",
+          "Add one visual detail and one because/payoff sentence.",
+          "Add a simple because/that-is-why payoff."
+        ],
+        "strengths": [
+          "short_hook",
+          "payoff_action"
+        ],
+        "suggested_hook": "Dogs changes for one visible reason."
       },
       "rewrite_instructions": [
         "Open with the subject plus outcome in the first two seconds.",

@@ -1,5 +1,5 @@
 {
-  "sample_count": 94,
+  "sample_count": 95,
   "category_counts": {
     "ocean": 5,
     "forests": 7,
@@ -11,7 +11,7 @@
     "insects": 11,
     "reptiles": 4,
     "rivers": 2,
-    "geology": 7,
+    "geology": 8,
     "dogs": 3,
     "fungi": 2,
     "birds": 3,
@@ -33,7 +33,7 @@
     "animal_intelligence": 13,
     "cute_behavior": 1,
     "rare_nature": 1,
-    "earth_engine": 14,
+    "earth_engine": 15,
     "physics_demo": 1,
     "animal_memory": 5,
     "survival_trick": 2,
@@ -53,7 +53,7 @@
     "Primate Intelligence": 2,
     "Tiny Worlds": 11,
     "Cold-Blooded Secrets": 4,
-    "Earth Engine": 11,
+    "Earth Engine": 12,
     "Pet Secrets": 5,
     "Sky Intelligence": 3,
     "Nature Signals": 5,
@@ -63,7 +63,7 @@
     "Planet Repair": 2
   },
   "category_scores": {
-    "geology": 47.3,
+    "geology": 48.01,
     "farm": 36.77,
     "space": 17.7,
     "chemistry": 47.3,
@@ -73,24 +73,24 @@
     "fungi": 47.3,
     "trees": 26.1,
     "ocean": 47.3,
-    "arctic": 36.7,
+    "arctic": 35.25,
     "dogs": 48.01,
     "nocturnal": 26.1,
     "insects": 26.1
   },
   "format_scores": {
-    "earth_engine": 37.3,
+    "earth_engine": 37.66,
     "animal_memory": 36.77,
     "space_engine": 17.7,
     "chemistry_reaction": 47.3,
     "animal_intelligence": 47.66,
-    "body_superpower": 40.23,
+    "body_superpower": 39.27,
     "hidden_network": 36.7,
     "survival_trick": 48.01,
     "single_fact": 33.17
   },
   "category_subscriber_rates": {
-    "geology": 60.0,
+    "geology": 40.0,
     "farm": 20.0,
     "space": 0.0,
     "chemistry": 60.0,
@@ -106,7 +106,7 @@
     "insects": 0.0
   },
   "format_subscriber_rates": {
-    "earth_engine": 30.0,
+    "earth_engine": 20.0,
     "animal_memory": 20.0,
     "space_engine": 0.0,
     "chemistry_reaction": 60.0,
@@ -117,7 +117,7 @@
     "single_fact": 20.0
   },
   "category_weights": {
-    "geology": 0.971,
+    "geology": 0.972,
     "farm": 0.899,
     "space": 0.911,
     "chemistry": 0.971,
@@ -127,18 +127,18 @@
     "fungi": 0.971,
     "trees": 0.928,
     "ocean": 0.971,
-    "arctic": 0.899,
+    "arctic": 0.893,
     "dogs": 0.972,
     "nocturnal": 0.928,
     "insects": 0.928
   },
   "format_weights": {
-    "earth_engine": 0.901,
+    "earth_engine": 0.903,
     "animal_memory": 0.899,
     "space_engine": 0.911,
     "chemistry_reaction": 0.971,
     "animal_intelligence": 0.943,
-    "body_superpower": 0.869,
+    "body_superpower": 0.864,
     "hidden_network": 0.899,
     "survival_trick": 0.972,
     "single_fact": 0.827
@@ -173,6 +173,7 @@
   "winning_title_patterns": {
     "{subject} use {subject} {subject} {subject} {subject} {action}": 7,
     "{subject} {action} {subject} {subject} {subject} {subject}": 4,
+    "{visual} {subject} {subject} the {subject} of {subject}": 3,
     "{subject} {subject} {subject} {subject} {subject}": 3,
     "{subject} {subject} {subject} {subject} {subject} {subject}": 3,
     "{subject} can {action} {subject} {subject}": 3,
@@ -180,7 +181,6 @@
     "{subject} use {subject} {visual} {subject} {subject} {action}": 3,
     "{subject} use {subject} map {subject} {subject} {action}": 3,
     "{subject} {subject} {subject} {subject} {subject} {subject} {subject}": 2,
-    "{visual} {subject} {subject} the {subject} of {subject}": 2,
     "{subject} {action} {subject} {subject} {subject} {subject} {subject}": 2,
     "{subject} use {action} {subject} to {subject} {subject} {subject}": 2
   },
@@ -195,13 +195,12 @@
     "{subject} can {action} the air {subject} {subject}": 3,
     "{subject} {subject} {subject} {subject} in {subject} {subject}": 3,
     "{subject} can {action} {subject} {emotion} {subject} {subject}": 3,
+    "{visual} {subject} {subject} the {subject} of {subject}": 3,
     "{visual} {subject} by {subject} {emotion} {visual}": 3,
-    "{subject} can {action} a {subject} {subject} {subject} {subject}": 3,
-    "{subject} can use the {subject} sky {subject} a": 3
+    "{subject} can {action} a {subject} {subject} {subject} {subject}": 3
   },
   "weak_patterns": {
     "{subject} use {subject} {subject} {subject} {subject} {action}": 3,
-    "{visual} {subject} {subject} the {subject} of {subject}": 2,
     "{subject} {action} {subject} {subject} {subject} {subject}": 2,
     "{subject} can {action} a {subject} {subject} {subject} {subject}": 2,
     "{subject} can {subject} {subject} {subject} {subject} {subject} {subject}": 2,
@@ -211,13 +210,14 @@
     "{visual} {visual} {subject} {subject} {subject} {subject} the {subject}": 1,
     "{visual} {visual} can {subject} {subject} {subject} {subject} {subject}": 1,
     "{subject} {action} {subject} {subject} the {subject}": 1,
-    "{subject} can {action} who {subject} in the {subject}": 1
+    "{subject} can {action} who {subject} in the {subject}": 1,
+    "{subject} use {subject} {action} {subject} {subject} {action}": 1
   },
   "experiment_scores": {
-    "format:winner_inspired": 37.73,
-    "hook:pattern_reuse": 37.73,
-    "thumbnail:new_thumbnail": 38.24,
-    "cta:follow_for_more": 37.73,
+    "format:winner_inspired": 37.57,
+    "hook:pattern_reuse": 37.57,
+    "thumbnail:new_thumbnail": 38.11,
+    "cta:follow_for_more": 37.57,
     "format:fresh_variant": 40.63,
     "hook:new_hook": 40.63,
     "cta:specific_question": 40.63
@@ -226,17 +226,17 @@
     "format:fresh_variant": 40.63,
     "hook:new_hook": 40.63,
     "cta:specific_question": 40.63,
-    "thumbnail:new_thumbnail": 38.24,
-    "format:winner_inspired": 37.73,
-    "hook:pattern_reuse": 37.73,
-    "cta:follow_for_more": 37.73
+    "thumbnail:new_thumbnail": 38.11,
+    "format:winner_inspired": 37.57,
+    "hook:pattern_reuse": 37.57,
+    "cta:follow_for_more": 37.57
   },
-  "updated_at": "2026-07-12T06:43:57.708114+00:00",
+  "updated_at": "2026-07-12T06:48:28.794880+00:00",
   "data_coverage": {
-    "total_markers": 94,
+    "total_markers": 95,
     "views": 17,
-    "retention": 2,
-    "watch_time": 2,
+    "retention": 3,
+    "watch_time": 3,
     "subscribers": 0,
     "comments": 10
   }

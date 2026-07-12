@@ -1,8 +1,24 @@
 {
   "checked": 109,
-  "errors": 0,
-  "generated_at": "2026-07-12T06:20:10.560914+00:00",
+  "errors": 1,
+  "generated_at": "2026-07-12T06:49:04.591089+00:00",
   "items": [
+    {
+      "approved": false,
+      "enabled": true,
+      "errors": [],
+      "kind": "uploaded",
+      "path": "_videos/short-2026-07-03-044f781f8d21d65c-2026-07-03.manifest.json",
+      "score": 54,
+      "strict": false,
+      "warnings": [
+        "animal_not_front_loaded",
+        "missing_naturefacts_hashtag",
+        "missing_shorts_hashtag",
+        "missing_wildbrief_hashtag",
+        "thin_tag_set"
+      ]
+    },
     {
       "approved": true,
       "enabled": true,
@@ -171,12 +187,14 @@
       "warnings": []
     },
     {
-      "approved": true,
+      "approved": false,
       "enabled": true,
-      "errors": [],
+      "errors": [
+        "repeated_title"
+      ],
       "kind": "uploaded",
       "path": "_videos/short-2026-07-01-9305622c3a706eef-2026-07-01.done",
-      "score": 100,
+      "score": 82,
       "strict": false,
       "warnings": []
     },
@@ -449,6 +467,18 @@
       "score": 100,
       "strict": false,
       "warnings": []
+    },
+    {
+      "approved": true,
+      "enabled": true,
+      "errors": [],
+      "kind": "uploaded",
+      "path": "_videos/short-2026-07-03-044f781f8d21d65c-2026-07-03.done",
+      "score": 90,
+      "strict": false,
+      "warnings": [
+        "title_too_long_for_shorts"
+      ]
     },
     {
       "approved": true,
@@ -982,20 +1012,6 @@
       ]
     },
     {
-      "approved": false,
-      "enabled": true,
-      "errors": [],
-      "kind": "pending",
-      "path": "_data/stories_queue.json#ce3b2fc76a336a95",
-      "score": 54,
-      "strict": false,
-      "warnings": [
-        "animal_not_front_loaded",
-        "title_too_short_for_search",
-        "weak_search_front"
-      ]
-    },
-    {
       "approved": true,
       "enabled": true,
       "errors": [],
@@ -1012,23 +1028,13 @@
       "enabled": true,
       "errors": [],
       "kind": "pending",
-      "path": "_data/stories_queue.json#044f781f8d21d65c",
-      "score": 100,
-      "strict": false,
-      "warnings": []
-    },
-    {
-      "approved": true,
-      "enabled": true,
-      "errors": [],
-      "kind": "pending",
       "path": "_data/stories_queue.json#09c8f40beafab256",
       "score": 100,
       "strict": false,
       "warnings": []
     }
   ],
-  "pending_checked": 13,
-  "uploaded_checked": 96,
-  "warnings": 16
+  "pending_checked": 11,
+  "uploaded_checked": 98,
+  "warnings": 19
 }
