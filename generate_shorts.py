@@ -46,6 +46,7 @@ from utils.animal_enrichment import download_commons_image
 from utils.audience_expansion import global_strategy, merge_hashtags, merge_search_tags
 from utils.broll import BrollClip, download_clip, fetch_broll_clips
 from utils.captions import (
+    find_leaked_override_codes,
     group_words_into_phrases,
     write_ass,
 )
@@ -512,6 +513,13 @@ def _compact_thumbnail_candidate(value: str) -> str:
             return replacement
     words = [word.strip("'-") for word in raw.split()]
     useful = [word for word in words if word and word not in _THUMB_STOP_WORDS]
+    if not useful:
+        # `value` is expected to already be a short, authored phrase
+        # (2-4 words). If every word happens to be on the generic-filler
+        # blocklist (e.g. "Secret Signal"), filtering to nothing is worse
+        # than showing the original words — keep them instead of falling
+        # through to a longer, unrelated candidate.
+        useful = words
     if len(useful) > 3:
         without_animals = [word for word in useful if word not in _THUMB_ANIMAL_WORDS]
         if len(without_animals) >= 2:
@@ -520,12 +528,43 @@ def _compact_thumbnail_candidate(value: str) -> str:
     return " ".join(useful)
 
 
-def _clean_thumbnail_text(text: str, *, title: str = "", hook: str = "") -> str:
+def _ai_thumbnail_cue(hook: str, title: str, category: str) -> str:
+    """Ask the AI fallback chain (Mistral/Cerebras/Gemini/Groq) for a
+    short, coherent visual cue when the authored `thumbnail_text` is
+    unusable. Last-resort only — never slices a sentence positionally,
+    which is how the fallback used to turn a narration sentence into a
+    truncated, meaningless fragment on the video's opening frame.
+    """
+    from utils.ai_helper import ai_text  # local import: keep render path import-light
+
+    basis = (hook or title or "").strip()
+    if not basis:
+        return ""
+    prompt = (
+        "Write ONE short visual caption for a nature Short's opening frame.\n"
+        f"Category: {category or 'nature'}. Video context: \"{basis[:200]}\"\n"
+        "Rules: 2-4 words, ALL CAPS, no punctuation, must read as a complete "
+        "standalone phrase (never a cut-off sentence fragment). "
+        "Reply with only the phrase, nothing else."
+    )
+    try:
+        out = ai_text(prompt, task="thumbnail_cue", timeout=12)
+    except Exception as exc:
+        log.debug("thumbnail cue AI fallback failed: %s", exc)
+        return ""
+    out = re.sub(r"[^A-Za-z0-9\s'-]", " ", out or "")
+    out = re.sub(r"\s+", " ", out).strip().upper()
+    return " ".join(out.split()[:4])
+
+
+def _clean_thumbnail_text(text: str, *, title: str = "", hook: str = "", category: str = "") -> str:
     """Make the cover text read like a fast visual cue, not generated prose."""
-    for candidate in (text, hook, title, f"{title} {hook}"):
-        compact = _compact_thumbnail_candidate(candidate)
-        if compact:
-            return compact[:24].strip() or "NATURE MOMENT"
+    compact = _compact_thumbnail_candidate(text)
+    if compact:
+        return compact[:24].strip()
+    ai_cue = _ai_thumbnail_cue(hook, title, category)
+    if ai_cue:
+        return ai_cue[:24].strip()
     return "NATURE MOMENT"
 
 
@@ -904,7 +943,13 @@ def _legacy_title_card_frame(
 
 
 def create_short_frame(
-    title: str, category: str, points: list[str], source: str, bg_path: Path | None, lang: str | None = None
+    title: str,
+    category: str,
+    points: list[str],
+    source: str,
+    bg_path: Path | None,
+    lang: str | None = None,
+    thumbnail_text: str = "",
 ) -> Image.Image:
     """
     Create a first frame that works as a Shorts cover: visible animal,
@@ -977,7 +1022,11 @@ def create_short_frame(
         stroke_fill=(0, 0, 0, 180),
     )
 
-    cue = _clean_thumbnail_text("", title=title, hook=points[0] if points else "")
+    # Reuse the already-resolved cover cue (same text burned as the
+    # video's opening-frame overlay) so the static frame and the video
+    # never show two different cues — and so we don't fire an extra AI
+    # call on every render when the caller already has a good one.
+    cue = thumbnail_text or _clean_thumbnail_text("", title=title, hook=points[0] if points else "", category=category)
     title_font = get_font(150, bold=True)
     title_lines = _side_caption_lines(draw, cue, title_font, int(SHORT_W * 0.48) - 112)
     if any((draw.textbbox((0, 0), line, font=title_font)[2] > int(SHORT_W * 0.48) - 112) for line in title_lines):
@@ -1650,6 +1699,7 @@ def _queue_to_story(qs: dict) -> dict:
         qs.get("thumbnail_text", ""),
         title=title,
         hook=qs.get("hook", ""),
+        category=qs.get("category", ""),
     )
     experiments = assign_all_for_production(qs["id"])
     experiments.update(dict(qs.get("experiments") or {}))
@@ -2218,6 +2268,7 @@ def generate_short(story: dict, tmp_dir: Path, lang: str | None = None) -> tuple
         story.get("thumbnail_text") or "",
         title=display_title,
         hook=hook_text,
+        category=category,
     )
     story["hook"] = hook_text
     story["title"] = display_title
@@ -2312,6 +2363,15 @@ def generate_short(story: dict, tmp_dir: Path, lang: str | None = None) -> tuple
         log.warning("  Skipping Short - production quality requires captions")
         return None
     if ass_path:
+        caption_issues = find_leaked_override_codes(ass_path)
+        if caption_issues:
+            log.warning(
+                "  ⏭  Skipping Short — burned captions leak raw formatting codes: %s",
+                caption_issues,
+            )
+            record_rejection(story, caption_issues, stage="caption_lint")
+            commit_rejected(story.get("_queue_id", ""), caption_issues, stage="caption_lint")
+            return None
         log.info("  📝 Captions ready: %s", ass_path.name)
     else:
         log.info("  ⚠ Captions skipped — Whisper providers unavailable")
@@ -2409,6 +2469,7 @@ def generate_short(story: dict, tmp_dir: Path, lang: str | None = None) -> tuple
         source=story.get("source", "Pexels"),
         bg_path=bg_path,
         lang=lang,
+        thumbnail_text=thumbnail_text,
     )
     frame_path = tmp_dir / f"frame_{slug}.png"
     frame.save(str(frame_path))

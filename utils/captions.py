@@ -385,25 +385,33 @@ def write_ass(
         start_str = _format_ass_time(phrase_start)
         end_str = _format_ass_time(phrase_end)
         
-        # Build the karaoke text
+        # Build the karaoke text. Each word gets one override block that
+        # opens with its (optional) leading-gap \k tag immediately
+        # followed by its own \k tag and text — never a separate,
+        # standalone gap block. That keeps every `{` paired with its
+        # `}` so libass always parses the tag instead of printing it
+        # as literal text, while still rendering exactly one visible
+        # space between words (attached as a plain-text prefix, not
+        # inside the override block).
         text_parts = []
         current_time = phrase_start
-        for w in phrase_words:
-            # Add delay before word if there's a gap
+        for i, w in enumerate(phrase_words):
+            tag = ""
             if w.start > current_time:
                 gap_cs = int((w.start - current_time) * 100)
                 if gap_cs > 0:
-                    text_parts.append(f"{{\\k{gap_cs}}}")
-            
-            word_cs = int((w.end - w.start) * 100)
-            # Ensure word has at least 1cs to render properly
-            word_cs = max(1, word_cs)
-            
+                    tag += f"\\k{gap_cs}"
+
+            word_cs = max(1, int((w.end - w.start) * 100))
+            tag += f"\\k{word_cs}"
+            tag = "{" + tag + "}"
+
             word_text = _caption_text_with_emphasis(w.word)
-            text_parts.append(f"{{\\k{word_cs}}}{word_text}")
+            prefix = " " if i > 0 else ""
+            text_parts.append(f"{prefix}{tag}{word_text}")
             current_time = w.end
-            
-        text = " ".join(text_parts).replace("} {", "} ") # Fix spacing around tags
+
+        text = "".join(text_parts)
         
         # A tiny pop-in scale feels like CapCut captions
         text = r"{\fad(45,60)\t(0,90,\fscx106\fscy106)}" + text
@@ -414,3 +422,29 @@ def write_ass(
     except Exception as exc:
         log.warning("write_ass failed: %s", exc)
         return False
+
+
+def find_leaked_override_codes(ass_path: Path) -> list[str]:
+    """Safety-net check: scan a written .ass file's [Events] text for ASS
+    override codes (`\\k12`, stray `{`/`}`) that would render as literal
+    on-screen text instead of being consumed as formatting. Returns a
+    list of problem codes, empty if the caption text is clean.
+
+    This is a belt-and-suspenders check for `write_ass` bugs — the
+    generator should never emit unbalanced braces, but a pre-publish
+    scan catches any regression before the Short ships.
+    """
+    try:
+        body = ass_path.read_text(encoding="utf-8")
+    except Exception:
+        return []
+    if "[Events]" not in body:
+        return []
+    events = body.split("[Events]", 1)[1]
+    visible = re.sub(r"\{[^}]*\}", "", events)
+    issues: list[str] = []
+    if re.search(r"\\[kK]\d", visible):
+        issues.append("leaked_karaoke_tag")
+    if "{" in visible or "}" in visible:
+        issues.append("unbalanced_ass_braces")
+    return issues
