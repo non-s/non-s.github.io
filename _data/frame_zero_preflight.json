@@ -1,16 +1,35 @@
 {
-  "generated_at": "2026-07-13T07:45:51.036570+00:00",
+  "generated_at": "2026-07-13T07:48:42.839381+00:00",
   "floor": 82.0,
-  "pending": 12,
-  "ready": 12,
+  "pending": 14,
+  "ready": 14,
   "held": 0,
-  "rewritten": 0,
-  "average_opening_score": 97.17,
+  "rewritten": 1,
+  "average_opening_score": 97.0,
   "render_gate": "approved",
   "counts": {
-    "approved": 12
+    "approved": 14,
+    "rewritten": 1
   },
   "items": [
+    {
+      "id": "c65e9470eb4f37b9",
+      "title": "Lions hunt better when the pride coordinates",
+      "category": "wildlife",
+      "render_gate": "approved",
+      "opening_score": 100.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Lions reveal the pride plan first.",
+      "first_frame_text": "PRIDE PLAN",
+      "visible_cue": "pride plan",
+      "rewrite_applied": true,
+      "rewrite_reason": "opening_retention_below_floor",
+      "before_score": 70.0,
+      "after_score": 100.0,
+      "risks": [],
+      "action": "Use the frame-zero rewrite before rendering."
+    },
     {
       "id": "a4ca94af1a59d5df",
       "title": "Fox eyes glow at night in a way you didn't expect",
@@ -29,6 +48,26 @@
       "risks": [
         "frame_text_not_echoed_early",
         "missing_watch_instruction"
+      ],
+      "action": "Ready to render with current first frame."
+    },
+    {
+      "id": "75f7922395ba987c",
+      "title": "Elephant make the paw placement matter first",
+      "category": "wildlife",
+      "render_gate": "approved",
+      "opening_score": 92.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Elephant make the paw placement matter first.",
+      "first_frame_text": "PAW PLACEMENT",
+      "visible_cue": "",
+      "rewrite_applied": false,
+      "rewrite_reason": "",
+      "before_score": null,
+      "after_score": 92.0,
+      "risks": [
+        "subject_not_frontloaded"
       ],
       "action": "Ready to render with current first frame."
     },
