@@ -1,17 +1,17 @@
 {
   "counts": {
-    "automation_safe": 1,
+    "automation_safe": 2,
     "high": 0,
-    "manual_review": 2,
+    "manual_review": 1,
     "total": 3,
     "urgent": 3
   },
   "free_only": true,
-  "generated_at": "2026-07-13T07:52:17.478805+00:00",
+  "generated_at": "2026-07-13T08:11:59.264984+00:00",
   "items": [
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 67.462,
+      "age_hours": 67.791,
       "automation_safe": true,
       "category": "insects",
       "checkpoint_label": "1h",
@@ -36,9 +36,9 @@
       "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
-      "action_type": "prepare_package_rescue",
-      "age_hours": 37.474,
-      "automation_safe": false,
+      "action_type": "pull_fresh_analytics",
+      "age_hours": 37.802,
+      "automation_safe": true,
       "category": "microscopy",
       "checkpoint_label": "1h",
       "checkpoint_state": "overdue",
@@ -46,24 +46,24 @@
       "due_at": "2026-07-11T19:23:51.980992+00:00",
       "free_only": true,
       "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-      "id": "fresh-upload:PJXOHbhndt4:repair_candidate:1h",
-      "lane": "package_rescue",
-      "manual_approval_required": true,
+      "id": "fresh-upload:PJXOHbhndt4:analytics_due:1h",
+      "lane": "measurement",
+      "manual_approval_required": false,
       "opening_retention_score": 72.0,
       "priority": "urgent",
-      "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
       "series": "Nature Signals",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "target_views": 24,
       "title": "Cells copy instructions before splitting",
       "url": "https://www.youtube.com/shorts/PJXOHbhndt4",
       "video_id": "PJXOHbhndt4",
       "wait_until": "",
-      "why": "Observed velocity is weak enough to prepare a package intervention."
+      "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
       "action_type": "prepare_package_rescue",
-      "age_hours": 25.096,
+      "age_hours": 25.425,
       "automation_safe": false,
       "category": "geology",
       "checkpoint_label": "1h",
@@ -89,5 +89,5 @@
     }
   ],
   "source": "fresh_upload_watchlist",
-  "source_generated_at": "2026-07-13T07:52:17.478222+00:00"
+  "source_generated_at": "2026-07-13T08:11:59.264400+00:00"
 }

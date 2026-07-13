@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 1,
+    "analytics_due": 2,
     "awaiting_1h": 0,
     "high_priority": 3,
-    "repair_candidates": 2,
+    "repair_candidates": 1,
     "tracked": 3
   },
-  "generated_at": "2026-07-13T07:52:17.478222+00:00",
+  "generated_at": "2026-07-13T08:11:59.264400+00:00",
   "items": [
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 25.096,
+      "age_hours": 25.425,
       "category": "geology",
       "checkpoints": [
         {
@@ -80,8 +80,8 @@
       }
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 37.474,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 37.802,
       "category": "microscopy",
       "checkpoints": [
         {
@@ -106,14 +106,14 @@
           "delta_to_target": -300,
           "due_at": "2026-07-12T18:23:51.980992+00:00",
           "label": "24h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 300,
           "views": 0
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
         "delta_to_target": -24,
         "due_at": "2026-07-11T19:23:51.980992+00:00",
@@ -127,27 +127,16 @@
       "opening_retention_state": "needs_tightening",
       "priority": "high",
       "series": "Nature Signals",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Cells copy instructions before splitting",
       "uploaded_at": "2026-07-11T18:23:51.980992+00:00",
       "url": "https://www.youtube.com/shorts/PJXOHbhndt4",
       "video_id": "PJXOHbhndt4",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.756,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Cells copy instructions before splitting",
-        "video_id": "PJXOHbhndt4",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 67.462,
+      "age_hours": 67.791,
       "category": "insects",
       "checkpoints": [
         {
