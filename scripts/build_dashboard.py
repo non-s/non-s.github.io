@@ -287,29 +287,53 @@ def _sparkline_svg(values: list[float], width: int = 600, height: int = 80, stro
 
 
 CSS = """
-:root { color-scheme: dark; }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+:root {
+  color-scheme: dark;
+  --bg-dark: #0a0a0f;
+  --card-bg: rgba(20, 22, 30, 0.6);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --text-main: #e2e8f0;
+  --text-muted: #94a3b8;
+  --accent: #38bdf8;
+  --accent-glow: rgba(56, 189, 248, 0.15);
+}
 * { box-sizing: border-box; }
-body { font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-       margin: 0; padding: 24px; max-width: 1100px; margin-inline: auto;
-       background: #0b0d12; color: #e6e9ef; line-height: 1.5; }
-h1, h2, h3 { color: #fff; margin-top: 1.6em; }
-h1 { margin-top: 0; }
-small { color: #9aa3b2; }
-.card { background: #131722; border: 1px solid #1f2433; border-radius: 12px;
-        padding: 20px; margin: 16px 0; }
-.metric { font-size: 2.4em; font-weight: 600; }
-.row { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-table { width: 100%; border-collapse: collapse; }
-th, td { border-bottom: 1px solid #1f2433; padding: 8px 6px; text-align: left;
-         vertical-align: top; }
-th { color: #9aa3b2; font-weight: 500; font-size: 0.85em; }
-a { color: #0ea5e9; text-decoration: none; }
-a:hover { text-decoration: underline; }
-code { background: #1f2433; padding: 1px 6px; border-radius: 4px; }
-.badge { display: inline-block; padding: 1px 8px; border-radius: 99px;
-         font-size: 0.78em; background: #1f2433; color: #c0c7d6; }
-.green { color: #4ade80; }
-.red   { color: #f87171; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  margin: 0; padding: 32px 24px; max-width: 1200px; margin-inline: auto;
+  background: var(--bg-dark);
+  background-image: radial-gradient(circle at 50% 0%, var(--accent-glow) 0%, transparent 50%);
+  color: var(--text-main); line-height: 1.6;
+}
+h1, h2, h3 { color: #fff; margin-top: 1.8em; font-weight: 600; letter-spacing: -0.02em; }
+h1 { margin-top: 0; font-size: 2.5em; background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+small { color: var(--text-muted); font-size: 0.85em; }
+.card {
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: 16px; padding: 24px; margin: 20px 0;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 24px -1px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.card:hover { border-color: rgba(255,255,255,0.15); transform: translateY(-2px); }
+.metric { font-size: 2.5em; font-weight: 700; color: #fff; letter-spacing: -0.03em; margin-top: 8px; }
+.row { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 12px; }
+th, td { border-bottom: 1px solid var(--card-border); padding: 12px 10px; text-align: left; vertical-align: top; }
+th { color: var(--text-muted); font-weight: 500; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.05em; }
+tr { transition: background-color 0.15s ease; }
+tr:hover td { background-color: rgba(255,255,255,0.02); }
+a { color: var(--accent); text-decoration: none; transition: color 0.15s ease; }
+a:hover { color: #7dd3fc; text-decoration: none; }
+code { background: rgba(255,255,255,0.06); padding: 3px 6px; border-radius: 6px; font-size: 0.85em; font-family: ui-monospace, monospace; border: 1px solid rgba(255,255,255,0.05); }
+.badge { display: inline-block; padding: 2px 10px; border-radius: 99px; font-size: 0.75em; font-weight: 600; background: rgba(255,255,255,0.08); color: #e2e8f0; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid rgba(255,255,255,0.05); }
+.green { color: #4ade80; font-weight: 600; }
+.red   { color: #f87171; font-weight: 600; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #475569; }
 """
 
 

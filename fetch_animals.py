@@ -416,69 +416,41 @@ _AI_PROMPT_TEMPLATE = (
     "natural phenomena, geology, ecosystems, Earth from space, "
     "astronomy, physics, chemistry, microscopy, conservation, and "
     "scientific discoveries. Every Short combines real public-domain "
-    "footage with one visual surprise that can be understood fast. "
+    "footage with one visual surprise that can be understood fast.\n\n"
+    "CRITICAL CONSTRAINTS (FAILURE TO OBEY THESE WILL REJECT THE SCRIPT):\n"
+    "1. THUMBNAIL TEXT: MUST be EXACTLY 2 to 4 words. MUST be highly scannable and punchy. NO long sentences.\n"
+    "2. OPENING HOOK: The first sentence must make a CONCRETE PROMISE about what the viewer will see. "
+    "DO NOT use vague setups or questions. Example of good: 'This frog freezes its blood to survive winter.' "
+    "Example of bad: 'Did you know some frogs can freeze?'\n"
+    "3. UNIQUE TITLE: Ensure the title is highly specific to the exact visual action in the footage to avoid duplicate titles across similar subjects.\n"
+    "4. VISUAL MATCH: The entire script MUST be about the exact visual elements present in the clip. Do not invent off-topic facts.\n"
+    "5. SCRIPT HOOK MATCH: The spoken hook must match the visual action seamlessly.\n\n"
     "Tone: curious, cinematic, direct, no clickbait, no AI-isms. Speak "
-    "like one curious host, not a fact card: include one small human "
-    "reaction, two concrete visual details the viewer can notice, one "
-    "tension beat (but/because/that's why), and no generic phrases like "
-    "nature is amazing, hidden secret, or you won't believe. "
+    "like one curious host, not a fact card. Include one tension beat (but/because/that's why), and no generic phrases.\n\n"
     "Respond ONLY with valid JSON.\n\n"
     "Clip:\n"
     "Subject: {subject}\n"
     "Context: {context}\n"
     "Trend context: {trend_context}\n"
     "Studio direction: {studio_direction}\n\n"
-    "Clip variation key: {variation_key}. Use this only to choose a "
-    "distinct wording and mechanism when the same subject appears in "
-    "multiple clips. Do not mention the key.\n\n"
+    "Clip variation key: {variation_key}. Use this to generate a COMPLETELY UNIQUE title and hook for this specific clip to avoid duplication.\n\n"
     "EDITORIAL REQUIREMENT: narration, hook, title, and thumbnail MUST "
-    "be about the visible subject named in Subject. Never switch to a "
-    "different subject just because it has a stronger fact. Turtle "
-    "footage requires turtle facts; mushroom footage requires fungi "
-    "facts; lava footage requires volcano or geology facts; storm "
-    "footage requires weather facts; moon footage requires moon or "
-    "space facts; prism footage requires light or physics facts; "
-    "chemical reaction footage requires chemistry facts; microscope "
-    "footage requires microscopic biology or crystal facts. If multiple "
-    "subjects are named, choose the one most visibly present.\n\n"
+    "be about the visible subject named in Subject.\n\n"
     "ANGLE REQUIREMENT: Focus heavily on 'Debunking Myths', the 'Mandela Effect', "
-    "and bizarre counter-intuitive facts. Do not write generic encyclopedia facts. "
-    "The Short must answer a real curiosity about the visible subject by dismantling "
-    "what people wrongly believe or revealing something the school system got wrong. "
-    "Use movement only when the exact fact is about that movement. Bad: "
-    "'Butterflies rely on wing movement.' Better: 'Butterflies taste flowers with their feet, "
-    "not their mouths.' Bad: 'The moon moves across space.' Better: 'The dark side of the moon "
-    "is a lie; it gets just as much sunlight.' Bad: 'This reaction moves "
-    "fast.' Better: 'This reaction foams because gas is being made.'\n\n"
+    "and bizarre counter-intuitive facts. Do not write generic encyclopedia facts.\n\n"
     "RETENTION FORMULA: 0-1s = outcome-first hook; 1-4s = visual cue to "
     "watch; 4-12s = real mechanism; final beat = satisfying payoff plus a "
-    "provocative or personal interactive question that forces viewers to comment "
-    "(e.g., 'What would you do?', 'Would you survive this?', 'Did you learn this wrong too?'). "
-    "MRBEAST SERIES HOOK: In about 20% of the scripts, replace the final question with a cliffhanger "
-    "to force a subscription (e.g., 'But this is nothing compared to what it does at night... Like and subscribe for Part 2!'). "
-    "GAMIFIED EASTER EGG: In about 10% of the scripts, mention that you hid a crown emoji 👑 in the video for 1 frame, "
-    "and challenge the viewer to pause exactly on it (e.g., 'I hid a crown in this video, tell me if you can pause on it!'). "
-    "Do not say 'payoff', 'visible signal', 'hidden cue', 'final move', or 'replay the first second' in the viewer-facing copy. "
+    "provocative or personal interactive question that forces viewers to comment.\n"
     "Keep sentences short enough for yellow CapCut-style captions.\n\n"
     "Return this exact JSON shape:\n"
     "{{"
-    '"score": <int 1-10 - how interesting is this subject for a global nature-science Short>,'
-    '"seo_title": "<38-58 chars. Start with the subject, then the curious angle. '
-    "Avoid starting with Why/How/This/These. NO all-caps, no multiple punctuation. "
-    'Good: \\"Mushrooms talk through underground threads\\". '
-    'Good: \\"Lava builds land faster than you think\\".>",'
-    '"yt_tags": ["<5 lowercase tags. First 3 are subject-specific '
-    "(subject, process, visible anchor). Last 2 are evergreen "
-    '(\\"nature\\", \\"nature facts\\", \\"science\\", \\"earth science\\").>"],'
-    '"topic_hashtag": "<one CamelCase hashtag identifying the category. '
-    'Examples: Ocean, Fungi, Volcanoes, Weather, Geology, SpaceScience, Physics, Chemistry, Microscopy.>",'
-    '"thumbnail_text": "<2-4 word punchy phrase. ALL CAPS allowed. '
-    'E.g. FUNGAL INTERNET, LAVA ISLAND, STORM ENGINE.>",'
-    '"hook": "<the very first spoken line, max 10 words. Lead with outcome, not setup. No question hooks.>",'
-    '"script": "<the full voice-over for a 12-18 second short. 38-55 words MAX. '
-    "FIRST WORDS MUST BE the hook, verbatim. Then one visible anchor, one mechanism, "
-    "and one satisfying reason. Include because or that's why. Close with a tiny comment "
-    'question. No stage directions, no URLs.>",'
+    '"score": <int 1-10>,'
+    '"seo_title": "<38-58 chars. Unique and highly specific to the visual action. NO all-caps.>",'
+    '"yt_tags": ["<5 lowercase tags>"],'
+    '"topic_hashtag": "<one CamelCase hashtag identifying the category. E.g. Ocean, SpaceScience.>",'
+    '"thumbnail_text": "<EXACTLY 2 TO 4 WORDS. Punchy. ALL CAPS. E.g. FUNGAL INTERNET.>",'
+    '"hook": "<the very first spoken line, max 10 words. CONCRETE PROMISE. No questions.>",'
+    '"script": "<the full voice-over. 38-55 words MAX. FIRST WORDS MUST BE the hook, verbatim. Include a visible anchor and mechanism.>",'
     '"sentiment": "positive"'
     "}}"
 )
