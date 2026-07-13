@@ -69,17 +69,10 @@ def pinned_comment_payload(meta: dict, handoff: dict | None = None) -> str:
     handoff = handoff or {}
     title = str(handoff.get("title") or "").strip()
     url = str(handoff.get("url") or "").strip()
-    
-    # 💰 Monetization / Affiliate CTA
-    cta = (
-        "🔬 Curte natureza e ciência? Descubra os segredos escondidos do nosso planeta! "
-        "Apoie o canal e expanda sua mente clicando aqui: https://amzn.to/exemplo_afiliado_livros_ciencia\n\n"
-    )
-    
     if title and url:
-        return f"{cta}Assista a seguir: {title[:72]} {url}"
+        return f"Assista a seguir: {title[:72]} {url}"
     series = str(meta.get("series") or meta.get("category") or "Wild Brief").strip()
-    return f"{cta}Acompanhe o próximo Wild Brief na playlist de {series}."
+    return f"Próximo episódio: acompanhe a saga de vídeos sobre {series} na nossa playlist do canal."
 
 
 def _recommendable_title(title: str) -> bool:
