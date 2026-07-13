@@ -66,7 +66,6 @@
     "geology": 48.01,
     "farm": 36.77,
     "space": 17.7,
-    "chemistry": 47.3,
     "earth_from_space": 27.3,
     "wildlife": 47.66,
     "reptiles": 47.3,
@@ -75,25 +74,23 @@
     "ocean": 47.3,
     "arctic": 35.25,
     "dogs": 48.01,
-    "nocturnal": 26.1,
-    "insects": 26.1
+    "insects": 36.7,
+    "nocturnal": 26.1
   },
   "format_scores": {
     "earth_engine": 37.66,
     "animal_memory": 36.77,
     "space_engine": 17.7,
-    "chemistry_reaction": 47.3,
     "animal_intelligence": 47.66,
     "body_superpower": 39.27,
     "hidden_network": 36.7,
     "survival_trick": 48.01,
-    "single_fact": 33.17
+    "single_fact": 36.7
   },
   "category_subscriber_rates": {
     "geology": 40.0,
     "farm": 20.0,
     "space": 0.0,
-    "chemistry": 60.0,
     "earth_from_space": 0.0,
     "wildlife": 50.0,
     "reptiles": 60.0,
@@ -102,25 +99,23 @@
     "ocean": 60.0,
     "arctic": 30.0,
     "dogs": 40.0,
-    "nocturnal": 0.0,
-    "insects": 0.0
+    "insects": 30.0,
+    "nocturnal": 0.0
   },
   "format_subscriber_rates": {
     "earth_engine": 20.0,
     "animal_memory": 20.0,
     "space_engine": 0.0,
-    "chemistry_reaction": 60.0,
     "animal_intelligence": 50.0,
     "body_superpower": 40.0,
     "hidden_network": 30.0,
     "survival_trick": 40.0,
-    "single_fact": 20.0
+    "single_fact": 30.0
   },
   "category_weights": {
     "geology": 0.972,
     "farm": 0.899,
     "space": 0.911,
-    "chemistry": 0.971,
     "earth_from_space": 0.931,
     "wildlife": 0.943,
     "reptiles": 0.971,
@@ -129,25 +124,23 @@
     "ocean": 0.971,
     "arctic": 0.893,
     "dogs": 0.972,
-    "nocturnal": 0.928,
-    "insects": 0.928
+    "insects": 0.899,
+    "nocturnal": 0.928
   },
   "format_weights": {
     "earth_engine": 0.903,
     "animal_memory": 0.899,
     "space_engine": 0.911,
-    "chemistry_reaction": 0.971,
     "animal_intelligence": 0.943,
     "body_superpower": 0.864,
     "hidden_network": 0.899,
     "survival_trick": 0.972,
-    "single_fact": 0.827
+    "single_fact": 0.798
   },
   "subscriber_category_weights": {
     "geology": 1.25,
     "farm": 1.25,
     "space": 0.97,
-    "chemistry": 1.25,
     "earth_from_space": 0.97,
     "wildlife": 1.25,
     "reptiles": 1.25,
@@ -156,14 +149,13 @@
     "ocean": 1.25,
     "arctic": 1.25,
     "dogs": 1.25,
-    "nocturnal": 0.97,
-    "insects": 0.97
+    "insects": 1.25,
+    "nocturnal": 0.97
   },
   "subscriber_format_weights": {
     "earth_engine": 1.25,
     "animal_memory": 1.25,
     "space_engine": 0.97,
-    "chemistry_reaction": 1.25,
     "animal_intelligence": 1.25,
     "body_superpower": 1.25,
     "hidden_network": 1.25,
@@ -172,12 +164,12 @@
   },
   "winning_title_patterns": {
     "{subject} use {subject} {subject} {subject} {subject} {action}": 7,
-    "{subject} {action} {subject} {subject} {subject} {subject}": 4,
+    "{subject} use {subject} {action} {subject} {subject} {action}": 4,
     "{visual} {subject} {subject} the {subject} of {subject}": 3,
     "{subject} {subject} {subject} {subject} {subject}": 3,
     "{subject} {subject} {subject} {subject} {subject} {subject}": 3,
+    "{subject} {action} {subject} {subject} {subject} {subject}": 3,
     "{subject} can {action} {subject} {subject}": 3,
-    "{subject} use {subject} {action} {subject} {subject} {action}": 3,
     "{subject} use {subject} {visual} {subject} {subject} {action}": 3,
     "{subject} use {subject} map {subject} {subject} {action}": 3,
     "{subject} {subject} {subject} {subject} {subject} {subject} {subject}": 2,
@@ -188,9 +180,9 @@
   "winning_hook_patterns": {
     "{subject} {action} a map {subject} {action}": 5,
     "{subject} can {action} {subject} {subject}": 5,
-    "{subject} {action} {subject} {subject} {subject} {subject}": 5,
     "{subject} can {action} {subject} {subject} {subject} {subject}": 4,
     "{subject} {action} the air {subject} a {subject} {subject}": 4,
+    "{subject} {action} {subject} {subject} {subject} {subject}": 4,
     "{subject} use {subject} to {subject} up {subject} {subject}": 4,
     "{subject} can {action} the air {subject} {subject}": 3,
     "{subject} {subject} {subject} {subject} in {subject} {subject}": 3,
@@ -201,8 +193,8 @@
   },
   "weak_patterns": {
     "{subject} use {subject} {subject} {subject} {subject} {action}": 3,
-    "{subject} {action} {subject} {subject} {subject} {subject}": 2,
     "{subject} can {action} a {subject} {subject} {subject} {subject}": 2,
+    "{subject} use {subject} {action} {subject} {subject} {action}": 2,
     "{subject} can {subject} {subject} {subject} {subject} {subject} {subject}": 2,
     "{subject} can {action} {subject} {subject} {subject} {subject}": 2,
     "the {subject} {subject} one {subject} {subject} {subject} {subject}": 1,
@@ -211,27 +203,27 @@
     "{visual} {visual} can {subject} {subject} {subject} {subject} {subject}": 1,
     "{subject} {action} {subject} {subject} the {subject}": 1,
     "{subject} can {action} who {subject} in the {subject}": 1,
-    "{subject} use {subject} {action} {subject} {subject} {action}": 1
+    "{subject} {action} the air {subject} a {subject} {subject}": 1
   },
   "experiment_scores": {
-    "format:winner_inspired": 37.57,
-    "hook:pattern_reuse": 37.57,
+    "format:winner_inspired": 38.22,
+    "hook:pattern_reuse": 38.22,
     "thumbnail:new_thumbnail": 38.11,
-    "cta:follow_for_more": 37.57,
-    "format:fresh_variant": 40.63,
-    "hook:new_hook": 40.63,
-    "cta:specific_question": 40.63
+    "cta:follow_for_more": 38.22,
+    "format:fresh_variant": 37.3,
+    "hook:new_hook": 37.3,
+    "cta:specific_question": 37.3
   },
   "winning_experiments": {
-    "format:fresh_variant": 40.63,
-    "hook:new_hook": 40.63,
-    "cta:specific_question": 40.63,
+    "format:winner_inspired": 38.22,
+    "hook:pattern_reuse": 38.22,
+    "cta:follow_for_more": 38.22,
     "thumbnail:new_thumbnail": 38.11,
-    "format:winner_inspired": 37.57,
-    "hook:pattern_reuse": 37.57,
-    "cta:follow_for_more": 37.57
+    "format:fresh_variant": 37.3,
+    "hook:new_hook": 37.3,
+    "cta:specific_question": 37.3
   },
-  "updated_at": "2026-07-13T00:21:59.663707+00:00",
+  "updated_at": "2026-07-13T01:14:14.264865+00:00",
   "data_coverage": {
     "total_markers": 95,
     "views": 17,
