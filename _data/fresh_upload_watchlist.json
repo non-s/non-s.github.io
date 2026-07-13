@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 1,
+    "analytics_due": 2,
     "awaiting_1h": 0,
     "high_priority": 2,
-    "repair_candidates": 1,
+    "repair_candidates": 0,
     "tracked": 2
   },
-  "generated_at": "2026-07-13T18:11:45.708582+00:00",
+  "generated_at": "2026-07-13T18:18:12.181726+00:00",
   "items": [
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 35.421,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 35.528,
       "category": "geology",
       "checkpoints": [
         {
@@ -40,14 +40,14 @@
           "delta_to_target": -300,
           "due_at": "2026-07-13T06:46:30.181782+00:00",
           "label": "24h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 300,
           "views": 0
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
         "delta_to_target": -24,
         "due_at": "2026-07-12T07:46:30.181782+00:00",
@@ -61,27 +61,16 @@
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Earth Engine",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Rock layers store ancient environments in stripes | Earth engine",
       "uploaded_at": "2026-07-12T06:46:30.181782+00:00",
       "url": "https://www.youtube.com/shorts/6Xko5TJwEdw",
       "video_id": "6Xko5TJwEdw",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.756,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Rock layers store ancient environments in stripes | Earth engine",
-        "video_id": "6Xko5TJwEdw",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 47.798,
+      "age_hours": 47.906,
       "category": "microscopy",
       "checkpoints": [
         {

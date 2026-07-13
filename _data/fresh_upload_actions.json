@@ -1,17 +1,17 @@
 {
   "counts": {
-    "automation_safe": 1,
+    "automation_safe": 2,
     "high": 0,
-    "manual_review": 1,
+    "manual_review": 0,
     "total": 2,
     "urgent": 2
   },
   "free_only": true,
-  "generated_at": "2026-07-13T18:11:45.709285+00:00",
+  "generated_at": "2026-07-13T18:18:12.182282+00:00",
   "items": [
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 47.798,
+      "age_hours": 47.906,
       "automation_safe": true,
       "category": "microscopy",
       "checkpoint_label": "1h",
@@ -36,9 +36,9 @@
       "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
-      "action_type": "prepare_package_rescue",
-      "age_hours": 35.421,
-      "automation_safe": false,
+      "action_type": "pull_fresh_analytics",
+      "age_hours": 35.528,
+      "automation_safe": true,
       "category": "geology",
       "checkpoint_label": "1h",
       "checkpoint_state": "overdue",
@@ -46,22 +46,22 @@
       "due_at": "2026-07-12T07:46:30.181782+00:00",
       "free_only": true,
       "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-      "id": "fresh-upload:6Xko5TJwEdw:repair_candidate:1h",
-      "lane": "package_rescue",
-      "manual_approval_required": true,
+      "id": "fresh-upload:6Xko5TJwEdw:analytics_due:1h",
+      "lane": "measurement",
+      "manual_approval_required": false,
       "opening_retention_score": 100.0,
       "priority": "urgent",
-      "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
       "series": "Earth Engine",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "target_views": 24,
       "title": "Rock layers store ancient environments in stripes | Earth engine",
       "url": "https://www.youtube.com/shorts/6Xko5TJwEdw",
       "video_id": "6Xko5TJwEdw",
       "wait_until": "",
-      "why": "Observed velocity is weak enough to prepare a package intervention."
+      "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     }
   ],
   "source": "fresh_upload_watchlist",
-  "source_generated_at": "2026-07-13T18:11:45.708582+00:00"
+  "source_generated_at": "2026-07-13T18:18:12.181726+00:00"
 }
