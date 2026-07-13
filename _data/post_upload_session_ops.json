@@ -2,18 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 2,
-      "high": 1,
-      "manual_review": 1,
+      "automation_safe": 1,
+      "high": 0,
+      "manual_review": 2,
       "total": 3,
-      "urgent": 2
+      "urgent": 3
     },
     "free_only": true,
-    "generated_at": "2026-07-13T07:32:29.934128+00:00",
+    "generated_at": "2026-07-13T07:36:23.615568+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 67.132,
+        "age_hours": 67.197,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 37.144,
+        "age_hours": 37.209,
         "automation_safe": false,
         "category": "microscopy",
         "checkpoint_label": "1h",
@@ -64,34 +64,34 @@
         "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
-        "action_type": "pull_fresh_analytics",
-        "age_hours": 24.767,
-        "automation_safe": true,
+        "action_type": "prepare_package_rescue",
+        "age_hours": 24.832,
+        "automation_safe": false,
         "category": "geology",
-        "checkpoint_label": "24h",
-        "checkpoint_state": "due",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "overdue",
         "current_views": 0,
-        "due_at": "2026-07-13T06:46:30.181782+00:00",
+        "due_at": "2026-07-12T07:46:30.181782+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:6Xko5TJwEdw:analytics_due:24h",
-        "lane": "measurement",
-        "manual_approval_required": false,
+        "id": "fresh-upload:6Xko5TJwEdw:repair_candidate:1h",
+        "lane": "package_rescue",
+        "manual_approval_required": true,
         "opening_retention_score": 100.0,
-        "priority": "high",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 24h sample first.",
+        "priority": "urgent",
+        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
         "series": "Earth Engine",
-        "state": "analytics_due",
-        "target_views": 300,
+        "state": "repair_candidate",
+        "target_views": 24,
         "title": "Rock layers store ancient environments in stripes | Earth engine",
         "url": "https://www.youtube.com/shorts/6Xko5TJwEdw",
         "video_id": "6Xko5TJwEdw",
         "wait_until": "",
-        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
+        "why": "Observed velocity is weak enough to prepare a package intervention."
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-13T07:32:29.933424+00:00"
+    "source_generated_at": "2026-07-13T07:36:23.614961+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -100,17 +100,17 @@
       24
     ],
     "counts": {
-      "analytics_due": 2,
+      "analytics_due": 1,
       "awaiting_1h": 0,
       "high_priority": 3,
-      "repair_candidates": 1,
+      "repair_candidates": 2,
       "tracked": 3
     },
-    "generated_at": "2026-07-13T07:32:29.933424+00:00",
+    "generated_at": "2026-07-13T07:36:23.614961+00:00",
     "items": [
       {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 24.767,
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "age_hours": 24.832,
         "category": "geology",
         "checkpoints": [
           {
@@ -135,37 +135,48 @@
             "delta_to_target": -300,
             "due_at": "2026-07-13T06:46:30.181782+00:00",
             "label": "24h",
-            "source": "estimated",
-            "state": "due",
+            "source": "observed",
+            "state": "observed",
             "target_views": 300,
             "views": 0
           }
         ],
         "current_views": 0,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
         "next_checkpoint": {
-          "delta_to_target": -300,
-          "due_at": "2026-07-13T06:46:30.181782+00:00",
-          "label": "24h",
+          "delta_to_target": -24,
+          "due_at": "2026-07-12T07:46:30.181782+00:00",
+          "label": "1h",
           "source": "estimated",
-          "state": "due",
-          "target_views": 300,
+          "state": "overdue",
+          "target_views": 24,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
         "priority": "high",
         "series": "Earth Engine",
-        "state": "analytics_due",
+        "state": "repair_candidate",
         "title": "Rock layers store ancient environments in stripes | Earth engine",
         "uploaded_at": "2026-07-12T06:46:30.181782+00:00",
         "url": "https://www.youtube.com/shorts/6Xko5TJwEdw",
         "video_id": "6Xko5TJwEdw",
-        "views_per_hour": 0.0
+        "views_per_hour": 0.0,
+        "warning": {
+          "action": "TITLE_AUTO_REPAIR_TRIGGER",
+          "confidence_score": 0.756,
+          "reason": "low early velocity",
+          "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
+          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+          "title": "Rock layers store ancient environments in stripes | Earth engine",
+          "video_id": "6Xko5TJwEdw",
+          "views": 0,
+          "warning_state": "repair_risk"
+        }
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 37.144,
+        "age_hours": 37.209,
         "category": "microscopy",
         "checkpoints": [
           {
@@ -231,7 +242,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 67.132,
+        "age_hours": 67.197,
         "category": "insects",
         "checkpoints": [
           {
@@ -292,7 +303,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-13T07:32:29.934171+00:00",
+  "generated_at": "2026-07-13T07:36:23.615610+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
