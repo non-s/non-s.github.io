@@ -42,6 +42,8 @@ Return ONLY valid JSON matching this schema:
 TOPIC: {topic}
 """
 
+
+
 async def generate_segment(segment_index: int, topic_key: str, query: str) -> Path | None:
     """Generate a single 16:9 segment."""
     segment_dir = VIDEOS_DIR / "compilation_temp"
@@ -98,6 +100,8 @@ async def generate_segment(segment_index: int, topic_key: str, query: str) -> Pa
     return out_mp4 if ok and out_mp4.exists() else None
 
 
+
+
 async def async_main():
     VIDEOS_DIR.mkdir(exist_ok=True)
     compilation_temp = VIDEOS_DIR / "compilation_temp"
@@ -141,8 +145,10 @@ async def async_main():
     else:
         log.error("Failed to concatenate segments.")
 
+
 def main():
     asyncio.run(async_main())
+
 
 if __name__ == "__main__":
     main()

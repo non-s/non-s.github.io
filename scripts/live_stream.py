@@ -12,6 +12,8 @@ from pathlib import Path
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger(__name__)
 
+
+
 def main():
     stream_key = os.environ.get("YOUTUBE_STREAM_KEY")
     if not stream_key:
@@ -56,6 +58,8 @@ def main():
         log.info("Stream interrupted by user.")
     except subprocess.CalledProcessError as e:
         log.error(f"FFmpeg crashed: {e}")
+
+
 
 if __name__ == "__main__":
     main()
