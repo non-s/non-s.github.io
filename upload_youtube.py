@@ -103,7 +103,7 @@ def _normalise_tags(tags) -> list[str]:
 
 
 def _youtube_title(meta: dict) -> str:
-    title = (meta.get("title") or "Nature fact of the day").strip()
+    title = (meta.get("seo_title") or meta.get("title") or "Nature fact of the day").strip()
     return title if len(title) <= 100 else title[:97].rstrip(" .,;:-") + "..."
 
 

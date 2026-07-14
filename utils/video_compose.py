@@ -433,9 +433,9 @@ def build_broll_short(
         str(output_path),
     ]
     try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=180)
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
     except subprocess.TimeoutExpired:
-        log.error("ffmpeg b-roll compose timed out after 180s")
+        log.error("ffmpeg b-roll compose timed out after 300s")
         return False
     finally:
         try:
@@ -584,9 +584,9 @@ def build_static_short(
         str(output_path),
     ]
     try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=180)
     except subprocess.TimeoutExpired:
-        log.error("ffmpeg static compose timed out")
+        log.error("ffmpeg static compose timed out after 180s")
         return False
     if result.returncode != 0:
         log.error("ffmpeg static compose failed: %s", result.stderr[-1200:])

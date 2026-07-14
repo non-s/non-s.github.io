@@ -114,21 +114,30 @@ def fetch_pexels(query: str, per_page: int = 8, page: int = 1) -> list[BrollClip
         return [BrollClip(**c) for c in cached]
 
     try:
-        _throttle()
-        response = _session().get(
-            _PEXELS_API,
-            params={
-                "query": query[:120],
-                "per_page": per_page,
-                "page": page,
-                "orientation": "portrait",
-                "size": "medium",
-            },
-            headers={"Authorization": key},
-            timeout=_TIMEOUT,
-        )
-        if response.status_code != 200:
-            log.warning("Pexels API request failed with status code %d for query %r", response.status_code, query[:40])
+        for attempt in range(3):
+            _throttle()
+            response = _session().get(
+                _PEXELS_API,
+                params={
+                    "query": query[:120],
+                    "per_page": per_page,
+                    "page": page,
+                    "orientation": "portrait",
+                    "size": "medium",
+                },
+                headers={"Authorization": key},
+                timeout=_TIMEOUT,
+            )
+            if response.status_code == 429:
+                log.warning("Pexels rate limit hit (429), retrying in %d seconds...", 2 ** attempt * 3)
+                time.sleep(2 ** attempt * 3)
+                continue
+            if response.status_code != 200:
+                log.warning("Pexels API request failed with status code %d for query %r", response.status_code, query[:40])
+                return []
+            break
+        else:
+            log.warning("Pexels API request failed after 3 attempts (429) for query %r", query[:40])
             return []
         videos = response.json().get("videos", []) or []
     except Exception as exc:
