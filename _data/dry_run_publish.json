@@ -1,36 +1,36 @@
 {
   "would_publish": [
     {
-      "id": "2b314bb55137e91b",
-      "title": "Fossils turn old bones into time clues",
-      "category": "discoveries",
-      "queue_score": 100.0,
+      "id": "5492c4505c453345",
+      "title": "Cats groom to reset their scent map",
+      "category": "cats",
+      "queue_score": 78.0,
       "template_cluster": "",
-      "mechanism_cluster": "",
+      "mechanism_cluster": "scent_map",
       "objective_reasons": [
         "bootstrap_observe_before_scaling"
       ],
       "scale_ready": false,
-      "autonomy_priority": 103.0,
-      "autonomy_lane": "fresh_experiment",
-      "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
+      "autonomy_priority": 94.0,
+      "autonomy_lane": "recovery",
+      "hypothesis_id": "H5_RECOVER_OR_PAUSE",
       "packaging_lab": {
         "title_variants": [
-          "Fossils turn old bones into time clues",
-          "Fossils use fossil shape before they leave",
-          "This fossil shape gives fossils away"
+          "Cats groom to reset their scent map",
+          "Cats signal through grooming signal",
+          "Cats use grooming signal before they signal"
         ],
         "thumbnail_variants": [
-          "FOSSIL CLUE",
-          "FOSSIL SHAPE",
-          "WATCH FOSSIL SHAPE"
+          "GROOMING SIGNAL",
+          "WATCH GROOMING SIGNAL",
+          "CATS SIGNAL"
         ],
         "hook_variants": [
-          "Fossils can preserve a clue from deep time.",
-          "Fossils turn old bones into time clues",
-          "Watch the pattern again. Tomorrow in Discovery Brief: another nature signal. Would you trust this explanation"
+          "Cats use grooming to reset their scent map.",
+          "Cats groom to reset their scent map",
+          "Watch the grooming signal again. Tomorrow in Pet Secrets: another animal signal. What part of this feels most"
         ],
-        "pinned_comment": "Watch the pattern again. Tomorrow in Discovery Brief: another nature signal. Would you trust this explanation from footage alone?",
+        "pinned_comment": "Watch the grooming signal again. Tomorrow in Pet Secrets: another animal signal. What part of this feels most impossible?",
         "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
       },
       "publish_score": {
@@ -38,18 +38,21 @@
         "approved": true,
         "state": "publish_ready",
         "opportunity": {
-          "score": 67,
+          "score": 51,
           "signals": {
-            "viral_potential": 85,
-            "visual_potential": 69,
-            "replay_potential": 72,
+            "viral_potential": 50,
+            "visual_potential": 45,
+            "replay_potential": 64,
             "comment_potential": 54,
-            "educational_potential": 72,
-            "emotional_potential": 44,
-            "novelty": 59
+            "educational_potential": 58,
+            "emotional_potential": 35,
+            "novelty": 45
           },
-          "verdict": "produce",
-          "reasons": [],
+          "verdict": "discard",
+          "reasons": [
+            "weak_visual_surface",
+            "low_opportunity_score"
+          ],
           "confidence": {
             "confidence_score": 0.0,
             "sample_size": 0,
@@ -64,11 +67,11 @@
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
         },
         "retention": {
-          "score": 71,
+          "score": 68,
           "signals": {
             "hook_score": 70,
-            "curiosity_score": 79,
-            "visual_score": 58,
+            "curiosity_score": 71,
+            "visual_score": 50,
             "replay_score": 62,
             "completion_prediction": 84
           },
@@ -91,20 +94,23 @@
           "score": 100.0,
           "state": "retention_ready",
           "approved": true,
-          "subject": "fossils",
+          "subject": "cats",
           "cue_terms": [
-            "clue",
-            "fossil",
-            "shape"
+            "grip",
+            "groom",
+            "map",
+            "paw",
+            "scent",
+            "tongue"
           ],
           "frame_hook_bridge": [
-            "clue",
-            "fossil"
+            "groom"
           ],
           "cue_bridge": [
-            "clue",
-            "fossil",
-            "shape"
+            "groom",
+            "map",
+            "scent",
+            "tongue"
           ],
           "strengths": [
             "subject_frontloaded",
@@ -122,33 +128,35 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.65,
-            "sample_size": 12,
+            "confidence_score": 0.0,
+            "sample_size": 0,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
-            "recommendation_strength": "test",
-            "can_adjust_strategy": true,
-            "bootstrap_multiplier": 0.738,
-            "reasoning": "pattern has 12/5 samples, inferred data, confidence 0.65; strategy changes allowed."
+            "recommendation_strength": "observe",
+            "can_adjust_strategy": false,
+            "bootstrap_multiplier": 0.25,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
         "subscriber_conversion": {
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103,
-          "return_probability": 0.222,
-          "comment_probability": 0.191,
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133,
+          "return_probability": 0.281,
+          "comment_probability": 0.24,
           "robotic_title": {
             "risk": 0,
             "state": "clear",
             "hits": []
           },
           "reasons": [
+            "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
           "confidence": {
             "confidence_score": 0.033,
@@ -175,8 +183,8 @@
           "bootstrap_multiplier": 0.255,
           "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
         },
-        "category": "discoveries",
-        "story_format": "science_clue",
+        "category": "cats",
+        "story_format": "body_superpower",
         "hook_score": 100,
         "title_score": 100,
         "phrase_risk": {
@@ -199,17 +207,26 @@
           "swipe_risk_band": "low",
           "payoff_time_s": 0.0,
           "template_cluster": "",
-          "mechanism_cluster": ""
+          "mechanism_cluster": "scent_map"
+        },
+        "reserve_override": {
+          "reason": "publish_ready_supply_reserve_fallback",
+          "original_approved": false,
+          "original_state": "rewrite",
+          "original_opportunity_reasons": [
+            "weak_visual_surface",
+            "low_opportunity_score"
+          ]
         }
       },
       "youtube_brain": {
         "score": 100,
         "state": "publish_minded",
-        "animal": "fossils",
-        "subject": "fossils",
-        "story_format": "science_clue",
-        "viewer_promise": "See why this fossil science clue matters.",
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "animal": "cats",
+        "subject": "cats",
+        "story_format": "body_superpower",
+        "viewer_promise": "See why cats body superpower matters.",
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
           "0-1s: visible subject and outcome",
@@ -221,20 +238,23 @@
           "score": 100.0,
           "state": "retention_ready",
           "approved": true,
-          "subject": "fossils",
+          "subject": "cats",
           "cue_terms": [
-            "clue",
-            "fossil",
-            "shape"
+            "grip",
+            "groom",
+            "map",
+            "paw",
+            "scent",
+            "tongue"
           ],
           "frame_hook_bridge": [
-            "clue",
-            "fossil"
+            "groom"
           ],
           "cue_bridge": [
-            "clue",
-            "fossil",
-            "shape"
+            "groom",
+            "map",
+            "scent",
+            "tongue"
           ],
           "strengths": [
             "subject_frontloaded",
@@ -260,7 +280,7 @@
         "commands": []
       },
       "packaging": {
-        "score": 95,
+        "score": 94,
         "state": "magnetic",
         "strengths": [
           "title_shape",
@@ -272,110 +292,109 @@
         ],
         "risks": [],
         "title_options": [
-          "Fossils turn old bones into time clues",
-          "Fossils use fossil shape before they leave",
-          "This fossil shape gives fossils away",
-          "Why fossils leave after one fossil shape",
-          "Fossils reveal the answer with fossil shape",
-          "The fossil shape that changes the moment",
-          "Fossils make one fossil shape matter",
-          "Fossils show the hidden answer in seconds",
-          "Fossils: watch this fossil shape",
-          "Watch fossils after the fossil shape"
+          "Cats groom to reset their scent map",
+          "Cats signal through grooming signal",
+          "Cats use grooming signal before they signal",
+          "This grooming signal gives cats away",
+          "Why cats signal after one grooming signal",
+          "Cats reveal the answer with grooming signal",
+          "The grooming signal that changes the moment",
+          "Cats make one grooming signal matter",
+          "Cats show the hidden answer in seconds",
+          "Cats: watch this grooming signal"
         ],
         "thumbnail_options": [
-          "FOSSIL CLUE",
-          "FOSSIL SHAPE",
-          "WATCH FOSSIL SHAPE",
-          "FOSSILS LEAVE",
-          "FOSSIL SHAPE MATTERS",
-          "FOSSIL SHAPE FIRST",
-          "FOSSIL SHAPE REVEAL",
-          "FOSSIL SHAPE CLUE",
+          "GROOMING SIGNAL",
+          "WATCH GROOMING SIGNAL",
+          "CATS SIGNAL",
+          "GROOMING SIGNAL MATTERS",
+          "GROOMING SIGNAL FIRST",
+          "GROOMING SIGNAL REVEAL",
+          "GROOMING SIGNAL CLUE",
           "WATCH THE MOVE",
           "SPOT THE CLUE"
         ],
         "hook_options": [
-          "Fossils can preserve a clue from deep time",
-          "Fossils show why the fossil shape matters.",
-          "Fossils show why the fossil shape matters.",
-          "Fossils show why the fossil shape matters.",
-          "Fossils give away the answer through fossil shape"
+          "Cats use grooming to reset their scent map",
+          "Cats show why the grooming signal matters.",
+          "Cats show why the grooming signal matters.",
+          "Cats show why the grooming signal matters.",
+          "Cats give away the answer through grooming signal"
         ],
         "selected_variant": {
-          "score": 80,
-          "title": "Fossils turn old bones into time clues",
-          "thumbnail_text": "FOSSIL CLUE",
-          "hook": "Start with the fossil shape; it changes the scene"
+          "score": 75,
+          "title": "Cats groom to reset their scent map",
+          "thumbnail_text": "GROOMING SIGNAL",
+          "hook": "Watch the grooming signal; it explains the behavior"
         },
         "top_variants": [
           {
-            "score": 80,
-            "title": "Fossils turn old bones into time clues",
-            "thumbnail_text": "FOSSIL CLUE",
-            "hook": "Start with the fossil shape; it changes the scene"
-          },
-          {
-            "score": 78,
-            "title": "Fossils turn old bones into time clues",
-            "thumbnail_text": "FOSSIL CLUE",
-            "hook": "Fossils can preserve a clue from deep time"
-          },
-          {
-            "score": 78,
-            "title": "Fossils turn old bones into time clues",
-            "thumbnail_text": "FOSSIL CLUE",
-            "hook": "Watch the fossil shape; it explains the behavior"
-          },
-          {
-            "score": 77,
-            "title": "Fossils use fossil shape before they leave",
-            "thumbnail_text": "FOSSIL CLUE",
-            "hook": "Start with the fossil shape; it changes the scene"
+            "score": 75,
+            "title": "Cats groom to reset their scent map",
+            "thumbnail_text": "GROOMING SIGNAL",
+            "hook": "Watch the grooming signal; it explains the behavior"
           },
           {
             "score": 75,
-            "title": "Fossils use fossil shape before they leave",
-            "thumbnail_text": "FOSSIL CLUE",
-            "hook": "Fossils can preserve a clue from deep time"
+            "title": "Cats groom to reset their scent map",
+            "thumbnail_text": "GROOMING SIGNAL",
+            "hook": "Start with the grooming signal; it changes the scene"
           },
           {
-            "score": 75,
-            "title": "Fossils use fossil shape before they leave",
-            "thumbnail_text": "FOSSIL CLUE",
-            "hook": "Watch the fossil shape; it explains the behavior"
+            "score": 74,
+            "title": "Cats groom to reset their scent map",
+            "thumbnail_text": "GROOMING SIGNAL",
+            "hook": "Cats use grooming to reset their scent map"
           },
           {
-            "score": 73,
-            "title": "Fossils turn old bones into time clues",
-            "thumbnail_text": "FOSSIL SHAPE",
-            "hook": "Start with the fossil shape; it changes the scene"
+            "score": 68,
+            "title": "Cats groom to reset their scent map",
+            "thumbnail_text": "WATCH GROOMING SIGNAL",
+            "hook": "Watch the grooming signal; it explains the behavior"
           },
           {
-            "score": 73,
-            "title": "Fossils turn old bones into time clues",
-            "thumbnail_text": "WATCH FOSSIL SHAPE",
-            "hook": "Start with the fossil shape; it changes the scene"
+            "score": 68,
+            "title": "Cats groom to reset their scent map",
+            "thumbnail_text": "WATCH GROOMING SIGNAL",
+            "hook": "Start with the grooming signal; it changes the scene"
           },
           {
-            "score": 73,
-            "title": "Fossils turn old bones into time clues",
-            "thumbnail_text": "FOSSILS LEAVE",
-            "hook": "Start with the fossil shape; it changes the scene"
+            "score": 68,
+            "title": "Cats groom to reset their scent map",
+            "thumbnail_text": "CATS SIGNAL",
+            "hook": "Watch the grooming signal; it explains the behavior"
           },
           {
-            "score": 73,
-            "title": "Fossils turn old bones into time clues",
-            "thumbnail_text": "FOSSIL SHAPE MATTERS",
-            "hook": "Start with the fossil shape; it changes the scene"
+            "score": 68,
+            "title": "Cats groom to reset their scent map",
+            "thumbnail_text": "CATS SIGNAL",
+            "hook": "Start with the grooming signal; it changes the scene"
+          },
+          {
+            "score": 68,
+            "title": "Cats groom to reset their scent map",
+            "thumbnail_text": "GROOMING SIGNAL MATTERS",
+            "hook": "Watch the grooming signal; it explains the behavior"
+          },
+          {
+            "score": 68,
+            "title": "Cats groom to reset their scent map",
+            "thumbnail_text": "GROOMING SIGNAL MATTERS",
+            "hook": "Start with the grooming signal; it changes the scene"
+          },
+          {
+            "score": 68,
+            "title": "Cats groom to reset their scent map",
+            "thumbnail_text": "GROOMING SIGNAL FIRST",
+            "hook": "Watch the grooming signal; it explains the behavior"
           }
         ],
         "retention": {
-          "score": 71,
+          "score": 68,
           "signals": {
             "hook_score": 70,
-            "curiosity_score": 79,
-            "visual_score": 58,
+            "curiosity_score": 71,
+            "visual_score": 50,
             "replay_score": 62,
             "completion_prediction": 84
           },
@@ -402,14 +421,8 @@
             "thumbnail_pattern": "",
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
           },
-          "winning_experiments": {
-            "format:fresh_variant": 27.3,
-            "hook:new_hook": 27.3,
-            "cta:specific_question": 27.3,
-            "thumbnail:new_thumbnail": 25.26,
-            "format:winner_inspired": 25.0
-          },
-          "sample_count": 95,
+          "winning_experiments": {},
+          "sample_count": 96,
           "assignment": {
             "format": "winner_inspired",
             "hook": "pattern_reuse",
@@ -418,68 +431,68 @@
           }
         },
         "series_identity": {
-          "series": "Discovery Brief",
-          "episode": 1,
-          "label": "Discovery Brief",
-          "continuity_prompt": "Next in Discovery Brief: compare this with another force of nature."
+          "series": "Pet Secrets",
+          "episode": 6,
+          "label": "Pet Secrets #6",
+          "continuity_prompt": "Next in Pet Secrets: compare this with another force of nature."
         },
-        "pinned_comment": "Watch the pattern again. Tomorrow in Discovery Brief: another nature signal. Would you trust this explanation from footage alone?",
-        "community_prompt": "Which fossils clue should Wild Brief compare next in Discovery Brief?",
-        "series": "Discovery Brief",
-        "next_episode_question": "Tomorrow in Discovery Brief: another nature signal. Would you trust this explanation from footage alone?",
+        "pinned_comment": "Watch the grooming signal again. Tomorrow in Pet Secrets: another animal signal. What part of this feels most impossible?",
+        "community_prompt": "Which cats clue should Wild Brief compare next in Pet Secrets?",
+        "series": "Pet Secrets #6",
+        "next_episode_question": "Tomorrow in Pet Secrets: another animal signal. What part of this feels most impossible?",
         "search_intent": {
-          "subject": "fossils",
-          "visible_cue": "pattern",
-          "series": "Discovery Brief",
-          "title_variant": "Fossils pattern explained fast",
-          "description_line": "This Short explains the visible pattern behind Fossils in a fast nature science story.",
+          "subject": "cats",
+          "visible_cue": "grooming signal",
+          "series": "Pet Secrets",
+          "title_variant": "Cats behavior: grooming signal explained",
+          "description_line": "This Short explains Cats behavior through the visible grooming signal.",
           "terms": [
-            "fossils",
-            "pattern",
-            "discoveries",
-            "science clue"
+            "cats",
+            "grooming signal",
+            "body superpower"
           ]
         },
         "retention_contract": {
-          "subject": "fossils",
-          "visible_cue": "pattern",
-          "first_frame_text": "FOSSIL CLUE",
-          "first_2s_narration": "Fossils can preserve a clue from deep time Watch the shape in",
-          "series": "Discovery Brief",
-          "next_episode_question": "Tomorrow in Discovery Brief: another nature signal. Would you trust this explanation from footage alone?",
+          "subject": "cats",
+          "visible_cue": "grooming signal",
+          "first_frame_text": "GROOMING SIGNAL",
+          "first_2s_narration": "Cats use grooming to reset their scent map Watch the tongue and",
+          "series": "Pet Secrets",
+          "next_episode_question": "Tomorrow in Pet Secrets: another animal signal. What part of this feels most impossible?",
           "search_intent": {
-            "subject": "fossils",
-            "visible_cue": "pattern",
-            "series": "Discovery Brief",
-            "title_variant": "Fossils pattern explained fast",
-            "description_line": "This Short explains the visible pattern behind Fossils in a fast nature science story.",
+            "subject": "cats",
+            "visible_cue": "grooming signal",
+            "series": "Pet Secrets",
+            "title_variant": "Cats behavior: grooming signal explained",
+            "description_line": "This Short explains Cats behavior through the visible grooming signal.",
             "terms": [
-              "fossils",
-              "pattern",
-              "discoveries",
-              "science clue"
+              "cats",
+              "grooming signal",
+              "body superpower"
             ]
           },
           "opening_retention_score": 100.0,
           "opening_retention_state": "retention_ready"
         },
-        "cta_prompt": "Want fast updates from the edge of science?",
-        "replay_prompt": "End by pointing back to the pattern, so viewers rewatch the fossils clip.",
+        "cta_prompt": "Want one animal signal a day? Follow for the next pet clue.",
+        "replay_prompt": "End by pointing back to the grooming signal, so viewers rewatch the cats clip.",
         "subscriber_conversion": {
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103,
-          "return_probability": 0.222,
-          "comment_probability": 0.191,
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133,
+          "return_probability": 0.281,
+          "comment_probability": 0.24,
           "robotic_title": {
             "risk": 0,
             "state": "clear",
             "hits": []
           },
           "reasons": [
+            "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
           "confidence": {
             "confidence_score": 0.033,
@@ -510,20 +523,23 @@
             "score": 100.0,
             "state": "retention_ready",
             "approved": true,
-            "subject": "fossils",
+            "subject": "cats",
             "cue_terms": [
-              "clue",
-              "fossil",
-              "shape"
+              "grip",
+              "groom",
+              "map",
+              "paw",
+              "scent",
+              "tongue"
             ],
             "frame_hook_bridge": [
-              "clue",
-              "fossil"
+              "groom"
             ],
             "cue_bridge": [
-              "clue",
-              "fossil",
-              "shape"
+              "groom",
+              "map",
+              "scent",
+              "tongue"
             ],
             "strengths": [
               "subject_frontloaded",
@@ -538,7 +554,7 @@
           }
         },
         "curiosity_gap": {
-          "hook": "Why do these fossils change after the fossil clue?",
+          "hook": "Why do these cats change after the paw grip?",
           "source": "template",
           "score": 78.0,
           "reasons": [
@@ -550,20 +566,23 @@
           "score": 100.0,
           "state": "retention_ready",
           "approved": true,
-          "subject": "fossils",
+          "subject": "cats",
           "cue_terms": [
-            "clue",
-            "fossil",
-            "shape"
+            "grip",
+            "groom",
+            "map",
+            "paw",
+            "scent",
+            "tongue"
           ],
           "frame_hook_bridge": [
-            "clue",
-            "fossil"
+            "groom"
           ],
           "cue_bridge": [
-            "clue",
-            "fossil",
-            "shape"
+            "groom",
+            "map",
+            "scent",
+            "tongue"
           ],
           "strengths": [
             "subject_frontloaded",
@@ -583,41 +602,41 @@
           "fixes": []
         },
         "loop_plan": {
-          "callback_keyword": "fossil clue",
-          "opening_line": "Fossils can preserve a clue from deep time.",
-          "ending_line": "Which ancient clue should we read next?",
-          "final_line": "Now the fossil clue at the start makes sense.",
+          "callback_keyword": "grooming signal",
+          "opening_line": "Cats use grooming to reset their scent map.",
+          "ending_line": "Which pet behavior should we decode next?",
+          "final_line": "Now the grooming signal at the start makes sense.",
           "rewrite_applied": true,
           "audio_crossfade_ms": 120,
           "subtitle_tail_mode": "carry-forward",
-          "loop_score": 0.869,
+          "loop_score": 0.835,
           "render_hints": {
-            "carry_keyword": "fossil clue",
+            "carry_keyword": "grooming signal",
             "subtle_audio_tail": true,
             "avoid_hard_stop": true
           }
         },
-        "loop_score": 0.869,
+        "loop_score": 0.835,
         "editorial_rulebook": {
           "approved": true,
           "score": 100.0,
           "violations": [],
           "notes": [],
-          "recommended_format": "science clue",
+          "recommended_format": "body superpower",
           "recommended_duration_s": 24
         },
         "preflight_inputs": {
-          "first_frame_text": "FOSSIL CLUE",
+          "first_frame_text": "GROOMING SIGNAL",
           "first_frame_text_words": 2,
-          "hook": "Fossils can preserve a clue from deep time.",
-          "hook_words": 7,
-          "first_2s_narration": "Fossils can preserve clue from deep time Watch the shape in the",
-          "caption_chars_per_second": 15.59,
+          "hook": "Cats use grooming to reset their scent map.",
+          "hook_words": 8,
+          "first_2s_narration": "Cats use grooming to reset their scent map Watch the tongue and",
+          "caption_chars_per_second": 14.9,
           "visual_motion_score": 0.76,
           "contrast_score": 0.74,
           "hook_specificity": 0.78,
           "novelty_score": 0.58,
-          "duration_hint_s": 17,
+          "duration_hint_s": 20,
           "payoff_time_s": 0,
           "payoff_score": 75,
           "payoff_reveal_sentence_index": 0,
@@ -626,20 +645,23 @@
             "score": 100.0,
             "state": "retention_ready",
             "approved": true,
-            "subject": "fossils",
+            "subject": "cats",
             "cue_terms": [
-              "clue",
-              "fossil",
-              "shape"
+              "grip",
+              "groom",
+              "map",
+              "paw",
+              "scent",
+              "tongue"
             ],
             "frame_hook_bridge": [
-              "clue",
-              "fossil"
+              "groom"
             ],
             "cue_bridge": [
-              "clue",
-              "fossil",
-              "shape"
+              "groom",
+              "map",
+              "scent",
+              "tongue"
             ],
             "strengths": [
               "subject_frontloaded",
@@ -653,7 +675,7 @@
             "risks": []
           },
           "opening_retention_score": 100.0,
-          "loop_score": 0.869
+          "loop_score": 0.835
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast."
       },
@@ -674,16 +696,17 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 12,
-    "pending_after": 12,
+    "pending_before": 11,
+    "pending_after": 11,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 3,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 12,
+      "objective_gate:bootstrap_observe_before_scaling": 11,
       "editor_in_chief:script quality gate blocked the narration": 5,
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
-      "editor_in_chief:editorial score 46 is below 62": 1
+      "editor_in_chief:editorial score 46 is below 62": 1,
+      "publish_ready_supply_reserve_fallback": 1
     }
   },
   "rejected_preview": []

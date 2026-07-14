@@ -6,16 +6,71 @@
   ],
   "counts": {
     "analytics_due": 2,
-    "awaiting_1h": 0,
+    "awaiting_1h": 1,
     "high_priority": 2,
     "repair_candidates": 0,
-    "tracked": 2
+    "tracked": 3
   },
-  "generated_at": "2026-07-14T00:18:58.308733+00:00",
+  "generated_at": "2026-07-14T00:39:21.645170+00:00",
   "items": [
     {
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.033,
+      "category": "discoveries",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-14T01:37:24.551626+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-14T06:37:24.551626+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-15T00:37:24.551626+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-14T01:37:24.551626+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Discovery Brief",
+      "state": "awaiting_1h",
+      "title": "Fossils turn old bones into time clues",
+      "uploaded_at": "2026-07-14T00:37:24.551626+00:00",
+      "url": "https://www.youtube.com/shorts/DGs36Y79jHo",
+      "video_id": "DGs36Y79jHo",
+      "views_per_hour": 0.0
+    },
+    {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 41.541,
+      "age_hours": 41.881,
       "category": "geology",
       "checkpoints": [
         {
@@ -70,7 +125,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 53.918,
+      "age_hours": 54.258,
       "category": "microscopy",
       "checkpoints": [
         {
