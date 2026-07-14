@@ -977,6 +977,8 @@ def rescue_story(story: dict, reasons: list[str]) -> tuple[dict, bool]:
             "duplicate_script",
             "duplicate_angle",
             "rewrite_packaging",
+            "thumbnail_not_2_4_words",
+            "thumbnail_text_not_scannable",
             "missing_visible_cue",
             "missing_action_word",
             "title_needs_stronger_shape",
