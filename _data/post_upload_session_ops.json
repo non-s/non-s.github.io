@@ -2,18 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 3,
+      "automation_safe": 4,
       "high": 0,
       "manual_review": 0,
-      "total": 3,
+      "total": 4,
       "urgent": 2
     },
     "free_only": true,
-    "generated_at": "2026-07-14T00:43:08.338962+00:00",
+    "generated_at": "2026-07-14T01:07:50.234866+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 54.321,
+        "age_hours": 54.733,
         "automation_safe": true,
         "category": "microscopy",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 41.944,
+        "age_hours": 42.356,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.095,
+        "age_hours": 0.507,
         "automation_safe": true,
         "category": "discoveries",
         "checkpoint_label": "1h",
@@ -88,10 +88,36 @@
         "video_id": "DGs36Y79jHo",
         "wait_until": "2026-07-14T01:37:24.551626+00:00",
         "why": "The upload is still inside the no-panic observation window."
+      },
+      {
+        "action_type": "hold_until_first_hour",
+        "age_hours": 0.035,
+        "automation_safe": true,
+        "category": "wildlife",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-14T02:05:45.230548+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:xa7g2eRaRLE:awaiting_1h:1h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "low",
+        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "series": "Animal Superpowers",
+        "state": "awaiting_1h",
+        "target_views": 24,
+        "title": "Lions hunt better when the pride coordinates",
+        "url": "https://www.youtube.com/shorts/xa7g2eRaRLE",
+        "video_id": "xa7g2eRaRLE",
+        "wait_until": "2026-07-14T02:05:45.230548+00:00",
+        "why": "The upload is still inside the no-panic observation window."
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-14T00:43:08.338336+00:00"
+    "source_generated_at": "2026-07-14T01:07:50.234214+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -101,16 +127,71 @@
     ],
     "counts": {
       "analytics_due": 2,
-      "awaiting_1h": 1,
+      "awaiting_1h": 2,
       "high_priority": 2,
       "repair_candidates": 0,
-      "tracked": 3
+      "tracked": 4
     },
-    "generated_at": "2026-07-14T00:43:08.338336+00:00",
+    "generated_at": "2026-07-14T01:07:50.234214+00:00",
     "items": [
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.095,
+        "age_hours": 0.035,
+        "category": "wildlife",
+        "checkpoints": [
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-14T02:05:45.230548+00:00",
+            "label": "1h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 24,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-14T07:05:45.230548+00:00",
+            "label": "6h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 105,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-15T01:05:45.230548+00:00",
+            "label": "24h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 300,
+            "views": 0
+          }
+        ],
+        "current_views": 0,
+        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "next_checkpoint": {
+          "delta_to_target": 0,
+          "due_at": "2026-07-14T02:05:45.230548+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        "opening_retention_score": 100.0,
+        "opening_retention_state": "retention_ready",
+        "priority": "low",
+        "series": "Animal Superpowers",
+        "state": "awaiting_1h",
+        "title": "Lions hunt better when the pride coordinates",
+        "uploaded_at": "2026-07-14T01:05:45.230548+00:00",
+        "url": "https://www.youtube.com/shorts/xa7g2eRaRLE",
+        "video_id": "xa7g2eRaRLE",
+        "views_per_hour": 0.0
+      },
+      {
+        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "age_hours": 0.507,
         "category": "discoveries",
         "checkpoints": [
           {
@@ -165,7 +246,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 41.944,
+        "age_hours": 42.356,
         "category": "geology",
         "checkpoints": [
           {
@@ -220,7 +301,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 54.321,
+        "age_hours": 54.733,
         "category": "microscopy",
         "checkpoints": [
           {
@@ -281,23 +362,12 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-14T00:43:08.339024+00:00",
+  "generated_at": "2026-07-14T01:07:50.234918+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
   ],
   "related_video_recommendations": [
-    {
-      "recommendation": {
-        "reason": "same series/category/format session bridge",
-        "score": 65.0,
-        "title": "Whales slap the surface to warn the pod",
-        "url": "https://www.youtube.com/shorts/vUB5OSOv218",
-        "video_id": "vUB5OSOv218"
-      },
-      "source_title": "Dolphins can call each other with signature whistles",
-      "source_video_id": "xxal3t3p9K0"
-    },
     {
       "recommendation": {
         "reason": "same series/category/format session bridge",
@@ -341,14 +411,20 @@
       },
       "source_title": "Fossils turn old bones into time clues",
       "source_video_id": "DGs36Y79jHo"
+    },
+    {
+      "recommendation": {
+        "reason": "same series/category/format session bridge",
+        "score": 85.0,
+        "title": "Wolves read scent posts like a map",
+        "url": "https://www.youtube.com/shorts/p5aVx8ZViPI",
+        "video_id": "p5aVx8ZViPI"
+      },
+      "source_title": "Lions hunt better when the pride coordinates",
+      "source_video_id": "xa7g2eRaRLE"
     }
   ],
   "sequel_opportunities": [
-    {
-      "prompt": "Make a sequel with a new subject but the same payoff shape: Dolphins can call each other with signature whistles",
-      "title": "Dolphins can call each other with signature whistles",
-      "video_id": "xxal3t3p9K0"
-    },
     {
       "prompt": "Make a sequel with a new subject but the same payoff shape: Beetles steer after one star compass",
       "title": "Beetles steer after one star compass",
@@ -368,13 +444,18 @@
       "prompt": "Make a sequel with a new subject but the same payoff shape: Fossils turn old bones into time clues",
       "title": "Fossils turn old bones into time clues",
       "video_id": "DGs36Y79jHo"
+    },
+    {
+      "prompt": "Make a sequel with a new subject but the same payoff shape: Lions hunt better when the pride coordinates",
+      "title": "Lions hunt better when the pride coordinates",
+      "video_id": "xa7g2eRaRLE"
     }
   ],
   "session_graph": {
     "action_score_threshold": 55,
     "coverage": 0.9,
     "edges": 20,
-    "nodes": 96,
+    "nodes": 97,
     "target_reuse_limit": 2
   }
 }
