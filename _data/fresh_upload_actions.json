@@ -1,17 +1,17 @@
 {
   "counts": {
     "automation_safe": 3,
-    "high": 1,
+    "high": 2,
     "manual_review": 1,
     "total": 4,
     "urgent": 2
   },
   "free_only": true,
-  "generated_at": "2026-07-14T07:04:58.613363+00:00",
+  "generated_at": "2026-07-14T08:34:14.178578+00:00",
   "items": [
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 60.685,
+      "age_hours": 62.173,
       "automation_safe": true,
       "category": "microscopy",
       "checkpoint_label": "1h",
@@ -37,7 +37,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 48.308,
+      "age_hours": 49.796,
       "automation_safe": true,
       "category": "geology",
       "checkpoint_label": "1h",
@@ -62,8 +62,34 @@
       "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
+      "action_type": "pull_fresh_analytics",
+      "age_hours": 7.475,
+      "automation_safe": true,
+      "category": "wildlife",
+      "checkpoint_label": "6h",
+      "checkpoint_state": "due",
+      "current_views": 0,
+      "due_at": "2026-07-14T07:05:45.230548+00:00",
+      "free_only": true,
+      "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+      "id": "fresh-upload:xa7g2eRaRLE:analytics_due:6h",
+      "lane": "measurement",
+      "manual_approval_required": false,
+      "opening_retention_score": 100.0,
+      "priority": "high",
+      "recommended_action": "Run the analytics pull before making a creative decision. Check the 6h sample first.",
+      "series": "Animal Superpowers",
+      "state": "analytics_due",
+      "target_views": 105,
+      "title": "Lions hunt better when the pride coordinates",
+      "url": "https://www.youtube.com/shorts/xa7g2eRaRLE",
+      "video_id": "xa7g2eRaRLE",
+      "wait_until": "",
+      "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
+    },
+    {
       "action_type": "prepare_package_rescue",
-      "age_hours": 6.459,
+      "age_hours": 7.947,
       "automation_safe": false,
       "category": "discoveries",
       "checkpoint_label": "24h",
@@ -86,34 +112,8 @@
       "video_id": "DGs36Y79jHo",
       "wait_until": "",
       "why": "Observed velocity is weak enough to prepare a package intervention."
-    },
-    {
-      "action_type": "watch_next_checkpoint",
-      "age_hours": 5.987,
-      "automation_safe": true,
-      "category": "wildlife",
-      "checkpoint_label": "6h",
-      "checkpoint_state": "pending",
-      "current_views": 0,
-      "due_at": "2026-07-14T07:05:45.230548+00:00",
-      "free_only": true,
-      "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-      "id": "fresh-upload:xa7g2eRaRLE:watch:6h",
-      "lane": "observe",
-      "manual_approval_required": false,
-      "opening_retention_score": 100.0,
-      "priority": "low",
-      "recommended_action": "Keep observing through the next checkpoint.",
-      "series": "Animal Superpowers",
-      "state": "watch",
-      "target_views": 105,
-      "title": "Lions hunt better when the pride coordinates",
-      "url": "https://www.youtube.com/shorts/xa7g2eRaRLE",
-      "video_id": "xa7g2eRaRLE",
-      "wait_until": "2026-07-14T07:05:45.230548+00:00",
-      "why": "No intervention signal is strong enough yet."
     }
   ],
   "source": "fresh_upload_watchlist",
-  "source_generated_at": "2026-07-14T07:04:58.612651+00:00"
+  "source_generated_at": "2026-07-14T08:34:14.177994+00:00"
 }
