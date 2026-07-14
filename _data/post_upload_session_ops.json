@@ -2,18 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 3,
+      "automation_safe": 2,
       "high": 2,
-      "manual_review": 1,
+      "manual_review": 2,
       "total": 4,
       "urgent": 2
     },
     "free_only": true,
-    "generated_at": "2026-07-14T08:34:14.178578+00:00",
+    "generated_at": "2026-07-14T08:39:14.292151+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 62.173,
+        "age_hours": 62.256,
         "automation_safe": true,
         "category": "microscopy",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 49.796,
+        "age_hours": 49.879,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "1h",
@@ -64,34 +64,8 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "pull_fresh_analytics",
-        "age_hours": 7.475,
-        "automation_safe": true,
-        "category": "wildlife",
-        "checkpoint_label": "6h",
-        "checkpoint_state": "due",
-        "current_views": 0,
-        "due_at": "2026-07-14T07:05:45.230548+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:xa7g2eRaRLE:analytics_due:6h",
-        "lane": "measurement",
-        "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "high",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 6h sample first.",
-        "series": "Animal Superpowers",
-        "state": "analytics_due",
-        "target_views": 105,
-        "title": "Lions hunt better when the pride coordinates",
-        "url": "https://www.youtube.com/shorts/xa7g2eRaRLE",
-        "video_id": "xa7g2eRaRLE",
-        "wait_until": "",
-        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
-      },
-      {
         "action_type": "prepare_package_rescue",
-        "age_hours": 7.947,
+        "age_hours": 8.03,
         "automation_safe": false,
         "category": "discoveries",
         "checkpoint_label": "24h",
@@ -114,10 +88,36 @@
         "video_id": "DGs36Y79jHo",
         "wait_until": "",
         "why": "Observed velocity is weak enough to prepare a package intervention."
+      },
+      {
+        "action_type": "prepare_package_rescue",
+        "age_hours": 7.558,
+        "automation_safe": false,
+        "category": "wildlife",
+        "checkpoint_label": "24h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-15T01:05:45.230548+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:xa7g2eRaRLE:repair_candidate:24h",
+        "lane": "package_rescue",
+        "manual_approval_required": true,
+        "opening_retention_score": 100.0,
+        "priority": "high",
+        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "series": "Animal Superpowers",
+        "state": "repair_candidate",
+        "target_views": 300,
+        "title": "Lions hunt better when the pride coordinates",
+        "url": "https://www.youtube.com/shorts/xa7g2eRaRLE",
+        "video_id": "xa7g2eRaRLE",
+        "wait_until": "",
+        "why": "Observed velocity is weak enough to prepare a package intervention."
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-14T08:34:14.177994+00:00"
+    "source_generated_at": "2026-07-14T08:39:14.291416+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -126,17 +126,17 @@
       24
     ],
     "counts": {
-      "analytics_due": 3,
+      "analytics_due": 2,
       "awaiting_1h": 0,
       "high_priority": 4,
-      "repair_candidates": 1,
+      "repair_candidates": 2,
       "tracked": 4
     },
-    "generated_at": "2026-07-14T08:34:14.177994+00:00",
+    "generated_at": "2026-07-14T08:39:14.291416+00:00",
     "items": [
       {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 7.475,
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "age_hours": 7.558,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -152,8 +152,8 @@
             "delta_to_target": -105,
             "due_at": "2026-07-14T07:05:45.230548+00:00",
             "label": "6h",
-            "source": "estimated",
-            "state": "due",
+            "source": "observed",
+            "state": "observed",
             "target_views": 105,
             "views": 0
           },
@@ -168,30 +168,41 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
         "next_checkpoint": {
-          "delta_to_target": -105,
-          "due_at": "2026-07-14T07:05:45.230548+00:00",
-          "label": "6h",
+          "delta_to_target": 0,
+          "due_at": "2026-07-15T01:05:45.230548+00:00",
+          "label": "24h",
           "source": "estimated",
-          "state": "due",
-          "target_views": 105,
+          "state": "pending",
+          "target_views": 300,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
         "priority": "high",
         "series": "Animal Superpowers",
-        "state": "analytics_due",
+        "state": "repair_candidate",
         "title": "Lions hunt better when the pride coordinates",
         "uploaded_at": "2026-07-14T01:05:45.230548+00:00",
         "url": "https://www.youtube.com/shorts/xa7g2eRaRLE",
         "video_id": "xa7g2eRaRLE",
-        "views_per_hour": 0.0
+        "views_per_hour": 0.0,
+        "warning": {
+          "action": "TITLE_AUTO_REPAIR_TRIGGER",
+          "confidence_score": 0.594,
+          "reason": "low early velocity",
+          "reasoning": "video has 25/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+          "title": "Lions hunt better when the pride coordinates",
+          "video_id": "xa7g2eRaRLE",
+          "views": 0,
+          "warning_state": "repair_risk"
+        }
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 7.947,
+        "age_hours": 8.03,
         "category": "discoveries",
         "checkpoints": [
           {
@@ -247,7 +258,7 @@
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.594,
           "reason": "low early velocity",
-          "reasoning": "video has 27/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+          "reasoning": "video has 29/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
           "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
           "title": "Fossils turn old bones into time clues",
           "video_id": "DGs36Y79jHo",
@@ -257,7 +268,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 49.796,
+        "age_hours": 49.879,
         "category": "geology",
         "checkpoints": [
           {
@@ -312,7 +323,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 62.173,
+        "age_hours": 62.256,
         "category": "microscopy",
         "checkpoints": [
           {
@@ -373,7 +384,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-14T08:34:14.178622+00:00",
+  "generated_at": "2026-07-14T08:39:14.292203+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
