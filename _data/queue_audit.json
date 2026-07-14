@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-14T01:14:51.905806+00:00",
+  "generated_at": "2026-07-14T03:25:43.962846+00:00",
   "pending": 20,
   "states": {
     "publish_ready": 7,
@@ -15,29 +15,15 @@
     "approved": 20
   },
   "prune_summary": {
-    "pending_before": 46,
+    "pending_before": 20,
     "pending_after": 20,
-    "rejected": 26,
-    "repair_needed": 3,
-    "repaired": 12,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 4,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 19,
-      "duplicate_title": 14,
-      "off_topic_visual": 10,
       "editor_in_chief:script quality gate blocked the narration": 6,
-      "copy_subject_mismatch": 5,
-      "queue_score_reject": 3,
-      "no_action_promise": 2,
-      "missing_action_word": 2,
-      "missing_visible_cue": 2,
-      "script_subject_mismatch": 2,
-      "duplicate_script": 2,
-      "opening_retention_gap_risk": 1,
-      "opening promise is not concrete enough": 1,
-      "script_word_loop": 1,
-      "rights_guard_person_manual_review": 1,
-      "non_animal_body_language": 1,
-      "duplicate_angle": 1,
+      "duplicate_title": 1,
       "inventory_reserve_fallback": 1
     }
   },
@@ -483,7 +469,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-14T01:14:34.875538+00:00",
+        "checked_at": "2026-07-14T03:25:23.121848+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -949,6 +935,1287 @@
       }
     },
     {
+      "id": "26f7e380a1b02081",
+      "title": "Sheep recognize faces across the flock",
+      "category": "farm",
+      "publish_score": {
+        "approved": true,
+        "category": "farm",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "face_recognition",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "face"
+          ],
+          "cue_terms": [
+            "face",
+            "flock",
+            "memor"
+          ],
+          "frame_hook_bridge": [],
+          "risks": [
+            "frame_text_not_echoed_early"
+          ],
+          "score": 90.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "sheep"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 57,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 65,
+            "emotional_potential": 35,
+            "novelty": 45,
+            "replay_potential": 72,
+            "viral_potential": 58,
+            "visual_potential": 55
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "animal_memory",
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-07-14T03:25:23.509552+00:00",
+        "mechanism_cluster": "face_recognition",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "sheep",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "face"
+          ],
+          "cue_terms": [
+            "face",
+            "flock",
+            "memor"
+          ],
+          "frame_hook_bridge": [],
+          "risks": [
+            "frame_text_not_echoed_early"
+          ],
+          "score": 90.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "sheep"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "animal_memory",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "sheep",
+        "viewer_promise": "See why sheep animal memory matters."
+      },
+      "packaging": {
+        "community_prompt": "Which sheep clue should Wild Brief compare next in Farmyard Surprises?",
+        "cta_prompt": "Want one animal signal a day? Follow for tomorrow's farm clue.",
+        "curiosity_gap": {
+          "hook": "Why do these sheep change after the flock memory?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "animal memory",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 97,
+          "winners": {
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
+          },
+          "winning_experiments": {}
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "face"
+            ],
+            "cue_terms": [
+              "face",
+              "flock",
+              "memor"
+            ],
+            "frame_hook_bridge": [],
+            "risks": [
+              "frame_text_not_echoed_early"
+            ],
+            "score": 90.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "sheep"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Sheep can remember familiar faces",
+          "Sheep show why the face memory matters.",
+          "Sheep show why the face memory matters.",
+          "Sheep show why the face memory matters.",
+          "Sheep give away the answer through face memory"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "flock memory",
+          "ending_line": "Which farm animal should we compare next?",
+          "final_line": "Now the flock memory at the start makes sense.",
+          "loop_score": 0.812,
+          "opening_line": "Sheep can remember familiar faces.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "flock memory",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.812,
+        "next_episode_question": "Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "face"
+          ],
+          "cue_terms": [
+            "face",
+            "flock",
+            "memor"
+          ],
+          "frame_hook_bridge": [],
+          "risks": [
+            "frame_text_not_echoed_early"
+          ],
+          "score": 90.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "sheep"
+        },
+        "pinned_comment": "Watch the group again. Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 14.78,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 18,
+          "first_2s_narration": "Sheep can remember familiar faces Watch the face and spacing because sheep",
+          "first_frame_text": "FLOCK MEMORY",
+          "first_frame_text_words": 2,
+          "hook": "Sheep can remember familiar faces.",
+          "hook_specificity": 0.78,
+          "hook_words": 5,
+          "loop_score": 0.812,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "face"
+            ],
+            "cue_terms": [
+              "face",
+              "flock",
+              "memor"
+            ],
+            "frame_hook_bridge": [],
+            "risks": [
+              "frame_text_not_echoed_early"
+            ],
+            "score": 90.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "sheep"
+          },
+          "opening_retention_score": 90.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the group, so viewers rewatch the sheep clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Sheep can remember familiar faces Watch the face and spacing because sheep",
+          "first_frame_text": "FLOCK MEMORY",
+          "next_episode_question": "Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
+          "opening_retention_score": 90.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Sheep behavior through the visible group.",
+            "series": "Farmyard Surprises",
+            "subject": "sheep",
+            "terms": [
+              "sheep",
+              "group",
+              "farm",
+              "animal memory"
+            ],
+            "title_variant": "Sheep behavior: group explained",
+            "visible_cue": "group"
+          },
+          "series": "Farmyard Surprises",
+          "subject": "sheep",
+          "visible_cue": "group"
+        },
+        "risks": [],
+        "score": 96,
+        "search_intent": {
+          "description_line": "This Short explains Sheep behavior through the visible group.",
+          "series": "Farmyard Surprises",
+          "subject": "sheep",
+          "terms": [
+            "sheep",
+            "group",
+            "farm",
+            "animal memory"
+          ],
+          "title_variant": "Sheep behavior: group explained",
+          "visible_cue": "group"
+        },
+        "selected_variant": {
+          "hook": "Sheep can remember familiar faces",
+          "score": 77,
+          "thumbnail_text": "FLOCK MEMORY",
+          "title": "Sheep recognize faces across the flock"
+        },
+        "series": "Farmyard Surprises #10",
+        "series_identity": {
+          "continuity_prompt": "Next in Farmyard Surprises: compare this with another force of nature.",
+          "episode": 10,
+          "label": "Farmyard Surprises #10",
+          "series": "Farmyard Surprises"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "FLOCK MEMORY",
+          "FACE MEMORY",
+          "WATCH FACE MEMORY",
+          "SHEEP REMEMBER",
+          "FACE MEMORY MATTERS",
+          "FACE MEMORY FIRST",
+          "FACE MEMORY REVEAL",
+          "FACE MEMORY CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Sheep recognize faces across the flock",
+          "Sheep use face memory before they remember",
+          "This face memory gives sheep away",
+          "Why sheep remember after one face memory",
+          "Sheep reveal the answer with face memory",
+          "The face memory that changes the moment",
+          "Sheep make one face memory matter",
+          "Sheep show the hidden answer in seconds",
+          "Sheep: watch this face memory",
+          "Watch sheep after the face memory"
+        ],
+        "top_variants": [
+          {
+            "hook": "Sheep can remember familiar faces",
+            "score": 77,
+            "thumbnail_text": "FLOCK MEMORY",
+            "title": "Sheep recognize faces across the flock"
+          },
+          {
+            "hook": "Start with the face memory; it changes the scene",
+            "score": 77,
+            "thumbnail_text": "FLOCK MEMORY",
+            "title": "Sheep recognize faces across the flock"
+          },
+          {
+            "hook": "Watch the face memory; it explains the behavior",
+            "score": 76,
+            "thumbnail_text": "FLOCK MEMORY",
+            "title": "Sheep recognize faces across the flock"
+          },
+          {
+            "hook": "Start with the face memory; it changes the scene",
+            "score": 74,
+            "thumbnail_text": "FLOCK MEMORY",
+            "title": "Sheep use face memory before they remember"
+          },
+          {
+            "hook": "Sheep can remember familiar faces",
+            "score": 73,
+            "thumbnail_text": "FLOCK MEMORY",
+            "title": "Sheep use face memory before they remember"
+          },
+          {
+            "hook": "Watch the face memory; it explains the behavior",
+            "score": 72,
+            "thumbnail_text": "FLOCK MEMORY",
+            "title": "Sheep use face memory before they remember"
+          },
+          {
+            "hook": "Sheep can remember familiar faces",
+            "score": 70,
+            "thumbnail_text": "FACE MEMORY",
+            "title": "Sheep recognize faces across the flock"
+          },
+          {
+            "hook": "Start with the face memory; it changes the scene",
+            "score": 70,
+            "thumbnail_text": "FACE MEMORY",
+            "title": "Sheep recognize faces across the flock"
+          },
+          {
+            "hook": "Sheep can remember familiar faces",
+            "score": 70,
+            "thumbnail_text": "WATCH FACE MEMORY",
+            "title": "Sheep recognize faces across the flock"
+          },
+          {
+            "hook": "Start with the face memory; it changes the scene",
+            "score": 70,
+            "thumbnail_text": "WATCH FACE MEMORY",
+            "title": "Sheep recognize faces across the flock"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
+      "id": "079e4c96730df79c",
+      "title": "Horses can remember familiar faces",
+      "category": "farm",
+      "publish_score": {
+        "approved": true,
+        "category": "farm",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "face_recognition",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ears",
+            "eyes",
+            "face"
+          ],
+          "cue_terms": [
+            "ears",
+            "eyes",
+            "face",
+            "memor"
+          ],
+          "frame_hook_bridge": [
+            "face"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "horses"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 56,
+          "signals": {
+            "comment_potential": 62,
+            "educational_potential": 58,
+            "emotional_potential": 35,
+            "novelty": 45,
+            "replay_potential": 64,
+            "viral_potential": 50,
+            "visual_potential": 65
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 66
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "animal_memory",
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-07-14T03:25:23.510785+00:00",
+        "mechanism_cluster": "face_recognition",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "horses",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ears",
+            "eyes",
+            "face"
+          ],
+          "cue_terms": [
+            "ears",
+            "eyes",
+            "face",
+            "memor"
+          ],
+          "frame_hook_bridge": [
+            "face"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "horses"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "animal_memory",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "horses",
+        "viewer_promise": "See why horses animal memory matters."
+      },
+      "packaging": {
+        "community_prompt": "Which horses clue should Wild Brief compare next in Farmyard Surprises?",
+        "cta_prompt": "Want one animal signal a day? Follow for tomorrow's farm clue.",
+        "curiosity_gap": {
+          "hook": "Why do these horses change after the face memory?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "animal memory",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 97,
+          "winners": {
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
+          },
+          "winning_experiments": {}
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "ears",
+              "eyes",
+              "face"
+            ],
+            "cue_terms": [
+              "ears",
+              "eyes",
+              "face",
+              "memor"
+            ],
+            "frame_hook_bridge": [
+              "face"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "horses"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Horses can remember familiar faces",
+          "Horses show why the face memory matters.",
+          "Horses show why the face memory matters.",
+          "Horses show why the face memory matters.",
+          "Horses give away the answer through face memory"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "face memory",
+          "ending_line": "Which herd animal next?",
+          "final_line": "Now the face memory at the start makes sense.",
+          "loop_score": 0.779,
+          "opening_line": "Horses can remember familiar faces.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "face memory",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.779,
+        "next_episode_question": "Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ears",
+            "eyes",
+            "face"
+          ],
+          "cue_terms": [
+            "ears",
+            "eyes",
+            "face",
+            "memor"
+          ],
+          "frame_hook_bridge": [
+            "face"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "horses"
+        },
+        "pinned_comment": "Watch the face memory again. Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.29,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 17,
+          "first_2s_narration": "Horses can remember familiar faces Watch the eyes and ears because horses",
+          "first_frame_text": "FACE MEMORY",
+          "first_frame_text_words": 2,
+          "hook": "Horses can remember familiar faces.",
+          "hook_specificity": 0.78,
+          "hook_words": 5,
+          "loop_score": 0.779,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "ears",
+              "eyes",
+              "face"
+            ],
+            "cue_terms": [
+              "ears",
+              "eyes",
+              "face",
+              "memor"
+            ],
+            "frame_hook_bridge": [
+              "face"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "horses"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the face memory, so viewers rewatch the horses clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 66
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Horses can remember familiar faces Watch the eyes and ears because horses",
+          "first_frame_text": "FACE MEMORY",
+          "next_episode_question": "Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Horses behavior through the visible face memory.",
+            "series": "Farmyard Surprises",
+            "subject": "horses",
+            "terms": [
+              "horses",
+              "face memory",
+              "farm",
+              "animal memory"
+            ],
+            "title_variant": "Horses behavior: face memory explained",
+            "visible_cue": "face memory"
+          },
+          "series": "Farmyard Surprises",
+          "subject": "horses",
+          "visible_cue": "face memory"
+        },
+        "risks": [],
+        "score": 96,
+        "search_intent": {
+          "description_line": "This Short explains Horses behavior through the visible face memory.",
+          "series": "Farmyard Surprises",
+          "subject": "horses",
+          "terms": [
+            "horses",
+            "face memory",
+            "farm",
+            "animal memory"
+          ],
+          "title_variant": "Horses behavior: face memory explained",
+          "visible_cue": "face memory"
+        },
+        "selected_variant": {
+          "hook": "Horses can remember familiar faces",
+          "score": 77,
+          "thumbnail_text": "FACE MEMORY",
+          "title": "Horses remember familiar faces for months"
+        },
+        "series": "Farmyard Surprises #10",
+        "series_identity": {
+          "continuity_prompt": "Next in Farmyard Surprises: compare this with another force of nature.",
+          "episode": 10,
+          "label": "Farmyard Surprises #10",
+          "series": "Farmyard Surprises"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "FACE MEMORY",
+          "WATCH FACE MEMORY",
+          "HORSES REMEMBER",
+          "FACE MEMORY MATTERS",
+          "FACE MEMORY FIRST",
+          "FACE MEMORY REVEAL",
+          "FACE MEMORY CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Horses remember familiar faces for months",
+          "Horses can remember familiar faces",
+          "Horses use face memory before they remember",
+          "This face memory gives horses away",
+          "Why horses remember after one face memory",
+          "Horses reveal the answer with face memory",
+          "The face memory that changes the moment",
+          "Horses make one face memory matter",
+          "Horses show the hidden answer in seconds",
+          "Horses: watch this face memory"
+        ],
+        "top_variants": [
+          {
+            "hook": "Horses can remember familiar faces",
+            "score": 77,
+            "thumbnail_text": "FACE MEMORY",
+            "title": "Horses remember familiar faces for months"
+          },
+          {
+            "hook": "Start with the face memory; it changes the scene",
+            "score": 77,
+            "thumbnail_text": "FACE MEMORY",
+            "title": "Horses remember familiar faces for months"
+          },
+          {
+            "hook": "Watch the face memory; it explains the behavior",
+            "score": 76,
+            "thumbnail_text": "FACE MEMORY",
+            "title": "Horses remember familiar faces for months"
+          },
+          {
+            "hook": "Horses can remember familiar faces",
+            "score": 74,
+            "thumbnail_text": "FACE MEMORY",
+            "title": "Horses use face memory before they remember"
+          },
+          {
+            "hook": "Start with the face memory; it changes the scene",
+            "score": 74,
+            "thumbnail_text": "FACE MEMORY",
+            "title": "Horses use face memory before they remember"
+          },
+          {
+            "hook": "Watch the face memory; it explains the behavior",
+            "score": 72,
+            "thumbnail_text": "FACE MEMORY",
+            "title": "Horses use face memory before they remember"
+          },
+          {
+            "hook": "Horses can remember familiar faces",
+            "score": 70,
+            "thumbnail_text": "WATCH FACE MEMORY",
+            "title": "Horses remember familiar faces for months"
+          },
+          {
+            "hook": "Start with the face memory; it changes the scene",
+            "score": 70,
+            "thumbnail_text": "WATCH FACE MEMORY",
+            "title": "Horses remember familiar faces for months"
+          },
+          {
+            "hook": "Horses can remember familiar faces",
+            "score": 70,
+            "thumbnail_text": "HORSES REMEMBER",
+            "title": "Horses remember familiar faces for months"
+          },
+          {
+            "hook": "Start with the face memory; it changes the scene",
+            "score": 70,
+            "thumbnail_text": "HORSES REMEMBER",
+            "title": "Horses remember familiar faces for months"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "950b049fd7d3b3d5",
       "title": "This tongue smell gives snakes away",
       "category": "reptiles",
@@ -1126,7 +2393,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-14T01:14:36.108725+00:00",
+        "checked_at": "2026-07-14T03:25:23.514778+00:00",
         "mechanism_cluster": "tongue_smell",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1780,7 +3047,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-14T01:14:36.109976+00:00",
+        "checked_at": "2026-07-14T03:25:23.516525+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2420,7 +3687,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-14T01:14:36.112119+00:00",
+        "checked_at": "2026-07-14T03:25:23.519763+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3068,7 +4335,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-14T01:14:36.626759+00:00",
+        "checked_at": "2026-07-14T03:25:23.522496+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3540,1283 +4807,6 @@
       }
     },
     {
-      "id": "26f7e380a1b02081",
-      "title": "Sheep recognize faces across the flock",
-      "category": "farm",
-      "publish_score": {
-        "approved": true,
-        "category": "farm",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "face_recognition",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "face"
-          ],
-          "cue_terms": [
-            "face",
-            "flock",
-            "memor"
-          ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early"
-          ],
-          "score": 90.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "sheep"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 57,
-          "signals": {
-            "comment_potential": 54,
-            "educational_potential": 65,
-            "emotional_potential": 35,
-            "novelty": 45,
-            "replay_potential": 72,
-            "viral_potential": 58,
-            "visual_potential": 55
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "animal_memory",
-        "subscriber_conversion": {
-          "comment_probability": 0.223,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.261,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-07-14T01:14:36.909670+00:00",
-        "mechanism_cluster": "face_recognition",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 100.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 100.0,
-      "youtube_brain": {
-        "animal": "sheep",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "face"
-          ],
-          "cue_terms": [
-            "face",
-            "flock",
-            "memor"
-          ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early"
-          ],
-          "score": 90.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "sheep"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "animal_memory",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "sheep",
-        "viewer_promise": "See why sheep animal memory matters."
-      },
-      "packaging": {
-        "community_prompt": "Which sheep clue should Wild Brief compare next in Animal Memory?",
-        "cta_prompt": "Want one animal signal a day? Follow for tomorrow's farm clue.",
-        "curiosity_gap": {
-          "hook": "Why do these sheep change after the flock memory?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "animal memory",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 97,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
-          },
-          "winning_experiments": {}
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "face"
-            ],
-            "cue_terms": [
-              "face",
-              "flock",
-              "memor"
-            ],
-            "frame_hook_bridge": [],
-            "risks": [
-              "frame_text_not_echoed_early"
-            ],
-            "score": 90.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "sheep"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Sheep can remember familiar faces",
-          "Sheep show why the face memory matters.",
-          "Sheep show why the face memory matters.",
-          "Sheep show why the face memory matters.",
-          "Sheep give away the answer through face memory"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "flock memory",
-          "ending_line": "Which farm animal should we compare next?",
-          "final_line": "Now the flock memory at the start makes sense.",
-          "loop_score": 0.812,
-          "opening_line": "Sheep can remember familiar faces.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "flock memory",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.812,
-        "next_episode_question": "Tomorrow in Animal Memory: another animal signal. What part of this feels most impossible?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "face"
-          ],
-          "cue_terms": [
-            "face",
-            "flock",
-            "memor"
-          ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early"
-          ],
-          "score": 90.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "sheep"
-        },
-        "pinned_comment": "Watch the group again. Tomorrow in Animal Memory: another animal signal. What part of this feels most impossible?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 14.78,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 18,
-          "first_2s_narration": "Sheep can remember familiar faces Watch the face and spacing because sheep",
-          "first_frame_text": "FLOCK MEMORY",
-          "first_frame_text_words": 2,
-          "hook": "Sheep can remember familiar faces.",
-          "hook_specificity": 0.78,
-          "hook_words": 5,
-          "loop_score": 0.812,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "face"
-            ],
-            "cue_terms": [
-              "face",
-              "flock",
-              "memor"
-            ],
-            "frame_hook_bridge": [],
-            "risks": [
-              "frame_text_not_echoed_early"
-            ],
-            "score": 90.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "sheep"
-          },
-          "opening_retention_score": 90.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the group, so viewers rewatch the sheep clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Sheep can remember familiar faces Watch the face and spacing because sheep",
-          "first_frame_text": "FLOCK MEMORY",
-          "next_episode_question": "Tomorrow in Animal Memory: another animal signal. What part of this feels most impossible?",
-          "opening_retention_score": 90.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains Sheep behavior through the visible group.",
-            "series": "Animal Memory",
-            "subject": "sheep",
-            "terms": [
-              "sheep",
-              "group",
-              "farm",
-              "animal memory"
-            ],
-            "title_variant": "Sheep behavior: group explained",
-            "visible_cue": "group"
-          },
-          "series": "Animal Memory",
-          "subject": "sheep",
-          "visible_cue": "group"
-        },
-        "risks": [],
-        "score": 96,
-        "search_intent": {
-          "description_line": "This Short explains Sheep behavior through the visible group.",
-          "series": "Animal Memory",
-          "subject": "sheep",
-          "terms": [
-            "sheep",
-            "group",
-            "farm",
-            "animal memory"
-          ],
-          "title_variant": "Sheep behavior: group explained",
-          "visible_cue": "group"
-        },
-        "selected_variant": {
-          "hook": "Sheep can remember familiar faces",
-          "score": 77,
-          "thumbnail_text": "FLOCK MEMORY",
-          "title": "Sheep recognize faces across the flock"
-        },
-        "series": "Animal Memory",
-        "series_identity": {
-          "continuity_prompt": "Next in Animal Memory: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Animal Memory",
-          "series": "Animal Memory"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.223,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.261,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "FLOCK MEMORY",
-          "FACE MEMORY",
-          "WATCH FACE MEMORY",
-          "SHEEP REMEMBER",
-          "FACE MEMORY MATTERS",
-          "FACE MEMORY FIRST",
-          "FACE MEMORY REVEAL",
-          "FACE MEMORY CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Sheep recognize faces across the flock",
-          "Sheep use face memory before they remember",
-          "This face memory gives sheep away",
-          "Why sheep remember after one face memory",
-          "Sheep reveal the answer with face memory",
-          "The face memory that changes the moment",
-          "Sheep make one face memory matter",
-          "Sheep show the hidden answer in seconds",
-          "Sheep: watch this face memory",
-          "Watch sheep after the face memory"
-        ],
-        "top_variants": [
-          {
-            "hook": "Sheep can remember familiar faces",
-            "score": 77,
-            "thumbnail_text": "FLOCK MEMORY",
-            "title": "Sheep recognize faces across the flock"
-          },
-          {
-            "hook": "Start with the face memory; it changes the scene",
-            "score": 77,
-            "thumbnail_text": "FLOCK MEMORY",
-            "title": "Sheep recognize faces across the flock"
-          },
-          {
-            "hook": "Watch the face memory; it explains the behavior",
-            "score": 76,
-            "thumbnail_text": "FLOCK MEMORY",
-            "title": "Sheep recognize faces across the flock"
-          },
-          {
-            "hook": "Start with the face memory; it changes the scene",
-            "score": 74,
-            "thumbnail_text": "FLOCK MEMORY",
-            "title": "Sheep use face memory before they remember"
-          },
-          {
-            "hook": "Sheep can remember familiar faces",
-            "score": 73,
-            "thumbnail_text": "FLOCK MEMORY",
-            "title": "Sheep use face memory before they remember"
-          },
-          {
-            "hook": "Watch the face memory; it explains the behavior",
-            "score": 72,
-            "thumbnail_text": "FLOCK MEMORY",
-            "title": "Sheep use face memory before they remember"
-          },
-          {
-            "hook": "Sheep can remember familiar faces",
-            "score": 70,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Sheep recognize faces across the flock"
-          },
-          {
-            "hook": "Start with the face memory; it changes the scene",
-            "score": 70,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Sheep recognize faces across the flock"
-          },
-          {
-            "hook": "Sheep can remember familiar faces",
-            "score": 70,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "Sheep recognize faces across the flock"
-          },
-          {
-            "hook": "Start with the face memory; it changes the scene",
-            "score": 70,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "Sheep recognize faces across the flock"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
-      "id": "079e4c96730df79c",
-      "title": "Horses can remember familiar faces",
-      "category": "farm",
-      "publish_score": {
-        "approved": true,
-        "category": "farm",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "face_recognition",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "ears",
-            "eyes",
-            "face"
-          ],
-          "cue_terms": [
-            "ears",
-            "eyes",
-            "face",
-            "memor"
-          ],
-          "frame_hook_bridge": [
-            "face"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "horses"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 56,
-          "signals": {
-            "comment_potential": 62,
-            "educational_potential": 58,
-            "emotional_potential": 35,
-            "novelty": 45,
-            "replay_potential": 64,
-            "viral_potential": 50,
-            "visual_potential": 65
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "animal_memory",
-        "subscriber_conversion": {
-          "comment_probability": 0.223,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.261,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-07-14T01:14:37.617573+00:00",
-        "mechanism_cluster": "face_recognition",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 100.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 100.0,
-      "youtube_brain": {
-        "animal": "horses",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "ears",
-            "eyes",
-            "face"
-          ],
-          "cue_terms": [
-            "ears",
-            "eyes",
-            "face",
-            "memor"
-          ],
-          "frame_hook_bridge": [
-            "face"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "horses"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "animal_memory",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "horses",
-        "viewer_promise": "See why horses animal memory matters."
-      },
-      "packaging": {
-        "community_prompt": "Which horses clue should Wild Brief compare next in Animal Memory?",
-        "cta_prompt": "Want one animal signal a day? Follow for tomorrow's farm clue.",
-        "curiosity_gap": {
-          "hook": "Why do these horses change after the face memory?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "animal memory",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 97,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
-          },
-          "winning_experiments": {}
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "ears",
-              "eyes",
-              "face"
-            ],
-            "cue_terms": [
-              "ears",
-              "eyes",
-              "face",
-              "memor"
-            ],
-            "frame_hook_bridge": [
-              "face"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "horses"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Horses can remember familiar faces",
-          "Horses show why the face memory matters.",
-          "Horses show why the face memory matters.",
-          "Horses show why the face memory matters.",
-          "Horses give away the answer through face memory"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "face memory",
-          "ending_line": "Which herd animal next?",
-          "final_line": "Now the face memory at the start makes sense.",
-          "loop_score": 0.779,
-          "opening_line": "Horses can remember familiar faces.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "face memory",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.779,
-        "next_episode_question": "Tomorrow in Animal Memory: another animal signal. What part of this feels most impossible?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "ears",
-            "eyes",
-            "face"
-          ],
-          "cue_terms": [
-            "ears",
-            "eyes",
-            "face",
-            "memor"
-          ],
-          "frame_hook_bridge": [
-            "face"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "horses"
-        },
-        "pinned_comment": "Watch the face memory again. Tomorrow in Animal Memory: another animal signal. What part of this feels most impossible?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.29,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 17,
-          "first_2s_narration": "Horses can remember familiar faces Watch the eyes and ears because horses",
-          "first_frame_text": "FACE MEMORY",
-          "first_frame_text_words": 2,
-          "hook": "Horses can remember familiar faces.",
-          "hook_specificity": 0.78,
-          "hook_words": 5,
-          "loop_score": 0.779,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "ears",
-              "eyes",
-              "face"
-            ],
-            "cue_terms": [
-              "ears",
-              "eyes",
-              "face",
-              "memor"
-            ],
-            "frame_hook_bridge": [
-              "face"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "horses"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the face memory, so viewers rewatch the horses clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 66
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Horses can remember familiar faces Watch the eyes and ears because horses",
-          "first_frame_text": "FACE MEMORY",
-          "next_episode_question": "Tomorrow in Animal Memory: another animal signal. What part of this feels most impossible?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains Horses behavior through the visible face memory.",
-            "series": "Animal Memory",
-            "subject": "horses",
-            "terms": [
-              "horses",
-              "face memory",
-              "farm",
-              "animal memory"
-            ],
-            "title_variant": "Horses behavior: face memory explained",
-            "visible_cue": "face memory"
-          },
-          "series": "Animal Memory",
-          "subject": "horses",
-          "visible_cue": "face memory"
-        },
-        "risks": [],
-        "score": 96,
-        "search_intent": {
-          "description_line": "This Short explains Horses behavior through the visible face memory.",
-          "series": "Animal Memory",
-          "subject": "horses",
-          "terms": [
-            "horses",
-            "face memory",
-            "farm",
-            "animal memory"
-          ],
-          "title_variant": "Horses behavior: face memory explained",
-          "visible_cue": "face memory"
-        },
-        "selected_variant": {
-          "hook": "Horses can remember familiar faces",
-          "score": 77,
-          "thumbnail_text": "FACE MEMORY",
-          "title": "Horses remember familiar faces for months"
-        },
-        "series": "Animal Memory",
-        "series_identity": {
-          "continuity_prompt": "Next in Animal Memory: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Animal Memory",
-          "series": "Animal Memory"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.223,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.261,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 86,
-          "state": "strong",
-          "subscriber_probability": 0.123
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "FACE MEMORY",
-          "WATCH FACE MEMORY",
-          "HORSES REMEMBER",
-          "FACE MEMORY MATTERS",
-          "FACE MEMORY FIRST",
-          "FACE MEMORY REVEAL",
-          "FACE MEMORY CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Horses remember familiar faces for months",
-          "Horses can remember familiar faces",
-          "Horses use face memory before they remember",
-          "This face memory gives horses away",
-          "Why horses remember after one face memory",
-          "Horses reveal the answer with face memory",
-          "The face memory that changes the moment",
-          "Horses make one face memory matter",
-          "Horses show the hidden answer in seconds",
-          "Horses: watch this face memory"
-        ],
-        "top_variants": [
-          {
-            "hook": "Horses can remember familiar faces",
-            "score": 77,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Start with the face memory; it changes the scene",
-            "score": 77,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Watch the face memory; it explains the behavior",
-            "score": 76,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Horses can remember familiar faces",
-            "score": 74,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Horses use face memory before they remember"
-          },
-          {
-            "hook": "Start with the face memory; it changes the scene",
-            "score": 74,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Horses use face memory before they remember"
-          },
-          {
-            "hook": "Watch the face memory; it explains the behavior",
-            "score": 72,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Horses use face memory before they remember"
-          },
-          {
-            "hook": "Horses can remember familiar faces",
-            "score": 70,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Start with the face memory; it changes the scene",
-            "score": 70,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Horses can remember familiar faces",
-            "score": 70,
-            "thumbnail_text": "HORSES REMEMBER",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Start with the face memory; it changes the scene",
-            "score": 70,
-            "thumbnail_text": "HORSES REMEMBER",
-            "title": "Horses remember familiar faces for months"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "61e0327638cef862",
       "title": "This learned habit gives monkeys away",
       "category": "primates",
@@ -4988,7 +4978,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-14T01:14:38.094211+00:00",
+        "checked_at": "2026-07-14T03:25:23.599133+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "inventory_reserve_fallback",
@@ -5623,7 +5613,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-14T01:14:36.628366+00:00",
+        "checked_at": "2026-07-14T03:25:23.524900+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6269,7 +6259,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-14T01:14:36.629534+00:00",
+        "checked_at": "2026-07-14T03:25:23.526563+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6903,7 +6893,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-14T01:14:36.905976+00:00",
+        "checked_at": "2026-07-14T03:25:23.537824+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7536,7 +7526,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-14T01:14:36.907465+00:00",
+        "checked_at": "2026-07-14T03:25:23.540009+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8003,6 +7993,649 @@
       }
     },
     {
+      "id": "94eff649e5f3fc4c",
+      "title": "Horses sort familiar clues with face memory",
+      "category": "farm",
+      "publish_score": {
+        "approved": false,
+        "category": "farm",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "face_recognition",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "face",
+            "memor"
+          ],
+          "cue_terms": [
+            "face",
+            "memor"
+          ],
+          "frame_hook_bridge": [
+            "face",
+            "memor"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "horses"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [
+            "weak_visual_surface",
+            "low_opportunity_score"
+          ],
+          "score": 54,
+          "signals": {
+            "comment_potential": 62,
+            "educational_potential": 65,
+            "emotional_potential": 35,
+            "novelty": 55,
+            "replay_potential": 74,
+            "viral_potential": 45,
+            "visual_potential": 45
+          },
+          "verdict": "discard"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 70,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 79,
+            "hook_score": 70,
+            "replay_score": 72,
+            "visual_score": 50
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "rewrite",
+        "story_format": "animal_memory",
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-07-14T03:25:23.512320+00:00",
+        "mechanism_cluster": "face_recognition",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 78.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 78.0,
+      "youtube_brain": {
+        "animal": "horses",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "face",
+            "memor"
+          ],
+          "cue_terms": [
+            "face",
+            "memor"
+          ],
+          "frame_hook_bridge": [
+            "face",
+            "memor"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "horses"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "animal_memory",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "horses",
+        "viewer_promise": "See why horses animal memory matters."
+      },
+      "packaging": {
+        "community_prompt": "Which horses clue should Wild Brief compare next in Farmyard Surprises?",
+        "cta_prompt": "Want one animal signal a day? Follow for tomorrow's farm clue.",
+        "curiosity_gap": {
+          "hook": "Why do these horses change after the face memory?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "animal memory",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 97,
+          "winners": {
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
+          },
+          "winning_experiments": {}
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "face",
+              "memor"
+            ],
+            "cue_terms": [
+              "face",
+              "memor"
+            ],
+            "frame_hook_bridge": [
+              "face",
+              "memor"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "horses"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Horses can remember familiar faces",
+          "Horses can sort familiar clues with face memory",
+          "Horses show why the face memory matters.",
+          "Horses show why the face memory matters.",
+          "Horses show why the face memory matters."
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "horses",
+          "ending_line": "Which horses memory clue should come next.",
+          "final_line": "Now the horses at the start make sense.",
+          "loop_score": 0.702,
+          "opening_line": "Horses can sort familiar clues with face memory.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "horses",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": false,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.702,
+        "next_episode_question": "Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "face",
+            "memor"
+          ],
+          "cue_terms": [
+            "face",
+            "memor"
+          ],
+          "frame_hook_bridge": [
+            "face",
+            "memor"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "horses"
+        },
+        "pinned_comment": "Watch the face memory again. Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.65,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 17,
+          "first_2s_narration": "Horses can sort familiar clues with face memory Watch the face memory",
+          "first_frame_text": "FACE MEMORY",
+          "first_frame_text_words": 2,
+          "hook": "Horses can sort familiar clues with face memory.",
+          "hook_specificity": 0.78,
+          "hook_words": 8,
+          "loop_score": 0.702,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "face",
+              "memor"
+            ],
+            "cue_terms": [
+              "face",
+              "memor"
+            ],
+            "frame_hook_bridge": [
+              "face",
+              "memor"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "horses"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the face memory, so viewers rewatch the horses clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 70,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 79,
+            "hook_score": 70,
+            "replay_score": 72,
+            "visual_score": 50
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Horses can sort familiar clues with face memory Watch the face memory",
+          "first_frame_text": "FACE MEMORY",
+          "next_episode_question": "Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Horses behavior through the visible face memory.",
+            "series": "Farmyard Surprises",
+            "subject": "horses",
+            "terms": [
+              "horses",
+              "face memory",
+              "farm",
+              "animal memory"
+            ],
+            "title_variant": "Horses behavior: face memory explained",
+            "visible_cue": "face memory"
+          },
+          "series": "Farmyard Surprises",
+          "subject": "horses",
+          "visible_cue": "face memory"
+        },
+        "risks": [],
+        "score": 95,
+        "search_intent": {
+          "description_line": "This Short explains Horses behavior through the visible face memory.",
+          "series": "Farmyard Surprises",
+          "subject": "horses",
+          "terms": [
+            "horses",
+            "face memory",
+            "farm",
+            "animal memory"
+          ],
+          "title_variant": "Horses behavior: face memory explained",
+          "visible_cue": "face memory"
+        },
+        "selected_variant": {
+          "hook": "Horses can remember familiar faces",
+          "score": 77,
+          "thumbnail_text": "FACE MEMORY",
+          "title": "Horses remember familiar faces for months"
+        },
+        "series": "Farmyard Surprises #10",
+        "series_identity": {
+          "continuity_prompt": "Next in Farmyard Surprises: compare this with another force of nature.",
+          "episode": 10,
+          "label": "Farmyard Surprises #10",
+          "series": "Farmyard Surprises"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "FACE MEMORY",
+          "WATCH FACE MEMORY",
+          "HORSES CONNECT",
+          "FACE MEMORY MATTERS",
+          "FACE MEMORY FIRST",
+          "FACE MEMORY REVEAL",
+          "FACE MEMORY CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Horses remember familiar faces for months",
+          "Horses sort familiar clues with face memory",
+          "Horses connect through face memory",
+          "Horses use face memory before they connect",
+          "This face memory gives horses away",
+          "Why horses connect after one face memory",
+          "Horses reveal the answer with face memory",
+          "The face memory that changes the moment",
+          "Horses make one face memory matter",
+          "Horses show the hidden answer in seconds"
+        ],
+        "top_variants": [
+          {
+            "hook": "Horses can remember familiar faces",
+            "score": 77,
+            "thumbnail_text": "FACE MEMORY",
+            "title": "Horses remember familiar faces for months"
+          },
+          {
+            "hook": "Horses can sort familiar clues with face memory",
+            "score": 76,
+            "thumbnail_text": "FACE MEMORY",
+            "title": "Horses remember familiar faces for months"
+          },
+          {
+            "hook": "Watch the face memory; it explains the behavior",
+            "score": 76,
+            "thumbnail_text": "FACE MEMORY",
+            "title": "Horses remember familiar faces for months"
+          },
+          {
+            "hook": "Horses can remember familiar faces",
+            "score": 72,
+            "thumbnail_text": "FACE MEMORY",
+            "title": "Horses use face memory before they connect"
+          },
+          {
+            "hook": "Horses can sort familiar clues with face memory",
+            "score": 71,
+            "thumbnail_text": "FACE MEMORY",
+            "title": "Horses use face memory before they connect"
+          },
+          {
+            "hook": "Watch the face memory; it explains the behavior",
+            "score": 71,
+            "thumbnail_text": "FACE MEMORY",
+            "title": "Horses use face memory before they connect"
+          },
+          {
+            "hook": "Horses can remember familiar faces",
+            "score": 70,
+            "thumbnail_text": "WATCH FACE MEMORY",
+            "title": "Horses remember familiar faces for months"
+          },
+          {
+            "hook": "Horses can remember familiar faces",
+            "score": 70,
+            "thumbnail_text": "HORSES CONNECT",
+            "title": "Horses remember familiar faces for months"
+          },
+          {
+            "hook": "Horses can remember familiar faces",
+            "score": 70,
+            "thumbnail_text": "FACE MEMORY MATTERS",
+            "title": "Horses remember familiar faces for months"
+          },
+          {
+            "hook": "Horses can remember familiar faces",
+            "score": 70,
+            "thumbnail_text": "FACE MEMORY FIRST",
+            "title": "Horses remember familiar faces for months"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "5492c4505c453345",
       "title": "Cats groom to reset their scent map",
       "category": "cats",
@@ -8185,7 +8818,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-14T01:14:36.908210+00:00",
+        "checked_at": "2026-07-14T03:25:23.541074+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8669,12 +9302,12 @@
       }
     },
     {
-      "id": "94eff649e5f3fc4c",
-      "title": "Horses sort familiar clues with face memory",
-      "category": "farm",
+      "id": "1af1013cc6eed163",
+      "title": "Whales send songs across huge ocean distances",
+      "category": "ocean",
       "publish_score": {
-        "approved": false,
-        "category": "farm",
+        "approved": true,
+        "category": "ocean",
         "decision_confidence": {
           "bootstrap_multiplier": 0.255,
           "can_adjust_strategy": false,
@@ -8692,10 +9325,10 @@
           "issues": [],
           "state": "approved"
         },
-        "hook_score": 100,
+        "hook_score": 86,
         "objective_gate": {
           "confidence_score": 0.007,
-          "mechanism_cluster": "face_recognition",
+          "mechanism_cluster": "",
           "payoff_time_s": 0.0,
           "penalty": 0.0,
           "publish_blocking": false,
@@ -8709,16 +9342,18 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "face",
-            "memor"
+            "ocean",
+            "song",
+            "sound"
           ],
           "cue_terms": [
-            "face",
-            "memor"
+            "ocean",
+            "song",
+            "sound"
           ],
           "frame_hook_bridge": [
-            "face",
-            "memor"
+            "ocean",
+            "song"
           ],
           "risks": [],
           "score": 100.0,
@@ -8732,7 +9367,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "horses"
+          "subject": "whales"
         },
         "opportunity": {
           "confidence": {
@@ -8747,21 +9382,18 @@
             "sample_size": 0
           },
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [
-            "weak_visual_surface",
-            "low_opportunity_score"
-          ],
-          "score": 54,
+          "reasons": [],
+          "score": 57,
           "signals": {
-            "comment_potential": 62,
-            "educational_potential": 65,
+            "comment_potential": 46,
+            "educational_potential": 60,
             "emotional_potential": 35,
-            "novelty": 55,
-            "replay_potential": 74,
-            "viral_potential": 45,
-            "visual_potential": 45
+            "novelty": 69,
+            "replay_potential": 60,
+            "viral_potential": 62,
+            "visual_potential": 59
           },
-          "verdict": "discard"
+          "verdict": "rewrite"
         },
         "phrase_risk": {
           "hits": [],
@@ -8781,21 +9413,21 @@
           },
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 70,
+          "score": 68,
           "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 79,
+            "completion_prediction": 84,
+            "curiosity_score": 71,
             "hook_score": 70,
-            "replay_score": 72,
+            "replay_score": 62,
             "visual_score": 50
           },
           "verdict": "rewrite"
         },
         "score": 100,
-        "state": "rewrite",
-        "story_format": "animal_memory",
+        "state": "publish_ready",
+        "story_format": "animal_intelligence",
         "subscriber_conversion": {
-          "comment_probability": 0.223,
+          "comment_probability": 0.207,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -8809,22 +9441,22 @@
           },
           "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
           "reasons": [
-            "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.261,
+          "return_probability": 0.242,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 86,
+          "score": 79,
           "state": "strong",
-          "subscriber_probability": 0.123
+          "subscriber_probability": 0.113
         },
-        "title_score": 100,
+        "title_score": 90,
         "weak_content": {
           "confidence": {
             "bootstrap_multiplier": 0.25,
@@ -8845,32 +9477,35 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-14T01:14:37.831323+00:00",
-        "mechanism_cluster": "face_recognition",
+        "checked_at": "2026-07-14T03:25:23.507504+00:00",
+        "mechanism_cluster": "",
         "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
+          "objective_gate:bootstrap_observe_before_scaling",
+          "editor_in_chief:script quality gate blocked the narration"
         ],
-        "score": 78.0,
+        "score": 70.0,
         "state": "rewrite",
         "template_cluster": ""
       },
-      "queue_score": 78.0,
+      "queue_score": 70.0,
       "youtube_brain": {
-        "animal": "horses",
+        "animal": "whales",
         "commands": [],
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "face",
-            "memor"
+            "ocean",
+            "song",
+            "sound"
           ],
           "cue_terms": [
-            "face",
-            "memor"
+            "ocean",
+            "song",
+            "sound"
           ],
           "frame_hook_bridge": [
-            "face",
-            "memor"
+            "ocean",
+            "song"
           ],
           "risks": [],
           "score": 100.0,
@@ -8884,7 +9519,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "horses"
+          "subject": "whales"
         },
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
@@ -8897,7 +9532,7 @@
         "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
         "score": 100,
         "state": "publish_minded",
-        "story_format": "animal_memory",
+        "story_format": "animal_intelligence",
         "strengths": [
           "subject_visible_in_first_sentence",
           "action_driven_promise",
@@ -8907,14 +9542,14 @@
           "thumbnail_text_scannable",
           "retention_opening_aligned"
         ],
-        "subject": "horses",
-        "viewer_promise": "See why horses animal memory matters."
+        "subject": "whales",
+        "viewer_promise": "See why whales animal intelligence matters."
       },
       "packaging": {
-        "community_prompt": "Which horses clue should Wild Brief compare next in Animal Memory?",
-        "cta_prompt": "Want one animal signal a day? Follow for tomorrow's farm clue.",
+        "community_prompt": "Which whales clue should Wild Brief compare next in Ocean Mysteries?",
+        "cta_prompt": "Want to uncover what is still hidden in the ocean?",
         "curiosity_gap": {
-          "hook": "Why do these horses change after the face memory?",
+          "hook": "Why do these whales change after the ocean song?",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -8926,7 +9561,7 @@
           "approved": true,
           "notes": [],
           "recommended_duration_s": 24,
-          "recommended_format": "animal memory",
+          "recommended_format": "animal intelligence",
           "score": 100.0,
           "violations": []
         },
@@ -8953,16 +9588,18 @@
           "retention_opening": {
             "approved": true,
             "cue_bridge": [
-              "face",
-              "memor"
+              "ocean",
+              "song",
+              "sound"
             ],
             "cue_terms": [
-              "face",
-              "memor"
+              "ocean",
+              "song",
+              "sound"
             ],
             "frame_hook_bridge": [
-              "face",
-              "memor"
+              "ocean",
+              "song"
             ],
             "risks": [],
             "score": 100.0,
@@ -8976,7 +9613,7 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "horses"
+            "subject": "whales"
           },
           "safe_area": {
             "aspect": "4:5",
@@ -8989,42 +9626,44 @@
           "word_count": 2
         },
         "hook_options": [
-          "Horses can remember familiar faces",
-          "Horses can sort familiar clues with face memory",
-          "Horses show why the face memory matters.",
-          "Horses show why the face memory matters.",
-          "Horses show why the face memory matters."
+          "Whales can send sound farther than sight",
+          "Whales reveal the ocean song first",
+          "Whales show why the ocean song matters.",
+          "Whales show why the ocean song matters.",
+          "Whales show why the ocean song matters."
         ],
         "loop_plan": {
           "audio_crossfade_ms": 120,
-          "callback_keyword": "horses",
-          "ending_line": "Which horses memory clue should come next?",
-          "final_line": "Which horses memory clue should come next?",
-          "loop_score": 0.996,
-          "opening_line": "Horses can sort familiar clues with face memory.",
+          "callback_keyword": "ocean song",
+          "ending_line": "Which call should come next?",
+          "final_line": "Now the ocean song at the start makes sense.",
+          "loop_score": 0.797,
+          "opening_line": "Whales reveal the ocean song first.",
           "render_hints": {
             "avoid_hard_stop": true,
-            "carry_keyword": "horses",
+            "carry_keyword": "ocean song",
             "subtle_audio_tail": true
           },
-          "rewrite_applied": false,
+          "rewrite_applied": true,
           "subtitle_tail_mode": "carry-forward"
         },
-        "loop_score": 0.996,
-        "next_episode_question": "Tomorrow in Animal Memory: another animal signal. What part of this feels most impossible?",
+        "loop_score": 0.797,
+        "next_episode_question": "Tomorrow in Ocean Mysteries: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "face",
-            "memor"
+            "ocean",
+            "song",
+            "sound"
           ],
           "cue_terms": [
-            "face",
-            "memor"
+            "ocean",
+            "song",
+            "sound"
           ],
           "frame_hook_bridge": [
-            "face",
-            "memor"
+            "ocean",
+            "song"
           ],
           "risks": [],
           "score": 100.0,
@@ -9038,35 +9677,37 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "horses"
+          "subject": "whales"
         },
-        "pinned_comment": "Watch the face memory again. Tomorrow in Animal Memory: another animal signal. What part of this feels most impossible?",
+        "pinned_comment": "Watch the ocean song again. Tomorrow in Ocean Mysteries: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
         "preflight_inputs": {
-          "caption_chars_per_second": 15.65,
+          "caption_chars_per_second": 15.47,
           "contrast_score": 0.74,
           "cta_count": 1,
-          "duration_hint_s": 17,
-          "first_2s_narration": "Horses can sort familiar clues with face memory Watch the face memory",
-          "first_frame_text": "FACE MEMORY",
+          "duration_hint_s": 15,
+          "first_2s_narration": "Whales reveal the ocean song first Watch closely because whale sound can",
+          "first_frame_text": "OCEAN SONG",
           "first_frame_text_words": 2,
-          "hook": "Horses can sort familiar clues with face memory.",
+          "hook": "Whales reveal the ocean song first.",
           "hook_specificity": 0.78,
-          "hook_words": 8,
-          "loop_score": 0.996,
+          "hook_words": 6,
+          "loop_score": 0.797,
           "novelty_score": 0.58,
           "opening_retention": {
             "approved": true,
             "cue_bridge": [
-              "face",
-              "memor"
+              "ocean",
+              "song",
+              "sound"
             ],
             "cue_terms": [
-              "face",
-              "memor"
+              "ocean",
+              "song",
+              "sound"
             ],
             "frame_hook_bridge": [
-              "face",
-              "memor"
+              "ocean",
+              "song"
             ],
             "risks": [],
             "score": 100.0,
@@ -9080,7 +9721,7 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "horses"
+            "subject": "whales"
           },
           "opening_retention_score": 100.0,
           "payoff_reveal_sentence_index": 0,
@@ -9089,7 +9730,7 @@
           "visual_motion_score": 0.76
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the face memory, so viewers rewatch the horses clip.",
+        "replay_prompt": "End by pointing back to the ocean song, so viewers rewatch the whales clip.",
         "retention": {
           "confidence": {
             "bootstrap_multiplier": 0.25,
@@ -9104,66 +9745,66 @@
           },
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 70,
+          "score": 68,
           "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 79,
+            "completion_prediction": 84,
+            "curiosity_score": 71,
             "hook_score": 70,
-            "replay_score": 72,
+            "replay_score": 62,
             "visual_score": 50
           },
           "verdict": "rewrite"
         },
         "retention_contract": {
-          "first_2s_narration": "Horses can sort familiar clues with face memory Watch the face memory",
-          "first_frame_text": "FACE MEMORY",
-          "next_episode_question": "Tomorrow in Animal Memory: another animal signal. What part of this feels most impossible?",
+          "first_2s_narration": "Whales reveal the ocean song first Watch closely because whale sound can",
+          "first_frame_text": "OCEAN SONG",
+          "next_episode_question": "Tomorrow in Ocean Mysteries: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
           "opening_retention_score": 100.0,
           "opening_retention_state": "retention_ready",
           "search_intent": {
-            "description_line": "This Short explains Horses behavior through the visible face memory.",
-            "series": "Animal Memory",
-            "subject": "horses",
+            "description_line": "This Short explains Whales behavior through the visible ocean song.",
+            "series": "Ocean Mysteries",
+            "subject": "whales",
             "terms": [
-              "horses",
-              "face memory",
-              "farm",
-              "animal memory"
+              "whales",
+              "ocean song",
+              "ocean",
+              "animal intelligence"
             ],
-            "title_variant": "Horses behavior: face memory explained",
-            "visible_cue": "face memory"
+            "title_variant": "Whales behavior: ocean song explained",
+            "visible_cue": "ocean song"
           },
-          "series": "Animal Memory",
-          "subject": "horses",
-          "visible_cue": "face memory"
+          "series": "Ocean Mysteries",
+          "subject": "whales",
+          "visible_cue": "ocean song"
         },
         "risks": [],
-        "score": 95,
+        "score": 94,
         "search_intent": {
-          "description_line": "This Short explains Horses behavior through the visible face memory.",
-          "series": "Animal Memory",
-          "subject": "horses",
+          "description_line": "This Short explains Whales behavior through the visible ocean song.",
+          "series": "Ocean Mysteries",
+          "subject": "whales",
           "terms": [
-            "horses",
-            "face memory",
-            "farm",
-            "animal memory"
+            "whales",
+            "ocean song",
+            "ocean",
+            "animal intelligence"
           ],
-          "title_variant": "Horses behavior: face memory explained",
-          "visible_cue": "face memory"
+          "title_variant": "Whales behavior: ocean song explained",
+          "visible_cue": "ocean song"
         },
         "selected_variant": {
-          "hook": "Horses can remember familiar faces",
+          "hook": "Whales can send sound farther than sight",
           "score": 77,
-          "thumbnail_text": "FACE MEMORY",
-          "title": "Horses remember familiar faces for months"
+          "thumbnail_text": "OCEAN SONG",
+          "title": "Whales send songs across huge ocean distances"
         },
-        "series": "Animal Memory",
+        "series": "Ocean Mysteries #6",
         "series_identity": {
-          "continuity_prompt": "Next in Animal Memory: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Animal Memory",
-          "series": "Animal Memory"
+          "continuity_prompt": "Next in Ocean Mysteries: compare this with another force of nature.",
+          "episode": 6,
+          "label": "Ocean Mysteries #6",
+          "series": "Ocean Mysteries"
         },
         "state": "magnetic",
         "strengths": [
@@ -9175,7 +9816,7 @@
           "retention_opening_aligned"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.223,
+          "comment_probability": 0.207,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -9189,20 +9830,20 @@
           },
           "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
           "reasons": [
-            "identity_cta",
             "debate_comment",
             "return_prompt",
-            "series_identity"
+            "series_identity",
+            "episode_continuity"
           ],
-          "return_probability": 0.261,
+          "return_probability": 0.242,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 86,
+          "score": 79,
           "state": "strong",
-          "subscriber_probability": 0.123
+          "subscriber_probability": 0.113
         },
         "swipe_risk": {
           "band": "low",
@@ -9211,88 +9852,88 @@
           "score": 0
         },
         "thumbnail_options": [
-          "FACE MEMORY",
-          "WATCH FACE MEMORY",
-          "HORSES CONNECT",
-          "FACE MEMORY MATTERS",
-          "FACE MEMORY FIRST",
-          "FACE MEMORY REVEAL",
-          "FACE MEMORY CLUE",
+          "OCEAN SONG",
+          "WATCH OCEAN SONG",
+          "WHALES CHANGE",
+          "OCEAN SONG MATTERS",
+          "OCEAN SONG FIRST",
+          "OCEAN SONG REVEAL",
+          "OCEAN SONG CLUE",
           "WATCH THE MOVE",
           "SPOT THE CLUE"
         ],
         "title_options": [
-          "Horses remember familiar faces for months",
-          "Horses sort familiar clues with face memory",
-          "Horses connect through face memory",
-          "Horses use face memory before they connect",
-          "This face memory gives horses away",
-          "Why horses connect after one face memory",
-          "Horses reveal the answer with face memory",
-          "The face memory that changes the moment",
-          "Horses make one face memory matter",
-          "Horses show the hidden answer in seconds"
+          "Whales send songs across huge ocean distances",
+          "Whales use ocean song before they change",
+          "This ocean song gives whales away",
+          "Why whales change after one ocean song",
+          "Whales reveal the answer with ocean song",
+          "The ocean song that changes the moment",
+          "Whales make one ocean song matter",
+          "Whales show the hidden answer in seconds",
+          "Whales: watch this ocean song",
+          "Watch whales after the ocean song"
         ],
         "top_variants": [
           {
-            "hook": "Horses can remember familiar faces",
+            "hook": "Whales can send sound farther than sight",
             "score": 77,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Horses remember familiar faces for months"
+            "thumbnail_text": "OCEAN SONG",
+            "title": "Whales send songs across huge ocean distances"
           },
           {
-            "hook": "Horses can sort familiar clues with face memory",
-            "score": 76,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Horses remember familiar faces for months"
+            "hook": "Whales reveal the ocean song first",
+            "score": 77,
+            "thumbnail_text": "OCEAN SONG",
+            "title": "Whales send songs across huge ocean distances"
           },
           {
-            "hook": "Watch the face memory; it explains the behavior",
-            "score": 76,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Horses remember familiar faces for months"
+            "hook": "Watch the ocean song; it explains the behavior",
+            "score": 77,
+            "thumbnail_text": "OCEAN SONG",
+            "title": "Whales send songs across huge ocean distances"
           },
           {
-            "hook": "Horses can remember familiar faces",
-            "score": 72,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Horses use face memory before they connect"
+            "hook": "Whales can send sound farther than sight",
+            "score": 73,
+            "thumbnail_text": "OCEAN SONG",
+            "title": "Whales use ocean song before they change"
           },
           {
-            "hook": "Horses can sort familiar clues with face memory",
+            "hook": "Whales reveal the ocean song first",
+            "score": 73,
+            "thumbnail_text": "OCEAN SONG",
+            "title": "Whales use ocean song before they change"
+          },
+          {
+            "hook": "Watch the ocean song; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "OCEAN SONG",
+            "title": "Whales use ocean song before they change"
+          },
+          {
+            "hook": "Whales can send sound farther than sight",
             "score": 71,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Horses use face memory before they connect"
+            "thumbnail_text": "WHALES CHANGE",
+            "title": "Whales send songs across huge ocean distances"
           },
           {
-            "hook": "Watch the face memory; it explains the behavior",
+            "hook": "Whales reveal the ocean song first",
             "score": 71,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Horses use face memory before they connect"
+            "thumbnail_text": "WHALES CHANGE",
+            "title": "Whales send songs across huge ocean distances"
           },
           {
-            "hook": "Horses can remember familiar faces",
-            "score": 70,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "Horses remember familiar faces for months"
+            "hook": "Watch the ocean song; it explains the behavior",
+            "score": 71,
+            "thumbnail_text": "WHALES CHANGE",
+            "title": "Whales send songs across huge ocean distances"
           },
           {
-            "hook": "Horses can remember familiar faces",
+            "hook": "Whales can send sound farther than sight",
             "score": 70,
-            "thumbnail_text": "HORSES CONNECT",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Horses can remember familiar faces",
-            "score": 70,
-            "thumbnail_text": "FACE MEMORY MATTERS",
-            "title": "Horses remember familiar faces for months"
-          },
-          {
-            "hook": "Horses can remember familiar faces",
-            "score": 70,
-            "thumbnail_text": "FACE MEMORY FIRST",
-            "title": "Horses remember familiar faces for months"
+            "thumbnail_text": "WATCH OCEAN SONG",
+            "title": "Whales send songs across huge ocean distances"
           }
         ]
       },
@@ -9482,7 +10123,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-14T01:14:36.630677+00:00",
+        "checked_at": "2026-07-14T03:25:23.528180+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10115,7 +10756,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-14T01:14:36.631727+00:00",
+        "checked_at": "2026-07-14T03:25:23.529698+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10756,7 +11397,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-14T01:14:36.632773+00:00",
+        "checked_at": "2026-07-14T03:25:23.531191+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11405,7 +12046,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-14T01:14:36.634615+00:00",
+        "checked_at": "2026-07-14T03:25:23.533924+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11886,653 +12527,6 @@
       }
     },
     {
-      "id": "1af1013cc6eed163",
-      "title": "Whales send songs across huge ocean distances",
-      "category": "ocean",
-      "publish_score": {
-        "approved": true,
-        "category": "ocean",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 86,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "ocean",
-            "song",
-            "sound"
-          ],
-          "cue_terms": [
-            "ocean",
-            "song",
-            "sound"
-          ],
-          "frame_hook_bridge": [
-            "ocean",
-            "song"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "whales"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 57,
-          "signals": {
-            "comment_potential": 46,
-            "educational_potential": 60,
-            "emotional_potential": 35,
-            "novelty": 69,
-            "replay_potential": 60,
-            "viral_potential": 62,
-            "visual_potential": 59
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 68,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 70,
-            "replay_score": 62,
-            "visual_score": 50
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "animal_intelligence",
-        "subscriber_conversion": {
-          "comment_probability": 0.191,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.222,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-07-14T01:14:38.033755+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling",
-          "editor_in_chief:script quality gate blocked the narration"
-        ],
-        "score": 70.0,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 70.0,
-      "youtube_brain": {
-        "animal": "whales",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "ocean",
-            "song",
-            "sound"
-          ],
-          "cue_terms": [
-            "ocean",
-            "song",
-            "sound"
-          ],
-          "frame_hook_bridge": [
-            "ocean",
-            "song"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "whales"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "animal_intelligence",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "whales",
-        "viewer_promise": "See why whales animal intelligence matters."
-      },
-      "packaging": {
-        "community_prompt": "Which whales clue should Wild Brief compare next in Watch The Cue?",
-        "cta_prompt": "Want to uncover what is still hidden in the ocean?",
-        "curiosity_gap": {
-          "hook": "Why do these whales change after the ocean song?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "animal intelligence",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 97,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
-          },
-          "winning_experiments": {}
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "ocean",
-              "song",
-              "sound"
-            ],
-            "cue_terms": [
-              "ocean",
-              "song",
-              "sound"
-            ],
-            "frame_hook_bridge": [
-              "ocean",
-              "song"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "whales"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Whales can send sound farther than sight",
-          "Whales reveal the ocean song first",
-          "Whales show why the ocean song matters.",
-          "Whales show why the ocean song matters.",
-          "Whales show why the ocean song matters."
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "ocean song",
-          "ending_line": "Which call should come next?",
-          "final_line": "Now the ocean song at the start makes sense.",
-          "loop_score": 0.797,
-          "opening_line": "Whales reveal the ocean song first.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "ocean song",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.797,
-        "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "ocean",
-            "song",
-            "sound"
-          ],
-          "cue_terms": [
-            "ocean",
-            "song",
-            "sound"
-          ],
-          "frame_hook_bridge": [
-            "ocean",
-            "song"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "whales"
-        },
-        "pinned_comment": "Watch the ocean song again. Tomorrow in Watch The Cue: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.47,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 15,
-          "first_2s_narration": "Whales reveal the ocean song first Watch closely because whale sound can",
-          "first_frame_text": "OCEAN SONG",
-          "first_frame_text_words": 2,
-          "hook": "Whales reveal the ocean song first.",
-          "hook_specificity": 0.78,
-          "hook_words": 6,
-          "loop_score": 0.797,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "ocean",
-              "song",
-              "sound"
-            ],
-            "cue_terms": [
-              "ocean",
-              "song",
-              "sound"
-            ],
-            "frame_hook_bridge": [
-              "ocean",
-              "song"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "whales"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the ocean song, so viewers rewatch the whales clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 68,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 70,
-            "replay_score": 62,
-            "visual_score": 50
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Whales reveal the ocean song first Watch closely because whale sound can",
-          "first_frame_text": "OCEAN SONG",
-          "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains Whales behavior through the visible ocean song.",
-            "series": "Watch The Cue",
-            "subject": "whales",
-            "terms": [
-              "whales",
-              "ocean song",
-              "ocean",
-              "animal intelligence"
-            ],
-            "title_variant": "Whales behavior: ocean song explained",
-            "visible_cue": "ocean song"
-          },
-          "series": "Watch The Cue",
-          "subject": "whales",
-          "visible_cue": "ocean song"
-        },
-        "risks": [],
-        "score": 94,
-        "search_intent": {
-          "description_line": "This Short explains Whales behavior through the visible ocean song.",
-          "series": "Watch The Cue",
-          "subject": "whales",
-          "terms": [
-            "whales",
-            "ocean song",
-            "ocean",
-            "animal intelligence"
-          ],
-          "title_variant": "Whales behavior: ocean song explained",
-          "visible_cue": "ocean song"
-        },
-        "selected_variant": {
-          "hook": "Whales can send sound farther than sight",
-          "score": 77,
-          "thumbnail_text": "OCEAN SONG",
-          "title": "Whales send songs across huge ocean distances"
-        },
-        "series": "Watch The Cue",
-        "series_identity": {
-          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Watch The Cue",
-          "series": "Watch The Cue"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.191,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "debate_comment",
-            "return_prompt",
-            "series_identity"
-          ],
-          "return_probability": 0.222,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 72,
-          "state": "usable",
-          "subscriber_probability": 0.103
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "OCEAN SONG",
-          "WATCH OCEAN SONG",
-          "WHALES CHANGE",
-          "OCEAN SONG MATTERS",
-          "OCEAN SONG FIRST",
-          "OCEAN SONG REVEAL",
-          "OCEAN SONG CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Whales send songs across huge ocean distances",
-          "Whales use ocean song before they change",
-          "This ocean song gives whales away",
-          "Why whales change after one ocean song",
-          "Whales reveal the answer with ocean song",
-          "The ocean song that changes the moment",
-          "Whales make one ocean song matter",
-          "Whales show the hidden answer in seconds",
-          "Whales: watch this ocean song",
-          "Watch whales after the ocean song"
-        ],
-        "top_variants": [
-          {
-            "hook": "Whales can send sound farther than sight",
-            "score": 77,
-            "thumbnail_text": "OCEAN SONG",
-            "title": "Whales send songs across huge ocean distances"
-          },
-          {
-            "hook": "Whales reveal the ocean song first",
-            "score": 77,
-            "thumbnail_text": "OCEAN SONG",
-            "title": "Whales send songs across huge ocean distances"
-          },
-          {
-            "hook": "Watch the ocean song; it explains the behavior",
-            "score": 77,
-            "thumbnail_text": "OCEAN SONG",
-            "title": "Whales send songs across huge ocean distances"
-          },
-          {
-            "hook": "Whales can send sound farther than sight",
-            "score": 73,
-            "thumbnail_text": "OCEAN SONG",
-            "title": "Whales use ocean song before they change"
-          },
-          {
-            "hook": "Whales reveal the ocean song first",
-            "score": 73,
-            "thumbnail_text": "OCEAN SONG",
-            "title": "Whales use ocean song before they change"
-          },
-          {
-            "hook": "Watch the ocean song; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "OCEAN SONG",
-            "title": "Whales use ocean song before they change"
-          },
-          {
-            "hook": "Whales can send sound farther than sight",
-            "score": 71,
-            "thumbnail_text": "WHALES CHANGE",
-            "title": "Whales send songs across huge ocean distances"
-          },
-          {
-            "hook": "Whales reveal the ocean song first",
-            "score": 71,
-            "thumbnail_text": "WHALES CHANGE",
-            "title": "Whales send songs across huge ocean distances"
-          },
-          {
-            "hook": "Watch the ocean song; it explains the behavior",
-            "score": 71,
-            "thumbnail_text": "WHALES CHANGE",
-            "title": "Whales send songs across huge ocean distances"
-          },
-          {
-            "hook": "Whales can send sound farther than sight",
-            "score": 70,
-            "thumbnail_text": "WATCH OCEAN SONG",
-            "title": "Whales send songs across huge ocean distances"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "eb41118e410e097b",
       "title": "Ocean edges turn wave motion into patterns",
       "category": "conservation",
@@ -12709,7 +12703,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-14T01:14:36.904034+00:00",
+        "checked_at": "2026-07-14T03:25:23.535672+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
