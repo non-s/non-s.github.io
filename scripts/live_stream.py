@@ -22,17 +22,17 @@ def main():
 
     videos_dir = Path("_videos")
     long_videos = list(videos_dir.glob("long_video_*.mp4"))
-    
+
     if not long_videos:
         log.error(f"No long_video_*.mp4 found in {videos_dir}. Run generate_long_video.py first.")
         return
-        
+
     # Pick the most recently generated video
     latest_video = sorted(long_videos, key=lambda p: p.stat().st_mtime)[-1]
     log.info(f"Starting 24/7 Live Stream using: {latest_video.name}")
-    
+
     rtmp_url = f"rtmp://a.rtmp.youtube.com/live2/{stream_key}"
-    
+
     cmd = [
         "ffmpeg",
         "-re",  # Read input at native frame rate
@@ -50,7 +50,7 @@ def main():
         "-f", "flv",
         rtmp_url
     ]
-    
+
     log.info("Running FFmpeg stream loop...")
     try:
         subprocess.run(cmd, check=True)
@@ -63,3 +63,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

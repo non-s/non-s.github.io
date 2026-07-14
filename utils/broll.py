@@ -251,7 +251,9 @@ def _enabled_sources() -> list[str]:
     return ["pexels"]
 
 
-def fetch_broll_clips(query: str, want_n: int = 4, category: str = "", animal_only: bool = False, orientation: str = "portrait") -> list[BrollClip]:
+def fetch_broll_clips(
+    query: str, want_n: int = 4, category: str = "", animal_only: bool = False, orientation: str = "portrait"
+) -> list[BrollClip]:
     """Collect up to `want_n` vetted Pexels clips."""
     seen_urls: set[str] = set()
     collected: list[BrollClip] = []
