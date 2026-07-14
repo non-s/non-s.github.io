@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-14T16:58:03.107617+00:00",
+  "generated_at": "2026-07-14T17:01:11.573482+00:00",
   "pending": 24,
   "states": {
     "publish_ready": 10,
@@ -17,17 +17,90 @@
     "approved": 24
   },
   "prune_summary": {
-    "pending_before": 24,
+    "pending_before": 28,
     "pending_after": 24,
-    "rejected": 0,
-    "repair_needed": 0,
-    "repaired": 4,
+    "rejected": 4,
+    "repair_needed": 1,
+    "repaired": 7,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 24,
-      "editor_in_chief:script quality gate blocked the narration": 7
+      "editor_in_chief:script quality gate blocked the narration": 7,
+      "duplicate_title": 2,
+      "opening_retention_gap_risk": 1,
+      "opening promise is not concrete enough": 1,
+      "queue_score_reject": 1,
+      "duplicate_angle": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "1f58100014c68523",
+      "title": "Dogs build a map with smell",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "9671b42813160143",
+      "title": "Ants show why scent road matters",
+      "reasons": [
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "0c814f8d394aeb4c",
+      "title": "Monkeys wash food when grit gets annoying",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "e68d6d405eb5f7d9",
+      "title": "Coral reefs are cities built by tiny animals",
+      "reasons": [
+        "opening_retention_gap_risk",
+        "opening promise is not concrete enough",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "17b14d32ee2f726b",
+      "title": "Coral reefs are built by tiny living builders",
+      "reasons": [
+        "copy_subject_mismatch"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "694a67bf447bd7c9",
+      "title": "Dogs read human pointing surprisingly well",
+      "reasons": [
+        "rights_guard_person_manual_review"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "11148c3336daba76",
+      "title": "monkey bridge walks between trees",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
+    {
+      "id": "fc7f1789273594fb",
+      "title": "Mushrooms trade nutrients through underground threads",
+      "reasons": [
+        "opening_retention_gap_risk",
+        "opening promise is not concrete enough",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
     {
       "id": "a8e43b33c2784548",
       "title": "Coral reefs are built by tiny living builders",
@@ -218,77 +291,6 @@
         "off_topic_visual"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "5811c07cbd0fb4e7",
-      "title": "Coral reefs are cities built by tiny animals",
-      "reasons": [
-        "opening_retention_gap_risk",
-        "opening promise is not concrete enough",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "599921de9e906fa0",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "2227f1e9c97284a0",
-      "title": "Coral reefs are built by tiny living builders",
-      "reasons": [
-        "copy_subject_mismatch"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "15fc6023f3676b39",
-      "title": "Forests can cool the air below them",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "a43b2b405f5f9b93",
-      "title": "fox hunts by moonlight in grass",
-      "reasons": [
-        "rights_guard_person_manual_review",
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "86a631c0bcf31ca5",
-      "title": "elephant walks beside human on road",
-      "reasons": [
-        "rights_guard_person_manual_review"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "7782cf5762c08f26",
-      "title": "Ants use scent road before they trick",
-      "reasons": [
-        "payoff_not_explicit",
-        "opening_retention_gap_risk",
-        "generic_creator_language",
-        "queue_score_reject"
-      ],
-      "stage": "queue_repair"
-    },
-    {
-      "id": "3dd8e76440dc3d7d",
-      "title": "moss on tree trunk secrets",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -467,7 +469,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-14T16:57:38.978794+00:00",
+        "checked_at": "2026-07-14T17:00:46.255627+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1112,7 +1114,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-14T16:57:38.982544+00:00",
+        "checked_at": "2026-07-14T17:00:46.259085+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1754,7 +1756,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-14T16:57:38.986854+00:00",
+        "checked_at": "2026-07-14T17:00:47.294593+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2394,7 +2396,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-14T16:57:38.988110+00:00",
+        "checked_at": "2026-07-14T17:00:47.295889+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3047,7 +3049,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-14T16:57:38.992126+00:00",
+        "checked_at": "2026-07-14T17:00:47.300114+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3695,7 +3697,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-14T16:57:38.993919+00:00",
+        "checked_at": "2026-07-14T17:00:47.301951+00:00",
         "mechanism_cluster": "tongue_smell",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4350,7 +4352,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-14T16:57:38.995671+00:00",
+        "checked_at": "2026-07-14T17:00:47.303759+00:00",
         "mechanism_cluster": "visual_stabilization",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4988,7 +4990,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-14T16:57:38.997403+00:00",
+        "checked_at": "2026-07-14T17:00:47.305563+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5633,7 +5635,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-14T16:57:39.000193+00:00",
+        "checked_at": "2026-07-14T17:00:47.308365+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6286,7 +6288,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-14T16:57:39.002456+00:00",
+        "checked_at": "2026-07-14T17:00:47.310616+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6939,7 +6941,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-14T16:57:39.004761+00:00",
+        "checked_at": "2026-07-14T17:00:47.313276+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7590,7 +7592,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-14T16:57:39.006420+00:00",
+        "checked_at": "2026-07-14T17:00:47.315057+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8229,7 +8231,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-14T16:57:39.019516+00:00",
+        "checked_at": "2026-07-14T17:00:47.328917+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8867,7 +8869,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-14T16:57:39.021675+00:00",
+        "checked_at": "2026-07-14T17:00:47.331242+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -9512,7 +9514,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-14T16:57:38.980129+00:00",
+        "checked_at": "2026-07-14T17:00:46.256747+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -10151,7 +10153,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-14T16:57:38.989839+00:00",
+        "checked_at": "2026-07-14T17:00:47.297503+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -10804,7 +10806,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-14T16:57:39.022746+00:00",
+        "checked_at": "2026-07-14T17:00:47.332380+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -11468,7 +11470,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-14T16:57:38.984021+00:00",
+        "checked_at": "2026-07-14T17:00:46.267191+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12119,7 +12121,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-14T16:57:39.008040+00:00",
+        "checked_at": "2026-07-14T17:00:47.316776+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12757,7 +12759,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-14T16:57:39.009623+00:00",
+        "checked_at": "2026-07-14T17:00:47.318426+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
