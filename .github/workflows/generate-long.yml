@@ -1,0 +1,41 @@
+name: Generate Long Video
+
+on:
+  schedule:
+    # Runs once a day at 23:00 UTC
+    - cron: '0 23 * * *'
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg curl
+          pip install -r requirements.txt
+
+      - name: Generate Long Video
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+        run: python generate_long_video.py
+
+      - name: Commit Generated Video
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add _videos/long_video_*.mp4
+          git commit -m "feat(video): add daily long video compilation" || echo "No new video generated"
+          git push

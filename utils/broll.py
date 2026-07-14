@@ -97,7 +97,7 @@ def _pexels_clip_title(url: str, uploader: str = "") -> str:
     return re.sub(r"[-_]+", " ", slug).strip() or uploader.strip()
 
 
-def fetch_pexels(query: str, per_page: int = 8, page: int = 1) -> list[BrollClip]:
+def fetch_pexels(query: str, per_page: int = 8, page: int = 1, orientation: str = "portrait") -> list[BrollClip]:
     """Search Pexels Videos for `query`. Empty list on any failure."""
     key = os.environ.get("PEXELS_API_KEY", "")
     if not key:
@@ -108,7 +108,7 @@ def fetch_pexels(query: str, per_page: int = 8, page: int = 1) -> list[BrollClip
 
     per_page = max(1, min(80, int(per_page or 8)))
     page = max(1, int(page or 1))
-    cache_path = _cache_key("pexels", f"{query}|{per_page}|{page}|v1")
+    cache_path = _cache_key("pexels", f"{query}|{per_page}|{page}|{orientation}|v1")
     cached = _cache_get(cache_path)
     if cached is not None:
         return [BrollClip(**c) for c in cached]
@@ -122,7 +122,7 @@ def fetch_pexels(query: str, per_page: int = 8, page: int = 1) -> list[BrollClip
                     "query": query[:120],
                     "per_page": per_page,
                     "page": page,
-                    "orientation": "portrait",
+                    "orientation": orientation,
                     "size": "medium",
                 },
                 headers={"Authorization": key},
@@ -251,7 +251,7 @@ def _enabled_sources() -> list[str]:
     return ["pexels"]
 
 
-def fetch_broll_clips(query: str, want_n: int = 4, category: str = "", animal_only: bool = False) -> list[BrollClip]:
+def fetch_broll_clips(query: str, want_n: int = 4, category: str = "", animal_only: bool = False, orientation: str = "portrait") -> list[BrollClip]:
     """Collect up to `want_n` vetted Pexels clips."""
     seen_urls: set[str] = set()
     collected: list[BrollClip] = []
@@ -265,7 +265,7 @@ def fetch_broll_clips(query: str, want_n: int = 4, category: str = "", animal_on
         if len(collected) >= want_n:
             break
         try:
-            clips = fetch_pexels(q)
+            clips = fetch_pexels(q, orientation=orientation)
         except Exception as exc:
             log.warning("broll fetcher fetch_pexels crashed: %s", exc)
             clips = []

@@ -27,7 +27,7 @@ from pathlib import Path
 
 log = logging.getLogger(__name__)
 
-SHORT_W, SHORT_H = 1080, 1920
+target_w, target_h = 1080, 1920
 TARGET_FPS = 30
 # Fast Shorts are easier to finish, replay, and recommend. Keep a hard
 # ceiling so TTS variance never turns a tight script into a slow one.
@@ -146,6 +146,8 @@ def build_broll_short(
     cover_text: str = "",
     cta_text: str = "",
     watermark_text: str = "@WildBrief",
+    target_w: int = 1080,
+    target_h: int = 1920,
 ) -> bool:
     """Compose a vertical Short from N b-roll clips + audio.
 
@@ -248,7 +250,7 @@ def build_broll_short(
             # the zoom envelope is smooth, not jittery. `s={W}x{H}` scales
             # the output back down to Shorts native after the crop walk.
             f"zoompan=z='{z_expr}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
-            f":d=1:s={SHORT_W}x{SHORT_H}:fps={TARGET_FPS},"
+            f":d=1:s={target_w}x{target_h}:fps={TARGET_FPS},"
             f"eq=contrast=1.08:saturation=1.14:brightness=0.015,"
             f"unsharp=5:5:0.55:3:3:0.25,"
             f"setsar=1,"
@@ -265,8 +267,8 @@ def build_broll_short(
         extra_inputs.append(intro_card_path)
         parts.append(
             f"[{idx}:v]"
-            f"scale={SHORT_W}:{SHORT_H}:force_original_aspect_ratio=decrease,"
-            f"pad={SHORT_W}:{SHORT_H}:(ow-iw)/2:(oh-ih)/2,"
+            f"scale={target_w}:{target_h}:force_original_aspect_ratio=decrease,"
+            f"pad={target_w}:{target_h}:(ow-iw)/2:(oh-ih)/2,"
             f"setsar=1,fps={TARGET_FPS},"
             f"trim=duration={intro_s:.3f},setpts=PTS-STARTPTS"
             f"[vintro]"
@@ -277,8 +279,8 @@ def build_broll_short(
         extra_inputs.append(outro_card_path)
         parts.append(
             f"[{idx}:v]"
-            f"scale={SHORT_W}:{SHORT_H}:force_original_aspect_ratio=decrease,"
-            f"pad={SHORT_W}:{SHORT_H}:(ow-iw)/2:(oh-ih)/2,"
+            f"scale={target_w}:{target_h}:force_original_aspect_ratio=decrease,"
+            f"pad={target_w}:{target_h}:(ow-iw)/2:(oh-ih)/2,"
             f"setsar=1,fps={TARGET_FPS},"
             f"trim=duration={outro_s:.3f},setpts=PTS-STARTPTS"
             f"[voutro]"
@@ -454,7 +456,6 @@ def build_broll_short(
 
 
 def build_static_short(
-    frame_path: Path,
     audio_path: Path,
     output_path: Path,
     ass_subtitle_path: Path | None = None,
@@ -462,6 +463,9 @@ def build_static_short(
     cover_text: str = "",
     cta_text: str = "",
     watermark_text: str = "@WildBrief",
+    category: str = "",
+    target_w: int = 1080,
+    target_h: int = 1920,
 ) -> bool:
     """Single still image + audio, with optional burned captions.
 
@@ -489,11 +493,11 @@ def build_static_short(
     # Commas inside the zoompan z-expression have to be backslash-
     # escaped so FFmpeg doesn't parse them as filter separators.
     parts.append(
-        f"[{last}]scale={SHORT_W}:{SHORT_H}:force_original_aspect_ratio=decrease,"
-        f"pad={SHORT_W}:{SHORT_H}:(ow-iw)/2:(oh-ih)/2,setsar=1,"
+        f"[{last}]scale={target_w}:{target_h}:force_original_aspect_ratio=decrease,"
+        f"pad={target_w}:{target_h}:(ow-iw)/2:(oh-ih)/2,setsar=1,"
         f"zoompan=z='min(zoom+{zoom_step:.6f}\\,1.07)':"
         f"x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':"
-        f"d=1:s={SHORT_W}x{SHORT_H}:fps={TARGET_FPS},"
+        f"d=1:s={target_w}x{target_h}:fps={TARGET_FPS},"
         f"eq=contrast=1.06:saturation=1.12:brightness=0.012,"
         f"unsharp=5:5:0.45:3:3:0.20[scaled]"
     )
@@ -593,3 +597,6 @@ def build_static_short(
         return False
     log.info("  ðŸŽž  Static-frame Short ready (%.1fs): %s", audio_dur, output_path.name)
     return True
+
+
+

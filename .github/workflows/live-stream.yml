@@ -1,0 +1,42 @@
+name: 24/7 Live Stream Relay
+
+on:
+  schedule:
+    # Runs every 5 hours and 50 minutes. We use a Cron that triggers hourly, 
+    # but the script will handle running for 5.8 hours before exiting.
+    # Actually, a simpler approach is repository_dispatch or workflow_dispatch,
+    # but to loop automatically we can use a cron that runs every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  stream:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360 # 6 hours max
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg curl
+          pip install -r requirements.txt
+
+      - name: Run Live Stream
+        env:
+          YOUTUBE_STREAM_KEY: ${{ secrets.YOUTUBE_STREAM_KEY }}
+        # We run this in a while loop so if ffmpeg crashes it restarts instantly.
+        # GitHub will forcibly kill the runner at 6 hours, and the cron will start a new one.
+        run: |
+          while true; do
+            python scripts/live_stream.py
+            sleep 5
+          done
