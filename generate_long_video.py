@@ -20,7 +20,7 @@ from utils.broll import fetch_broll_clips
 from utils.captions import transcribe as captions_transcribe, write_ass
 from utils.video_compose import build_broll_short
 from utils.nature_strategy import NATURE_TOPICS
-from generate_shorts import text_to_speech, _env_enabled, pick_voice_for_locale
+from generate_shorts import text_to_speech, _env_enabled, pick_voice
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger(__name__)
@@ -77,7 +77,7 @@ async def generate_segment(segment_index: int, topic_key: str, query: str) -> Pa
         
     # 3. TTS
     audio_path = segment_dir / f"audio_{segment_index}.mp3"
-    voice = pick_voice_for_locale("en")
+    voice = pick_voice(query)
     await text_to_speech(script, audio_path, voice=voice)
     if not audio_path.exists():
         return None
