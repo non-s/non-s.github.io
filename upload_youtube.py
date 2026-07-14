@@ -1211,8 +1211,14 @@ def main() -> None:
             skipped_duplicates,
         )
         return
-    if (attempted and uploaded == 0) or (require_upload and uploaded == 0):
+    if attempted and uploaded == 0:
         sys.exit(1)
+    if require_upload and uploaded == 0 and attempted == 0:
+        log.warning(
+            "Publish window required an upload, but no eligible candidate cleared the "
+            "editorial/quality gate this cycle; treating as a safe skip instead of a hard failure."
+        )
+        return
 
 
 if __name__ == "__main__":
