@@ -8,8 +8,6 @@ on:
     # but to loop automatically we can use a cron that runs every 6 hours
     - cron: '0 */6 * * *'
   workflow_dispatch:
-  push:
-    branches: [main]
 
 permissions:
   contents: write
