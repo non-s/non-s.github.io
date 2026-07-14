@@ -45,10 +45,21 @@ jobs:
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
         run: python generate_long_video.py
 
-      - name: Commit Generated Video
+      - name: Locate Generated Video
+        id: locate_video
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add _videos/long_video_*.mp4
-          git commit -m "feat(video): add daily long video compilation" || echo "No new video generated"
-          git push
+          latest="$(ls -t _videos/long_video_*.mp4 2>/dev/null | head -n1 || true)"
+          echo "path=$latest" >> "$GITHUB_OUTPUT"
+          if [ -n "$latest" ]; then
+            echo "Generated video: $latest"
+          else
+            echo "No video was generated this run."
+          fi
+
+      - name: Upload Generated Video as Artifact
+        if: steps.locate_video.outputs.path != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: long-video-${{ github.run_id }}
+          path: ${{ steps.locate_video.outputs.path }}
+          retention-days: 14
