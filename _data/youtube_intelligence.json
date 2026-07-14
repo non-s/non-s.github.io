@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-07-14T05:52:58.849617+00:00",
+  "generated_at": "2026-07-14T06:23:25.563927+00:00",
   "window": {
     "start_date": "2026-06-17",
     "end_date": "2026-07-14"
   },
-  "coverage_score": 40,
+  "coverage_score": 80,
   "quota_strategy": [
     "Batch videos.list in groups of 50.",
     "Avoid search.list for routine automation because it is expensive and trend discovery already uses cheaper public sources.",
@@ -43,7 +43,7 @@
   },
   "video_audit": {
     "videos_checked": 2,
-    "total_views": 6,
+    "total_views": 5,
     "total_likes": 0,
     "total_comments": 2,
     "private_or_unlisted": 0,
@@ -52,7 +52,7 @@
       {
         "video_id": "DGs36Y79jHo",
         "title": "Fossils turn old bones into time clues",
-        "views": 5,
+        "views": 4,
         "likes": 0,
         "comments": 1,
         "privacy_status": "public",
@@ -77,7 +77,7 @@
       "coverage": "implemented",
       "use": "Channel identity, uploads playlist, subscriber/view/video totals, branding/status audit.",
       "risk": "read_only",
-      "last_run": "attempted"
+      "last_run": "ok"
     },
     {
       "id": "uploaded_video_inventory",
@@ -86,7 +86,7 @@
       "coverage": "implemented",
       "use": "Compare YouTube uploads against local .done markers and detect missing local memory.",
       "risk": "read_only",
-      "last_run": "attempted"
+      "last_run": "ok"
     },
     {
       "id": "video_metadata_statistics",
@@ -95,7 +95,7 @@
       "coverage": "implemented",
       "use": "Public stats, title/description/tag/status/duration audit for every tracked Short.",
       "risk": "read_only",
-      "last_run": "attempted"
+      "last_run": "ok"
     },
     {
       "id": "comment_threads",
@@ -153,9 +153,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,likes,comments,shares,subscribersGained",
       "sort": "-views",
       "use": "Rank videos by growth, engagement, retention and subscriber conversion.",
-      "status": "not_authorized",
+      "status": "ok",
       "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "error": ""
     },
     {
       "id": "daily_channel",
@@ -163,9 +163,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
       "sort": "day",
       "use": "Daily pacing and anomaly detection.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 25,
+      "error": ""
     },
     {
       "id": "country",
@@ -173,9 +173,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",
       "sort": "-views",
       "use": "Geo demand and publish timing hints.",
-      "status": "not_authorized",
+      "status": "ok",
       "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "error": ""
     },
     {
       "id": "traffic_source",
@@ -183,9 +183,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Detect whether Shorts feed, search, browse, external or channel surfaces are driving growth.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 6,
+      "error": ""
     },
     {
       "id": "device_type",
@@ -193,9 +193,9 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Tune caption size, pacing and visual density for device mix.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 4,
+      "error": ""
     },
     {
       "id": "subscriber_status",
@@ -203,12 +203,10 @@
       "metrics": "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage",
       "sort": "-views",
       "use": "Separate existing subscriber behavior from discovery behavior.",
-      "status": "not_authorized",
-      "rows": 0,
-      "error": "yt-analytics.readonly scope missing"
+      "status": "ok",
+      "rows": 2,
+      "error": ""
     }
   ],
-  "issues": [
-    "youtube_analytics_scope_missing"
-  ]
+  "issues": []
 }
