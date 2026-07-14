@@ -15,7 +15,7 @@ from datetime import datetime
 
 from utils.ai_helper import ai_text
 from utils.broll import fetch_broll_clips
-from utils.captions import transcribe as captions_transcribe, write_ass
+from utils.captions import transcribe as captions_transcribe, write_ass, group_words_into_phrases
 from utils.video_compose import build_broll_short
 from utils.nature_strategy import NATURE_TOPICS
 from generate_shorts import text_to_speech, pick_voice
@@ -85,7 +85,8 @@ async def generate_segment(segment_index: int, topic_key: str, query: str) -> Pa
     ass_path = segment_dir / f"captions_{segment_index}.ass"
     words = captions_transcribe(audio_path, script)
     if words:
-        write_ass(words, ass_path, video_w=1920, video_h=1080, margin_v=120)
+        phrases = group_words_into_phrases(words, max_words=3, max_gap_s=0.45, max_duration_s=1.8)
+        write_ass(phrases, ass_path, video_w=1920, video_h=1080, margin_v=120)
 
     # 5. Compose
     out_mp4 = segment_dir / f"segment_{segment_index}.mp4"
