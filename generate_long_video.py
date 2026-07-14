@@ -7,11 +7,8 @@ generate_long_video.py — Fetch, narrate, and compose a long horizontal video (
 import asyncio
 import json
 import logging
-import os
 import random
 import subprocess
-import sys
-import time
 from pathlib import Path
 from datetime import datetime
 
@@ -20,7 +17,7 @@ from utils.broll import fetch_broll_clips
 from utils.captions import transcribe as captions_transcribe, write_ass
 from utils.video_compose import build_broll_short
 from utils.nature_strategy import NATURE_TOPICS
-from generate_shorts import text_to_speech, _env_enabled, pick_voice
+from generate_shorts import text_to_speech, pick_voice
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger(__name__)
