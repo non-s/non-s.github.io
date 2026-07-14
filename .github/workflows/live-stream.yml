@@ -8,6 +8,8 @@ on:
     # but to loop automatically we can use a cron that runs every 6 hours
     - cron: '0 */6 * * *'
   workflow_dispatch:
+  push:
+    branches: [main]
 
 permissions:
   contents: write
@@ -44,6 +46,7 @@ jobs:
         # GitHub will forcibly kill the runner at 6 hours, and the cron will start a new one.
         run: |
           while true; do
+            git pull origin main || true
             python scripts/live_stream.py
             sleep 5
           done

@@ -5,6 +5,8 @@ on:
     # Runs once a day at 23:00 UTC
     - cron: '0 23 * * *'
   workflow_dispatch:
+  push:
+    branches: [main]
 
 permissions:
   contents: write
