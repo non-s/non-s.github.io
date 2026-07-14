@@ -63,7 +63,7 @@ jobs:
           YOUTUBE_DAILY_QUOTA_BUDGET: ${{ vars.YOUTUBE_DAILY_QUOTA_BUDGET || '10000' }}
           YOUTUBE_DAILY_UPLOAD_BUDGET: ${{ vars.YOUTUBE_DAILY_UPLOAD_BUDGET || '100' }}
         run: |
-          quota="$(python scripts/quota_preflight.py fetch-content --json --no-fail-on-block)"
+          quota="$(python scripts/quota_preflight.py fetch-content --json --no-fail-on-block --check-only)"
           echo "$quota"
           blocked="$(QUOTA_JSON="$quota" python - <<'PY'
           import json

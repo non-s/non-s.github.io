@@ -40,11 +40,20 @@ jobs:
       - name: Run Live Stream
         env:
           YOUTUBE_STREAM_KEY: ${{ secrets.YOUTUBE_STREAM_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # We run this in a while loop so if ffmpeg crashes it restarts instantly.
         # GitHub will forcibly kill the runner at 6 hours, and the cron will start a new one.
         run: |
+          mkdir -p _videos
           while true; do
             git pull origin main || true
+            run_id=$(gh run list --workflow="Generate Long Video" --status=success --limit 1 --json databaseId --jq '.[0].databaseId' 2>/dev/null || true)
+            if [ -n "$run_id" ]; then
+              echo "Downloading latest horizontal video (run $run_id)..."
+              gh run download "$run_id" --name "long-video-$run_id" --dir _videos || true
+            else
+              echo "No successful long video run found."
+            fi
             python scripts/live_stream.py
             sleep 5
           done
