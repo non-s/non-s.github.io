@@ -64,7 +64,7 @@ async def generate_segment(segment_index: int, topic_key: str, query: str) -> Pa
     # 2. AI Script
     prompt = PROMPT.replace("{topic}", query)
     try:
-        response = ai_text(prompt, max_tokens=150, fallback={"title": "", "script": "", "hook": ""})
+        response = ai_text(prompt, json_mode=True)
         data = json.loads(response) if isinstance(response, str) else response
     except Exception as e:
         log.error(f"AI failed: {e}")
