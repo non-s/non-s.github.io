@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Rewrite stories held by category recovery into approved-safe variants."""
+
 from __future__ import annotations
 
 import json

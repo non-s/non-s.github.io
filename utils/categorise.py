@@ -11,7 +11,6 @@ there's no signal.
 
 from __future__ import annotations
 
-
 # Order matters â€” earlier rules win. Place sharper signals first.
 # Used by analytics dashboards to back-classify uploaded Shorts that
 # pre-date the explicit `category` field on the queue (or whose

@@ -1118,7 +1118,12 @@ def package_story(story: dict) -> dict:
     memory = load_format_memory()
     selected = _select_packaging(out, memory=memory)
     best_variant = selected["best"]
-    if best_variant and not preserve_source_packaging and not angle_packaging_applied and not out.get("local_rewrite", {}).get("applied"):
+    if (
+        best_variant
+        and not preserve_source_packaging
+        and not angle_packaging_applied
+        and not out.get("local_rewrite", {}).get("applied")
+    ):
         out["seo_title"] = best_variant["title"]
         out["title"] = best_variant["title"]
         out["thumbnail_text"] = best_variant["thumbnail_text"]

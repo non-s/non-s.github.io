@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Apply local retention rewrites to held queue stories."""
+
 from __future__ import annotations
 
 import json

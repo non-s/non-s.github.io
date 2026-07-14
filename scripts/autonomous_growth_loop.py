@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Run the closed-loop autonomous growth planner."""
+
 from __future__ import annotations
 
 import sys

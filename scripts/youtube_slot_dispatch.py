@@ -23,7 +23,6 @@ if str(ROOT) not in sys.path:
 
 from scripts.upload_intent import INTENTS_FILE, duplicate_slot_uploaded  # noqa: E402
 
-
 ACTIVE_STATUSES = {"queued", "in_progress", "waiting", "requested", "pending"}
 DEFAULT_PUBLISH_SLOTS = tuple(f"{hour:02d}:00" for hour in range(24))
 

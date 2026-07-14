@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Write narrator performance from latest analytics."""
+
 from __future__ import annotations
 
 import json

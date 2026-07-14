@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Refresh audience-comment learning signals for uploaded Shorts."""
+
 from __future__ import annotations
 
 import json

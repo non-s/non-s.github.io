@@ -244,9 +244,6 @@ def _call_groq(sys_msg: str, prompt: str, timeout: int, key: str, json_mode: boo
     return r.json()["choices"][0]["message"]["content"].strip()
 
 
-
-
-
 def _default_system_prompt() -> str:
     return (
         _host_persona_block() + " "
@@ -346,7 +343,14 @@ def ai_text(
             except Exception as exc:
                 provider_stats.record(name, success=False, status=None)
                 log.warning("%s error (attempt %d/2): %s", label, attempt + 1, exc)
-                if name == "mistral" and isinstance(exc, (requests.exceptions.Timeout, requests.exceptions.ConnectionError, requests.exceptions.RequestException)):
+                if name == "mistral" and isinstance(
+                    exc,
+                    (
+                        requests.exceptions.Timeout,
+                        requests.exceptions.ConnectionError,
+                        requests.exceptions.RequestException,
+                    ),
+                ):
                     _mistral_429_streak += 1
                     if _mistral_429_streak >= _MISTRAL_429_CIRCUIT_THRESHOLD:
                         _mistral_circuit_open = True

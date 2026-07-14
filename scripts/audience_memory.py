@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Build real audience memory from .done markers plus analytics/latest.json."""
+
 from __future__ import annotations
 
 import json

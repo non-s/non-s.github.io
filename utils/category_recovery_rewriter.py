@@ -9,7 +9,6 @@ from datetime import datetime, timezone
 from utils.retention_surgeon import diagnose
 from utils.story_intelligence import classify_format
 
-
 CAT_RECOVERY_ANGLES = [
     {
         "key": "whiskers",

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Generate a weekly Markdown executive report from local analytics."""
+
 from __future__ import annotations
 
 import json

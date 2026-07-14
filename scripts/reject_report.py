@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Summarise rejected candidates."""
+
 from __future__ import annotations
 
 import json

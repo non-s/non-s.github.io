@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-
 LIVE_ROOTS = ("_data", "_videos")
 STATE_SUFFIXES = {".json", ".jsonl", ".csv", ".md", ".done", ".txt"}
 

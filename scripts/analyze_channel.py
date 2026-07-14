@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Refresh free public performance metrics for uploaded Wild Brief Shorts."""
+
 from __future__ import annotations
 
 import json

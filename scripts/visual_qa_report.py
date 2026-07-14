@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Summarise visual QA coverage from uploaded marker metadata."""
+
 from __future__ import annotations
 
 import json

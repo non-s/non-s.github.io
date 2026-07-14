@@ -12,7 +12,6 @@ import re
 
 from utils.growth_engine import analyze_retention
 
-
 WEAK_OPENERS = {
     "did you know",
     "today",

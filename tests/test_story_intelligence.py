@@ -6,10 +6,7 @@ def test_classify_format_detects_memory():
 
 
 def test_classify_format_keeps_physical_nature_out_of_animal_intelligence():
-    text = (
-        "Storm clouds spread sunlight before it reaches the ground. "
-        "Which light clue should we compare next?"
-    )
+    text = "Storm clouds spread sunlight before it reaches the ground. " "Which light clue should we compare next?"
 
     assert classify_format(text, category="earth_from_space") == "earth_engine"
     assert classify_format(text) == "earth_engine"

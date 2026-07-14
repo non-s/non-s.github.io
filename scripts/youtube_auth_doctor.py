@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Report YouTube OAuth visibility without printing token material."""
+
 from __future__ import annotations
 
 import argparse

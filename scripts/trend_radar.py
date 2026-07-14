@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Write the local public nature-science trend radar."""
+
 from __future__ import annotations
 
 import json

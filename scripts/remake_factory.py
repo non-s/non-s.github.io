@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Create queue-ready remake drafts from the remake backlog."""
+
 from __future__ import annotations
 
 import json

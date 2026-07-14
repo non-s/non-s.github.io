@@ -13,7 +13,6 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(me
 log = logging.getLogger(__name__)
 
 
-
 def main():
     stream_key = os.environ.get("YOUTUBE_STREAM_KEY")
     if not stream_key:
@@ -36,19 +35,31 @@ def main():
     cmd = [
         "ffmpeg",
         "-re",  # Read input at native frame rate
-        "-stream_loop", "-1",  # Infinite loop
-        "-i", str(latest_video),
-        "-c:v", "libx264",
-        "-preset", "veryfast",
-        "-maxrate", "3000k",
-        "-bufsize", "6000k",
-        "-pix_fmt", "yuv420p",
-        "-g", "60",  # Keyframe interval (2s for 30fps)
-        "-c:a", "aac",
-        "-b:a", "128k",
-        "-ar", "44100",
-        "-f", "flv",
-        rtmp_url
+        "-stream_loop",
+        "-1",  # Infinite loop
+        "-i",
+        str(latest_video),
+        "-c:v",
+        "libx264",
+        "-preset",
+        "veryfast",
+        "-maxrate",
+        "3000k",
+        "-bufsize",
+        "6000k",
+        "-pix_fmt",
+        "yuv420p",
+        "-g",
+        "60",  # Keyframe interval (2s for 30fps)
+        "-c:a",
+        "aac",
+        "-b:a",
+        "128k",
+        "-ar",
+        "44100",
+        "-f",
+        "flv",
+        rtmp_url,
     ]
 
     log.info("Running FFmpeg stream loop...")
@@ -60,7 +71,5 @@ def main():
         log.error(f"FFmpeg crashed: {e}")
 
 
-
 if __name__ == "__main__":
     main()
-

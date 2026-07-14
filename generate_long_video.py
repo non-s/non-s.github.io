@@ -44,7 +44,6 @@ TOPIC: {topic}
 """
 
 
-
 async def generate_segment(segment_index: int, topic_key: str, query: str) -> Path | None:
     """Generate a single 16:9 segment."""
     segment_dir = VIDEOS_DIR / "compilation_temp"
@@ -96,11 +95,9 @@ async def generate_segment(segment_index: int, topic_key: str, query: str) -> Pa
         output_path=out_mp4,
         ass_subtitle_path=ass_path if ass_path.exists() else None,
         target_w=1920,
-        target_h=1080
+        target_h=1080,
     )
     return out_mp4 if ok and out_mp4.exists() else None
-
-
 
 
 async def async_main():
@@ -152,4 +149,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

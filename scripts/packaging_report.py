@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Audit pending Shorts packaging: title, thumbnail and community hook."""
+
 from __future__ import annotations
 
 import json

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Summarise AI provider health and routing order."""
+
 from __future__ import annotations
 
 import json

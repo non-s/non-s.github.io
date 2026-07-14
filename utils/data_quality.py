@@ -6,7 +6,6 @@ from datetime import datetime, timezone
 
 from utils.confidence_engine import assess_confidence, data_quality_from_counts
 
-
 METRICS = {
     "views": ("views", "viewCount"),
     "likes": ("likes", "likeCount"),

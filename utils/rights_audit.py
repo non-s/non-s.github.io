@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-
 ALLOWED_SOURCES = {
     "pexels",
     "wikimedia commons",

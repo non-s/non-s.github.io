@@ -55,7 +55,10 @@ def test_groups_handles_empty():
 
 
 def test_write_ass_creates_valid_file(tmp_path):
-    caps = [[_w("Octopus", 0.0, 0.5), _w("camouflage", 0.6, 1.2)], [_w("Owl", 1.5, 2.0), _w("night", 2.1, 2.4), _w("vision", 2.5, 2.8)]]
+    caps = [
+        [_w("Octopus", 0.0, 0.5), _w("camouflage", 0.6, 1.2)],
+        [_w("Owl", 1.5, 2.0), _w("night", 2.1, 2.4), _w("vision", 2.5, 2.8)],
+    ]
     out = tmp_path / "subs.ass"
     assert write_ass(caps, out)
     body = out.read_text(encoding="utf-8")
@@ -93,11 +96,13 @@ def test_write_ass_never_leaks_karaoke_tags_as_visible_text(tmp_path):
     """Regression test for a join/replace bug that stripped the opening
     `{` off a \\k tag whenever a silent gap preceded a word, leaving
     raw codes like `\\k45}DROPS` burned into the video as literal text."""
-    caps = [[
-        _w("Drops", 0.0, 0.5),
-        _w("visibility", 1.42, 1.87),  # gap > 0 before this word
-        _w("when", 1.87, 2.1),
-    ]]
+    caps = [
+        [
+            _w("Drops", 0.0, 0.5),
+            _w("visibility", 1.42, 1.87),  # gap > 0 before this word
+            _w("when", 1.87, 2.1),
+        ]
+    ]
     out = tmp_path / "subs.ass"
     write_ass(caps, out)
     body = out.read_text(encoding="utf-8")
@@ -275,24 +280,26 @@ def test_transcribe_faster_whisper_uses_multilingual_model_when_language_is_ptbr
     monkeypatch.setenv("LANGUAGE", "pt-BR")
     audio = tmp_path / "a.mp3"
     audio.write_bytes(b"x" * 100)
-    
+
     model_passed = []
-    
+
     class FakeWhisperModel:
         def __init__(self, model_name, **kwargs):
             model_passed.append(model_name)
+
         def transcribe(self, *args, **kwargs):
             return [], None
-            
+
     import sys
+
     fake_fw = MagicMock()
     fake_fw.WhisperModel = FakeWhisperModel
     sys.modules["faster_whisper"] = fake_fw
-    
+
     try:
         captions.transcribe_faster_whisper(audio)
     finally:
         sys.modules.pop("faster_whisper", None)
-        
+
     assert "tiny" in model_passed
     assert "tiny.en" not in model_passed

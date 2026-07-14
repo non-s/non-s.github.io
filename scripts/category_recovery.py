@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Plan recovery rules for paused or fragile categories."""
+
 from __future__ import annotations
 
 import json

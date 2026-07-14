@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Sanitize legacy generated copy that no longer passes editorial guardrails."""
+
 from __future__ import annotations
 
 import json

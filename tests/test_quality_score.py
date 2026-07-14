@@ -2,7 +2,6 @@
 
 from utils.ai_helper import quality_score
 
-
 _RICH_AI = {
     "article_body": "x" * 600,
     "key_points": ["k1", "k2", "k3"],

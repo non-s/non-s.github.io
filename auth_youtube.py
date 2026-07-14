@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Create youtube_token.json for the GitHub Actions YOUTUBE_TOKEN secret."""
+
 from __future__ import annotations
 
 import json

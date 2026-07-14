@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Build the editorial fact/angle ledger for the pending queue."""
+
 from __future__ import annotations
 
 import json

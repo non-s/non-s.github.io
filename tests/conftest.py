@@ -63,6 +63,7 @@ def _isolate_state_files(tmp_path_factory, monkeypatch):
         import utils.publish_score
         import utils.audience_memory
         import utils.queue_pruner
+
         monkeypatch.setattr(utils.growth_engine, "load_format_memory", lambda *args, **kwargs: {})
         monkeypatch.setattr(utils.publish_score, "load_format_memory", lambda *args, **kwargs: {})
         monkeypatch.setattr(utils.publish_score, "load_audience_memory", lambda *args, **kwargs: {})

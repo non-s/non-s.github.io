@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Build fan-growth reporting focused on subscribers per 1k views."""
+
 from __future__ import annotations
 
 import json

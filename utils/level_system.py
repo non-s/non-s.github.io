@@ -242,7 +242,8 @@ def _level_checks(metrics: dict, *, ready_target: int, pending_target: int) -> d
         },
         5: {
             "passed": metrics["youtube_search_view_rate"] >= 0.05 and metrics["crosspost_assets"] >= 3,
-            "progress": (_ratio(metrics["youtube_search_view_rate"], 0.05) + _ratio(metrics["crosspost_assets"], 3)) / 2,
+            "progress": (_ratio(metrics["youtube_search_view_rate"], 0.05) + _ratio(metrics["crosspost_assets"], 3))
+            / 2,
             "evidence": {
                 "youtube_search_view_rate": metrics["youtube_search_view_rate"],
                 "crosspost_assets": metrics["crosspost_assets"],
@@ -623,12 +624,16 @@ def build_level_system(
         "levels": levels,
         "game_loop": {
             "now": actions[0]["action"] if actions else next_upgrade["title"],
-            "next": LEVELS[min(current["number"], len(LEVELS) - 1)]["name"]
-            if current["number"] < len(LEVELS)
-            else "Maintain compound scale",
-            "after_next": LEVELS[min(current["number"] + 1, len(LEVELS) - 1)]["name"]
-            if current["number"] + 1 < len(LEVELS)
-            else "Defend the final level",
+            "next": (
+                LEVELS[min(current["number"], len(LEVELS) - 1)]["name"]
+                if current["number"] < len(LEVELS)
+                else "Maintain compound scale"
+            ),
+            "after_next": (
+                LEVELS[min(current["number"] + 1, len(LEVELS) - 1)]["name"]
+                if current["number"] + 1 < len(LEVELS)
+                else "Defend the final level"
+            ),
         },
         "free_resource_policy": {
             "paid_tools_required": False,

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Classify old uploaded markers that predate current metadata fields."""
+
 from __future__ import annotations
 
 import json

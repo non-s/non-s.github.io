@@ -10,7 +10,6 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
-
 GLOBAL_HASHTAGS = ["Shorts", "NatureFacts", "WildBrief", "EarthScience", "Nature"]
 
 GLOBAL_SEARCH_TAGS = [

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Write a queue of pending stories that need retention rewrites."""
+
 from __future__ import annotations
 
 import json

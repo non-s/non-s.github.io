@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Audit the pending queue with senior YouTube creator heuristics."""
+
 from __future__ import annotations
 
 import json

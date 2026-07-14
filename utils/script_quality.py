@@ -338,7 +338,7 @@ def should_block(issues: list[Issue], min_grade: int = 8) -> bool:
     """MrBeast Kill Switch: True if any issue is `block`-severity OR the grade < 8."""
     if any(i.severity == "block" for i in issues):
         return True
-    
+
     penalty = sum(4 if i.severity == "block" else 1 for i in issues)
     grade = max(0, 10 - penalty)
     return grade < min_grade

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Append sequel candidates from top-performing Shorts."""
+
 from __future__ import annotations
 
 import json

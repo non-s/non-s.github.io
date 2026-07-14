@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Write the seven-day Wild Brief agency plan."""
+
 from __future__ import annotations
 
 import json

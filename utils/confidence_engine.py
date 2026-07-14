@@ -9,7 +9,6 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 
-
 MINIMUM_SAMPLE_RULES = {
     "category": 5,
     "format": 5,

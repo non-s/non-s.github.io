@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Backfill modern quality fields into historical .done markers."""
+
 from __future__ import annotations
 
 import json

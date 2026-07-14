@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Write the live-state control-plane pressure report."""
+
 from __future__ import annotations
 
 import json

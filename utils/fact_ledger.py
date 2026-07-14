@@ -6,7 +6,6 @@ import re
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
 
-
 _STOPWORDS = {
     "animal",
     "animals",

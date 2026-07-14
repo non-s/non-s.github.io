@@ -182,7 +182,9 @@ def transcribe_groq(audio_path: Path, lang: str | None = None) -> list[Caption] 
 # isn't impacted.
 
 
-def transcribe_faster_whisper(audio_path: Path, model_name: str | None = None, lang: str | None = None) -> list[Caption] | None:
+def transcribe_faster_whisper(
+    audio_path: Path, model_name: str | None = None, lang: str | None = None
+) -> list[Caption] | None:
     """Local CPU transcription on the GitHub Actions runner. ~5-15s per 50s audio."""
     if not audio_path.exists():
         return None
@@ -264,28 +266,124 @@ def _format_ass_time(seconds: float) -> str:
 
 EMPHASIS_WORDS_BY_LANG = {
     "en": {
-        "ancient", "atom", "aurora", "because", "breathe", "burst", "bursts",
-        "cell", "coral", "crystal", "deadly", "earth", "escape", "explode",
-        "fast", "first", "forest", "fungi", "giant", "glacier", "glow",
-        "gravity", "hidden", "lava", "lightning", "locked", "molecule",
-        "moon", "mushroom", "mycelium", "ocean", "one", "planet", "prism",
-        "rare", "reef", "repeating", "river", "roots", "second", "secret",
-        "shock", "signal", "slow", "space", "spin", "spins", "star", "storm",
-        "strike", "strikes", "survive", "talk", "third", "three", "tiny",
-        "tornado", "tree", "two", "volcano", "watch", "wave", "why",
+        "ancient",
+        "atom",
+        "aurora",
+        "because",
+        "breathe",
+        "burst",
+        "bursts",
+        "cell",
+        "coral",
+        "crystal",
+        "deadly",
+        "earth",
+        "escape",
+        "explode",
+        "fast",
+        "first",
+        "forest",
+        "fungi",
+        "giant",
+        "glacier",
+        "glow",
+        "gravity",
+        "hidden",
+        "lava",
+        "lightning",
+        "locked",
+        "molecule",
+        "moon",
+        "mushroom",
+        "mycelium",
+        "ocean",
+        "one",
+        "planet",
+        "prism",
+        "rare",
+        "reef",
+        "repeating",
+        "river",
+        "roots",
+        "second",
+        "secret",
+        "shock",
+        "signal",
+        "slow",
+        "space",
+        "spin",
+        "spins",
+        "star",
+        "storm",
+        "strike",
+        "strikes",
+        "survive",
+        "talk",
+        "third",
+        "three",
+        "tiny",
+        "tornado",
+        "tree",
+        "two",
+        "volcano",
+        "watch",
+        "wave",
+        "why",
     },
     "pt": {
-        "porque", "primeiro", "segundo", "terceiro", "unico", "olhe", "veja",
-        "planeta", "terra", "oceano", "segredo", "revelado", "incrivel",
-        "surpreendente", "escondido", "misterioso", "gigante", "minusculo",
-        "como", "porquê", "por que", "vida", "selvagem", "natureza", "sobrevive"
+        "porque",
+        "primeiro",
+        "segundo",
+        "terceiro",
+        "unico",
+        "olhe",
+        "veja",
+        "planeta",
+        "terra",
+        "oceano",
+        "segredo",
+        "revelado",
+        "incrivel",
+        "surpreendente",
+        "escondido",
+        "misterioso",
+        "gigante",
+        "minusculo",
+        "como",
+        "porquê",
+        "por que",
+        "vida",
+        "selvagem",
+        "natureza",
+        "sobrevive",
     },
     "es": {
-        "porque", "primero", "segundo", "tercero", "unico", "mira", "vea",
-        "planeta", "tierra", "oceano", "secreto", "revelado", "increible",
-        "sorprendente", "oculto", "misterioso", "gigante", "diminuto",
-        "como", "por que", "por qué", "vida", "salvaje", "naturaleza", "sobrevive"
-    }
+        "porque",
+        "primero",
+        "segundo",
+        "tercero",
+        "unico",
+        "mira",
+        "vea",
+        "planeta",
+        "tierra",
+        "oceano",
+        "secreto",
+        "revelado",
+        "increible",
+        "sorprendente",
+        "oculto",
+        "misterioso",
+        "gigante",
+        "diminuto",
+        "como",
+        "por que",
+        "por qué",
+        "vida",
+        "salvaje",
+        "naturaleza",
+        "sobrevive",
+    },
 }
 
 
@@ -314,7 +412,7 @@ def group_words_into_phrases(
     words: list[Caption], max_words: int = 4, max_gap_s: float = 0.6, max_duration_s: float = 2.5
 ) -> list[list[Caption]]:
     """Group word-level captions into chunks of 2-4 words that fit on screen.
-    
+
     Preserves individual word Captions so the ASS writer can apply Karaoke
     word-by-word timing effects.
     """
@@ -348,16 +446,16 @@ def write_ass(
 ) -> bool:
     """Write a Shorts-tuned ASS subtitle file with Karaoke word highlighting.
 
-    Default style: bold modern yellow (active), white (inactive), thick black outline, 
+    Default style: bold modern yellow (active), white (inactive), thick black outline,
     dropped shadow, positioned in the upper-middle (margin_v from bottom).
     Returns True on success.
     """
     if not captions:
         return False
-    
+
     # SecondaryColour sets the inactive word color (White) before Karaoke hits it
     secondary_colour = "&H00FFFFFF"
-    
+
     header = (
         "[Script Info]\n"
         "ScriptType: v4.00+\n"
@@ -384,7 +482,7 @@ def write_ass(
         phrase_end = phrase_words[-1].end
         start_str = _format_ass_time(phrase_start)
         end_str = _format_ass_time(phrase_end)
-        
+
         # Build the karaoke text. Each word gets one override block that
         # opens with its (optional) leading-gap \k tag immediately
         # followed by its own \k tag and text — never a separate,
@@ -412,7 +510,7 @@ def write_ass(
             current_time = w.end
 
         text = "".join(text_parts)
-        
+
         # A tiny pop-in scale feels like CapCut captions
         text = r"{\fad(45,60)\t(0,90,\fscx106\fscy106)}" + text
         lines.append(f"Dialogue: 0,{start_str},{end_str},Shorts,,0,0,0,,{text}")

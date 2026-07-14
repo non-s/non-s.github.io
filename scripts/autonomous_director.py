@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Write the autonomous operating plan for the channel."""
+
 from __future__ import annotations
 
 import json

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Daily agency brief for the next production day."""
+
 from __future__ import annotations
 
 import json

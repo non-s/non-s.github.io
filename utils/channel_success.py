@@ -16,7 +16,6 @@ from utils.channel_objective import (
 )
 from utils.editorial_guard import editorial_issues
 
-
 RETENTION_FLOOR = 62.0
 RETENTION_STRETCH = 70.0
 SUBS_PER_1000_TARGET = 1.5

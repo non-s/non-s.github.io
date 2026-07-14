@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Write a data-quality report for Wild Brief learning systems."""
+
 from __future__ import annotations
 
 import json

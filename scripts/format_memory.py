@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Build learned format memory from uploaded Wild Brief markers."""
+
 from __future__ import annotations
 
 import json

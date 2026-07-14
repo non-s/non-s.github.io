@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Mark queue stories consumed when upload evidence already exists."""
+
 from __future__ import annotations
 
 import argparse

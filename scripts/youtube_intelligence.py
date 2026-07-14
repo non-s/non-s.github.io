@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Build a broad YouTube API coverage snapshot for Wild Brief."""
+
 from __future__ import annotations
 
 import json

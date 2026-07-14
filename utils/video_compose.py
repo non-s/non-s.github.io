@@ -108,8 +108,13 @@ def _overlay_copy(text: str, max_chars: int = 42) -> str:
 
 def _mix_audio(cmd: list[str], parts: list[str], audio_path: Path, audio_idx: int) -> str:
     import random
-    bgm_candidates = [p for p in Path("_assets/audio/bgm").glob("*.*") if p.suffix.lower() in (".mp3", ".wav", ".m4a", ".aac")]
-    sfx_candidates = [p for p in Path("_assets/audio/sfx").glob("*.*") if p.suffix.lower() in (".mp3", ".wav", ".m4a", ".aac")]
+
+    bgm_candidates = [
+        p for p in Path("_assets/audio/bgm").glob("*.*") if p.suffix.lower() in (".mp3", ".wav", ".m4a", ".aac")
+    ]
+    sfx_candidates = [
+        p for p in Path("_assets/audio/sfx").glob("*.*") if p.suffix.lower() in (".mp3", ".wav", ".m4a", ".aac")
+    ]
     bgm_path = random.choice(bgm_candidates) if bgm_candidates else None
     sfx_path = random.choice(sfx_candidates) if sfx_candidates else None
 
@@ -131,7 +136,9 @@ def _mix_audio(cmd: list[str], parts: list[str], audio_path: Path, audio_idx: in
         audio_inputs_count += 1
 
     if audio_inputs_count > 1:
-        parts.append(f"{amix_labels}amix=inputs={audio_inputs_count}:duration=first:dropout_transition=2:normalize=0[aout]")
+        parts.append(
+            f"{amix_labels}amix=inputs={audio_inputs_count}:duration=first:dropout_transition=2:normalize=0[aout]"
+        )
         return "[aout]"
     else:
         return f"{audio_idx}:a"
@@ -243,7 +250,7 @@ def build_broll_short(
             # Loop short clips, trim long ones to the exact segment length.
             # `setpts=PTS-STARTPTS` resets timestamps so concat splices cleanly.
             f"[{i}:v]"
-              # cheap loop covers under-length clips
+            # cheap loop covers under-length clips
             f"scale=1350:2400:force_original_aspect_ratio=increase,"
             f"{crop_expr},"
             # Ken Burns push — `d=1` outputs one frame per input frame so
@@ -383,13 +390,13 @@ def build_broll_short(
     cmd = ["ffmpeg", "-y"]
     for clip in broll_paths:
         cmd += ["-stream_loop", "-1", "-i", str(clip)]
-    
+
     for card in extra_inputs:
         cmd += ["-loop", "1", "-t", f"{max(intro_s, outro_s):.3f}", "-i", str(card)]
-        
+
     cmd += ["-i", str(audio_path)]
     audio_idx = n + len(extra_inputs)
-    
+
     final_audio_map = _mix_audio(cmd, parts, audio_path, audio_idx)
     # --------------------------------------
 
@@ -456,6 +463,7 @@ def build_broll_short(
 
 
 def build_static_short(
+    frame_path: Path,
     audio_path: Path,
     output_path: Path,
     ass_subtitle_path: Path | None = None,
@@ -597,6 +605,3 @@ def build_static_short(
         return False
     log.info("  ðŸŽž  Static-frame Short ready (%.1fs): %s", audio_dur, output_path.name)
     return True
-
-
-

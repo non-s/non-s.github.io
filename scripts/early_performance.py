@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Build early distribution velocity, warnings and winner-pattern memory."""
+
 from __future__ import annotations
 
 import json

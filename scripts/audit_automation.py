@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Write the local Wild Brief automation health report."""
+
 from __future__ import annotations
 
 import json

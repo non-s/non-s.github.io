@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Reply to recent YouTube comments with safe Wild Brief responses."""
+
 from __future__ import annotations
 
 import json

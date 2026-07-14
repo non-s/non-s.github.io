@@ -8,7 +8,6 @@ from utils.prompt_safety import (
     wrap_untrusted,
 )
 
-
 # ── sanitize_for_prompt ──────────────────────────────────────────
 
 

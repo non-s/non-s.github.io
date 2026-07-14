@@ -70,7 +70,9 @@ def test_ai_enhance_animal_parses_valid_json(monkeypatch):
 def test_ai_enhance_includes_trend_context_in_prompt(monkeypatch):
     seen = {}
     dog_payload = dict(json.loads(_AI_OK_PAYLOAD))
-    dog_payload["script"] = "Dogs read people better than most animals. They can read human gestures and remember social cues from people, which helps them form deep connections with their owners over many years. Do you think dogs are the smartest pets in the world?"
+    dog_payload["script"] = (
+        "Dogs read people better than most animals. They can read human gestures and remember social cues from people, which helps them form deep connections with their owners over many years. Do you think dogs are the smartest pets in the world?"
+    )
     dog_payload["hook"] = "Dogs read people better than most animals."
     dog_payload["seo_title"] = "Why dogs read people so well"
 
@@ -268,7 +270,9 @@ def test_ai_enhance_caps_tag_list_to_five(monkeypatch):
 
 def test_ai_enhance_rejects_script_about_different_visible_animal(monkeypatch):
     mismatch = dict(json.loads(_AI_OK_PAYLOAD))
-    mismatch["script"] = "Jellyfish drift through the ocean without a brain. They use simple nerve nets to detect light and currents, which is a surprisingly effective way to survive in the deep ocean. Do you think they are actually smart?"
+    mismatch["script"] = (
+        "Jellyfish drift through the ocean without a brain. They use simple nerve nets to detect light and currents, which is a surprisingly effective way to survive in the deep ocean. Do you think they are actually smart?"
+    )
     monkeypatch.setattr(fetch_animals, "ai_text", lambda *a, **kw: json.dumps(mismatch))
     assert fetch_animals._ai_enhance_animal("Sea turtle swimming over coral", "ocean") is None
 
@@ -293,7 +297,9 @@ def test_ai_enhance_accepts_alias_for_visible_animal(monkeypatch):
     dog["seo_title"] = "Dogs read snow trails by smell"
     dog["title"] = dog["seo_title"]
     dog["hook"] = "Dogs track snow trails by smell."
-    dog["script"] = "Dogs track snow trails by smell. They see blues and yellows better than reds and greens, which makes their winter hunting much more successful. They are built for extreme survival. Would you survive in the freezing cold?"
+    dog["script"] = (
+        "Dogs track snow trails by smell. They see blues and yellows better than reds and greens, which makes their winter hunting much more successful. They are built for extreme survival. Would you survive in the freezing cold?"
+    )
     dog["thumbnail_text"] = "DOG VISION"
     monkeypatch.setattr(fetch_animals, "ai_text", lambda *a, **kw: json.dumps(dog))
     assert fetch_animals._ai_enhance_animal("Husky running through snow", "dogs") is not None
@@ -1274,7 +1280,10 @@ def test_validate_and_repair_json_repairs_all_caps_and_punctuation():
     assert repaired is not None
     assert repaired["seo_title"] == "Dolphin communication is complex!"
     assert repaired["hook"] == "Dolphins call each other by name?"
-    assert repaired["script"] == "Dolphins call each other by name. They use unique whistles for identity. This helps them stay coordinated in the wide ocean. especially when they hunt in cooperative teams. Do you think they remember old friends after many years apart.?"
+    assert (
+        repaired["script"]
+        == "Dolphins call each other by name. They use unique whistles for identity. This helps them stay coordinated in the wide ocean. especially when they hunt in cooperative teams. Do you think they remember old friends after many years apart.?"
+    )
 
 
 def test_validate_and_repair_json_word_count_limits():

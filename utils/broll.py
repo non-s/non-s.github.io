@@ -129,11 +129,13 @@ def fetch_pexels(query: str, per_page: int = 8, page: int = 1, orientation: str 
                 timeout=_TIMEOUT,
             )
             if response.status_code == 429:
-                log.warning("Pexels rate limit hit (429), retrying in %d seconds...", 2 ** attempt * 3)
-                time.sleep(2 ** attempt * 3)
+                log.warning("Pexels rate limit hit (429), retrying in %d seconds...", 2**attempt * 3)
+                time.sleep(2**attempt * 3)
                 continue
             if response.status_code != 200:
-                log.warning("Pexels API request failed with status code %d for query %r", response.status_code, query[:40])
+                log.warning(
+                    "Pexels API request failed with status code %d for query %r", response.status_code, query[:40]
+                )
                 return []
             break
         else:

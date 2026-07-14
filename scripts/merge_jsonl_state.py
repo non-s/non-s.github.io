@@ -7,6 +7,7 @@ append-only ledgers: a queue refresh can accidentally overwrite a YouTube
 upload row that landed a minute earlier. This helper merges known JSONL files
 line-by-line so concurrent workflow commits keep both histories.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -178,14 +179,14 @@ def merge_state_file(root: Path, state_dir: Path, relative_path: str) -> dict:
             "changed": False,
             "skipped": True,
         }
-    
+
     if relative_path == "_data/fact_sources.jsonl":
         merged = merge_fact_source_lines(current_lines, incoming_lines)
     elif relative_path in KEY_MERGED_PATHS:
         merged = merge_keyed_jsonl_lines(current_lines, incoming_lines, KEY_MERGED_PATHS[relative_path])
     else:
         merged = merge_jsonl_lines(current_lines, incoming_lines)
-        
+
     incoming_path.parent.mkdir(parents=True, exist_ok=True)
     text = "\n".join(merged)
     if text:

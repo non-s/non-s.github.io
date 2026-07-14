@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Write a legacy visual-QA backfill report from existing markers."""
+
 from __future__ import annotations
 
 import json

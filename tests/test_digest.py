@@ -10,7 +10,6 @@ import pytest
 
 from utils import digest
 
-
 # ── collect_recent_shorts ────────────────────────────────────────
 
 

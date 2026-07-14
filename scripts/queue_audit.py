@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Audit pending queue quality and write _data/queue_audit.json."""
+
 from __future__ import annotations
 
 import json

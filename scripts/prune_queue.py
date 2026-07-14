@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Prune active queue inventory and quarantine weak candidates."""
+
 from __future__ import annotations
 
 import json

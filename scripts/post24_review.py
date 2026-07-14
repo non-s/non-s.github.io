@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Write first-24h video decisions."""
+
 from __future__ import annotations
 
 import sys

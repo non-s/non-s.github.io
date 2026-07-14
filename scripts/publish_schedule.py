@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Write adaptive publish schedule recommendation."""
+
 from __future__ import annotations
 
 import sys

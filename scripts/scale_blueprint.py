@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Write the Wild Brief scale blueprint."""
+
 from __future__ import annotations
 
 import json

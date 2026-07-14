@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Build a local remake backlog from analytics candidates."""
+
 from __future__ import annotations
 
 import json
