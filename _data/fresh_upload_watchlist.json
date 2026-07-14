@@ -7,15 +7,15 @@
   "counts": {
     "analytics_due": 2,
     "awaiting_1h": 0,
-    "high_priority": 2,
-    "repair_candidates": 0,
+    "high_priority": 3,
+    "repair_candidates": 1,
     "tracked": 4
   },
-  "generated_at": "2026-07-14T06:23:48.948833+00:00",
+  "generated_at": "2026-07-14T07:04:58.612651+00:00",
   "items": [
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.301,
+      "age_hours": 5.987,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -69,8 +69,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.773,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.459,
       "category": "discoveries",
       "checkpoints": [
         {
@@ -83,11 +83,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-07-14T06:37:24.551626+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 0
         },
@@ -102,30 +102,41 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-14T06:37:24.551626+00:00",
-        "label": "6h",
+        "due_at": "2026-07-15T00:37:24.551626+00:00",
+        "label": "24h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 105,
+        "target_views": 300,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Discovery Brief",
-      "state": "watch",
+      "state": "repair_candidate",
       "title": "Fossils turn old bones into time clues",
       "uploaded_at": "2026-07-14T00:37:24.551626+00:00",
       "url": "https://www.youtube.com/shorts/DGs36Y79jHo",
       "video_id": "DGs36Y79jHo",
-      "views_per_hour": 0.0
+      "views_per_hour": 0.0,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 26/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Fossils turn old bones into time clues",
+        "video_id": "DGs36Y79jHo",
+        "views": 0,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 47.622,
+      "age_hours": 48.308,
       "category": "geology",
       "checkpoints": [
         {
@@ -180,7 +191,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 59.999,
+      "age_hours": 60.685,
       "category": "microscopy",
       "checkpoints": [
         {
