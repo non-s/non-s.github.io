@@ -187,11 +187,8 @@ def _call_cerebras(sys_msg: str, prompt: str, timeout: int, key: str, json_mode:
 
 
 def _call_gemini(sys_msg: str, prompt: str, timeout: int, key: str, json_mode: bool = False) -> str:
-    """Google Gemini (generative-language). Different request shape than OpenAI.
-
-    Free tier: 15 RPM, 1,500 req/day on flash-lite — way more headroom
-    than Mistral's 500k tokens/mo. Used as a 3rd parachute after Mistral
-    and Cerebras both fail in a single 24h window.
+    """Google Gemini (generative-language) with Google Search Grounding!
+    Uses real-time Google Search to fetch up-to-date facts and SEO trends.
     """
     _throttle()
     url = _GEMINI_API_URL.format(model=_GEMINI_MODEL) + f"?key={key}"
@@ -207,6 +204,9 @@ def _call_gemini(sys_msg: str, prompt: str, timeout: int, key: str, json_mode: b
             "temperature": 0.7,
             "maxOutputTokens": 3000,
         },
+        "tools": [
+            {"googleSearch": {}}
+        ],
     }
     if json_mode:
         body["generationConfig"]["responseMimeType"] = "application/json"
@@ -268,9 +268,9 @@ def _default_system_prompt() -> str:
 
 def _ai_provider_registry() -> dict[str, tuple[str, str, object]]:
     return {
+        "gemini": ("GEMINI_API_KEY", "Gemini", _call_gemini),
         "mistral": ("MISTRAL_API_KEY", "Mistral", _call_mistral),
         "cerebras": ("CEREBRAS_API_KEY", "Cerebras", _call_cerebras),
-        "gemini": ("GEMINI_API_KEY", "Gemini", _call_gemini),
         "groq": ("GROQ_API_KEY", "Groq", _call_groq),
     }
 
