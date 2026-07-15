@@ -249,19 +249,33 @@ class DynamicStreamer:
                     target = base_ts
 
                 # Stream the file chunk by chunk into ffmpeg's stdin
-                # Since ffmpeg uses -re, it will throttle this read to exactly 1x real-time!
-                with open(target, "rb") as f:
-                    while True:
-                        chunk = f.read(1024 * 1024)  # 1MB chunks
-                        if not chunk:
-                            break
-                        self.ffmpeg_proc.stdin.write(chunk)
-                        self.ffmpeg_proc.stdin.flush()
+                try:
+                    with open(target, "rb") as f:
+                        while True:
+                            chunk = f.read(1024 * 1024)  # 1MB chunks
+                            if not chunk:
+                                break
+                            self.ffmpeg_proc.stdin.write(chunk)
+                            self.ffmpeg_proc.stdin.flush()
+                except (BrokenPipeError, OSError) as e:
+                    log.error(f"FFmpeg pipe broken ({e}). YouTube likely reset the connection or internet dropped. Restarting pipe...")
+                    if self.ffmpeg_proc:
+                        self.ffmpeg_proc.kill()
+                        self.ffmpeg_proc.wait()
+                    time.sleep(5) # Cooldown before reconnecting
+                    self.start_ffmpeg_pipe()
+                    # We broke out of this file's loop, but the outer `while True` will just pick up the next file or restart base_ts
+                except Exception as e:
+                    log.error(f"Unexpected streaming error: {e}. Restarting...")
+                    time.sleep(5)
+                    if self.ffmpeg_proc:
+                        self.ffmpeg_proc.kill()
+                    self.start_ffmpeg_pipe()
 
         except KeyboardInterrupt:
             log.info("Stopping stream...")
         finally:
-            if self.ffmpeg_proc:
+            if self.ffmpeg_proc and self.ffmpeg_proc.stdin:
                 self.ffmpeg_proc.stdin.close()
                 self.ffmpeg_proc.wait()
 
