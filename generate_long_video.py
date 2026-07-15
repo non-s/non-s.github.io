@@ -88,7 +88,7 @@ async def generate_segment(segment_index: int, topic_key: str, query: str, langu
     audio_path = segment_dir / f"audio_{segment_index}.mp3"
     voice_map = {
         "en": "en-US-ChristopherNeural",
-        "es": "es-ES-AlvaroNeural",
+        "es": "es-MX-JorgeNeural",
         "pt": "pt-BR-AntonioNeural"
     }
     voice = voice_map.get(language, "en-US-ChristopherNeural")
