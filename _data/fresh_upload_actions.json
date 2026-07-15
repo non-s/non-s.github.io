@@ -1,17 +1,17 @@
 {
   "counts": {
     "automation_safe": 9,
-    "high": 0,
+    "high": 1,
     "manual_review": 0,
     "total": 9,
     "urgent": 2
   },
   "free_only": true,
-  "generated_at": "2026-07-15T17:08:42.956321+00:00",
+  "generated_at": "2026-07-15T17:34:41.912735+00:00",
   "items": [
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 40.522,
+      "age_hours": 40.955,
       "automation_safe": true,
       "category": "discoveries",
       "checkpoint_label": "1h",
@@ -37,7 +37,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 40.049,
+      "age_hours": 40.482,
       "automation_safe": true,
       "category": "wildlife",
       "checkpoint_label": "1h",
@@ -62,34 +62,34 @@
       "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
-      "action_type": "watch_next_checkpoint",
-      "age_hours": 5.942,
+      "action_type": "pull_fresh_analytics",
+      "age_hours": 6.375,
       "automation_safe": true,
       "category": "wildlife",
       "checkpoint_label": "6h",
-      "checkpoint_state": "pending",
+      "checkpoint_state": "due",
       "current_views": 0,
       "due_at": "2026-07-15T17:12:12.504967+00:00",
       "free_only": true,
       "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-      "id": "fresh-upload:P2CGUzQ-y0A:watch:6h",
-      "lane": "observe",
+      "id": "fresh-upload:P2CGUzQ-y0A:analytics_due:6h",
+      "lane": "measurement",
       "manual_approval_required": false,
       "opening_retention_score": 90.0,
-      "priority": "low",
-      "recommended_action": "Keep observing through the next checkpoint.",
+      "priority": "high",
+      "recommended_action": "Run the analytics pull before making a creative decision. Check the 6h sample first.",
       "series": "Animal Superpowers",
-      "state": "watch",
+      "state": "analytics_due",
       "target_views": 105,
       "title": "This sound radar gives deer away",
       "url": "https://www.youtube.com/shorts/P2CGUzQ-y0A",
       "video_id": "P2CGUzQ-y0A",
-      "wait_until": "2026-07-15T17:12:12.504967+00:00",
-      "why": "No intervention signal is strong enough yet."
+      "wait_until": "",
+      "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
       "action_type": "hold_until_first_hour",
-      "age_hours": 0.383,
+      "age_hours": 0.817,
       "automation_safe": true,
       "category": "geology",
       "checkpoint_label": "1h",
@@ -115,7 +115,7 @@
     },
     {
       "action_type": "hold_until_first_hour",
-      "age_hours": 0.035,
+      "age_hours": 0.468,
       "automation_safe": true,
       "category": "earth_from_space",
       "checkpoint_label": "1h",
@@ -141,7 +141,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 4.632,
+      "age_hours": 5.065,
       "automation_safe": true,
       "category": "insects",
       "checkpoint_label": "6h",
@@ -167,7 +167,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 4.123,
+      "age_hours": 4.556,
       "automation_safe": true,
       "category": "reptiles",
       "checkpoint_label": "6h",
@@ -193,7 +193,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 3.038,
+      "age_hours": 3.471,
       "automation_safe": true,
       "category": "farm",
       "checkpoint_label": "6h",
@@ -219,7 +219,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 1.893,
+      "age_hours": 2.326,
       "automation_safe": true,
       "category": "dogs",
       "checkpoint_label": "6h",
@@ -245,5 +245,5 @@
     }
   ],
   "source": "fresh_upload_watchlist",
-  "source_generated_at": "2026-07-15T17:08:42.955624+00:00"
+  "source_generated_at": "2026-07-15T17:34:41.911928+00:00"
 }
