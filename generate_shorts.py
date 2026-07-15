@@ -2386,10 +2386,10 @@ def generate_short(story: dict, tmp_dir: Path, lang: str | None = None) -> tuple
         return None
 
     # ── 4. Output paths ───────────────────────────────────────────
-    vdir = Path("_videos") if lang == "en" else Path(f"_videos_{lang}")
+    vdir = Path("_videos")
     vdir.mkdir(exist_ok=True)
-    video_path = vdir / f"short-{slug}-{date_str}.mp4"
-    thumb_path = vdir / f"short-{slug}-{date_str}_thumb.jpg"
+    video_path = vdir / f"short-{slug}-{lang}-{date_str}.mp4"
+    thumb_path = vdir / f"short-{slug}-{lang}-{date_str}_thumb.jpg"
 
     # ── 5. Background image (always needed for thumbnail; sometimes
     # also for the static-frame video pipeline fallback). The b-roll
@@ -2821,40 +2821,33 @@ def main():
             log.info(f"  Short ready: {video_path.name}")
             log.info(f"  YT title: {metadata['title'][:80]}")
 
-            # MrBeast Multi-Lingual Empire (Spanish Dubbing)
+            # Global Monolithic Channel Empire: Translate and dub to multiple languages!
             if LANGUAGE == "en":
-                log.info("  >> Triggering Spanish (es-MX) Dubbing pipeline...")
-                es_tmp = Path(tempfile.mkdtemp(prefix="yt_shorts_es_"))
-                result_es = generate_short(story, es_tmp, lang="es-MX")
-                if result_es:
-                    video_es, thumb_es, meta_es = result_es
-                    es_dir = Path("_videos_es-MX")
-                    es_dir.mkdir(exist_ok=True)
-                    final_es_video = es_dir / f"{video_path.name}"
-                    final_es_thumb = es_dir / f"{thumb_path.name}"
-                    final_es_meta = es_dir / f"{video_path.stem}.json"
-                    video_es.rename(final_es_video)
-                    thumb_es.rename(final_es_thumb)
-                    Path(video_es.with_suffix(".json")).rename(final_es_meta)
+                # These languages have Edge-TTS voices and translate well for Shorts
+                target_langs = ["es-MX", "pt-BR", "ru-RU", "de-DE", "zh-CN"]
+                for tlang in target_langs:
+                    log.info(f"  >> Triggering {tlang} Global Pipeline...")
+                    t_tmp = Path(tempfile.mkdtemp(prefix=f"yt_shorts_{tlang}_"))
+                    result_t = generate_short(story, t_tmp, lang=tlang)
+                    if result_t:
+                        log.info(f"  Global {tlang} Short ready: {result_t[0].name}")
+                        # Update localized done markers
+                        t_done_file = Path(f"_videos/shorts_done_{tlang}.json")
+                        try:
+                            if t_done_file.exists():
+                                t_done_data = json.loads(t_done_file.read_text(encoding="utf-8"))
+                                t_done = set(t_done_data) if isinstance(t_done_data, list) else set()
+                            else:
+                                t_done = set()
+                        except Exception:
+                            t_done = set()
+                        t_done.add(story["slug"])
+                        t_done_file.write_text(
+                            json.dumps(sorted(t_done), indent=2, ensure_ascii=False),
+                            encoding="utf-8",
+                        )
+                    shutil.rmtree(t_tmp, ignore_errors=True)
 
-                    # Update Spanish done markers
-                    es_done_file = es_dir / "shorts_done.json"
-                    try:
-                        if es_done_file.exists():
-                            es_done_data = json.loads(es_done_file.read_text(encoding="utf-8"))
-                            es_done = set(es_done_data) if isinstance(es_done_data, list) else set()
-                        else:
-                            es_done = set()
-                    except Exception:
-                        es_done = set()
-                    es_done.add(story["slug"])
-                    es_done_file.write_text(
-                        json.dumps(sorted(es_done), indent=2, ensure_ascii=False),
-                        encoding="utf-8",
-                    )
-
-                    log.info(f"  Spanish Short ready: {final_es_video.name} in {es_dir}")
-                shutil.rmtree(es_tmp, ignore_errors=True)
 
         else:
             log.warning(f"  ⏭ Candidate skipped, trying next: {story.get('slug', '?')}")
