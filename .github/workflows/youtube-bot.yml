@@ -99,6 +99,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
+          python -m playwright install chromium
           if [ "${INSTALL_FASTER_WHISPER:-1}" = "1" ]; then
             pip install --no-deps "faster-whisper>=1.0,<2.0" "ctranslate2>=4.0,<5.0" || true
           fi
@@ -337,6 +338,13 @@ jobs:
           PYTHONUNBUFFERED: "1"
           YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
           YOUTUBE_DESCRIPTION_MODE: ${{ vars.YOUTUBE_DESCRIPTION_MODE || 'empty' }}
+      - name: "Upload Shorts para TikTok"
+        if: steps.publish_window.outputs.should_publish == 'true' && secrets.TIKTOK_SESSION_ID != ''
+        run: python scripts/sync_tiktok.py
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUNBUFFERED: "1"
+          TIKTOK_SESSION_ID: ${{ secrets.TIKTOK_SESSION_ID }}
       - name: "Aplicar ciclo de vida da midia"
         if: steps.publish_window.outputs.should_publish == 'true'
         run: python scripts/media_lifecycle.py --cleanup --audit-tracked --json
