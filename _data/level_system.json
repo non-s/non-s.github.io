@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-15T12:34:38.663687+00:00",
+  "generated_at": "2026-07-15T13:02:52.898158+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
   "overall_progress_pct": 34.3,
@@ -22,12 +22,12 @@
       "top_blockers": [
         {
           "id": "objective_gate:bootstrap_observe_before_scaling",
-          "count": 46,
+          "count": 44,
           "operator_translation": "collect more observed signal before scaling this pattern"
         },
         {
           "id": "queue_prune:rewrite",
-          "count": 14,
+          "count": 15,
           "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
@@ -36,14 +36,14 @@
           "operator_translation": "editor in chief:script quality gate blocked the narration"
         },
         {
-          "id": "bootstrap_observe_before_scaling",
-          "count": 9,
-          "operator_translation": "bootstrap observe before scaling"
-        },
-        {
           "id": "editor_in_chief:needs_ai_rewrite",
           "count": 7,
           "operator_translation": "editor in chief:needs ai rewrite"
+        },
+        {
+          "id": "bootstrap_observe_before_scaling",
+          "count": 7,
+          "operator_translation": "bootstrap observe before scaling"
         }
       ]
     }
@@ -80,16 +80,16 @@
     }
   ],
   "metrics": {
-    "health_score": 79,
+    "health_score": 78,
     "health_state": "watch",
-    "pending": 23,
-    "operational_publish_ready": 9,
-    "apparent_publish_ready": 9,
-    "eligible_count": 9,
+    "pending": 22,
+    "operational_publish_ready": 7,
+    "apparent_publish_ready": 7,
+    "eligible_count": 7,
     "scale_ready_count": 0,
-    "next_shorts_count": 9,
-    "editorial_candidate_count": 23,
-    "published_count": 4,
+    "next_shorts_count": 7,
+    "editorial_candidate_count": 22,
+    "published_count": 5,
     "views_28d": 30314,
     "total_subscribers": 46,
     "subs_per_1000_views": 1.221,
@@ -103,12 +103,12 @@
   "top_blockers": [
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
-      "count": 46,
+      "count": 44,
       "operator_translation": "collect more observed signal before scaling this pattern"
     },
     {
       "id": "queue_prune:rewrite",
-      "count": 14,
+      "count": 15,
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
@@ -117,14 +117,14 @@
       "operator_translation": "editor in chief:script quality gate blocked the narration"
     },
     {
-      "id": "bootstrap_observe_before_scaling",
-      "count": 9,
-      "operator_translation": "bootstrap observe before scaling"
-    },
-    {
       "id": "editor_in_chief:needs_ai_rewrite",
       "count": 7,
       "operator_translation": "editor in chief:needs ai rewrite"
+    },
+    {
+      "id": "bootstrap_observe_before_scaling",
+      "count": 7,
+      "operator_translation": "bootstrap observe before scaling"
     },
     {
       "id": "packaging:missing_action_word",
@@ -137,6 +137,11 @@
       "operator_translation": "repair the publish score package"
     },
     {
+      "id": "editor_in_chief:subject repeated inside 3-day cooldown",
+      "count": 2,
+      "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
+    },
+    {
       "id": "youtube_brain:missing_visual_cue",
       "count": 1,
       "operator_translation": "youtube brain:missing visual cue"
@@ -147,19 +152,14 @@
       "operator_translation": "packaging:script does not expose enough concrete visual detail"
     },
     {
+      "id": "editor_in_chief:cooldown_subject",
+      "count": 1,
+      "operator_translation": "pick a fresh subject inside the same lane"
+    },
+    {
       "id": "scale:first_second",
       "count": 1,
       "operator_translation": "scale:first second"
-    },
-    {
-      "id": "scale:recurring_audience",
-      "count": 1,
-      "operator_translation": "scale:recurring audience"
-    },
-    {
-      "id": "scale:subscriber_conversion",
-      "count": 1,
-      "operator_translation": "scale:subscriber conversion"
     }
   ],
   "levels": [
@@ -172,8 +172,8 @@
       "status": "cleared",
       "progress_pct": 100.0,
       "evidence": {
-        "published_count": 4,
-        "health_score": 79
+        "published_count": 5,
+        "health_score": 78
       }
     },
     {
@@ -185,9 +185,9 @@
       "status": "cleared",
       "progress_pct": 100.0,
       "evidence": {
-        "operational_publish_ready": 9,
-        "eligible_count": 9,
-        "pending": 23,
+        "operational_publish_ready": 7,
+        "eligible_count": 7,
+        "pending": 22,
         "target_publish_ready": 6,
         "target_pending": 20
       }
@@ -251,11 +251,11 @@
       "unlock": "One million views per 28 days, excellent health, and ten publish-ready Shorts in reserve.",
       "revenue_job": "Scale the proven system instead of adding random effort.",
       "status": "locked",
-      "progress_pct": 31.0,
+      "progress_pct": 24.3,
       "evidence": {
         "views_28d": 30314,
         "health_state": "watch",
-        "operational_publish_ready": 9
+        "operational_publish_ready": 7
       }
     }
   ],

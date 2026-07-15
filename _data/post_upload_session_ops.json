@@ -2,18 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 3,
+      "automation_safe": 5,
       "high": 0,
-      "manual_review": 1,
-      "total": 4,
+      "manual_review": 0,
+      "total": 5,
       "urgent": 2
     },
     "free_only": true,
-    "generated_at": "2026-07-15T12:33:25.216788+00:00",
+    "generated_at": "2026-07-15T13:01:41.672292+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 35.934,
+        "age_hours": 36.405,
         "automation_safe": true,
         "category": "discoveries",
         "checkpoint_label": "1h",
@@ -38,9 +38,9 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "prepare_package_rescue",
-        "age_hours": 35.461,
-        "automation_safe": false,
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 35.932,
+        "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
         "checkpoint_state": "overdue",
@@ -48,24 +48,24 @@
         "due_at": "2026-07-14T02:05:45.230548+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:xa7g2eRaRLE:repair_candidate:1h",
-        "lane": "package_rescue",
-        "manual_approval_required": true,
+        "id": "fresh-upload:xa7g2eRaRLE:analytics_due:1h",
+        "lane": "measurement",
+        "manual_approval_required": false,
         "opening_retention_score": 100.0,
         "priority": "urgent",
-        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
         "series": "Animal Superpowers",
-        "state": "repair_candidate",
+        "state": "analytics_due",
         "target_views": 24,
         "title": "Lions hunt better when the pride coordinates",
         "url": "https://www.youtube.com/shorts/xa7g2eRaRLE",
         "video_id": "xa7g2eRaRLE",
         "wait_until": "",
-        "why": "Observed velocity is weak enough to prepare a package intervention."
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.044,
+        "age_hours": 0.515,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "1h",
@@ -90,8 +90,34 @@
         "why": "The upload is still inside the no-panic observation window."
       },
       {
+        "action_type": "hold_until_first_hour",
+        "age_hours": 0.006,
+        "automation_safe": true,
+        "category": "reptiles",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-15T14:01:21.241971+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:u3DIskqSxF0:awaiting_1h:1h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "low",
+        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "series": "Cold-Blooded Secrets",
+        "state": "awaiting_1h",
+        "target_views": 24,
+        "title": "Snakes can sense heat when light disappears",
+        "url": "https://www.youtube.com/shorts/u3DIskqSxF0",
+        "video_id": "u3DIskqSxF0",
+        "wait_until": "2026-07-15T14:01:21.241971+00:00",
+        "why": "The upload is still inside the no-panic observation window."
+      },
+      {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 1.354,
+        "age_hours": 1.825,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "6h",
@@ -117,7 +143,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-15T12:33:25.216010+00:00"
+    "source_generated_at": "2026-07-15T13:01:41.671465+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -126,17 +152,72 @@
       24
     ],
     "counts": {
-      "analytics_due": 1,
-      "awaiting_1h": 1,
+      "analytics_due": 2,
+      "awaiting_1h": 2,
       "high_priority": 2,
-      "repair_candidates": 1,
-      "tracked": 4
+      "repair_candidates": 0,
+      "tracked": 5
     },
-    "generated_at": "2026-07-15T12:33:25.216010+00:00",
+    "generated_at": "2026-07-15T13:01:41.671465+00:00",
     "items": [
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.044,
+        "age_hours": 0.006,
+        "category": "reptiles",
+        "checkpoints": [
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-15T14:01:21.241971+00:00",
+            "label": "1h",
+            "source": "missing",
+            "state": "pending",
+            "target_views": 24,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-15T19:01:21.241971+00:00",
+            "label": "6h",
+            "source": "missing",
+            "state": "pending",
+            "target_views": 105,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-16T13:01:21.241971+00:00",
+            "label": "24h",
+            "source": "missing",
+            "state": "pending",
+            "target_views": 300,
+            "views": 0
+          }
+        ],
+        "current_views": 0,
+        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "next_checkpoint": {
+          "delta_to_target": 0,
+          "due_at": "2026-07-15T14:01:21.241971+00:00",
+          "label": "1h",
+          "source": "missing",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        "opening_retention_score": 100.0,
+        "opening_retention_state": "retention_ready",
+        "priority": "low",
+        "series": "Cold-Blooded Secrets",
+        "state": "awaiting_1h",
+        "title": "Snakes can sense heat when light disappears",
+        "uploaded_at": "2026-07-15T13:01:21.241971+00:00",
+        "url": "https://www.youtube.com/shorts/u3DIskqSxF0",
+        "video_id": "u3DIskqSxF0",
+        "views_per_hour": 0.0
+      },
+      {
+        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "age_hours": 0.515,
         "category": "insects",
         "checkpoints": [
           {
@@ -191,7 +272,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 1.354,
+        "age_hours": 1.825,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -245,8 +326,8 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 35.461,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 35.932,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -268,17 +349,17 @@
             "views": 0
           },
           {
-            "delta_to_target": -299,
+            "delta_to_target": -300,
             "due_at": "2026-07-15T01:05:45.230548+00:00",
             "label": "24h",
-            "source": "observed",
-            "state": "observed",
+            "source": "estimated",
+            "state": "overdue",
             "target_views": 300,
-            "views": 1
+            "views": 0
           }
         ],
         "current_views": 1,
-        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
           "delta_to_target": -24,
           "due_at": "2026-07-14T02:05:45.230548+00:00",
@@ -292,27 +373,16 @@
         "opening_retention_state": "retention_ready",
         "priority": "high",
         "series": "Animal Superpowers",
-        "state": "repair_candidate",
+        "state": "analytics_due",
         "title": "Lions hunt better when the pride coordinates",
         "uploaded_at": "2026-07-14T01:05:45.230548+00:00",
         "url": "https://www.youtube.com/shorts/xa7g2eRaRLE",
         "video_id": "xa7g2eRaRLE",
-        "views_per_hour": 0.028,
-        "warning": {
-          "action": "TITLE_AUTO_REPAIR_TRIGGER",
-          "confidence_score": 0.756,
-          "reason": "low early velocity",
-          "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
-          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-          "title": "Lions hunt better when the pride coordinates",
-          "video_id": "xa7g2eRaRLE",
-          "views": 1,
-          "warning_state": "repair_risk"
-        }
+        "views_per_hour": 0.028
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 35.934,
+        "age_hours": 36.405,
         "category": "discoveries",
         "checkpoints": [
           {
@@ -363,7 +433,7 @@
         "uploaded_at": "2026-07-14T00:37:24.551626+00:00",
         "url": "https://www.youtube.com/shorts/DGs36Y79jHo",
         "video_id": "DGs36Y79jHo",
-        "views_per_hour": 0.139
+        "views_per_hour": 0.138
       }
     ],
     "targets": {
@@ -373,23 +443,12 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-15T12:33:25.216841+00:00",
+  "generated_at": "2026-07-15T13:01:41.672373+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
   ],
   "related_video_recommendations": [
-    {
-      "recommendation": {
-        "reason": "same series/category/format session bridge",
-        "score": 85.0,
-        "title": "Rock layers store ancient environments in stripes",
-        "url": "https://www.youtube.com/shorts/FEAbi2e-yas",
-        "video_id": "FEAbi2e-yas"
-      },
-      "source_title": "Rock layers store ancient environments in stripes | Earth engine",
-      "source_video_id": "6Xko5TJwEdw"
-    },
     {
       "recommendation": {
         "reason": "same series/category/format session bridge",
@@ -433,14 +492,20 @@
       },
       "source_title": "Ants reveal the answer with scent road",
       "source_video_id": "oh2BtNufq6c"
+    },
+    {
+      "recommendation": {
+        "reason": "same series/category/format session bridge",
+        "score": 85.0,
+        "title": "Snakes can detect warm prey in the dark",
+        "url": "https://www.youtube.com/shorts/ytZXl-smi5Q",
+        "video_id": "ytZXl-smi5Q"
+      },
+      "source_title": "Snakes can sense heat when light disappears",
+      "source_video_id": "u3DIskqSxF0"
     }
   ],
   "sequel_opportunities": [
-    {
-      "prompt": "Make a sequel with a new subject but the same payoff shape: Rock layers store ancient environments in stripes | Earth engine",
-      "title": "Rock layers store ancient environments in stripes | Earth engine",
-      "video_id": "6Xko5TJwEdw"
-    },
     {
       "prompt": "Make a sequel with a new subject but the same payoff shape: Fossils turn old bones into time clues",
       "title": "Fossils turn old bones into time clues",
@@ -460,13 +525,18 @@
       "prompt": "Make a sequel with a new subject but the same payoff shape: Ants reveal the answer with scent road",
       "title": "Ants reveal the answer with scent road",
       "video_id": "oh2BtNufq6c"
+    },
+    {
+      "prompt": "Make a sequel with a new subject but the same payoff shape: Snakes can sense heat when light disappears",
+      "title": "Snakes can sense heat when light disappears",
+      "video_id": "u3DIskqSxF0"
     }
   ],
   "session_graph": {
     "action_score_threshold": 55,
     "coverage": 0.9,
     "edges": 20,
-    "nodes": 99,
+    "nodes": 100,
     "target_reuse_limit": 2
   }
 }

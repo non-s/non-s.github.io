@@ -5,17 +5,72 @@
     24
   ],
   "counts": {
-    "analytics_due": 1,
-    "awaiting_1h": 1,
+    "analytics_due": 2,
+    "awaiting_1h": 2,
     "high_priority": 2,
-    "repair_candidates": 1,
-    "tracked": 4
+    "repair_candidates": 0,
+    "tracked": 5
   },
-  "generated_at": "2026-07-15T12:33:25.216010+00:00",
+  "generated_at": "2026-07-15T13:01:41.671465+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.044,
+      "age_hours": 0.006,
+      "category": "reptiles",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-15T14:01:21.241971+00:00",
+          "label": "1h",
+          "source": "missing",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-15T19:01:21.241971+00:00",
+          "label": "6h",
+          "source": "missing",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-16T13:01:21.241971+00:00",
+          "label": "24h",
+          "source": "missing",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-15T14:01:21.241971+00:00",
+        "label": "1h",
+        "source": "missing",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Cold-Blooded Secrets",
+      "state": "awaiting_1h",
+      "title": "Snakes can sense heat when light disappears",
+      "uploaded_at": "2026-07-15T13:01:21.241971+00:00",
+      "url": "https://www.youtube.com/shorts/u3DIskqSxF0",
+      "video_id": "u3DIskqSxF0",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.515,
       "category": "insects",
       "checkpoints": [
         {
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.354,
+      "age_hours": 1.825,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -124,8 +179,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 35.461,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 35.932,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -147,17 +202,17 @@
           "views": 0
         },
         {
-          "delta_to_target": -299,
+          "delta_to_target": -300,
           "due_at": "2026-07-15T01:05:45.230548+00:00",
           "label": "24h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 300,
-          "views": 1
+          "views": 0
         }
       ],
       "current_views": 1,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
         "delta_to_target": -24,
         "due_at": "2026-07-14T02:05:45.230548+00:00",
@@ -171,27 +226,16 @@
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Animal Superpowers",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Lions hunt better when the pride coordinates",
       "uploaded_at": "2026-07-14T01:05:45.230548+00:00",
       "url": "https://www.youtube.com/shorts/xa7g2eRaRLE",
       "video_id": "xa7g2eRaRLE",
-      "views_per_hour": 0.028,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.756,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Lions hunt better when the pride coordinates",
-        "video_id": "xa7g2eRaRLE",
-        "views": 1,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.028
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 35.934,
+      "age_hours": 36.405,
       "category": "discoveries",
       "checkpoints": [
         {
@@ -242,7 +286,7 @@
       "uploaded_at": "2026-07-14T00:37:24.551626+00:00",
       "url": "https://www.youtube.com/shorts/DGs36Y79jHo",
       "video_id": "DGs36Y79jHo",
-      "views_per_hour": 0.139
+      "views_per_hour": 0.138
     }
   ],
   "targets": {
