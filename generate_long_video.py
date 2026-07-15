@@ -17,7 +17,7 @@ from pathlib import Path
 from datetime import datetime
 
 from utils.ai_helper import ai_text
-from utils.broll import fetch_broll_clips
+from utils.broll import fetch_broll_clips, download_clip
 from utils.captions import transcribe as captions_transcribe, write_ass, group_words_into_phrases
 from utils.video_compose import build_broll_short
 from utils.nature_strategy import NATURE_TOPICS
