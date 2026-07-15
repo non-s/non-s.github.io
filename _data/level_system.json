@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-15T18:47:56.146110+00:00",
+  "generated_at": "2026-07-15T18:52:23.767746+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
-  "overall_progress_pct": 28.1,
+  "overall_progress_pct": 28.3,
   "current_level": {
     "number": 2,
     "name": "Publish supply engine",
@@ -10,7 +10,7 @@
     "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
     "revenue_job": "Turn production from lucky shots into repeatable inventory.",
     "status": "boss_fight",
-    "progress_pct": 96.7
+    "progress_pct": 98.3
   },
   "boss": {
     "id": "pending_queue_low",
@@ -20,7 +20,7 @@
       "eligible_count": 6,
       "operational_publish_ready": 6,
       "apparent_publish_ready": 6,
-      "pending": 18,
+      "pending": 19,
       "target_publish_ready": 6,
       "target_pending": 20,
       "top_blockers": [
@@ -36,7 +36,7 @@
         },
         {
           "id": "queue_prune:rewrite",
-          "count": 12,
+          "count": 13,
           "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
@@ -86,14 +86,14 @@
     {
       "priority": "P1",
       "action": "Refresh free discovery only after the current repair batch is clean.",
-      "target": "pending 18/20",
+      "target": "pending 19/20",
       "why": "Bigger inventory helps only when the gate can accept winners."
     }
   ],
   "metrics": {
     "health_score": 67,
     "health_state": "needs_work",
-    "pending": 18,
+    "pending": 19,
     "operational_publish_ready": 6,
     "apparent_publish_ready": 6,
     "eligible_count": 6,
@@ -124,7 +124,7 @@
     },
     {
       "id": "queue_prune:rewrite",
-      "count": 12,
+      "count": 13,
       "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
@@ -148,9 +148,19 @@
       "operator_translation": "editorial cooldown supply fallback"
     },
     {
+      "id": "duplicate_title",
+      "count": 4,
+      "operator_translation": "duplicate title"
+    },
+    {
       "id": "packaging:missing_action_word",
       "count": 3,
       "operator_translation": "packaging:missing action word"
+    },
+    {
+      "id": "off_topic_visual",
+      "count": 3,
+      "operator_translation": "off topic visual"
     },
     {
       "id": "editor_in_chief:editorial score 46 is below 62",
@@ -161,16 +171,6 @@
       "id": "publish_ready_supply_reserve_fallback",
       "count": 2,
       "operator_translation": "publish ready supply reserve fallback"
-    },
-    {
-      "id": "publish_score:rewrite",
-      "count": 1,
-      "operator_translation": "repair the publish score package"
-    },
-    {
-      "id": "editor_in_chief:cooldown_subject",
-      "count": 1,
-      "operator_translation": "pick a fresh subject inside the same lane"
     }
   ],
   "levels": [
@@ -194,11 +194,11 @@
       "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
       "revenue_job": "Turn production from lucky shots into repeatable inventory.",
       "status": "current",
-      "progress_pct": 96.7,
+      "progress_pct": 98.3,
       "evidence": {
         "operational_publish_ready": 6,
         "eligible_count": 6,
-        "pending": 18,
+        "pending": 19,
         "target_publish_ready": 6,
         "target_pending": 20
       }
