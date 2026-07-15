@@ -101,7 +101,7 @@ async def generate_segment(segment_index: int, topic_key: str, query: str) -> Pa
     # 5. Compose
     out_mp4 = segment_dir / f"segment_{segment_index}.mp4"
     ok = build_broll_short(
-        broll_paths=[clip_path],
+        broll_paths=[final_clip_path],
         audio_path=audio_path,
         output_path=out_mp4,
         ass_subtitle_path=ass_path if ass_path.exists() else None,
