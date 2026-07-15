@@ -6,24 +6,79 @@
   ],
   "counts": {
     "analytics_due": 2,
-    "awaiting_1h": 2,
+    "awaiting_1h": 1,
     "high_priority": 2,
     "repair_candidates": 0,
-    "tracked": 5
+    "tracked": 6
   },
-  "generated_at": "2026-07-15T13:11:38.079501+00:00",
+  "generated_at": "2026-07-15T14:06:44.965335+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.171,
-      "category": "reptiles",
+      "age_hours": 0.005,
+      "category": "farm",
       "checkpoints": [
         {
           "delta_to_target": 0,
+          "due_at": "2026-07-15T15:06:25.201584+00:00",
+          "label": "1h",
+          "source": "missing",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-15T20:06:25.201584+00:00",
+          "label": "6h",
+          "source": "missing",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-16T14:06:25.201584+00:00",
+          "label": "24h",
+          "source": "missing",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-15T15:06:25.201584+00:00",
+        "label": "1h",
+        "source": "missing",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Farmyard Surprises",
+      "state": "awaiting_1h",
+      "title": "Chickens lock their view between steps",
+      "uploaded_at": "2026-07-15T14:06:25.201584+00:00",
+      "url": "https://www.youtube.com/shorts/06k3cVpMwPg",
+      "video_id": "06k3cVpMwPg",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 1.09,
+      "category": "reptiles",
+      "checkpoints": [
+        {
+          "delta_to_target": -24,
           "due_at": "2026-07-15T14:01:21.241971+00:00",
           "label": "1h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-15T14:01:21.241971+00:00",
-        "label": "1h",
+        "due_at": "2026-07-15T19:01:21.241971+00:00",
+        "label": "6h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 24,
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "low",
       "series": "Cold-Blooded Secrets",
-      "state": "awaiting_1h",
+      "state": "watch",
       "title": "Snakes can sense heat when light disappears",
       "uploaded_at": "2026-07-15T13:01:21.241971+00:00",
       "url": "https://www.youtube.com/shorts/u3DIskqSxF0",
@@ -69,16 +124,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.681,
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 1.599,
       "category": "insects",
       "checkpoints": [
         {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-15T13:30:48.137490+00:00",
           "label": "1h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -102,21 +157,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-15T13:30:48.137490+00:00",
-        "label": "1h",
+        "due_at": "2026-07-15T18:30:48.137490+00:00",
+        "label": "6h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 24,
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "low",
       "series": "Tiny Worlds",
-      "state": "awaiting_1h",
+      "state": "watch",
       "title": "Ants reveal the answer with scent road",
       "uploaded_at": "2026-07-15T12:30:48.137490+00:00",
       "url": "https://www.youtube.com/shorts/oh2BtNufq6c",
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.99,
+      "age_hours": 2.909,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 36.098,
+      "age_hours": 37.017,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -231,11 +286,11 @@
       "uploaded_at": "2026-07-14T01:05:45.230548+00:00",
       "url": "https://www.youtube.com/shorts/xa7g2eRaRLE",
       "video_id": "xa7g2eRaRLE",
-      "views_per_hour": 0.028
+      "views_per_hour": 0.027
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 36.57,
+      "age_hours": 37.489,
       "category": "discoveries",
       "checkpoints": [
         {
@@ -286,7 +341,7 @@
       "uploaded_at": "2026-07-14T00:37:24.551626+00:00",
       "url": "https://www.youtube.com/shorts/DGs36Y79jHo",
       "video_id": "DGs36Y79jHo",
-      "views_per_hour": 0.137
+      "views_per_hour": 0.134
     }
   ],
   "targets": {

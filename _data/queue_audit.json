@@ -1,34 +1,43 @@
 {
-  "generated_at": "2026-07-15T13:12:22.819495+00:00",
-  "pending": 22,
+  "generated_at": "2026-07-15T14:07:27.069923+00:00",
+  "pending": 21,
   "states": {
     "rewrite": 15,
-    "publish_ready": 7
+    "publish_ready": 6
   },
   "mechanism_clusters": {
     "face_recognition": 4,
     "scent_map": 2,
     "call_signal": 1,
-    "visual_stabilization": 1,
     "tongue_smell": 1,
     "beak_signal": 1
   },
   "rights": {
-    "approved": 22
+    "approved": 21
   },
   "prune_summary": {
-    "pending_before": 22,
-    "pending_after": 22,
+    "pending_before": 21,
+    "pending_after": 21,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 4,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 22,
+      "objective_gate:bootstrap_observe_before_scaling": 21,
       "editor_in_chief:script quality gate blocked the narration": 7,
       "editor_in_chief:subject repeated inside 3-day cooldown": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "8f88482e7f4a305f",
+      "title": "Chickens Gallinas frenan la vista al caminar",
+      "reasons": [
+        "subject repeated inside 3-day cooldown",
+        "humanity score is too low",
+        "editorial score 39 is below 62"
+      ],
+      "stage": "editor_in_chief"
+    },
     {
       "id": "0a177c8cd1036675",
       "title": "Dogs read human pointing surprisingly well",
@@ -276,15 +285,6 @@
         "script_hook_mismatch"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "d59500b055c38e47",
-      "title": "Grand Prismatic steam blast",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -461,7 +461,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T13:12:00.179229+00:00",
+        "checked_at": "2026-07-15T14:07:05.853528+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -553,7 +553,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -771,11 +771,11 @@
           "thumbnail_text": "FLOCK MEMORY",
           "title": "Sheep recognize faces across the flock"
         },
-        "series": "Farmyard Surprises #10",
+        "series": "Farmyard Surprises #11",
         "series_identity": {
           "continuity_prompt": "Next in Farmyard Surprises: compare this with another force of nature.",
-          "episode": 10,
-          "label": "Farmyard Surprises #10",
+          "episode": 11,
+          "label": "Farmyard Surprises #11",
           "series": "Farmyard Surprises"
         },
         "state": "magnetic",
@@ -1098,7 +1098,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T13:12:00.181910+00:00",
+        "checked_at": "2026-07-15T14:07:05.856152+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1191,7 +1191,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1565,640 +1565,6 @@
       }
     },
     {
-      "id": "8f88482e7f4a305f",
-      "title": "Chickens lock their view between steps",
-      "category": "farm",
-      "publish_score": {
-        "approved": true,
-        "category": "farm",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "visual_stabilization",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "eyes"
-          ],
-          "cue_terms": [
-            "eyes",
-            "stead"
-          ],
-          "frame_hook_bridge": [
-            "eyes"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "chickens"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 62,
-          "signals": {
-            "comment_potential": 54,
-            "educational_potential": 65,
-            "emotional_potential": 44,
-            "novelty": 45,
-            "replay_potential": 92,
-            "viral_potential": 66,
-            "visual_potential": 55
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 75,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 82,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "body_superpower",
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "title_score": 90,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.445,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.26,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-07-15T13:12:00.183720+00:00",
-        "mechanism_cluster": "visual_stabilization",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 100.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 100.0,
-      "youtube_brain": {
-        "animal": "chickens",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "eyes"
-          ],
-          "cue_terms": [
-            "eyes",
-            "stead"
-          ],
-          "frame_hook_bridge": [
-            "eyes"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "chickens"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "body_superpower",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "chickens",
-        "viewer_promise": "See why chickens body superpower matters."
-      },
-      "packaging": {
-        "community_prompt": "Which chickens clue should Wild Brief compare next in Farmyard Surprises?",
-        "cta_prompt": "Want one animal signal a day? Follow for tomorrow's farm clue.",
-        "curiosity_gap": {
-          "hook": "Why do these chickens change after the steady eyes?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "body superpower",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "specific_question",
-            "format": "fresh_variant",
-            "hook": "new_hook",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "explore",
-          "sample_count": 100,
-          "winners": {
-            "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 47.5,
-            "format:winner_inspired": 47.5,
-            "hook:pattern_reuse": 47.5,
-            "thumbnail:new_thumbnail": 47.5
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "eyes"
-            ],
-            "cue_terms": [
-              "eyes",
-              "stead"
-            ],
-            "frame_hook_bridge": [
-              "eyes"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "chickens"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Chickens lock their view between steps",
-          "Chickens show why the steady eyes matters.",
-          "Chickens show why the steady eyes matters.",
-          "Chickens show why the steady eyes matters.",
-          "Chickens give away the answer through steady eyes"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "steady eyes",
-          "ending_line": "Did you notice it?",
-          "final_line": "Now the steady eyes at the start make sense.",
-          "loop_score": 0.795,
-          "opening_line": "Chickens lock their view between steps.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "steady eyes",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.795,
-        "next_episode_question": "Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "eyes"
-          ],
-          "cue_terms": [
-            "eyes",
-            "stead"
-          ],
-          "frame_hook_bridge": [
-            "eyes"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "chickens"
-        },
-        "pinned_comment": "Watch the steady eyes again. Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.42,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 19,
-          "first_2s_narration": "Chickens lock their view between steps Watch the eyes stay level while",
-          "first_frame_text": "STEADY EYES",
-          "first_frame_text_words": 2,
-          "hook": "Chickens lock their view between steps.",
-          "hook_specificity": 0.78,
-          "hook_words": 6,
-          "loop_score": 0.795,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "eyes"
-            ],
-            "cue_terms": [
-              "eyes",
-              "stead"
-            ],
-            "frame_hook_bridge": [
-              "eyes"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "chickens"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the steady eyes, so viewers rewatch the chickens clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 75,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 82,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Chickens lock their view between steps Watch the eyes stay level while",
-          "first_frame_text": "STEADY EYES",
-          "next_episode_question": "Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains Chickens behavior through the visible steady eyes.",
-            "series": "Farmyard Surprises",
-            "subject": "chickens",
-            "terms": [
-              "chickens",
-              "steady eyes",
-              "farm",
-              "body superpower"
-            ],
-            "title_variant": "Chickens behavior: steady eyes explained",
-            "visible_cue": "steady eyes"
-          },
-          "series": "Farmyard Surprises",
-          "subject": "chickens",
-          "visible_cue": "steady eyes"
-        },
-        "risks": [],
-        "score": 96,
-        "search_intent": {
-          "description_line": "This Short explains Chickens behavior through the visible steady eyes.",
-          "series": "Farmyard Surprises",
-          "subject": "chickens",
-          "terms": [
-            "chickens",
-            "steady eyes",
-            "farm",
-            "body superpower"
-          ],
-          "title_variant": "Chickens behavior: steady eyes explained",
-          "visible_cue": "steady eyes"
-        },
-        "selected_variant": {
-          "hook": "Start with the steady eyes; it changes the scene",
-          "score": 82,
-          "thumbnail_text": "STEADY EYES",
-          "title": "Chickens keep their view steady while walking"
-        },
-        "series": "Farmyard Surprises #10",
-        "series_identity": {
-          "continuity_prompt": "Next in Farmyard Surprises: compare this with another force of nature.",
-          "episode": 10,
-          "label": "Farmyard Surprises #10",
-          "series": "Farmyard Surprises"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "STEADY EYES",
-          "WATCH STEADY EYES",
-          "CHICKENS STABILIZE",
-          "STEADY EYES MATTERS",
-          "STEADY EYES FIRST",
-          "STEADY EYES REVEAL",
-          "STEADY EYES CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Chickens keep their view steady while walking",
-          "Chickens lock their view between steps",
-          "Chickens use steady eyes before they stabilize",
-          "Why chickens stabilize after one steady eyes",
-          "Chickens reveal the answer with steady eyes",
-          "The steady eyes that changes the moment",
-          "Chickens make one steady eyes matter",
-          "Chickens show the hidden answer in seconds",
-          "Chickens: watch this steady eyes"
-        ],
-        "top_variants": [
-          {
-            "hook": "Start with the steady eyes; it changes the scene",
-            "score": 82,
-            "thumbnail_text": "STEADY EYES",
-            "title": "Chickens keep their view steady while walking"
-          },
-          {
-            "hook": "Chickens lock their view between steps",
-            "score": 81,
-            "thumbnail_text": "STEADY EYES",
-            "title": "Chickens keep their view steady while walking"
-          },
-          {
-            "hook": "Watch the steady eyes; it explains the behavior",
-            "score": 81,
-            "thumbnail_text": "STEADY EYES",
-            "title": "Chickens keep their view steady while walking"
-          },
-          {
-            "hook": "Start with the steady eyes; it changes the scene",
-            "score": 75,
-            "thumbnail_text": "WATCH STEADY EYES",
-            "title": "Chickens keep their view steady while walking"
-          },
-          {
-            "hook": "Start with the steady eyes; it changes the scene",
-            "score": 75,
-            "thumbnail_text": "CHICKENS STABILIZE",
-            "title": "Chickens keep their view steady while walking"
-          },
-          {
-            "hook": "Start with the steady eyes; it changes the scene",
-            "score": 75,
-            "thumbnail_text": "STEADY EYES MATTERS",
-            "title": "Chickens keep their view steady while walking"
-          },
-          {
-            "hook": "Chickens lock their view between steps",
-            "score": 75,
-            "thumbnail_text": "STEADY EYES FIRST",
-            "title": "Chickens keep their view steady while walking"
-          },
-          {
-            "hook": "Watch the steady eyes; it explains the behavior",
-            "score": 75,
-            "thumbnail_text": "STEADY EYES FIRST",
-            "title": "Chickens keep their view steady while walking"
-          },
-          {
-            "hook": "Start with the steady eyes; it changes the scene",
-            "score": 75,
-            "thumbnail_text": "STEADY EYES FIRST",
-            "title": "Chickens keep their view steady while walking"
-          },
-          {
-            "hook": "Chickens lock their view between steps",
-            "score": 74,
-            "thumbnail_text": "WATCH STEADY EYES",
-            "title": "Chickens keep their view steady while walking"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "079e4c96730df79c",
       "title": "Horses can remember familiar faces",
       "category": "farm",
@@ -2375,7 +1741,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T13:12:00.184995+00:00",
+        "checked_at": "2026-07-15T14:07:05.857382+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2471,7 +1837,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -2701,11 +2067,11 @@
           "thumbnail_text": "FACE MEMORY",
           "title": "Horses remember familiar faces for months"
         },
-        "series": "Farmyard Surprises #10",
+        "series": "Farmyard Surprises #11",
         "series_identity": {
           "continuity_prompt": "Next in Farmyard Surprises: compare this with another force of nature.",
-          "episode": 10,
-          "label": "Farmyard Surprises #10",
+          "episode": 11,
+          "label": "Farmyard Surprises #11",
           "series": "Farmyard Surprises"
         },
         "state": "magnetic",
@@ -3030,7 +2396,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T13:12:00.186796+00:00",
+        "checked_at": "2026-07-15T14:07:05.859150+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3124,7 +2490,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -3675,7 +3041,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T13:12:00.188916+00:00",
+        "checked_at": "2026-07-15T14:07:05.861106+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3771,7 +3137,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -4328,7 +3694,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T13:12:00.191429+00:00",
+        "checked_at": "2026-07-15T14:07:05.863362+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4424,7 +3790,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -4981,7 +4347,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T13:12:00.193885+00:00",
+        "checked_at": "2026-07-15T14:07:05.865700+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5077,7 +4443,7 @@
           },
           "explore_rate": 0.1,
           "mode": "explore",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -5632,7 +4998,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T13:12:00.195614+00:00",
+        "checked_at": "2026-07-15T14:07:05.867409+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5726,7 +5092,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6271,7 +5637,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T13:12:00.210242+00:00",
+        "checked_at": "2026-07-15T14:07:05.881283+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6363,7 +5729,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6909,7 +6275,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T13:12:00.212547+00:00",
+        "checked_at": "2026-07-15T14:07:05.883475+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7003,7 +6369,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -7554,7 +6920,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T13:12:00.170531+00:00",
+        "checked_at": "2026-07-15T14:07:05.845621+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7648,7 +7014,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -8193,7 +7559,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T13:12:00.197084+00:00",
+        "checked_at": "2026-07-15T14:07:05.868805+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8287,7 +7653,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -8511,11 +7877,11 @@
           "thumbnail_text": "FACE MEMORY",
           "title": "Horses remember familiar faces for months"
         },
-        "series": "Farmyard Surprises #10",
+        "series": "Farmyard Surprises #11",
         "series_identity": {
           "continuity_prompt": "Next in Farmyard Surprises: compare this with another force of nature.",
-          "episode": 10,
-          "label": "Farmyard Surprises #10",
+          "episode": 11,
+          "label": "Farmyard Surprises #11",
           "series": "Farmyard Surprises"
         },
         "state": "magnetic",
@@ -8846,7 +8212,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T13:12:00.198176+00:00",
+        "checked_at": "2026-07-15T14:07:05.869866+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8945,7 +8311,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -9510,7 +8876,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T13:12:00.172559+00:00",
+        "checked_at": "2026-07-15T14:07:05.847196+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9607,7 +8973,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -10161,7 +9527,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T13:12:00.174920+00:00",
+        "checked_at": "2026-07-15T14:07:05.849308+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10254,7 +9620,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -10797,7 +10163,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T13:12:00.176724+00:00",
+        "checked_at": "2026-07-15T14:07:05.851179+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10887,7 +10253,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -11426,7 +10792,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T13:12:00.199746+00:00",
+        "checked_at": "2026-07-15T14:07:05.871395+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11521,7 +10887,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -12072,7 +11438,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T13:12:00.201346+00:00",
+        "checked_at": "2026-07-15T14:07:05.872931+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12169,7 +11535,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -12726,7 +12092,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T13:12:00.204267+00:00",
+        "checked_at": "2026-07-15T14:07:05.875627+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12825,7 +12191,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 100,
+          "sample_count": 101,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -13195,6 +12561,667 @@
             "score": 74,
             "thumbnail_text": "WATCH ROCK LAYER",
             "title": "Rock layers store ancient environments in stripes"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
+      "id": "950b049fd7d3b3d5",
+      "title": "This tongue smell gives snakes away",
+      "category": "reptiles",
+      "publish_score": {
+        "approved": true,
+        "category": "reptiles",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "tongue_smell",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "air",
+            "tongue"
+          ],
+          "cue_terms": [
+            "air",
+            "leaf",
+            "move",
+            "smell",
+            "tongue"
+          ],
+          "frame_hook_bridge": [
+            "tongue"
+          ],
+          "risks": [
+            "subject_not_frontloaded"
+          ],
+          "score": 92.0,
+          "state": "retention_ready",
+          "strengths": [
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "reptiles"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 67,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 73,
+            "emotional_potential": 35,
+            "novelty": 59,
+            "replay_potential": 82,
+            "viral_potential": 77,
+            "visual_potential": 69
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 75,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "title_score": 74,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.445,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.26,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-07-15T14:07:05.877351+00:00",
+        "mechanism_cluster": "tongue_smell",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling",
+          "editor_in_chief:subject repeated inside 3-day cooldown"
+        ],
+        "score": 64.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 64.0,
+      "youtube_brain": {
+        "animal": "snakes",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "air",
+            "tongue"
+          ],
+          "cue_terms": [
+            "air",
+            "leaf",
+            "move",
+            "smell",
+            "tongue"
+          ],
+          "frame_hook_bridge": [
+            "tongue"
+          ],
+          "risks": [
+            "subject_not_frontloaded"
+          ],
+          "score": 92.0,
+          "state": "retention_ready",
+          "strengths": [
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "reptiles"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "snakes",
+        "viewer_promise": "See why snakes body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which snakes clue should Wild Brief compare next in Cold-Blooded Secrets?",
+        "cta_prompt": "Want more survival tricks from ancient designs?",
+        "curiosity_gap": {
+          "hook": "Why do these reptiles change after the leaf move?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 101,
+          "winners": {
+            "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 47.5,
+            "format:winner_inspired": 47.5,
+            "hook:pattern_reuse": 47.5,
+            "thumbnail:new_thumbnail": 47.5
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "air",
+              "tongue"
+            ],
+            "cue_terms": [
+              "air",
+              "leaf",
+              "move",
+              "smell",
+              "tongue"
+            ],
+            "frame_hook_bridge": [
+              "tongue"
+            ],
+            "risks": [
+              "subject_not_frontloaded"
+            ],
+            "score": 92.0,
+            "state": "retention_ready",
+            "strengths": [
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "reptiles"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Snakes sample the air with a tongue flick",
+          "Snakes show why the tongue smell matters.",
+          "Snakes show why the tongue smell matters.",
+          "Snakes show why the tongue smell matters.",
+          "Snakes give away the answer through tongue smell"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "tongue smell",
+          "ending_line": "Would you notice the trail.",
+          "final_line": "Now the tongue smell at the start makes sense.",
+          "loop_score": 0.79,
+          "opening_line": "Snakes sample the air with a tongue flick.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "tongue smell",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.79,
+        "next_episode_question": "Tomorrow in Cold-Blooded Secrets: another animal signal. Is this ancient design underrated?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "air",
+            "tongue"
+          ],
+          "cue_terms": [
+            "air",
+            "leaf",
+            "move",
+            "smell",
+            "tongue"
+          ],
+          "frame_hook_bridge": [
+            "tongue"
+          ],
+          "risks": [
+            "subject_not_frontloaded"
+          ],
+          "score": 92.0,
+          "state": "retention_ready",
+          "strengths": [
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "reptiles"
+        },
+        "pinned_comment": "Watch the tongue smell again. Tomorrow in Cold-Blooded Secrets: another animal signal. Is this ancient design underrated?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.56,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 18,
+          "first_2s_narration": "Snakes sample the air with tongue flick Watch the tongue flick because",
+          "first_frame_text": "TONGUE SMELL",
+          "first_frame_text_words": 2,
+          "hook": "Snakes sample the air with a tongue flick.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.79,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "air",
+              "tongue"
+            ],
+            "cue_terms": [
+              "air",
+              "leaf",
+              "move",
+              "smell",
+              "tongue"
+            ],
+            "frame_hook_bridge": [
+              "tongue"
+            ],
+            "risks": [
+              "subject_not_frontloaded"
+            ],
+            "score": 92.0,
+            "state": "retention_ready",
+            "strengths": [
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "reptiles"
+          },
+          "opening_retention_score": 92.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the tongue smell, so viewers rewatch the snakes clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 75,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Snakes sample the air with a tongue flick Watch the tongue flick",
+          "first_frame_text": "TONGUE SMELL",
+          "next_episode_question": "Tomorrow in Cold-Blooded Secrets: another animal signal. Is this ancient design underrated?",
+          "opening_retention_score": 92.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Snakes behavior through the visible tongue smell.",
+            "series": "Cold-Blooded Secrets",
+            "subject": "snakes",
+            "terms": [
+              "snakes",
+              "tongue smell",
+              "reptiles",
+              "body superpower"
+            ],
+            "title_variant": "Snakes behavior: tongue smell explained",
+            "visible_cue": "tongue smell"
+          },
+          "series": "Cold-Blooded Secrets",
+          "subject": "snakes",
+          "visible_cue": "tongue smell"
+        },
+        "risks": [],
+        "score": 96,
+        "search_intent": {
+          "description_line": "This Short explains Snakes behavior through the visible tongue smell.",
+          "series": "Cold-Blooded Secrets",
+          "subject": "snakes",
+          "terms": [
+            "snakes",
+            "tongue smell",
+            "reptiles",
+            "body superpower"
+          ],
+          "title_variant": "Snakes behavior: tongue smell explained",
+          "visible_cue": "tongue smell"
+        },
+        "selected_variant": {
+          "hook": "Watch the tongue smell; it explains the behavior",
+          "score": 80,
+          "thumbnail_text": "TONGUE SMELL",
+          "title": "Snakes smell the air with their tongues"
+        },
+        "series": "Cold-Blooded Secrets #6",
+        "series_identity": {
+          "continuity_prompt": "Next in Cold-Blooded Secrets: compare this with another force of nature.",
+          "episode": 6,
+          "label": "Cold-Blooded Secrets #6",
+          "series": "Cold-Blooded Secrets"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "TONGUE SMELL",
+          "WATCH TONGUE SMELL",
+          "SNAKES SMELL",
+          "TONGUE SMELL MATTERS",
+          "TONGUE SMELL FIRST",
+          "TONGUE SMELL REVEAL",
+          "TONGUE SMELL CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Snakes smell the air with their tongues",
+          "This tongue smell gives snakes away",
+          "Snakes use tongue smell before they smell",
+          "Why snakes smell after one tongue smell",
+          "Snakes reveal the answer with tongue smell",
+          "The tongue smell that changes the moment",
+          "Snakes make one tongue smell matter",
+          "Snakes show the hidden answer in seconds",
+          "Snakes: watch this tongue smell",
+          "Watch snakes after the tongue smell"
+        ],
+        "top_variants": [
+          {
+            "hook": "Watch the tongue smell; it explains the behavior",
+            "score": 80,
+            "thumbnail_text": "TONGUE SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Start with the tongue smell; it changes the scene",
+            "score": 80,
+            "thumbnail_text": "TONGUE SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Snakes sample the air with a tongue flick",
+            "score": 79,
+            "thumbnail_text": "TONGUE SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Watch the tongue smell; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "WATCH TONGUE SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Start with the tongue smell; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "WATCH TONGUE SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Watch the tongue smell; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "SNAKES SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Start with the tongue smell; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "SNAKES SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Watch the tongue smell; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "TONGUE SMELL MATTERS",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Start with the tongue smell; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "TONGUE SMELL MATTERS",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Watch the tongue smell; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "TONGUE SMELL FIRST",
+            "title": "Snakes smell the air with their tongues"
           }
         ]
       },
