@@ -6,12 +6,12 @@ from utils.ai_helper import ai_text
 
 log = logging.getLogger(__name__)
 
-def run_editorial_board(topic: str) -> Dict[str, str]:
+def run_editorial_board(topic: str, language: str = "pt") -> Dict[str, str]:
     """
     Runs a multi-agent simulation to generate a high-quality video script.
     Agents: Director, Fact-Checker, and Copywriter.
     """
-    log.info(f"Starting Multi-Agent Editorial Board for topic: {topic}")
+    log.info(f"Starting Multi-Agent Editorial Board for topic: {topic} in language: {language}")
     
     current_month = datetime.datetime.now().strftime("%B")
     
@@ -69,8 +69,14 @@ def run_editorial_board(topic: str) -> Dict[str, str]:
     Topic: {topic}
     Scientifically Validated Angle: {validated}
     Biological Fact: {fact}
+    Target Language: {language}
     
-    Write a brilliant 3-sentence script.
+    Write a brilliant, short script that perfectly synchronizes with a 5-10 second fast-paced video clip.
+    RULES FOR PERFECT PACING:
+    - The script MUST be in the Target Language ({language}).
+    - Exactly 3 sentences. No more, no less.
+    - Keep sentences short and rhythmic (maximum 8-12 words per sentence) so the text stays in sync with dynamic video transitions.
+    
     Sentence 1: The hook (must be punchy and mysterious).
     Sentence 2: The explanation (using the biological fact).
     Sentence 3: The payoff/conclusion (leaving the viewer amazed).
@@ -78,7 +84,7 @@ def run_editorial_board(topic: str) -> Dict[str, str]:
     Return ONLY a JSON object with this schema:
     {{
         "title": "A short, SEO-optimized title (under 50 chars)",
-        "script": "The full 3-sentence script",
+        "script": "The full 3-sentence script in {language}",
         "hook": "The hook (sentence 1)"
     }}
     """

@@ -29,14 +29,14 @@ log = logging.getLogger(__name__)
 VIDEOS_DIR = Path("_videos")
 MAX_SEGMENTS = 15
 
-async def generate_segment(segment_index: int, topic_key: str, query: str) -> Path | None:
+async def generate_segment(segment_index: int, topic_key: str, query: str, language: str) -> Path | None:
     """Generate a single 16:9 segment."""
     segment_dir = VIDEOS_DIR / "compilation_temp"
     segment_dir.mkdir(parents=True, exist_ok=True)
 
     # 1. Multi-Agent Script Generation
     from utils.multi_agent_board import run_editorial_board
-    data = run_editorial_board(query)
+    data = run_editorial_board(query, language=language)
 
     # 1. Fetch B-roll with Multimodal Quality Gate
     from utils.visual_qa import evaluate_frame
@@ -86,7 +86,12 @@ async def generate_segment(segment_index: int, topic_key: str, query: str) -> Pa
 
     # 3. TTS
     audio_path = segment_dir / f"audio_{segment_index}.mp3"
-    voice = pick_voice(query)
+    voice_map = {
+        "en": "en-US-ChristopherNeural",
+        "es": "es-ES-AlvaroNeural",
+        "pt": "pt-BR-AntonioNeural"
+    }
+    voice = voice_map.get(language, "en-US-ChristopherNeural")
     await text_to_speech(script, audio_path, voice=voice)
     if not audio_path.exists():
         return None
@@ -140,12 +145,18 @@ async def async_main():
 
     segment_paths = []
 
+    # Rotate language daily: en -> es -> pt
+    days_since_epoch = datetime.now().toordinal()
+    langs = ["en", "es", "pt"]
+    current_lang = langs[days_since_epoch % 3]
+    log.info(f"Daily Language Rotation: Selected '{current_lang}' for today's documentary.")
+
     for i in range(min(MAX_SEGMENTS, len(topics))):
         key, data = topics[i]
         queries = data.get("queries", [key])
         query = random.choice(queries)
-        log.info(f"Generating segment {i+1} for {query}...")
-        path = await generate_segment(i, key, query)
+        log.info(f"Generating segment {i+1} for {query} in {current_lang}...")
+        path = await generate_segment(i, key, query, language=current_lang)
         if path:
             segment_paths.append(path)
 

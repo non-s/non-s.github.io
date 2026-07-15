@@ -206,6 +206,24 @@ class DynamicStreamer:
                 log.error(f"Chat monitor error: {e}")
             time.sleep(60)
 
+    def content_updater_thread(self):
+        import random
+        log.info("Starting Content Updater Thread...")
+        while True:
+            try:
+                # Try to download the latest video run using GH CLI
+                log.info("Checking for new generated videos...")
+                run_id_cmd = "gh run list --workflow='Generate Long Video' --status=success --limit 1 --json databaseId --jq '.[0].databaseId'"
+                result = subprocess.run(run_id_cmd, shell=True, capture_output=True, text=True)
+                run_id = result.stdout.strip()
+                if run_id and run_id != "null":
+                    log.info(f"Found latest run {run_id}, downloading if not present...")
+                    dl_cmd = f"gh run download {run_id} --name 'long-video-{run_id}' --dir {self.videos_dir}"
+                    subprocess.run(dl_cmd, shell=True, capture_output=True)
+            except Exception as e:
+                log.error(f"Content updater error: {e}")
+            time.sleep(3600)  # Check every hour
+
     def start_ffmpeg_pipe(self):
         rtmp_url = f"rtmp://a.rtmp.youtube.com/live2/{self.stream_key}"
         cmd = [
@@ -225,15 +243,14 @@ class DynamicStreamer:
             log.error("No long videos found.")
             return
 
-        latest_mp4 = sorted(long_videos, key=lambda p: p.stat().st_mtime)[-1]
-        base_ts = self.convert_to_ts(latest_mp4)
-
         # Start background threads
         threading.Thread(target=self.chat_monitor_thread, daemon=True).start()
+        threading.Thread(target=self.content_updater_thread, daemon=True).start()
 
         self.start_ffmpeg_pipe()
 
         try:
+            import random
             while True:
                 # Check if we have a dynamic clip waiting
                 next_clip = None
@@ -245,6 +262,14 @@ class DynamicStreamer:
                     log.info(f"Injecting dynamic clip: {next_clip.name}")
                     target = next_clip
                 else:
+                    # Refresh the list of long videos so we include new ones downloaded by the updater
+                    long_videos = list(self.videos_dir.glob("long_video_*.mp4"))
+                    if not long_videos:
+                        time.sleep(5)
+                        continue
+                        
+                    chosen_mp4 = random.choice(long_videos)
+                    base_ts = self.convert_to_ts(chosen_mp4)
                     log.info(f"Looping base video: {base_ts.name}")
                     target = base_ts
 
