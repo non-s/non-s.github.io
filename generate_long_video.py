@@ -51,8 +51,7 @@ async def generate_segment(segment_index: int, topic_key: str, query: str) -> Pa
     for idx, clip in enumerate(clips):
         clip_path = segment_dir / f"clip_{segment_index}_{idx}.mp4"
         if not clip_path.exists():
-            r = subprocess.run(["curl", "-sL", clip.download_url, "-o", str(clip_path)])
-            if r.returncode != 0:
+            if not download_clip(clip, clip_path):
                 continue
         
         # Extract a middle frame for Multimodal Validation
