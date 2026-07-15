@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-07-15T00:49:58.019463+00:00",
+  "generated_at": "2026-07-15T00:54:33.600439+00:00",
   "floor": 82.0,
-  "pending": 24,
-  "ready": 23,
+  "pending": 25,
+  "ready": 24,
   "held": 1,
-  "rewritten": 3,
-  "average_opening_score": 96.33,
+  "rewritten": 4,
+  "average_opening_score": 96.08,
   "render_gate": "hold",
   "counts": {
-    "approved": 23,
-    "rewritten": 3,
+    "approved": 24,
+    "rewritten": 4,
     "hold": 1
   },
   "items": [
@@ -33,6 +33,26 @@
         "visible_cue_not_repeated_early"
       ],
       "action": "Hold until opening is rewritten."
+    },
+    {
+      "id": "94d7b569eb9a4ac7",
+      "title": "Mushrooms trade nutrients through underground threads",
+      "category": "fungi",
+      "render_gate": "approved",
+      "opening_score": 90.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Mushrooms reveal the mycelium threads first.",
+      "first_frame_text": "FUNGAL WEB",
+      "visible_cue": "mycelium threads",
+      "rewrite_applied": true,
+      "rewrite_reason": "stale_frame_zero_repair",
+      "before_score": 90.0,
+      "after_score": 90.0,
+      "risks": [
+        "frame_text_not_echoed_early"
+      ],
+      "action": "Use the frame-zero rewrite before rendering."
     },
     {
       "id": "77350ffd71ce5a69",
