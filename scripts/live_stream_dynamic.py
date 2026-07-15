@@ -29,7 +29,8 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(me
 log = logging.getLogger(__name__)
 
 from utils.ai_helper import ai_text
-from utils.tts import generate_speech
+import asyncio
+from generate_shorts import text_to_speech
 from utils.youtube_oauth import load_token_info, credentials_from_token_info, can_manage_comments
 from googleapiclient.discovery import build
 
@@ -131,7 +132,7 @@ class DynamicStreamer:
             
         # 2. Generate TTS
         tts_path = self.temp_dir / f"response_{int(time.time())}.mp3"
-        generate_speech(script, str(tts_path))
+        asyncio.run(text_to_speech(script, str(tts_path)))
         if not tts_path.exists():
             return None
             
