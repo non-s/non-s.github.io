@@ -40,6 +40,7 @@ jobs:
       contents: write
     env:
       MAX_SHORTS_PER_RUN: "1"
+      RETENTION_EASTER_EGG_ENABLED: "1"
       # Optional music bed is off by default for the Pexels-only restart.
       MUSIC_BED_ENABLED: ${{ vars.MUSIC_BED_ENABLED || '0' }}
       BROLL_SOURCE_MODE: ${{ vars.BROLL_SOURCE_MODE || 'pexels' }}

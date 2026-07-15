@@ -29,49 +29,57 @@ log = logging.getLogger(__name__)
 VIDEOS_DIR = Path("_videos")
 MAX_SEGMENTS = 15
 
-PROMPT = """
-You are a nature documentary narrator.
-Write a 3-sentence script about the following topic.
-Sentence 1: The hook.
-Sentence 2: The explanation.
-Sentence 3: The payoff/conclusion.
-Use clear, easy to understand English.
-Return ONLY valid JSON matching this schema:
-{
-    "title": "A short descriptive title",
-    "script": "The full 3-sentence script here",
-    "hook": "The hook (sentence 1) here"
-}
-
-TOPIC: {topic}
-"""
-
-
 async def generate_segment(segment_index: int, topic_key: str, query: str) -> Path | None:
     """Generate a single 16:9 segment."""
     segment_dir = VIDEOS_DIR / "compilation_temp"
     segment_dir.mkdir(parents=True, exist_ok=True)
 
-    # 1. Fetch B-roll
-    clips = fetch_broll_clips(query, want_n=1, orientation="landscape")
+    # 1. Multi-Agent Script Generation
+    from utils.multi_agent_board import run_editorial_board
+    data = run_editorial_board(query)
+
+    # 1. Fetch B-roll with Multimodal Quality Gate
+    from utils.visual_qa import evaluate_frame
+    
+    # We ask for up to 3 clips to have fallbacks if visual QA fails
+    clips = fetch_broll_clips(query, want_n=3, orientation="landscape")
     if not clips:
         log.warning(f"No clips found for {query}")
         return None
-    clip = clips[0]
-    clip_path = segment_dir / f"clip_{segment_index}.mp4"
-    if not clip_path.exists():
-        r = subprocess.run(["curl", "-sL", clip.download_url, "-o", str(clip_path)])
-        if r.returncode != 0:
-            return None
-
-    # 2. AI Script
-    prompt = PROMPT.replace("{topic}", query)
-    try:
-        response = ai_text(prompt, json_mode=True)
-        data = json.loads(response) if isinstance(response, str) else response
-    except Exception as e:
-        log.error(f"AI failed: {e}")
+        
+    valid_clip_path = None
+    for clip in clips:
+        clip_path = segment_dir / f"clip_{segment_index}_{clip.id}.mp4"
+        if not clip_path.exists():
+            r = subprocess.run(["curl", "-sL", clip.download_url, "-o", str(clip_path)])
+            if r.returncode != 0:
+                continue
+        
+        # Extract a middle frame for Multimodal Validation
+        frame_path = segment_dir / f"frame_{segment_index}_{clip.id}.jpg"
+        subprocess.run(["ffmpeg", "-y", "-i", str(clip_path), "-vf", "select=eq(n\,30)", "-vframes", "1", str(frame_path)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        
+        if frame_path.exists():
+            evaluation = evaluate_frame(frame_path, expected_subject=query)
+            if evaluation.get("approved", True):
+                log.info(f"Multimodal Gate Approved clip {clip.id} for {query}")
+                valid_clip_path = clip_path
+                break
+            else:
+                log.warning(f"Multimodal Gate Rejected clip {clip.id} for {query}. Reason: {evaluation.get('reason')}")
+        else:
+            # If ffmpeg fails, just accept the video
+            valid_clip_path = clip_path
+            break
+            
+    if not valid_clip_path:
+        log.warning(f"All clips rejected by Multimodal Gate for {query}")
         return None
+    
+    # Symlink or rename the valid clip to the expected clip_path
+    final_clip_path = segment_dir / f"clip_{segment_index}.mp4"
+    if final_clip_path.exists(): final_clip_path.unlink()
+    valid_clip_path.rename(final_clip_path)
 
     script = data.get("script")
     if not script:
