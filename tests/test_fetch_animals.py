@@ -109,12 +109,12 @@ def test_variation_key_is_stable_and_clip_specific():
 
 
 def test_ai_enhance_includes_clip_variation_key_in_prompt(monkeypatch):
-    seen = {"prompts": []}
+    seen = {"prompts": [], "seeds": []}
     clip_url = "https://www.pexels.com/video/cat-playing/123/"
 
     def fake_ai(prompt, *args, **kwargs):
         seen["prompts"].append(prompt)
-        seen["seed"] = kwargs.get("seed")
+        seen["seeds"].append(kwargs.get("seed"))
         return _AI_OK_PAYLOAD
 
     monkeypatch.setattr(fetch_animals, "ai_text", fake_ai)
@@ -124,7 +124,7 @@ def test_ai_enhance_includes_clip_variation_key_in_prompt(monkeypatch):
     assert out is not None
     assert any(f"Clip variation key: {expected_key}" in p for p in seen["prompts"])
     assert not any(clip_url in p for p in seen["prompts"])
-    assert isinstance(seen["seed"], int)
+    assert isinstance(seen["seeds"][0], int)
 
 
 def test_deterministic_fallback_keeps_visible_subject_contract():
