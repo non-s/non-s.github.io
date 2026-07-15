@@ -74,7 +74,7 @@ def test_build_broll_short_succeeds(tmp_path, stub_ffprobe, stub_ffmpeg_ok, monk
     last_cmd = stub_ffmpeg_ok[-1]
     # Must include all three -i broll paths plus the audio.
     input_idxs = [i for i, a in enumerate(last_cmd) if a == "-i"]
-    assert len(input_idxs) == 4  # 3 clips + 1 audio (no brand cards)
+    assert len(input_idxs) in (4, 5)  # 3 clips + 1 audio + optional bgm
     # Filtergraph references concat.
     fg_idx = last_cmd.index("-filter_complex")
     assert "concat=n=3" in last_cmd[fg_idx + 1]
@@ -111,8 +111,8 @@ def test_build_broll_short_with_brand_cards(tmp_path, stub_ffprobe, stub_ffmpeg_
     assert ok
     last_cmd = stub_ffmpeg_ok[-1]
     input_idxs = [i for i, a in enumerate(last_cmd) if a == "-i"]
-    # 3 clips + 2 brand cards + 1 audio.
-    assert len(input_idxs) == 6
+    # 3 clips + 2 brand cards + 1 audio + optional bgm
+    assert len(input_idxs) in (6, 7)
     # Filtergraph concats intro + 3 clips + outro = 5 segments.
     fg_idx = last_cmd.index("-filter_complex")
     assert "concat=n=5" in last_cmd[fg_idx + 1]
