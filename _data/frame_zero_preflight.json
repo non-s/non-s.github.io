@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-07-15T18:23:22.398094+00:00",
+  "generated_at": "2026-07-15T18:28:42.230844+00:00",
   "floor": 82.0,
-  "pending": 18,
-  "ready": 17,
+  "pending": 19,
+  "ready": 18,
   "held": 1,
-  "rewritten": 3,
-  "average_opening_score": 95.11,
+  "rewritten": 4,
+  "average_opening_score": 94.95,
   "render_gate": "hold",
   "counts": {
-    "approved": 17,
-    "rewritten": 3,
+    "approved": 18,
+    "rewritten": 4,
     "hold": 1
   },
   "items": [
@@ -51,6 +51,26 @@
       "after_score": 90.0,
       "risks": [
         "frame_text_not_echoed_early"
+      ],
+      "action": "Use the frame-zero rewrite before rendering."
+    },
+    {
+      "id": "bfdf61047fdeb26c",
+      "title": "Auroras glow when solar particles hit air",
+      "category": "weather",
+      "render_gate": "approved",
+      "opening_score": 92.0,
+      "frame_zero_score": 92.0,
+      "opening_state": "retention_ready",
+      "opening_line": "Auroras start with charged particles from the sun.",
+      "first_frame_text": "AURORA GLOW",
+      "visible_cue": "aurora glow",
+      "rewrite_applied": true,
+      "rewrite_reason": "generic_opening_copy",
+      "before_score": 70.0,
+      "after_score": 92.0,
+      "risks": [
+        "subject_not_frontloaded"
       ],
       "action": "Use the frame-zero rewrite before rendering."
     },

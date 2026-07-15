@@ -1,13 +1,14 @@
 {
-  "generated_at": "2026-07-15T18:23:22.500612+00:00",
-  "pending": 18,
+  "generated_at": "2026-07-15T18:28:42.342949+00:00",
+  "pending": 19,
   "summary": {
-    "average_score": 99.78,
+    "average_score": 99.47,
     "states": {
-      "publish_minded": 18
+      "publish_minded": 19
     },
     "top_risks": {
-      "missing_visual_cue": 1
+      "missing_visual_cue": 1,
+      "subject_not_immediately_clear": 1
     }
   },
   "publish_ready_summary": {
@@ -1130,6 +1131,71 @@
           "Name the visual cue the viewer should watch in the first second."
         ]
       }
+    },
+    {
+      "id": "bfdf61047fdeb26c",
+      "title": "Auroras glow when solar particles hit air",
+      "category": "weather",
+      "queue_state": "rewrite",
+      "youtube_brain": {
+        "score": 94,
+        "state": "publish_minded",
+        "animal": "solar",
+        "subject": "solar",
+        "story_format": "rare_nature",
+        "viewer_promise": "See why solar rare nature matters.",
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "opening_retention": {
+          "score": 92.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "atmosphere",
+          "cue_terms": [
+            "aurora",
+            "color",
+            "glow"
+          ],
+          "frame_hook_bridge": [
+            "aurora"
+          ],
+          "cue_bridge": [
+            "aurora",
+            "color"
+          ],
+          "strengths": [
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": [
+            "subject_not_frontloaded"
+          ]
+        },
+        "risks": [
+          "subject_not_immediately_clear"
+        ],
+        "strengths": [
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "commands": [
+          "Open with the visible subject before the behavior."
+        ]
+      }
     }
   ],
   "top": [
@@ -2241,6 +2307,71 @@
         ],
         "commands": [
           "Name the visual cue the viewer should watch in the first second."
+        ]
+      }
+    },
+    {
+      "id": "bfdf61047fdeb26c",
+      "title": "Auroras glow when solar particles hit air",
+      "category": "weather",
+      "queue_state": "rewrite",
+      "youtube_brain": {
+        "score": 94,
+        "state": "publish_minded",
+        "animal": "solar",
+        "subject": "solar",
+        "story_format": "rare_nature",
+        "viewer_promise": "See why solar rare nature matters.",
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "opening_retention": {
+          "score": 92.0,
+          "state": "retention_ready",
+          "approved": true,
+          "subject": "atmosphere",
+          "cue_terms": [
+            "aurora",
+            "color",
+            "glow"
+          ],
+          "frame_hook_bridge": [
+            "aurora"
+          ],
+          "cue_bridge": [
+            "aurora",
+            "color"
+          ],
+          "strengths": [
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "risks": [
+            "subject_not_frontloaded"
+          ]
+        },
+        "risks": [
+          "subject_not_immediately_clear"
+        ],
+        "strengths": [
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "commands": [
+          "Open with the visible subject before the behavior."
         ]
       }
     }
