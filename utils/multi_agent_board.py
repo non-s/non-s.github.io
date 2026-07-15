@@ -71,20 +71,26 @@ def run_editorial_board(topic: str, language: str = "pt") -> Dict[str, str]:
     Biological Fact: {fact}
     Target Language: {language}
     
-    Write a brilliant, short script that perfectly synchronizes with a 5-10 second fast-paced video clip.
-    RULES FOR PERFECT PACING:
+    Write a brilliant, short script that perfectly synchronizes with a fast-paced video clip.
+    RULES FOR ALGORITHMIC VIRALITY (MANDATORY):
     - The script MUST be in the Target Language ({language}).
     - Exactly 3 sentences. No more, no less.
-    - Keep sentences short and rhythmic (maximum 8-12 words per sentence) so the text stays in sync with dynamic video transitions.
+    - Keep sentences short and rhythmic (maximum 8-12 words per sentence).
+    - CONTROVERSIAL HOOK: Sentence 1 must be highly controversial, mysterious, or challenge a common belief to spark comments (e.g. "Forget everything you knew about...").
+    - INFINITE LOOP TRAP: The LAST word of Sentence 3 must perfectly connect grammatically with the FIRST word of Sentence 1, so when the video loops, it sounds like a continuous sentence.
     
-    Sentence 1: The hook (must be punchy and mysterious).
+    Example of Infinite Loop:
+    (Sentence 3 ends with): "...and that is the exact reason why"
+    (Sentence 1 starts with): "the great white shark never stops swimming."
+    
+    Sentence 1: The controversial hook (Start of the loop).
     Sentence 2: The explanation (using the biological fact).
-    Sentence 3: The payoff/conclusion (leaving the viewer amazed).
+    Sentence 3: The payoff/conclusion (End of the loop, leading directly into Sentence 1).
     
     Return ONLY a JSON object with this schema:
     {{
-        "title": "A short, SEO-optimized title (under 50 chars)",
-        "script": "The full 3-sentence script in {language}",
+        "title": "A short, highly clickbaity SEO title (under 50 chars)",
+        "script": "The full 3-sentence loopable script in {language}",
         "hook": "The hook (sentence 1)"
     }}
     """

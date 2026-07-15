@@ -108,6 +108,10 @@ def _overlay_copy(text: str, max_chars: int = 42) -> str:
 
 def _mix_audio(cmd: list[str], parts: list[str], audio_path: Path, audio_idx: int, sfx_delay_ms: int = 0) -> str:
     import random
+    from utils.sfx_generator import ensure_sfx_library
+    
+    # Generate cinematic SFX if they don't exist
+    ensure_sfx_library(Path("_assets/audio"))
 
     bgm_candidates = [
         p for p in Path("_assets/audio/bgm").glob("*.*") if p.suffix.lower() in (".mp3", ".wav", ".m4a", ".aac")
@@ -229,16 +233,14 @@ def build_broll_short(
     segment_frames = int(round(seg_dur * TARGET_FPS))
     for i, clip in enumerate(broll_paths):
         zoom_in = i % 2 == 0
-        # zoompan z starts at 1 and grows (or shrinks) per frame. A 1.08
-        # final zoom over seg_dur ≈ 1.78% per second — slow enough to
-        # feel cinematic, not so fast the viewer notices the crop walking.
-        # Direction alternates per clip (in / out / in) so consecutive
-        # segments feel different and the edit has energy.
-        zoom_step = 0.08 / max(segment_frames, 1)
+        # Subway Surfers Effect: A sudden scale pop every 1.8 seconds (54 frames)
+        # to reset the user's attention span (Dopamine hit).
+        pop_interval = int(1.8 * TARGET_FPS)
+        zoom_step = 0.15 / max(segment_frames, 1)
         if zoom_in:
-            z_expr = f"min(zoom+{zoom_step:.6f}\\,1.08)"
+            z_expr = f"if(not(mod(on\\,{pop_interval}))\\,1.00\\,min(zoom+{zoom_step:.6f}\\,1.15))"
         else:
-            z_expr = f"if(eq(on\\,0)\\,1.08\\,max(zoom-{zoom_step:.6f}\\,1.00))"
+            z_expr = f"if(not(mod(on\\,{pop_interval}))\\,1.15\\,max(zoom-{zoom_step:.6f}\\,1.00))"
         # Face-aware crop: bias the crop window so the face stays
         # centred in the cropped frame. Face detection runs on the
         # ORIGINAL frame; once we scale to 2× the offset scales too.
