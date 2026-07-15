@@ -62,11 +62,11 @@ async def generate_segment(segment_index: int, topic_key: str, query: str) -> Pa
         if frame_path.exists():
             evaluation = evaluate_frame(frame_path, expected_subject=query)
             if evaluation.get("approved", True):
-                log.info(f"Multimodal Gate Approved clip {clip.id} for {query}")
+                log.info(f"Multimodal Gate Approved clip {idx} for {query}")
                 valid_clip_path = clip_path
                 break
             else:
-                log.warning(f"Multimodal Gate Rejected clip {clip.id} for {query}. Reason: {evaluation.get('reason')}")
+                log.warning(f"Multimodal Gate Rejected clip {idx} for {query}. Reason: {evaluation.get('reason')}")
         else:
             # If ffmpeg fails, just accept the video
             valid_clip_path = clip_path
