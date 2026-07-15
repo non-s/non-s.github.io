@@ -1,5 +1,4 @@
 import subprocess
-import os
 from pathlib import Path
 
 def generate_cinematic_whoosh(output_path: Path):
