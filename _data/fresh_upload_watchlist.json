@@ -5,25 +5,25 @@
     24
   ],
   "counts": {
-    "analytics_due": 2,
-    "awaiting_1h": 1,
-    "high_priority": 2,
+    "analytics_due": 3,
+    "awaiting_1h": 0,
+    "high_priority": 3,
     "repair_candidates": 0,
     "tracked": 7
   },
-  "generated_at": "2026-07-15T15:56:20.972034+00:00",
+  "generated_at": "2026-07-15T16:46:53.567980+00:00",
   "items": [
     {
-      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.687,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 1.529,
       "category": "dogs",
       "checkpoints": [
         {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-15T16:15:08.329086+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +47,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -24,
         "due_at": "2026-07-15T16:15:08.329086+00:00",
         "label": "1h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Pet Secrets",
-      "state": "awaiting_1h",
+      "state": "analytics_due",
       "title": "This scent map gives dogs away",
       "uploaded_at": "2026-07-15T15:15:08.329086+00:00",
       "url": "https://www.youtube.com/shorts/YZMh9v8WHJI",
@@ -70,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.832,
+      "age_hours": 2.675,
       "category": "farm",
       "checkpoints": [
         {
@@ -125,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.917,
+      "age_hours": 3.759,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.426,
+      "age_hours": 4.268,
       "category": "insects",
       "checkpoints": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.736,
+      "age_hours": 5.578,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -290,7 +290,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 38.843,
+      "age_hours": 39.686,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -345,7 +345,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 39.316,
+      "age_hours": 40.158,
       "category": "discoveries",
       "checkpoints": [
         {
