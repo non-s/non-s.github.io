@@ -193,6 +193,8 @@ def _frontload_title(title: str, animal: str) -> str:
                 return rest[:1].upper() + rest[1:]
             return f"{animal} {rest}".strip()
     if lower.startswith(("this ", "these ", "they ")):
+        if animal_root in lower:
+            return cleaned
         return f"{animal} {cleaned}".strip()
     return f"{animal} {cleaned}".strip()
 
