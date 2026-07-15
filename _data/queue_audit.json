@@ -1,39 +1,46 @@
 {
-  "generated_at": "2026-07-15T21:45:15.011859+00:00",
-  "pending": 16,
+  "generated_at": "2026-07-15T22:17:22.307442+00:00",
+  "pending": 15,
   "states": {
     "rewrite": 12,
-    "publish_ready": 4
+    "publish_ready": 3
   },
   "mechanism_clusters": {
     "beak_signal": 1,
     "face_recognition": 1,
-    "call_signal": 1,
     "scent_map": 1,
-    "tongue_smell": 1
+    "tongue_smell": 1,
+    "call_signal": 1
   },
   "rights": {
-    "approved": 16
+    "approved": 15
   },
   "prune_summary": {
-    "pending_before": 18,
-    "pending_after": 16,
-    "rejected": 2,
+    "pending_before": 15,
+    "pending_after": 15,
+    "rejected": 0,
     "repair_needed": 0,
     "repaired": 4,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 16,
+      "objective_gate:bootstrap_observe_before_scaling": 15,
       "editor_in_chief:script quality gate blocked the narration": 7,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 2,
-      "duplicate_title": 1,
-      "off_topic_visual": 1,
-      "script_hook_mismatch": 1,
+      "editor_in_chief:subject repeated inside 3-day cooldown": 3,
       "editor_in_chief:editorial score 46 is below 62": 1,
       "editorial_cooldown_supply_fallback": 1,
       "publish_ready_supply_reserve_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "c33b553fdb94fa59",
+      "title": "Elephants Elefantes usam orelhas como radiadores antes de...",
+      "reasons": [
+        "subject repeated inside 3-day cooldown",
+        "humanity score is too low",
+        "editorial score 41 is below 62"
+      ],
+      "stage": "editor_in_chief"
+    },
     {
       "id": "cf8cf6e15f4f46f2",
       "title": "hiker on wet alpine trail in rain gear",
@@ -307,16 +314,6 @@
         "duplicate_title"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "6fee851cb7a2ae19",
-      "title": "hedgehog raids agave at night",
-      "reasons": [
-        "copy_subject_mismatch",
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -494,7 +491,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T21:44:58.593152+00:00",
+        "checked_at": "2026-07-15T22:17:06.905649+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -587,7 +584,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 108,
+          "sample_count": 109,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1133,7 +1130,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T21:44:58.587807+00:00",
+        "checked_at": "2026-07-15T22:17:06.897817+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1225,7 +1222,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 108,
+          "sample_count": 109,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1771,7 +1768,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T21:44:58.590033+00:00",
+        "checked_at": "2026-07-15T22:17:06.900155+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1865,7 +1862,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 108,
+          "sample_count": 109,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -2415,7 +2412,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T21:44:58.594873+00:00",
+        "checked_at": "2026-07-15T22:17:06.907396+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2509,7 +2506,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 108,
+          "sample_count": 109,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -2882,1304 +2879,6 @@
       }
     },
     {
-      "id": "c33b553fdb94fa59",
-      "title": "Elephants use ear radiator before they trick",
-      "category": "wildlife",
-      "publish_score": {
-        "approved": true,
-        "category": "wildlife",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "ear",
-            "ears",
-            "radiator",
-            "surface"
-          ],
-          "cue_terms": [
-            "ear",
-            "ears",
-            "radiator",
-            "surface"
-          ],
-          "frame_hook_bridge": [
-            "ear",
-            "radiator"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "elephants"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 70,
-          "signals": {
-            "comment_potential": 62,
-            "educational_potential": 73,
-            "emotional_potential": 44,
-            "novelty": 59,
-            "replay_potential": 82,
-            "viral_potential": 75,
-            "visual_potential": 79
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 79,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 87,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 66
-          },
-          "verdict": "ready"
-        },
-        "score": 88.7,
-        "state": "publish_ready",
-        "story_format": "body_superpower",
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.542,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.39,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-07-15T21:44:58.596147+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 88.7,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 88.7,
-      "youtube_brain": {
-        "animal": "elephants",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "ear",
-            "ears",
-            "radiator",
-            "surface"
-          ],
-          "cue_terms": [
-            "ear",
-            "ears",
-            "radiator",
-            "surface"
-          ],
-          "frame_hook_bridge": [
-            "ear",
-            "radiator"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "elephants"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "body_superpower",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "elephants",
-        "viewer_promise": "See why elephants body superpower matters."
-      },
-      "packaging": {
-        "community_prompt": "Which elephants clue should Wild Brief compare next in Animal Superpowers?",
-        "cta_prompt": "Want more wild behavior explained without the fluff?",
-        "curiosity_gap": {
-          "hook": "Elephants use ear radiator before they trick",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "story"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "body superpower",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "specific_question",
-            "format": "fresh_variant",
-            "hook": "new_hook",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "explore",
-          "sample_count": 108,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 47.78,
-            "format:winner_inspired": 47.78,
-            "hook:pattern_reuse": 47.78,
-            "thumbnail:new_thumbnail": 47.78
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "ear",
-              "ears",
-              "radiator",
-              "surface"
-            ],
-            "cue_terms": [
-              "ear",
-              "ears",
-              "radiator",
-              "surface"
-            ],
-            "frame_hook_bridge": [
-              "ear",
-              "radiator"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "elephants"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Elephants use their ears as living radiators",
-          "Elephants show why the ear radiator matters.",
-          "Elephants show why the ear radiator matters.",
-          "Elephants show why the ear radiator matters.",
-          "Elephants give away the answer through ear radiator"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "ear radiator",
-          "ending_line": "Which giant animal trick next?",
-          "final_line": "Now the ear radiator at the start makes sense.",
-          "loop_score": 0.836,
-          "opening_line": "Elephants use their ears as living radiators.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "ear radiator",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.836,
-        "next_episode_question": "Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "ear",
-            "ears",
-            "radiator",
-            "surface"
-          ],
-          "cue_terms": [
-            "ear",
-            "ears",
-            "radiator",
-            "surface"
-          ],
-          "frame_hook_bridge": [
-            "ear",
-            "radiator"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "elephants"
-        },
-        "pinned_comment": "Watch the ear radiator again. Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.17,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 18,
-          "first_2s_narration": "Elephants use their ears as living radiators Watch the ear surface because",
-          "first_frame_text": "EAR RADIATOR",
-          "first_frame_text_words": 2,
-          "hook": "Elephants use their ears as living radiators.",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.836,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "ear",
-              "ears",
-              "radiator",
-              "surface"
-            ],
-            "cue_terms": [
-              "ear",
-              "ears",
-              "radiator",
-              "surface"
-            ],
-            "frame_hook_bridge": [
-              "ear",
-              "radiator"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "elephants"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the ear radiator, so viewers rewatch the elephants clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 79,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 87,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 66
-          },
-          "verdict": "ready"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Elephants use their ears as living radiators Watch the ear surface because",
-          "first_frame_text": "EAR RADIATOR",
-          "next_episode_question": "Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains Elephants behavior through the visible ear radiator.",
-            "series": "Animal Superpowers",
-            "subject": "elephants",
-            "terms": [
-              "elephants",
-              "ear radiator",
-              "wildlife",
-              "body superpower"
-            ],
-            "title_variant": "Elephants behavior: ear radiator explained",
-            "visible_cue": "ear radiator"
-          },
-          "series": "Animal Superpowers",
-          "subject": "elephants",
-          "visible_cue": "ear radiator"
-        },
-        "risks": [],
-        "score": 98,
-        "search_intent": {
-          "description_line": "This Short explains Elephants behavior through the visible ear radiator.",
-          "series": "Animal Superpowers",
-          "subject": "elephants",
-          "terms": [
-            "elephants",
-            "ear radiator",
-            "wildlife",
-            "body superpower"
-          ],
-          "title_variant": "Elephants behavior: ear radiator explained",
-          "visible_cue": "ear radiator"
-        },
-        "selected_variant": {
-          "hook": "Elephants use their ears as living radiators",
-          "score": 83,
-          "thumbnail_text": "EAR RADIATOR",
-          "title": "Elephants cool blood through giant ears"
-        },
-        "series": "Animal Superpowers #14",
-        "series_identity": {
-          "continuity_prompt": "Next in Animal Superpowers: compare this with another force of nature.",
-          "episode": 14,
-          "label": "Animal Superpowers #14",
-          "series": "Animal Superpowers"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "EAR RADIATOR",
-          "WATCH EAR RADIATOR",
-          "ELEPHANTS TRICK",
-          "EAR RADIATOR MATTERS",
-          "EAR RADIATOR FIRST",
-          "EAR RADIATOR REVEAL",
-          "EAR RADIATOR CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Elephants cool blood through giant ears",
-          "Elephants use ear radiator before they trick",
-          "This ear radiator gives elephants away",
-          "Why elephants trick after one ear radiator",
-          "Elephants reveal the answer with ear radiator",
-          "The ear radiator that changes the moment",
-          "Elephants make one ear radiator matter",
-          "Elephants show the hidden answer in seconds",
-          "Elephants: watch this ear radiator",
-          "Watch elephants after the ear radiator"
-        ],
-        "top_variants": [
-          {
-            "hook": "Elephants use their ears as living radiators",
-            "score": 83,
-            "thumbnail_text": "EAR RADIATOR",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Watch the ear radiator; it explains the behavior",
-            "score": 83,
-            "thumbnail_text": "EAR RADIATOR",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Start with the ear radiator; it changes the scene",
-            "score": 83,
-            "thumbnail_text": "EAR RADIATOR",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Elephants use their ears as living radiators",
-            "score": 76,
-            "thumbnail_text": "WATCH EAR RADIATOR",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Watch the ear radiator; it explains the behavior",
-            "score": 76,
-            "thumbnail_text": "WATCH EAR RADIATOR",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Start with the ear radiator; it changes the scene",
-            "score": 76,
-            "thumbnail_text": "WATCH EAR RADIATOR",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Elephants use their ears as living radiators",
-            "score": 76,
-            "thumbnail_text": "ELEPHANTS TRICK",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Watch the ear radiator; it explains the behavior",
-            "score": 76,
-            "thumbnail_text": "ELEPHANTS TRICK",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Start with the ear radiator; it changes the scene",
-            "score": 76,
-            "thumbnail_text": "ELEPHANTS TRICK",
-            "title": "Elephants cool blood through giant ears"
-          },
-          {
-            "hook": "Elephants use their ears as living radiators",
-            "score": 76,
-            "thumbnail_text": "EAR RADIATOR MATTERS",
-            "title": "Elephants cool blood through giant ears"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
-      "id": "2a8f3f3725c00fe2",
-      "title": "Elephants can feel rumbles through the ground",
-      "category": "wildlife",
-      "publish_score": {
-        "approved": true,
-        "category": "wildlife",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 86,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "call_signal",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "ground"
-          ],
-          "cue_terms": [
-            "ground"
-          ],
-          "frame_hook_bridge": [
-            "ground"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "elephants"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 66,
-          "signals": {
-            "comment_potential": 54,
-            "educational_potential": 66,
-            "emotional_potential": 35,
-            "novelty": 69,
-            "replay_potential": 92,
-            "viral_potential": 77,
-            "visual_potential": 59
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 76,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 82,
-            "visual_score": 50
-          },
-          "verdict": "rewrite"
-        },
-        "score": 86.1,
-        "state": "publish_ready",
-        "story_format": "body_superpower",
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.542,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.39,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-07-15T21:44:58.597218+00:00",
-        "mechanism_cluster": "call_signal",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 80.1,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 80.1,
-      "youtube_brain": {
-        "animal": "elephants",
-        "commands": [
-          "Name the visual cue the viewer should watch in the first second."
-        ],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "ground"
-          ],
-          "cue_terms": [
-            "ground"
-          ],
-          "frame_hook_bridge": [
-            "ground"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "elephants"
-        },
-        "replay_reason": "weak",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [
-          "missing_visual_cue"
-        ],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 96,
-        "state": "publish_minded",
-        "story_format": "body_superpower",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "elephants",
-        "viewer_promise": "See why elephants body superpower matters."
-      },
-      "packaging": {
-        "community_prompt": "Which elephants clue should Wild Brief compare next in Animal Superpowers?",
-        "cta_prompt": "Want more wild behavior explained without the fluff?",
-        "curiosity_gap": {
-          "hook": "Why do these elephants change after the ground signal?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "body superpower",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 108,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 47.78,
-            "format:winner_inspired": 47.78,
-            "hook:pattern_reuse": 47.78,
-            "thumbnail:new_thumbnail": 47.78
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "ground"
-            ],
-            "cue_terms": [
-              "ground"
-            ],
-            "frame_hook_bridge": [
-              "ground"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "elephants"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Elephants can sense low rumbles underfoot",
-          "Elephants reveal the ground signal first",
-          "Elephants show why the ground signal matters.",
-          "Elephants show why the ground signal matters.",
-          "Elephants show why the ground signal matters."
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "ground signal",
-          "ending_line": "Would you notice the signal?",
-          "final_line": "Now the ground signal at the start makes sense.",
-          "loop_score": 0.908,
-          "opening_line": "Elephants reveal the ground signal first.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "ground signal",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.908,
-        "next_episode_question": "Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "ground"
-          ],
-          "cue_terms": [
-            "ground"
-          ],
-          "frame_hook_bridge": [
-            "ground"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "elephants"
-        },
-        "pinned_comment": "Watch the ground signal again. Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 16.12,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 16,
-          "first_2s_narration": "Elephants reveal the ground signal first Watch closely because low elephant calls",
-          "first_frame_text": "GROUND SIGNAL",
-          "first_frame_text_words": 2,
-          "hook": "Elephants reveal the ground signal first.",
-          "hook_specificity": 0.78,
-          "hook_words": 6,
-          "loop_score": 0.908,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "ground"
-            ],
-            "cue_terms": [
-              "ground"
-            ],
-            "frame_hook_bridge": [
-              "ground"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "elephants"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the ground signal, so viewers rewatch the elephants clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 76,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 82,
-            "visual_score": 50
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Elephants reveal the ground signal first Watch closely because low elephant calls",
-          "first_frame_text": "GROUND SIGNAL",
-          "next_episode_question": "Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains Elephants behavior through the visible ground signal.",
-            "series": "Animal Superpowers",
-            "subject": "elephants",
-            "terms": [
-              "elephants",
-              "ground signal",
-              "wildlife",
-              "body superpower"
-            ],
-            "title_variant": "Elephants behavior: ground signal explained",
-            "visible_cue": "ground signal"
-          },
-          "series": "Animal Superpowers",
-          "subject": "elephants",
-          "visible_cue": "ground signal"
-        },
-        "risks": [],
-        "score": 97,
-        "search_intent": {
-          "description_line": "This Short explains Elephants behavior through the visible ground signal.",
-          "series": "Animal Superpowers",
-          "subject": "elephants",
-          "terms": [
-            "elephants",
-            "ground signal",
-            "wildlife",
-            "body superpower"
-          ],
-          "title_variant": "Elephants behavior: ground signal explained",
-          "visible_cue": "ground signal"
-        },
-        "selected_variant": {
-          "hook": "Elephants can sense low rumbles underfoot",
-          "score": 80,
-          "thumbnail_text": "GROUND SIGNAL",
-          "title": "Elephants can feel rumbles through the ground"
-        },
-        "series": "Animal Superpowers #14",
-        "series_identity": {
-          "continuity_prompt": "Next in Animal Superpowers #14: compare this with another force of nature.",
-          "episode": 1,
-          "label": "Animal Superpowers #14",
-          "series": "Animal Superpowers #14"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "GROUND SIGNAL",
-          "WATCH GROUND SIGNAL",
-          "ELEPHANTS SIGNAL",
-          "GROUND SIGNAL MATTERS",
-          "GROUND SIGNAL FIRST",
-          "GROUND SIGNAL REVEAL",
-          "GROUND SIGNAL CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Elephants can feel rumbles through the ground",
-          "Elephants signal through ground signal",
-          "Elephants use ground signal before they signal",
-          "This ground signal gives elephants away",
-          "Why elephants signal after one ground signal",
-          "Elephants reveal the answer with ground signal",
-          "The ground signal that changes the moment",
-          "Elephants make one ground signal matter",
-          "Elephants show the hidden answer in seconds",
-          "Elephants: watch this ground signal"
-        ],
-        "top_variants": [
-          {
-            "hook": "Elephants can sense low rumbles underfoot",
-            "score": 80,
-            "thumbnail_text": "GROUND SIGNAL",
-            "title": "Elephants can feel rumbles through the ground"
-          },
-          {
-            "hook": "Elephants reveal the ground signal first",
-            "score": 80,
-            "thumbnail_text": "GROUND SIGNAL",
-            "title": "Elephants can feel rumbles through the ground"
-          },
-          {
-            "hook": "Watch the ground signal; it explains the behavior",
-            "score": 80,
-            "thumbnail_text": "GROUND SIGNAL",
-            "title": "Elephants can feel rumbles through the ground"
-          },
-          {
-            "hook": "Elephants can sense low rumbles underfoot",
-            "score": 73,
-            "thumbnail_text": "WATCH GROUND SIGNAL",
-            "title": "Elephants can feel rumbles through the ground"
-          },
-          {
-            "hook": "Elephants reveal the ground signal first",
-            "score": 73,
-            "thumbnail_text": "WATCH GROUND SIGNAL",
-            "title": "Elephants can feel rumbles through the ground"
-          },
-          {
-            "hook": "Watch the ground signal; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "WATCH GROUND SIGNAL",
-            "title": "Elephants can feel rumbles through the ground"
-          },
-          {
-            "hook": "Elephants can sense low rumbles underfoot",
-            "score": 73,
-            "thumbnail_text": "ELEPHANTS SIGNAL",
-            "title": "Elephants can feel rumbles through the ground"
-          },
-          {
-            "hook": "Elephants reveal the ground signal first",
-            "score": 73,
-            "thumbnail_text": "ELEPHANTS SIGNAL",
-            "title": "Elephants can feel rumbles through the ground"
-          },
-          {
-            "hook": "Watch the ground signal; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "ELEPHANTS SIGNAL",
-            "title": "Elephants can feel rumbles through the ground"
-          },
-          {
-            "hook": "Elephants can sense low rumbles underfoot",
-            "score": 73,
-            "thumbnail_text": "GROUND SIGNAL MATTERS",
-            "title": "Elephants can feel rumbles through the ground"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "5492c4505c453345",
       "title": "Cats groom to reset their scent map",
       "category": "cats",
@@ -4371,7 +3070,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T21:44:58.598287+00:00",
+        "checked_at": "2026-07-15T22:17:06.909913+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4471,7 +3170,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 108,
+          "sample_count": 109,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -5039,7 +3738,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T21:44:58.585603+00:00",
+        "checked_at": "2026-07-15T22:17:06.895200+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5135,7 +3834,7 @@
           },
           "explore_rate": 0.1,
           "mode": "explore",
-          "sample_count": 108,
+          "sample_count": 109,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -5695,7 +4394,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T21:44:58.604728+00:00",
+        "checked_at": "2026-07-15T22:17:06.915047+00:00",
         "mechanism_cluster": "tongue_smell",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5794,7 +4493,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 108,
+          "sample_count": 109,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6180,6 +4879,1270 @@
       }
     },
     {
+      "id": "15162aaa98b392f2",
+      "title": "Turtles steer home by reading hidden currents",
+      "category": "ocean",
+      "publish_score": {
+        "approved": true,
+        "category": "ocean",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "current"
+          ],
+          "cue_terms": [
+            "current",
+            "map"
+          ],
+          "frame_hook_bridge": [
+            "current"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "turtles"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 66,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 66,
+            "emotional_potential": 44,
+            "novelty": 69,
+            "replay_potential": 72,
+            "viral_potential": 75,
+            "visual_potential": 69
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "single_fact",
+        "subscriber_conversion": {
+          "comment_probability": 0.237,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "hook_invites_return",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.278,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 92,
+          "state": "strong",
+          "subscriber_probability": 0.131
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.542,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.39,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 3
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-07-15T22:17:06.902051+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling",
+          "editor_in_chief:script quality gate blocked the narration"
+        ],
+        "score": 70.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 70.0,
+      "youtube_brain": {
+        "animal": "turtles",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "current"
+          ],
+          "cue_terms": [
+            "current",
+            "map"
+          ],
+          "frame_hook_bridge": [
+            "current"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "turtles"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "single_fact",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "turtles",
+        "viewer_promise": "See why turtles single fact matters."
+      },
+      "packaging": {
+        "community_prompt": "Which turtles clue should Wild Brief compare next in Ocean Mysteries?",
+        "cta_prompt": "Want to uncover what is still hidden in the ocean?",
+        "curiosity_gap": {
+          "hook": "Why do these turtles change after the current map?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "single fact",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 109,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 47.78,
+            "format:winner_inspired": 47.78,
+            "hook:pattern_reuse": 47.78,
+            "thumbnail:new_thumbnail": 47.78
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "current"
+            ],
+            "cue_terms": [
+              "current",
+              "map"
+            ],
+            "frame_hook_bridge": [
+              "current"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "turtles"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Turtles can navigate with Earth's magnetic field",
+          "Turtles steer home by reading hidden currents",
+          "Turtles show why the magnetic map matters.",
+          "Turtles show why the magnetic map matters.",
+          "Turtles show why the magnetic map matters."
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "current map",
+          "ending_line": "Which turtle clue should we decode next?",
+          "final_line": "Now the current map at the start makes sense.",
+          "loop_score": 0.786,
+          "opening_line": "Turtles steer home by reading hidden currents.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "current map",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.786,
+        "next_episode_question": "Tomorrow in Ocean Mysteries: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "current"
+          ],
+          "cue_terms": [
+            "current",
+            "map"
+          ],
+          "frame_hook_bridge": [
+            "current"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "turtles"
+        },
+        "pinned_comment": "Watch the flippers again. Tomorrow in Ocean Mysteries: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 16.73,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 15,
+          "first_2s_narration": "Turtles steer home by reading hidden currents Watch the flippers first because",
+          "first_frame_text": "CURRENT MAP",
+          "first_frame_text_words": 2,
+          "hook": "Turtles steer home by reading hidden currents.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.786,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "current"
+            ],
+            "cue_terms": [
+              "current",
+              "map"
+            ],
+            "frame_hook_bridge": [
+              "current"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "turtles"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the flippers, so viewers rewatch the turtles clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 73,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Turtles steer home by reading hidden currents Watch the flippers first because",
+          "first_frame_text": "CURRENT MAP",
+          "next_episode_question": "Tomorrow in Ocean Mysteries: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Turtles behavior through the visible flippers.",
+            "series": "Ocean Mysteries",
+            "subject": "turtles",
+            "terms": [
+              "turtles",
+              "flippers",
+              "ocean",
+              "single fact"
+            ],
+            "title_variant": "Turtles behavior: flippers explained",
+            "visible_cue": "flippers"
+          },
+          "series": "Ocean Mysteries",
+          "subject": "turtles",
+          "visible_cue": "flippers"
+        },
+        "risks": [],
+        "score": 96,
+        "search_intent": {
+          "description_line": "This Short explains Turtles behavior through the visible flippers.",
+          "series": "Ocean Mysteries",
+          "subject": "turtles",
+          "terms": [
+            "turtles",
+            "flippers",
+            "ocean",
+            "single fact"
+          ],
+          "title_variant": "Turtles behavior: flippers explained",
+          "visible_cue": "flippers"
+        },
+        "selected_variant": {
+          "hook": "Turtles steer home by reading hidden currents",
+          "score": 80,
+          "thumbnail_text": "MAGNETIC MAP",
+          "title": "Turtles carry a magnetic map home"
+        },
+        "series": "Ocean Mysteries #6",
+        "series_identity": {
+          "continuity_prompt": "Next in Ocean Mysteries: compare this with another force of nature.",
+          "episode": 6,
+          "label": "Ocean Mysteries #6",
+          "series": "Ocean Mysteries"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.237,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "hook_invites_return",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.278,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 92,
+          "state": "strong",
+          "subscriber_probability": 0.131
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "MAGNETIC MAP",
+          "CURRENT MAP",
+          "WATCH MAGNETIC MAP",
+          "TURTLES STEER",
+          "MAGNETIC MAP MATTERS",
+          "MAGNETIC MAP FIRST",
+          "MAGNETIC MAP REVEAL",
+          "MAGNETIC MAP CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Turtles carry a magnetic map home",
+          "Turtles steer home by reading hidden currents",
+          "Turtles use magnetic map before they steer",
+          "This magnetic map gives turtles away",
+          "Why turtles steer after one magnetic map",
+          "Turtles reveal the answer with magnetic map",
+          "The magnetic map that changes the moment",
+          "Turtles make one magnetic map matter",
+          "Turtles show the hidden answer in seconds",
+          "Turtles: watch this magnetic map"
+        ],
+        "top_variants": [
+          {
+            "hook": "Turtles steer home by reading hidden currents",
+            "score": 80,
+            "thumbnail_text": "MAGNETIC MAP",
+            "title": "Turtles carry a magnetic map home"
+          },
+          {
+            "hook": "Turtles can navigate with Earth's magnetic field",
+            "score": 78,
+            "thumbnail_text": "MAGNETIC MAP",
+            "title": "Turtles carry a magnetic map home"
+          },
+          {
+            "hook": "Watch the magnetic map; it explains the behavior",
+            "score": 78,
+            "thumbnail_text": "MAGNETIC MAP",
+            "title": "Turtles carry a magnetic map home"
+          },
+          {
+            "hook": "Turtles steer home by reading hidden currents",
+            "score": 73,
+            "thumbnail_text": "CURRENT MAP",
+            "title": "Turtles carry a magnetic map home"
+          },
+          {
+            "hook": "Turtles steer home by reading hidden currents",
+            "score": 73,
+            "thumbnail_text": "WATCH MAGNETIC MAP",
+            "title": "Turtles carry a magnetic map home"
+          },
+          {
+            "hook": "Turtles steer home by reading hidden currents",
+            "score": 73,
+            "thumbnail_text": "TURTLES STEER",
+            "title": "Turtles carry a magnetic map home"
+          },
+          {
+            "hook": "Turtles steer home by reading hidden currents",
+            "score": 73,
+            "thumbnail_text": "MAGNETIC MAP MATTERS",
+            "title": "Turtles carry a magnetic map home"
+          },
+          {
+            "hook": "Turtles can navigate with Earth's magnetic field",
+            "score": 71,
+            "thumbnail_text": "CURRENT MAP",
+            "title": "Turtles carry a magnetic map home"
+          },
+          {
+            "hook": "Watch the magnetic map; it explains the behavior",
+            "score": 71,
+            "thumbnail_text": "CURRENT MAP",
+            "title": "Turtles carry a magnetic map home"
+          },
+          {
+            "hook": "Turtles can navigate with Earth's magnetic field",
+            "score": 71,
+            "thumbnail_text": "WATCH MAGNETIC MAP",
+            "title": "Turtles carry a magnetic map home"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
+      "id": "06d294eee8bb0e88",
+      "title": "Turtles read moving water before they steer",
+      "category": "reptiles",
+      "publish_score": {
+        "approved": true,
+        "category": "reptiles",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": false,
+          "cue_bridge": [],
+          "cue_terms": [
+            "current",
+            "map"
+          ],
+          "frame_hook_bridge": [],
+          "risks": [
+            "frame_text_not_echoed_early",
+            "visible_cue_not_repeated_early"
+          ],
+          "score": 74.0,
+          "state": "needs_tightening",
+          "strengths": [
+            "subject_frontloaded",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable",
+            "curiosity_shape"
+          ],
+          "subject": "turtles"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 66,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 66,
+            "emotional_potential": 35,
+            "novelty": 69,
+            "replay_potential": 82,
+            "viral_potential": 72,
+            "visual_potential": 69
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 76,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 87,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "single_fact",
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "hook_invites_return",
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.3,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.542,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.39,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 3
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-07-15T22:17:06.903887+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling",
+          "editor_in_chief:script quality gate blocked the narration"
+        ],
+        "score": 70.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 70.0,
+      "youtube_brain": {
+        "animal": "turtles",
+        "commands": [],
+        "opening_retention": {
+          "approved": false,
+          "cue_bridge": [],
+          "cue_terms": [
+            "current",
+            "map"
+          ],
+          "frame_hook_bridge": [],
+          "risks": [
+            "frame_text_not_echoed_early",
+            "visible_cue_not_repeated_early"
+          ],
+          "score": 74.0,
+          "state": "needs_tightening",
+          "strengths": [
+            "subject_frontloaded",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable",
+            "curiosity_shape"
+          ],
+          "subject": "turtles"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "single_fact",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable"
+        ],
+        "subject": "turtles",
+        "viewer_promise": "See why turtles single fact matters."
+      },
+      "packaging": {
+        "community_prompt": "Which turtles clue should Wild Brief compare next in Cold-Blooded Secrets?",
+        "cta_prompt": "Want more survival tricks from ancient designs?",
+        "curiosity_gap": {
+          "hook": "Turtles read moving water before they steer.",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "story"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "single fact",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 109,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 47.78,
+            "format:winner_inspired": 47.78,
+            "hook:pattern_reuse": 47.78,
+            "thumbnail:new_thumbnail": 47.78
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": false,
+            "cue_bridge": [],
+            "cue_terms": [
+              "current",
+              "map"
+            ],
+            "frame_hook_bridge": [],
+            "risks": [
+              "frame_text_not_echoed_early",
+              "visible_cue_not_repeated_early"
+            ],
+            "score": 74.0,
+            "state": "needs_tightening",
+            "strengths": [
+              "subject_frontloaded",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable",
+              "curiosity_shape"
+            ],
+            "subject": "turtles"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 84,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Turtles can navigate with Earth's magnetic field",
+          "Turtles read moving water before they steer",
+          "Turtles show why the magnetic map matters.",
+          "Turtles show why the magnetic map matters.",
+          "Turtles show why the magnetic map matters."
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "current map",
+          "ending_line": "Which turtle clue should we decode next?",
+          "final_line": "Now the current map at the start makes sense.",
+          "loop_score": 0.801,
+          "opening_line": "Turtles read moving water before they steer.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "current map",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.801,
+        "next_episode_question": "Tomorrow in Cold-Blooded Secrets: another animal signal. Is this ancient design underrated?",
+        "opening_retention": {
+          "approved": false,
+          "cue_bridge": [],
+          "cue_terms": [
+            "current",
+            "map"
+          ],
+          "frame_hook_bridge": [],
+          "risks": [
+            "frame_text_not_echoed_early",
+            "visible_cue_not_repeated_early"
+          ],
+          "score": 74.0,
+          "state": "needs_tightening",
+          "strengths": [
+            "subject_frontloaded",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable",
+            "curiosity_shape"
+          ],
+          "subject": "turtles"
+        },
+        "pinned_comment": "Watch the flippers again. Tomorrow in Cold-Blooded Secrets: another animal signal. Is this ancient design underrated?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 16.6,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 15,
+          "first_2s_narration": "Turtles read moving water before they steer Watch the flippers first because",
+          "first_frame_text": "CURRENT MAP",
+          "first_frame_text_words": 2,
+          "hook": "Turtles read moving water before they steer.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.801,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": false,
+            "cue_bridge": [],
+            "cue_terms": [
+              "current",
+              "map"
+            ],
+            "frame_hook_bridge": [],
+            "risks": [
+              "frame_text_not_echoed_early",
+              "visible_cue_not_repeated_early"
+            ],
+            "score": 74.0,
+            "state": "needs_tightening",
+            "strengths": [
+              "subject_frontloaded",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable",
+              "curiosity_shape"
+            ],
+            "subject": "turtles"
+          },
+          "opening_retention_score": 74.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the flippers, so viewers rewatch the turtles clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 76,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 87,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Turtles read moving water before they steer Watch the flippers first because",
+          "first_frame_text": "CURRENT MAP",
+          "next_episode_question": "Tomorrow in Cold-Blooded Secrets: another animal signal. Is this ancient design underrated?",
+          "opening_retention_score": 74.0,
+          "opening_retention_state": "needs_tightening",
+          "search_intent": {
+            "description_line": "This Short explains Turtles behavior through the visible flippers.",
+            "series": "Cold-Blooded Secrets",
+            "subject": "turtles",
+            "terms": [
+              "turtles",
+              "flippers",
+              "reptiles",
+              "single fact"
+            ],
+            "title_variant": "Turtles behavior: flippers explained",
+            "visible_cue": "flippers"
+          },
+          "series": "Cold-Blooded Secrets",
+          "subject": "turtles",
+          "visible_cue": "flippers"
+        },
+        "risks": [],
+        "score": 93,
+        "search_intent": {
+          "description_line": "This Short explains Turtles behavior through the visible flippers.",
+          "series": "Cold-Blooded Secrets",
+          "subject": "turtles",
+          "terms": [
+            "turtles",
+            "flippers",
+            "reptiles",
+            "single fact"
+          ],
+          "title_variant": "Turtles behavior: flippers explained",
+          "visible_cue": "flippers"
+        },
+        "selected_variant": {
+          "hook": "Turtles read moving water before they steer",
+          "score": 81,
+          "thumbnail_text": "MAGNETIC MAP",
+          "title": "Turtles carry a magnetic map home"
+        },
+        "series": "Cold-Blooded Secrets #6",
+        "series_identity": {
+          "continuity_prompt": "Next in Cold-Blooded Secrets: compare this with another force of nature.",
+          "episode": 6,
+          "label": "Cold-Blooded Secrets #6",
+          "series": "Cold-Blooded Secrets"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.256,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "hook_invites_return",
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.3,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 100,
+          "state": "strong",
+          "subscriber_probability": 0.143
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "MAGNETIC MAP",
+          "CURRENT MAP",
+          "WATCH MAGNETIC MAP",
+          "TURTLES STEER",
+          "MAGNETIC MAP MATTERS",
+          "MAGNETIC MAP FIRST",
+          "MAGNETIC MAP REVEAL",
+          "MAGNETIC MAP CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Turtles carry a magnetic map home",
+          "Turtles read moving water before they steer",
+          "Turtles use magnetic map before they steer",
+          "This magnetic map gives turtles away",
+          "Why turtles steer after one magnetic map",
+          "Turtles reveal the answer with magnetic map",
+          "The magnetic map that changes the moment",
+          "Turtles make one magnetic map matter",
+          "Turtles show the hidden answer in seconds",
+          "Turtles: watch this magnetic map"
+        ],
+        "top_variants": [
+          {
+            "hook": "Turtles read moving water before they steer",
+            "score": 81,
+            "thumbnail_text": "MAGNETIC MAP",
+            "title": "Turtles carry a magnetic map home"
+          },
+          {
+            "hook": "Turtles can navigate with Earth's magnetic field",
+            "score": 80,
+            "thumbnail_text": "MAGNETIC MAP",
+            "title": "Turtles carry a magnetic map home"
+          },
+          {
+            "hook": "Watch the magnetic map; it explains the behavior",
+            "score": 80,
+            "thumbnail_text": "MAGNETIC MAP",
+            "title": "Turtles carry a magnetic map home"
+          },
+          {
+            "hook": "Turtles read moving water before they steer",
+            "score": 74,
+            "thumbnail_text": "CURRENT MAP",
+            "title": "Turtles carry a magnetic map home"
+          },
+          {
+            "hook": "Turtles read moving water before they steer",
+            "score": 74,
+            "thumbnail_text": "WATCH MAGNETIC MAP",
+            "title": "Turtles carry a magnetic map home"
+          },
+          {
+            "hook": "Turtles read moving water before they steer",
+            "score": 74,
+            "thumbnail_text": "TURTLES STEER",
+            "title": "Turtles carry a magnetic map home"
+          },
+          {
+            "hook": "Turtles read moving water before they steer",
+            "score": 74,
+            "thumbnail_text": "MAGNETIC MAP MATTERS",
+            "title": "Turtles carry a magnetic map home"
+          },
+          {
+            "hook": "Turtles can navigate with Earth's magnetic field",
+            "score": 73,
+            "thumbnail_text": "CURRENT MAP",
+            "title": "Turtles carry a magnetic map home"
+          },
+          {
+            "hook": "Watch the magnetic map; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "CURRENT MAP",
+            "title": "Turtles carry a magnetic map home"
+          },
+          {
+            "hook": "Turtles can navigate with Earth's magnetic field",
+            "score": 73,
+            "thumbnail_text": "WATCH MAGNETIC MAP",
+            "title": "Turtles carry a magnetic map home"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "1af1013cc6eed163",
       "title": "Whales send songs across huge ocean distances",
       "category": "ocean",
@@ -6355,7 +6318,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T21:44:58.591453+00:00",
+        "checked_at": "2026-07-15T22:17:06.908821+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6452,7 +6415,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 108,
+          "sample_count": 109,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6834,643 +6797,6 @@
       }
     },
     {
-      "id": "15162aaa98b392f2",
-      "title": "Turtles steer home by reading hidden currents",
-      "category": "ocean",
-      "publish_score": {
-        "approved": true,
-        "category": "ocean",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "current"
-          ],
-          "cue_terms": [
-            "current",
-            "map"
-          ],
-          "frame_hook_bridge": [
-            "current"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "turtles"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 66,
-          "signals": {
-            "comment_potential": 54,
-            "educational_potential": 66,
-            "emotional_potential": 44,
-            "novelty": 69,
-            "replay_potential": 72,
-            "viral_potential": 75,
-            "visual_potential": 69
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "single_fact",
-        "subscriber_conversion": {
-          "comment_probability": 0.237,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "hook_invites_return",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.278,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 92,
-          "state": "strong",
-          "subscriber_probability": 0.131
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.542,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.39,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-07-15T21:44:58.599897+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling",
-          "editor_in_chief:script quality gate blocked the narration"
-        ],
-        "score": 70.0,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 70.0,
-      "youtube_brain": {
-        "animal": "turtles",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "current"
-          ],
-          "cue_terms": [
-            "current",
-            "map"
-          ],
-          "frame_hook_bridge": [
-            "current"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "turtles"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "single_fact",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "turtles",
-        "viewer_promise": "See why turtles single fact matters."
-      },
-      "packaging": {
-        "community_prompt": "Which turtles clue should Wild Brief compare next in Ocean Mysteries?",
-        "cta_prompt": "Want to uncover what is still hidden in the ocean?",
-        "curiosity_gap": {
-          "hook": "Why do these turtles change after the current map?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "single fact",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 108,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 47.78,
-            "format:winner_inspired": 47.78,
-            "hook:pattern_reuse": 47.78,
-            "thumbnail:new_thumbnail": 47.78
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "current"
-            ],
-            "cue_terms": [
-              "current",
-              "map"
-            ],
-            "frame_hook_bridge": [
-              "current"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "turtles"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Turtles can navigate with Earth's magnetic field",
-          "Turtles steer home by reading hidden currents",
-          "Turtles show why the magnetic map matters.",
-          "Turtles show why the magnetic map matters.",
-          "Turtles show why the magnetic map matters."
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "current map",
-          "ending_line": "Which turtle clue should we decode next?",
-          "final_line": "Now the current map at the start makes sense.",
-          "loop_score": 0.786,
-          "opening_line": "Turtles steer home by reading hidden currents.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "current map",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.786,
-        "next_episode_question": "Tomorrow in Ocean Mysteries: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "current"
-          ],
-          "cue_terms": [
-            "current",
-            "map"
-          ],
-          "frame_hook_bridge": [
-            "current"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "turtles"
-        },
-        "pinned_comment": "Watch the flippers again. Tomorrow in Ocean Mysteries: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 16.73,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 15,
-          "first_2s_narration": "Turtles steer home by reading hidden currents Watch the flippers first because",
-          "first_frame_text": "CURRENT MAP",
-          "first_frame_text_words": 2,
-          "hook": "Turtles steer home by reading hidden currents.",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.786,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "current"
-            ],
-            "cue_terms": [
-              "current",
-              "map"
-            ],
-            "frame_hook_bridge": [
-              "current"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "turtles"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the flippers, so viewers rewatch the turtles clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Turtles steer home by reading hidden currents Watch the flippers first because",
-          "first_frame_text": "CURRENT MAP",
-          "next_episode_question": "Tomorrow in Ocean Mysteries: another animal signal. What feels more impossible: the ocean's depth, pressure, or creatures?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains Turtles behavior through the visible flippers.",
-            "series": "Ocean Mysteries",
-            "subject": "turtles",
-            "terms": [
-              "turtles",
-              "flippers",
-              "ocean",
-              "single fact"
-            ],
-            "title_variant": "Turtles behavior: flippers explained",
-            "visible_cue": "flippers"
-          },
-          "series": "Ocean Mysteries",
-          "subject": "turtles",
-          "visible_cue": "flippers"
-        },
-        "risks": [],
-        "score": 96,
-        "search_intent": {
-          "description_line": "This Short explains Turtles behavior through the visible flippers.",
-          "series": "Ocean Mysteries",
-          "subject": "turtles",
-          "terms": [
-            "turtles",
-            "flippers",
-            "ocean",
-            "single fact"
-          ],
-          "title_variant": "Turtles behavior: flippers explained",
-          "visible_cue": "flippers"
-        },
-        "selected_variant": {
-          "hook": "Turtles steer home by reading hidden currents",
-          "score": 80,
-          "thumbnail_text": "MAGNETIC MAP",
-          "title": "Turtles carry a magnetic map home"
-        },
-        "series": "Ocean Mysteries #6",
-        "series_identity": {
-          "continuity_prompt": "Next in Ocean Mysteries: compare this with another force of nature.",
-          "episode": 6,
-          "label": "Ocean Mysteries #6",
-          "series": "Ocean Mysteries"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.237,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "hook_invites_return",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.278,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 92,
-          "state": "strong",
-          "subscriber_probability": 0.131
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "MAGNETIC MAP",
-          "CURRENT MAP",
-          "WATCH MAGNETIC MAP",
-          "TURTLES STEER",
-          "MAGNETIC MAP MATTERS",
-          "MAGNETIC MAP FIRST",
-          "MAGNETIC MAP REVEAL",
-          "MAGNETIC MAP CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Turtles carry a magnetic map home",
-          "Turtles steer home by reading hidden currents",
-          "Turtles use magnetic map before they steer",
-          "This magnetic map gives turtles away",
-          "Why turtles steer after one magnetic map",
-          "Turtles reveal the answer with magnetic map",
-          "The magnetic map that changes the moment",
-          "Turtles make one magnetic map matter",
-          "Turtles show the hidden answer in seconds",
-          "Turtles: watch this magnetic map"
-        ],
-        "top_variants": [
-          {
-            "hook": "Turtles steer home by reading hidden currents",
-            "score": 80,
-            "thumbnail_text": "MAGNETIC MAP",
-            "title": "Turtles carry a magnetic map home"
-          },
-          {
-            "hook": "Turtles can navigate with Earth's magnetic field",
-            "score": 78,
-            "thumbnail_text": "MAGNETIC MAP",
-            "title": "Turtles carry a magnetic map home"
-          },
-          {
-            "hook": "Watch the magnetic map; it explains the behavior",
-            "score": 78,
-            "thumbnail_text": "MAGNETIC MAP",
-            "title": "Turtles carry a magnetic map home"
-          },
-          {
-            "hook": "Turtles steer home by reading hidden currents",
-            "score": 73,
-            "thumbnail_text": "CURRENT MAP",
-            "title": "Turtles carry a magnetic map home"
-          },
-          {
-            "hook": "Turtles steer home by reading hidden currents",
-            "score": 73,
-            "thumbnail_text": "WATCH MAGNETIC MAP",
-            "title": "Turtles carry a magnetic map home"
-          },
-          {
-            "hook": "Turtles steer home by reading hidden currents",
-            "score": 73,
-            "thumbnail_text": "TURTLES STEER",
-            "title": "Turtles carry a magnetic map home"
-          },
-          {
-            "hook": "Turtles steer home by reading hidden currents",
-            "score": 73,
-            "thumbnail_text": "MAGNETIC MAP MATTERS",
-            "title": "Turtles carry a magnetic map home"
-          },
-          {
-            "hook": "Turtles can navigate with Earth's magnetic field",
-            "score": 71,
-            "thumbnail_text": "CURRENT MAP",
-            "title": "Turtles carry a magnetic map home"
-          },
-          {
-            "hook": "Watch the magnetic map; it explains the behavior",
-            "score": 71,
-            "thumbnail_text": "CURRENT MAP",
-            "title": "Turtles carry a magnetic map home"
-          },
-          {
-            "hook": "Turtles can navigate with Earth's magnetic field",
-            "score": 71,
-            "thumbnail_text": "WATCH MAGNETIC MAP",
-            "title": "Turtles carry a magnetic map home"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "53958248afcfe49f",
       "title": "Forest canopies slow heat near the ground",
       "category": "forests",
@@ -7644,7 +6970,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T21:44:58.601452+00:00",
+        "checked_at": "2026-07-15T22:17:06.911508+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7739,7 +7065,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 108,
+          "sample_count": 109,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -8290,7 +7616,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T21:44:58.602982+00:00",
+        "checked_at": "2026-07-15T22:17:06.913159+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8387,7 +7713,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 108,
+          "sample_count": 109,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -8767,633 +8093,6 @@
       }
     },
     {
-      "id": "06d294eee8bb0e88",
-      "title": "Turtles read moving water before they steer",
-      "category": "reptiles",
-      "publish_score": {
-        "approved": true,
-        "category": "reptiles",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": false,
-          "cue_bridge": [],
-          "cue_terms": [
-            "current",
-            "map"
-          ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early",
-            "visible_cue_not_repeated_early"
-          ],
-          "score": 74.0,
-          "state": "needs_tightening",
-          "strengths": [
-            "subject_frontloaded",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable",
-            "curiosity_shape"
-          ],
-          "subject": "turtles"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 66,
-          "signals": {
-            "comment_potential": 54,
-            "educational_potential": 66,
-            "emotional_potential": 35,
-            "novelty": 69,
-            "replay_potential": 82,
-            "viral_potential": 72,
-            "visual_potential": 69
-          },
-          "verdict": "produce"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 76,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 87,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "score": 98.6,
-        "state": "publish_ready",
-        "story_format": "single_fact",
-        "subscriber_conversion": {
-          "comment_probability": 0.256,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "hook_invites_return",
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.3,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.542,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.39,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 3
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "rewrite",
-      "queue_prune": {
-        "checked_at": "2026-07-15T21:44:58.606474+00:00",
-        "mechanism_cluster": "",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling",
-          "editor_in_chief:script quality gate blocked the narration"
-        ],
-        "score": 68.6,
-        "state": "rewrite",
-        "template_cluster": ""
-      },
-      "queue_score": 68.6,
-      "youtube_brain": {
-        "animal": "turtles",
-        "commands": [],
-        "opening_retention": {
-          "approved": false,
-          "cue_bridge": [],
-          "cue_terms": [
-            "current",
-            "map"
-          ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early",
-            "visible_cue_not_repeated_early"
-          ],
-          "score": 74.0,
-          "state": "needs_tightening",
-          "strengths": [
-            "subject_frontloaded",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable",
-            "curiosity_shape"
-          ],
-          "subject": "turtles"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "single_fact",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable"
-        ],
-        "subject": "turtles",
-        "viewer_promise": "See why turtles single fact matters."
-      },
-      "packaging": {
-        "community_prompt": "Which turtles clue should Wild Brief compare next in Cold-Blooded Secrets?",
-        "cta_prompt": "Want more survival tricks from ancient designs?",
-        "curiosity_gap": {
-          "hook": "Turtles read moving water before they steer.",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "story"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "single fact",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 108,
-          "winners": {
-            "hook_pattern": "{subject} can {action} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 47.78,
-            "format:winner_inspired": 47.78,
-            "hook:pattern_reuse": 47.78,
-            "thumbnail:new_thumbnail": 47.78
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": false,
-            "cue_bridge": [],
-            "cue_terms": [
-              "current",
-              "map"
-            ],
-            "frame_hook_bridge": [],
-            "risks": [
-              "frame_text_not_echoed_early",
-              "visible_cue_not_repeated_early"
-            ],
-            "score": 74.0,
-            "state": "needs_tightening",
-            "strengths": [
-              "subject_frontloaded",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable",
-              "curiosity_shape"
-            ],
-            "subject": "turtles"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 84,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Turtles can navigate with Earth's magnetic field",
-          "Turtles read moving water before they steer",
-          "Turtles show why the magnetic map matters.",
-          "Turtles show why the magnetic map matters.",
-          "Turtles show why the magnetic map matters."
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "current map",
-          "ending_line": "Which turtle clue should we decode next?",
-          "final_line": "Now the current map at the start makes sense.",
-          "loop_score": 0.801,
-          "opening_line": "Turtles read moving water before they steer.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "current map",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.801,
-        "next_episode_question": "Tomorrow in Cold-Blooded Secrets: another animal signal. Is this ancient design underrated?",
-        "opening_retention": {
-          "approved": false,
-          "cue_bridge": [],
-          "cue_terms": [
-            "current",
-            "map"
-          ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early",
-            "visible_cue_not_repeated_early"
-          ],
-          "score": 74.0,
-          "state": "needs_tightening",
-          "strengths": [
-            "subject_frontloaded",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable",
-            "curiosity_shape"
-          ],
-          "subject": "turtles"
-        },
-        "pinned_comment": "Watch the flippers again. Tomorrow in Cold-Blooded Secrets: another animal signal. Is this ancient design underrated?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 16.6,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 15,
-          "first_2s_narration": "Turtles read moving water before they steer Watch the flippers first because",
-          "first_frame_text": "CURRENT MAP",
-          "first_frame_text_words": 2,
-          "hook": "Turtles read moving water before they steer.",
-          "hook_specificity": 0.78,
-          "hook_words": 7,
-          "loop_score": 0.801,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": false,
-            "cue_bridge": [],
-            "cue_terms": [
-              "current",
-              "map"
-            ],
-            "frame_hook_bridge": [],
-            "risks": [
-              "frame_text_not_echoed_early",
-              "visible_cue_not_repeated_early"
-            ],
-            "score": 74.0,
-            "state": "needs_tightening",
-            "strengths": [
-              "subject_frontloaded",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable",
-              "curiosity_shape"
-            ],
-            "subject": "turtles"
-          },
-          "opening_retention_score": 74.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the flippers, so viewers rewatch the turtles clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 76,
-          "signals": {
-            "completion_prediction": 77,
-            "curiosity_score": 87,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Turtles read moving water before they steer Watch the flippers first because",
-          "first_frame_text": "CURRENT MAP",
-          "next_episode_question": "Tomorrow in Cold-Blooded Secrets: another animal signal. Is this ancient design underrated?",
-          "opening_retention_score": 74.0,
-          "opening_retention_state": "needs_tightening",
-          "search_intent": {
-            "description_line": "This Short explains Turtles behavior through the visible flippers.",
-            "series": "Cold-Blooded Secrets",
-            "subject": "turtles",
-            "terms": [
-              "turtles",
-              "flippers",
-              "reptiles",
-              "single fact"
-            ],
-            "title_variant": "Turtles behavior: flippers explained",
-            "visible_cue": "flippers"
-          },
-          "series": "Cold-Blooded Secrets",
-          "subject": "turtles",
-          "visible_cue": "flippers"
-        },
-        "risks": [],
-        "score": 93,
-        "search_intent": {
-          "description_line": "This Short explains Turtles behavior through the visible flippers.",
-          "series": "Cold-Blooded Secrets",
-          "subject": "turtles",
-          "terms": [
-            "turtles",
-            "flippers",
-            "reptiles",
-            "single fact"
-          ],
-          "title_variant": "Turtles behavior: flippers explained",
-          "visible_cue": "flippers"
-        },
-        "selected_variant": {
-          "hook": "Turtles read moving water before they steer",
-          "score": 81,
-          "thumbnail_text": "MAGNETIC MAP",
-          "title": "Turtles carry a magnetic map home"
-        },
-        "series": "Cold-Blooded Secrets #6",
-        "series_identity": {
-          "continuity_prompt": "Next in Cold-Blooded Secrets: compare this with another force of nature.",
-          "episode": 6,
-          "label": "Cold-Blooded Secrets #6",
-          "series": "Cold-Blooded Secrets"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.256,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "hook_invites_return",
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.3,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 100,
-          "state": "strong",
-          "subscriber_probability": 0.143
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "MAGNETIC MAP",
-          "CURRENT MAP",
-          "WATCH MAGNETIC MAP",
-          "TURTLES STEER",
-          "MAGNETIC MAP MATTERS",
-          "MAGNETIC MAP FIRST",
-          "MAGNETIC MAP REVEAL",
-          "MAGNETIC MAP CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Turtles carry a magnetic map home",
-          "Turtles read moving water before they steer",
-          "Turtles use magnetic map before they steer",
-          "This magnetic map gives turtles away",
-          "Why turtles steer after one magnetic map",
-          "Turtles reveal the answer with magnetic map",
-          "The magnetic map that changes the moment",
-          "Turtles make one magnetic map matter",
-          "Turtles show the hidden answer in seconds",
-          "Turtles: watch this magnetic map"
-        ],
-        "top_variants": [
-          {
-            "hook": "Turtles read moving water before they steer",
-            "score": 81,
-            "thumbnail_text": "MAGNETIC MAP",
-            "title": "Turtles carry a magnetic map home"
-          },
-          {
-            "hook": "Turtles can navigate with Earth's magnetic field",
-            "score": 80,
-            "thumbnail_text": "MAGNETIC MAP",
-            "title": "Turtles carry a magnetic map home"
-          },
-          {
-            "hook": "Watch the magnetic map; it explains the behavior",
-            "score": 80,
-            "thumbnail_text": "MAGNETIC MAP",
-            "title": "Turtles carry a magnetic map home"
-          },
-          {
-            "hook": "Turtles read moving water before they steer",
-            "score": 74,
-            "thumbnail_text": "CURRENT MAP",
-            "title": "Turtles carry a magnetic map home"
-          },
-          {
-            "hook": "Turtles read moving water before they steer",
-            "score": 74,
-            "thumbnail_text": "WATCH MAGNETIC MAP",
-            "title": "Turtles carry a magnetic map home"
-          },
-          {
-            "hook": "Turtles read moving water before they steer",
-            "score": 74,
-            "thumbnail_text": "TURTLES STEER",
-            "title": "Turtles carry a magnetic map home"
-          },
-          {
-            "hook": "Turtles read moving water before they steer",
-            "score": 74,
-            "thumbnail_text": "MAGNETIC MAP MATTERS",
-            "title": "Turtles carry a magnetic map home"
-          },
-          {
-            "hook": "Turtles can navigate with Earth's magnetic field",
-            "score": 73,
-            "thumbnail_text": "CURRENT MAP",
-            "title": "Turtles carry a magnetic map home"
-          },
-          {
-            "hook": "Watch the magnetic map; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "CURRENT MAP",
-            "title": "Turtles carry a magnetic map home"
-          },
-          {
-            "hook": "Turtles can navigate with Earth's magnetic field",
-            "score": 73,
-            "thumbnail_text": "WATCH MAGNETIC MAP",
-            "title": "Turtles carry a magnetic map home"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "09c8f40beafab256",
       "title": "Rock stripes turn cliffs into timelines",
       "category": "geology",
@@ -9571,7 +8270,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T21:44:58.583114+00:00",
+        "checked_at": "2026-07-15T22:17:06.891595+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9672,7 +8371,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 108,
+          "sample_count": 109,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -10235,7 +8934,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T21:44:58.608246+00:00",
+        "checked_at": "2026-07-15T22:17:06.918071+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10333,7 +9032,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 108,
+          "sample_count": 109,
           "winners": {
             "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -10701,6 +9400,640 @@
             "score": 72,
             "thumbnail_text": "MANGROVES CHANGE",
             "title": "Mangroves take power out of waves"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
+      "id": "2a8f3f3725c00fe2",
+      "title": "Elephants can feel rumbles through the ground",
+      "category": "wildlife",
+      "publish_score": {
+        "approved": true,
+        "category": "wildlife",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 86,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "call_signal",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ground"
+          ],
+          "cue_terms": [
+            "ground"
+          ],
+          "frame_hook_bridge": [
+            "ground"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "elephants"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 66,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 66,
+            "emotional_potential": 35,
+            "novelty": 69,
+            "replay_potential": 92,
+            "viral_potential": 77,
+            "visual_potential": 59
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 76,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 82,
+            "visual_score": 50
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.542,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.39,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 3
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-07-15T22:17:06.916167+00:00",
+        "mechanism_cluster": "call_signal",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling",
+          "editor_in_chief:subject repeated inside 3-day cooldown"
+        ],
+        "score": 58.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 58.0,
+      "youtube_brain": {
+        "animal": "elephants",
+        "commands": [
+          "Name the visual cue the viewer should watch in the first second."
+        ],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ground"
+          ],
+          "cue_terms": [
+            "ground"
+          ],
+          "frame_hook_bridge": [
+            "ground"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "elephants"
+        },
+        "replay_reason": "weak",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [
+          "missing_visual_cue"
+        ],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 96,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "elephants",
+        "viewer_promise": "See why elephants body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which elephants clue should Wild Brief compare next in Animal Superpowers?",
+        "cta_prompt": "Want more wild behavior explained without the fluff?",
+        "curiosity_gap": {
+          "hook": "Why do these elephants change after the ground signal?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 109,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 47.78,
+            "format:winner_inspired": 47.78,
+            "hook:pattern_reuse": 47.78,
+            "thumbnail:new_thumbnail": 47.78
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "ground"
+            ],
+            "cue_terms": [
+              "ground"
+            ],
+            "frame_hook_bridge": [
+              "ground"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "elephants"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Elephants can sense low rumbles underfoot",
+          "Elephants reveal the ground signal first",
+          "Elephants show why the ground signal matters.",
+          "Elephants show why the ground signal matters.",
+          "Elephants show why the ground signal matters."
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "ground signal",
+          "ending_line": "Would you notice the signal?",
+          "final_line": "Now the ground signal at the start makes sense.",
+          "loop_score": 0.908,
+          "opening_line": "Elephants reveal the ground signal first.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "ground signal",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.908,
+        "next_episode_question": "Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ground"
+          ],
+          "cue_terms": [
+            "ground"
+          ],
+          "frame_hook_bridge": [
+            "ground"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "elephants"
+        },
+        "pinned_comment": "Watch the ground signal again. Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 16.12,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 16,
+          "first_2s_narration": "Elephants reveal the ground signal first Watch closely because low elephant calls",
+          "first_frame_text": "GROUND SIGNAL",
+          "first_frame_text_words": 2,
+          "hook": "Elephants reveal the ground signal first.",
+          "hook_specificity": 0.78,
+          "hook_words": 6,
+          "loop_score": 0.908,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "ground"
+            ],
+            "cue_terms": [
+              "ground"
+            ],
+            "frame_hook_bridge": [
+              "ground"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "elephants"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the ground signal, so viewers rewatch the elephants clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 76,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 79,
+            "hook_score": 82,
+            "replay_score": 82,
+            "visual_score": 50
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Elephants reveal the ground signal first Watch closely because low elephant calls",
+          "first_frame_text": "GROUND SIGNAL",
+          "next_episode_question": "Tomorrow in Animal Superpowers: another animal signal. Is this adaptation, instinct, or intelligence?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Elephants behavior through the visible ground signal.",
+            "series": "Animal Superpowers",
+            "subject": "elephants",
+            "terms": [
+              "elephants",
+              "ground signal",
+              "wildlife",
+              "body superpower"
+            ],
+            "title_variant": "Elephants behavior: ground signal explained",
+            "visible_cue": "ground signal"
+          },
+          "series": "Animal Superpowers",
+          "subject": "elephants",
+          "visible_cue": "ground signal"
+        },
+        "risks": [],
+        "score": 97,
+        "search_intent": {
+          "description_line": "This Short explains Elephants behavior through the visible ground signal.",
+          "series": "Animal Superpowers",
+          "subject": "elephants",
+          "terms": [
+            "elephants",
+            "ground signal",
+            "wildlife",
+            "body superpower"
+          ],
+          "title_variant": "Elephants behavior: ground signal explained",
+          "visible_cue": "ground signal"
+        },
+        "selected_variant": {
+          "hook": "Elephants can sense low rumbles underfoot",
+          "score": 80,
+          "thumbnail_text": "GROUND SIGNAL",
+          "title": "Elephants can feel rumbles through the ground"
+        },
+        "series": "Animal Superpowers #15",
+        "series_identity": {
+          "continuity_prompt": "Next in Animal Superpowers #15: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Animal Superpowers #15",
+          "series": "Animal Superpowers #15"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "GROUND SIGNAL",
+          "WATCH GROUND SIGNAL",
+          "ELEPHANTS SIGNAL",
+          "GROUND SIGNAL MATTERS",
+          "GROUND SIGNAL FIRST",
+          "GROUND SIGNAL REVEAL",
+          "GROUND SIGNAL CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Elephants can feel rumbles through the ground",
+          "Elephants signal through ground signal",
+          "Elephants use ground signal before they signal",
+          "This ground signal gives elephants away",
+          "Why elephants signal after one ground signal",
+          "Elephants reveal the answer with ground signal",
+          "The ground signal that changes the moment",
+          "Elephants make one ground signal matter",
+          "Elephants show the hidden answer in seconds",
+          "Elephants: watch this ground signal"
+        ],
+        "top_variants": [
+          {
+            "hook": "Elephants can sense low rumbles underfoot",
+            "score": 80,
+            "thumbnail_text": "GROUND SIGNAL",
+            "title": "Elephants can feel rumbles through the ground"
+          },
+          {
+            "hook": "Elephants reveal the ground signal first",
+            "score": 80,
+            "thumbnail_text": "GROUND SIGNAL",
+            "title": "Elephants can feel rumbles through the ground"
+          },
+          {
+            "hook": "Watch the ground signal; it explains the behavior",
+            "score": 80,
+            "thumbnail_text": "GROUND SIGNAL",
+            "title": "Elephants can feel rumbles through the ground"
+          },
+          {
+            "hook": "Elephants can sense low rumbles underfoot",
+            "score": 73,
+            "thumbnail_text": "WATCH GROUND SIGNAL",
+            "title": "Elephants can feel rumbles through the ground"
+          },
+          {
+            "hook": "Elephants reveal the ground signal first",
+            "score": 73,
+            "thumbnail_text": "WATCH GROUND SIGNAL",
+            "title": "Elephants can feel rumbles through the ground"
+          },
+          {
+            "hook": "Watch the ground signal; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "WATCH GROUND SIGNAL",
+            "title": "Elephants can feel rumbles through the ground"
+          },
+          {
+            "hook": "Elephants can sense low rumbles underfoot",
+            "score": 73,
+            "thumbnail_text": "ELEPHANTS SIGNAL",
+            "title": "Elephants can feel rumbles through the ground"
+          },
+          {
+            "hook": "Elephants reveal the ground signal first",
+            "score": 73,
+            "thumbnail_text": "ELEPHANTS SIGNAL",
+            "title": "Elephants can feel rumbles through the ground"
+          },
+          {
+            "hook": "Watch the ground signal; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "ELEPHANTS SIGNAL",
+            "title": "Elephants can feel rumbles through the ground"
+          },
+          {
+            "hook": "Elephants can sense low rumbles underfoot",
+            "score": 73,
+            "thumbnail_text": "GROUND SIGNAL MATTERS",
+            "title": "Elephants can feel rumbles through the ground"
           }
         ]
       },
