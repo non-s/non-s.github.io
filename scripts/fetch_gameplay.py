@@ -36,7 +36,7 @@ def main():
     
     # Use yt-dlp to download 720p/1080p mp4
     cmd = [
-        "yt-dlp",
+        sys.executable, "-m", "yt_dlp",
         "-f", "bestvideo[ext=mp4][height<=1080]+bestaudio[ext=m4a]/best[ext=mp4][height<=1080]",
         "-o", str(GAMEPLAY_DIR / "%(id)s.%(ext)s"),
         "--no-playlist",
