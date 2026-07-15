@@ -1107,6 +1107,37 @@ def upload_video(youtube, meta: dict, *, sequence_index: int = 0) -> str | None:
         log.info("Scheduled: %s at %s", _video_url(video_id), scheduled_publish_at)
     else:
         log.info("Published: %s", _video_url(video_id))
+        
+        # 1. Pinned Comment Quiz (Interactive Trivia)
+        if privacy == "public":
+            try:
+                from utils.ai_helper import ai_text
+                animal = meta.get("title", "this animal")
+                quiz_prompt = (
+                    f"Create a short, super engaging multiple-choice trivia question about {animal}. "
+                    "Format it exactly like this: 'Qual você acha que é a verdade sobre [animal]? A) [Opção 1] B) [Opção 2]. Responda abaixo! 👇'"
+                )
+                trivia = ai_text(quiz_prompt, timeout=15)
+                if trivia:
+                    comment_request = youtube.commentThreads().insert(
+                        part="snippet",
+                        body={
+                            "snippet": {
+                                "videoId": video_id,
+                                "topLevelComment": {
+                                    "snippet": {
+                                        "textOriginal": trivia
+                                    }
+                                }
+                            }
+                        }
+                    )
+                    comment_response = comment_request.execute()
+                    comment_id = comment_response["snippet"]["topLevelComment"]["id"]
+                    log.info(f"Interactive Pinned Comment Quiz posted! Comment ID: {comment_id}")
+            except Exception as e:
+                log.error(f"Failed to post interactive trivia comment: {e}")
+                
     return video_id
 
 

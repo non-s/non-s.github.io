@@ -106,7 +106,7 @@ def _overlay_copy(text: str, max_chars: int = 42) -> str:
     return (" ".join(words).rstrip(" .,;:-") + "...") if words else cleaned[: max_chars - 3] + "..."
 
 
-def _mix_audio(cmd: list[str], parts: list[str], audio_path: Path, audio_idx: int) -> str:
+def _mix_audio(cmd: list[str], parts: list[str], audio_path: Path, audio_idx: int, sfx_delay_ms: int = 0) -> str:
     import random
 
     bgm_candidates = [
@@ -131,7 +131,11 @@ def _mix_audio(cmd: list[str], parts: list[str], audio_path: Path, audio_idx: in
     if sfx_path:
         cmd += ["-i", str(sfx_path)]
         sfx_idx = audio_idx + audio_inputs_count
-        parts.append(f"[{sfx_idx}:a]volume=0.90[asfx]")
+        # Apply delay so SFX hits exactly at the easter egg
+        if sfx_delay_ms > 0:
+            parts.append(f"[{sfx_idx}:a]adelay={sfx_delay_ms}|{sfx_delay_ms},volume=0.90[asfx]")
+        else:
+            parts.append(f"[{sfx_idx}:a]volume=0.90[asfx]")
         amix_labels += "[asfx]"
         audio_inputs_count += 1
 
@@ -368,11 +372,11 @@ def build_broll_short(
 
     # Optional one-frame cue for experiments. Disabled by default so the
     # production renderer stays deterministic and portable across platforms.
+    mid_time = max(0, float(audio_dur) / 2)
     if RETENTION_EASTER_EGG_ENABLED:
         import random
         emojis = ["🦅", "🐍", "🦁", "🐙", "🦋", "🐊"]
         secret_emoji = random.choice(emojis)
-        mid_time = max(0, float(audio_dur) / 2)
         parts.append(
             f"[{last_label}]drawtext={font_param}"
             f":text='{secret_emoji}':fontcolor=white:fontsize=150"
@@ -412,7 +416,9 @@ def build_broll_short(
     cmd += ["-i", str(audio_path)]
     audio_idx = n + len(extra_inputs)
 
-    final_audio_map = _mix_audio(cmd, parts, audio_path, audio_idx)
+    # Delay the SFX by mid_time if easter egg is enabled, else no delay (0)
+    sfx_delay_ms = int(mid_time * 1000) if RETENTION_EASTER_EGG_ENABLED else 0
+    final_audio_map = _mix_audio(cmd, parts, audio_path, audio_idx, sfx_delay_ms=sfx_delay_ms)
     # --------------------------------------
 
     filtergraph = ";".join(parts)
