@@ -93,14 +93,5 @@ def run_editorial_board(topic: str) -> Dict[str, str]:
         log.info(f"Copywriter finished script: {final_script['title']}")
         return final_script
     except Exception as e:
-        log.warning(f"Copywriter failed, falling back to simple prompt. Error: {e}")
-        # Fallback to single prompt
-        fallback_prompt = f"""
-        Write a 3-sentence script about: {topic}.
-        Return ONLY valid JSON: {{"title": "...", "script": "...", "hook": "..."}}
-        """
-        fb = ai_text(fallback_prompt, json_mode=True)
-        try:
-            return json.loads(fb)
-        except:
-            return {"title": topic, "script": f"Let's learn about {topic}. It is an amazing animal in nature. Thanks for watching.", "hook": f"Let's learn about {topic}."}
+        log.warning(f"Copywriter failed completely. Error: {e}")
+        raise ValueError(f"Failed to generate a valid script for {topic}") from e

@@ -1232,26 +1232,25 @@ def main() -> None:
             skipped_duplicates += 1
             continue
         channel_duplicate = channel_upload_titles.get(_title_key(_youtube_title(meta)))
-        if channel_duplicate and _env_mode_blocks("UPLOAD_CHANNEL_TITLE_DEDUPE_MODE"):
-            intent = build_upload_intent(meta, meta_file=str(meta_file), slot=intent_slot)
-            if str(channel_duplicate.get("video_id") or "") in existing_video_ids:
-                log.warning(
-                    "Skipping duplicate title %r already tracked as %s",
-                    _youtube_title(meta),
-                    channel_duplicate.get("video_id"),
-                )
-                _skip_tracked_channel_duplicate(meta_file, meta, intent, channel_duplicate)
-            else:
-                log.warning(
-                    "Adopting existing channel upload for duplicate title %r as %s",
-                    _youtube_title(meta),
-                    channel_duplicate.get("video_id"),
-                )
-                _adopt_existing_channel_upload(meta_file, meta, intent, channel_duplicate)
-                existing_video_ids.add(str(channel_duplicate.get("video_id") or ""))
-            skipped_duplicates += 1
-            existing_titles.add(_title_key(_youtube_title(meta)))
-            continue
+        intent = build_upload_intent(meta, meta_file=str(meta_file), slot=intent_slot)
+        duplicate = duplicate_uploaded(intent)
+        meta["upload_intent_key"] = intent["idempotency_key"]
+        meta["upload_intent"] = intent
+
+        old_vid = None
+        if channel_duplicate:
+            old_vid = channel_duplicate.get("video_id")
+        elif duplicate:
+            old_vid = duplicate.get("video_id")
+
+        if old_vid:
+            log.warning("Duplicate detected on channel (ID: %s). User requested to DELETE the old video.", old_vid)
+            try:
+                youtube.videos().delete(id=old_vid).execute()
+                log.info("Successfully deleted old duplicate video %s from YouTube.", old_vid)
+            except Exception as e:
+                log.warning("Failed to delete old duplicate video %s: %s", old_vid, e)
+
         title_dedupe = _apply_unique_upload_title(meta, existing_titles)
         if title_dedupe.get("applied"):
             log.info(
@@ -1259,18 +1258,6 @@ def main() -> None:
                 title_dedupe.get("before"),
                 title_dedupe.get("after"),
             )
-        intent = build_upload_intent(meta, meta_file=str(meta_file), slot=intent_slot)
-        duplicate = duplicate_uploaded(intent)
-        meta["upload_intent_key"] = intent["idempotency_key"]
-        meta["upload_intent"] = intent
-        if duplicate and _env_mode_blocks("UPLOAD_IDEMPOTENCY_MODE"):
-            log.warning(
-                "Skipping duplicate upload intent %s already published as %s",
-                intent["idempotency_key"],
-                duplicate.get("video_id"),
-            )
-            skipped_duplicates += 1
-            continue
         write_upload_intent(intent)
         attempted += 1
         video_id = upload_video(youtube, meta, sequence_index=uploaded)
