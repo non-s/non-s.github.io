@@ -78,10 +78,10 @@ def generate_sniper_comments(channel_name: str, video_title: str) -> str:
     prompt = (
         f"You are a master of YouTube growth hacking. A giant channel named '{channel_name}' "
         f"just uploaded a video titled: '{video_title}'.\n\n"
-        "Your mission is to write 3 short, extremely viral, and engaging Portuguese comments to be posted on this video.\n"
+        "Your mission is to write 3 short, extremely viral, and engaging English comments to be posted on this video.\n"
         "The goal of these comments is to get thousands of likes (Top Comment) so that people click our profile (we run an animal facts channel).\n\n"
         "Rules:\n"
-        "1. Write in plain, casual Brazilian Portuguese.\n"
+        "1. Write in plain, casual, and highly engaging native English.\n"
         "2. Comment 1 should be a mind-blowing addition or scientific curiosity related to the title.\n"
         "3. Comment 2 should be a funny, relatable joke about the animal/subject.\n"
         "4. Comment 3 should be a slightly controversial or debate-sparking question to drive replies.\n"
