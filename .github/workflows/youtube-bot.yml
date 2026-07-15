@@ -330,6 +330,7 @@ jobs:
           PYTHONUNBUFFERED: "1"
           YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
           YOUTUBE_DESCRIPTION_MODE: ${{ vars.YOUTUBE_DESCRIPTION_MODE || 'empty' }}
+          MEDIA_LIFECYCLE_CLEANUP: 0
       - name: "Upload Shorts para YouTube (Spanish)"
         if: steps.publish_window.outputs.should_publish == 'true' && hashFiles('youtube_token_es-MX.json') != ''
         run: python upload_youtube.py --language=es-MX
@@ -338,6 +339,7 @@ jobs:
           PYTHONUNBUFFERED: "1"
           YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
           YOUTUBE_DESCRIPTION_MODE: ${{ vars.YOUTUBE_DESCRIPTION_MODE || 'empty' }}
+          MEDIA_LIFECYCLE_CLEANUP: 0
       - name: "Upload Shorts para TikTok"
         if: steps.publish_window.outputs.should_publish == 'true'
         run: |
