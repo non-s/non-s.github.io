@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-15T16:58:20.631225+00:00",
+  "generated_at": "2026-07-15T17:01:17.822049+00:00",
   "pending": 20,
   "states": {
     "rewrite": 14,
@@ -16,20 +16,39 @@
     "approved": 20
   },
   "prune_summary": {
-    "pending_before": 20,
+    "pending_before": 22,
     "pending_after": 20,
-    "rejected": 0,
+    "rejected": 2,
     "repair_needed": 0,
     "repaired": 4,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 20,
       "editor_in_chief:script quality gate blocked the narration": 7,
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
+      "duplicate_title": 2,
       "editor_in_chief:editorial score 46 is below 62": 1,
+      "copy_subject_mismatch": 1,
       "editorial_cooldown_supply_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "ab564f1466fb530a",
+      "title": "Monkeys wash food when grit gets annoying",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "ad719b93f49ecc56",
+      "title": "Coral reefs are cities built by tiny animals",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
     {
       "id": "690a8a1654c9dcf1",
       "title": "Monkeys wash food when grit gets annoying",
@@ -274,26 +293,6 @@
         "queue_score_reject"
       ],
       "stage": "queue_repair"
-    },
-    {
-      "id": "c3e342b5ff5c6b5d",
-      "title": "Snakes Las serpientes ven calor en la oscuridad total",
-      "reasons": [
-        "subject repeated inside 3-day cooldown",
-        "humanity score is too low",
-        "editorial score 45 is below 62"
-      ],
-      "stage": "editor_in_chief"
-    },
-    {
-      "id": "77350ffd71ce5a69",
-      "title": "Ants Hormigas trazan rutas con aroma en segundos",
-      "reasons": [
-        "subject repeated inside 3-day cooldown",
-        "humanity score is too low",
-        "editorial score 47 is below 62"
-      ],
-      "stage": "editor_in_chief"
     }
   ],
   "top": [
@@ -474,7 +473,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:58:00.777513+00:00",
+        "checked_at": "2026-07-15T17:00:57.128239+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1119,7 +1118,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:58:00.782828+00:00",
+        "checked_at": "2026-07-15T17:00:57.132983+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1754,7 +1753,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:58:00.784052+00:00",
+        "checked_at": "2026-07-15T17:00:57.135185+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2401,7 +2400,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:58:00.793151+00:00",
+        "checked_at": "2026-07-15T17:00:57.175916+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3039,7 +3038,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:58:00.780495+00:00",
+        "checked_at": "2026-07-15T17:00:57.130742+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3685,7 +3684,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:58:00.786291+00:00",
+        "checked_at": "2026-07-15T17:00:57.169135+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4318,7 +4317,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:58:00.788537+00:00",
+        "checked_at": "2026-07-15T17:00:57.171390+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4957,7 +4956,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:58:00.794869+00:00",
+        "checked_at": "2026-07-15T17:00:57.177615+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5597,7 +5596,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:58:00.796113+00:00",
+        "checked_at": "2026-07-15T17:00:57.178859+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6250,7 +6249,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:58:00.797169+00:00",
+        "checked_at": "2026-07-15T17:00:57.179925+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6884,7 +6883,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:58:00.791370+00:00",
+        "checked_at": "2026-07-15T17:00:57.174216+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7532,7 +7531,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:58:00.808304+00:00",
+        "checked_at": "2026-07-15T17:00:57.559183+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8193,7 +8192,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:58:00.803652+00:00",
+        "checked_at": "2026-07-15T17:00:57.186489+00:00",
         "mechanism_cluster": "tongue_smell",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8848,7 +8847,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:58:00.789962+00:00",
+        "checked_at": "2026-07-15T17:00:57.172802+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9494,7 +9493,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:58:00.798821+00:00",
+        "checked_at": "2026-07-15T17:00:57.181583+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10127,7 +10126,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:58:00.800369+00:00",
+        "checked_at": "2026-07-15T17:00:57.183202+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10768,7 +10767,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:58:00.801914+00:00",
+        "checked_at": "2026-07-15T17:00:57.184734+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11411,7 +11410,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:58:00.805391+00:00",
+        "checked_at": "2026-07-15T17:00:57.556234+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12039,7 +12038,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:58:00.768489+00:00",
+        "checked_at": "2026-07-15T17:00:57.126149+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12698,7 +12697,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:58:00.807223+00:00",
+        "checked_at": "2026-07-15T17:00:57.558045+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
