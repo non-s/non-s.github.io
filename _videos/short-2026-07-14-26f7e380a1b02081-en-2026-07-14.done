@@ -1668,5 +1668,48 @@
     ],
     "skipped": [],
     "deleted_bytes": 42974805
+  },
+  "retention_surgery": {
+    "score": 70,
+    "growth_retention": {
+      "score": 66,
+      "signals": {
+        "hook_score": 82,
+        "curiosity_score": 55,
+        "visual_score": 58,
+        "replay_score": 52,
+        "completion_prediction": 76
+      },
+      "verdict": "rewrite",
+      "reasons": [
+        "weak_replay_loop"
+      ],
+      "confidence": {
+        "confidence_score": 0.227,
+        "sample_size": 2,
+        "minimum_sample_size": 5,
+        "data_quality": "estimated",
+        "data_quality_score": 0.567,
+        "recommendation_strength": "observe",
+        "can_adjust_strategy": false,
+        "bootstrap_multiplier": 0.42,
+        "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+      },
+      "reasoning": "category has 2/5 samples, estimated data, confidence 0.23; observation only."
+    },
+    "verdict": "tighten",
+    "issues": [
+      "script_too_short",
+      "missing_because"
+    ],
+    "fixes": [
+      "Add one visual detail and one because/payoff sentence.",
+      "Add a simple because/that-is-why payoff."
+    ],
+    "strengths": [
+      "short_hook",
+      "payoff_action"
+    ],
+    "suggested_hook": "Sheep can remember familiar faces."
   }
 }

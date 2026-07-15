@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-15T21:14:18.137794+00:00",
+  "generated_at": "2026-07-15T21:20:29.102631+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
-  "overall_progress_pct": 27.5,
+  "overall_progress_pct": 26.0,
   "current_level": {
     "number": 2,
     "name": "Publish supply engine",
@@ -10,34 +10,34 @@
     "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
     "revenue_job": "Turn production from lucky shots into repeatable inventory.",
     "status": "boss_fight",
-    "progress_pct": 92.8
+    "progress_pct": 82.2
   },
   "boss": {
     "id": "publish_ready_reserve_low",
     "label": "Publish-ready reserve is below target",
     "severity": "critical",
     "evidence": {
-      "eligible_count": 6,
-      "operational_publish_ready": 5,
-      "apparent_publish_ready": 5,
-      "pending": 19,
+      "eligible_count": 4,
+      "operational_publish_ready": 4,
+      "apparent_publish_ready": 4,
+      "pending": 16,
       "target_publish_ready": 6,
       "target_pending": 20,
       "top_blockers": [
         {
           "id": "objective_gate:bootstrap_observe_before_scaling",
-          "count": 35,
+          "count": 32,
           "operator_translation": "collect more observed signal before scaling this pattern"
-        },
-        {
-          "id": "queue_prune:rewrite",
-          "count": 14,
-          "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
           "id": "editor_in_chief:script quality gate blocked the narration",
           "count": 14,
           "operator_translation": "editor in chief:script quality gate blocked the narration"
+        },
+        {
+          "id": "queue_prune:rewrite",
+          "count": 12,
+          "operator_translation": "rewrite the held candidate until queue prune clears"
         },
         {
           "id": "editor_in_chief:needs_ai_rewrite",
@@ -46,7 +46,7 @@
         },
         {
           "id": "bootstrap_observe_before_scaling",
-          "count": 6,
+          "count": 4,
           "operator_translation": "bootstrap observe before scaling"
         }
       ]
@@ -74,33 +74,33 @@
     {
       "priority": "P0",
       "action": "Batch-fix the top blocker reasons before fetching a larger queue.",
-      "target": "objective_gate:bootstrap_observe_before_scaling, queue_prune:rewrite, editor_in_chief:script quality gate blocked the narration",
+      "target": "objective_gate:bootstrap_observe_before_scaling, editor_in_chief:script quality gate blocked the narration, queue_prune:rewrite",
       "why": "Current supply has strong ideas but fails late gates."
     },
     {
       "priority": "P1",
       "action": "Build the reserve to six operational publish-ready Shorts.",
-      "target": "5/6",
+      "target": "4/6",
       "why": "One upload slot should never depend on one fragile candidate."
     },
     {
       "priority": "P1",
       "action": "Refresh free discovery only after the current repair batch is clean.",
-      "target": "pending 19/20",
+      "target": "pending 16/20",
       "why": "Bigger inventory helps only when the gate can accept winners."
     }
   ],
   "metrics": {
-    "health_score": 67,
+    "health_score": 66,
     "health_state": "needs_work",
-    "pending": 19,
-    "operational_publish_ready": 5,
-    "apparent_publish_ready": 5,
-    "eligible_count": 6,
+    "pending": 16,
+    "operational_publish_ready": 4,
+    "apparent_publish_ready": 4,
+    "eligible_count": 4,
     "scale_ready_count": 0,
-    "next_shorts_count": 6,
-    "editorial_candidate_count": 18,
-    "published_count": 12,
+    "next_shorts_count": 4,
+    "editorial_candidate_count": 16,
+    "published_count": 13,
     "views_28d": 30314,
     "total_subscribers": 46,
     "subs_per_1000_views": 1.221,
@@ -114,18 +114,18 @@
   "top_blockers": [
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
-      "count": 35,
+      "count": 32,
       "operator_translation": "collect more observed signal before scaling this pattern"
-    },
-    {
-      "id": "queue_prune:rewrite",
-      "count": 14,
-      "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
       "id": "editor_in_chief:script quality gate blocked the narration",
       "count": 14,
       "operator_translation": "editor in chief:script quality gate blocked the narration"
+    },
+    {
+      "id": "queue_prune:rewrite",
+      "count": 12,
+      "operator_translation": "rewrite the held candidate until queue prune clears"
     },
     {
       "id": "editor_in_chief:needs_ai_rewrite",
@@ -134,13 +134,8 @@
     },
     {
       "id": "bootstrap_observe_before_scaling",
-      "count": 6,
+      "count": 4,
       "operator_translation": "bootstrap observe before scaling"
-    },
-    {
-      "id": "duplicate_title",
-      "count": 6,
-      "operator_translation": "duplicate title"
     },
     {
       "id": "editor_in_chief:subject repeated inside 3-day cooldown",
@@ -168,9 +163,14 @@
       "operator_translation": "publish ready supply reserve fallback"
     },
     {
-      "id": "copy_subject_mismatch",
-      "count": 2,
-      "operator_translation": "copy subject mismatch"
+      "id": "publish_score:rewrite",
+      "count": 1,
+      "operator_translation": "repair the publish score package"
+    },
+    {
+      "id": "editor_in_chief:cooldown_subject",
+      "count": 1,
+      "operator_translation": "pick a fresh subject inside the same lane"
     }
   ],
   "levels": [
@@ -183,8 +183,8 @@
       "status": "cleared",
       "progress_pct": 100.0,
       "evidence": {
-        "published_count": 12,
-        "health_score": 67
+        "published_count": 13,
+        "health_score": 66
       }
     },
     {
@@ -194,11 +194,11 @@
       "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
       "revenue_job": "Turn production from lucky shots into repeatable inventory.",
       "status": "current",
-      "progress_pct": 92.8,
+      "progress_pct": 82.2,
       "evidence": {
-        "operational_publish_ready": 5,
-        "eligible_count": 6,
-        "pending": 19,
+        "operational_publish_ready": 4,
+        "eligible_count": 4,
+        "pending": 16,
         "target_publish_ready": 6,
         "target_pending": 20
       }
@@ -262,11 +262,11 @@
       "unlock": "One million views per 28 days, excellent health, and ten publish-ready Shorts in reserve.",
       "revenue_job": "Scale the proven system instead of adding random effort.",
       "status": "locked",
-      "progress_pct": 17.7,
+      "progress_pct": 14.3,
       "evidence": {
         "views_28d": 30314,
         "health_state": "needs_work",
-        "operational_publish_ready": 5
+        "operational_publish_ready": 4
       }
     }
   ],
