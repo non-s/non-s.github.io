@@ -5,25 +5,80 @@
     24
   ],
   "counts": {
-    "analytics_due": 6,
-    "awaiting_1h": 0,
-    "high_priority": 6,
-    "repair_candidates": 0,
+    "analytics_due": 2,
+    "awaiting_1h": 1,
+    "high_priority": 4,
+    "repair_candidates": 2,
     "tracked": 10
   },
-  "generated_at": "2026-07-15T23:16:04.549764+00:00",
+  "generated_at": "2026-07-15T23:28:58.982139+00:00",
   "items": [
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 1.03,
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.033,
+      "category": "reptiles",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-16T00:26:58.496934+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-16T05:26:58.496934+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-16T23:26:58.496934+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-16T00:26:58.496934+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Cold-Blooded Secrets",
+      "state": "awaiting_1h",
+      "title": "This tongue smell gives snakes away",
+      "uploaded_at": "2026-07-15T23:26:58.496934+00:00",
+      "url": "https://www.youtube.com/shorts/L4U_p2YUTyg",
+      "video_id": "L4U_p2YUTyg",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 1.245,
       "category": "wildlife",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-15T23:14:16.504771+00:00",
           "label": "1h",
-          "source": "missing",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -31,7 +86,7 @@
           "delta_to_target": 0,
           "due_at": "2026-07-16T04:14:16.504771+00:00",
           "label": "6h",
-          "source": "missing",
+          "source": "estimated",
           "state": "pending",
           "target_views": 105,
           "views": 0
@@ -40,28 +95,28 @@
           "delta_to_target": 0,
           "due_at": "2026-07-16T22:14:16.504771+00:00",
           "label": "24h",
-          "source": "missing",
+          "source": "estimated",
           "state": "pending",
           "target_views": 300,
           "views": 0
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-15T23:14:16.504771+00:00",
-        "label": "1h",
-        "source": "missing",
-        "state": "due",
-        "target_views": 24,
+        "delta_to_target": 0,
+        "due_at": "2026-07-16T04:14:16.504771+00:00",
+        "label": "6h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "high",
+      "priority": "low",
       "series": "Animal Superpowers",
-      "state": "analytics_due",
+      "state": "watch",
       "title": "Elephants use ear radiator before they trick",
       "uploaded_at": "2026-07-15T22:14:16.504771+00:00",
       "url": "https://www.youtube.com/shorts/B-8Yjr7aViY",
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.984,
+      "age_hours": 2.199,
       "category": "geology",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.91,
+      "age_hours": 3.125,
       "category": "farm",
       "checkpoints": [
         {
@@ -176,11 +231,11 @@
       "uploaded_at": "2026-07-15T20:21:30.033022+00:00",
       "url": "https://www.youtube.com/shorts/Nwsv9XCe7is",
       "video_id": "Nwsv9XCe7is",
-      "views_per_hour": 1.032
+      "views_per_hour": 0.645
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.611,
+      "age_hours": 3.826,
       "category": "farm",
       "checkpoints": [
         {
@@ -231,11 +286,11 @@
       "uploaded_at": "2026-07-15T19:39:23.925649+00:00",
       "url": "https://www.youtube.com/shorts/ga5ecDiwYCc",
       "video_id": "ga5ecDiwYCc",
-      "views_per_hour": 1.516
+      "views_per_hour": 1.052
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.929,
+      "age_hours": 5.144,
       "category": "farm",
       "checkpoints": [
         {
@@ -289,8 +344,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.157,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.373,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -306,8 +361,8 @@
           "delta_to_target": -102,
           "due_at": "2026-07-15T23:06:37.793048+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 3
         },
@@ -322,30 +377,41 @@
         }
       ],
       "current_views": 3,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
-        "delta_to_target": -102,
-        "due_at": "2026-07-15T23:06:37.793048+00:00",
-        "label": "6h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-16T17:06:37.793048+00:00",
+        "label": "24h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 105,
+        "state": "pending",
+        "target_views": 300,
         "views": 3
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Planet Earth",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Earth clouds reveal moving air from above",
       "uploaded_at": "2026-07-15T17:06:37.793048+00:00",
       "url": "https://www.youtube.com/shorts/pqdf9Rdjtu4",
       "video_id": "pqdf9Rdjtu4",
-      "views_per_hour": 0.579
+      "views_per_hour": 0.473,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Earth clouds reveal moving air from above",
+        "video_id": "pqdf9Rdjtu4",
+        "views": 3,
+        "warning_state": "repair_risk"
+      }
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.506,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 6.721,
       "category": "geology",
       "checkpoints": [
         {
@@ -361,8 +427,8 @@
           "delta_to_target": -103,
           "due_at": "2026-07-15T22:45:42.431869+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 2
         },
@@ -377,30 +443,41 @@
         }
       ],
       "current_views": 2,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
-        "delta_to_target": -103,
-        "due_at": "2026-07-15T22:45:42.431869+00:00",
-        "label": "6h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-16T16:45:42.431869+00:00",
+        "label": "24h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 105,
+        "state": "pending",
+        "target_views": 300,
         "views": 2
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Earth Engine",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Rock layers store old environments in stripes",
       "uploaded_at": "2026-07-15T16:45:42.431869+00:00",
       "url": "https://www.youtube.com/shorts/OAZunjbhm1w",
       "video_id": "OAZunjbhm1w",
-      "views_per_hour": 0.361
+      "views_per_hour": 0.299,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.594,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Rock layers store old environments in stripes",
+        "video_id": "OAZunjbhm1w",
+        "views": 2,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.016,
+      "age_hours": 8.231,
       "category": "dogs",
       "checkpoints": [
         {
@@ -455,7 +532,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.161,
+      "age_hours": 9.376,
       "category": "farm",
       "checkpoints": [
         {
@@ -506,61 +583,6 @@
       "uploaded_at": "2026-07-15T14:06:25.201584+00:00",
       "url": "https://www.youtube.com/shorts/06k3cVpMwPg",
       "video_id": "06k3cVpMwPg",
-      "views_per_hour": 0.0
-    },
-    {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 10.245,
-      "category": "reptiles",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-15T14:01:21.241971+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-15T19:01:21.241971+00:00",
-          "label": "6h",
-          "source": "observed",
-          "state": "observed",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": 0,
-          "due_at": "2026-07-16T13:01:21.241971+00:00",
-          "label": "24h",
-          "source": "estimated",
-          "state": "pending",
-          "target_views": 300,
-          "views": 0
-        }
-      ],
-      "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-15T14:01:21.241971+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Cold-Blooded Secrets",
-      "state": "analytics_due",
-      "title": "Snakes can sense heat when light disappears",
-      "uploaded_at": "2026-07-15T13:01:21.241971+00:00",
-      "url": "https://www.youtube.com/shorts/u3DIskqSxF0",
-      "video_id": "u3DIskqSxF0",
       "views_per_hour": 0.0
     }
   ],
