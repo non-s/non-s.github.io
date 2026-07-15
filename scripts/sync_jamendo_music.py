@@ -23,53 +23,36 @@ MAX_TRACKS = 10
 def main():
     BGM_DIR.mkdir(parents=True, exist_ok=True)
     
-    # Clean up old tracks to rotate library
     existing_files = list(BGM_DIR.glob("jamendo_*.mp3"))
     if len(existing_files) >= MAX_TRACKS:
-        # Delete random old files to make room for 2 new ones
         random.shuffle(existing_files)
         for f in existing_files[:2]:
             f.unlink()
             log.info(f"Removed old track {f.name} to rotate library.")
             
-    # Search for cinematic, ambient, epic, nature, or documentary
-    tags = random.choice(["cinematic", "ambient", "documentary", "epic", "nature"])
-    url = f"https://api.jamendo.com/v3.0/tracks/?client_id={CLIENT_ID}&format=json&limit=5&tags={tags}&order=popularity_week&audioformat=mp32"
+    # Download a relaxing/cinematic track using yt-dlp
+    import subprocess
+    queries = [
+        "ytsearch1:No Copyright Background Music Cinematic Documentary",
+        "ytsearch1:No Copyright Relaxing Nature Background Music",
+        "ytsearch1:No Copyright Deep Ocean Ambient Music"
+    ]
+    query = random.choice(queries)
+    log.info(f"Downloading BGM using yt-dlp query: {query}")
     
-    log.info(f"Querying Jamendo API for tag: {tags}")
+    cmd = [
+        sys.executable, "-m", "yt_dlp",
+        "-x", "--audio-format", "mp3",
+        "--audio-quality", "5",
+        "-o", str(BGM_DIR / "jamendo_%(id)s.%(ext)s"),
+        query
+    ]
+    
     try:
-        req = urllib.request.Request(url, headers={"User-Agent": "WildBrief-Bot/3.0"})
-        resp = urllib.request.urlopen(req, timeout=15).read().decode()
-        data = json.loads(resp)
-        results = data.get("results", [])
-        
-        if not results:
-            log.warning("No results from Jamendo.")
-            return
-
-        for track in results:
-            track_id = track.get("id")
-            dl_url = track.get("audiodownload")
-            
-            if not track_id or not dl_url:
-                continue
-                
-            dest = BGM_DIR / f"jamendo_{track_id}.mp3"
-            if dest.exists():
-                continue
-                
-            log.info(f"Downloading track {track_id}: {track.get('name')} by {track.get('artist_name')}...")
-            dl_req = urllib.request.Request(dl_url, headers={"User-Agent": "WildBrief-Bot/3.0"})
-            audio_data = urllib.request.urlopen(dl_req, timeout=30).read()
-            
-            with open(dest, "wb") as f:
-                f.write(audio_data)
-            
-            log.info(f"Saved {dest.name} ({len(audio_data) // 1024} KB)")
-            break # Just download 1 per run to not overload
-            
+        subprocess.run(cmd, check=True)
+        log.info("BGM synced successfully via yt-dlp.")
     except Exception as e:
-        log.error(f"Failed to sync Jamendo music: {e}")
+        log.error(f"Failed to sync BGM: {e}")
 
 if __name__ == "__main__":
     main()
