@@ -118,22 +118,23 @@ class DynamicStreamer:
             return []
 
     def convert_to_ts(self, mp4_path: Path) -> Path:
-        ts_path = self.temp_dir / f"{mp4_path.stem}.ts"
-        if ts_path.exists():
-            return ts_path
-            
-        log.info(f"Converting {mp4_path.name} to MPEG-TS...")
-        # Scale to 1920x1080 and ensure consistent framerate/audio for gapless concat
+        out_ts = self.temp_dir / f"{mp4_path.stem}.ts"
+        if out_ts.exists() and out_ts.stat().st_size > 0:
+            return out_ts
+
+        log.info(f"Converting {mp4_path.name} to MPEG-TS for streaming...")
         cmd = [
             "ffmpeg", "-y", "-i", str(mp4_path),
-            "-vf", "scale=1920:1080,fps=30",
-            "-c:v", "libx264", "-preset", "veryfast", "-profile:v", "high",
-            "-c:a", "aac", "-ar", "44100", "-b:a", "128k",
+            "-c", "copy",
+            "-bsf:v", "h264_mp4toannexb",
             "-f", "mpegts",
-            str(ts_path)
+            str(out_ts)
         ]
-        subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
-        return ts_path
+        res = subprocess.run(cmd, capture_output=True, text=True)
+        if res.returncode != 0:
+            log.error(f"FFmpeg failed to convert {mp4_path.name} to TS. Exit code: {res.returncode}")
+            log.error(f"FFmpeg stderr: {res.stderr}")
+        return out_ts
 
     def generate_host_response(self, question: dict) -> Path | None:
         log.info(f"Generating Virtual Host response for: {question['author']} - {question['text']}")
@@ -273,28 +274,32 @@ class DynamicStreamer:
                     log.info(f"Looping base video: {base_ts.name}")
                     target = base_ts
 
+                # Check if master ffmpeg crashed
+                if self.ffmpeg_proc.poll() is not None:
+                    log.error("Master FFmpeg pipe crashed! Restarting...")
+                    self.start_ffmpeg_pipe()
+
                 # Stream the file chunk by chunk into ffmpeg's stdin
                 try:
                     with open(target, "rb") as f:
                         while True:
+                            # Check again inside the loop to avoid BrokenPipe
+                            if self.ffmpeg_proc.poll() is not None:
+                                log.error("Master FFmpeg pipe crashed during streaming! Breaking out to restart...")
+                                break
+                            
                             chunk = f.read(1024 * 1024)  # 1MB chunks
                             if not chunk:
                                 break
                             self.ffmpeg_proc.stdin.write(chunk)
                             self.ffmpeg_proc.stdin.flush()
-                except (BrokenPipeError, OSError) as e:
-                    log.error(f"FFmpeg pipe broken ({e}). YouTube likely reset the connection or internet dropped. Restarting pipe...")
+                except Exception as e:
+                    log.error(f"Error streaming {target.name}: {e}")
+                    time.sleep(2)
                     if self.ffmpeg_proc:
                         self.ffmpeg_proc.kill()
                         self.ffmpeg_proc.wait()
                     time.sleep(5) # Cooldown before reconnecting
-                    self.start_ffmpeg_pipe()
-                    # We broke out of this file's loop, but the outer `while True` will just pick up the next file or restart base_ts
-                except Exception as e:
-                    log.error(f"Unexpected streaming error: {e}. Restarting...")
-                    time.sleep(5)
-                    if self.ffmpeg_proc:
-                        self.ffmpeg_proc.kill()
                     self.start_ffmpeg_pipe()
 
         except KeyboardInterrupt:
