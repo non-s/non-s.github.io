@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-07-15T09:33:48.203340+00:00",
-  "autonomy_score": 60,
+  "generated_at": "2026-07-15T09:36:38.441191+00:00",
+  "autonomy_score": 72,
   "state": "needs_operator_attention",
   "publish_mix": {
     "winner_sequels": 20,
@@ -16,20 +16,22 @@
   },
   "traffic_source": {
     "state": "unavailable",
-    "reason": "traffic_source_report_not_ready",
+    "reason": "<HttpError 500 when requesting https://youtubeanalytics.googleapis.com/v2/reports?ids=channel%3D%3DMINE&startDate=2026-06-18&endDate=2026-07-15&metrics=views%2CestimatedMinutesWatched%2CaverageViewDuration%2CaverageViewPercentage&dimensions",
     "dominant_source": ""
   },
   "quota_budget": {
-    "risk_score": 0,
+    "risk_score": 7,
     "state": "normal",
     "issues": [],
-    "unavailable_reports": [],
+    "unavailable_reports": [
+      "traffic_source"
+    ],
     "policy": "Use read-only reports daily; reserve write quota for scheduled publishing only."
   },
   "category_priorities": [
     {
       "value": "discoveries",
-      "score": 41.168
+      "score": 41.162
     },
     {
       "value": "wildlife",
@@ -51,7 +53,7 @@
   "format_priorities": [
     {
       "value": "science_clue",
-      "score": 41.168
+      "score": 41.162
     },
     {
       "value": "animal_intelligence",
