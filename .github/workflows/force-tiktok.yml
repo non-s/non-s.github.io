@@ -1,0 +1,23 @@
+name: "Force TikTok Sync"
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          python -m playwright install chromium
+      - name: Run TikTok Sync
+        run: python scripts/sync_tiktok.py
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUNBUFFERED: "1"
+          TIKTOK_SESSION_ID: ${{ secrets.TIKTOK_SESSION_ID }}
