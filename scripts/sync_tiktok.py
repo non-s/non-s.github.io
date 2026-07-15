@@ -89,7 +89,7 @@ def main():
             # Record success
             record = {
                 "video": vid_path,
-                "title": title,
+                "title": raw_title,
                 "status": "uploaded"
             }
             with open(TIKTOK_INTENTS_FILE, "a", encoding="utf-8") as f:
