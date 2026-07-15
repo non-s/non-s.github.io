@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-15T17:44:44.032501+00:00",
+  "generated_at": "2026-07-15T17:47:49.366812+00:00",
   "pending": 20,
   "states": {
     "rewrite": 14,
@@ -16,15 +16,19 @@
     "approved": 20
   },
   "prune_summary": {
-    "pending_before": 20,
+    "pending_before": 22,
     "pending_after": 20,
-    "rejected": 0,
-    "repair_needed": 0,
+    "rejected": 2,
+    "repair_needed": 1,
     "repaired": 5,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 19,
       "editor_in_chief:script quality gate blocked the narration": 7,
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
+      "off_topic_visual": 1,
+      "opening_retention_gap_risk": 1,
+      "opening promise is not concrete enough": 1,
+      "queue_score_reject": 1,
       "duplicate_title": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
       "editorial_cooldown_supply_fallback": 1,
@@ -33,6 +37,24 @@
     }
   },
   "rejected_preview": [
+    {
+      "id": "9f4a9964079e54da",
+      "title": "Coral reefs are cities built by tiny animals",
+      "reasons": [
+        "opening_retention_gap_risk",
+        "opening promise is not concrete enough",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
+    {
+      "id": "87c162981f0be426",
+      "title": "lava flakes melt on hot water",
+      "reasons": [
+        "off_topic_visual"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "2b1e422b9b438f1a",
       "title": "Coral reefs are cities built by tiny animals",
@@ -278,23 +300,6 @@
         "script_hook_mismatch"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "627fd35c4a82a378",
-      "title": "Kerid Crater lake aerial Iceland",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "565ffbe796d140d0",
-      "title": "Magnets make invisible fields visible",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -471,7 +476,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T17:44:23.243741+00:00",
+        "checked_at": "2026-07-15T17:47:28.949171+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1111,7 +1116,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T17:44:23.244990+00:00",
+        "checked_at": "2026-07-15T17:47:28.950407+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1763,7 +1768,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T17:44:23.249749+00:00",
+        "checked_at": "2026-07-15T17:47:28.954904+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2407,7 +2412,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T17:44:23.322710+00:00",
+        "checked_at": "2026-07-15T17:47:29.023020+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "inventory_reserve_fallback",
@@ -3069,7 +3074,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T17:44:23.241470+00:00",
+        "checked_at": "2026-07-15T17:47:28.947041+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3720,7 +3725,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T17:44:23.251435+00:00",
+        "checked_at": "2026-07-15T17:47:28.956592+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4359,7 +4364,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T17:44:23.265924+00:00",
+        "checked_at": "2026-07-15T17:47:28.970933+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4997,7 +5002,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T17:44:23.268127+00:00",
+        "checked_at": "2026-07-15T17:47:28.973114+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5647,7 +5652,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T17:44:23.252725+00:00",
+        "checked_at": "2026-07-15T17:47:28.957823+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6305,7 +6310,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T17:44:23.253799+00:00",
+        "checked_at": "2026-07-15T17:47:28.958882+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6953,7 +6958,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T17:44:23.248070+00:00",
+        "checked_at": "2026-07-15T17:47:28.953210+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7607,7 +7612,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T17:44:23.269189+00:00",
+        "checked_at": "2026-07-15T17:47:28.974176+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8273,7 +8278,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T17:44:23.260223+00:00",
+        "checked_at": "2026-07-15T17:47:28.965260+00:00",
         "mechanism_cluster": "tongue_smell",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8933,7 +8938,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T17:44:23.246635+00:00",
+        "checked_at": "2026-07-15T17:47:28.951803+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9584,7 +9589,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T17:44:23.255408+00:00",
+        "checked_at": "2026-07-15T17:47:28.960475+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10222,7 +10227,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T17:44:23.256943+00:00",
+        "checked_at": "2026-07-15T17:47:28.961997+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10868,7 +10873,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T17:44:23.258489+00:00",
+        "checked_at": "2026-07-15T17:47:28.963537+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11516,7 +11521,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T17:44:23.261957+00:00",
+        "checked_at": "2026-07-15T17:47:28.966983+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12149,7 +12154,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T17:44:23.238299+00:00",
+        "checked_at": "2026-07-15T17:47:28.943921+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12813,7 +12818,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T17:44:23.263740+00:00",
+        "checked_at": "2026-07-15T17:47:28.968753+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
