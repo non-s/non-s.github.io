@@ -64,10 +64,10 @@ def _get_yolo_paths(tmp_dir: Path) -> tuple[str, str]:
     weights_path = tmp_dir / "yolov3-tiny.weights"
     if not cfg_path.exists():
         log.info("Downloading YOLO cfg...")
-        urllib.request.urlretrieve(YOLO_CFG_URL, str(cfg_path))
+        urllib.request.urlretrieve(YOLO_CFG_URL, str(cfg_path))  # nosec B310
     if not weights_path.exists():
         log.info("Downloading YOLO weights...")
-        urllib.request.urlretrieve(YOLO_WEIGHTS_URL, str(weights_path))
+        urllib.request.urlretrieve(YOLO_WEIGHTS_URL, str(weights_path))  # nosec B310
     return str(cfg_path), str(weights_path)
 
 

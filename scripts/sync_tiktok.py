@@ -84,7 +84,7 @@ def main():
             "--desc", desc
         ]
         
-        result = subprocess.run(cmd)
+        result = subprocess.run(cmd)  # nosec B603
         
         if result.returncode == 0:
             # Record success

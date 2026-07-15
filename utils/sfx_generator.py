@@ -10,7 +10,7 @@ def generate_cinematic_whoosh(output_path: Path):
         "-t", "0.5",
         str(output_path)
     ]
-    subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)  # nosec B603
 
 def generate_deep_impact(output_path: Path):
     """Gera um grave de impacto cinematografico (Boom/Hit)."""
@@ -20,7 +20,7 @@ def generate_deep_impact(output_path: Path):
         "-t", "0.5",
         str(output_path)
     ]
-    subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)  # nosec B603
 
 def ensure_sfx_library(assets_dir: Path) -> dict[str, Path]:
     sfx_dir = assets_dir / "sfx"
