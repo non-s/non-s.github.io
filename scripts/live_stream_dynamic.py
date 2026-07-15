@@ -37,7 +37,7 @@ from googleapiclient.discovery import build
 
 class DynamicStreamer:
     def __init__(self, stream_key: str):
-        self.stream_key = stream_key
+        self.stream_key = stream_key.strip()
         self.videos_dir = Path("_videos")
         self.temp_dir = Path("_videos/temp_stream")
         self.temp_dir.mkdir(parents=True, exist_ok=True)
