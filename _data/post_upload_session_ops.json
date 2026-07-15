@@ -3,17 +3,17 @@
   "fresh_upload_actions": {
     "counts": {
       "automation_safe": 9,
-      "high": 1,
+      "high": 3,
       "manual_review": 1,
       "total": 10,
       "urgent": 3
     },
     "free_only": true,
-    "generated_at": "2026-07-15T18:51:02.981309+00:00",
+    "generated_at": "2026-07-15T19:28:07.785858+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 42.227,
+        "age_hours": 42.845,
         "automation_safe": true,
         "category": "discoveries",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 41.755,
+        "age_hours": 42.373,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 7.647,
+        "age_hours": 8.265,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -90,8 +90,60 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 6.446,
+        "automation_safe": true,
+        "category": "reptiles",
+        "checkpoint_label": "6h",
+        "checkpoint_state": "due",
+        "current_views": 0,
+        "due_at": "2026-07-15T19:01:21.241971+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:u3DIskqSxF0:analytics_due:6h",
+        "lane": "measurement",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "high",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 6h sample first.",
+        "series": "Cold-Blooded Secrets",
+        "state": "analytics_due",
+        "target_views": 105,
+        "title": "Snakes can sense heat when light disappears",
+        "url": "https://www.youtube.com/shorts/u3DIskqSxF0",
+        "video_id": "u3DIskqSxF0",
+        "wait_until": "",
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
+      },
+      {
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 1.13,
+        "automation_safe": true,
+        "category": "farm",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "due",
+        "current_views": 0,
+        "due_at": "2026-07-15T19:20:19.680517+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:qZH-jcRdi6Y:analytics_due:1h",
+        "lane": "measurement",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "high",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
+        "series": "Farmyard Surprises",
+        "state": "analytics_due",
+        "target_views": 24,
+        "title": "Horses sort familiar clues with face memory",
+        "url": "https://www.youtube.com/shorts/qZH-jcRdi6Y",
+        "video_id": "qZH-jcRdi6Y",
+        "wait_until": "",
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
+      },
+      {
         "action_type": "prepare_package_rescue",
-        "age_hours": 6.337,
+        "age_hours": 6.955,
         "automation_safe": false,
         "category": "insects",
         "checkpoint_label": "24h",
@@ -117,59 +169,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 5.828,
-        "automation_safe": true,
-        "category": "reptiles",
-        "checkpoint_label": "6h",
-        "checkpoint_state": "pending",
-        "current_views": 0,
-        "due_at": "2026-07-15T19:01:21.241971+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:u3DIskqSxF0:watch:6h",
-        "lane": "observe",
-        "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Keep observing through the next checkpoint.",
-        "series": "Cold-Blooded Secrets",
-        "state": "watch",
-        "target_views": 105,
-        "title": "Snakes can sense heat when light disappears",
-        "url": "https://www.youtube.com/shorts/u3DIskqSxF0",
-        "video_id": "u3DIskqSxF0",
-        "wait_until": "2026-07-15T19:01:21.241971+00:00",
-        "why": "No intervention signal is strong enough yet."
-      },
-      {
-        "action_type": "hold_until_first_hour",
-        "age_hours": 0.512,
-        "automation_safe": true,
-        "category": "farm",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "pending",
-        "current_views": 0,
-        "due_at": "2026-07-15T19:20:19.680517+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:qZH-jcRdi6Y:awaiting_1h:1h",
-        "lane": "observe",
-        "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "series": "Farmyard Surprises",
-        "state": "awaiting_1h",
-        "target_views": 24,
-        "title": "Horses sort familiar clues with face memory",
-        "url": "https://www.youtube.com/shorts/qZH-jcRdi6Y",
-        "video_id": "qZH-jcRdi6Y",
-        "wait_until": "2026-07-15T19:20:19.680517+00:00",
-        "why": "The upload is still inside the no-panic observation window."
-      },
-      {
-        "action_type": "watch_next_checkpoint",
-        "age_hours": 4.744,
+        "age_hours": 5.362,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "6h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.599,
+        "age_hours": 4.217,
         "automation_safe": true,
         "category": "dogs",
         "checkpoint_label": "6h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.089,
+        "age_hours": 2.707,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "6h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 1.74,
+        "age_hours": 2.358,
         "automation_safe": true,
         "category": "earth_from_space",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-15T18:51:02.980273+00:00"
+    "source_generated_at": "2026-07-15T19:28:07.785041+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,25 +282,25 @@
       24
     ],
     "counts": {
-      "analytics_due": 3,
-      "awaiting_1h": 1,
-      "high_priority": 4,
+      "analytics_due": 5,
+      "awaiting_1h": 0,
+      "high_priority": 6,
       "repair_candidates": 1,
       "tracked": 10
     },
-    "generated_at": "2026-07-15T18:51:02.980273+00:00",
+    "generated_at": "2026-07-15T19:28:07.785041+00:00",
     "items": [
       {
-        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.512,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 1.13,
         "category": "farm",
         "checkpoints": [
           {
-            "delta_to_target": 0,
+            "delta_to_target": -24,
             "due_at": "2026-07-15T19:20:19.680517+00:00",
             "label": "1h",
             "source": "estimated",
-            "state": "pending",
+            "state": "due",
             "target_views": 24,
             "views": 0
           },
@@ -324,21 +324,21 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-15T19:20:19.680517+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 24,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Farmyard Surprises",
-        "state": "awaiting_1h",
+        "state": "analytics_due",
         "title": "Horses sort familiar clues with face memory",
         "uploaded_at": "2026-07-15T18:20:19.680517+00:00",
         "url": "https://www.youtube.com/shorts/qZH-jcRdi6Y",
@@ -347,7 +347,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 1.74,
+        "age_hours": 2.358,
         "category": "earth_from_space",
         "checkpoints": [
           {
@@ -398,11 +398,11 @@
         "uploaded_at": "2026-07-15T17:06:37.793048+00:00",
         "url": "https://www.youtube.com/shorts/pqdf9Rdjtu4",
         "video_id": "pqdf9Rdjtu4",
-        "views_per_hour": 1.197
+        "views_per_hour": 1.149
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.089,
+        "age_hours": 2.707,
         "category": "geology",
         "checkpoints": [
           {
@@ -453,11 +453,11 @@
         "uploaded_at": "2026-07-15T16:45:42.431869+00:00",
         "url": "https://www.youtube.com/shorts/OAZunjbhm1w",
         "video_id": "OAZunjbhm1w",
-        "views_per_hour": 0.99
+        "views_per_hour": 0.957
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.599,
+        "age_hours": 4.217,
         "category": "dogs",
         "checkpoints": [
           {
@@ -512,7 +512,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 4.744,
+        "age_hours": 5.362,
         "category": "farm",
         "checkpoints": [
           {
@@ -566,8 +566,8 @@
         "views_per_hour": 0.0
       },
       {
-        "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.828,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 6.446,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -580,11 +580,11 @@
             "views": 0
           },
           {
-            "delta_to_target": 0,
+            "delta_to_target": -105,
             "due_at": "2026-07-15T19:01:21.241971+00:00",
             "label": "6h",
             "source": "estimated",
-            "state": "pending",
+            "state": "due",
             "target_views": 105,
             "views": 0
           },
@@ -599,21 +599,21 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "No intervention signal is strong enough yet.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
+          "delta_to_target": -105,
           "due_at": "2026-07-15T19:01:21.241971+00:00",
           "label": "6h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 105,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Cold-Blooded Secrets",
-        "state": "watch",
+        "state": "analytics_due",
         "title": "Snakes can sense heat when light disappears",
         "uploaded_at": "2026-07-15T13:01:21.241971+00:00",
         "url": "https://www.youtube.com/shorts/u3DIskqSxF0",
@@ -622,7 +622,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 6.337,
+        "age_hours": 6.955,
         "category": "insects",
         "checkpoints": [
           {
@@ -688,7 +688,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 7.647,
+        "age_hours": 8.265,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -743,7 +743,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 41.755,
+        "age_hours": 42.373,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -798,7 +798,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 42.227,
+        "age_hours": 42.845,
         "category": "discoveries",
         "checkpoints": [
           {
@@ -859,7 +859,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-15T18:51:02.981414+00:00",
+  "generated_at": "2026-07-15T19:28:07.785952+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
