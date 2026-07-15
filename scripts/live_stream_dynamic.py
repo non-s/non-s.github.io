@@ -122,11 +122,14 @@ class DynamicStreamer:
         if out_ts.exists() and out_ts.stat().st_size > 0:
             return out_ts
 
-        log.info(f"Converting {mp4_path.name} to MPEG-TS for streaming...")
+        log.info(f"Converting {mp4_path.name} to MPEG-TS for streaming (fixing keyframes)...")
         cmd = [
             "ffmpeg", "-y", "-i", str(mp4_path),
-            "-c", "copy",
-            "-bsf:v", "h264_mp4toannexb",
+            "-r", "30",
+            "-c:v", "libx264", "-preset", "veryfast", "-profile:v", "high",
+            "-g", "60", "-keyint_min", "60", "-sc_threshold", "0",
+            "-b:v", "4500k", "-maxrate", "4500k", "-bufsize", "9000k",
+            "-c:a", "aac", "-b:a", "128k", "-ar", "44100",
             "-f", "mpegts",
             str(out_ts)
         ]
