@@ -53,45 +53,81 @@ def _extract_first_frame(clip_path: Path, dest: Path) -> bool:
         return False
 
 
-def detect_face_center(clip_path: Path, tmp_dir: Path) -> tuple[float, float] | None:
-    """Probe the first frame for a face. Returns (x_frac, y_frac) in
-    [0, 1] coordinates of the source frame's centre-of-largest-face,
-    or None when no face is found / OpenCV isn't available.
+import urllib.request
+import os
 
-    Frac coordinates let the caller convert to pixels regardless of
-    the actual source resolution.
+YOLO_CFG_URL = "https://raw.githubusercontent.com/pjreddie/darknet/master/cfg/yolov3-tiny.cfg"
+YOLO_WEIGHTS_URL = "https://pjreddie.com/media/files/yolov3-tiny.weights"
+
+def _get_yolo_paths(tmp_dir: Path) -> tuple[str, str]:
+    cfg_path = tmp_dir / "yolov3-tiny.cfg"
+    weights_path = tmp_dir / "yolov3-tiny.weights"
+    if not cfg_path.exists():
+        log.info("Downloading YOLO cfg...")
+        urllib.request.urlretrieve(YOLO_CFG_URL, str(cfg_path))
+    if not weights_path.exists():
+        log.info("Downloading YOLO weights...")
+        urllib.request.urlretrieve(YOLO_WEIGHTS_URL, str(weights_path))
+    return str(cfg_path), str(weights_path)
+
+
+def detect_face_center(clip_path: Path, tmp_dir: Path) -> tuple[float, float] | None:
+    """Probe the first frame for the largest object (animal/subject).
+    Returns (x_frac, y_frac) in [0, 1] coordinates of the source frame's centre.
     """
     if not _try_import_opencv():
         return None
     try:
         import cv2
+        import numpy as np
     except Exception:
         return None
 
     frame_path = tmp_dir / (clip_path.stem + "_first.png")
     if not _extract_first_frame(clip_path, frame_path):
         return None
+        
     try:
         img = cv2.imread(str(frame_path))
         if img is None:
             return None
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        # haarcascades ships with opencv-python-headless under data/.
-        cascade_path = cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
-        cascade = cv2.CascadeClassifier(cascade_path)
-        faces = cascade.detectMultiScale(
-            gray,
-            scaleFactor=1.2,
-            minNeighbors=5,
-            minSize=(60, 60),
-        )
-        if len(faces) == 0:
-            return None
-        # Largest face wins (closest to camera = main subject).
-        x, y, w, h = max(faces, key=lambda f: f[2] * f[3])
-        cx, cy = x + w / 2.0, y + h / 2.0
-        h_img, w_img = gray.shape
-        return (cx / w_img, cy / h_img)
+            
+        h_img, w_img = img.shape[:2]
+        cfg, weights = _get_yolo_paths(tmp_dir)
+        net = cv2.dnn.readNetFromDarknet(cfg, weights)
+        
+        blob = cv2.dnn.blobFromImage(img, 1/255.0, (416, 416), swapRB=True, crop=False)
+        net.setInput(blob)
+        
+        layer_names = net.getLayerNames()
+        try:
+            out_layers = [layer_names[i - 1] for i in net.getUnconnectedOutLayers()]
+        except Exception:
+            # Handle different OpenCV versions
+            out_layers = [layer_names[i[0] - 1] if isinstance(i, (list, np.ndarray)) else layer_names[i - 1] for i in net.getUnconnectedOutLayers()]
+            
+        outs = net.forward(out_layers)
+        
+        max_area = 0
+        best_center = None
+        
+        for out in outs:
+            for detection in out:
+                scores = detection[5:]
+                class_id = np.argmax(scores)
+                confidence = scores[class_id]
+                
+                # Confidence threshold > 0.3. We trust any class, because in wildlife
+                # Pexels videos, the main object IS the animal.
+                if confidence > 0.3:
+                    box = detection[0:4] * np.array([w_img, h_img, w_img, h_img])
+                    (centerX, centerY, width, height) = box.astype("int")
+                    area = width * height
+                    if area > max_area:
+                        max_area = area
+                        best_center = (centerX / w_img, centerY / h_img)
+                        
+        return best_center
     except Exception as exc:
         log.debug("face_crop detect failed for %s: %s", clip_path.name, exc)
         return None
