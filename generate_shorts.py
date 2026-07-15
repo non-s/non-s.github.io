@@ -2498,6 +2498,10 @@ def generate_short(story: dict, tmp_dir: Path, lang: str | None = None) -> tuple
     # Set CHANNEL_WATERMARK=@yourhandle to opt back in (useful if you're
     # cross-posting the raw MP4 elsewhere).
     watermark_text = os.environ.get("CHANNEL_WATERMARK", "")
+    
+    vip_author = story.get("vip_author", "")
+    vip_author_text = f"Requested by {vip_author}" if vip_author else ""
+    
     if broll_paths:
         ok = build_broll_short(
             broll_paths=broll_paths,
@@ -2508,6 +2512,7 @@ def generate_short(story: dict, tmp_dir: Path, lang: str | None = None) -> tuple
             cover_text=thumbnail_text,
             cta_text=cta_text,
             watermark_text=watermark_text,
+            vip_author_text=vip_author_text,
         )
         if not ok and QUALITY_REQUIRE_MOTION_BROLL:
             log.warning("  Skipping Short - b-roll compose failed in strict production mode")

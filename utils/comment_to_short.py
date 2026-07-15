@@ -159,6 +159,12 @@ def score_comment(comment: dict) -> dict:
     lower = text.lower()
     score = 28.0
     reasons: list[str] = []
+    
+    # VIP Community Order Command
+    if lower.startswith("/wildbrief ") or lower.startswith("!wildbrief "):
+        score += 900.0  # Instant priority
+        reasons.append("vip_community_order")
+        
     if "?" in text:
         score += 24
         reasons.append("viewer_question")
@@ -284,6 +290,7 @@ def build_comment_short_candidate(comment: dict, markers: list[dict] | None = No
     animal = (scored["animals"] or ["nature"])[0]
     source_video = _text(comment.get("video_id"))
     candidate_id = _comment_id(comment)
+    author = _text(comment.get("authorDisplayName") or comment.get("author") or "A viewer")
     cue = _cue_for(animal, text)
     title = _title_for(animal, cue, text) if animal != "nature" else "Nature reveals one clue viewers asked about"
     hook, script = (
@@ -350,6 +357,7 @@ def build_comment_short_candidate(comment: dict, markers: list[dict] | None = No
         "yt_tags": yt_tags,
         "score": scored["score"],
         "comment_score": scored,
+        "vip_author": author if "vip_community_order" in scored["reasons"] else "",
         "comment_context": {
             "video_id": source_video,
             "published_at": comment.get("publishedAt", ""),

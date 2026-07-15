@@ -156,6 +156,7 @@ def build_broll_short(
     target_w: int = 1080,
     target_h: int = 1920,
     enable_brand_cards: bool = True,
+    vip_author_text: str = "",
 ) -> bool:
     """Compose a vertical Short from N b-roll clips + audio.
 
@@ -378,6 +379,17 @@ def build_broll_short(
             f"[withegg]"
         )
         last_label = "withegg"
+        
+    if vip_author_text:
+        safe = _ffmpeg_escape(vip_author_text)
+        parts.append(
+            f"[{last_label}]drawtext={font_param}"
+            f":text='{safe}':fontcolor=yellow:fontsize=52"
+            f":box=1:boxcolor=black@0.70:boxborderw=20"
+            f":x=(w-text_w)/2:y=h-300"
+            f"[withvip]"
+        )
+        last_label = "withvip"
 
     # Burned ASS subtitles (word-level captions in the middle band).
     if ass_subtitle_path and ass_subtitle_path.exists():

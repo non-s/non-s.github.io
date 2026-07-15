@@ -1,0 +1,103 @@
+import json
+import logging
+import datetime
+from typing import Dict
+from utils.ai_helper import ai_text
+
+log = logging.getLogger(__name__)
+
+def run_editorial_board(topic: str) -> Dict[str, str]:
+    """
+    Runs a multi-agent simulation to generate a high-quality video script.
+    Agents: Director, Fact-Checker, and Copywriter.
+    """
+    log.info(f"Starting Multi-Agent Editorial Board for topic: {topic}")
+    
+    current_month = datetime.datetime.now().strftime("%B")
+    
+    # 1. Director Agent
+    director_prompt = f"""
+    You are the Creative Director of an award-winning nature documentary channel.
+    The next topic is: {topic}.
+    
+    WORLD STATE CONTEXT: We are currently in the month of {current_month}.
+    If possible, subtly tailor the hook to relate to phenomena, weather, or animal behaviors typical for this time of year globally.
+    
+    Provide exactly ONE brilliant, highly engaging angle/hook to explore this topic.
+    The angle should be surprising, avoiding common clichés.
+    Return ONLY a JSON object with this schema:
+    {{"angle": "The core surprising concept", "rationale": "Why this works for retention"}}
+    """
+    director_pitch_str = ai_text(director_prompt, timeout=25)
+    
+    try:
+        director_pitch = json.loads(director_pitch_str)
+        angle = director_pitch.get("angle", topic)
+    except Exception as e:
+        log.warning(f"Director agent failed to output JSON. Fallback to topic. Error: {e}")
+        angle = topic
+
+    log.info(f"Director selected angle: {angle}")
+    
+    # 2. Fact-Checker Agent
+    fact_prompt = f"""
+    You are a meticulous Biologist and Fact-Checker.
+    The Director proposed this angle: "{angle}" for the topic "{topic}".
+    Validate this angle. If it's scientifically inaccurate or exaggerated, correct it.
+    If it's true, add one fascinating biological detail that proves it.
+    Return ONLY a JSON object with this schema:
+    {{"validated_angle": "The biologically accurate angle", "fascinating_fact": "One amazing true detail"}}
+    """
+    fact_str = ai_text(fact_prompt, timeout=25)
+    
+    try:
+        fact_data = json.loads(fact_str)
+        validated = fact_data.get("validated_angle", angle)
+        fact = fact_data.get("fascinating_fact", "")
+    except Exception as e:
+        log.warning(f"Fact-Checker failed to output JSON. Error: {e}")
+        validated = angle
+        fact = ""
+
+    log.info(f"Fact-Checker validated: {validated} with fact: {fact}")
+
+    # 3. Copywriter Agent (Final Script)
+    copywriter_prompt = f"""
+    You are a master scriptwriter and SEO expert for a viral YouTube Shorts channel.
+    Topic: {topic}
+    Scientifically Validated Angle: {validated}
+    Biological Fact: {fact}
+    
+    Write a brilliant 3-sentence script.
+    Sentence 1: The hook (must be punchy and mysterious).
+    Sentence 2: The explanation (using the biological fact).
+    Sentence 3: The payoff/conclusion (leaving the viewer amazed).
+    
+    Return ONLY a JSON object with this schema:
+    {{
+        "title": "A short, SEO-optimized title (under 50 chars)",
+        "script": "The full 3-sentence script",
+        "hook": "The hook (sentence 1)"
+    }}
+    """
+    final_script_str = ai_text(copywriter_prompt, timeout=30)
+    
+    try:
+        final_script = json.loads(final_script_str)
+        # Ensure we have the required fields
+        if not all(k in final_script for k in ["title", "script", "hook"]):
+            raise ValueError("Missing required fields in final script")
+        log.info(f"Copywriter finished script: {final_script['title']}")
+        return final_script
+    except Exception as e:
+        log.warning(f"Copywriter failed, falling back to simple prompt. Error: {e}")
+        # Fallback to single prompt
+        fallback_prompt = f"""
+        Write a 3-sentence script about: {topic}.
+        Return ONLY valid JSON: {{"title": "...", "script": "...", "hook": "..."}}
+        """
+        fb = ai_text(fallback_prompt)
+        try:
+            return json.loads(fb)
+        except:
+            return {"title": topic, "script": f"Let's learn about {topic}. It is an amazing animal in nature. Thanks for watching.", "hook": f"Let's learn about {topic}."}

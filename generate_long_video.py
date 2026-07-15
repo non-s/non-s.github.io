@@ -123,6 +123,22 @@ async def async_main():
     topics = list(NATURE_TOPICS.items())
     random.shuffle(topics)
 
+    # 1. Democracy Selvagem (Live Votes Integration)
+    try:
+        import json
+        votes_file = Path("_data/live_votes.json")
+        if votes_file.exists():
+            votes = json.loads(votes_file.read_text())
+            if votes:
+                top_vote = max(votes, key=votes.get)
+                # Inject the winning vote as the very first segment of the documentary
+                topics.insert(0, (top_vote, {"queries": [top_vote]}))
+                log.info(f"Democracia Selvagem: Injecting Audience Vote Winner: {top_vote}")
+                # Clear votes for the next cycle
+                votes_file.unlink()
+    except Exception as e:
+        log.error(f"Failed to read live votes: {e}")
+
     segment_paths = []
 
     for i in range(min(MAX_SEGMENTS, len(topics))):

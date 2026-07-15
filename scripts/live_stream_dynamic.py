@@ -89,11 +89,29 @@ class DynamicStreamer:
             response = request.execute()
             items = response.get("items", [])
             questions = []
+            votes = []
             for item in items:
                 text = item["snippet"]["displayMessage"]
                 author = item["authorDetails"]["displayName"]
                 if "?" in text and len(text) > 10:
                     questions.append({"author": author, "text": text})
+                if text.lower().startswith("!vote "):
+                    vote = text[6:].strip().lower()
+                    if len(vote) < 20:
+                        votes.append(vote)
+            
+            # Tally votes and save to JSON
+            if votes:
+                try:
+                    votes_file = Path("_data/live_votes.json")
+                    votes_file.parent.mkdir(exist_ok=True)
+                    current_votes = json.loads(votes_file.read_text()) if votes_file.exists() else {}
+                    for v in votes:
+                        current_votes[v] = current_votes.get(v, 0) + 1
+                    votes_file.write_text(json.dumps(current_votes, indent=2))
+                except Exception as e:
+                    log.error(f"Failed to record votes: {e}")
+                    
             return questions
         except Exception as e:
             log.error(f"Failed to fetch chat messages: {e}")
