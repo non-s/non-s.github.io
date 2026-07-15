@@ -159,12 +159,12 @@ def score_comment(comment: dict) -> dict:
     lower = text.lower()
     score = 28.0
     reasons: list[str] = []
-    
+
     # VIP Community Order Command
     if lower.startswith("/wildbrief ") or lower.startswith("!wildbrief "):
         score += 900.0  # Instant priority
         reasons.append("vip_community_order")
-        
+
     if "?" in text:
         score += 24
         reasons.append("viewer_question")
