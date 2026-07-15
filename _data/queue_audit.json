@@ -1,43 +1,54 @@
 {
-  "generated_at": "2026-07-15T23:16:36.653633+00:00",
-  "pending": 14,
+  "generated_at": "2026-07-15T23:16:44.981920+00:00",
+  "pending": 15,
   "states": {
     "rewrite": 12,
-    "publish_ready": 2
+    "publish_ready": 3
   },
   "mechanism_clusters": {
     "beak_signal": 1,
     "face_recognition": 1,
+    "scent_map": 1,
     "tongue_smell": 1,
     "call_signal": 1
   },
   "rights": {
-    "approved": 14
+    "approved": 15
   },
   "prune_summary": {
-    "pending_before": 14,
-    "pending_after": 14,
-    "rejected": 0,
+    "pending_before": 17,
+    "pending_after": 15,
+    "rejected": 2,
     "repair_needed": 0,
-    "repaired": 4,
+    "repaired": 5,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 14,
+      "objective_gate:bootstrap_observe_before_scaling": 15,
       "editor_in_chief:script quality gate blocked the narration": 7,
       "editor_in_chief:subject repeated inside 3-day cooldown": 3,
+      "duplicate_title": 2,
+      "copy_subject_mismatch": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
-      "editorial_cooldown_supply_fallback": 1
+      "editorial_cooldown_supply_fallback": 1,
+      "publish_ready_supply_reserve_fallback": 1
     }
   },
   "rejected_preview": [
     {
-      "id": "5492c4505c453345",
-      "title": "Cats Gatos se lambem para resetar o mapa de cheiros",
+      "id": "08a55f3240d65335",
+      "title": "Rock layers store ancient environments in stripes",
       "reasons": [
-        "subject repeated inside 3-day cooldown",
-        "humanity score is too low",
-        "editorial score 39 is below 62"
+        "duplicate_title"
       ],
-      "stage": "editor_in_chief"
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "5a3e42d68da25c3a",
+      "title": "Storm clouds reveal a storm's heat engine",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
     },
     {
       "id": "4200f0c770078a7d",
@@ -299,16 +310,6 @@
         "duplicate_title"
       ],
       "stage": "queue_prune_final"
-    },
-    {
-      "id": "f42e42c78de6500e",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "off_topic_visual",
-        "copy_subject_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
     }
   ],
   "top": [
@@ -486,7 +487,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T23:16:22.480015+00:00",
+        "checked_at": "2026-07-15T23:16:29.172044+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1125,7 +1126,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T23:16:22.472963+00:00",
+        "checked_at": "2026-07-15T23:16:29.164156+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1763,7 +1764,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T23:16:22.475090+00:00",
+        "checked_at": "2026-07-15T23:16:29.166506+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2407,7 +2408,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T23:16:22.481748+00:00",
+        "checked_at": "2026-07-15T23:16:29.173675+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2874,6 +2875,687 @@
       }
     },
     {
+      "id": "5492c4505c453345",
+      "title": "Cats groom to reset their scent map",
+      "category": "cats",
+      "publish_score": {
+        "approved": true,
+        "category": "cats",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "scent_map",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "groom",
+            "map",
+            "scent",
+            "tongue"
+          ],
+          "cue_terms": [
+            "grip",
+            "groom",
+            "map",
+            "paw",
+            "scent",
+            "tongue"
+          ],
+          "frame_hook_bridge": [
+            "groom"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "cats"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [
+            "weak_visual_surface",
+            "low_opportunity_score"
+          ],
+          "score": 51,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 58,
+            "emotional_potential": 35,
+            "novelty": 45,
+            "replay_potential": 64,
+            "viral_potential": 50,
+            "visual_potential": 45
+          },
+          "verdict": "discard"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "reserve_override": {
+          "original_approved": false,
+          "original_opportunity_reasons": [
+            "weak_visual_surface",
+            "low_opportunity_score"
+          ],
+          "original_state": "rewrite",
+          "reason": "publish_ready_supply_reserve_fallback"
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 68,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 50
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.542,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.39,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 3/5 samples, inferred data, confidence 0.39; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 3
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-07-15T23:16:29.176163+00:00",
+        "mechanism_cluster": "scent_map",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling",
+          "publish_ready_supply_reserve_fallback"
+        ],
+        "score": 78.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 78.0,
+      "youtube_brain": {
+        "animal": "cats",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "groom",
+            "map",
+            "scent",
+            "tongue"
+          ],
+          "cue_terms": [
+            "grip",
+            "groom",
+            "map",
+            "paw",
+            "scent",
+            "tongue"
+          ],
+          "frame_hook_bridge": [
+            "groom"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "cats"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "cats",
+        "viewer_promise": "See why cats body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which cats clue should Wild Brief compare next in Pet Secrets?",
+        "cta_prompt": "Want one animal signal a day? Follow for the next pet clue.",
+        "curiosity_gap": {
+          "hook": "Why do these cats change after the paw grip?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 109,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 47.78,
+            "format:winner_inspired": 47.78,
+            "hook:pattern_reuse": 47.78,
+            "thumbnail:new_thumbnail": 47.78
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "groom",
+              "map",
+              "scent",
+              "tongue"
+            ],
+            "cue_terms": [
+              "grip",
+              "groom",
+              "map",
+              "paw",
+              "scent",
+              "tongue"
+            ],
+            "frame_hook_bridge": [
+              "groom"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "cats"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Cats use grooming to reset their scent map",
+          "Cats show why the grooming signal matters.",
+          "Cats show why the grooming signal matters.",
+          "Cats show why the grooming signal matters.",
+          "Cats give away the answer through grooming signal"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "grooming signal",
+          "ending_line": "Which pet behavior should we decode next?",
+          "final_line": "Now the grooming signal at the start makes sense.",
+          "loop_score": 0.835,
+          "opening_line": "Cats use grooming to reset their scent map.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "grooming signal",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.835,
+        "next_episode_question": "Tomorrow in Pet Secrets: another animal signal. What part of this feels most impossible?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "groom",
+            "map",
+            "scent",
+            "tongue"
+          ],
+          "cue_terms": [
+            "grip",
+            "groom",
+            "map",
+            "paw",
+            "scent",
+            "tongue"
+          ],
+          "frame_hook_bridge": [
+            "groom"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "cats"
+        },
+        "pinned_comment": "Watch the grooming signal again. Tomorrow in Pet Secrets: another animal signal. What part of this feels most impossible?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 14.9,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 20,
+          "first_2s_narration": "Cats use grooming to reset their scent map Watch the tongue and",
+          "first_frame_text": "GROOMING SIGNAL",
+          "first_frame_text_words": 2,
+          "hook": "Cats use grooming to reset their scent map.",
+          "hook_specificity": 0.78,
+          "hook_words": 8,
+          "loop_score": 0.835,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "groom",
+              "map",
+              "scent",
+              "tongue"
+            ],
+            "cue_terms": [
+              "grip",
+              "groom",
+              "map",
+              "paw",
+              "scent",
+              "tongue"
+            ],
+            "frame_hook_bridge": [
+              "groom"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "cats"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the grooming signal, so viewers rewatch the cats clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 68,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 50
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Cats use grooming to reset their scent map Watch the tongue and",
+          "first_frame_text": "GROOMING SIGNAL",
+          "next_episode_question": "Tomorrow in Pet Secrets: another animal signal. What part of this feels most impossible?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Cats behavior through the visible grooming signal.",
+            "series": "Pet Secrets",
+            "subject": "cats",
+            "terms": [
+              "cats",
+              "grooming signal",
+              "body superpower"
+            ],
+            "title_variant": "Cats behavior: grooming signal explained",
+            "visible_cue": "grooming signal"
+          },
+          "series": "Pet Secrets",
+          "subject": "cats",
+          "visible_cue": "grooming signal"
+        },
+        "risks": [],
+        "score": 94,
+        "search_intent": {
+          "description_line": "This Short explains Cats behavior through the visible grooming signal.",
+          "series": "Pet Secrets",
+          "subject": "cats",
+          "terms": [
+            "cats",
+            "grooming signal",
+            "body superpower"
+          ],
+          "title_variant": "Cats behavior: grooming signal explained",
+          "visible_cue": "grooming signal"
+        },
+        "selected_variant": {
+          "hook": "Watch the grooming signal; it explains the behavior",
+          "score": 75,
+          "thumbnail_text": "GROOMING SIGNAL",
+          "title": "Cats groom to reset their scent map"
+        },
+        "series": "Pet Secrets #7",
+        "series_identity": {
+          "continuity_prompt": "Next in Pet Secrets: compare this with another force of nature.",
+          "episode": 7,
+          "label": "Pet Secrets #7",
+          "series": "Pet Secrets"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "GROOMING SIGNAL",
+          "WATCH GROOMING SIGNAL",
+          "CATS SIGNAL",
+          "GROOMING SIGNAL MATTERS",
+          "GROOMING SIGNAL FIRST",
+          "GROOMING SIGNAL REVEAL",
+          "GROOMING SIGNAL CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Cats groom to reset their scent map",
+          "Cats signal through grooming signal",
+          "Cats use grooming signal before they signal",
+          "This grooming signal gives cats away",
+          "Why cats signal after one grooming signal",
+          "Cats reveal the answer with grooming signal",
+          "The grooming signal that changes the moment",
+          "Cats make one grooming signal matter",
+          "Cats show the hidden answer in seconds",
+          "Cats: watch this grooming signal"
+        ],
+        "top_variants": [
+          {
+            "hook": "Watch the grooming signal; it explains the behavior",
+            "score": 75,
+            "thumbnail_text": "GROOMING SIGNAL",
+            "title": "Cats groom to reset their scent map"
+          },
+          {
+            "hook": "Start with the grooming signal; it changes the scene",
+            "score": 75,
+            "thumbnail_text": "GROOMING SIGNAL",
+            "title": "Cats groom to reset their scent map"
+          },
+          {
+            "hook": "Cats use grooming to reset their scent map",
+            "score": 74,
+            "thumbnail_text": "GROOMING SIGNAL",
+            "title": "Cats groom to reset their scent map"
+          },
+          {
+            "hook": "Watch the grooming signal; it explains the behavior",
+            "score": 68,
+            "thumbnail_text": "WATCH GROOMING SIGNAL",
+            "title": "Cats groom to reset their scent map"
+          },
+          {
+            "hook": "Start with the grooming signal; it changes the scene",
+            "score": 68,
+            "thumbnail_text": "WATCH GROOMING SIGNAL",
+            "title": "Cats groom to reset their scent map"
+          },
+          {
+            "hook": "Watch the grooming signal; it explains the behavior",
+            "score": 68,
+            "thumbnail_text": "CATS SIGNAL",
+            "title": "Cats groom to reset their scent map"
+          },
+          {
+            "hook": "Start with the grooming signal; it changes the scene",
+            "score": 68,
+            "thumbnail_text": "CATS SIGNAL",
+            "title": "Cats groom to reset their scent map"
+          },
+          {
+            "hook": "Watch the grooming signal; it explains the behavior",
+            "score": 68,
+            "thumbnail_text": "GROOMING SIGNAL MATTERS",
+            "title": "Cats groom to reset their scent map"
+          },
+          {
+            "hook": "Start with the grooming signal; it changes the scene",
+            "score": 68,
+            "thumbnail_text": "GROOMING SIGNAL MATTERS",
+            "title": "Cats groom to reset their scent map"
+          },
+          {
+            "hook": "Watch the grooming signal; it explains the behavior",
+            "score": 68,
+            "thumbnail_text": "GROOMING SIGNAL FIRST",
+            "title": "Cats groom to reset their scent map"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "06c1a5450940dc2d",
       "title": "Storm clouds show air layers changing over time",
       "category": "earth_from_space",
@@ -3052,7 +3734,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T23:16:22.470640+00:00",
+        "checked_at": "2026-07-15T23:16:28.756202+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3708,7 +4390,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T23:16:22.487834+00:00",
+        "checked_at": "2026-07-15T23:16:29.180871+00:00",
         "mechanism_cluster": "tongue_smell",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4365,7 +5047,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T23:16:22.476663+00:00",
+        "checked_at": "2026-07-15T23:16:29.168667+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5001,7 +5683,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T23:16:22.478336+00:00",
+        "checked_at": "2026-07-15T23:16:29.170401+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5632,7 +6314,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T23:16:22.483093+00:00",
+        "checked_at": "2026-07-15T23:16:29.175046+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6284,7 +6966,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T23:16:22.484688+00:00",
+        "checked_at": "2026-07-15T23:16:29.177662+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6930,7 +7612,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T23:16:22.486166+00:00",
+        "checked_at": "2026-07-15T23:16:29.179177+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7584,7 +8266,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T23:16:22.462328+00:00",
+        "checked_at": "2026-07-15T23:16:28.746878+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8248,7 +8930,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T23:16:22.490576+00:00",
+        "checked_at": "2026-07-15T23:16:29.183704+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8902,7 +9584,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T23:16:22.488869+00:00",
+        "checked_at": "2026-07-15T23:16:29.181911+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",

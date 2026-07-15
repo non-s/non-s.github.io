@@ -5,24 +5,24 @@
     24
   ],
   "counts": {
-    "analytics_due": 4,
+    "analytics_due": 6,
     "awaiting_1h": 0,
     "high_priority": 6,
-    "repair_candidates": 2,
+    "repair_candidates": 0,
     "tracked": 10
   },
-  "generated_at": "2026-07-15T23:15:57.030939+00:00",
+  "generated_at": "2026-07-15T23:16:04.549764+00:00",
   "items": [
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 1.028,
+      "age_hours": 1.03,
       "category": "wildlife",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-15T23:14:16.504771+00:00",
           "label": "1h",
-          "source": "estimated",
+          "source": "missing",
           "state": "due",
           "target_views": 24,
           "views": 0
@@ -31,7 +31,7 @@
           "delta_to_target": 0,
           "due_at": "2026-07-16T04:14:16.504771+00:00",
           "label": "6h",
-          "source": "estimated",
+          "source": "missing",
           "state": "pending",
           "target_views": 105,
           "views": 0
@@ -40,7 +40,7 @@
           "delta_to_target": 0,
           "due_at": "2026-07-16T22:14:16.504771+00:00",
           "label": "24h",
-          "source": "estimated",
+          "source": "missing",
           "state": "pending",
           "target_views": 300,
           "views": 0
@@ -52,7 +52,7 @@
         "delta_to_target": -24,
         "due_at": "2026-07-15T23:14:16.504771+00:00",
         "label": "1h",
-        "source": "estimated",
+        "source": "missing",
         "state": "due",
         "target_views": 24,
         "views": 0
@@ -70,7 +70,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.982,
+      "age_hours": 1.984,
       "category": "geology",
       "checkpoints": [
         {
@@ -125,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.907,
+      "age_hours": 2.91,
       "category": "farm",
       "checkpoints": [
         {
@@ -176,11 +176,11 @@
       "uploaded_at": "2026-07-15T20:21:30.033022+00:00",
       "url": "https://www.youtube.com/shorts/Nwsv9XCe7is",
       "video_id": "Nwsv9XCe7is",
-      "views_per_hour": 0.702
+      "views_per_hour": 1.032
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.609,
+      "age_hours": 3.611,
       "category": "farm",
       "checkpoints": [
         {
@@ -231,11 +231,11 @@
       "uploaded_at": "2026-07-15T19:39:23.925649+00:00",
       "url": "https://www.youtube.com/shorts/ga5ecDiwYCc",
       "video_id": "ga5ecDiwYCc",
-      "views_per_hour": 1.126
+      "views_per_hour": 1.516
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.927,
+      "age_hours": 4.929,
       "category": "farm",
       "checkpoints": [
         {
@@ -289,8 +289,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.155,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 6.157,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -306,8 +306,8 @@
           "delta_to_target": -102,
           "due_at": "2026-07-15T23:06:37.793048+00:00",
           "label": "6h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "due",
           "target_views": 105,
           "views": 3
         },
@@ -322,41 +322,30 @@
         }
       ],
       "current_views": 3,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-16T17:06:37.793048+00:00",
-        "label": "24h",
+        "delta_to_target": -102,
+        "due_at": "2026-07-15T23:06:37.793048+00:00",
+        "label": "6h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "due",
+        "target_views": 105,
         "views": 3
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Planet Earth",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Earth clouds reveal moving air from above",
       "uploaded_at": "2026-07-15T17:06:37.793048+00:00",
       "url": "https://www.youtube.com/shorts/pqdf9Rdjtu4",
       "video_id": "pqdf9Rdjtu4",
-      "views_per_hour": 0.492,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Earth clouds reveal moving air from above",
-        "video_id": "pqdf9Rdjtu4",
-        "views": 3,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.579
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.504,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 6.506,
       "category": "geology",
       "checkpoints": [
         {
@@ -372,8 +361,8 @@
           "delta_to_target": -103,
           "due_at": "2026-07-15T22:45:42.431869+00:00",
           "label": "6h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "due",
           "target_views": 105,
           "views": 2
         },
@@ -388,41 +377,30 @@
         }
       ],
       "current_views": 2,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-16T16:45:42.431869+00:00",
-        "label": "24h",
+        "delta_to_target": -103,
+        "due_at": "2026-07-15T22:45:42.431869+00:00",
+        "label": "6h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "due",
+        "target_views": 105,
         "views": 2
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Earth Engine",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Rock layers store old environments in stripes",
       "uploaded_at": "2026-07-15T16:45:42.431869+00:00",
       "url": "https://www.youtube.com/shorts/OAZunjbhm1w",
       "video_id": "OAZunjbhm1w",
-      "views_per_hour": 0.31,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Rock layers store old environments in stripes",
-        "video_id": "OAZunjbhm1w",
-        "views": 2,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.361
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 8.014,
+      "age_hours": 8.016,
       "category": "dogs",
       "checkpoints": [
         {
@@ -477,7 +455,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.159,
+      "age_hours": 9.161,
       "category": "farm",
       "checkpoints": [
         {
@@ -532,7 +510,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 10.243,
+      "age_hours": 10.245,
       "category": "reptiles",
       "checkpoints": [
         {
