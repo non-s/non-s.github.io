@@ -155,6 +155,7 @@ def build_broll_short(
     watermark_text: str = "@WildBrief",
     target_w: int = 1080,
     target_h: int = 1920,
+    enable_brand_cards: bool = True,
 ) -> bool:
     """Compose a vertical Short from N b-roll clips + audio.
 
@@ -187,7 +188,7 @@ def build_broll_short(
     # duration so the FULL Short still matches the audio length.
     intro_card_path: Path | None = None
     outro_card_path: Path | None = None
-    if BRAND_CARDS_ENABLED:
+    if enable_brand_cards and BRAND_CARDS_ENABLED:
         try:
             from utils.brand_card import get_intro_outro_cards
 

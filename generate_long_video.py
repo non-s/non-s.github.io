@@ -100,6 +100,7 @@ async def generate_segment(segment_index: int, topic_key: str, query: str) -> Pa
         ass_subtitle_path=ass_path if ass_path.exists() else None,
         target_w=1920,
         target_h=1080,
+        enable_brand_cards=False,
     )
     return out_mp4 if ok and out_mp4.exists() else None
 
