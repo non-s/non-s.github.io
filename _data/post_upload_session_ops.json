@@ -2,18 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 2,
+      "automation_safe": 1,
       "high": 0,
-      "manual_review": 1,
+      "manual_review": 2,
       "total": 3,
       "urgent": 3
     },
     "free_only": true,
-    "generated_at": "2026-07-15T01:01:37.129074+00:00",
+    "generated_at": "2026-07-15T01:08:39.499032+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 66.252,
+        "age_hours": 66.369,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 24.403,
+        "age_hours": 24.521,
         "automation_safe": false,
         "category": "discoveries",
         "checkpoint_label": "1h",
@@ -64,9 +64,9 @@
         "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
-        "action_type": "pull_fresh_analytics",
-        "age_hours": 23.931,
-        "automation_safe": true,
+        "action_type": "prepare_package_rescue",
+        "age_hours": 24.048,
+        "automation_safe": false,
         "category": "wildlife",
         "checkpoint_label": "1h",
         "checkpoint_state": "overdue",
@@ -74,24 +74,24 @@
         "due_at": "2026-07-14T02:05:45.230548+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:xa7g2eRaRLE:analytics_due:1h",
-        "lane": "measurement",
-        "manual_approval_required": false,
+        "id": "fresh-upload:xa7g2eRaRLE:repair_candidate:1h",
+        "lane": "package_rescue",
+        "manual_approval_required": true,
         "opening_retention_score": 100.0,
         "priority": "urgent",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
+        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
         "series": "Animal Superpowers",
-        "state": "analytics_due",
+        "state": "repair_candidate",
         "target_views": 24,
         "title": "Lions hunt better when the pride coordinates",
         "url": "https://www.youtube.com/shorts/xa7g2eRaRLE",
         "video_id": "xa7g2eRaRLE",
         "wait_until": "",
-        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
+        "why": "Observed velocity is weak enough to prepare a package intervention."
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-15T01:01:37.128422+00:00"
+    "source_generated_at": "2026-07-15T01:08:39.498492+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -100,17 +100,17 @@
       24
     ],
     "counts": {
-      "analytics_due": 2,
+      "analytics_due": 1,
       "awaiting_1h": 0,
       "high_priority": 3,
-      "repair_candidates": 1,
+      "repair_candidates": 2,
       "tracked": 3
     },
-    "generated_at": "2026-07-15T01:01:37.128422+00:00",
+    "generated_at": "2026-07-15T01:08:39.498492+00:00",
     "items": [
       {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 23.931,
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "age_hours": 24.048,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -132,17 +132,17 @@
             "views": 0
           },
           {
-            "delta_to_target": 0,
+            "delta_to_target": -299,
             "due_at": "2026-07-15T01:05:45.230548+00:00",
             "label": "24h",
-            "source": "estimated",
-            "state": "pending",
+            "source": "observed",
+            "state": "observed",
             "target_views": 300,
             "views": 1
           }
         ],
         "current_views": 1,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
         "next_checkpoint": {
           "delta_to_target": -24,
           "due_at": "2026-07-14T02:05:45.230548+00:00",
@@ -156,16 +156,27 @@
         "opening_retention_state": "retention_ready",
         "priority": "high",
         "series": "Animal Superpowers",
-        "state": "analytics_due",
+        "state": "repair_candidate",
         "title": "Lions hunt better when the pride coordinates",
         "uploaded_at": "2026-07-14T01:05:45.230548+00:00",
         "url": "https://www.youtube.com/shorts/xa7g2eRaRLE",
         "video_id": "xa7g2eRaRLE",
-        "views_per_hour": 0.042
+        "views_per_hour": 0.042,
+        "warning": {
+          "action": "TITLE_AUTO_REPAIR_TRIGGER",
+          "confidence_score": 0.756,
+          "reason": "low early velocity",
+          "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
+          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+          "title": "Lions hunt better when the pride coordinates",
+          "video_id": "xa7g2eRaRLE",
+          "views": 1,
+          "warning_state": "repair_risk"
+        }
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 24.403,
+        "age_hours": 24.521,
         "category": "discoveries",
         "checkpoints": [
           {
@@ -216,7 +227,7 @@
         "uploaded_at": "2026-07-14T00:37:24.551626+00:00",
         "url": "https://www.youtube.com/shorts/DGs36Y79jHo",
         "video_id": "DGs36Y79jHo",
-        "views_per_hour": 0.205,
+        "views_per_hour": 0.204,
         "warning": {
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.756,
@@ -231,7 +242,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 66.252,
+        "age_hours": 66.369,
         "category": "geology",
         "checkpoints": [
           {
@@ -292,7 +303,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-15T01:01:37.129119+00:00",
+  "generated_at": "2026-07-15T01:08:39.499066+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."

@@ -5,17 +5,17 @@
     24
   ],
   "counts": {
-    "analytics_due": 2,
+    "analytics_due": 1,
     "awaiting_1h": 0,
     "high_priority": 3,
-    "repair_candidates": 1,
+    "repair_candidates": 2,
     "tracked": 3
   },
-  "generated_at": "2026-07-15T01:01:37.128422+00:00",
+  "generated_at": "2026-07-15T01:08:39.498492+00:00",
   "items": [
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 23.931,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 24.048,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -37,17 +37,17 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -299,
           "due_at": "2026-07-15T01:05:45.230548+00:00",
           "label": "24h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 300,
           "views": 1
         }
       ],
       "current_views": 1,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": -24,
         "due_at": "2026-07-14T02:05:45.230548+00:00",
@@ -61,16 +61,27 @@
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Animal Superpowers",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Lions hunt better when the pride coordinates",
       "uploaded_at": "2026-07-14T01:05:45.230548+00:00",
       "url": "https://www.youtube.com/shorts/xa7g2eRaRLE",
       "video_id": "xa7g2eRaRLE",
-      "views_per_hour": 0.042
+      "views_per_hour": 0.042,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.756,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Lions hunt better when the pride coordinates",
+        "video_id": "xa7g2eRaRLE",
+        "views": 1,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 24.403,
+      "age_hours": 24.521,
       "category": "discoveries",
       "checkpoints": [
         {
@@ -121,7 +132,7 @@
       "uploaded_at": "2026-07-14T00:37:24.551626+00:00",
       "url": "https://www.youtube.com/shorts/DGs36Y79jHo",
       "video_id": "DGs36Y79jHo",
-      "views_per_hour": 0.205,
+      "views_per_hour": 0.204,
       "warning": {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.756,
@@ -136,7 +147,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 66.252,
+      "age_hours": 66.369,
       "category": "geology",
       "checkpoints": [
         {
