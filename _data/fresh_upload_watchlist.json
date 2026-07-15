@@ -9,21 +9,76 @@
     "awaiting_1h": 1,
     "high_priority": 2,
     "repair_candidates": 0,
-    "tracked": 6
+    "tracked": 7
   },
-  "generated_at": "2026-07-15T14:25:05.020756+00:00",
+  "generated_at": "2026-07-15T15:15:27.000832+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.311,
-      "category": "farm",
+      "age_hours": 0.005,
+      "category": "dogs",
       "checkpoints": [
         {
           "delta_to_target": 0,
+          "due_at": "2026-07-15T16:15:08.329086+00:00",
+          "label": "1h",
+          "source": "missing",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-15T21:15:08.329086+00:00",
+          "label": "6h",
+          "source": "missing",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-16T15:15:08.329086+00:00",
+          "label": "24h",
+          "source": "missing",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-15T16:15:08.329086+00:00",
+        "label": "1h",
+        "source": "missing",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Pet Secrets",
+      "state": "awaiting_1h",
+      "title": "This scent map gives dogs away",
+      "uploaded_at": "2026-07-15T15:15:08.329086+00:00",
+      "url": "https://www.youtube.com/shorts/YZMh9v8WHJI",
+      "video_id": "YZMh9v8WHJI",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 1.15,
+      "category": "farm",
+      "checkpoints": [
+        {
+          "delta_to_target": -24,
           "due_at": "2026-07-15T15:06:25.201584+00:00",
           "label": "1h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
         "delta_to_target": 0,
-        "due_at": "2026-07-15T15:06:25.201584+00:00",
-        "label": "1h",
+        "due_at": "2026-07-15T20:06:25.201584+00:00",
+        "label": "6h",
         "source": "estimated",
         "state": "pending",
-        "target_views": 24,
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "low",
       "series": "Farmyard Surprises",
-      "state": "awaiting_1h",
+      "state": "watch",
       "title": "Chickens lock their view between steps",
       "uploaded_at": "2026-07-15T14:06:25.201584+00:00",
       "url": "https://www.youtube.com/shorts/06k3cVpMwPg",
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.395,
+      "age_hours": 2.235,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 1.905,
+      "age_hours": 2.744,
       "category": "insects",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.215,
+      "age_hours": 4.054,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -235,7 +290,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 37.322,
+      "age_hours": 38.162,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -286,11 +341,11 @@
       "uploaded_at": "2026-07-14T01:05:45.230548+00:00",
       "url": "https://www.youtube.com/shorts/xa7g2eRaRLE",
       "video_id": "xa7g2eRaRLE",
-      "views_per_hour": 0.027
+      "views_per_hour": 0.026
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 37.795,
+      "age_hours": 38.634,
       "category": "discoveries",
       "checkpoints": [
         {
@@ -341,7 +396,7 @@
       "uploaded_at": "2026-07-14T00:37:24.551626+00:00",
       "url": "https://www.youtube.com/shorts/DGs36Y79jHo",
       "video_id": "DGs36Y79jHo",
-      "views_per_hour": 0.133
+      "views_per_hour": 0.13
     }
   ],
   "targets": {

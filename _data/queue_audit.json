@@ -1,35 +1,44 @@
 {
-  "generated_at": "2026-07-15T14:25:51.032051+00:00",
-  "pending": 21,
+  "generated_at": "2026-07-15T15:16:13.029712+00:00",
+  "pending": 20,
   "states": {
-    "rewrite": 15,
+    "rewrite": 14,
     "publish_ready": 6
   },
   "mechanism_clusters": {
     "face_recognition": 4,
-    "scent_map": 2,
     "call_signal": 1,
+    "scent_map": 1,
     "tongue_smell": 1,
     "beak_signal": 1
   },
   "rights": {
-    "approved": 21
+    "approved": 20
   },
   "prune_summary": {
-    "pending_before": 25,
-    "pending_after": 21,
-    "rejected": 4,
+    "pending_before": 20,
+    "pending_after": 20,
+    "rejected": 0,
     "repair_needed": 0,
-    "repaired": 5,
+    "repaired": 4,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 21,
+      "objective_gate:bootstrap_observe_before_scaling": 20,
       "editor_in_chief:script quality gate blocked the narration": 7,
-      "duplicate_title": 3,
-      "rights_guard_person_manual_review": 1,
-      "editor_in_chief:subject repeated inside 3-day cooldown": 1
+      "editor_in_chief:subject repeated inside 3-day cooldown": 1,
+      "editorial_cooldown_supply_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "4902c8c9c16ac33f",
+      "title": "Dogs Cachorro faz mapa com o cheiro e te acha fácil",
+      "reasons": [
+        "subject repeated inside 3-day cooldown",
+        "humanity score is too low",
+        "editorial score 39 is below 62"
+      ],
+      "stage": "editor_in_chief"
+    },
     {
       "id": "839a036e343c447a",
       "title": "Magnets make invisible fields visible",
@@ -279,14 +288,6 @@
         "duplicate_title"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "a2d2a18b4a595e4c",
-      "title": "Elephants cool blood through giant ears",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -463,7 +464,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T14:25:29.363594+00:00",
+        "checked_at": "2026-07-15T15:15:52.564935+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -555,7 +556,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 101,
+          "sample_count": 102,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1100,7 +1101,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T14:25:29.366313+00:00",
+        "checked_at": "2026-07-15T15:15:52.567568+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1193,7 +1194,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 101,
+          "sample_count": 102,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -1743,7 +1744,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T14:25:29.367563+00:00",
+        "checked_at": "2026-07-15T15:15:52.568803+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1839,7 +1840,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 101,
+          "sample_count": 102,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -2222,651 +2223,6 @@
       }
     },
     {
-      "id": "4902c8c9c16ac33f",
-      "title": "This scent map gives dogs away",
-      "category": "dogs",
-      "publish_score": {
-        "approved": true,
-        "category": "dogs",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "scent_map",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "map",
-            "nose"
-          ],
-          "cue_terms": [
-            "map",
-            "nose",
-            "scent"
-          ],
-          "frame_hook_bridge": [
-            "map"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "dogs"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [
-            "borderline_opportunity_observe"
-          ],
-          "score": 54,
-          "signals": {
-            "comment_potential": 54,
-            "educational_potential": 58,
-            "emotional_potential": 35,
-            "novelty": 45,
-            "replay_potential": 74,
-            "viral_potential": 50,
-            "visual_potential": 55
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 76,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "body_superpower",
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "title_score": 84,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.445,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.26,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-07-15T14:25:29.369334+00:00",
-        "mechanism_cluster": "scent_map",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 100.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 100.0,
-      "youtube_brain": {
-        "animal": "dogs",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "map",
-            "nose"
-          ],
-          "cue_terms": [
-            "map",
-            "nose",
-            "scent"
-          ],
-          "frame_hook_bridge": [
-            "map"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "dogs"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "body_superpower",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "dogs",
-        "viewer_promise": "See why dogs body superpower matters."
-      },
-      "packaging": {
-        "community_prompt": "Which dogs clue should Wild Brief compare next in Pet Secrets?",
-        "cta_prompt": "Want one animal signal a day? Follow for the next pet clue.",
-        "curiosity_gap": {
-          "hook": "Why do these dogs change after the scent map?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "body superpower",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 101,
-          "winners": {
-            "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 47.5,
-            "format:winner_inspired": 47.5,
-            "hook:pattern_reuse": 47.5,
-            "thumbnail:new_thumbnail": 47.5
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "map",
-              "nose"
-            ],
-            "cue_terms": [
-              "map",
-              "nose",
-              "scent"
-            ],
-            "frame_hook_bridge": [
-              "map"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "dogs"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Dogs build a map with smell",
-          "Dogs show why the scent map matters.",
-          "Dogs show why the scent map matters.",
-          "Dogs show why the scent map matters.",
-          "Dogs give away the answer through scent map"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "scent map",
-          "ending_line": "What should they sniff next?",
-          "final_line": "Now the scent map at the start makes sense.",
-          "loop_score": 0.798,
-          "opening_line": "Dogs build a map with smell.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "scent map",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.798,
-        "next_episode_question": "Tomorrow in Pet Secrets: another animal signal. What part of this feels most impossible?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "map",
-            "nose"
-          ],
-          "cue_terms": [
-            "map",
-            "nose",
-            "scent"
-          ],
-          "frame_hook_bridge": [
-            "map"
-          ],
-          "risks": [],
-          "score": 100.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "frame_hook_bridge",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "dogs"
-        },
-        "pinned_comment": "Watch the scent map again. Tomorrow in Pet Secrets: another animal signal. What part of this feels most impossible?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 15.0,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 17,
-          "first_2s_narration": "Dogs build map with smell Watch the nose before the feet because",
-          "first_frame_text": "SCENT MAP",
-          "first_frame_text_words": 2,
-          "hook": "Dogs build a map with smell.",
-          "hook_specificity": 0.78,
-          "hook_words": 5,
-          "loop_score": 0.798,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "map",
-              "nose"
-            ],
-            "cue_terms": [
-              "map",
-              "nose",
-              "scent"
-            ],
-            "frame_hook_bridge": [
-              "map"
-            ],
-            "risks": [],
-            "score": 100.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "frame_hook_bridge",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "dogs"
-          },
-          "opening_retention_score": 100.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 71,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the scent map, so viewers rewatch the dogs clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 76,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 79,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Dogs build a map with smell Watch the nose before the feet",
-          "first_frame_text": "SCENT MAP",
-          "next_episode_question": "Tomorrow in Pet Secrets: another animal signal. What part of this feels most impossible?",
-          "opening_retention_score": 100.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains Dogs behavior through the visible scent map.",
-            "series": "Pet Secrets",
-            "subject": "dogs",
-            "terms": [
-              "dogs",
-              "scent map",
-              "body superpower"
-            ],
-            "title_variant": "Dogs behavior: scent map explained",
-            "visible_cue": "scent map"
-          },
-          "series": "Pet Secrets",
-          "subject": "dogs",
-          "visible_cue": "scent map"
-        },
-        "risks": [],
-        "score": 97,
-        "search_intent": {
-          "description_line": "This Short explains Dogs behavior through the visible scent map.",
-          "series": "Pet Secrets",
-          "subject": "dogs",
-          "terms": [
-            "dogs",
-            "scent map",
-            "body superpower"
-          ],
-          "title_variant": "Dogs behavior: scent map explained",
-          "visible_cue": "scent map"
-        },
-        "selected_variant": {
-          "hook": "Dogs build a map with smell",
-          "score": 78,
-          "thumbnail_text": "SCENT MAP",
-          "title": "Dogs read the world through scent maps"
-        },
-        "series": "Pet Secrets #6",
-        "series_identity": {
-          "continuity_prompt": "Next in Pet Secrets: compare this with another force of nature.",
-          "episode": 6,
-          "label": "Pet Secrets #6",
-          "series": "Pet Secrets"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "SCENT MAP",
-          "WATCH SCENT MAP",
-          "DOGS SMELL",
-          "SCENT MAP MATTERS",
-          "SCENT MAP FIRST",
-          "SCENT MAP REVEAL",
-          "SCENT MAP CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Dogs read the world through scent maps",
-          "This scent map gives dogs away",
-          "Dogs use scent map before they smell",
-          "Why dogs smell after one scent map",
-          "Dogs reveal the answer with scent map",
-          "The scent map that changes the moment",
-          "Dogs make one scent map matter",
-          "Dogs show the hidden answer in seconds",
-          "Dogs: watch this scent map",
-          "Watch dogs after the scent map"
-        ],
-        "top_variants": [
-          {
-            "hook": "Dogs build a map with smell",
-            "score": 78,
-            "thumbnail_text": "SCENT MAP",
-            "title": "Dogs read the world through scent maps"
-          },
-          {
-            "hook": "Start with the scent map; it changes the scene",
-            "score": 78,
-            "thumbnail_text": "SCENT MAP",
-            "title": "Dogs read the world through scent maps"
-          },
-          {
-            "hook": "Watch the scent map; it explains the behavior",
-            "score": 77,
-            "thumbnail_text": "SCENT MAP",
-            "title": "Dogs read the world through scent maps"
-          },
-          {
-            "hook": "Dogs build a map with smell",
-            "score": 71,
-            "thumbnail_text": "WATCH SCENT MAP",
-            "title": "Dogs read the world through scent maps"
-          },
-          {
-            "hook": "Start with the scent map; it changes the scene",
-            "score": 71,
-            "thumbnail_text": "WATCH SCENT MAP",
-            "title": "Dogs read the world through scent maps"
-          },
-          {
-            "hook": "Dogs build a map with smell",
-            "score": 71,
-            "thumbnail_text": "DOGS SMELL",
-            "title": "Dogs read the world through scent maps"
-          },
-          {
-            "hook": "Start with the scent map; it changes the scene",
-            "score": 71,
-            "thumbnail_text": "DOGS SMELL",
-            "title": "Dogs read the world through scent maps"
-          },
-          {
-            "hook": "Dogs build a map with smell",
-            "score": 71,
-            "thumbnail_text": "SCENT MAP MATTERS",
-            "title": "Dogs read the world through scent maps"
-          },
-          {
-            "hook": "Start with the scent map; it changes the scene",
-            "score": 71,
-            "thumbnail_text": "SCENT MAP MATTERS",
-            "title": "Dogs read the world through scent maps"
-          },
-          {
-            "hook": "Dogs build a map with smell",
-            "score": 71,
-            "thumbnail_text": "SCENT MAP FIRST",
-            "title": "Dogs read the world through scent maps"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
       "id": "cb4cb593e9502516",
       "title": "Earth clouds reveal moving air from above",
       "category": "earth_from_space",
@@ -3043,7 +2399,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T14:25:29.371243+00:00",
+        "checked_at": "2026-07-15T15:15:52.570836+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3139,7 +2495,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 101,
+          "sample_count": 102,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -3696,7 +3052,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T14:25:29.373471+00:00",
+        "checked_at": "2026-07-15T15:15:52.573217+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3792,7 +3148,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 101,
+          "sample_count": 102,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -4349,7 +3705,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T14:25:29.375835+00:00",
+        "checked_at": "2026-07-15T15:15:52.575616+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4445,7 +3801,7 @@
           },
           "explore_rate": 0.1,
           "mode": "explore",
-          "sample_count": 101,
+          "sample_count": 102,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -5000,7 +4356,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T14:25:29.377517+00:00",
+        "checked_at": "2026-07-15T15:15:52.577301+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5094,7 +4450,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 101,
+          "sample_count": 102,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -5639,7 +4995,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T14:25:29.391684+00:00",
+        "checked_at": "2026-07-15T15:15:52.591544+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5731,7 +5087,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 101,
+          "sample_count": 102,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6277,7 +5633,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T14:25:29.393880+00:00",
+        "checked_at": "2026-07-15T15:15:52.593767+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6371,7 +5727,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 101,
+          "sample_count": 102,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -6922,7 +6278,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T14:25:29.003379+00:00",
+        "checked_at": "2026-07-15T15:15:52.549689+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7016,7 +6372,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 101,
+          "sample_count": 102,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -7561,7 +6917,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T14:25:29.378919+00:00",
+        "checked_at": "2026-07-15T15:15:52.578844+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7655,7 +7011,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 101,
+          "sample_count": 102,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -8214,7 +7570,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T14:25:29.380007+00:00",
+        "checked_at": "2026-07-15T15:15:52.579934+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -8313,7 +7669,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 101,
+          "sample_count": 102,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -8550,11 +7906,11 @@
           "thumbnail_text": "GROOMING SIGNAL",
           "title": "Cats groom to reset their scent map"
         },
-        "series": "Pet Secrets #6",
+        "series": "Pet Secrets #7",
         "series_identity": {
           "continuity_prompt": "Next in Pet Secrets: compare this with another force of nature.",
-          "episode": 6,
-          "label": "Pet Secrets #6",
+          "episode": 7,
+          "label": "Pet Secrets #7",
           "series": "Pet Secrets"
         },
         "state": "magnetic",
@@ -8686,6 +8042,668 @@
             "score": 68,
             "thumbnail_text": "GROOMING SIGNAL FIRST",
             "title": "Cats groom to reset their scent map"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
+      "id": "950b049fd7d3b3d5",
+      "title": "This tongue smell gives snakes away",
+      "category": "reptiles",
+      "publish_score": {
+        "approved": true,
+        "category": "reptiles",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "tongue_smell",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "air",
+            "tongue"
+          ],
+          "cue_terms": [
+            "air",
+            "leaf",
+            "move",
+            "smell",
+            "tongue"
+          ],
+          "frame_hook_bridge": [
+            "tongue"
+          ],
+          "risks": [
+            "subject_not_frontloaded"
+          ],
+          "score": 92.0,
+          "state": "retention_ready",
+          "strengths": [
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "reptiles"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 67,
+          "signals": {
+            "comment_potential": 54,
+            "educational_potential": 73,
+            "emotional_potential": 35,
+            "novelty": 59,
+            "replay_potential": 82,
+            "viral_potential": 77,
+            "visual_potential": 69
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 75,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "title_score": 74,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.445,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.26,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-07-15T15:15:52.587576+00:00",
+        "mechanism_cluster": "tongue_smell",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling",
+          "editor_in_chief:subject repeated inside 3-day cooldown",
+          "editorial_cooldown_supply_fallback"
+        ],
+        "score": 72.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 72.0,
+      "youtube_brain": {
+        "animal": "snakes",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "air",
+            "tongue"
+          ],
+          "cue_terms": [
+            "air",
+            "leaf",
+            "move",
+            "smell",
+            "tongue"
+          ],
+          "frame_hook_bridge": [
+            "tongue"
+          ],
+          "risks": [
+            "subject_not_frontloaded"
+          ],
+          "score": 92.0,
+          "state": "retention_ready",
+          "strengths": [
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "reptiles"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "snakes",
+        "viewer_promise": "See why snakes body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which snakes clue should Wild Brief compare next in Cold-Blooded Secrets?",
+        "cta_prompt": "Want more survival tricks from ancient designs?",
+        "curiosity_gap": {
+          "hook": "Why do these reptiles change after the leaf move?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 102,
+          "winners": {
+            "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 47.5,
+            "format:winner_inspired": 47.5,
+            "hook:pattern_reuse": 47.5,
+            "thumbnail:new_thumbnail": 47.5
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "air",
+              "tongue"
+            ],
+            "cue_terms": [
+              "air",
+              "leaf",
+              "move",
+              "smell",
+              "tongue"
+            ],
+            "frame_hook_bridge": [
+              "tongue"
+            ],
+            "risks": [
+              "subject_not_frontloaded"
+            ],
+            "score": 92.0,
+            "state": "retention_ready",
+            "strengths": [
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "reptiles"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Snakes sample the air with a tongue flick",
+          "Snakes show why the tongue smell matters.",
+          "Snakes show why the tongue smell matters.",
+          "Snakes show why the tongue smell matters.",
+          "Snakes give away the answer through tongue smell"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "tongue smell",
+          "ending_line": "Would you notice the trail.",
+          "final_line": "Now the tongue smell at the start makes sense.",
+          "loop_score": 0.79,
+          "opening_line": "Snakes sample the air with a tongue flick.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "tongue smell",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.79,
+        "next_episode_question": "Tomorrow in Cold-Blooded Secrets: another animal signal. Is this ancient design underrated?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "air",
+            "tongue"
+          ],
+          "cue_terms": [
+            "air",
+            "leaf",
+            "move",
+            "smell",
+            "tongue"
+          ],
+          "frame_hook_bridge": [
+            "tongue"
+          ],
+          "risks": [
+            "subject_not_frontloaded"
+          ],
+          "score": 92.0,
+          "state": "retention_ready",
+          "strengths": [
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "reptiles"
+        },
+        "pinned_comment": "Watch the tongue smell again. Tomorrow in Cold-Blooded Secrets: another animal signal. Is this ancient design underrated?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.56,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 18,
+          "first_2s_narration": "Snakes sample the air with tongue flick Watch the tongue flick because",
+          "first_frame_text": "TONGUE SMELL",
+          "first_frame_text_words": 2,
+          "hook": "Snakes sample the air with a tongue flick.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.79,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "air",
+              "tongue"
+            ],
+            "cue_terms": [
+              "air",
+              "leaf",
+              "move",
+              "smell",
+              "tongue"
+            ],
+            "frame_hook_bridge": [
+              "tongue"
+            ],
+            "risks": [
+              "subject_not_frontloaded"
+            ],
+            "score": 92.0,
+            "state": "retention_ready",
+            "strengths": [
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "reptiles"
+          },
+          "opening_retention_score": 92.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the tongue smell, so viewers rewatch the snakes clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 75,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 58
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Snakes sample the air with a tongue flick Watch the tongue flick",
+          "first_frame_text": "TONGUE SMELL",
+          "next_episode_question": "Tomorrow in Cold-Blooded Secrets: another animal signal. Is this ancient design underrated?",
+          "opening_retention_score": 92.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Snakes behavior through the visible tongue smell.",
+            "series": "Cold-Blooded Secrets",
+            "subject": "snakes",
+            "terms": [
+              "snakes",
+              "tongue smell",
+              "reptiles",
+              "body superpower"
+            ],
+            "title_variant": "Snakes behavior: tongue smell explained",
+            "visible_cue": "tongue smell"
+          },
+          "series": "Cold-Blooded Secrets",
+          "subject": "snakes",
+          "visible_cue": "tongue smell"
+        },
+        "risks": [],
+        "score": 96,
+        "search_intent": {
+          "description_line": "This Short explains Snakes behavior through the visible tongue smell.",
+          "series": "Cold-Blooded Secrets",
+          "subject": "snakes",
+          "terms": [
+            "snakes",
+            "tongue smell",
+            "reptiles",
+            "body superpower"
+          ],
+          "title_variant": "Snakes behavior: tongue smell explained",
+          "visible_cue": "tongue smell"
+        },
+        "selected_variant": {
+          "hook": "Watch the tongue smell; it explains the behavior",
+          "score": 80,
+          "thumbnail_text": "TONGUE SMELL",
+          "title": "Snakes smell the air with their tongues"
+        },
+        "series": "Cold-Blooded Secrets #6",
+        "series_identity": {
+          "continuity_prompt": "Next in Cold-Blooded Secrets: compare this with another force of nature.",
+          "episode": 6,
+          "label": "Cold-Blooded Secrets #6",
+          "series": "Cold-Blooded Secrets"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.24,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.281,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 93,
+          "state": "strong",
+          "subscriber_probability": 0.133
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "TONGUE SMELL",
+          "WATCH TONGUE SMELL",
+          "SNAKES SMELL",
+          "TONGUE SMELL MATTERS",
+          "TONGUE SMELL FIRST",
+          "TONGUE SMELL REVEAL",
+          "TONGUE SMELL CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Snakes smell the air with their tongues",
+          "This tongue smell gives snakes away",
+          "Snakes use tongue smell before they smell",
+          "Why snakes smell after one tongue smell",
+          "Snakes reveal the answer with tongue smell",
+          "The tongue smell that changes the moment",
+          "Snakes make one tongue smell matter",
+          "Snakes show the hidden answer in seconds",
+          "Snakes: watch this tongue smell",
+          "Watch snakes after the tongue smell"
+        ],
+        "top_variants": [
+          {
+            "hook": "Watch the tongue smell; it explains the behavior",
+            "score": 80,
+            "thumbnail_text": "TONGUE SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Start with the tongue smell; it changes the scene",
+            "score": 80,
+            "thumbnail_text": "TONGUE SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Snakes sample the air with a tongue flick",
+            "score": 79,
+            "thumbnail_text": "TONGUE SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Watch the tongue smell; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "WATCH TONGUE SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Start with the tongue smell; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "WATCH TONGUE SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Watch the tongue smell; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "SNAKES SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Start with the tongue smell; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "SNAKES SMELL",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Watch the tongue smell; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "TONGUE SMELL MATTERS",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Start with the tongue smell; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "TONGUE SMELL MATTERS",
+            "title": "Snakes smell the air with their tongues"
+          },
+          {
+            "hook": "Watch the tongue smell; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "TONGUE SMELL FIRST",
+            "title": "Snakes smell the air with their tongues"
           }
         ]
       },
@@ -8878,7 +8896,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T14:25:29.004839+00:00",
+        "checked_at": "2026-07-15T15:15:52.558110+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8975,7 +8993,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 101,
+          "sample_count": 102,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -9529,7 +9547,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T14:25:29.007630+00:00",
+        "checked_at": "2026-07-15T15:15:52.560827+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9622,7 +9640,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 101,
+          "sample_count": 102,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -10165,7 +10183,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T14:25:29.361539+00:00",
+        "checked_at": "2026-07-15T15:15:52.562777+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10255,7 +10273,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 101,
+          "sample_count": 102,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -10794,7 +10812,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T14:25:29.381559+00:00",
+        "checked_at": "2026-07-15T15:15:52.581485+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10889,7 +10907,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 101,
+          "sample_count": 102,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -11440,7 +11458,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T14:25:29.383106+00:00",
+        "checked_at": "2026-07-15T15:15:52.583012+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11537,7 +11555,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 101,
+          "sample_count": 102,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -12094,7 +12112,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T14:25:29.385906+00:00",
+        "checked_at": "2026-07-15T15:15:52.585830+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12193,7 +12211,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 101,
+          "sample_count": 102,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -12580,12 +12598,12 @@
       }
     },
     {
-      "id": "950b049fd7d3b3d5",
-      "title": "This tongue smell gives snakes away",
-      "category": "reptiles",
+      "id": "eb41118e410e097b",
+      "title": "Ocean edges turn wave motion into patterns",
+      "category": "conservation",
       "publish_score": {
         "approved": true,
-        "category": "reptiles",
+        "category": "conservation",
         "decision_confidence": {
           "bootstrap_multiplier": 0.255,
           "can_adjust_strategy": false,
@@ -12603,10 +12621,10 @@
           "issues": [],
           "state": "approved"
         },
-        "hook_score": 100,
+        "hook_score": 86,
         "objective_gate": {
           "confidence_score": 0.007,
-          "mechanism_cluster": "tongue_smell",
+          "mechanism_cluster": "",
           "payoff_time_s": 0.0,
           "penalty": 0.0,
           "publish_blocking": false,
@@ -12620,18 +12638,18 @@
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "air",
-            "tongue"
+            "edge",
+            "pattern",
+            "wave"
           ],
           "cue_terms": [
-            "air",
-            "leaf",
-            "move",
-            "smell",
-            "tongue"
+            "edge",
+            "pattern",
+            "wave"
           ],
           "frame_hook_bridge": [
-            "tongue"
+            "edge",
+            "wave"
           ],
           "risks": [
             "subject_not_frontloaded"
@@ -12646,7 +12664,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "reptiles"
+          "subject": "conservation"
         },
         "opportunity": {
           "confidence": {
@@ -12662,17 +12680,17 @@
           },
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 67,
+          "score": 58,
           "signals": {
-            "comment_potential": 54,
-            "educational_potential": 73,
+            "comment_potential": 46,
+            "educational_potential": 66,
             "emotional_potential": 35,
-            "novelty": 59,
-            "replay_potential": 82,
-            "viral_potential": 77,
-            "visual_potential": 69
+            "novelty": 69,
+            "replay_potential": 60,
+            "viral_potential": 62,
+            "visual_potential": 59
           },
-          "verdict": "produce"
+          "verdict": "rewrite"
         },
         "phrase_risk": {
           "hits": [],
@@ -12692,21 +12710,21 @@
           },
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 75,
+          "score": 67,
           "signals": {
-            "completion_prediction": 84,
+            "completion_prediction": 77,
             "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 58
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 50
           },
           "verdict": "rewrite"
         },
-        "score": 100,
+        "score": 92.5,
         "state": "publish_ready",
-        "story_format": "body_superpower",
+        "story_format": "conservation_signal",
         "subscriber_conversion": {
-          "comment_probability": 0.24,
+          "comment_probability": 0.207,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -12720,23 +12738,22 @@
           },
           "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
           "reasons": [
-            "identity_cta",
             "debate_comment",
             "return_prompt",
             "series_identity",
             "episode_continuity"
           ],
-          "return_probability": 0.281,
+          "return_probability": 0.242,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 93,
+          "score": 79,
           "state": "strong",
-          "subscriber_probability": 0.133
+          "subscriber_probability": 0.113
         },
-        "title_score": 74,
+        "title_score": 100,
         "weak_content": {
           "confidence": {
             "bootstrap_multiplier": 0.445,
@@ -12757,35 +12774,35 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T14:25:29.387710+00:00",
-        "mechanism_cluster": "tongue_smell",
+        "checked_at": "2026-07-15T15:15:52.589358+00:00",
+        "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
-          "editor_in_chief:subject repeated inside 3-day cooldown"
+          "editor_in_chief:script quality gate blocked the narration"
         ],
-        "score": 64.0,
+        "score": 62.5,
         "state": "rewrite",
         "template_cluster": ""
       },
-      "queue_score": 64.0,
+      "queue_score": 62.5,
       "youtube_brain": {
-        "animal": "snakes",
+        "animal": "ocean",
         "commands": [],
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "air",
-            "tongue"
+            "edge",
+            "pattern",
+            "wave"
           ],
           "cue_terms": [
-            "air",
-            "leaf",
-            "move",
-            "smell",
-            "tongue"
+            "edge",
+            "pattern",
+            "wave"
           ],
           "frame_hook_bridge": [
-            "tongue"
+            "edge",
+            "wave"
           ],
           "risks": [
             "subject_not_frontloaded"
@@ -12800,7 +12817,7 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "reptiles"
+          "subject": "conservation"
         },
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
@@ -12810,10 +12827,10 @@
           "last 2s: payoff and follow signal"
         ],
         "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
         "score": 100,
         "state": "publish_minded",
-        "story_format": "body_superpower",
+        "story_format": "conservation_signal",
         "strengths": [
           "subject_visible_in_first_sentence",
           "action_driven_promise",
@@ -12823,14 +12840,14 @@
           "thumbnail_text_scannable",
           "retention_opening_aligned"
         ],
-        "subject": "snakes",
-        "viewer_promise": "See why snakes body superpower matters."
+        "subject": "ocean",
+        "viewer_promise": "See why this ocean conservation signal matters."
       },
       "packaging": {
-        "community_prompt": "Which snakes clue should Wild Brief compare next in Cold-Blooded Secrets?",
-        "cta_prompt": "Want more survival tricks from ancient designs?",
+        "community_prompt": "Which ocean clue should Wild Brief compare next in Planet Repair?",
+        "cta_prompt": "Want real examples of nature fighting back?",
         "curiosity_gap": {
-          "hook": "Why do these reptiles change after the leaf move?",
+          "hook": "Why does this conservation changes after the wave edge?",
           "reasons": [
             "specific_detail",
             "open_loop"
@@ -12842,7 +12859,7 @@
           "approved": true,
           "notes": [],
           "recommended_duration_s": 24,
-          "recommended_format": "body superpower",
+          "recommended_format": "conservation signal",
           "score": 100.0,
           "violations": []
         },
@@ -12855,7 +12872,7 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 101,
+          "sample_count": 102,
           "winners": {
             "hook_pattern": "{subject} {subject} the {subject} {subject} {subject}",
             "thumbnail_pattern": "",
@@ -12874,18 +12891,18 @@
           "retention_opening": {
             "approved": true,
             "cue_bridge": [
-              "air",
-              "tongue"
+              "edge",
+              "pattern",
+              "wave"
             ],
             "cue_terms": [
-              "air",
-              "leaf",
-              "move",
-              "smell",
-              "tongue"
+              "edge",
+              "pattern",
+              "wave"
             ],
             "frame_hook_bridge": [
-              "tongue"
+              "edge",
+              "wave"
             ],
             "risks": [
               "subject_not_frontloaded"
@@ -12900,7 +12917,7 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "reptiles"
+            "subject": "conservation"
           },
           "safe_area": {
             "aspect": "4:5",
@@ -12913,44 +12930,44 @@
           "word_count": 2
         },
         "hook_options": [
-          "Snakes sample the air with a tongue flick",
-          "Snakes show why the tongue smell matters.",
-          "Snakes show why the tongue smell matters.",
-          "Snakes show why the tongue smell matters.",
-          "Snakes give away the answer through tongue smell"
+          "Ocean shows why the patterns matters.",
+          "Ocean edges turn wave motion into patterns",
+          "Ocean shows why the mangrove roots matters.",
+          "Ocean shows why the mangrove roots matters.",
+          "Ocean shows why the mangrove roots matters."
         ],
         "loop_plan": {
           "audio_crossfade_ms": 120,
-          "callback_keyword": "tongue smell",
-          "ending_line": "Would you notice the trail.",
-          "final_line": "Now the tongue smell at the start makes sense.",
-          "loop_score": 0.79,
-          "opening_line": "Snakes sample the air with a tongue flick.",
+          "callback_keyword": "ocean",
+          "ending_line": "Which ocean clue should we decode next?",
+          "final_line": "Which ocean clue should we decode next?",
+          "loop_score": 0.791,
+          "opening_line": "Ocean edges turn wave motion into patterns.",
           "render_hints": {
             "avoid_hard_stop": true,
-            "carry_keyword": "tongue smell",
+            "carry_keyword": "ocean",
             "subtle_audio_tail": true
           },
-          "rewrite_applied": true,
+          "rewrite_applied": false,
           "subtitle_tail_mode": "carry-forward"
         },
-        "loop_score": 0.79,
-        "next_episode_question": "Tomorrow in Cold-Blooded Secrets: another animal signal. Is this ancient design underrated?",
+        "loop_score": 0.791,
+        "next_episode_question": "Tomorrow in Planet Repair: another nature signal. Is this proof nature recovers, or proof it needs help sooner?",
         "opening_retention": {
           "approved": true,
           "cue_bridge": [
-            "air",
-            "tongue"
+            "edge",
+            "pattern",
+            "wave"
           ],
           "cue_terms": [
-            "air",
-            "leaf",
-            "move",
-            "smell",
-            "tongue"
+            "edge",
+            "pattern",
+            "wave"
           ],
           "frame_hook_bridge": [
-            "tongue"
+            "edge",
+            "wave"
           ],
           "risks": [
             "subject_not_frontloaded"
@@ -12965,37 +12982,37 @@
             "reason_arrives_early",
             "frame_text_scannable"
           ],
-          "subject": "reptiles"
+          "subject": "conservation"
         },
-        "pinned_comment": "Watch the tongue smell again. Tomorrow in Cold-Blooded Secrets: another animal signal. Is this ancient design underrated?",
+        "pinned_comment": "Watch the patterns again. Tomorrow in Planet Repair: another nature signal. Is this proof nature recovers, or proof it needs help sooner?",
         "preflight_inputs": {
-          "caption_chars_per_second": 15.56,
+          "caption_chars_per_second": 14.73,
           "contrast_score": 0.74,
           "cta_count": 1,
-          "duration_hint_s": 18,
-          "first_2s_narration": "Snakes sample the air with tongue flick Watch the tongue flick because",
-          "first_frame_text": "TONGUE SMELL",
+          "duration_hint_s": 15,
+          "first_2s_narration": "Ocean edges turn wave motion into patterns Watch the wave edge first",
+          "first_frame_text": "WAVE EDGE",
           "first_frame_text_words": 2,
-          "hook": "Snakes sample the air with a tongue flick.",
+          "hook": "Ocean edges turn wave motion into patterns.",
           "hook_specificity": 0.78,
           "hook_words": 7,
-          "loop_score": 0.79,
+          "loop_score": 0.791,
           "novelty_score": 0.58,
           "opening_retention": {
             "approved": true,
             "cue_bridge": [
-              "air",
-              "tongue"
+              "edge",
+              "pattern",
+              "wave"
             ],
             "cue_terms": [
-              "air",
-              "leaf",
-              "move",
-              "smell",
-              "tongue"
+              "edge",
+              "pattern",
+              "wave"
             ],
             "frame_hook_bridge": [
-              "tongue"
+              "edge",
+              "wave"
             ],
             "risks": [
               "subject_not_frontloaded"
@@ -13010,7 +13027,7 @@
               "reason_arrives_early",
               "frame_text_scannable"
             ],
-            "subject": "reptiles"
+            "subject": "conservation"
           },
           "opening_retention_score": 92.0,
           "payoff_reveal_sentence_index": 0,
@@ -13019,7 +13036,7 @@
           "visual_motion_score": 0.76
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the tongue smell, so viewers rewatch the snakes clip.",
+        "replay_prompt": "End by pointing back to the patterns, so viewers rewatch the ocean clip.",
         "retention": {
           "confidence": {
             "bootstrap_multiplier": 0.25,
@@ -13034,66 +13051,66 @@
           },
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 75,
+          "score": 67,
           "signals": {
-            "completion_prediction": 84,
+            "completion_prediction": 77,
             "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 72,
-            "visual_score": 58
+            "hook_score": 70,
+            "replay_score": 62,
+            "visual_score": 50
           },
           "verdict": "rewrite"
         },
         "retention_contract": {
-          "first_2s_narration": "Snakes sample the air with a tongue flick Watch the tongue flick",
-          "first_frame_text": "TONGUE SMELL",
-          "next_episode_question": "Tomorrow in Cold-Blooded Secrets: another animal signal. Is this ancient design underrated?",
+          "first_2s_narration": "Ocean edges turn wave motion into patterns Watch the wave edge first",
+          "first_frame_text": "WAVE EDGE",
+          "next_episode_question": "Tomorrow in Planet Repair: another nature signal. Is this proof nature recovers, or proof it needs help sooner?",
           "opening_retention_score": 92.0,
           "opening_retention_state": "retention_ready",
           "search_intent": {
-            "description_line": "This Short explains Snakes behavior through the visible tongue smell.",
-            "series": "Cold-Blooded Secrets",
-            "subject": "snakes",
+            "description_line": "This Short explains the visible patterns behind Ocean in a fast nature science story.",
+            "series": "Planet Repair",
+            "subject": "ocean",
             "terms": [
-              "snakes",
-              "tongue smell",
-              "reptiles",
-              "body superpower"
+              "ocean",
+              "patterns",
+              "conservation",
+              "conservation signal"
             ],
-            "title_variant": "Snakes behavior: tongue smell explained",
-            "visible_cue": "tongue smell"
+            "title_variant": "Ocean patterns explained fast",
+            "visible_cue": "patterns"
           },
-          "series": "Cold-Blooded Secrets",
-          "subject": "snakes",
-          "visible_cue": "tongue smell"
+          "series": "Planet Repair",
+          "subject": "ocean",
+          "visible_cue": "patterns"
         },
         "risks": [],
-        "score": 96,
+        "score": 94,
         "search_intent": {
-          "description_line": "This Short explains Snakes behavior through the visible tongue smell.",
-          "series": "Cold-Blooded Secrets",
-          "subject": "snakes",
+          "description_line": "This Short explains the visible patterns behind Ocean in a fast nature science story.",
+          "series": "Planet Repair",
+          "subject": "ocean",
           "terms": [
-            "snakes",
-            "tongue smell",
-            "reptiles",
-            "body superpower"
+            "ocean",
+            "patterns",
+            "conservation",
+            "conservation signal"
           ],
-          "title_variant": "Snakes behavior: tongue smell explained",
-          "visible_cue": "tongue smell"
+          "title_variant": "Ocean patterns explained fast",
+          "visible_cue": "patterns"
         },
         "selected_variant": {
-          "hook": "Watch the tongue smell; it explains the behavior",
-          "score": 80,
-          "thumbnail_text": "TONGUE SMELL",
-          "title": "Snakes smell the air with their tongues"
+          "hook": "Mangroves can slow waves before they hit land",
+          "score": 79,
+          "thumbnail_text": "WAVE BUFFER",
+          "title": "Mangroves take power out of waves"
         },
-        "series": "Cold-Blooded Secrets #6",
+        "series": "Planet Repair #3",
         "series_identity": {
-          "continuity_prompt": "Next in Cold-Blooded Secrets: compare this with another force of nature.",
-          "episode": 6,
-          "label": "Cold-Blooded Secrets #6",
-          "series": "Cold-Blooded Secrets"
+          "continuity_prompt": "Next in Planet Repair: compare this with another force of nature.",
+          "episode": 3,
+          "label": "Planet Repair #3",
+          "series": "Planet Repair"
         },
         "state": "magnetic",
         "strengths": [
@@ -13105,7 +13122,7 @@
           "retention_opening_aligned"
         ],
         "subscriber_conversion": {
-          "comment_probability": 0.24,
+          "comment_probability": 0.207,
           "confidence": {
             "bootstrap_multiplier": 0.274,
             "can_adjust_strategy": false,
@@ -13119,21 +13136,20 @@
           },
           "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
           "reasons": [
-            "identity_cta",
             "debate_comment",
             "return_prompt",
             "series_identity",
             "episode_continuity"
           ],
-          "return_probability": 0.281,
+          "return_probability": 0.242,
           "robotic_title": {
             "hits": [],
             "risk": 0,
             "state": "clear"
           },
-          "score": 93,
+          "score": 79,
           "state": "strong",
-          "subscriber_probability": 0.133
+          "subscriber_probability": 0.113
         },
         "swipe_risk": {
           "band": "low",
@@ -13142,88 +13158,88 @@
           "score": 0
         },
         "thumbnail_options": [
-          "TONGUE SMELL",
-          "WATCH TONGUE SMELL",
-          "SNAKES SMELL",
-          "TONGUE SMELL MATTERS",
-          "TONGUE SMELL FIRST",
-          "TONGUE SMELL REVEAL",
-          "TONGUE SMELL CLUE",
+          "WAVE BUFFER",
+          "MANGROVE ROOTS",
+          "WATCH MANGROVE ROOTS",
+          "MANGROVES CHANGE",
+          "MANGROVE ROOTS MATTERS",
+          "MANGROVE ROOTS FIRST",
+          "MANGROVE ROOTS REVEAL",
+          "MANGROVE ROOTS CLUE",
           "WATCH THE MOVE",
           "SPOT THE CLUE"
         ],
         "title_options": [
-          "Snakes smell the air with their tongues",
-          "This tongue smell gives snakes away",
-          "Snakes use tongue smell before they smell",
-          "Why snakes smell after one tongue smell",
-          "Snakes reveal the answer with tongue smell",
-          "The tongue smell that changes the moment",
-          "Snakes make one tongue smell matter",
-          "Snakes show the hidden answer in seconds",
-          "Snakes: watch this tongue smell",
-          "Watch snakes after the tongue smell"
+          "Mangroves take power out of waves",
+          "Ocean edges turn wave motion into patterns",
+          "Mangroves use mangrove roots before they change",
+          "Why mangroves change after one mangrove roots",
+          "Mangroves reveal the answer with mangrove roots",
+          "The mangrove roots that changes the moment",
+          "Mangroves make one mangrove roots matter",
+          "Mangroves show the hidden answer in seconds",
+          "Mangroves: watch this mangrove roots"
         ],
         "top_variants": [
           {
-            "hook": "Watch the tongue smell; it explains the behavior",
-            "score": 80,
-            "thumbnail_text": "TONGUE SMELL",
-            "title": "Snakes smell the air with their tongues"
-          },
-          {
-            "hook": "Start with the tongue smell; it changes the scene",
-            "score": 80,
-            "thumbnail_text": "TONGUE SMELL",
-            "title": "Snakes smell the air with their tongues"
-          },
-          {
-            "hook": "Snakes sample the air with a tongue flick",
+            "hook": "Mangroves can slow waves before they hit land",
             "score": 79,
-            "thumbnail_text": "TONGUE SMELL",
-            "title": "Snakes smell the air with their tongues"
+            "thumbnail_text": "WAVE BUFFER",
+            "title": "Mangroves take power out of waves"
           },
           {
-            "hook": "Watch the tongue smell; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "WATCH TONGUE SMELL",
-            "title": "Snakes smell the air with their tongues"
+            "hook": "Watch the mangrove roots; it explains the behavior",
+            "score": 79,
+            "thumbnail_text": "WAVE BUFFER",
+            "title": "Mangroves take power out of waves"
           },
           {
-            "hook": "Start with the tongue smell; it changes the scene",
-            "score": 73,
-            "thumbnail_text": "WATCH TONGUE SMELL",
-            "title": "Snakes smell the air with their tongues"
+            "hook": "Ocean edges turn wave motion into patterns",
+            "score": 76,
+            "thumbnail_text": "WAVE BUFFER",
+            "title": "Mangroves take power out of waves"
           },
           {
-            "hook": "Watch the tongue smell; it explains the behavior",
+            "hook": "Mangroves can slow waves before they hit land",
             "score": 73,
-            "thumbnail_text": "SNAKES SMELL",
-            "title": "Snakes smell the air with their tongues"
+            "thumbnail_text": "MANGROVE ROOTS",
+            "title": "Mangroves take power out of waves"
           },
           {
-            "hook": "Start with the tongue smell; it changes the scene",
+            "hook": "Mangroves can slow waves before they hit land",
             "score": 73,
-            "thumbnail_text": "SNAKES SMELL",
-            "title": "Snakes smell the air with their tongues"
+            "thumbnail_text": "WATCH MANGROVE ROOTS",
+            "title": "Mangroves take power out of waves"
           },
           {
-            "hook": "Watch the tongue smell; it explains the behavior",
+            "hook": "Mangroves can slow waves before they hit land",
             "score": 73,
-            "thumbnail_text": "TONGUE SMELL MATTERS",
-            "title": "Snakes smell the air with their tongues"
+            "thumbnail_text": "MANGROVES CHANGE",
+            "title": "Mangroves take power out of waves"
           },
           {
-            "hook": "Start with the tongue smell; it changes the scene",
+            "hook": "Mangroves can slow waves before they hit land",
             "score": 73,
-            "thumbnail_text": "TONGUE SMELL MATTERS",
-            "title": "Snakes smell the air with their tongues"
+            "thumbnail_text": "MANGROVE ROOTS MATTERS",
+            "title": "Mangroves take power out of waves"
           },
           {
-            "hook": "Watch the tongue smell; it explains the behavior",
-            "score": 73,
-            "thumbnail_text": "TONGUE SMELL FIRST",
-            "title": "Snakes smell the air with their tongues"
+            "hook": "Watch the mangrove roots; it explains the behavior",
+            "score": 72,
+            "thumbnail_text": "MANGROVE ROOTS",
+            "title": "Mangroves take power out of waves"
+          },
+          {
+            "hook": "Watch the mangrove roots; it explains the behavior",
+            "score": 72,
+            "thumbnail_text": "WATCH MANGROVE ROOTS",
+            "title": "Mangroves take power out of waves"
+          },
+          {
+            "hook": "Watch the mangrove roots; it explains the behavior",
+            "score": 72,
+            "thumbnail_text": "MANGROVES CHANGE",
+            "title": "Mangroves take power out of waves"
           }
         ]
       },
