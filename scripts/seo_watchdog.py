@@ -32,7 +32,11 @@ def run():
 
     data = json.loads(post24_file.read_text())
     videos = data.get("videos", [])
-    youtube = get_youtube_service()
+    try:
+        youtube = get_youtube_service()
+    except Exception as e:
+        log.error(f"No YouTube service available: {e}")
+        return
 
     for v in videos:
         # Actionable states for SEO mutation

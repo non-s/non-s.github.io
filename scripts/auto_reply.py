@@ -15,7 +15,12 @@ from upload_youtube import get_youtube_service
 from utils.ai_helper import ai_text
 
 def run():
-    youtube = get_youtube_service()
+    try:
+        youtube = get_youtube_service()
+    except Exception as e:
+        log.error(f"No YouTube service available: {e}")
+        return
+
     if not youtube:
         log.error("No YouTube service available.")
         return
