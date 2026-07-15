@@ -1,5 +1,5 @@
 {
-  "total": 436,
+  "total": 437,
   "reasons": {
     "duplicate_title": 193,
     "off_topic_visual": 162,
@@ -23,41 +23,24 @@
     "missing_visual_cue": 3,
     "thumbnail_text_not_scannable": 3,
     "thumbnail_not_2_4_words": 3,
+    "subject repeated inside 3-day cooldown": 2,
+    "humanity score is too low": 2,
     "payoff_not_explicit": 2,
     "bad_plural_verb": 2,
     "publish_score_reject": 1,
-    "subject repeated inside 3-day cooldown": 1,
-    "humanity score is too low": 1,
     "editorial score 49 is below 62": 1,
     "generic_creator_language": 1,
-    "script does not expose enough concrete visual detail": 1
+    "script does not expose enough concrete visual detail": 1,
+    "editorial score 39 is below 62": 1
   },
   "stages": {
     "queue_prune_final": 215,
     "queue_prune": 184,
     "queue_repair": 35,
-    "publish_score": 1,
-    "editor_in_chief": 1
+    "editor_in_chief": 2,
+    "publish_score": 1
   },
   "latest": [
-    {
-      "story_id": "2010c85eb7624489",
-      "stage": "queue_prune",
-      "reasons": [
-        "off_topic_visual",
-        "script_hook_mismatch"
-      ],
-      "title": "California harbor seal sunbathing stretch",
-      "category": "space",
-      "script_key": "this harbor seal just stretched out like it s on vacation watch that slow deliberate flipper wiggle pure recharge mode they doze like this when they feel safe soaking up warmth between dives that s the quiet luxury of a predator free afternoon",
-      "angle_key": "seal|slow|flipper|space",
-      "source_url": "https://www.pexels.com/video/elephant-seals-relaxing-on-california-beach-35629382/",
-      "pexels_video_id": "35629382",
-      "source_clip_id": "pexels:2010c85eb7624489",
-      "recorded_at": "2026-07-15T09:34:47.875714+00:00",
-      "rewrite_attempted": false,
-      "rewrite_applied": false
-    },
     {
       "story_id": "98ce4feb1a6b628a",
       "stage": "queue_prune",
@@ -480,6 +463,25 @@
       "recorded_at": "2026-07-15T11:06:01.617932+00:00",
       "rewrite_attempted": false,
       "rewrite_applied": false
+    },
+    {
+      "story_id": "1fee9e84b033497b",
+      "stage": "editor_in_chief",
+      "reasons": [
+        "subject repeated inside 3-day cooldown",
+        "humanity score is too low",
+        "editorial score 39 is below 62"
+      ],
+      "title": "Deer Los venados escuchan en 360 y te delatan",
+      "category": "wildlife",
+      "script_key": "los venados dirigen cada oreja hacia el peligro f jate en las orejas porque pueden girarlas para escuchar sonidos de cualquier direcci n ese r pido chequeo auditivo les ayuda a decidir si se quedan quietos huyen o siguen comiendo un segundo de silencio les dice a todo el cuerpo qu hacer t te quedar as quieto now the alarm call at the start makes sense",
+      "angle_key": "deer|call|alarm call|wildlife",
+      "source_url": "https://www.pexels.com/video/the-swamp-deer-16820454/",
+      "pexels_video_id": "16820454",
+      "source_clip_id": "pexels:1fee9e84b033497b",
+      "recorded_at": "2026-07-15T11:12:03.390214+00:00",
+      "rewrite_attempted": true,
+      "rewrite_applied": true
     }
   ]
 }

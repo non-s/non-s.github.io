@@ -6,16 +6,71 @@
   ],
   "counts": {
     "analytics_due": 0,
-    "awaiting_1h": 0,
+    "awaiting_1h": 1,
     "high_priority": 2,
     "repair_candidates": 2,
-    "tracked": 2
+    "tracked": 3
   },
-  "generated_at": "2026-07-15T11:05:36.363666+00:00",
+  "generated_at": "2026-07-15T11:14:51.726046+00:00",
   "items": [
     {
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.044,
+      "category": "wildlife",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-15T12:12:12.504967+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-15T17:12:12.504967+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-16T11:12:12.504967+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-15T12:12:12.504967+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 90.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Animal Superpowers",
+      "state": "awaiting_1h",
+      "title": "This sound radar gives deer away",
+      "uploaded_at": "2026-07-15T11:12:12.504967+00:00",
+      "url": "https://www.youtube.com/shorts/P2CGUzQ-y0A",
+      "video_id": "P2CGUzQ-y0A",
+      "views_per_hour": 0.0
+    },
+    {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 33.998,
+      "age_hours": 34.152,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -66,7 +121,7 @@
       "uploaded_at": "2026-07-14T01:05:45.230548+00:00",
       "url": "https://www.youtube.com/shorts/xa7g2eRaRLE",
       "video_id": "xa7g2eRaRLE",
-      "views_per_hour": 0.03,
+      "views_per_hour": 0.029,
       "warning": {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.756,
@@ -81,7 +136,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 34.47,
+      "age_hours": 34.624,
       "category": "discoveries",
       "checkpoints": [
         {
@@ -132,7 +187,7 @@
       "uploaded_at": "2026-07-14T00:37:24.551626+00:00",
       "url": "https://www.youtube.com/shorts/DGs36Y79jHo",
       "video_id": "DGs36Y79jHo",
-      "views_per_hour": 0.148,
+      "views_per_hour": 0.145,
       "warning": {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.756,
