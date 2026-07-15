@@ -1079,17 +1079,54 @@ def upload_video(youtube, meta: dict, *, sequence_index: int = 0) -> str | None:
         meta["youtube_privacy"] = "private"
     else:
         meta["youtube_privacy"] = privacy
-    request = youtube.videos().insert(
-        part="snippet,status",
-        body={
-            "snippet": {
-                "title": _youtube_title(meta),
-                "description": _youtube_description(meta),
-                "tags": _normalise_tags(meta.get("tags")),
-                "categoryId": str(meta.get("youtube_category_id") or "15"),
-            },
-            "status": status,
+    localizations_dict = {}
+    try:
+        from utils.ai_helper import ai_text
+        import json
+        import re
+        en_title = _youtube_title(meta)
+        en_desc = _youtube_description(meta)
+        
+        prompt = (
+            "Translate the following YouTube video title and description into Hindi (hi), Russian (ru), and Spanish (es).\n\n"
+            f"Title: {en_title}\n"
+            f"Description: {en_desc}\n\n"
+            "Return valid JSON strictly matching this schema:\n"
+            "{\n"
+            "  \"hi\": {\"title\": \"...\", \"description\": \"...\"},\n"
+            "  \"ru\": {\"title\": \"...\", \"description\": \"...\"},\n"
+            "  \"es\": {\"title\": \"...\", \"description\": \"...\"}\n"
+            "}"
+        )
+        translated_json = ai_text(prompt, timeout=25, json_mode=True)
+        if translated_json:
+            clean = re.sub(r"```(?:json)?\s*|\s*```", "", translated_json).strip()
+            locs = json.loads(clean)
+            if "hi" in locs and "title" in locs["hi"]:
+                localizations_dict = locs
+                meta["localizations"] = locs
+    except Exception as e:
+        log.warning(f"Translation logic failed: {e}")
+
+    part_str = "snippet,status"
+    body_payload = {
+        "snippet": {
+            "title": _youtube_title(meta),
+            "description": _youtube_description(meta),
+            "tags": _normalise_tags(meta.get("tags")),
+            "categoryId": str(meta.get("youtube_category_id") or "15"),
+            "defaultLanguage": "en",
         },
+        "status": status,
+    }
+    
+    if localizations_dict:
+        part_str += ",localizations"
+        body_payload["localizations"] = localizations_dict
+
+    request = youtube.videos().insert(
+        part=part_str,
+        body=body_payload,
         media_body=MediaFileUpload(str(video_path), mimetype="video/mp4", chunksize=-1, resumable=True),
         notifySubscribers=False,
     )
