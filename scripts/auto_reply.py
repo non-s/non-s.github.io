@@ -11,11 +11,11 @@ if str(ROOT) not in sys.path:
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("auto_reply")
 
-from utils.youtube import get_authenticated_service
+from upload_youtube import get_youtube_service
 from utils.ai_helper import ai_text
 
 def run():
-    youtube = get_authenticated_service()
+    youtube = get_youtube_service()
     if not youtube:
         log.error("No YouTube service available.")
         return

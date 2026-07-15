@@ -7,12 +7,24 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
-from utils.youtube import get_authenticated_service
+from upload_youtube import get_youtube_service
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("seo_watchdog")
 
-def run_seo_watchdog():
+
+def _build_ai_prompt(title: str, tags: list[str]) -> str:
+    tags_str = ", ".join(tags[:10])
+    return (
+        f"Generate exactly 1 new click-worthy YouTube title to replace this underperforming one:\n"
+        f"Old Title: {title}\n"
+        f"Tags: {tags_str}\n"
+        "Rules: Max 60 chars. Must create intense curiosity (Zeigarnik effect). "
+        "No emojis. Return ONLY the title text."
+    )
+
+
+def run():
     post24_file = Path("_data/post24_review.json")
     if not post24_file.exists():
         log.info("No post24_review.json found.")
@@ -20,7 +32,7 @@ def run_seo_watchdog():
 
     data = json.loads(post24_file.read_text())
     videos = data.get("videos", [])
-    youtube = get_authenticated_service()
+    youtube = get_youtube_service()
 
     for v in videos:
         # Actionable states for SEO mutation
