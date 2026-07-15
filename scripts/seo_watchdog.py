@@ -71,4 +71,4 @@ def run():
                 log.error(f"Failed to update video {vid}: {e}")
 
 if __name__ == "__main__":
-    run_seo_watchdog()
+    run()
