@@ -258,7 +258,8 @@ def tracked_media_risks(root: Path | str = ".", paths: Iterable[str] | None = No
         suffix = PurePosixPath(rel).suffix.lower()
         reason = ""
         if suffix in AUDIO_VIDEO_SUFFIXES:
-            reason = "audio_video_should_not_be_tracked"
+            if not rel.startswith("_assets/"):
+                reason = "audio_video_should_not_be_tracked"
         elif suffix in GENERATED_IMAGE_SUFFIXES and _generated_image_path(rel):
             reason = "generated_image_should_not_be_tracked"
         if not reason:
