@@ -409,9 +409,9 @@ def _caption_text_with_emphasis(text: str) -> str:
 
 
 def group_words_into_phrases(
-    words: list[Caption], max_words: int = 4, max_gap_s: float = 0.6, max_duration_s: float = 2.5
+    words: list[Caption], max_words: int = 2, max_gap_s: float = 0.6, max_duration_s: float = 2.0
 ) -> list[list[Caption]]:
-    """Group word-level captions into chunks of 2-4 words that fit on screen.
+    """Group word-level captions into chunks of 1-2 words that fit on screen.
 
     Preserves individual word Captions so the ASS writer can apply Karaoke
     word-by-word timing effects.
@@ -438,16 +438,17 @@ def write_ass(
     path: Path,
     video_w: int = 1080,
     video_h: int = 1920,
-    font_size: int = 88,
+    font_size: int = 130,
     primary_colour: str = "&H0000F2FF",
     outline_colour: str = "&H00000000",
     shadow_colour: str = "&H00000000",
-    margin_v: int = 360,
+    margin_v: int = 960,
 ) -> bool:
-    """Write a Shorts-tuned ASS subtitle file with Karaoke word highlighting.
+    """Write an aggressive Hormozi-style ASS subtitle file.
 
-    Default style: bold modern yellow (active), white (inactive), thick black outline,
-    dropped shadow, positioned in the upper-middle (margin_v from bottom).
+    Default style: massive font size, centered vertically and horizontally, 
+    pop-in animations.
+
     Returns True on success.
     """
     if not captions:
@@ -511,8 +512,8 @@ def write_ass(
 
         text = "".join(text_parts)
 
-        # A tiny pop-in scale feels like CapCut captions
-        text = r"{\fad(45,60)\t(0,90,\fscx106\fscy106)}" + text
+        # Aggressive Hormozi pop-in: Start slightly small and blast to 115% scale fast
+        text = r"{\fscx80\fscy80\t(0,80,\fscx115\fscy115)}" + text
         lines.append(f"Dialogue: 0,{start_str},{end_str},Shorts,,0,0,0,,{text}")
     try:
         path.write_text(header + "\n".join(lines) + "\n", encoding="utf-8")

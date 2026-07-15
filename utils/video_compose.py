@@ -252,6 +252,8 @@ def build_broll_short(
             crop_expr = f"crop=1350:2400:{crop_x}:{crop_y}"
         else:
             crop_expr = "crop=1350:2400"
+        # The hook (clip 0) gets a majestic 25% slow-motion effect for extra retention
+        pts_mod = "1.25*PTS" if i == 0 else "PTS"
         parts.append(
             # Loop short clips, trim long ones to the exact segment length.
             # `setpts=PTS-STARTPTS` resets timestamps so concat splices cleanly.
@@ -267,7 +269,7 @@ def build_broll_short(
             f"eq=contrast=1.08:saturation=1.14:brightness=0.015,"
             f"unsharp=5:5:0.55:3:3:0.25,"
             f"setsar=1,"
-            f"trim=duration={seg_dur:.3f},setpts=PTS-STARTPTS"
+            f"setpts={pts_mod}-STARTPTS,trim=duration={seg_dur:.3f}"
             f"[v{i}]"
         )
     # Brand-card streams. We add them as extra FFmpeg inputs and
