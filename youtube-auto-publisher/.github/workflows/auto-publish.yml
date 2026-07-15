@@ -1,0 +1,222 @@
+name: YouTube Auto Publisher - 4 Videos por Dia
+
+on:
+  schedule:
+    # Melhores horarios YouTube (horario de Brasilia -> UTC)
+    # 08:00 BRT = 11:00 UTC
+    - cron: "0 11 * * *"
+    # 12:00 BRT = 15:00 UTC
+    - cron: "0 15 * * *"
+    # 17:00 BRT = 20:00 UTC
+    - cron: "0 20 * * *"
+    # 20:00 BRT = 23:00 UTC
+    - cron: "0 23 * * *"
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: "Topico especifico (deixe vazio para automatico)"
+        required: false
+        default: ""
+      dry_run:
+        description: "Gerar video sem publicar no YouTube"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: youtube-auto-publisher-production
+  cancel-in-progress: false
+
+env:
+  TZ: America/Sao_Paulo
+
+jobs:
+  publish-video:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repositorio
+        uses: actions/checkout@v6
+
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Validar secrets de producao
+        id: production_preflight
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_TOKEN_JSON: ${{ secrets.YOUTUBE_TOKEN_JSON }}
+        run: |
+          python <<'PY'
+          import json
+          import os
+
+          output_path = os.environ["GITHUB_OUTPUT"]
+          summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
+
+
+          def set_can_publish(value: bool) -> None:
+              with open(output_path, "a", encoding="utf-8") as output:
+                  output.write("can_publish=true\n" if value else "can_publish=false\n")
+
+
+          def write_summary(status: str, detail: str) -> None:
+              if not summary_path:
+                  return
+              with open(summary_path, "a", encoding="utf-8") as summary:
+                  summary.write("### YouTube production preflight\n")
+                  summary.write(f"- Status: `{status}`\n")
+                  summary.write(f"- Detail: {detail}\n")
+
+          required = {
+              "GROQ_API_KEY": os.environ.get("GROQ_API_KEY", "").strip(),
+              "PEXELS_API_KEY": os.environ.get("PEXELS_API_KEY", "").strip(),
+              "YOUTUBE_CLIENT_ID": os.environ.get("YOUTUBE_CLIENT_ID", "").strip(),
+              "YOUTUBE_CLIENT_SECRET": os.environ.get("YOUTUBE_CLIENT_SECRET", "").strip(),
+              "YOUTUBE_TOKEN_JSON": os.environ.get("YOUTUBE_TOKEN_JSON", "").strip(),
+          }
+          missing = [name for name, value in required.items() if not value]
+          if missing:
+              message = f"Missing required GitHub Actions secrets: {', '.join(missing)}"
+              print(f"::warning::{message}")
+              set_can_publish(False)
+              write_summary("skipped", message)
+              raise SystemExit(0)
+
+          try:
+              token = json.loads(required["YOUTUBE_TOKEN_JSON"])
+          except json.JSONDecodeError as exc:
+              message = f"YOUTUBE_TOKEN_JSON is not valid JSON: {exc}"
+              print(f"::warning::{message}")
+              set_can_publish(False)
+              write_summary("skipped", message)
+              raise SystemExit(0)
+
+          if not token.get("refresh_token"):
+              message = "YOUTUBE_TOKEN_JSON must include a refresh_token for unattended publishing."
+              print(f"::warning::{message}")
+              set_can_publish(False)
+              write_summary("skipped", message)
+              raise SystemExit(0)
+
+          set_can_publish(True)
+          write_summary("ready", "All required production secrets are configured.")
+          PY
+
+      - name: Instalar FFmpeg
+        if: steps.production_preflight.outputs.can_publish == 'true'
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y ffmpeg
+          ffmpeg -version
+
+      - name: Instalar dependencias Python
+        if: steps.production_preflight.outputs.can_publish == 'true'
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Configurar credenciais YouTube
+        if: steps.production_preflight.outputs.can_publish == 'true'
+        env:
+          YOUTUBE_TOKEN_JSON: ${{ secrets.YOUTUBE_TOKEN_JSON }}
+        run: |
+          python <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          token = json.loads(os.environ["YOUTUBE_TOKEN_JSON"])
+          token_path = Path("token.json")
+          token_path.write_text(json.dumps(token), encoding="utf-8")
+          token_path.chmod(0o600)
+          print("Credenciais YouTube configuradas em token.json")
+          PY
+
+      - name: Criar video de curiosidades
+        if: steps.production_preflight.outputs.can_publish == 'true'
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_TOKEN_JSON: ${{ secrets.YOUTUBE_TOKEN_JSON }}
+          VIDEO_PRIVACY_STATUS: "public"
+          ENABLE_AUTO_PUBLISH: "true"
+          TOPIC_INPUT: ${{ github.event.inputs.topic || '' }}
+          DRY_RUN_INPUT: ${{ github.event.inputs.dry_run || 'false' }}
+        run: |
+          args=()
+          if [ -n "$TOPIC_INPUT" ]; then
+            args+=(--topic "$TOPIC_INPUT")
+          fi
+          if [ "$DRY_RUN_INPUT" = "true" ]; then
+            args+=(--dry-run)
+          fi
+          python main.py "${args[@]}"
+
+      - name: Persistir estado operacional no GitHub
+        if: success() && steps.production_preflight.outputs.can_publish == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase --autostash origin "$GITHUB_REF_NAME"
+          shopt -s nullglob
+          state_files=(data/used_topics.json data/published_*.json data/used_pexels_ids.json)
+          if [ "${#state_files[@]}" -eq 0 ]; then
+            echo "Nenhum estado operacional novo para persistir."
+            exit 0
+          fi
+          git add "${state_files[@]}"
+          if git diff --cached --quiet; then
+            echo "Estado operacional sem mudancas."
+            exit 0
+          fi
+          git commit -m "chore: update publisher state [skip ci]"
+          git push
+
+      - name: Upload video como artifact (backup)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: video-${{ github.run_number }}
+          path: output/*.mp4
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - name: Notificar falha no Slack
+        # Only attempts a notification when the SLACK_WEBHOOK_URL secret is
+        # actually configured; repos that never set it get a normal skipped
+        # step instead of a failing curl call.
+        if: failure() && env.SLACK_WEBHOOK_URL != ''
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          payload=$(python - <<'PY'
+          import json
+          import os
+
+          message = (
+              f":rotating_light: *YouTube Auto Publisher* falhou em "
+              f"`{os.environ['GITHUB_REPOSITORY']}`\n"
+              f"Workflow: {os.environ['GITHUB_WORKFLOW']} | Run: "
+              f"{os.environ['GITHUB_RUN_ID']} | Ref: {os.environ['GITHUB_REF_NAME']}\n"
+              f"<{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{os.environ['GITHUB_RUN_ID']}|Ver detalhes>"
+          )
+          print(json.dumps({"text": message}))
+          PY
+          )
+          curl -sS -X POST -H "Content-Type: application/json" -d "$payload" "$SLACK_WEBHOOK_URL"
