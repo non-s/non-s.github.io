@@ -2491,7 +2491,7 @@ def generate_short(story: dict, tmp_dir: Path, lang: str | None = None) -> tuple
 
     # ── 7. Compose video (b-roll preferred, static fallback) ──────
     # Every Short closes with one unambiguous channel-growth action.
-    cta_text = _end_card_text_for_story(story)
+    cta_text = "Se inscreva! Achou o Emoji Escondido? Comente o tempo!"
     story["end_card_text"] = cta_text
     # Brand-bug watermark. Disabled by default because a second channel
     # mark adds visual noise to a compact Shorts frame.

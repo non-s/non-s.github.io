@@ -166,7 +166,8 @@ class DynamicStreamer:
         vf_string = (
             f"color=c=black:s=1920x1080:r=30,"
             f"drawtext=text='{viewer_text}':fontcolor=yellow:fontsize=48:x=(w-text_w)/2:y=200,"
-            f"drawtext=text='{safe_text}':fontcolor=white:fontsize=64:x=(w-text_w)/2:y=(h-text_h)/2"
+            f"drawtext=text='{safe_text}':fontcolor=white:fontsize=64:x=(w-text_w)/2:y=(h-text_h)/2,"
+            f"drawtext=text='Vote no proximo video do canal digitando !vote [animal]':fontcolor=green:fontsize=40:x=(w-text_w)/2:y=h-150"
         )
         
         cmd = [

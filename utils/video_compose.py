@@ -369,13 +369,15 @@ def build_broll_short(
     # Optional one-frame cue for experiments. Disabled by default so the
     # production renderer stays deterministic and portable across platforms.
     if RETENTION_EASTER_EGG_ENABLED:
+        import random
+        emojis = ["🦅", "🐍", "🦁", "🐙", "🦋", "🐊"]
+        secret_emoji = random.choice(emojis)
         mid_time = max(0, float(audio_dur) / 2)
         parts.append(
             f"[{last_label}]drawtext={font_param}"
-            f":text=' CUE FRAME ':fontcolor=white:fontsize=120"
-            f":box=1:boxcolor=red@0.9:boxborderw=30"
+            f":text='{secret_emoji}':fontcolor=white:fontsize=150"
             f":x=(w-text_w)/2:y=(h-text_h)/2"
-            f":enable='between(t,{mid_time:.2f},{mid_time + 0.035:.2f})'"
+            f":enable='between(t,{mid_time:.2f},{mid_time + 0.05:.2f})'"
             f"[withegg]"
         )
         last_label = "withegg"
