@@ -1,52 +1,46 @@
 {
-  "generated_at": "2026-07-15T19:52:04.173619+00:00",
-  "pending": 18,
+  "generated_at": "2026-07-15T20:22:32.720403+00:00",
+  "pending": 17,
   "states": {
     "rewrite": 12,
-    "publish_ready": 6
+    "publish_ready": 5
   },
   "mechanism_clusters": {
-    "face_recognition": 2,
     "call_signal": 1,
     "scent_map": 1,
     "tongue_smell": 1,
+    "face_recognition": 1,
     "beak_signal": 1
   },
   "rights": {
-    "approved": 18
+    "approved": 17
   },
   "prune_summary": {
-    "pending_before": 24,
-    "pending_after": 18,
-    "rejected": 6,
-    "repair_needed": 2,
-    "repaired": 5,
+    "pending_before": 17,
+    "pending_after": 17,
+    "rejected": 0,
+    "repair_needed": 0,
+    "repaired": 4,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 18,
+      "objective_gate:bootstrap_observe_before_scaling": 17,
       "editor_in_chief:script quality gate blocked the narration": 7,
-      "queue_score_reject": 2,
-      "copy_subject_mismatch": 2,
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
-      "duplicate_title": 2,
-      "opening_retention_gap_risk": 1,
-      "opening promise is not concrete enough": 1,
-      "thumbnail_text_not_scannable": 1,
-      "title_shape_weak": 1,
-      "title_needs_stronger_shape": 1,
-      "thumbnail_not_2_4_words": 1,
-      "subject_not_clear": 1,
-      "missing_action_word": 1,
-      "off_topic_visual": 1,
-      "script_hook_mismatch": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
-      "duplicate_script": 1,
-      "duplicate_angle": 1,
-      "script_subject_mismatch": 1,
       "editorial_cooldown_supply_fallback": 1,
       "publish_ready_supply_reserve_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "26f7e380a1b02081",
+      "title": "Sheep Ovelhas reconhecem rostos no rebanho",
+      "reasons": [
+        "subject repeated inside 3-day cooldown",
+        "humanity score is too low",
+        "editorial score 41 is below 62"
+      ],
+      "stage": "editor_in_chief"
+    },
     {
       "id": "0d161eb352de5a6e",
       "title": "Monkeys wash food when grit gets annoying",
@@ -319,14 +313,6 @@
         "script_hook_mismatch"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "56a90dc252409c06",
-      "title": "redwoods roots hang upside-down",
-      "reasons": [
-        "off_topic_visual"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -503,7 +489,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T19:51:44.603194+00:00",
+        "checked_at": "2026-07-15T20:22:15.450541+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -596,9 +582,9 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 106,
+          "sample_count": 107,
           "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
@@ -819,10 +805,10 @@
         },
         "series": "Earth Engine #14",
         "series_identity": {
-          "continuity_prompt": "Next in Earth Engine #14: compare this with another force of nature.",
-          "episode": 1,
+          "continuity_prompt": "Next in Earth Engine: compare this with another force of nature.",
+          "episode": 14,
           "label": "Earth Engine #14",
-          "series": "Earth Engine #14"
+          "series": "Earth Engine"
         },
         "state": "magnetic",
         "strengths": [
@@ -951,642 +937,6 @@
             "score": 72,
             "thumbnail_text": "ROCK LAYERS WEAR",
             "title": "Rock layers store ancient environments in stripes"
-          }
-        ]
-      },
-      "rights_audit": {
-        "approved": true,
-        "source": "pexels",
-        "license": "pexels license (free for commercial use)",
-        "reasons": [],
-        "warnings": []
-      },
-      "editorial_guard": {
-        "approved": true,
-        "issues": [],
-        "state": "approved"
-      }
-    },
-    {
-      "id": "26f7e380a1b02081",
-      "title": "Sheep recognize faces across the flock",
-      "category": "farm",
-      "publish_score": {
-        "approved": true,
-        "category": "farm",
-        "decision_confidence": {
-          "bootstrap_multiplier": 0.255,
-          "can_adjust_strategy": false,
-          "confidence_score": 0.007,
-          "data_quality": "inferred",
-          "data_quality_score": 0.65,
-          "minimum_sample_size": 15,
-          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
-          "recommendation_strength": "observe",
-          "sample_size": 1
-        },
-        "distribution_adjustment": 0,
-        "editorial_guard": {
-          "approved": true,
-          "issues": [],
-          "state": "approved"
-        },
-        "hook_score": 100,
-        "objective_gate": {
-          "confidence_score": 0.007,
-          "mechanism_cluster": "face_recognition",
-          "payoff_time_s": 0.0,
-          "penalty": 0.0,
-          "publish_blocking": false,
-          "reasons": [
-            "bootstrap_observe_before_scaling"
-          ],
-          "scale_ready": false,
-          "swipe_risk_band": "low",
-          "template_cluster": ""
-        },
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "face"
-          ],
-          "cue_terms": [
-            "face",
-            "flock",
-            "memor"
-          ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early"
-          ],
-          "score": 90.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "sheep"
-        },
-        "opportunity": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 57,
-          "signals": {
-            "comment_potential": 54,
-            "educational_potential": 65,
-            "emotional_potential": 35,
-            "novelty": 45,
-            "replay_potential": 72,
-            "viral_potential": 58,
-            "visual_potential": 55
-          },
-          "verdict": "rewrite"
-        },
-        "phrase_risk": {
-          "hits": [],
-          "penalty": 0
-        },
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "score": 100,
-        "state": "publish_ready",
-        "story_format": "animal_memory",
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "title_score": 100,
-        "weak_content": {
-          "confidence": {
-            "bootstrap_multiplier": 0.445,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.26,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 2
-          },
-          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
-          "reasons": [],
-          "risk": 0,
-          "state": "clear"
-        }
-      },
-      "editorial_state": "publish_ready",
-      "queue_prune": {
-        "checked_at": "2026-07-15T19:51:44.606549+00:00",
-        "mechanism_cluster": "face_recognition",
-        "objective_reasons": [
-          "objective_gate:bootstrap_observe_before_scaling"
-        ],
-        "score": 100.0,
-        "state": "publish_ready",
-        "template_cluster": ""
-      },
-      "queue_score": 100.0,
-      "youtube_brain": {
-        "animal": "sheep",
-        "commands": [],
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "face"
-          ],
-          "cue_terms": [
-            "face",
-            "flock",
-            "memor"
-          ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early"
-          ],
-          "score": 90.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "sheep"
-        },
-        "replay_reason": "watch_the_cue_again",
-        "retention_path": [
-          "0-1s: visible subject and outcome",
-          "1-4s: visible cue",
-          "4-18s: mechanism",
-          "last 2s: payoff and follow signal"
-        ],
-        "risks": [],
-        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
-        "score": 100,
-        "state": "publish_minded",
-        "story_format": "animal_memory",
-        "strengths": [
-          "subject_visible_in_first_sentence",
-          "action_driven_promise",
-          "visible_cue_for_viewer",
-          "clear_payoff",
-          "shorts_length_fit",
-          "thumbnail_text_scannable",
-          "retention_opening_aligned"
-        ],
-        "subject": "sheep",
-        "viewer_promise": "See why sheep animal memory matters."
-      },
-      "packaging": {
-        "community_prompt": "Which sheep clue should Wild Brief compare next in Farmyard Surprises?",
-        "cta_prompt": "Want one animal signal a day? Follow for tomorrow's farm clue.",
-        "curiosity_gap": {
-          "hook": "Why do these sheep change after the flock memory?",
-          "reasons": [
-            "specific_detail",
-            "open_loop"
-          ],
-          "score": 78.0,
-          "source": "template"
-        },
-        "editorial_rulebook": {
-          "approved": true,
-          "notes": [],
-          "recommended_duration_s": 24,
-          "recommended_format": "animal memory",
-          "score": 100.0,
-          "violations": []
-        },
-        "experiment": {
-          "assignment": {
-            "cta": "follow_for_more",
-            "format": "winner_inspired",
-            "hook": "pattern_reuse",
-            "thumbnail": "new_thumbnail"
-          },
-          "explore_rate": 0.1,
-          "mode": "exploit",
-          "sample_count": 106,
-          "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
-            "thumbnail_pattern": "",
-            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
-          },
-          "winning_experiments": {
-            "cta:follow_for_more": 47.3,
-            "format:winner_inspired": 47.3,
-            "hook:pattern_reuse": 47.3,
-            "thumbnail:new_thumbnail": 47.3
-          }
-        },
-        "frame_zero": {
-          "approved": true,
-          "first_frame_preview": "first_frame_preview.png",
-          "retention_opening": {
-            "approved": true,
-            "cue_bridge": [
-              "face"
-            ],
-            "cue_terms": [
-              "face",
-              "flock",
-              "memor"
-            ],
-            "frame_hook_bridge": [],
-            "risks": [
-              "frame_text_not_echoed_early"
-            ],
-            "score": 90.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "sheep"
-          },
-          "safe_area": {
-            "aspect": "4:5",
-            "h": 1350,
-            "w": 1080,
-            "x": 0,
-            "y": 285
-          },
-          "score": 92,
-          "word_count": 2
-        },
-        "hook_options": [
-          "Sheep can remember familiar faces",
-          "Sheep show why the face memory matters.",
-          "Sheep show why the face memory matters.",
-          "Sheep show why the face memory matters.",
-          "Sheep give away the answer through face memory"
-        ],
-        "loop_plan": {
-          "audio_crossfade_ms": 120,
-          "callback_keyword": "flock memory",
-          "ending_line": "Which farm animal should we compare next?",
-          "final_line": "Now the flock memory at the start makes sense.",
-          "loop_score": 0.812,
-          "opening_line": "Sheep can remember familiar faces.",
-          "render_hints": {
-            "avoid_hard_stop": true,
-            "carry_keyword": "flock memory",
-            "subtle_audio_tail": true
-          },
-          "rewrite_applied": true,
-          "subtitle_tail_mode": "carry-forward"
-        },
-        "loop_score": 0.812,
-        "next_episode_question": "Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
-        "opening_retention": {
-          "approved": true,
-          "cue_bridge": [
-            "face"
-          ],
-          "cue_terms": [
-            "face",
-            "flock",
-            "memor"
-          ],
-          "frame_hook_bridge": [],
-          "risks": [
-            "frame_text_not_echoed_early"
-          ],
-          "score": 90.0,
-          "state": "retention_ready",
-          "strengths": [
-            "subject_frontloaded",
-            "visible_cue_repeated_early",
-            "watch_instruction_early",
-            "action_promise_early",
-            "reason_arrives_early",
-            "frame_text_scannable"
-          ],
-          "subject": "sheep"
-        },
-        "pinned_comment": "Watch the group again. Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
-        "preflight_inputs": {
-          "caption_chars_per_second": 14.78,
-          "contrast_score": 0.74,
-          "cta_count": 1,
-          "duration_hint_s": 18,
-          "first_2s_narration": "Sheep can remember familiar faces Watch the face and spacing because sheep",
-          "first_frame_text": "FLOCK MEMORY",
-          "first_frame_text_words": 2,
-          "hook": "Sheep can remember familiar faces.",
-          "hook_specificity": 0.78,
-          "hook_words": 5,
-          "loop_score": 0.812,
-          "novelty_score": 0.58,
-          "opening_retention": {
-            "approved": true,
-            "cue_bridge": [
-              "face"
-            ],
-            "cue_terms": [
-              "face",
-              "flock",
-              "memor"
-            ],
-            "frame_hook_bridge": [],
-            "risks": [
-              "frame_text_not_echoed_early"
-            ],
-            "score": 90.0,
-            "state": "retention_ready",
-            "strengths": [
-              "subject_frontloaded",
-              "visible_cue_repeated_early",
-              "watch_instruction_early",
-              "action_promise_early",
-              "reason_arrives_early",
-              "frame_text_scannable"
-            ],
-            "subject": "sheep"
-          },
-          "opening_retention_score": 90.0,
-          "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
-          "payoff_time_s": 0,
-          "visual_motion_score": 0.76
-        },
-        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
-        "replay_prompt": "End by pointing back to the group, so viewers rewatch the sheep clip.",
-        "retention": {
-          "confidence": {
-            "bootstrap_multiplier": 0.25,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.0,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-            "recommendation_strength": "observe",
-            "sample_size": 0
-          },
-          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
-          "reasons": [],
-          "score": 73,
-          "signals": {
-            "completion_prediction": 84,
-            "curiosity_score": 71,
-            "hook_score": 82,
-            "replay_score": 62,
-            "visual_score": 58
-          },
-          "verdict": "rewrite"
-        },
-        "retention_contract": {
-          "first_2s_narration": "Sheep can remember familiar faces Watch the face and spacing because sheep",
-          "first_frame_text": "FLOCK MEMORY",
-          "next_episode_question": "Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
-          "opening_retention_score": 90.0,
-          "opening_retention_state": "retention_ready",
-          "search_intent": {
-            "description_line": "This Short explains Sheep behavior through the visible group.",
-            "series": "Farmyard Surprises",
-            "subject": "sheep",
-            "terms": [
-              "sheep",
-              "group",
-              "farm",
-              "animal memory"
-            ],
-            "title_variant": "Sheep behavior: group explained",
-            "visible_cue": "group"
-          },
-          "series": "Farmyard Surprises",
-          "subject": "sheep",
-          "visible_cue": "group"
-        },
-        "risks": [],
-        "score": 96,
-        "search_intent": {
-          "description_line": "This Short explains Sheep behavior through the visible group.",
-          "series": "Farmyard Surprises",
-          "subject": "sheep",
-          "terms": [
-            "sheep",
-            "group",
-            "farm",
-            "animal memory"
-          ],
-          "title_variant": "Sheep behavior: group explained",
-          "visible_cue": "group"
-        },
-        "selected_variant": {
-          "hook": "Sheep can remember familiar faces",
-          "score": 77,
-          "thumbnail_text": "FLOCK MEMORY",
-          "title": "Sheep recognize faces across the flock"
-        },
-        "series": "Farmyard Surprises #13",
-        "series_identity": {
-          "continuity_prompt": "Next in Farmyard Surprises: compare this with another force of nature.",
-          "episode": 13,
-          "label": "Farmyard Surprises #13",
-          "series": "Farmyard Surprises"
-        },
-        "state": "magnetic",
-        "strengths": [
-          "title_shape",
-          "thumbnail_scannable",
-          "subject_clear",
-          "action_word",
-          "visible_cue",
-          "retention_opening_aligned"
-        ],
-        "subscriber_conversion": {
-          "comment_probability": 0.24,
-          "confidence": {
-            "bootstrap_multiplier": 0.274,
-            "can_adjust_strategy": false,
-            "confidence_score": 0.033,
-            "data_quality": "inferred",
-            "data_quality_score": 0.65,
-            "minimum_sample_size": 5,
-            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-            "recommendation_strength": "observe",
-            "sample_size": 1
-          },
-          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
-          "reasons": [
-            "identity_cta",
-            "debate_comment",
-            "return_prompt",
-            "series_identity",
-            "episode_continuity"
-          ],
-          "return_probability": 0.281,
-          "robotic_title": {
-            "hits": [],
-            "risk": 0,
-            "state": "clear"
-          },
-          "score": 93,
-          "state": "strong",
-          "subscriber_probability": 0.133
-        },
-        "swipe_risk": {
-          "band": "low",
-          "fixes": [],
-          "reasons": [],
-          "score": 0
-        },
-        "thumbnail_options": [
-          "FLOCK MEMORY",
-          "FACE MEMORY",
-          "WATCH FACE MEMORY",
-          "SHEEP REMEMBER",
-          "FACE MEMORY MATTERS",
-          "FACE MEMORY FIRST",
-          "FACE MEMORY REVEAL",
-          "FACE MEMORY CLUE",
-          "WATCH THE MOVE",
-          "SPOT THE CLUE"
-        ],
-        "title_options": [
-          "Sheep recognize faces across the flock",
-          "Sheep use face memory before they remember",
-          "This face memory gives sheep away",
-          "Why sheep remember after one face memory",
-          "Sheep reveal the answer with face memory",
-          "The face memory that changes the moment",
-          "Sheep make one face memory matter",
-          "Sheep show the hidden answer in seconds",
-          "Sheep: watch this face memory",
-          "Watch sheep after the face memory"
-        ],
-        "top_variants": [
-          {
-            "hook": "Sheep can remember familiar faces",
-            "score": 77,
-            "thumbnail_text": "FLOCK MEMORY",
-            "title": "Sheep recognize faces across the flock"
-          },
-          {
-            "hook": "Start with the face memory; it changes the scene",
-            "score": 77,
-            "thumbnail_text": "FLOCK MEMORY",
-            "title": "Sheep recognize faces across the flock"
-          },
-          {
-            "hook": "Watch the face memory; it explains the behavior",
-            "score": 76,
-            "thumbnail_text": "FLOCK MEMORY",
-            "title": "Sheep recognize faces across the flock"
-          },
-          {
-            "hook": "Start with the face memory; it changes the scene",
-            "score": 74,
-            "thumbnail_text": "FLOCK MEMORY",
-            "title": "Sheep use face memory before they remember"
-          },
-          {
-            "hook": "Sheep can remember familiar faces",
-            "score": 73,
-            "thumbnail_text": "FLOCK MEMORY",
-            "title": "Sheep use face memory before they remember"
-          },
-          {
-            "hook": "Watch the face memory; it explains the behavior",
-            "score": 72,
-            "thumbnail_text": "FLOCK MEMORY",
-            "title": "Sheep use face memory before they remember"
-          },
-          {
-            "hook": "Sheep can remember familiar faces",
-            "score": 70,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Sheep recognize faces across the flock"
-          },
-          {
-            "hook": "Start with the face memory; it changes the scene",
-            "score": 70,
-            "thumbnail_text": "FACE MEMORY",
-            "title": "Sheep recognize faces across the flock"
-          },
-          {
-            "hook": "Sheep can remember familiar faces",
-            "score": 70,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "Sheep recognize faces across the flock"
-          },
-          {
-            "hook": "Start with the face memory; it changes the scene",
-            "score": 70,
-            "thumbnail_text": "WATCH FACE MEMORY",
-            "title": "Sheep recognize faces across the flock"
           }
         ]
       },
@@ -1782,7 +1132,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T19:51:44.607878+00:00",
+        "checked_at": "2026-07-15T20:22:15.454791+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1880,9 +1230,9 @@
           },
           "explore_rate": 0.1,
           "mode": "explore",
-          "sample_count": 106,
+          "sample_count": 107,
           "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
@@ -2442,7 +1792,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T19:51:45.309246+00:00",
+        "checked_at": "2026-07-15T20:22:15.460672+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2535,9 +1885,9 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 106,
+          "sample_count": 107,
           "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
@@ -3081,7 +2431,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T19:51:45.311056+00:00",
+        "checked_at": "2026-07-15T20:22:15.462435+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3175,9 +2525,9 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 106,
+          "sample_count": 107,
           "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
@@ -3720,7 +3070,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T19:51:45.319613+00:00",
+        "checked_at": "2026-07-15T20:22:15.471140+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3812,9 +3162,9 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 106,
+          "sample_count": 107,
           "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
@@ -4358,7 +3708,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T19:51:45.321861+00:00",
+        "checked_at": "2026-07-15T20:22:15.473455+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4452,9 +3802,9 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 106,
+          "sample_count": 107,
           "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
@@ -5001,7 +4351,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T19:51:44.609001+00:00",
+        "checked_at": "2026-07-15T20:22:15.455921+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5095,9 +4445,9 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 106,
+          "sample_count": 107,
           "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
@@ -5654,7 +5004,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T19:51:44.610129+00:00",
+        "checked_at": "2026-07-15T20:22:15.457051+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5754,9 +5104,9 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 106,
+          "sample_count": 107,
           "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
@@ -6322,7 +5672,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T19:51:44.231888+00:00",
+        "checked_at": "2026-07-15T20:22:15.448202+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6418,9 +5768,9 @@
           },
           "explore_rate": 0.1,
           "mode": "explore",
-          "sample_count": 106,
+          "sample_count": 107,
           "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
@@ -6978,7 +6328,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T19:51:44.612164+00:00",
+        "checked_at": "2026-07-15T20:22:15.458893+00:00",
         "mechanism_cluster": "tongue_smell",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7077,9 +6427,9 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 106,
+          "sample_count": 107,
           "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
@@ -7638,7 +6988,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T19:51:45.312491+00:00",
+        "checked_at": "2026-07-15T20:22:15.463881+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7735,9 +7085,9 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 106,
+          "sample_count": 107,
           "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
@@ -8289,7 +7639,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T19:51:45.314163+00:00",
+        "checked_at": "2026-07-15T20:22:15.465579+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8382,9 +7732,9 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 106,
+          "sample_count": 107,
           "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
@@ -8927,7 +8277,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T19:51:45.315727+00:00",
+        "checked_at": "2026-07-15T20:22:15.467200+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9022,9 +8372,9 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 106,
+          "sample_count": 107,
           "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
@@ -9573,7 +8923,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T19:51:45.317285+00:00",
+        "checked_at": "2026-07-15T20:22:15.468808+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9670,9 +9020,9 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 106,
+          "sample_count": 107,
           "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
@@ -10221,7 +9571,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T19:51:45.323678+00:00",
+        "checked_at": "2026-07-15T20:22:15.475282+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10311,9 +9661,9 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 106,
+          "sample_count": 107,
           "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
@@ -10854,7 +10204,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T19:51:44.234502+00:00",
+        "checked_at": "2026-07-15T20:22:15.453458+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10955,9 +10305,9 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 106,
+          "sample_count": 107,
           "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
@@ -11518,7 +10868,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T19:51:45.325635+00:00",
+        "checked_at": "2026-07-15T20:22:15.477167+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11616,9 +10966,9 @@
           },
           "explore_rate": 0.1,
           "mode": "exploit",
-          "sample_count": 106,
+          "sample_count": 107,
           "winners": {
-            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
             "thumbnail_pattern": "",
             "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
           },
