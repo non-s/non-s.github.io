@@ -1001,7 +1001,7 @@
         "category": "reptiles",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.34
+        "freshness_score": 51.32
       },
       {
         "id": "94d7b569eb9a4ac7",
@@ -1017,7 +1017,7 @@
         "category": "nocturnal",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 15.24
+        "freshness_score": 15.22
       },
       {
         "id": "1af1013cc6eed163",
@@ -1025,7 +1025,7 @@
         "category": "ocean",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.38
+        "freshness_score": 51.36
       },
       {
         "id": "15162aaa98b392f2",
@@ -1033,7 +1033,7 @@
         "category": "ocean",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 39.18
+        "freshness_score": 39.16
       },
       {
         "id": "53958248afcfe49f",
@@ -1081,7 +1081,7 @@
         "category": "conservation",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 19.1
+        "freshness_score": 19.08
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -1163,15 +1163,16 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 17,
+    "pending_before": 18,
     "pending_after": 17,
-    "rejected": 0,
+    "rejected": 1,
     "repair_needed": 0,
-    "repaired": 4,
+    "repaired": 5,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 17,
       "editor_in_chief:script quality gate blocked the narration": 7,
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
+      "duplicate_title": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
       "editorial_cooldown_supply_fallback": 1,
       "publish_ready_supply_reserve_fallback": 1

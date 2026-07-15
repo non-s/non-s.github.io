@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-15T20:43:30.817001+00:00",
-  "pending": 17,
+  "generated_at": "2026-07-15T20:46:41.652966+00:00",
+  "pending": 18,
   "states": {
-    "rewrite": 12,
+    "rewrite": 13,
     "publish_ready": 5
   },
   "mechanism_clusters": {
@@ -13,24 +13,51 @@
     "beak_signal": 1
   },
   "rights": {
-    "approved": 17
+    "approved": 18
   },
   "prune_summary": {
-    "pending_before": 17,
-    "pending_after": 17,
-    "rejected": 0,
+    "pending_before": 20,
+    "pending_after": 18,
+    "rejected": 2,
     "repair_needed": 0,
     "repaired": 4,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 17,
       "editor_in_chief:script quality gate blocked the narration": 7,
+      "duplicate_title": 2,
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
+      "rights_guard_person_manual_review": 1,
+      "off_topic_visual": 1,
+      "script_hook_mismatch": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
+      "script_subject_mismatch": 1,
+      "copy_subject_mismatch": 1,
       "editorial_cooldown_supply_fallback": 1,
-      "publish_ready_supply_reserve_fallback": 1
+      "publish_ready_supply_reserve_fallback": 1,
+      "inventory_reserve_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "03b672edeb91d972",
+      "title": "Monkeys wash food when grit gets annoying",
+      "reasons": [
+        "script_subject_mismatch",
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "f93f1c51b62f9bbf",
+      "title": "Texas horned lizard mugs peanut in motion",
+      "reasons": [
+        "rights_guard_person_manual_review",
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "3912358619d17b80",
       "title": "Fossils turn old bones into time clues",
@@ -299,25 +326,6 @@
         "copy_subject_mismatch"
       ],
       "stage": "queue_prune_final"
-    },
-    {
-      "id": "411b3706547c9803",
-      "title": "Snakes sample the air with a tongue flick",
-      "reasons": [
-        "duplicate_title",
-        "duplicate_script",
-        "duplicate_angle"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "a49121c3a0b87e82",
-      "title": "Rivers carry stone grains while they flow",
-      "reasons": [
-        "script_subject_mismatch",
-        "copy_subject_mismatch"
-      ],
-      "stage": "queue_prune_final"
     }
   ],
   "top": [
@@ -494,7 +502,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T20:43:14.876610+00:00",
+        "checked_at": "2026-07-15T20:46:21.865547+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1137,7 +1145,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T20:43:14.880831+00:00",
+        "checked_at": "2026-07-15T20:46:21.877133+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1797,7 +1805,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T20:43:14.886097+00:00",
+        "checked_at": "2026-07-15T20:46:22.253393+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2264,6 +2272,669 @@
       }
     },
     {
+      "id": "7526eee6bffce6fe",
+      "title": "Rock layers use rock layers before they change",
+      "category": "geology",
+      "publish_score": {
+        "approved": true,
+        "category": "geology",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.36,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.146,
+          "data_quality": "estimated",
+          "data_quality_score": 0.35,
+          "minimum_sample_size": 38,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.15.",
+          "recommendation_strength": "observe",
+          "sample_size": 10
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.146,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "pattern",
+            "rock",
+            "stripe",
+            "time"
+          ],
+          "cue_terms": [
+            "pattern",
+            "rock",
+            "stripe",
+            "time"
+          ],
+          "frame_hook_bridge": [
+            "rock",
+            "time"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "rock"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 65,
+          "signals": {
+            "comment_potential": 49,
+            "educational_potential": 67,
+            "emotional_potential": 39,
+            "novelty": 54,
+            "replay_potential": 67,
+            "viral_potential": 70,
+            "visual_potential": 84
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 76,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 74
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "earth_engine",
+        "subscriber_conversion": {
+          "comment_probability": 0.207,
+          "confidence": {
+            "bootstrap_multiplier": 0.374,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.165,
+            "data_quality": "estimated",
+            "data_quality_score": 0.425,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
+            "recommendation_strength": "observe",
+            "sample_size": 5
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.242,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.445,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.26,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 2/5 samples, inferred data, confidence 0.26; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-07-15T20:46:22.665917+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "inventory_reserve_fallback",
+          "inventory_reserve:duplicate_title"
+        ],
+        "score": 100.0,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "rock",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "pattern",
+            "rock",
+            "stripe",
+            "time"
+          ],
+          "cue_terms": [
+            "pattern",
+            "rock",
+            "stripe",
+            "time"
+          ],
+          "frame_hook_bridge": [
+            "rock",
+            "time"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "rock"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "earth_engine",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "rock",
+        "viewer_promise": "See why this rock earth engine matters."
+      },
+      "packaging": {
+        "community_prompt": "Which rock clue should Wild Brief compare next in Earth Engine?",
+        "cta_prompt": "Want to understand the planet under your feet?",
+        "curiosity_gap": {
+          "hook": "Watch the rock time; it explains why this rock changes.",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "earth engine",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "specific_question",
+            "format": "fresh_variant",
+            "hook": "new_hook",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "explore",
+          "sample_count": 107,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 47.3,
+            "format:winner_inspired": 47.3,
+            "hook:pattern_reuse": 47.3,
+            "thumbnail:new_thumbnail": 47.3
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "pattern",
+              "rock",
+              "stripe",
+              "time"
+            ],
+            "cue_terms": [
+              "pattern",
+              "rock",
+              "stripe",
+              "time"
+            ],
+            "frame_hook_bridge": [
+              "rock",
+              "time"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "rock"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Rock layers are time stamps made of stone",
+          "Watch the rock layers; it explains the behavior",
+          "Start with the rock layer; it changes the scene",
+          "The rock layer is the detail most people miss",
+          "Rock layers give away the answer through rock layers"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "rock time",
+          "ending_line": "Which rock clue should we read next?",
+          "final_line": "Now the rock time at the start makes sense.",
+          "loop_score": 0.973,
+          "opening_line": "Rock layers are time stamps made of stone.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "rock time",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.973,
+        "next_episode_question": "Tomorrow in Earth Engine: another nature signal. Does this make Earth feel stable or constantly moving?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "pattern",
+            "rock",
+            "stripe",
+            "time"
+          ],
+          "cue_terms": [
+            "pattern",
+            "rock",
+            "stripe",
+            "time"
+          ],
+          "frame_hook_bridge": [
+            "rock",
+            "time"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "rock"
+        },
+        "pinned_comment": "Watch the rock layers again. Tomorrow in Earth Engine: another nature signal. Does this make Earth feel stable or constantly moving?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.59,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 17,
+          "first_2s_narration": "Rock layers are time stamps made of stone Watch the stripe pattern",
+          "first_frame_text": "ROCK TIME",
+          "first_frame_text_words": 2,
+          "hook": "Rock layers are time stamps made of stone.",
+          "hook_specificity": 0.78,
+          "hook_words": 8,
+          "loop_score": 0.973,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "pattern",
+              "rock",
+              "stripe",
+              "time"
+            ],
+            "cue_terms": [
+              "pattern",
+              "rock",
+              "stripe",
+              "time"
+            ],
+            "frame_hook_bridge": [
+              "rock",
+              "time"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "rock"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the rock layers, so viewers rewatch the rock clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 76,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 62,
+            "visual_score": 74
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Rock layers are time stamps made of stone Watch the stripe pattern",
+          "first_frame_text": "ROCK TIME",
+          "next_episode_question": "Tomorrow in Earth Engine: another nature signal. Does this make Earth feel stable or constantly moving?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains the visible rock layers behind Rock in a fast nature science story.",
+            "series": "Earth Engine",
+            "subject": "rock",
+            "terms": [
+              "rock",
+              "rock layers",
+              "geology",
+              "earth engine"
+            ],
+            "title_variant": "Rock rock layers explained fast",
+            "visible_cue": "rock layers"
+          },
+          "series": "Earth Engine",
+          "subject": "rock",
+          "visible_cue": "rock layers"
+        },
+        "risks": [],
+        "score": 97,
+        "search_intent": {
+          "description_line": "This Short explains the visible rock layers behind Rock in a fast nature science story.",
+          "series": "Earth Engine",
+          "subject": "rock",
+          "terms": [
+            "rock",
+            "rock layers",
+            "geology",
+            "earth engine"
+          ],
+          "title_variant": "Rock rock layers explained fast",
+          "visible_cue": "rock layers"
+        },
+        "selected_variant": {
+          "hook": "Rock layers are time stamps made of stone",
+          "score": 80,
+          "thumbnail_text": "ROCK TIME",
+          "title": "Rock layers store ancient environments in stripes"
+        },
+        "series": "Earth Engine #14",
+        "series_identity": {
+          "continuity_prompt": "Next in Earth Engine: compare this with another force of nature.",
+          "episode": 14,
+          "label": "Earth Engine #14",
+          "series": "Earth Engine"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.207,
+          "confidence": {
+            "bootstrap_multiplier": 0.374,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.165,
+            "data_quality": "estimated",
+            "data_quality_score": 0.425,
+            "minimum_sample_size": 18,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
+            "recommendation_strength": "observe",
+            "sample_size": 5
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.16.",
+          "reasons": [
+            "debate_comment",
+            "return_prompt",
+            "series_identity",
+            "episode_continuity"
+          ],
+          "return_probability": 0.242,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 79,
+          "state": "strong",
+          "subscriber_probability": 0.113
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "ROCK TIME",
+          "ROCK LAYER",
+          "WATCH ROCK LAYER",
+          "ROCK LAYERS CHANGE",
+          "ROCK LAYER MATTERS",
+          "ROCK LAYER FIRST",
+          "ROCK LAYER REVEAL",
+          "ROCK LAYER CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Rock layers store ancient environments in stripes",
+          "Rock layers use rock layers before they change",
+          "This rock layer gives rock layers away",
+          "Rock layers reveal the answer with rock layers",
+          "The rock layer that changes the moment",
+          "Rock layers show the hidden answer in seconds",
+          "Rock layers: watch this rock layer",
+          "Watch rock layers after the rock layer"
+        ],
+        "top_variants": [
+          {
+            "hook": "Rock layers are time stamps made of stone",
+            "score": 80,
+            "thumbnail_text": "ROCK TIME",
+            "title": "Rock layers store ancient environments in stripes"
+          },
+          {
+            "hook": "Watch the rock layers; it explains the behavior",
+            "score": 80,
+            "thumbnail_text": "ROCK TIME",
+            "title": "Rock layers store ancient environments in stripes"
+          },
+          {
+            "hook": "Start with the rock layer; it changes the scene",
+            "score": 80,
+            "thumbnail_text": "ROCK TIME",
+            "title": "Rock layers store ancient environments in stripes"
+          },
+          {
+            "hook": "Rock layers are time stamps made of stone",
+            "score": 73,
+            "thumbnail_text": "ROCK LAYER",
+            "title": "Rock layers store ancient environments in stripes"
+          },
+          {
+            "hook": "Watch the rock layers; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "ROCK LAYER",
+            "title": "Rock layers store ancient environments in stripes"
+          },
+          {
+            "hook": "Start with the rock layer; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "ROCK LAYER",
+            "title": "Rock layers store ancient environments in stripes"
+          },
+          {
+            "hook": "Rock layers are time stamps made of stone",
+            "score": 73,
+            "thumbnail_text": "WATCH ROCK LAYER",
+            "title": "Rock layers store ancient environments in stripes"
+          },
+          {
+            "hook": "Watch the rock layers; it explains the behavior",
+            "score": 73,
+            "thumbnail_text": "WATCH ROCK LAYER",
+            "title": "Rock layers store ancient environments in stripes"
+          },
+          {
+            "hook": "Start with the rock layer; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "WATCH ROCK LAYER",
+            "title": "Rock layers store ancient environments in stripes"
+          },
+          {
+            "hook": "Rock layers are time stamps made of stone",
+            "score": 73,
+            "thumbnail_text": "ROCK LAYERS CHANGE",
+            "title": "Rock layers store ancient environments in stripes"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "a4ca94af1a59d5df",
       "title": "Fox eyes glow at night in a way you didn't expect",
       "category": "nocturnal",
@@ -2436,7 +3107,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T20:43:14.887634+00:00",
+        "checked_at": "2026-07-15T20:46:22.255270+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3075,7 +3746,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T20:43:14.894915+00:00",
+        "checked_at": "2026-07-15T20:46:22.264702+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3713,7 +4384,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T20:43:14.896844+00:00",
+        "checked_at": "2026-07-15T20:46:22.267062+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4356,7 +5027,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T20:43:14.881912+00:00",
+        "checked_at": "2026-07-15T20:46:21.878312+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5009,7 +5680,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T20:43:14.882971+00:00",
+        "checked_at": "2026-07-15T20:46:21.879425+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5677,7 +6348,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T20:43:14.874564+00:00",
+        "checked_at": "2026-07-15T20:46:21.863333+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6333,7 +7004,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T20:43:14.884579+00:00",
+        "checked_at": "2026-07-15T20:46:21.881179+00:00",
         "mechanism_cluster": "tongue_smell",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6993,7 +7664,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T20:43:14.888859+00:00",
+        "checked_at": "2026-07-15T20:46:22.256865+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -7644,7 +8315,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T20:43:14.890292+00:00",
+        "checked_at": "2026-07-15T20:46:22.258881+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8282,7 +8953,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T20:43:14.891649+00:00",
+        "checked_at": "2026-07-15T20:46:22.260531+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8928,7 +9599,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T20:43:14.893004+00:00",
+        "checked_at": "2026-07-15T20:46:22.262046+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9576,7 +10247,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T20:43:14.898388+00:00",
+        "checked_at": "2026-07-15T20:46:22.268754+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10209,7 +10880,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T20:43:14.879572+00:00",
+        "checked_at": "2026-07-15T20:46:21.869053+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10873,7 +11544,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T20:43:14.899994+00:00",
+        "checked_at": "2026-07-15T20:46:22.270556+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
