@@ -79,12 +79,12 @@ def evaluate_frame(image_path: Path, expected_subject: str) -> dict:
         model = os.environ.get("GEMINI_VISION_MODEL", "gemini-2.0-flash-lite").strip()
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
         prompt = (
-            "You are a strict visual QA reviewer for an animal-only YouTube Shorts channel. "
-            f"Expected visible animal subject: {expected_subject!r}. "
+            "You are a strict visual QA reviewer for a nature and science YouTube channel. "
+            f"Expected visible nature/science subject: {expected_subject!r}. "
             "Return JSON only with approved (boolean), subject_visible (boolean), "
             "subject_match (boolean), thumbnail_quality (integer 1-10), and reason (short string). "
-            "Approve only if the image visibly contains the expected animal or an unambiguous close match. "
-            "Reject people, food, objects, unrelated animals, and abstract backgrounds."
+            "Approve only if the image visibly contains the expected nature/science subject or an unambiguous close match. "
+            "Reject people, food, objects, unrelated categories, and abstract backgrounds."
         )
         payload = {
             "contents": [

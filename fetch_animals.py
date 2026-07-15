@@ -1832,14 +1832,63 @@ def _ai_enhance_animal(
         studio_direction=wrapped_studio_direction,
         variation_key=_variation_key(subject, context, variation_material),
     )
-    raw = ai_text(
+    raw_draft = ai_text(
         prompt,
         seed=int(_variation_key(subject, variation_material)[:8], 16) % 9999,
         timeout=25,
         json_mode=True,
     )
-    if not raw:
+    if not raw_draft:
         return None
+
+    try:
+        clean_draft = re.sub(r"```(?:json)?\s*|\s*```", "", raw_draft).strip()
+        m = re.search(r"\{.*\}", clean_draft, re.DOTALL)
+        draft_data = json.loads(m.group(0), strict=False) if m else None
+    except Exception:
+        draft_data = None
+
+    if draft_data and isinstance(draft_data, dict):
+        review_prompt = (
+            "You are the Fact-Checker and Compliance Officer for Wild Brief, a nature channel.\n"
+            "Review the following draft YouTube Shorts JSON payload for accuracy, clickbait words, and structural rules.\n\n"
+            f"Draft JSON:\n{json.dumps(draft_data, indent=2)}\n\n"
+            "Rules to check:\n"
+            "1. NO forbidden clickbait/robotic words: 'amazing', 'incredible', 'secret', 'unbelievable', 'shocking', 'crazy'. Use descriptive alternatives.\n"
+            "2. The hook must NOT be a question (e.g. no 'Did you know...'). It must be a concrete promise.\n"
+            "3. The thumbnail text must be EXACTLY 2 to 4 words, scannable, in ALL CAPS.\n"
+            "4. The title must be highly specific to the action, not generic.\n\n"
+            "Propose any necessary fixes. Respond in valid JSON matching this schema:\n"
+            "{\n"
+            "  \"issues_found\": true/false,\n"
+            "  \"corrections\": {\n"
+            "    \"seo_title\": \"<corrected title or original if fine>\",\n"
+            "    \"thumbnail_text\": \"<corrected thumbnail text or original if fine>\",\n"
+            "    \"hook\": \"<corrected hook or original if fine>\",\n"
+            "    \"script\": \"<corrected script or original if fine>\"\n"
+            "  }\n"
+            "}"
+        )
+        raw_review = ai_text(review_prompt, timeout=20, json_mode=True)
+        try:
+            clean_review = re.sub(r"```(?:json)?\s*|\s*```", "", raw_review).strip()
+            m_rev = re.search(r"\{.*\}", clean_review, re.DOTALL)
+            review_data = json.loads(m_rev.group(0), strict=False) if m_rev else None
+        except Exception:
+            review_data = None
+
+        if review_data and review_data.get("issues_found"):
+            log.info("Editorial Board: Reviewer proposed corrections. Applying updates...")
+            corrections = review_data.get("corrections") or {}
+            for k in ("seo_title", "thumbnail_text", "hook", "script"):
+                if corrections.get(k):
+                    draft_data[k] = corrections[k]
+            raw = json.dumps(draft_data)
+        else:
+            log.info("Editorial Board: Reviewer approved draft without corrections.")
+            raw = raw_draft
+    else:
+        raw = raw_draft
     try:
         # Strip code fences if the model wrapped the JSON.
         clean = re.sub(r"```(?:json)?\s*|\s*```", "", raw).strip()

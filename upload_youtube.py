@@ -977,6 +977,23 @@ def _post_cta_comment(youtube, video_id: str, text: str) -> dict:
     }
 
 
+def _reply_to_parent_comment(youtube, parent_id: str, text: str) -> dict:
+    request = youtube.comments().insert(
+        part="snippet",
+        body={
+            "snippet": {
+                "parentId": parent_id,
+                "textOriginal": text,
+            }
+        },
+    )
+    response = _execute(request)
+    return {
+        "posted": True,
+        "reply_id": response.get("id", ""),
+    }
+
+
 def run_post_upload_operations(youtube, video_id: str, meta: dict) -> dict:
     """Run YouTube-only growth operations after a successful upload."""
     if os.environ.get("YOUTUBE_POST_UPLOAD_AUTOMATION", "1").lower() in {"0", "false", "no"}:
@@ -1007,6 +1024,18 @@ def run_post_upload_operations(youtube, video_id: str, meta: dict) -> dict:
             "pin_status": "not_supported_by_youtube_data_api",
         }
         log.warning("CTA comment operation failed: %s", exc)
+
+    comment_context = meta.get("comment_context")
+    if comment_context and isinstance(comment_context, dict):
+        parent_id = comment_context.get("parent_comment_id")
+        if parent_id:
+            try:
+                reply_text = f"We made this video to answer your question! Check it out here: https://youtube.com/shorts/{video_id}"
+                result["parent_reply"] = _reply_to_parent_comment(youtube, parent_id, reply_text)
+            except Exception as exc:
+                result["parent_reply"] = {"posted": False, "error": f"{type(exc).__name__}: {exc}"}
+                log.warning("Failed to reply to parent comment %s: %s", parent_id, exc)
+
     return result
 
 

@@ -2724,6 +2724,7 @@ def generate_short(story: dict, tmp_dir: Path, lang: str | None = None) -> tuple
         "hashtags": clean_hashtags,
         "language": metadata.get("language", "en"),
         "platform_ready": True,
+        "comment_context": metadata.get("comment_context"),
     }
     manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")
     log.info(f"  Multi-platform manifest saved: {manifest_path.name}")

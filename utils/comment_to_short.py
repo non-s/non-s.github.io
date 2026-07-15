@@ -354,6 +354,7 @@ def build_comment_short_candidate(comment: dict, markers: list[dict] | None = No
             "video_id": source_video,
             "published_at": comment.get("publishedAt", ""),
             "author": comment.get("author", ""),
+            "parent_comment_id": str(comment.get("comment_id") or comment.get("id") or ""),
         },
         "fetched_at": datetime.now(timezone.utc).isoformat(),
     }
