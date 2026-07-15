@@ -217,13 +217,24 @@ class DynamicStreamer:
             try:
                 # Try to download the latest video run using GH CLI
                 log.info("Checking for new generated videos...")
-                run_id_cmd = "gh run list --workflow='Generate Long Video' --status=success --limit 1 --json databaseId --jq '.[0].databaseId'"
-                result = subprocess.run(run_id_cmd, shell=True, capture_output=True, text=True)
+                run_id_cmd = [
+                    "gh", "run", "list",
+                    "--workflow=Generate Long Video",
+                    "--status=success",
+                    "--limit", "1",
+                    "--json", "databaseId",
+                    "--jq", ".[0].databaseId"
+                ]
+                result = subprocess.run(run_id_cmd, capture_output=True, text=True)
                 run_id = result.stdout.strip()
                 if run_id and run_id != "null":
                     log.info(f"Found latest run {run_id}, downloading if not present...")
-                    dl_cmd = f"gh run download {run_id} --name 'long-video-{run_id}' --dir {self.videos_dir}"
-                    subprocess.run(dl_cmd, shell=True, capture_output=True)
+                    dl_cmd = [
+                        "gh", "run", "download", str(run_id),
+                        "--name", f"long-video-{run_id}",
+                        "--dir", str(self.videos_dir)
+                    ]
+                    subprocess.run(dl_cmd, capture_output=True)
             except Exception as e:
                 log.error(f"Content updater error: {e}")
             time.sleep(3600)  # Check every hour
