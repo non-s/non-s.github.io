@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-15T16:49:02.898430+00:00",
-  "pending": 19,
+  "generated_at": "2026-07-15T16:52:40.899377+00:00",
+  "pending": 20,
   "states": {
-    "rewrite": 13,
+    "rewrite": 14,
     "publish_ready": 6
   },
   "mechanism_clusters": {
@@ -13,24 +13,47 @@
     "scent_map": 1
   },
   "rights": {
-    "approved": 19
+    "approved": 20
   },
   "prune_summary": {
-    "pending_before": 19,
-    "pending_after": 19,
-    "rejected": 0,
-    "repair_needed": 0,
+    "pending_before": 22,
+    "pending_after": 20,
+    "rejected": 2,
+    "repair_needed": 1,
     "repaired": 4,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 19,
       "editor_in_chief:script quality gate blocked the narration": 7,
+      "duplicate_title": 2,
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
+      "opening_retention_gap_risk": 1,
+      "opening promise is not concrete enough": 1,
+      "queue_score_reject": 1,
       "editor_in_chief:editorial score 46 is below 62": 1,
       "editorial_cooldown_supply_fallback": 1,
-      "publish_ready_supply_reserve_fallback": 1
+      "publish_ready_supply_reserve_fallback": 1,
+      "inventory_reserve_fallback": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "690a8a1654c9dcf1",
+      "title": "Monkeys wash food when grit gets annoying",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "88f5dce46e725f86",
+      "title": "Coral reefs are cities built by tiny animals",
+      "reasons": [
+        "opening_retention_gap_risk",
+        "opening promise is not concrete enough",
+        "queue_score_reject"
+      ],
+      "stage": "queue_repair"
+    },
     {
       "id": "625bc2903a3e3385",
       "title": "Camadas de rocha guardam ambientes antigos em listras",
@@ -40,6 +63,25 @@
         "editorial score 41 is below 62"
       ],
       "stage": "editor_in_chief"
+    },
+    {
+      "id": "53c29b951009490a",
+      "title": "Coral reefs are cities built by tiny animals",
+      "reasons": [
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "c16151398323c180",
+      "title": "Elephants can feel rumbles through the ground",
+      "reasons": [
+        "duplicate_title",
+        "duplicate_script",
+        "duplicate_angle"
+      ],
+      "stage": "queue_prune_final"
     },
     {
       "id": "4902c8c9c16ac33f",
@@ -258,40 +300,6 @@
         "editorial score 47 is below 62"
       ],
       "stage": "editor_in_chief"
-    },
-    {
-      "id": "ab8211ad5be3fa73",
-      "title": "Fossils turn old bones into time clues",
-      "reasons": [
-        "off_topic_visual",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "b65f4eac9249c31b",
-      "title": "Magnets make invisible fields visible",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "ec9e79528d2f8260",
-      "title": "Coral reefs are cities built by tiny animals",
-      "reasons": [
-        "copy_subject_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
-    },
-    {
-      "id": "3b304be4b4d3b506",
-      "title": "Dogs read human pointing surprisingly well",
-      "reasons": [
-        "rights_guard_person_manual_review"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -472,7 +480,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:48:43.689112+00:00",
+        "checked_at": "2026-07-15T16:52:19.313873+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1117,7 +1125,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:48:43.694146+00:00",
+        "checked_at": "2026-07-15T16:52:19.318952+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1752,7 +1760,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:48:43.695380+00:00",
+        "checked_at": "2026-07-15T16:52:19.320208+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2399,7 +2407,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:48:43.704355+00:00",
+        "checked_at": "2026-07-15T16:52:19.329530+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3037,7 +3045,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:48:43.691786+00:00",
+        "checked_at": "2026-07-15T16:52:19.316678+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3683,7 +3691,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:48:43.697588+00:00",
+        "checked_at": "2026-07-15T16:52:19.322590+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4316,7 +4324,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:48:43.699824+00:00",
+        "checked_at": "2026-07-15T16:52:19.324963+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -4955,7 +4963,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:48:43.706050+00:00",
+        "checked_at": "2026-07-15T16:52:19.331239+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -5417,6 +5425,665 @@
       }
     },
     {
+      "id": "c33b553fdb94fa59",
+      "title": "Elephants use ear radiator before they trick",
+      "category": "wildlife",
+      "publish_score": {
+        "approved": true,
+        "category": "wildlife",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.255,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.007,
+          "data_quality": "inferred",
+          "data_quality_score": 0.65,
+          "minimum_sample_size": 15,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.01.",
+          "recommendation_strength": "observe",
+          "sample_size": 1
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.007,
+          "mechanism_cluster": "",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ear",
+            "ears",
+            "radiator",
+            "surface"
+          ],
+          "cue_terms": [
+            "ear",
+            "ears",
+            "radiator",
+            "surface"
+          ],
+          "frame_hook_bridge": [
+            "ear",
+            "radiator"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "elephants"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 71,
+          "signals": {
+            "comment_potential": 62,
+            "educational_potential": 73,
+            "emotional_potential": 44,
+            "novelty": 59,
+            "replay_potential": 82,
+            "viral_potential": 80,
+            "visual_potential": 79
+          },
+          "verdict": "produce"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 79,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 87,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 66
+          },
+          "verdict": "ready"
+        },
+        "score": 87.1,
+        "state": "publish_ready",
+        "story_format": "body_superpower",
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "title_score": 90,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "rewrite",
+      "queue_prune": {
+        "checked_at": "2026-07-15T16:52:20.075248+00:00",
+        "mechanism_cluster": "",
+        "objective_reasons": [
+          "inventory_reserve_fallback",
+          "inventory_reserve:duplicate_title"
+        ],
+        "score": 87.1,
+        "state": "rewrite",
+        "template_cluster": ""
+      },
+      "queue_score": 87.1,
+      "youtube_brain": {
+        "animal": "elephants",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ear",
+            "ears",
+            "radiator",
+            "surface"
+          ],
+          "cue_terms": [
+            "ear",
+            "ears",
+            "radiator",
+            "surface"
+          ],
+          "frame_hook_bridge": [
+            "ear",
+            "radiator"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "elephants"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "body_superpower",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "elephants",
+        "viewer_promise": "See why elephants body superpower matters."
+      },
+      "packaging": {
+        "community_prompt": "Which elephants clue should Wild Brief compare next in Watch The Cue?",
+        "cta_prompt": "Want more wild behavior explained without the fluff?",
+        "curiosity_gap": {
+          "hook": "Why do these elephants change after the ear radiator?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "body superpower",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "specific_question",
+            "format": "fresh_variant",
+            "hook": "new_hook",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "explore",
+          "sample_count": 103,
+          "winners": {
+            "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
+          },
+          "winning_experiments": {}
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "ear",
+              "ears",
+              "radiator",
+              "surface"
+            ],
+            "cue_terms": [
+              "ear",
+              "ears",
+              "radiator",
+              "surface"
+            ],
+            "frame_hook_bridge": [
+              "ear",
+              "radiator"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "elephants"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Elephants use their ears as living radiators",
+          "Elephants show why the ear radiator matters.",
+          "Elephants show why the ear radiator matters.",
+          "Elephants show why the ear radiator matters.",
+          "Elephants give away the answer through ear radiator"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "ear radiator",
+          "ending_line": "Which giant animal trick next?",
+          "final_line": "Now the ear radiator at the start makes sense.",
+          "loop_score": 0.836,
+          "opening_line": "Elephants use their ears as living radiators.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "ear radiator",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.836,
+        "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "ear",
+            "ears",
+            "radiator",
+            "surface"
+          ],
+          "cue_terms": [
+            "ear",
+            "ears",
+            "radiator",
+            "surface"
+          ],
+          "frame_hook_bridge": [
+            "ear",
+            "radiator"
+          ],
+          "risks": [],
+          "score": 100.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "action_promise_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "elephants"
+        },
+        "pinned_comment": "Watch the ear radiator again. Tomorrow in Watch The Cue: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.17,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 18,
+          "first_2s_narration": "Elephants use their ears as living radiators Watch the ear surface because",
+          "first_frame_text": "EAR RADIATOR",
+          "first_frame_text_words": 2,
+          "hook": "Elephants use their ears as living radiators.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.836,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "ear",
+              "ears",
+              "radiator",
+              "surface"
+            ],
+            "cue_terms": [
+              "ear",
+              "ears",
+              "radiator",
+              "surface"
+            ],
+            "frame_hook_bridge": [
+              "ear",
+              "radiator"
+            ],
+            "risks": [],
+            "score": 100.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "action_promise_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "elephants"
+          },
+          "opening_retention_score": 100.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the ear radiator, so viewers rewatch the elephants clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.25,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.0,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 0
+          },
+          "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
+          "reasons": [],
+          "score": 79,
+          "signals": {
+            "completion_prediction": 84,
+            "curiosity_score": 87,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 66
+          },
+          "verdict": "ready"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Elephants use their ears as living radiators Watch the ear surface because",
+          "first_frame_text": "EAR RADIATOR",
+          "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. Is this adaptation, instinct, or intelligence?",
+          "opening_retention_score": 100.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Elephants behavior through the visible ear radiator.",
+            "series": "Watch The Cue",
+            "subject": "elephants",
+            "terms": [
+              "elephants",
+              "ear radiator",
+              "wildlife",
+              "body superpower"
+            ],
+            "title_variant": "Elephants behavior: ear radiator explained",
+            "visible_cue": "ear radiator"
+          },
+          "series": "Watch The Cue",
+          "subject": "elephants",
+          "visible_cue": "ear radiator"
+        },
+        "risks": [],
+        "score": 98,
+        "search_intent": {
+          "description_line": "This Short explains Elephants behavior through the visible ear radiator.",
+          "series": "Watch The Cue",
+          "subject": "elephants",
+          "terms": [
+            "elephants",
+            "ear radiator",
+            "wildlife",
+            "body superpower"
+          ],
+          "title_variant": "Elephants behavior: ear radiator explained",
+          "visible_cue": "ear radiator"
+        },
+        "selected_variant": {
+          "hook": "Elephants use their ears as living radiators",
+          "score": 83,
+          "thumbnail_text": "EAR RADIATOR",
+          "title": "Elephants cool blood through giant ears"
+        },
+        "series": "Watch The Cue",
+        "series_identity": {
+          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Watch The Cue",
+          "series": "Watch The Cue"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.274,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.033,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.03.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "EAR RADIATOR",
+          "WATCH EAR RADIATOR",
+          "ELEPHANTS TRICK",
+          "EAR RADIATOR MATTERS",
+          "EAR RADIATOR FIRST",
+          "EAR RADIATOR REVEAL",
+          "EAR RADIATOR CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Elephants cool blood through giant ears",
+          "Elephants use ear radiator before they trick",
+          "This ear radiator gives elephants away",
+          "Why elephants trick after one ear radiator",
+          "Elephants reveal the answer with ear radiator",
+          "The ear radiator that changes the moment",
+          "Elephants make one ear radiator matter",
+          "Elephants show the hidden answer in seconds",
+          "Elephants: watch this ear radiator",
+          "Watch elephants after the ear radiator"
+        ],
+        "top_variants": [
+          {
+            "hook": "Elephants use their ears as living radiators",
+            "score": 83,
+            "thumbnail_text": "EAR RADIATOR",
+            "title": "Elephants cool blood through giant ears"
+          },
+          {
+            "hook": "Watch the ear radiator; it explains the behavior",
+            "score": 83,
+            "thumbnail_text": "EAR RADIATOR",
+            "title": "Elephants cool blood through giant ears"
+          },
+          {
+            "hook": "Start with the ear radiator; it changes the scene",
+            "score": 83,
+            "thumbnail_text": "EAR RADIATOR",
+            "title": "Elephants cool blood through giant ears"
+          },
+          {
+            "hook": "Elephants use their ears as living radiators",
+            "score": 76,
+            "thumbnail_text": "WATCH EAR RADIATOR",
+            "title": "Elephants cool blood through giant ears"
+          },
+          {
+            "hook": "Watch the ear radiator; it explains the behavior",
+            "score": 76,
+            "thumbnail_text": "WATCH EAR RADIATOR",
+            "title": "Elephants cool blood through giant ears"
+          },
+          {
+            "hook": "Start with the ear radiator; it changes the scene",
+            "score": 76,
+            "thumbnail_text": "WATCH EAR RADIATOR",
+            "title": "Elephants cool blood through giant ears"
+          },
+          {
+            "hook": "Elephants use their ears as living radiators",
+            "score": 76,
+            "thumbnail_text": "ELEPHANTS TRICK",
+            "title": "Elephants cool blood through giant ears"
+          },
+          {
+            "hook": "Watch the ear radiator; it explains the behavior",
+            "score": 76,
+            "thumbnail_text": "ELEPHANTS TRICK",
+            "title": "Elephants cool blood through giant ears"
+          },
+          {
+            "hook": "Start with the ear radiator; it changes the scene",
+            "score": 76,
+            "thumbnail_text": "ELEPHANTS TRICK",
+            "title": "Elephants cool blood through giant ears"
+          },
+          {
+            "hook": "Elephants use their ears as living radiators",
+            "score": 76,
+            "thumbnail_text": "EAR RADIATOR MATTERS",
+            "title": "Elephants cool blood through giant ears"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
+    {
       "id": "2a8f3f3725c00fe2",
       "title": "Elephants can feel rumbles through the ground",
       "category": "wildlife",
@@ -5588,7 +6255,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:48:43.707120+00:00",
+        "checked_at": "2026-07-15T16:52:19.332368+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -6231,7 +6898,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:48:43.702649+00:00",
+        "checked_at": "2026-07-15T16:52:19.327845+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6880,7 +7547,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:48:43.718161+00:00",
+        "checked_at": "2026-07-15T16:52:19.717868+00:00",
         "mechanism_cluster": "scent_map",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -7541,7 +8208,7 @@
       },
       "editorial_state": "publish_ready",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:48:43.713574+00:00",
+        "checked_at": "2026-07-15T16:52:19.338807+00:00",
         "mechanism_cluster": "tongue_smell",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8196,7 +8863,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:48:43.701236+00:00",
+        "checked_at": "2026-07-15T16:52:19.326397+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8842,7 +9509,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:48:43.708759+00:00",
+        "checked_at": "2026-07-15T16:52:19.333981+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -9475,7 +10142,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:48:43.710305+00:00",
+        "checked_at": "2026-07-15T16:52:19.335511+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10116,7 +10783,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:48:43.711829+00:00",
+        "checked_at": "2026-07-15T16:52:19.337058+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -10759,7 +11426,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:48:43.715325+00:00",
+        "checked_at": "2026-07-15T16:52:19.714959+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -11387,7 +12054,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:48:43.686485+00:00",
+        "checked_at": "2026-07-15T16:52:19.311051+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -12046,7 +12713,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-15T16:48:43.717094+00:00",
+        "checked_at": "2026-07-15T16:52:19.716769+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
