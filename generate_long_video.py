@@ -4,6 +4,9 @@
 generate_long_video.py — Fetch, narrate, and compose a long horizontal video (Compilation).
 """
 
+import os
+os.environ["BRAND_CARDS_ENABLED"] = "0"
+
 import asyncio
 import json
 import logging
@@ -140,6 +143,56 @@ async def async_main():
 
     if r.returncode == 0 and final_output.exists():
         log.info(f"SUCCESS: Long video created at {final_output}")
+        # Upload compilation to YouTube if token exists
+        if Path("youtube_token.json").exists():
+            log.info("youtube_token.json found. Attempting to upload compilation to YouTube...")
+            try:
+                from upload_youtube import get_youtube_service
+                from googleapiclient.http import MediaFileUpload
+
+                youtube = get_youtube_service()
+
+                title = f"The Wonders of Nature & Science | 15-in-1 Documentary Compilation"
+                description = (
+                    "Explore the incredible wonders of our natural world, from rare geological phenomena "
+                    "to deep ecosystems and astronomical views. A compilation of 15 short documentaries.\n\n"
+                    "#Nature #Science #Documentary #WildBrief"
+                )
+                tags = ["Nature", "Science", "Documentary", "WildBrief", "Ecosystems", "Astronomy"]
+
+                request = youtube.videos().insert(
+                    part="snippet,status",
+                    body={
+                        "snippet": {
+                            "title": title,
+                            "description": description,
+                            "tags": tags,
+                            "categoryId": "28",  # Science & Technology
+                        },
+                        "status": {
+                            "privacyStatus": "public",
+                            "selfDeclaredMadeForKids": False
+                        },
+                    },
+                    media_body=MediaFileUpload(str(final_output), mimetype="video/mp4", chunksize=1024*1024, resumable=True),
+                )
+
+                log.info(f"Uploading {final_output.name} to YouTube...")
+                response = None
+                while response is None:
+                    status, response = request.next_chunk()
+                    if status:
+                        log.info(f"Upload progress: {int(status.progress() * 100)}%")
+
+                video_id = response.get("id")
+                if video_id:
+                    log.info(f"SUCCESS: Compilation uploaded to YouTube! Video URL: https://youtu.be/{video_id}")
+                else:
+                    log.error("Failed to retrieve uploaded video ID.")
+            except Exception as e:
+                log.error(f"Failed to upload compiled video to YouTube: {e}")
+        else:
+            log.info("No youtube_token.json found; skipping YouTube upload.")
     else:
         log.error("Failed to concatenate segments.")
 

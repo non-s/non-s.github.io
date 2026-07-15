@@ -36,6 +36,18 @@ jobs:
           sudo apt-get install -y ffmpeg curl
           pip install -r requirements.txt
 
+      - name: Restore YouTube Token
+        env:
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+        run: |
+          if [ -n "$YOUTUBE_TOKEN" ]; then
+            printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
+            chmod 600 youtube_token.json
+            echo "Token restored."
+          else
+            echo "No YouTube token configured."
+          fi
+
       - name: Generate Long Video
         env:
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
@@ -44,6 +56,11 @@ jobs:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY || secrets.GROQ }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
         run: python generate_long_video.py
+
+      - name: Cleanup YouTube Token
+        if: always()
+        run: |
+          rm -f youtube_token.json
 
       - name: Locate Generated Video
         id: locate_video
