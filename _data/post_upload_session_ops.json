@@ -2,23 +2,23 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 7,
-      "high": 1,
+      "automation_safe": 8,
+      "high": 0,
       "manual_review": 0,
-      "total": 7,
+      "total": 8,
       "urgent": 2
     },
     "free_only": true,
-    "generated_at": "2026-07-15T16:46:53.568766+00:00",
+    "generated_at": "2026-07-15T16:48:15.797282+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 40.158,
+        "age_hours": 40.181,
         "automation_safe": true,
         "category": "discoveries",
         "checkpoint_label": "1h",
         "checkpoint_state": "overdue",
-        "current_views": 5,
+        "current_views": 0,
         "due_at": "2026-07-14T01:37:24.551626+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
@@ -39,12 +39,12 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 39.686,
+        "age_hours": 39.708,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
         "checkpoint_state": "overdue",
-        "current_views": 1,
+        "current_views": 0,
         "due_at": "2026-07-14T02:05:45.230548+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
@@ -64,34 +64,8 @@
         "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       },
       {
-        "action_type": "pull_fresh_analytics",
-        "age_hours": 1.529,
-        "automation_safe": true,
-        "category": "dogs",
-        "checkpoint_label": "1h",
-        "checkpoint_state": "due",
-        "current_views": 0,
-        "due_at": "2026-07-15T16:15:08.329086+00:00",
-        "free_only": true,
-        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:YZMh9v8WHJI:analytics_due:1h",
-        "lane": "measurement",
-        "manual_approval_required": false,
-        "opening_retention_score": 100.0,
-        "priority": "high",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
-        "series": "Pet Secrets",
-        "state": "analytics_due",
-        "target_views": 24,
-        "title": "This scent map gives dogs away",
-        "url": "https://www.youtube.com/shorts/YZMh9v8WHJI",
-        "video_id": "YZMh9v8WHJI",
-        "wait_until": "",
-        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
-      },
-      {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 5.578,
+        "age_hours": 5.601,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "6h",
@@ -116,8 +90,34 @@
         "why": "No intervention signal is strong enough yet."
       },
       {
+        "action_type": "hold_until_first_hour",
+        "age_hours": 0.043,
+        "automation_safe": true,
+        "category": "geology",
+        "checkpoint_label": "1h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-15T17:45:42.431869+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:OAZunjbhm1w:awaiting_1h:1h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "low",
+        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "series": "Earth Engine",
+        "state": "awaiting_1h",
+        "target_views": 24,
+        "title": "Rock layers store old environments in stripes",
+        "url": "https://www.youtube.com/shorts/OAZunjbhm1w",
+        "video_id": "OAZunjbhm1w",
+        "wait_until": "2026-07-15T17:45:42.431869+00:00",
+        "why": "The upload is still inside the no-panic observation window."
+      },
+      {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 4.268,
+        "age_hours": 4.291,
         "automation_safe": true,
         "category": "insects",
         "checkpoint_label": "6h",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 3.759,
+        "age_hours": 3.782,
         "automation_safe": true,
         "category": "reptiles",
         "checkpoint_label": "6h",
@@ -169,7 +169,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.675,
+        "age_hours": 2.697,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "6h",
@@ -192,10 +192,36 @@
         "video_id": "06k3cVpMwPg",
         "wait_until": "2026-07-15T20:06:25.201584+00:00",
         "why": "No intervention signal is strong enough yet."
+      },
+      {
+        "action_type": "watch_next_checkpoint",
+        "age_hours": 1.552,
+        "automation_safe": true,
+        "category": "dogs",
+        "checkpoint_label": "6h",
+        "checkpoint_state": "pending",
+        "current_views": 0,
+        "due_at": "2026-07-15T21:15:08.329086+00:00",
+        "free_only": true,
+        "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
+        "id": "fresh-upload:YZMh9v8WHJI:watch:6h",
+        "lane": "observe",
+        "manual_approval_required": false,
+        "opening_retention_score": 100.0,
+        "priority": "low",
+        "recommended_action": "Keep observing through the next checkpoint.",
+        "series": "Pet Secrets",
+        "state": "watch",
+        "target_views": 105,
+        "title": "This scent map gives dogs away",
+        "url": "https://www.youtube.com/shorts/YZMh9v8WHJI",
+        "video_id": "YZMh9v8WHJI",
+        "wait_until": "2026-07-15T21:15:08.329086+00:00",
+        "why": "No intervention signal is strong enough yet."
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-15T16:46:53.567980+00:00"
+    "source_generated_at": "2026-07-15T16:48:15.796388+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -204,25 +230,80 @@
       24
     ],
     "counts": {
-      "analytics_due": 3,
-      "awaiting_1h": 0,
-      "high_priority": 3,
+      "analytics_due": 2,
+      "awaiting_1h": 1,
+      "high_priority": 2,
       "repair_candidates": 0,
-      "tracked": 7
+      "tracked": 8
     },
-    "generated_at": "2026-07-15T16:46:53.567980+00:00",
+    "generated_at": "2026-07-15T16:48:15.796388+00:00",
     "items": [
       {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 1.529,
+        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "age_hours": 0.043,
+        "category": "geology",
+        "checkpoints": [
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-15T17:45:42.431869+00:00",
+            "label": "1h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 24,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-15T22:45:42.431869+00:00",
+            "label": "6h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 105,
+            "views": 0
+          },
+          {
+            "delta_to_target": 0,
+            "due_at": "2026-07-16T16:45:42.431869+00:00",
+            "label": "24h",
+            "source": "estimated",
+            "state": "pending",
+            "target_views": 300,
+            "views": 0
+          }
+        ],
+        "current_views": 0,
+        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "next_checkpoint": {
+          "delta_to_target": 0,
+          "due_at": "2026-07-15T17:45:42.431869+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        "opening_retention_score": 100.0,
+        "opening_retention_state": "retention_ready",
+        "priority": "low",
+        "series": "Earth Engine",
+        "state": "awaiting_1h",
+        "title": "Rock layers store old environments in stripes",
+        "uploaded_at": "2026-07-15T16:45:42.431869+00:00",
+        "url": "https://www.youtube.com/shorts/OAZunjbhm1w",
+        "video_id": "OAZunjbhm1w",
+        "views_per_hour": 0.0
+      },
+      {
+        "action": "Keep observing through the next checkpoint.",
+        "age_hours": 1.552,
         "category": "dogs",
         "checkpoints": [
           {
             "delta_to_target": -24,
             "due_at": "2026-07-15T16:15:08.329086+00:00",
             "label": "1h",
-            "source": "estimated",
-            "state": "due",
+            "source": "observed",
+            "state": "observed",
             "target_views": 24,
             "views": 0
           },
@@ -246,21 +327,21 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+        "hypothesis": "No intervention signal is strong enough yet.",
         "next_checkpoint": {
-          "delta_to_target": -24,
-          "due_at": "2026-07-15T16:15:08.329086+00:00",
-          "label": "1h",
+          "delta_to_target": 0,
+          "due_at": "2026-07-15T21:15:08.329086+00:00",
+          "label": "6h",
           "source": "estimated",
-          "state": "due",
-          "target_views": 24,
+          "state": "pending",
+          "target_views": 105,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "high",
+        "priority": "low",
         "series": "Pet Secrets",
-        "state": "analytics_due",
+        "state": "watch",
         "title": "This scent map gives dogs away",
         "uploaded_at": "2026-07-15T15:15:08.329086+00:00",
         "url": "https://www.youtube.com/shorts/YZMh9v8WHJI",
@@ -269,7 +350,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.675,
+        "age_hours": 2.697,
         "category": "farm",
         "checkpoints": [
           {
@@ -324,7 +405,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 3.759,
+        "age_hours": 3.782,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -379,7 +460,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 4.268,
+        "age_hours": 4.291,
         "category": "insects",
         "checkpoints": [
           {
@@ -434,7 +515,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.578,
+        "age_hours": 5.601,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -489,7 +570,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 39.686,
+        "age_hours": 39.708,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -520,7 +601,7 @@
             "views": 0
           }
         ],
-        "current_views": 1,
+        "current_views": 0,
         "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
           "delta_to_target": -24,
@@ -540,11 +621,11 @@
         "uploaded_at": "2026-07-14T01:05:45.230548+00:00",
         "url": "https://www.youtube.com/shorts/xa7g2eRaRLE",
         "video_id": "xa7g2eRaRLE",
-        "views_per_hour": 0.026
+        "views_per_hour": 0.0
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 40.158,
+        "age_hours": 40.181,
         "category": "discoveries",
         "checkpoints": [
           {
@@ -566,16 +647,16 @@
             "views": 0
           },
           {
-            "delta_to_target": -297,
+            "delta_to_target": -300,
             "due_at": "2026-07-15T00:37:24.551626+00:00",
             "label": "24h",
             "source": "estimated",
             "state": "overdue",
             "target_views": 300,
-            "views": 3
+            "views": 0
           }
         ],
-        "current_views": 5,
+        "current_views": 0,
         "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
           "delta_to_target": -24,
@@ -595,7 +676,7 @@
         "uploaded_at": "2026-07-14T00:37:24.551626+00:00",
         "url": "https://www.youtube.com/shorts/DGs36Y79jHo",
         "video_id": "DGs36Y79jHo",
-        "views_per_hour": 0.127
+        "views_per_hour": 0.0
       }
     ],
     "targets": {
@@ -605,23 +686,12 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-15T16:46:53.568836+00:00",
+  "generated_at": "2026-07-15T16:48:15.797364+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
   ],
   "related_video_recommendations": [
-    {
-      "recommendation": {
-        "reason": "same series/category/format session bridge",
-        "score": 85.0,
-        "title": "Deer can aim each ear toward danger",
-        "url": "https://www.youtube.com/shorts/XGrYnV-uJaQ",
-        "video_id": "XGrYnV-uJaQ"
-      },
-      "source_title": "This sound radar gives deer away",
-      "source_video_id": "P2CGUzQ-y0A"
-    },
     {
       "recommendation": {
         "reason": "same series/category/format session bridge",
@@ -665,14 +735,20 @@
       },
       "source_title": "This scent map gives dogs away",
       "source_video_id": "YZMh9v8WHJI"
+    },
+    {
+      "recommendation": {
+        "reason": "same series/category/format session bridge",
+        "score": 85.0,
+        "title": "Rock layers store ancient environments in stripes",
+        "url": "https://www.youtube.com/shorts/FEAbi2e-yas",
+        "video_id": "FEAbi2e-yas"
+      },
+      "source_title": "Rock layers store old environments in stripes",
+      "source_video_id": "OAZunjbhm1w"
     }
   ],
   "sequel_opportunities": [
-    {
-      "prompt": "Make a sequel with a new subject but the same payoff shape: This sound radar gives deer away",
-      "title": "This sound radar gives deer away",
-      "video_id": "P2CGUzQ-y0A"
-    },
     {
       "prompt": "Make a sequel with a new subject but the same payoff shape: Ants reveal the answer with scent road",
       "title": "Ants reveal the answer with scent road",
@@ -692,13 +768,18 @@
       "prompt": "Make a sequel with a new subject but the same payoff shape: This scent map gives dogs away",
       "title": "This scent map gives dogs away",
       "video_id": "YZMh9v8WHJI"
+    },
+    {
+      "prompt": "Make a sequel with a new subject but the same payoff shape: Rock layers store old environments in stripes",
+      "title": "Rock layers store old environments in stripes",
+      "video_id": "OAZunjbhm1w"
     }
   ],
   "session_graph": {
     "action_score_threshold": 55,
     "coverage": 0.9,
     "edges": 20,
-    "nodes": 102,
+    "nodes": 103,
     "target_reuse_limit": 2
   }
 }

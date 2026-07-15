@@ -5,25 +5,80 @@
     24
   ],
   "counts": {
-    "analytics_due": 3,
-    "awaiting_1h": 0,
-    "high_priority": 3,
+    "analytics_due": 2,
+    "awaiting_1h": 1,
+    "high_priority": 2,
     "repair_candidates": 0,
-    "tracked": 7
+    "tracked": 8
   },
-  "generated_at": "2026-07-15T16:46:53.567980+00:00",
+  "generated_at": "2026-07-15T16:48:15.796388+00:00",
   "items": [
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 1.529,
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.043,
+      "category": "geology",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-15T17:45:42.431869+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-15T22:45:42.431869+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-16T16:45:42.431869+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-15T17:45:42.431869+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Earth Engine",
+      "state": "awaiting_1h",
+      "title": "Rock layers store old environments in stripes",
+      "uploaded_at": "2026-07-15T16:45:42.431869+00:00",
+      "url": "https://www.youtube.com/shorts/OAZunjbhm1w",
+      "video_id": "OAZunjbhm1w",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 1.552,
       "category": "dogs",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-15T16:15:08.329086+00:00",
           "label": "1h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-15T16:15:08.329086+00:00",
-        "label": "1h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-15T21:15:08.329086+00:00",
+        "label": "6h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 24,
+        "state": "pending",
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "high",
+      "priority": "low",
       "series": "Pet Secrets",
-      "state": "analytics_due",
+      "state": "watch",
       "title": "This scent map gives dogs away",
       "uploaded_at": "2026-07-15T15:15:08.329086+00:00",
       "url": "https://www.youtube.com/shorts/YZMh9v8WHJI",
@@ -70,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.675,
+      "age_hours": 2.697,
       "category": "farm",
       "checkpoints": [
         {
@@ -125,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.759,
+      "age_hours": 3.782,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -180,7 +235,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 4.268,
+      "age_hours": 4.291,
       "category": "insects",
       "checkpoints": [
         {
@@ -235,7 +290,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.578,
+      "age_hours": 5.601,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -290,7 +345,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 39.686,
+      "age_hours": 39.708,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -321,7 +376,7 @@
           "views": 0
         }
       ],
-      "current_views": 1,
+      "current_views": 0,
       "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
         "delta_to_target": -24,
@@ -341,11 +396,11 @@
       "uploaded_at": "2026-07-14T01:05:45.230548+00:00",
       "url": "https://www.youtube.com/shorts/xa7g2eRaRLE",
       "video_id": "xa7g2eRaRLE",
-      "views_per_hour": 0.026
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 40.158,
+      "age_hours": 40.181,
       "category": "discoveries",
       "checkpoints": [
         {
@@ -367,16 +422,16 @@
           "views": 0
         },
         {
-          "delta_to_target": -297,
+          "delta_to_target": -300,
           "due_at": "2026-07-15T00:37:24.551626+00:00",
           "label": "24h",
           "source": "estimated",
           "state": "overdue",
           "target_views": 300,
-          "views": 3
+          "views": 0
         }
       ],
-      "current_views": 5,
+      "current_views": 0,
       "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
         "delta_to_target": -24,
@@ -396,7 +451,7 @@
       "uploaded_at": "2026-07-14T00:37:24.551626+00:00",
       "url": "https://www.youtube.com/shorts/DGs36Y79jHo",
       "video_id": "DGs36Y79jHo",
-      "views_per_hour": 0.127
+      "views_per_hour": 0.0
     }
   ],
   "targets": {
