@@ -28,9 +28,10 @@ def run_editorial_board(topic: str) -> Dict[str, str]:
     Return ONLY a JSON object with this schema:
     {{"angle": "The core surprising concept", "rationale": "Why this works for retention"}}
     """
-    director_pitch_str = ai_text(director_prompt, timeout=25)
+    director_pitch_str = ai_text(director_prompt, timeout=25, json_mode=True)
     
     try:
+        if director_pitch_str.startswith("```json"): director_pitch_str = director_pitch_str.strip("`").replace("json\n", "", 1)
         director_pitch = json.loads(director_pitch_str)
         angle = director_pitch.get("angle", topic)
     except Exception as e:
@@ -48,9 +49,10 @@ def run_editorial_board(topic: str) -> Dict[str, str]:
     Return ONLY a JSON object with this schema:
     {{"validated_angle": "The biologically accurate angle", "fascinating_fact": "One amazing true detail"}}
     """
-    fact_str = ai_text(fact_prompt, timeout=25)
+    fact_str = ai_text(fact_prompt, timeout=25, json_mode=True)
     
     try:
+        if fact_str.startswith("```json"): fact_str = fact_str.strip("`").replace("json\n", "", 1)
         fact_data = json.loads(fact_str)
         validated = fact_data.get("validated_angle", angle)
         fact = fact_data.get("fascinating_fact", "")
@@ -80,9 +82,10 @@ def run_editorial_board(topic: str) -> Dict[str, str]:
         "hook": "The hook (sentence 1)"
     }}
     """
-    final_script_str = ai_text(copywriter_prompt, timeout=30)
+    final_script_str = ai_text(copywriter_prompt, timeout=30, json_mode=True)
     
     try:
+        if final_script_str.startswith("```json"): final_script_str = final_script_str.strip("`").replace("json\n", "", 1)
         final_script = json.loads(final_script_str)
         # Ensure we have the required fields
         if not all(k in final_script for k in ["title", "script", "hook"]):
@@ -96,7 +99,7 @@ def run_editorial_board(topic: str) -> Dict[str, str]:
         Write a 3-sentence script about: {topic}.
         Return ONLY valid JSON: {{"title": "...", "script": "...", "hook": "..."}}
         """
-        fb = ai_text(fallback_prompt)
+        fb = ai_text(fallback_prompt, json_mode=True)
         try:
             return json.loads(fb)
         except:
