@@ -47,13 +47,34 @@ def main():
         print("TikTok is fully synced. No new videos to upload.")
         return
 
-    # Upload each pending video
     for data in to_upload:
         vid_path = data["video"]
-        title = data.get("title", "New WildBrief Short! #wildlife #nature #animals")
-        desc = f"{title} #wildbrief #wildlife #nature #animals #shorts"
+        # Convert YouTube title to a viral TikTok hook
+        raw_title = data.get("title", "Você não vai acreditar no que esse animal fez!")
         
-        print(f"Syncing {vid_path} to TikTok...")
+        # TikTok SEO Strategy: Hook + Emotion + Viral Hashtags
+        viral_hook = f"😱 {raw_title}"
+        cta = "Qual o seu animal preferido? Comenta aí embaixo! 👇"
+        
+        # Dynamic hashtag logic based on keywords
+        base_tags = ["#wildbrief", "#vidaanimal", "#natureza", "#curiosidades", "#animaisdotiktok", "#fyp", "#viral"]
+        lower_title = raw_title.lower()
+        
+        if "leão" in lower_title or "lion" in lower_title:
+            base_tags.extend(["#leao", "#predador", "#reidaselva"])
+        if "tubarão" in lower_title or "shark" in lower_title:
+            base_tags.extend(["#tubarao", "#oceano", "#mar"])
+        if "tigre" in lower_title or "tiger" in lower_title:
+            base_tags.extend(["#tigre", "#selva"])
+        if "cobra" in lower_title or "snake" in lower_title:
+            base_tags.extend(["#cobra", "#serpente", "#veneno"])
+            
+        tags_str = " ".join(base_tags)
+        
+        desc = f"{viral_hook}\n\n{cta}\n\n{tags_str}"
+        
+        print(f"Syncing {vid_path} to TikTok with SEO:")
+        print(f"Description:\n{desc}\n")
         
         # Run upload_tiktok.py
         cmd = [
