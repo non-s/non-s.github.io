@@ -121,9 +121,9 @@ availability is not reliable enough for the zero-cost goal.
 
 ## Subdirectory: YouTube Auto Publisher
 
-The general-purpose video generation pipeline `youtube-auto-publisher` has been merged into the [youtube-auto-publisher/](file:///home/proton/non-s.github.io/youtube-auto-publisher/) directory of this repository.
+The general-purpose video generation pipeline `youtube-auto-publisher` has been merged into the [youtube-auto-publisher/](youtube-auto-publisher/) directory of this repository.
 
 To use it:
 1. Navigate to the subdirectory: `cd youtube-auto-publisher`
-2. Follow the setup and environment configuration instructions in its local [README.md](file:///home/proton/non-s.github.io/youtube-auto-publisher/README.md).
-3. The workflows [.github/workflows/youtube-auto-publisher-publish.yml](file:///home/proton/non-s.github.io/.github/workflows/youtube-auto-publisher-publish.yml) and [.github/workflows/youtube-auto-publisher-quality.yml](file:///home/proton/non-s.github.io/.github/workflows/youtube-auto-publisher-quality.yml) run within this context on GitHub Actions.
+2. Follow the setup and environment configuration instructions in its local [README.md](youtube-auto-publisher/README.md).
+3. The workflows [.github/workflows/youtube-auto-publisher-publish.yml](.github/workflows/youtube-auto-publisher-publish.yml) and [.github/workflows/youtube-auto-publisher-quality.yml](.github/workflows/youtube-auto-publisher-quality.yml) run within this context on GitHub Actions.
