@@ -68,7 +68,7 @@ def test_ai_enhance_animal_parses_valid_json(monkeypatch):
 
 
 def test_ai_enhance_includes_trend_context_in_prompt(monkeypatch):
-    seen = {}
+    seen = {"prompts": []}
     dog_payload = dict(json.loads(_AI_OK_PAYLOAD))
     dog_payload["script"] = (
         "Dogs read people better than most animals. They can read human gestures and remember social cues from people, which helps them form deep connections with their owners over many years. Do you think dogs are the smartest pets in the world?"
@@ -77,7 +77,7 @@ def test_ai_enhance_includes_trend_context_in_prompt(monkeypatch):
     dog_payload["seo_title"] = "Why dogs read people so well"
 
     def fake_ai(prompt, *args, **kwargs):
-        seen["prompt"] = prompt
+        seen["prompts"].append(prompt)
         return json.dumps(dog_payload)
 
     monkeypatch.setattr(fetch_animals, "ai_text", fake_ai)
@@ -95,8 +95,8 @@ def test_ai_enhance_includes_trend_context_in_prompt(monkeypatch):
     )
     assert out is not None
     assert out["trend_context"]["animal"] == "dog"
-    assert "Viral dog rescue draws attention" in seen["prompt"]
-    assert "not as a claim about the exact clip" in seen["prompt"]
+    assert any("Viral dog rescue draws attention" in p for p in seen["prompts"])
+    assert any("not as a claim about the exact clip" in p for p in seen["prompts"])
 
 
 def test_variation_key_is_stable_and_clip_specific():
@@ -109,11 +109,11 @@ def test_variation_key_is_stable_and_clip_specific():
 
 
 def test_ai_enhance_includes_clip_variation_key_in_prompt(monkeypatch):
-    seen = {}
+    seen = {"prompts": []}
     clip_url = "https://www.pexels.com/video/cat-playing/123/"
 
     def fake_ai(prompt, *args, **kwargs):
-        seen["prompt"] = prompt
+        seen["prompts"].append(prompt)
         seen["seed"] = kwargs.get("seed")
         return _AI_OK_PAYLOAD
 
@@ -122,8 +122,8 @@ def test_ai_enhance_includes_clip_variation_key_in_prompt(monkeypatch):
 
     expected_key = fetch_animals._variation_key("cat", "A clip of cats", clip_url)
     assert out is not None
-    assert f"Clip variation key: {expected_key}" in seen["prompt"]
-    assert clip_url not in seen["prompt"]
+    assert any(f"Clip variation key: {expected_key}" in p for p in seen["prompts"])
+    assert not any(clip_url in p for p in seen["prompts"])
     assert isinstance(seen["seed"], int)
 
 
