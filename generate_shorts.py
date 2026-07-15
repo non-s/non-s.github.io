@@ -608,32 +608,41 @@ TTS_TIMEOUT_S = float(os.environ.get("TTS_TIMEOUT_S", "45"))
 # These offsets are tuned by ear to land each voice in the 30-45s
 # range for a 100-word script. Missing entries fall through to +3%.
 VOICE_RATE_OFFSETS = {
-    # English
-    "en-US-JennyNeural": "+3%",  # baseline
-    "en-US-AriaNeural": "+4%",
-    "en-US-GuyNeural": "+2%",
-    "en-US-ChristopherNeural": "+1%",
-    "en-US-RogerNeural": "+1%",
-    "en-US-SteffanNeural": "+2%",
-    "en-GB-SoniaNeural": "+6%",  # British — naturally slower
-    "en-GB-RyanNeural": "+6%",
-    "en-AU-NatashaNeural": "+3%",
-    # Portuguese (Brazil) — already brisk; we slow down slightly
-    "pt-BR-FranciscaNeural": "+0%",
-    "pt-BR-AntonioNeural": "-2%",  # the calmest of the three
-    "pt-BR-ThalitaNeural": "+0%",
-    # Spanish + French
-    "es-ES-ElviraNeural": "+2%",
-    "es-ES-AlvaroNeural": "+2%",
-    "es-MX-DaliaNeural": "+2%",
-    "es-MX-JorgeNeural": "+2%",
-    "fr-FR-DeniseNeural": "+4%",
-    "fr-FR-HenriNeural": "+4%",
+    "en-US-ChristopherNeural": "-5%",
+    "en-US-RogerNeural": "-4%",
+    "pt-BR-AntonioNeural": "-6%",
+    "es-MX-JorgeNeural": "-5%",
+    "fr-FR-HenriNeural": "-5%",
+    "ru-RU-DmitryNeural": "-4%",
+    "de-DE-ConradNeural": "-5%",
+    "zh-CN-YunxiNeural": "-5%",
+    "hi-IN-MadhurNeural": "-5%",
+    "ar-SA-HamedNeural": "-5%",
+    "bn-IN-BashkarNeural": "-5%",
+    "ur-PK-AsadNeural": "-5%",
+    "id-ID-ArdiNeural": "-5%",
+    "ja-JP-KeitaNeural": "-5%",
+    "sw-KE-AliNeural": "-5%",
+    "mr-IN-ManoharNeural": "-5%",
 }
 
 VOICE_PITCH_OFFSETS = {
-    "en-US-ChristopherNeural": "-2Hz",
-    "en-US-RogerNeural": "-1Hz",
+    "en-US-ChristopherNeural": "-8Hz",
+    "en-US-RogerNeural": "-6Hz",
+    "pt-BR-AntonioNeural": "-8Hz",
+    "es-MX-JorgeNeural": "-8Hz",
+    "fr-FR-HenriNeural": "-8Hz",
+    "ru-RU-DmitryNeural": "-8Hz",
+    "de-DE-ConradNeural": "-8Hz",
+    "zh-CN-YunxiNeural": "-8Hz",
+    "hi-IN-MadhurNeural": "-8Hz",
+    "ar-SA-HamedNeural": "-8Hz",
+    "bn-IN-BashkarNeural": "-8Hz",
+    "ur-PK-AsadNeural": "-8Hz",
+    "id-ID-ArdiNeural": "-8Hz",
+    "ja-JP-KeitaNeural": "-8Hz",
+    "sw-KE-AliNeural": "-8Hz",
+    "mr-IN-ManoharNeural": "-8Hz",
 }
 
 
@@ -2823,8 +2832,13 @@ def main():
 
             # Global Monolithic Channel Empire: Translate and dub to multiple languages!
             if LANGUAGE == "en":
-                # These languages have Edge-TTS voices and translate well for Shorts
-                target_langs = ["es-MX", "pt-BR", "ru-RU", "de-DE", "zh-CN"]
+                # Top 15 Most Spoken Languages in the World (English is base)
+                target_langs = [
+                    "zh-CN", "hi-IN", "es-MX", "fr-FR", 
+                    "ar-SA", "bn-IN", "ru-RU", "pt-BR", 
+                    "ur-PK", "id-ID", "de-DE", "ja-JP", 
+                    "sw-KE", "mr-IN"
+                ]
                 for tlang in target_langs:
                     log.info(f"  >> Triggering {tlang} Global Pipeline...")
                     t_tmp = Path(tempfile.mkdtemp(prefix=f"yt_shorts_{tlang}_"))
