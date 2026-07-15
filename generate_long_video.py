@@ -48,15 +48,15 @@ async def generate_segment(segment_index: int, topic_key: str, query: str) -> Pa
         return None
         
     valid_clip_path = None
-    for clip in clips:
-        clip_path = segment_dir / f"clip_{segment_index}_{clip.id}.mp4"
+    for idx, clip in enumerate(clips):
+        clip_path = segment_dir / f"clip_{segment_index}_{idx}.mp4"
         if not clip_path.exists():
             r = subprocess.run(["curl", "-sL", clip.download_url, "-o", str(clip_path)])
             if r.returncode != 0:
                 continue
         
         # Extract a middle frame for Multimodal Validation
-        frame_path = segment_dir / f"frame_{segment_index}_{clip.id}.jpg"
+        frame_path = segment_dir / f"frame_{segment_index}_{idx}.jpg"
         subprocess.run(["ffmpeg", "-y", "-i", str(clip_path), "-vf", "select=eq(n\,30)", "-vframes", "1", str(frame_path)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         
         if frame_path.exists():
