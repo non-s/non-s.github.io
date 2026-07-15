@@ -1,17 +1,17 @@
 {
   "counts": {
-    "automation_safe": 8,
-    "high": 2,
-    "manual_review": 2,
+    "automation_safe": 9,
+    "high": 1,
+    "manual_review": 1,
     "total": 10,
-    "urgent": 2
+    "urgent": 3
   },
   "free_only": true,
-  "generated_at": "2026-07-15T20:21:46.646880+00:00",
+  "generated_at": "2026-07-15T20:25:14.688745+00:00",
   "items": [
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 9.159,
+      "age_hours": 9.217,
       "automation_safe": true,
       "category": "wildlife",
       "checkpoint_label": "1h",
@@ -37,7 +37,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 7.85,
+      "age_hours": 7.907,
       "automation_safe": true,
       "category": "insects",
       "checkpoint_label": "1h",
@@ -62,34 +62,34 @@
       "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
-      "action_type": "prepare_package_rescue",
-      "age_hours": 7.34,
-      "automation_safe": false,
+      "action_type": "pull_fresh_analytics",
+      "age_hours": 7.398,
+      "automation_safe": true,
       "category": "reptiles",
-      "checkpoint_label": "24h",
-      "checkpoint_state": "pending",
+      "checkpoint_label": "1h",
+      "checkpoint_state": "overdue",
       "current_views": 0,
-      "due_at": "2026-07-16T13:01:21.241971+00:00",
+      "due_at": "2026-07-15T14:01:21.241971+00:00",
       "free_only": true,
       "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-      "id": "fresh-upload:u3DIskqSxF0:repair_candidate:24h",
-      "lane": "package_rescue",
-      "manual_approval_required": true,
+      "id": "fresh-upload:u3DIskqSxF0:analytics_due:1h",
+      "lane": "measurement",
+      "manual_approval_required": false,
       "opening_retention_score": 100.0,
-      "priority": "high",
-      "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "priority": "urgent",
+      "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
       "series": "Cold-Blooded Secrets",
-      "state": "repair_candidate",
-      "target_views": 300,
+      "state": "analytics_due",
+      "target_views": 24,
       "title": "Snakes can sense heat when light disappears",
       "url": "https://www.youtube.com/shorts/u3DIskqSxF0",
       "video_id": "u3DIskqSxF0",
       "wait_until": "",
-      "why": "Observed velocity is weak enough to prepare a package intervention."
+      "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
       "action_type": "prepare_package_rescue",
-      "age_hours": 6.256,
+      "age_hours": 6.314,
       "automation_safe": false,
       "category": "farm",
       "checkpoint_label": "24h",
@@ -115,7 +115,7 @@
     },
     {
       "action_type": "hold_until_first_hour",
-      "age_hours": 0.706,
+      "age_hours": 0.764,
       "automation_safe": true,
       "category": "farm",
       "checkpoint_label": "1h",
@@ -141,7 +141,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 5.111,
+      "age_hours": 5.168,
       "automation_safe": true,
       "category": "dogs",
       "checkpoint_label": "6h",
@@ -167,7 +167,7 @@
     },
     {
       "action_type": "hold_until_first_hour",
-      "age_hours": 0.005,
+      "age_hours": 0.062,
       "automation_safe": true,
       "category": "farm",
       "checkpoint_label": "1h",
@@ -193,7 +193,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 3.601,
+      "age_hours": 3.659,
       "automation_safe": true,
       "category": "geology",
       "checkpoint_label": "6h",
@@ -219,7 +219,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 3.252,
+      "age_hours": 3.31,
       "automation_safe": true,
       "category": "earth_from_space",
       "checkpoint_label": "6h",
@@ -245,7 +245,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 2.024,
+      "age_hours": 2.082,
       "automation_safe": true,
       "category": "farm",
       "checkpoint_label": "6h",
@@ -271,5 +271,5 @@
     }
   ],
   "source": "fresh_upload_watchlist",
-  "source_generated_at": "2026-07-15T20:21:46.645922+00:00"
+  "source_generated_at": "2026-07-15T20:25:14.687796+00:00"
 }

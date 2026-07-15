@@ -5,24 +5,24 @@
     24
   ],
   "counts": {
-    "analytics_due": 2,
+    "analytics_due": 3,
     "awaiting_1h": 2,
     "high_priority": 4,
-    "repair_candidates": 2,
+    "repair_candidates": 1,
     "tracked": 10
   },
-  "generated_at": "2026-07-15T20:21:46.645922+00:00",
+  "generated_at": "2026-07-15T20:25:14.687796+00:00",
   "items": [
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.005,
+      "age_hours": 0.062,
       "category": "farm",
       "checkpoints": [
         {
           "delta_to_target": 0,
           "due_at": "2026-07-15T21:21:30.033022+00:00",
           "label": "1h",
-          "source": "missing",
+          "source": "estimated",
           "state": "pending",
           "target_views": 24,
           "views": 0
@@ -31,7 +31,7 @@
           "delta_to_target": 0,
           "due_at": "2026-07-16T02:21:30.033022+00:00",
           "label": "6h",
-          "source": "missing",
+          "source": "estimated",
           "state": "pending",
           "target_views": 105,
           "views": 0
@@ -40,7 +40,7 @@
           "delta_to_target": 0,
           "due_at": "2026-07-16T20:21:30.033022+00:00",
           "label": "24h",
-          "source": "missing",
+          "source": "estimated",
           "state": "pending",
           "target_views": 300,
           "views": 0
@@ -52,7 +52,7 @@
         "delta_to_target": 0,
         "due_at": "2026-07-15T21:21:30.033022+00:00",
         "label": "1h",
-        "source": "missing",
+        "source": "estimated",
         "state": "pending",
         "target_views": 24,
         "views": 0
@@ -70,7 +70,7 @@
     },
     {
       "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.706,
+      "age_hours": 0.764,
       "category": "farm",
       "checkpoints": [
         {
@@ -125,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.024,
+      "age_hours": 2.082,
       "category": "farm",
       "checkpoints": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.252,
+      "age_hours": 3.31,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -231,11 +231,11 @@
       "uploaded_at": "2026-07-15T17:06:37.793048+00:00",
       "url": "https://www.youtube.com/shorts/pqdf9Rdjtu4",
       "video_id": "pqdf9Rdjtu4",
-      "views_per_hour": 0.627
+      "views_per_hour": 0.615
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 3.601,
+      "age_hours": 3.659,
       "category": "geology",
       "checkpoints": [
         {
@@ -286,11 +286,11 @@
       "uploaded_at": "2026-07-15T16:45:42.431869+00:00",
       "url": "https://www.youtube.com/shorts/OAZunjbhm1w",
       "video_id": "OAZunjbhm1w",
-      "views_per_hour": 0.565
+      "views_per_hour": 0.555
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.111,
+      "age_hours": 5.168,
       "category": "dogs",
       "checkpoints": [
         {
@@ -345,7 +345,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 6.256,
+      "age_hours": 6.314,
       "category": "farm",
       "checkpoints": [
         {
@@ -410,16 +410,16 @@
       }
     },
     {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 7.34,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 7.398,
       "category": "reptiles",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-15T14:01:21.241971+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -443,41 +443,30 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
-        "due_at": "2026-07-16T13:01:21.241971+00:00",
-        "label": "24h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-15T14:01:21.241971+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "pending",
-        "target_views": 300,
+        "state": "overdue",
+        "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Cold-Blooded Secrets",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "title": "Snakes can sense heat when light disappears",
       "uploaded_at": "2026-07-15T13:01:21.241971+00:00",
       "url": "https://www.youtube.com/shorts/u3DIskqSxF0",
       "video_id": "u3DIskqSxF0",
-      "views_per_hour": 0.0,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.594,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Snakes can sense heat when light disappears",
-        "video_id": "u3DIskqSxF0",
-        "views": 0,
-        "warning_state": "repair_risk"
-      }
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 7.85,
+      "age_hours": 7.907,
       "category": "insects",
       "checkpoints": [
         {
@@ -532,7 +521,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 9.159,
+      "age_hours": 9.217,
       "category": "wildlife",
       "checkpoints": [
         {
