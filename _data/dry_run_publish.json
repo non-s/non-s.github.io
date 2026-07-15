@@ -1,36 +1,36 @@
 {
   "would_publish": [
     {
-      "id": "cb4cb593e9502516",
-      "title": "Earth clouds reveal moving air from above",
-      "category": "earth_from_space",
-      "queue_score": 100.0,
+      "id": "94eff649e5f3fc4c",
+      "title": "Horses sort familiar clues with face memory",
+      "category": "farm",
+      "queue_score": 78.0,
       "template_cluster": "",
-      "mechanism_cluster": "",
+      "mechanism_cluster": "face_recognition",
       "objective_reasons": [
         "bootstrap_observe_before_scaling"
       ],
       "scale_ready": false,
-      "autonomy_priority": 118.0,
+      "autonomy_priority": 110.0,
       "autonomy_lane": "proven_category",
       "hypothesis_id": "H1_DOUBLE_DOWN_CATEGORY",
       "packaging_lab": {
         "title_variants": [
-          "Storm clouds reveal a storm's heat engine",
-          "Earth clouds reveal moving air from above",
-          "Storm clouds use cloud spiral before they cools"
+          "Horses remember familiar faces for months",
+          "Horses sort familiar clues with face memory",
+          "Horses connect through face memory"
         ],
         "thumbnail_variants": [
-          "STORM ENGINE",
-          "CLOUD SPIRAL",
-          "WATCH CLOUD SPIRAL"
+          "FACE MEMORY",
+          "WATCH FACE MEMORY",
+          "HORSES CONNECT"
         ],
         "hook_variants": [
-          "Earth clouds reveal moving air from above.",
-          "Earth clouds reveal moving air from above",
-          "Watch the pattern again. Tomorrow in Planet Earth: another nature signal. Which planet-scale clue should we co"
+          "Horses can sort familiar clues with face memory.",
+          "Horses sort familiar clues with face memory",
+          "Watch the face memory again. Tomorrow in Farmyard Surprises: another animal signal. What part of this feels mo"
         ],
-        "pinned_comment": "Watch the pattern again. Tomorrow in Planet Earth: another nature signal. Which planet-scale clue should we compare next?",
+        "pinned_comment": "Watch the face memory again. Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
         "test_rule": "Try the first variant now; keep the other two as measured rewrite options if 24h retention misses target."
       },
       "publish_score": {
@@ -38,18 +38,21 @@
         "approved": true,
         "state": "publish_ready",
         "opportunity": {
-          "score": 56,
+          "score": 54,
           "signals": {
-            "viral_potential": 48,
-            "visual_potential": 75,
-            "replay_potential": 60,
-            "comment_potential": 46,
-            "educational_potential": 58,
+            "viral_potential": 45,
+            "visual_potential": 45,
+            "replay_potential": 74,
+            "comment_potential": 62,
+            "educational_potential": 65,
             "emotional_potential": 35,
             "novelty": 55
           },
-          "verdict": "rewrite",
-          "reasons": [],
+          "verdict": "discard",
+          "reasons": [
+            "weak_visual_surface",
+            "low_opportunity_score"
+          ],
           "confidence": {
             "confidence_score": 0.0,
             "sample_size": 0,
@@ -64,12 +67,12 @@
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
         },
         "retention": {
-          "score": 74,
+          "score": 70,
           "signals": {
-            "hook_score": 82,
-            "curiosity_score": 71,
-            "visual_score": 74,
-            "replay_score": 62,
+            "hook_score": 70,
+            "curiosity_score": 79,
+            "visual_score": 50,
+            "replay_score": 72,
             "completion_prediction": 77
           },
           "verdict": "rewrite",
@@ -91,20 +94,18 @@
           "score": 100.0,
           "state": "retention_ready",
           "approved": true,
-          "subject": "earth",
+          "subject": "horses",
           "cue_terms": [
-            "air",
-            "cloud",
-            "map",
-            "pattern"
+            "face",
+            "memor"
           ],
           "frame_hook_bridge": [
-            "cloud"
+            "face",
+            "memor"
           ],
           "cue_bridge": [
-            "air",
-            "cloud",
-            "pattern"
+            "face",
+            "memor"
           ],
           "strengths": [
             "subject_frontloaded",
@@ -122,15 +123,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
+            "confidence_score": 0.13,
+            "sample_size": 1,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
+            "bootstrap_multiplier": 0.348,
+            "reasoning": "pattern has 1/5 samples, inferred data, confidence 0.13; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -177,9 +178,9 @@
           "bootstrap_multiplier": 0.255,
           "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
         },
-        "category": "earth_from_space",
-        "story_format": "earth_engine",
-        "hook_score": 86,
+        "category": "farm",
+        "story_format": "animal_memory",
+        "hook_score": 100,
         "title_score": 100,
         "phrase_risk": {
           "penalty": 0,
@@ -201,17 +202,26 @@
           "swipe_risk_band": "low",
           "payoff_time_s": 0.0,
           "template_cluster": "",
-          "mechanism_cluster": ""
+          "mechanism_cluster": "face_recognition"
+        },
+        "reserve_override": {
+          "reason": "publish_ready_supply_reserve_fallback",
+          "original_approved": false,
+          "original_state": "rewrite",
+          "original_opportunity_reasons": [
+            "weak_visual_surface",
+            "low_opportunity_score"
+          ]
         }
       },
       "youtube_brain": {
         "score": 100,
         "state": "publish_minded",
-        "animal": "earth",
-        "subject": "earth",
-        "story_format": "earth_engine",
-        "viewer_promise": "See why this earth earth engine matters.",
-        "satisfaction_bet": "The viewer gets one visible nature cue and one reason, fast.",
+        "animal": "horses",
+        "subject": "horses",
+        "story_format": "animal_memory",
+        "viewer_promise": "See why horses animal memory matters.",
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
         "replay_reason": "watch_the_cue_again",
         "retention_path": [
           "0-1s: visible subject and outcome",
@@ -223,20 +233,18 @@
           "score": 100.0,
           "state": "retention_ready",
           "approved": true,
-          "subject": "earth",
+          "subject": "horses",
           "cue_terms": [
-            "air",
-            "cloud",
-            "map",
-            "pattern"
+            "face",
+            "memor"
           ],
           "frame_hook_bridge": [
-            "cloud"
+            "face",
+            "memor"
           ],
           "cue_bridge": [
-            "air",
-            "cloud",
-            "pattern"
+            "face",
+            "memor"
           ],
           "strengths": [
             "subject_frontloaded",
@@ -262,7 +270,7 @@
         "commands": []
       },
       "packaging": {
-        "score": 96,
+        "score": 95,
         "state": "magnetic",
         "strengths": [
           "title_shape",
@@ -274,109 +282,110 @@
         ],
         "risks": [],
         "title_options": [
-          "Storm clouds reveal a storm's heat engine",
-          "Earth clouds reveal moving air from above",
-          "Storm clouds use cloud spiral before they cools",
-          "This cloud spiral gives storm clouds away",
-          "Storm clouds reveal the answer with cloud spiral",
-          "The cloud spiral that changes the moment",
-          "Storm clouds show the hidden answer in seconds",
-          "Storm clouds: watch this cloud spiral"
+          "Horses remember familiar faces for months",
+          "Horses sort familiar clues with face memory",
+          "Horses connect through face memory",
+          "Horses use face memory before they connect",
+          "This face memory gives horses away",
+          "Why horses connect after one face memory",
+          "Horses reveal the answer with face memory",
+          "The face memory that changes the moment",
+          "Horses make one face memory matter",
+          "Horses show the hidden answer in seconds"
         ],
         "thumbnail_options": [
-          "STORM ENGINE",
-          "CLOUD SPIRAL",
-          "WATCH CLOUD SPIRAL",
-          "STORM CLOUDS COOLS",
-          "CLOUD SPIRAL MATTERS",
-          "CLOUD SPIRAL FIRST",
-          "CLOUD SPIRAL REVEAL",
-          "CLOUD SPIRAL CLUE",
+          "FACE MEMORY",
+          "WATCH FACE MEMORY",
+          "HORSES CONNECT",
+          "FACE MEMORY MATTERS",
+          "FACE MEMORY FIRST",
+          "FACE MEMORY REVEAL",
+          "FACE MEMORY CLUE",
           "WATCH THE MOVE",
           "SPOT THE CLUE"
         ],
         "hook_options": [
-          "Earth shows why the pattern matters.",
-          "Earth clouds reveal moving air from above",
-          "Earth shows why the cloud spiral matters.",
-          "Earth shows why the cloud spiral matters.",
-          "Earth shows why the cloud spiral matters."
+          "Horses can remember familiar faces",
+          "Horses can sort familiar clues with face memory",
+          "Horses show why the face memory matters.",
+          "Horses show why the face memory matters.",
+          "Horses show why the face memory matters."
         ],
         "selected_variant": {
-          "score": 79,
-          "title": "Storm clouds reveal a storm's heat engine",
-          "thumbnail_text": "STORM ENGINE",
-          "hook": "Storm clouds show where a storm is feeding"
+          "score": 77,
+          "title": "Horses remember familiar faces for months",
+          "thumbnail_text": "FACE MEMORY",
+          "hook": "Horses can remember familiar faces"
         },
         "top_variants": [
           {
-            "score": 79,
-            "title": "Storm clouds reveal a storm's heat engine",
-            "thumbnail_text": "STORM ENGINE",
-            "hook": "Storm clouds show where a storm is feeding"
+            "score": 77,
+            "title": "Horses remember familiar faces for months",
+            "thumbnail_text": "FACE MEMORY",
+            "hook": "Horses can remember familiar faces"
           },
           {
-            "score": 78,
-            "title": "Storm clouds reveal a storm's heat engine",
-            "thumbnail_text": "STORM ENGINE",
-            "hook": "Earth clouds reveal moving air from above"
+            "score": 76,
+            "title": "Horses remember familiar faces for months",
+            "thumbnail_text": "FACE MEMORY",
+            "hook": "Horses can sort familiar clues with face memory"
           },
           {
-            "score": 78,
-            "title": "Storm clouds reveal a storm's heat engine",
-            "thumbnail_text": "STORM ENGINE",
-            "hook": "Watch the cloud spiral; it explains the behavior"
-          },
-          {
-            "score": 72,
-            "title": "Storm clouds reveal a storm's heat engine",
-            "thumbnail_text": "CLOUD SPIRAL",
-            "hook": "Storm clouds show where a storm is feeding"
+            "score": 76,
+            "title": "Horses remember familiar faces for months",
+            "thumbnail_text": "FACE MEMORY",
+            "hook": "Watch the face memory; it explains the behavior"
           },
           {
             "score": 72,
-            "title": "Storm clouds reveal a storm's heat engine",
-            "thumbnail_text": "WATCH CLOUD SPIRAL",
-            "hook": "Storm clouds show where a storm is feeding"
-          },
-          {
-            "score": 72,
-            "title": "Storm clouds reveal a storm's heat engine",
-            "thumbnail_text": "STORM CLOUDS COOLS",
-            "hook": "Storm clouds show where a storm is feeding"
-          },
-          {
-            "score": 72,
-            "title": "Storm clouds reveal a storm's heat engine",
-            "thumbnail_text": "CLOUD SPIRAL MATTERS",
-            "hook": "Storm clouds show where a storm is feeding"
+            "title": "Horses use face memory before they connect",
+            "thumbnail_text": "FACE MEMORY",
+            "hook": "Horses can remember familiar faces"
           },
           {
             "score": 71,
-            "title": "Storm clouds reveal a storm's heat engine",
-            "thumbnail_text": "CLOUD SPIRAL",
-            "hook": "Earth clouds reveal moving air from above"
+            "title": "Horses use face memory before they connect",
+            "thumbnail_text": "FACE MEMORY",
+            "hook": "Horses can sort familiar clues with face memory"
           },
           {
             "score": 71,
-            "title": "Storm clouds reveal a storm's heat engine",
-            "thumbnail_text": "CLOUD SPIRAL",
-            "hook": "Watch the cloud spiral; it explains the behavior"
+            "title": "Horses use face memory before they connect",
+            "thumbnail_text": "FACE MEMORY",
+            "hook": "Watch the face memory; it explains the behavior"
           },
           {
-            "score": 71,
-            "title": "Storm clouds reveal a storm's heat engine",
-            "thumbnail_text": "WATCH CLOUD SPIRAL",
-            "hook": "Earth clouds reveal moving air from above"
+            "score": 70,
+            "title": "Horses remember familiar faces for months",
+            "thumbnail_text": "WATCH FACE MEMORY",
+            "hook": "Horses can remember familiar faces"
+          },
+          {
+            "score": 70,
+            "title": "Horses remember familiar faces for months",
+            "thumbnail_text": "HORSES CONNECT",
+            "hook": "Horses can remember familiar faces"
+          },
+          {
+            "score": 70,
+            "title": "Horses remember familiar faces for months",
+            "thumbnail_text": "FACE MEMORY MATTERS",
+            "hook": "Horses can remember familiar faces"
+          },
+          {
+            "score": 70,
+            "title": "Horses remember familiar faces for months",
+            "thumbnail_text": "FACE MEMORY FIRST",
+            "hook": "Horses can remember familiar faces"
           }
         ],
         "retention": {
-          "score": 74,
+          "score": 70,
           "signals": {
-            "hook_score": 82,
-            "curiosity_score": 71,
-            "visual_score": 74,
-            "replay_score": 62,
+            "hook_score": 70,
+            "curiosity_score": 79,
+            "visual_score": 50,
+            "replay_score": 72,
             "completion_prediction": 77
           },
           "verdict": "rewrite",
@@ -402,8 +411,13 @@
             "thumbnail_pattern": "",
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
           },
-          "winning_experiments": {},
-          "sample_count": 103,
+          "winning_experiments": {
+            "format:winner_inspired": 46.1,
+            "hook:pattern_reuse": 46.1,
+            "thumbnail:new_thumbnail": 46.1,
+            "cta:follow_for_more": 46.1
+          },
+          "sample_count": 104,
           "assignment": {
             "format": "winner_inspired",
             "hook": "pattern_reuse",
@@ -412,53 +426,53 @@
           }
         },
         "series_identity": {
-          "series": "Planet Earth",
-          "episode": 4,
-          "label": "Planet Earth #4",
-          "continuity_prompt": "Next in Planet Earth: compare this with another force of nature."
+          "series": "Farmyard Surprises",
+          "episode": 11,
+          "label": "Farmyard Surprises #11",
+          "continuity_prompt": "Next in Farmyard Surprises: compare this with another force of nature."
         },
-        "pinned_comment": "Watch the pattern again. Tomorrow in Planet Earth: another nature signal. Which planet-scale clue should we compare next?",
-        "community_prompt": "Which earth clue should Wild Brief compare next in Planet Earth?",
-        "series": "Planet Earth #4",
-        "next_episode_question": "Tomorrow in Planet Earth: another nature signal. Which planet-scale clue should we compare next?",
+        "pinned_comment": "Watch the face memory again. Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
+        "community_prompt": "Which horses clue should Wild Brief compare next in Farmyard Surprises?",
+        "series": "Farmyard Surprises #11",
+        "next_episode_question": "Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
         "search_intent": {
-          "subject": "earth",
-          "visible_cue": "pattern",
-          "series": "Planet Earth",
-          "title_variant": "Earth pattern explained fast",
-          "description_line": "This Short explains the visible pattern behind Earth in a fast nature science story.",
+          "subject": "horses",
+          "visible_cue": "face memory",
+          "series": "Farmyard Surprises",
+          "title_variant": "Horses behavior: face memory explained",
+          "description_line": "This Short explains Horses behavior through the visible face memory.",
           "terms": [
-            "earth",
-            "pattern",
-            "earth_from_space",
-            "earth engine"
+            "horses",
+            "face memory",
+            "farm",
+            "animal memory"
           ]
         },
         "retention_contract": {
-          "subject": "earth",
-          "visible_cue": "pattern",
-          "first_frame_text": "CLOUD MAP",
-          "first_2s_narration": "Earth clouds reveal moving air from above Watch the cloud pattern first",
-          "series": "Planet Earth",
-          "next_episode_question": "Tomorrow in Planet Earth: another nature signal. Which planet-scale clue should we compare next?",
+          "subject": "horses",
+          "visible_cue": "face memory",
+          "first_frame_text": "FACE MEMORY",
+          "first_2s_narration": "Horses can sort familiar clues with face memory Watch the face memory",
+          "series": "Farmyard Surprises",
+          "next_episode_question": "Tomorrow in Farmyard Surprises: another animal signal. What part of this feels most impossible?",
           "search_intent": {
-            "subject": "earth",
-            "visible_cue": "pattern",
-            "series": "Planet Earth",
-            "title_variant": "Earth pattern explained fast",
-            "description_line": "This Short explains the visible pattern behind Earth in a fast nature science story.",
+            "subject": "horses",
+            "visible_cue": "face memory",
+            "series": "Farmyard Surprises",
+            "title_variant": "Horses behavior: face memory explained",
+            "description_line": "This Short explains Horses behavior through the visible face memory.",
             "terms": [
-              "earth",
-              "pattern",
-              "earth_from_space",
-              "earth engine"
+              "horses",
+              "face memory",
+              "farm",
+              "animal memory"
             ]
           },
           "opening_retention_score": 100.0,
           "opening_retention_state": "retention_ready"
         },
-        "cta_prompt": "Want more planet-scale nature explained fast?",
-        "replay_prompt": "End by pointing back to the pattern, so viewers rewatch the earth clip.",
+        "cta_prompt": "Want one animal signal a day? Follow for tomorrow's farm clue.",
+        "replay_prompt": "End by pointing back to the face memory, so viewers rewatch the horses clip.",
         "subscriber_conversion": {
           "score": 93,
           "state": "strong",
@@ -506,20 +520,18 @@
             "score": 100.0,
             "state": "retention_ready",
             "approved": true,
-            "subject": "earth",
+            "subject": "horses",
             "cue_terms": [
-              "air",
-              "cloud",
-              "map",
-              "pattern"
+              "face",
+              "memor"
             ],
             "frame_hook_bridge": [
-              "cloud"
+              "face",
+              "memor"
             ],
             "cue_bridge": [
-              "air",
-              "cloud",
-              "pattern"
+              "face",
+              "memor"
             ],
             "strengths": [
               "subject_frontloaded",
@@ -534,7 +546,7 @@
           }
         },
         "curiosity_gap": {
-          "hook": "Why does this earth changes after the cloud map?",
+          "hook": "Why do these horses change after the face memory?",
           "source": "template",
           "score": 78.0,
           "reasons": [
@@ -546,20 +558,18 @@
           "score": 100.0,
           "state": "retention_ready",
           "approved": true,
-          "subject": "earth",
+          "subject": "horses",
           "cue_terms": [
-            "air",
-            "cloud",
-            "map",
-            "pattern"
+            "face",
+            "memor"
           ],
           "frame_hook_bridge": [
-            "cloud"
+            "face",
+            "memor"
           ],
           "cue_bridge": [
-            "air",
-            "cloud",
-            "pattern"
+            "face",
+            "memor"
           ],
           "strengths": [
             "subject_frontloaded",
@@ -579,36 +589,36 @@
           "fixes": []
         },
         "loop_plan": {
-          "callback_keyword": "cloud map",
-          "opening_line": "Earth clouds reveal moving air from above.",
-          "ending_line": "Which sky clue should we decode next?",
-          "final_line": "Now the cloud map at the start makes sense.",
-          "rewrite_applied": true,
+          "callback_keyword": "horses",
+          "opening_line": "Horses can sort familiar clues with face memory.",
+          "ending_line": "Which horses memory clue should come next.",
+          "final_line": "Now the horses at the start make sense.",
+          "rewrite_applied": false,
           "audio_crossfade_ms": 120,
           "subtitle_tail_mode": "carry-forward",
-          "loop_score": 0.783,
+          "loop_score": 0.702,
           "render_hints": {
-            "carry_keyword": "cloud map",
+            "carry_keyword": "horses",
             "subtle_audio_tail": true,
             "avoid_hard_stop": true
           }
         },
-        "loop_score": 0.783,
+        "loop_score": 0.702,
         "editorial_rulebook": {
           "approved": true,
           "score": 100.0,
           "violations": [],
           "notes": [],
-          "recommended_format": "earth engine",
+          "recommended_format": "animal memory",
           "recommended_duration_s": 24
         },
         "preflight_inputs": {
-          "first_frame_text": "CLOUD MAP",
+          "first_frame_text": "FACE MEMORY",
           "first_frame_text_words": 2,
-          "hook": "Earth clouds reveal moving air from above.",
-          "hook_words": 7,
-          "first_2s_narration": "Earth clouds reveal moving air from above Watch the cloud pattern first",
-          "caption_chars_per_second": 15.24,
+          "hook": "Horses can sort familiar clues with face memory.",
+          "hook_words": 8,
+          "first_2s_narration": "Horses can sort familiar clues with face memory Watch the face memory",
+          "caption_chars_per_second": 15.65,
           "visual_motion_score": 0.76,
           "contrast_score": 0.74,
           "hook_specificity": 0.78,
@@ -622,20 +632,18 @@
             "score": 100.0,
             "state": "retention_ready",
             "approved": true,
-            "subject": "earth",
+            "subject": "horses",
             "cue_terms": [
-              "air",
-              "cloud",
-              "map",
-              "pattern"
+              "face",
+              "memor"
             ],
             "frame_hook_bridge": [
-              "cloud"
+              "face",
+              "memor"
             ],
             "cue_bridge": [
-              "air",
-              "cloud",
-              "pattern"
+              "face",
+              "memor"
             ],
             "strengths": [
               "subject_frontloaded",
@@ -649,7 +657,7 @@
             "risks": []
           },
           "opening_retention_score": 100.0,
-          "loop_score": 0.783
+          "loop_score": 0.702
         },
         "principle": "Stop the swipe with a visible cue, then pay it off fast."
       },
@@ -783,15 +791,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
+            "confidence_score": 0.13,
+            "sample_size": 1,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
+            "bootstrap_multiplier": 0.348,
+            "reasoning": "pattern has 1/5 samples, inferred data, confidence 0.13; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -1064,8 +1072,13 @@
             "thumbnail_pattern": "",
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
           },
-          "winning_experiments": {},
-          "sample_count": 103,
+          "winning_experiments": {
+            "format:winner_inspired": 46.1,
+            "hook:pattern_reuse": 46.1,
+            "thumbnail:new_thumbnail": 46.1,
+            "cta:follow_for_more": 46.1
+          },
+          "sample_count": 104,
           "assignment": {
             "format": "winner_inspired",
             "hook": "pattern_reuse",
@@ -1441,15 +1454,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
+            "confidence_score": 0.13,
+            "sample_size": 1,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
+            "bootstrap_multiplier": 0.348,
+            "reasoning": "pattern has 1/5 samples, inferred data, confidence 0.13; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -1719,8 +1732,13 @@
             "thumbnail_pattern": "",
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
           },
-          "winning_experiments": {},
-          "sample_count": 103,
+          "winning_experiments": {
+            "format:winner_inspired": 46.1,
+            "hook:pattern_reuse": 46.1,
+            "thumbnail:new_thumbnail": 46.1,
+            "cta:follow_for_more": 46.1
+          },
+          "sample_count": 104,
           "assignment": {
             "format": "winner_inspired",
             "hook": "pattern_reuse",
@@ -2090,15 +2108,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
+            "confidence_score": 0.13,
+            "sample_size": 1,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
+            "bootstrap_multiplier": 0.348,
+            "reasoning": "pattern has 1/5 samples, inferred data, confidence 0.13; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -2373,8 +2391,13 @@
             "thumbnail_pattern": "",
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
           },
-          "winning_experiments": {},
-          "sample_count": 103,
+          "winning_experiments": {
+            "format:winner_inspired": 46.1,
+            "hook:pattern_reuse": 46.1,
+            "thumbnail:new_thumbnail": 46.1,
+            "cta:follow_for_more": 46.1
+          },
+          "sample_count": 104,
           "assignment": {
             "format": "fresh_variant",
             "hook": "new_hook",
@@ -2761,15 +2784,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
+            "confidence_score": 0.13,
+            "sample_size": 1,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
+            "bootstrap_multiplier": 0.348,
+            "reasoning": "pattern has 1/5 samples, inferred data, confidence 0.13; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -3043,8 +3066,13 @@
             "thumbnail_pattern": "",
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
           },
-          "winning_experiments": {},
-          "sample_count": 103,
+          "winning_experiments": {
+            "format:winner_inspired": 46.1,
+            "hook:pattern_reuse": 46.1,
+            "thumbnail:new_thumbnail": 46.1,
+            "cta:follow_for_more": 46.1
+          },
+          "sample_count": 104,
           "assignment": {
             "format": "winner_inspired",
             "hook": "pattern_reuse",
@@ -3424,15 +3452,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
+            "confidence_score": 0.13,
+            "sample_size": 1,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
+            "bootstrap_multiplier": 0.348,
+            "reasoning": "pattern has 1/5 samples, inferred data, confidence 0.13; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -3702,8 +3730,13 @@
             "thumbnail_pattern": "",
             "hook_pattern": "{subject} {action} {subject} {subject} {subject} {subject}"
           },
-          "winning_experiments": {},
-          "sample_count": 103,
+          "winning_experiments": {
+            "format:winner_inspired": 46.1,
+            "hook:pattern_reuse": 46.1,
+            "thumbnail:new_thumbnail": 46.1,
+            "cta:follow_for_more": 46.1
+          },
+          "sample_count": 104,
           "assignment": {
             "format": "winner_inspired",
             "hook": "pattern_reuse",
@@ -3961,17 +3994,18 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 20,
-    "pending_after": 20,
+    "pending_before": 19,
+    "pending_after": 19,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 4,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 20,
+      "objective_gate:bootstrap_observe_before_scaling": 19,
       "editor_in_chief:script quality gate blocked the narration": 7,
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
       "editor_in_chief:editorial score 46 is below 62": 1,
-      "editorial_cooldown_supply_fallback": 1
+      "editorial_cooldown_supply_fallback": 1,
+      "publish_ready_supply_reserve_fallback": 1
     }
   },
   "rejected_preview": []

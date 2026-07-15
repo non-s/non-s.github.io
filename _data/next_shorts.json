@@ -1,35 +1,39 @@
 {
   "items": [
     {
-      "id": "cb4cb593e9502516",
-      "title": "Earth clouds reveal moving air from above",
-      "category": "earth_from_space",
-      "autonomy_priority": 118.0,
-      "queue_score": 100.0,
+      "id": "94eff649e5f3fc4c",
+      "title": "Horses sort familiar clues with face memory",
+      "category": "farm",
+      "autonomy_priority": 110.0,
+      "queue_score": 78.0,
       "template_cluster": "",
-      "mechanism_cluster": "",
+      "mechanism_cluster": "face_recognition",
       "objective_reasons": [
-        "objective_gate:bootstrap_observe_before_scaling"
+        "objective_gate:bootstrap_observe_before_scaling",
+        "publish_ready_supply_reserve_fallback"
       ],
-      "lane": "evergreen",
+      "lane": "recovery",
       "mix_adjustment": 5.0,
       "score": {
         "score": 100.0,
         "approved": true,
         "state": "publish_ready",
         "opportunity": {
-          "score": 56,
+          "score": 54,
           "signals": {
-            "viral_potential": 48,
-            "visual_potential": 75,
-            "replay_potential": 60,
-            "comment_potential": 46,
-            "educational_potential": 58,
+            "viral_potential": 45,
+            "visual_potential": 45,
+            "replay_potential": 74,
+            "comment_potential": 62,
+            "educational_potential": 65,
             "emotional_potential": 35,
             "novelty": 55
           },
-          "verdict": "rewrite",
-          "reasons": [],
+          "verdict": "discard",
+          "reasons": [
+            "weak_visual_surface",
+            "low_opportunity_score"
+          ],
           "confidence": {
             "confidence_score": 0.0,
             "sample_size": 0,
@@ -44,12 +48,12 @@
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only."
         },
         "retention": {
-          "score": 74,
+          "score": 70,
           "signals": {
-            "hook_score": 82,
-            "curiosity_score": 71,
-            "visual_score": 74,
-            "replay_score": 62,
+            "hook_score": 70,
+            "curiosity_score": 79,
+            "visual_score": 50,
+            "replay_score": 72,
             "completion_prediction": 77
           },
           "verdict": "rewrite",
@@ -71,20 +75,18 @@
           "score": 100.0,
           "state": "retention_ready",
           "approved": true,
-          "subject": "earth",
+          "subject": "horses",
           "cue_terms": [
-            "air",
-            "cloud",
-            "map",
-            "pattern"
+            "face",
+            "memor"
           ],
           "frame_hook_bridge": [
-            "cloud"
+            "face",
+            "memor"
           ],
           "cue_bridge": [
-            "air",
-            "cloud",
-            "pattern"
+            "face",
+            "memor"
           ],
           "strengths": [
             "subject_frontloaded",
@@ -102,15 +104,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
+            "confidence_score": 0.13,
+            "sample_size": 1,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
+            "bootstrap_multiplier": 0.348,
+            "reasoning": "pattern has 1/5 samples, inferred data, confidence 0.13; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -156,9 +158,9 @@
           "bootstrap_multiplier": 0.255,
           "reasoning": "Combined 5 evidence source(s) with average confidence 0.01."
         },
-        "category": "earth_from_space",
-        "story_format": "earth_engine",
-        "hook_score": 86,
+        "category": "farm",
+        "story_format": "animal_memory",
+        "hook_score": 100,
         "title_score": 100,
         "phrase_risk": {
           "penalty": 0,
@@ -180,7 +182,16 @@
           "swipe_risk_band": "low",
           "payoff_time_s": 0.0,
           "template_cluster": "",
-          "mechanism_cluster": ""
+          "mechanism_cluster": "face_recognition"
+        },
+        "reserve_override": {
+          "reason": "publish_ready_supply_reserve_fallback",
+          "original_approved": false,
+          "original_state": "rewrite",
+          "original_opportunity_reasons": [
+            "weak_visual_surface",
+            "low_opportunity_score"
+          ]
         }
       }
     },
@@ -286,15 +297,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
+            "confidence_score": 0.13,
+            "sample_size": 1,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
+            "bootstrap_multiplier": 0.348,
+            "reasoning": "pattern has 1/5 samples, inferred data, confidence 0.13; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -466,15 +477,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
+            "confidence_score": 0.13,
+            "sample_size": 1,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
+            "bootstrap_multiplier": 0.348,
+            "reasoning": "pattern has 1/5 samples, inferred data, confidence 0.13; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -652,15 +663,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
+            "confidence_score": 0.13,
+            "sample_size": 1,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
+            "bootstrap_multiplier": 0.348,
+            "reasoning": "pattern has 1/5 samples, inferred data, confidence 0.13; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -839,15 +850,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
+            "confidence_score": 0.13,
+            "sample_size": 1,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
+            "bootstrap_multiplier": 0.348,
+            "reasoning": "pattern has 1/5 samples, inferred data, confidence 0.13; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -1020,15 +1031,15 @@
           "state": "clear",
           "reasons": [],
           "confidence": {
-            "confidence_score": 0.0,
-            "sample_size": 0,
+            "confidence_score": 0.13,
+            "sample_size": 1,
             "minimum_sample_size": 5,
             "data_quality": "inferred",
             "data_quality_score": 0.65,
             "recommendation_strength": "observe",
             "can_adjust_strategy": false,
-            "bootstrap_multiplier": 0.25,
-            "reasoning": "pattern has 0/5 samples, inferred data, confidence 0.00; observation only."
+            "bootstrap_multiplier": 0.348,
+            "reasoning": "pattern has 1/5 samples, inferred data, confidence 0.13; observation only."
           },
           "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory."
         },
@@ -1111,7 +1122,7 @@
       "recovery": 0.15
     },
     "counts": {
-      "evergreen": 16,
+      "evergreen": 15,
       "recovery": 4
     },
     "items": [
@@ -1124,20 +1135,12 @@
         "freshness_score": 14.04
       },
       {
-        "id": "cb4cb593e9502516",
-        "title": "Earth clouds reveal moving air from above",
-        "category": "earth_from_space",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 51.68
-      },
-      {
         "id": "06c1a5450940dc2d",
         "title": "Storm clouds show air layers changing over time",
         "category": "earth_from_space",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 42.54
+        "freshness_score": 42.52
       },
       {
         "id": "26f7e380a1b02081",
@@ -1153,23 +1156,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 51.68
-      },
-      {
-        "id": "7297fa80243db8ee",
-        "title": "Macaws use beaks like climbing tools",
-        "category": "birds",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 20.16
-      },
-      {
-        "id": "32bc71248738d412",
-        "title": "Parrots use their beak like a third foot",
-        "category": "birds",
-        "lane": "evergreen",
-        "adjustment": 5.0,
-        "freshness_score": 19.2
+        "freshness_score": 51.66
       },
       {
         "id": "1af1013cc6eed163",
@@ -1177,7 +1164,7 @@
         "category": "ocean",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.68
+        "freshness_score": 51.66
       },
       {
         "id": "94eff649e5f3fc4c",
@@ -1185,7 +1172,7 @@
         "category": "farm",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 51.68
+        "freshness_score": 51.66
       },
       {
         "id": "94d7b569eb9a4ac7",
@@ -1193,7 +1180,7 @@
         "category": "fungi",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 53.66
+        "freshness_score": 53.64
       },
       {
         "id": "a4ca94af1a59d5df",
@@ -1217,7 +1204,7 @@
         "category": "wildlife",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 52.5
+        "freshness_score": 52.48
       },
       {
         "id": "15162aaa98b392f2",
@@ -1225,7 +1212,7 @@
         "category": "ocean",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 39.48
+        "freshness_score": 39.46
       },
       {
         "id": "53958248afcfe49f",
@@ -1249,7 +1236,7 @@
         "category": "reptiles",
         "lane": "evergreen",
         "adjustment": 5.0,
-        "freshness_score": 51.64
+        "freshness_score": 51.62
       },
       {
         "id": "06d294eee8bb0e88",
@@ -1268,12 +1255,28 @@
         "freshness_score": 19.4
       },
       {
+        "id": "7297fa80243db8ee",
+        "title": "Macaws use beaks like climbing tools",
+        "category": "birds",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 20.14
+      },
+      {
+        "id": "32bc71248738d412",
+        "title": "Parrots use their beak like a third foot",
+        "category": "birds",
+        "lane": "evergreen",
+        "adjustment": 5.0,
+        "freshness_score": 19.2
+      },
+      {
         "id": "5492c4505c453345",
         "title": "Cats groom to reset their scent map",
         "category": "cats",
         "lane": "recovery",
         "adjustment": 5.0,
-        "freshness_score": 31.62
+        "freshness_score": 31.6
       }
     ],
     "recommendation": "balance_underrepresented_lanes_first"
@@ -1286,12 +1289,12 @@
       {
         "window": 10,
         "items": 6,
-        "dominant_shape": "{subject} clouds reveal moving air from above",
+        "dominant_shape": "{subject} sort familiar clues with {cue} memory",
         "dominant_count": 1,
         "dominant_share": 0.167,
         "top_shapes": [
           {
-            "shape": "{subject} clouds reveal moving air from above",
+            "shape": "{subject} sort familiar clues with {cue} memory",
             "count": 1,
             "share": 0.167
           },
@@ -1320,12 +1323,12 @@
       {
         "window": 30,
         "items": 6,
-        "dominant_shape": "{subject} clouds reveal moving air from above",
+        "dominant_shape": "{subject} sort familiar clues with {cue} memory",
         "dominant_count": 1,
         "dominant_share": 0.167,
         "top_shapes": [
           {
-            "shape": "{subject} clouds reveal moving air from above",
+            "shape": "{subject} sort familiar clues with {cue} memory",
             "count": 1,
             "share": 0.167
           },
@@ -1355,17 +1358,18 @@
   },
   "selection_rule": "autonomy_priority with retention lift, then queue_score and publish_score",
   "prune_summary": {
-    "pending_before": 20,
-    "pending_after": 20,
+    "pending_before": 19,
+    "pending_after": 19,
     "rejected": 0,
     "repair_needed": 0,
     "repaired": 4,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 20,
+      "objective_gate:bootstrap_observe_before_scaling": 19,
       "editor_in_chief:script quality gate blocked the narration": 7,
       "editor_in_chief:subject repeated inside 3-day cooldown": 2,
       "editor_in_chief:editorial score 46 is below 62": 1,
-      "editorial_cooldown_supply_fallback": 1
+      "editorial_cooldown_supply_fallback": 1,
+      "publish_ready_supply_reserve_fallback": 1
     }
   }
 }
