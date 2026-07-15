@@ -3,17 +3,17 @@
   "fresh_upload_actions": {
     "counts": {
       "automation_safe": 1,
-      "high": 0,
+      "high": 1,
       "manual_review": 2,
       "total": 3,
       "urgent": 2
     },
     "free_only": true,
-    "generated_at": "2026-07-15T11:58:08.448887+00:00",
+    "generated_at": "2026-07-15T12:24:16.808278+00:00",
     "items": [
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 35.346,
+        "age_hours": 35.781,
         "automation_safe": false,
         "category": "discoveries",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 34.873,
+        "age_hours": 35.309,
         "automation_safe": false,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -64,34 +64,34 @@
         "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
-        "action_type": "hold_until_first_hour",
-        "age_hours": 0.766,
+        "action_type": "pull_fresh_analytics",
+        "age_hours": 1.201,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
-        "checkpoint_state": "pending",
+        "checkpoint_state": "due",
         "current_views": 0,
         "due_at": "2026-07-15T12:12:12.504967+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:P2CGUzQ-y0A:awaiting_1h:1h",
-        "lane": "observe",
+        "id": "fresh-upload:P2CGUzQ-y0A:analytics_due:1h",
+        "lane": "measurement",
         "manual_approval_required": false,
         "opening_retention_score": 90.0,
-        "priority": "low",
-        "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+        "priority": "high",
+        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
         "series": "Animal Superpowers",
-        "state": "awaiting_1h",
+        "state": "analytics_due",
         "target_views": 24,
         "title": "This sound radar gives deer away",
         "url": "https://www.youtube.com/shorts/P2CGUzQ-y0A",
         "video_id": "P2CGUzQ-y0A",
-        "wait_until": "2026-07-15T12:12:12.504967+00:00",
-        "why": "The upload is still inside the no-panic observation window."
+        "wait_until": "",
+        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-15T11:58:08.448258+00:00"
+    "source_generated_at": "2026-07-15T12:24:16.807635+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -100,25 +100,25 @@
       24
     ],
     "counts": {
-      "analytics_due": 0,
-      "awaiting_1h": 1,
-      "high_priority": 2,
+      "analytics_due": 1,
+      "awaiting_1h": 0,
+      "high_priority": 3,
       "repair_candidates": 2,
       "tracked": 3
     },
-    "generated_at": "2026-07-15T11:58:08.448258+00:00",
+    "generated_at": "2026-07-15T12:24:16.807635+00:00",
     "items": [
       {
-        "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.766,
+        "action": "Run the analytics pull before making a creative decision.",
+        "age_hours": 1.201,
         "category": "wildlife",
         "checkpoints": [
           {
-            "delta_to_target": 0,
+            "delta_to_target": -24,
             "due_at": "2026-07-15T12:12:12.504967+00:00",
             "label": "1h",
             "source": "estimated",
-            "state": "pending",
+            "state": "due",
             "target_views": 24,
             "views": 0
           },
@@ -142,21 +142,21 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "The upload is still inside the no-panic observation window.",
+        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
         "next_checkpoint": {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-15T12:12:12.504967+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 24,
           "views": 0
         },
         "opening_retention_score": 90.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Animal Superpowers",
-        "state": "awaiting_1h",
+        "state": "analytics_due",
         "title": "This sound radar gives deer away",
         "uploaded_at": "2026-07-15T11:12:12.504967+00:00",
         "url": "https://www.youtube.com/shorts/P2CGUzQ-y0A",
@@ -165,7 +165,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 34.873,
+        "age_hours": 35.309,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -231,7 +231,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 35.346,
+        "age_hours": 35.781,
         "category": "discoveries",
         "checkpoints": [
           {
@@ -282,7 +282,7 @@
         "uploaded_at": "2026-07-14T00:37:24.551626+00:00",
         "url": "https://www.youtube.com/shorts/DGs36Y79jHo",
         "video_id": "DGs36Y79jHo",
-        "views_per_hour": 0.142,
+        "views_per_hour": 0.141,
         "warning": {
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.756,
@@ -303,7 +303,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-15T11:58:08.448928+00:00",
+  "generated_at": "2026-07-15T12:24:16.808323+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
