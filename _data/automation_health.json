@@ -1,22 +1,22 @@
 {
-  "generated_at": "2026-07-16T18:16:05.864939+00:00",
-  "score": 37,
+  "generated_at": "2026-07-16T18:18:40.771217+00:00",
+  "score": 67,
   "state": "needs_work",
   "issues": [
     "queue_inventory_low",
-    "publish_ready_inventory_empty",
-    "no_agency_publish_now_candidate",
     "youtube_analytics_scope_incomplete",
     "average_retention_needs_attention"
   ],
   "queue": {
-    "pending": 14,
-    "publish_ready": 0,
+    "pending": 16,
+    "publish_ready": 2,
     "categories": {
       "arctic": 1,
       "birds": 2,
+      "chemistry": 1,
       "conservation": 1,
       "earth_from_space": 1,
+      "farm": 1,
       "forests": 2,
       "geology": 2,
       "nocturnal": 1,
@@ -29,11 +29,11 @@
     "missing_source": 0,
     "held_reasons": {
       "queue_prune:rewrite": 14,
-      "editor_in_chief:needs_ai_rewrite": 6,
-      "editor_in_chief:cooldown_subject": 3,
+      "editor_in_chief:needs_ai_rewrite": 5,
+      "editor_in_chief:cooldown_subject": 4,
       "packaging:missing_action_word": 3,
-      "publish_score:rewrite": 1,
       "youtube_brain:missing_visual_cue": 1,
+      "publish_score:rewrite": 1,
       "youtube_brain:title_shape_weak": 1,
       "packaging:title_needs_stronger_shape": 1,
       "packaging:subject_not_clear": 1,
@@ -46,10 +46,10 @@
     "subject_frontloaded_pct": 100.0
   },
   "agency": {
-    "average_score": 52.4,
+    "average_score": 55.0,
     "decisions": {
       "hold": 9,
-      "strong_candidate": 5
+      "strong_candidate": 7
     },
     "top": [
       {
@@ -64,18 +64,39 @@
         ]
       },
       {
+        "title": "Cows use herd memory before they remember",
+        "category": "farm",
+        "score": 78,
+        "decision": "strong_candidate",
+        "strengths": [
+          "strong_quality",
+          "matches_channel_learning",
+          "fresh_inventory"
+        ]
+      },
+      {
         "title": "Parrots use their beak like a third foot",
         "category": "birds",
-        "score": 77,
+        "score": 76,
         "decision": "strong_candidate",
         "strengths": [
           "strong_quality"
         ]
       },
       {
+        "title": "Crystals use crystal edge before they lock",
+        "category": "chemistry",
+        "score": 75,
+        "decision": "strong_candidate",
+        "strengths": [
+          "strong_quality",
+          "fresh_inventory"
+        ]
+      },
+      {
         "title": "Storm clouds show air layers changing over time",
         "category": "earth_from_space",
-        "score": 76,
+        "score": 75,
         "decision": "strong_candidate",
         "strengths": [
           "strong_quality",
@@ -85,7 +106,7 @@
       {
         "title": "Macaws use beaks like climbing tools",
         "category": "birds",
-        "score": 75,
+        "score": 74,
         "decision": "strong_candidate",
         "strengths": [
           "strong_quality"
@@ -101,31 +122,9 @@
         ]
       },
       {
-        "title": "Rock layers signal through steam vent",
-        "category": "geology",
-        "score": 46,
-        "decision": "hold",
-        "strengths": [
-          "strong_quality",
-          "matches_channel_learning",
-          "fresh_inventory"
-        ]
-      },
-      {
-        "title": "Elephants can feel rumbles through the ground",
-        "category": "wildlife",
-        "score": 45,
-        "decision": "hold",
-        "strengths": [
-          "strong_quality",
-          "matches_channel_learning",
-          "fresh_inventory"
-        ]
-      },
-      {
         "title": "Whales send songs across huge ocean distances",
         "category": "ocean",
-        "score": 44,
+        "score": 46,
         "decision": "hold",
         "strengths": [
           "strong_quality",
@@ -135,14 +134,14 @@
     ]
   },
   "analytics": {
-    "pulled_at": "2026-07-16T13:19:18.305528+00:00",
+    "pulled_at": "2026-07-16T18:15:12.945138+00:00",
     "metric_scope": "public_video_statistics",
-    "total_views": 22,
+    "total_views": 23,
     "avg_view_pct": 0.0,
-    "shorts_tracked": 112
+    "shorts_tracked": 113
   },
   "comments": {
-    "comments_sampled": 7,
-    "question_count": 7
+    "comments_sampled": 8,
+    "question_count": 8
   }
 }
