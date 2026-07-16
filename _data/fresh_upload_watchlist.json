@@ -5,25 +5,25 @@
     24
   ],
   "counts": {
-    "analytics_due": 5,
-    "awaiting_1h": 2,
-    "high_priority": 7,
+    "analytics_due": 7,
+    "awaiting_1h": 0,
+    "high_priority": 9,
     "repair_candidates": 2,
     "tracked": 10
   },
-  "generated_at": "2026-07-16T20:37:19.477321+00:00",
+  "generated_at": "2026-07-16T21:13:45.998600+00:00",
   "items": [
     {
-      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.498,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 1.105,
       "category": "chemistry",
       "checkpoints": [
         {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-16T21:07:26.591290+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +47,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -24,
         "due_at": "2026-07-16T21:07:26.591290+00:00",
         "label": "1h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Nature Signals",
-      "state": "awaiting_1h",
+      "state": "analytics_due",
       "title": "Crystals use crystal edge before they lock",
       "uploaded_at": "2026-07-16T20:07:26.591290+00:00",
       "url": "https://www.youtube.com/shorts/lK8R_CKIkc4",
@@ -69,16 +69,16 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.869,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 1.477,
       "category": "farm",
       "checkpoints": [
         {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-16T20:45:09.888548+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 24,
           "views": 0
         },
@@ -102,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -24,
         "due_at": "2026-07-16T20:45:09.888548+00:00",
         "label": "1h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Farmyard Surprises",
-      "state": "awaiting_1h",
+      "state": "analytics_due",
       "title": "Cows use herd memory before they remember",
       "uploaded_at": "2026-07-16T19:45:09.888548+00:00",
       "url": "https://www.youtube.com/shorts/xUZe6S8bPLA",
@@ -125,7 +125,7 @@
     },
     {
       "action": "Keep observing through the next checkpoint.",
-      "age_hours": 2.369,
+      "age_hours": 2.976,
       "category": "ocean",
       "checkpoints": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 7.301,
+      "age_hours": 7.908,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -231,11 +231,11 @@
       "uploaded_at": "2026-07-16T13:19:16.344875+00:00",
       "url": "https://www.youtube.com/shorts/c15ttR7GlnY",
       "video_id": "c15ttR7GlnY",
-      "views_per_hour": 0.138
+      "views_per_hour": 0.137
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 20.285,
+      "age_hours": 20.892,
       "category": "trees",
       "checkpoints": [
         {
@@ -290,7 +290,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 21.172,
+      "age_hours": 21.78,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -345,7 +345,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 22.384,
+      "age_hours": 22.992,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -400,7 +400,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 23.338,
+      "age_hours": 23.945,
       "category": "geology",
       "checkpoints": [
         {
@@ -455,7 +455,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 24.264,
+      "age_hours": 24.871,
       "category": "farm",
       "checkpoints": [
         {
@@ -521,7 +521,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 24.965,
+      "age_hours": 25.573,
       "category": "farm",
       "checkpoints": [
         {
@@ -572,7 +572,7 @@
       "uploaded_at": "2026-07-15T19:39:23.925649+00:00",
       "url": "https://www.youtube.com/shorts/ga5ecDiwYCc",
       "video_id": "ga5ecDiwYCc",
-      "views_per_hour": 0.241,
+      "views_per_hour": 0.24,
       "warning": {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.756,

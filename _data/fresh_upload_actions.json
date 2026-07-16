@@ -1,17 +1,17 @@
 {
   "counts": {
     "automation_safe": 8,
-    "high": 0,
+    "high": 2,
     "manual_review": 2,
     "total": 10,
     "urgent": 7
   },
   "free_only": true,
-  "generated_at": "2026-07-16T20:37:19.478758+00:00",
+  "generated_at": "2026-07-16T21:13:45.999752+00:00",
   "items": [
     {
       "action_type": "prepare_package_rescue",
-      "age_hours": 24.965,
+      "age_hours": 25.573,
       "automation_safe": false,
       "category": "farm",
       "checkpoint_label": "1h",
@@ -37,7 +37,7 @@
     },
     {
       "action_type": "prepare_package_rescue",
-      "age_hours": 24.264,
+      "age_hours": 24.871,
       "automation_safe": false,
       "category": "farm",
       "checkpoint_label": "1h",
@@ -63,7 +63,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 23.338,
+      "age_hours": 23.945,
       "automation_safe": true,
       "category": "geology",
       "checkpoint_label": "1h",
@@ -89,7 +89,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 22.384,
+      "age_hours": 22.992,
       "automation_safe": true,
       "category": "wildlife",
       "checkpoint_label": "1h",
@@ -115,7 +115,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 21.172,
+      "age_hours": 21.78,
       "automation_safe": true,
       "category": "reptiles",
       "checkpoint_label": "1h",
@@ -141,7 +141,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 20.285,
+      "age_hours": 20.892,
       "automation_safe": true,
       "category": "trees",
       "checkpoint_label": "1h",
@@ -167,7 +167,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 7.301,
+      "age_hours": 7.908,
       "automation_safe": true,
       "category": "wildlife",
       "checkpoint_label": "1h",
@@ -192,60 +192,60 @@
       "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
-      "action_type": "hold_until_first_hour",
-      "age_hours": 0.869,
+      "action_type": "pull_fresh_analytics",
+      "age_hours": 1.477,
       "automation_safe": true,
       "category": "farm",
       "checkpoint_label": "1h",
-      "checkpoint_state": "pending",
+      "checkpoint_state": "due",
       "current_views": 0,
       "due_at": "2026-07-16T20:45:09.888548+00:00",
       "free_only": true,
       "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-      "id": "fresh-upload:xUZe6S8bPLA:awaiting_1h:1h",
-      "lane": "observe",
+      "id": "fresh-upload:xUZe6S8bPLA:analytics_due:1h",
+      "lane": "measurement",
       "manual_approval_required": false,
       "opening_retention_score": 100.0,
-      "priority": "low",
-      "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "priority": "high",
+      "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
       "series": "Farmyard Surprises",
-      "state": "awaiting_1h",
+      "state": "analytics_due",
       "target_views": 24,
       "title": "Cows use herd memory before they remember",
       "url": "https://www.youtube.com/shorts/xUZe6S8bPLA",
       "video_id": "xUZe6S8bPLA",
-      "wait_until": "2026-07-16T20:45:09.888548+00:00",
-      "why": "The upload is still inside the no-panic observation window."
+      "wait_until": "",
+      "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
-      "action_type": "hold_until_first_hour",
-      "age_hours": 0.498,
+      "action_type": "pull_fresh_analytics",
+      "age_hours": 1.105,
       "automation_safe": true,
       "category": "chemistry",
       "checkpoint_label": "1h",
-      "checkpoint_state": "pending",
+      "checkpoint_state": "due",
       "current_views": 0,
       "due_at": "2026-07-16T21:07:26.591290+00:00",
       "free_only": true,
       "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-      "id": "fresh-upload:lK8R_CKIkc4:awaiting_1h:1h",
-      "lane": "observe",
+      "id": "fresh-upload:lK8R_CKIkc4:analytics_due:1h",
+      "lane": "measurement",
       "manual_approval_required": false,
       "opening_retention_score": 100.0,
-      "priority": "low",
-      "recommended_action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "priority": "high",
+      "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
       "series": "Nature Signals",
-      "state": "awaiting_1h",
+      "state": "analytics_due",
       "target_views": 24,
       "title": "Crystals use crystal edge before they lock",
       "url": "https://www.youtube.com/shorts/lK8R_CKIkc4",
       "video_id": "lK8R_CKIkc4",
-      "wait_until": "2026-07-16T21:07:26.591290+00:00",
-      "why": "The upload is still inside the no-panic observation window."
+      "wait_until": "",
+      "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 2.369,
+      "age_hours": 2.976,
       "automation_safe": true,
       "category": "ocean",
       "checkpoint_label": "6h",
@@ -271,5 +271,5 @@
     }
   ],
   "source": "fresh_upload_watchlist",
-  "source_generated_at": "2026-07-16T20:37:19.477321+00:00"
+  "source_generated_at": "2026-07-16T21:13:45.998600+00:00"
 }
