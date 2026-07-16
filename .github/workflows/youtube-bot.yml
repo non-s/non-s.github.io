@@ -324,18 +324,6 @@ jobs:
           YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
           YOUTUBE_DESCRIPTION_MODE: ${{ vars.YOUTUBE_DESCRIPTION_MODE || 'empty' }}
           MEDIA_LIFECYCLE_CLEANUP: 0
-      - name: "Upload Shorts para TikTok"
-        if: steps.publish_window.outputs.should_publish == 'true'
-        run: |
-          if [ -z "$TIKTOK_SESSION_ID" ]; then
-            echo "TikTok session ID not found. Skipping."
-            exit 0
-          fi
-          python scripts/sync_tiktok.py
-        env:
-          PYTHONIOENCODING: utf-8
-          PYTHONUNBUFFERED: "1"
-          TIKTOK_SESSION_ID: ${{ secrets.TIKTOK_SESSION_ID }}
       - name: "Aplicar ciclo de vida da midia"
         if: steps.publish_window.outputs.should_publish == 'true'
         run: python scripts/media_lifecycle.py --cleanup --audit-tracked --json
