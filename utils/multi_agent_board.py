@@ -22,7 +22,6 @@ def run_editorial_board(topic: str, language: str = "pt") -> Dict[str, str]:
     hook_injection = ""
     if hooks_file.exists():
         try:
-            import json
             with open(hooks_file, "r", encoding="utf-8") as f:
                 hooks = json.load(f)
             if hooks:
