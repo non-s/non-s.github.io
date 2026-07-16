@@ -5,25 +5,80 @@
     24
   ],
   "counts": {
-    "analytics_due": 8,
-    "awaiting_1h": 0,
-    "high_priority": 10,
+    "analytics_due": 6,
+    "awaiting_1h": 1,
+    "high_priority": 8,
     "repair_candidates": 2,
     "tracked": 10
   },
-  "generated_at": "2026-07-16T19:37:09.712353+00:00",
+  "generated_at": "2026-07-16T19:47:31.290898+00:00",
   "items": [
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 1.366,
+      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
+      "age_hours": 0.039,
+      "category": "farm",
+      "checkpoints": [
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-16T20:45:09.888548+00:00",
+          "label": "1h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 24,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-17T01:45:09.888548+00:00",
+          "label": "6h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 105,
+          "views": 0
+        },
+        {
+          "delta_to_target": 0,
+          "due_at": "2026-07-17T19:45:09.888548+00:00",
+          "label": "24h",
+          "source": "estimated",
+          "state": "pending",
+          "target_views": 300,
+          "views": 0
+        }
+      ],
+      "current_views": 0,
+      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "next_checkpoint": {
+        "delta_to_target": 0,
+        "due_at": "2026-07-16T20:45:09.888548+00:00",
+        "label": "1h",
+        "source": "estimated",
+        "state": "pending",
+        "target_views": 24,
+        "views": 0
+      },
+      "opening_retention_score": 100.0,
+      "opening_retention_state": "retention_ready",
+      "priority": "low",
+      "series": "Farmyard Surprises",
+      "state": "awaiting_1h",
+      "title": "Cows use herd memory before they remember",
+      "uploaded_at": "2026-07-16T19:45:09.888548+00:00",
+      "url": "https://www.youtube.com/shorts/xUZe6S8bPLA",
+      "video_id": "xUZe6S8bPLA",
+      "views_per_hour": 0.0
+    },
+    {
+      "action": "Keep observing through the next checkpoint.",
+      "age_hours": 1.539,
       "category": "ocean",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-16T19:15:10.876900+00:00",
           "label": "1h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +102,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "No intervention signal is strong enough yet.",
       "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-16T19:15:10.876900+00:00",
-        "label": "1h",
+        "delta_to_target": 0,
+        "due_at": "2026-07-17T00:15:10.876900+00:00",
+        "label": "6h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 24,
+        "state": "pending",
+        "target_views": 105,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "high",
+      "priority": "low",
       "series": "Ocean Mysteries",
-      "state": "analytics_due",
+      "state": "watch",
       "title": "Sharks signal through electric sense",
       "uploaded_at": "2026-07-16T18:15:10.876900+00:00",
       "url": "https://www.youtube.com/shorts/PVpCwIoFOyM",
@@ -70,15 +125,15 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 6.298,
+      "age_hours": 6.471,
       "category": "wildlife",
       "checkpoints": [
         {
           "delta_to_target": -24,
           "due_at": "2026-07-16T14:19:16.344875+00:00",
           "label": "1h",
-          "source": "observed",
-          "state": "observed",
+          "source": "estimated",
+          "state": "overdue",
           "target_views": 24,
           "views": 0
         },
@@ -86,8 +141,8 @@
           "delta_to_target": -104,
           "due_at": "2026-07-16T19:19:16.344875+00:00",
           "label": "6h",
-          "source": "estimated",
-          "state": "due",
+          "source": "observed",
+          "state": "observed",
           "target_views": 105,
           "views": 1
         },
@@ -104,13 +159,13 @@
       "current_views": 1,
       "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": -104,
-        "due_at": "2026-07-16T19:19:16.344875+00:00",
-        "label": "6h",
+        "delta_to_target": -24,
+        "due_at": "2026-07-16T14:19:16.344875+00:00",
+        "label": "1h",
         "source": "estimated",
-        "state": "due",
-        "target_views": 105,
-        "views": 1
+        "state": "overdue",
+        "target_views": 24,
+        "views": 0
       },
       "opening_retention_score": 96.0,
       "opening_retention_state": "retention_ready",
@@ -121,11 +176,11 @@
       "uploaded_at": "2026-07-16T13:19:16.344875+00:00",
       "url": "https://www.youtube.com/shorts/c15ttR7GlnY",
       "video_id": "c15ttR7GlnY",
-      "views_per_hour": 0.181
+      "views_per_hour": 0.155
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 19.282,
+      "age_hours": 19.455,
       "category": "trees",
       "checkpoints": [
         {
@@ -153,10 +208,10 @@
           "source": "estimated",
           "state": "pending",
           "target_views": 300,
-          "views": 1
+          "views": 0
         }
       ],
-      "current_views": 1,
+      "current_views": 0,
       "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
         "delta_to_target": -24,
@@ -176,11 +231,11 @@
       "uploaded_at": "2026-07-16T00:20:13.162658+00:00",
       "url": "https://www.youtube.com/shorts/woMqgzIYxwM",
       "video_id": "woMqgzIYxwM",
-      "views_per_hour": 0.054
+      "views_per_hour": 0.0
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 20.17,
+      "age_hours": 20.342,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -231,11 +286,11 @@
       "uploaded_at": "2026-07-15T23:26:58.496934+00:00",
       "url": "https://www.youtube.com/shorts/L4U_p2YUTyg",
       "video_id": "L4U_p2YUTyg",
-      "views_per_hour": 0.155
+      "views_per_hour": 0.148
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 21.381,
+      "age_hours": 21.554,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -286,11 +341,11 @@
       "uploaded_at": "2026-07-15T22:14:16.504771+00:00",
       "url": "https://www.youtube.com/shorts/B-8Yjr7aViY",
       "video_id": "B-8Yjr7aViY",
-      "views_per_hour": 0.049
+      "views_per_hour": 0.046
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 22.335,
+      "age_hours": 22.508,
       "category": "geology",
       "checkpoints": [
         {
@@ -341,11 +396,11 @@
       "uploaded_at": "2026-07-15T21:17:03.517209+00:00",
       "url": "https://www.youtube.com/shorts/nvELsnuHGcc",
       "video_id": "nvELsnuHGcc",
-      "views_per_hour": 0.046
+      "views_per_hour": 0.044
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 23.261,
+      "age_hours": 23.434,
       "category": "farm",
       "checkpoints": [
         {
@@ -396,11 +451,11 @@
       "uploaded_at": "2026-07-15T20:21:30.033022+00:00",
       "url": "https://www.youtube.com/shorts/Nwsv9XCe7is",
       "video_id": "Nwsv9XCe7is",
-      "views_per_hour": 0.133
+      "views_per_hour": 0.128
     },
     {
-      "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 23.963,
+      "action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "age_hours": 24.135,
       "category": "farm",
       "checkpoints": [
         {
@@ -422,17 +477,17 @@
           "views": 1
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -294,
           "due_at": "2026-07-16T19:39:23.925649+00:00",
           "label": "24h",
-          "source": "estimated",
-          "state": "pending",
+          "source": "observed",
+          "state": "observed",
           "target_views": 300,
           "views": 6
         }
       ],
       "current_views": 6,
-      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
       "next_checkpoint": {
         "delta_to_target": -24,
         "due_at": "2026-07-15T20:39:23.925649+00:00",
@@ -446,16 +501,27 @@
       "opening_retention_state": "retention_ready",
       "priority": "high",
       "series": "Farmyard Surprises",
-      "state": "analytics_due",
+      "state": "repair_candidate",
       "title": "Horses can remember familiar faces",
       "uploaded_at": "2026-07-15T19:39:23.925649+00:00",
       "url": "https://www.youtube.com/shorts/ga5ecDiwYCc",
       "video_id": "ga5ecDiwYCc",
-      "views_per_hour": 0.259
+      "views_per_hour": 0.249,
+      "warning": {
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "confidence_score": 0.756,
+        "reason": "low early velocity",
+        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
+        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+        "title": "Horses can remember familiar faces",
+        "video_id": "ga5ecDiwYCc",
+        "views": 6,
+        "warning_state": "repair_risk"
+      }
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 25.281,
+      "age_hours": 25.453,
       "category": "farm",
       "checkpoints": [
         {
@@ -516,72 +582,6 @@
         "title": "Horses sort familiar clues with face memory",
         "video_id": "qZH-jcRdi6Y",
         "views": 0,
-        "warning_state": "repair_risk"
-      }
-    },
-    {
-      "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 26.509,
-      "category": "earth_from_space",
-      "checkpoints": [
-        {
-          "delta_to_target": -24,
-          "due_at": "2026-07-15T18:06:37.793048+00:00",
-          "label": "1h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 24,
-          "views": 0
-        },
-        {
-          "delta_to_target": -105,
-          "due_at": "2026-07-15T23:06:37.793048+00:00",
-          "label": "6h",
-          "source": "estimated",
-          "state": "overdue",
-          "target_views": 105,
-          "views": 0
-        },
-        {
-          "delta_to_target": -296,
-          "due_at": "2026-07-16T17:06:37.793048+00:00",
-          "label": "24h",
-          "source": "observed",
-          "state": "observed",
-          "target_views": 300,
-          "views": 4
-        }
-      ],
-      "current_views": 4,
-      "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
-      "next_checkpoint": {
-        "delta_to_target": -24,
-        "due_at": "2026-07-15T18:06:37.793048+00:00",
-        "label": "1h",
-        "source": "estimated",
-        "state": "overdue",
-        "target_views": 24,
-        "views": 0
-      },
-      "opening_retention_score": 100.0,
-      "opening_retention_state": "retention_ready",
-      "priority": "high",
-      "series": "Planet Earth",
-      "state": "repair_candidate",
-      "title": "Earth clouds reveal moving air from above",
-      "uploaded_at": "2026-07-15T17:06:37.793048+00:00",
-      "url": "https://www.youtube.com/shorts/pqdf9Rdjtu4",
-      "video_id": "pqdf9Rdjtu4",
-      "views_per_hour": 0.155,
-      "warning": {
-        "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "confidence_score": 0.756,
-        "reason": "low early velocity",
-        "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
-        "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
-        "title": "Earth clouds reveal moving air from above",
-        "video_id": "pqdf9Rdjtu4",
-        "views": 4,
         "warning_state": "repair_risk"
       }
     }
