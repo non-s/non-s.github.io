@@ -1,17 +1,17 @@
 {
   "counts": {
-    "automation_safe": 7,
-    "high": 3,
-    "manual_review": 3,
+    "automation_safe": 8,
+    "high": 2,
+    "manual_review": 2,
     "total": 10,
-    "urgent": 3
+    "urgent": 4
   },
   "free_only": true,
-  "generated_at": "2026-07-16T02:28:38.321469+00:00",
+  "generated_at": "2026-07-16T02:31:11.880862+00:00",
   "items": [
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 11.225,
+      "age_hours": 11.268,
       "automation_safe": true,
       "category": "dogs",
       "checkpoint_label": "1h",
@@ -37,7 +37,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 9.716,
+      "age_hours": 9.758,
       "automation_safe": true,
       "category": "geology",
       "checkpoint_label": "1h",
@@ -63,7 +63,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 9.367,
+      "age_hours": 9.409,
       "automation_safe": true,
       "category": "earth_from_space",
       "checkpoint_label": "1h",
@@ -88,34 +88,34 @@
       "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
-      "action_type": "prepare_package_rescue",
-      "age_hours": 8.139,
-      "automation_safe": false,
+      "action_type": "pull_fresh_analytics",
+      "age_hours": 8.181,
+      "automation_safe": true,
       "category": "farm",
-      "checkpoint_label": "24h",
-      "checkpoint_state": "pending",
+      "checkpoint_label": "1h",
+      "checkpoint_state": "overdue",
       "current_views": 0,
-      "due_at": "2026-07-16T18:20:19.680517+00:00",
+      "due_at": "2026-07-15T19:20:19.680517+00:00",
       "free_only": true,
       "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-      "id": "fresh-upload:qZH-jcRdi6Y:repair_candidate:24h",
-      "lane": "package_rescue",
-      "manual_approval_required": true,
+      "id": "fresh-upload:qZH-jcRdi6Y:analytics_due:1h",
+      "lane": "measurement",
+      "manual_approval_required": false,
       "opening_retention_score": 100.0,
-      "priority": "high",
-      "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "priority": "urgent",
+      "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
       "series": "Farmyard Surprises",
-      "state": "repair_candidate",
-      "target_views": 300,
+      "state": "analytics_due",
+      "target_views": 24,
       "title": "Horses sort familiar clues with face memory",
       "url": "https://www.youtube.com/shorts/qZH-jcRdi6Y",
       "video_id": "qZH-jcRdi6Y",
       "wait_until": "",
-      "why": "Observed velocity is weak enough to prepare a package intervention."
+      "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
       "action_type": "prepare_package_rescue",
-      "age_hours": 6.821,
+      "age_hours": 6.863,
       "automation_safe": false,
       "category": "farm",
       "checkpoint_label": "24h",
@@ -141,7 +141,7 @@
     },
     {
       "action_type": "prepare_package_rescue",
-      "age_hours": 6.119,
+      "age_hours": 6.162,
       "automation_safe": false,
       "category": "farm",
       "checkpoint_label": "24h",
@@ -167,7 +167,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 5.193,
+      "age_hours": 5.236,
       "automation_safe": true,
       "category": "geology",
       "checkpoint_label": "6h",
@@ -193,7 +193,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 4.239,
+      "age_hours": 4.282,
       "automation_safe": true,
       "category": "wildlife",
       "checkpoint_label": "6h",
@@ -219,7 +219,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 3.028,
+      "age_hours": 3.07,
       "automation_safe": true,
       "category": "reptiles",
       "checkpoint_label": "6h",
@@ -245,7 +245,7 @@
     },
     {
       "action_type": "watch_next_checkpoint",
-      "age_hours": 2.14,
+      "age_hours": 2.183,
       "automation_safe": true,
       "category": "trees",
       "checkpoint_label": "6h",
@@ -271,5 +271,5 @@
     }
   ],
   "source": "fresh_upload_watchlist",
-  "source_generated_at": "2026-07-16T02:28:38.320462+00:00"
+  "source_generated_at": "2026-07-16T02:31:11.879843+00:00"
 }
