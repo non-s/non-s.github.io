@@ -252,7 +252,10 @@ def _learning_profile(
 
 
 def build_snapshot(
-    markers: list[dict], statistics: dict[str, dict], retention: dict[str, dict] | None = None
+    markers: list[dict],
+    statistics: dict[str, dict],
+    retention: dict[str, dict] | None = None,
+    analytics_scope_available: bool = False,
 ) -> tuple[dict, list[dict]]:
     retention = retention or {}
     observations: list[dict] = []
@@ -423,7 +426,11 @@ def build_snapshot(
     brief = weekly_brief(brief_seed, observations, performance_matrix, remakes)
     snapshot = {
         "pulled_at": datetime.now(timezone.utc).isoformat(),
-        "metric_scope": "youtube_analytics_and_public_statistics" if retention else "public_video_statistics",
+        "metric_scope": (
+            "youtube_analytics_and_public_statistics"
+            if retention
+            else "youtube_analytics_pending_data" if analytics_scope_available else "public_video_statistics"
+        ),
         "total_views": total_views,
         "shorts_tracked": len(markers),
         "avg_engagement_score": average([o["engagement_score"] for o in observations]),
@@ -501,11 +508,14 @@ def main() -> int:
         print(f"analytics: public-stat refresh skipped: {exc}")
         return 0
     retention: dict[str, dict] = {}
+    analytics_service = _load_analytics_service()
     try:
-        retention = _fetch_retention(_load_analytics_service(), [m["video_id"] for m in markers])
+        retention = _fetch_retention(analytics_service, [m["video_id"] for m in markers])
     except Exception as exc:
         print(f"analytics: retention refresh skipped: {exc}")
-    snapshot, observations = build_snapshot(markers, stats, retention)
+    snapshot, observations = build_snapshot(
+        markers, stats, retention, analytics_scope_available=analytics_service is not None
+    )
     ANALYTICS_DIR.mkdir(parents=True, exist_ok=True)
     (ANALYTICS_DIR / "latest.json").write_text(
         json.dumps(snapshot, indent=2, ensure_ascii=False),

@@ -191,7 +191,12 @@ def build_health(root: Path | str = ".") -> dict:
         issues.append("seo_average_below_target")
     if frontloaded_pct < 95:
         issues.append("subject_frontload_below_target")
-    if latest and latest.get("metric_scope") != "youtube_analytics_and_public_statistics":
+    # "public_video_statistics" means the token genuinely lacks (or never had)
+    # yt-analytics.readonly. "youtube_analytics_pending_data" means the scope
+    # is fine but YouTube hasn't returned per-video rows yet (expected for a
+    # channel with very little view volume) — that is not an auth problem and
+    # should not tell the operator to re-authenticate.
+    if latest and latest.get("metric_scope") == "public_video_statistics":
         issues.append("youtube_analytics_scope_incomplete")
     if latest and float(latest.get("avg_view_pct", 0) or 0) < 55:
         issues.append("average_retention_needs_attention")
