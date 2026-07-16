@@ -5,25 +5,25 @@
     24
   ],
   "counts": {
-    "analytics_due": 6,
-    "awaiting_1h": 1,
-    "high_priority": 8,
+    "analytics_due": 8,
+    "awaiting_1h": 0,
+    "high_priority": 10,
     "repair_candidates": 2,
     "tracked": 10
   },
-  "generated_at": "2026-07-16T18:50:40.288634+00:00",
+  "generated_at": "2026-07-16T19:37:09.712353+00:00",
   "items": [
     {
-      "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-      "age_hours": 0.592,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 1.366,
       "category": "ocean",
       "checkpoints": [
         {
-          "delta_to_target": 0,
+          "delta_to_target": -24,
           "due_at": "2026-07-16T19:15:10.876900+00:00",
           "label": "1h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 24,
           "views": 0
         },
@@ -47,21 +47,21 @@
         }
       ],
       "current_views": 0,
-      "hypothesis": "The upload is still inside the no-panic observation window.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -24,
         "due_at": "2026-07-16T19:15:10.876900+00:00",
         "label": "1h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 24,
         "views": 0
       },
       "opening_retention_score": 100.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Ocean Mysteries",
-      "state": "awaiting_1h",
+      "state": "analytics_due",
       "title": "Sharks signal through electric sense",
       "uploaded_at": "2026-07-16T18:15:10.876900+00:00",
       "url": "https://www.youtube.com/shorts/PVpCwIoFOyM",
@@ -69,8 +69,8 @@
       "views_per_hour": 0.0
     },
     {
-      "action": "Keep observing through the next checkpoint.",
-      "age_hours": 5.523,
+      "action": "Run the analytics pull before making a creative decision.",
+      "age_hours": 6.298,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -83,11 +83,11 @@
           "views": 0
         },
         {
-          "delta_to_target": 0,
+          "delta_to_target": -104,
           "due_at": "2026-07-16T19:19:16.344875+00:00",
           "label": "6h",
           "source": "estimated",
-          "state": "pending",
+          "state": "due",
           "target_views": 105,
           "views": 1
         },
@@ -102,30 +102,30 @@
         }
       ],
       "current_views": 1,
-      "hypothesis": "No intervention signal is strong enough yet.",
+      "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
       "next_checkpoint": {
-        "delta_to_target": 0,
+        "delta_to_target": -104,
         "due_at": "2026-07-16T19:19:16.344875+00:00",
         "label": "6h",
         "source": "estimated",
-        "state": "pending",
+        "state": "due",
         "target_views": 105,
         "views": 1
       },
       "opening_retention_score": 96.0,
       "opening_retention_state": "retention_ready",
-      "priority": "low",
+      "priority": "high",
       "series": "Animal Superpowers",
-      "state": "watch",
+      "state": "analytics_due",
       "title": "Wolves leave scent notes for the pack",
       "uploaded_at": "2026-07-16T13:19:16.344875+00:00",
       "url": "https://www.youtube.com/shorts/c15ttR7GlnY",
       "video_id": "c15ttR7GlnY",
-      "views_per_hour": 0.182
+      "views_per_hour": 0.181
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 18.508,
+      "age_hours": 19.282,
       "category": "trees",
       "checkpoints": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 19.395,
+      "age_hours": 20.17,
       "category": "reptiles",
       "checkpoints": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 20.607,
+      "age_hours": 21.381,
       "category": "wildlife",
       "checkpoints": [
         {
@@ -290,7 +290,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 21.56,
+      "age_hours": 22.335,
       "category": "geology",
       "checkpoints": [
         {
@@ -345,7 +345,7 @@
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 22.486,
+      "age_hours": 23.261,
       "category": "farm",
       "checkpoints": [
         {
@@ -396,11 +396,11 @@
       "uploaded_at": "2026-07-15T20:21:30.033022+00:00",
       "url": "https://www.youtube.com/shorts/Nwsv9XCe7is",
       "video_id": "Nwsv9XCe7is",
-      "views_per_hour": 0.134
+      "views_per_hour": 0.133
     },
     {
       "action": "Run the analytics pull before making a creative decision.",
-      "age_hours": 23.188,
+      "age_hours": 23.963,
       "category": "farm",
       "checkpoints": [
         {
@@ -455,7 +455,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 24.506,
+      "age_hours": 25.281,
       "category": "farm",
       "checkpoints": [
         {
@@ -521,7 +521,7 @@
     },
     {
       "action": "TITLE_AUTO_REPAIR_TRIGGER",
-      "age_hours": 25.734,
+      "age_hours": 26.509,
       "category": "earth_from_space",
       "checkpoints": [
         {
@@ -572,7 +572,7 @@
       "uploaded_at": "2026-07-15T17:06:37.793048+00:00",
       "url": "https://www.youtube.com/shorts/pqdf9Rdjtu4",
       "video_id": "pqdf9Rdjtu4",
-      "views_per_hour": 0.156,
+      "views_per_hour": 0.155,
       "warning": {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
         "confidence_score": 0.756,
