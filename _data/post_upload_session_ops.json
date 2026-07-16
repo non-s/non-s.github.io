@@ -2,18 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 9,
+      "automation_safe": 8,
       "high": 0,
-      "manual_review": 1,
+      "manual_review": 2,
       "total": 10,
       "urgent": 7
     },
     "free_only": true,
-    "generated_at": "2026-07-16T20:20:54.972787+00:00",
+    "generated_at": "2026-07-16T20:35:04.556673+00:00",
     "items": [
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 24.692,
+        "age_hours": 24.928,
         "automation_safe": false,
         "category": "farm",
         "checkpoint_label": "1h",
@@ -38,9 +38,9 @@
         "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
-        "action_type": "pull_fresh_analytics",
-        "age_hours": 23.99,
-        "automation_safe": true,
+        "action_type": "prepare_package_rescue",
+        "age_hours": 24.226,
+        "automation_safe": false,
         "category": "farm",
         "checkpoint_label": "1h",
         "checkpoint_state": "overdue",
@@ -48,24 +48,24 @@
         "due_at": "2026-07-15T21:21:30.033022+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:Nwsv9XCe7is:analytics_due:1h",
-        "lane": "measurement",
-        "manual_approval_required": false,
+        "id": "fresh-upload:Nwsv9XCe7is:repair_candidate:1h",
+        "lane": "package_rescue",
+        "manual_approval_required": true,
         "opening_retention_score": 90.0,
         "priority": "urgent",
-        "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
+        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
         "series": "Farmyard Surprises",
-        "state": "analytics_due",
+        "state": "repair_candidate",
         "target_views": 24,
         "title": "Sheep recognize faces across the flock",
         "url": "https://www.youtube.com/shorts/Nwsv9XCe7is",
         "video_id": "Nwsv9XCe7is",
         "wait_until": "",
-        "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
+        "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 23.064,
+        "age_hours": 23.3,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "1h",
@@ -91,7 +91,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 22.111,
+        "age_hours": 22.347,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -117,7 +117,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 20.899,
+        "age_hours": 21.135,
         "automation_safe": true,
         "category": "reptiles",
         "checkpoint_label": "1h",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 20.012,
+        "age_hours": 20.248,
         "automation_safe": true,
         "category": "trees",
         "checkpoint_label": "1h",
@@ -169,7 +169,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 7.027,
+        "age_hours": 7.263,
         "automation_safe": true,
         "category": "wildlife",
         "checkpoint_label": "1h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.596,
+        "age_hours": 0.832,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "1h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "hold_until_first_hour",
-        "age_hours": 0.225,
+        "age_hours": 0.461,
         "automation_safe": true,
         "category": "chemistry",
         "checkpoint_label": "1h",
@@ -247,7 +247,7 @@
       },
       {
         "action_type": "watch_next_checkpoint",
-        "age_hours": 2.096,
+        "age_hours": 2.332,
         "automation_safe": true,
         "category": "ocean",
         "checkpoint_label": "6h",
@@ -273,7 +273,7 @@
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-16T20:20:54.971416+00:00"
+    "source_generated_at": "2026-07-16T20:35:04.555712+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -282,17 +282,17 @@
       24
     ],
     "counts": {
-      "analytics_due": 6,
+      "analytics_due": 5,
       "awaiting_1h": 2,
       "high_priority": 7,
-      "repair_candidates": 1,
+      "repair_candidates": 2,
       "tracked": 10
     },
-    "generated_at": "2026-07-16T20:20:54.971416+00:00",
+    "generated_at": "2026-07-16T20:35:04.555712+00:00",
     "items": [
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.225,
+        "age_hours": 0.461,
         "category": "chemistry",
         "checkpoints": [
           {
@@ -347,7 +347,7 @@
       },
       {
         "action": "Wait for the first-hour checkpoint; do not repair before data exists.",
-        "age_hours": 0.596,
+        "age_hours": 0.832,
         "category": "farm",
         "checkpoints": [
           {
@@ -402,7 +402,7 @@
       },
       {
         "action": "Keep observing through the next checkpoint.",
-        "age_hours": 2.096,
+        "age_hours": 2.332,
         "category": "ocean",
         "checkpoints": [
           {
@@ -457,7 +457,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 7.027,
+        "age_hours": 7.263,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -508,11 +508,11 @@
         "uploaded_at": "2026-07-16T13:19:16.344875+00:00",
         "url": "https://www.youtube.com/shorts/c15ttR7GlnY",
         "video_id": "c15ttR7GlnY",
-        "views_per_hour": 0.143
+        "views_per_hour": 0.138
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 20.012,
+        "age_hours": 20.248,
         "category": "trees",
         "checkpoints": [
           {
@@ -567,7 +567,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 20.899,
+        "age_hours": 21.135,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -618,11 +618,11 @@
         "uploaded_at": "2026-07-15T23:26:58.496934+00:00",
         "url": "https://www.youtube.com/shorts/L4U_p2YUTyg",
         "video_id": "L4U_p2YUTyg",
-        "views_per_hour": 0.144
+        "views_per_hour": 0.142
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 22.111,
+        "age_hours": 22.347,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -677,7 +677,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 23.064,
+        "age_hours": 23.3,
         "category": "geology",
         "checkpoints": [
           {
@@ -731,8 +731,8 @@
         "views_per_hour": 0.043
       },
       {
-        "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 23.99,
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "age_hours": 24.226,
         "category": "farm",
         "checkpoints": [
           {
@@ -754,17 +754,17 @@
             "views": 0
           },
           {
-            "delta_to_target": 0,
+            "delta_to_target": -297,
             "due_at": "2026-07-16T20:21:30.033022+00:00",
             "label": "24h",
-            "source": "estimated",
-            "state": "pending",
+            "source": "observed",
+            "state": "observed",
             "target_views": 300,
             "views": 3
           }
         ],
         "current_views": 3,
-        "hypothesis": "The next checkpoint is due, but the system still needs a fresh measured sample.",
+        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
         "next_checkpoint": {
           "delta_to_target": -24,
           "due_at": "2026-07-15T21:21:30.033022+00:00",
@@ -778,16 +778,27 @@
         "opening_retention_state": "retention_ready",
         "priority": "high",
         "series": "Farmyard Surprises",
-        "state": "analytics_due",
+        "state": "repair_candidate",
         "title": "Sheep recognize faces across the flock",
         "uploaded_at": "2026-07-15T20:21:30.033022+00:00",
         "url": "https://www.youtube.com/shorts/Nwsv9XCe7is",
         "video_id": "Nwsv9XCe7is",
-        "views_per_hour": 0.125
+        "views_per_hour": 0.124,
+        "warning": {
+          "action": "TITLE_AUTO_REPAIR_TRIGGER",
+          "confidence_score": 0.756,
+          "reason": "low early velocity",
+          "reasoning": "video has 30/2 samples, observed data, confidence 0.76; strategy changes allowed.",
+          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+          "title": "Sheep recognize faces across the flock",
+          "video_id": "Nwsv9XCe7is",
+          "views": 3,
+          "warning_state": "repair_risk"
+        }
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 24.692,
+        "age_hours": 24.928,
         "category": "farm",
         "checkpoints": [
           {
@@ -838,7 +849,7 @@
         "uploaded_at": "2026-07-15T19:39:23.925649+00:00",
         "url": "https://www.youtube.com/shorts/ga5ecDiwYCc",
         "video_id": "ga5ecDiwYCc",
-        "views_per_hour": 0.243,
+        "views_per_hour": 0.241,
         "warning": {
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.756,
@@ -859,7 +870,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-16T20:20:54.972881+00:00",
+  "generated_at": "2026-07-16T20:35:04.556763+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
