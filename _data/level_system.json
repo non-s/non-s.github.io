@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-16T00:13:46.059797+00:00",
+  "generated_at": "2026-07-16T00:15:00.001466+00:00",
   "mode": "free_resources_only",
   "status": "in_progress",
-  "overall_progress_pct": 26.5,
+  "overall_progress_pct": 25.5,
   "current_level": {
     "number": 2,
     "name": "Publish supply engine",
@@ -10,23 +10,23 @@
     "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
     "revenue_job": "Turn production from lucky shots into repeatable inventory.",
     "status": "boss_fight",
-    "progress_pct": 85.6
+    "progress_pct": 78.3
   },
   "boss": {
     "id": "publish_ready_reserve_low",
     "label": "Publish-ready reserve is below target",
     "severity": "critical",
     "evidence": {
-      "eligible_count": 4,
-      "operational_publish_ready": 4,
-      "apparent_publish_ready": 4,
-      "pending": 18,
+      "eligible_count": 3,
+      "operational_publish_ready": 3,
+      "apparent_publish_ready": 3,
+      "pending": 17,
       "target_publish_ready": 6,
       "target_pending": 20,
       "top_blockers": [
         {
           "id": "objective_gate:bootstrap_observe_before_scaling",
-          "count": 36,
+          "count": 34,
           "operator_translation": "collect more observed signal before scaling this pattern"
         },
         {
@@ -40,14 +40,14 @@
           "operator_translation": "editor in chief:script quality gate blocked the narration"
         },
         {
-          "id": "editor_in_chief:subject repeated inside 3-day cooldown",
-          "count": 8,
-          "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
-        },
-        {
           "id": "editor_in_chief:needs_ai_rewrite",
           "count": 6,
           "operator_translation": "editor in chief:needs ai rewrite"
+        },
+        {
+          "id": "editor_in_chief:subject repeated inside 3-day cooldown",
+          "count": 6,
+          "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
         }
       ]
     }
@@ -80,26 +80,26 @@
     {
       "priority": "P1",
       "action": "Build the reserve to six operational publish-ready Shorts.",
-      "target": "4/6",
+      "target": "3/6",
       "why": "One upload slot should never depend on one fragile candidate."
     },
     {
       "priority": "P1",
       "action": "Refresh free discovery only after the current repair batch is clean.",
-      "target": "pending 18/20",
+      "target": "pending 17/20",
       "why": "Bigger inventory helps only when the gate can accept winners."
     }
   ],
   "metrics": {
     "health_score": 67,
     "health_state": "needs_work",
-    "pending": 18,
-    "operational_publish_ready": 4,
-    "apparent_publish_ready": 4,
-    "eligible_count": 4,
+    "pending": 17,
+    "operational_publish_ready": 3,
+    "apparent_publish_ready": 3,
+    "eligible_count": 3,
     "scale_ready_count": 0,
-    "next_shorts_count": 4,
-    "editorial_candidate_count": 18,
+    "next_shorts_count": 3,
+    "editorial_candidate_count": 17,
     "published_count": 15,
     "views_28d": 30314,
     "total_subscribers": 46,
@@ -114,7 +114,7 @@
   "top_blockers": [
     {
       "id": "objective_gate:bootstrap_observe_before_scaling",
-      "count": 36,
+      "count": 34,
       "operator_translation": "collect more observed signal before scaling this pattern"
     },
     {
@@ -128,19 +128,19 @@
       "operator_translation": "editor in chief:script quality gate blocked the narration"
     },
     {
-      "id": "editor_in_chief:subject repeated inside 3-day cooldown",
-      "count": 8,
-      "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
-    },
-    {
       "id": "editor_in_chief:needs_ai_rewrite",
       "count": 6,
       "operator_translation": "editor in chief:needs ai rewrite"
     },
     {
-      "id": "bootstrap_observe_before_scaling",
+      "id": "editor_in_chief:subject repeated inside 3-day cooldown",
+      "count": 6,
+      "operator_translation": "editor in chief:subject repeated inside 3-day cooldown"
+    },
+    {
+      "id": "packaging:missing_action_word",
       "count": 4,
-      "operator_translation": "bootstrap observe before scaling"
+      "operator_translation": "packaging:missing action word"
     },
     {
       "id": "editor_in_chief:cooldown_subject",
@@ -148,19 +148,14 @@
       "operator_translation": "pick a fresh subject inside the same lane"
     },
     {
-      "id": "packaging:missing_action_word",
+      "id": "bootstrap_observe_before_scaling",
       "count": 3,
-      "operator_translation": "packaging:missing action word"
+      "operator_translation": "bootstrap observe before scaling"
     },
     {
       "id": "editor_in_chief:editorial score 46 is below 62",
       "count": 2,
       "operator_translation": "editor in chief:editorial score 46 is below 62"
-    },
-    {
-      "id": "editorial_cooldown_supply_fallback",
-      "count": 2,
-      "operator_translation": "editorial cooldown supply fallback"
     },
     {
       "id": "publish_score:rewrite",
@@ -171,6 +166,11 @@
       "id": "youtube_brain:title_shape_weak",
       "count": 1,
       "operator_translation": "youtube brain:title shape weak"
+    },
+    {
+      "id": "packaging:rewrite_packaging",
+      "count": 1,
+      "operator_translation": "packaging:rewrite packaging"
     }
   ],
   "levels": [
@@ -194,11 +194,11 @@
       "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
       "revenue_job": "Turn production from lucky shots into repeatable inventory.",
       "status": "current",
-      "progress_pct": 85.6,
+      "progress_pct": 78.3,
       "evidence": {
-        "operational_publish_ready": 4,
-        "eligible_count": 4,
-        "pending": 18,
+        "operational_publish_ready": 3,
+        "eligible_count": 3,
+        "pending": 17,
         "target_publish_ready": 6,
         "target_pending": 20
       }
@@ -262,11 +262,11 @@
       "unlock": "One million views per 28 days, excellent health, and ten publish-ready Shorts in reserve.",
       "revenue_job": "Scale the proven system instead of adding random effort.",
       "status": "locked",
-      "progress_pct": 14.3,
+      "progress_pct": 11.0,
       "evidence": {
         "views_28d": 30314,
         "health_state": "needs_work",
-        "operational_publish_ready": 4
+        "operational_publish_ready": 3
       }
     }
   ],

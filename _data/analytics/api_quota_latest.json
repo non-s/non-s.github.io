@@ -1,32 +1,40 @@
 {
   "calls": {
-    "pexels.search": 58
+    "youtube.analytics.reports.query": 6,
+    "youtube.commentThreads.insert": 1,
+    "youtube.playlistItems.insert": 2,
+    "youtube.playlistItems.list": 2,
+    "youtube.playlists.list": 2,
+    "youtube.thumbnails.set": 3,
+    "youtube.videos.insert": 3
   },
-  "estimated_daily_calls": {},
-  "estimated_units": 58,
+  "estimated_daily_calls": {
+    "youtube.videos.insert": 3
+  },
+  "estimated_units": 310,
   "guard": {
     "block": false,
     "daily_budget": 10000,
     "daily_call_buckets": {
       "youtube.videos.insert": {
-        "attempted_today": 0,
+        "attempted_today": 3,
         "block": false,
         "daily_budget": 100,
         "max_daily_ratio": 0.95,
-        "projected_ratio": 0.5,
-        "projected_today": 50,
+        "projected_ratio": 0.53,
+        "projected_today": 53,
         "spent_today": 50
       }
     },
     "enabled": true,
     "max_daily_ratio": 0.95,
     "mode": "block",
-    "projected_ratio": 0.7934,
-    "projected_today": 7934,
+    "projected_ratio": 0.8186,
+    "projected_today": 8186,
     "reason": "within_budget_or_observe",
     "spent_today": 7876
   },
   "quota_day_pt": "2026-07-15",
-  "timestamp_utc": "2026-07-16T00:12:09.890603+00:00",
-  "workflow": "fetch-content"
+  "timestamp_utc": "2026-07-16T00:13:15.483647+00:00",
+  "workflow": "youtube-bot"
 }
