@@ -1,33 +1,44 @@
 {
-  "generated_at": "2026-07-16T13:08:40.956219+00:00",
-  "pending": 14,
+  "generated_at": "2026-07-16T13:11:20.465838+00:00",
+  "pending": 15,
   "states": {
-    "rewrite": 14
+    "rewrite": 14,
+    "publish_ready": 1
   },
   "mechanism_clusters": {
     "call_signal": 1,
+    "scent_map": 1,
     "beak_signal": 1,
     "tail_signal": 1,
     "face_recognition": 1
   },
   "rights": {
-    "approved": 14
+    "approved": 15
   },
   "prune_summary": {
-    "pending_before": 14,
-    "pending_after": 14,
-    "rejected": 0,
+    "pending_before": 16,
+    "pending_after": 15,
+    "rejected": 1,
     "repair_needed": 0,
     "repaired": 5,
     "reasons": {
-      "objective_gate:bootstrap_observe_before_scaling": 12,
+      "objective_gate:bootstrap_observe_before_scaling": 13,
       "editor_in_chief:script quality gate blocked the narration": 7,
       "editor_in_chief:subject repeated inside 3-day cooldown": 3,
       "objective_gate:observe_before_scaling": 2,
+      "duplicate_title": 1,
       "editor_in_chief:editorial score 46 is below 62": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "a791a2aa1c19b083",
+      "title": "Magnets make invisible fields visible",
+      "reasons": [
+        "duplicate_title"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "53de3ea8dc946736",
       "title": "Seals track fish trails with whiskers",
@@ -299,18 +310,650 @@
         "off_topic_visual"
       ],
       "stage": "queue_prune"
-    },
-    {
-      "id": "34388c84733d6636",
-      "title": "alpine landslide splits mountain slope",
-      "reasons": [
-        "off_topic_visual",
-        "non_animal_body_language"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
+    {
+      "id": "18762a35e9b1f385",
+      "title": "Wolves leave scent notes for the pack",
+      "category": "wildlife",
+      "publish_score": {
+        "approved": true,
+        "category": "wildlife",
+        "decision_confidence": {
+          "bootstrap_multiplier": 0.31,
+          "can_adjust_strategy": false,
+          "confidence_score": 0.08,
+          "data_quality": "estimated",
+          "data_quality_score": 0.425,
+          "minimum_sample_size": 25,
+          "reasoning": "Combined 5 evidence source(s) with average confidence 0.08.",
+          "recommendation_strength": "observe",
+          "sample_size": 5
+        },
+        "distribution_adjustment": 0,
+        "editorial_guard": {
+          "approved": true,
+          "issues": [],
+          "state": "approved"
+        },
+        "hook_score": 100,
+        "objective_gate": {
+          "confidence_score": 0.08,
+          "mechanism_cluster": "scent_map",
+          "payoff_time_s": 0.0,
+          "penalty": 0.0,
+          "publish_blocking": false,
+          "reasons": [
+            "bootstrap_observe_before_scaling"
+          ],
+          "scale_ready": false,
+          "swipe_risk_band": "low",
+          "template_cluster": ""
+        },
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "scent"
+          ],
+          "cue_terms": [
+            "post",
+            "scent"
+          ],
+          "frame_hook_bridge": [
+            "scent"
+          ],
+          "risks": [
+            "missing_early_action"
+          ],
+          "score": 96.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "wolves"
+        },
+        "opportunity": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [
+            "weak_visual_surface"
+          ],
+          "score": 55,
+          "signals": {
+            "comment_potential": 62,
+            "educational_potential": 58,
+            "emotional_potential": 27,
+            "novelty": 51,
+            "replay_potential": 66,
+            "viral_potential": 61,
+            "visual_potential": 51
+          },
+          "verdict": "rewrite"
+        },
+        "phrase_risk": {
+          "hits": [],
+          "penalty": 0
+        },
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 72,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 50
+          },
+          "verdict": "rewrite"
+        },
+        "score": 100,
+        "state": "publish_ready",
+        "story_format": "animal_intelligence",
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.296,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.061,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "title_score": 100,
+        "weak_content": {
+          "confidence": {
+            "bootstrap_multiplier": 0.738,
+            "can_adjust_strategy": true,
+            "confidence_score": 0.65,
+            "data_quality": "inferred",
+            "data_quality_score": 0.65,
+            "minimum_sample_size": 5,
+            "reasoning": "pattern has 10/5 samples, inferred data, confidence 0.65; strategy changes allowed.",
+            "recommendation_strength": "test",
+            "sample_size": 10
+          },
+          "reasoning": "Weak-content checks use deterministic pattern risk plus any repeated weak patterns in memory.",
+          "reasons": [],
+          "risk": 0,
+          "state": "clear"
+        }
+      },
+      "editorial_state": "publish_ready",
+      "queue_prune": {
+        "checked_at": "2026-07-16T13:11:06.359900+00:00",
+        "mechanism_cluster": "scent_map",
+        "objective_reasons": [
+          "objective_gate:bootstrap_observe_before_scaling"
+        ],
+        "score": 100.0,
+        "state": "publish_ready",
+        "template_cluster": ""
+      },
+      "queue_score": 100.0,
+      "youtube_brain": {
+        "animal": "wolves",
+        "commands": [],
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "scent"
+          ],
+          "cue_terms": [
+            "post",
+            "scent"
+          ],
+          "frame_hook_bridge": [
+            "scent"
+          ],
+          "risks": [
+            "missing_early_action"
+          ],
+          "score": 96.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "wolves"
+        },
+        "replay_reason": "watch_the_cue_again",
+        "retention_path": [
+          "0-1s: visible subject and outcome",
+          "1-4s: visible cue",
+          "4-18s: mechanism",
+          "last 2s: payoff and follow signal"
+        ],
+        "risks": [],
+        "satisfaction_bet": "The viewer gets one visible behavior and one reason, fast.",
+        "score": 100,
+        "state": "publish_minded",
+        "story_format": "animal_intelligence",
+        "strengths": [
+          "subject_visible_in_first_sentence",
+          "action_driven_promise",
+          "visible_cue_for_viewer",
+          "clear_payoff",
+          "shorts_length_fit",
+          "thumbnail_text_scannable",
+          "retention_opening_aligned"
+        ],
+        "subject": "wolves",
+        "viewer_promise": "See why wolves animal intelligence matters."
+      },
+      "packaging": {
+        "community_prompt": "Which wolves clue should Wild Brief compare next in Watch The Cue?",
+        "cta_prompt": "Want more wild behavior explained without the fluff?",
+        "curiosity_gap": {
+          "hook": "Why do these wolves change after the scent post?",
+          "reasons": [
+            "specific_detail",
+            "open_loop"
+          ],
+          "score": 78.0,
+          "source": "template"
+        },
+        "editorial_rulebook": {
+          "approved": true,
+          "notes": [],
+          "recommended_duration_s": 24,
+          "recommended_format": "animal intelligence",
+          "score": 100.0,
+          "violations": []
+        },
+        "experiment": {
+          "assignment": {
+            "cta": "follow_for_more",
+            "format": "winner_inspired",
+            "hook": "pattern_reuse",
+            "thumbnail": "new_thumbnail"
+          },
+          "explore_rate": 0.1,
+          "mode": "exploit",
+          "sample_count": 111,
+          "winners": {
+            "hook_pattern": "{subject} can {action} {subject} {subject}",
+            "thumbnail_pattern": "",
+            "title_pattern": "{subject} use {subject} {subject} {subject} {subject} {action}"
+          },
+          "winning_experiments": {
+            "cta:follow_for_more": 27.74,
+            "format:fresh_variant": 26.1,
+            "format:winner_inspired": 27.74,
+            "hook:pattern_reuse": 27.74,
+            "thumbnail:new_thumbnail": 27.51
+          }
+        },
+        "frame_zero": {
+          "approved": true,
+          "first_frame_preview": "first_frame_preview.png",
+          "retention_opening": {
+            "approved": true,
+            "cue_bridge": [
+              "scent"
+            ],
+            "cue_terms": [
+              "post",
+              "scent"
+            ],
+            "frame_hook_bridge": [
+              "scent"
+            ],
+            "risks": [
+              "missing_early_action"
+            ],
+            "score": 96.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "wolves"
+          },
+          "safe_area": {
+            "aspect": "4:5",
+            "h": 1350,
+            "w": 1080,
+            "x": 0,
+            "y": 285
+          },
+          "score": 92,
+          "word_count": 2
+        },
+        "hook_options": [
+          "Wolves leave scent notes for the pack",
+          "Wolves show why the scent post matters.",
+          "Wolves show why the scent post matters.",
+          "Wolves show why the scent post matters.",
+          "Wolves give away the answer through scent post"
+        ],
+        "loop_plan": {
+          "audio_crossfade_ms": 120,
+          "callback_keyword": "scent post",
+          "ending_line": "Which pack signal next?",
+          "final_line": "Now the scent post at the start makes sense.",
+          "loop_score": 0.788,
+          "opening_line": "Wolves leave scent notes for the pack.",
+          "render_hints": {
+            "avoid_hard_stop": true,
+            "carry_keyword": "scent post",
+            "subtle_audio_tail": true
+          },
+          "rewrite_applied": true,
+          "subtitle_tail_mode": "carry-forward"
+        },
+        "loop_score": 0.788,
+        "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "opening_retention": {
+          "approved": true,
+          "cue_bridge": [
+            "scent"
+          ],
+          "cue_terms": [
+            "post",
+            "scent"
+          ],
+          "frame_hook_bridge": [
+            "scent"
+          ],
+          "risks": [
+            "missing_early_action"
+          ],
+          "score": 96.0,
+          "state": "retention_ready",
+          "strengths": [
+            "subject_frontloaded",
+            "frame_hook_bridge",
+            "visible_cue_repeated_early",
+            "watch_instruction_early",
+            "reason_arrives_early",
+            "frame_text_scannable"
+          ],
+          "subject": "wolves"
+        },
+        "pinned_comment": "Watch the scent post again. Tomorrow in Watch The Cue: another animal signal. Is this adaptation, instinct, or intelligence?",
+        "preflight_inputs": {
+          "caption_chars_per_second": 15.82,
+          "contrast_score": 0.74,
+          "cta_count": 1,
+          "duration_hint_s": 17,
+          "first_2s_narration": "Wolves leave scent notes for the pack Watch where the animal pauses",
+          "first_frame_text": "SCENT POST",
+          "first_frame_text_words": 2,
+          "hook": "Wolves leave scent notes for the pack.",
+          "hook_specificity": 0.78,
+          "hook_words": 7,
+          "loop_score": 0.788,
+          "novelty_score": 0.58,
+          "opening_retention": {
+            "approved": true,
+            "cue_bridge": [
+              "scent"
+            ],
+            "cue_terms": [
+              "post",
+              "scent"
+            ],
+            "frame_hook_bridge": [
+              "scent"
+            ],
+            "risks": [
+              "missing_early_action"
+            ],
+            "score": 96.0,
+            "state": "retention_ready",
+            "strengths": [
+              "subject_frontloaded",
+              "frame_hook_bridge",
+              "visible_cue_repeated_early",
+              "watch_instruction_early",
+              "reason_arrives_early",
+              "frame_text_scannable"
+            ],
+            "subject": "wolves"
+          },
+          "opening_retention_score": 96.0,
+          "payoff_reveal_sentence_index": 0,
+          "payoff_score": 75,
+          "payoff_time_s": 0,
+          "visual_motion_score": 0.76
+        },
+        "principle": "Stop the swipe with a visible cue, then pay it off fast.",
+        "replay_prompt": "End by pointing back to the scent post, so viewers rewatch the wolves clip.",
+        "retention": {
+          "confidence": {
+            "bootstrap_multiplier": 0.335,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.113,
+            "data_quality": "estimated",
+            "data_quality_score": 0.567,
+            "minimum_sample_size": 5,
+            "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+            "recommendation_strength": "observe",
+            "sample_size": 1
+          },
+          "reasoning": "category has 1/5 samples, estimated data, confidence 0.11; observation only.",
+          "reasons": [],
+          "score": 72,
+          "signals": {
+            "completion_prediction": 77,
+            "curiosity_score": 71,
+            "hook_score": 82,
+            "replay_score": 72,
+            "visual_score": 50
+          },
+          "verdict": "rewrite"
+        },
+        "retention_contract": {
+          "first_2s_narration": "Wolves leave scent notes for the pack Watch where the animal pauses",
+          "first_frame_text": "SCENT POST",
+          "next_episode_question": "Tomorrow in Watch The Cue: another animal signal. Is this adaptation, instinct, or intelligence?",
+          "opening_retention_score": 96.0,
+          "opening_retention_state": "retention_ready",
+          "search_intent": {
+            "description_line": "This Short explains Wolves behavior through the visible scent post.",
+            "series": "Watch The Cue",
+            "subject": "wolves",
+            "terms": [
+              "wolves",
+              "scent post",
+              "wildlife",
+              "animal intelligence"
+            ],
+            "title_variant": "Wolves behavior: scent post explained",
+            "visible_cue": "scent post"
+          },
+          "series": "Watch The Cue",
+          "subject": "wolves",
+          "visible_cue": "scent post"
+        },
+        "risks": [],
+        "score": 95,
+        "search_intent": {
+          "description_line": "This Short explains Wolves behavior through the visible scent post.",
+          "series": "Watch The Cue",
+          "subject": "wolves",
+          "terms": [
+            "wolves",
+            "scent post",
+            "wildlife",
+            "animal intelligence"
+          ],
+          "title_variant": "Wolves behavior: scent post explained",
+          "visible_cue": "scent post"
+        },
+        "selected_variant": {
+          "hook": "Wolves leave scent notes for the pack",
+          "score": 77,
+          "thumbnail_text": "SCENT POST",
+          "title": "Wolves read scent posts like a map"
+        },
+        "series": "Watch The Cue",
+        "series_identity": {
+          "continuity_prompt": "Next in Watch The Cue: compare this with another force of nature.",
+          "episode": 1,
+          "label": "Watch The Cue",
+          "series": "Watch The Cue"
+        },
+        "state": "magnetic",
+        "strengths": [
+          "title_shape",
+          "thumbnail_scannable",
+          "subject_clear",
+          "action_word",
+          "visible_cue",
+          "retention_opening_aligned"
+        ],
+        "subscriber_conversion": {
+          "comment_probability": 0.223,
+          "confidence": {
+            "bootstrap_multiplier": 0.296,
+            "can_adjust_strategy": false,
+            "confidence_score": 0.061,
+            "data_quality": "inferred",
+            "data_quality_score": 0.5,
+            "minimum_sample_size": 10,
+            "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+            "recommendation_strength": "observe",
+            "sample_size": 2
+          },
+          "reasoning": "Combined 4 evidence source(s) with average confidence 0.06.",
+          "reasons": [
+            "identity_cta",
+            "debate_comment",
+            "return_prompt",
+            "series_identity"
+          ],
+          "return_probability": 0.261,
+          "robotic_title": {
+            "hits": [],
+            "risk": 0,
+            "state": "clear"
+          },
+          "score": 86,
+          "state": "strong",
+          "subscriber_probability": 0.123
+        },
+        "swipe_risk": {
+          "band": "low",
+          "fixes": [],
+          "reasons": [],
+          "score": 0
+        },
+        "thumbnail_options": [
+          "SCENT POST",
+          "WATCH SCENT POST",
+          "WOLVES SIGNAL",
+          "SCENT POST MATTERS",
+          "SCENT POST FIRST",
+          "SCENT POST REVEAL",
+          "SCENT POST CLUE",
+          "WATCH THE MOVE",
+          "SPOT THE CLUE"
+        ],
+        "title_options": [
+          "Wolves read scent posts like a map",
+          "Wolves leave scent notes for the pack",
+          "Wolves signal through scent post",
+          "Wolves use scent post before they signal",
+          "This scent post gives wolves away",
+          "Why wolves signal after one scent post",
+          "Wolves reveal the answer with scent post",
+          "The scent post that changes the moment",
+          "Wolves make one scent post matter",
+          "Wolves show the hidden answer in seconds"
+        ],
+        "top_variants": [
+          {
+            "hook": "Wolves leave scent notes for the pack",
+            "score": 77,
+            "thumbnail_text": "SCENT POST",
+            "title": "Wolves read scent posts like a map"
+          },
+          {
+            "hook": "Start with the scent post; it changes the scene",
+            "score": 77,
+            "thumbnail_text": "SCENT POST",
+            "title": "Wolves read scent posts like a map"
+          },
+          {
+            "hook": "Watch the scent post; it explains the behavior",
+            "score": 75,
+            "thumbnail_text": "SCENT POST",
+            "title": "Wolves read scent posts like a map"
+          },
+          {
+            "hook": "Wolves leave scent notes for the pack",
+            "score": 73,
+            "thumbnail_text": "SCENT POST",
+            "title": "Wolves use scent post before they signal"
+          },
+          {
+            "hook": "Start with the scent post; it changes the scene",
+            "score": 73,
+            "thumbnail_text": "SCENT POST",
+            "title": "Wolves use scent post before they signal"
+          },
+          {
+            "hook": "Watch the scent post; it explains the behavior",
+            "score": 72,
+            "thumbnail_text": "SCENT POST",
+            "title": "Wolves use scent post before they signal"
+          },
+          {
+            "hook": "Wolves leave scent notes for the pack",
+            "score": 70,
+            "thumbnail_text": "WATCH SCENT POST",
+            "title": "Wolves read scent posts like a map"
+          },
+          {
+            "hook": "Start with the scent post; it changes the scene",
+            "score": 70,
+            "thumbnail_text": "WATCH SCENT POST",
+            "title": "Wolves read scent posts like a map"
+          },
+          {
+            "hook": "Wolves leave scent notes for the pack",
+            "score": 70,
+            "thumbnail_text": "WOLVES SIGNAL",
+            "title": "Wolves read scent posts like a map"
+          },
+          {
+            "hook": "Start with the scent post; it changes the scene",
+            "score": 70,
+            "thumbnail_text": "WOLVES SIGNAL",
+            "title": "Wolves read scent posts like a map"
+          }
+        ]
+      },
+      "rights_audit": {
+        "approved": true,
+        "source": "pexels",
+        "license": "pexels license (free for commercial use)",
+        "reasons": [],
+        "warnings": []
+      },
+      "editorial_guard": {
+        "approved": true,
+        "issues": [],
+        "state": "approved"
+      }
+    },
     {
       "id": "7297fa80243db8ee",
       "title": "Macaws use beaks like climbing tools",
@@ -484,7 +1127,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T13:08:31.244539+00:00",
+        "checked_at": "2026-07-16T13:11:06.362846+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1123,7 +1766,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T13:08:31.245973+00:00",
+        "checked_at": "2026-07-16T13:11:06.364839+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1768,7 +2411,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T13:08:31.248885+00:00",
+        "checked_at": "2026-07-16T13:11:06.369105+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2237,7 +2880,7 @@
     },
     {
       "id": "0e46ecd46c794407",
-      "title": "Arctics use tail lift to solve a problem",
+      "title": "Arctics reveal the answer with tail lift",
       "category": "arctic",
       "publish_score": {
         "approved": true,
@@ -2259,7 +2902,7 @@
           "issues": [],
           "state": "approved"
         },
-        "hook_score": 88,
+        "hook_score": 74,
         "objective_gate": {
           "confidence_score": 0.035,
           "mechanism_cluster": "tail_signal",
@@ -2345,9 +2988,9 @@
           },
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 76,
+          "score": 77,
           "signals": {
-            "completion_prediction": 77,
+            "completion_prediction": 84,
             "curiosity_score": 87,
             "hook_score": 82,
             "replay_score": 72,
@@ -2410,16 +3053,16 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T13:08:31.247784+00:00",
+        "checked_at": "2026-07-16T13:11:06.367606+00:00",
         "mechanism_cluster": "tail_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
         ],
-        "score": 78.0,
+        "score": 86.0,
         "state": "rewrite",
         "template_cluster": ""
       },
-      "queue_score": 78.0,
+      "queue_score": 86.0,
       "youtube_brain": {
         "animal": "arctic",
         "commands": [],
@@ -2573,8 +3216,8 @@
           "callback_keyword": "arctics",
           "ending_line": "Which arctics detail should we decode next?",
           "final_line": "Which arctics detail should we decode next?",
-          "loop_score": 0.825,
-          "opening_line": "Arctics use tail lift for a reason.",
+          "loop_score": 0.828,
+          "opening_line": "Arctics reveal the tail lift fast.",
           "render_hints": {
             "avoid_hard_stop": true,
             "carry_keyword": "arctics",
@@ -2583,7 +3226,7 @@
           "rewrite_applied": false,
           "subtitle_tail_mode": "carry-forward"
         },
-        "loop_score": 0.825,
+        "loop_score": 0.828,
         "next_episode_question": "Tomorrow in Polar Survival: another animal signal. What part of this feels most impossible?",
         "opening_retention": {
           "approved": true,
@@ -2615,17 +3258,17 @@
         },
         "pinned_comment": "Watch the tail position again. Tomorrow in Polar Survival: another animal signal. What part of this feels most impossible?",
         "preflight_inputs": {
-          "caption_chars_per_second": 14.95,
+          "caption_chars_per_second": 14.89,
           "contrast_score": 0.74,
           "cta_count": 1,
           "duration_hint_s": 19,
-          "first_2s_narration": "Arctics use tail lift for reason Watch the tail position because arctics",
+          "first_2s_narration": "Arctics reveal the tail lift fast Watch the tail position because arctics",
           "first_frame_text": "TAIL LIFT",
           "first_frame_text_words": 2,
-          "hook": "Arctics use tail lift for a reason.",
+          "hook": "Arctics reveal the tail lift fast.",
           "hook_specificity": 0.78,
           "hook_words": 6,
-          "loop_score": 0.825,
+          "loop_score": 0.828,
           "novelty_score": 0.58,
           "opening_retention": {
             "approved": true,
@@ -2657,7 +3300,7 @@
           },
           "opening_retention_score": 100.0,
           "payoff_reveal_sentence_index": 0,
-          "payoff_score": 84,
+          "payoff_score": 75,
           "payoff_time_s": 0,
           "visual_motion_score": 0.76
         },
@@ -2677,9 +3320,9 @@
           },
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 76,
+          "score": 77,
           "signals": {
-            "completion_prediction": 77,
+            "completion_prediction": 84,
             "curiosity_score": 87,
             "hook_score": 82,
             "replay_score": 72,
@@ -2688,7 +3331,7 @@
           "verdict": "rewrite"
         },
         "retention_contract": {
-          "first_2s_narration": "Arctics use tail lift for a reason Watch the tail position because",
+          "first_2s_narration": "Arctics reveal the tail lift fast Watch the tail position because arctics",
           "first_frame_text": "TAIL LIFT",
           "next_episode_question": "Tomorrow in Polar Survival: another animal signal. What part of this feels most impossible?",
           "opening_retention_score": 100.0,
@@ -2711,10 +3354,9 @@
         },
         "risks": [
           "title_needs_stronger_shape",
-          "subject_not_clear",
-          "missing_action_word"
+          "subject_not_clear"
         ],
-        "score": 67,
+        "score": 75,
         "search_intent": {
           "description_line": "This Short explains Arctic behavior through the visible tail position.",
           "series": "Polar Survival",
@@ -2728,7 +3370,7 @@
           "visible_cue": "tail position"
         },
         "selected_variant": {
-          "hook": "Arctics use tail lift for a reason",
+          "hook": "Arctics reveal the tail lift fast",
           "score": 61,
           "thumbnail_text": "TAIL LIFT",
           "title": "Why arctics signal after one tail lift"
@@ -2740,9 +3382,10 @@
           "label": "Polar Survival #4",
           "series": "Polar Survival #4"
         },
-        "state": "rewrite_packaging",
+        "state": "usable",
         "strengths": [
           "thumbnail_scannable",
+          "action_word",
           "visible_cue",
           "retention_opening_aligned"
         ],
@@ -2795,20 +3438,20 @@
           "SPOT THE CLUE"
         ],
         "title_options": [
-          "Arctics use tail lift to solve a problem",
+          "Arctics reveal the answer with tail lift",
           "Arctics signal through tail lift",
           "Arctics use tail lift before they signal",
           "This tail lift gives arctics away",
           "Why arctics signal after one tail lift",
-          "Arctics reveal the answer with tail lift",
           "The tail lift that changes the moment",
           "Arctics make one tail lift matter",
           "Arctics show the hidden answer in seconds",
-          "Arctics: watch this tail lift"
+          "Arctics: watch this tail lift",
+          "Watch arctics after the tail lift"
         ],
         "top_variants": [
           {
-            "hook": "Arctics use tail lift for a reason",
+            "hook": "Arctics reveal the tail lift fast",
             "score": 61,
             "thumbnail_text": "TAIL LIFT",
             "title": "Why arctics signal after one tail lift"
@@ -2826,7 +3469,7 @@
             "title": "Why arctics signal after one tail lift"
           },
           {
-            "hook": "Arctics use tail lift for a reason",
+            "hook": "Arctics reveal the tail lift fast",
             "score": 61,
             "thumbnail_text": "WATCH TAIL LIFT",
             "title": "Why arctics signal after one tail lift"
@@ -2844,7 +3487,7 @@
             "title": "Why arctics signal after one tail lift"
           },
           {
-            "hook": "Arctics use tail lift for a reason",
+            "hook": "Arctics reveal the tail lift fast",
             "score": 61,
             "thumbnail_text": "ARCTICS SIGNAL",
             "title": "Why arctics signal after one tail lift"
@@ -2862,7 +3505,7 @@
             "title": "Why arctics signal after one tail lift"
           },
           {
-            "hook": "Arctics use tail lift for a reason",
+            "hook": "Arctics reveal the tail lift fast",
             "score": 61,
             "thumbnail_text": "TAIL LIFT MATTERS",
             "title": "Why arctics signal after one tail lift"
@@ -3061,7 +3704,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T13:08:31.241134+00:00",
+        "checked_at": "2026-07-16T13:11:06.071675+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3712,7 +4355,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T13:08:31.243037+00:00",
+        "checked_at": "2026-07-16T13:11:06.074246+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4341,7 +4984,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T13:08:31.247007+00:00",
+        "checked_at": "2026-07-16T13:11:06.366513+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4982,7 +5625,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T13:08:31.249777+00:00",
+        "checked_at": "2026-07-16T13:11:06.370333+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5635,7 +6278,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T13:08:31.250759+00:00",
+        "checked_at": "2026-07-16T13:11:06.372406+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6282,7 +6925,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T13:08:31.251760+00:00",
+        "checked_at": "2026-07-16T13:11:06.373777+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6931,7 +7574,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T13:08:31.233544+00:00",
+        "checked_at": "2026-07-16T13:11:06.066287+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -7573,7 +8216,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T13:08:31.235688+00:00",
+        "checked_at": "2026-07-16T13:11:06.069614+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -8238,7 +8881,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T13:08:31.252953+00:00",
+        "checked_at": "2026-07-16T13:11:06.375469+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8895,7 +9538,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T13:08:31.241874+00:00",
+        "checked_at": "2026-07-16T13:11:06.072671+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
