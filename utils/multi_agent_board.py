@@ -15,6 +15,24 @@ def run_editorial_board(topic: str, language: str = "pt") -> Dict[str, str]:
     
     current_month = datetime.datetime.now().strftime("%B")
     
+    import random
+    from pathlib import Path
+    ROOT = Path(__file__).resolve().parents[1]
+    hooks_file = ROOT / "_data" / "hook_formulas.json"
+    hook_injection = ""
+    if hooks_file.exists():
+        try:
+            import json
+            with open(hooks_file, "r", encoding="utf-8") as f:
+                hooks = json.load(f)
+            if hooks:
+                selected_hook = random.choice(hooks).get("formula", "")
+                if selected_hook:
+                    hook_injection = f"\n    COMPETITOR VIRAL DNA FOUND! You MUST structure the hook using this psychological template: '{selected_hook}'\n"
+        except Exception:
+            pass
+
+    
     # 1. Director Agent
     director_prompt = f"""
     You are the Creative Director of an award-winning nature documentary channel.
@@ -70,6 +88,7 @@ def run_editorial_board(topic: str, language: str = "pt") -> Dict[str, str]:
     Scientifically Validated Angle: {validated}
     Biological Fact: {fact}
     Target Language: {language}
+    {hook_injection}
     
     Write a brilliant, short script that perfectly synchronizes with a fast-paced video clip.
     RULES FOR ALGORITHMIC VIRALITY (MANDATORY):
