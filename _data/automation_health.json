@@ -1,18 +1,19 @@
 {
-  "generated_at": "2026-07-16T19:48:35.337505+00:00",
-  "score": 77,
-  "state": "watch",
+  "generated_at": "2026-07-16T20:10:11.791678+00:00",
+  "score": 47,
+  "state": "needs_work",
   "issues": [
     "queue_inventory_low",
+    "publish_ready_inventory_empty",
+    "no_agency_publish_now_candidate",
     "average_retention_needs_attention"
   ],
   "queue": {
-    "pending": 15,
-    "publish_ready": 1,
+    "pending": 14,
+    "publish_ready": 0,
     "categories": {
       "arctic": 1,
       "birds": 2,
-      "chemistry": 1,
       "conservation": 1,
       "earth_from_space": 1,
       "forests": 2,
@@ -29,11 +30,10 @@
       "queue_prune:rewrite": 14,
       "editor_in_chief:needs_ai_rewrite": 5,
       "editor_in_chief:cooldown_subject": 4,
-      "packaging:missing_action_word": 4,
+      "packaging:missing_action_word": 3,
       "youtube_brain:missing_visual_cue": 1,
       "publish_score:rewrite": 1,
       "youtube_brain:title_shape_weak": 1,
-      "packaging:rewrite_packaging": 1,
       "packaging:title_needs_stronger_shape": 1,
       "packaging:subject_not_clear": 1,
       "packaging:script does not expose enough concrete visual detail": 1
@@ -45,16 +45,16 @@
     "subject_frontloaded_pct": 100.0
   },
   "agency": {
-    "average_score": 53.7,
+    "average_score": 51.6,
     "decisions": {
       "hold": 9,
-      "strong_candidate": 6
+      "strong_candidate": 5
     },
     "top": [
       {
-        "title": "Arctics use tail lift to solve a problem",
+        "title": "Arctics reveal the answer with tail lift",
         "category": "arctic",
-        "score": 80,
+        "score": 79,
         "decision": "strong_candidate",
         "strengths": [
           "strong_quality",
@@ -83,19 +83,9 @@
         ]
       },
       {
-        "title": "Crystals use crystal edge before they lock",
-        "category": "chemistry",
-        "score": 75,
-        "decision": "strong_candidate",
-        "strengths": [
-          "strong_quality",
-          "fresh_inventory"
-        ]
-      },
-      {
         "title": "Storm clouds show air layers changing over time",
         "category": "earth_from_space",
-        "score": 73,
+        "score": 72,
         "decision": "strong_candidate",
         "strengths": [
           "strong_quality"
@@ -113,36 +103,46 @@
       {
         "title": "Whales send songs across huge ocean distances",
         "category": "ocean",
-        "score": 49,
+        "score": 48,
         "decision": "hold",
         "strengths": [
           "strong_quality",
-          "matches_channel_learning",
           "fresh_inventory"
         ]
       },
       {
         "title": "Turtles steer home by reading hidden currents",
         "category": "ocean",
-        "score": 46,
+        "score": 45,
         "decision": "hold",
         "strengths": [
           "strong_quality",
           "matches_channel_learning",
           "fresh_angle"
         ]
+      },
+      {
+        "title": "Elephants can feel rumbles through the ground",
+        "category": "wildlife",
+        "score": 44,
+        "decision": "hold",
+        "strengths": [
+          "strong_quality",
+          "matches_channel_learning",
+          "fresh_inventory"
+        ]
       }
     ]
   },
   "analytics": {
-    "pulled_at": "2026-07-16T19:45:11.695160+00:00",
+    "pulled_at": "2026-07-16T20:07:28.265501+00:00",
     "metric_scope": "youtube_analytics_pending_data",
     "total_views": 23,
     "avg_view_pct": 0.0,
-    "shorts_tracked": 114
+    "shorts_tracked": 115
   },
   "comments": {
-    "comments_sampled": 9,
-    "question_count": 9
+    "comments_sampled": 10,
+    "question_count": 10
   }
 }
