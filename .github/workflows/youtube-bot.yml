@@ -293,18 +293,11 @@ jobs:
             printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
             chmod 600 youtube_token.json
           fi
-          if [ -n "$YOUTUBE_TOKEN_ES" ]; then
-            printf '%s' "$YOUTUBE_TOKEN_ES" > youtube_token_es-MX.json
-            chmod 600 youtube_token_es-MX.json
-          fi
       - name: "Validar autenticacao do YouTube"
         if: steps.publish_window.outputs.should_publish == 'true'
         run: |
           if [ -f youtube_token.json ]; then
             python upload_youtube.py --check-auth --language=en
-          fi
-          if [ -f youtube_token_es-MX.json ]; then
-            python upload_youtube.py --check-auth --language=es-MX
           fi
         env:
           PYTHONIOENCODING: utf-8
@@ -322,18 +315,9 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY || secrets.GROQ }}
           MAX_SHORTS_PER_RUN: ${{ env.MAX_SHORTS_PER_RUN }}
-      - name: "Upload Shorts para YouTube (English)"
+      - name: "Upload Shorts para YouTube"
         if: steps.publish_window.outputs.should_publish == 'true' && hashFiles('youtube_token.json') != ''
         run: python upload_youtube.py --language=en
-        env:
-          PYTHONIOENCODING: utf-8
-          PYTHONUNBUFFERED: "1"
-          YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
-          YOUTUBE_DESCRIPTION_MODE: ${{ vars.YOUTUBE_DESCRIPTION_MODE || 'empty' }}
-          MEDIA_LIFECYCLE_CLEANUP: 0
-      - name: "Upload Shorts para YouTube (Spanish)"
-        if: steps.publish_window.outputs.should_publish == 'true' && hashFiles('youtube_token_es-MX.json') != ''
-        run: python upload_youtube.py --language=es-MX
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
@@ -486,11 +470,11 @@ jobs:
             mkdir -p "$state_dir/$(dirname "$path")"
             cp "$path" "$state_dir/$path"
           done
-          find _videos _videos_es-MX -maxdepth 1 -type f \( -name '*.done' -o -name '*.roundup' \) -print0 2>/dev/null | while IFS= read -r -d '' path; do
+          find _videos -maxdepth 1 -type f \( -name '*.done' -o -name '*.roundup' \) -print0 2>/dev/null | while IFS= read -r -d '' path; do
             mkdir -p "$state_dir/$(dirname "$path")"
             cp "$path" "$state_dir/$path"
           done
-          for path in _videos/shorts_done.json _videos_pt-BR/shorts_done.json _videos_es-MX/shorts_done.json _videos/shorts_done_es.json; do
+          for path in _videos/shorts_done.json; do
             if [ -e "$path" ]; then
               mkdir -p "$state_dir/$(dirname "$path")"
               cp "$path" "$state_dir/$path"
@@ -511,10 +495,10 @@ jobs:
             [ -e "$path" ] && git add "$path"
           done
           find _data/reports -maxdepth 1 -type f -name 'weekly-*.md' -print0 2>/dev/null | xargs -0 -r git add --
-          find _videos _videos_es-MX -maxdepth 1 -type f \
+          find _videos -maxdepth 1 -type f \
             \( -name '*.done' -o -name '*.roundup' \) \
             -print0 2>/dev/null | xargs -0 -r git add --
-          for path in _videos/shorts_done.json _videos_pt-BR/shorts_done.json _videos_es-MX/shorts_done.json _videos/shorts_done_es.json; do
+          for path in _videos/shorts_done.json; do
             [ -e "$path" ] && git add -f "$path"
           done
           if git diff --cached --quiet; then
@@ -538,11 +522,11 @@ jobs:
               mkdir -p "$retry_dir/$(dirname "$path")"
               cp "$path" "$retry_dir/$path"
             done
-            find _videos _videos_es-MX -maxdepth 1 -type f \( -name '*.done' -o -name '*.roundup' \) -print0 2>/dev/null | while IFS= read -r -d '' path; do
+            find _videos -maxdepth 1 -type f \( -name '*.done' -o -name '*.roundup' \) -print0 2>/dev/null | while IFS= read -r -d '' path; do
               mkdir -p "$retry_dir/$(dirname "$path")"
               cp "$path" "$retry_dir/$path"
             done
-            for path in _videos/shorts_done.json _videos_pt-BR/shorts_done.json _videos_es-MX/shorts_done.json _videos/shorts_done_es.json; do
+            for path in _videos/shorts_done.json; do
               if [ -e "$path" ]; then
                 mkdir -p "$retry_dir/$(dirname "$path")"
                 cp "$path" "$retry_dir/$path"
@@ -559,10 +543,10 @@ jobs:
               [ -e "$path" ] && git add "$path"
             done
             find _data/reports -maxdepth 1 -type f -name 'weekly-*.md' -print0 2>/dev/null | xargs -0 -r git add --
-            find _videos _videos_es-MX -maxdepth 1 -type f \
+            find _videos -maxdepth 1 -type f \
               \( -name '*.done' -o -name '*.roundup' \) \
               -print0 2>/dev/null | xargs -0 -r git add --
-            for path in _videos/shorts_done.json _videos_pt-BR/shorts_done.json _videos_es-MX/shorts_done.json _videos/shorts_done_es.json; do
+            for path in _videos/shorts_done.json; do
               [ -e "$path" ] && git add -f "$path"
             done
             if git diff --cached --quiet; then
@@ -587,7 +571,7 @@ jobs:
       - name: "Apagar tokens do YouTube no final"
         if: always()
         run: |
-          for path in youtube_token.json youtube_token_es-MX.json; do
+          for path in youtube_token.json; do
             if [ -f "$path" ]; then
               shred -u "$path" 2>/dev/null || rm -f "$path"
             fi
