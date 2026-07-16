@@ -2829,40 +2829,6 @@ def main():
             created += 1
             log.info(f"  Short ready: {video_path.name}")
             log.info(f"  YT title: {metadata['title'][:80]}")
-
-            # Global Monolithic Channel Empire: Translate and dub to multiple languages!
-            if LANGUAGE == "en":
-                # Top 15 Most Spoken Languages in the World (English is base)
-                target_langs = [
-                    "zh-CN", "hi-IN", "es-MX", "fr-FR", 
-                    "ar-SA", "bn-IN", "ru-RU", "pt-BR", 
-                    "ur-PK", "id-ID", "de-DE", "ja-JP", 
-                    "sw-KE", "mr-IN"
-                ]
-                for tlang in target_langs:
-                    log.info(f"  >> Triggering {tlang} Global Pipeline...")
-                    t_tmp = Path(tempfile.mkdtemp(prefix=f"yt_shorts_{tlang}_"))
-                    result_t = generate_short(story, t_tmp, lang=tlang)
-                    if result_t:
-                        log.info(f"  Global {tlang} Short ready: {result_t[0].name}")
-                        # Update localized done markers
-                        t_done_file = Path(f"_videos/shorts_done_{tlang}.json")
-                        try:
-                            if t_done_file.exists():
-                                t_done_data = json.loads(t_done_file.read_text(encoding="utf-8"))
-                                t_done = set(t_done_data) if isinstance(t_done_data, list) else set()
-                            else:
-                                t_done = set()
-                        except Exception:
-                            t_done = set()
-                        t_done.add(story["slug"])
-                        t_done_file.write_text(
-                            json.dumps(sorted(t_done), indent=2, ensure_ascii=False),
-                            encoding="utf-8",
-                        )
-                    shutil.rmtree(t_tmp, ignore_errors=True)
-
-
         else:
             log.warning(f"  ⏭ Candidate skipped, trying next: {story.get('slug', '?')}")
 

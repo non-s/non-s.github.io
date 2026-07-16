@@ -145,11 +145,8 @@ async def async_main():
 
     segment_paths = []
 
-    # Rotate language daily: en -> es -> pt
-    days_since_epoch = datetime.now().toordinal()
-    langs = ["en", "es", "pt"]
-    current_lang = langs[days_since_epoch % 3]
-    log.info(f"Daily Language Rotation: Selected '{current_lang}' for today's documentary.")
+    # Channel is English-only.
+    current_lang = "en"
 
     for i in range(min(MAX_SEGMENTS, len(topics))):
         key, data = topics[i]
