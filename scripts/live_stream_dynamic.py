@@ -16,6 +16,7 @@ import subprocess
 import threading
 import shutil
 import glob
+from datetime import datetime, timezone
 from pathlib import Path
 
 # Fix path for imports
@@ -48,6 +49,8 @@ class DynamicStreamer:
         
         self.youtube = self._get_youtube_client()
         self.live_chat_id = None
+        self.stream_id = None
+        self.broadcast_id = None
 
     def _get_youtube_client(self):
         token_file = ROOT / "youtube_token.json"
@@ -55,8 +58,87 @@ class DynamicStreamer:
         if not info.present or not can_manage_comments(info.data):
             log.warning("No valid youtube token for chat fetching.")
             return None
-        creds = credentials_from_token_info(info, ["https://www.googleapis.com/auth/youtube.readonly"])
+        # force-ssl covers liveBroadcasts/liveStreams write calls as well as
+        # liveChatMessages read calls used below.
+        creds = credentials_from_token_info(info, ["https://www.googleapis.com/auth/youtube.force-ssl"])
         return build("youtube", "v3", credentials=creds, cache_discovery=False)
+
+    def _find_stream_id(self) -> str | None:
+        """Resolve the liveStreams resource bound to our RTMP stream key."""
+        if self.stream_id or not self.youtube:
+            return self.stream_id
+        try:
+            response = self.youtube.liveStreams().list(part="id,cdn", mine=True, maxResults=50).execute()
+            for item in response.get("items", []):
+                stream_name = ((item.get("cdn") or {}).get("ingestionInfo") or {}).get("streamName", "")
+                if stream_name and stream_name == self.stream_key:
+                    self.stream_id = item.get("id")
+                    log.info(f"Resolved liveStreams id {self.stream_id} for our stream key.")
+                    break
+        except Exception as e:
+            log.error(f"Failed to list liveStreams: {e}")
+        return self.stream_id
+
+    def ensure_live_broadcast(self):
+        """Create+bind a new public broadcast whenever none is currently
+        active or upcoming, so the 24/7 relay never streams into a void."""
+        if not self.youtube:
+            return
+        try:
+            response = self.youtube.liveBroadcasts().list(
+                part="snippet,status",
+                broadcastStatus="all",
+                broadcastType="all",
+                maxResults=50,
+            ).execute()
+            for item in response.get("items", []):
+                life_cycle = ((item.get("status") or {}).get("lifeCycleStatus") or "")
+                if life_cycle in {"live", "ready", "testing"}:
+                    self.broadcast_id = item.get("id")
+                    self.live_chat_id = (item.get("snippet") or {}).get("liveChatId") or self.live_chat_id
+                    return
+        except Exception as e:
+            log.error(f"Failed to list liveBroadcasts: {e}")
+            return
+
+        stream_id = self._find_stream_id()
+        if not stream_id:
+            log.error("No liveStreams resource matches YOUTUBE_STREAM_KEY; cannot create a broadcast.")
+            return
+
+        log.info("No active/ready broadcast found. Creating a new one so the channel goes live again...")
+        try:
+            insert_response = self.youtube.liveBroadcasts().insert(
+                part="snippet,status,contentDetails",
+                body={
+                    "snippet": {
+                        "title": "🔴 24/7 Wild Nature & Animal Secrets | Ao Vivo | En Vivo",
+                        "description": "Non-stop nature documentaries, wildlife facts and Earth science, looping live.",
+                        "scheduledStartTime": datetime.now(timezone.utc).isoformat(),
+                    },
+                    "status": {
+                        "privacyStatus": "public",
+                        "selfDeclaredMadeForKids": False,
+                    },
+                    "contentDetails": {
+                        "enableAutoStart": True,
+                        "enableAutoStop": False,
+                        "enableDvr": True,
+                        "latencyPreference": "normal",
+                    },
+                },
+            ).execute()
+            new_broadcast_id = insert_response.get("id")
+            self.youtube.liveBroadcasts().bind(
+                id=new_broadcast_id,
+                part="id,contentDetails",
+                streamId=stream_id,
+            ).execute()
+            self.broadcast_id = new_broadcast_id
+            self.live_chat_id = (insert_response.get("snippet") or {}).get("liveChatId")
+            log.info(f"Created and bound new broadcast {new_broadcast_id}. It will auto-go-live once video data arrives.")
+        except Exception as e:
+            log.error(f"Failed to create/bind a new broadcast: {e}")
 
     def _update_live_chat_id(self):
         if not self.youtube:
@@ -115,6 +197,12 @@ class DynamicStreamer:
             return questions
         except Exception as e:
             log.error(f"Failed to fetch chat messages: {e}")
+            if "liveChatEnded" in str(e) or "live chat is no longer live" in str(e).lower():
+                # The bound broadcast ended; drop the stale id so the
+                # broadcast monitor thread creates/binds a fresh one and
+                # chat lookups resume once it goes live again.
+                self.live_chat_id = None
+                self.broadcast_id = None
             return []
 
     def convert_to_ts(self, mp4_path: Path) -> Path:
@@ -210,6 +298,20 @@ class DynamicStreamer:
                 log.error(f"Chat monitor error: {e}")
             time.sleep(60)
 
+    def broadcast_monitor_thread(self):
+        """Keep a public broadcast bound to our stream key at all times.
+        This is what makes the relay self-heal on YouTube's side: ffmpeg
+        can push RTMP data forever, but that alone never puts the channel
+        back on-air once a broadcast ends — a new one has to be created
+        and bound."""
+        log.info("Starting Broadcast Monitor Thread...")
+        while True:
+            try:
+                self.ensure_live_broadcast()
+            except Exception as e:
+                log.error(f"Broadcast monitor error: {e}")
+            time.sleep(120)
+
     def content_updater_thread(self):
         import random
         log.info("Starting Content Updater Thread...")
@@ -258,9 +360,14 @@ class DynamicStreamer:
             log.error("No long videos found.")
             return
 
+        # Make sure a broadcast exists and is bound *before* we start
+        # pushing video, so YouTube has somewhere to auto-start it.
+        self.ensure_live_broadcast()
+
         # Start background threads
         threading.Thread(target=self.chat_monitor_thread, daemon=True).start()
         threading.Thread(target=self.content_updater_thread, daemon=True).start()
+        threading.Thread(target=self.broadcast_monitor_thread, daemon=True).start()
 
         self.start_ffmpeg_pipe()
 
