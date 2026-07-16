@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-16T08:16:09.695482+00:00",
+  "generated_at": "2026-07-16T08:19:51.533014+00:00",
   "pending": 14,
   "states": {
     "rewrite": 14
@@ -14,20 +14,43 @@
     "approved": 14
   },
   "prune_summary": {
-    "pending_before": 14,
+    "pending_before": 16,
     "pending_after": 14,
-    "rejected": 0,
+    "rejected": 2,
     "repair_needed": 0,
     "repaired": 5,
     "reasons": {
       "objective_gate:bootstrap_observe_before_scaling": 12,
       "editor_in_chief:script quality gate blocked the narration": 7,
       "editor_in_chief:subject repeated inside 3-day cooldown": 3,
+      "off_topic_visual": 2,
       "objective_gate:observe_before_scaling": 2,
-      "editor_in_chief:editorial score 46 is below 62": 1
+      "script_hook_mismatch": 1,
+      "editor_in_chief:editorial score 46 is below 62": 1,
+      "copy_subject_mismatch": 1,
+      "duplicate_title": 1
     }
   },
   "rejected_preview": [
+    {
+      "id": "e53ddc9bcb1c9642",
+      "title": "Fossils turn old bones into time clues",
+      "reasons": [
+        "off_topic_visual",
+        "copy_subject_mismatch",
+        "duplicate_title"
+      ],
+      "stage": "queue_prune_final"
+    },
+    {
+      "id": "cebcae7c354e77b5",
+      "title": "greater horseshoe bat catches cricket echolocation",
+      "reasons": [
+        "off_topic_visual",
+        "script_hook_mismatch"
+      ],
+      "stage": "queue_prune"
+    },
     {
       "id": "c9ecc07890c27ba0",
       "title": "Fossils turn old bones into time clues",
@@ -295,23 +318,6 @@
         "queue_score_reject"
       ],
       "stage": "queue_repair"
-    },
-    {
-      "id": "08a55f3240d65335",
-      "title": "Rock layers store ancient environments in stripes",
-      "reasons": [
-        "duplicate_title"
-      ],
-      "stage": "queue_prune_final"
-    },
-    {
-      "id": "5a3e42d68da25c3a",
-      "title": "Storm clouds reveal a storm's heat engine",
-      "reasons": [
-        "copy_subject_mismatch",
-        "duplicate_title"
-      ],
-      "stage": "queue_prune"
     }
   ],
   "top": [
@@ -488,7 +494,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T08:15:54.872782+00:00",
+        "checked_at": "2026-07-16T08:19:38.009895+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1127,7 +1133,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T08:15:54.874992+00:00",
+        "checked_at": "2026-07-16T08:19:38.011965+00:00",
         "mechanism_cluster": "beak_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -1772,7 +1778,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T08:15:54.879435+00:00",
+        "checked_at": "2026-07-16T08:19:38.016071+00:00",
         "mechanism_cluster": "face_recognition",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -2241,7 +2247,7 @@
     },
     {
       "id": "0e46ecd46c794407",
-      "title": "Arctics reveal the answer with tail lift",
+      "title": "Arctics use tail lift to solve a problem",
       "category": "arctic",
       "publish_score": {
         "approved": true,
@@ -2263,7 +2269,7 @@
           "issues": [],
           "state": "approved"
         },
-        "hook_score": 74,
+        "hook_score": 88,
         "objective_gate": {
           "confidence_score": 0.035,
           "mechanism_cluster": "tail_signal",
@@ -2349,9 +2355,9 @@
           },
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 77,
+          "score": 76,
           "signals": {
-            "completion_prediction": 84,
+            "completion_prediction": 77,
             "curiosity_score": 87,
             "hook_score": 82,
             "replay_score": 72,
@@ -2414,16 +2420,16 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T08:15:54.877772+00:00",
+        "checked_at": "2026-07-16T08:19:38.014536+00:00",
         "mechanism_cluster": "tail_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
         ],
-        "score": 86.0,
+        "score": 78.0,
         "state": "rewrite",
         "template_cluster": ""
       },
-      "queue_score": 86.0,
+      "queue_score": 78.0,
       "youtube_brain": {
         "animal": "arctic",
         "commands": [],
@@ -2577,8 +2583,8 @@
           "callback_keyword": "arctics",
           "ending_line": "Which arctics detail should we decode next?",
           "final_line": "Which arctics detail should we decode next?",
-          "loop_score": 0.828,
-          "opening_line": "Arctics reveal the tail lift fast.",
+          "loop_score": 0.825,
+          "opening_line": "Arctics use tail lift for a reason.",
           "render_hints": {
             "avoid_hard_stop": true,
             "carry_keyword": "arctics",
@@ -2587,7 +2593,7 @@
           "rewrite_applied": false,
           "subtitle_tail_mode": "carry-forward"
         },
-        "loop_score": 0.828,
+        "loop_score": 0.825,
         "next_episode_question": "Tomorrow in Polar Survival: another animal signal. What part of this feels most impossible?",
         "opening_retention": {
           "approved": true,
@@ -2619,17 +2625,17 @@
         },
         "pinned_comment": "Watch the tail position again. Tomorrow in Polar Survival: another animal signal. What part of this feels most impossible?",
         "preflight_inputs": {
-          "caption_chars_per_second": 14.89,
+          "caption_chars_per_second": 14.95,
           "contrast_score": 0.74,
           "cta_count": 1,
           "duration_hint_s": 19,
-          "first_2s_narration": "Arctics reveal the tail lift fast Watch the tail position because arctics",
+          "first_2s_narration": "Arctics use tail lift for reason Watch the tail position because arctics",
           "first_frame_text": "TAIL LIFT",
           "first_frame_text_words": 2,
-          "hook": "Arctics reveal the tail lift fast.",
+          "hook": "Arctics use tail lift for a reason.",
           "hook_specificity": 0.78,
           "hook_words": 6,
-          "loop_score": 0.828,
+          "loop_score": 0.825,
           "novelty_score": 0.58,
           "opening_retention": {
             "approved": true,
@@ -2661,7 +2667,7 @@
           },
           "opening_retention_score": 100.0,
           "payoff_reveal_sentence_index": 0,
-          "payoff_score": 75,
+          "payoff_score": 84,
           "payoff_time_s": 0,
           "visual_motion_score": 0.76
         },
@@ -2681,9 +2687,9 @@
           },
           "reasoning": "category has 0/5 samples, inferred data, confidence 0.00; observation only.",
           "reasons": [],
-          "score": 77,
+          "score": 76,
           "signals": {
-            "completion_prediction": 84,
+            "completion_prediction": 77,
             "curiosity_score": 87,
             "hook_score": 82,
             "replay_score": 72,
@@ -2692,7 +2698,7 @@
           "verdict": "rewrite"
         },
         "retention_contract": {
-          "first_2s_narration": "Arctics reveal the tail lift fast Watch the tail position because arctics",
+          "first_2s_narration": "Arctics use tail lift for a reason Watch the tail position because",
           "first_frame_text": "TAIL LIFT",
           "next_episode_question": "Tomorrow in Polar Survival: another animal signal. What part of this feels most impossible?",
           "opening_retention_score": 100.0,
@@ -2715,9 +2721,10 @@
         },
         "risks": [
           "title_needs_stronger_shape",
-          "subject_not_clear"
+          "subject_not_clear",
+          "missing_action_word"
         ],
-        "score": 75,
+        "score": 67,
         "search_intent": {
           "description_line": "This Short explains Arctic behavior through the visible tail position.",
           "series": "Polar Survival",
@@ -2731,7 +2738,7 @@
           "visible_cue": "tail position"
         },
         "selected_variant": {
-          "hook": "Arctics reveal the tail lift fast",
+          "hook": "Arctics use tail lift for a reason",
           "score": 61,
           "thumbnail_text": "TAIL LIFT",
           "title": "Why arctics signal after one tail lift"
@@ -2743,10 +2750,9 @@
           "label": "Polar Survival #4",
           "series": "Polar Survival #4"
         },
-        "state": "usable",
+        "state": "rewrite_packaging",
         "strengths": [
           "thumbnail_scannable",
-          "action_word",
           "visible_cue",
           "retention_opening_aligned"
         ],
@@ -2799,20 +2805,20 @@
           "SPOT THE CLUE"
         ],
         "title_options": [
-          "Arctics reveal the answer with tail lift",
+          "Arctics use tail lift to solve a problem",
           "Arctics signal through tail lift",
           "Arctics use tail lift before they signal",
           "This tail lift gives arctics away",
           "Why arctics signal after one tail lift",
+          "Arctics reveal the answer with tail lift",
           "The tail lift that changes the moment",
           "Arctics make one tail lift matter",
           "Arctics show the hidden answer in seconds",
-          "Arctics: watch this tail lift",
-          "Watch arctics after the tail lift"
+          "Arctics: watch this tail lift"
         ],
         "top_variants": [
           {
-            "hook": "Arctics reveal the tail lift fast",
+            "hook": "Arctics use tail lift for a reason",
             "score": 61,
             "thumbnail_text": "TAIL LIFT",
             "title": "Why arctics signal after one tail lift"
@@ -2830,7 +2836,7 @@
             "title": "Why arctics signal after one tail lift"
           },
           {
-            "hook": "Arctics reveal the tail lift fast",
+            "hook": "Arctics use tail lift for a reason",
             "score": 61,
             "thumbnail_text": "WATCH TAIL LIFT",
             "title": "Why arctics signal after one tail lift"
@@ -2848,7 +2854,7 @@
             "title": "Why arctics signal after one tail lift"
           },
           {
-            "hook": "Arctics reveal the tail lift fast",
+            "hook": "Arctics use tail lift for a reason",
             "score": 61,
             "thumbnail_text": "ARCTICS SIGNAL",
             "title": "Why arctics signal after one tail lift"
@@ -2866,7 +2872,7 @@
             "title": "Why arctics signal after one tail lift"
           },
           {
-            "hook": "Arctics reveal the tail lift fast",
+            "hook": "Arctics use tail lift for a reason",
             "score": 61,
             "thumbnail_text": "TAIL LIFT MATTERS",
             "title": "Why arctics signal after one tail lift"
@@ -3065,7 +3071,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T08:15:54.866967+00:00",
+        "checked_at": "2026-07-16T08:19:37.977447+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling"
@@ -3716,7 +3722,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T08:15:54.870496+00:00",
+        "checked_at": "2026-07-16T08:19:37.980090+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4345,7 +4351,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T08:15:54.876579+00:00",
+        "checked_at": "2026-07-16T08:19:38.013431+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -4986,7 +4992,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T08:15:54.880847+00:00",
+        "checked_at": "2026-07-16T08:19:38.017328+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -5639,7 +5645,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T08:15:54.882370+00:00",
+        "checked_at": "2026-07-16T08:19:38.018730+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6286,7 +6292,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T08:15:54.883911+00:00",
+        "checked_at": "2026-07-16T08:19:38.020116+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -6935,7 +6941,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T08:15:54.859624+00:00",
+        "checked_at": "2026-07-16T08:19:37.966226+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -7577,7 +7583,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T08:15:54.863891+00:00",
+        "checked_at": "2026-07-16T08:19:37.975205+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:observe_before_scaling",
@@ -8242,7 +8248,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T08:15:54.885818+00:00",
+        "checked_at": "2026-07-16T08:19:38.021740+00:00",
         "mechanism_cluster": "",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
@@ -8899,7 +8905,7 @@
       },
       "editorial_state": "rewrite",
       "queue_prune": {
-        "checked_at": "2026-07-16T08:15:54.868100+00:00",
+        "checked_at": "2026-07-16T08:19:37.978473+00:00",
         "mechanism_cluster": "call_signal",
         "objective_reasons": [
           "objective_gate:bootstrap_observe_before_scaling",
