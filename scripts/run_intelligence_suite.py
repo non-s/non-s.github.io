@@ -145,6 +145,8 @@ SCRIPT_SETS = {
         "scripts/winner_sequel_factory.py",
         "scripts/category_recovery.py",
         "scripts/category_recovery_rewriter.py",
+        "scripts/retention_rewrite_queue.py",
+        "scripts/retention_rewriter.py",
         "scripts/fact_ledger.py",
         "scripts/fact_guard.py",
         "scripts/build_originality_pack.py",
