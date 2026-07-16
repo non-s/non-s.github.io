@@ -2,18 +2,18 @@
   "comment_reply_short_candidates": [],
   "fresh_upload_actions": {
     "counts": {
-      "automation_safe": 6,
-      "high": 4,
-      "manual_review": 4,
+      "automation_safe": 5,
+      "high": 5,
+      "manual_review": 5,
       "total": 10,
       "urgent": 5
     },
     "free_only": true,
-    "generated_at": "2026-07-16T06:01:18.125559+00:00",
+    "generated_at": "2026-07-16T07:42:03.821131+00:00",
     "items": [
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 14.769,
+        "age_hours": 16.449,
         "automation_safe": true,
         "category": "dogs",
         "checkpoint_label": "1h",
@@ -39,7 +39,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 13.26,
+        "age_hours": 14.939,
         "automation_safe": true,
         "category": "geology",
         "checkpoint_label": "1h",
@@ -65,7 +65,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 12.911,
+        "age_hours": 14.591,
         "automation_safe": true,
         "category": "earth_from_space",
         "checkpoint_label": "1h",
@@ -91,7 +91,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 11.683,
+        "age_hours": 13.362,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "1h",
@@ -117,7 +117,7 @@
       },
       {
         "action_type": "pull_fresh_analytics",
-        "age_hours": 10.365,
+        "age_hours": 12.044,
         "automation_safe": true,
         "category": "farm",
         "checkpoint_label": "1h",
@@ -143,7 +143,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 9.663,
+        "age_hours": 11.343,
         "automation_safe": false,
         "category": "farm",
         "checkpoint_label": "24h",
@@ -169,7 +169,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 8.737,
+        "age_hours": 10.417,
         "automation_safe": false,
         "category": "geology",
         "checkpoint_label": "24h",
@@ -195,7 +195,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 7.784,
+        "age_hours": 9.463,
         "automation_safe": false,
         "category": "wildlife",
         "checkpoint_label": "24h",
@@ -221,7 +221,7 @@
       },
       {
         "action_type": "prepare_package_rescue",
-        "age_hours": 6.572,
+        "age_hours": 8.251,
         "automation_safe": false,
         "category": "reptiles",
         "checkpoint_label": "24h",
@@ -246,34 +246,34 @@
         "why": "Observed velocity is weak enough to prepare a package intervention."
       },
       {
-        "action_type": "watch_next_checkpoint",
-        "age_hours": 5.685,
-        "automation_safe": true,
+        "action_type": "prepare_package_rescue",
+        "age_hours": 7.364,
+        "automation_safe": false,
         "category": "trees",
-        "checkpoint_label": "6h",
+        "checkpoint_label": "24h",
         "checkpoint_state": "pending",
         "current_views": 0,
-        "due_at": "2026-07-16T06:20:13.162658+00:00",
+        "due_at": "2026-07-17T00:20:13.162658+00:00",
         "free_only": true,
         "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-        "id": "fresh-upload:woMqgzIYxwM:watch:6h",
-        "lane": "observe",
-        "manual_approval_required": false,
+        "id": "fresh-upload:woMqgzIYxwM:repair_candidate:24h",
+        "lane": "package_rescue",
+        "manual_approval_required": true,
         "opening_retention_score": 100.0,
-        "priority": "low",
-        "recommended_action": "Keep observing through the next checkpoint.",
+        "priority": "high",
+        "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
         "series": "Hidden Network",
-        "state": "watch",
-        "target_views": 105,
+        "state": "repair_candidate",
+        "target_views": 300,
         "title": "Trees leaves after one tree rings",
         "url": "https://www.youtube.com/shorts/woMqgzIYxwM",
         "video_id": "woMqgzIYxwM",
-        "wait_until": "2026-07-16T06:20:13.162658+00:00",
-        "why": "No intervention signal is strong enough yet."
+        "wait_until": "",
+        "why": "Observed velocity is weak enough to prepare a package intervention."
       }
     ],
     "source": "fresh_upload_watchlist",
-    "source_generated_at": "2026-07-16T06:01:18.124151+00:00"
+    "source_generated_at": "2026-07-16T07:42:03.820100+00:00"
   },
   "fresh_upload_watchlist": {
     "checkpoint_hours": [
@@ -284,15 +284,15 @@
     "counts": {
       "analytics_due": 5,
       "awaiting_1h": 0,
-      "high_priority": 9,
-      "repair_candidates": 4,
+      "high_priority": 10,
+      "repair_candidates": 5,
       "tracked": 10
     },
-    "generated_at": "2026-07-16T06:01:18.124151+00:00",
+    "generated_at": "2026-07-16T07:42:03.820100+00:00",
     "items": [
       {
-        "action": "Keep observing through the next checkpoint.",
-        "age_hours": 5.685,
+        "action": "TITLE_AUTO_REPAIR_TRIGGER",
+        "age_hours": 7.364,
         "category": "trees",
         "checkpoints": [
           {
@@ -305,11 +305,11 @@
             "views": 0
           },
           {
-            "delta_to_target": 0,
+            "delta_to_target": -105,
             "due_at": "2026-07-16T06:20:13.162658+00:00",
             "label": "6h",
-            "source": "estimated",
-            "state": "pending",
+            "source": "observed",
+            "state": "observed",
             "target_views": 105,
             "views": 0
           },
@@ -324,30 +324,41 @@
           }
         ],
         "current_views": 0,
-        "hypothesis": "No intervention signal is strong enough yet.",
+        "hypothesis": "Observed velocity is weak enough to prepare a package intervention.",
         "next_checkpoint": {
           "delta_to_target": 0,
-          "due_at": "2026-07-16T06:20:13.162658+00:00",
-          "label": "6h",
+          "due_at": "2026-07-17T00:20:13.162658+00:00",
+          "label": "24h",
           "source": "estimated",
           "state": "pending",
-          "target_views": 105,
+          "target_views": 300,
           "views": 0
         },
         "opening_retention_score": 100.0,
         "opening_retention_state": "retention_ready",
-        "priority": "low",
+        "priority": "high",
         "series": "Hidden Network",
-        "state": "watch",
+        "state": "repair_candidate",
         "title": "Trees leaves after one tree rings",
         "uploaded_at": "2026-07-16T00:20:13.162658+00:00",
         "url": "https://www.youtube.com/shorts/woMqgzIYxwM",
         "video_id": "woMqgzIYxwM",
-        "views_per_hour": 0.0
+        "views_per_hour": 0.0,
+        "warning": {
+          "action": "TITLE_AUTO_REPAIR_TRIGGER",
+          "confidence_score": 0.594,
+          "reason": "low early velocity",
+          "reasoning": "video has 18/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+          "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
+          "title": "Trees leaves after one tree rings",
+          "video_id": "woMqgzIYxwM",
+          "views": 0,
+          "warning_state": "repair_risk"
+        }
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 6.572,
+        "age_hours": 8.251,
         "category": "reptiles",
         "checkpoints": [
           {
@@ -398,12 +409,12 @@
         "uploaded_at": "2026-07-15T23:26:58.496934+00:00",
         "url": "https://www.youtube.com/shorts/L4U_p2YUTyg",
         "video_id": "L4U_p2YUTyg",
-        "views_per_hour": 0.458,
+        "views_per_hour": 0.364,
         "warning": {
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.594,
           "reason": "low early velocity",
-          "reasoning": "video has 28/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
+          "reasoning": "video has 29/2 samples, estimated data, confidence 0.59; strategy changes allowed.",
           "repair_reason": "Failed 1-hour view velocity threshold. Swapping title to Variant B.",
           "title": "This tongue smell gives snakes away",
           "video_id": "L4U_p2YUTyg",
@@ -413,7 +424,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 7.784,
+        "age_hours": 9.463,
         "category": "wildlife",
         "checkpoints": [
           {
@@ -464,7 +475,7 @@
         "uploaded_at": "2026-07-15T22:14:16.504771+00:00",
         "url": "https://www.youtube.com/shorts/B-8Yjr7aViY",
         "video_id": "B-8Yjr7aViY",
-        "views_per_hour": 0.129,
+        "views_per_hour": 0.106,
         "warning": {
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.594,
@@ -479,7 +490,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 8.737,
+        "age_hours": 10.417,
         "category": "geology",
         "checkpoints": [
           {
@@ -530,7 +541,7 @@
         "uploaded_at": "2026-07-15T21:17:03.517209+00:00",
         "url": "https://www.youtube.com/shorts/nvELsnuHGcc",
         "video_id": "nvELsnuHGcc",
-        "views_per_hour": 0.115,
+        "views_per_hour": 0.096,
         "warning": {
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.594,
@@ -545,7 +556,7 @@
       },
       {
         "action": "TITLE_AUTO_REPAIR_TRIGGER",
-        "age_hours": 9.663,
+        "age_hours": 11.343,
         "category": "farm",
         "checkpoints": [
           {
@@ -596,7 +607,7 @@
         "uploaded_at": "2026-07-15T20:21:30.033022+00:00",
         "url": "https://www.youtube.com/shorts/Nwsv9XCe7is",
         "video_id": "Nwsv9XCe7is",
-        "views_per_hour": 0.311,
+        "views_per_hour": 0.265,
         "warning": {
           "action": "TITLE_AUTO_REPAIR_TRIGGER",
           "confidence_score": 0.594,
@@ -611,7 +622,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 10.365,
+        "age_hours": 12.044,
         "category": "farm",
         "checkpoints": [
           {
@@ -662,11 +673,11 @@
         "uploaded_at": "2026-07-15T19:39:23.925649+00:00",
         "url": "https://www.youtube.com/shorts/ga5ecDiwYCc",
         "video_id": "ga5ecDiwYCc",
-        "views_per_hour": 0.387
+        "views_per_hour": 0.333
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 11.683,
+        "age_hours": 13.362,
         "category": "farm",
         "checkpoints": [
           {
@@ -721,7 +732,7 @@
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 12.911,
+        "age_hours": 14.591,
         "category": "earth_from_space",
         "checkpoints": [
           {
@@ -772,11 +783,11 @@
         "uploaded_at": "2026-07-15T17:06:37.793048+00:00",
         "url": "https://www.youtube.com/shorts/pqdf9Rdjtu4",
         "video_id": "pqdf9Rdjtu4",
-        "views_per_hour": 0.31
+        "views_per_hour": 0.275
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 13.26,
+        "age_hours": 14.939,
         "category": "geology",
         "checkpoints": [
           {
@@ -827,11 +838,11 @@
         "uploaded_at": "2026-07-15T16:45:42.431869+00:00",
         "url": "https://www.youtube.com/shorts/OAZunjbhm1w",
         "video_id": "OAZunjbhm1w",
-        "views_per_hour": 0.151
+        "views_per_hour": 0.134
       },
       {
         "action": "Run the analytics pull before making a creative decision.",
-        "age_hours": 14.769,
+        "age_hours": 16.449,
         "category": "dogs",
         "checkpoints": [
           {
@@ -892,7 +903,7 @@
     },
     "window_hours": 72
   },
-  "generated_at": "2026-07-16T06:01:18.125675+00:00",
+  "generated_at": "2026-07-16T07:42:03.821232+00:00",
   "playlist_sequence_notes": [
     "Place each new Short after the closest same-series winner.",
     "Use related video manually in Studio when official automation is unavailable."
