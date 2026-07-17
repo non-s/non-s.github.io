@@ -24,9 +24,7 @@ def test_workflows_parse_and_include_growth_steps():
     assert "scripts/sync_lofi_broll.py" in youtube_workflow
     assert "scripts/sync_jamendo_music.py" in youtube_workflow
     assert "generate_lofi_short.py" in youtube_workflow
-    assert 'BROLL_SOURCE_MODE: "pexels"' not in youtube_workflow
-    assert "BROLL_SOURCE_MODE: ${{ vars.BROLL_SOURCE_MODE || 'pexels' }}" in youtube_workflow
-    assert "PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}" in youtube_workflow
+    assert "PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}" in youtube_workflow
     assert "YouTube automation state -" in youtube_workflow
     assert "merge_jsonl_state.py" in youtube_workflow
     assert "jsonl_merge_paths" in youtube_workflow

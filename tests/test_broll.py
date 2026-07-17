@@ -134,6 +134,105 @@ def test_pexels_cache_keeps_pages_separate(monkeypatch, tmp_path):
     assert calls["n"] == 2
 
 
+def _pixabay_payload():
+    return {
+        "hits": [
+            {
+                "id": 214500,
+                "pageURL": "https://pixabay.com/videos/id-214500/",
+                "type": "animation",
+                "tags": "girl, study, relaxing, anime, lofi",
+                "duration": 63,
+                "isAiGenerated": True,
+                "user": "Earth_to_Infinity",
+                "userURL": "https://pixabay.com/users/42093275/",
+                "videos": {
+                    "large": {"url": "https://cdn.pixabay.com/video/large.mp4", "width": 3840, "height": 2160},
+                    "medium": {"url": "https://cdn.pixabay.com/video/medium.mp4", "width": 2560, "height": 1440},
+                },
+            },
+        ]
+    }
+
+
+def test_pixabay_returns_clips_when_key_set(monkeypatch, tmp_path):
+    monkeypatch.setenv("PIXABAY_API_KEY", "x")
+    monkeypatch.setattr(broll, "_CACHE_DIR", tmp_path / "c")
+    fake = MagicMock(status_code=200)
+    fake.json.return_value = _pixabay_payload()
+    with patch.object(broll, "_session") as factory:
+        session = MagicMock()
+        session.get.return_value = fake
+        factory.return_value = session
+        clips = broll.fetch_pixabay("anime lofi girl study")
+    assert len(clips) == 1
+    clip = clips[0]
+    assert clip.source == "pixabay"
+    assert clip.download_url == "https://cdn.pixabay.com/video/large.mp4"
+    assert clip.title == "girl"
+    assert clip.license_evidence == "https://pixabay.com/videos/id-214500/"
+    assert clip.source_metadata["pixabay_video_id"] == "214500"
+    assert clip.source_metadata["is_ai_generated"] is True
+    params = session.get.call_args.kwargs["params"]
+    assert params["video_type"] == "animation"
+    assert str(session.get.call_args.args[0]).endswith("/api/videos/")
+
+
+def test_pixabay_falls_back_to_smaller_resolution_when_large_missing(monkeypatch, tmp_path):
+    monkeypatch.setenv("PIXABAY_API_KEY", "x")
+    monkeypatch.setattr(broll, "_CACHE_DIR", tmp_path / "c")
+    payload = _pixabay_payload()
+    del payload["hits"][0]["videos"]["large"]
+    fake = MagicMock(status_code=200)
+    fake.json.return_value = payload
+    with patch.object(broll, "_session") as factory:
+        session = MagicMock()
+        session.get.return_value = fake
+        factory.return_value = session
+        clips = broll.fetch_pixabay("anime lofi")
+    assert clips[0].download_url == "https://cdn.pixabay.com/video/medium.mp4"
+
+
+def test_pixabay_returns_empty_without_key(monkeypatch):
+    monkeypatch.delenv("PIXABAY_API_KEY", raising=False)
+    assert broll.fetch_pixabay("anything") == []
+
+
+def test_pixabay_returns_empty_on_non_200(monkeypatch, tmp_path):
+    monkeypatch.setenv("PIXABAY_API_KEY", "x")
+    monkeypatch.setattr(broll, "_CACHE_DIR", tmp_path / "c")
+    fake = MagicMock(status_code=400)
+    fake.json.return_value = {}
+    with patch.object(broll, "_session") as factory:
+        session = MagicMock()
+        session.get.return_value = fake
+        factory.return_value = session
+        assert broll.fetch_pixabay("x") == []
+
+
+def test_pixabay_cache_avoids_second_call(monkeypatch, tmp_path):
+    monkeypatch.setenv("PIXABAY_API_KEY", "x")
+    monkeypatch.setattr(broll, "_CACHE_DIR", tmp_path / "c")
+    fake = MagicMock(status_code=200)
+    fake.json.return_value = _pixabay_payload()
+    calls = {"n": 0}
+
+    def make_session():
+        session = MagicMock()
+
+        def _get(*args, **kwargs):
+            calls["n"] += 1
+            return fake
+
+        session.get.side_effect = _get
+        return session
+
+    with patch.object(broll, "_session", side_effect=make_session):
+        broll.fetch_pixabay("identical query")
+        broll.fetch_pixabay("identical query")
+    assert calls["n"] == 1
+
+
 def test_enabled_sources_is_pexels_only(monkeypatch):
     monkeypatch.setenv("BROLL_SOURCE_MODE", "legacy,backup,pexels")
     assert broll._enabled_sources() == ["pexels"]

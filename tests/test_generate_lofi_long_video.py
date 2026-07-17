@@ -7,16 +7,16 @@ from utils.broll import BrollClip
 
 def _clip(clip_id="1", **overrides) -> BrollClip:
     clip = BrollClip(
-        source="pexels",
-        url=f"https://www.pexels.com/video/{clip_id}",
-        download_url=f"https://videos.pexels.com/video-files/{clip_id}/download.mp4",
+        source="pixabay",
+        url=f"https://pixabay.com/videos/id-{clip_id}/",
+        download_url=f"https://cdn.pixabay.com/video/{clip_id}/large.mp4",
         width=1920,
         height=1080,
         duration_s=12.0,
-        title="rain on window cozy",
-        license="Pexels License (free for commercial use)",
-        license_evidence=f"https://www.pexels.com/video/{clip_id}",
-        source_metadata={"pexels_video_id": clip_id, "pexels_query": "rain window cozy"},
+        title="girl",
+        license="Pixabay Content License (free for commercial use, no attribution required)",
+        license_evidence=f"https://pixabay.com/videos/id-{clip_id}/",
+        source_metadata={"pixabay_video_id": clip_id, "pixabay_query": "anime lofi girl study"},
     )
     for key, value in overrides.items():
         setattr(clip, key, value)
@@ -26,10 +26,10 @@ def _clip(clip_id="1", **overrides) -> BrollClip:
 def test_fetch_unique_clips_deduplicates_by_download_url(monkeypatch):
     same_clip = _clip(clip_id="1")
 
-    def fake_fetch(query, want_n=2, orientation="landscape"):
+    def fake_fetch(query, per_page=6):
         return [same_clip]
 
-    monkeypatch.setattr(lofi_long, "fetch_broll_clips", fake_fetch)
+    monkeypatch.setattr(lofi_long, "fetch_pixabay", fake_fetch)
 
     clips = lofi_long._fetch_unique_clips(4)
 
@@ -37,10 +37,10 @@ def test_fetch_unique_clips_deduplicates_by_download_url(monkeypatch):
 
 
 def test_fetch_unique_clips_stops_at_want_n(monkeypatch):
-    def fake_fetch(query, want_n=2, orientation="landscape"):
+    def fake_fetch(query, per_page=6):
         return [_clip(clip_id=f"{query}-{i}") for i in range(2)]
 
-    monkeypatch.setattr(lofi_long, "fetch_broll_clips", fake_fetch)
+    monkeypatch.setattr(lofi_long, "fetch_pixabay", fake_fetch)
 
     clips = lofi_long._fetch_unique_clips(3)
 

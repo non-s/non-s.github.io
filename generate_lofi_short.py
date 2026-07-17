@@ -94,7 +94,7 @@ def _build_metadata(broll_meta: dict, bgm_meta: dict, duration_s: float, video_p
             credit += f" ({license_url})"
         description_lines.append(credit)
     if photographer:
-        description_lines.append(f"\U0001f3ac Visual: Pexels / {photographer}")
+        description_lines.append(f"\U0001f3ac Visual: Pixabay / {photographer}")
 
     tags = list(DEFAULT_TAGS)
     if mood.lower() not in {tag.lower() for tag in tags}:
@@ -111,9 +111,13 @@ def _build_metadata(broll_meta: dict, bgm_meta: dict, duration_s: float, video_p
         "story_id": story_id,
         "packaging": {"pinned_comment": "What mood should the next loop be? \U0001f31a"},
         "pre_publish_audit": {"approved": True, "reason": "lofi_no_claims_to_vet"},
-        "source": "pexels",
-        "pexels_video_id": str(broll_meta.get("pexels_video_id") or ""),
-        "source_clip_id": str(broll_meta.get("pexels_video_id") or ""),
+        "source": "pixabay",
+        # upload_youtube.py's ledger field is named after the original
+        # Pexels-only pipeline but is provider-agnostic in practice (it
+        # just needs *a* source clip id); keeping the key avoids touching
+        # that already-tested allowlist/ledger contract for a rename.
+        "pexels_video_id": str(broll_meta.get("pixabay_video_id") or ""),
+        "source_clip_id": str(broll_meta.get("pixabay_video_id") or ""),
         "source_url": str(broll_meta.get("license_evidence") or ""),
         "source_license": str(broll_meta.get("license") or ""),
         "source_license_evidence": str(broll_meta.get("license_evidence") or ""),
@@ -206,7 +210,7 @@ def _extract_thumbnail(video_path: Path, thumb_path: Path, timestamp_s: float = 
 def main() -> int:
     VIDEOS_DIR.mkdir(parents=True, exist_ok=True)
 
-    broll_path = _pick_file(BROLL_DIR, "pexels_*.mp4")
+    broll_path = _pick_file(BROLL_DIR, "pixabay_*.mp4")
     if broll_path is None:
         log.error("No lofi b-roll clips found in %s -- run scripts/sync_lofi_broll.py first.", BROLL_DIR)
         return 1

@@ -5,8 +5,9 @@
 | Name | Required | Use |
 | --- | --- | --- |
 | `YOUTUBE_TOKEN` | yes | OAuth token JSON for official YouTube Data API upload and optional Analytics API reads. |
-| `PEXELS_API_KEY` or `PEXELS` | yes | Free Pexels API key used for the production visual source. |
-| One AI text provider key | yes | Queue/story rewriting and packaging assistance. Supported names include `MISTRAL_API_KEY`, `CEREBRAS_API_KEY`, `GEMINI_API_KEY` and `GROQ_API_KEY`. |
+| `PIXABAY_API_KEY` | yes | Free Pixabay API key used for the active lofi pipeline's anime/illustrated b-roll (`video_type=animation`) -- Pexels has no genuine illustrated content, checked live. |
+| `PEXELS_API_KEY` or `PEXELS` | only if `fetch-content.yml`/`QUEUE_REFRESH_ENABLED` is re-enabled | Free Pexels API key used by the dormant nature-Shorts pipeline's realistic b-roll. Not used by the active lofi pipeline. |
+| One AI text provider key | only if the dormant nature-Shorts pipeline is re-enabled | Queue/story rewriting and packaging assistance. Supported names include `MISTRAL_API_KEY`, `CEREBRAS_API_KEY`, `GEMINI_API_KEY` and `GROQ_API_KEY`. Not used by the active lofi pipeline (its title/description text is template-based). |
 
 ## Optional Secrets and Settings
 

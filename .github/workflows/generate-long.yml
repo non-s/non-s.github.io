@@ -40,8 +40,7 @@ jobs:
       # YouTube token is needed here.
       - name: Generate Long Video
         env:
-          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
-          PEXELS_MIN_INTERVAL_S: ${{ vars.PEXELS_MIN_INTERVAL_S || '1.0' }}
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
         run: python generate_lofi_long_video.py
 
       - name: Locate Generated Video

@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """Compose a long silent lofi loop video for the 24/7 live stream relay.
 
-Fetches fresh landscape lofi b-roll clips, turns each into a fixed-length
-silent segment, and concatenates them into one _videos/long_video_*.mp4.
-The live relay (scripts/live_stream_dynamic.py) loops this file
-indefinitely, mixing in a track from the local Jamendo bgm library on the
-way in since this generator only produces picture -- no audio, no
-narration, no per-run bgm decision.
+Fetches fresh anime/illustrated-style lofi b-roll clips from Pixabay (the
+"Lofi Girl" studying-loop look; Pexels has no genuine illustrated content,
+checked live), turns each into a fixed-length silent segment, and
+concatenates them into one _videos/long_video_*.mp4. The live relay
+(scripts/live_stream_dynamic.py) loops this file indefinitely, mixing in a
+track from the local Jamendo bgm library on the way in since this
+generator only produces picture -- no audio, no narration, no per-run bgm
+decision.
 
 This is the lofi replacement for generate_long_video.py, which built each
 segment from a narrated, multi-agent-scripted nature fact (TTS + burned-in
@@ -28,7 +30,7 @@ ROOT = Path(__file__).resolve().parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from utils.broll import BrollClip, download_clip, fetch_broll_clips  # noqa: E402
+from utils.broll import BrollClip, download_clip, fetch_pixabay  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger(__name__)
@@ -43,18 +45,18 @@ SEGMENT_DURATION_S = 75.0
 SEGMENT_COUNT = 12
 
 LOFI_QUERIES = [
-    "rain window cozy",
-    "fireplace night cozy room",
-    "coffee cup steam desk",
-    "night city lights window",
-    "study desk lamp night",
-    "snow falling window cozy",
-    "candle warm room night",
-    "ocean waves night calm",
-    "bedroom plants sunlight morning",
-    "cat sleeping cozy blanket",
-    "library books reading corner",
-    "forest rain window view",
+    "anime lofi girl study",
+    "anime rain window cozy",
+    "anime fireplace night room",
+    "anime night city lights",
+    "anime study desk lamp",
+    "anime snow window cozy",
+    "anime cafe jazz",
+    "anime bedroom plants morning",
+    "anime cat sleeping cozy",
+    "anime library reading",
+    "anime rooftop night city",
+    "anime train window rain",
 ]
 
 
@@ -121,7 +123,7 @@ def _fetch_unique_clips(want_n: int) -> list[BrollClip]:
     seen_urls: set[str] = set()
     clips: list[BrollClip] = []
     for query in queries:
-        for clip in fetch_broll_clips(query, want_n=2, orientation="landscape"):
+        for clip in fetch_pixabay(query, per_page=6):
             if clip.download_url in seen_urls:
                 continue
             seen_urls.add(clip.download_url)

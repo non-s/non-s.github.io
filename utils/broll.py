@@ -25,6 +25,7 @@ _TIMEOUT = 20
 _CACHE_DIR = Path(os.environ.get("BROLL_CACHE_DIR", "_data/broll_cache"))
 _CACHE_TTL_S = 86400 * 7
 _PEXELS_API = "https://api.pexels.com/v1/videos/search"
+_PIXABAY_API = "https://pixabay.com/api/videos/"
 
 # Pexels free tier asks for courteous request spacing. fetch-content.yml and
 # youtube-bot.yml can both call fetch_pexels() many times within one process
@@ -179,6 +180,85 @@ def fetch_pexels(query: str, per_page: int = 8, page: int = 1, orientation: str 
                     "pexels_query": query[:120],
                     "photographer": (video.get("user", {}) or {}).get("name", ""),
                     "photographer_url": (video.get("user", {}) or {}).get("url", ""),
+                },
+            )
+        )
+    _cache_put(cache_path, [dataclasses.asdict(clip) for clip in out])
+    return out
+
+
+def fetch_pixabay(query: str, per_page: int = 8, page: int = 1, video_type: str = "animation") -> list[BrollClip]:
+    """Search Pixabay Videos for `query`. Empty list on any failure.
+
+    `video_type="animation"` is Pixabay's own category for illustrated/
+    motion-graphics content (as opposed to `"film"`, real-world footage) --
+    this is what makes it a usable source for an anime/cartoon-style loop
+    aesthetic, which Pexels does not have (checked live: Pexels "anime"
+    searches return cosplay footage and mistagged live-action, not actual
+    illustrated content).
+    """
+    key = os.environ.get("PIXABAY_API_KEY", "")
+    if not key:
+        log.warning("Pixabay API key (PIXABAY_API_KEY) is missing — cannot fetch B-roll")
+        return []
+    if not query:
+        return []
+
+    per_page = max(3, min(200, int(per_page or 8)))
+    page = max(1, int(page or 1))
+    cache_path = _cache_key("pixabay", f"{query}|{per_page}|{page}|{video_type}|v1")
+    cached = _cache_get(cache_path)
+    if cached is not None:
+        return [BrollClip(**c) for c in cached]
+
+    try:
+        _throttle()
+        response = _session().get(
+            _PIXABAY_API,
+            params={
+                "key": key,
+                "q": query[:100],
+                "video_type": video_type,
+                "per_page": per_page,
+                "page": page,
+                "safesearch": "true",
+            },
+            timeout=_TIMEOUT,
+        )
+        if response.status_code != 200:
+            log.warning("Pixabay API request failed with status code %d for query %r", response.status_code, query[:40])
+            return []
+        videos = response.json().get("hits", []) or []
+    except Exception as exc:
+        log.debug("pixabay error %s: %s", query[:40], exc)
+        return []
+
+    out: list[BrollClip] = []
+    for video in videos:
+        files = video.get("videos") or {}
+        item = files.get("large") or files.get("medium") or files.get("small") or files.get("tiny")
+        if not item or not item.get("url"):
+            continue
+        tags = str(video.get("tags") or "")
+        out.append(
+            BrollClip(
+                source="pixabay",
+                url=video.get("pageURL", ""),
+                download_url=item["url"],
+                width=int(item.get("width") or 0),
+                height=int(item.get("height") or 0),
+                duration_s=float(video.get("duration") or 0),
+                title=tags.split(",")[0].strip() if tags else "",
+                license="Pixabay Content License (free for commercial use, no attribution required)",
+                license_evidence=video.get("pageURL", ""),
+                source_metadata={
+                    "pixabay_video_id": str(video.get("id") or ""),
+                    "pixabay_page": page,
+                    "pixabay_query": query[:100],
+                    "photographer": video.get("user", ""),
+                    "photographer_url": video.get("userURL", ""),
+                    "is_ai_generated": bool(video.get("isAiGenerated")),
+                    "tags": tags,
                 },
             )
         )

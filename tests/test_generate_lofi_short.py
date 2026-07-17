@@ -11,14 +11,14 @@ def _touch(path, size=1024):
 
 
 def test_pick_file_returns_none_when_directory_empty(tmp_path):
-    assert lofi._pick_file(tmp_path, "pexels_*.mp4") is None
+    assert lofi._pick_file(tmp_path, "pixabay_*.mp4") is None
 
 
 def test_pick_file_returns_a_match(tmp_path):
-    _touch(tmp_path / "pexels_1.mp4")
-    _touch(tmp_path / "pexels_2.mp4")
-    picked = lofi._pick_file(tmp_path, "pexels_*.mp4")
-    assert picked in {tmp_path / "pexels_1.mp4", tmp_path / "pexels_2.mp4"}
+    _touch(tmp_path / "pixabay_1.mp4")
+    _touch(tmp_path / "pixabay_2.mp4")
+    picked = lofi._pick_file(tmp_path, "pixabay_*.mp4")
+    assert picked in {tmp_path / "pixabay_1.mp4", tmp_path / "pixabay_2.mp4"}
 
 
 def test_load_sidecar_returns_empty_dict_when_missing(tmp_path):
@@ -26,8 +26,8 @@ def test_load_sidecar_returns_empty_dict_when_missing(tmp_path):
 
 
 def test_load_sidecar_reads_matching_json(tmp_path):
-    video = _touch(tmp_path / "pexels_1.mp4")
-    (tmp_path / "pexels_1.json").write_text(json.dumps({"title": "rain window"}), encoding="utf-8")
+    video = _touch(tmp_path / "pixabay_1.mp4")
+    (tmp_path / "pixabay_1.json").write_text(json.dumps({"title": "rain window"}), encoding="utf-8")
     assert lofi._load_sidecar(video) == {"title": "rain window"}
 
 
@@ -44,9 +44,9 @@ def test_build_metadata_includes_attribution_and_upload_contract_fields(tmp_path
     broll_meta = {
         "query": "fireplace night cozy",
         "photographer": "Some Photographer",
-        "pexels_video_id": "123",
-        "license": "Pexels License (free for commercial use)",
-        "license_evidence": "https://www.pexels.com/video/123",
+        "pixabay_video_id": "123",
+        "license": "Pixabay Content License (free for commercial use, no attribution required)",
+        "license_evidence": "https://pixabay.com/videos/id-123/",
     }
     bgm_meta = {
         "track_name": "Horizons",
@@ -63,7 +63,7 @@ def test_build_metadata_includes_attribution_and_upload_contract_fields(tmp_path
     assert "Train Room" in meta["description"]
     assert "Some Photographer" in meta["description"]
     assert meta["pexels_video_id"] == "123"
-    assert meta["source_license_evidence"] == "https://www.pexels.com/video/123"
+    assert meta["source_license_evidence"] == "https://pixabay.com/videos/id-123/"
     assert meta["category"] == "lofi"
     assert meta["series"] == "Lofi Beats"
     assert meta["story_id"] == "lofi-1700000000-1234"
@@ -99,7 +99,7 @@ def test_compose_short_builds_looping_ffmpeg_command(tmp_path, monkeypatch):
 
     monkeypatch.setattr(lofi.subprocess, "run", fake_run)
 
-    broll_path = tmp_path / "pexels_1.mp4"
+    broll_path = tmp_path / "pixabay_1.mp4"
     bgm_path = tmp_path / "jamendo_1.mp3"
     output_path = tmp_path / "short-lofi-3.mp4"
 
@@ -178,7 +178,7 @@ def test_main_returns_error_when_no_broll_available(tmp_path, monkeypatch):
 def test_main_returns_error_when_no_bgm_available(tmp_path, monkeypatch):
     broll_dir = tmp_path / "broll"
     broll_dir.mkdir()
-    _touch(broll_dir / "pexels_1.mp4")
+    _touch(broll_dir / "pixabay_1.mp4")
     monkeypatch.setattr(lofi, "VIDEOS_DIR", tmp_path / "_videos")
     monkeypatch.setattr(lofi, "BROLL_DIR", broll_dir)
     monkeypatch.setattr(lofi, "BGM_DIR", tmp_path / "empty_bgm")
@@ -193,9 +193,9 @@ def test_main_writes_video_and_metadata_pair_on_success(tmp_path, monkeypatch):
     videos_dir = tmp_path / "_videos"
     broll_dir.mkdir()
     bgm_dir.mkdir()
-    _touch(broll_dir / "pexels_1.mp4")
-    (broll_dir / "pexels_1.json").write_text(
-        json.dumps({"query": "rain window cozy", "photographer": "Ana", "pexels_video_id": "1"}), encoding="utf-8"
+    _touch(broll_dir / "pixabay_1.mp4")
+    (broll_dir / "pixabay_1.json").write_text(
+        json.dumps({"query": "rain window cozy", "photographer": "Ana", "pixabay_video_id": "1"}), encoding="utf-8"
     )
     _touch(bgm_dir / "jamendo_1.mp3")
     (bgm_dir / "jamendo_1.json").write_text(
@@ -237,7 +237,7 @@ def test_main_omits_thumbnail_field_when_extraction_fails(tmp_path, monkeypatch)
     videos_dir = tmp_path / "_videos"
     broll_dir.mkdir()
     bgm_dir.mkdir()
-    _touch(broll_dir / "pexels_1.mp4")
+    _touch(broll_dir / "pixabay_1.mp4")
     _touch(bgm_dir / "jamendo_1.mp3")
 
     monkeypatch.setattr(lofi, "VIDEOS_DIR", videos_dir)
@@ -258,7 +258,7 @@ def test_main_returns_error_when_composition_fails(tmp_path, monkeypatch):
     bgm_dir = tmp_path / "bgm"
     broll_dir.mkdir()
     bgm_dir.mkdir()
-    _touch(broll_dir / "pexels_1.mp4")
+    _touch(broll_dir / "pixabay_1.mp4")
     _touch(bgm_dir / "jamendo_1.mp3")
 
     monkeypatch.setattr(lofi, "VIDEOS_DIR", tmp_path / "_videos")

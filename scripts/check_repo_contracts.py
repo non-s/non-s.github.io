@@ -92,7 +92,7 @@ WORKFLOW_TOKENS = {
         "sync_jamendo_music.py",
         "generate_lofi_short.py",
         "python upload_youtube.py --language=en",
-        "PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}",
+        "PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}",
         "upload_intents.jsonl",
     ),
     ".github/workflows/fetch-content.yml": (

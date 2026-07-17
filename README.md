@@ -3,10 +3,11 @@
 [![Production quality gate](https://github.com/non-s/non-s.github.io/actions/workflows/quality-gate.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/quality-gate.yml)
 [![YouTube Bot - Shorts only](https://github.com/non-s/non-s.github.io/actions/workflows/youtube-bot.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/youtube-bot.yml)
 
-Automated pipeline that turns free-licensed Pexels b-roll and Creative
-Commons (CC BY, commercial-safe) music into looping lofi YouTube Shorts and
-a 24/7 lofi live stream, with no narration -- clip + music only -- and
-publishes through the official YouTube Data API.
+Automated pipeline that turns free-licensed Pixabay anime/illustrated
+b-roll (the "Lofi Girl" studying-loop look) and Creative Commons (CC BY,
+commercial-safe) music into looping lofi YouTube Shorts and a 24/7 lofi
+live stream, with no narration -- clip + music only -- and publishes
+through the official YouTube Data API.
 
 - Cadence: `youtube-bot.yml` fires up to 3x/hour (`:02`, `:22`, `:42`, the
   extra two as a recovery net for delayed/dropped GitHub schedule events);
@@ -14,15 +15,17 @@ publishes through the official YouTube Data API.
   publishing twice.
 - Duration: **30-58 seconds** per Short, randomized.
 - Category: YouTube **Science & Technology** (`categoryId=28`).
-- Content: a random Pexels lofi-aesthetic clip (rain windows, fireplaces,
-  cozy rooms, night cities, study desks, ...) looped under a random
-  CC BY-licensed Jamendo track, with a lofi-genre title/description and a
-  custom thumbnail frame.
+- Content: a random Pixabay anime-style lofi clip (`video_type=animation`
+  -- girl studying, rain windows, cozy rooms, night cities, ...) looped
+  under a random CC BY-licensed Jamendo track, with a lofi-genre title/
+  description and a custom thumbnail frame. Pexels was tried first but has
+  no genuine illustrated content -- checked live, its "anime" search
+  results are cosplay footage and mistagged live-action.
 
 ## Pipeline
 
 ```text
-scripts/sync_lofi_broll.py   -> _assets/video/lofi_broll (Pexels clips)
+scripts/sync_lofi_broll.py   -> _assets/video/lofi_broll (Pixabay anime clips)
 scripts/sync_jamendo_music.py -> _assets/audio/bgm (Jamendo CC BY tracks)
 generate_lofi_short.py        -> _videos/*.mp4 + metadata (Shorts)
 generate_lofi_long_video.py   -> _videos/long_video_*.mp4 (24/7 live loop)
@@ -108,15 +111,14 @@ replacing the current queue, render, upload or official YouTube APIs.
 ## Required secrets
 
 - `YOUTUBE_TOKEN` -- Shorts upload + playlist/comment operations.
-- `PEXELS_API_KEY` or legacy secret name `PEXELS` -- b-roll for Shorts and
-  the live loop.
+- `PIXABAY_API_KEY` -- anime/illustrated b-roll for Shorts and the live loop.
 - `YOUTUBE_STREAM_KEY` -- only needed for the 24/7 live relay
   (`live-stream.yml`).
 
-Jamendo music sync (`scripts/sync_jamendo_music.py`) uses Jamendo's public
-demo client id and needs no secret. No AI text provider key is required by
-the active lofi pipeline -- title/description text is template-based, not
-AI-generated.
+Jamendo music sync (`scripts/sync_jamendo_music.py`) uses a registered
+Jamendo client id (`CLIENT_ID` in that script) and needs no separate
+GitHub secret. No AI text provider key is required by the active lofi
+pipeline -- title/description text is template-based, not AI-generated.
 
 `YOUTUBE_TOKEN` is an OAuth JSON token, not an API key. Generate it once with `auth_youtube.py` or the `Build auth_youtube.exe (Windows)` workflow. See [SETUP.md](SETUP.md).
 

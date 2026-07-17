@@ -38,9 +38,7 @@ jobs:
     permissions:
       contents: write
     env:
-      BROLL_SOURCE_MODE: ${{ vars.BROLL_SOURCE_MODE || 'pexels' }}
-      PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
-      PEXELS_MIN_INTERVAL_S: ${{ vars.PEXELS_MIN_INTERVAL_S || '1.0' }}
+      PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
       UPLOAD_IDEMPOTENCY_MODE: ${{ vars.UPLOAD_IDEMPOTENCY_MODE || 'block' }}
       UPLOAD_SLOT_IDEMPOTENCY_MODE: ${{ vars.UPLOAD_SLOT_IDEMPOTENCY_MODE || 'block' }}
       MEDIA_LIFECYCLE_CLEANUP: ${{ vars.MEDIA_LIFECYCLE_CLEANUP || '1' }}
@@ -133,8 +131,6 @@ jobs:
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
-          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
-          PEXELS_MIN_INTERVAL_S: ${{ vars.PEXELS_MIN_INTERVAL_S || '1.0' }}
       - name: "Gerar Short lofi"
         if: env.PUBLISH_QUOTA_BLOCKED != '1'
         # A fresh checkout always starts with an empty local bgm/b-roll
