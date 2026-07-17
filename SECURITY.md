@@ -23,8 +23,8 @@ In scope:
 
 Out of scope:
 
-- Third-party services we integrate with (YouTube, Mistral, Pexels,
-  edge-tts). Report those upstream.
+- Third-party services we integrate with (YouTube, Pixabay, Jamendo).
+  Report those upstream.
 - Issues already known and tracked publicly in the GitHub issue tracker.
 - Denial-of-service, social engineering, or physical attacks against
   infrastructure we don't control.
@@ -48,12 +48,11 @@ Out of scope:
 Required:
 
 - `YOUTUBE_TOKEN`
-- `PEXELS_API_KEY` or `PEXELS`
-- at least one configured AI text provider key
+- `PIXABAY_API_KEY`
 
 Optional:
 
-- `GEMINI_API_KEY` or `GEMINI`
+- `YOUTUBE_STREAM_KEY` (24/7 live relay only)
 - `WILD_BRIEF_RSS_URLS`
 - `WILD_BRIEF_GMAIL_ALERTS`
 - `WILD_BRIEF_ALERT_TO`

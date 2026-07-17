@@ -6,8 +6,14 @@
 | --- | --- | --- |
 | `YOUTUBE_TOKEN` | yes | OAuth token JSON for official YouTube Data API upload and optional Analytics API reads. |
 | `PIXABAY_API_KEY` | yes | Free Pixabay API key used for the active lofi pipeline's anime/illustrated b-roll (`video_type=animation`) -- Pexels has no genuine illustrated content, checked live. |
-| `PEXELS_API_KEY` or `PEXELS` | only if `fetch-content.yml`/`QUEUE_REFRESH_ENABLED` is re-enabled | Free Pexels API key used by the dormant nature-Shorts pipeline's realistic b-roll. Not used by the active lofi pipeline. |
-| One AI text provider key | only if the dormant nature-Shorts pipeline is re-enabled | Queue/story rewriting and packaging assistance. Supported names include `MISTRAL_API_KEY`, `CEREBRAS_API_KEY`, `GEMINI_API_KEY` and `GROQ_API_KEY`. Not used by the active lofi pipeline (its title/description text is template-based). |
+| `YOUTUBE_STREAM_KEY` | only for the 24/7 live relay (`live-stream.yml`) | RTMP stream key the live relay pushes to. |
+
+**Removed 2026-07-17** (were unused -- only wired to the dormant
+`fetch-content.yml`/`QUEUE_REFRESH_ENABLED` nature-Shorts pipeline, not
+the active lofi pipeline): `PEXELS_API_KEY`/`PEXELS`, `MISTRAL_API_KEY`,
+`CEREBRAS_API_KEY`, `GEMINI_API_KEY`/`GEMINI`, `GROQ_API_KEY`/`GROQ`.
+Re-add them (and re-wire `fetch-content.yml`) only if that pipeline is
+ever re-enabled.
 
 ## Optional Secrets and Settings
 
@@ -21,7 +27,6 @@
 | `PEXELS_TOPIC_CALL_BUDGET` | no | Maximum Pexels search calls allowed per topic per refresh run. Defaults to `2` to stay conservative with free provider quota. |
 | `PEXELS_DEEP_SEARCH_GAP` | no | Pending-story gap that enables deeper Pexels page search. Defaults to `8`. |
 | `FETCH_REFRESH_TIMEOUT_SECONDS` | no | Maximum seconds allowed for the Pexels refresh step before the run skips generated commits to protect publish attempts. Defaults to `720`. |
-| `GEMINI_API_KEY` or `GEMINI` | no | Visual QA when configured. |
 | `WILD_BRIEF_RSS_URLS` | no | Comma-separated RSS URLs for `scripts/free_signal_harvester.py`. |
 | `WILD_BRIEF_GMAIL_ALERTS` | no | Set to `1` only when alert payload generation should be enabled. |
 | `WILD_BRIEF_ALERT_TO` | no | Alert recipient used only when alerts are explicitly enabled. |

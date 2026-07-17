@@ -5,19 +5,16 @@
 Open **Settings -> Secrets and variables -> Actions** and add:
 
 - `YOUTUBE_TOKEN`
-- `PEXELS_API_KEY` or legacy secret name `PEXELS`
-- At least one AI text provider:
-  `MISTRAL_API_KEY`, `CEREBRAS_API_KEY`, `GEMINI_API_KEY` or `GROQ_API_KEY`
+- `PIXABAY_API_KEY` -- active lofi pipeline's visual source (anime/
+  illustrated b-roll for Shorts and the live loop)
+- `YOUTUBE_STREAM_KEY` -- only needed for the 24/7 live relay
+  (`live-stream.yml`)
 
-Recommended free quality extensions:
-
-- `GEMINI_API_KEY` or `GEMINI`
-
-Pexels is the production visual source. Set `BROLL_SOURCE_MODE=pexels` and add
-the free `PEXELS_API_KEY` secret. The workflows also accept the existing
-legacy name `PEXELS`. GBIF and Wikimedia Commons need no key. AI image
-generation is not enabled because the project is optimized for zero-cost
-operation.
+The dormant nature-Shorts pipeline (`fetch-content.yml`,
+`QUEUE_REFRESH_ENABLED`) used `PEXELS_API_KEY`/`PEXELS` and an AI text
+provider key (`MISTRAL_API_KEY`, `CEREBRAS_API_KEY`, `GEMINI_API_KEY` or
+`GROQ_API_KEY`). Those secrets were removed 2026-07-17 since nothing
+active reads them; re-add them only if that pipeline is re-enabled.
 
 ## Create YouTube OAuth credentials
 
