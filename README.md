@@ -35,6 +35,17 @@ scripts/live_stream_dynamic.py -> 24/7 YouTube Live relay (one clip
                                    several clips cut together)
 ```
 
+The b-roll/bgm libraries (`_assets/video/lofi_broll`, `_assets/audio/bgm`)
+are gitignored and persist across ephemeral runners via GitHub Actions
+cache (`actions/cache`, key `lofi-media-*`) instead of git, so the Jamendo
+library grows toward its ~150-track target over many runs instead of
+resetting to empty every time. The live relay streams straight to RTMP
+with `-stream_loop -1` on both the video clip and the audio playlist --
+there is no bake-to-file step, so a crash/restart is back on air within
+seconds regardless of playlist size. The looped clip is preprocessed once
+with a short crossfade baked between its tail and head so the loop
+wrap-around has no visible jump cut.
+
 This channel was rebuilt from an earlier nature-science-facts format
 (narrated Shorts, editorial scoring pipeline, trend hijacking, a story
 queue). Everything below "Editorial system" describes that earlier

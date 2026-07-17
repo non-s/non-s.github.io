@@ -38,11 +38,13 @@ log = logging.getLogger("jamendo_sync")
 CLIENT_ID = "04ff30b1"
 API_URL = "https://api.jamendo.com/v3.0/tracks/"
 BGM_DIR = ROOT / "_assets" / "audio" / "bgm"
-MAX_TRACKS = 20
-DOWNLOADS_PER_RUN = 4
+MAX_TRACKS = 150
+DOWNLOADS_PER_RUN = 20
 REQUEST_TIMEOUT_S = 20
 FETCH_RETRIES = 3
 RETRY_DELAY_S = 2.0
+FETCH_LIMIT = 200
+OFFSET_POOL_SIZE = 2000  # how deep into the catalog a random offset can land
 
 # fuzzytags = OR search: any of these ambient/chill/study moods qualify.
 # jazz/lofi/chillhop/piano nudge results toward the jazz-influenced sound
@@ -61,7 +63,7 @@ MOOD_TAGS = "chillout+lounge+ambient+downtempo+instrumental+relax+meditation+jaz
 PREFERRED_GENRES = {"lofi", "jazz", "chillhop", "triphop", "downtempo", "jazzhop"}
 
 
-def _fetch_candidates(limit: int = 50) -> list[dict]:
+def _fetch_candidates(limit: int = FETCH_LIMIT, offset: int = 0) -> list[dict]:
     """Search Jamendo, retrying on transient failure.
 
     Checked live: identical back-to-back requests with the same client id,
@@ -70,10 +72,16 @@ def _fetch_candidates(limit: int = 50) -> list[dict]:
     results list), independent of query size or caller. A short retry loop
     resolves it in practice; two failures in a row never happened across
     a dozen manual checks.
+
+    No `order` param on purpose: `order=popularity_month` was checked live
+    and silently caps the matching pool at ~200 tracks total (offset=200
+    consistently returned 0 more, even after retries) -- the default
+    ordering paginates through the full tagged catalog instead, confirmed
+    live with offset=200/400 both returning full pages.
     """
     query = (
         f"{API_URL}?client_id={CLIENT_ID}&format=json&fuzzytags={MOOD_TAGS}"
-        f"&include=licenses+musicinfo&audioformat=mp32&limit={limit}&order=popularity_month"
+        f"&include=licenses+musicinfo&audioformat=mp32&limit={limit}&offset={offset}"
     )
     for attempt in range(1, FETCH_RETRIES + 1):
         try:
@@ -174,7 +182,22 @@ def main() -> int:
             log.info("Removed old track %s to rotate library.", stale.name)
             existing_ids.discard(stale.stem.removeprefix("jamendo_"))
 
-    raw = _fetch_candidates()
+    # The commercially-safe (plain CC BY) yield is low -- checked live,
+    # roughly 2% of raw results -- so one 200-track page rarely has enough
+    # new downloadable tracks on its own. Sampling a handful of random
+    # offsets into the tagged catalog each run both widens the pool and
+    # spreads discovery across the catalog instead of hammering the same
+    # top page every time.
+    raw: list[dict] = []
+    seen_track_ids: set[str] = set()
+    offsets = random.sample(range(0, OFFSET_POOL_SIZE, FETCH_LIMIT), k=5)
+    for offset in offsets:
+        for track in _fetch_candidates(offset=offset):
+            track_id = str(track.get("id") or "")
+            if track_id and track_id not in seen_track_ids:
+                seen_track_ids.add(track_id)
+                raw.append(track)
+
     candidates = [t for t in raw if _downloadable(t, existing_ids)]
     if not candidates:
         commercially_safe = sum(1 for t in raw if _commercially_safe(str(t.get("license_ccurl") or "")))

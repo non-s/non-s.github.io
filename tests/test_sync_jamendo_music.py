@@ -223,8 +223,8 @@ def test_download_track_cleans_up_partial_file_on_failure(tmp_path, monkeypatch)
 
 def test_main_downloads_up_to_downloads_per_run_new_tracks(tmp_path, monkeypatch):
     monkeypatch.setattr(sync_jamendo_music, "BGM_DIR", tmp_path)
-    candidates = [_track(track_id=str(i)) for i in range(1, 8)]
-    monkeypatch.setattr(sync_jamendo_music, "_fetch_candidates", lambda: candidates)
+    candidates = [_track(track_id=str(i)) for i in range(1, 30)]
+    monkeypatch.setattr(sync_jamendo_music, "_fetch_candidates", lambda offset=0: candidates)
     monkeypatch.setattr(
         sync_jamendo_music.urllib.request, "urlretrieve", lambda url, filename: filename.write_bytes(b"x")
     )
@@ -242,7 +242,7 @@ def test_main_prefers_lofi_jazz_tagged_candidates(tmp_path, monkeypatch):
     monkeypatch.setattr(sync_jamendo_music, "DOWNLOADS_PER_RUN", 1)
     corporate = _track(track_id="1", musicinfo={"tags": {"genres": ["corporate"]}})
     lofi = _track(track_id="2", musicinfo={"tags": {"genres": ["lofi"]}})
-    monkeypatch.setattr(sync_jamendo_music, "_fetch_candidates", lambda: [corporate, lofi])
+    monkeypatch.setattr(sync_jamendo_music, "_fetch_candidates", lambda offset=0: [corporate, lofi])
     monkeypatch.setattr(
         sync_jamendo_music.urllib.request, "urlretrieve", lambda url, filename: filename.write_bytes(b"x")
     )
@@ -259,7 +259,7 @@ def test_main_rotates_out_oldest_tracks_when_library_is_full(tmp_path, monkeypat
     for i in range(3):
         (tmp_path / f"jamendo_{i}.mp3").write_bytes(b"x")
         (tmp_path / f"jamendo_{i}.json").write_text("{}")
-    monkeypatch.setattr(sync_jamendo_music, "_fetch_candidates", lambda: [])
+    monkeypatch.setattr(sync_jamendo_music, "_fetch_candidates", lambda offset=0: [])
 
     assert sync_jamendo_music.main() == 0
 
@@ -273,7 +273,7 @@ def test_main_skips_tracks_already_present(tmp_path, monkeypatch):
     monkeypatch.setattr(sync_jamendo_music, "BGM_DIR", tmp_path)
     (tmp_path / "jamendo_1.mp3").write_bytes(b"x")
     (tmp_path / "jamendo_1.json").write_text("{}")
-    monkeypatch.setattr(sync_jamendo_music, "_fetch_candidates", lambda: [_track(track_id="1")])
+    monkeypatch.setattr(sync_jamendo_music, "_fetch_candidates", lambda offset=0: [_track(track_id="1")])
 
     assert sync_jamendo_music.main() == 0
 

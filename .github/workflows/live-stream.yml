@@ -48,13 +48,22 @@ jobs:
             echo "No YouTube token configured."
           fi
 
+      - name: Restore lofi media libraries from cache
+        # Both directories are gitignored/untracked -- a fresh runner always
+        # starts empty. Actions cache (not git) is what makes the library
+        # accumulate toward ~150 bgm tracks over time instead of resetting
+        # every run: the key is unique per run so a save always happens,
+        # and restore-keys pulls in the most recent previous library first.
+        uses: actions/cache@v4
+        with:
+          path: |
+            _assets/audio/bgm
+            _assets/video/lofi_broll
+          key: lofi-media-${{ github.run_id }}
+          restore-keys: |
+            lofi-media-
+
       - name: Sync b-roll and bgm libraries
-        # _assets/video/lofi_broll/*.mp4 and _assets/audio/bgm/*.mp3 are
-        # both gitignored -- they only exist on a machine after these have
-        # run there. Without this step the relay starts with empty
-        # libraries and either can't find a clip to loop at all, or
-        # streams silently (no audio track), which stops YouTube from ever
-        # transitioning the broadcast out of "waiting for stream data".
         env:
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
         run: |

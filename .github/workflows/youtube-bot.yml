@@ -123,6 +123,22 @@ jobs:
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
+      - name: "Restaurar bibliotecas de midia lofi do cache"
+        # Ambos os diretorios sao gitignored/nao versionados -- um runner
+        # novo sempre comeca vazio. O cache de Actions (nao o git) e o que
+        # faz a biblioteca crescer rumo a ~150 faixas ao longo do tempo em
+        # vez de reiniciar a cada execucao: a chave e unica por execucao
+        # entao sempre salva no final, e restore-keys traz a biblioteca
+        # mais recente para comecar.
+        if: env.PUBLISH_QUOTA_BLOCKED != '1'
+        uses: actions/cache@v4
+        with:
+          path: |
+            _assets/audio/bgm
+            _assets/video/lofi_broll
+          key: lofi-media-${{ github.run_id }}
+          restore-keys: |
+            lofi-media-
       - name: "Sincronizar bibliotecas de b-roll e musica lofi"
         if: env.PUBLISH_QUOTA_BLOCKED != '1'
         run: |

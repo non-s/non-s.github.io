@@ -10,7 +10,17 @@ anime/illustrated clip from the same Pixabay b-roll library the Shorts
 generator uses (_assets/video/lofi_broll), loops it, and concatenates every
 locally available Jamendo track into one playlist that plays through in
 sequence and then repeats -- not a single song on loop for the whole
-session. Streams gaplessly to YouTube Live using an MPEG-TS pipe.
+session.
+
+A single ffmpeg process streams straight to RTMP with `-stream_loop -1` on
+both the video clip and the audio playlist -- there is no bake-to-file
+step sized to the playlist's length. That used to mean a restart had to
+re-encode a segment as long as the whole bgm library before any stream
+data went out; with a ~150-track library that could take hours. Now a
+restart just relaunches ffmpeg against the same (cached) inputs and is
+back on air within seconds. The video clip is preprocessed once with a
+short crossfade baked between its tail and its head, so looping it
+forever has no visible jump cut at the wrap-around point.
 
 A background thread keeps a public broadcast bound to the stream key at
 all times -- ffmpeg can push RTMP data forever, but that alone never puts
@@ -51,7 +61,7 @@ BROLL_DIR = ROOT / "_assets" / "video" / "lofi_broll"
 TARGET_W = 1920
 TARGET_H = 1080
 TARGET_FPS = 30
-FALLBACK_SILENT_DURATION_S = 1800.0
+LOOP_CROSSFADE_S = 1.0
 
 BROADCAST_TITLE = "\U0001f534 24/7 Lofi Beats to Relax/Study to | Live"
 BROADCAST_DESCRIPTION = (
@@ -59,13 +69,17 @@ BROADCAST_DESCRIPTION = (
 )
 
 
-def _audio_duration_s(path: Path) -> float:
+def _media_duration_s(path: Path) -> float:
+    """ffprobe wrapper for either audio or video. Returns 0.0 (treat as
+    unknown) rather than a guessed fallback duration -- callers that need
+    a real duration (the loop-crossfade calc) skip the optional step
+    they wanted it for instead of computing it against a made-up number."""
     cmd = ["ffprobe", "-v", "quiet", "-show_entries", "format=duration", "-of", "csv=p=0", str(path)]
     try:
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=15)
         return float(result.stdout.strip())
     except Exception:
-        return FALLBACK_SILENT_DURATION_S
+        return 0.0
 
 
 class DynamicStreamer:
@@ -237,41 +251,99 @@ class DynamicStreamer:
         log.info("Built bgm playlist from %d track(s).", len(tracks))
         return playlist_path
 
-    def build_loop_segment(self) -> Path | None:
-        """Build (or reuse) the single video-loop + music-playlist segment
-        this relay streams: one anime clip, looped for as long as the
-        local bgm playlist takes to play through once, matching the
-        "one video, whole playlist on loop" lofi-radio format instead of
-        cutting between several different clips."""
-        out_ts = self.temp_dir / "loop_segment.ts"
-        if out_ts.exists() and out_ts.stat().st_size > 0:
-            return out_ts
+    def _prepare_seamless_loop_clip(self, clip_path: Path) -> Path:
+        """Bake a short crossfade between the clip's tail and its head once,
+        so repeating it forever via -stream_loop -1 has no visible hard cut
+        at the wrap-around point.
 
+        Standard ffmpeg loop-crossfade trick: split the clip into
+        [start][mid][end], crossfade end->start into one "blend" segment,
+        then output [blend][mid]. Looping that result plays
+        mid -> blend -> mid -> blend forever -- the seam (originally the
+        cut from the last frame back to the first) is now a smooth fade
+        instead of a jump cut, and the fade only has to be computed once
+        per clip since the output file is cached and reused across
+        restarts.
+        """
+        out_path = self.temp_dir / f"seamless_{clip_path.stem}.mp4"
+        if out_path.exists() and out_path.stat().st_size > 0:
+            return out_path
+
+        duration = _media_duration_s(clip_path)
+        fade = min(LOOP_CROSSFADE_S, duration / 6) if duration > 3 else 0.0
+        if fade <= 0:
+            return clip_path
+
+        filter_complex = (
+            f"[0:v]trim=0:{fade:.3f},setpts=PTS-STARTPTS[start];"
+            f"[0:v]trim={duration - fade:.3f}:{duration:.3f},setpts=PTS-STARTPTS[end];"
+            f"[0:v]trim={fade:.3f}:{duration - fade:.3f},setpts=PTS-STARTPTS[mid];"
+            f"[end][start]xfade=transition=fade:duration={fade:.3f}:offset=0[blend];"
+            "[blend][mid]concat=n=2:v=1:a=0[out]"
+        )
+        cmd = [
+            "ffmpeg",
+            "-y",
+            "-i",
+            str(clip_path),
+            "-filter_complex",
+            filter_complex,
+            "-map",
+            "[out]",
+            "-an",
+            str(out_path),
+        ]
+        try:
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+        except Exception as exc:
+            log.warning("Failed to bake seamless loop clip, streaming raw clip instead: %s", exc)
+            return clip_path
+        if result.returncode != 0 or not out_path.exists() or out_path.stat().st_size == 0:
+            log.warning("ffmpeg seamless-loop bake failed, streaming raw clip instead: %s", result.stderr[-500:])
+            return clip_path
+        log.info("Baked seamless loop clip from %s (crossfade=%.2fs).", clip_path.name, fade)
+        return out_path
+
+    def build_stream_command(self) -> list[str] | None:
+        """Build the ffmpeg command that streams straight to RTMP: one
+        looped (seamlessly crossfaded) clip as video, the whole local bgm
+        playlist looped as audio -- no intermediate bake-to-file step.
+        Concatenating the playlist is a fast `-c copy` remux regardless of
+        how many tracks it holds, and the video loop is a few seconds of
+        work on a short clip, so a restart (crash, cooldown loop) starts
+        producing stream output again within seconds instead of waiting
+        through a fresh multi-hour re-encode sized to the playlist length.
+        """
         clip_path = self._pick_broll_clip()
         if not clip_path:
             log.error("No lofi b-roll clip found in %s to loop.", BROLL_DIR)
             return None
+        video_input = self._prepare_seamless_loop_clip(clip_path)
 
         playlist_path = self._build_bgm_playlist()
+
         video_filter = (
             f"scale={TARGET_W}:{TARGET_H}:force_original_aspect_ratio=increase,"
             f"crop={TARGET_W}:{TARGET_H},fps={TARGET_FPS},"
             f"zoompan=z='min(zoom+0.0003,1.06)':d=1:s={TARGET_W}x{TARGET_H}:fps={TARGET_FPS},"
             "setsar=1"
         )
-        cmd = ["ffmpeg", "-y", "-stream_loop", "-1", "-i", str(clip_path)]
+
+        cmd = ["ffmpeg", "-y", "-re", "-stream_loop", "-1", "-i", str(video_input)]
         if playlist_path:
-            duration_s = _audio_duration_s(playlist_path)
-            cmd += ["-stream_loop", "-1", "-i", str(playlist_path), "-map", "0:v", "-map", "1:a"]
+            cmd += ["-re", "-stream_loop", "-1", "-i", str(playlist_path), "-map", "0:v", "-map", "1:a"]
         else:
-            log.warning("No bgm tracks found in %s; looping this segment with silent audio.", BGM_DIR)
-            duration_s = FALLBACK_SILENT_DURATION_S
+            log.warning("No bgm tracks found in %s; streaming this clip with silent audio.", BGM_DIR)
             cmd += ["-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo", "-map", "0:v", "-map", "1:a"]
+
+        if self.stream_key == "test":
+            output = ["-f", "flv", "test_output.flv"]
+        else:
+            output = ["-f", "flv", f"rtmp://a.rtmp.youtube.com/live2/{self.stream_key}"]
+
         cmd += [
             "-vf",
             video_filter,
-            "-t",
-            f"{duration_s:.3f}",
             "-r",
             str(TARGET_FPS),
             "-c:v",
@@ -298,23 +370,8 @@ class DynamicStreamer:
             "128k",
             "-ar",
             "44100",
-            "-f",
-            "mpegts",
-            str(out_ts),
-        ]
-        try:
-            result = subprocess.run(cmd, capture_output=True, text=True, timeout=max(300, int(duration_s) + 120))
-        except Exception as exc:
-            log.error(f"Failed to build loop segment: {exc}")
-            return None
-        if result.returncode != 0:
-            log.error(f"FFmpeg failed to build loop segment. Exit code: {result.returncode}")
-            log.error(f"FFmpeg stderr: {result.stderr[-2000:]}")
-            return None
-        if not out_ts.exists() or out_ts.stat().st_size == 0:
-            return None
-        log.info("Built loop segment from %s (%.1f min).", clip_path.name, duration_s / 60)
-        return out_ts
+        ] + output
+        return cmd
 
     def broadcast_monitor_thread(self):
         """Keep a public broadcast bound to our stream key at all times.
@@ -330,22 +387,6 @@ class DynamicStreamer:
                 log.error(f"Broadcast monitor error: {e}")
             time.sleep(120)
 
-    def start_ffmpeg_pipe(self):
-        rtmp_url = f"rtmp://a.rtmp.youtube.com/live2/{self.stream_key}"
-        cmd = [
-            "ffmpeg",
-            "-re",  # Important: read stdin at native frame rate!
-            "-i",
-            "pipe:0",  # Read from stdin
-            "-c",
-            "copy",  # Copy the already compatible TS streams
-            "-f",
-            "flv",
-            rtmp_url,
-        ]
-        log.info("Starting master FFmpeg pipe...")
-        self.ffmpeg_proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
-
     def run(self):
         if not list(BROLL_DIR.glob("pixabay_*.mp4")):
             log.error("No lofi b-roll clips found in %s.", BROLL_DIR)
@@ -357,66 +398,31 @@ class DynamicStreamer:
 
         threading.Thread(target=self.broadcast_monitor_thread, daemon=True).start()
 
-        self.start_ffmpeg_pipe()
-
         try:
             while True:
-                target = self.build_loop_segment()
-                if not target:
+                cmd = self.build_stream_command()
+                if not cmd:
                     time.sleep(10)
                     continue
-                log.info(f"Looping segment: {target.name}")
-
-                if self.ffmpeg_proc.poll() is not None:
-                    log.error("Master FFmpeg pipe crashed! Restarting...")
-                    self.start_ffmpeg_pipe()
-
-                try:
-                    with open(target, "rb") as f:
-                        while True:
-                            if self.ffmpeg_proc.poll() is not None:
-                                log.error("Master FFmpeg pipe crashed during streaming! Breaking out to restart...")
-                                break
-
-                            chunk = f.read(1024 * 1024)  # 1MB chunks
-                            if not chunk:
-                                break
-                            self.ffmpeg_proc.stdin.write(chunk)
-                            self.ffmpeg_proc.stdin.flush()
-                except Exception as e:
-                    log.error(f"Error streaming {target.name}: {e}")
-                    time.sleep(2)
-                    if self.ffmpeg_proc:
-                        self.ffmpeg_proc.kill()
-                        self.ffmpeg_proc.wait()
-                    time.sleep(5)  # Cooldown before reconnecting
-                    self.start_ffmpeg_pipe()
-
+                log.info("Starting stream ffmpeg process...")
+                self.ffmpeg_proc = subprocess.Popen(cmd)
+                self.ffmpeg_proc.wait()
+                log.error("Stream ffmpeg process exited (code %s); restarting.", self.ffmpeg_proc.returncode)
+                time.sleep(5)  # Cooldown before reconnecting
         except KeyboardInterrupt:
             log.info("Stopping stream...")
-        finally:
-            if self.ffmpeg_proc and self.ffmpeg_proc.stdin:
-                self.ffmpeg_proc.stdin.close()
+            if self.ffmpeg_proc:
+                self.ffmpeg_proc.terminate()
                 self.ffmpeg_proc.wait()
 
 
 def main():
     stream_key = os.environ.get("YOUTUBE_STREAM_KEY")
     if not stream_key:
-        log.warning("No YOUTUBE_STREAM_KEY found. Running in local test mode (writing to output.flv).")
-        os.environ["YOUTUBE_STREAM_KEY"] = "test"
+        log.warning("No YOUTUBE_STREAM_KEY found. Running in local test mode (writing to test_output.flv).")
+        stream_key = "test"
 
-    streamer = DynamicStreamer(os.environ.get("YOUTUBE_STREAM_KEY"))
-    if stream_key is None:
-        streamer.start_ffmpeg_pipe = lambda: setattr(
-            streamer,
-            "ffmpeg_proc",
-            subprocess.Popen(
-                ["ffmpeg", "-y", "-re", "-i", "pipe:0", "-c", "copy", "test_output.flv"],
-                stdin=subprocess.PIPE,
-            ),
-        )
-
+    streamer = DynamicStreamer(stream_key)
     streamer.run()
 
 
