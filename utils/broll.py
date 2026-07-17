@@ -236,7 +236,19 @@ def fetch_pixabay(query: str, per_page: int = 8, page: int = 1, video_type: str 
     out: list[BrollClip] = []
     for video in videos:
         files = video.get("videos") or {}
-        item = files.get("large") or files.get("medium") or files.get("small") or files.get("tiny")
+        # "medium" (Pixabay's ~1280x720 tier) is preferred over "large"
+        # (often 4K) on purpose: both consumers of this clip re-encode it
+        # at most to 1920x1080 (TARGET_W/TARGET_H in live_stream_dynamic.py),
+        # so a 4K source buys nothing visually but is far more expensive to
+        # decode/re-encode. Checked live: re-encoding a "large" clip
+        # through the live relay's loop-crossfade filter graph
+        # (utils/broll.py -> scripts/live_stream_dynamic.py
+        # _prepare_seamless_loop_clip) used enough memory on a standard
+        # GitHub Actions runner to get the whole job SIGTERM'd (exit 143)
+        # partway through, twice in a row, with no application-level error
+        # at all -- only visible by comparing timing against actual OOM
+        # behavior, since the process left no traceback.
+        item = files.get("medium") or files.get("large") or files.get("small") or files.get("tiny")
         if not item or not item.get("url"):
             continue
         tags = str(video.get("tags") or "")

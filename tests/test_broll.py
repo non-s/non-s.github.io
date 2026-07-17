@@ -168,7 +168,7 @@ def test_pixabay_returns_clips_when_key_set(monkeypatch, tmp_path):
     assert len(clips) == 1
     clip = clips[0]
     assert clip.source == "pixabay"
-    assert clip.download_url == "https://cdn.pixabay.com/video/large.mp4"
+    assert clip.download_url == "https://cdn.pixabay.com/video/medium.mp4"
     assert clip.title == "girl"
     assert clip.license_evidence == "https://pixabay.com/videos/id-214500/"
     assert clip.source_metadata["pixabay_video_id"] == "214500"
@@ -178,11 +178,11 @@ def test_pixabay_returns_clips_when_key_set(monkeypatch, tmp_path):
     assert str(session.get.call_args.args[0]).endswith("/api/videos/")
 
 
-def test_pixabay_falls_back_to_smaller_resolution_when_large_missing(monkeypatch, tmp_path):
+def test_pixabay_falls_back_to_large_when_medium_missing(monkeypatch, tmp_path):
     monkeypatch.setenv("PIXABAY_API_KEY", "x")
     monkeypatch.setattr(broll, "_CACHE_DIR", tmp_path / "c")
     payload = _pixabay_payload()
-    del payload["hits"][0]["videos"]["large"]
+    del payload["hits"][0]["videos"]["medium"]
     fake = MagicMock(status_code=200)
     fake.json.return_value = payload
     with patch.object(broll, "_session") as factory:
@@ -190,7 +190,7 @@ def test_pixabay_falls_back_to_smaller_resolution_when_large_missing(monkeypatch
         session.get.return_value = fake
         factory.return_value = session
         clips = broll.fetch_pixabay("anime lofi")
-    assert clips[0].download_url == "https://cdn.pixabay.com/video/medium.mp4"
+    assert clips[0].download_url == "https://cdn.pixabay.com/video/large.mp4"
 
 
 def test_pixabay_returns_empty_without_key(monkeypatch):

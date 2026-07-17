@@ -304,6 +304,13 @@ class DynamicStreamer:
             # replacement for the raw clip.
             "-pix_fmt",
             "yuv420p",
+            # Checked live: the default x264 "medium" preset re-encoding a
+            # source clip through this filter graph used enough CPU/memory
+            # on a standard GitHub Actions runner to get the whole job
+            # killed (SIGTERM) partway through -- "veryfast" matches the
+            # preset already used for the main streaming encode below.
+            "-preset",
+            "veryfast",
             str(out_path),
         ]
         try:
