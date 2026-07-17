@@ -211,12 +211,26 @@ class DynamicStreamer:
                 str(out_ts),
             ]
         else:
-            log.warning("No bgm track found in %s; streaming this segment silent.", BGM_DIR)
+            # A stream with no audio track at all can leave YouTube's live
+            # ingestion stuck validating the broadcast instead of ever
+            # transitioning it out of "waiting for stream data" -- so even
+            # this fallback carries a (silent) audio track rather than
+            # dropping it with -an. This should be rare: the workflow syncs
+            # the bgm library before every relay run.
+            log.warning("No bgm track found in %s; streaming this segment with silent audio.", BGM_DIR)
             cmd = [
                 "ffmpeg",
                 "-y",
                 "-i",
                 str(mp4_path),
+                "-f",
+                "lavfi",
+                "-i",
+                "anullsrc=r=44100:cl=stereo",
+                "-map",
+                "0:v",
+                "-map",
+                "1:a",
                 "-r",
                 "30",
                 "-c:v",
@@ -237,7 +251,13 @@ class DynamicStreamer:
                 "4500k",
                 "-bufsize",
                 "9000k",
-                "-an",
+                "-c:a",
+                "aac",
+                "-b:a",
+                "128k",
+                "-ar",
+                "44100",
+                "-shortest",
                 "-f",
                 "mpegts",
                 str(out_ts),

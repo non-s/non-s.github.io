@@ -91,7 +91,8 @@ def test_convert_to_ts_streams_silent_when_no_bgm(streamer, tmp_path, monkeypatc
 
     assert out_ts.exists()
     cmd = calls[-1]
-    assert "-an" in cmd
+    assert "-an" not in cmd
+    assert "anullsrc=r=44100:cl=stereo" in cmd
     assert "-stream_loop" not in cmd
 
 

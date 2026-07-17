@@ -49,6 +49,14 @@ jobs:
             echo "No YouTube token configured."
           fi
 
+      - name: Sync bgm library
+        # _assets/audio/bgm/*.mp3 is gitignored -- it only exists on a
+        # machine after this has run there. Without this step the relay
+        # starts with an empty bgm library and streams silently (no audio
+        # track at all), which stops YouTube from ever transitioning the
+        # broadcast out of "waiting for stream data".
+        run: python scripts/sync_jamendo_music.py
+
       - name: Run Live Stream
         env:
           YOUTUBE_STREAM_KEY: ${{ secrets.YOUTUBE_STREAM_KEY }}
