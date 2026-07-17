@@ -48,8 +48,23 @@ EDITORIAL_COOLDOWN_SUPPLY_FALLBACK = "editorial_cooldown_supply_fallback"
 PUBLISH_READY_SUPPLY_RESERVE_FALLBACK = "publish_ready_supply_reserve_fallback"
 INVENTORY_RESERVE_FALLBACK = "inventory_reserve_fallback"
 PUBLISH_READY_RESERVE_TARGET = 6
-RESERVE_ALLOWED_PACKAGING_RISKS: set[str] = set()
-RESERVE_ALLOWED_BRAIN_RISKS: set[str] = set()
+
+# These are soft title/script "punchiness" signals (title-audit score below
+# a stylistic threshold, missing an action verb, script description below a
+# concreteness score) -- not rights, safety, factual-accuracy or generic
+# clickbait violations. During bootstrap (near-zero real audience signal,
+# see objective_gate:bootstrap_observe_before_scaling in channel_objective.py)
+# the reserve valve otherwise stays permanently empty: a freshly reset/new
+# channel cannot accumulate the real watch-time signal it needs to clear
+# decision_confidence_floor without publishing anything first, and every
+# generated candidate carries at least one of these minor style risks.
+RESERVE_ALLOWED_PACKAGING_RISKS: set[str] = {
+    "title_needs_stronger_shape",
+    "subject_not_clear",
+    "missing_action_word",
+    "script does not expose enough concrete visual detail",
+}
+RESERVE_ALLOWED_BRAIN_RISKS: set[str] = {"title_shape_weak"}
 RESERVE_ALLOWED_OPPORTUNITY_REASONS = {"low_opportunity_score", "weak_replay_reason", "weak_visual_surface"}
 RESERVE_MIN_PUBLISH_SCORE = 95.0
 SUCCESS_RECOVERY_RESERVE_MIN_PUBLISH_SCORE = 90.0

@@ -1011,6 +1011,67 @@ def test_prune_queue_keeps_risky_reserve_out_of_publish_ready(monkeypatch):
     assert rejected == []
 
 
+def test_prune_queue_lets_bootstrap_reserve_through_with_only_soft_style_risks(monkeypatch):
+    """A cold-start/reset channel has near-zero real audience signal, so every
+    candidate carries objective_gate:bootstrap_observe_before_scaling. If the
+    reserve valve also demanded zero packaging/brain risk, it would stay
+    permanently empty, because minor title-punchiness risks like
+    missing_action_word show up on nearly every generated candidate. Those
+    are stylistic, not rights/safety/factual-accuracy issues, so the reserve
+    valve should admit them -- unlike a real risk such as missing_visible_cue
+    (covered by test_prune_queue_keeps_risky_reserve_out_of_publish_ready)."""
+
+    def fake_quality_issues(*args, **kwargs):
+        return []
+
+    def fake_enriched_score(story, analytics_strategy=None):
+        return {
+            "story": story,
+            "score": 96,
+            "state": "rewrite",
+            "publish_score": {
+                "approved": True,
+                "state": "publish_ready",
+                "score": 100,
+                "objective_gate": {
+                    "reasons": ["bootstrap_observe_before_scaling"],
+                    "scale_ready": False,
+                    "publish_blocking": False,
+                },
+            },
+            "youtube_brain": {"state": "publish_minded", "risks": ["title_shape_weak"]},
+            "packaging": {"state": "magnetic", "risks": ["missing_action_word", "subject_not_clear"]},
+            "rights_audit": {"approved": True, "reasons": [], "warnings": []},
+            "editorial_guard": {"approved": True, "issues": []},
+            "editorial": {"approved": True, "state": "publish_now", "reasons": []},
+            "repair": {"attempted": False, "applied": False, "reasons": []},
+        }
+
+    monkeypatch.setattr("utils.queue_pruner.quality_issues", fake_quality_issues)
+    monkeypatch.setattr("utils.queue_pruner.enriched_score", fake_enriched_score)
+    queue = {
+        "stories": [
+            _story(
+                "reserve-soft-risk",
+                title="Plants count touches before snapping shut",
+                seo_title="Plants count touches before snapping shut",
+                hook="Plants count touches before snapping shut.",
+                thumbnail_text="TWO TOUCHES",
+                script="Plants count touches before snapping shut. Watch the trigger hairs bend twice before the trap closes.",
+                category="plants",
+            )
+        ]
+    }
+
+    pruned, rejected, summary = prune_queue(queue, max_pending=10)
+
+    story = pruned["stories"][0]
+    assert story["queue_prune"]["state"] == "publish_ready"
+    assert "publish_ready_supply_reserve_fallback" in story["queue_prune"]["objective_reasons"]
+    assert summary["reasons"]["publish_ready_supply_reserve_fallback"] == 1
+    assert rejected == []
+
+
 def test_prune_queue_uses_inventory_reserve_for_soft_duplicates(monkeypatch):
     def fake_quality_issues(story, *args, **kwargs):
         return ["duplicate_title"] if str(story.get("id") or "").startswith("story-dup") else []
