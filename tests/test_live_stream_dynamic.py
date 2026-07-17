@@ -9,6 +9,10 @@ import scripts.live_stream_dynamic as live_stream_dynamic
 @pytest.fixture
 def streamer(monkeypatch, tmp_path):
     monkeypatch.setattr(live_stream_dynamic.DynamicStreamer, "_get_youtube_client", lambda self: None)
+    # Default to "no pinned clip" so existing tests exercise the BROLL_DIR
+    # fallback; the real repo-committed pinned clip would otherwise always
+    # win regardless of BROLL_DIR monkeypatching below.
+    monkeypatch.setattr(live_stream_dynamic, "PINNED_BROLL_CLIP", tmp_path / "no_pinned_clip.mp4")
     instance = live_stream_dynamic.DynamicStreamer("test-stream-key")
     instance.videos_dir = tmp_path / "_videos"
     instance.temp_dir = tmp_path / "_videos" / "temp_stream"
@@ -33,6 +37,18 @@ def test_pick_broll_clip_returns_a_clip_when_present(streamer, tmp_path, monkeyp
     picked = streamer._pick_broll_clip()
 
     assert picked in {broll_dir / "pixabay_1.mp4", broll_dir / "pixabay_2.mp4"}
+
+
+def test_pick_broll_clip_prefers_pinned_clip_when_present(streamer, tmp_path, monkeypatch):
+    broll_dir = tmp_path / "broll"
+    broll_dir.mkdir()
+    (broll_dir / "pixabay_1.mp4").write_bytes(b"x")
+    monkeypatch.setattr(live_stream_dynamic, "BROLL_DIR", broll_dir)
+    pinned = tmp_path / "pinned_live_clip.mp4"
+    pinned.write_bytes(b"x")
+    monkeypatch.setattr(live_stream_dynamic, "PINNED_BROLL_CLIP", pinned)
+
+    assert streamer._pick_broll_clip() == pinned
 
 
 def test_build_bgm_playlist_returns_none_when_library_empty(streamer, tmp_path, monkeypatch):

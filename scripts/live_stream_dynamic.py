@@ -5,12 +5,15 @@ live_stream_dynamic.py -- 24/7 lofi live relay with self-healing broadcast.
 
 The "Lofi Girl" format this channel is modeled on isn't several different
 video clips cut together -- it's one single looping animation with a music
-playlist rotating underneath, for hours. So this relay picks ONE random
-anime/illustrated clip from the same Pixabay b-roll library the Shorts
-generator uses (_assets/video/lofi_broll), loops it, and concatenates every
-locally available Jamendo track into one playlist that plays through in
-sequence and then repeats -- not a single song on loop for the whole
-session.
+playlist rotating underneath, for hours. So this relay loops ONE fixed
+anime clip, committed directly into the repo at
+_assets/video/pinned_live_clip.mp4 (PINNED_BROLL_CLIP below) rather than
+picked randomly from the rotating Pixabay-synced library the Shorts
+generator uses -- that library still varies run to run, which doesn't fit
+a single persistent visual identity for the 24/7 stream. It concatenates
+every locally available Jamendo track into one playlist that plays
+through in sequence and then repeats -- not a single song on loop for the
+whole session.
 
 A single ffmpeg process streams straight to RTMP with `-stream_loop -1` on
 both the video clip and the audio playlist -- there is no bake-to-file
@@ -57,6 +60,13 @@ log = logging.getLogger(__name__)
 
 BGM_DIR = ROOT / "_assets" / "audio" / "bgm"
 BROLL_DIR = ROOT / "_assets" / "video" / "lofi_broll"
+
+# The live relay loops exactly one visual, matching the real "Lofi Girl"
+# format (one animation, music rotates underneath) -- committed into the
+# repo directly (not the rotating, gitignored BROLL_DIR cache) so it's
+# never affected by that library's oldest-first rotation and survives
+# every restart with no re-sync needed.
+PINNED_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_live_clip.mp4"
 
 TARGET_W = 1920
 TARGET_H = 1080
@@ -225,6 +235,8 @@ class DynamicStreamer:
             log.warning(f"Failed to rebrand stale broadcast: {e}")
 
     def _pick_broll_clip(self) -> Path | None:
+        if PINNED_BROLL_CLIP.exists():
+            return PINNED_BROLL_CLIP
         clips = list(BROLL_DIR.glob("pixabay_*.mp4"))
         return random.choice(clips) if clips else None
 
@@ -411,8 +423,8 @@ class DynamicStreamer:
             time.sleep(120)
 
     def run(self):
-        if not list(BROLL_DIR.glob("pixabay_*.mp4")):
-            log.error("No lofi b-roll clips found in %s.", BROLL_DIR)
+        if not PINNED_BROLL_CLIP.exists() and not list(BROLL_DIR.glob("pixabay_*.mp4")):
+            log.error("No lofi b-roll clips found (no pinned clip, %s empty).", BROLL_DIR)
             return
 
         # Make sure a broadcast exists and is bound *before* we start

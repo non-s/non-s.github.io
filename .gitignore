@@ -62,6 +62,11 @@ assets/audio/
 assets/video/
 assets/videos/
 
+# Exception: the live relay's permanently pinned b-roll clip is a small,
+# deliberately committed static asset (not rendered/generated output).
+!_assets/video/pinned_live_clip.mp4
+!_assets/video/pinned_live_clip.json
+
 # Video pipeline binaries
 _videos/*.mp4
 _videos/*.mp3
