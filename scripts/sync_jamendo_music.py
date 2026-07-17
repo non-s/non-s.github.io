@@ -54,7 +54,7 @@ REQUEST_TIMEOUT_S = 20
 MOOD_TAGS = "chillout+lounge+ambient+downtempo+instrumental+relax+meditation+jazz+lofi+chillhop+piano"
 
 
-def _fetch_candidates(limit: int = 20) -> list[dict]:
+def _fetch_candidates(limit: int = 50) -> list[dict]:
     query = (
         f"{API_URL}?client_id={CLIENT_ID}&format=json&fuzzytags={MOOD_TAGS}"
         f"&include=licenses&audioformat=mp32&limit={limit}&order=popularity_month"
