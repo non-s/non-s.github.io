@@ -38,7 +38,6 @@ def build_pack(root: Path = ROOT, limit: int = 10) -> dict:
                 "title": title,
                 "url": url,
                 "shortform_caption": f"{title} {tags}".strip()[:2200],
-                "instagram_caption": f"{title}\n\n{url}\n\n{tags}".strip()[:2200],
                 "shorts_caption": marker.get("description", "")[:5000],
             }
         )

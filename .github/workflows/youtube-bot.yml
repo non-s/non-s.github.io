@@ -306,7 +306,6 @@ jobs:
         if: steps.publish_window.outputs.should_publish == 'true'
         run: |
           python scripts/newsjacking_radar.py || true
-          python scripts/sniper_radar.py || true
           python scripts/competitor_spy.py || true
           python scripts/community_polls.py || true
         env:
