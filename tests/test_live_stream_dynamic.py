@@ -114,7 +114,16 @@ def test_convert_to_ts_reuses_existing_ts_file(streamer, tmp_path, monkeypatch):
 def test_ensure_live_broadcast_reuses_active_broadcast(streamer):
     fake_youtube = MagicMock()
     fake_youtube.liveBroadcasts().list().execute.return_value = {
-        "items": [{"id": "abc123", "status": {"lifeCycleStatus": "live"}}]
+        "items": [
+            {
+                "id": "abc123",
+                "status": {"lifeCycleStatus": "live"},
+                "snippet": {
+                    "title": live_stream_dynamic.BROADCAST_TITLE,
+                    "description": live_stream_dynamic.BROADCAST_DESCRIPTION,
+                },
+            }
+        ]
     }
     streamer.youtube = fake_youtube
 
@@ -122,6 +131,35 @@ def test_ensure_live_broadcast_reuses_active_broadcast(streamer):
 
     assert streamer.broadcast_id == "abc123"
     fake_youtube.liveBroadcasts().insert.assert_not_called()
+    fake_youtube.liveBroadcasts().update.assert_not_called()
+
+
+def test_ensure_live_broadcast_rebrands_stale_active_broadcast(streamer):
+    fake_youtube = MagicMock()
+    fake_youtube.liveBroadcasts().list().execute.return_value = {
+        "items": [
+            {
+                "id": "abc123",
+                "status": {"lifeCycleStatus": "live"},
+                "snippet": {
+                    "title": "\U0001f534 24/7 Wild Nature & Animal Secrets | Ao Vivo | En Vivo",
+                    "description": "Non-stop nature documentaries, wildlife facts and Earth science, looping live.",
+                    "scheduledStartTime": "2026-07-15T00:00:00Z",
+                },
+            }
+        ]
+    }
+    streamer.youtube = fake_youtube
+
+    streamer.ensure_live_broadcast()
+
+    assert streamer.broadcast_id == "abc123"
+    fake_youtube.liveBroadcasts().insert.assert_not_called()
+    update_call = fake_youtube.liveBroadcasts().update.call_args
+    assert update_call.kwargs["body"]["id"] == "abc123"
+    assert update_call.kwargs["body"]["snippet"]["title"] == live_stream_dynamic.BROADCAST_TITLE
+    assert update_call.kwargs["body"]["snippet"]["description"] == live_stream_dynamic.BROADCAST_DESCRIPTION
+    assert update_call.kwargs["body"]["snippet"]["scheduledStartTime"] == "2026-07-15T00:00:00Z"
 
 
 def test_ensure_live_broadcast_creates_lofi_branded_broadcast_when_none_active(streamer):

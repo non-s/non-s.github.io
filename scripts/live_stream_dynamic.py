@@ -105,6 +105,7 @@ class DynamicStreamer:
                 life_cycle = (item.get("status") or {}).get("lifeCycleStatus") or ""
                 if life_cycle in {"live", "ready", "testing"}:
                     self.broadcast_id = item.get("id")
+                    self._rebrand_if_stale(item)
                     return
         except Exception as e:
             log.error(f"Failed to list liveBroadcasts: {e}")
@@ -153,6 +154,36 @@ class DynamicStreamer:
             )
         except Exception as e:
             log.error(f"Failed to create/bind a new broadcast: {e}")
+
+    def _rebrand_if_stale(self, broadcast_item: dict) -> None:
+        """Fix an already-active broadcast's title/description if they
+        don't match the current branding.
+
+        ensure_live_broadcast() only creates a NEW broadcast when none is
+        active -- an already-live/ready/testing broadcast created under
+        older branding (e.g. the pre-lofi-pivot nature-facts title) would
+        otherwise just keep getting reused forever with its stale title,
+        even though the video/audio streaming through it is already lofi.
+        """
+        snippet = broadcast_item.get("snippet") or {}
+        if snippet.get("title") == BROADCAST_TITLE and snippet.get("description") == BROADCAST_DESCRIPTION:
+            return
+        try:
+            self.youtube.liveBroadcasts().update(
+                part="snippet",
+                body={
+                    "id": broadcast_item.get("id"),
+                    "snippet": {
+                        "title": BROADCAST_TITLE,
+                        "description": BROADCAST_DESCRIPTION,
+                        "scheduledStartTime": snippet.get("scheduledStartTime")
+                        or datetime.now(timezone.utc).isoformat(),
+                    },
+                },
+            ).execute()
+            log.info("Rebranded stale broadcast %s to current lofi title.", broadcast_item.get("id"))
+        except Exception as e:
+            log.warning(f"Failed to rebrand stale broadcast: {e}")
 
     def _pick_bgm_track(self) -> Path | None:
         tracks = list(BGM_DIR.glob("jamendo_*.mp3"))
