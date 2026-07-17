@@ -36,13 +36,30 @@ def find_active_broadcast_ids(youtube) -> list[str]:
 
 
 def end_broadcasts(youtube, broadcast_ids: list[str]) -> dict[str, bool]:
+    """Transition each broadcast to complete, falling back to an outright
+    delete when YouTube rejects the transition.
+
+    Checked live: a broadcast stuck in "ready" (bound to a stream key but
+    that never actually received valid data, e.g. after an ffmpeg
+    misconfiguration) has no "live" state to complete from -- the
+    transition API call fails with reason "invalidTransition". Deleting
+    it outright is the only way to clear that broadcast so a fresh one
+    can take its place.
+    """
     results: dict[str, bool] = {}
     for broadcast_id in broadcast_ids:
         try:
             youtube.liveBroadcasts().transition(broadcastStatus="complete", id=broadcast_id, part="id,status").execute()
             results[broadcast_id] = True
+            continue
         except Exception as exc:
-            print(f"Failed to end {broadcast_id}: {exc}", file=sys.stderr)
+            transition_error = exc
+        try:
+            youtube.liveBroadcasts().delete(id=broadcast_id).execute()
+            results[broadcast_id] = True
+        except Exception as delete_exc:
+            print(f"Failed to end {broadcast_id}: {transition_error}", file=sys.stderr)
+            print(f"Failed to delete {broadcast_id} as fallback: {delete_exc}", file=sys.stderr)
             results[broadcast_id] = False
     return results
 

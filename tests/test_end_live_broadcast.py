@@ -29,9 +29,24 @@ def test_end_broadcasts_reports_success_per_id():
     assert youtube.liveBroadcasts().transition.call_count == 2
 
 
+def test_end_broadcasts_falls_back_to_delete_when_transition_is_invalid():
+    """Checked live: a broadcast stuck in "ready" that never received
+    valid stream data can't transition straight to "complete" (YouTube
+    returns reason "invalidTransition") -- delete is the only way to
+    clear it."""
+    youtube = MagicMock()
+    youtube.liveBroadcasts().transition().execute.side_effect = Exception("invalidTransition")
+
+    results = end_live_broadcast.end_broadcasts(youtube, ["stuck-ready"])
+
+    assert results == {"stuck-ready": True}
+    youtube.liveBroadcasts().delete.assert_called_with(id="stuck-ready")
+
+
 def test_end_broadcasts_reports_failure_without_stopping_others():
     youtube = MagicMock()
-    youtube.liveBroadcasts().transition().execute.side_effect = [Exception("boom"), None]
+    youtube.liveBroadcasts().transition().execute.side_effect = Exception("boom")
+    youtube.liveBroadcasts().delete().execute.side_effect = [Exception("still broken"), None]
 
     results = end_live_broadcast.end_broadcasts(youtube, ["bad", "good"])
 
@@ -64,6 +79,7 @@ def test_main_returns_one_when_an_end_fails(monkeypatch):
         "items": [{"id": "abc", "status": {"lifeCycleStatus": "live"}}]
     }
     fake_youtube.liveBroadcasts().transition().execute.side_effect = Exception("boom")
+    fake_youtube.liveBroadcasts().delete().execute.side_effect = Exception("still broken")
     monkeypatch.setattr(end_live_broadcast, "get_youtube_service", lambda: fake_youtube)
 
     assert end_live_broadcast.main() == 1
