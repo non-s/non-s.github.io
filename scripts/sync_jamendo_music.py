@@ -139,9 +139,16 @@ def main() -> int:
             log.info("Removed old track %s to rotate library.", stale.name)
             existing_ids.discard(stale.stem.removeprefix("jamendo_"))
 
-    candidates = [t for t in _fetch_candidates() if _downloadable(t, existing_ids)]
+    raw = _fetch_candidates()
+    candidates = [t for t in raw if _downloadable(t, existing_ids)]
     if not candidates:
-        log.warning("No new downloadable Jamendo tracks found this run.")
+        commercially_safe = sum(1 for t in raw if _commercially_safe(str(t.get("license_ccurl") or "")))
+        log.warning(
+            "No new downloadable Jamendo tracks found this run (raw=%d, commercially_safe=%d, already_owned=%d).",
+            len(raw),
+            commercially_safe,
+            len(existing_ids),
+        )
         return 0
 
     random.shuffle(candidates)
