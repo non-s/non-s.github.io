@@ -1,15 +1,14 @@
 name: "YouTube Bot - Shorts only"
 
-# Shorts-only pipeline for YouTube.
-# The workflow evaluates every canonical global slot; scripts/publish_window.py
-# is the source of truth that decides publish vs safe skip.
+# Lofi Shorts pipeline for YouTube: no narration, no story queue -- every
+# run fetches/refreshes a small b-roll+bgm library and generates one fresh
+# Short on demand. upload_youtube.py's own per-canonical-slot dedup (see
+# duplicate_slot_uploaded() in scripts/upload_intent.py) keeps a slot from
+# publishing twice even though this schedule fires up to 3x/hour as a
+# recovery net for delayed/dropped GitHub schedule events.
 on:
   schedule:
-    # Offset from the crowded top-of-hour GitHub cron minute while still
-    # targeting the canonical HH:00 publishing slot in publish_schedule.py.
     - cron: "2 * * * *"
-    # Recovery launches for delayed/dropped GitHub schedule events.
-    # scripts/publish_window.py only allows these inside the slot grace window.
     - cron: "22 * * * *"
     - cron: "42 * * * *"
   workflow_dispatch:
@@ -30,51 +29,29 @@ concurrency:
 
 jobs:
   generate-and-upload:
-    name: "Gerar e publicar Shorts no YouTube"
+    name: "Gerar e publicar Lofi Shorts no YouTube"
     # Set YOUTUBE_PUBLISHING_ENABLED=1 to keep the hourly YouTube publisher
     # active. Pexels is the default visual source.
     if: ${{ vars.YOUTUBE_PUBLISHING_ENABLED == '1' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
     permissions:
       contents: write
     env:
-      MAX_SHORTS_PER_RUN: "1"
-      RETENTION_EASTER_EGG_ENABLED: "1"
-      # Optional music bed is off by default for the Pexels-only restart.
-      MUSIC_BED_ENABLED: ${{ vars.MUSIC_BED_ENABLED || '0' }}
       BROLL_SOURCE_MODE: ${{ vars.BROLL_SOURCE_MODE || 'pexels' }}
       PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
       PEXELS_MIN_INTERVAL_S: ${{ vars.PEXELS_MIN_INTERVAL_S || '1.0' }}
-      # Open immediately on the animal and hook in the Shorts feed.
-      BRAND_CARDS_ENABLED: "0"
-      # Monetization-first mode: skip a candidate instead of shipping a
-      # weak static video or a Short without retention-critical captions.
-      QUALITY_REQUIRE_MOTION_BROLL: "1"
-      QUALITY_REQUIRE_CAPTIONS: "1"
-      QUALITY_MIN_VISUAL_QA_SCORE: "6"
-      REQUIRE_SHORT_ON_PUBLISH: "0"
-      REQUIRE_UPLOAD_ON_PUBLISH: "1"
-      ADAPTIVE_CADENCE_ENABLED: ${{ vars.ADAPTIVE_CADENCE_ENABLED || '0' }}
-      ALLOW_FLEX_SLOT: ${{ vars.ALLOW_FLEX_SLOT || '0' }}
-      PUBLISH_SLOT_GRACE_MINUTES: ${{ vars.PUBLISH_SLOT_GRACE_MINUTES || '90' }}
-      MIN_SLOT_PUBLISH_SCORE: ${{ vars.MIN_SLOT_PUBLISH_SCORE || '0' }}
-      MIN_QUEUE_OPPORTUNITY_SCORE: ${{ vars.MIN_QUEUE_OPPORTUNITY_SCORE || '0' }}
-      OPENING_GATE_MODE: ${{ vars.OPENING_GATE_MODE || 'warn' }}
-      OPENING_GATE_MIN_SCORE: ${{ vars.OPENING_GATE_MIN_SCORE || '78' }}
-      FACT_GUARD_MODE: ${{ vars.FACT_GUARD_MODE || 'block' }}
-      RIGHTS_GUARD_MODE: ${{ vars.RIGHTS_GUARD_MODE || 'block' }}
-      ORIGINALITY_PACK_MODE: ${{ vars.ORIGINALITY_PACK_MODE || 'warn' }}
       UPLOAD_IDEMPOTENCY_MODE: ${{ vars.UPLOAD_IDEMPOTENCY_MODE || 'block' }}
+      UPLOAD_SLOT_IDEMPOTENCY_MODE: ${{ vars.UPLOAD_SLOT_IDEMPOTENCY_MODE || 'block' }}
       MEDIA_LIFECYCLE_CLEANUP: ${{ vars.MEDIA_LIFECYCLE_CLEANUP || '1' }}
       QUOTA_GUARD_MODE: ${{ vars.QUOTA_GUARD_MODE || 'block' }}
       QUOTA_GUARD_MAX_DAILY_RATIO: ${{ vars.QUOTA_GUARD_MAX_DAILY_RATIO || '0.95' }}
       YOUTUBE_DAILY_QUOTA_BUDGET: "10000"
       YOUTUBE_DAILY_UPLOAD_BUDGET: "100"
-      OPS_GUARDIAN_ENFORCE: ${{ vars.OPS_GUARDIAN_ENFORCE || '0' }}
       YOUTUBE_DESCRIPTION_MODE: ${{ vars.YOUTUBE_DESCRIPTION_MODE || 'full' }}
-      PUBLISH_RECOVERY_DELAY_MINUTES: ${{ vars.PUBLISH_RECOVERY_DELAY_MINUTES || '40' }}
-      PUBLISH_EVENT_SCHEDULE_CRON: ${{ github.event.schedule || '' }}
+      CHANNEL_PLAYLIST_PREFIX: ${{ vars.CHANNEL_PLAYLIST_PREFIX || '' }}
+      CHANNEL_DEFAULT_HASHTAGS: ${{ vars.CHANNEL_DEFAULT_HASHTAGS || '#Shorts,#lofi,#chillbeats' }}
+      CHANNEL_PLAYLIST_DESCRIPTION: ${{ vars.CHANNEL_PLAYLIST_DESCRIPTION || 'Lofi Shorts grouped for easier binge watching.' }}
     steps:
       - name: "Checkout"
         uses: actions/checkout@v7.0.0
@@ -90,19 +67,14 @@ jobs:
         with:
           python-version: "3.11"
           cache: "pip"
-      - name: "Instalar FFmpeg, libass e fontes"
+      - name: "Instalar FFmpeg"
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y ffmpeg libass9 fonts-dejavu-core fonts-liberation fonts-noto-core fonts-noto-mono fonts-open-sans fontconfig
-          sudo fc-cache -f -v
+          sudo apt-get install -y ffmpeg
       - name: "Instalar dependencias Python"
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
-          python -m playwright install chromium
-          if [ "${INSTALL_FASTER_WHISPER:-1}" = "1" ]; then
-            pip install --no-deps "faster-whisper>=1.0,<2.0" "ctranslate2>=4.0,<5.0" || true
-          fi
       - name: "Quota preflight"
         run: |
           set +e
@@ -134,159 +106,10 @@ jobs:
           if [ "$code" = "3" ]; then
             echo "Quota guard requested a safe skip."
           fi
-      - name: "Garantir fila minima"
-        if: env.PUBLISH_QUOTA_BLOCKED != '1'
-        run: |
-          count_field() {
-            FIELD="$1" QUEUE_COUNTS="$counts" python - <<'PY'
-          import json
-          import os
-
-          payload = json.loads(os.environ["QUEUE_COUNTS"])
-          print(int(payload.get(os.environ["FIELD"], 0) or 0))
-          PY
-          }
-          refresh_counts() {
-            counts="$(python scripts/queue_ready_count.py --refresh --json)"
-            ready="$(count_field publish_ready)"
-            publishable="$(count_field publish_eligible)"
-            pending="$(count_field pending)"
-          }
-          target="${QUEUE_TARGET_PUBLISH_READY:-6}"
-          minimum_to_publish="${QUEUE_MIN_READY_TO_PUBLISH:-1}"
-          max_attempts="${QUEUE_BACKFILL_ATTEMPTS:-2}"
-          base_pending_target="${QUEUE_TARGET_PENDING:-18}"
-          pending_batch="${QUEUE_BACKFILL_PENDING_BATCH:-6}"
-          backfill_timeout="${QUEUE_BACKFILL_TIMEOUT_SECONDS:-540}"
-          refresh_counts
-          echo "Operational queue before publish backfill: publish-ready ${ready}/${target}; publish-eligible ${publishable}/${minimum_to_publish}; pending ${pending}/${base_pending_target}"
-          if [ "${ready}" -ge "${target}" ] && [ "${publishable}" -ge "${minimum_to_publish}" ]; then
-            echo "Publish-ready inventory is enough and at least one Short clears final publish quality; raw pending inventory is monitored by fetch-content."
-          fi
-          if [ "${publishable}" -ge "${minimum_to_publish}" ] && [ "${ready}" -lt "${target}" ]; then
-            echo "Publish-eligible inventory can satisfy this one-Short run; reserve backfill is left to fetch-content."
-          fi
-          attempt=1
-          while [ "${publishable}" -lt "${minimum_to_publish}" ] && [ "${attempt}" -le "${max_attempts}" ]; do
-            echo "Publish-eligible queue is below the publish minimum; emergency backfill attempt ${attempt}/${max_attempts}."
-            export QUEUE_TARGET_PENDING=$((base_pending_target + (attempt - 1) * pending_batch))
-            echo "Raw pending target for this attempt: ${QUEUE_TARGET_PENDING}"
-            if ! timeout "${backfill_timeout}s" python fetch_animals.py; then
-              echo "::warning::Publish backfill attempt ${attempt} did not complete within ${backfill_timeout}s or exited non-zero; continuing with current queue."
-              break
-            fi
-            python scripts/apply_topic_freshness.py || true
-            refresh_counts
-            echo "Operational queue after backfill attempt ${attempt}: publish-ready ${ready}/${target}; publish-eligible ${publishable}/${minimum_to_publish}; pending ${pending}/${base_pending_target}"
-            attempt=$((attempt + 1))
-          done
-          python scripts/queue_ready_count.py --json
-          if [ "${publishable}" -lt "${minimum_to_publish}" ]; then
-            echo "::warning::Publish-eligible queue still below the per-run minimum after ${max_attempts} attempt(s): publish-eligible ${publishable}/${minimum_to_publish}; publish-ready ${ready}/${target}"
-          fi
-          if [ "${ready}" -lt "${target}" ]; then
-            echo "::warning::Publish-ready queue still below target after ${max_attempts} attempt(s): publish-ready ${ready}/${target}; pending ${pending}/${base_pending_target}"
-          else
-            echo "Queue has enough publish-ready inventory: publish-ready ${ready}/${target}; pending ${pending}/${base_pending_target}"
-          fi
-          if [ "${pending}" -lt "${base_pending_target}" ]; then
-            echo "::warning::Raw pending inventory ${pending}/${base_pending_target} is below the emergency target; fetch-content owns deeper replenishment."
-          fi
-        env:
-          PYTHONIOENCODING: utf-8
-          PYTHONUNBUFFERED: "1"
-          BROLL_SOURCE_MODE: "pexels"
-          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
-          PEXELS_MIN_INTERVAL_S: ${{ vars.PEXELS_MIN_INTERVAL_S || '1.0' }}
-          QUEUE_TARGET_PUBLISH_READY: ${{ vars.PUBLISH_BACKFILL_READY_TARGET || '6' }}
-          QUEUE_MIN_READY_TO_PUBLISH: ${{ vars.PUBLISH_MIN_READY_TO_PUBLISH || '1' }}
-          QUEUE_TARGET_PENDING: ${{ vars.PUBLISH_BACKFILL_QUEUE_TARGET || '18' }}
-          QUEUE_BACKFILL_PENDING_BATCH: ${{ vars.PUBLISH_BACKFILL_PENDING_BATCH || '6' }}
-          QUEUE_BACKFILL_ATTEMPTS: ${{ vars.PUBLISH_BACKFILL_ATTEMPTS || '2' }}
-          QUEUE_BACKFILL_TIMEOUT_SECONDS: ${{ vars.PUBLISH_BACKFILL_TIMEOUT_SECONDS || '540' }}
-          PEXELS_SEARCH_PER_PAGE: ${{ vars.PEXELS_SEARCH_PER_PAGE || '32' }}
-          PEXELS_DISCOVERY_PAGES: ${{ vars.PEXELS_DISCOVERY_PAGES || '2' }}
-          PEXELS_BACKFILL_QUERY_TAKE: ${{ vars.PEXELS_BACKFILL_QUERY_TAKE || '6' }}
-          PEXELS_TOPIC_CALL_BUDGET: ${{ vars.PEXELS_TOPIC_CALL_BUDGET || '2' }}
-          PEXELS_DEEP_SEARCH_GAP: ${{ vars.PEXELS_DEEP_SEARCH_GAP || '8' }}
-          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
-          CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY || secrets.CEREBRAS }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI }}
-          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY || secrets.GROQ }}
-      - name: "Preparar inteligencia pre-publicacao"
-        run: python scripts/run_intelligence_suite.py pre_generate
-        env:
-          PYTHONIOENCODING: utf-8
-          PYTHONUNBUFFERED: "1"
-          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
-          CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY || secrets.CEREBRAS }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI }}
-          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY || secrets.GROQ }}
-      - name: "Decidir janela de publicacao"
-        id: publish_window
-        env:
-          WORKFLOW_DISPATCH_REASON: ${{ github.event.inputs.reason || '' }}
-        run: |
-          if [ "${PUBLISH_QUOTA_BLOCKED:-0}" = "1" ]; then
-            echo '{"decision":"skip_quota_guard","reasons":["quota_guard_blocked"]}'
-            echo "should_publish=false" >> "$GITHUB_OUTPUT"
-            echo "### Publish window decision" >> "$GITHUB_STEP_SUMMARY"
-            echo "- Decision: \`skip_quota_guard\`" >> "$GITHUB_STEP_SUMMARY"
-            echo "- Reasons: \`quota_guard_blocked\`" >> "$GITHUB_STEP_SUMMARY"
-            exit 0
-          fi
-          decision="$(python scripts/publish_window.py --json)"
-          echo "$decision"
-          should_publish="$(DECISION_JSON="$decision" python - <<'PY'
-          import json
-          import os
-
-          payload = json.loads(os.environ["DECISION_JSON"])
-          print("true" if payload.get("decision") == "publish" else "false")
-          PY
-          )"
-          echo "should_publish=$should_publish" >> "$GITHUB_OUTPUT"
-          top_candidate_id="$(DECISION_JSON="$decision" python - <<'PY'
-          import json
-          import os
-
-          payload = json.loads(os.environ["DECISION_JSON"])
-          print(str(payload.get("top_candidate_id") or ""))
-          PY
-          )"
-          echo "top_candidate_id=$top_candidate_id" >> "$GITHUB_OUTPUT"
-          echo "PUBLISH_WINDOW_TOP_CANDIDATE_ID=$top_candidate_id" >> "$GITHUB_ENV"
-          echo "PUBLISH_WINDOW_SELECTED_ONLY=1" >> "$GITHUB_ENV"
-          DECISION_JSON="$decision" python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
-          import json
-          import os
-
-          payload = json.loads(os.environ["DECISION_JSON"])
-          print("### Publish window decision")
-          print(f"- Decision: `{payload.get('decision')}`")
-          print(f"- Slot: `{payload.get('slot_label')}` UTC")
-          print(f"- Next slot: `{payload.get('next_slot')}` UTC")
-          print(f"- Top candidate: `{payload.get('top_candidate_id') or 'none'}`")
-          print(f"- Publish score: `{payload.get('publish_score')}`")
-          print(f"- Opportunity score: `{payload.get('opportunity_score')}`")
-          print(f"- Reasons: `{', '.join(payload.get('reasons') or ['ready'])}`")
-          PY
-          DECISION_JSON="$decision" python - <<'PY'
-          import json
-          import os
-          payload = json.loads(os.environ["DECISION_JSON"])
-          soft_skip_decisions = {"skip_no_eligible_story", "skip_low_queue_quality"}
-          if payload.get("decision") in soft_skip_decisions:
-              print(
-                  "::warning::No eligible Short was published this cycle; quality guard kept the channel clean: "
-                  f"{payload.get('decision')} reasons={payload.get('reasons')}",
-              )
-          PY
       - name: "Restaurar tokens do YouTube"
-        if: steps.publish_window.outputs.should_publish == 'true'
+        if: env.PUBLISH_QUOTA_BLOCKED != '1'
         env:
           YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
-          YOUTUBE_TOKEN_ES: ${{ secrets.YOUTUBE_TOKEN_ES || secrets.YOUTUBE_TOKEN_ES_MX }}
         run: |
           umask 077
           if [ -n "$YOUTUBE_TOKEN" ]; then
@@ -294,7 +117,7 @@ jobs:
             chmod 600 youtube_token.json
           fi
       - name: "Validar autenticacao do YouTube"
-        if: steps.publish_window.outputs.should_publish == 'true'
+        if: env.PUBLISH_QUOTA_BLOCKED != '1'
         run: |
           if [ -f youtube_token.json ]; then
             python upload_youtube.py --check-auth --language=en
@@ -302,67 +125,33 @@ jobs:
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
-      - name: "Trend Hijacking e Radar de Oportunidades"
-        if: steps.publish_window.outputs.should_publish == 'true'
+      - name: "Sincronizar bibliotecas de b-roll e musica lofi"
+        if: env.PUBLISH_QUOTA_BLOCKED != '1'
         run: |
-          python scripts/newsjacking_radar.py || true
-          python scripts/competitor_spy.py || true
-          python scripts/community_polls.py || true
+          python scripts/sync_lofi_broll.py
+          python scripts/sync_jamendo_music.py
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI }}
-      - name: "Gerar Shorts"
-        if: steps.publish_window.outputs.should_publish == 'true'
-        run: |
-          python scripts/generate_audio_assets.py
-          python generate_shorts.py
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
+          PEXELS_MIN_INTERVAL_S: ${{ vars.PEXELS_MIN_INTERVAL_S || '1.0' }}
+      - name: "Gerar Short lofi"
+        if: env.PUBLISH_QUOTA_BLOCKED != '1'
+        run: python generate_lofi_short.py
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
-          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
-          CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY || secrets.CEREBRAS }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI }}
-          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY || secrets.GROQ }}
-          MAX_SHORTS_PER_RUN: ${{ env.MAX_SHORTS_PER_RUN }}
       - name: "Upload Shorts para YouTube"
-        if: steps.publish_window.outputs.should_publish == 'true' && hashFiles('youtube_token.json') != ''
+        if: env.PUBLISH_QUOTA_BLOCKED != '1' && hashFiles('youtube_token.json') != ''
         run: python upload_youtube.py --language=en
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
           YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
-          YOUTUBE_DESCRIPTION_MODE: ${{ vars.YOUTUBE_DESCRIPTION_MODE || 'full' }}
           MEDIA_LIFECYCLE_CLEANUP: 0
       - name: "Aplicar ciclo de vida da midia"
-        if: steps.publish_window.outputs.should_publish == 'true'
+        if: env.PUBLISH_QUOTA_BLOCKED != '1'
         run: python scripts/media_lifecycle.py --cleanup --audit-tracked --json
-      - name: "Atualizar aprendizado editorial gratuito"
-        if: steps.publish_window.outputs.should_publish == 'true'
-        run: |
-          python scripts/run_intelligence_suite.py post_publish
-      - name: "Engajar comentarios"
-        if: steps.publish_window.outputs.should_publish == 'true'
-        run: |
-          python scripts/reply_comments.py
-        env:
-          PYTHONIOENCODING: utf-8
-          PYTHONUNBUFFERED: "1"
-          YOUTUBE_AUTO_REPLY_COMMENTS: ${{ vars.YOUTUBE_AUTO_REPLY_COMMENTS || '1' }}
-          YOUTUBE_COMMENT_REPLY_LIMIT: ${{ vars.YOUTUBE_COMMENT_REPLY_LIMIT || '30' }}
-      - name: "Promover comentarios para ideias de Shorts"
-        if: steps.publish_window.outputs.should_publish == 'true'
-        run: python scripts/comment_to_short_pipeline.py
-      - name: "Sincronizar diagnosticos da fila"
-        if: always() && env.PUBLISH_QUOTA_BLOCKED != '1'
-        run: python scripts/run_intelligence_suite.py queue
-        env:
-          PYTHONIOENCODING: utf-8
-          PYTHONUNBUFFERED: "1"
-          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
-          CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY || secrets.CEREBRAS }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI }}
-          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY || secrets.GROQ }}
       - name: "Salvar marcadores no git"
         if: always() && env.PUBLISH_QUOTA_BLOCKED != '1'
         run: |
@@ -370,93 +159,17 @@ jobs:
           git config user.email "bot@wildbrief.com"
           state_dir="$(mktemp -d)"
           state_paths=(
-            community_polls_suggestions.md
-            _data/stories_queue.json
             _data/published_clips.json
             _data/provider_stats.jsonl
-            _data/channel_memory.jsonl
             _data/analytics/latest.json
-            _data/analytics/experiments.json
-            _data/analytics/comments.json
             _data/analytics/api_quota_ledger.jsonl
             _data/analytics/api_quota_latest.json
-            _data/analytics/reporting_video_metrics.jsonl
-            _data/analytics/studio_reach_daily.jsonl
             _data/upload_intents.jsonl
             _data/media_lifecycle_report.json
-            _data/comment_replies.json
-            _data/comment_to_short_candidates.json
-            _data/ai_provider_report.json
-            _data/packaging_report.json
-            _data/frame_zero_preflight.json
-            _data/youtube_brain_report.json
-            _data/youtube_intelligence.json
-            _data/autonomous_director.json
-            _data/autonomous_growth_plan.json
-            _data/channel_success.json
-            _data/scale_blueprint.json
-            _data/level_system.json
-            _data/control_plane_report.json
-            _data/success_rewriter.json
-            _data/winner_sequel_factory.json
-            _data/automation_health.json
-            _data/ops_guardian.json
-            _data/remake_backlog.json
-            _data/trend_radar.json
-            _data/trends/trend_signals.jsonl
-            _data/category_recovery.json
-            _data/category_recovery_rewriter.json
-            _data/fact_ledger.json
-            _data/fact_guard_report.json
-            _data/fact_sources.jsonl
-            _data/source_provenance.jsonl
-            _data/originality_pack.jsonl
-            _data/experiment_registry.json
-            _data/underpowered_tests.json
-            _data/music_bed_report.json
-            _data/format_memory.json
-            _data/fan_growth.json
-            _data/audience_memory.json
-            _data/early_performance.json
-            _data/early_warning.json
-            _data/winner_patterns.json
-            _data/data_quality_report.json
-            _data/agency_gate.json
-            _data/post24_review.json
-            _data/post_upload_session_ops.json
-            _data/fresh_upload_watchlist.json
-            _data/fresh_upload_actions.json
-            _data/sequence_plan.json
-            _data/publish_schedule.json
-            _data/next_shorts.json
-            _data/queue_audit.json
-            _data/dry_run_publish.json
-            _data/reject_report.json
-            _data/publish_slot_decisions.jsonl
-            _data/rejected_queue.jsonl
-            _data/session_graph.json
-            _data/next_session_actions.json
-            _data/sequel_candidates.json
-            _data/related_video_recommendations.json
-            _data/comment_reply_short_candidates.json
-            _data/opening_audit_report.json
-            _data/seo_metadata_lint.json
-            _data/queue_prune_report.json
-            _data/repair_queue.jsonl
           )
           jsonl_merge_paths=(
             _data/analytics/api_quota_ledger.jsonl
-            _data/analytics/reporting_video_metrics.jsonl
-            _data/analytics/studio_reach_daily.jsonl
-            _data/channel_memory.jsonl
-            _data/fact_sources.jsonl
-            _data/originality_pack.jsonl
             _data/provider_stats.jsonl
-            _data/publish_slot_decisions.jsonl
-            _data/repair_queue.jsonl
-            _data/rejected_queue.jsonl
-            _data/source_provenance.jsonl
-            _data/trends/trend_signals.jsonl
             _data/upload_intents.jsonl
           )
           for path in "${state_paths[@]}"; do
@@ -464,42 +177,22 @@ jobs:
               mkdir -p "$state_dir/$(dirname "$path")"
               cp "$path" "$state_dir/$path"
             fi
-          done
-          find _data/reports -maxdepth 1 -type f -name 'weekly-*.md' -print0 2>/dev/null | while IFS= read -r -d '' path; do
-            mkdir -p "$state_dir/$(dirname "$path")"
-            cp "$path" "$state_dir/$path"
           done
           find _videos -maxdepth 1 -type f \( -name '*.done' -o -name '*.roundup' \) -print0 2>/dev/null | while IFS= read -r -d '' path; do
             mkdir -p "$state_dir/$(dirname "$path")"
             cp "$path" "$state_dir/$path"
           done
-          for path in _videos/shorts_done.json; do
-            if [ -e "$path" ]; then
-              mkdir -p "$state_dir/$(dirname "$path")"
-              cp "$path" "$state_dir/$path"
-            fi
-          done
           git fetch origin main
           git reset --hard origin/main
           python scripts/merge_jsonl_state.py "$state_dir" "${jsonl_merge_paths[@]}"
           cp -R "$state_dir"/. .
-          python scripts/reconcile_queue_uploads.py
           rm -rf "$state_dir"
-          # Stage the queue first: unmatched optional globs must never
-          # prevent consumed stories from being persisted. Append-only JSONL
-          # ledgers are merged with latest main before generated state is
-          # replayed, so diagnostics and upload rows do not erase each other.
-          git add _data/stories_queue.json
           for path in "${state_paths[@]}"; do
             [ -e "$path" ] && git add "$path"
           done
-          find _data/reports -maxdepth 1 -type f -name 'weekly-*.md' -print0 2>/dev/null | xargs -0 -r git add --
           find _videos -maxdepth 1 -type f \
             \( -name '*.done' -o -name '*.roundup' \) \
             -print0 2>/dev/null | xargs -0 -r git add --
-          for path in _videos/shorts_done.json; do
-            [ -e "$path" ] && git add -f "$path"
-          done
           if git diff --cached --quiet; then
             echo "Nenhum arquivo novo para salvar."
             exit 0
@@ -517,37 +210,21 @@ jobs:
                 cp "$path" "$retry_dir/$path"
               fi
             done
-            find _data/reports -maxdepth 1 -type f -name 'weekly-*.md' -print0 2>/dev/null | while IFS= read -r -d '' path; do
-              mkdir -p "$retry_dir/$(dirname "$path")"
-              cp "$path" "$retry_dir/$path"
-            done
             find _videos -maxdepth 1 -type f \( -name '*.done' -o -name '*.roundup' \) -print0 2>/dev/null | while IFS= read -r -d '' path; do
               mkdir -p "$retry_dir/$(dirname "$path")"
               cp "$path" "$retry_dir/$path"
-            done
-            for path in _videos/shorts_done.json; do
-              if [ -e "$path" ]; then
-                mkdir -p "$retry_dir/$(dirname "$path")"
-                cp "$path" "$retry_dir/$path"
-              fi
             done
             git fetch origin main
             git reset --hard origin/main
             python scripts/merge_jsonl_state.py "$retry_dir" "${jsonl_merge_paths[@]}"
             cp -R "$retry_dir"/. .
-            python scripts/reconcile_queue_uploads.py
             rm -rf "$retry_dir"
-            git add _data/stories_queue.json
             for path in "${state_paths[@]}"; do
               [ -e "$path" ] && git add "$path"
             done
-            find _data/reports -maxdepth 1 -type f -name 'weekly-*.md' -print0 2>/dev/null | xargs -0 -r git add --
             find _videos -maxdepth 1 -type f \
               \( -name '*.done' -o -name '*.roundup' \) \
               -print0 2>/dev/null | xargs -0 -r git add --
-            for path in _videos/shorts_done.json; do
-              [ -e "$path" ] && git add -f "$path"
-            done
             if git diff --cached --quiet; then
               echo "Latest main already contains generated state."
               exit 0
@@ -563,7 +240,6 @@ jobs:
         with:
           name: "youtube-log-${{ github.run_number }}"
           path: |
-            generate_shorts.log
             upload_youtube.log
           retention-days: 7
           if-no-files-found: ignore

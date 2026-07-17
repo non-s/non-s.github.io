@@ -19,65 +19,21 @@ def test_workflows_parse_and_include_growth_steps():
     youtube_workflow = (ROOT / ".github/workflows/youtube-bot.yml").read_text(encoding="utf-8")
     assert "quota_preflight.py youtube-bot --json --check-only" in youtube_workflow
     assert "Registrar quota consumida" not in youtube_workflow
-    assert "PUBLISH_EVENT_SCHEDULE_CRON" in youtube_workflow
-    assert "skip_quota_guard" in youtube_workflow
     assert "Sincronizar main remoto antes da decisao" in youtube_workflow
     assert "git checkout -B main origin/main" in youtube_workflow
-    assert "Garantir fila minima" in youtube_workflow
-    assert "python fetch_animals.py" in youtube_workflow
-    assert "scripts/queue_ready_count.py --refresh --json" in youtube_workflow
-    assert "publish_eligible" in youtube_workflow
-    assert "count_field pending" in youtube_workflow
-    assert "PUBLISH_BACKFILL_READY_TARGET || '6'" in youtube_workflow
-    assert 'target="${QUEUE_TARGET_PUBLISH_READY:-6}"' in youtube_workflow
-    assert "PUBLISH_MIN_READY_TO_PUBLISH || '1'" in youtube_workflow
-    assert 'minimum_to_publish="${QUEUE_MIN_READY_TO_PUBLISH:-1}"' in youtube_workflow
-    assert "QUEUE_TARGET_PENDING: ${{ vars.PUBLISH_BACKFILL_QUEUE_TARGET || '18' }}" in youtube_workflow
-    assert 'BROLL_SOURCE_MODE: "pexels"' in youtube_workflow
+    assert "scripts/sync_lofi_broll.py" in youtube_workflow
+    assert "scripts/sync_jamendo_music.py" in youtube_workflow
+    assert "generate_lofi_short.py" in youtube_workflow
+    assert 'BROLL_SOURCE_MODE: "pexels"' not in youtube_workflow
     assert "BROLL_SOURCE_MODE: ${{ vars.BROLL_SOURCE_MODE || 'pexels' }}" in youtube_workflow
     assert "PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}" in youtube_workflow
-    assert "MUSIC_BED_ENABLED: ${{ vars.MUSIC_BED_ENABLED || '0' }}" in youtube_workflow
-    assert "QUEUE_BACKFILL_PENDING_BATCH: ${{ vars.PUBLISH_BACKFILL_PENDING_BATCH || '6' }}" in youtube_workflow
-    assert "QUEUE_BACKFILL_TIMEOUT_SECONDS: ${{ vars.PUBLISH_BACKFILL_TIMEOUT_SECONDS || '540' }}" in youtube_workflow
-    assert "PEXELS_SEARCH_PER_PAGE: ${{ vars.PEXELS_SEARCH_PER_PAGE || '32' }}" in youtube_workflow
-    assert "PEXELS_DISCOVERY_PAGES: ${{ vars.PEXELS_DISCOVERY_PAGES || '2' }}" in youtube_workflow
-    assert "PEXELS_BACKFILL_QUERY_TAKE: ${{ vars.PEXELS_BACKFILL_QUERY_TAKE || '6' }}" in youtube_workflow
-    assert "PEXELS_TOPIC_CALL_BUDGET: ${{ vars.PEXELS_TOPIC_CALL_BUDGET || '2' }}" in youtube_workflow
-    assert "PEXELS_DEEP_SEARCH_GAP: ${{ vars.PEXELS_DEEP_SEARCH_GAP || '8' }}" in youtube_workflow
-    assert "base_pending_target + (attempt - 1) * pending_batch" in youtube_workflow
-    assert "QUEUE_BACKFILL_ATTEMPTS" in youtube_workflow
-    assert 'while [ "${publishable}" -lt "${minimum_to_publish}" ]' in youtube_workflow
-    assert "Publish-eligible inventory can satisfy this one-Short run" in youtube_workflow
-    assert "at least one Short clears final publish quality" in youtube_workflow
-    assert "fetch-content owns deeper replenishment" in youtube_workflow
-    assert 'timeout "${backfill_timeout}s" python fetch_animals.py' in youtube_workflow
-    assert (
-        'while { [ "${ready}" -lt "${target}" ] || [ "${pending}" -lt "${base_pending_target}" ]; }'
-        not in youtube_workflow
-    )
-    assert "REQUIRE_SHORT_ON_PUBLISH" in youtube_workflow
-    assert 'soft_skip_decisions = {"skip_no_eligible_story", "skip_low_queue_quality"}' in youtube_workflow
-    assert "No eligible Short was published this cycle; quality guard kept the channel clean" in youtube_workflow
-    assert "REQUIRE_UPLOAD_ON_PUBLISH" in youtube_workflow
-    assert "top_candidate_id=$top_candidate_id" in youtube_workflow
-    assert "PUBLISH_WINDOW_TOP_CANDIDATE_ID=$top_candidate_id" in youtube_workflow
-    assert "PUBLISH_WINDOW_SELECTED_ONLY=1" in youtube_workflow
-    assert "Sincronizar diagnosticos da fila" in youtube_workflow
-    assert "python scripts/run_intelligence_suite.py queue" in youtube_workflow
     assert "YouTube automation state -" in youtube_workflow
     assert "merge_jsonl_state.py" in youtube_workflow
-    assert "reconcile_queue_uploads.py" in youtube_workflow
     assert "jsonl_merge_paths" in youtube_workflow
     assert yaml.safe_load(youtube_workflow)["concurrency"]["group"] == "youtube-publisher"
     assert "_data/analytics/api_quota_ledger.jsonl" in youtube_workflow
-    assert "_data/rejected_queue.jsonl" in youtube_workflow
     assert "if: always() && env.PUBLISH_QUOTA_BLOCKED != '1'" in youtube_workflow
-    assert "Sincronizar diagnosticos da fila" in youtube_workflow
     assert "Salvar marcadores no git" in youtube_workflow
-    assert (
-        "steps.publish_window.outputs.should_publish == 'true'\n        run: python scripts/run_intelligence_suite.py queue"
-        not in youtube_workflow
-    )
     assert 'cron: "2 * * * *"' in youtube_workflow
     assert 'cron: "22 * * * *"' in youtube_workflow
     assert 'cron: "42 * * * *"' in youtube_workflow
@@ -126,15 +82,6 @@ def test_workflows_parse_and_include_growth_steps():
     assert "_data/reject_report.json" in fetch_workflow
     assert "_data/fresh_upload_watchlist.json" in fetch_workflow
     assert "_data/fresh_upload_actions.json" in fetch_workflow
-    assert "_data/next_shorts.json" in youtube_workflow
-    assert "_data/scale_blueprint.json" in youtube_workflow
-    assert "_data/level_system.json" in youtube_workflow
-    assert "_data/control_plane_report.json" in youtube_workflow
-    assert "_data/queue_audit.json" in youtube_workflow
-    assert "_data/dry_run_publish.json" in youtube_workflow
-    assert "_data/reject_report.json" in youtube_workflow
-    assert "_data/fresh_upload_watchlist.json" in youtube_workflow
-    assert "_data/fresh_upload_actions.json" in youtube_workflow
     dashboard_workflow = (ROOT / ".github/workflows/dashboard.yml").read_text(encoding="utf-8")
     assert "_data/next_shorts.json" in dashboard_workflow
     assert "_data/control_plane_report.json" in dashboard_workflow
@@ -182,9 +129,10 @@ def test_youtube_publisher_syncs_latest_main_before_publish_decision():
     names = [step.get("name") for step in steps]
 
     sync_index = names.index("Sincronizar main remoto antes da decisao")
-    assert sync_index < names.index("Garantir fila minima")
-    assert sync_index < names.index("Preparar inteligencia pre-publicacao")
-    assert sync_index < names.index("Decidir janela de publicacao")
+    assert sync_index < names.index("Quota preflight")
+    assert sync_index < names.index("Sincronizar bibliotecas de b-roll e musica lofi")
+    assert sync_index < names.index("Gerar Short lofi")
+    assert sync_index < names.index("Upload Shorts para YouTube")
 
     sync_step = steps[sync_index]
     assert "git fetch origin main" in sync_step["run"]
