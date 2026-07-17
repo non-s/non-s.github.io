@@ -13,7 +13,7 @@ def test_feature_flag_snapshot_uses_defaults():
     snap = snapshot({})
 
     assert snap["ADAPTIVE_CADENCE_ENABLED"] == "1"
-    assert snap["SEO_METADATA_LINT_STRICT"] == "0"
+    assert snap["QUOTA_GUARD_MODE"] == "block"
 
 
 def test_feature_flags_are_documented():

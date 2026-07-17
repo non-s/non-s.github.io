@@ -1,53 +1,45 @@
-# Wild Brief Runbooks
+# Amber Hours Runbooks
 
-The v1.0 operating contract lives in [V1_CLOSURE.md](V1_CLOSURE.md). Use that
-document as the final definition of "done" before starting new work.
+## Publisher Health Check
 
-## v1.0 Closure Check
-
-1. Confirm `_data/upload_intents.jsonl` has an `uploaded` row for the latest
-   UTC slot.
+1. Confirm `_data/upload_intents.jsonl` has an `uploaded` row for the
+   latest UTC slot.
 2. Run `python scripts/check_repo_contracts.py`.
 3. Run `python scripts/audit_slot_contracts.py`.
 4. Run `python scripts/check_schedule_sync.py`.
-5. Run `python scripts/queue_ready_count.py --json`.
-6. Run `python -m pytest -q`.
-7. Build the dashboard and check the `v1.0 closure status` card.
+5. Run `python -m pytest -q`.
 
-## Queue Looks Stale
+## Media Library Looks Empty
 
-1. Run `python scripts/free_signal_harvester.py`.
-2. Run `python scripts/apply_topic_freshness.py`.
-3. Check `_data/trends/freshness_report.json`.
-4. If the queue is still weak, run `python fetch_animals.py`.
+1. Trigger `admin-resync-broll.yml` to force a fresh b-roll sync.
+2. Trigger `admin-check-media-library.yml` to see current bgm/b-roll
+   counts.
+3. If Jamendo/Pixabay supply is thin, the next scheduled `youtube-bot.yml`
+   run will keep retrying — an empty-supply cycle is a skip, not a
+   failure.
 
 ## Studio Reach Import
 
-1. Drop exported Studio or Google Sheets CSV files in `_data/studio_reach_exports/`.
-2. Run `python scripts/import_studio_reach_export.py`.
+1. Drop exported Studio or Google Sheets CSV files in
+   `_data/studio_reach_exports/`.
+2. Run the `studio-reach-import.yml` workflow (or
+   `python scripts/import_studio_reach_export.py` locally).
 3. Confirm `_data/analytics/studio_reach_latest.json` has non-zero rows.
 
 ## Quota Pressure
 
 1. Run `python scripts/quota_preflight.py youtube-bot --json`.
-2. Use `QUOTA_GUARD_MODE=warn` for passive logging.
-3. Use `QUOTA_GUARD_MODE=block` only when the projected daily ratio should skip publication.
-
-## TTS Fallback
-
-1. Set `COQUI_TTS_COMMAND` to a local Coqui-compatible command if available.
-2. Run `python scripts/tts_healthcheck.py --no-synth --json`.
-3. Run without `--no-synth` locally when you want an actual sample render.
+2. Set `QUOTA_GUARD_MODE` to anything other than `block` (e.g. `off`) to
+   stop hard-blocking while investigating.
 
 ## Dashboard Refresh
 
-Run `python scripts/run_intelligence_suite.py dashboard --strict`, then
-`python scripts/build_dashboard.py`. The dashboard should render even with no
-optional exports.
+Run `python scripts/build_dashboard.py`. It renders even with no optional
+analytics imports present.
 
 ## Alert Issue
 
-The free GitHub Issues alert workflow opens or comments on `Wild Brief
-automation alert` when a critical workflow fails. Treat the issue as the active
-incident room, paste the failed run URL, and close it only after the closure
-checks pass again.
+The free GitHub Issues alert workflow (`ops-alert.yml`) opens or comments
+on `Wild Brief automation alert` when a critical workflow fails. Treat the
+issue as the active incident room, paste the failed run URL, and close it
+only after the health check above passes again.

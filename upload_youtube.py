@@ -790,25 +790,6 @@ def _done_marker(video_id: str, meta: dict) -> dict:
     return marker
 
 
-def _record_published_clip(meta: dict, video_id: str) -> None:
-    try:
-        from fetch_animals import record_published_clip
-
-        record_published_clip(
-            pexels_video_id=meta.get("pexels_video_id", ""),
-            story_id=meta.get("story_id", ""),
-            pexels_url=meta.get("pexels_download_url", ""),
-            source_clip_id=meta.get("source_clip_id", ""),
-            source=meta.get("source", ""),
-            source_url=meta.get("source_url", ""),
-            source_license=meta.get("source_license", ""),
-            source_license_evidence=meta.get("source_license_evidence", ""),
-            platform_video_id=video_id,
-        )
-    except Exception as exc:
-        log.warning("published_clips ledger update failed: %s", exc)
-
-
 def _adopt_existing_channel_upload(meta_file: Path, meta: dict, intent: dict, upload: dict) -> None:
     video_id = str(upload.get("video_id") or "").strip()
     uploaded_intent = {
@@ -836,7 +817,6 @@ def _adopt_existing_channel_upload(meta_file: Path, meta: dict, intent: dict, up
     marker["adopted_existing_upload"] = upload
     marker["media_lifecycle"] = cleanup_meta_artifacts(meta)
     meta_file.with_suffix(".done").write_text(json.dumps(marker, indent=2), encoding="utf-8")
-    _record_published_clip(meta, video_id)
     meta_file.unlink(missing_ok=True)
 
 
@@ -1244,7 +1224,6 @@ def main() -> None:
             json.dumps(marker, indent=2),
             encoding="utf-8",
         )
-        _record_published_clip(meta, video_id)
         meta_file.unlink()
         existing_titles.add(_title_key(_youtube_title(meta)))
         uploaded += 1

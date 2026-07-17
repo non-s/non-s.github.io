@@ -57,34 +57,8 @@ jobs:
           PY
 
       - name: "Run test suite"
-        # The deselected tests below assert that committed _data/*.json
-        # snapshots (stories_queue.json, dry_run_publish.json,
-        # queue_audit.json, ops_guardian.json, ...) exactly match a live
-        # recomputation, or otherwise call queue_pruner/editorial helpers
-        # (paused_categories, ops_guardian_enforced, _agency_held_ids,
-        # published_title_keys, load_channel_objective) that read those
-        # same snapshots straight off disk instead of through a fixture.
-        # Those snapshots are regenerated hourly by youtube-bot.yml /
-        # fetch-content.yml, so by the time this gate checks out main
-        # they're already stale -- the tests intermittently fail on live
-        # data drift (e.g. a real paused/held category leaking into an
-        # otherwise-mocked test), not on a code defect. This first showed
-        # up as the original 3 deselects; 2026-07-09 through 2026-07-12
-        # runs showed the same class of failure (assert 0 == N, with N
-        # the expected reserve/fallback count) in the queue-pruner reserve
-        # fallback tests below, which share the same unmocked live-data
-        # helpers. They stay genuinely useful right after the bot
-        # regenerates the data (covered there), just not as a push/PR
-        # code-correctness gate.
         run: |
-          python -m pytest -q --cov=utils --cov=scripts --cov-report=term-missing --cov-fail-under=20 \
-            --deselect tests/test_queue_pruner.py::test_prune_queue_promotes_safe_reserve_when_operational_supply_is_empty \
-            --deselect tests/test_queue_state_contracts.py::test_publish_ready_queue_matches_operational_reports \
-            --deselect tests/test_youtube_focus_audit.py::test_animal_queue_has_unique_visually_aligned_scripts \
-            --deselect tests/test_queue_pruner.py::test_prune_queue_fills_v1_publish_ready_reserve_target \
-            --deselect tests/test_dry_run_publish.py::test_dry_run_publish_counts_editorial_cooldown_supply_fallback \
-            --deselect tests/test_queue_ready_count.py::test_queue_ready_count_accepts_editorial_cooldown_supply_fallback \
-            --deselect tests/test_operator_output_contracts.py::test_agency_plan_avoids_paused_trend_categories
+          python -m pytest -q --cov=utils --cov=scripts --cov-report=term-missing --cov-fail-under=20
 
       - name: "Check publish schedule contract"
         run: |
@@ -92,20 +66,14 @@ jobs:
           python scripts/check_schedule_sync.py
           python scripts/audit_slot_contracts.py
           python scripts/check_repo_contracts.py
-          python scripts/experiment_governance.py --json
-          python scripts/fact_guard.py --json
           python scripts/upload_intent.py --json
           python scripts/media_lifecycle.py --audit-tracked --json
-          python scripts/tts_healthcheck.py --no-synth --json
           python scripts/quota_preflight.py youtube-bot --json --no-fail-on-block
-          python scripts/seo_metadata_lint.py
           python -m pytest -q \
             tests/test_publish_schedule_adaptive.py \
-            tests/test_publish_window_adaptive.py \
             tests/test_docs_schedule_sync.py \
             tests/test_repo_contracts.py \
             tests/test_feature_flags_registry.py \
-            tests/test_tts_healthcheck.py \
             tests/test_media_lifecycle.py \
             tests/test_production_smoke.py \
             tests/test_security_txt.py \
@@ -115,86 +83,49 @@ jobs:
       - name: "Type-check zero-cost critical path"
         run: |
           python -m mypy \
-            utils/time_semantics.py utils/opening_gate_v2.py utils/hook_library.py utils/story_patterns.py \
-            utils/payoff_controller.py utils/loop_semantics.py utils/claim_risk.py utils/rights_guard.py \
-            utils/originality_pack.py utils/experiment_registry.py utils/experiment_scheduler.py utils/retention_warehouse.py \
-            scripts/audit_slot_contracts.py scripts/upload_intent.py scripts/fact_guard.py scripts/build_originality_pack.py \
+            utils/time_semantics.py utils/retention_warehouse.py utils/api_quota_budget.py utils/publish_schedule.py \
+            utils/session_graph.py utils/studio_reach_schema.py utils/analytics_schema.py \
+            scripts/audit_slot_contracts.py scripts/upload_intent.py \
             --ignore-missing-imports --follow-imports=silent --check-untyped-defs
 
-      - name: "Lint world-class growth modules"
+      - name: "Lint lofi pipeline modules"
         run: |
           python -m black --check --diff \
-            utils/curiosity_gap.py utils/swipe_risk.py utils/loop_engine.py utils/ab_selector.py \
-            utils/analytics_schema.py utils/editorial_rules.py utils/trend_bridge.py utils/tts_fallback.py utils/observability.py \
-            utils/publish_schedule.py utils/studio_reach_schema.py utils/topic_freshness.py utils/first_frame_audit.py \
-            utils/session_graph.py utils/api_quota_budget.py utils/editorial_mix_optimizer.py utils/feature_flags.py \
-            utils/comment_to_short.py utils/seo_optimizer.py utils/music_bed.py utils/media_lifecycle.py \
-            utils/time_semantics.py utils/opening_gate_v2.py utils/story_patterns.py utils/hook_library.py \
-            utils/payoff_controller.py utils/loop_semantics.py utils/claim_risk.py utils/rights_guard.py \
-            utils/originality_pack.py utils/experiment_registry.py utils/experiment_scheduler.py utils/retention_warehouse.py \
-            utils/frame_zero_packaging.py utils/search_enrichment.py utils/cohort_memory.py utils/comment_policy.py \
-            utils/voice_registry.py utils/render_qa.py utils/fresh_upload_sentinel.py utils/fresh_upload_actions.py \
-            scripts/bootstrap_growth_baseline.py scripts/collect_analytics_extended.py scripts/weekly_growth_review.py \
-            scripts/free_signal_harvester.py scripts/post_upload_session_ops.py scripts/publish_window.py scripts/check_schedule_sync.py \
-            scripts/check_repo_contracts.py scripts/import_studio_reach_export.py scripts/apply_topic_freshness.py \
-            scripts/opening_audit_report.py scripts/quota_preflight.py scripts/reporting_bootstrap.py scripts/reporting_pull.py \
-            scripts/comment_to_short_pipeline.py scripts/compact_analytics.py scripts/seo_metadata_lint.py scripts/tts_healthcheck.py \
-            scripts/audit_slot_contracts.py scripts/upload_intent.py scripts/fact_guard.py scripts/build_originality_pack.py \
-            scripts/experiment_governance.py scripts/reconcile_retention.py scripts/session_graph_actioner.py \
-            scripts/build_crosspost_pack.py scripts/render_bench.py scripts/music_bed_report.py scripts/security_manifest.py scripts/doctor.py \
-            scripts/media_lifecycle.py scripts/production_smoke.py scripts/frame_zero_preflight.py \
-            tests/test_curiosity_gap.py tests/test_swipe_risk.py tests/test_loop_engine.py tests/test_ab_selector.py \
-            tests/test_analytics_schema.py tests/test_collect_analytics_extended.py \
-            tests/test_free_signal_harvester.py tests/test_post_upload_session_ops.py \
-            tests/test_publish_schedule_adaptive.py tests/test_publish_window_adaptive.py tests/test_docs_schedule_sync.py \
-            tests/test_import_studio_reach_export.py tests/test_topic_freshness.py tests/test_first_frame_audit.py \
-            tests/test_session_graph.py tests/test_api_quota_budget.py tests/test_editorial_mix_optimizer.py \
-            tests/test_reporting_bootstrap.py tests/test_reporting_pull.py tests/test_comment_to_short_pipeline.py \
-            tests/test_compact_analytics.py tests/test_seo_optimizer_v2.py tests/test_feature_flags_registry.py \
-            tests/test_tts_healthcheck.py tests/test_repo_contracts.py tests/test_workflow_contracts.py tests/test_zero_cost_hardening.py \
-            tests/test_media_lifecycle.py tests/test_production_smoke.py tests/test_security_txt.py tests/test_fresh_upload_sentinel.py tests/test_fresh_upload_actions.py \
-            tests/test_frame_zero_preflight.py
+            utils/analytics_schema.py utils/publish_schedule.py utils/studio_reach_schema.py \
+            utils/session_graph.py utils/api_quota_budget.py utils/feature_flags.py \
+            utils/media_lifecycle.py utils/time_semantics.py utils/retention_warehouse.py \
+            utils/ai_helper.py utils/ai_cache.py utils/provider_stats.py utils/broll.py \
+            utils/host_persona.py utils/panic.py utils/retry.py utils/audience_expansion.py \
+            utils/youtube_oauth.py \
+            scripts/check_schedule_sync.py scripts/check_repo_contracts.py \
+            scripts/import_studio_reach_export.py scripts/reporting_bootstrap.py scripts/reporting_pull.py \
+            scripts/audit_slot_contracts.py scripts/upload_intent.py \
+            scripts/security_manifest.py scripts/media_lifecycle.py scripts/production_smoke.py \
+            scripts/sync_lofi_broll.py scripts/sync_jamendo_music.py scripts/live_stream_dynamic.py \
+            scripts/merge_jsonl_state.py scripts/quota_preflight.py scripts/youtube_slot_dispatch.py \
+            scripts/build_dashboard.py \
+            generate_lofi_short.py upload_youtube.py auth_youtube.py
           python -m ruff check \
-            utils/curiosity_gap.py utils/swipe_risk.py utils/loop_engine.py utils/ab_selector.py \
-            utils/analytics_schema.py utils/editorial_rules.py utils/trend_bridge.py utils/tts_fallback.py utils/observability.py \
-            utils/publish_schedule.py utils/studio_reach_schema.py utils/topic_freshness.py utils/first_frame_audit.py \
-            utils/session_graph.py utils/api_quota_budget.py utils/editorial_mix_optimizer.py utils/feature_flags.py \
-            utils/comment_to_short.py utils/seo_optimizer.py utils/music_bed.py utils/media_lifecycle.py \
-            utils/time_semantics.py utils/opening_gate_v2.py utils/story_patterns.py utils/hook_library.py \
-            utils/payoff_controller.py utils/loop_semantics.py utils/claim_risk.py utils/rights_guard.py \
-            utils/originality_pack.py utils/experiment_registry.py utils/experiment_scheduler.py utils/retention_warehouse.py \
-            utils/frame_zero_packaging.py utils/search_enrichment.py utils/cohort_memory.py utils/comment_policy.py \
-            utils/voice_registry.py utils/render_qa.py utils/fresh_upload_sentinel.py utils/fresh_upload_actions.py \
-            scripts/bootstrap_growth_baseline.py scripts/collect_analytics_extended.py scripts/weekly_growth_review.py \
-            scripts/free_signal_harvester.py scripts/post_upload_session_ops.py scripts/publish_window.py scripts/check_schedule_sync.py \
-            scripts/check_repo_contracts.py scripts/import_studio_reach_export.py scripts/apply_topic_freshness.py \
-            scripts/opening_audit_report.py scripts/quota_preflight.py scripts/reporting_bootstrap.py scripts/reporting_pull.py \
-            scripts/comment_to_short_pipeline.py scripts/compact_analytics.py scripts/seo_metadata_lint.py scripts/tts_healthcheck.py \
-            scripts/audit_slot_contracts.py scripts/upload_intent.py scripts/fact_guard.py scripts/build_originality_pack.py \
-            scripts/experiment_governance.py scripts/reconcile_retention.py scripts/session_graph_actioner.py \
-            scripts/build_crosspost_pack.py scripts/render_bench.py scripts/music_bed_report.py scripts/security_manifest.py scripts/doctor.py \
-            scripts/media_lifecycle.py scripts/production_smoke.py scripts/frame_zero_preflight.py \
-            tests/test_curiosity_gap.py tests/test_swipe_risk.py tests/test_loop_engine.py tests/test_ab_selector.py \
-            tests/test_analytics_schema.py tests/test_collect_analytics_extended.py \
-            tests/test_free_signal_harvester.py tests/test_post_upload_session_ops.py \
-            tests/test_publish_schedule_adaptive.py tests/test_publish_window_adaptive.py tests/test_docs_schedule_sync.py \
-            tests/test_import_studio_reach_export.py tests/test_topic_freshness.py tests/test_first_frame_audit.py \
-            tests/test_session_graph.py tests/test_api_quota_budget.py tests/test_editorial_mix_optimizer.py \
-            tests/test_reporting_bootstrap.py tests/test_reporting_pull.py tests/test_comment_to_short_pipeline.py \
-            tests/test_compact_analytics.py tests/test_seo_optimizer_v2.py tests/test_feature_flags_registry.py \
-            tests/test_tts_healthcheck.py tests/test_repo_contracts.py tests/test_workflow_contracts.py tests/test_zero_cost_hardening.py \
-            tests/test_media_lifecycle.py tests/test_production_smoke.py tests/test_security_txt.py tests/test_fresh_upload_sentinel.py tests/test_fresh_upload_actions.py \
-            tests/test_frame_zero_preflight.py
+            utils/analytics_schema.py utils/publish_schedule.py utils/studio_reach_schema.py \
+            utils/session_graph.py utils/api_quota_budget.py utils/feature_flags.py \
+            utils/media_lifecycle.py utils/time_semantics.py utils/retention_warehouse.py \
+            utils/ai_helper.py utils/ai_cache.py utils/provider_stats.py utils/broll.py \
+            utils/host_persona.py utils/panic.py utils/retry.py utils/audience_expansion.py \
+            utils/youtube_oauth.py \
+            scripts/check_schedule_sync.py scripts/check_repo_contracts.py \
+            scripts/import_studio_reach_export.py scripts/reporting_bootstrap.py scripts/reporting_pull.py \
+            scripts/audit_slot_contracts.py scripts/upload_intent.py \
+            scripts/security_manifest.py scripts/media_lifecycle.py scripts/production_smoke.py \
+            scripts/sync_lofi_broll.py scripts/sync_jamendo_music.py scripts/live_stream_dynamic.py \
+            scripts/merge_jsonl_state.py scripts/quota_preflight.py scripts/youtube_slot_dispatch.py \
+            scripts/build_dashboard.py \
+            generate_lofi_short.py upload_youtube.py auth_youtube.py
 
       - name: "Audit dependencies"
         run: python -m pip_audit -r requirements.txt
 
       - name: "Run high-severity security scan"
-        run: python -m bandit -q -lll -r fetch_animals.py generate_shorts.py upload_youtube.py auth_youtube.py utils scripts -x tests
-
-      - name: "Run automation health audit"
-        run: |
-          python scripts/run_intelligence_suite.py dashboard --strict
+        run: python -m bandit -q -lll -r upload_youtube.py auth_youtube.py utils scripts -x tests
 
       - name: "Dashboard smoke build"
         run: python scripts/build_dashboard.py

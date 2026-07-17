@@ -1,9 +1,4 @@
-"""Shared pytest fixtures.
-
-Keeps test files lean: every test that needs a fake Mistral pulls it
-from here. The old site fixtures were removed during the animal-channel
-pivot.
-"""
+"""Shared pytest fixtures."""
 
 from __future__ import annotations
 
@@ -12,7 +7,6 @@ from pathlib import Path
 
 import pytest
 
-# Make the repo root importable so tests can `import fetch_animals` etc.
 REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
@@ -21,14 +15,8 @@ if str(REPO_ROOT) not in sys.path:
 @pytest.fixture(autouse=True)
 def _isolate_state_files(tmp_path_factory, monkeypatch):
     """Redirect every module that writes to `_data/...` at runtime
-    into a per-test-session tmp dir.
-
-    Tests have repeatedly leaked state files (music cache, brand cards,
-    intro/outro audio, quota log, provider stats, channel memory,
-    velocity ledger) into the repo's `_data/` because each module
-    declares its path at import time. We can't catch every leak
-    one-by-one without losing time — this fixture autouses across
-    every test and forces all cache/ledger paths through a tmp dir.
+    into a per-test-session tmp dir, so tests can't leak cache/ledger
+    files into the repo's `_data/`.
 
     Individual tests that explicitly monkeypatch these constants are
     NOT affected — their specific overrides happen AFTER this fixture
@@ -36,18 +24,10 @@ def _isolate_state_files(tmp_path_factory, monkeypatch):
     """
     cache_root = tmp_path_factory.mktemp("isolated_data")
 
-    # Each (module, attribute, path-fragment) tuple gets isolated.
     overrides = [
-        ("utils.provider_stats", "STATS_LOG", "provider_stats.jsonl"),
-        ("utils.channel_memory", "MEMORY_LOG", "channel_memory.jsonl"),
-        ("utils.rejected_queue", "REJECTED_QUEUE", "rejected_queue.jsonl"),
-        ("utils.rejected_queue", "LEGACY_REJECTED_QUEUE", "rejected_queue.json"),
-        ("utils.music_bed", "MUSIC_CACHE_DIR", "music_cache"),
         ("utils.broll", "_CACHE_DIR", "broll_cache"),
-        ("utils.brand_card", "BRAND_CARD_CACHE", "brand_card_cache"),
-        ("utils.intro_outro", "INTRO_OUTRO_CACHE", "intro_outro_cache"),
         ("utils.host_persona", "PERSONA_FILE", "host_persona.json"),
-        ("fetch_animals", "PUBLISHED_CLIPS_FILE", "published_clips.json"),
+        ("utils.provider_stats", "STATS_LOG", "provider_stats.jsonl"),
     ]
     for module_name, attr, frag in overrides:
         try:
@@ -56,21 +36,6 @@ def _isolate_state_files(tmp_path_factory, monkeypatch):
             continue
         if hasattr(mod, attr):
             monkeypatch.setattr(mod, attr, cache_root / frag, raising=False)
-
-    # Mock dynamic memory loaders to avoid breaking assertions with live weights
-    try:
-        import utils.growth_engine
-        import utils.publish_score
-        import utils.audience_memory
-        import utils.queue_pruner
-
-        monkeypatch.setattr(utils.growth_engine, "load_format_memory", lambda *args, **kwargs: {})
-        monkeypatch.setattr(utils.publish_score, "load_format_memory", lambda *args, **kwargs: {})
-        monkeypatch.setattr(utils.publish_score, "load_audience_memory", lambda *args, **kwargs: {})
-        monkeypatch.setattr(utils.audience_memory, "load_audience_memory", lambda *args, **kwargs: {})
-        monkeypatch.setattr(utils.queue_pruner, "published_title_keys", lambda *args, **kwargs: set())
-    except Exception:
-        pass
 
     # The Mistral-429 circuit breaker in utils.ai_helper holds module-
     # level state (`_mistral_429_streak`, `_mistral_circuit_open`).

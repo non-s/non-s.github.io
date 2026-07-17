@@ -66,13 +66,6 @@ def estimate_limited_calls(calls: dict[str, int]) -> dict[str, int]:
     return {method: int(calls.get(method) or 0) for method in LIMITED_CALL_METHODS if int(calls.get(method) or 0) > 0}
 
 
-def estimate_fetch_content_cost(search_calls: int = 12, enrichment_calls: int = 0, provider: str = "pexels") -> dict:
-    calls = {"pexels.search": search_calls}
-    if enrichment_calls:
-        calls["youtube.analytics.reports.query"] = enrichment_calls
-    return {"workflow": "fetch-content", "calls": calls, "estimated_units": estimate_cost(calls)}
-
-
 def estimate_publish_run_cost(
     videos: int = 1,
     playlists: int = 2,

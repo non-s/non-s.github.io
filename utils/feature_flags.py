@@ -23,10 +23,20 @@ class FeatureFlag:
 
 FLAGS: tuple[FeatureFlag, ...] = (
     FeatureFlag(
+        "YOUTUBE_PUBLISHING_ENABLED",
+        "0",
+        "publishing",
+        "Master switch for the hourly lofi Shorts publisher.",
+        "Set to 0 to pause publishing entirely.",
+    ),
+    FeatureFlag(
         "ADAPTIVE_CADENCE_ENABLED",
         "1",
         "publishing",
-        "Enable adaptive publish/skip decisions.",
+        "Enable adaptive publish/skip decisions from the canonical 24/day UTC grid: "
+        "00:00, 01:00, 02:00, 03:00, 04:00, 05:00, 06:00, 07:00, 08:00, 09:00, 10:00, "
+        "11:00, 12:00, 13:00, 14:00, 15:00, 16:00, 17:00, 18:00, 19:00, 20:00, 21:00, "
+        "22:00 and 23:00.",
         "Set to 0 for legacy slot behavior.",
     ),
     FeatureFlag("ALLOW_FLEX_SLOT", "0", "publishing", "Allow one extra operator-defined UTC slot.", "Set to 0."),
@@ -46,48 +56,6 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Lower or disable adaptive cadence.",
     ),
     FeatureFlag(
-        "QUEUE_TARGET_PENDING",
-        "72",
-        "publishing",
-        "Raw pending story target for hourly queue refresh before quality pruning.",
-        "Raise only when prebuilding inventory.",
-    ),
-    FeatureFlag(
-        "PUBLISH_BACKFILL_QUEUE_TARGET",
-        "18",
-        "publishing",
-        "Raw pending-story target used only when publish-ready emergency backfill is needed.",
-        "Set lower or rely on fetch-content during provider slowdowns.",
-    ),
-    FeatureFlag(
-        "FETCH_REFRESH_TIMEOUT_SECONDS",
-        "720",
-        "publishing",
-        "Maximum seconds for one Pexels queue refresh before skipping generated commits.",
-        "Lower it if refresh jobs approach publish attempts.",
-    ),
-    FeatureFlag(
-        "PUBLISH_BACKFILL_READY_TARGET",
-        "6",
-        "publishing",
-        "Minimum editor-approved publish-ready candidates before a publish attempt.",
-        "Lower only during provider outages.",
-    ),
-    FeatureFlag(
-        "PUBLISH_BACKFILL_PENDING_BATCH",
-        "6",
-        "publishing",
-        "Extra raw pending target added on each emergency backfill attempt.",
-        "Lower if the publish workflow approaches timeout.",
-    ),
-    FeatureFlag(
-        "PUBLISH_BACKFILL_TIMEOUT_SECONDS",
-        "540",
-        "publishing",
-        "Maximum seconds allowed for one publish-workflow emergency backfill attempt.",
-        "Lower it to preserve the upload slot; fetch-content handles deep replenishment.",
-    ),
-    FeatureFlag(
         "YOUTUBE_DESCRIPTION_MODE",
         "full",
         "publishing",
@@ -98,7 +66,7 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "CHANNEL_PLAYLIST_PREFIX",
         "",
         "publishing",
-        "Text prepended to every auto-created playlist title, e.g. 'Wild Brief | '.",
+        "Text prepended to every auto-created playlist title.",
         "Unset it to use bare playlist titles.",
     ),
     FeatureFlag(
@@ -123,20 +91,6 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Set to 40.",
     ),
     FeatureFlag(
-        "PUBLISH_HEARTBEAT_RUNTIME_MINUTES",
-        "170",
-        "publishing",
-        "Minutes the bounded YouTube heartbeat keeps dispatching missed hourly slots.",
-        "Lower to reduce runner time or disable the heartbeat workflow.",
-    ),
-    FeatureFlag(
-        "PUBLISH_HEARTBEAT_DISPATCH_MINUTE",
-        "6",
-        "publishing",
-        "Minute of each hour when the heartbeat dispatches a missed publisher run.",
-        "Use an off-peak minute between 3 and 12.",
-    ),
-    FeatureFlag(
         "PUBLISH_HEARTBEAT_RECENT_RUN_TOLERANCE_MINUTES",
         "10",
         "publishing",
@@ -144,99 +98,43 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Raise if GitHub frequently delays publisher runs.",
     ),
     FeatureFlag(
+        "YOUTUBE_SCHEDULE_UPLOADS",
+        "0",
+        "publishing",
+        "Upload as private scheduled videos with publishAt instead of immediate public uploads.",
+        "Set to 0 for normal slot-time public uploads.",
+    ),
+    FeatureFlag(
+        "YOUTUBE_SCHEDULE_START_UTC",
+        "",
+        "publishing",
+        "Optional RFC3339 start time for scheduled upload batches.",
+        "Unset it.",
+    ),
+    FeatureFlag(
+        "YOUTUBE_SCHEDULE_SLOTS_UTC",
+        "",
+        "publishing",
+        "Optional comma-separated HH:MM UTC slots for scheduled upload batches.",
+        "Unset to use the canonical publish grid.",
+    ),
+    FeatureFlag(
+        "YOUTUBE_SCHEDULE_OFFSET",
+        "0",
+        "publishing",
+        "Starting index into the rolling schedule when adding another scheduled batch.",
+        "Reset to 0 after batch upload.",
+    ),
+    FeatureFlag(
         "STUDIO_REACH_IMPORT_ENABLED", "1", "analytics", "Import manually exported Shorts Reach CSV data.", "Set to 0."
     ),
     FeatureFlag(
-        "STUDIO_REACH_IMPORT_PATH",
-        "_data/studio_reach_exports",
+        "YOUTUBE_REPORTING_ENABLED",
+        "0",
         "analytics",
-        "Path to Studio/Sheets reach CSV exports.",
-        "Leave empty or remove files.",
+        "Enable optional Reporting API CSV backfill folders.",
+        "Set to 0.",
     ),
-    FeatureFlag(
-        "TOPIC_FRESHNESS_ENABLED", "1", "discovery", "Annotate queue entries with free freshness signals.", "Set to 0."
-    ),
-    FeatureFlag(
-        "PEXELS_SEARCH_PER_PAGE",
-        "32",
-        "discovery",
-        "Pexels video results requested per search call.",
-        "Lower if Pexels responses approach timeout.",
-    ),
-    FeatureFlag(
-        "PEXELS_DISCOVERY_PAGES",
-        "2",
-        "discovery",
-        "Maximum Pexels result pages searched when queue inventory is short.",
-        "Set to 1 to search only the first page.",
-    ),
-    FeatureFlag(
-        "PEXELS_BACKFILL_QUERY_TAKE",
-        "6",
-        "discovery",
-        "Topic query count used during low-inventory Pexels backfill.",
-        "Lower if provider quota becomes tight.",
-    ),
-    FeatureFlag(
-        "PEXELS_TOPIC_CALL_BUDGET",
-        "2",
-        "discovery",
-        "Maximum Pexels search calls allowed per topic per refresh run.",
-        "Lower if provider quota becomes tight.",
-    ),
-    FeatureFlag(
-        "PEXELS_DEEP_SEARCH_GAP",
-        "8",
-        "discovery",
-        "Pending-story gap that enables deeper Pexels page search.",
-        "Raise it to reserve deeper paging for emergencies.",
-    ),
-    FeatureFlag("OPENING_AUDIT_ENABLED", "1", "production", "Score the first second opening package.", "Set to 0."),
-    FeatureFlag(
-        "OPENING_AUDIT_STRICT",
-        "1",
-        "production",
-        "Reject openings below the configured score.",
-        "Set to 0 for informational mode.",
-    ),
-    FeatureFlag(
-        "OPENING_MIN_SCORE",
-        "72",
-        "production",
-        "Minimum opening audit score.",
-        "Lower threshold or disable strict mode.",
-    ),
-    FeatureFlag("OPENING_GATE_MODE", "warn", "production", "Opening gate v2 mode: off, warn or block.", "Use warn."),
-    FeatureFlag(
-        "OPENING_GATE_MIN_SCORE",
-        "78",
-        "production",
-        "Minimum opening gate v2 score.",
-        "Lower threshold or set OPENING_GATE_MODE=off.",
-    ),
-    FeatureFlag("FACT_GUARD_MODE", "block", "production", "Claim risk mode: warn or block.", "Use warn."),
-    FeatureFlag("RIGHTS_GUARD_MODE", "block", "production", "Rights guard mode: warn or block.", "Use warn."),
-    FeatureFlag(
-        "ORIGINALITY_PACK_MODE",
-        "warn",
-        "production",
-        "Originality pack completeness mode: warn or block.",
-        "Use warn.",
-    ),
-    FeatureFlag(
-        "SESSION_GRAPH_ENABLED", "1", "growth", "Build post-upload handoff and sequel graph artifacts.", "Set to 0."
-    ),
-    FeatureFlag(
-        "COMMENT_TO_SHORT_ENABLED", "1", "growth", "Promote strong viewer questions into Short ideas.", "Set to 0."
-    ),
-    FeatureFlag(
-        "COMMENT_TO_SHORT_MIN_SCORE",
-        "64",
-        "growth",
-        "Minimum score to add a comment idea to the queue.",
-        "Raise threshold or disable.",
-    ),
-    FeatureFlag("COMMENT_TO_SHORT_MAX_ITEMS", "6", "growth", "Maximum comment ideas added per run.", "Lower limit."),
     FeatureFlag(
         "QUOTA_GUARD_ENABLED",
         "1",
@@ -244,7 +142,7 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Block runs projected to exceed quota budget.",
         "Set to 0 for passive logging.",
     ),
-    FeatureFlag("QUOTA_GUARD_MODE", "block", "operations", "Quota guard mode: warn or block.", "Use warn."),
+    FeatureFlag("QUOTA_GUARD_MODE", "block", "operations", "Quota guard mode: anything other than block just warns.", "Use off."),
     FeatureFlag(
         "UPLOAD_IDEMPOTENCY_MODE",
         "block",
@@ -265,20 +163,6 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "operations",
         "Delete generated media after successful upload while keeping metadata markers.",
         "Set to 0 temporarily while debugging renders.",
-    ),
-    FeatureFlag(
-        "RETENTION_EASTER_EGG_ENABLED",
-        "0",
-        "production",
-        "Enable an experimental one-frame retention cue in rendered videos.",
-        "Set to 0.",
-    ),
-    FeatureFlag(
-        "OPS_GUARDIAN_ENFORCE",
-        "1",
-        "operations",
-        "Apply ops guardian paused-topic guidance during candidate selection.",
-        "Set to 0.",
     ),
     FeatureFlag(
         "OPS_ALERTS_ENABLED",
@@ -309,35 +193,6 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Conservative daily YouTube upload-call budget.",
         "Match the Google Cloud upload quota.",
     ),
-    FeatureFlag(
-        "YOUTUBE_REPORTING_ENABLED",
-        "0",
-        "analytics",
-        "Enable optional Reporting API CSV backfill folders.",
-        "Set to 0.",
-    ),
-    FeatureFlag(
-        "WAREHOUSE_COMPACTION_ENABLED", "1", "analytics", "Write monthly JSONL analytics partitions.", "Set to 0."
-    ),
-    FeatureFlag("MUSIC_BED_ENABLED", "0", "production", "Allow optional music beds.", "Set to 0."),
-    FeatureFlag(
-        "MUSIC_BED_CANARY_PERCENT",
-        "5",
-        "production",
-        "Percent of Shorts allowed into safe music-bed canary.",
-        "Set to 0.",
-    ),
-    FeatureFlag(
-        "SEO_METADATA_LINT_ENABLED",
-        "1",
-        "production",
-        "Attach deterministic SEO/metadata lint to every Short.",
-        "Set to 0.",
-    ),
-    FeatureFlag("SEO_METADATA_LINT_STRICT", "0", "production", "Reject metadata with SEO lint errors.", "Set to 0."),
-    FeatureFlag("COQUI_TTS_COMMAND", "", "resilience", "Optional local Coqui-compatible TTS command.", "Unset it."),
-    FeatureFlag("COQUI_TTS_MODEL", "", "resilience", "Optional Coqui model name.", "Unset it."),
-    FeatureFlag("COQUI_TTS_LOCALE_ARG", "0", "resilience", "Pass language_idx to Coqui CLI.", "Set to 0."),
 )
 
 

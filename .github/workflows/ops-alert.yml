@@ -4,14 +4,12 @@ on:
   workflow_run:
     workflows:
       - "YouTube Bot - Shorts only"
-      - "Refresh Pexels queue"
       - "YouTube hourly heartbeat"
       - "YouTube publishing watchdog"
       - "Production quality gate"
       - "Build + deploy dashboard"
       - "CodeQL"
       - "Security, SBOM and license audit"
-      - "TTS fallback health"
       - "Production smoke"
     types: [completed]
   workflow_dispatch:
@@ -68,12 +66,11 @@ jobs:
               echo "- Manual reason: ${MANUAL_REASON}"
             fi
             echo
-            echo "Run the v1.0 closure checks:"
+            echo "Local checks:"
             echo
             echo "\`\`\`powershell"
             echo ".\\.venv\\Scripts\\python.exe scripts\\check_repo_contracts.py"
             echo ".\\.venv\\Scripts\\python.exe -m pytest -q"
-            echo ".\\.venv\\Scripts\\python.exe scripts\\queue_ready_count.py --json"
             echo "\`\`\`"
           } > "$body"
           if [ -n "$existing" ]; then

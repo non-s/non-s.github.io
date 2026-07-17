@@ -1,9 +1,6 @@
 import json
 
-import fetch_animals
-from scripts.quota_preflight import preflight
 from utils.api_quota_budget import (
-    estimate_fetch_content_cost,
     estimate_metadata_repair_cost,
     estimate_publish_run_cost,
     quota_ledger_row,
@@ -20,28 +17,12 @@ def test_quota_estimate_separates_youtube_upload_bucket():
     assert estimate["calls"]["youtube.thumbnails.set"] == 1
 
 
-def test_fetch_content_estimate_uses_pexels_by_default():
-    estimate = estimate_fetch_content_cost(search_calls=8)
-
-    assert estimate["calls"] == {"pexels.search": 8}
-    assert estimate["estimated_units"] == 8
-
-
 def test_metadata_repair_estimates_video_update_cost():
     estimate = estimate_metadata_repair_cost(updates=2)
 
     assert estimate["workflow"] == "youtube-metadata-repair"
     assert estimate["calls"] == {"youtube.videos.update": 2}
     assert estimate["estimated_units"] == 100
-
-
-def test_fetch_content_preflight_uses_dynamic_pexels_budget():
-    row = preflight("fetch-content", check_only=True)
-
-    assert row["calls"]["pexels.search"] == min(
-        len(fetch_animals.ANIMAL_TOPICS) * fetch_animals.PEXELS_TOPIC_CALL_BUDGET,
-        200,
-    )
 
 
 def test_quota_guard_blocks_only_in_block_mode(tmp_path):

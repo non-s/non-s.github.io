@@ -13,7 +13,6 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from utils.api_quota_budget import (  # noqa: E402
-    estimate_fetch_content_cost,
     estimate_publish_run_cost,
     quota_ledger_row,
     write_quota_ledger_row,
@@ -21,16 +20,7 @@ from utils.api_quota_budget import (  # noqa: E402
 
 
 def preflight(workflow: str, *, check_only: bool = False) -> dict:
-    if workflow == "fetch-content":
-        try:
-            import fetch_animals  # noqa: PLC0415
-
-            search_calls = min(len(fetch_animals.ANIMAL_TOPICS) * fetch_animals.PEXELS_TOPIC_CALL_BUDGET, 200)
-        except Exception:
-            search_calls = 12
-        estimate = estimate_fetch_content_cost(search_calls=search_calls)
-    else:
-        estimate = estimate_publish_run_cost()
+    estimate = estimate_publish_run_cost()
     if check_only:
         return quota_ledger_row(estimate)
     return write_quota_ledger_row(estimate)
@@ -38,7 +28,7 @@ def preflight(workflow: str, *, check_only: bool = False) -> dict:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("workflow", choices=["fetch-content", "youtube-bot"])
+    parser.add_argument("workflow", choices=["youtube-bot"])
     parser.add_argument("--json", action="store_true")
     parser.add_argument(
         "--no-fail-on-block",

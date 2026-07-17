@@ -1,6 +1,5 @@
 import json
 
-from scripts.youtube_auth_doctor import build_report
 from utils.youtube_oauth import (
     ANALYTICS_SCOPE,
     COMMENTS_SCOPE,
@@ -68,12 +67,10 @@ def test_redacted_diagnostics_hide_token_material(monkeypatch, tmp_path):
     info = load_token_info(tmp_path / "missing.json")
 
     diagnostics = redacted_token_diagnostics(info)
-    report = build_report(tmp_path / "missing.json")
-    dumped = json.dumps({"diagnostics": diagnostics, "report": report})
+    dumped = json.dumps(diagnostics)
 
     assert "access-secret" not in dumped
     assert "refresh-secret" not in dumped
     assert "client-secret" not in dumped
     assert "client-id-12345678" not in dumped
     assert diagnostics["client_id_suffix"] == "12345678"
-    assert report["status"] == "ok"

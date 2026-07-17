@@ -6,9 +6,6 @@ name: "YouTube hourly heartbeat"
 on:
   schedule:
     - cron: "13 * * * *"
-  workflow_run:
-    workflows: ["Refresh Pexels queue"]
-    types: [completed]
   workflow_dispatch:
     inputs:
       reason:
@@ -26,7 +23,7 @@ concurrency:
 jobs:
   dispatch-hourly:
     name: "Dispatch hourly YouTube publisher"
-    if: ${{ vars.YOUTUBE_PUBLISHING_ENABLED == '1' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success') }}
+    if: ${{ vars.YOUTUBE_PUBLISHING_ENABLED == '1' }}
     runs-on: ubuntu-latest
     timeout-minutes: 8
     permissions:

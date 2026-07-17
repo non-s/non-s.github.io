@@ -87,7 +87,7 @@ def audit_slot_contracts(root: Path = ROOT) -> dict:
         for path in (
             root / "README.md",
             root / "docs" / "ENVIRONMENT.md",
-            root / "docs" / "WILD_BRIEF_WORLD_CLASS_UPGRADE.md",
+            root / "docs" / "ARCHITECTURE.md",
         )
     )
     bot_slots = _cron_slots(bot_text)

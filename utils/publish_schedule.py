@@ -2,18 +2,13 @@
 
 from __future__ import annotations
 
-import json
 import os
 from datetime import datetime, time, timedelta, timezone
-from pathlib import Path
 
 from utils.audience_expansion import GLOBAL_PUBLISH_WINDOWS
 
-ANALYTICS_FILE = Path("_data/analytics/latest.json")
-SCHEDULE_FILE = Path("_data/publish_schedule.json")
 CANONICAL_SLOTS_UTC = tuple(str(item["slot"]) for item in GLOBAL_PUBLISH_WINDOWS)
 DEFAULT_RECOMMENDED_SLOTS_UTC = CANONICAL_SLOTS_UTC
-DECISIONS_FILE = Path("_data/publish_slot_decisions.jsonl")
 
 
 def _env_bool(name: str, default: bool = False, env: dict | None = None) -> bool:
@@ -226,45 +221,3 @@ def next_slot(now: datetime | None = None, schedule: dict | None = None, env: di
     return f"{winner.hour:02d}:{winner.minute:02d}"
 
 
-def _safe_json(path: Path) -> dict:
-    try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-        return data if isinstance(data, dict) else {}
-    except Exception:
-        return {}
-
-
-def recommend_schedule(analytics: dict | None = None) -> dict:
-    analytics = analytics or _safe_json(ANALYTICS_FILE)
-    global_slots = [str(item["slot"]) for item in GLOBAL_PUBLISH_WINDOWS]
-
-    # MrBeast Heatmap Dynamic Scheduling
-    if _env_bool("MRBEAST_HEATMAP_ENABLED", False):
-        peak_hours = {16, 17, 18, 19, 20, 21, 22}
-        slots = [s for s in global_slots if int(s.split(":")[0]) in peak_hours]
-        if not slots:
-            slots = global_slots  # fallback
-    else:
-        slots = global_slots
-
-    cadence = len(slots)
-    backlog_target = max(0, _env_int("QUEUE_TARGET_PENDING", 24))
-    return {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
-        "timezone": "UTC",
-        "canonical_slots": list(CANONICAL_SLOTS_UTC),
-        "recommended_slots": slots,
-        "recommended_shorts_per_day": cadence,
-        "rolling_batch_size": backlog_target or 1,
-        "queue_target_pending": backlog_target,
-        "target_regions": GLOBAL_PUBLISH_WINDOWS,
-        "feature_flags": feature_flags(),
-        "reason": "operator_day_zero_hourly_publish_with_quality_and_quota_guards",
-    }
-
-
-def write_schedule(path: Path = SCHEDULE_FILE) -> dict:
-    schedule = recommend_schedule()
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(schedule, indent=2, ensure_ascii=False), encoding="utf-8")
-    return schedule
