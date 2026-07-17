@@ -40,12 +40,9 @@ jobs:
       # YouTube token is needed here.
       - name: Generate Long Video
         env:
-          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
-          CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY || secrets.CEREBRAS }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI }}
-          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY || secrets.GROQ }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}
-        run: python generate_long_video.py
+          PEXELS_MIN_INTERVAL_S: ${{ vars.PEXELS_MIN_INTERVAL_S || '1.0' }}
+        run: python generate_lofi_long_video.py
 
       - name: Locate Generated Video
         id: locate_video
