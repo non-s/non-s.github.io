@@ -70,7 +70,14 @@ def _load_sidecar(media_path: Path) -> dict:
 
 
 def _mood_label(query: str) -> str:
-    words = [w for w in (query or "").split() if w][:2]
+    # LOFI_QUERIES in sync_lofi_broll.py all start with "anime"; skip it so
+    # the mood doesn't collide with the "Lofi"/"Anime" wording already in
+    # TITLE_TEMPLATES (e.g. "anime lofi girl study" -> "Lofi Girl", not the
+    # redundant "Anime Lofi").
+    words = [w for w in (query or "").split() if w]
+    if words and words[0].lower() == "anime":
+        words = words[1:]
+    words = words[:2]
     return " ".join(word.capitalize() for word in words) or "Cozy"
 
 

@@ -135,7 +135,12 @@ def main() -> int:
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
     report = duplicate_report(Path(args.path))
-    duplicate_count = sum(len(report[key]) for key in ("duplicate_uploads", "duplicate_titles", "duplicate_slots"))
+    # duplicate_titles is informational only: the lofi pipeline's titles are
+    # template-based (see generate_lofi_short.py), not per-story unique text,
+    # so exact title reuse across the catalog is expected and not a sign of
+    # a broken generator. duplicate_uploads/duplicate_slots are real bugs
+    # (the same content published twice, or two videos claiming one slot).
+    duplicate_count = sum(len(report[key]) for key in ("duplicate_uploads", "duplicate_slots"))
     print(
         json.dumps(report, sort_keys=True, ensure_ascii=False)
         if args.json
