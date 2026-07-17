@@ -9,7 +9,10 @@ def test_main_prints_snippet_and_branding_titles(monkeypatch, capsys):
         "items": [
             {
                 "id": "chan-1",
-                "snippet": {"title": "Wild Brief"},
+                "snippet": {
+                    "title": "Wild Brief",
+                    "thumbnails": {"high": {"url": "https://yt3.example/avatar.jpg"}},
+                },
                 "brandingSettings": {"channel": {"title": "Amber Hours"}},
             }
         ]
@@ -20,6 +23,7 @@ def test_main_prints_snippet_and_branding_titles(monkeypatch, capsys):
     out = capsys.readouterr().out
     assert "Wild Brief" in out
     assert "Amber Hours" in out
+    assert "https://yt3.example/avatar.jpg" in out
 
 
 def test_main_returns_one_when_no_channel_found(monkeypatch, capsys):

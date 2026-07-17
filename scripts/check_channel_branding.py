@@ -31,10 +31,12 @@ def main() -> int:
         print("No channel found for the authenticated account.", file=sys.stderr)
         return 1
     channel = items[0]
+    snippet = channel.get("snippet") or {}
     result = {
         "channel_id": channel.get("id"),
-        "snippet.title": (channel.get("snippet") or {}).get("title"),
+        "snippet.title": snippet.get("title"),
         "brandingSettings.channel.title": (channel.get("brandingSettings") or {}).get("channel", {}).get("title"),
+        "snippet.thumbnails.high.url": ((snippet.get("thumbnails") or {}).get("high") or {}).get("url"),
     }
     print(json.dumps(result, indent=2, ensure_ascii=False))
     return 0
