@@ -139,6 +139,7 @@ def test_prepare_seamless_loop_clip_bakes_crossfade_for_normal_clips(streamer, t
     cmd = calls[-1]
     assert "-filter_complex" in cmd
     assert "xfade" in cmd[cmd.index("-filter_complex") + 1]
+    assert cmd[cmd.index("-pix_fmt") + 1] == "yuv420p"
 
 
 def test_prepare_seamless_loop_clip_reuses_existing_bake(streamer, tmp_path, monkeypatch):
@@ -201,6 +202,7 @@ def test_build_stream_command_loops_clip_and_playlist_with_no_bake_duration(stre
     assert cmd.count("-stream_loop") == 2
     assert "-t" not in cmd
     assert "rtmp://a.rtmp.youtube.com/live2/test-stream-key" in cmd
+    assert "format=yuv420p" in cmd[cmd.index("-vf") + 1]
 
 
 def test_build_stream_command_falls_back_to_silent_audio_without_bgm(streamer, tmp_path, monkeypatch):

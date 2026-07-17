@@ -291,6 +291,14 @@ class DynamicStreamer:
             "-map",
             "[out]",
             "-an",
+            # xfade negotiates a higher-precision pixel format for the
+            # blend by default (checked live: yuv444p), which then makes
+            # the *next* ffmpeg stage's "-profile:v high" encode fail
+            # outright ("high profile doesn't support 4:4:4") -- pin the
+            # bake's output back to standard 4:2:0 so it's a drop-in
+            # replacement for the raw clip.
+            "-pix_fmt",
+            "yuv420p",
             str(out_path),
         ]
         try:
@@ -326,7 +334,10 @@ class DynamicStreamer:
             f"scale={TARGET_W}:{TARGET_H}:force_original_aspect_ratio=increase,"
             f"crop={TARGET_W}:{TARGET_H},fps={TARGET_FPS},"
             f"zoompan=z='min(zoom+0.0003,1.06)':d=1:s={TARGET_W}x{TARGET_H}:fps={TARGET_FPS},"
-            "setsar=1"
+            # Belt-and-braces: -profile:v high below only supports 4:2:0,
+            # so pin the format here regardless of what pixel format the
+            # (possibly seamless-loop-baked) video input happens to carry.
+            "setsar=1,format=yuv420p"
         )
 
         cmd = ["ffmpeg", "-y", "-re", "-stream_loop", "-1", "-i", str(video_input)]
