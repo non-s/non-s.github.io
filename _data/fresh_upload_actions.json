@@ -1,17 +1,17 @@
 {
   "counts": {
-    "automation_safe": 8,
+    "automation_safe": 9,
     "high": 0,
-    "manual_review": 2,
+    "manual_review": 1,
     "total": 10,
     "urgent": 10
   },
   "free_only": true,
-  "generated_at": "2026-07-17T11:15:48.395855+00:00",
+  "generated_at": "2026-07-17T11:21:46.454273+00:00",
   "items": [
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 39.607,
+      "age_hours": 39.706,
       "automation_safe": true,
       "category": "farm",
       "checkpoint_label": "1h",
@@ -37,7 +37,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 38.905,
+      "age_hours": 39.005,
       "automation_safe": true,
       "category": "farm",
       "checkpoint_label": "1h",
@@ -63,7 +63,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 37.979,
+      "age_hours": 38.079,
       "automation_safe": true,
       "category": "geology",
       "checkpoint_label": "1h",
@@ -89,7 +89,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 37.026,
+      "age_hours": 37.125,
       "automation_safe": true,
       "category": "wildlife",
       "checkpoint_label": "1h",
@@ -114,9 +114,9 @@
       "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
-      "action_type": "prepare_package_rescue",
-      "age_hours": 35.814,
-      "automation_safe": false,
+      "action_type": "pull_fresh_analytics",
+      "age_hours": 35.913,
+      "automation_safe": true,
       "category": "reptiles",
       "checkpoint_label": "1h",
       "checkpoint_state": "overdue",
@@ -124,24 +124,24 @@
       "due_at": "2026-07-16T00:26:58.496934+00:00",
       "free_only": true,
       "free_resource": "Committed analytics JSON, YouTube Studio free analytics, and GitHub Actions dashboard refresh.",
-      "id": "fresh-upload:L4U_p2YUTyg:repair_candidate:1h",
-      "lane": "package_rescue",
-      "manual_approval_required": true,
+      "id": "fresh-upload:L4U_p2YUTyg:analytics_due:1h",
+      "lane": "measurement",
+      "manual_approval_required": false,
       "opening_retention_score": 100.0,
       "priority": "urgent",
-      "recommended_action": "TITLE_AUTO_REPAIR_TRIGGER",
+      "recommended_action": "Run the analytics pull before making a creative decision. Check the 1h sample first.",
       "series": "Cold-Blooded Secrets",
-      "state": "repair_candidate",
+      "state": "analytics_due",
       "target_views": 24,
       "title": "This tongue smell gives snakes away",
       "url": "https://www.youtube.com/shorts/L4U_p2YUTyg",
       "video_id": "L4U_p2YUTyg",
       "wait_until": "",
-      "why": "Observed velocity is weak enough to prepare a package intervention."
+      "why": "The next checkpoint is due, but the system still needs a fresh measured sample."
     },
     {
       "action_type": "prepare_package_rescue",
-      "age_hours": 34.926,
+      "age_hours": 35.026,
       "automation_safe": false,
       "category": "trees",
       "checkpoint_label": "1h",
@@ -167,7 +167,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 21.942,
+      "age_hours": 22.042,
       "automation_safe": true,
       "category": "wildlife",
       "checkpoint_label": "1h",
@@ -193,7 +193,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 17.01,
+      "age_hours": 17.11,
       "automation_safe": true,
       "category": "ocean",
       "checkpoint_label": "1h",
@@ -219,7 +219,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 15.511,
+      "age_hours": 15.61,
       "automation_safe": true,
       "category": "farm",
       "checkpoint_label": "1h",
@@ -245,7 +245,7 @@
     },
     {
       "action_type": "pull_fresh_analytics",
-      "age_hours": 15.139,
+      "age_hours": 15.239,
       "automation_safe": true,
       "category": "chemistry",
       "checkpoint_label": "1h",
@@ -271,5 +271,5 @@
     }
   ],
   "source": "fresh_upload_watchlist",
-  "source_generated_at": "2026-07-17T11:15:48.394713+00:00"
+  "source_generated_at": "2026-07-17T11:21:46.452931+00:00"
 }
