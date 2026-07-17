@@ -28,9 +28,11 @@ through the official YouTube Data API.
 scripts/sync_lofi_broll.py   -> _assets/video/lofi_broll (Pixabay anime clips)
 scripts/sync_jamendo_music.py -> _assets/audio/bgm (Jamendo CC BY tracks)
 generate_lofi_short.py        -> _videos/*.mp4 + metadata (Shorts)
-generate_lofi_long_video.py   -> _videos/long_video_*.mp4 (24/7 live loop)
 upload_youtube.py             -> YouTube Shorts + .done sidecar
-scripts/live_stream_dynamic.py -> 24/7 YouTube Live relay
+scripts/live_stream_dynamic.py -> 24/7 YouTube Live relay (one clip
+                                   looped + the whole local bgm playlist
+                                   on loop, like a real lofi radio -- not
+                                   several clips cut together)
 ```
 
 This channel was rebuilt from an earlier nature-science-facts format

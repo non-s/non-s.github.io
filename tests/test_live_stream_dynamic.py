@@ -16,99 +16,178 @@ def streamer(monkeypatch, tmp_path):
     return instance
 
 
-def test_pick_bgm_track_returns_none_when_library_empty(streamer, tmp_path, monkeypatch):
+def test_pick_broll_clip_returns_none_when_library_empty(streamer, tmp_path, monkeypatch):
+    monkeypatch.setattr(live_stream_dynamic, "BROLL_DIR", tmp_path / "empty_broll")
+    (tmp_path / "empty_broll").mkdir()
+
+    assert streamer._pick_broll_clip() is None
+
+
+def test_pick_broll_clip_returns_a_clip_when_present(streamer, tmp_path, monkeypatch):
+    broll_dir = tmp_path / "broll"
+    broll_dir.mkdir()
+    (broll_dir / "pixabay_1.mp4").write_bytes(b"x")
+    (broll_dir / "pixabay_2.mp4").write_bytes(b"x")
+    monkeypatch.setattr(live_stream_dynamic, "BROLL_DIR", broll_dir)
+
+    picked = streamer._pick_broll_clip()
+
+    assert picked in {broll_dir / "pixabay_1.mp4", broll_dir / "pixabay_2.mp4"}
+
+
+def test_build_bgm_playlist_returns_none_when_library_empty(streamer, tmp_path, monkeypatch):
     monkeypatch.setattr(live_stream_dynamic, "BGM_DIR", tmp_path / "empty_bgm")
     (tmp_path / "empty_bgm").mkdir()
 
-    assert streamer._pick_bgm_track() is None
+    assert streamer._build_bgm_playlist() is None
 
 
-def test_pick_bgm_track_returns_a_track_when_present(streamer, tmp_path, monkeypatch):
+def test_build_bgm_playlist_concatenates_every_track(streamer, tmp_path, monkeypatch):
+    bgm_dir = tmp_path / "bgm"
+    bgm_dir.mkdir()
+    for i in range(3):
+        (bgm_dir / f"jamendo_{i}.mp3").write_bytes(b"x")
+    monkeypatch.setattr(live_stream_dynamic, "BGM_DIR", bgm_dir)
+
+    calls = []
+
+    def fake_run(cmd, **kwargs):
+        calls.append(cmd)
+        Path(cmd[-1]).write_bytes(b"fake-playlist")
+        result = MagicMock()
+        result.returncode = 0
+        result.stderr = ""
+        return result
+
+    monkeypatch.setattr(live_stream_dynamic.subprocess, "run", fake_run)
+
+    playlist_path = streamer._build_bgm_playlist()
+
+    assert playlist_path is not None
+    assert playlist_path.read_bytes() == b"fake-playlist"
+    concat_list = (streamer.temp_dir / "playlist_concat.txt").read_text()
+    for i in range(3):
+        assert f"jamendo_{i}.mp3" in concat_list
+
+
+def test_build_bgm_playlist_reuses_existing_playlist(streamer, tmp_path, monkeypatch):
     bgm_dir = tmp_path / "bgm"
     bgm_dir.mkdir()
     (bgm_dir / "jamendo_1.mp3").write_bytes(b"x")
-    (bgm_dir / "jamendo_2.mp3").write_bytes(b"x")
     monkeypatch.setattr(live_stream_dynamic, "BGM_DIR", bgm_dir)
+    existing_playlist = streamer.temp_dir / "playlist.mp3"
+    existing_playlist.write_bytes(b"already-built")
 
-    picked = streamer._pick_bgm_track()
-
-    assert picked in {bgm_dir / "jamendo_1.mp3", bgm_dir / "jamendo_2.mp3"}
-
-
-def test_convert_to_ts_mixes_bgm_when_available(streamer, tmp_path, monkeypatch):
-    bgm_dir = tmp_path / "bgm"
-    bgm_dir.mkdir()
-    bgm_path = bgm_dir / "jamendo_1.mp3"
-    bgm_path.write_bytes(b"x")
-    monkeypatch.setattr(live_stream_dynamic, "BGM_DIR", bgm_dir)
-
-    calls = []
-
-    def fake_run(cmd, **kwargs):
-        calls.append(cmd)
-        Path(cmd[-1]).write_bytes(b"fake-ts")
-        result = MagicMock()
-        result.returncode = 0
-        result.stderr = ""
-        return result
-
-    monkeypatch.setattr(live_stream_dynamic.subprocess, "run", fake_run)
-
-    mp4_path = tmp_path / "long_video_x.mp4"
-    mp4_path.write_bytes(b"x")
-
-    out_ts = streamer.convert_to_ts(mp4_path)
-
-    assert out_ts.exists()
-    cmd = calls[-1]
-    assert "-stream_loop" in cmd
-    assert str(bgm_path) in cmd
-    assert "-map" in cmd
-    assert "0:v" in cmd
-    assert "1:a" in cmd
-
-
-def test_convert_to_ts_streams_silent_when_no_bgm(streamer, tmp_path, monkeypatch):
-    monkeypatch.setattr(live_stream_dynamic, "BGM_DIR", tmp_path / "no_bgm")
-    (tmp_path / "no_bgm").mkdir()
-
-    calls = []
-
-    def fake_run(cmd, **kwargs):
-        calls.append(cmd)
-        Path(cmd[-1]).write_bytes(b"fake-ts")
-        result = MagicMock()
-        result.returncode = 0
-        result.stderr = ""
-        return result
-
-    monkeypatch.setattr(live_stream_dynamic.subprocess, "run", fake_run)
-
-    mp4_path = tmp_path / "long_video_y.mp4"
-    mp4_path.write_bytes(b"x")
-
-    out_ts = streamer.convert_to_ts(mp4_path)
-
-    assert out_ts.exists()
-    cmd = calls[-1]
-    assert "-an" not in cmd
-    assert "anullsrc=r=44100:cl=stereo" in cmd
-    assert "-stream_loop" not in cmd
-
-
-def test_convert_to_ts_reuses_existing_ts_file(streamer, tmp_path, monkeypatch):
     calls = []
     monkeypatch.setattr(live_stream_dynamic.subprocess, "run", lambda cmd, **k: calls.append(cmd))
 
-    mp4_path = tmp_path / "long_video_z.mp4"
-    mp4_path.write_bytes(b"x")
-    existing_ts = streamer.temp_dir / "long_video_z.ts"
-    existing_ts.write_bytes(b"already-converted")
+    playlist_path = streamer._build_bgm_playlist()
 
-    out_ts = streamer.convert_to_ts(mp4_path)
+    assert playlist_path == existing_playlist
+    assert calls == []
+
+
+def test_build_loop_segment_returns_none_without_broll_clip(streamer, tmp_path, monkeypatch):
+    monkeypatch.setattr(live_stream_dynamic, "BROLL_DIR", tmp_path / "empty_broll")
+    (tmp_path / "empty_broll").mkdir()
+
+    assert streamer.build_loop_segment() is None
+
+
+def test_build_loop_segment_mixes_full_playlist_when_available(streamer, tmp_path, monkeypatch):
+    broll_dir = tmp_path / "broll"
+    broll_dir.mkdir()
+    clip_path = broll_dir / "pixabay_1.mp4"
+    clip_path.write_bytes(b"x")
+    monkeypatch.setattr(live_stream_dynamic, "BROLL_DIR", broll_dir)
+    monkeypatch.setattr(streamer, "_build_bgm_playlist", lambda: tmp_path / "playlist.mp3")
+    monkeypatch.setattr(live_stream_dynamic, "_audio_duration_s", lambda path: 900.0)
+
+    calls = []
+
+    def fake_run(cmd, **kwargs):
+        calls.append(cmd)
+        Path(cmd[-1]).write_bytes(b"fake-ts")
+        result = MagicMock()
+        result.returncode = 0
+        result.stderr = ""
+        return result
+
+    monkeypatch.setattr(live_stream_dynamic.subprocess, "run", fake_run)
+
+    out_ts = streamer.build_loop_segment()
+
+    assert out_ts is not None and out_ts.exists()
+    cmd = calls[-1]
+    assert str(clip_path) in cmd
+    assert str(tmp_path / "playlist.mp3") in cmd
+    assert "-map" in cmd
+    assert "0:v" in cmd
+    assert "1:a" in cmd
+    assert cmd[cmd.index("-t") + 1] == "900.000"
+    assert cmd.count("-stream_loop") == 2
+
+
+def test_build_loop_segment_falls_back_to_silent_audio_without_bgm(streamer, tmp_path, monkeypatch):
+    broll_dir = tmp_path / "broll"
+    broll_dir.mkdir()
+    (broll_dir / "pixabay_1.mp4").write_bytes(b"x")
+    monkeypatch.setattr(live_stream_dynamic, "BROLL_DIR", broll_dir)
+    monkeypatch.setattr(streamer, "_build_bgm_playlist", lambda: None)
+
+    calls = []
+
+    def fake_run(cmd, **kwargs):
+        calls.append(cmd)
+        Path(cmd[-1]).write_bytes(b"fake-ts")
+        result = MagicMock()
+        result.returncode = 0
+        result.stderr = ""
+        return result
+
+    monkeypatch.setattr(live_stream_dynamic.subprocess, "run", fake_run)
+
+    out_ts = streamer.build_loop_segment()
+
+    assert out_ts is not None
+    cmd = calls[-1]
+    assert "anullsrc=r=44100:cl=stereo" in cmd
+    assert cmd.count("-stream_loop") == 1
+
+
+def test_build_loop_segment_reuses_existing_segment(streamer, tmp_path, monkeypatch):
+    broll_dir = tmp_path / "broll"
+    broll_dir.mkdir()
+    (broll_dir / "pixabay_1.mp4").write_bytes(b"x")
+    monkeypatch.setattr(live_stream_dynamic, "BROLL_DIR", broll_dir)
+    existing_ts = streamer.temp_dir / "loop_segment.ts"
+    existing_ts.write_bytes(b"already-built")
+
+    calls = []
+    monkeypatch.setattr(live_stream_dynamic.subprocess, "run", lambda cmd, **k: calls.append(cmd))
+
+    out_ts = streamer.build_loop_segment()
 
     assert out_ts == existing_ts
     assert calls == []
+
+
+def test_build_loop_segment_returns_none_on_ffmpeg_failure(streamer, tmp_path, monkeypatch):
+    broll_dir = tmp_path / "broll"
+    broll_dir.mkdir()
+    (broll_dir / "pixabay_1.mp4").write_bytes(b"x")
+    monkeypatch.setattr(live_stream_dynamic, "BROLL_DIR", broll_dir)
+    monkeypatch.setattr(streamer, "_build_bgm_playlist", lambda: None)
+
+    def fake_run(cmd, **kwargs):
+        result = MagicMock()
+        result.returncode = 1
+        result.stderr = "boom"
+        return result
+
+    monkeypatch.setattr(live_stream_dynamic.subprocess, "run", fake_run)
+
+    assert streamer.build_loop_segment() is None
 
 
 def test_ensure_live_broadcast_reuses_active_broadcast(streamer):

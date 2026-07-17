@@ -3,13 +3,18 @@
 """
 live_stream_dynamic.py -- 24/7 lofi live relay with self-healing broadcast.
 
-Streams gaplessly to YouTube Live using an MPEG-TS pipe: loops whichever
-long_video_*.mp4 files exist (built by generate_lofi_long_video.py, a
-silent landscape lofi b-roll compilation), mixing in a track from the local
-Jamendo bgm library on the way in since the source video itself carries no
-audio. A background thread keeps a public broadcast bound to the stream key
-at all times -- ffmpeg can push RTMP data forever, but that alone never
-puts the channel back on-air once a broadcast ends, so a new one has to be
+The "Lofi Girl" format this channel is modeled on isn't several different
+video clips cut together -- it's one single looping animation with a music
+playlist rotating underneath, for hours. So this relay picks ONE random
+anime/illustrated clip from the same Pixabay b-roll library the Shorts
+generator uses (_assets/video/lofi_broll), loops it, and concatenates every
+locally available Jamendo track into one playlist that plays through in
+sequence and then repeats -- not a single song on loop for the whole
+session. Streams gaplessly to YouTube Live using an MPEG-TS pipe.
+
+A background thread keeps a public broadcast bound to the stream key at
+all times -- ffmpeg can push RTMP data forever, but that alone never puts
+the channel back on-air once a broadcast ends, so a new one has to be
 created and bound whenever none is active.
 
 This used to also run an AI "virtual host" that answered live chat
@@ -41,11 +46,26 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(me
 log = logging.getLogger(__name__)
 
 BGM_DIR = ROOT / "_assets" / "audio" / "bgm"
+BROLL_DIR = ROOT / "_assets" / "video" / "lofi_broll"
+
+TARGET_W = 1920
+TARGET_H = 1080
+TARGET_FPS = 30
+FALLBACK_SILENT_DURATION_S = 1800.0
 
 BROADCAST_TITLE = "\U0001f534 24/7 Lofi Beats to Relax/Study to | Live"
 BROADCAST_DESCRIPTION = (
     "Non-stop lofi beats, looping live -- cozy visuals and chill music to relax, study or unwind to."
 )
+
+
+def _audio_duration_s(path: Path) -> float:
+    cmd = ["ffprobe", "-v", "quiet", "-show_entries", "format=duration", "-of", "csv=p=0", str(path)]
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=15)
+        return float(result.stdout.strip())
+    except Exception:
+        return FALLBACK_SILENT_DURATION_S
 
 
 class DynamicStreamer:
@@ -185,118 +205,115 @@ class DynamicStreamer:
         except Exception as e:
             log.warning(f"Failed to rebrand stale broadcast: {e}")
 
-    def _pick_bgm_track(self) -> Path | None:
-        tracks = list(BGM_DIR.glob("jamendo_*.mp3"))
-        return random.choice(tracks) if tracks else None
+    def _pick_broll_clip(self) -> Path | None:
+        clips = list(BROLL_DIR.glob("pixabay_*.mp4"))
+        return random.choice(clips) if clips else None
 
-    def convert_to_ts(self, mp4_path: Path) -> Path:
-        out_ts = self.temp_dir / f"{mp4_path.stem}.ts"
+    def _build_bgm_playlist(self) -> Path | None:
+        """Concatenate every locally available bgm track into one file, so
+        the loop segment plays through the whole library in sequence
+        instead of a single track repeating for the whole session."""
+        tracks = list(BGM_DIR.glob("jamendo_*.mp3"))
+        if not tracks:
+            return None
+        playlist_path = self.temp_dir / "playlist.mp3"
+        if playlist_path.exists() and playlist_path.stat().st_size > 0:
+            return playlist_path
+        random.shuffle(tracks)
+        list_path = self.temp_dir / "playlist_concat.txt"
+        list_path.write_text(
+            "\n".join(f"file '{track.resolve()}'" for track in tracks) + "\n",
+            encoding="utf-8",
+        )
+        cmd = ["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(list_path), "-c", "copy", str(playlist_path)]
+        try:
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+        except Exception as exc:
+            log.error(f"Failed to build bgm playlist: {exc}")
+            return None
+        if result.returncode != 0 or not playlist_path.exists():
+            log.error(f"ffmpeg playlist concat exited {result.returncode}: {result.stderr[-500:]}")
+            return None
+        log.info("Built bgm playlist from %d track(s).", len(tracks))
+        return playlist_path
+
+    def build_loop_segment(self) -> Path | None:
+        """Build (or reuse) the single video-loop + music-playlist segment
+        this relay streams: one anime clip, looped for as long as the
+        local bgm playlist takes to play through once, matching the
+        "one video, whole playlist on loop" lofi-radio format instead of
+        cutting between several different clips."""
+        out_ts = self.temp_dir / "loop_segment.ts"
         if out_ts.exists() and out_ts.stat().st_size > 0:
             return out_ts
 
-        bgm_path = self._pick_bgm_track()
-        log.info(f"Converting {mp4_path.name} to MPEG-TS for streaming (fixing keyframes)...")
-        if bgm_path:
-            cmd = [
-                "ffmpeg",
-                "-y",
-                "-i",
-                str(mp4_path),
-                "-stream_loop",
-                "-1",
-                "-i",
-                str(bgm_path),
-                "-map",
-                "0:v",
-                "-map",
-                "1:a",
-                "-r",
-                "30",
-                "-c:v",
-                "libx264",
-                "-preset",
-                "veryfast",
-                "-profile:v",
-                "high",
-                "-g",
-                "60",
-                "-keyint_min",
-                "60",
-                "-sc_threshold",
-                "0",
-                "-b:v",
-                "4500k",
-                "-maxrate",
-                "4500k",
-                "-bufsize",
-                "9000k",
-                "-c:a",
-                "aac",
-                "-b:a",
-                "128k",
-                "-ar",
-                "44100",
-                "-shortest",
-                "-f",
-                "mpegts",
-                str(out_ts),
-            ]
+        clip_path = self._pick_broll_clip()
+        if not clip_path:
+            log.error("No lofi b-roll clip found in %s to loop.", BROLL_DIR)
+            return None
+
+        playlist_path = self._build_bgm_playlist()
+        video_filter = (
+            f"scale={TARGET_W}:{TARGET_H}:force_original_aspect_ratio=increase,"
+            f"crop={TARGET_W}:{TARGET_H},fps={TARGET_FPS},"
+            f"zoompan=z='min(zoom+0.0003,1.06)':d=1:s={TARGET_W}x{TARGET_H}:fps={TARGET_FPS},"
+            "setsar=1"
+        )
+        cmd = ["ffmpeg", "-y", "-stream_loop", "-1", "-i", str(clip_path)]
+        if playlist_path:
+            duration_s = _audio_duration_s(playlist_path)
+            cmd += ["-stream_loop", "-1", "-i", str(playlist_path), "-map", "0:v", "-map", "1:a"]
         else:
-            # A stream with no audio track at all can leave YouTube's live
-            # ingestion stuck validating the broadcast instead of ever
-            # transitioning it out of "waiting for stream data" -- so even
-            # this fallback carries a (silent) audio track rather than
-            # dropping it with -an. This should be rare: the workflow syncs
-            # the bgm library before every relay run.
-            log.warning("No bgm track found in %s; streaming this segment with silent audio.", BGM_DIR)
-            cmd = [
-                "ffmpeg",
-                "-y",
-                "-i",
-                str(mp4_path),
-                "-f",
-                "lavfi",
-                "-i",
-                "anullsrc=r=44100:cl=stereo",
-                "-map",
-                "0:v",
-                "-map",
-                "1:a",
-                "-r",
-                "30",
-                "-c:v",
-                "libx264",
-                "-preset",
-                "veryfast",
-                "-profile:v",
-                "high",
-                "-g",
-                "60",
-                "-keyint_min",
-                "60",
-                "-sc_threshold",
-                "0",
-                "-b:v",
-                "4500k",
-                "-maxrate",
-                "4500k",
-                "-bufsize",
-                "9000k",
-                "-c:a",
-                "aac",
-                "-b:a",
-                "128k",
-                "-ar",
-                "44100",
-                "-shortest",
-                "-f",
-                "mpegts",
-                str(out_ts),
-            ]
-        res = subprocess.run(cmd, capture_output=True, text=True)
-        if res.returncode != 0:
-            log.error(f"FFmpeg failed to convert {mp4_path.name} to TS. Exit code: {res.returncode}")
-            log.error(f"FFmpeg stderr: {res.stderr}")
+            log.warning("No bgm tracks found in %s; looping this segment with silent audio.", BGM_DIR)
+            duration_s = FALLBACK_SILENT_DURATION_S
+            cmd += ["-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo", "-map", "0:v", "-map", "1:a"]
+        cmd += [
+            "-vf",
+            video_filter,
+            "-t",
+            f"{duration_s:.3f}",
+            "-r",
+            str(TARGET_FPS),
+            "-c:v",
+            "libx264",
+            "-preset",
+            "veryfast",
+            "-profile:v",
+            "high",
+            "-g",
+            "60",
+            "-keyint_min",
+            "60",
+            "-sc_threshold",
+            "0",
+            "-b:v",
+            "4500k",
+            "-maxrate",
+            "4500k",
+            "-bufsize",
+            "9000k",
+            "-c:a",
+            "aac",
+            "-b:a",
+            "128k",
+            "-ar",
+            "44100",
+            "-f",
+            "mpegts",
+            str(out_ts),
+        ]
+        try:
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=max(300, int(duration_s) + 120))
+        except Exception as exc:
+            log.error(f"Failed to build loop segment: {exc}")
+            return None
+        if result.returncode != 0:
+            log.error(f"FFmpeg failed to build loop segment. Exit code: {result.returncode}")
+            log.error(f"FFmpeg stderr: {result.stderr[-2000:]}")
+            return None
+        if not out_ts.exists() or out_ts.stat().st_size == 0:
+            return None
+        log.info("Built loop segment from %s (%.1f min).", clip_path.name, duration_s / 60)
         return out_ts
 
     def broadcast_monitor_thread(self):
@@ -312,43 +329,6 @@ class DynamicStreamer:
             except Exception as e:
                 log.error(f"Broadcast monitor error: {e}")
             time.sleep(120)
-
-    def content_updater_thread(self):
-        log.info("Starting Content Updater Thread...")
-        while True:
-            try:
-                log.info("Checking for new generated videos...")
-                run_id_cmd = [
-                    "gh",
-                    "run",
-                    "list",
-                    "--workflow=Generate Long Video",
-                    "--status=success",
-                    "--limit",
-                    "1",
-                    "--json",
-                    "databaseId",
-                    "--jq",
-                    ".[0].databaseId",
-                ]
-                result = subprocess.run(run_id_cmd, capture_output=True, text=True)
-                run_id = result.stdout.strip()
-                if run_id and run_id != "null":
-                    log.info(f"Found latest run {run_id}, downloading if not present...")
-                    dl_cmd = [
-                        "gh",
-                        "run",
-                        "download",
-                        str(run_id),
-                        "--name",
-                        f"long-video-{run_id}",
-                        "--dir",
-                        str(self.videos_dir),
-                    ]
-                    subprocess.run(dl_cmd, capture_output=True)
-            except Exception as e:
-                log.error(f"Content updater error: {e}")
-            time.sleep(3600)  # Check every hour
 
     def start_ffmpeg_pipe(self):
         rtmp_url = f"rtmp://a.rtmp.youtube.com/live2/{self.stream_key}"
@@ -367,30 +347,25 @@ class DynamicStreamer:
         self.ffmpeg_proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
 
     def run(self):
-        long_videos = list(self.videos_dir.glob("long_video_*.mp4"))
-        if not long_videos:
-            log.error("No long videos found.")
+        if not list(BROLL_DIR.glob("pixabay_*.mp4")):
+            log.error("No lofi b-roll clips found in %s.", BROLL_DIR)
             return
 
         # Make sure a broadcast exists and is bound *before* we start
         # pushing video, so YouTube has somewhere to auto-start it.
         self.ensure_live_broadcast()
 
-        threading.Thread(target=self.content_updater_thread, daemon=True).start()
         threading.Thread(target=self.broadcast_monitor_thread, daemon=True).start()
 
         self.start_ffmpeg_pipe()
 
         try:
             while True:
-                long_videos = list(self.videos_dir.glob("long_video_*.mp4"))
-                if not long_videos:
-                    time.sleep(5)
+                target = self.build_loop_segment()
+                if not target:
+                    time.sleep(10)
                     continue
-
-                chosen_mp4 = random.choice(long_videos)
-                target = self.convert_to_ts(chosen_mp4)
-                log.info(f"Looping base video: {target.name}")
+                log.info(f"Looping segment: {target.name}")
 
                 if self.ffmpeg_proc.poll() is not None:
                     log.error("Master FFmpeg pipe crashed! Restarting...")
