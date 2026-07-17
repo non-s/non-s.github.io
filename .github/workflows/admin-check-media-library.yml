@@ -44,3 +44,12 @@ jobs:
             echo "- bgm tracks: $bgm_count"
             echo "- broll clips: $broll_count"
           } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: "List b-roll clip metadata"
+        run: |
+          for meta in _assets/video/lofi_broll/pixabay_*.json; do
+            [ -e "$meta" ] || continue
+            echo "--- $(basename "$meta") ---"
+            cat "$meta"
+            echo
+          done
