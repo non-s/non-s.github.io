@@ -1,10 +1,101 @@
 {
-  "generated_at": "2026-07-17T13:42:32.956365+00:00",
-  "channel_epoch": "channel_reset_2026-07-17",
-  "state": "channel_reset",
-  "pressure_score": 0,
-  "metrics": {},
-  "largest_state_files": [],
-  "migration_lanes": [],
-  "commands": []
+  "state": "watch",
+  "pressure_score": 45,
+  "metrics": {
+    "live_state_files": 115,
+    "data_state_files": 114,
+    "video_done_markers": 0,
+    "live_state_bytes": 37151,
+    "stories_queue_bytes": 142,
+    "stories_queue_lines": 6,
+    "workflow_files": 22,
+    "state_path_refs": 279
+  },
+  "largest_state_files": [
+    {
+      "path": "_data/experiment_registry.json",
+      "bytes": 7632,
+      "lines": 189
+    },
+    {
+      "path": "_data/publish_schedule.json",
+      "bytes": 5527,
+      "lines": 301
+    },
+    {
+      "path": "_data/day_zero_reset_report.json",
+      "bytes": 5025,
+      "lines": 138
+    },
+    {
+      "path": "_data/channel_objective.json",
+      "bytes": 2071,
+      "lines": 53
+    },
+    {
+      "path": "_data/hook_library.json",
+      "bytes": 1073,
+      "lines": 49
+    },
+    {
+      "path": "_data/automation_health.json",
+      "bytes": 833,
+      "lines": 41
+    },
+    {
+      "path": "_data/post_upload_session_ops.json",
+      "bytes": 620,
+      "lines": 26
+    },
+    {
+      "path": "_data/level_system.json",
+      "bytes": 555,
+      "lines": 23
+    },
+    {
+      "path": "_data/channel_epoch.json",
+      "bytes": 489,
+      "lines": 10
+    },
+    {
+      "path": "_data/analytics/api_quota_latest.json",
+      "bytes": 412,
+      "lines": 18
+    },
+    {
+      "path": "_data/agency_plan.json",
+      "bytes": 335,
+      "lines": 9
+    },
+    {
+      "path": "_data/analytics/latest.json",
+      "bytes": 303,
+      "lines": 12
+    }
+  ],
+  "migration_lanes": [
+    {
+      "lane": "queue_and_upload_intents",
+      "target": "Firebase/Firestore collections keyed by channel, language, state, and publish window",
+      "reason": "Queue and upload state change every run and should not be merged through Git.",
+      "priority": 1
+    },
+    {
+      "lane": "raw_analytics_and_ledgers",
+      "target": "Object storage plus compacted daily snapshots committed to Git",
+      "reason": "Append-heavy JSONL/CSV data creates repository churn and merge pressure.",
+      "priority": 2
+    },
+    {
+      "lane": "workflow_runtime_state",
+      "target": "External run ledger with Git storing reports, not live locks",
+      "reason": "Operational locks, quota ledgers, and markers are control-plane state.",
+      "priority": 3
+    }
+  ],
+  "commands": [
+    "Keep Git for code, dashboards, and reviewed daily/weekly snapshots.",
+    "Move queue, upload intents, raw analytics, quota ledgers, and run markers behind a storage adapter.",
+    "Block new features that add live-state files without a migration lane."
+  ]
 }

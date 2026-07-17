@@ -1,23 +1,233 @@
 {
-  "generated_at": "2026-07-17T13:42:32.956365+00:00",
-  "channel_epoch": "channel_reset_2026-07-17",
+  "generated_at": "2026-07-17T14:00:32.334713+00:00",
   "mode": "free_resources_only",
-  "status": "channel_reset",
-  "overall_progress_pct": 0,
+  "status": "in_progress",
+  "overall_progress_pct": 0.0,
   "current_level": {
     "number": 1,
-    "name": "Clean restart",
-    "mission": "Rebuild the channel from an empty public inventory.",
-    "status": "current",
-    "progress_pct": 0
+    "name": "Launch safety",
+    "mission": "Keep the publisher safe, recoverable, and able to upload without manual drama.",
+    "unlock": "At least one real upload is recorded and automation health is usable.",
+    "revenue_job": "Protect the channel asset before chasing volume.",
+    "status": "boss_fight",
+    "progress_pct": 0.0
   },
-  "boss": {},
-  "next_upgrade": {},
-  "action_plan": [],
+  "boss": {
+    "id": "launch_proof_missing",
+    "label": "Launch proof is incomplete",
+    "severity": "high",
+    "evidence": {
+      "published_count": 0,
+      "health_score": 0
+    }
+  },
+  "next_upgrade": {
+    "id": "prove_safe_launch",
+    "title": "Get the safe launch proof on record",
+    "why": "The business starts with reliable publishing.",
+    "success_gate": "published_count >= 1 and health_score >= 60",
+    "free_only": true,
+    "primary_files": [
+      "_data/upload_intents.jsonl",
+      "_data/automation_health.json"
+    ]
+  },
+  "action_plan": [
+    {
+      "priority": "P0",
+      "action": "Keep compounding only lanes that clear supply, retention, and return-viewer gates.",
+      "target": "compound scale",
+      "why": "The final level rewards consistency over novelty."
+    }
+  ],
   "metrics": {
+    "health_score": 0,
+    "health_state": "needs_work",
+    "pending": 0,
+    "operational_publish_ready": 0,
+    "apparent_publish_ready": 0,
+    "eligible_count": 0,
+    "scale_ready_count": 0,
+    "next_shorts_count": 0,
+    "editorial_candidate_count": 0,
     "published_count": 0,
-    "views_28d": 0,
+    "views_28d": 30314,
+    "total_subscribers": 46,
+    "subs_per_1000_views": 1.221,
+    "stayed_to_watch_rate": 0.318,
+    "avg_view_percentage": 0.0,
+    "recurring_viewer_rate": 0.001,
+    "youtube_search_view_rate": 0.017,
+    "crosspost_assets": 0,
     "comments_sampled": 0
   },
-  "top_blockers": []
+  "top_blockers": [
+    {
+      "id": "scale:first_second",
+      "count": 1,
+      "operator_translation": "scale:first second"
+    },
+    {
+      "id": "scale:recurring_audience",
+      "count": 1,
+      "operator_translation": "scale:recurring audience"
+    },
+    {
+      "id": "scale:subscriber_conversion",
+      "count": 1,
+      "operator_translation": "scale:subscriber conversion"
+    },
+    {
+      "id": "scale:feed_dependency",
+      "count": 1,
+      "operator_translation": "scale:feed dependency"
+    },
+    {
+      "id": "scale:comment_loop",
+      "count": 1,
+      "operator_translation": "scale:comment loop"
+    }
+  ],
+  "levels": [
+    {
+      "number": 1,
+      "name": "Launch safety",
+      "mission": "Keep the publisher safe, recoverable, and able to upload without manual drama.",
+      "unlock": "At least one real upload is recorded and automation health is usable.",
+      "revenue_job": "Protect the channel asset before chasing volume.",
+      "status": "current",
+      "progress_pct": 0.0,
+      "evidence": {
+        "published_count": 0,
+        "health_score": 0
+      }
+    },
+    {
+      "number": 2,
+      "name": "Publish supply engine",
+      "mission": "Maintain enough final-eligible Shorts that every publish window has a strong option.",
+      "unlock": "Six operationally publish-ready Shorts, at least one dry-run eligible Short, and twenty pending stories.",
+      "revenue_job": "Turn production from lucky shots into repeatable inventory.",
+      "status": "locked",
+      "progress_pct": 0.0,
+      "evidence": {
+        "operational_publish_ready": 0,
+        "eligible_count": 0,
+        "pending": 0,
+        "target_publish_ready": 6,
+        "target_pending": 20
+      }
+    },
+    {
+      "number": 3,
+      "name": "Retention packaging",
+      "mission": "Make the opening frame and first sentence clear enough that strangers keep watching.",
+      "unlock": "Stayed-to-watch rate at 40% or higher and average view percentage at 62% or higher.",
+      "revenue_job": "Convert reach into watch time and proof that the format works.",
+      "status": "locked",
+      "progress_pct": 39.8,
+      "evidence": {
+        "stayed_to_watch_rate": 0.318,
+        "avg_view_percentage": 0.0
+      }
+    },
+    {
+      "number": 4,
+      "name": "Repeat audience loop",
+      "mission": "Turn one-off viewers into people who recognize the channel and come back.",
+      "unlock": "Recurring viewer rate reaches 2% and audience comments keep producing usable prompts.",
+      "revenue_job": "Build an audience identity instead of isolated viral posts.",
+      "status": "locked",
+      "progress_pct": 2.5,
+      "evidence": {
+        "recurring_viewer_rate": 0.001,
+        "comments_sampled": 0
+      }
+    },
+    {
+      "number": 5,
+      "name": "Free distribution mesh",
+      "mission": "Give every winner a free web, search, and cross-post path without paid tools.",
+      "unlock": "Search traffic reaches 5% and the free cross-post pack has at least three ready assets.",
+      "revenue_job": "Make each successful Short travel farther than the Shorts feed.",
+      "status": "locked",
+      "progress_pct": 17.0,
+      "evidence": {
+        "youtube_search_view_rate": 0.017,
+        "crosspost_assets": 0
+      }
+    },
+    {
+      "number": 6,
+      "name": "Monetization runway",
+      "mission": "Prove sponsor-safe consistency, subscriber conversion, and a clean operating record.",
+      "unlock": "One thousand subscribers and at least 1.5 subscribers gained per thousand views.",
+      "revenue_job": "Prepare the channel for platform revenue, sponsorship, and product experiments.",
+      "status": "locked",
+      "progress_pct": 43.0,
+      "evidence": {
+        "total_subscribers": 46,
+        "subs_per_1000_views": 1.221
+      }
+    },
+    {
+      "number": 7,
+      "name": "Compound scale",
+      "mission": "Run the machine with enough quality, cadence, and audience memory to compound.",
+      "unlock": "One million views per 28 days, excellent health, and ten publish-ready Shorts in reserve.",
+      "revenue_job": "Scale the proven system instead of adding random effort.",
+      "status": "locked",
+      "progress_pct": 1.0,
+      "evidence": {
+        "views_28d": 30314,
+        "health_state": "needs_work",
+        "operational_publish_ready": 0
+      }
+    }
+  ],
+  "game_loop": {
+    "now": "Keep compounding only lanes that clear supply, retention, and return-viewer gates.",
+    "next": "Publish supply engine",
+    "after_next": "Retention packaging"
+  },
+  "free_resource_policy": {
+    "paid_tools_required": false,
+    "allowed_resources": [
+      "GitHub Actions",
+      "GitHub Pages",
+      "YouTube Analytics exports",
+      "public comments",
+      "Pexels free media",
+      "local deterministic scripts"
+    ],
+    "rule": "Spend money only after a free signal proves the next bottleneck is worth scaling."
+  },
+  "business_path": [
+    {
+      "stage": "attention_asset",
+      "job": "Publish safely and learn what strangers keep watching."
+    },
+    {
+      "stage": "audience_identity",
+      "job": "Turn winners into recognizable lanes, sequels, and comments."
+    },
+    {
+      "stage": "sponsor_safe_proof",
+      "job": "Keep rights, metadata, and performance evidence clean enough for partners."
+    },
+    {
+      "stage": "revenue_experiments",
+      "job": "Test platform revenue, sponsorship, licensing, and product ideas only after repeat demand appears."
+    }
+  ],
+  "data_contract": {
+    "requires": [
+      "_data/automation_health.json",
+      "_data/dry_run_publish.json",
+      "_data/next_shorts.json",
+      "_data/queue_audit.json",
+      "_data/scale_blueprint.json"
+    ],
+    "writes": "_data/level_system.json"
+  }
 }

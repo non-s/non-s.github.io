@@ -1,5 +1,17 @@
 {
-  "generated_at": "2026-07-17T13:42:32.956365+00:00",
-  "channel_epoch": "channel_reset_2026-07-17",
-  "items": []
+  "generated_at": "2026-07-17T14:00:25.704869+00:00",
+  "items": [],
+  "counts": {
+    "repair_package": 0,
+    "scale": 0,
+    "rewrite_hook": 0,
+    "pause_topic": 0,
+    "watch": 0
+  },
+  "rules": {
+    "repair_package": "title or packaging fails editorial guard",
+    "scale": "retention >= 62 and growth_score >= 180",
+    "rewrite_hook": "views >= 900 and retention < 62",
+    "pause_topic": "views < 500 and retention < 50"
+  }
 }
