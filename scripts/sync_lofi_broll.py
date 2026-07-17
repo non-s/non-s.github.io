@@ -50,11 +50,42 @@ LOFI_QUERIES = [
 ]
 
 
+# Pixabay's video_type=animation category also contains generic 3D
+# corporate/motion-graphics stock clips -- checked live: a sync run for
+# the query "anime library reading" downloaded a plain 3D "man with a
+# stack of books" explainer-video clip (Pixabay id 115021, tagged just
+# "man" as its first/title tag), which then played on the live relay
+# looking nothing like the intended Lofi-Girl-style loop. video_type
+# alone doesn't guarantee the actual illustrated look, so also require
+# at least one of Pixabay's own tags to name an anime/cartoon style.
+ANIME_STYLE_SIGNALS = {
+    "anime",
+    "cartoon",
+    "manga",
+    "chibi",
+    "kawaii",
+    "toon",
+    "illustration",
+    "illustrated",
+    "drawn",
+    "hand-drawn",
+    "handdrawn",
+    "comic",
+}
+
+
+def _looks_anime_styled(clip: BrollClip) -> bool:
+    tags = str(clip.source_metadata.get("tags") or "").lower()
+    return any(signal in tags for signal in ANIME_STYLE_SIGNALS)
+
+
 def _downloadable(clip: BrollClip, existing_ids: set[str]) -> bool:
     clip_id = str(clip.source_metadata.get("pixabay_video_id") or "")
     if not clip_id:
         return False
     if clip_id in existing_ids:
+        return False
+    if not _looks_anime_styled(clip):
         return False
     return True
 
@@ -77,6 +108,7 @@ def _download(clip: BrollClip) -> bool:
                 "photographer_url": clip.source_metadata.get("photographer_url", ""),
                 "query": clip.source_metadata.get("pixabay_query", ""),
                 "is_ai_generated": clip.source_metadata.get("is_ai_generated", False),
+                "tags": clip.source_metadata.get("tags", ""),
             },
             indent=2,
             ensure_ascii=False,

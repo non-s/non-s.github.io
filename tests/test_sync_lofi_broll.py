@@ -21,6 +21,7 @@ def _clip(clip_id="1", **overrides) -> BrollClip:
             "photographer": "Some Uploader",
             "photographer_url": "https://pixabay.com/users/someone/",
             "is_ai_generated": True,
+            "tags": "anime, girl, study, lofi",
         },
     )
     for key, value in overrides.items():
@@ -45,6 +46,33 @@ def test_downloadable_accepts_clean_clip():
     assert sync_lofi_broll._downloadable(clip, set()) is True
 
 
+def test_downloadable_rejects_clip_without_anime_style_tags():
+    """Checked live: Pixabay's video_type=animation category also
+    surfaces generic 3D corporate/motion-graphics stock clips (a "man
+    with a stack of books" explainer-video clip matched the query
+    "anime library reading" despite having no anime/cartoon-style tags
+    at all) -- video_type alone doesn't guarantee the Lofi-Girl look."""
+    clip = _clip()
+    clip.source_metadata = dict(clip.source_metadata)
+    clip.source_metadata["tags"] = "man, library, book, education, reading"
+    assert sync_lofi_broll._downloadable(clip, set()) is False
+
+
+def test_looks_anime_styled_accepts_any_signal_keyword():
+    for tag in ["anime", "Cartoon", "manga girl", "kawaii style", "hand-drawn loop"]:
+        clip = _clip()
+        clip.source_metadata = dict(clip.source_metadata)
+        clip.source_metadata["tags"] = tag
+        assert sync_lofi_broll._looks_anime_styled(clip) is True
+
+
+def test_looks_anime_styled_rejects_generic_stock_tags():
+    clip = _clip()
+    clip.source_metadata = dict(clip.source_metadata)
+    clip.source_metadata["tags"] = "man, train, window, business, office"
+    assert sync_lofi_broll._looks_anime_styled(clip) is False
+
+
 def test_download_writes_video_and_attribution_sidecar(tmp_path, monkeypatch):
     monkeypatch.setattr(sync_lofi_broll, "BROLL_DIR", tmp_path)
 
@@ -65,6 +93,7 @@ def test_download_writes_video_and_attribution_sidecar(tmp_path, monkeypatch):
     assert meta["photographer"] == "Some Uploader"
     assert meta["pixabay_video_id"] == "99"
     assert meta["is_ai_generated"] is True
+    assert meta["tags"] == "anime, girl, study, lofi"
 
 
 def test_download_returns_false_when_download_fails(tmp_path, monkeypatch):
