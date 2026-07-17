@@ -599,6 +599,7 @@ def _done_marker(video_id: str, meta: dict) -> dict:
     keys = (
         "title",
         "description",
+        "script",
         "tags",
         "category",
         "series",
@@ -692,6 +693,7 @@ def _done_marker(video_id: str, meta: dict) -> dict:
     defaults = {
         "title": "",
         "description": "",
+        "script": "",
         "tags": [],
         "category": "",
         "series": "",

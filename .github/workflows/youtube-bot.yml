@@ -72,7 +72,7 @@ jobs:
       YOUTUBE_DAILY_QUOTA_BUDGET: "10000"
       YOUTUBE_DAILY_UPLOAD_BUDGET: "100"
       OPS_GUARDIAN_ENFORCE: ${{ vars.OPS_GUARDIAN_ENFORCE || '0' }}
-      YOUTUBE_DESCRIPTION_MODE: ${{ vars.YOUTUBE_DESCRIPTION_MODE || 'empty' }}
+      YOUTUBE_DESCRIPTION_MODE: ${{ vars.YOUTUBE_DESCRIPTION_MODE || 'full' }}
       PUBLISH_RECOVERY_DELAY_MINUTES: ${{ vars.PUBLISH_RECOVERY_DELAY_MINUTES || '40' }}
       PUBLISH_EVENT_SCHEDULE_CRON: ${{ github.event.schedule || '' }}
     steps:
@@ -332,7 +332,7 @@ jobs:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
           YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
-          YOUTUBE_DESCRIPTION_MODE: ${{ vars.YOUTUBE_DESCRIPTION_MODE || 'empty' }}
+          YOUTUBE_DESCRIPTION_MODE: ${{ vars.YOUTUBE_DESCRIPTION_MODE || 'full' }}
           MEDIA_LIFECYCLE_CLEANUP: 0
       - name: "Aplicar ciclo de vida da midia"
         if: steps.publish_window.outputs.should_publish == 'true'

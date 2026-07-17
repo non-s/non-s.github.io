@@ -89,10 +89,10 @@ FLAGS: tuple[FeatureFlag, ...] = (
     ),
     FeatureFlag(
         "YOUTUBE_DESCRIPTION_MODE",
-        "empty",
+        "full",
         "publishing",
         "YouTube description mode: empty or full.",
-        "Set to full.",
+        "Set to empty for a minimal-description rollback.",
     ),
     FeatureFlag(
         "PUBLISH_RECOVERY_DELAY_MINUTES",

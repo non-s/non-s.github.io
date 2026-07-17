@@ -134,6 +134,26 @@ def test_rejected_pre_publish_audit_is_not_uploadable(tmp_path):
     )
 
 
+def test_done_marker_preserves_full_narration_script():
+    marker = _done_marker(
+        "abc123",
+        {
+            "title": "Octopus",
+            "script": "Octopuses taste with their arms. Each sucker reads chemical "
+            "signals before the brain ever gets involved.",
+        },
+    )
+    assert marker["script"] == (
+        "Octopuses taste with their arms. Each sucker reads chemical "
+        "signals before the brain ever gets involved."
+    )
+
+
+def test_done_marker_defaults_script_to_empty_string():
+    marker = _done_marker("abc123", {"title": "Octopus"})
+    assert marker["script"] == ""
+
+
 def test_done_marker_preserves_production_quality_signals():
     marker = _done_marker(
         "abc123",

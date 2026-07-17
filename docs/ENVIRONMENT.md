@@ -38,7 +38,7 @@
 | `PUBLISH_BACKFILL_READY_TARGET` | no | Minimum editor-approved `publish_ready` candidates the publish workflow tries to keep before attempting upload. Defaults to `6` so the system carries several hourly slots of clean reserve instead of living one clip from a stall. |
 | `PUBLISH_BACKFILL_PENDING_BATCH` | no | Extra raw pending-story target added on each emergency backfill attempt while approved supply is still low. Defaults to `6`. |
 | `PUBLISH_BACKFILL_TIMEOUT_SECONDS` | no | Maximum time for one publish-workflow emergency backfill attempt. Defaults to `540`; deeper replenishment belongs to `fetch-content`. |
-| `YOUTUBE_DESCRIPTION_MODE` | no | YouTube description mode: `empty` or `full`. Defaults to `empty` in the publishing workflow. |
+| `YOUTUBE_DESCRIPTION_MODE` | no | YouTube description mode: `empty` or `full`. Defaults to `full` in the publishing workflow so uploads carry the generated context, source and hashtags instead of an empty description. |
 | `PUBLISH_RECOVERY_DELAY_MINUTES` | no | Minutes after an hourly slot when the recovery cron maps back to the intended slot. Defaults to `40`. |
 | `PUBLISH_HEARTBEAT_RUNTIME_MINUTES` | no | Minutes the bounded YouTube heartbeat keeps dispatching missed hourly slots. Defaults to `170`. |
 | `PUBLISH_HEARTBEAT_DISPATCH_MINUTE` | no | Minute of each hour when the heartbeat dispatches a missed publisher run. Defaults to `6`. |
@@ -111,7 +111,7 @@ protects non-upload calls such as thumbnails, playlists, comments and analytics.
 | `PEXELS_TOPIC_CALL_BUDGET` | `2` | discovery | Maximum Pexels search calls allowed per topic per refresh run. | Lower if provider quota becomes tight. |
 | `PEXELS_DEEP_SEARCH_GAP` | `8` | discovery | Pending-story gap that enables deeper Pexels page search. | Raise it to reserve deeper paging for emergencies. |
 | `FETCH_REFRESH_TIMEOUT_SECONDS` | `720` | publishing | Maximum seconds allowed for the Pexels refresh step before skipping generated commits. | Lower it if refresh jobs approach publish attempts. |
-| `YOUTUBE_DESCRIPTION_MODE` | `empty` | publishing | YouTube description mode: empty or full. | Set to full. |
+| `YOUTUBE_DESCRIPTION_MODE` | `full` | publishing | YouTube description mode: empty or full. | Set to empty for a minimal-description rollback. |
 | `PUBLISH_RECOVERY_DELAY_MINUTES` | `40` | publishing | Minutes after an hourly slot when recovery cron maps back to the intended slot. | Set to 40. |
 | `YOUTUBE_SCHEDULE_UPLOADS` | `0` | publishing | Upload as private scheduled videos with publishAt. | Set to 0 for normal slot-time public uploads. |
 | `YOUTUBE_SCHEDULE_START_UTC` | `` | publishing | Optional start time for scheduled upload batches. | Unset it. |

@@ -104,6 +104,7 @@ from utils.story_patterns import classify_story_pattern
 from utils.studio_rewrite import rewrite_if_needed
 from utils.text import humanize_for_tts
 from utils.time_semantics import temporal_fields
+from utils.title_coherence import evaluate_title_coherence
 from utils.translation import SUPPORTED_LANGUAGES, translate_story
 from utils.tts_fallback import synthesize_with_coqui
 from utils.video_common import draw_rounded_rect, get_font, wrap_text
@@ -2645,6 +2646,18 @@ def generate_short(story: dict, tmp_dir: Path, lang: str | None = None) -> tuple
             "; ".join(metadata["editorial_guard"].get("issues") or []),
         )
         record_rejection(metadata, metadata["editorial_guard"].get("issues") or [], stage="editorial_guard")
+        return None
+    metadata["title_coherence"] = evaluate_title_coherence(
+        str(metadata.get("seo_title") or metadata.get("title") or "")
+    )
+    if metadata["title_coherence"].get("state") == "held":
+        log.warning(
+            "  Skipping Short - title coherence check held copy: %s",
+            metadata["title_coherence"].get("reason"),
+        )
+        record_rejection(
+            metadata, [metadata["title_coherence"].get("reason") or "incoherent_title"], stage="title_coherence"
+        )
         return None
     if metadata["claim_risk"].get("level") == "block" and os.environ.get("FACT_GUARD_MODE", "block").lower() == "block":
         log.warning("  Skipping Short - fact guard blocked unsupported claims")
