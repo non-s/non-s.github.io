@@ -32,6 +32,21 @@ def test_downloadable_requires_license_url():
     assert sync_jamendo_music._downloadable(track, set()) is False
 
 
+def test_downloadable_rejects_noncommercial_license():
+    track = _track(license_ccurl="http://creativecommons.org/licenses/by-nc/3.0/")
+    assert sync_jamendo_music._downloadable(track, set()) is False
+
+
+def test_downloadable_rejects_noderivatives_license():
+    track = _track(license_ccurl="http://creativecommons.org/licenses/by-nd/3.0/")
+    assert sync_jamendo_music._downloadable(track, set()) is False
+
+
+def test_downloadable_rejects_sharealike_license():
+    track = _track(license_ccurl="http://creativecommons.org/licenses/by-sa/3.0/")
+    assert sync_jamendo_music._downloadable(track, set()) is False
+
+
 def test_downloadable_rejects_already_downloaded_track():
     track = _track(track_id="42")
     assert sync_jamendo_music._downloadable(track, {"42"}) is False
@@ -40,6 +55,14 @@ def test_downloadable_rejects_already_downloaded_track():
 def test_downloadable_accepts_clean_track():
     track = _track()
     assert sync_jamendo_music._downloadable(track, set()) is True
+
+
+def test_commercially_safe_accepts_plain_attribution():
+    assert sync_jamendo_music._commercially_safe("http://creativecommons.org/licenses/by/3.0/") is True
+
+
+def test_commercially_safe_rejects_noncommercial_noderivatives():
+    assert sync_jamendo_music._commercially_safe("http://creativecommons.org/licenses/by-nc-nd/3.0/") is False
 
 
 def test_fetch_candidates_returns_empty_on_api_error(monkeypatch):

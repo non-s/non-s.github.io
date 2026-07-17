@@ -21,6 +21,7 @@ from __future__ import annotations
 import json
 import logging
 import random
+import re
 import sys
 import urllib.error
 import urllib.request
@@ -62,12 +63,25 @@ def _fetch_candidates(limit: int = 20) -> list[dict]:
     return payload.get("results") or []
 
 
+def _commercially_safe(license_ccurl: str) -> bool:
+    """Only plain Attribution (CC BY) clears a monetized channel.
+
+    NonCommercial (NC) tracks explicitly forbid the use this channel makes
+    of them -- monetized YouTube is commercial use by definition. NoDerivs
+    (ND) and ShareAlike (SA) are excluded too: syncing a track to video is
+    arguably a derivative under a strict reading, and SA would require the
+    finished video itself to carry a matching CC license, which conflicts
+    with normal YouTube distribution. CC BY has neither restriction.
+    """
+    return bool(re.search(r"creativecommons\.org/licenses/by/", license_ccurl or "", re.IGNORECASE))
+
+
 def _downloadable(track: dict, existing_ids: set[str]) -> bool:
     if not track.get("audiodownload_allowed"):
         return False
     if not track.get("audiodownload"):
         return False
-    if not track.get("license_ccurl"):
+    if not _commercially_safe(str(track.get("license_ccurl") or "")):
         return False
     if str(track.get("id")) in existing_ids:
         return False
