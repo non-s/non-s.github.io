@@ -66,6 +66,8 @@ def test_commercially_safe_rejects_noncommercial_noderivatives():
 
 
 def test_fetch_candidates_returns_empty_on_api_error(monkeypatch):
+    monkeypatch.setattr(sync_jamendo_music.time, "sleep", lambda s: None)
+
     def fake_urlopen(*args, **kwargs):
         raise sync_jamendo_music.urllib.error.URLError("no network")
 
@@ -75,6 +77,8 @@ def test_fetch_candidates_returns_empty_on_api_error(monkeypatch):
 
 
 def test_fetch_candidates_returns_empty_on_api_failure_status(monkeypatch):
+    monkeypatch.setattr(sync_jamendo_music.time, "sleep", lambda s: None)
+
     class FakeResponse:
         def __enter__(self):
             return self
@@ -106,6 +110,76 @@ def test_fetch_candidates_returns_results_on_success(monkeypatch):
     monkeypatch.setattr(sync_jamendo_music.urllib.request, "urlopen", lambda *a, **k: FakeResponse())
 
     assert sync_jamendo_music._fetch_candidates() == [_track()]
+
+
+def test_fetch_candidates_retries_when_success_status_has_empty_results(monkeypatch):
+    """Checked live against the real API: identical requests intermittently
+    return status success with an empty results list. A retry should
+    recover once a later attempt returns real results."""
+    monkeypatch.setattr(sync_jamendo_music.time, "sleep", lambda s: None)
+    responses = [
+        {"headers": {"status": "success"}, "results": []},
+        {"headers": {"status": "success"}, "results": [_track()]},
+    ]
+
+    class FakeResponse:
+        def __init__(self, payload):
+            self.payload = payload
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            return False
+
+        def read(self):
+            return json.dumps(self.payload).encode()
+
+    call_count = {"n": 0}
+
+    def fake_urlopen(*args, **kwargs):
+        payload = responses[call_count["n"]]
+        call_count["n"] += 1
+        return FakeResponse(payload)
+
+    monkeypatch.setattr(sync_jamendo_music.urllib.request, "urlopen", fake_urlopen)
+
+    assert sync_jamendo_music._fetch_candidates() == [_track()]
+    assert call_count["n"] == 2
+
+
+def test_fetch_candidates_gives_up_after_all_retries_return_empty(monkeypatch):
+    monkeypatch.setattr(sync_jamendo_music.time, "sleep", lambda s: None)
+    payload = {"headers": {"status": "success"}, "results": []}
+
+    class FakeResponse:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            return False
+
+        def read(self):
+            return json.dumps(payload).encode()
+
+    calls = []
+    monkeypatch.setattr(
+        sync_jamendo_music.urllib.request, "urlopen", lambda *a, **k: (calls.append(1), FakeResponse())[1]
+    )
+
+    assert sync_jamendo_music._fetch_candidates() == []
+    assert len(calls) == sync_jamendo_music.FETCH_RETRIES
+
+
+def test_genre_score_prefers_lofi_and_jazz_tags():
+    lofi_track = _track(musicinfo={"tags": {"genres": ["lofi", "hiphop"]}})
+    corporate_track = _track(musicinfo={"tags": {"genres": ["corporate"]}})
+    assert sync_jamendo_music._genre_score(lofi_track) == 1
+    assert sync_jamendo_music._genre_score(corporate_track) == 0
+
+
+def test_genre_score_handles_missing_musicinfo():
+    assert sync_jamendo_music._genre_score(_track()) == 0
 
 
 def test_download_track_writes_audio_and_attribution_sidecar(tmp_path, monkeypatch):
@@ -147,9 +221,9 @@ def test_download_track_cleans_up_partial_file_on_failure(tmp_path, monkeypatch)
     assert not (tmp_path / "jamendo_7.json").exists()
 
 
-def test_main_downloads_up_to_two_new_tracks(tmp_path, monkeypatch):
+def test_main_downloads_up_to_downloads_per_run_new_tracks(tmp_path, monkeypatch):
     monkeypatch.setattr(sync_jamendo_music, "BGM_DIR", tmp_path)
-    candidates = [_track(track_id=str(i)) for i in range(1, 6)]
+    candidates = [_track(track_id=str(i)) for i in range(1, 8)]
     monkeypatch.setattr(sync_jamendo_music, "_fetch_candidates", lambda: candidates)
     monkeypatch.setattr(
         sync_jamendo_music.urllib.request, "urlretrieve", lambda url, filename: filename.write_bytes(b"x")
@@ -158,9 +232,25 @@ def test_main_downloads_up_to_two_new_tracks(tmp_path, monkeypatch):
     assert sync_jamendo_music.main() == 0
 
     downloaded = list(tmp_path.glob("jamendo_*.mp3"))
-    assert len(downloaded) == 2
+    assert len(downloaded) == sync_jamendo_music.DOWNLOADS_PER_RUN
     for audio_path in downloaded:
         assert audio_path.with_suffix(".json").exists()
+
+
+def test_main_prefers_lofi_jazz_tagged_candidates(tmp_path, monkeypatch):
+    monkeypatch.setattr(sync_jamendo_music, "BGM_DIR", tmp_path)
+    monkeypatch.setattr(sync_jamendo_music, "DOWNLOADS_PER_RUN", 1)
+    corporate = _track(track_id="1", musicinfo={"tags": {"genres": ["corporate"]}})
+    lofi = _track(track_id="2", musicinfo={"tags": {"genres": ["lofi"]}})
+    monkeypatch.setattr(sync_jamendo_music, "_fetch_candidates", lambda: [corporate, lofi])
+    monkeypatch.setattr(
+        sync_jamendo_music.urllib.request, "urlretrieve", lambda url, filename: filename.write_bytes(b"x")
+    )
+
+    assert sync_jamendo_music.main() == 0
+
+    downloaded = list(tmp_path.glob("jamendo_*.mp3"))
+    assert [p.name for p in downloaded] == ["jamendo_2.mp3"]
 
 
 def test_main_rotates_out_oldest_tracks_when_library_is_full(tmp_path, monkeypatch):

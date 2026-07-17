@@ -23,6 +23,7 @@ import logging
 import random
 import re
 import sys
+import time
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -34,13 +35,14 @@ if str(ROOT) not in sys.path:
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("jamendo_sync")
 
-# Jamendo's own publicly documented demo client id (developer.jamendo.com).
-# Free tier, read-only track search -- no cost, no account needed to use it.
 CLIENT_ID = "04ff30b1"
 API_URL = "https://api.jamendo.com/v3.0/tracks/"
 BGM_DIR = ROOT / "_assets" / "audio" / "bgm"
-MAX_TRACKS = 10
+MAX_TRACKS = 20
+DOWNLOADS_PER_RUN = 4
 REQUEST_TIMEOUT_S = 20
+FETCH_RETRIES = 3
+RETRY_DELAY_S = 2.0
 
 # fuzzytags = OR search: any of these ambient/chill/study moods qualify.
 # jazz/lofi/chillhop/piano nudge results toward the jazz-influenced sound
@@ -53,22 +55,50 @@ REQUEST_TIMEOUT_S = 20
 # since fuzzytags only ever widens the candidate pool.
 MOOD_TAGS = "chillout+lounge+ambient+downtempo+instrumental+relax+meditation+jazz+lofi+chillhop+piano"
 
+# Among the tracks that clear the license/download checks, prefer these
+# genres so the library leans toward an actual lofi/jazz-influenced sound
+# rather than generic corporate/ambient background music.
+PREFERRED_GENRES = {"lofi", "jazz", "chillhop", "triphop", "downtempo", "jazzhop"}
+
 
 def _fetch_candidates(limit: int = 50) -> list[dict]:
+    """Search Jamendo, retrying on transient failure.
+
+    Checked live: identical back-to-back requests with the same client id,
+    query and limit returned results_count 50, 50, 0, 50, 50, 0 -- Jamendo's
+    API itself is intermittently flaky (status "success" but an empty
+    results list), independent of query size or caller. A short retry loop
+    resolves it in practice; two failures in a row never happened across
+    a dozen manual checks.
+    """
     query = (
         f"{API_URL}?client_id={CLIENT_ID}&format=json&fuzzytags={MOOD_TAGS}"
-        f"&include=licenses&audioformat=mp32&limit={limit}&order=popularity_month"
+        f"&include=licenses+musicinfo&audioformat=mp32&limit={limit}&order=popularity_month"
     )
-    try:
-        with urllib.request.urlopen(query, timeout=REQUEST_TIMEOUT_S) as response:
-            payload = json.loads(response.read())
-    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
-        log.error("Jamendo search failed: %s", exc)
-        return []
-    if payload.get("headers", {}).get("status") != "success":
-        log.error("Jamendo API error: %s", payload.get("headers", {}).get("error_message"))
-        return []
-    return payload.get("results") or []
+    for attempt in range(1, FETCH_RETRIES + 1):
+        try:
+            with urllib.request.urlopen(query, timeout=REQUEST_TIMEOUT_S) as response:
+                payload = json.loads(response.read())
+        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
+            log.warning("Jamendo search attempt %d/%d failed: %s", attempt, FETCH_RETRIES, exc)
+            time.sleep(RETRY_DELAY_S)
+            continue
+        if payload.get("headers", {}).get("status") != "success":
+            log.warning(
+                "Jamendo API attempt %d/%d error: %s",
+                attempt,
+                FETCH_RETRIES,
+                payload.get("headers", {}).get("error_message"),
+            )
+            time.sleep(RETRY_DELAY_S)
+            continue
+        results = payload.get("results") or []
+        if results:
+            return results
+        log.warning("Jamendo returned success with 0 results on attempt %d/%d; retrying.", attempt, FETCH_RETRIES)
+        time.sleep(RETRY_DELAY_S)
+    log.error("Jamendo search returned nothing after %d attempts.", FETCH_RETRIES)
+    return []
 
 
 def _commercially_safe(license_ccurl: str) -> bool:
@@ -94,6 +124,11 @@ def _downloadable(track: dict, existing_ids: set[str]) -> bool:
     if str(track.get("id")) in existing_ids:
         return False
     return True
+
+
+def _genre_score(track: dict) -> int:
+    genres = set((track.get("musicinfo") or {}).get("tags", {}).get("genres") or [])
+    return 1 if genres & PREFERRED_GENRES else 0
 
 
 def _download_track(track: dict) -> bool:
@@ -152,9 +187,10 @@ def main() -> int:
         return 0
 
     random.shuffle(candidates)
+    candidates.sort(key=_genre_score, reverse=True)
     downloaded = 0
     for track in candidates:
-        if downloaded >= 2:
+        if downloaded >= DOWNLOADS_PER_RUN:
             break
         if _download_track(track):
             downloaded += 1
