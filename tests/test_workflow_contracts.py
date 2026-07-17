@@ -22,7 +22,7 @@ def test_workflows_parse_and_include_growth_steps():
     assert "Sincronizar main remoto antes da decisao" in youtube_workflow
     assert "git checkout -B main origin/main" in youtube_workflow
     assert "scripts/sync_lofi_broll.py" in youtube_workflow
-    assert "scripts/sync_lofi_youtube_music.py" in youtube_workflow
+    assert "scripts/sync_jamendo_music.py" in youtube_workflow
     assert "generate_lofi_short.py" in youtube_workflow
     assert 'BROLL_SOURCE_MODE: "pexels"' not in youtube_workflow
     assert "BROLL_SOURCE_MODE: ${{ vars.BROLL_SOURCE_MODE || 'pexels' }}" in youtube_workflow

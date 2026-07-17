@@ -129,7 +129,7 @@ jobs:
         if: env.PUBLISH_QUOTA_BLOCKED != '1'
         run: |
           python scripts/sync_lofi_broll.py
-          python scripts/sync_lofi_youtube_music.py
+          python scripts/sync_jamendo_music.py
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"

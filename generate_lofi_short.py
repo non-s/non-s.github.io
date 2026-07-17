@@ -2,7 +2,7 @@
 """Generate one lofi YouTube Short: a looping b-roll clip + music, no narration.
 
 Picks a random clip from scripts/sync_lofi_broll.py's on-disk library and a
-random track from scripts/sync_lofi_youtube_music.py's on-disk library, loops
+random track from scripts/sync_jamendo_music.py's on-disk library, loops
 both to a fixed target duration with a short fade in/out, and writes the
 `_videos/short-*.mp4` + matching `.json` pair that upload_youtube.py's
 _collect_pending_meta() already picks up -- no changes needed there.
@@ -211,9 +211,9 @@ def main() -> int:
         log.error("No lofi b-roll clips found in %s -- run scripts/sync_lofi_broll.py first.", BROLL_DIR)
         return 1
 
-    bgm_path = _pick_file(BGM_DIR, "*.mp3")
+    bgm_path = _pick_file(BGM_DIR, "jamendo_*.mp3")
     if bgm_path is None:
-        log.error("No bgm tracks found in %s -- run scripts/sync_lofi_youtube_music.py first.", BGM_DIR)
+        log.error("No bgm tracks found in %s -- run scripts/sync_jamendo_music.py first.", BGM_DIR)
         return 1
 
     broll_meta = _load_sidecar(broll_path)

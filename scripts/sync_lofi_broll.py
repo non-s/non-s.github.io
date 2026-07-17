@@ -8,7 +8,7 @@ windows, cozy rooms, fireplaces, night cities, study desks. Every clip keeps
 a sidecar JSON with the Pexels photographer name and clip URL, so a video
 description can credit the source if we ever want to.
 
-Mirrors scripts/sync_lofi_youtube_music.py's on-disk library pattern: a capped
+Mirrors scripts/sync_jamendo_music.py's on-disk library pattern: a capped
 pool of files in _assets/video/lofi_broll, oldest rotated out once the pool
 is full, so the Shorts generator can just pick a random clip already on
 disk instead of hitting the network per render.

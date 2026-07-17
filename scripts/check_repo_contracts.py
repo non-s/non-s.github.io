@@ -89,7 +89,7 @@ WORKFLOW_TOKENS = {
         "media_lifecycle.py --cleanup --audit-tracked",
         "merge_jsonl_state.py",
         "sync_lofi_broll.py",
-        "sync_lofi_youtube_music.py",
+        "sync_jamendo_music.py",
         "generate_lofi_short.py",
         "python upload_youtube.py --language=en",
         "PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXELS }}",
