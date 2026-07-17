@@ -127,6 +127,44 @@ def test_compose_short_returns_false_on_ffmpeg_failure(tmp_path, monkeypatch):
     assert ok is False
 
 
+def test_extract_thumbnail_writes_frame_on_success(tmp_path, monkeypatch):
+    def fake_run(cmd, **kwargs):
+        Path(cmd[-1]).write_bytes(b"fake-jpg")
+        result = MagicMock()
+        result.returncode = 0
+        result.stderr = ""
+        return result
+
+    monkeypatch.setattr(lofi.subprocess, "run", fake_run)
+
+    thumb_path = tmp_path / "short-lofi-1_thumb.jpg"
+    assert lofi._extract_thumbnail(tmp_path / "short-lofi-1.mp4", thumb_path) is True
+    assert thumb_path.read_bytes() == b"fake-jpg"
+
+
+def test_extract_thumbnail_returns_false_on_ffmpeg_failure(tmp_path, monkeypatch):
+    def fake_run(cmd, **kwargs):
+        result = MagicMock()
+        result.returncode = 1
+        result.stderr = "boom"
+        return result
+
+    monkeypatch.setattr(lofi.subprocess, "run", fake_run)
+
+    ok = lofi._extract_thumbnail(tmp_path / "short-lofi-1.mp4", tmp_path / "thumb.jpg")
+    assert ok is False
+
+
+def test_extract_thumbnail_returns_false_when_ffmpeg_missing(tmp_path, monkeypatch):
+    def fake_run(cmd, **kwargs):
+        raise FileNotFoundError("ffmpeg not found")
+
+    monkeypatch.setattr(lofi.subprocess, "run", fake_run)
+
+    ok = lofi._extract_thumbnail(tmp_path / "short-lofi-1.mp4", tmp_path / "thumb.jpg")
+    assert ok is False
+
+
 def test_main_returns_error_when_no_broll_available(tmp_path, monkeypatch):
     monkeypatch.setattr(lofi, "VIDEOS_DIR", tmp_path / "_videos")
     monkeypatch.setattr(lofi, "BROLL_DIR", tmp_path / "empty_broll")
@@ -174,6 +212,12 @@ def test_main_writes_video_and_metadata_pair_on_success(tmp_path, monkeypatch):
 
     monkeypatch.setattr(lofi, "_compose_short", fake_compose)
 
+    def fake_thumbnail(video_path, thumb_path, timestamp_s=2.0):
+        thumb_path.write_bytes(b"fake-jpg")
+        return True
+
+    monkeypatch.setattr(lofi, "_extract_thumbnail", fake_thumbnail)
+
     assert lofi.main() == 0
 
     videos = list(videos_dir.glob("short-*.mp4"))
@@ -183,6 +227,30 @@ def test_main_writes_video_and_metadata_pair_on_success(tmp_path, monkeypatch):
     meta = json.loads(meta_path.read_text())
     assert meta["video"] == str(videos[0])
     assert meta["pre_publish_audit"]["approved"] is True
+    assert meta["thumbnail"] == str(videos_dir / f"{videos[0].stem}_thumb.jpg")
+    assert Path(meta["thumbnail"]).exists()
+
+
+def test_main_omits_thumbnail_field_when_extraction_fails(tmp_path, monkeypatch):
+    broll_dir = tmp_path / "broll"
+    bgm_dir = tmp_path / "bgm"
+    videos_dir = tmp_path / "_videos"
+    broll_dir.mkdir()
+    bgm_dir.mkdir()
+    _touch(broll_dir / "pexels_1.mp4")
+    _touch(bgm_dir / "jamendo_1.mp3")
+
+    monkeypatch.setattr(lofi, "VIDEOS_DIR", videos_dir)
+    monkeypatch.setattr(lofi, "BROLL_DIR", broll_dir)
+    monkeypatch.setattr(lofi, "BGM_DIR", bgm_dir)
+    monkeypatch.setattr(lofi, "_compose_short", lambda broll, bgm, out, dur: out.write_bytes(b"x") or True)
+    monkeypatch.setattr(lofi, "_extract_thumbnail", lambda *a, **k: False)
+
+    assert lofi.main() == 0
+
+    meta_path = next(videos_dir.glob("short-*.json"))
+    meta = json.loads(meta_path.read_text())
+    assert "thumbnail" not in meta
 
 
 def test_main_returns_error_when_composition_fails(tmp_path, monkeypatch):

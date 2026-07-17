@@ -177,6 +177,32 @@ def _compose_short(broll_path: Path, bgm_path: Path, output_path: Path, duration
     return output_path.exists() and output_path.stat().st_size > 0
 
 
+def _extract_thumbnail(video_path: Path, thumb_path: Path, timestamp_s: float = 2.0) -> bool:
+    """Grab a single frame as the upload thumbnail instead of letting YouTube auto-pick one."""
+    cmd = [
+        "ffmpeg",
+        "-y",
+        "-ss",
+        f"{timestamp_s:.2f}",
+        "-i",
+        str(video_path),
+        "-vframes",
+        "1",
+        "-q:v",
+        "2",
+        str(thumb_path),
+    ]
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
+    except Exception as exc:
+        log.warning("thumbnail extraction failed to run: %s", exc)
+        return False
+    if result.returncode != 0:
+        log.warning("thumbnail extraction exited %d: %s", result.returncode, result.stderr[-500:])
+        return False
+    return thumb_path.exists() and thumb_path.stat().st_size > 0
+
+
 def main() -> int:
     VIDEOS_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -203,6 +229,11 @@ def main() -> int:
         return 1
 
     metadata = _build_metadata(broll_meta, bgm_meta, duration_s, video_path, story_id=slug)
+    thumb_path = VIDEOS_DIR / f"short-{slug}_thumb.jpg"
+    if _extract_thumbnail(video_path, thumb_path):
+        metadata["thumbnail"] = str(thumb_path)
+    else:
+        log.warning("No custom thumbnail for %s -- YouTube will auto-pick a frame.", slug)
     meta_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False), encoding="utf-8")
     log.info("Generated %s (%.1fs): %s", video_path.name, duration_s, metadata["title"])
     return 0
