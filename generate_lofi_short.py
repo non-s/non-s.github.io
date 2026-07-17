@@ -45,6 +45,13 @@ CATEGORY = "lofi"
 SERIES = "Lofi Beats"
 DEFAULT_TAGS = ["lofi", "lofi beats", "chill music", "study music", "relax", "chillhop", "ambient"]
 
+TITLE_TEMPLATES = [
+    "{mood} Lofi Beats to Relax/Study to \U0001f3a7",
+    "{mood} Lofi Mix — Chill Beats to Unwind \U0001f3b5",
+    "Lofi Vibes: {mood} Edition \U0001f319",
+    "{mood} Chillhop Loop — Study & Relax \U0001f4da",
+]
+
 
 def _pick_file(directory: Path, pattern: str) -> Path | None:
     candidates = sorted(directory.glob(pattern))
@@ -67,9 +74,9 @@ def _mood_label(query: str) -> str:
     return " ".join(word.capitalize() for word in words) or "Cozy"
 
 
-def _build_metadata(broll_meta: dict, bgm_meta: dict, duration_s: float, video_path: Path) -> dict:
+def _build_metadata(broll_meta: dict, bgm_meta: dict, duration_s: float, video_path: Path, story_id: str = "") -> dict:
     mood = _mood_label(str(broll_meta.get("query") or ""))
-    title = f"{mood} Lofi Beats to Relax/Study to \U0001f3a7"
+    title = random.choice(TITLE_TEMPLATES).format(mood=mood)
     track_name = str(bgm_meta.get("track_name") or "")
     artist_name = str(bgm_meta.get("artist_name") or "")
     license_url = str(bgm_meta.get("license_ccurl") or "")
@@ -89,14 +96,19 @@ def _build_metadata(broll_meta: dict, bgm_meta: dict, duration_s: float, video_p
     if photographer:
         description_lines.append(f"\U0001f3ac Visual: Pexels / {photographer}")
 
+    tags = list(DEFAULT_TAGS)
+    if mood.lower() not in {tag.lower() for tag in tags}:
+        tags.append(mood.lower())
+
     return {
         "title": title,
         "description": "\n".join(description_lines).strip(),
         "category": CATEGORY,
         "series": SERIES,
-        "tags": list(DEFAULT_TAGS),
+        "tags": tags,
         "video": str(video_path),
         "duration_s": duration_s,
+        "story_id": story_id,
         "packaging": {"pinned_comment": "What mood should the next loop be? \U0001f31a"},
         "pre_publish_audit": {"approved": True, "reason": "lofi_no_claims_to_vet"},
         "source": "pexels",
@@ -190,7 +202,7 @@ def main() -> int:
         log.error("Short composition failed for %s", slug)
         return 1
 
-    metadata = _build_metadata(broll_meta, bgm_meta, duration_s, video_path)
+    metadata = _build_metadata(broll_meta, bgm_meta, duration_s, video_path, story_id=slug)
     meta_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False), encoding="utf-8")
     log.info("Generated %s (%.1fs): %s", video_path.name, duration_s, metadata["title"])
     return 0

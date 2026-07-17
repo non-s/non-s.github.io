@@ -54,7 +54,7 @@ def test_build_metadata_includes_attribution_and_upload_contract_fields(tmp_path
         "license_ccurl": "http://creativecommons.org/licenses/by/3.0/",
         "track_id": "99",
     }
-    meta = lofi._build_metadata(broll_meta, bgm_meta, 42.0, video_path)
+    meta = lofi._build_metadata(broll_meta, bgm_meta, 42.0, video_path, story_id="lofi-1700000000-1234")
 
     assert meta["video"] == str(video_path)
     assert meta["pre_publish_audit"]["approved"] is True
@@ -66,6 +66,17 @@ def test_build_metadata_includes_attribution_and_upload_contract_fields(tmp_path
     assert meta["source_license_evidence"] == "https://www.pexels.com/video/123"
     assert meta["category"] == "lofi"
     assert meta["series"] == "Lofi Beats"
+    assert meta["story_id"] == "lofi-1700000000-1234"
+    assert "fireplace night" in [tag.lower() for tag in meta["tags"]]
+
+
+def test_build_metadata_title_always_matches_one_of_the_templates(tmp_path):
+    video_path = tmp_path / "short-lofi-1.mp4"
+    broll_meta = {"query": "snow falling window cozy"}
+    seen_titles = {lofi._build_metadata(broll_meta, {}, 30.0, video_path)["title"] for _ in range(30)}
+    expected = {template.format(mood="Snow Falling") for template in lofi.TITLE_TEMPLATES}
+    assert seen_titles <= expected
+    assert len(seen_titles) > 1  # the random sample actually exercises more than one template
 
 
 def test_build_metadata_tolerates_missing_attribution(tmp_path):
