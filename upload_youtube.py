@@ -42,7 +42,7 @@ YOUTUBE_INTELLIGENCE_FILE = Path("_data/youtube_intelligence.json")
 SCOPES = DEFAULT_SCOPES
 RETRIABLE_STATUS_CODES = {500, 502, 503, 504}
 MAX_RETRIES = 6
-PLAYLIST_PREFIX = "Wild Brief | "
+PLAYLIST_PREFIX = os.environ.get("CHANNEL_PLAYLIST_PREFIX", "")
 PILLAR_PLAYLIST_BY_CATEGORY = {
     "volcanoes": "Earth Engine",
     "weather": "Earth Engine",
@@ -103,7 +103,7 @@ def _normalise_tags(tags) -> list[str]:
 
 
 def _youtube_title(meta: dict) -> str:
-    title = (meta.get("seo_title") or meta.get("title") or "Nature fact of the day").strip()
+    title = (meta.get("seo_title") or meta.get("title") or "New Short").strip()
     return title if len(title) <= 100 else title[:97].rstrip(" .,;:-") + "..."
 
 
@@ -123,20 +123,6 @@ def _existing_upload_titles(videos_dir: Path = VIDEOS_DIR) -> set[str]:
             if key:
                 titles.add(key)
     return titles
-
-
-def _existing_upload_ids(videos_dir: Path = VIDEOS_DIR) -> set[str]:
-    video_ids: set[str] = set()
-    for path in sorted(videos_dir.glob("*.done")):
-        try:
-            marker = json.loads(path.read_text(encoding="utf-8"))
-        except Exception:
-            continue
-        if isinstance(marker, dict):
-            video_id = str(marker.get("video_id") or "").strip()
-            if video_id:
-                video_ids.add(video_id)
-    return video_ids
 
 
 def _read_json_object(path: Path) -> dict:
@@ -435,7 +421,10 @@ def _youtube_description(meta: dict) -> str:
         return ""
     description = (meta.get("description") or _youtube_title(meta)).strip()
     existing = {part.lower() for part in description.split() if part.startswith("#")}
-    missing = [tag for tag in ("#Shorts", "#NatureFacts", "#WildBrief", "#EarthScience") if tag.lower() not in existing]
+    default_hashtags = [
+        tag.strip() for tag in os.environ.get("CHANNEL_DEFAULT_HASHTAGS", "#Shorts").split(",") if tag.strip()
+    ]
+    missing = [tag for tag in default_hashtags if tag.lower() not in existing]
     if missing:
         description += "\n\n" + " ".join(missing)
     source = (meta.get("source_url") or "").strip()
@@ -538,7 +527,7 @@ def _video_url(video_id: str) -> str:
     return f"https://www.youtube.com/shorts/{video_id}" if video_id else ""
 
 
-def _safe_label(value: object, fallback: str = "Nature Facts") -> str:
+def _safe_label(value: object, fallback: str = "Highlights") -> str:
     label = " ".join(str(value or "").replace("_", " ").split()).strip(" -|")
     if not label:
         label = fallback
@@ -564,7 +553,7 @@ def _playlist_titles(meta: dict) -> list[str]:
         if key not in seen:
             out.append(title[:150])
             seen.add(key)
-    return out or [f"{PLAYLIST_PREFIX}Nature Facts"]
+    return out or [f"{PLAYLIST_PREFIX}Highlights"]
 
 
 def _comment_text(meta: dict) -> str:
@@ -583,7 +572,7 @@ def _comment_text(meta: dict) -> str:
         or ""
     ).strip()
     if not text:
-        text = "👇 What do you think about this? Is the science textbook lying to us? Drop your thoughts below!"
+        text = "👇 Let us know how this one made you feel — drop a comment below!"
     return text[:500]
 
 
@@ -894,7 +883,9 @@ def _create_playlist(youtube, title: str) -> str:
         body={
             "snippet": {
                 "title": title,
-                "description": "Wild Brief Shorts grouped for easier binge watching.",
+                "description": os.environ.get(
+                    "CHANNEL_PLAYLIST_DESCRIPTION", "Shorts grouped for easier binge watching."
+                ),
             },
             "status": {"privacyStatus": "public"},
         },
@@ -1084,20 +1075,19 @@ def upload_video(youtube, meta: dict, *, sequence_index: int = 0) -> str | None:
     localizations_dict = {}
     try:
         from utils.ai_helper import ai_text
-        import json
-        import re
+
         en_title = _youtube_title(meta)
         en_desc = _youtube_description(meta)
-        
+
         prompt = (
             "Translate the following YouTube video title and description into Hindi (hi), Russian (ru), and Spanish (es).\n\n"
             f"Title: {en_title}\n"
             f"Description: {en_desc}\n\n"
             "Return valid JSON strictly matching this schema:\n"
             "{\n"
-            "  \"hi\": {\"title\": \"...\", \"description\": \"...\"},\n"
-            "  \"ru\": {\"title\": \"...\", \"description\": \"...\"},\n"
-            "  \"es\": {\"title\": \"...\", \"description\": \"...\"}\n"
+            '  "hi": {"title": "...", "description": "..."},\n'
+            '  "ru": {"title": "...", "description": "..."},\n'
+            '  "es": {"title": "...", "description": "..."}\n'
             "}"
         )
         translated_json = ai_text(prompt, timeout=25, json_mode=True)
@@ -1121,7 +1111,7 @@ def upload_video(youtube, meta: dict, *, sequence_index: int = 0) -> str | None:
         },
         "status": status,
     }
-    
+
     if localizations_dict:
         part_str += ",localizations"
         body_payload["localizations"] = localizations_dict
@@ -1146,37 +1136,6 @@ def upload_video(youtube, meta: dict, *, sequence_index: int = 0) -> str | None:
         log.info("Scheduled: %s at %s", _video_url(video_id), scheduled_publish_at)
     else:
         log.info("Published: %s", _video_url(video_id))
-        
-        # 1. Pinned Comment Quiz (Interactive Trivia)
-        if privacy == "public":
-            try:
-                from utils.ai_helper import ai_text
-                animal = meta.get("title", "this animal")
-                quiz_prompt = (
-                    f"Create a short, super engaging multiple-choice trivia question about {animal}. "
-                    "Format it exactly like this: 'Qual você acha que é a verdade sobre [animal]? A) [Opção 1] B) [Opção 2]. Responda abaixo! 👇'"
-                )
-                trivia = ai_text(quiz_prompt, timeout=15)
-                if trivia:
-                    comment_request = youtube.commentThreads().insert(
-                        part="snippet",
-                        body={
-                            "snippet": {
-                                "videoId": video_id,
-                                "topLevelComment": {
-                                    "snippet": {
-                                        "textOriginal": trivia
-                                    }
-                                }
-                            }
-                        }
-                    )
-                    comment_response = comment_request.execute()
-                    comment_id = comment_response["snippet"]["topLevelComment"]["id"]
-                    log.info(f"Interactive Pinned Comment Quiz posted! Comment ID: {comment_id}")
-            except Exception as e:
-                log.error(f"Failed to post interactive trivia comment: {e}")
-                
     return video_id
 
 
@@ -1207,7 +1166,6 @@ def main() -> None:
         log.error("Quota guard blocked upload: %s", (quota_row.get("guard") or {}).get("reason"))
         return
     existing_titles = _existing_upload_titles(VIDEOS_DIR)
-    existing_video_ids = _existing_upload_ids(VIDEOS_DIR)
     channel_upload_titles = _existing_channel_upload_titles(youtube)
     for meta_file in pending:
         try:

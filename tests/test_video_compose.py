@@ -4,7 +4,7 @@ construction, no actual encoding."""
 from __future__ import annotations
 
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 import pytest
 
@@ -74,7 +74,7 @@ def test_build_broll_short_succeeds(tmp_path, stub_ffprobe, stub_ffmpeg_ok, monk
     last_cmd = stub_ffmpeg_ok[-1]
     # Must include all three -i broll paths plus the audio.
     input_idxs = [i for i, a in enumerate(last_cmd) if a == "-i"]
-    assert len(input_idxs) in (4, 5)  # 3 clips + 1 audio + optional bgm
+    assert len(input_idxs) in (4, 5, 6)  # 3 clips + 1 audio + optional bgm + optional sfx
     # Filtergraph references concat.
     fg_idx = last_cmd.index("-filter_complex")
     assert "concat=n=3" in last_cmd[fg_idx + 1]
@@ -94,7 +94,8 @@ def test_build_broll_short_with_brand_cards(tmp_path, stub_ffprobe, stub_ffmpeg_
 
     # video_compose imports brand_card lazily; patch the sys.modules
     # entry it expects to find.
-    import types, sys
+    import sys
+    import types
 
     fake_module = types.ModuleType("utils.brand_card")
     fake_module.get_intro_outro_cards = fake_cards
@@ -111,8 +112,8 @@ def test_build_broll_short_with_brand_cards(tmp_path, stub_ffprobe, stub_ffmpeg_
     assert ok
     last_cmd = stub_ffmpeg_ok[-1]
     input_idxs = [i for i, a in enumerate(last_cmd) if a == "-i"]
-    # 3 clips + 2 brand cards + 1 audio + optional bgm
-    assert len(input_idxs) in (6, 7)
+    # 3 clips + 2 brand cards + 1 audio + optional bgm + optional sfx
+    assert len(input_idxs) in (6, 7, 8)
     # Filtergraph concats intro + 3 clips + outro = 5 segments.
     fg_idx = last_cmd.index("-filter_complex")
     assert "concat=n=5" in last_cmd[fg_idx + 1]

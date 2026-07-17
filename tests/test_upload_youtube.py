@@ -11,6 +11,7 @@ pytest.importorskip("googleapiclient")
 
 from googleapiclient.errors import HttpError
 
+import upload_youtube
 from upload_youtube import (
     _apply_unique_upload_title,
     _comment_text,
@@ -90,12 +91,24 @@ def test_existing_upload_titles_reads_done_markers(tmp_path):
     assert _existing_upload_titles(tmp_path) == {"cats purr softly"}
 
 
-def test_description_adds_shorts_discovery_tags():
+def test_description_adds_default_shorts_discovery_tag(monkeypatch):
+    monkeypatch.delenv("CHANNEL_DEFAULT_HASHTAGS", raising=False)
     desc = _youtube_description({"title": "Cats are surprising", "description": "Body"})
     assert "#Shorts" in desc
-    assert "#NatureFacts" in desc
-    assert "#WildBrief" in desc
-    assert "#EarthScience" in desc
+
+
+def test_description_uses_configured_channel_hashtags(monkeypatch):
+    monkeypatch.setenv("CHANNEL_DEFAULT_HASHTAGS", "#Shorts,#Lofi,#ChillBeats")
+    desc = _youtube_description({"title": "Rainy night loop", "description": "Body"})
+    assert "#Shorts" in desc
+    assert "#Lofi" in desc
+    assert "#ChillBeats" in desc
+
+
+def test_description_does_not_duplicate_hashtags_already_present(monkeypatch):
+    monkeypatch.setenv("CHANNEL_DEFAULT_HASHTAGS", "#Shorts,#Lofi")
+    desc = _youtube_description({"title": "Rainy night loop", "description": "Body #Lofi"})
+    assert desc.count("#Lofi") == 1
 
 
 def test_tags_are_deduplicated_case_insensitively():
@@ -144,8 +157,7 @@ def test_done_marker_preserves_full_narration_script():
         },
     )
     assert marker["script"] == (
-        "Octopuses taste with their arms. Each sucker reads chemical "
-        "signals before the brain ever gets involved."
+        "Octopuses taste with their arms. Each sucker reads chemical " "signals before the brain ever gets involved."
     )
 
 
@@ -217,6 +229,17 @@ def test_done_marker_uses_scheduled_publish_time_for_temporal_fields():
 
 
 def test_playlist_titles_use_series_and_category():
+    titles = _playlist_titles({"series": "Watch The Cue", "category": "birds"})
+
+    assert titles == [
+        "Start Here",
+        "Watch The Cue",
+        "Birds",
+    ]
+
+
+def test_playlist_titles_apply_configured_prefix(monkeypatch):
+    monkeypatch.setattr(upload_youtube, "PLAYLIST_PREFIX", "Wild Brief | ")
     titles = _playlist_titles({"series": "Watch The Cue", "category": "birds"})
 
     assert titles == [
@@ -348,6 +371,7 @@ class _YouTube:
 
 def test_post_upload_operations_adds_playlists_and_comment(monkeypatch):
     monkeypatch.setenv("YOUTUBE_POST_UPLOAD_AUTOMATION", "1")
+    monkeypatch.setattr(upload_youtube, "PLAYLIST_PREFIX", "Wild Brief | ")
     youtube = _YouTube()
     result = run_post_upload_operations(
         youtube,
