@@ -43,7 +43,15 @@ MAX_TRACKS = 10
 REQUEST_TIMEOUT_S = 20
 
 # fuzzytags = OR search: any of these ambient/chill/study moods qualify.
-MOOD_TAGS = "chillout+lounge+ambient+downtempo+instrumental+relax+meditation"
+# jazz/lofi/chillhop/piano nudge results toward the jazz-influenced sound
+# "lofi" usually means -- checked live against the Jamendo API: querying
+# "lofi" or "chillhop" alone returns almost exclusively NC/ND-licensed
+# tracks (not usable on a monetized channel), but folding those terms into
+# this broader OR search as extra candidates -- rather than replacing the
+# generic chillout/ambient terms with them -- measurably increased how many
+# results came back plain CC-BY licensed (2/50 -> 6/50 in that check),
+# since fuzzytags only ever widens the candidate pool.
+MOOD_TAGS = "chillout+lounge+ambient+downtempo+instrumental+relax+meditation+jazz+lofi+chillhop+piano"
 
 
 def _fetch_candidates(limit: int = 20) -> list[dict]:
