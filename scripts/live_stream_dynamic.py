@@ -63,7 +63,12 @@ TARGET_H = 1080
 TARGET_FPS = 30
 LOOP_CROSSFADE_S = 1.0
 
-BROADCAST_TITLE = "\U0001f534 24/7 Lofi Beats to Relax/Study to | Live"
+# "lofi hip hop radio" + "beats to relax/study to" are the two proven
+# high-search-volume phrases in this genre (Lofi Girl, Chillhop Music,
+# The Jazz Hop Cafe all title around this same pattern) -- splitting them
+# instead of only using one combined phrase covers more real search
+# queries than the previous title did.
+BROADCAST_TITLE = "lofi hip hop radio \U0001f4da beats to relax/study to [24/7 LIVE]"
 BROADCAST_DESCRIPTION = (
     "Non-stop lofi beats, looping live -- cozy visuals and chill music to relax, study or unwind to."
 )
