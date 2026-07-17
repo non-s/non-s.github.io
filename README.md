@@ -1,35 +1,43 @@
-# Wild Brief - Nature Science Shorts Bot (YouTube)
+# Lofi Beats Bot (YouTube)
 
 [![Production quality gate](https://github.com/non-s/non-s.github.io/actions/workflows/quality-gate.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/quality-gate.yml)
-[![Refresh Pexels queue](https://github.com/non-s/non-s.github.io/actions/workflows/fetch-content.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/fetch-content.yml)
 [![YouTube Bot - Shorts only](https://github.com/non-s/non-s.github.io/actions/workflows/youtube-bot.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/youtube-bot.yml)
 
-Automated pipeline that turns curated Pexels nature and science footage into vertical YouTube Shorts with original voice-over narration and publishes through the official YouTube Data API.
+Automated pipeline that turns free-licensed Pexels b-roll and Creative
+Commons (CC BY, commercial-safe) music into looping lofi YouTube Shorts and
+a 24/7 lofi live stream, with no narration -- clip + music only -- and
+publishes through the official YouTube Data API.
 
-- Cadence: the workflow evaluates **one slot per hour, 00:00 through
-  23:00 UTC**, for a 24/day publishing grid when quality and quota allow it.
-  Canonical slots: `00:00`, `01:00`, `02:00`, `03:00`, `04:00`, `05:00`,
-  `06:00`, `07:00`, `08:00`, `09:00`, `10:00`, `11:00`, `12:00`, `13:00`,
-  `14:00`, `15:00`, `16:00`, `17:00`, `18:00`, `19:00`, `20:00`, `21:00`,
-  `22:00` and `23:00`.
-  `utils/publish_schedule.py` is the source of truth for adaptive publish vs
-  safe skip, and every slot writes `_data/publish_slot_decisions.jsonl`.
-  Metadata also carries `publish_ts_utc`, `publish_day_pt`, `quota_day_pt`
-  and `views_regime` so UTC operations and Pacific-time YouTube quota/analytics
-  semantics stay aligned.
-- Duration target: **12-18 seconds**, biased toward high completion rate.
+- Cadence: `youtube-bot.yml` fires up to 3x/hour (`:02`, `:22`, `:42`, the
+  extra two as a recovery net for delayed/dropped GitHub schedule events);
+  `upload_youtube.py`'s own per-canonical-slot dedup keeps a slot from
+  publishing twice.
+- Duration: **30-58 seconds** per Short, randomized.
 - Category: YouTube **Science & Technology** (`categoryId=28`).
-- Programming: animals, plants, trees, fungi, oceans, rivers, mountains, forests, volcanoes, weather, rare natural phenomena, geology, ecosystems, Earth from space, astronomy, physics, chemistry, microscopy, conservation and discoveries.
+- Content: a random Pexels lofi-aesthetic clip (rain windows, fireplaces,
+  cozy rooms, night cities, study desks, ...) looped under a random
+  CC BY-licensed Jamendo track, with a lofi-genre title/description and a
+  custom thumbnail frame.
 
 ## Pipeline
 
 ```text
-Pexels clips -> nature taxonomy + enrichment -> fetch_animals.py
-             -> _data/stories_queue.json
-             -> generate_shorts.py -> _videos/*.mp4 + metadata
-             -> upload_youtube.py -> YouTube Shorts + .done sidecar
-             -> analyze_channel.py -> free public performance feedback
+scripts/sync_lofi_broll.py   -> _assets/video/lofi_broll (Pexels clips)
+scripts/sync_jamendo_music.py -> _assets/audio/bgm (Jamendo CC BY tracks)
+generate_lofi_short.py        -> _videos/*.mp4 + metadata (Shorts)
+generate_lofi_long_video.py   -> _videos/long_video_*.mp4 (24/7 live loop)
+upload_youtube.py             -> YouTube Shorts + .done sidecar
+scripts/live_stream_dynamic.py -> 24/7 YouTube Live relay
 ```
+
+This channel was rebuilt from an earlier nature-science-facts format
+(narrated Shorts, editorial scoring pipeline, trend hijacking, a story
+queue). Everything below "Editorial system" describes that earlier
+pipeline: the code is still in the repo but nothing in
+`.github/workflows/` invokes `generate_shorts.py`, `fetch_animals.py` or
+`publish_window.py` anymore. Kept for reference rather than deleted, since
+several of its modules (b-roll fetching, upload, media lifecycle) are still
+the ones the lofi pipeline reuses.
 
 ## Editorial system
 
@@ -99,23 +107,16 @@ replacing the current queue, render, upload or official YouTube APIs.
 
 ## Required secrets
 
-- `YOUTUBE_TOKEN`
-- `PEXELS_API_KEY` or legacy secret name `PEXELS`
-- At least one AI text provider:
-  `MISTRAL_API_KEY`, `CEREBRAS_API_KEY`, `GEMINI_API_KEY` or `GROQ_API_KEY`
+- `YOUTUBE_TOKEN` -- Shorts upload + playlist/comment operations.
+- `PEXELS_API_KEY` or legacy secret name `PEXELS` -- b-roll for Shorts and
+  the live loop.
+- `YOUTUBE_STREAM_KEY` -- only needed for the 24/7 live relay
+  (`live-stream.yml`).
 
-Recommended free quality extensions:
-
-- `GEMINI_API_KEY` or `GEMINI`
-- `AUDIO_LIBRARY_MANIFEST` for operator-curated YouTube Audio Library files
-- `COQUI_TTS_COMMAND` for a local TTS fallback if Edge TTS fails
-
-GBIF and Wikimedia Commons enrichment do not require secrets. Pexels is the
-default and only active visual source through `BROLL_SOURCE_MODE=pexels`.
-See [WILD_BRIEF_GROWTH_PLAN.md](WILD_BRIEF_GROWTH_PLAN.md) for the current channel transformation plan.
-
-AI image generation is intentionally disabled because current free-tier
-availability is not reliable enough for the zero-cost goal.
+Jamendo music sync (`scripts/sync_jamendo_music.py`) uses Jamendo's public
+demo client id and needs no secret. No AI text provider key is required by
+the active lofi pipeline -- title/description text is template-based, not
+AI-generated.
 
 `YOUTUBE_TOKEN` is an OAuth JSON token, not an API key. Generate it once with `auth_youtube.py` or the `Build auth_youtube.exe (Windows)` workflow. See [SETUP.md](SETUP.md).
 

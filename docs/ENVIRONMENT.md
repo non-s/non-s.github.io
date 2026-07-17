@@ -39,6 +39,9 @@
 | `PUBLISH_BACKFILL_PENDING_BATCH` | no | Extra raw pending-story target added on each emergency backfill attempt while approved supply is still low. Defaults to `6`. |
 | `PUBLISH_BACKFILL_TIMEOUT_SECONDS` | no | Maximum time for one publish-workflow emergency backfill attempt. Defaults to `540`; deeper replenishment belongs to `fetch-content`. |
 | `YOUTUBE_DESCRIPTION_MODE` | no | YouTube description mode: `empty` or `full`. Defaults to `full` in the publishing workflow so uploads carry the generated context, source and hashtags instead of an empty description. |
+| `CHANNEL_PLAYLIST_PREFIX` | no | Text prepended to every auto-created playlist title. Defaults to empty (bare titles); a nature-branded rollback would set it to `Wild Brief \| `. |
+| `CHANNEL_DEFAULT_HASHTAGS` | no | Comma-separated hashtags appended to the description when not already present. Defaults to `#Shorts`; the lofi workflow sets it to `#Shorts,#lofi,#chillbeats`. |
+| `CHANNEL_PLAYLIST_DESCRIPTION` | no | Description text used for every auto-created playlist. Defaults to a generic "grouped for easier binge watching" line. |
 | `PUBLISH_RECOVERY_DELAY_MINUTES` | no | Minutes after an hourly slot when the recovery cron maps back to the intended slot. Defaults to `40`. |
 | `PUBLISH_HEARTBEAT_RUNTIME_MINUTES` | no | Minutes the bounded YouTube heartbeat keeps dispatching missed hourly slots. Defaults to `170`. |
 | `PUBLISH_HEARTBEAT_DISPATCH_MINUTE` | no | Minute of each hour when the heartbeat dispatches a missed publisher run. Defaults to `6`. |
@@ -112,6 +115,9 @@ protects non-upload calls such as thumbnails, playlists, comments and analytics.
 | `PEXELS_DEEP_SEARCH_GAP` | `8` | discovery | Pending-story gap that enables deeper Pexels page search. | Raise it to reserve deeper paging for emergencies. |
 | `FETCH_REFRESH_TIMEOUT_SECONDS` | `720` | publishing | Maximum seconds allowed for the Pexels refresh step before skipping generated commits. | Lower it if refresh jobs approach publish attempts. |
 | `YOUTUBE_DESCRIPTION_MODE` | `full` | publishing | YouTube description mode: empty or full. | Set to empty for a minimal-description rollback. |
+| `CHANNEL_PLAYLIST_PREFIX` | (empty) | publishing | Text prepended to every auto-created playlist title, e.g. 'Wild Brief \| '. | Unset it to use bare playlist titles. |
+| `CHANNEL_DEFAULT_HASHTAGS` | `#Shorts` | publishing | Comma-separated hashtags appended to the description when not already present. | Set to #Shorts to drop channel-specific tags. |
+| `CHANNEL_PLAYLIST_DESCRIPTION` | `Shorts grouped for easier binge watching.` | publishing | Description text used for every auto-created playlist. | Unset it to use the generic default. |
 | `PUBLISH_RECOVERY_DELAY_MINUTES` | `40` | publishing | Minutes after an hourly slot when recovery cron maps back to the intended slot. | Set to 40. |
 | `YOUTUBE_SCHEDULE_UPLOADS` | `0` | publishing | Upload as private scheduled videos with publishAt. | Set to 0 for normal slot-time public uploads. |
 | `YOUTUBE_SCHEDULE_START_UTC` | `` | publishing | Optional start time for scheduled upload batches. | Unset it. |

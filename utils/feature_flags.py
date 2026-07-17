@@ -95,6 +95,27 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Set to empty for a minimal-description rollback.",
     ),
     FeatureFlag(
+        "CHANNEL_PLAYLIST_PREFIX",
+        "",
+        "publishing",
+        "Text prepended to every auto-created playlist title, e.g. 'Wild Brief | '.",
+        "Unset it to use bare playlist titles.",
+    ),
+    FeatureFlag(
+        "CHANNEL_DEFAULT_HASHTAGS",
+        "#Shorts",
+        "publishing",
+        "Comma-separated hashtags appended to the description when not already present.",
+        "Set to #Shorts to drop channel-specific tags.",
+    ),
+    FeatureFlag(
+        "CHANNEL_PLAYLIST_DESCRIPTION",
+        "Shorts grouped for easier binge watching.",
+        "publishing",
+        "Description text used for every auto-created playlist.",
+        "Unset it to use the generic default.",
+    ),
+    FeatureFlag(
         "PUBLISH_RECOVERY_DELAY_MINUTES",
         "40",
         "publishing",
