@@ -155,7 +155,7 @@ class DynamicStreamer:
             log.error(f"Failed to create/bind a new broadcast: {e}")
 
     def _pick_bgm_track(self) -> Path | None:
-        tracks = list(BGM_DIR.glob("jamendo_*.mp3"))
+        tracks = list(BGM_DIR.glob("*.mp3"))
         return random.choice(tracks) if tracks else None
 
     def convert_to_ts(self, mp4_path: Path) -> Path:

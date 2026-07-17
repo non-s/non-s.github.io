@@ -26,19 +26,19 @@ def test_pick_bgm_track_returns_none_when_library_empty(streamer, tmp_path, monk
 def test_pick_bgm_track_returns_a_track_when_present(streamer, tmp_path, monkeypatch):
     bgm_dir = tmp_path / "bgm"
     bgm_dir.mkdir()
-    (bgm_dir / "jamendo_1.mp3").write_bytes(b"x")
-    (bgm_dir / "jamendo_2.mp3").write_bytes(b"x")
+    (bgm_dir / "ytcc_1.mp3").write_bytes(b"x")
+    (bgm_dir / "ytcc_2.mp3").write_bytes(b"x")
     monkeypatch.setattr(live_stream_dynamic, "BGM_DIR", bgm_dir)
 
     picked = streamer._pick_bgm_track()
 
-    assert picked in {bgm_dir / "jamendo_1.mp3", bgm_dir / "jamendo_2.mp3"}
+    assert picked in {bgm_dir / "ytcc_1.mp3", bgm_dir / "ytcc_2.mp3"}
 
 
 def test_convert_to_ts_mixes_bgm_when_available(streamer, tmp_path, monkeypatch):
     bgm_dir = tmp_path / "bgm"
     bgm_dir.mkdir()
-    bgm_path = bgm_dir / "jamendo_1.mp3"
+    bgm_path = bgm_dir / "ytcc_1.mp3"
     bgm_path.write_bytes(b"x")
     monkeypatch.setattr(live_stream_dynamic, "BGM_DIR", bgm_dir)
 

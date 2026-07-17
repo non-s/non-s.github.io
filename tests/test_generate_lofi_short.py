@@ -100,7 +100,7 @@ def test_compose_short_builds_looping_ffmpeg_command(tmp_path, monkeypatch):
     monkeypatch.setattr(lofi.subprocess, "run", fake_run)
 
     broll_path = tmp_path / "pexels_1.mp4"
-    bgm_path = tmp_path / "jamendo_1.mp3"
+    bgm_path = tmp_path / "ytcc_1.mp3"
     output_path = tmp_path / "short-lofi-3.mp4"
 
     ok = lofi._compose_short(broll_path, bgm_path, output_path, 45.0)
@@ -197,8 +197,8 @@ def test_main_writes_video_and_metadata_pair_on_success(tmp_path, monkeypatch):
     (broll_dir / "pexels_1.json").write_text(
         json.dumps({"query": "rain window cozy", "photographer": "Ana", "pexels_video_id": "1"}), encoding="utf-8"
     )
-    _touch(bgm_dir / "jamendo_1.mp3")
-    (bgm_dir / "jamendo_1.json").write_text(
+    _touch(bgm_dir / "ytcc_1.mp3")
+    (bgm_dir / "ytcc_1.json").write_text(
         json.dumps({"track_name": "Rainy Study", "artist_name": "Someone", "track_id": "1"}), encoding="utf-8"
     )
 
@@ -238,7 +238,7 @@ def test_main_omits_thumbnail_field_when_extraction_fails(tmp_path, monkeypatch)
     broll_dir.mkdir()
     bgm_dir.mkdir()
     _touch(broll_dir / "pexels_1.mp4")
-    _touch(bgm_dir / "jamendo_1.mp3")
+    _touch(bgm_dir / "ytcc_1.mp3")
 
     monkeypatch.setattr(lofi, "VIDEOS_DIR", videos_dir)
     monkeypatch.setattr(lofi, "BROLL_DIR", broll_dir)
@@ -259,7 +259,7 @@ def test_main_returns_error_when_composition_fails(tmp_path, monkeypatch):
     broll_dir.mkdir()
     bgm_dir.mkdir()
     _touch(broll_dir / "pexels_1.mp4")
-    _touch(bgm_dir / "jamendo_1.mp3")
+    _touch(bgm_dir / "ytcc_1.mp3")
 
     monkeypatch.setattr(lofi, "VIDEOS_DIR", tmp_path / "_videos")
     monkeypatch.setattr(lofi, "BROLL_DIR", broll_dir)

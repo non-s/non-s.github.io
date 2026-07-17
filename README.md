@@ -16,14 +16,14 @@ publishes through the official YouTube Data API.
 - Category: YouTube **Science & Technology** (`categoryId=28`).
 - Content: a random Pexels lofi-aesthetic clip (rain windows, fireplaces,
   cozy rooms, night cities, study desks, ...) looped under a random
-  CC BY-licensed Jamendo track, with a lofi-genre title/description and a
-  custom thumbnail frame.
+  YouTube-verified Creative Commons track, with a lofi-genre title/
+  description and a custom thumbnail frame.
 
 ## Pipeline
 
 ```text
-scripts/sync_lofi_broll.py   -> _assets/video/lofi_broll (Pexels clips)
-scripts/sync_jamendo_music.py -> _assets/audio/bgm (Jamendo CC BY tracks)
+scripts/sync_lofi_broll.py         -> _assets/video/lofi_broll (Pexels clips)
+scripts/sync_lofi_youtube_music.py -> _assets/audio/bgm (YouTube CC BY tracks)
 generate_lofi_short.py        -> _videos/*.mp4 + metadata (Shorts)
 generate_lofi_long_video.py   -> _videos/long_video_*.mp4 (24/7 live loop)
 upload_youtube.py             -> YouTube Shorts + .done sidecar
@@ -113,10 +113,11 @@ replacing the current queue, render, upload or official YouTube APIs.
 - `YOUTUBE_STREAM_KEY` -- only needed for the 24/7 live relay
   (`live-stream.yml`).
 
-Jamendo music sync (`scripts/sync_jamendo_music.py`) uses Jamendo's public
-demo client id and needs no secret. No AI text provider key is required by
-the active lofi pipeline -- title/description text is template-based, not
-AI-generated.
+Music sync (`scripts/sync_lofi_youtube_music.py`) downloads audio from
+YouTube videos the uploader explicitly marked Creative Commons (verified
+per-track via yt-dlp's `license` field, not a title/description guess) and
+needs no secret. No AI text provider key is required by the active lofi
+pipeline -- title/description text is template-based, not AI-generated.
 
 `YOUTUBE_TOKEN` is an OAuth JSON token, not an API key. Generate it once with `auth_youtube.py` or the `Build auth_youtube.exe (Windows)` workflow. See [SETUP.md](SETUP.md).
 
