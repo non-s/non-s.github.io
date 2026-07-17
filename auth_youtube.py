@@ -4,9 +4,9 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import os
-import argparse
 import subprocess
 from pathlib import Path
 

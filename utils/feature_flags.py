@@ -142,7 +142,9 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Block runs projected to exceed quota budget.",
         "Set to 0 for passive logging.",
     ),
-    FeatureFlag("QUOTA_GUARD_MODE", "block", "operations", "Quota guard mode: anything other than block just warns.", "Use off."),
+    FeatureFlag(
+        "QUOTA_GUARD_MODE", "block", "operations", "Quota guard mode: anything other than block just warns.", "Use off."
+    ),
     FeatureFlag(
         "UPLOAD_IDEMPOTENCY_MODE",
         "block",

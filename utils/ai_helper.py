@@ -20,7 +20,6 @@ provider hiccup — drastically reducing the "Mistral 429 → drop story"
 loss rate on the free-tier budget.
 """
 
-import json
 import logging
 import os
 import re
@@ -31,7 +30,6 @@ from time import sleep
 import requests
 
 from utils import ai_cache, provider_stats
-from utils.retry import with_retry
 
 
 def _host_persona_block() -> str:
@@ -204,9 +202,7 @@ def _call_gemini(sys_msg: str, prompt: str, timeout: int, key: str, json_mode: b
             "temperature": 0.7,
             "maxOutputTokens": 3000,
         },
-        "tools": [
-            {"googleSearch": {}}
-        ],
+        "tools": [{"googleSearch": {}}],
     }
     if json_mode:
         body["generationConfig"]["responseMimeType"] = "application/json"
@@ -359,5 +355,3 @@ def ai_text(
                     continue
                 break
     return ""
-
-

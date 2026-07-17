@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import os
+from collections.abc import Mapping
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -37,21 +38,21 @@ UPLOAD_METHOD = "youtube.videos.insert"
 LIMITED_CALL_METHODS = (UPLOAD_METHOD,)
 
 
-def _bool(name: str, default: bool = True, env: dict | None = None) -> bool:
+def _bool(name: str, default: bool = True, env: Mapping[str, str] | None = None) -> bool:
     value = (env or os.environ).get(name)
     if value is None:
         return default
     return str(value).strip().lower() in {"1", "true", "yes", "on"}
 
 
-def _float(name: str, default: float, env: dict | None = None) -> float:
+def _float(name: str, default: float, env: Mapping[str, str] | None = None) -> float:
     try:
         return float((env or os.environ).get(name, default))
     except Exception:
         return default
 
 
-def _int(name: str, default: int, env: dict | None = None) -> int:
+def _int(name: str, default: int, env: Mapping[str, str] | None = None) -> int:
     try:
         return int((env or os.environ).get(name, default))
     except Exception:
@@ -140,7 +141,7 @@ def daily_method_calls(path: Path = LEDGER_FILE, *, method: str, day: str | None
     return int(total)
 
 
-def _daily_call_budget(method: str, env: dict | None = None) -> int:
+def _daily_call_budget(method: str, env: Mapping[str, str] | None = None) -> int:
     if method == UPLOAD_METHOD:
         return _int("YOUTUBE_DAILY_UPLOAD_BUDGET", DEFAULT_DAILY_UPLOAD_BUDGET, env)
     return 0
@@ -150,14 +151,15 @@ def should_block_run(
     estimate: dict,
     *,
     path: Path = LEDGER_FILE,
-    env: dict | None = None,
+    env: Mapping[str, str] | None = None,
     daily_budget: int = DEFAULT_DAILY_BUDGET,
 ) -> dict:
     env = env or os.environ
     mode = str(env.get("QUOTA_GUARD_MODE", "block")).lower()
     enabled = _bool("QUOTA_GUARD_ENABLED", True, env)
     max_ratio = _float("QUOTA_GUARD_MAX_DAILY_RATIO", 0.95, env)
-    calls = estimate.get("calls") if isinstance(estimate.get("calls"), dict) else {}
+    calls_raw = estimate.get("calls")
+    calls: dict = calls_raw if isinstance(calls_raw, dict) else {}
     estimated_units = _estimate_units(estimate)
     spent = daily_spend(path)
     projected = spent + estimated_units
@@ -208,7 +210,7 @@ def write_quota_ledger_row(
     *,
     path: Path = LEDGER_FILE,
     latest_path: Path = LATEST_FILE,
-    env: dict | None = None,
+    env: Mapping[str, str] | None = None,
 ) -> dict:
     env = env or os.environ
     row = quota_ledger_row(estimate, path=path, env=env)
@@ -225,11 +227,12 @@ def quota_ledger_row(
     estimate: dict,
     *,
     path: Path = LEDGER_FILE,
-    env: dict | None = None,
+    env: Mapping[str, str] | None = None,
 ) -> dict:
     env = env or os.environ
     guard = should_block_run(estimate, path=path, env=env)
-    calls = estimate.get("calls") if isinstance(estimate.get("calls"), dict) else {}
+    calls_raw = estimate.get("calls")
+    calls: dict = calls_raw if isinstance(calls_raw, dict) else {}
     return {
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
         "quota_day_pt": quota_day_pt(),
