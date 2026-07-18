@@ -14,7 +14,14 @@ permissions:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # Do NOT cancel an in-progress run here. live-stream-watchdog.yml
+  # re-dispatches this workflow every 10 minutes whenever it doesn't see an
+  # active/queued run; with cancel-in-progress:true, any watchdog dispatch
+  # that races a still-healthy stream (API/status lag, or the 6h cron firing
+  # close to a watchdog check) kills a good stream instead of a dead one.
+  # With this false, a redundant dispatch just queues behind the current
+  # run and starts once it actually ends (crash or the 360min timeout).
+  cancel-in-progress: false
 
 jobs:
   stream:
