@@ -27,7 +27,6 @@ UNIT_METHOD_COSTS = {
     "youtube.commentThreads.list": 1,
     "youtube.comments.insert": 50,
     "youtube.analytics.reports.query": 1,
-    "pexels.search": 1,
 }
 
 DEFAULT_DAILY_BUDGET = int(os.environ.get("YOUTUBE_DAILY_QUOTA_BUDGET", "10000"))

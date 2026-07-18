@@ -105,13 +105,18 @@ def test_build_metadata_includes_attribution_and_upload_contract_fields(tmp_path
     assert "fireplace night" in [tag.lower() for tag in meta["tags"]]
 
 
-def test_build_metadata_title_always_matches_one_of_the_templates(tmp_path):
+def test_build_metadata_title_uses_branded_hook_for_a_known_mood(tmp_path):
+    video_path = tmp_path / "short-lofi-1.mp4"
+    broll_meta = {"query": "anime rain window cozy"}
+    meta = lofi._build_metadata(broll_meta, {}, 30.0, video_path)
+    assert meta["title"] == "Rainy Night Anime Lofi — Amber Hours \U0001f327️"
+
+
+def test_build_metadata_title_falls_back_to_raw_mood_for_an_unknown_mood(tmp_path):
     video_path = tmp_path / "short-lofi-1.mp4"
     broll_meta = {"query": "snow falling window cozy"}
-    seen_titles = {lofi._build_metadata(broll_meta, {}, 30.0, video_path)["title"] for _ in range(30)}
-    expected = {template.format(mood="Snow Falling") for template in lofi.TITLE_TEMPLATES}
-    assert seen_titles <= expected
-    assert len(seen_titles) > 1  # the random sample actually exercises more than one template
+    meta = lofi._build_metadata(broll_meta, {}, 30.0, video_path)
+    assert meta["title"] == "Snow Falling Anime Lofi — Amber Hours \U0001f319"
 
 
 def test_build_metadata_tolerates_missing_attribution(tmp_path):

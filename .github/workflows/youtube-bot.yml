@@ -31,7 +31,7 @@ jobs:
   generate-and-upload:
     name: "Gerar e publicar Lofi Shorts no YouTube"
     # Set YOUTUBE_PUBLISHING_ENABLED=1 to keep the hourly YouTube publisher
-    # active. Pexels is the default visual source.
+    # active. Pixabay (anime/illustrated b-roll) is the visual source.
     if: ${{ vars.YOUTUBE_PUBLISHING_ENABLED == '1' }}
     runs-on: ubuntu-latest
     timeout-minutes: 20

@@ -1,8 +1,9 @@
-"""Free-tier Pexels b-roll discovery for YouTube Shorts.
+"""Pixabay b-roll discovery for the lofi Shorts/mix/live pipeline.
 
-The Shorts pipeline needs real motion on screen, ideally with varied clips
-every few seconds. Wild Brief now uses Pexels as the only production visual
-source so the rights, cache, quota and QA behavior stay predictable.
+The lofi pipeline needs an anime/illustrated-style loop, not real-world
+footage -- see fetch_pixabay()'s docstring for why Pixabay (checked live)
+is the only source that actually has that content; Pexels was tried first
+and removed once that became clear.
 """
 
 from __future__ import annotations
@@ -12,7 +13,6 @@ import hashlib
 import json
 import logging
 import os
-import re
 import time
 from pathlib import Path
 
@@ -24,13 +24,11 @@ _USER_AGENT = "WildBrief-Bot/4.0 (+https://non-s.github.io)"
 _TIMEOUT = 20
 _CACHE_DIR = Path(os.environ.get("BROLL_CACHE_DIR", "_data/broll_cache"))
 _CACHE_TTL_S = 86400 * 7
-_PEXELS_API = "https://api.pexels.com/v1/videos/search"
 _PIXABAY_API = "https://pixabay.com/api/videos/"
 
-# Pexels free tier asks for courteous request spacing. fetch-content.yml and
-# youtube-bot.yml can both call fetch_pexels() many times within one process
+# youtube-bot.yml can call fetch_pixabay() many times within one process
 # run; this throttle keeps real (non-cached) calls from bursting.
-_MIN_REQUEST_INTERVAL_S = float(os.environ.get("PEXELS_MIN_INTERVAL_S", "0"))
+_MIN_REQUEST_INTERVAL_S = float(os.environ.get("BROLL_MIN_INTERVAL_S", "0"))
 _last_request_ts = 0.0
 
 
@@ -145,103 +143,6 @@ def _cache_put(path: Path, clips: list[dict]) -> None:
         log.debug("broll cache write failed: %s", exc)
 
 
-def _pexels_clip_title(url: str, uploader: str = "") -> str:
-    """Extract the descriptive clip slug; uploader names are not subjects."""
-    parts = (url or "").rstrip("/").split("/")
-    tail = parts[-1] if parts else ""
-    slug = parts[-2] if tail.isdigit() and len(parts) >= 2 else re.sub(r"-\d+$", "", tail)
-    return re.sub(r"[-_]+", " ", slug).strip() or uploader.strip()
-
-
-def fetch_pexels(query: str, per_page: int = 8, page: int = 1, orientation: str = "portrait") -> list[BrollClip]:
-    """Search Pexels Videos for `query`. Empty list on any failure."""
-    key = os.environ.get("PEXELS_API_KEY", "")
-    if not key:
-        log.warning("Pexels API key (PEXELS_API_KEY) is missing — cannot fetch B-roll")
-        return []
-    if not query:
-        return []
-
-    per_page = max(1, min(80, int(per_page or 8)))
-    page = max(1, int(page or 1))
-    cache_path = _cache_key("pexels", f"{query}|{per_page}|{page}|{orientation}|v1")
-    cached = _cache_get(cache_path)
-    if cached is not None:
-        return [BrollClip(**c) for c in cached]
-
-    try:
-        for attempt in range(3):
-            _throttle()
-            response = _session().get(
-                _PEXELS_API,
-                params={
-                    "query": query[:120],
-                    "per_page": per_page,
-                    "page": page,
-                    "orientation": orientation,
-                    "size": "medium",
-                },
-                headers={"Authorization": key},
-                timeout=_TIMEOUT,
-            )
-            if response.status_code == 429:
-                log.warning("Pexels rate limit hit (429), retrying in %d seconds...", 2**attempt * 3)
-                time.sleep(2**attempt * 3)
-                continue
-            if response.status_code != 200:
-                log.warning(
-                    "Pexels API request failed with status code %d for query %r", response.status_code, query[:40]
-                )
-                return []
-            break
-        else:
-            log.warning("Pexels API request failed after 3 attempts (429) for query %r", query[:40])
-            return []
-        videos = response.json().get("videos", []) or []
-    except Exception as exc:
-        log.debug("pexels error %s: %s", query[:40], exc)
-        return []
-
-    out: list[BrollClip] = []
-    for video in videos:
-        files = video.get("video_files", []) or []
-        files = [item for item in files if item.get("link") and item.get("width") and item.get("height")]
-        files.sort(
-            key=lambda item: (
-                0 if (item.get("height") or 0) >= (item.get("width") or 0) else 1,
-                abs((item.get("height") or 0) - 1920),
-            )
-        )
-        if not files:
-            continue
-        item = files[0]
-        out.append(
-            BrollClip(
-                source="pexels",
-                url=video.get("url", ""),
-                download_url=item["link"],
-                width=int(item.get("width") or 0),
-                height=int(item.get("height") or 0),
-                duration_s=float(video.get("duration") or 0),
-                title=_pexels_clip_title(
-                    video.get("url", ""),
-                    (video.get("user", {}) or {}).get("name", ""),
-                ),
-                license="Pexels License (free for commercial use)",
-                license_evidence=video.get("url", ""),
-                source_metadata={
-                    "pexels_video_id": str(video.get("id") or ""),
-                    "pexels_page": page,
-                    "pexels_query": query[:120],
-                    "photographer": (video.get("user", {}) or {}).get("name", ""),
-                    "photographer_url": (video.get("user", {}) or {}).get("url", ""),
-                },
-            )
-        )
-    _cache_put(cache_path, [dataclasses.asdict(clip) for clip in out])
-    return out
-
-
 def fetch_pixabay(query: str, per_page: int = 8, page: int = 1, video_type: str = "animation") -> list[BrollClip]:
     """Search Pixabay Videos for `query`. Empty list on any failure.
 
@@ -331,107 +232,6 @@ def fetch_pixabay(query: str, per_page: int = 8, page: int = 1, video_type: str 
         )
     _cache_put(cache_path, [dataclasses.asdict(clip) for clip in out])
     return out
-
-
-_STOPWORDS = {
-    "a",
-    "an",
-    "the",
-    "and",
-    "or",
-    "but",
-    "in",
-    "on",
-    "at",
-    "to",
-    "for",
-    "of",
-    "with",
-    "by",
-    "from",
-    "is",
-    "are",
-    "was",
-    "were",
-    "be",
-    "been",
-    "as",
-    "that",
-    "this",
-    "these",
-    "those",
-    "it",
-    "its",
-    "after",
-    "before",
-    "during",
-    "into",
-    "over",
-    "under",
-    "between",
-    "again",
-    "than",
-    "today",
-    "yesterday",
-    "tomorrow",
-    "new",
-    "latest",
-    "update",
-    "report",
-    "says",
-    "said",
-    "now",
-    "just",
-    "really",
-}
-
-
-def _build_query(text: str) -> str:
-    """Reduce a title to b-roll-friendly keywords."""
-    if not text:
-        return ""
-    tokens = re.findall(r"[A-Za-z][A-Za-z\-']{2,}", text)
-    kept = [token for token in tokens if token.lower() not in _STOPWORDS][:6]
-    return " ".join(kept)
-
-
-def _enabled_sources() -> list[str]:
-    """Return active visual sources. Production is intentionally Pexels-only."""
-    return ["pexels"]
-
-
-def fetch_broll_clips(
-    query: str, want_n: int = 4, category: str = "", animal_only: bool = False, orientation: str = "portrait"
-) -> list[BrollClip]:
-    """Collect up to `want_n` vetted Pexels clips."""
-    seen_urls: set[str] = set()
-    collected: list[BrollClip] = []
-    refined = _build_query(query)
-    cat_query = (category or "").strip().lower()
-    queries = [q for q in (refined, query, cat_query) if q]
-    source_order = _enabled_sources()
-    per_source: dict[str, int] = {source: 0 for source in source_order}
-
-    for q in queries:
-        if len(collected) >= want_n:
-            break
-        try:
-            clips = fetch_pexels(q, orientation=orientation)
-        except Exception as exc:
-            log.warning("broll fetcher fetch_pexels crashed: %s", exc)
-            clips = []
-        for clip in clips:
-            if clip.download_url in seen_urls:
-                continue
-            seen_urls.add(clip.download_url)
-            collected.append(clip)
-            per_source[clip.source] = per_source.get(clip.source, 0) + 1
-            if len(collected) >= want_n:
-                break
-
-    source_counts = ", ".join(f"{source}={per_source.get(source, 0)}" for source in source_order)
-    log.info("  B-roll source mode: %s · total=%d/%d", source_counts, len(collected), want_n)
-    return collected
 
 
 def download_clip(clip: BrollClip, dest: Path, max_bytes: int | None = None) -> bool:

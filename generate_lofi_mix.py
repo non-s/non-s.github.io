@@ -42,6 +42,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from utils.broll import is_on_brand_broll_clip  # noqa: E402
+from utils.lofi_branding import branded_title  # noqa: E402
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("generate_lofi_mix")
@@ -71,14 +72,6 @@ DEFAULT_TAGS = [
     "chillhop",
     "ambient",
 ]
-
-TITLE_TEMPLATES = [
-    "1 Hour of {mood} Lofi Beats to Study/Relax to \U0001f3a7",
-    "{mood} Lofi Mix — 1 Hour of Chill Beats \U0001f3b5",
-    "Lofi Radio: {mood} Session (1 Hour) \U0001f319",
-    "1 Hour {mood} Chillhop Loop — Deep Focus & Relax \U0001f4da",
-]
-
 
 def _pick_file(directory: Path, pattern: str) -> Path | None:
     candidates = sorted(directory.glob(pattern))
@@ -318,7 +311,7 @@ def _extract_thumbnail(video_path: Path, thumb_path: Path, timestamp_s: float = 
 
 def _build_metadata(broll_meta: dict, bgm_metas: list[dict], duration_s: float, video_path: Path, slug: str) -> dict:
     mood = _mood_label(str(broll_meta.get("query") or ""))
-    title = random.choice(TITLE_TEMPLATES).format(mood=mood)
+    title = branded_title(mood, suffix="(1 Hour)")
     photographer = str(broll_meta.get("photographer") or "")
 
     description_lines = [
