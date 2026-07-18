@@ -31,12 +31,26 @@ def test_pick_broll_clip_returns_a_clip_when_present(streamer, tmp_path, monkeyp
     broll_dir = tmp_path / "broll"
     broll_dir.mkdir()
     (broll_dir / "pixabay_1.mp4").write_bytes(b"x")
+    (broll_dir / "pixabay_1.json").write_text('{"tags": "anime, girl, study, lofi"}')
     (broll_dir / "pixabay_2.mp4").write_bytes(b"x")
+    (broll_dir / "pixabay_2.json").write_text('{"tags": "anime, rain, window"}')
     monkeypatch.setattr(live_stream_dynamic, "BROLL_DIR", broll_dir)
 
     picked = streamer._pick_broll_clip()
 
     assert picked in {broll_dir / "pixabay_1.mp4", broll_dir / "pixabay_2.mp4"}
+
+
+def test_pick_broll_clip_skips_offbrand_clips_in_fallback_pool(streamer, tmp_path, monkeypatch):
+    """Regression: without a pinned clip, the rotating BROLL_DIR fallback
+    must not surface a clip lacking anime-style tag evidence."""
+    broll_dir = tmp_path / "broll"
+    broll_dir.mkdir()
+    (broll_dir / "pixabay_1.mp4").write_bytes(b"x")
+    (broll_dir / "pixabay_1.json").write_text('{"tags": "man, library, book, education, reading"}')
+    monkeypatch.setattr(live_stream_dynamic, "BROLL_DIR", broll_dir)
+
+    assert streamer._pick_broll_clip() is None
 
 
 def test_pick_broll_clip_prefers_pinned_clip_when_present(streamer, tmp_path, monkeypatch):
@@ -203,6 +217,7 @@ def test_build_stream_command_loops_clip_and_playlist_with_no_bake_duration(stre
     broll_dir.mkdir()
     clip_path = broll_dir / "pixabay_1.mp4"
     clip_path.write_bytes(b"x")
+    (broll_dir / "pixabay_1.json").write_text('{"tags": "anime, girl, study, lofi"}')
     monkeypatch.setattr(live_stream_dynamic, "BROLL_DIR", broll_dir)
     monkeypatch.setattr(streamer, "_prepare_seamless_loop_clip", lambda clip: clip)
     monkeypatch.setattr(streamer, "_build_bgm_playlist", lambda: tmp_path / "playlist.mp3")
@@ -225,6 +240,7 @@ def test_build_stream_command_falls_back_to_silent_audio_without_bgm(streamer, t
     broll_dir = tmp_path / "broll"
     broll_dir.mkdir()
     (broll_dir / "pixabay_1.mp4").write_bytes(b"x")
+    (broll_dir / "pixabay_1.json").write_text('{"tags": "anime, girl, study, lofi"}')
     monkeypatch.setattr(live_stream_dynamic, "BROLL_DIR", broll_dir)
     monkeypatch.setattr(streamer, "_prepare_seamless_loop_clip", lambda clip: clip)
     monkeypatch.setattr(streamer, "_build_bgm_playlist", lambda: None)
@@ -240,6 +256,7 @@ def test_build_stream_command_writes_local_file_in_test_mode(streamer, tmp_path,
     broll_dir = tmp_path / "broll"
     broll_dir.mkdir()
     (broll_dir / "pixabay_1.mp4").write_bytes(b"x")
+    (broll_dir / "pixabay_1.json").write_text('{"tags": "anime, girl, study, lofi"}')
     monkeypatch.setattr(live_stream_dynamic, "BROLL_DIR", broll_dir)
     monkeypatch.setattr(streamer, "_prepare_seamless_loop_clip", lambda clip: clip)
     monkeypatch.setattr(streamer, "_build_bgm_playlist", lambda: None)
@@ -254,6 +271,7 @@ def test_build_stream_command_streams_to_rtmp_with_real_stream_key(streamer, tmp
     broll_dir = tmp_path / "broll"
     broll_dir.mkdir()
     (broll_dir / "pixabay_1.mp4").write_bytes(b"x")
+    (broll_dir / "pixabay_1.json").write_text('{"tags": "anime, girl, study, lofi"}')
     monkeypatch.setattr(live_stream_dynamic, "BROLL_DIR", broll_dir)
     monkeypatch.setattr(streamer, "_prepare_seamless_loop_clip", lambda clip: clip)
     monkeypatch.setattr(streamer, "_build_bgm_playlist", lambda: None)

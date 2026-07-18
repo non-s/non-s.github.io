@@ -10,6 +10,15 @@ def _touch(path, size=1024):
     return path
 
 
+def _touch_broll(directory, name="pixabay_1.mp4", **extra_meta):
+    """Write an on-brand b-roll clip (anime-tagged sidecar) for tests that
+    only care about exercising the pipeline past broll selection."""
+    video_path = _touch(directory / name)
+    meta = {"tags": "anime, girl, study, lofi", **extra_meta}
+    video_path.with_suffix(".json").write_text(json.dumps(meta), encoding="utf-8")
+    return video_path
+
+
 def test_pick_file_returns_none_when_directory_empty(tmp_path):
     assert lofi._pick_file(tmp_path, "pixabay_*.mp4") is None
 
@@ -19,6 +28,32 @@ def test_pick_file_returns_a_match(tmp_path):
     _touch(tmp_path / "pixabay_2.mp4")
     picked = lofi._pick_file(tmp_path, "pixabay_*.mp4")
     assert picked in {tmp_path / "pixabay_1.mp4", tmp_path / "pixabay_2.mp4"}
+
+
+def test_pick_broll_file_returns_none_when_directory_empty(tmp_path):
+    assert lofi._pick_broll_file(tmp_path, "pixabay_*.mp4") is None
+
+
+def test_pick_broll_file_skips_clips_without_anime_style_tags(tmp_path):
+    """Regression: an off-brand clip (no anime/cartoon tag evidence) that
+    is already on disk -- however it got there -- must never be picked
+    for a Short, even though _pick_file alone would happily return it."""
+    _touch(tmp_path / "pixabay_1.mp4")
+    (tmp_path / "pixabay_1.json").write_text(
+        json.dumps({"tags": "man, library, book, education, reading"}), encoding="utf-8"
+    )
+    assert lofi._pick_broll_file(tmp_path, "pixabay_*.mp4") is None
+
+
+def test_pick_broll_file_returns_only_on_brand_clip(tmp_path):
+    _touch(tmp_path / "pixabay_1.mp4")
+    (tmp_path / "pixabay_1.json").write_text(
+        json.dumps({"tags": "man, library, book, education, reading"}), encoding="utf-8"
+    )
+    _touch(tmp_path / "pixabay_2.mp4")
+    (tmp_path / "pixabay_2.json").write_text(json.dumps({"tags": "anime, girl, study, lofi"}), encoding="utf-8")
+
+    assert lofi._pick_broll_file(tmp_path, "pixabay_*.mp4") == tmp_path / "pixabay_2.mp4"
 
 
 def test_load_sidecar_returns_empty_dict_when_missing(tmp_path):
@@ -175,10 +210,31 @@ def test_main_returns_error_when_no_broll_available(tmp_path, monkeypatch):
     assert lofi.main() == 1
 
 
+def test_main_returns_error_when_only_offbrand_broll_available(tmp_path, monkeypatch):
+    """Regression: a clip present on disk but without anime-style tag
+    evidence must not be used, even though the library isn't empty."""
+    broll_dir = tmp_path / "broll"
+    bgm_dir = tmp_path / "bgm"
+    broll_dir.mkdir()
+    bgm_dir.mkdir()
+    _touch(broll_dir / "pixabay_1.mp4")
+    (broll_dir / "pixabay_1.json").write_text(
+        json.dumps({"tags": "man, library, book, education, reading"}), encoding="utf-8"
+    )
+    _touch(bgm_dir / "jamendo_1.mp3")
+
+    monkeypatch.setattr(lofi, "VIDEOS_DIR", tmp_path / "_videos")
+    monkeypatch.setattr(lofi, "BROLL_DIR", broll_dir)
+    monkeypatch.setattr(lofi, "BGM_DIR", bgm_dir)
+
+    assert lofi.main() == 1
+    assert list((tmp_path / "_videos").glob("short-*.mp4")) == []
+
+
 def test_main_returns_error_when_no_bgm_available(tmp_path, monkeypatch):
     broll_dir = tmp_path / "broll"
     broll_dir.mkdir()
-    _touch(broll_dir / "pixabay_1.mp4")
+    _touch_broll(broll_dir)
     monkeypatch.setattr(lofi, "VIDEOS_DIR", tmp_path / "_videos")
     monkeypatch.setattr(lofi, "BROLL_DIR", broll_dir)
     monkeypatch.setattr(lofi, "BGM_DIR", tmp_path / "empty_bgm")
@@ -193,9 +249,8 @@ def test_main_writes_video_and_metadata_pair_on_success(tmp_path, monkeypatch):
     videos_dir = tmp_path / "_videos"
     broll_dir.mkdir()
     bgm_dir.mkdir()
-    _touch(broll_dir / "pixabay_1.mp4")
-    (broll_dir / "pixabay_1.json").write_text(
-        json.dumps({"query": "rain window cozy", "photographer": "Ana", "pixabay_video_id": "1"}), encoding="utf-8"
+    _touch_broll(
+        broll_dir, query="rain window cozy", photographer="Ana", pixabay_video_id="1", tags="anime, rain, window"
     )
     _touch(bgm_dir / "jamendo_1.mp3")
     (bgm_dir / "jamendo_1.json").write_text(
@@ -237,7 +292,7 @@ def test_main_omits_thumbnail_field_when_extraction_fails(tmp_path, monkeypatch)
     videos_dir = tmp_path / "_videos"
     broll_dir.mkdir()
     bgm_dir.mkdir()
-    _touch(broll_dir / "pixabay_1.mp4")
+    _touch_broll(broll_dir)
     _touch(bgm_dir / "jamendo_1.mp3")
 
     monkeypatch.setattr(lofi, "VIDEOS_DIR", videos_dir)
@@ -258,7 +313,7 @@ def test_main_returns_error_when_composition_fails(tmp_path, monkeypatch):
     bgm_dir = tmp_path / "bgm"
     broll_dir.mkdir()
     bgm_dir.mkdir()
-    _touch(broll_dir / "pixabay_1.mp4")
+    _touch_broll(broll_dir)
     _touch(bgm_dir / "jamendo_1.mp3")
 
     monkeypatch.setattr(lofi, "VIDEOS_DIR", tmp_path / "_videos")

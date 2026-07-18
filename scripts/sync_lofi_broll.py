@@ -28,7 +28,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from utils.broll import BrollClip, download_clip, fetch_pixabay  # noqa: E402
+from utils.broll import BrollClip, download_clip, fetch_pixabay, looks_anime_styled  # noqa: E402
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("lofi_broll_sync")
@@ -50,33 +50,13 @@ LOFI_QUERIES = [
 ]
 
 
-# Pixabay's video_type=animation category also contains generic 3D
-# corporate/motion-graphics stock clips -- checked live: a sync run for
-# the query "anime library reading" downloaded a plain 3D "man with a
-# stack of books" explainer-video clip (Pixabay id 115021, tagged just
-# "man" as its first/title tag), which then played on the live relay
-# looking nothing like the intended Lofi-Girl-style loop. video_type
-# alone doesn't guarantee the actual illustrated look, so also require
-# at least one of Pixabay's own tags to name an anime/cartoon style.
-ANIME_STYLE_SIGNALS = {
-    "anime",
-    "cartoon",
-    "manga",
-    "chibi",
-    "kawaii",
-    "toon",
-    "illustration",
-    "illustrated",
-    "drawn",
-    "hand-drawn",
-    "handdrawn",
-    "comic",
-}
-
-
+# ANIME_STYLE_SIGNALS/looks_anime_styled now live in utils/broll.py so
+# generate_lofi_short.py, generate_lofi_mix.py, and
+# scripts/live_stream_dynamic.py can apply the same check again at
+# selection time, not just here at download time (see utils/broll.py's
+# is_on_brand_broll_clip docstring for why that second gate matters).
 def _looks_anime_styled(clip: BrollClip) -> bool:
-    tags = str(clip.source_metadata.get("tags") or "").lower()
-    return any(signal in tags for signal in ANIME_STYLE_SIGNALS)
+    return looks_anime_styled(str(clip.source_metadata.get("tags") or ""))
 
 
 def _downloadable(clip: BrollClip, existing_ids: set[str]) -> bool:

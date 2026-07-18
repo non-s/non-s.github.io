@@ -27,6 +27,8 @@ ROOT = Path(__file__).resolve().parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from utils.broll import is_on_brand_broll_clip  # noqa: E402
+
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("generate_lofi_short")
 
@@ -55,6 +57,19 @@ TITLE_TEMPLATES = [
 
 def _pick_file(directory: Path, pattern: str) -> Path | None:
     candidates = sorted(directory.glob(pattern))
+    if not candidates:
+        return None
+    return random.choice(candidates)
+
+
+def _pick_broll_file(directory: Path, pattern: str) -> Path | None:
+    """Like _pick_file, but only among clips with anime-style tag evidence.
+
+    A clip that lacks that evidence (never re-checked here before) can
+    still be sitting in the shared library -- see
+    utils.broll.is_on_brand_broll_clip.
+    """
+    candidates = [p for p in sorted(directory.glob(pattern)) if is_on_brand_broll_clip(p)]
     if not candidates:
         return None
     return random.choice(candidates)
@@ -217,9 +232,13 @@ def _extract_thumbnail(video_path: Path, thumb_path: Path, timestamp_s: float = 
 def main() -> int:
     VIDEOS_DIR.mkdir(parents=True, exist_ok=True)
 
-    broll_path = _pick_file(BROLL_DIR, "pixabay_*.mp4")
+    broll_path = _pick_broll_file(BROLL_DIR, "pixabay_*.mp4")
     if broll_path is None:
-        log.error("No lofi b-roll clips found in %s -- run scripts/sync_lofi_broll.py first.", BROLL_DIR)
+        log.error(
+            "No on-brand lofi b-roll clips found in %s -- run scripts/sync_lofi_broll.py first, "
+            "or scripts/prune_offbrand_broll.py if the library only has off-brand clips.",
+            BROLL_DIR,
+        )
         return 1
 
     bgm_path = _pick_file(BGM_DIR, "jamendo_*.mp3")

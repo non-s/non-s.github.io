@@ -2,9 +2,51 @@
 
 from __future__ import annotations
 
+import json
 from unittest.mock import MagicMock, patch
 
 from utils import broll
+
+
+def test_looks_anime_styled_accepts_any_signal_keyword():
+    for tag in ["anime", "Cartoon", "manga girl", "kawaii style", "hand-drawn loop"]:
+        assert broll.looks_anime_styled(tag) is True
+
+
+def test_looks_anime_styled_rejects_generic_stock_tags():
+    assert broll.looks_anime_styled("man, train, window, business, office") is False
+
+
+def test_looks_anime_styled_handles_empty_input():
+    assert broll.looks_anime_styled("") is False
+    assert broll.looks_anime_styled(None) is False
+
+
+def test_is_on_brand_broll_clip_accepts_anime_tagged_sidecar(tmp_path):
+    video_path = tmp_path / "pixabay_1.mp4"
+    video_path.write_bytes(b"x")
+    video_path.with_suffix(".json").write_text(json.dumps({"tags": "anime, girl, study, lofi"}))
+    assert broll.is_on_brand_broll_clip(video_path) is True
+
+
+def test_is_on_brand_broll_clip_rejects_offbrand_sidecar(tmp_path):
+    video_path = tmp_path / "pixabay_1.mp4"
+    video_path.write_bytes(b"x")
+    video_path.with_suffix(".json").write_text(json.dumps({"tags": "man, library, book"}))
+    assert broll.is_on_brand_broll_clip(video_path) is False
+
+
+def test_is_on_brand_broll_clip_rejects_missing_sidecar(tmp_path):
+    video_path = tmp_path / "pixabay_1.mp4"
+    video_path.write_bytes(b"x")
+    assert broll.is_on_brand_broll_clip(video_path) is False
+
+
+def test_is_on_brand_broll_clip_rejects_corrupt_sidecar(tmp_path):
+    video_path = tmp_path / "pixabay_1.mp4"
+    video_path.write_bytes(b"x")
+    video_path.with_suffix(".json").write_text("not json")
+    assert broll.is_on_brand_broll_clip(video_path) is False
 
 
 def test_pexels_clip_title_uses_descriptive_url_slug():

@@ -42,6 +42,61 @@ def _throttle() -> None:
     _last_request_ts = time.time()
 
 
+# Pixabay's video_type=animation category also contains generic 3D
+# corporate/motion-graphics stock clips -- checked live: a sync run for
+# the query "anime library reading" downloaded a plain 3D "man with a
+# stack of books" explainer-video clip (Pixabay id 115021, tagged just
+# "man" as its first/title tag), which then played on the live relay
+# looking nothing like the intended Lofi-Girl-style loop, and was later
+# also picked up as a Short's b-roll since nothing checked style at
+# selection time either. video_type alone doesn't guarantee the actual
+# illustrated look, so require at least one of Pixabay's own tags to
+# name an anime/cartoon style -- both when a clip is downloaded
+# (scripts/sync_lofi_broll.py) and again whenever one is picked off disk
+# for output (generate_lofi_short.py, generate_lofi_mix.py,
+# scripts/live_stream_dynamic.py), so a clip that reaches the shared
+# library some other way (stale cache, manual copy, a sync run on older
+# code) still can't end up in a published video.
+ANIME_STYLE_SIGNALS = {
+    "anime",
+    "cartoon",
+    "manga",
+    "chibi",
+    "kawaii",
+    "toon",
+    "illustration",
+    "illustrated",
+    "drawn",
+    "hand-drawn",
+    "handdrawn",
+    "comic",
+}
+
+
+def looks_anime_styled(tags: str) -> bool:
+    tags = (tags or "").lower()
+    return any(signal in tags for signal in ANIME_STYLE_SIGNALS)
+
+
+def is_on_brand_broll_clip(video_path: Path) -> bool:
+    """True if `video_path`'s sidecar JSON has anime-style tag evidence.
+
+    Selection-time counterpart to scripts/sync_lofi_broll.py's
+    download-time gate: a clip already sitting in the shared media-library
+    cache (pre-dating that filter, restored from a stale cache, or copied
+    in by hand) must not be picked for a Short/mix/live loop just because
+    it's on disk.
+    """
+    meta_path = video_path.with_suffix(".json")
+    try:
+        meta = json.loads(meta_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return False
+    if not isinstance(meta, dict):
+        return False
+    return looks_anime_styled(str(meta.get("tags") or ""))
+
+
 @dataclasses.dataclass
 class BrollClip:
     """One b-roll candidate returned by Pexels."""

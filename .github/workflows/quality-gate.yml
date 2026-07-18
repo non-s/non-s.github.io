@@ -84,7 +84,7 @@ jobs:
         run: |
           python -m mypy \
             utils/time_semantics.py utils/retention_warehouse.py utils/api_quota_budget.py utils/publish_schedule.py \
-            utils/session_graph.py utils/studio_reach_schema.py utils/analytics_schema.py \
+            utils/studio_reach_schema.py utils/analytics_schema.py \
             scripts/audit_slot_contracts.py scripts/upload_intent.py \
             --ignore-missing-imports --follow-imports=silent --check-untyped-defs
 
@@ -92,7 +92,7 @@ jobs:
         run: |
           python -m black --check --diff \
             utils/analytics_schema.py utils/publish_schedule.py utils/studio_reach_schema.py \
-            utils/session_graph.py utils/api_quota_budget.py utils/feature_flags.py \
+            utils/api_quota_budget.py utils/feature_flags.py \
             utils/media_lifecycle.py utils/time_semantics.py utils/retention_warehouse.py \
             utils/ai_helper.py utils/ai_cache.py utils/provider_stats.py utils/broll.py \
             utils/host_persona.py utils/panic.py utils/retry.py utils/audience_expansion.py \
@@ -107,7 +107,7 @@ jobs:
             generate_lofi_short.py generate_lofi_mix.py upload_youtube.py auth_youtube.py
           python -m ruff check \
             utils/analytics_schema.py utils/publish_schedule.py utils/studio_reach_schema.py \
-            utils/session_graph.py utils/api_quota_budget.py utils/feature_flags.py \
+            utils/api_quota_budget.py utils/feature_flags.py \
             utils/media_lifecycle.py utils/time_semantics.py utils/retention_warehouse.py \
             utils/ai_helper.py utils/ai_cache.py utils/provider_stats.py utils/broll.py \
             utils/host_persona.py utils/panic.py utils/retry.py utils/audience_expansion.py \

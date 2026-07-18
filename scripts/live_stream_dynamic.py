@@ -53,6 +53,7 @@ if str(ROOT) not in sys.path:
 
 from googleapiclient.discovery import build  # noqa: E402
 
+from utils.broll import is_on_brand_broll_clip  # noqa: E402
 from utils.youtube_oauth import can_manage_comments, credentials_from_token_info, load_token_info  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -237,7 +238,11 @@ class DynamicStreamer:
     def _pick_broll_clip(self) -> Path | None:
         if PINNED_BROLL_CLIP.exists():
             return PINNED_BROLL_CLIP
-        clips = list(BROLL_DIR.glob("pixabay_*.mp4"))
+        # Same anime-style tag check sync_lofi_broll.py applies at
+        # download time, re-applied here: falling back to the rotating
+        # BROLL_DIR pool (no PINNED_BROLL_CLIP) must not surface a clip
+        # that only got onto disk despite lacking that evidence.
+        clips = [p for p in BROLL_DIR.glob("pixabay_*.mp4") if is_on_brand_broll_clip(p)]
         return random.choice(clips) if clips else None
 
     def _build_bgm_playlist(self) -> Path | None:
