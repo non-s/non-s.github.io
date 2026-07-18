@@ -1,0 +1,202 @@
+name: "Lofi Mix - daily 1 hour video"
+
+# Companion to youtube-bot.yml's vertical Shorts: once a day, renders and
+# publishes one 1-hour horizontal lofi mix (fresh Pixabay clip looped +
+# shuffled Jamendo playlist, no narration). generate_lofi_mix.py only
+# ever encodes the short crossfade-baked clip once and loops the
+# already-encoded result to fill the hour, so this stays well inside
+# the timeout below instead of transcoding a full hour of video.
+on:
+  schedule:
+    - cron: "15 4 * * *"
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Why this run was started"
+        required: false
+        default: "manual"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lofi-mix-daily
+  cancel-in-progress: false
+
+jobs:
+  generate-and-upload:
+    name: "Gerar e publicar o mix lofi de 1 hora"
+    if: ${{ vars.YOUTUBE_PUBLISHING_ENABLED == '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: write
+    env:
+      PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+      UPLOAD_IDEMPOTENCY_MODE: ${{ vars.UPLOAD_IDEMPOTENCY_MODE || 'block' }}
+      UPLOAD_SLOT_IDEMPOTENCY_MODE: ${{ vars.UPLOAD_SLOT_IDEMPOTENCY_MODE || 'block' }}
+      MEDIA_LIFECYCLE_CLEANUP: ${{ vars.MEDIA_LIFECYCLE_CLEANUP || '1' }}
+      QUOTA_GUARD_MODE: ${{ vars.QUOTA_GUARD_MODE || 'block' }}
+      QUOTA_GUARD_MAX_DAILY_RATIO: ${{ vars.QUOTA_GUARD_MAX_DAILY_RATIO || '0.95' }}
+      YOUTUBE_DAILY_QUOTA_BUDGET: "10000"
+      YOUTUBE_DAILY_UPLOAD_BUDGET: "100"
+      YOUTUBE_DESCRIPTION_MODE: ${{ vars.YOUTUBE_DESCRIPTION_MODE || 'full' }}
+      CHANNEL_PLAYLIST_PREFIX: ${{ vars.CHANNEL_PLAYLIST_PREFIX || '' }}
+      CHANNEL_DEFAULT_HASHTAGS: ${{ vars.CHANNEL_DEFAULT_HASHTAGS || '#Shorts,#lofi,#chillbeats' }}
+      CHANNEL_PLAYLIST_DESCRIPTION: ${{ vars.CHANNEL_PLAYLIST_DESCRIPTION || 'Lofi Shorts grouped for easier binge watching.' }}
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v7.0.0
+        with:
+          fetch-depth: 0
+      - name: "Sincronizar main remoto antes da decisao"
+        run: |
+          git fetch origin main
+          git checkout -B main origin/main
+      - name: "Python 3.11"
+        uses: actions/setup-python@v6.3.0
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: "Instalar FFmpeg"
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
+      - name: "Instalar dependencias Python"
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: "Restaurar tokens do YouTube"
+        env:
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+        run: |
+          umask 077
+          if [ -n "$YOUTUBE_TOKEN" ]; then
+            printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
+            chmod 600 youtube_token.json
+          fi
+      - name: "Restaurar bibliotecas de midia lofi do cache"
+        uses: actions/cache@v4
+        with:
+          path: |
+            _assets/audio/bgm
+            _assets/video/lofi_broll
+          key: lofi-media-${{ github.run_id }}
+          restore-keys: |
+            lofi-media-
+      - name: "Sincronizar bibliotecas de b-roll e musica lofi"
+        run: |
+          python scripts/sync_lofi_broll.py
+          python scripts/sync_jamendo_music.py
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUNBUFFERED: "1"
+      - name: "Gerar mix lofi de 1 hora"
+        run: python generate_lofi_mix.py || echo "::warning::No mix generated this cycle (b-roll/bgm supply not ready)."
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUNBUFFERED: "1"
+      - name: "Upload do mix para o YouTube"
+        if: hashFiles('youtube_token.json') != ''
+        run: python upload_youtube.py --language=en
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUNBUFFERED: "1"
+          YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
+          MEDIA_LIFECYCLE_CLEANUP: 0
+      - name: "Aplicar ciclo de vida da midia"
+        run: python scripts/media_lifecycle.py --cleanup --audit-tracked --json
+      - name: "Salvar marcadores no git"
+        if: always()
+        run: |
+          git config user.name "Wild Brief Bot"
+          git config user.email "bot@wildbrief.com"
+          state_dir="$(mktemp -d)"
+          state_paths=(
+            _data/provider_stats.jsonl
+            _data/analytics/latest.json
+            _data/analytics/api_quota_ledger.jsonl
+            _data/analytics/api_quota_latest.json
+            _data/upload_intents.jsonl
+            _data/media_lifecycle_report.json
+          )
+          jsonl_merge_paths=(
+            _data/analytics/api_quota_ledger.jsonl
+            _data/provider_stats.jsonl
+            _data/upload_intents.jsonl
+          )
+          for path in "${state_paths[@]}"; do
+            if [ -e "$path" ]; then
+              mkdir -p "$state_dir/$(dirname "$path")"
+              cp "$path" "$state_dir/$path"
+            fi
+          done
+          find _videos -maxdepth 1 -type f -name '*.done' -print0 2>/dev/null | while IFS= read -r -d '' path; do
+            mkdir -p "$state_dir/$(dirname "$path")"
+            cp "$path" "$state_dir/$path"
+          done
+          git fetch origin main
+          git reset --hard origin/main
+          python scripts/merge_jsonl_state.py "$state_dir" "${jsonl_merge_paths[@]}"
+          cp -R "$state_dir"/. .
+          rm -rf "$state_dir"
+          for path in "${state_paths[@]}"; do
+            [ -e "$path" ] && git add "$path"
+          done
+          find _videos -maxdepth 1 -type f -name '*.done' -print0 2>/dev/null | xargs -0 -r git add --
+          if git diff --cached --quiet; then
+            echo "Nenhum arquivo novo para salvar."
+            exit 0
+          fi
+          git commit -m "Lofi mix automation state - $(date -u +'%Y-%m-%d')"
+          for attempt in 1 2 3; do
+            if git push origin HEAD; then
+              exit 0
+            fi
+            echo "Push rejected on attempt ${attempt}; replaying generated state on latest main."
+            retry_dir="$(mktemp -d)"
+            for path in "${state_paths[@]}"; do
+              if [ -e "$path" ]; then
+                mkdir -p "$retry_dir/$(dirname "$path")"
+                cp "$path" "$retry_dir/$path"
+              fi
+            done
+            find _videos -maxdepth 1 -type f -name '*.done' -print0 2>/dev/null | while IFS= read -r -d '' path; do
+              mkdir -p "$retry_dir/$(dirname "$path")"
+              cp "$path" "$retry_dir/$path"
+            done
+            git fetch origin main
+            git reset --hard origin/main
+            python scripts/merge_jsonl_state.py "$retry_dir" "${jsonl_merge_paths[@]}"
+            cp -R "$retry_dir"/. .
+            rm -rf "$retry_dir"
+            for path in "${state_paths[@]}"; do
+              [ -e "$path" ] && git add "$path"
+            done
+            find _videos -maxdepth 1 -type f -name '*.done' -print0 2>/dev/null | xargs -0 -r git add --
+            if git diff --cached --quiet; then
+              echo "Latest main already contains generated state."
+              exit 0
+            fi
+            git commit -m "Lofi mix automation state - $(date -u +'%Y-%m-%d')"
+            sleep $((attempt * 5))
+          done
+          echo "Push failed after retries."
+          exit 1
+      - name: "Log de execucao"
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: "lofi-mix-log-${{ github.run_number }}"
+          path: |
+            upload_youtube.log
+          retention-days: 7
+          if-no-files-found: ignore
+      - name: "Apagar tokens do YouTube no final"
+        if: always()
+        run: |
+          for path in youtube_token.json; do
+            if [ -f "$path" ]; then
+              shred -u "$path" 2>/dev/null || rm -f "$path"
+            fi
+          done

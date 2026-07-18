@@ -104,7 +104,7 @@ jobs:
             scripts/sync_lofi_broll.py scripts/sync_jamendo_music.py scripts/live_stream_dynamic.py \
             scripts/merge_jsonl_state.py scripts/quota_preflight.py scripts/youtube_slot_dispatch.py \
             scripts/build_dashboard.py \
-            generate_lofi_short.py upload_youtube.py auth_youtube.py
+            generate_lofi_short.py generate_lofi_mix.py upload_youtube.py auth_youtube.py
           python -m ruff check \
             utils/analytics_schema.py utils/publish_schedule.py utils/studio_reach_schema.py \
             utils/session_graph.py utils/api_quota_budget.py utils/feature_flags.py \
@@ -119,7 +119,7 @@ jobs:
             scripts/sync_lofi_broll.py scripts/sync_jamendo_music.py scripts/live_stream_dynamic.py \
             scripts/merge_jsonl_state.py scripts/quota_preflight.py scripts/youtube_slot_dispatch.py \
             scripts/build_dashboard.py \
-            generate_lofi_short.py upload_youtube.py auth_youtube.py
+            generate_lofi_short.py generate_lofi_mix.py upload_youtube.py auth_youtube.py
 
       - name: "Audit dependencies"
         run: python -m pip_audit -r requirements.txt

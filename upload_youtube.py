@@ -87,7 +87,7 @@ def check_auth() -> bool:
 
 
 def _collect_pending_meta(videos_dir: Path) -> list[Path]:
-    return sorted(p for p in videos_dir.glob("*.json") if p.stem.startswith(("short-", "roundup-")))
+    return sorted(p for p in videos_dir.glob("*.json") if p.stem.startswith(("short-", "roundup-", "mix-")))
 
 
 def _normalise_tags(tags) -> list[str]:
@@ -424,6 +424,10 @@ def _youtube_description(meta: dict) -> str:
     default_hashtags = [
         tag.strip() for tag in os.environ.get("CHANNEL_DEFAULT_HASHTAGS", "#Shorts").split(",") if tag.strip()
     ]
+    if meta.get("is_short") is False:
+        # #Shorts on a long-form video is just wrong, not merely harmless --
+        # don't carry over a hashtag list tuned for the vertical Shorts.
+        default_hashtags = [tag for tag in default_hashtags if tag.lower() != "#shorts"]
     missing = [tag for tag in default_hashtags if tag.lower() not in existing]
     if missing:
         description += "\n\n" + " ".join(missing)
