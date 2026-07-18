@@ -119,6 +119,10 @@ def test_short_url_is_canonical():
     assert _video_url("abc123") == "https://www.youtube.com/shorts/abc123"
 
 
+def test_long_form_url_is_not_a_shorts_link():
+    assert _video_url("abc123", {"is_short": False}) == "https://www.youtube.com/watch?v=abc123"
+
+
 def test_check_auth_loads_credentials(monkeypatch):
     called = {"value": False}
 

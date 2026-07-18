@@ -527,8 +527,12 @@ def _scheduled_publish_at(meta: dict, *, sequence_index: int = 0, now: datetime 
     return _rfc3339_z(candidates[offset])
 
 
-def _video_url(video_id: str) -> str:
-    return f"https://www.youtube.com/shorts/{video_id}" if video_id else ""
+def _video_url(video_id: str, meta: dict | None = None) -> str:
+    if not video_id:
+        return ""
+    if meta is not None and meta.get("is_short") is False:
+        return f"https://www.youtube.com/watch?v={video_id}"
+    return f"https://www.youtube.com/shorts/{video_id}"
 
 
 def _safe_label(value: object, fallback: str = "Highlights") -> str:
@@ -785,7 +789,7 @@ def _done_marker(video_id: str, meta: dict) -> dict:
     marker.update(
         {
             "video_id": video_id,
-            "url": _video_url(video_id),
+            "url": _video_url(video_id, meta),
             "uploaded_at": uploaded_at.isoformat(),
             "platform": "youtube",
             "language": _LANGUAGE,
@@ -1117,9 +1121,9 @@ def upload_video(youtube, meta: dict, *, sequence_index: int = 0) -> str | None:
         except HttpError as exc:
             log.warning("Thumbnail upload failed: HTTP %s", exc.resp.status)
     if scheduled_publish_at:
-        log.info("Scheduled: %s at %s", _video_url(video_id), scheduled_publish_at)
+        log.info("Scheduled: %s at %s", _video_url(video_id, meta), scheduled_publish_at)
     else:
-        log.info("Published: %s", _video_url(video_id))
+        log.info("Published: %s", _video_url(video_id, meta))
     return video_id
 
 
