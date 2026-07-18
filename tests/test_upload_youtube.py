@@ -14,7 +14,6 @@ from googleapiclient.errors import HttpError
 import upload_youtube
 from upload_youtube import (
     _apply_unique_upload_title,
-    _comment_text,
     _done_marker,
     _existing_upload_titles,
     _is_uploadable_meta,
@@ -253,18 +252,6 @@ def test_playlist_titles_apply_configured_prefix(monkeypatch):
     ]
 
 
-def test_comment_text_prefers_packaging_comment():
-    assert (
-        _comment_text(
-            {
-                "packaging": {"pinned_comment": "What should we decode next?"},
-                "cta_prompt": "Follow for more.",
-            }
-        )
-        == "What should we decode next?"
-    )
-
-
 class _Req:
     def __init__(self, payload):
         self.payload = payload
@@ -309,28 +296,6 @@ class _PlaylistItemsPrecheck404(_PlaylistItems):
         raise HttpError(SimpleNamespace(status=404, reason="Not Found"), b'{"error":{"message":"playlist not found"}}')
 
 
-class _CommentThreads:
-    def __init__(self):
-        self.comments = []
-
-    def insert(self, **kwargs):
-        snippet = kwargs["body"]["snippet"]
-        text = snippet["topLevelComment"]["snippet"]["textOriginal"]
-        self.comments.append((snippet["videoId"], text))
-        return _Req(
-            {
-                "id": "COMMENT_THREAD",
-                "snippet": {
-                    "topLevelComment": {
-                        "snippet": {
-                            "authorChannelId": {"value": "CHANNEL"},
-                        }
-                    }
-                },
-            }
-        )
-
-
 class _Videos:
     def __init__(self):
         self.inserts = []
@@ -353,7 +318,6 @@ class _YouTube:
     def __init__(self):
         self._playlists = _Playlists()
         self._playlist_items = _PlaylistItems()
-        self._comment_threads = _CommentThreads()
         self._videos = _Videos()
         self._thumbnails = _Thumbnails()
 
@@ -363,9 +327,6 @@ class _YouTube:
     def playlistItems(self):
         return self._playlist_items
 
-    def commentThreads(self):
-        return self._comment_threads
-
     def videos(self):
         return self._videos
 
@@ -373,7 +334,7 @@ class _YouTube:
         return self._thumbnails
 
 
-def test_post_upload_operations_adds_playlists_and_comment(monkeypatch):
+def test_post_upload_operations_adds_playlists(monkeypatch):
     monkeypatch.setenv("YOUTUBE_POST_UPLOAD_AUTOMATION", "1")
     monkeypatch.setattr(upload_youtube, "PLAYLIST_PREFIX", "Wild Brief | ")
     youtube = _YouTube()
@@ -383,7 +344,6 @@ def test_post_upload_operations_adds_playlists_and_comment(monkeypatch):
         {
             "series": "Watch The Cue",
             "category": "birds",
-            "packaging": {"pinned_comment": "Did you catch the wing?"},
         },
     )
 
@@ -395,9 +355,6 @@ def test_post_upload_operations_adds_playlists_and_comment(monkeypatch):
     ]
     assert all(item["added"] for item in result["playlists"])
     assert youtube._playlist_items.added == [("PL-1", "VID123"), ("PL-2", "VID123"), ("PL-3", "VID123")]
-    assert youtube._comment_threads.comments == [("VID123", "Did you catch the wing?")]
-    assert result["comment"]["posted"] is True
-    assert result["comment"]["pin_status"] == "not_supported_by_youtube_data_api"
 
 
 def test_post_upload_operations_inserts_after_playlist_precheck_404(monkeypatch):

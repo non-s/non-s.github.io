@@ -29,7 +29,6 @@ REQUIRED_FILES = (
     "scripts/production_smoke.py",
     ".well-known/security.txt",
     "utils/studio_reach_schema.py",
-    "utils/session_graph.py",
     "utils/api_quota_budget.py",
     "utils/feature_flags.py",
     "utils/time_semantics.py",

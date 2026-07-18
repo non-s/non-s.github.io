@@ -24,7 +24,6 @@ from scripts.upload_intent import build_upload_intent, duplicate_slot_uploaded, 
 from utils.api_quota_budget import estimate_publish_run_cost, write_quota_ledger_row
 from utils.media_lifecycle import cleanup_meta_artifacts
 from utils.publish_schedule import active_slot_label, canonical_slots, slot_label
-from utils.session_graph import pinned_comment_payload
 from utils.time_semantics import temporal_fields
 from utils.youtube_oauth import DEFAULT_SCOPES, credentials_from_token_info, load_token_info, token_status_message
 
@@ -564,26 +563,6 @@ def _playlist_titles(meta: dict) -> list[str]:
     return out or [f"{PLAYLIST_PREFIX}Highlights"]
 
 
-def _comment_text(meta: dict) -> str:
-    raw_packaging = meta.get("packaging")
-    packaging: dict = raw_packaging if isinstance(raw_packaging, dict) else {}
-    text = str(
-        meta.get("pinned_comment")
-        or packaging.get("pinned_comment")
-        or meta.get("session_comment")
-        or meta.get("cta_prompt")
-        or (
-            pinned_comment_payload(meta, meta.get("session_handoff"))
-            if isinstance(meta.get("session_handoff"), dict) and meta.get("session_handoff")
-            else ""
-        )
-        or ""
-    ).strip()
-    if not text:
-        text = "👇 Let us know how this one made you feel — drop a comment below!"
-    return text[:500]
-
-
 def _is_uploadable_meta(meta: dict) -> bool:
     audit = meta.get("pre_publish_audit")
     if isinstance(audit, dict) and audit.get("approved") is False:
@@ -934,47 +913,6 @@ def _add_video_to_playlist(youtube, playlist_id: str, video_id: str) -> str:
     return str(response.get("id") or "added")
 
 
-def _post_cta_comment(youtube, video_id: str, text: str) -> dict:
-    request = youtube.commentThreads().insert(
-        part="snippet",
-        body={
-            "snippet": {
-                "videoId": video_id,
-                "topLevelComment": {
-                    "snippet": {
-                        "textOriginal": text,
-                    }
-                },
-            }
-        },
-    )
-    response = _execute(request)
-    comment = ((response.get("snippet") or {}).get("topLevelComment") or {}).get("snippet") or {}
-    return {
-        "posted": True,
-        "comment_thread_id": response.get("id", ""),
-        "author_channel_id": ((comment.get("authorChannelId") or {}).get("value") or ""),
-        "pin_status": "not_supported_by_youtube_data_api",
-    }
-
-
-def _reply_to_parent_comment(youtube, parent_id: str, text: str) -> dict:
-    request = youtube.comments().insert(
-        part="snippet",
-        body={
-            "snippet": {
-                "parentId": parent_id,
-                "textOriginal": text,
-            }
-        },
-    )
-    response = _execute(request)
-    return {
-        "posted": True,
-        "reply_id": response.get("id", ""),
-    }
-
-
 def run_post_upload_operations(youtube, video_id: str, meta: dict) -> dict:
     """Run YouTube-only growth operations after a successful upload."""
     if os.environ.get("YOUTUBE_POST_UPLOAD_AUTOMATION", "1").lower() in {"0", "false", "no"}:
@@ -982,7 +920,6 @@ def run_post_upload_operations(youtube, video_id: str, meta: dict) -> dict:
     result: dict = {
         "enabled": True,
         "playlists": [],
-        "comment": {"posted": False, "pin_status": "not_supported_by_youtube_data_api"},
     }
     for title in _playlist_titles(meta):
         item = {"title": title, "added": False, "playlist_id": "", "error": ""}
@@ -996,27 +933,6 @@ def run_post_upload_operations(youtube, video_id: str, meta: dict) -> dict:
             item["error"] = f"{type(exc).__name__}: {exc}"
             log.warning("Playlist operation failed for %s: %s", title, exc)
         result["playlists"].append(item)
-    try:
-        result["comment"] = _post_cta_comment(youtube, video_id, _comment_text(meta))
-    except Exception as exc:
-        result["comment"] = {
-            "posted": False,
-            "error": f"{type(exc).__name__}: {exc}",
-            "pin_status": "not_supported_by_youtube_data_api",
-        }
-        log.warning("CTA comment operation failed: %s", exc)
-
-    comment_context = meta.get("comment_context")
-    if comment_context and isinstance(comment_context, dict):
-        parent_id = comment_context.get("parent_comment_id")
-        if parent_id:
-            try:
-                reply_text = f"We made this video to answer your question! Check it out here: https://youtube.com/shorts/{video_id}"
-                result["parent_reply"] = _reply_to_parent_comment(youtube, parent_id, reply_text)
-            except Exception as exc:
-                result["parent_reply"] = {"posted": False, "error": f"{type(exc).__name__}: {exc}"}
-                log.warning("Failed to reply to parent comment %s: %s", parent_id, exc)
-
     return result
 
 
@@ -1221,10 +1137,9 @@ def main() -> None:
         meta["upload_intent"] = uploaded_intent
         meta["youtube_operations"] = run_post_upload_operations(youtube, video_id, meta)
         meta["session_action"] = {
-            "applied": bool(meta["youtube_operations"].get("comment", {}).get("posted")),
-            "operator_assist": meta["youtube_operations"].get("comment", {}).get("pin_status")
-            == "not_supported_by_youtube_data_api",
-            "comment_text": _comment_text(meta),
+            "applied": False,
+            "operator_assist": False,
+            "comment_text": "",
         }
         marker = _done_marker(video_id, meta)
         marker["media_lifecycle"] = cleanup_meta_artifacts(meta)

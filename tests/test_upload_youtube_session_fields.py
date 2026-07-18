@@ -2,15 +2,7 @@ import pytest
 
 pytest.importorskip("googleapiclient")
 
-from upload_youtube import _comment_text, _done_marker
-
-
-def test_comment_text_uses_session_handoff_when_no_comment():
-    text = _comment_text(
-        {"series": "Ocean", "session_handoff": {"title": "Next ocean cue", "url": "https://youtu.be/x"}}
-    )
-
-    assert "Next ocean cue" in text
+from upload_youtube import _done_marker
 
 
 def test_done_marker_preserves_session_and_opening_fields():
