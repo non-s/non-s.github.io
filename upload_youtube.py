@@ -42,22 +42,6 @@ SCOPES = DEFAULT_SCOPES
 RETRIABLE_STATUS_CODES = {500, 502, 503, 504}
 MAX_RETRIES = 6
 PLAYLIST_PREFIX = os.environ.get("CHANNEL_PLAYLIST_PREFIX", "")
-PILLAR_PLAYLIST_BY_CATEGORY = {
-    "volcanoes": "Earth Engine",
-    "weather": "Earth Engine",
-    "rivers": "Earth Engine",
-    "mountains": "Earth Engine",
-    "geology": "Earth Engine",
-    "fungi": "Hidden Network",
-    "trees": "Hidden Network",
-    "forests": "Hidden Network",
-    "ecosystems": "Hidden Network",
-    "rare_phenomena": "Rare Earth",
-    "earth_from_space": "Planet Earth",
-    "conservation": "Planet Repair",
-    "discoveries": "Discovery Brief",
-    "plants": "Biology Brief",
-}
 
 logging.basicConfig(
     level=logging.INFO,
@@ -501,11 +485,8 @@ def _safe_label(value: object, fallback: str = "Highlights") -> str:
 
 
 def _playlist_titles(meta: dict) -> list[str]:
-    category = str(meta.get("category") or "").strip().lower()
-    pillar = PILLAR_PLAYLIST_BY_CATEGORY.get(category, "")
     labels = [
         "Start Here",
-        _safe_label(pillar, ""),
         _safe_label(meta.get("series"), ""),
         _safe_label(meta.get("category"), ""),
     ]
