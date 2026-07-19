@@ -54,6 +54,19 @@ NEW_TITLES: dict[str, str] = {
     "3Y-rn3CraqY": "Snowfall Anime Lofi — Amber Hours 🌨️",
     "SkqC0A42z1I": "Rain on the Window Anime Lofi — Amber Hours 🌧️",
     "dhFjT3Qw8uw": "Sleepy Cat Anime Lofi (1 Hour) — Amber Hours 🐾",
+    # Added 2026-07-19: 9 videos published in the gap between the original
+    # 20-video snapshot above and utils/lofi_branding.py landing -- neither
+    # this batch nor the new upload code ever touched them. Titles chosen
+    # to avoid colliding with the 16 titles already live at the time.
+    "NNSH_83oNaQ": "Study Session Anime Lofi — Amber Hours 🕯️",
+    "tOxOnwZKbNc": "Anime Study Nights — Amber Hours 🕯️",
+    "TQh9J1r2M5Y": "Midnight Rain Anime Lofi — Amber Hours 🌧️",
+    "cmjxkJhtMRw": "Rainy Window Anime Lofi — Amber Hours 🌧️",
+    "7N-Q7EYL5_Q": "Cozy Fireplace Anime Lofi — Amber Hours 🌙",
+    "FWEQ3TM8LcI": "Night City Skyline Anime Lofi — Amber Hours 🌃",
+    "akQ4DhVSmeg": "Midnight Cat Lofi — Amber Hours 🐾",
+    "zfPqPQHKKqQ": "Rain at Night Anime Lofi — Amber Hours 🌧️",
+    "pmKjOO99aWU": "Napping Cat Anime Lofi — Amber Hours 🐾",
 }
 
 
