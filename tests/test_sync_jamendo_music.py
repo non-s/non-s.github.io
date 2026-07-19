@@ -205,6 +205,20 @@ def test_download_track_writes_audio_and_attribution_sidecar(tmp_path, monkeypat
     assert meta["artist_name"] == "Train Room"
     assert meta["license_ccurl"] == "http://creativecommons.org/licenses/by/3.0/"
     assert meta["track_id"] == "99"
+    assert meta["speed"] == ""
+
+
+def test_download_track_writes_the_jamendo_tempo_when_present(tmp_path, monkeypatch):
+    monkeypatch.setattr(sync_jamendo_music, "BGM_DIR", tmp_path)
+    monkeypatch.setattr(
+        sync_jamendo_music.urllib.request, "urlretrieve", lambda url, filename: filename.write_bytes(b"x")
+    )
+
+    track = _track(track_id="5", musicinfo={"speed": "high"})
+    assert sync_jamendo_music._download_track(track) is True
+
+    meta = json.loads((tmp_path / "jamendo_5.json").read_text())
+    assert meta["speed"] == "high"
 
 
 def test_download_track_cleans_up_partial_file_on_failure(tmp_path, monkeypatch):

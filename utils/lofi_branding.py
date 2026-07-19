@@ -84,3 +84,34 @@ def playlist_bucket_for_title(title: str) -> str:
         if signal in text:
             return bucket
     return _DEFAULT_PLAYLIST_BUCKET
+
+
+# Most of this channel's moods are the same nocturnal/rainy energy by
+# design (see the module docstring), so only the two scenes that read as
+# visually busier than the rest -- a moving city skyline, a jazz cafe --
+# get pulled out of the default "calm" bucket. Keyed off _mood_label()'s
+# output (lowercased), same as HOOK_BY_MOOD.
+_LIVELY_MOODS = {"night city", "cafe jazz"}
+
+# scripts/sync_jamendo_music.py's sidecar "speed" field (Jamendo's own
+# verylow/low/medium/high tempo classification) bucketed to match
+# mood_energy()'s two buckets. "medium" is the single most common value by
+# far (~74% of the catalog checked live), so it's treated as compatible
+# with either mood -- restricting it to "lively" only would starve the
+# "calm" bucket (the one nearly every video in this niche wants) down to
+# the ~10% of tracks tagged low/verylow.
+CALM_BGM_SPEEDS = {"verylow", "low", "medium"}
+LIVELY_BGM_SPEEDS = {"medium", "high"}
+
+
+def mood_energy(mood: str) -> str:
+    """ "calm" or "lively", per _LIVELY_MOODS -- see bgm_speeds_for_mood()."""
+    return "lively" if mood.lower() in _LIVELY_MOODS else "calm"
+
+
+def bgm_speeds_for_mood(mood: str) -> set[str]:
+    """Which scripts/sync_jamendo_music.py sidecar "speed" values pair well
+    with this b-roll mood, for generate_lofi_short.py's single clip + single
+    track pairing (generate_lofi_mix.py and live_stream_dynamic.py loop the
+    whole bgm library regardless of mood, so this doesn't apply there)."""
+    return LIVELY_BGM_SPEEDS if mood_energy(mood) == "lively" else CALM_BGM_SPEEDS

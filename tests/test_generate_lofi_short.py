@@ -30,6 +30,33 @@ def test_pick_file_returns_a_match(tmp_path):
     assert picked in {tmp_path / "pixabay_1.mp4", tmp_path / "pixabay_2.mp4"}
 
 
+def test_pick_bgm_file_for_mood_returns_none_when_directory_empty(tmp_path):
+    assert lofi._pick_bgm_file_for_mood(tmp_path, "Rain Window") is None
+
+
+def test_pick_bgm_file_for_mood_prefers_a_speed_matching_the_mood_energy(tmp_path):
+    """ "Night City" is the one lively mood -- it should only ever land on
+    the medium/high-speed track, never the verylow one, even though
+    _pick_file alone would happily return either at random."""
+    _touch(tmp_path / "jamendo_1.mp3")
+    (tmp_path / "jamendo_1.json").write_text(json.dumps({"speed": "verylow"}), encoding="utf-8")
+    _touch(tmp_path / "jamendo_2.mp3")
+    (tmp_path / "jamendo_2.json").write_text(json.dumps({"speed": "high"}), encoding="utf-8")
+
+    for _ in range(20):
+        assert lofi._pick_bgm_file_for_mood(tmp_path, "Night City") == tmp_path / "jamendo_2.mp3"
+
+
+def test_pick_bgm_file_for_mood_falls_back_to_full_library_when_nothing_matches(tmp_path):
+    """A track with no "speed" sidecar field (older library entry, or a
+    Jamendo result missing the field) must still be eligible -- a Short
+    should never fail to get music just because nothing was tagged."""
+    _touch(tmp_path / "jamendo_1.mp3")
+    (tmp_path / "jamendo_1.json").write_text(json.dumps({}), encoding="utf-8")
+
+    assert lofi._pick_bgm_file_for_mood(tmp_path, "Rain Window") == tmp_path / "jamendo_1.mp3"
+
+
 def test_pick_broll_file_returns_none_when_directory_empty(tmp_path):
     assert lofi._pick_broll_file(tmp_path, "pixabay_*.mp4") is None
 

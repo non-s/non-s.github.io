@@ -28,7 +28,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from utils.broll import pick_weighted_broll_file  # noqa: E402
-from utils.lofi_branding import branded_title, playlist_bucket_for_title  # noqa: E402
+from utils.lofi_branding import bgm_speeds_for_mood, branded_title, playlist_bucket_for_title  # noqa: E402
 from utils.thumbnail_branding import brand_short_thumbnail  # noqa: E402
 
 logging.basicConfig(level=logging.INFO)
@@ -68,6 +68,21 @@ def _pick_file(directory: Path, pattern: str) -> Path | None:
     if not candidates:
         return None
     return random.choice(candidates)
+
+
+def _pick_bgm_file_for_mood(directory: Path, mood: str) -> Path | None:
+    """Prefer a track whose sidecar "speed" matches the b-roll mood's energy
+    (utils.lofi_branding.bgm_speeds_for_mood) so a busier scene doesn't get
+    paired with a half-asleep track or vice versa. Falls back to the full
+    library when no track matches -- an older/unsynced sidecar without a
+    "speed" field, or a still-small library, shouldn't ever leave a Short
+    without music."""
+    candidates = sorted(directory.glob("jamendo_*.mp3"))
+    if not candidates:
+        return None
+    wanted_speeds = bgm_speeds_for_mood(mood)
+    matches = [p for p in candidates if _load_sidecar(p).get("speed") in wanted_speeds]
+    return random.choice(matches or candidates)
 
 
 def _pick_broll_file(directory: Path, pattern: str) -> Path | None:
@@ -253,12 +268,14 @@ def main() -> int:
         )
         return 1
 
-    bgm_path = _pick_file(BGM_DIR, "jamendo_*.mp3")
+    broll_meta = _load_sidecar(broll_path)
+    mood = _mood_label(str(broll_meta.get("query") or ""))
+
+    bgm_path = _pick_bgm_file_for_mood(BGM_DIR, mood)
     if bgm_path is None:
         log.error("No bgm tracks found in %s -- run scripts/sync_jamendo_music.py first.", BGM_DIR)
         return 1
 
-    broll_meta = _load_sidecar(broll_path)
     bgm_meta = _load_sidecar(bgm_path)
     duration_s = round(random.uniform(MIN_DURATION_S, MAX_DURATION_S), 1)
 

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from utils.lofi_branding import branded_title, playlist_bucket_for_title
+from utils.lofi_branding import bgm_speeds_for_mood, branded_title, mood_energy, playlist_bucket_for_title
 
 
 def test_branded_title_uses_known_mood_hook():
@@ -38,3 +38,16 @@ def test_playlist_bucket_groups_different_cat_hooks_into_one_playlist():
 def test_playlist_bucket_falls_back_to_default_for_unmatched_title():
     assert playlist_bucket_for_title("Cozy Fireplace Anime Lofi — Amber Hours \U0001f319") == "Cozy Anime Lofi"
     assert playlist_bucket_for_title("") == "Cozy Anime Lofi"
+
+
+def test_mood_energy_is_lively_only_for_the_two_visually_busy_moods():
+    assert mood_energy("night city") == "lively"
+    assert mood_energy("Cafe Jazz") == "lively"
+    assert mood_energy("rain window") == "calm"
+    assert mood_energy("cat sleeping") == "calm"
+    assert mood_energy("some unknown mood") == "calm"
+
+
+def test_bgm_speeds_for_mood_excludes_high_energy_tracks_from_calm_moods():
+    assert bgm_speeds_for_mood("rain window") == {"verylow", "low", "medium"}
+    assert bgm_speeds_for_mood("night city") == {"medium", "high"}
