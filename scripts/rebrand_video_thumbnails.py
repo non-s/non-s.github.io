@@ -162,12 +162,28 @@ def _extract_vertical_content(path: Path) -> None:
     im.crop((x0, 0, x0 + target_w, h)).convert("RGB").save(path, quality=95)
 
 
+# Both confirmed deleted from the channel (404 videoNotFound / every
+# thumbnail size missing, including default.jpg) -- almost certainly by
+# the auto-delete-on-title-collision bug fixed in 9a3ecaa0b. Their .done
+# markers were deleted three times today and kept coming back: youtube-
+# bot.yml's "Salvar marcadores no git" step snapshots the whole
+# _videos/*.done glob from its own checkout *before* resetting to latest
+# origin/main, then unconditionally restores that whole snapshot on top --
+# so any run whose checkout predates a marker deletion resurrects it
+# regardless of what's actually on origin/main. That's a real bug in a
+# frequently-running, production-critical workflow; fixing it needs more
+# care/testing than a quick patch under time pressure, so it's a known
+# follow-up, not fixed here. Skipping these ids directly sidesteps it for
+# this script specifically.
+_KNOWN_DELETED_VIDEO_IDS = {"dhFjT3Qw8uw", "QO-lcCEaWgM"}
+
+
 def build_plan(videos_dir: Path = VIDEOS_DIR) -> list[dict]:
     plans: list[dict] = []
     for path in sorted(videos_dir.glob("*.done")):
         marker = _read_json(path)
         video_id = str(marker.get("video_id") or "")
-        if not video_id:
+        if not video_id or video_id in _KNOWN_DELETED_VIDEO_IDS:
             continue
         is_mix = path.name.startswith("mix-")
         mood = _hook_from_title(str(marker.get("title") or ""))
