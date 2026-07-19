@@ -10,8 +10,9 @@ import scripts.live_stream_dynamic as live_stream_dynamic
 def streamer(monkeypatch, tmp_path):
     monkeypatch.setattr(live_stream_dynamic.DynamicStreamer, "_get_youtube_client", lambda self: None)
     # Default to "no pinned clip" so existing tests exercise the BROLL_DIR
-    # fallback; the real repo-committed pinned clip would otherwise always
-    # win regardless of BROLL_DIR monkeypatching below.
+    # fallback; the real repo-committed pinned pool/clip would otherwise
+    # always win regardless of BROLL_DIR monkeypatching below.
+    monkeypatch.setattr(live_stream_dynamic, "PINNED_BROLL_DIR", tmp_path / "no_pinned_pool")
     monkeypatch.setattr(live_stream_dynamic, "PINNED_BROLL_CLIP", tmp_path / "no_pinned_clip.mp4")
     instance = live_stream_dynamic.DynamicStreamer("test-stream-key")
     instance.videos_dir = tmp_path / "_videos"
@@ -63,6 +64,53 @@ def test_pick_broll_clip_prefers_pinned_clip_when_present(streamer, tmp_path, mo
     monkeypatch.setattr(live_stream_dynamic, "PINNED_BROLL_CLIP", pinned)
 
     assert streamer._pick_broll_clip() == pinned
+
+
+def test_select_pinned_broll_clip_returns_none_with_no_pool_and_no_legacy_clip(tmp_path, monkeypatch):
+    monkeypatch.setattr(live_stream_dynamic, "PINNED_BROLL_DIR", tmp_path / "no_pool")
+    monkeypatch.setattr(live_stream_dynamic, "PINNED_BROLL_CLIP", tmp_path / "no_legacy.mp4")
+
+    assert live_stream_dynamic._select_pinned_broll_clip() is None
+
+
+def test_select_pinned_broll_clip_falls_back_to_legacy_clip_when_pool_absent(tmp_path, monkeypatch):
+    legacy = tmp_path / "pinned_live_clip.mp4"
+    legacy.write_bytes(b"x")
+    monkeypatch.setattr(live_stream_dynamic, "PINNED_BROLL_DIR", tmp_path / "no_pool")
+    monkeypatch.setattr(live_stream_dynamic, "PINNED_BROLL_CLIP", legacy)
+
+    assert live_stream_dynamic._select_pinned_broll_clip() == legacy
+
+
+def test_select_pinned_broll_clip_returns_the_only_pool_clip_unrotated(tmp_path, monkeypatch):
+    pool = tmp_path / "pool"
+    pool.mkdir()
+    only_clip = pool / "rain_01.mp4"
+    only_clip.write_bytes(b"x")
+    monkeypatch.setattr(live_stream_dynamic, "PINNED_BROLL_DIR", pool)
+
+    assert live_stream_dynamic._select_pinned_broll_clip() == only_clip
+
+
+def test_select_pinned_broll_clip_rotates_weekly_across_a_curated_pool(tmp_path, monkeypatch):
+    from datetime import datetime, timezone
+
+    pool = tmp_path / "pool"
+    pool.mkdir()
+    clip_a = pool / "rain_01.mp4"
+    clip_b = pool / "rain_02.mp4"
+    clip_a.write_bytes(b"x")
+    clip_b.write_bytes(b"x")
+    monkeypatch.setattr(live_stream_dynamic, "PINNED_BROLL_DIR", pool)
+    monkeypatch.setattr(live_stream_dynamic, "_PINNED_ROTATION_PERIOD_DAYS", 7)
+
+    week_one = live_stream_dynamic._select_pinned_broll_clip(datetime(2026, 7, 1, tzinfo=timezone.utc))
+    week_two = live_stream_dynamic._select_pinned_broll_clip(datetime(2026, 7, 8, tzinfo=timezone.utc))
+    same_week = live_stream_dynamic._select_pinned_broll_clip(datetime(2026, 7, 2, tzinfo=timezone.utc))
+
+    assert week_one in {clip_a, clip_b}
+    assert week_one == same_week  # still within the same 7-day period
+    assert week_two != week_one  # a full period later, rotated to the other clip
 
 
 def test_build_bgm_playlist_returns_none_when_library_empty(streamer, tmp_path, monkeypatch):

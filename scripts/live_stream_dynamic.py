@@ -62,12 +62,21 @@ log = logging.getLogger(__name__)
 BGM_DIR = ROOT / "_assets" / "audio" / "bgm"
 BROLL_DIR = ROOT / "_assets" / "video" / "lofi_broll"
 
-# The live relay loops exactly one visual, matching the real "Lofi Girl"
-# format (one animation, music rotates underneath) -- committed into the
-# repo directly (not the rotating, gitignored BROLL_DIR cache) so it's
-# never affected by that library's oldest-first rotation and survives
-# every restart with no re-sync needed.
+# The live relay loops exactly one visual at a time, matching the real
+# "Lofi Girl" format (one animation, music rotates underneath) -- committed
+# into the repo directly (not the rotating, gitignored BROLL_DIR cache) so
+# it's never affected by that library's oldest-first rotation and survives
+# every restart with no re-sync needed. A small curated pool in
+# PINNED_BROLL_DIR rotates slowly (weekly) instead of it being the exact
+# same loop forever -- still one persistent visual per stretch, just
+# refreshed periodically so a viewer who checks in for hours across
+# several days doesn't see an identical loop indefinitely. Falls back to
+# the single legacy PINNED_BROLL_CLIP untouched when the pool has 0 or 1
+# clips curated (true today -- adding more curated "rainy night" clips to
+# PINNED_BROLL_DIR is what actually turns rotation on).
+PINNED_BROLL_DIR = ROOT / "_assets" / "video" / "pinned_live_clips"
 PINNED_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_live_clip.mp4"
+_PINNED_ROTATION_PERIOD_DAYS = 7
 
 TARGET_W = 1920
 TARGET_H = 1080
@@ -93,6 +102,31 @@ _LEGACY_BROADCAST_TITLES = {
 BROADCAST_DESCRIPTION = (
     "Non-stop lofi beats, looping live -- cozy visuals and chill music to relax, study or unwind to."
 )
+
+
+def _pinned_broll_candidates() -> list[Path]:
+    if PINNED_BROLL_DIR.is_dir():
+        clips = sorted(p for p in PINNED_BROLL_DIR.glob("*.mp4") if p.is_file())
+        if clips:
+            return clips
+    return [PINNED_BROLL_CLIP] if PINNED_BROLL_CLIP.exists() else []
+
+
+def _select_pinned_broll_clip(now: datetime | None = None) -> Path | None:
+    """Deterministic (no state file needed): with N curated clips, which
+    one is "current" changes every _PINNED_ROTATION_PERIOD_DAYS days, in
+    lockstep across every relay process/restart since it's derived purely
+    from the calendar date. A single candidate (today's real state)
+    always returns that one clip -- identical to the old fixed-clip
+    behavior."""
+    candidates = _pinned_broll_candidates()
+    if not candidates:
+        return None
+    if len(candidates) == 1:
+        return candidates[0]
+    current = now or datetime.now(timezone.utc)
+    period_index = current.toordinal() // _PINNED_ROTATION_PERIOD_DAYS
+    return candidates[period_index % len(candidates)]
 
 
 def _media_duration_s(path: Path) -> float:
@@ -252,8 +286,9 @@ class DynamicStreamer:
             log.warning(f"Failed to rebrand stale broadcast: {e}")
 
     def _pick_broll_clip(self) -> Path | None:
-        if PINNED_BROLL_CLIP.exists():
-            return PINNED_BROLL_CLIP
+        pinned = _select_pinned_broll_clip()
+        if pinned:
+            return pinned
         # Same anime-style tag check sync_lofi_broll.py applies at
         # download time, re-applied here: falling back to the rotating
         # BROLL_DIR pool (no PINNED_BROLL_CLIP) must not surface a clip
