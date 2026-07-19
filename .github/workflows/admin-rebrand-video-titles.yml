@@ -100,6 +100,7 @@ jobs:
       - name: "Apply rebrand"
         if: ${{ inputs.apply == 'true' && steps.plan.outputs.planned != '0' }}
         run: |
+          set -o pipefail
           python scripts/rebrand_video_titles.py --json --apply | tee rebrand-applied.json
       - name: "Commit rebrand state"
         if: ${{ inputs.apply == 'true' && steps.plan.outputs.planned != '0' }}

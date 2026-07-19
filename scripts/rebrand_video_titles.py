@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -27,6 +28,9 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from upload_youtube import _normalise_tags, get_youtube_service  # noqa: E402
+
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger("rebrand_video_titles")
 
 VIDEOS_DIR = Path("_videos")
 
@@ -134,14 +138,22 @@ def main() -> int:
     runnable = [p for p in plans if not p.get("error")]
     applied: list[dict] = []
 
+    failed: list[dict] = []
     if args.apply and runnable:
         youtube = get_youtube_service()
         for plan in runnable:
-            response = apply_plan(youtube, plan)
+            try:
+                response = apply_plan(youtube, plan)
+            except Exception as exc:
+                # One video gone missing/private (404, permission change, ...)
+                # must not sink the other 19 -- log it and keep going.
+                log.warning("videos.update failed for %s: %s", plan["video_id"], exc)
+                failed.append({"video_id": plan["video_id"], "error": str(exc)})
+                continue
             write_marker_rebrand(plan, response)
             applied.append({"video_id": plan["video_id"], "after_title": plan["after_title"]})
 
-    payload = {"planned": len(runnable), "applied": len(applied), "plans": plans}
+    payload = {"planned": len(runnable), "applied": len(applied), "failed": failed, "plans": plans}
     if args.json:
         print(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
@@ -150,8 +162,8 @@ def main() -> int:
                 print(f"{plan['video_id']}: ERROR {plan['error']}")
             else:
                 print(f"{plan['video_id']}: {plan['before_title']!r} -> {plan['after_title']!r}")
-        print(f"planned={len(runnable)} applied={len(applied)}")
-    return 0
+        print(f"planned={len(runnable)} applied={len(applied)} failed={len(failed)}")
+    return 1 if failed and not applied else 0
 
 
 if __name__ == "__main__":
