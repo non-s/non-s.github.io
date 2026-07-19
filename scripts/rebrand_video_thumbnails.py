@@ -59,24 +59,30 @@ THUMB_TIMEOUT_S = 20
 # inside the panel/frame).
 _THUMBNAIL_BRANDING_DEPLOYED_AT = 1784419627
 # thumbnails().set() has its own per-account rate limit, separate from the
-# daily quota budget -- checked live, blasting through 20 calls in ~10s hit
-# "uploadRateLimitExceeded" (HTTP 429) on call #2 and every call after.
-# Spacing calls out and backing off on a 429 is the fix, not quota.
-_BETWEEN_VIDEOS_S = 8.0
-_RATE_LIMIT_BACKOFFS_S = (30, 60, 120)
+# daily quota budget. Checked live, twice: blasting through calls with no
+# delay hits "uploadRateLimitExceeded" (HTTP 429) on call #2; spacing
+# calls 8s apart and backing off up to 30+60+120s on a 429 *still* didn't
+# clear it for several videos in a row -- this isn't a short burst window,
+# it's a longer-lived cooldown no in-job retry can wait out without
+# blowing the workflow timeout. A small courtesy delay is kept, but a 429
+# now stops the whole run instead of retrying: whatever got applied
+# stays applied (idempotent marker check means the rest just picks up on
+# the next run), and the job exits quickly instead of burning ~20 minutes
+# retrying calls that won't succeed.
+_BETWEEN_VIDEOS_S = 3.0
 
 
-def _set_thumbnail_with_retry(youtube, video_id: str, thumb_path: Path) -> None:
-    for attempt, backoff in enumerate((0, *_RATE_LIMIT_BACKOFFS_S)):
-        if backoff:
-            log.info("thumbnail rate-limited for %s, waiting %ds before retry %d", video_id, backoff, attempt)
-            time.sleep(backoff)
-        try:
-            youtube.thumbnails().set(videoId=video_id, media_body=MediaFileUpload(str(thumb_path))).execute()
-            return
-        except HttpError as exc:
-            if exc.resp.status != 429 or attempt == len(_RATE_LIMIT_BACKOFFS_S):
-                raise
+class _RateLimited(Exception):
+    pass
+
+
+def _set_thumbnail(youtube, video_id: str, thumb_path: Path) -> None:
+    try:
+        youtube.thumbnails().set(videoId=video_id, media_body=MediaFileUpload(str(thumb_path))).execute()
+    except HttpError as exc:
+        if exc.resp.status == 429:
+            raise _RateLimited(str(exc)) from exc
+        raise
 
 
 # Checked in order; YouTube serves a small grey placeholder JPEG (~1-2 KB)
@@ -193,7 +199,7 @@ def apply_plan(youtube, plan: dict, tmp_dir: Path) -> None:
     else:
         _extract_vertical_content(thumb_path)
         brand_short_thumbnail(thumb_path, plan["mood"])
-    _set_thumbnail_with_retry(youtube, plan["video_id"], thumb_path)
+    _set_thumbnail(youtube, plan["video_id"], thumb_path)
     snippet = {
         "title": plan["title"],
         "description": plan["description"],
@@ -230,6 +236,7 @@ def main() -> int:
     runnable = [p for p in plans if not p["already_done"]]
     applied: list[dict] = []
     failed: list[dict] = []
+    rate_limited = False
 
     if args.apply and runnable:
         youtube = get_youtube_service()
@@ -240,6 +247,17 @@ def main() -> int:
                     time.sleep(_BETWEEN_VIDEOS_S)
                 try:
                     apply_plan(youtube, plan, tmp_dir)
+                except _RateLimited as exc:
+                    log.warning(
+                        "thumbnail upload rate-limited at %s -- stopping this run, %d/%d already applied: %s",
+                        plan["video_id"],
+                        len(applied),
+                        len(runnable),
+                        exc,
+                    )
+                    failed.append({"video_id": plan["video_id"], "error": f"rate_limited: {exc}"})
+                    rate_limited = True
+                    break
                 except Exception as exc:
                     log.warning("thumbnail/tag refresh failed for %s: %s", plan["video_id"], exc)
                     failed.append({"video_id": plan["video_id"], "error": str(exc)})
@@ -247,7 +265,13 @@ def main() -> int:
                 write_marker_done(plan)
                 applied.append({"video_id": plan["video_id"], "mood": plan["mood"]})
 
-    payload = {"planned": len(runnable), "applied": len(applied), "failed": failed, "plans": plans}
+    payload = {
+        "planned": len(runnable),
+        "applied": len(applied),
+        "failed": failed,
+        "rate_limited": rate_limited,
+        "plans": plans,
+    }
     if args.json:
         print(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
