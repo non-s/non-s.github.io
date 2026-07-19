@@ -150,69 +150,39 @@ def test_rejected_pre_publish_audit_is_not_uploadable(tmp_path):
     )
 
 
-def test_done_marker_preserves_full_narration_script():
+def test_done_marker_preserves_lofi_production_signals():
+    """Regression: _done_marker() used to silently drop duration_s/story_id/
+    bgm_track_id/bgm_license_ccurl (missing from its old ~90-field schema
+    despite both generators always setting them on meta) while persisting
+    ~75 narrated-content fields (gbif, narrator_voice, humanity, ...) that
+    nothing in the lofi pipeline -- or anything downstream -- ever reads."""
     marker = _done_marker(
         "abc123",
         {
-            "title": "Octopus",
-            "script": "Octopuses taste with their arms. Each sucker reads chemical "
-            "signals before the brain ever gets involved.",
-        },
-    )
-    assert marker["script"] == (
-        "Octopuses taste with their arms. Each sucker reads chemical " "signals before the brain ever gets involved."
-    )
-
-
-def test_done_marker_defaults_script_to_empty_string():
-    marker = _done_marker("abc123", {"title": "Octopus"})
-    assert marker["script"] == ""
-
-
-def test_done_marker_preserves_production_quality_signals():
-    marker = _done_marker(
-        "abc123",
-        {
-            "title": "Octopus",
-            "has_broll": True,
-            "has_captions": True,
-            "script_quality_grade": 9,
-            "visual_qa": {"checked": True, "approved": True, "thumbnail_quality": 8},
-            "humanity": {"score": 88, "label": "signature"},
-            "studio_polish": {"applied": True, "before_score": 20, "after_score": 88},
-            "studio_state": "polished",
-            "ai_rewrite": {"attempted": True, "accepted": True},
-            "pre_publish_audit": {"approved": True, "score": 92},
-            "monetization_audit": {"approved": True, "score": 94},
-            "seo_score": {"score": 96},
-            "seo_optimisation": {"applied": True},
-            "loop_render_applied": {"final_line": "Now the wing at the start makes sense."},
-            "end_card_text": "WATCH THE WING AGAIN",
-            "variant_assignment_log": {"written": 7},
-            "cta_prompt": "Follow for more animal facts.",
-            "replay_prompt": "End by pointing back to the wing.",
+            "title": "Rainy Night Anime Lofi — Amber Hours",
+            "duration_s": 42.5,
+            "story_id": "lofi-1700000000-1234",
+            "bgm_track_id": "99",
+            "bgm_license_ccurl": "http://creativecommons.org/licenses/by/3.0/",
+            "pre_publish_audit": {"approved": True, "reason": "lofi_no_claims_to_vet"},
             "youtube_operations": {"enabled": True},
         },
     )
     assert marker["url"] == "https://www.youtube.com/shorts/abc123"
-    assert marker["has_broll"] is True
-    assert marker["has_captions"] is True
-    assert marker["script_quality_grade"] == 9
-    assert marker["visual_qa"]["thumbnail_quality"] == 8
-    assert marker["humanity"]["label"] == "signature"
-    assert marker["studio_polish"]["applied"] is True
-    assert marker["studio_state"] == "polished"
-    assert marker["ai_rewrite"]["accepted"] is True
-    assert marker["pre_publish_audit"]["score"] == 92
-    assert marker["monetization_audit"]["score"] == 94
-    assert marker["seo_score"]["score"] == 96
-    assert marker["seo_optimisation"]["applied"] is True
-    assert marker["loop_render_applied"]["final_line"].startswith("Now the wing")
-    assert marker["end_card_text"] == "WATCH THE WING AGAIN"
-    assert marker["variant_assignment_log"]["written"] == 7
-    assert marker["cta_prompt"] == "Follow for more animal facts."
-    assert marker["replay_prompt"].startswith("End by")
+    assert marker["duration_s"] == 42.5
+    assert marker["story_id"] == "lofi-1700000000-1234"
+    assert marker["bgm_track_id"] == "99"
+    assert marker["bgm_license_ccurl"] == "http://creativecommons.org/licenses/by/3.0/"
+    assert marker["pre_publish_audit"]["approved"] is True
     assert marker["youtube_operations"]["enabled"] is True
+
+
+def test_done_marker_defaults_lofi_fields_when_absent():
+    marker = _done_marker("abc123", {"title": "Cozy Anime Lofi"})
+    assert marker["duration_s"] == 0.0
+    assert marker["story_id"] == ""
+    assert marker["bgm_track_id"] == ""
+    assert marker["bgm_license_ccurl"] == ""
 
 
 def test_done_marker_uses_scheduled_publish_time_for_temporal_fields():

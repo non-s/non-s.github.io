@@ -511,86 +511,40 @@ def _is_uploadable_meta(meta: dict) -> bool:
 
 
 def _done_marker(video_id: str, meta: dict) -> dict:
-    """Persist the production signals needed by analytics and digest."""
+    """Persist the production signals needed by analytics and digest.
+
+    Trimmed 2026-07-19 from ~90 fields to the ones the current lofi
+    pipeline (or a script that reads a marker afterward) actually
+    populates or consumes -- confirmed via a repo-wide grep that the
+    removed fields (gbif, narrator_voice, claim_risk, hook_library_score,
+    ...) were never read anywhere outside this function and its own tests,
+    leftover schema from the narrated nature-content pipeline the channel
+    pivoted away from. duration_s/story_id/bgm_track_id/bgm_license_ccurl
+    are new here: both generators have set them on `meta` all along, but
+    they weren't in the old `keys` tuple, so they were silently dropped
+    from every published marker.
+    """
     keys = (
         "title",
         "description",
-        "script",
         "tags",
         "category",
         "series",
-        "editorial",
         "is_short",
-        "has_broll",
-        "has_captions",
-        "script_quality_grade",
-        "production_quality",
-        "pexels_video_id",
-        "pexels_download_url",
-        "source_clip_id",
+        "duration_s",
+        "story_id",
         "source",
+        "source_clip_id",
         "source_url",
         "source_license",
         "source_license_evidence",
-        "source_creator",
-        "source_collection",
-        "rights_policy",
-        "commons_page_url",
-        "commons_license",
-        "commons_artist",
-        "gbif",
-        "visual_qa",
-        "visual_ctr",
-        "experiments",
-        "hook",
-        "story_format",
-        "hook_audit",
-        "title_audit",
-        "narrator_voice",
-        "human_voice",
-        "humanity",
-        "studio_polish",
-        "studio_state",
-        "ai_rewrite",
+        "pexels_video_id",
+        "bgm_track_id",
+        "bgm_license_ccurl",
         "pre_publish_audit",
-        "monetization_audit",
-        "seo_score",
-        "seo_optimisation",
-        "seo_lint",
-        "music_bed_variant",
-        "publish_score",
-        "youtube_brain",
         "packaging",
         "pinned_comment",
-        "opportunity_score",
-        "retention_score",
-        "weak_content",
-        "subscriber_conversion",
-        "loop_render_applied",
-        "end_card_text",
-        "variant_assignment_log",
-        "cta_prompt",
-        "replay_prompt",
         "youtube_operations",
-        "opening_audit",
-        "opening_gate_v2",
-        "story_pattern",
-        "hook_library",
-        "hook_library_score",
-        "payoff_control",
-        "payoff_second",
-        "loop_semantics",
-        "loop_density",
-        "callback_keyword_overlap",
-        "claim_risk",
-        "rights_guard",
-        "source_provenance",
-        "originality_pack",
-        "frame_zero_packaging",
-        "retention_contract",
-        "search_intent",
-        "next_episode_question",
-        "search_enrichment",
         "publish_ts_utc",
         "scheduled_publish_at",
         "youtube_privacy",
@@ -601,89 +555,29 @@ def _done_marker(video_id: str, meta: dict) -> dict:
         "views_regime",
         "upload_intent_key",
         "upload_intent",
-        "session_handoff",
-        "session_action",
-        "audience_strategy",
         "upload_title_dedupe",
     )
     defaults = {
         "title": "",
         "description": "",
-        "script": "",
         "tags": [],
         "category": "",
         "series": "",
-        "editorial": {},
         "is_short": True,
-        "has_broll": False,
-        "has_captions": False,
-        "production_quality": {},
-        "pexels_video_id": "",
-        "pexels_download_url": "",
-        "source_clip_id": "",
+        "duration_s": 0.0,
+        "story_id": "",
         "source": "",
+        "source_clip_id": "",
         "source_url": "",
         "source_license": "",
         "source_license_evidence": "",
-        "source_creator": "",
-        "source_collection": "",
-        "rights_policy": "",
-        "commons_page_url": "",
-        "commons_license": "",
-        "commons_artist": "",
-        "gbif": {},
-        "visual_qa": {},
-        "visual_ctr": {},
-        "experiments": {},
-        "hook": "",
-        "story_format": "",
-        "hook_audit": {},
-        "title_audit": {},
-        "narrator_voice": "",
-        "human_voice": {},
-        "humanity": {},
-        "studio_polish": {},
-        "studio_state": "",
-        "ai_rewrite": {},
+        "pexels_video_id": "",
+        "bgm_track_id": "",
+        "bgm_license_ccurl": "",
         "pre_publish_audit": {},
-        "monetization_audit": {},
-        "seo_score": {},
-        "seo_optimisation": {},
-        "seo_lint": {},
-        "music_bed_variant": "",
-        "publish_score": {},
-        "youtube_brain": {},
         "packaging": {},
         "pinned_comment": "",
-        "opportunity_score": {},
-        "retention_score": {},
-        "weak_content": {},
-        "subscriber_conversion": {},
-        "loop_render_applied": {},
-        "end_card_text": "",
-        "variant_assignment_log": {},
-        "cta_prompt": "",
-        "replay_prompt": "",
         "youtube_operations": {},
-        "opening_audit": {},
-        "opening_gate_v2": {},
-        "story_pattern": {},
-        "hook_library": {},
-        "hook_library_score": {},
-        "payoff_control": {},
-        "payoff_second": 0,
-        "loop_semantics": {},
-        "loop_density": 0,
-        "callback_keyword_overlap": 0,
-        "claim_risk": {},
-        "rights_guard": {},
-        "source_provenance": {},
-        "originality_pack": {},
-        "frame_zero_packaging": {},
-        "retention_contract": {},
-        "search_intent": {},
-        "next_episode_question": "",
-        "search_enrichment": {},
         "publish_ts_utc": "",
         "scheduled_publish_at": "",
         "publish_slot": "",
@@ -694,14 +588,9 @@ def _done_marker(video_id: str, meta: dict) -> dict:
         "views_regime": "",
         "upload_intent_key": "",
         "upload_intent": {},
-        "session_handoff": {},
-        "session_action": {},
-        "audience_strategy": {},
         "upload_title_dedupe": {},
     }
     marker = {key: meta.get(key, defaults.get(key)) for key in keys}
-    if not marker.get("subscriber_conversion") and isinstance(marker.get("packaging"), dict):
-        marker["subscriber_conversion"] = marker["packaging"].get("subscriber_conversion", {})
     uploaded_at = datetime.now(timezone.utc)
     public_at = marker.get("scheduled_publish_at") or marker.get("publish_ts_utc") or uploaded_at
     marker.update(temporal_fields(public_at, now=uploaded_at))
@@ -715,49 +604,6 @@ def _done_marker(video_id: str, meta: dict) -> dict:
         }
     )
     return marker
-
-
-def _adopt_existing_channel_upload(meta_file: Path, meta: dict, intent: dict, upload: dict) -> None:
-    video_id = str(upload.get("video_id") or "").strip()
-    uploaded_intent = {
-        **intent,
-        "status": "uploaded",
-        "video_id": video_id,
-        "created_at": datetime.now(timezone.utc).isoformat(),
-        "adopted_from": "youtube_channel_title_duplicate",
-    }
-    meta["upload_intent_key"] = intent["idempotency_key"]
-    meta["upload_intent"] = uploaded_intent
-    meta["youtube_operations"] = {
-        "enabled": False,
-        "reason": "channel_title_duplicate_adopted",
-        "matched_upload": upload,
-    }
-    meta["session_action"] = {
-        "applied": False,
-        "operator_assist": False,
-        "comment_text": "",
-    }
-    write_upload_intent(intent)
-    write_upload_intent(uploaded_intent)
-    marker = _done_marker(video_id, meta)
-    marker["adopted_existing_upload"] = upload
-    marker["media_lifecycle"] = cleanup_meta_artifacts(meta)
-    meta_file.with_suffix(".done").write_text(json.dumps(marker, indent=2), encoding="utf-8")
-    meta_file.unlink(missing_ok=True)
-
-
-def _skip_tracked_channel_duplicate(meta_file: Path, meta: dict, intent: dict, upload: dict) -> None:
-    skipped_intent = {
-        **intent,
-        "status": "skipped_duplicate",
-        "video_id": str(upload.get("video_id") or ""),
-        "created_at": datetime.now(timezone.utc).isoformat(),
-        "skip_reason": "channel_title_duplicate_already_tracked",
-    }
-    write_upload_intent(skipped_intent)
-    cleanup_meta_artifacts(meta)
-    meta_file.unlink(missing_ok=True)
 
 
 def _execute(request) -> dict:
@@ -1059,11 +905,6 @@ def main() -> None:
         write_upload_intent(uploaded_intent)
         meta["upload_intent"] = uploaded_intent
         meta["youtube_operations"] = run_post_upload_operations(youtube, video_id, meta)
-        meta["session_action"] = {
-            "applied": False,
-            "operator_assist": False,
-            "comment_text": "",
-        }
         marker = _done_marker(video_id, meta)
         marker["media_lifecycle"] = cleanup_meta_artifacts(meta)
         meta_file.with_suffix(".done").write_text(
