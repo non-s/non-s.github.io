@@ -17,8 +17,9 @@ Only the current `main` branch is maintained. There are no LTS branches.
 
 In scope:
 
-- The Python automation pipeline (`fetch_animals.py`, `generate_shorts.py`,
-  `upload_youtube.py`, `auth_youtube.py`, `utils/`).
+- The Python automation pipeline (`generate_lofi_short.py`,
+  `generate_lofi_mix.py`, `upload_youtube.py`, `auth_youtube.py`,
+  `scripts/live_stream_dynamic.py`, `utils/`).
 - The GitHub Actions workflows under `.github/workflows/`.
 
 Out of scope:
@@ -53,14 +54,6 @@ Required:
 Optional:
 
 - `YOUTUBE_STREAM_KEY` (24/7 live relay only)
-- `WILD_BRIEF_RSS_URLS`
-- `WILD_BRIEF_GMAIL_ALERTS`
-- `WILD_BRIEF_ALERT_TO`
-- `COQUI_TTS_COMMAND`
-- `COQUI_TTS_MODEL`
-- `AUDIO_LIBRARY_MANIFEST`
-- `EXPERIMENTS_FILE`
-- `VARIANT_ASSIGNMENTS_FILE`
 - `ADAPTIVE_CADENCE_ENABLED`
 - `ALLOW_FLEX_SLOT`
 - `FLEX_SLOT_UTC`
