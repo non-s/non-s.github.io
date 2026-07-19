@@ -107,7 +107,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add _videos/*.done
+          git add _videos/*.done _data/analytics/api_quota_ledger.jsonl _data/analytics/api_quota_latest.json
           if git diff --cached --quiet; then
             echo "No rebrand state to commit."
             exit 0
