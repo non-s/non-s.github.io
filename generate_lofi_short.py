@@ -29,6 +29,7 @@ if str(ROOT) not in sys.path:
 
 from utils.broll import is_on_brand_broll_clip  # noqa: E402
 from utils.lofi_branding import branded_title  # noqa: E402
+from utils.thumbnail_branding import brand_short_thumbnail  # noqa: E402
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("generate_lofi_short")
@@ -47,6 +48,7 @@ FADE_S = 1.5
 CATEGORY = "lofi"
 SERIES = "Lofi Beats"
 DEFAULT_TAGS = ["lofi", "lofi beats", "chill music", "study music", "relax", "chillhop", "ambient"]
+
 
 def _pick_file(directory: Path, pattern: str) -> Path | None:
     candidates = sorted(directory.glob(pattern))
@@ -254,6 +256,10 @@ def main() -> int:
     metadata = _build_metadata(broll_meta, bgm_meta, duration_s, video_path, story_id=slug)
     thumb_path = VIDEOS_DIR / f"short-{slug}_thumb.jpg"
     if _extract_thumbnail(video_path, thumb_path):
+        try:
+            brand_short_thumbnail(thumb_path, _mood_label(str(broll_meta.get("query") or "")))
+        except Exception as exc:
+            log.warning("thumbnail branding failed for %s, keeping raw frame: %s", slug, exc)
         metadata["thumbnail"] = str(thumb_path)
     else:
         log.warning("No custom thumbnail for %s -- YouTube will auto-pick a frame.", slug)

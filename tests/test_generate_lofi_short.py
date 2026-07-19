@@ -291,6 +291,31 @@ def test_main_writes_video_and_metadata_pair_on_success(tmp_path, monkeypatch):
     assert Path(meta["thumbnail"]).exists()
 
 
+def test_main_brands_the_thumbnail_with_the_broll_mood(tmp_path, monkeypatch):
+    broll_dir = tmp_path / "broll"
+    bgm_dir = tmp_path / "bgm"
+    videos_dir = tmp_path / "_videos"
+    broll_dir.mkdir()
+    bgm_dir.mkdir()
+    _touch_broll(broll_dir, query="rain window cozy")
+    _touch(bgm_dir / "jamendo_1.mp3")
+
+    monkeypatch.setattr(lofi, "VIDEOS_DIR", videos_dir)
+    monkeypatch.setattr(lofi, "BROLL_DIR", broll_dir)
+    monkeypatch.setattr(lofi, "BGM_DIR", bgm_dir)
+    monkeypatch.setattr(lofi, "_compose_short", lambda broll, bgm, out, dur: out.write_bytes(b"x") or True)
+    monkeypatch.setattr(
+        lofi, "_extract_thumbnail", lambda video_path, thumb_path, **k: thumb_path.write_bytes(b"x") or True
+    )
+
+    calls = []
+    monkeypatch.setattr(lofi, "brand_short_thumbnail", lambda path, mood: calls.append((path, mood)))
+
+    assert lofi.main() == 0
+    assert len(calls) == 1
+    assert calls[0][1] == "Rain Window"
+
+
 def test_main_omits_thumbnail_field_when_extraction_fails(tmp_path, monkeypatch):
     broll_dir = tmp_path / "broll"
     bgm_dir = tmp_path / "bgm"
