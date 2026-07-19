@@ -41,7 +41,7 @@ ROOT = Path(__file__).resolve().parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from utils.broll import is_on_brand_broll_clip  # noqa: E402
+from utils.broll import pick_weighted_broll_file  # noqa: E402
 from utils.lofi_branding import branded_title  # noqa: E402
 from utils.thumbnail_branding import brand_mix_thumbnail  # noqa: E402
 
@@ -83,14 +83,10 @@ def _pick_file(directory: Path, pattern: str) -> Path | None:
 
 
 def _pick_broll_file(directory: Path, pattern: str) -> Path | None:
-    """Like _pick_file, but only among clips with anime-style tag evidence.
-
-    See utils.broll.is_on_brand_broll_clip.
+    """Like _pick_file, but only among on-brand clips, weighted toward the
+    rainy-night/cozy sub-niche -- see utils.broll.pick_weighted_broll_file.
     """
-    candidates = [p for p in sorted(directory.glob(pattern)) if is_on_brand_broll_clip(p)]
-    if not candidates:
-        return None
-    return random.choice(candidates)
+    return pick_weighted_broll_file(directory, pattern)
 
 
 def _load_sidecar(media_path: Path) -> dict:

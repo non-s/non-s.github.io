@@ -47,6 +47,17 @@ LOFI_QUERIES = [
     "anime cat sleeping cozy",
     "anime library reading",
     "anime snow window night",
+    # Weighted toward the rainy-night/cozy sub-niche identity picked in
+    # chat on 2026-07-19 (small channel, so competing on a broad "lofi"
+    # search is unwinnable -- see rainy-night videos already using this
+    # identity). Each variant's first two non-"anime" words match an
+    # existing utils/lofi_branding.py mood key ("rain window"/"night
+    # city"/"snow window") on purpose, so this only makes those moods get
+    # picked more often -- it doesn't invent new untitled moods.
+    "anime rain window thunderstorm",
+    "anime night city rain",
+    "anime snow window cozy",
+    "anime rain window sleepy",
 ]
 
 

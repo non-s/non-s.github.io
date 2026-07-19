@@ -49,6 +49,45 @@ def test_is_on_brand_broll_clip_rejects_corrupt_sidecar(tmp_path):
     assert broll.is_on_brand_broll_clip(video_path) is False
 
 
+def _write_clip(directory, name, query, tags="anime, cozy"):
+    video_path = directory / name
+    video_path.write_bytes(b"x")
+    video_path.with_suffix(".json").write_text(json.dumps({"query": query, "tags": tags}))
+    return video_path
+
+
+def test_is_preferred_mood_clip_matches_rain_night_snow_queries(tmp_path):
+    rain = _write_clip(tmp_path, "pixabay_1.mp4", "anime rain window cozy")
+    night = _write_clip(tmp_path, "pixabay_2.mp4", "anime night city window")
+    snow = _write_clip(tmp_path, "pixabay_3.mp4", "anime snow window night")
+    cat = _write_clip(tmp_path, "pixabay_4.mp4", "anime cat sleeping cozy")
+    assert broll.is_preferred_mood_clip(rain) is True
+    assert broll.is_preferred_mood_clip(night) is True
+    assert broll.is_preferred_mood_clip(snow) is True
+    assert broll.is_preferred_mood_clip(cat) is False
+
+
+def test_pick_weighted_broll_file_returns_none_when_directory_empty(tmp_path):
+    assert broll.pick_weighted_broll_file(tmp_path, "pixabay_*.mp4") is None
+
+
+def test_pick_weighted_broll_file_skips_offbrand_clips(tmp_path):
+    _write_clip(tmp_path, "pixabay_1.mp4", "man library book", tags="man, library, book")
+    assert broll.pick_weighted_broll_file(tmp_path, "pixabay_*.mp4") is None
+
+
+def test_pick_weighted_broll_file_favors_preferred_mood_over_many_trials(tmp_path):
+    rain = _write_clip(tmp_path, "pixabay_1.mp4", "anime rain window cozy")
+    cat = _write_clip(tmp_path, "pixabay_2.mp4", "anime cat sleeping cozy")
+    picks = [broll.pick_weighted_broll_file(tmp_path, "pixabay_*.mp4") for _ in range(400)]
+    rain_count = picks.count(rain)
+    cat_count = picks.count(cat)
+    assert rain_count + cat_count == 400
+    # weighted 3:1 -- allow a wide margin so this isn't flaky, just checks
+    # the preferred clip clearly dominates rather than a coin flip.
+    assert rain_count > cat_count * 1.5
+
+
 def _pixabay_payload():
     return {
         "hits": [

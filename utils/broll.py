@@ -13,6 +13,7 @@ import hashlib
 import json
 import logging
 import os
+import random
 import time
 from pathlib import Path
 
@@ -93,6 +94,42 @@ def is_on_brand_broll_clip(video_path: Path) -> bool:
     if not isinstance(meta, dict):
         return False
     return looks_anime_styled(str(meta.get("tags") or ""))
+
+
+_PREFERRED_MOOD_SIGNALS = ("rain", "night", "snow")
+_PREFERRED_WEIGHT = 3
+
+
+def _clip_query(video_path: Path) -> str:
+    meta_path = video_path.with_suffix(".json")
+    try:
+        meta = json.loads(meta_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return ""
+    return str(meta.get("query") or "") if isinstance(meta, dict) else ""
+
+
+def is_preferred_mood_clip(video_path: Path) -> bool:
+    """True if this clip's source query names the rainy-night/cozy-anime
+    sub-niche picked in chat on 2026-07-19. Used to weight random b-roll
+    selection toward it so new Shorts/mixes actually reflect the channel's
+    chosen identity instead of diluting it evenly across all ten b-roll
+    moods (the same problem that started that conversation).
+    """
+    query = _clip_query(video_path).lower()
+    return any(signal in query for signal in _PREFERRED_MOOD_SIGNALS)
+
+
+def pick_weighted_broll_file(directory: Path, pattern: str) -> Path | None:
+    """Random pick among on-brand clips in `directory`, but a rainy-night/
+    night-city/snow clip is _PREFERRED_WEIGHT times as likely to be chosen
+    as any other single clip.
+    """
+    candidates = [p for p in sorted(directory.glob(pattern)) if is_on_brand_broll_clip(p)]
+    if not candidates:
+        return None
+    weights = [_PREFERRED_WEIGHT if is_preferred_mood_clip(p) else 1 for p in candidates]
+    return random.choices(candidates, weights=weights, k=1)[0]
 
 
 @dataclasses.dataclass
