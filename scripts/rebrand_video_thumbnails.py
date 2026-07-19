@@ -28,10 +28,12 @@ import json
 import logging
 import sys
 import tempfile
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
+from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 from PIL import Image
 
@@ -56,6 +58,27 @@ THUMB_TIMEOUT_S = 20
 # time (checked live: produces a smaller nested copy of the template
 # inside the panel/frame).
 _THUMBNAIL_BRANDING_DEPLOYED_AT = 1784419627
+# thumbnails().set() has its own per-account rate limit, separate from the
+# daily quota budget -- checked live, blasting through 20 calls in ~10s hit
+# "uploadRateLimitExceeded" (HTTP 429) on call #2 and every call after.
+# Spacing calls out and backing off on a 429 is the fix, not quota.
+_BETWEEN_VIDEOS_S = 8.0
+_RATE_LIMIT_BACKOFFS_S = (30, 60, 120)
+
+
+def _set_thumbnail_with_retry(youtube, video_id: str, thumb_path: Path) -> None:
+    for attempt, backoff in enumerate((0, *_RATE_LIMIT_BACKOFFS_S)):
+        if backoff:
+            log.info("thumbnail rate-limited for %s, waiting %ds before retry %d", video_id, backoff, attempt)
+            time.sleep(backoff)
+        try:
+            youtube.thumbnails().set(videoId=video_id, media_body=MediaFileUpload(str(thumb_path))).execute()
+            return
+        except HttpError as exc:
+            if exc.resp.status != 429 or attempt == len(_RATE_LIMIT_BACKOFFS_S):
+                raise
+
+
 # Checked in order; YouTube serves a small grey placeholder JPEG (~1-2 KB)
 # for a resolution it never generated for a given video, so falling
 # through on a tiny response is how a real still gets found.
@@ -170,7 +193,7 @@ def apply_plan(youtube, plan: dict, tmp_dir: Path) -> None:
     else:
         _extract_vertical_content(thumb_path)
         brand_short_thumbnail(thumb_path, plan["mood"])
-    youtube.thumbnails().set(videoId=plan["video_id"], media_body=MediaFileUpload(str(thumb_path))).execute()
+    _set_thumbnail_with_retry(youtube, plan["video_id"], thumb_path)
     snippet = {
         "title": plan["title"],
         "description": plan["description"],
@@ -212,7 +235,9 @@ def main() -> int:
         youtube = get_youtube_service()
         with tempfile.TemporaryDirectory() as tmp:
             tmp_dir = Path(tmp)
-            for plan in runnable:
+            for i, plan in enumerate(runnable):
+                if i:
+                    time.sleep(_BETWEEN_VIDEOS_S)
                 try:
                     apply_plan(youtube, plan, tmp_dir)
                 except Exception as exc:
