@@ -188,7 +188,9 @@ def build_plan(videos_dir: Path = VIDEOS_DIR) -> list[dict]:
         is_mix = path.name.startswith("mix-")
         mood = _hook_from_title(str(marker.get("title") or ""))
         base_tags = MIX_DEFAULT_TAGS if is_mix else SHORT_DEFAULT_TAGS
-        tags = _normalise_tags(list(base_tags) + [mood.lower()])
+        # Mood leads, matching the generators (see their _build_metadata()
+        # comment) -- keeps a consistent tag order across every video.
+        tags = _normalise_tags([mood.lower()] + list(base_tags))
         generated_after_deploy = _slug_timestamp(path) >= _THUMBNAIL_BRANDING_DEPLOYED_AT
         plans.append(
             {

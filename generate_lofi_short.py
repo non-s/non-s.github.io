@@ -124,9 +124,15 @@ def _build_metadata(broll_meta: dict, bgm_meta: dict, duration_s: float, video_p
     if photographer:
         description_lines.append(f"\U0001f3ac Visual: Pixabay / {photographer}")
 
-    tags = list(DEFAULT_TAGS)
-    if mood.lower() not in {tag.lower() for tag in tags}:
-        tags.append(mood.lower())
+    # Mood tag leads (not trails) DEFAULT_TAGS on purpose: it's the only
+    # per-video-specific tag, both for SEO (most specific term first) and
+    # because upload_youtube.py's title-collision dedup tries tag values in
+    # list order for a detail to append -- with the mood last, every fixed
+    # DEFAULT_TAGS entry got a chance to win first, so unrelated videos
+    # kept landing on the exact same dedup suffix ("| Rainy Night Lofi")
+    # regardless of their own mood.
+    tags = [mood.lower()] if mood.lower() not in {tag.lower() for tag in DEFAULT_TAGS} else []
+    tags += DEFAULT_TAGS
 
     return {
         "title": title,

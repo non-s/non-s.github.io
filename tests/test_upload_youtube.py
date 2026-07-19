@@ -83,6 +83,37 @@ def test_unique_upload_title_leaves_fresh_title_unchanged():
     assert meta["title"] == "Sharks sense tiny electric fields"
 
 
+def test_unique_upload_title_uses_the_video_own_mood_not_a_fixed_tag():
+    """Regression: with the mood tag last in a lofi video's tag list,
+    _candidate_title_details() always exhausted the shared DEFAULT_TAGS
+    entries first, so any two colliding lofi titles landed on the exact
+    same dedup suffix regardless of their own mood -- generate_lofi_short.py
+    now puts the mood tag first instead."""
+    base_tags = ["anime lofi", "rainy night lofi", "cozy anime lofi", "amber hours"]
+
+    cat_meta = {
+        "title": "Cozy Anime Lofi — Amber Hours",
+        "description": "cat sleeping lofi beats -- chill music to relax, study or unwind to.",
+        "category": "lofi",
+        "tags": ["cat sleeping", *base_tags],
+    }
+    snow_meta = {
+        "title": "Cozy Anime Lofi — Amber Hours",
+        "description": "snow window lofi beats -- chill music to relax, study or unwind to.",
+        "category": "lofi",
+        "tags": ["snow window", *base_tags],
+    }
+
+    cat_result = _apply_unique_upload_title(cat_meta, {"cozy anime lofi — amber hours"})
+    snow_result = _apply_unique_upload_title(snow_meta, {"cozy anime lofi — amber hours"})
+
+    assert cat_result["applied"] is True
+    assert snow_result["applied"] is True
+    assert "Cat sleeping" in cat_meta["title"]
+    assert "Snow window" in snow_meta["title"]
+    assert cat_meta["title"] != snow_meta["title"]
+
+
 def test_existing_upload_titles_reads_done_markers(tmp_path):
     (tmp_path / "short.done").write_text(json.dumps({"title": "Cats purr softly"}), encoding="utf-8")
     (tmp_path / "ignored.json").write_text(json.dumps({"title": "Not uploaded yet"}), encoding="utf-8")

@@ -341,9 +341,11 @@ def _build_metadata(broll_meta: dict, bgm_metas: list[dict], duration_s: float, 
     if photographer:
         description_lines.append(f"\U0001f3ac Visual: Pixabay / {photographer}")
 
-    tags = list(DEFAULT_TAGS)
-    if mood.lower() not in {tag.lower() for tag in tags}:
-        tags.append(mood.lower())
+    # Mood tag leads (not trails) DEFAULT_TAGS -- see generate_lofi_short.py's
+    # identical comment: fixes every unrelated video's title-collision dedup
+    # landing on the same suffix regardless of its own mood.
+    tags = [mood.lower()] if mood.lower() not in {tag.lower() for tag in DEFAULT_TAGS} else []
+    tags += DEFAULT_TAGS
 
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 

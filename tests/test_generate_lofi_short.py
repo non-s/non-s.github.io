@@ -104,6 +104,11 @@ def test_build_metadata_includes_attribution_and_upload_contract_fields(tmp_path
     assert meta["series"] == "Lofi Beats"
     assert meta["story_id"] == "lofi-1700000000-1234"
     assert "fireplace night" in [tag.lower() for tag in meta["tags"]]
+    # Mood tag leads DEFAULT_TAGS -- regression: upload_youtube.py's
+    # title-collision dedup tries tag values in list order, so with the
+    # mood last, every unrelated video's dedup landed on the same fixed
+    # DEFAULT_TAGS entry ("rainy night lofi") regardless of its own mood.
+    assert meta["tags"][0] == "fireplace night"
 
 
 def test_build_metadata_title_uses_branded_hook_for_a_known_mood(tmp_path):
