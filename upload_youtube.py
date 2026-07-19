@@ -20,7 +20,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
-from scripts.upload_intent import build_upload_intent, duplicate_slot_uploaded, duplicate_uploaded, write_upload_intent
+from scripts.upload_intent import build_upload_intent, duplicate_slot_uploaded, write_upload_intent
 from utils.api_quota_budget import estimate_publish_run_cost, write_quota_ledger_row
 from utils.media_lifecycle import cleanup_meta_artifacts
 from utils.publish_schedule import active_slot_label, canonical_slots, slot_label
@@ -145,34 +145,6 @@ def _normalise_channel_upload(row: dict, *, source: str) -> dict:
     }
 
 
-def _upload_title_map(rows: list[dict]) -> dict[str, dict]:
-    by_title: dict[str, dict] = {}
-    for row in rows:
-        key = _title_key(row.get("title") or "")
-        if key and row.get("video_id") and key not in by_title:
-            by_title[key] = row
-    return by_title
-
-
-def _channel_uploads_from_intelligence(path: Path = YOUTUBE_INTELLIGENCE_FILE) -> list[dict]:
-    payload = _read_json_object(path)
-    rows: list[dict] = []
-    sections = (
-        ((payload.get("uploads_inventory") or {}).get("latest_uploads") or [], "youtube_intelligence.uploads"),
-        ((payload.get("video_audit") or {}).get("top_public_videos") or [], "youtube_intelligence.audit"),
-    )
-    for items, source in sections:
-        if not isinstance(items, list):
-            continue
-        for item in items:
-            if not isinstance(item, dict):
-                continue
-            normalised = _normalise_channel_upload(item, source=source)
-            if normalised:
-                rows.append(normalised)
-    return rows
-
-
 def _fetch_recent_channel_uploads(youtube, *, limit: int = 50) -> list[dict]:
     if youtube is None or not hasattr(youtube, "channels") or not hasattr(youtube, "playlistItems"):
         return []
@@ -213,19 +185,6 @@ def _fetch_recent_channel_uploads(youtube, *, limit: int = 50) -> list[dict]:
         if not page_token:
             break
     return uploads
-
-
-def _existing_channel_upload_titles(
-    youtube=None, *, intelligence_path: Path = YOUTUBE_INTELLIGENCE_FILE
-) -> dict[str, dict]:
-    rows = _channel_uploads_from_intelligence(intelligence_path)
-    try:
-        rows = _fetch_recent_channel_uploads(youtube) + rows
-    except Exception as exc:
-        if _env_bool("YOUTUBE_CHANNEL_DEDUPE_REQUIRED", False):
-            raise RuntimeError(f"YouTube channel duplicate preflight failed: {exc}") from exc
-        log.warning("YouTube channel duplicate preflight unavailable: %s", exc)
-    return _upload_title_map(rows)
 
 
 def _phrase_words(value: str) -> list[str]:
@@ -1070,7 +1029,6 @@ def main() -> None:
         log.error("Quota guard blocked upload: %s", (quota_row.get("guard") or {}).get("reason"))
         return
     existing_titles = _existing_upload_titles(VIDEOS_DIR)
-    channel_upload_titles = _existing_channel_upload_titles(youtube)
     for meta_file in pending:
         try:
             meta = json.loads(meta_file.read_text(encoding="utf-8"))
@@ -1095,25 +1053,9 @@ def main() -> None:
             )
             skipped_duplicates += 1
             continue
-        channel_duplicate = channel_upload_titles.get(_title_key(_youtube_title(meta)))
         intent = build_upload_intent(meta, meta_file=str(meta_file), slot=intent_slot)
-        duplicate = duplicate_uploaded(intent)
         meta["upload_intent_key"] = intent["idempotency_key"]
         meta["upload_intent"] = intent
-
-        old_vid = None
-        if channel_duplicate:
-            old_vid = channel_duplicate.get("video_id")
-        elif duplicate:
-            old_vid = duplicate.get("video_id")
-
-        if old_vid:
-            log.warning("Duplicate detected on channel (ID: %s). User requested to DELETE the old video.", old_vid)
-            try:
-                youtube.videos().delete(id=old_vid).execute()
-                log.info("Successfully deleted old duplicate video %s from YouTube.", old_vid)
-            except Exception as e:
-                log.warning("Failed to delete old duplicate video %s: %s", old_vid, e)
 
         title_dedupe = _apply_unique_upload_title(meta, existing_titles)
         if title_dedupe.get("applied"):
