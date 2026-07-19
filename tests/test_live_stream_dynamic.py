@@ -333,6 +333,51 @@ def test_ensure_live_broadcast_rebrands_stale_active_broadcast(streamer):
     assert update_call.kwargs["body"]["snippet"]["scheduledStartTime"] == "2026-07-15T00:00:00Z"
 
 
+def test_ensure_live_broadcast_leaves_a_manually_retitled_broadcast_alone(streamer):
+    """A channel owner retitling the live from YouTube Studio must not get
+    reverted on the next check-in -- only known-legacy titles (or a blank
+    one) count as stale. See _rebrand_if_stale()'s docstring."""
+    fake_youtube = MagicMock()
+    fake_youtube.liveBroadcasts().list().execute.return_value = {
+        "items": [
+            {
+                "id": "abc123",
+                "status": {"lifeCycleStatus": "live"},
+                "snippet": {
+                    "title": "Rainy Night Study Session ☀️",
+                    "description": "whatever the owner typed here",
+                },
+            }
+        ]
+    }
+    streamer.youtube = fake_youtube
+
+    streamer.ensure_live_broadcast()
+
+    assert streamer.broadcast_id == "abc123"
+    fake_youtube.liveBroadcasts().insert.assert_not_called()
+    fake_youtube.liveBroadcasts().update.assert_not_called()
+
+
+def test_ensure_live_broadcast_rebrands_a_blank_title(streamer):
+    fake_youtube = MagicMock()
+    fake_youtube.liveBroadcasts().list().execute.return_value = {
+        "items": [
+            {
+                "id": "abc123",
+                "status": {"lifeCycleStatus": "live"},
+                "snippet": {"title": "", "description": ""},
+            }
+        ]
+    }
+    streamer.youtube = fake_youtube
+
+    streamer.ensure_live_broadcast()
+
+    update_call = fake_youtube.liveBroadcasts().update.call_args
+    assert update_call.kwargs["body"]["snippet"]["title"] == live_stream_dynamic.BROADCAST_TITLE
+
+
 def test_ensure_live_broadcast_creates_lofi_branded_broadcast_when_none_active(streamer):
     fake_youtube = MagicMock()
     fake_youtube.liveBroadcasts().list().execute.return_value = {"items": []}

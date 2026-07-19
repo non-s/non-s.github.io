@@ -80,6 +80,15 @@ LOOP_CROSSFADE_S = 1.0
 # instead of only using one combined phrase covers more real search
 # queries than the previous title did.
 BROADCAST_TITLE = "lofi hip hop radio \U0001f4da beats to relax/study to [24/7 LIVE]"
+
+# Every literal value BROADCAST_TITLE has ever held before the current one --
+# see _rebrand_if_stale()'s docstring for why this list (not "anything that
+# doesn't match BROADCAST_TITLE") is the staleness check.
+_LEGACY_BROADCAST_TITLES = {
+    "\U0001f534 24/7 Lofi Beats to Relax/Study to | Live",
+    "\U0001f534 24/7 Wild Nature & Animal Secrets | Ao Vivo | En Vivo",
+}
+
 BROADCAST_DESCRIPTION = (
     "Non-stop lofi beats, looping live -- cozy visuals and chill music to relax, study or unwind to."
 )
@@ -206,17 +215,23 @@ class DynamicStreamer:
             log.error(f"Failed to create/bind a new broadcast: {e}")
 
     def _rebrand_if_stale(self, broadcast_item: dict) -> None:
-        """Fix an already-active broadcast's title/description if they
-        don't match the current branding.
+        """Fix an already-active broadcast's title/description only if
+        they're empty or still carrying a known-legacy value.
 
         ensure_live_broadcast() only creates a NEW broadcast when none is
         active -- an already-live/ready/testing broadcast created under
-        older branding (e.g. the pre-lofi-pivot nature-facts title) would
-        otherwise just keep getting reused forever with its stale title,
-        even though the video/audio streaming through it is already lofi.
+        older branding would otherwise just keep reusing its stale title
+        forever, even though the video/audio streaming through it is
+        already lofi. This used to treat ANY mismatch against the current
+        BROADCAST_TITLE constant as "stale" and silently overwrite it --
+        which meant a channel owner retitling the live from YouTube Studio
+        got reverted on the very next check-in cycle, with no way to make
+        a manual edit stick. Only known-legacy strings (or a blank title)
+        count as stale now; anything else is left alone.
         """
         snippet = broadcast_item.get("snippet") or {}
-        if snippet.get("title") == BROADCAST_TITLE and snippet.get("description") == BROADCAST_DESCRIPTION:
+        current_title = snippet.get("title") or ""
+        if current_title and current_title not in _LEGACY_BROADCAST_TITLES:
             return
         try:
             self.youtube.liveBroadcasts().update(
