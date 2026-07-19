@@ -58,8 +58,8 @@ NEW_TITLES: dict[str, str] = {
     # 20-video snapshot above and utils/lofi_branding.py landing -- neither
     # this batch nor the new upload code ever touched them. Titles chosen
     # to avoid colliding with the 16 titles already live at the time.
+    # tOxOnwZKbNc removed 2026-07-19: also 404 videoNotFound (deleted).
     "NNSH_83oNaQ": "Study Session Anime Lofi — Amber Hours 🕯️",
-    "tOxOnwZKbNc": "Anime Study Nights — Amber Hours 🕯️",
     "TQh9J1r2M5Y": "Midnight Rain Anime Lofi — Amber Hours 🌧️",
     "cmjxkJhtMRw": "Rainy Window Anime Lofi — Amber Hours 🌧️",
     "7N-Q7EYL5_Q": "Cozy Fireplace Anime Lofi — Amber Hours 🌙",
