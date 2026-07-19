@@ -41,8 +41,11 @@ NEW_TITLES: dict[str, str] = {
     # the channel at some point, with no matching local marker cleanup).
     # Their .done markers were removed in the same pass; nothing left to
     # retarget them at.
+    # QO-lcCEaWgM removed 2026-07-19: also 404 videoNotFound (deleted --
+    # almost certainly by the auto-delete-on-title-collision bug fixed
+    # in 9a3ecaa0b, since VsbtdUMZMlc/-ZEDZvRlFNE later reused this same
+    # "Cozy Bedroom" mood/title before that fix landed).
     "8h5OsCzD954": "Cozy Anime Lofi — Amber Hours 🌙",
-    "QO-lcCEaWgM": "Cozy Bedroom Anime Lofi — Amber Hours 🌙",
     "znGCGdlCveY": "Midnight City Anime Lofi — Amber Hours 🌃",
     "Spr9pearb2E": "Quiet Anime Nights Lofi — Amber Hours 🌙",
     "OkVCQ9R66do": "Sleepy Cat Anime Lofi — Amber Hours 🐾",
@@ -53,7 +56,9 @@ NEW_TITLES: dict[str, str] = {
     "IKvEOESS8i8": "City Lights at Night — Amber Hours 🌃",
     "3Y-rn3CraqY": "Snowfall Anime Lofi — Amber Hours 🌨️",
     "SkqC0A42z1I": "Rain on the Window Anime Lofi — Amber Hours 🌧️",
-    "dhFjT3Qw8uw": "Sleepy Cat Anime Lofi (1 Hour) — Amber Hours 🐾",
+    # dhFjT3Qw8uw removed 2026-07-19: also 404 videoNotFound (deleted, same
+    # duplicate-title mechanism -- M3nB-0PZp-A later reused this exact
+    # "Sleepy Cat ... (1 Hour)" title before the auto-delete fix landed).
     # Added 2026-07-19: 9 videos published in the gap between the original
     # 20-video snapshot above and utils/lofi_branding.py landing -- neither
     # this batch nor the new upload code ever touched them. Titles chosen
