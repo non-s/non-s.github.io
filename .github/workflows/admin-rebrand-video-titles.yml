@@ -107,16 +107,24 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add _videos/*.done _data/analytics/api_quota_ledger.jsonl _data/analytics/api_quota_latest.json
+          # The quota ledger is written by every workflow that spends quota,
+          # including the hourly bot running concurrently with this one --
+          # committing it here is a guaranteed rebase conflict sooner or
+          # later. Discard it; the marker files are the only state this
+          # workflow needs to land.
+          git checkout -- _data/analytics/api_quota_ledger.jsonl _data/analytics/api_quota_latest.json 2>/dev/null || true
+          git add _videos/*.done
           if git diff --cached --quiet; then
             echo "No rebrand state to commit."
             exit 0
           fi
           git commit -m "Rebrand published video titles to rainy-night anime lofi identity"
           for attempt in 1 2 3; do
+            git rebase --abort 2>/dev/null || true
             if git pull --rebase origin main && git push origin HEAD:main; then
               exit 0
             fi
+            git rebase --abort 2>/dev/null || true
             sleep $((attempt * 5))
           done
           echo "Failed to push rebrand state." >&2
