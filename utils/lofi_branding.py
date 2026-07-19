@@ -43,3 +43,40 @@ def branded_title(mood: str, *, suffix: str = "") -> str:
     hook, emoji = HOOK_BY_MOOD.get(mood.lower(), (f"{mood} Anime Lofi", DEFAULT_EMOJI))
     parts = [hook] + ([suffix] if suffix else [])
     return f"{' '.join(parts)} — {BRAND_SUFFIX} {emoji}"
+
+
+# Keyword -> playlist bucket, checked IN ORDER against the (already-branded)
+# title text -- order matters, most specific first: "night"/"midnight" shows
+# up in almost every hook this channel uses ("Late Night Study", "Purring
+# Through the Night", ...) since the whole identity is nocturnal, so it has
+# to be the last, catch-most-of-the-rest signal or it swallows hooks that
+# belong in a more specific bucket. "purr" catches "Purring Through the
+# Night", which doesn't contain the literal word "cat". Groups the many
+# individual hooks (Sleepy Cat/Cat Nap/Purring Through the Night, ...) into
+# a handful of playlists a viewer would actually browse, instead of one
+# near-empty playlist per hook. Keyword-based (not a mood-key lookup) so it
+# still groups a title correctly even for a mood HOOK_BY_MOOD has no entry
+# for.
+_DEFAULT_PLAYLIST_BUCKET = "Cozy Anime Lofi"
+_PLAYLIST_BUCKET_SIGNALS: tuple[tuple[str, str], ...] = (
+    ("rain", "Rainy Night Lofi"),
+    ("snow", "Snowy Night Lofi"),
+    ("cat", "Cozy Cat Lofi"),
+    ("purr", "Cozy Cat Lofi"),
+    ("stud", "Late Night Study Lofi"),
+    ("librar", "Late Night Study Lofi"),
+    ("cafe", _DEFAULT_PLAYLIST_BUCKET),
+    ("fireplace", _DEFAULT_PLAYLIST_BUCKET),
+    ("bedroom", _DEFAULT_PLAYLIST_BUCKET),
+    ("night", "Midnight City Lofi"),
+)
+
+
+def playlist_bucket_for_title(title: str) -> str:
+    """Which mood playlist a published video's (already branded) title
+    belongs in -- see _PLAYLIST_BUCKET_SIGNALS."""
+    text = (title or "").lower()
+    for signal, bucket in _PLAYLIST_BUCKET_SIGNALS:
+        if signal in text:
+            return bucket
+    return _DEFAULT_PLAYLIST_BUCKET

@@ -97,6 +97,7 @@ def test_build_metadata_includes_attribution_and_upload_contract_fields(tmp_path
     assert "Horizons" in meta["description"]
     assert "Train Room" in meta["description"]
     assert "Some Photographer" in meta["description"]
+    assert "Cozy Anime Lofi collection on Amber Hours" in meta["description"]
     assert meta["pexels_video_id"] == "123"
     assert meta["source_license_evidence"] == "https://pixabay.com/videos/id-123/"
     assert meta["category"] == "lofi"

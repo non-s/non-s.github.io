@@ -42,7 +42,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from utils.broll import pick_weighted_broll_file  # noqa: E402
-from utils.lofi_branding import branded_title  # noqa: E402
+from utils.lofi_branding import branded_title, playlist_bucket_for_title  # noqa: E402
 from utils.thumbnail_branding import brand_mix_thumbnail  # noqa: E402
 
 logging.basicConfig(level=logging.INFO)
@@ -313,8 +313,12 @@ def _build_metadata(broll_meta: dict, bgm_metas: list[dict], duration_s: float, 
     title = branded_title(mood, suffix="(1 Hour)")
     photographer = str(broll_meta.get("photographer") or "")
 
+    bucket = playlist_bucket_for_title(title)
     description_lines = [
         f"1 hour of {mood.lower()} lofi beats -- chill music to relax, study or unwind to.",
+        "",
+        f"\U0001f319 Part of the {bucket} collection on Amber Hours -- rainy night "
+        "anime lofi, cozy beats for late nights, playing 24/7 on the channel live stream.",
         "",
     ]
     credits = []

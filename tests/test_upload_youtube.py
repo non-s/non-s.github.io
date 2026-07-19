@@ -208,6 +208,7 @@ def test_playlist_titles_use_series_and_category():
         "Start Here",
         "Watch The Cue",
         "Birds",
+        "Cozy Anime Lofi",
     ]
 
 
@@ -219,7 +220,20 @@ def test_playlist_titles_apply_configured_prefix(monkeypatch):
         "Wild Brief | Start Here",
         "Wild Brief | Watch The Cue",
         "Wild Brief | Birds",
+        "Wild Brief | Cozy Anime Lofi",
     ]
+
+
+def test_playlist_titles_group_by_mood_signal_in_the_title():
+    titles = _playlist_titles(
+        {"title": "Rainy Night Anime Lofi — Amber Hours \U0001f327️", "series": "Lofi Beats", "category": "lofi"}
+    )
+    assert "Rainy Night Lofi" in titles
+
+    titles = _playlist_titles(
+        {"title": "Sleepy Cat Anime Lofi — Amber Hours \U0001f43e", "series": "Lofi Beats", "category": "lofi"}
+    )
+    assert "Cozy Cat Lofi" in titles
 
 
 class _Req:
@@ -322,9 +336,15 @@ def test_post_upload_operations_adds_playlists(monkeypatch):
         "Wild Brief | Start Here",
         "Wild Brief | Watch The Cue",
         "Wild Brief | Birds",
+        "Wild Brief | Cozy Anime Lofi",
     ]
     assert all(item["added"] for item in result["playlists"])
-    assert youtube._playlist_items.added == [("PL-1", "VID123"), ("PL-2", "VID123"), ("PL-3", "VID123")]
+    assert youtube._playlist_items.added == [
+        ("PL-1", "VID123"),
+        ("PL-2", "VID123"),
+        ("PL-3", "VID123"),
+        ("PL-4", "VID123"),
+    ]
 
 
 def test_post_upload_operations_inserts_after_playlist_precheck_404(monkeypatch):
@@ -335,7 +355,12 @@ def test_post_upload_operations_inserts_after_playlist_precheck_404(monkeypatch)
     result = run_post_upload_operations(youtube, "VID123", {"series": "Tiny Worlds", "category": "insects"})
 
     assert all(item["added"] for item in result["playlists"])
-    assert youtube._playlist_items.added == [("PL-1", "VID123"), ("PL-2", "VID123"), ("PL-3", "VID123")]
+    assert youtube._playlist_items.added == [
+        ("PL-1", "VID123"),
+        ("PL-2", "VID123"),
+        ("PL-3", "VID123"),
+        ("PL-4", "VID123"),
+    ]
 
 
 def test_post_upload_operations_can_be_disabled(monkeypatch):

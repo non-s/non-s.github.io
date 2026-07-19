@@ -22,6 +22,7 @@ from googleapiclient.http import MediaFileUpload
 
 from scripts.upload_intent import build_upload_intent, duplicate_slot_uploaded, write_upload_intent
 from utils.api_quota_budget import estimate_publish_run_cost, write_quota_ledger_row
+from utils.lofi_branding import playlist_bucket_for_title
 from utils.media_lifecycle import cleanup_meta_artifacts
 from utils.publish_schedule import active_slot_label, canonical_slots, slot_label
 from utils.time_semantics import temporal_fields
@@ -489,6 +490,7 @@ def _playlist_titles(meta: dict) -> list[str]:
         "Start Here",
         _safe_label(meta.get("series"), ""),
         _safe_label(meta.get("category"), ""),
+        _safe_label(playlist_bucket_for_title(_youtube_title(meta)), ""),
     ]
     out: list[str] = []
     seen: set[str] = set()
