@@ -35,21 +35,20 @@ log = logging.getLogger("rebrand_video_titles")
 VIDEOS_DIR = Path("_videos")
 
 NEW_TITLES: dict[str, str] = {
-    "ErjYI1RELFU": "Late Night Study Anime Lofi — Amber Hours 🕯️",
-    "em26a-SM9xw": "Ocean Waves at Night — Calming Lofi — Amber Hours 🌊",
+    # 7 ids removed 2026-07-19 after the live run: ErjYI1RELFU, em26a-SM9xw,
+    # on6UxqQyBj4, Ck7hf9ELE6g, aCoO3WXAurs, oSREV1Tfouk, RNgqhxTZAb4 --
+    # videos.update returned 404 videoNotFound for all seven (deleted from
+    # the channel at some point, with no matching local marker cleanup).
+    # Their .done markers were removed in the same pass; nothing left to
+    # retarget them at.
     "8h5OsCzD954": "Cozy Anime Lofi — Amber Hours 🌙",
-    "on6UxqQyBj4": "Anime Lofi After Hours — Amber Hours 🌙",
     "QO-lcCEaWgM": "Cozy Bedroom Anime Lofi — Amber Hours 🌙",
     "znGCGdlCveY": "Midnight City Anime Lofi — Amber Hours 🌃",
     "Spr9pearb2E": "Quiet Anime Nights Lofi — Amber Hours 🌙",
     "OkVCQ9R66do": "Sleepy Cat Anime Lofi — Amber Hours 🐾",
     "Xi2cWR1DhYc": "Cat Nap Anime Lofi — Amber Hours 🐾",
-    "Ck7hf9ELE6g": "Midnight Cat Lofi — Amber Hours 🐾",
-    "aCoO3WXAurs": "Rainy Night Anime Lofi — Amber Hours 🌧️",
     "FX2p3eMfASM": "Snowy Night Anime Lofi — Amber Hours 🌨️",
-    "oSREV1Tfouk": "Plant-Filled Room Anime Lofi — Amber Hours 🌙",
     "6FkdfO3XZsU": "Cozy Cat Corner Anime Lofi — Amber Hours 🐾",
-    "RNgqhxTZAb4": "Late Night Library Lofi — Amber Hours 📚",
     "guDtN8g-xCA": "Purring Through the Night — Amber Hours 🐾",
     "IKvEOESS8i8": "City Lights at Night — Amber Hours 🌃",
     "3Y-rn3CraqY": "Snowfall Anime Lofi — Amber Hours 🌨️",
