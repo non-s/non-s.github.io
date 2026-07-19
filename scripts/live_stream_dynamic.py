@@ -79,12 +79,13 @@ LOOP_CROSSFADE_S = 1.0
 # The Jazz Hop Cafe all title around this same pattern) -- splitting them
 # instead of only using one combined phrase covers more real search
 # queries than the previous title did.
-BROADCAST_TITLE = "lofi hip hop radio \U0001f4da beats to relax/study to [24/7 LIVE]"
+BROADCAST_TITLE = "Rainy Night Anime Lofi — Amber Hours \U0001f319 [24/7 LIVE]"
 
 # Every literal value BROADCAST_TITLE has ever held before the current one --
 # see _rebrand_if_stale()'s docstring for why this list (not "anything that
 # doesn't match BROADCAST_TITLE") is the staleness check.
 _LEGACY_BROADCAST_TITLES = {
+    "lofi hip hop radio \U0001f4da beats to relax/study to [24/7 LIVE]",
     "\U0001f534 24/7 Lofi Beats to Relax/Study to | Live",
     "\U0001f534 24/7 Wild Nature & Animal Secrets | Ao Vivo | En Vivo",
 }
