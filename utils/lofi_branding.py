@@ -31,6 +31,10 @@ HOOK_BY_MOOD: dict[str, tuple[str, str]] = {
     "cat sleeping": ("Sleepy Cat Anime Lofi", "\U0001f43e"),
     "library reading": ("Late Night Library Lofi", "\U0001f4da"),
     "snow window": ("Snowy Night Anime Lofi", "\U0001f328️"),
+    "autumn rain": ("Autumn Rain Anime Lofi", "\U0001f327️"),
+    "foggy morning": ("Foggy Morning Anime Lofi", DEFAULT_EMOJI),
+    "rooftop night": ("Rooftop Rain Anime Lofi", "\U0001f327️"),
+    "train window": ("Late Night Train Anime Lofi", "\U0001f327️"),
 }
 
 

@@ -13,6 +13,13 @@ def test_branded_title_falls_back_for_unknown_mood():
     assert branded_title("Foggy Harbor") == "Foggy Harbor Anime Lofi — Amber Hours \U0001f319"
 
 
+def test_branded_title_covers_the_2026_07_19_variety_expansion_moods():
+    assert branded_title("autumn rain") == "Autumn Rain Anime Lofi — Amber Hours \U0001f327️"
+    assert branded_title("rooftop night") == "Rooftop Rain Anime Lofi — Amber Hours \U0001f327️"
+    assert branded_title("train window") == "Late Night Train Anime Lofi — Amber Hours \U0001f327️"
+    assert branded_title("foggy morning") == "Foggy Morning Anime Lofi — Amber Hours \U0001f319"
+
+
 def test_branded_title_inserts_suffix_before_the_brand_dash():
     assert branded_title("cat sleeping", suffix="(1 Hour)") == "Sleepy Cat Anime Lofi (1 Hour) — Amber Hours \U0001f43e"
 

@@ -58,6 +58,16 @@ LOFI_QUERIES = [
     "anime night city rain",
     "anime snow window cozy",
     "anime rain window sleepy",
+    # New visual settings (not weight-duplicates of an existing mood key)
+    # added 2026-07-19 so the identity doesn't get visually repetitive as
+    # the b-roll library turns over -- still on-theme (rain/night/cozy),
+    # just a different scene. Fall back to a generated title/hook via
+    # utils/lofi_branding.py's branded_title() default branch rather than
+    # needing a new HOOK_BY_MOOD entry each time.
+    "anime autumn rain window",
+    "anime foggy morning window",
+    "anime rooftop night rain",
+    "anime train window rain",
 ]
 
 
