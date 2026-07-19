@@ -47,7 +47,20 @@ FADE_S = 1.5
 
 CATEGORY = "lofi"
 SERIES = "Lofi Beats"
-DEFAULT_TAGS = ["lofi", "lofi beats", "chill music", "study music", "relax", "chillhop", "ambient"]
+# Niche-first (chat, 2026-07-19): "lofi"/"chillhop" alone are unwinnable
+# head terms for a small channel (Lofi Girl etc. already own them) -- lead
+# with the rainy-night/cozy-anime sub-niche instead, same reasoning as
+# utils/lofi_branding.py's titles.
+DEFAULT_TAGS = [
+    "lofi",
+    "anime lofi",
+    "rainy night lofi",
+    "cozy anime lofi",
+    "midnight lofi",
+    "sleep lofi",
+    "chillhop",
+    "amber hours",
+]
 
 
 def _pick_file(directory: Path, pattern: str) -> Path | None:

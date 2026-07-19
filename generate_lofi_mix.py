@@ -62,16 +62,17 @@ LOOP_CROSSFADE_S = 1.0
 CATEGORY = "lofi"
 SERIES = "Lofi Mixes"
 YOUTUBE_CATEGORY_ID = "10"  # Music -- more accurate for a long-form mix than the Shorts' default.
+# Niche-first (chat, 2026-07-19): see generate_lofi_short.py's DEFAULT_TAGS
+# comment -- same reasoning, "lofi hip hop radio" alone is Lofi Girl's turf.
 DEFAULT_TAGS = [
     "lofi",
     "lofi mix",
     "1 hour lofi",
-    "lofi hip hop radio",
-    "study music",
-    "chill music",
-    "relax",
-    "chillhop",
-    "ambient",
+    "anime lofi radio",
+    "rainy night lofi",
+    "midnight lofi",
+    "sleep lofi",
+    "amber hours",
 ]
 
 
