@@ -1,4 +1,5 @@
 import json
+import os
 
 import scripts.sync_jamendo_music as sync_jamendo_music
 
@@ -254,17 +255,23 @@ def test_main_prefers_lofi_jazz_tagged_candidates(tmp_path, monkeypatch):
 
 
 def test_main_rotates_out_oldest_tracks_when_library_is_full(tmp_path, monkeypatch):
+    """Regression: this used to shuffle-and-take-2 (a random pair), not the
+    genuinely oldest two by mtime, despite this test's name and the "Removed
+    old track" log message both claiming age-based eviction -- the assertion
+    below only checked the surviving *count*, so it never caught that."""
     monkeypatch.setattr(sync_jamendo_music, "BGM_DIR", tmp_path)
     monkeypatch.setattr(sync_jamendo_music, "MAX_TRACKS", 3)
     for i in range(3):
-        (tmp_path / f"jamendo_{i}.mp3").write_bytes(b"x")
+        audio = tmp_path / f"jamendo_{i}.mp3"
+        audio.write_bytes(b"x")
         (tmp_path / f"jamendo_{i}.json").write_text("{}")
+        os.utime(audio, (1000 + i * 100, 1000 + i * 100))
     monkeypatch.setattr(sync_jamendo_music, "_fetch_candidates", lambda offset=0: [])
 
     assert sync_jamendo_music.main() == 0
 
-    assert len(list(tmp_path.glob("jamendo_*.mp3"))) == 1
-    # every remaining audio file keeps a matching sidecar (none orphaned)
+    remaining = {p.stem for p in tmp_path.glob("jamendo_*.mp3")}
+    assert remaining == {"jamendo_2"}  # the two oldest (0, 1) get evicted first
     for audio_path in tmp_path.glob("jamendo_*.mp3"):
         assert audio_path.with_suffix(".json").exists()
 

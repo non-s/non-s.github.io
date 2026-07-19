@@ -175,7 +175,12 @@ def main() -> int:
     existing_audio = list(BGM_DIR.glob("jamendo_*.mp3"))
     existing_ids = {p.stem.removeprefix("jamendo_") for p in existing_audio}
     if len(existing_audio) >= MAX_TRACKS:
-        random.shuffle(existing_audio)
+        # Genuinely oldest-first (by download mtime), not a random 2 --
+        # picking randomly means a track downloaded on day one could
+        # survive indefinitely by luck while a same-age peer gets evicted,
+        # which isn't actually "rotating" the library toward fresher music
+        # over time the way the log message here always claimed.
+        existing_audio.sort(key=lambda p: p.stat().st_mtime)
         for stale in existing_audio[:2]:
             stale.unlink(missing_ok=True)
             stale.with_suffix(".json").unlink(missing_ok=True)

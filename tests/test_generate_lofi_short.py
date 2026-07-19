@@ -154,6 +154,32 @@ def test_compose_short_builds_looping_ffmpeg_command(tmp_path, monkeypatch):
     assert cmd[cmd.index("-t") + 1] == "45.000"
 
 
+def test_compose_short_uses_exactly_one_bgm_track(tmp_path, monkeypatch):
+    """Contract check (chat, 2026-07-19): a Short is one song, not a mix --
+    _pick_file() already only ever returns a single path and _compose_short
+    only ever takes one bgm_path argument, so this locks that in rather
+    than relying on it staying true by absence of a second call site."""
+    calls = []
+
+    def fake_run(cmd, **kwargs):
+        calls.append(cmd)
+        Path(cmd[-1]).write_bytes(b"fake-mp4")
+        result = MagicMock()
+        result.returncode = 0
+        result.stderr = ""
+        return result
+
+    monkeypatch.setattr(lofi.subprocess, "run", fake_run)
+
+    bgm_path = tmp_path / "jamendo_1.mp3"
+    ok = lofi._compose_short(tmp_path / "pixabay_1.mp4", bgm_path, tmp_path / "out.mp4", 45.0)
+
+    assert ok is True
+    cmd = calls[-1]
+    assert cmd.count(str(bgm_path)) == 1
+    assert cmd.count("-i") == 2  # exactly one video input, one audio input
+
+
 def test_compose_short_returns_false_on_ffmpeg_failure(tmp_path, monkeypatch):
     def fake_run(cmd, **kwargs):
         result = MagicMock()
