@@ -17,6 +17,21 @@ def test_quota_estimate_separates_youtube_upload_bucket():
     assert estimate["calls"]["youtube.thumbnails.set"] == 1
 
 
+def test_quota_estimate_default_playlist_count_matches_the_real_pipeline():
+    """Regression: the default `playlists` used to be 2, undercounting the
+    real per-video cost by roughly a third -- upload_youtube.py's
+    _playlist_titles() adds every video to 4 distinct playlists ("Start
+    Here" + series + category + mood bucket) since the 2026-07-19 series/
+    bucket changes, not 2."""
+    estimate = estimate_publish_run_cost(videos=1)
+
+    assert estimate["calls"]["youtube.playlistItems.insert"] == 4
+    # thumbnails.set(50) + playlists.list(4) + playlistItems.list(4) +
+    # playlistItems.insert(4*50=200) + commentThreads.insert(50) +
+    # analytics.reports.query(6*1=6); videos.insert is free (0).
+    assert estimate["estimated_units"] == 314
+
+
 def test_metadata_repair_estimates_video_update_cost():
     estimate = estimate_metadata_repair_cost(updates=2)
 

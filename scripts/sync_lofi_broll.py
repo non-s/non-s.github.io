@@ -33,8 +33,17 @@ from utils.broll import BrollClip, download_clip, fetch_pixabay, looks_anime_sty
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("lofi_broll_sync")
 
+# LOFI_QUERIES grew from 10 moods to 18 (2026-07-19's variety-expansion
+# entries below) without this cap growing to match -- with only 12 clip
+# slots for 18 distinct moods, most moods had no clip in the pool at any
+# given moment regardless of how many query strings existed, undercutting
+# the whole point of adding them (and of utils/broll_performance.py's
+# per-mood weighting: it can't favor a mood that has zero clips on disk
+# to pick from). 24 gives most moods a real shot at a slot at once, while
+# still tiny well within GitHub's 10GB Actions-cache limit even at a
+# generous ~15MB/clip.
 BROLL_DIR = ROOT / "_assets" / "video" / "lofi_broll"
-MAX_CLIPS = 12
+MAX_CLIPS = 24
 
 LOFI_QUERIES = [
     "anime lofi girl study",

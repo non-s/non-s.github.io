@@ -68,10 +68,20 @@ def estimate_limited_calls(calls: dict[str, int]) -> dict[str, int]:
 
 def estimate_publish_run_cost(
     videos: int = 1,
-    playlists: int = 2,
+    playlists: int = 4,
     comments: int = 1,
     analytics_queries: int = 6,
 ) -> dict:
+    """`playlists` defaults to 4 (not the old 2): upload_youtube.py's
+    _playlist_titles() adds every video to "Start Here" + its series +
+    its category + its mood playlist bucket -- 4 distinct playlists in
+    the typical case since 2026-07-19's series/bucket changes, not 2.
+    The old default undercounted the real per-video quota cost by
+    roughly a third (playlists.list + playlistItems.list + .insert per
+    playlist, most of that from the 50-unit .insert), which meant the
+    quota guard could let a run through that was actually closer to the
+    real 10,000/day cap than it looked.
+    """
     calls = {
         "youtube.videos.insert": videos,
         "youtube.thumbnails.set": videos,
