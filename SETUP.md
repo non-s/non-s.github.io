@@ -1,4 +1,4 @@
-# Wild Brief - YouTube Setup
+# Amber Hours - YouTube Setup
 
 ## Required GitHub secrets
 
@@ -6,15 +6,16 @@ Open **Settings -> Secrets and variables -> Actions** and add:
 
 - `YOUTUBE_TOKEN`
 - `PIXABAY_API_KEY` -- active lofi pipeline's visual source (anime/
-  illustrated b-roll for Shorts and the live loop)
+  illustrated b-roll for Shorts, the mix, and the live loop)
 - `YOUTUBE_STREAM_KEY` -- only needed for the 24/7 live relay
   (`live-stream.yml`)
 
-The dormant nature-Shorts pipeline (`fetch-content.yml`,
+The earlier nature-Shorts pipeline (`fetch-content.yml`,
 `QUEUE_REFRESH_ENABLED`) used `PEXELS_API_KEY`/`PEXELS` and an AI text
 provider key (`MISTRAL_API_KEY`, `CEREBRAS_API_KEY`, `GEMINI_API_KEY` or
-`GROQ_API_KEY`). Those secrets were removed 2026-07-17 since nothing
-active reads them; re-add them only if that pipeline is re-enabled.
+`GROQ_API_KEY`). That workflow, and the free-signal/TTS scripts that went
+with it, were removed once the channel fully moved to lofi -- none of
+those secrets or scripts are needed anymore.
 
 ## Create YouTube OAuth credentials
 
@@ -57,23 +58,33 @@ On Windows, you can instead run the **Build auth_youtube.exe (Windows)** workflo
 
 ## Start publishing
 
-1. Set repository variables `QUEUE_REFRESH_ENABLED=1` and `YOUTUBE_PUBLISHING_ENABLED=1` when you are ready to resume automation.
-2. Run `fetch-content.yml` manually.
-3. Run `youtube-bot.yml` manually.
-4. Optionally create the repository variable `YOUTUBE_PRIVACY`: `public`, `unlisted`, or `private`. Default: `public`.
+1. Set the repository variable `YOUTUBE_PUBLISHING_ENABLED=1` when you are
+   ready to resume automation -- every publishing/watchdog/health-check
+   workflow gates on it, so this one variable turns the whole pipeline on
+   or off.
+2. Run `youtube-bot.yml` manually once (Shorts) to confirm auth/quota are
+   working, then let its own schedule (`:02`, `:22`, `:42` hourly) take
+   over.
+3. Run `lofi-mix-daily.yml` manually once (the 1-hour horizontal mix),
+   then let its daily schedule take over.
+4. `live-stream.yml` needs `YOUTUBE_STREAM_KEY` set -- once it is,
+   `live-stream-watchdog.yml` keeps the relay running on its own.
+5. Optionally create the repository variable `YOUTUBE_PRIVACY`: `public`,
+   `unlisted`, or `private`. Default: `public`.
+
+See [RUNBOOK.md](RUNBOOK.md) for what each reliability workflow does and
+what to do when one of them alerts.
 
 ## Optional zero-cost imports
 
 - Shorts Reach: export the YouTube Studio reach table or a Google Sheets CSV
   containing viewed/stayed-to-watch and swiped-away columns, place it under
-  `_data/studio_reach_exports/`, then run `python scripts/import_studio_reach_export.py`.
+  `_data/studio_reach_exports/`, then run `python scripts/import_studio_reach_export.py`
+  (or run `studio-reach-import.yml`).
 - Reporting CSV backfill: place official Reporting API CSV exports under
   `_data/reporting_import/`, run `python scripts/reporting_bootstrap.py`, then
-  `python scripts/reporting_pull.py`.
-- Free freshness signals: place public Google Trends CSV/JSON snapshots under
-  `_data/trends/manual_import/` or set `WILD_BRIEF_RSS_URLS`, then run
-  `python scripts/free_signal_harvester.py` and `python scripts/apply_topic_freshness.py`.
-- Local TTS fallback: set `COQUI_TTS_COMMAND` and check it with
-  `python scripts/tts_healthcheck.py --no-synth --json`.
+  `python scripts/reporting_pull.py`. This is also what feeds
+  `utils/broll_performance.py`'s real-performance b-roll weighting once
+  there's enough data.
 
 All optional imports degrade safely when their source files are missing.
