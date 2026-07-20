@@ -25,12 +25,17 @@ from utils.broll import fetch_pixabay, looks_anime_styled  # noqa: E402
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("queries", nargs="+", help="One or more Pixabay search queries")
+    parser.add_argument(
+        "queries",
+        help='One or more Pixabay search queries, "|"-delimited (e.g. "anime rain window|anime cozy room")',
+    )
     parser.add_argument("--per-query", type=int, default=8)
     args = parser.parse_args()
 
     results = {}
-    for query in args.queries:
+    for query in (q.strip() for q in args.queries.split("|")):
+        if not query:
+            continue
         clips = fetch_pixabay(query, per_page=args.per_query)
         results[query] = [
             {

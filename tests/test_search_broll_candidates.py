@@ -30,6 +30,26 @@ def test_main_prints_one_result_list_per_query(monkeypatch, capsys):
     fetch.assert_called_once_with("anime rain window", per_page=8)
 
 
+def test_main_splits_pipe_delimited_queries(monkeypatch, capsys):
+    """Regression: the workflow passes queries as one shell argument (env
+    var, not unquoted interpolation) since GitHub Actions substitutes
+    ${{ inputs.queries }} as raw text -- an unquoted multi-word query
+    would otherwise get word-split by bash into one query per word."""
+    fetch = MagicMock(return_value=[])
+    monkeypatch.setattr(search_broll_candidates, "fetch_pixabay", fetch)
+    monkeypatch.setattr(
+        search_broll_candidates.sys,
+        "argv",
+        ["search_broll_candidates.py", "anime rain window|anime cozy room fireplace"],
+    )
+
+    search_broll_candidates.main()
+
+    fetch.assert_any_call("anime rain window", per_page=8)
+    fetch.assert_any_call("anime cozy room fireplace", per_page=8)
+    assert fetch.call_count == 2
+
+
 def test_main_flags_hits_that_dont_match_the_anime_style_signals(monkeypatch, capsys):
     clip = BrollClip(
         source="pixabay",

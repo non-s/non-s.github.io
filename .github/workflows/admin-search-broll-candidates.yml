@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       queries:
-        description: "Space-separated Pixabay search queries"
+        description: '"|"-delimited Pixabay search queries (e.g. "anime rain window|anime cozy room")'
         required: true
 
 permissions:
@@ -42,4 +42,6 @@ jobs:
           pip install -r requirements.txt
 
       - name: "Buscar candidatos de b-roll"
-        run: python scripts/search_broll_candidates.py ${{ inputs.queries }}
+        env:
+          QUERIES: ${{ inputs.queries }}
+        run: python scripts/search_broll_candidates.py "$QUERIES"
