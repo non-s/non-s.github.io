@@ -73,17 +73,15 @@ class _YouTube:
 
 
 def test_generated_short_metadata_survives_the_full_upload_pipeline(tmp_path, monkeypatch):
-    broll_dir = tmp_path / "broll"
+    pinned_clip = tmp_path / "pinned_short_clip.mp4"
     bgm_dir = tmp_path / "bgm"
     videos_dir = tmp_path / "_videos"
-    broll_dir.mkdir()
     bgm_dir.mkdir()
 
-    (broll_dir / "pixabay_1.mp4").write_bytes(b"x")
-    (broll_dir / "pixabay_1.json").write_text(
+    pinned_clip.write_bytes(b"x")
+    pinned_clip.with_suffix(".json").write_text(
         json.dumps(
             {
-                "query": "anime rain window cozy",
                 "tags": "anime, rain, window",
                 "pixabay_video_id": "1",
                 "photographer": "Test Photographer",
@@ -100,7 +98,7 @@ def test_generated_short_metadata_survives_the_full_upload_pipeline(tmp_path, mo
     )
 
     monkeypatch.setattr(lofi, "VIDEOS_DIR", videos_dir)
-    monkeypatch.setattr(lofi, "BROLL_DIR", broll_dir)
+    monkeypatch.setattr(lofi, "PINNED_BROLL_CLIP", pinned_clip)
     monkeypatch.setattr(lofi, "BGM_DIR", bgm_dir)
 
     def fake_compose(broll_path, bgm_path, output_path, duration_s):

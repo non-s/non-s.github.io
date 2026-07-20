@@ -3,31 +3,12 @@ from pathlib import Path
 from unittest.mock import MagicMock
 
 import generate_lofi_short as lofi
+from utils.lofi_branding import HOOK_BY_MOOD
 
 
 def _touch(path, size=1024):
     path.write_bytes(b"x" * size)
     return path
-
-
-def _touch_broll(directory, name="pixabay_1.mp4", **extra_meta):
-    """Write an on-brand b-roll clip (anime-tagged sidecar) for tests that
-    only care about exercising the pipeline past broll selection."""
-    video_path = _touch(directory / name)
-    meta = {"tags": "anime, girl, study, lofi", **extra_meta}
-    video_path.with_suffix(".json").write_text(json.dumps(meta), encoding="utf-8")
-    return video_path
-
-
-def test_pick_file_returns_none_when_directory_empty(tmp_path):
-    assert lofi._pick_file(tmp_path, "pixabay_*.mp4") is None
-
-
-def test_pick_file_returns_a_match(tmp_path):
-    _touch(tmp_path / "pixabay_1.mp4")
-    _touch(tmp_path / "pixabay_2.mp4")
-    picked = lofi._pick_file(tmp_path, "pixabay_*.mp4")
-    assert picked in {tmp_path / "pixabay_1.mp4", tmp_path / "pixabay_2.mp4"}
 
 
 def test_pick_bgm_file_for_mood_returns_none_when_directory_empty(tmp_path):
@@ -57,32 +38,6 @@ def test_pick_bgm_file_for_mood_falls_back_to_full_library_when_nothing_matches(
     assert lofi._pick_bgm_file_for_mood(tmp_path, "Rain Window") == tmp_path / "jamendo_1.mp3"
 
 
-def test_pick_broll_file_returns_none_when_directory_empty(tmp_path):
-    assert lofi._pick_broll_file(tmp_path, "pixabay_*.mp4") is None
-
-
-def test_pick_broll_file_skips_clips_without_anime_style_tags(tmp_path):
-    """Regression: an off-brand clip (no anime/cartoon tag evidence) that
-    is already on disk -- however it got there -- must never be picked
-    for a Short, even though _pick_file alone would happily return it."""
-    _touch(tmp_path / "pixabay_1.mp4")
-    (tmp_path / "pixabay_1.json").write_text(
-        json.dumps({"tags": "man, library, book, education, reading"}), encoding="utf-8"
-    )
-    assert lofi._pick_broll_file(tmp_path, "pixabay_*.mp4") is None
-
-
-def test_pick_broll_file_returns_only_on_brand_clip(tmp_path):
-    _touch(tmp_path / "pixabay_1.mp4")
-    (tmp_path / "pixabay_1.json").write_text(
-        json.dumps({"tags": "man, library, book, education, reading"}), encoding="utf-8"
-    )
-    _touch(tmp_path / "pixabay_2.mp4")
-    (tmp_path / "pixabay_2.json").write_text(json.dumps({"tags": "anime, girl, study, lofi"}), encoding="utf-8")
-
-    assert lofi._pick_broll_file(tmp_path, "pixabay_*.mp4") == tmp_path / "pixabay_2.mp4"
-
-
 def test_load_sidecar_returns_empty_dict_when_missing(tmp_path):
     assert lofi._load_sidecar(tmp_path / "missing.mp4") == {}
 
@@ -93,18 +48,18 @@ def test_load_sidecar_reads_matching_json(tmp_path):
     assert lofi._load_sidecar(video) == {"title": "rain window"}
 
 
-def test_mood_label_title_cases_first_two_words():
-    assert lofi._mood_label("rain window cozy") == "Rain Window"
-
-
-def test_mood_label_falls_back_when_empty():
-    assert lofi._mood_label("") == "Cozy"
+def test_pick_mood_returns_a_known_hook_mood():
+    """Regression: with the b-roll clip now pinned (no per-video search
+    query), mood must come from an independent, still-title-cased
+    vocabulary -- not silently collapse to a constant "Cozy" for every
+    Short."""
+    mood = lofi._pick_mood()
+    assert mood.lower() in HOOK_BY_MOOD
 
 
 def test_build_metadata_includes_attribution_and_upload_contract_fields(tmp_path):
     video_path = tmp_path / "short-lofi-1.mp4"
     broll_meta = {
-        "query": "fireplace night cozy",
         "photographer": "Some Photographer",
         "pixabay_video_id": "123",
         "license": "Pixabay Content License (free for commercial use, no attribution required)",
@@ -116,7 +71,9 @@ def test_build_metadata_includes_attribution_and_upload_contract_fields(tmp_path
         "license_ccurl": "http://creativecommons.org/licenses/by/3.0/",
         "track_id": "99",
     }
-    meta = lofi._build_metadata(broll_meta, bgm_meta, 42.0, video_path, story_id="lofi-1700000000-1234")
+    meta = lofi._build_metadata(
+        "Fireplace Night", broll_meta, bgm_meta, 42.0, video_path, story_id="lofi-1700000000-1234"
+    )
 
     assert meta["video"] == str(video_path)
     assert meta["pre_publish_audit"]["approved"] is True
@@ -124,14 +81,13 @@ def test_build_metadata_includes_attribution_and_upload_contract_fields(tmp_path
     assert "Horizons" in meta["description"]
     assert "Train Room" in meta["description"]
     assert "Some Photographer" in meta["description"]
-    assert "Cozy Anime Lofi collection on Amber Hours" in meta["description"]
     assert meta["pexels_video_id"] == "123"
     assert meta["source_license_evidence"] == "https://pixabay.com/videos/id-123/"
     assert meta["category"] == "lofi"
     # Series is now a fixed name per mood bucket + format, not one static
     # label every video shared regardless of mood -- see
     # generate_lofi_short.py's SERIES_SUFFIX comment.
-    assert meta["series"] == "Cozy Anime Lofi Shorts"
+    assert meta["series"].endswith(" Shorts")
     assert meta["story_id"] == "lofi-1700000000-1234"
     assert "fireplace night" in [tag.lower() for tag in meta["tags"]]
     # Mood tag leads DEFAULT_TAGS -- regression: upload_youtube.py's
@@ -143,21 +99,19 @@ def test_build_metadata_includes_attribution_and_upload_contract_fields(tmp_path
 
 def test_build_metadata_title_uses_branded_hook_for_a_known_mood(tmp_path):
     video_path = tmp_path / "short-lofi-1.mp4"
-    broll_meta = {"query": "anime rain window cozy"}
-    meta = lofi._build_metadata(broll_meta, {}, 30.0, video_path)
+    meta = lofi._build_metadata("Rain Window", {}, {}, 30.0, video_path)
     assert meta["title"] == "Rainy Night Anime Lofi — Amber Hours \U0001f327️"
 
 
 def test_build_metadata_title_falls_back_to_raw_mood_for_an_unknown_mood(tmp_path):
     video_path = tmp_path / "short-lofi-1.mp4"
-    broll_meta = {"query": "snow falling window cozy"}
-    meta = lofi._build_metadata(broll_meta, {}, 30.0, video_path)
+    meta = lofi._build_metadata("Snow Falling", {}, {}, 30.0, video_path)
     assert meta["title"] == "Snow Falling Anime Lofi — Amber Hours \U0001f319"
 
 
 def test_build_metadata_tolerates_missing_attribution(tmp_path):
     video_path = tmp_path / "short-lofi-2.mp4"
-    meta = lofi._build_metadata({}, {}, 30.0, video_path)
+    meta = lofi._build_metadata("Cozy", {}, {}, 30.0, video_path)
     assert meta["title"]
     assert meta["pre_publish_audit"]["approved"] is True
 
@@ -192,9 +146,10 @@ def test_compose_short_builds_looping_ffmpeg_command(tmp_path, monkeypatch):
 
 def test_compose_short_uses_exactly_one_bgm_track(tmp_path, monkeypatch):
     """Contract check (chat, 2026-07-19): a Short is one song, not a mix --
-    _pick_file() already only ever returns a single path and _compose_short
-    only ever takes one bgm_path argument, so this locks that in rather
-    than relying on it staying true by absence of a second call site."""
+    _pick_bgm_file_for_mood() already only ever returns a single path and
+    _compose_short only ever takes one bgm_path argument, so this locks
+    that in rather than relying on it staying true by absence of a second
+    call site."""
     calls = []
 
     def fake_run(cmd, **kwargs):
@@ -267,43 +222,21 @@ def test_extract_thumbnail_returns_false_when_ffmpeg_missing(tmp_path, monkeypat
     assert ok is False
 
 
-def test_main_returns_error_when_no_broll_available(tmp_path, monkeypatch):
+def test_main_returns_error_when_pinned_broll_clip_missing(tmp_path, monkeypatch):
+    """Regression: main() must never fall back to auto-picking some other
+    clip off disk -- if the one pinned asset isn't there, that's an error
+    to fix (a missing commit), not something to paper over."""
     monkeypatch.setattr(lofi, "VIDEOS_DIR", tmp_path / "_videos")
-    monkeypatch.setattr(lofi, "BROLL_DIR", tmp_path / "empty_broll")
+    monkeypatch.setattr(lofi, "PINNED_BROLL_CLIP", tmp_path / "missing_pinned_clip.mp4")
     monkeypatch.setattr(lofi, "BGM_DIR", tmp_path / "empty_bgm")
-    (tmp_path / "empty_broll").mkdir()
     (tmp_path / "empty_bgm").mkdir()
 
     assert lofi.main() == 1
 
 
-def test_main_returns_error_when_only_offbrand_broll_available(tmp_path, monkeypatch):
-    """Regression: a clip present on disk but without anime-style tag
-    evidence must not be used, even though the library isn't empty."""
-    broll_dir = tmp_path / "broll"
-    bgm_dir = tmp_path / "bgm"
-    broll_dir.mkdir()
-    bgm_dir.mkdir()
-    _touch(broll_dir / "pixabay_1.mp4")
-    (broll_dir / "pixabay_1.json").write_text(
-        json.dumps({"tags": "man, library, book, education, reading"}), encoding="utf-8"
-    )
-    _touch(bgm_dir / "jamendo_1.mp3")
-
-    monkeypatch.setattr(lofi, "VIDEOS_DIR", tmp_path / "_videos")
-    monkeypatch.setattr(lofi, "BROLL_DIR", broll_dir)
-    monkeypatch.setattr(lofi, "BGM_DIR", bgm_dir)
-
-    assert lofi.main() == 1
-    assert list((tmp_path / "_videos").glob("short-*.mp4")) == []
-
-
 def test_main_returns_error_when_no_bgm_available(tmp_path, monkeypatch):
-    broll_dir = tmp_path / "broll"
-    broll_dir.mkdir()
-    _touch_broll(broll_dir)
     monkeypatch.setattr(lofi, "VIDEOS_DIR", tmp_path / "_videos")
-    monkeypatch.setattr(lofi, "BROLL_DIR", broll_dir)
+    monkeypatch.setattr(lofi, "PINNED_BROLL_CLIP", _touch(tmp_path / "pinned_short_clip.mp4"))
     monkeypatch.setattr(lofi, "BGM_DIR", tmp_path / "empty_bgm")
     (tmp_path / "empty_bgm").mkdir()
 
@@ -311,21 +244,16 @@ def test_main_returns_error_when_no_bgm_available(tmp_path, monkeypatch):
 
 
 def test_main_writes_video_and_metadata_pair_on_success(tmp_path, monkeypatch):
-    broll_dir = tmp_path / "broll"
     bgm_dir = tmp_path / "bgm"
     videos_dir = tmp_path / "_videos"
-    broll_dir.mkdir()
     bgm_dir.mkdir()
-    _touch_broll(
-        broll_dir, query="rain window cozy", photographer="Ana", pixabay_video_id="1", tags="anime, rain, window"
-    )
     _touch(bgm_dir / "jamendo_1.mp3")
     (bgm_dir / "jamendo_1.json").write_text(
         json.dumps({"track_name": "Rainy Study", "artist_name": "Someone", "track_id": "1"}), encoding="utf-8"
     )
 
     monkeypatch.setattr(lofi, "VIDEOS_DIR", videos_dir)
-    monkeypatch.setattr(lofi, "BROLL_DIR", broll_dir)
+    monkeypatch.setattr(lofi, "PINNED_BROLL_CLIP", _touch(tmp_path / "pinned_short_clip.mp4"))
     monkeypatch.setattr(lofi, "BGM_DIR", bgm_dir)
 
     def fake_compose(broll_path, bgm_path, output_path, duration_s):
@@ -353,22 +281,20 @@ def test_main_writes_video_and_metadata_pair_on_success(tmp_path, monkeypatch):
     assert Path(meta["thumbnail"]).exists()
 
 
-def test_main_brands_the_thumbnail_with_the_broll_mood(tmp_path, monkeypatch):
-    broll_dir = tmp_path / "broll"
+def test_main_brands_the_thumbnail_with_the_picked_mood(tmp_path, monkeypatch):
     bgm_dir = tmp_path / "bgm"
     videos_dir = tmp_path / "_videos"
-    broll_dir.mkdir()
     bgm_dir.mkdir()
-    _touch_broll(broll_dir, query="rain window cozy")
     _touch(bgm_dir / "jamendo_1.mp3")
 
     monkeypatch.setattr(lofi, "VIDEOS_DIR", videos_dir)
-    monkeypatch.setattr(lofi, "BROLL_DIR", broll_dir)
+    monkeypatch.setattr(lofi, "PINNED_BROLL_CLIP", _touch(tmp_path / "pinned_short_clip.mp4"))
     monkeypatch.setattr(lofi, "BGM_DIR", bgm_dir)
     monkeypatch.setattr(lofi, "_compose_short", lambda broll, bgm, out, dur: out.write_bytes(b"x") or True)
     monkeypatch.setattr(
         lofi, "_extract_thumbnail", lambda video_path, thumb_path, **k: thumb_path.write_bytes(b"x") or True
     )
+    monkeypatch.setattr(lofi, "_pick_mood", lambda: "Rain Window")
 
     calls = []
     monkeypatch.setattr(lofi, "brand_short_thumbnail", lambda path, mood: calls.append((path, mood)))
@@ -379,16 +305,13 @@ def test_main_brands_the_thumbnail_with_the_broll_mood(tmp_path, monkeypatch):
 
 
 def test_main_omits_thumbnail_field_when_extraction_fails(tmp_path, monkeypatch):
-    broll_dir = tmp_path / "broll"
     bgm_dir = tmp_path / "bgm"
     videos_dir = tmp_path / "_videos"
-    broll_dir.mkdir()
     bgm_dir.mkdir()
-    _touch_broll(broll_dir)
     _touch(bgm_dir / "jamendo_1.mp3")
 
     monkeypatch.setattr(lofi, "VIDEOS_DIR", videos_dir)
-    monkeypatch.setattr(lofi, "BROLL_DIR", broll_dir)
+    monkeypatch.setattr(lofi, "PINNED_BROLL_CLIP", _touch(tmp_path / "pinned_short_clip.mp4"))
     monkeypatch.setattr(lofi, "BGM_DIR", bgm_dir)
     monkeypatch.setattr(lofi, "_compose_short", lambda broll, bgm, out, dur: out.write_bytes(b"x") or True)
     monkeypatch.setattr(lofi, "_extract_thumbnail", lambda *a, **k: False)
@@ -401,15 +324,12 @@ def test_main_omits_thumbnail_field_when_extraction_fails(tmp_path, monkeypatch)
 
 
 def test_main_returns_error_when_composition_fails(tmp_path, monkeypatch):
-    broll_dir = tmp_path / "broll"
     bgm_dir = tmp_path / "bgm"
-    broll_dir.mkdir()
     bgm_dir.mkdir()
-    _touch_broll(broll_dir)
     _touch(bgm_dir / "jamendo_1.mp3")
 
     monkeypatch.setattr(lofi, "VIDEOS_DIR", tmp_path / "_videos")
-    monkeypatch.setattr(lofi, "BROLL_DIR", broll_dir)
+    monkeypatch.setattr(lofi, "PINNED_BROLL_CLIP", _touch(tmp_path / "pinned_short_clip.mp4"))
     monkeypatch.setattr(lofi, "BGM_DIR", bgm_dir)
     monkeypatch.setattr(lofi, "_compose_short", lambda *a, **k: False)
 

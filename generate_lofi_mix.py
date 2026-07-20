@@ -2,12 +2,13 @@
 """Generate one 1-hour horizontal lofi mix video: a looping b-roll clip +
 a shuffled Jamendo music playlist, no narration.
 
-Companion to generate_lofi_short.py's vertical Shorts. Picks a fresh
-random clip from scripts/sync_lofi_broll.py's on-disk library (a
-different clip each run, same as the Shorts do -- not the single pinned
-clip scripts/live_stream_dynamic.py uses for the 24/7 stream) and bakes
-the same seamless crossfade loop that script uses so the clip has no
-visible jump cut at the wrap-around point.
+Companion to generate_lofi_short.py's vertical Shorts. Loops one fixed
+committed clip (PINNED_BROLL_CLIP -- see its own comment; a different,
+also-pinned clip from generate_lofi_short.py's and
+scripts/live_stream_dynamic.py's own, so live/Shorts/mix each have a
+distinct fixed visual) and bakes the same seamless crossfade loop
+live_stream_dynamic.py uses so the clip has no visible jump cut at the
+wrap-around point.
 
 Rendering approach: the crossfade-baked clip and its scale/zoompan
 filter are only ever encoded ONCE, against the clip's own short
@@ -41,14 +42,15 @@ ROOT = Path(__file__).resolve().parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from utils.broll import pick_weighted_broll_file  # noqa: E402
-from utils.lofi_branding import branded_title, playlist_bucket_for_title  # noqa: E402
+from utils.lofi_branding import HOOK_BY_MOOD, branded_title, playlist_bucket_for_title  # noqa: E402
 from utils.thumbnail_branding import brand_mix_thumbnail  # noqa: E402
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("generate_lofi_mix")
 
-BROLL_DIR = ROOT / "_assets" / "video" / "lofi_broll"
+# See generate_lofi_short.py's PINNED_BROLL_CLIP comment for why this is a
+# single committed asset instead of a Pixabay-synced rotating pool.
+PINNED_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_mix_clip.mp4"
 BGM_DIR = ROOT / "_assets" / "audio" / "bgm"
 VIDEOS_DIR = ROOT / "_videos"
 TEMP_DIR = ROOT / "_videos" / "temp_mix"
@@ -79,20 +81,6 @@ DEFAULT_TAGS = [
 ]
 
 
-def _pick_file(directory: Path, pattern: str) -> Path | None:
-    candidates = sorted(directory.glob(pattern))
-    if not candidates:
-        return None
-    return random.choice(candidates)
-
-
-def _pick_broll_file(directory: Path, pattern: str) -> Path | None:
-    """Like _pick_file, but only among on-brand clips, weighted toward the
-    rainy-night/cozy sub-niche -- see utils.broll.pick_weighted_broll_file.
-    """
-    return pick_weighted_broll_file(directory, pattern)
-
-
 def _load_sidecar(media_path: Path) -> dict:
     meta_path = media_path.with_suffix(".json")
     try:
@@ -102,12 +90,11 @@ def _load_sidecar(media_path: Path) -> dict:
     return data if isinstance(data, dict) else {}
 
 
-def _mood_label(query: str) -> str:
-    words = [w for w in (query or "").split() if w]
-    if words and words[0].lower() == "anime":
-        words = words[1:]
-    words = words[:2]
-    return " ".join(word.capitalize() for word in words) or "Cozy"
+def _pick_mood() -> str:
+    """See generate_lofi_short.py's identical helper: the pinned clip no
+    longer varies, so mood is picked independently instead of derived from
+    a per-video b-roll search query."""
+    return random.choice(list(HOOK_BY_MOOD.keys())).title()
 
 
 def _media_duration_s(path: Path) -> float:
@@ -311,8 +298,9 @@ def _extract_thumbnail(video_path: Path, thumb_path: Path, timestamp_s: float = 
     return thumb_path.exists() and thumb_path.stat().st_size > 0
 
 
-def _build_metadata(broll_meta: dict, bgm_metas: list[dict], duration_s: float, video_path: Path, slug: str) -> dict:
-    mood = _mood_label(str(broll_meta.get("query") or ""))
+def _build_metadata(
+    mood: str, broll_meta: dict, bgm_metas: list[dict], duration_s: float, video_path: Path, slug: str
+) -> dict:
     title = branded_title(mood, suffix="(1 Hour)")
     photographer = str(broll_meta.get("photographer") or "")
 
@@ -387,14 +375,10 @@ def main() -> int:
     VIDEOS_DIR.mkdir(parents=True, exist_ok=True)
     TEMP_DIR.mkdir(parents=True, exist_ok=True)
 
-    broll_path = _pick_broll_file(BROLL_DIR, "pixabay_*.mp4")
-    if broll_path is None:
-        log.error(
-            "No on-brand lofi b-roll clips found in %s -- run scripts/sync_lofi_broll.py first, "
-            "or scripts/prune_offbrand_broll.py if the library only has off-brand clips.",
-            BROLL_DIR,
-        )
+    if not PINNED_BROLL_CLIP.exists():
+        log.error("Pinned mix b-roll clip missing: %s", PINNED_BROLL_CLIP)
         return 1
+    broll_path = PINNED_BROLL_CLIP
 
     bgm_tracks = sorted(BGM_DIR.glob("jamendo_*.mp3"))
     if not bgm_tracks:
@@ -403,6 +387,7 @@ def main() -> int:
 
     broll_meta = _load_sidecar(broll_path)
     bgm_metas = [_load_sidecar(t) for t in bgm_tracks]
+    mood = _pick_mood()
 
     seamless_clip = _prepare_seamless_loop_clip(broll_path)
     filtered_segment = _bake_filtered_segment(seamless_clip)
@@ -423,11 +408,11 @@ def main() -> int:
         log.error("Mix composition failed for %s", slug)
         return 1
 
-    metadata = _build_metadata(broll_meta, bgm_metas, TARGET_DURATION_S, video_path, slug)
+    metadata = _build_metadata(mood, broll_meta, bgm_metas, TARGET_DURATION_S, video_path, slug)
     thumb_path = VIDEOS_DIR / f"mix-{slug}_thumb.jpg"
     if _extract_thumbnail(video_path, thumb_path):
         try:
-            brand_mix_thumbnail(thumb_path, _mood_label(str(broll_meta.get("query") or "")))
+            brand_mix_thumbnail(thumb_path, mood)
         except Exception as exc:
             log.warning("thumbnail branding failed for %s, keeping raw frame: %s", slug, exc)
         metadata["thumbnail"] = str(thumb_path)
