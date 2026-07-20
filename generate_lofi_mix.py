@@ -116,12 +116,28 @@ def _prepare_seamless_loop_clip(clip_path: Path) -> Path:
     if fade <= 0:
         return clip_path
 
+    # `mid` must be concat's FIRST input, `blend` its second. `mid` spans
+    # almost the whole clip (fade..duration-fade) and its trim filter can
+    # start emitting frames the instant ffmpeg starts demuxing; `blend`
+    # (xfade of `end`+`start`) can't emit anything until the demuxer has
+    # read all the way to the clip's tail. With concat's original
+    # [blend][mid] order, concat waits on segment 0 (blend) first, so
+    # every one of `mid`'s frames backs up unread in its filter queue for
+    # the whole clip -- confirmed locally: this deadlocks ffmpeg's internal
+    # frame queue ("100 buffers queued... something may be wrong", process
+    # never finishes) on the pinned 60fps clip, and is what CI's "runner
+    # received a shutdown signal" / exit 143 was actually memory pressure
+    # from -- the same failure mode this function's docstring already
+    # flags for live_stream_dynamic.py's identical graph. [mid][blend]
+    # instead matches the graph's natural read order (mid drains as it's
+    # produced; only `start`'s ~1s has to wait) and finishes in seconds
+    # with no queued-frames warning.
     filter_complex = (
         f"[0:v]trim=0:{fade:.3f},setpts=PTS-STARTPTS[start];"
         f"[0:v]trim={duration - fade:.3f}:{duration:.3f},setpts=PTS-STARTPTS[end];"
         f"[0:v]trim={fade:.3f}:{duration - fade:.3f},setpts=PTS-STARTPTS[mid];"
         f"[end][start]xfade=transition=fade:duration={fade:.3f}:offset=0[blend];"
-        "[blend][mid]concat=n=2:v=1:a=0[out]"
+        "[mid][blend]concat=n=2:v=1:a=0[out]"
     )
     cmd = [
         "ffmpeg",

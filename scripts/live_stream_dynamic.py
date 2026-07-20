@@ -347,12 +347,23 @@ class DynamicStreamer:
         if fade <= 0:
             return clip_path
 
+        # `mid` must be concat's FIRST input, `blend` its second -- see
+        # generate_lofi_mix.py's identical function for the full
+        # reasoning. With the original [blend][mid] order this deadlocks
+        # ffmpeg's internal frame queue on longer/higher-fps clips (each
+        # of `mid`'s frames backs up unread until concat reaches segment
+        # 1, since `blend` can't emit anything until the demuxer reaches
+        # the clip's tail) -- confirmed via generate_lofi_mix.py hitting
+        # exactly this on a 60fps pinned clip. Not yet observed here since
+        # today's pinned live clips are short, but it's the same graph and
+        # the pinned pool rotates, so fix it here too before a longer/
+        # higher-fps clip trips it on the 24/7 stream.
         filter_complex = (
             f"[0:v]trim=0:{fade:.3f},setpts=PTS-STARTPTS[start];"
             f"[0:v]trim={duration - fade:.3f}:{duration:.3f},setpts=PTS-STARTPTS[end];"
             f"[0:v]trim={fade:.3f}:{duration - fade:.3f},setpts=PTS-STARTPTS[mid];"
             f"[end][start]xfade=transition=fade:duration={fade:.3f}:offset=0[blend];"
-            "[blend][mid]concat=n=2:v=1:a=0[out]"
+            "[mid][blend]concat=n=2:v=1:a=0[out]"
         )
         cmd = [
             "ffmpeg",
