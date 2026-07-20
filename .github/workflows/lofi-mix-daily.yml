@@ -6,24 +6,32 @@ name: "Lofi Mix - daily 1 hour video"
 # ever encodes the short crossfade-baked clip once and loops the
 # already-encoded result to fill the hour, so this stays well inside
 # the timeout below instead of transcoding a full hour of video.
+#
+# A single `schedule:` firing a day is fragile -- checked live (chat,
+# 2026-07-20): GitHub Actions silently dropped the 21:30 UTC trigger one
+# day with zero run record and no error, so nothing published for ~35h
+# until a human noticed and dispatched a run by hand. This now polls
+# every 15 minutes instead (the same "check often, publish rarely"
+# pattern youtube-bot.yml already uses for Shorts) and the very first
+# step (`scripts/check_mix_publish_due.py`) is a cheap gate: every
+# subsequent step -- the actual sync/render/upload work -- only runs once
+# 24h have actually passed since the last committed `_videos/mix-*.done`
+# marker, so at most one mix still publishes per day, and a single missed
+# poll now costs ~15 minutes of drift instead of an entire day.
 on:
   schedule:
-    # 21:30 UTC = ~4:30-5:30pm US Eastern (DST-dependent) -- unlike the
-    # Shorts feed (deliberately spread across the whole day via
-    # utils/publish_schedule.py's global slot grid), there's only one of
-    # these a day, so it's worth aiming it at a real peak: landing a few
-    # hours before the US/EU evening study-and-sleep search surge this
-    # rainy-night/cozy niche targets, giving YouTube time to index it
-    # before that traffic arrives. Previously 04:15 UTC (~11:15pm-12:15am
-    # Eastern), which was arbitrary -- picked when this workflow was first
-    # written, not for any niche-specific reason.
-    - cron: "30 21 * * *"
+    - cron: "*/15 * * * *"
   workflow_dispatch:
     inputs:
       reason:
         description: "Why this run was started"
         required: false
         default: "manual"
+      force:
+        description: "Publish now even if 24h haven't passed since the last mix"
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: read
@@ -63,20 +71,36 @@ jobs:
         run: |
           git fetch origin main
           git checkout -B main origin/main
+      - name: "Verificar se ja passaram 24h desde o ultimo mix"
+        id: gate
+        run: |
+          if [ "${{ inputs.force }}" = "true" ]; then
+            echo "due=true" >> "$GITHUB_OUTPUT"
+            echo "Forced by workflow_dispatch input; skipping the 24h check."
+          else
+            result="$(python3 scripts/check_mix_publish_due.py --json)"
+            echo "$result"
+            due="$(python3 -c "import json,sys; print(str(json.loads(sys.argv[1])['due']).lower())" "$result")"
+            echo "due=$due" >> "$GITHUB_OUTPUT"
+          fi
       - name: "Python 3.11"
+        if: steps.gate.outputs.due == 'true'
         uses: actions/setup-python@v6.3.0
         with:
           python-version: "3.11"
           cache: "pip"
       - name: "Instalar FFmpeg"
+        if: steps.gate.outputs.due == 'true'
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y ffmpeg
       - name: "Instalar dependencias Python"
+        if: steps.gate.outputs.due == 'true'
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
       - name: "Restaurar tokens do YouTube"
+        if: steps.gate.outputs.due == 'true'
         env:
           YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
         run: |
@@ -86,6 +110,7 @@ jobs:
             chmod 600 youtube_token.json
           fi
       - name: "Restaurar bibliotecas de midia lofi do cache"
+        if: steps.gate.outputs.due == 'true'
         uses: actions/cache@v4
         with:
           path: |
@@ -95,6 +120,7 @@ jobs:
           restore-keys: |
             lofi-media-
       - name: "Sincronizar bibliotecas de b-roll e musica lofi"
+        if: steps.gate.outputs.due == 'true'
         run: |
           python scripts/sync_lofi_broll.py
           python scripts/sync_jamendo_music.py
@@ -102,12 +128,13 @@ jobs:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
       - name: "Gerar mix lofi de 1 hora"
+        if: steps.gate.outputs.due == 'true'
         run: python generate_lofi_mix.py || echo "::warning::No mix generated this cycle (b-roll/bgm supply not ready)."
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
       - name: "Upload do mix para o YouTube"
-        if: hashFiles('youtube_token.json') != ''
+        if: steps.gate.outputs.due == 'true' && hashFiles('youtube_token.json') != ''
         run: python upload_youtube.py --language=en
         env:
           PYTHONIOENCODING: utf-8
@@ -115,9 +142,10 @@ jobs:
           YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
           MEDIA_LIFECYCLE_CLEANUP: 0
       - name: "Aplicar ciclo de vida da midia"
+        if: steps.gate.outputs.due == 'true'
         run: python scripts/media_lifecycle.py --cleanup --audit-tracked --json
       - name: "Salvar marcadores no git"
-        if: always()
+        if: always() && steps.gate.outputs.due == 'true'
         run: |
           git config user.name "Wild Brief Bot"
           git config user.email "bot@wildbrief.com"
@@ -214,7 +242,7 @@ jobs:
           echo "Push failed after retries."
           exit 1
       - name: "Log de execucao"
-        if: always()
+        if: always() && steps.gate.outputs.due == 'true'
         uses: actions/upload-artifact@v7
         with:
           name: "lofi-mix-log-${{ github.run_number }}"
