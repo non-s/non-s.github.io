@@ -19,6 +19,9 @@ from pathlib import Path
 
 import requests
 
+from utils.broll_performance import mood_performance_weights
+from utils.lofi_branding import playlist_bucket_for_title
+
 log = logging.getLogger(__name__)
 
 _USER_AGENT = "WildBrief-Bot/4.0 (+https://non-s.github.io)"
@@ -120,15 +123,32 @@ def is_preferred_mood_clip(video_path: Path) -> bool:
     return any(signal in query for signal in _PREFERRED_MOOD_SIGNALS)
 
 
-def pick_weighted_broll_file(directory: Path, pattern: str) -> Path | None:
+def pick_weighted_broll_file(
+    directory: Path, pattern: str, performance_weights: dict[str, float] | None = None
+) -> Path | None:
     """Random pick among on-brand clips in `directory`, but a rainy-night/
     night-city/snow clip is _PREFERRED_WEIGHT times as likely to be chosen
-    as any other single clip.
+    as any other single clip -- further scaled by `performance_weights`
+    (playlist bucket -> multiplier), defaulting to
+    utils.broll_performance.mood_performance_weights() when not given, so
+    a bucket that's actually performed better/worse on this channel skews
+    selection odds further, on top of that fixed editorial bias. That
+    default is a no-op ({} -> every multiplier falls back to 1.0) until
+    there's enough real per-video view data to compute it from -- see
+    utils/broll_performance.py's docstring.
     """
     candidates = [p for p in sorted(directory.glob(pattern)) if is_on_brand_broll_clip(p)]
     if not candidates:
         return None
-    weights = [_PREFERRED_WEIGHT if is_preferred_mood_clip(p) else 1 for p in candidates]
+    if performance_weights is None:
+        performance_weights = mood_performance_weights()
+    weights = []
+    for p in candidates:
+        weight = float(_PREFERRED_WEIGHT if is_preferred_mood_clip(p) else 1)
+        if performance_weights:
+            bucket = playlist_bucket_for_title(_clip_query(p))
+            weight *= performance_weights.get(bucket, 1.0)
+        weights.append(weight)
     return random.choices(candidates, weights=weights, k=1)[0]
 
 

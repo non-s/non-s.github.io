@@ -17,6 +17,7 @@ import html
 import json
 import shutil
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -40,6 +41,13 @@ PUBLIC_SITE_FILES = (
     SECURITY_TXT,
 )
 RECENT_SHORTS_LIMIT = 20
+# Every earlier snapshot only ever overwrote _data/analytics/latest.json,
+# so the dashboard could show one point in time but never a trend -- there
+# was nothing to compare it against. This appends one row per UTC day
+# instead (re-running the same day updates that day's row rather than
+# growing duplicates), giving the dashboard real history to chart from.
+HISTORY_PATH = ANALYTICS_DIR / "dashboard_history.jsonl"
+TREND_DAYS = 14
 
 
 def _safe_json(path: Path) -> dict:
@@ -62,6 +70,69 @@ def _recent_shorts(limit: int = RECENT_SHORTS_LIMIT) -> list[dict]:
 
 def _stat_tile(label: str, value: str) -> str:
     return f"<div class='tile'><div class='tile-value'>{html.escape(value)}</div><div class='tile-label'>{html.escape(label)}</div></div>"
+
+
+def _load_history(path: Path = HISTORY_PATH) -> list[dict]:
+    if not path.exists():
+        return []
+    rows = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            row = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(row, dict) and row.get("day"):
+            rows.append(row)
+    rows.sort(key=lambda r: str(r.get("day") or ""))
+    return rows
+
+
+def append_history_snapshot(
+    *,
+    total_views: int,
+    subscribers_gained: int,
+    shorts_published: int,
+    now: datetime | None = None,
+    path: Path = HISTORY_PATH,
+) -> list[dict]:
+    """Append (or update, if already run today) one row for today's UTC
+    date. Returns the full, deduped, day-sorted history."""
+    now = now or datetime.now(timezone.utc)
+    day = now.strftime("%Y-%m-%d")
+    rows = {row["day"]: row for row in _load_history(path)}
+    rows[day] = {
+        "day": day,
+        "total_views": int(total_views or 0),
+        "subscribers_gained": int(subscribers_gained or 0),
+        "shorts_published": int(shorts_published or 0),
+    }
+    ordered = sorted(rows.values(), key=lambda r: str(r["day"]))
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("\n".join(json.dumps(row, sort_keys=True) for row in ordered) + "\n", encoding="utf-8")
+    return ordered
+
+
+def _sparkline_svg(values: list[float], *, width: int = 280, height: int = 48) -> str:
+    """Static inline SVG polyline -- no charting JS, matching this page's
+    zero-external-deps rule (a CDN outage must never blank the page)."""
+    if len(values) < 2:
+        return ""
+    lo, hi = min(values), max(values)
+    span = (hi - lo) or 1.0
+    step = width / (len(values) - 1)
+    points = []
+    for i, value in enumerate(values):
+        x = round(i * step, 1)
+        y = round(height - ((value - lo) / span) * height, 1)
+        points.append(f"{x},{y}")
+    return (
+        f"<svg width='{width}' height='{height}' viewBox='0 0 {width} {height}' "
+        "role='img' aria-label='Total views trend'>"
+        f"<polyline points='{' '.join(points)}' fill='none' stroke='#7dd3fc' stroke-width='2'/></svg>"
+    )
 
 
 def render_html() -> str:
@@ -119,6 +190,28 @@ def render_html() -> str:
             "YouTube Studio Shorts Reach CSV to populate real view/watch-time data.</small></p>"
         )
 
+    history = _load_history()[-TREND_DAYS:]
+    out.append("<h2>Trend (last %d days)</h2>" % TREND_DAYS)
+    if len(history) >= 2:
+        sparkline = _sparkline_svg([float(row.get("total_views") or 0) for row in history])
+        if sparkline:
+            out.append(sparkline)
+        out.append("<table><tr><th>Day</th><th>Total views</th><th>Subs gained</th><th>Shorts published</th></tr>")
+        for row in reversed(history):
+            out.append(
+                "<tr><td>{day}</td><td>{views:,}</td><td>{subs:,}</td><td>{shorts:,}</td></tr>".format(
+                    day=html.escape(str(row.get("day") or "")),
+                    views=int(row.get("total_views") or 0),
+                    subs=int(row.get("subscribers_gained") or 0),
+                    shorts=int(row.get("shorts_published") or 0),
+                )
+            )
+        out.append("</table>")
+    else:
+        out.append(
+            "<p><small>Not enough daily snapshots yet to chart a trend -- check back after a few more days.</small></p>"
+        )
+
     out.append("<h2>Recent Shorts</h2>")
     if recent_shorts:
         out.append("<table><tr><th>Uploaded</th><th>Title</th><th>Link</th></tr>")
@@ -142,6 +235,17 @@ def render_html() -> str:
 
 def main() -> None:
     SITE_DIR.mkdir(parents=True, exist_ok=True)
+
+    latest = _safe_json(ANALYTICS_DIR / "latest.json")
+    reach = _safe_json(ANALYTICS_DIR / "studio_reach_latest.json")
+    reach_summary = summarize_reach(reach.get("items") or [])
+    shorts_published = sum(1 for p in VIDEOS_DIR.glob("*.done") if _safe_json(p).get("video_id"))
+    append_history_snapshot(
+        total_views=int(latest.get("total_views") or reach_summary.get("views") or 0),
+        subscribers_gained=int(latest.get("subscribers_gained") or 0),
+        shorts_published=shorts_published,
+    )
+
     body = render_html()
     OUT.write_text(body, encoding="utf-8")
     ROOT_OUT.write_text(body, encoding="utf-8")

@@ -88,6 +88,36 @@ def test_pick_weighted_broll_file_favors_preferred_mood_over_many_trials(tmp_pat
     assert rain_count > cat_count * 1.5
 
 
+def test_pick_weighted_broll_file_applies_real_performance_weight_on_top(tmp_path):
+    """A clip in a real-performance-boosted bucket should win far more
+    often than the fixed 3:1 editorial bias alone would predict, once a
+    performance_weights multiplier is supplied for its bucket."""
+    cozy_cat = _write_clip(tmp_path, "pixabay_1.mp4", "anime cat sleeping cozy")  # "Cozy Cat Lofi" bucket, base=1
+    rain = _write_clip(tmp_path, "pixabay_2.mp4", "anime rain window cozy")  # "Rainy Night Lofi" bucket, base=3
+
+    # Without any performance data: rain (weight 3) beats cat (weight 1).
+    picks = [broll.pick_weighted_broll_file(tmp_path, "pixabay_*.mp4", performance_weights={}) for _ in range(400)]
+    assert picks.count(rain) > picks.count(cozy_cat)
+
+    # With cat's bucket boosted 2x and rain's bucket cut to 0.5x, cat should
+    # now win instead (1*2=2 vs 3*0.5=1.5).
+    boosted = {"Cozy Cat Lofi": 2.0, "Rainy Night Lofi": 0.5}
+    picks = [broll.pick_weighted_broll_file(tmp_path, "pixabay_*.mp4", performance_weights=boosted) for _ in range(400)]
+    assert picks.count(cozy_cat) > picks.count(rain)
+
+
+def test_pick_weighted_broll_file_defaults_to_mood_performance_weights(tmp_path, monkeypatch):
+    """When performance_weights isn't given, it should be computed via
+    utils.broll_performance.mood_performance_weights() rather than always
+    behaving as if no performance data exists."""
+    clip = _write_clip(tmp_path, "pixabay_1.mp4", "anime rain window cozy")
+    monkeypatch.setattr(broll, "mood_performance_weights", lambda: {"Rainy Night Lofi": 5.0})
+
+    # Just needs to not blow up and still return the only candidate --
+    # the weight value itself doesn't change the outcome with one clip.
+    assert broll.pick_weighted_broll_file(tmp_path, "pixabay_*.mp4") == clip
+
+
 def _pixabay_payload():
     return {
         "hits": [
