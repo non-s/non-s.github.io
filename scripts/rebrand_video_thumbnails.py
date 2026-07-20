@@ -200,7 +200,14 @@ def build_plan(videos_dir: Path = VIDEOS_DIR) -> list[dict]:
                 "mood": mood,
                 "title": str(marker.get("title") or ""),
                 "description": str(marker.get("description") or ""),
-                "category_id": "10" if is_mix else "15",
+                # "10" (Music) for both formats -- matches upload_youtube.py's
+                # fallback fix (categoryId default corrected from "15" Pets &
+                # Animals, a leftover from this uploader's original
+                # animal-fact content, to "10" Music for the current
+                # lofi-only pipeline). This script retags already-published
+                # videos, so it needs the same correction, not just new
+                # uploads going forward.
+                "category_id": "10",
                 "tags": tags,
                 "already_done": bool(marker.get("thumbnail_retag")) or generated_after_deploy,
             }

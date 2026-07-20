@@ -798,7 +798,12 @@ def upload_video(youtube, meta: dict, *, sequence_index: int = 0) -> str | None:
             "title": _youtube_title(meta),
             "description": _youtube_description(meta),
             "tags": _normalise_tags(meta.get("tags")),
-            "categoryId": str(meta.get("youtube_category_id") or "15"),
+            # "10" (Music) is the fallback, not "15" (Pets & Animals) --
+            # that was the right default back when this uploader mainly
+            # shipped animal-fact content, but every generator feeding it
+            # today (generate_lofi_short.py, generate_lofi_mix.py) is lofi
+            # music, and Shorts never set youtube_category_id explicitly.
+            "categoryId": str(meta.get("youtube_category_id") or "10"),
             "defaultLanguage": "en",
         },
         "status": status,

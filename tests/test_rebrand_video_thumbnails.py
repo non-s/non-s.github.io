@@ -7,6 +7,30 @@ from PIL import Image
 import scripts.rebrand_video_thumbnails as rvt
 
 
+def _write_marker(videos_dir, name, *, video_id="VID1", title="Rainy Night Anime Lofi — Amber Hours \U0001f327️"):
+    import json
+
+    path = videos_dir / name
+    path.write_text(json.dumps({"video_id": video_id, "title": title}), encoding="utf-8")
+    return path
+
+
+def test_build_plan_uses_the_music_category_for_both_shorts_and_mixes(tmp_path):
+    """Regression: shorts used to get category_id "15" (Pets & Animals)
+    here, the same stale animal-content default upload_youtube.py's
+    categoryId fallback had -- this retagging script needs the same fix
+    since it retags already-published videos, not just future uploads."""
+    _write_marker(tmp_path, "short-1.done", video_id="SHORT1")
+    _write_marker(
+        tmp_path, "mix-1.done", video_id="MIX1", title="Rainy Night Anime Lofi (1 Hour) — Amber Hours \U0001f327️"
+    )
+
+    plans = {p["video_id"]: p for p in rvt.build_plan(tmp_path)}
+
+    assert plans["SHORT1"]["category_id"] == "10"
+    assert plans["MIX1"]["category_id"] == "10"
+
+
 def test_hook_from_title_strips_brand_suffix_and_anime_lofi():
     assert rvt._hook_from_title("Rainy Night Anime Lofi — Amber Hours \U0001f327️") == "Rainy Night"
 

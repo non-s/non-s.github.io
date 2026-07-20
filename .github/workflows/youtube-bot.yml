@@ -48,7 +48,14 @@ jobs:
       YOUTUBE_DAILY_UPLOAD_BUDGET: "100"
       YOUTUBE_DESCRIPTION_MODE: ${{ vars.YOUTUBE_DESCRIPTION_MODE || 'full' }}
       CHANNEL_PLAYLIST_PREFIX: ${{ vars.CHANNEL_PLAYLIST_PREFIX || '' }}
-      CHANNEL_DEFAULT_HASHTAGS: ${{ vars.CHANNEL_DEFAULT_HASHTAGS || '#Shorts,#lofi,#chillbeats' }}
+      # "#chillbeats" was a generic head-term hashtag that doesn't say
+      # anything about this channel's sub-niche; "#animelofi"/"#rainynightlofi"
+      # match the branding utils/lofi_branding.py already leads titles with
+      # (see its module docstring for why head terms are unwinnable here).
+      # upload_youtube.py's _youtube_description() shows only the first 3
+      # hashtags above the title -- #Shorts/#lofi/#animelofi for a Short
+      # (long-form drops #Shorts, so it's #lofi/#animelofi/#rainynightlofi).
+      CHANNEL_DEFAULT_HASHTAGS: ${{ vars.CHANNEL_DEFAULT_HASHTAGS || '#Shorts,#lofi,#animelofi,#rainynightlofi' }}
       CHANNEL_PLAYLIST_DESCRIPTION: ${{ vars.CHANNEL_PLAYLIST_DESCRIPTION || 'Lofi Shorts grouped for easier binge watching.' }}
     steps:
       - name: "Checkout"

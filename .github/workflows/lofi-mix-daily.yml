@@ -8,7 +8,16 @@ name: "Lofi Mix - daily 1 hour video"
 # the timeout below instead of transcoding a full hour of video.
 on:
   schedule:
-    - cron: "15 4 * * *"
+    # 21:30 UTC = ~4:30-5:30pm US Eastern (DST-dependent) -- unlike the
+    # Shorts feed (deliberately spread across the whole day via
+    # utils/publish_schedule.py's global slot grid), there's only one of
+    # these a day, so it's worth aiming it at a real peak: landing a few
+    # hours before the US/EU evening study-and-sleep search surge this
+    # rainy-night/cozy niche targets, giving YouTube time to index it
+    # before that traffic arrives. Previously 04:15 UTC (~11:15pm-12:15am
+    # Eastern), which was arbitrary -- picked when this workflow was first
+    # written, not for any niche-specific reason.
+    - cron: "30 21 * * *"
   workflow_dispatch:
     inputs:
       reason:
@@ -42,7 +51,8 @@ jobs:
       YOUTUBE_DAILY_UPLOAD_BUDGET: "100"
       YOUTUBE_DESCRIPTION_MODE: ${{ vars.YOUTUBE_DESCRIPTION_MODE || 'full' }}
       CHANNEL_PLAYLIST_PREFIX: ${{ vars.CHANNEL_PLAYLIST_PREFIX || '' }}
-      CHANNEL_DEFAULT_HASHTAGS: ${{ vars.CHANNEL_DEFAULT_HASHTAGS || '#Shorts,#lofi,#chillbeats' }}
+      # Kept identical to youtube-bot.yml's default -- see its comment.
+      CHANNEL_DEFAULT_HASHTAGS: ${{ vars.CHANNEL_DEFAULT_HASHTAGS || '#Shorts,#lofi,#animelofi,#rainynightlofi' }}
       CHANNEL_PLAYLIST_DESCRIPTION: ${{ vars.CHANNEL_PLAYLIST_DESCRIPTION || 'Lofi Shorts grouped for easier binge watching.' }}
     steps:
       - name: "Checkout"

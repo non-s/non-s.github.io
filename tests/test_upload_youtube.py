@@ -426,3 +426,33 @@ def test_upload_video_sets_publish_at_for_scheduled_private_upload(monkeypatch, 
     assert status["privacyStatus"] == "private"
     assert status["publishAt"] == "2026-06-13T02:23:00Z"
     assert meta["scheduled_publish_at"] == "2026-06-13T02:23:00Z"
+
+
+def test_upload_video_defaults_category_to_music_not_pets_and_animals(tmp_path):
+    """Regression: the categoryId fallback used to be "15" (Pets & Animals)
+    -- left over from this uploader's original animal-fact content -- and
+    generate_lofi_short.py never sets youtube_category_id, so every lofi
+    Short was silently uploading under the wrong YouTube category."""
+    video = tmp_path / "short.mp4"
+    video.write_bytes(b"fake")
+    thumb = tmp_path / "thumb.jpg"
+    thumb.write_bytes(b"fake")
+    youtube = _YouTube()
+    meta = {"video": str(video), "thumbnail": str(thumb), "title": "Test Short"}
+
+    upload_video(youtube, meta)
+
+    assert youtube._videos.inserts[-1]["body"]["snippet"]["categoryId"] == "10"
+
+
+def test_upload_video_honors_an_explicit_category_override(tmp_path):
+    video = tmp_path / "mix.mp4"
+    video.write_bytes(b"fake")
+    thumb = tmp_path / "thumb.jpg"
+    thumb.write_bytes(b"fake")
+    youtube = _YouTube()
+    meta = {"video": str(video), "thumbnail": str(thumb), "title": "Test Mix", "youtube_category_id": "24"}
+
+    upload_video(youtube, meta)
+
+    assert youtube._videos.inserts[-1]["body"]["snippet"]["categoryId"] == "24"
