@@ -121,7 +121,6 @@ jobs:
         run: |
           git config user.name "Wild Brief Bot"
           git config user.email "bot@wildbrief.com"
-          state_dir="$(mktemp -d)"
           state_paths=(
             _data/provider_stats.jsonl
             _data/analytics/latest.json
@@ -135,13 +134,29 @@ jobs:
             _data/provider_stats.jsonl
             _data/upload_intents.jsonl
           )
+          # Same fix as youtube-bot.yml's identically-structured step (see
+          # its comment for the full rationale): only snapshot/restore
+          # *.done markers this run itself just created (still untracked in
+          # git), never the whole `_videos/*.done` glob -- otherwise a
+          # marker deleted upstream in the meantime (e.g. by an admin
+          # rebrand/dedupe script) gets silently resurrected by the blind
+          # restore below. Computed once, before the first reset, and
+          # reused as a fixed list through every retry, since a local
+          # commit makes the files untracked no longer.
+          mapfile -t new_marker_paths < <(
+            git status --porcelain=v1 --untracked-files=normal -- _videos 2>/dev/null \
+              | grep -E '^\?\? .*\.done$' \
+              | cut -c4-
+          )
+          state_dir="$(mktemp -d)"
           for path in "${state_paths[@]}"; do
             if [ -e "$path" ]; then
               mkdir -p "$state_dir/$(dirname "$path")"
               cp "$path" "$state_dir/$path"
             fi
           done
-          find _videos -maxdepth 1 -type f -name '*.done' -print0 2>/dev/null | while IFS= read -r -d '' path; do
+          for path in "${new_marker_paths[@]}"; do
+            [ -e "$path" ] || continue
             mkdir -p "$state_dir/$(dirname "$path")"
             cp "$path" "$state_dir/$path"
           done
@@ -153,7 +168,9 @@ jobs:
           for path in "${state_paths[@]}"; do
             [ -e "$path" ] && git add "$path"
           done
-          find _videos -maxdepth 1 -type f -name '*.done' -print0 2>/dev/null | xargs -0 -r git add --
+          for path in "${new_marker_paths[@]}"; do
+            [ -e "$path" ] && git add "$path"
+          done
           if git diff --cached --quiet; then
             echo "Nenhum arquivo novo para salvar."
             exit 0
@@ -171,7 +188,8 @@ jobs:
                 cp "$path" "$retry_dir/$path"
               fi
             done
-            find _videos -maxdepth 1 -type f -name '*.done' -print0 2>/dev/null | while IFS= read -r -d '' path; do
+            for path in "${new_marker_paths[@]}"; do
+              [ -e "$path" ] || continue
               mkdir -p "$retry_dir/$(dirname "$path")"
               cp "$path" "$retry_dir/$path"
             done
@@ -183,7 +201,9 @@ jobs:
             for path in "${state_paths[@]}"; do
               [ -e "$path" ] && git add "$path"
             done
-            find _videos -maxdepth 1 -type f -name '*.done' -print0 2>/dev/null | xargs -0 -r git add --
+            for path in "${new_marker_paths[@]}"; do
+              [ -e "$path" ] && git add "$path"
+            done
             if git diff --cached --quiet; then
               echo "Latest main already contains generated state."
               exit 0
