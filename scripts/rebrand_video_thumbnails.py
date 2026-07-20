@@ -44,6 +44,7 @@ if str(ROOT) not in sys.path:
 from generate_lofi_mix import DEFAULT_TAGS as MIX_DEFAULT_TAGS  # noqa: E402
 from generate_lofi_short import DEFAULT_TAGS as SHORT_DEFAULT_TAGS  # noqa: E402
 from upload_youtube import _normalise_tags, get_youtube_service  # noqa: E402
+from utils.orphan_registry import load_orphan_ids  # noqa: E402
 from utils.thumbnail_branding import brand_mix_thumbnail, brand_short_thumbnail  # noqa: E402
 
 logging.basicConfig(level=logging.INFO)
@@ -164,18 +165,15 @@ def _extract_vertical_content(path: Path) -> None:
 
 # Both confirmed deleted from the channel (404 videoNotFound / every
 # thumbnail size missing, including default.jpg) -- almost certainly by
-# the auto-delete-on-title-collision bug fixed in 9a3ecaa0b. Their .done
-# markers were deleted three times today and kept coming back: youtube-
-# bot.yml's "Salvar marcadores no git" step snapshots the whole
-# _videos/*.done glob from its own checkout *before* resetting to latest
-# origin/main, then unconditionally restores that whole snapshot on top --
-# so any run whose checkout predates a marker deletion resurrects it
-# regardless of what's actually on origin/main. That's a real bug in a
-# frequently-running, production-critical workflow; fixing it needs more
-# care/testing than a quick patch under time pressure, so it's a known
-# follow-up, not fixed here. Skipping these ids directly sidesteps it for
-# this script specifically.
-_KNOWN_DELETED_VIDEO_IDS = {"dhFjT3Qw8uw", "QO-lcCEaWgM"}
+# the auto-delete-on-title-collision bug, compounded by the marker-
+# resurrection race in youtube-bot.yml's "Salvar marcadores no git" step
+# (both since fixed: 9a3ecaa0b and the CircuitBreaker/marker-snapshot fix
+# in scripts/detect_orphan_videos.py's sibling commit). Kept as a fixed
+# base here since these two were found by hand before
+# detect_orphan_videos.py existed; anything found since is in
+# utils.orphan_registry's log instead of growing this constant by hand
+# again.
+_KNOWN_DELETED_VIDEO_IDS = {"dhFjT3Qw8uw", "QO-lcCEaWgM"} | load_orphan_ids()
 
 
 def build_plan(videos_dir: Path = VIDEOS_DIR) -> list[dict]:
