@@ -39,13 +39,15 @@ def main() -> int:
         clips = fetch_pixabay(query, per_page=args.per_query)
         results[query] = [
             {
-                "id": clip.source_metadata.get("id"),
+                "id": clip.source_metadata.get("pixabay_video_id"),
                 "download_url": clip.download_url,
                 "width": clip.width,
                 "height": clip.height,
                 "duration_s": clip.duration_s,
                 "tags": clip.source_metadata.get("tags"),
                 "page_url": clip.url,
+                "photographer": clip.source_metadata.get("photographer"),
+                "photographer_url": clip.source_metadata.get("photographer_url"),
                 "anime_style_tag_match": looks_anime_styled(str(clip.source_metadata.get("tags") or "")),
             }
             for clip in clips
