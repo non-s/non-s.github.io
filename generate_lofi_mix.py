@@ -240,7 +240,7 @@ def _build_bgm_playlist(tracks: list[Path]) -> Path | None:
     if result.returncode != 0 or not playlist_path.exists():
         log.error("ffmpeg playlist concat exited %d: %s", result.returncode, result.stderr[-500:])
         return None
-    log.info("Built bgm playlist from %d track(s).", len(shuffled))
+    log.info("Built bgm playlist from %d track(s).", len(tracks))
     return playlist_path
 
 
