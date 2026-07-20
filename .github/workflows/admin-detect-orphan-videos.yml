@@ -63,7 +63,12 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add _data/orphaned_videos.jsonl
+          # append_orphans() only creates _data/orphaned_videos.jsonl when there's
+          # at least one new orphan to log -- the common case (nothing new found)
+          # leaves it absent, so `git add` must not assume it exists.
+          if [ -f _data/orphaned_videos.jsonl ]; then
+            git add _data/orphaned_videos.jsonl
+          fi
           if git diff --cached --quiet; then
             echo "No newly-detected orphans to commit."
             exit 0
