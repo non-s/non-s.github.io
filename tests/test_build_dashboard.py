@@ -25,7 +25,15 @@ def test_append_history_snapshot_writes_one_row_per_day(tmp_path):
     dashboard.append_history_snapshot(total_views=100, subscribers_gained=5, shorts_published=10, now=day1, path=path)
 
     rows = dashboard._load_history(path)
-    assert rows == [{"day": "2026-07-01", "total_views": 100, "subscribers_gained": 5, "shorts_published": 10}]
+    assert rows == [
+        {
+            "day": "2026-07-01",
+            "total_views": 100,
+            "subscribers_gained": 5,
+            "shorts_published": 10,
+            "title_collision_rate": 0.0,
+        }
+    ]
 
 
 def test_append_history_snapshot_updates_same_day_instead_of_duplicating(tmp_path):
@@ -97,6 +105,55 @@ def test_render_html_shows_trend_table_once_history_has_two_or_more_days(tmp_pat
     assert "2026-07-01" in body
     assert "2026-07-02" in body
     assert "<polyline" in body
+
+
+def test_append_history_snapshot_records_title_collision_rate(tmp_path):
+    path = tmp_path / "history.jsonl"
+    dashboard.append_history_snapshot(
+        total_views=100,
+        subscribers_gained=5,
+        shorts_published=10,
+        title_collision_rate=0.5,
+        now=datetime(2026, 7, 1, tzinfo=timezone.utc),
+        path=path,
+    )
+    rows = dashboard._load_history(path)
+    assert rows[0]["title_collision_rate"] == 0.5
+
+
+def test_render_html_shows_branding_mix_and_collision_rate_from_real_markers(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "_data" / "analytics").mkdir(parents=True)
+    videos_dir = tmp_path / "_videos"
+    videos_dir.mkdir()
+    (videos_dir / "short-1.done").write_text(
+        json.dumps(
+            {
+                "video_id": "V1",
+                "title": "Rainy Night Anime Lofi",
+                "upload_title_dedupe": {"applied": True},
+            }
+        ),
+        encoding="utf-8",
+    )
+    (videos_dir / "short-2.done").write_text(
+        json.dumps(
+            {
+                "video_id": "V2",
+                "title": "Sleepy Cat Anime Lofi",
+                "upload_title_dedupe": {"applied": False},
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    body = dashboard.render_html()
+
+    assert "Branding mix" in body
+    assert "Rainy Night Lofi" in body
+    assert "Cozy Cat Lofi" in body
+    assert "Title collision rate" in body
+    assert "50%" in body
 
 
 def test_render_html_shows_placeholder_when_history_has_fewer_than_two_days(tmp_path, monkeypatch):

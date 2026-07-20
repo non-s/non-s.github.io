@@ -24,6 +24,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from utils.branding_metrics import collect_branding_stats  # noqa: E402
 from utils.studio_reach_schema import summarize_reach  # noqa: E402
 
 ANALYTICS_DIR = Path("_data/analytics")
@@ -95,6 +96,7 @@ def append_history_snapshot(
     total_views: int,
     subscribers_gained: int,
     shorts_published: int,
+    title_collision_rate: float = 0.0,
     now: datetime | None = None,
     path: Path = HISTORY_PATH,
 ) -> list[dict]:
@@ -108,6 +110,7 @@ def append_history_snapshot(
         "total_views": int(total_views or 0),
         "subscribers_gained": int(subscribers_gained or 0),
         "shorts_published": int(shorts_published or 0),
+        "title_collision_rate": round(float(title_collision_rate or 0.0), 4),
     }
     ordered = sorted(rows.values(), key=lambda r: str(r["day"]))
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -151,6 +154,7 @@ def render_html() -> str:
     subscribers_gained = latest.get("subscribers_gained", 0)
     avg_view_pct = latest.get("avg_view_pct") or 0
     stayed_to_watch_rate = reach_summary.get("stayed_to_watch_rate") or 0
+    branding = collect_branding_stats(VIDEOS_DIR)
 
     out = [
         "<!doctype html><html lang='en'><head><meta charset='utf-8'>",
@@ -180,6 +184,7 @@ def render_html() -> str:
             f"{float(avg_view_pct):.1f}%" if avg_view_pct else f"{stayed_to_watch_rate * 100:.1f}%",
         ),
         _stat_tile("Shorts published", f"{len(all_shorts):,}"),
+        _stat_tile("Title collision rate", f"{branding['collision_rate'] * 100:.0f}%"),
         "</div>",
     ]
 
@@ -196,14 +201,18 @@ def render_html() -> str:
         sparkline = _sparkline_svg([float(row.get("total_views") or 0) for row in history])
         if sparkline:
             out.append(sparkline)
-        out.append("<table><tr><th>Day</th><th>Total views</th><th>Subs gained</th><th>Shorts published</th></tr>")
+        out.append(
+            "<table><tr><th>Day</th><th>Total views</th><th>Subs gained</th>"
+            "<th>Shorts published</th><th>Title collision rate</th></tr>"
+        )
         for row in reversed(history):
             out.append(
-                "<tr><td>{day}</td><td>{views:,}</td><td>{subs:,}</td><td>{shorts:,}</td></tr>".format(
+                "<tr><td>{day}</td><td>{views:,}</td><td>{subs:,}</td><td>{shorts:,}</td><td>{rate:.0f}%</td></tr>".format(
                     day=html.escape(str(row.get("day") or "")),
                     views=int(row.get("total_views") or 0),
                     subs=int(row.get("subscribers_gained") or 0),
                     shorts=int(row.get("shorts_published") or 0),
+                    rate=float(row.get("title_collision_rate") or 0.0) * 100,
                 )
             )
         out.append("</table>")
@@ -211,6 +220,17 @@ def render_html() -> str:
         out.append(
             "<p><small>Not enough daily snapshots yet to chart a trend -- check back after a few more days.</small></p>"
         )
+
+    if branding["playlist_buckets"]:
+        out.append("<h2>Branding mix</h2>")
+        out.append(
+            f"<p><small>{branding['title_collisions']} of {branding['total']} published videos "
+            f"needed a title-collision dedupe suffix ({branding['collision_rate'] * 100:.0f}%).</small></p>"
+        )
+        out.append("<table><tr><th>Playlist bucket</th><th>Videos</th></tr>")
+        for bucket, count in branding["playlist_buckets"].items():
+            out.append(f"<tr><td>{html.escape(bucket)}</td><td>{count:,}</td></tr>")
+        out.append("</table>")
 
     out.append("<h2>Recent Shorts</h2>")
     if recent_shorts:
@@ -244,6 +264,7 @@ def main() -> None:
         total_views=int(latest.get("total_views") or reach_summary.get("views") or 0),
         subscribers_gained=int(latest.get("subscribers_gained") or 0),
         shorts_published=shorts_published,
+        title_collision_rate=collect_branding_stats(VIDEOS_DIR)["collision_rate"],
     )
 
     body = render_html()
