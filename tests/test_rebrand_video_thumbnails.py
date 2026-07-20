@@ -31,6 +31,41 @@ def test_build_plan_uses_the_music_category_for_both_shorts_and_mixes(tmp_path):
     assert plans["MIX1"]["category_id"] == "10"
 
 
+def test_build_plan_marks_a_post_deploy_marker_done_by_default(tmp_path):
+    _write_marker(tmp_path, "short-lofi-1784419627-1234.done", video_id="SHORT1")
+
+    plans = {p["video_id"]: p for p in rvt.build_plan(tmp_path)}
+
+    assert plans["SHORT1"]["already_done"] is True
+
+
+def test_build_plan_reruns_a_post_deploy_marker_whose_thumbnail_upload_failed(tmp_path):
+    """Regression: a post-deploy marker's slug timestamp alone used to be
+    enough to mark a video as already-branded -- but that only proves the
+    pipeline *tried*, not that thumbnails().set() actually landed.
+    upload_youtube.py now flags thumbnail_upload_failed on the marker when
+    it doesn't; build_plan() must treat that the same as pre-deploy (not
+    already_done), or a rate-limited upload never gets a second chance and
+    stays an unbranded raw frame forever."""
+    import json
+
+    path = tmp_path / "short-lofi-1784419627-1234.done"
+    path.write_text(
+        json.dumps(
+            {
+                "video_id": "SHORT1",
+                "title": "Rainy Night Anime Lofi — Amber Hours \U0001f327️",
+                "thumbnail_upload_failed": True,
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    plans = {p["video_id"]: p for p in rvt.build_plan(tmp_path)}
+
+    assert plans["SHORT1"]["already_done"] is False
+
+
 def test_hook_from_title_strips_brand_suffix_and_anime_lofi():
     assert rvt._hook_from_title("Rainy Night Anime Lofi — Amber Hours \U0001f327️") == "Rainy Night"
 

@@ -190,6 +190,14 @@ def build_plan(videos_dir: Path = VIDEOS_DIR) -> list[dict]:
         # comment) -- keeps a consistent tag order across every video.
         tags = _normalise_tags([mood.lower()] + list(base_tags))
         generated_after_deploy = _slug_timestamp(path) >= _THUMBNAIL_BRANDING_DEPLOYED_AT
+        # A post-deploy marker only proves the pipeline *tried* to brand its
+        # own thumbnail, not that the upload actually landed --
+        # thumbnails().set()'s rate limit (see _BETWEEN_VIDEOS_S above) can
+        # still eat the real thumbnails().set() call at publish time; when it
+        # does, upload_youtube.py flags thumbnail_upload_failed on the
+        # marker instead of leaving this script's date-cutoff assume it
+        # succeeded, so a raw unbranded frame doesn't stay live forever.
+        upload_failed = bool(marker.get("thumbnail_upload_failed"))
         plans.append(
             {
                 "marker": str(path),
@@ -207,7 +215,7 @@ def build_plan(videos_dir: Path = VIDEOS_DIR) -> list[dict]:
                 # uploads going forward.
                 "category_id": "10",
                 "tags": tags,
-                "already_done": bool(marker.get("thumbnail_retag")) or generated_after_deploy,
+                "already_done": bool(marker.get("thumbnail_retag")) or (generated_after_deploy and not upload_failed),
             }
         )
     return plans

@@ -208,6 +208,16 @@ def test_done_marker_preserves_lofi_production_signals():
     assert marker["youtube_operations"]["enabled"] is True
 
 
+def test_done_marker_carries_thumbnail_upload_failed_flag():
+    marker = _done_marker("abc123", {"title": "Cozy Anime Lofi", "thumbnail_upload_failed": True})
+    assert marker["thumbnail_upload_failed"] is True
+
+
+def test_done_marker_defaults_thumbnail_upload_failed_to_false():
+    marker = _done_marker("abc123", {"title": "Cozy Anime Lofi"})
+    assert marker["thumbnail_upload_failed"] is False
+
+
 def test_done_marker_defaults_lofi_fields_when_absent():
     marker = _done_marker("abc123", {"title": "Cozy Anime Lofi"})
     assert marker["duration_s"] == 0.0
@@ -320,21 +330,35 @@ class _Videos:
         return _UploadReq()
 
 
+class _ThumbnailSetReq:
+    def __init__(self, thumbnails: "_Thumbnails", kwargs: dict):
+        self._thumbnails = thumbnails
+        self._kwargs = kwargs
+
+    def execute(self):
+        self._thumbnails.calls += 1
+        self._thumbnails.uploads.append(self._kwargs)
+        if self._thumbnails.calls <= self._thumbnails._fail_times:
+            raise HttpError(SimpleNamespace(status=429, reason="Too Many Requests"), b"{}")
+        return {"id": "thumb"}
+
+
 class _Thumbnails:
-    def __init__(self):
+    def __init__(self, fail_times: int = 0):
         self.uploads = []
+        self.calls = 0
+        self._fail_times = fail_times
 
     def set(self, **kwargs):
-        self.uploads.append(kwargs)
-        return _Req({"id": "thumb"})
+        return _ThumbnailSetReq(self, kwargs)
 
 
 class _YouTube:
-    def __init__(self):
+    def __init__(self, thumbnails: "_Thumbnails | None" = None):
         self._playlists = _Playlists()
         self._playlist_items = _PlaylistItems()
         self._videos = _Videos()
-        self._thumbnails = _Thumbnails()
+        self._thumbnails = thumbnails if thumbnails is not None else _Thumbnails()
 
     def playlists(self):
         return self._playlists
@@ -456,3 +480,40 @@ def test_upload_video_honors_an_explicit_category_override(tmp_path):
     upload_video(youtube, meta)
 
     assert youtube._videos.inserts[-1]["body"]["snippet"]["categoryId"] == "24"
+
+
+def test_upload_video_retries_once_on_thumbnail_rate_limit_then_succeeds(tmp_path, monkeypatch):
+    monkeypatch.setattr(upload_youtube.time, "sleep", lambda seconds: None)
+    video = tmp_path / "short.mp4"
+    video.write_bytes(b"fake")
+    thumb = tmp_path / "thumb.jpg"
+    thumb.write_bytes(b"fake")
+    thumbnails = _Thumbnails(fail_times=1)
+    youtube = _YouTube(thumbnails=thumbnails)
+    meta = {"video": str(video), "thumbnail": str(thumb), "title": "Test Short"}
+
+    upload_video(youtube, meta)
+
+    assert thumbnails.calls == 2
+    assert "thumbnail_upload_failed" not in meta
+
+
+def test_upload_video_flags_thumbnail_upload_failed_when_retry_also_rate_limited(tmp_path, monkeypatch):
+    """Regression: a rate-limited thumbnails().set() used to just log a
+    warning and move on, so a video silently kept YouTube's own auto-picked
+    raw frame forever -- nothing else ever revisited it, since
+    rebrand_video_thumbnails.py's date-cutoff assumes any post-deploy
+    marker already got branded successfully."""
+    monkeypatch.setattr(upload_youtube.time, "sleep", lambda seconds: None)
+    video = tmp_path / "short.mp4"
+    video.write_bytes(b"fake")
+    thumb = tmp_path / "thumb.jpg"
+    thumb.write_bytes(b"fake")
+    thumbnails = _Thumbnails(fail_times=2)
+    youtube = _YouTube(thumbnails=thumbnails)
+    meta = {"video": str(video), "thumbnail": str(thumb), "title": "Test Short"}
+
+    upload_video(youtube, meta)
+
+    assert thumbnails.calls == 2
+    assert meta["thumbnail_upload_failed"] is True

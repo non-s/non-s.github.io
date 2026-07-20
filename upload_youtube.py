@@ -558,6 +558,7 @@ def _done_marker(video_id: str, meta: dict) -> dict:
         "upload_intent_key",
         "upload_intent",
         "upload_title_dedupe",
+        "thumbnail_upload_failed",
     )
     defaults = {
         "title": "",
@@ -591,6 +592,7 @@ def _done_marker(video_id: str, meta: dict) -> dict:
         "upload_intent_key": "",
         "upload_intent": {},
         "upload_title_dedupe": {},
+        "thumbnail_upload_failed": False,
     }
     marker = {key: meta.get(key, defaults.get(key)) for key in keys}
     uploaded_at = datetime.now(timezone.utc)
@@ -825,10 +827,30 @@ def upload_video(youtube, meta: dict, *, sequence_index: int = 0) -> str | None:
         return None
     thumb = Path(meta.get("thumbnail") or "")
     if thumb.exists():
-        try:
-            youtube.thumbnails().set(videoId=video_id, media_body=MediaFileUpload(str(thumb))).execute()
-        except HttpError as exc:
-            log.warning("Thumbnail upload failed: HTTP %s", exc.resp.status)
+        # thumbnails().set() has its own per-account rate limit, separate from
+        # the daily quota budget (see scripts/rebrand_video_thumbnails.py's
+        # notes: a burst of ~20 calls in 10s got 429s that a 30/60/120s
+        # backoff still couldn't clear). A single upload here is nowhere near
+        # that burst pattern -- checked live, real 429s on this call come and
+        # go over hours, not a sustained lockout -- so one short retry is
+        # cheap and often enough. If it still fails, meta gets flagged so
+        # _done_marker() persists it: without this, a video silently keeps
+        # YouTube's auto-picked raw frame forever, since
+        # rebrand_video_thumbnails.py's build_plan() otherwise assumes any
+        # marker timestamped after the branding pipeline shipped already got
+        # branded successfully.
+        for attempt in (1, 2):
+            try:
+                youtube.thumbnails().set(videoId=video_id, media_body=MediaFileUpload(str(thumb))).execute()
+                break
+            except HttpError as exc:
+                status = exc.resp.status
+                if status == 429 and attempt == 1:
+                    log.warning("Thumbnail upload rate-limited, retrying once in 20s.")
+                    time.sleep(20)
+                    continue
+                log.warning("Thumbnail upload failed: HTTP %s", status)
+                meta["thumbnail_upload_failed"] = True
     if scheduled_publish_at:
         log.info("Scheduled: %s at %s", _video_url(video_id, meta), scheduled_publish_at)
     else:

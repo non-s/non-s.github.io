@@ -1,13 +1,19 @@
 name: "Admin: rebrand published video thumbnails"
 
-# One-time (re-runnable/idempotent) batch: brands the thumbnail and
-# refreshes tags for every video published before the generators started
-# branding thumbnails themselves (426a5fb7f) -- agreed with the channel
-# owner on 2026-07-19 as a follow-up once titles were confirmed
-# consistent. scripts/rebrand_video_thumbnails.py's own timestamp check
-# skips anything the pipeline already branded at upload time.
+# Re-runnable/idempotent batch: brands the thumbnail and refreshes tags for
+# every video published before the generators started branding thumbnails
+# themselves (426a5fb7f), PLUS any newer video whose own branded-thumbnail
+# upload got rate-limited at publish time (upload_youtube.py's
+# thumbnail_upload_failed marker flag -- see scripts/rebrand_video_thumbnails.py's
+# build_plan()). That second case is why this now runs on a schedule
+# instead of one-time-manual-only: a rate-limited upload otherwise stays
+# an unbranded raw frame forever, since nothing else ever revisits it.
+# Every 6h to actually sweep stragglers without adding to the very
+# thumbnails().set() contention this exists to clean up after.
 
 on:
+  schedule:
+    - cron: "15 */6 * * *"
   workflow_dispatch:
     inputs:
       apply:
@@ -64,7 +70,7 @@ jobs:
           )"
           echo "planned=$planned" >> "$GITHUB_OUTPUT"
       - name: "Restore YouTube token"
-        if: ${{ inputs.apply == 'true' && steps.plan.outputs.planned != '0' }}
+        if: ${{ (github.event_name != 'workflow_dispatch' || inputs.apply == 'true') && steps.plan.outputs.planned != '0' }}
         env:
           YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
         run: |
@@ -76,7 +82,7 @@ jobs:
           printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
           chmod 600 youtube_token.json
       - name: "Quota preflight"
-        if: ${{ inputs.apply == 'true' && steps.plan.outputs.planned != '0' }}
+        if: ${{ (github.event_name != 'workflow_dispatch' || inputs.apply == 'true') && steps.plan.outputs.planned != '0' }}
         run: |
           quota="$(
           python - <<'PY'
@@ -105,12 +111,12 @@ jobs:
             exit 3
           fi
       - name: "Apply rebrand"
-        if: ${{ inputs.apply == 'true' && steps.plan.outputs.planned != '0' }}
+        if: ${{ (github.event_name != 'workflow_dispatch' || inputs.apply == 'true') && steps.plan.outputs.planned != '0' }}
         run: |
           set -o pipefail
           python scripts/rebrand_video_thumbnails.py --json --apply | tee thumb-rebrand-applied.json
       - name: "Commit rebrand state"
-        if: ${{ inputs.apply == 'true' && steps.plan.outputs.planned != '0' }}
+        if: ${{ (github.event_name != 'workflow_dispatch' || inputs.apply == 'true') && steps.plan.outputs.planned != '0' }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
