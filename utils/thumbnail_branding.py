@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import logging
 import random
+import zlib
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
@@ -43,6 +44,15 @@ def _font(size: int) -> ImageFont.FreeTypeFont:
         return ImageFont.truetype(_FONT_PATH, size)
     except OSError:
         return ImageFont.load_default()
+
+
+def _stable_seed(text: str) -> int:
+    """Python's built-in hash() is randomized per-process (PYTHONHASHSEED),
+    so seeding the stars/skyline art with hash(mood) made it redraw
+    differently for the same mood on every run -- not the stable per-mood
+    look the layout system otherwise guarantees. crc32 is deterministic
+    across processes and interpreters."""
+    return zlib.crc32(text.encode("utf-8"))
 
 
 def _hook_words(mood: str) -> str:
@@ -168,7 +178,7 @@ def brand_short_thumbnail(thumb_path: Path, mood: str, layout: str | None = None
 
     overlay = Image.alpha_composite(overlay, _amber_glow(w, h, int(w * 0.86), glow_cy, int(w * 0.35)))
     overlay = Image.alpha_composite(overlay, _moon(w, h, int(w * 0.86), moon_cy, int(w * 0.05)))
-    overlay = Image.alpha_composite(overlay, _skyline(w, h, h, seed=hash(mood) & 0xFFFF, max_h_ratio=0.13))
+    overlay = Image.alpha_composite(overlay, _skyline(w, h, h, seed=_stable_seed(mood) & 0xFFFF, max_h_ratio=0.13))
 
     composited = Image.alpha_composite(base.convert("RGBA"), overlay)
     d = ImageDraw.Draw(composited, "RGBA")
@@ -208,12 +218,12 @@ def brand_mix_thumbnail(thumb_path: Path, mood: str, layout: str | None = None) 
 
     canvas = _vgrad(w, h, PURPLE_TOP, PURPLE_MID).convert("RGBA")
     d = ImageDraw.Draw(canvas, "RGBA")
-    _stars(d, w, h, int(w * h / 9000), seed=hash(mood) & 0xFFFF)
+    _stars(d, w, h, int(w * h / 9000), seed=_stable_seed(mood) & 0xFFFF)
     glow_cx = int(w * 0.14) if mirror else int(w * 0.86)
     moon_cx = int(w * 0.2) if mirror else int(w * 0.8)
     canvas = Image.alpha_composite(canvas, _amber_glow(w, h, glow_cx, int(h * 0.42), int(w * 0.24)))
     canvas = Image.alpha_composite(canvas, _moon(w, h, moon_cx, int(h * 0.16), int(w * 0.035)))
-    canvas = Image.alpha_composite(canvas, _skyline(w, h, int(h * 0.92), seed=(hash(mood) & 0xFFFF) + 1))
+    canvas = Image.alpha_composite(canvas, _skyline(w, h, int(h * 0.92), seed=(_stable_seed(mood) & 0xFFFF) + 1))
 
     panel = (int(w * 0.22), int(h * 0.19), int(w * 0.76), int(h * 0.76))
     pw, ph = panel[2] - panel[0], panel[3] - panel[1]
