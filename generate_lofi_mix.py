@@ -389,12 +389,15 @@ def main() -> int:
     bgm_metas = [_load_sidecar(t) for t in bgm_tracks]
     mood = _pick_mood()
 
+    log.info("Stage 1/4: preparing seamless loop clip from %s", broll_path.name)
     seamless_clip = _prepare_seamless_loop_clip(broll_path)
+    log.info("Stage 2/4: baking filtered segment from %s", seamless_clip.name)
     filtered_segment = _bake_filtered_segment(seamless_clip)
     if filtered_segment is None:
         log.error("Could not prepare a loopable video segment from %s", broll_path.name)
         return 1
 
+    log.info("Stage 3/4: building bgm playlist from %d track(s)", len(bgm_tracks))
     playlist_path = _build_bgm_playlist(bgm_tracks)
     if playlist_path is None:
         log.error("Could not build a bgm playlist.")
@@ -404,6 +407,7 @@ def main() -> int:
     video_path = VIDEOS_DIR / f"mix-{slug}.mp4"
     meta_path = video_path.with_suffix(".json")
 
+    log.info("Stage 4/4: composing %.0fs mix at %s", TARGET_DURATION_S, video_path.name)
     if not _compose_mix(filtered_segment, playlist_path, video_path, TARGET_DURATION_S):
         log.error("Mix composition failed for %s", slug)
         return 1
