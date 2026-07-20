@@ -46,7 +46,15 @@ MAX_DURATION_S = 58.0
 FADE_S = 1.5
 
 CATEGORY = "lofi"
-SERIES = "Lofi Beats"
+# A fixed named series per mood bucket ("Rainy Night Lofi Shorts", "Cozy
+# Cat Lofi Shorts", ...) instead of one static "Lofi Beats" label on every
+# Short regardless of mood -- the old constant carried no thematic
+# information at all (every video had the exact same "series"), so it
+# never gave a viewer a real recurring thing to follow. Suffixed with
+# "Shorts" (matching generate_lofi_mix.py's "Mix" suffix) so the Shorts and
+# horizontal-mix side of a given theme stay two distinct series/playlists,
+# not one merged bucket.
+SERIES_SUFFIX = "Shorts"
 # Niche-first (chat, 2026-07-19): "lofi"/"chillhop" alone are unwinnable
 # head terms for a small channel (Lofi Girl etc. already own them) -- lead
 # with the rainy-night/cozy-anime sub-niche instead, same reasoning as
@@ -153,7 +161,7 @@ def _build_metadata(broll_meta: dict, bgm_meta: dict, duration_s: float, video_p
         "title": title,
         "description": "\n".join(description_lines).strip(),
         "category": CATEGORY,
-        "series": SERIES,
+        "series": f"{bucket} {SERIES_SUFFIX}",
         "tags": tags,
         "video": str(video_path),
         "duration_s": duration_s,

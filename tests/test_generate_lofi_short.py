@@ -128,7 +128,10 @@ def test_build_metadata_includes_attribution_and_upload_contract_fields(tmp_path
     assert meta["pexels_video_id"] == "123"
     assert meta["source_license_evidence"] == "https://pixabay.com/videos/id-123/"
     assert meta["category"] == "lofi"
-    assert meta["series"] == "Lofi Beats"
+    # Series is now a fixed name per mood bucket + format, not one static
+    # label every video shared regardless of mood -- see
+    # generate_lofi_short.py's SERIES_SUFFIX comment.
+    assert meta["series"] == "Cozy Anime Lofi Shorts"
     assert meta["story_id"] == "lofi-1700000000-1234"
     assert "fireplace night" in [tag.lower() for tag in meta["tags"]]
     # Mood tag leads DEFAULT_TAGS -- regression: upload_youtube.py's

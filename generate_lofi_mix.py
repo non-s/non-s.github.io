@@ -60,7 +60,10 @@ TARGET_DURATION_S = 3600.0
 LOOP_CROSSFADE_S = 1.0
 
 CATEGORY = "lofi"
-SERIES = "Lofi Mixes"
+# See generate_lofi_short.py's SERIES_SUFFIX comment -- same fixed
+# per-mood-bucket series naming, "Mix" suffix instead of "Shorts" so the
+# two formats stay distinct series/playlists per theme.
+SERIES_SUFFIX = "Mix"
 YOUTUBE_CATEGORY_ID = "10"  # Music -- more accurate for a long-form mix than the Shorts' default.
 # Niche-first (chat, 2026-07-19): see generate_lofi_short.py's DEFAULT_TAGS
 # comment -- same reasoning, "lofi hip hop radio" alone is Lofi Girl's turf.
@@ -353,7 +356,7 @@ def _build_metadata(broll_meta: dict, bgm_metas: list[dict], duration_s: float, 
         "title": title,
         "description": "\n".join(description_lines).strip(),
         "category": CATEGORY,
-        "series": SERIES,
+        "series": f"{bucket} {SERIES_SUFFIX}",
         "tags": tags,
         "video": str(video_path),
         "duration_s": duration_s,
