@@ -32,6 +32,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from utils.circuit_breaker import CircuitBreaker  # noqa: E402
+
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("jamendo_sync")
 
@@ -64,7 +66,19 @@ PREFERRED_GENRES = {"lofi", "jazz", "chillhop", "triphop", "downtempo", "jazzhop
 
 
 def _fetch_candidates(limit: int = FETCH_LIMIT, offset: int = 0) -> list[dict]:
-    """Search Jamendo, retrying on transient failure.
+    """Search Jamendo, retrying on transient failure. See _fetch_candidates_ex()."""
+    results, _hard_failure = _fetch_candidates_ex(limit=limit, offset=offset)
+    return results
+
+
+def _fetch_candidates_ex(limit: int = FETCH_LIMIT, offset: int = 0) -> tuple[list[dict], bool]:
+    """Like _fetch_candidates(), but also reports whether every attempt
+    gave up due to a real network/API failure -- as opposed to Jamendo
+    legitimately answering with zero matches. main()'s offset loop uses
+    this (not _fetch_candidates() directly) to feed
+    utils.circuit_breaker.CircuitBreaker: an ordinary run where a few
+    offsets just happen to come back empty must not trip it, only a
+    genuine sign the API is down right now should.
 
     Checked live: identical back-to-back requests with the same client id,
     query and limit returned results_count 50, 50, 0, 50, 50, 0 -- Jamendo's
@@ -83,12 +97,14 @@ def _fetch_candidates(limit: int = FETCH_LIMIT, offset: int = 0) -> list[dict]:
         f"{API_URL}?client_id={CLIENT_ID}&format=json&fuzzytags={MOOD_TAGS}"
         f"&include=licenses+musicinfo&audioformat=mp32&limit={limit}&offset={offset}"
     )
+    hard_failure = False
     for attempt in range(1, FETCH_RETRIES + 1):
         try:
             with urllib.request.urlopen(query, timeout=REQUEST_TIMEOUT_S) as response:
                 payload = json.loads(response.read())
         except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
             log.warning("Jamendo search attempt %d/%d failed: %s", attempt, FETCH_RETRIES, exc)
+            hard_failure = True
             time.sleep(RETRY_DELAY_S)
             continue
         if payload.get("headers", {}).get("status") != "success":
@@ -98,15 +114,16 @@ def _fetch_candidates(limit: int = FETCH_LIMIT, offset: int = 0) -> list[dict]:
                 FETCH_RETRIES,
                 payload.get("headers", {}).get("error_message"),
             )
+            hard_failure = True
             time.sleep(RETRY_DELAY_S)
             continue
         results = payload.get("results") or []
         if results:
-            return results
+            return results, False
         log.warning("Jamendo returned success with 0 results on attempt %d/%d; retrying.", attempt, FETCH_RETRIES)
         time.sleep(RETRY_DELAY_S)
     log.error("Jamendo search returned nothing after %d attempts.", FETCH_RETRIES)
-    return []
+    return [], hard_failure
 
 
 def _commercially_safe(license_ccurl: str) -> bool:
@@ -206,8 +223,22 @@ def main() -> int:
     raw: list[dict] = []
     seen_track_ids: set[str] = set()
     offsets = random.sample(range(0, OFFSET_POOL_SIZE, FETCH_LIMIT), k=5)
+    # Stops sampling further offsets once Jamendo has shown it's actually
+    # down right now (not just a page or two that happened to come back
+    # empty) -- each attempt already burns up to FETCH_RETRIES *
+    # RETRY_DELAY_S waiting through retries, so a real outage across all 5
+    # offsets would otherwise cost that in full every single run.
+    breaker = CircuitBreaker(threshold=3)
     for offset in offsets:
-        for track in _fetch_candidates(offset=offset):
+        if breaker.is_open:
+            log.warning("Jamendo circuit breaker open after repeated failures; skipping remaining offsets.")
+            break
+        tracks, hard_failure = _fetch_candidates_ex(offset=offset)
+        if hard_failure:
+            breaker.record_failure()
+        else:
+            breaker.record_success()
+        for track in tracks:
             track_id = str(track.get("id") or "")
             if track_id and track_id not in seen_track_ids:
                 seen_track_ids.add(track_id)

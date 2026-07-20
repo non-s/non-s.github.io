@@ -172,6 +172,96 @@ def test_fetch_candidates_gives_up_after_all_retries_return_empty(monkeypatch):
     assert len(calls) == sync_jamendo_music.FETCH_RETRIES
 
 
+def test_fetch_candidates_ex_reports_hard_failure_false_for_legitimately_empty_results(monkeypatch):
+    """Regression guard: a query that just has no matches must not look
+    like a provider outage to main()'s circuit breaker, or an ordinary run
+    with a couple of thin offsets would stop sampling the rest for no
+    reason."""
+    monkeypatch.setattr(sync_jamendo_music.time, "sleep", lambda s: None)
+    payload = {"headers": {"status": "success"}, "results": []}
+
+    class FakeResponse:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            return False
+
+        def read(self):
+            return json.dumps(payload).encode()
+
+    monkeypatch.setattr(sync_jamendo_music.urllib.request, "urlopen", lambda *a, **k: FakeResponse())
+
+    tracks, hard_failure = sync_jamendo_music._fetch_candidates_ex()
+    assert tracks == []
+    assert hard_failure is False
+
+
+def test_fetch_candidates_ex_reports_hard_failure_true_for_network_error(monkeypatch):
+    monkeypatch.setattr(sync_jamendo_music.time, "sleep", lambda s: None)
+    monkeypatch.setattr(
+        sync_jamendo_music.urllib.request,
+        "urlopen",
+        lambda *a, **k: (_ for _ in ()).throw(sync_jamendo_music.urllib.error.URLError("no network")),
+    )
+
+    tracks, hard_failure = sync_jamendo_music._fetch_candidates_ex()
+    assert tracks == []
+    assert hard_failure is True
+
+
+def test_fetch_candidates_ex_reports_hard_failure_true_for_api_error_status(monkeypatch):
+    monkeypatch.setattr(sync_jamendo_music.time, "sleep", lambda s: None)
+    payload = {"headers": {"status": "failed", "error_message": "bad client id"}}
+
+    class FakeResponse:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            return False
+
+        def read(self):
+            return json.dumps(payload).encode()
+
+    monkeypatch.setattr(sync_jamendo_music.urllib.request, "urlopen", lambda *a, **k: FakeResponse())
+
+    tracks, hard_failure = sync_jamendo_music._fetch_candidates_ex()
+    assert tracks == []
+    assert hard_failure is True
+
+
+def test_main_stops_sampling_offsets_after_the_breaker_opens(tmp_path, monkeypatch):
+    """3 consecutive hard failures (network/API errors, not just empty
+    results) should stop the offset loop early instead of burning the
+    full retry budget on every one of the 5 sampled offsets."""
+    monkeypatch.setattr(sync_jamendo_music, "BGM_DIR", tmp_path)
+    calls = []
+
+    def fake_fetch(offset=0):
+        calls.append(offset)
+        return [], True  # every offset is a hard failure
+
+    monkeypatch.setattr(sync_jamendo_music, "_fetch_candidates_ex", fake_fetch)
+
+    assert sync_jamendo_music.main() == 0
+    assert len(calls) == 3  # breaker(threshold=3) opens after the 3rd failure
+
+
+def test_main_keeps_sampling_all_offsets_when_failures_are_just_empty_results(tmp_path, monkeypatch):
+    monkeypatch.setattr(sync_jamendo_music, "BGM_DIR", tmp_path)
+    calls = []
+
+    def fake_fetch(offset=0):
+        calls.append(offset)
+        return [], False  # legitimately empty, never a hard failure
+
+    monkeypatch.setattr(sync_jamendo_music, "_fetch_candidates_ex", fake_fetch)
+
+    assert sync_jamendo_music.main() == 0
+    assert len(calls) == 5  # all 5 sampled offsets still get tried
+
+
 def test_genre_score_prefers_lofi_and_jazz_tags():
     lofi_track = _track(musicinfo={"tags": {"genres": ["lofi", "hiphop"]}})
     corporate_track = _track(musicinfo={"tags": {"genres": ["corporate"]}})
@@ -239,7 +329,7 @@ def test_download_track_cleans_up_partial_file_on_failure(tmp_path, monkeypatch)
 def test_main_downloads_up_to_downloads_per_run_new_tracks(tmp_path, monkeypatch):
     monkeypatch.setattr(sync_jamendo_music, "BGM_DIR", tmp_path)
     candidates = [_track(track_id=str(i)) for i in range(1, 30)]
-    monkeypatch.setattr(sync_jamendo_music, "_fetch_candidates", lambda offset=0: candidates)
+    monkeypatch.setattr(sync_jamendo_music, "_fetch_candidates_ex", lambda offset=0: (candidates, False))
     monkeypatch.setattr(
         sync_jamendo_music.urllib.request, "urlretrieve", lambda url, filename: filename.write_bytes(b"x")
     )
@@ -257,7 +347,7 @@ def test_main_prefers_lofi_jazz_tagged_candidates(tmp_path, monkeypatch):
     monkeypatch.setattr(sync_jamendo_music, "DOWNLOADS_PER_RUN", 1)
     corporate = _track(track_id="1", musicinfo={"tags": {"genres": ["corporate"]}})
     lofi = _track(track_id="2", musicinfo={"tags": {"genres": ["lofi"]}})
-    monkeypatch.setattr(sync_jamendo_music, "_fetch_candidates", lambda offset=0: [corporate, lofi])
+    monkeypatch.setattr(sync_jamendo_music, "_fetch_candidates_ex", lambda offset=0: ([corporate, lofi], False))
     monkeypatch.setattr(
         sync_jamendo_music.urllib.request, "urlretrieve", lambda url, filename: filename.write_bytes(b"x")
     )
@@ -280,7 +370,7 @@ def test_main_rotates_out_oldest_tracks_when_library_is_full(tmp_path, monkeypat
         audio.write_bytes(b"x")
         (tmp_path / f"jamendo_{i}.json").write_text("{}")
         os.utime(audio, (1000 + i * 100, 1000 + i * 100))
-    monkeypatch.setattr(sync_jamendo_music, "_fetch_candidates", lambda offset=0: [])
+    monkeypatch.setattr(sync_jamendo_music, "_fetch_candidates_ex", lambda offset=0: ([], False))
 
     assert sync_jamendo_music.main() == 0
 
@@ -294,7 +384,7 @@ def test_main_skips_tracks_already_present(tmp_path, monkeypatch):
     monkeypatch.setattr(sync_jamendo_music, "BGM_DIR", tmp_path)
     (tmp_path / "jamendo_1.mp3").write_bytes(b"x")
     (tmp_path / "jamendo_1.json").write_text("{}")
-    monkeypatch.setattr(sync_jamendo_music, "_fetch_candidates", lambda offset=0: [_track(track_id="1")])
+    monkeypatch.setattr(sync_jamendo_music, "_fetch_candidates_ex", lambda offset=0: ([_track(track_id="1")], False))
 
     assert sync_jamendo_music.main() == 0
 
