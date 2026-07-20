@@ -2,15 +2,16 @@
 """Gate for lofi-mix-daily.yml: due only once >= MIN_HOURS have passed since
 the last successfully published horizontal mix.
 
-Exists because relying on a single daily `schedule:` cron firing is fragile
--- checked live (chat, 2026-07-20): GitHub Actions silently dropped an
-entire day's trigger for this exact workflow, with zero run record, no
-error, nothing to retry. lofi-mix-daily.yml now polls every 15 minutes
+Exists because relying on a single `schedule:` cron firing is fragile --
+checked live (chat, 2026-07-20): GitHub Actions silently dropped an
+entire trigger for this exact workflow once, with zero run record, no
+error, nothing to retry. lofi-mix-daily.yml polls every 15 minutes
 instead, and this script is the guard that keeps that from publishing one
 mix every 15 minutes: a run only does the real work when the elapsed time
 since the last published mix's `_videos/mix-*.done` marker has crossed the
-threshold, so a single missed poll costs at most ~15 minutes of drift
-instead of losing the rest of the day.
+threshold (1 hour, matching the hourly short-mix cadence), so a single
+missed poll costs at most ~15 minutes of drift instead of losing the rest
+of the hour.
 """
 
 from __future__ import annotations
@@ -26,7 +27,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 VIDEOS_DIR = ROOT / "_videos"
-MIN_HOURS_BETWEEN_PUBLISHES = 24.0
+MIN_HOURS_BETWEEN_PUBLISHES = 1.0
 
 
 def _parse_ts(value: str) -> datetime | None:

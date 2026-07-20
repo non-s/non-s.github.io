@@ -25,24 +25,23 @@ GLOBAL_SEARCH_TAGS = [
 ]
 
 
-def _hourly_window(hour: int) -> dict:
-    """Return one UTC publishing slot for the hourly Shorts cadence."""
+def _region_for_hour(hour: int) -> tuple[str, list[str]]:
     if 0 <= hour <= 3:
-        label = "Americas evening and late scroll"
-        regions = ["North America", "Latin America"]
-    elif 4 <= hour <= 8:
-        label = "Asia/Oceania evening"
-        regions = ["India", "Southeast Asia", "East Asia", "Australia"]
-    elif 9 <= hour <= 15:
-        label = "Europe/Africa daytime"
-        regions = ["Europe", "Africa", "Middle East"]
-    else:
-        label = "Americas daytime"
-        regions = ["North America", "Latin America"]
-    return {"slot": f"{hour:02d}:00", "utc_hour": hour, "label": label, "regions": regions}
+        return "Americas evening and late scroll", ["North America", "Latin America"]
+    if 4 <= hour <= 8:
+        return "Asia/Oceania evening", ["India", "Southeast Asia", "East Asia", "Australia"]
+    if 9 <= hour <= 15:
+        return "Europe/Africa daytime", ["Europe", "Africa", "Middle East"]
+    return "Americas daytime", ["North America", "Latin America"]
 
 
-GLOBAL_PUBLISH_WINDOWS = [_hourly_window(hour) for hour in range(24)]
+def _ten_minute_window(hour: int, minute: int) -> dict:
+    """Return one UTC publishing slot for the 10-minute Shorts cadence."""
+    label, regions = _region_for_hour(hour)
+    return {"slot": f"{hour:02d}:{minute:02d}", "utc_hour": hour, "label": label, "regions": regions}
+
+
+GLOBAL_PUBLISH_WINDOWS = [_ten_minute_window(hour, minute) for hour in range(24) for minute in range(0, 60, 10)]
 
 
 def _clean_token(value: str) -> str:

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Generate one 1-hour horizontal lofi mix video: a looping b-roll clip +
-a shuffled Jamendo music playlist, no narration.
+"""Generate one short horizontal lofi mix video: a looping b-roll clip +
+exactly 3 Jamendo tracks back to back, no narration. Published hourly
+as the companion to generate_lofi_short.py's vertical Shorts.
 
 Companion to generate_lofi_short.py's vertical Shorts. Loops one fixed
 committed clip (PINNED_BROLL_CLIP -- see its own comment; a different,
@@ -12,15 +13,12 @@ wrap-around point.
 
 Rendering approach: the crossfade-baked clip and its scale/zoompan
 filter are only ever encoded ONCE, against the clip's own short
-duration (a few seconds of ffmpeg work). The 1-hour output is then
-produced by remuxing that already-encoded segment on a loop
-(`-stream_loop -1 -c:v copy`) instead of re-encoding a full hour of
-video -- the same "no bake sized to the loop length" principle
-live_stream_dynamic.py uses for its RTMP relay, just aimed at a file
-instead of a stream. Re-encoding 3600s of 1080p video on a shared
-GitHub Actions runner would risk the job either timing out or hitting
-the same SIGTERM-from-memory-pressure failure already seen and fixed
-once in the live relay's own crossfade bake.
+duration (a few seconds of ffmpeg work). The output (duration = the
+sum of the 3 chosen tracks) is then produced by remuxing that
+already-encoded segment on a loop (`-stream_loop -1 -c:v copy`)
+instead of re-encoding the whole runtime -- the same "no bake sized to
+the loop length" principle live_stream_dynamic.py uses for its RTMP
+relay, just aimed at a file instead of a stream.
 
 Writes `_videos/mix-*.mp4` + matching `.json` that upload_youtube.py's
 _collect_pending_meta() picks up (extended to recognize the "mix-"
@@ -58,7 +56,7 @@ TEMP_DIR = ROOT / "_videos" / "temp_mix"
 TARGET_W = 1920
 TARGET_H = 1080
 TARGET_FPS = 30
-TARGET_DURATION_S = 3600.0
+SONGS_PER_MIX = 3
 LOOP_CROSSFADE_S = 1.0
 
 CATEGORY = "lofi"
@@ -66,13 +64,12 @@ CATEGORY = "lofi"
 # per-mood-bucket series naming, "Mix" suffix instead of "Shorts" so the
 # two formats stay distinct series/playlists per theme.
 SERIES_SUFFIX = "Mix"
-YOUTUBE_CATEGORY_ID = "10"  # Music -- more accurate for a long-form mix than the Shorts' default.
+YOUTUBE_CATEGORY_ID = "10"  # Music -- more accurate for a mix than the Shorts' default.
 # Niche-first (chat, 2026-07-19): see generate_lofi_short.py's DEFAULT_TAGS
 # comment -- same reasoning, "lofi hip hop radio" alone is Lofi Girl's turf.
 DEFAULT_TAGS = [
     "lofi",
     "lofi mix",
-    "1 hour lofi",
     "anime lofi radio",
     "rainy night lofi",
     "midnight lofi",
@@ -207,16 +204,15 @@ def _bake_filtered_segment(seamless_clip: Path) -> Path | None:
 
 
 def _build_bgm_playlist(tracks: list[Path]) -> Path | None:
-    """Concatenate every locally available bgm track (shuffled) into one
-    file, same approach as live_stream_dynamic.py._build_bgm_playlist."""
+    """Concatenate exactly SONGS_PER_MIX tracks (already chosen by the
+    caller) into one file, same approach as
+    live_stream_dynamic.py._build_bgm_playlist."""
     if not tracks:
         return None
     playlist_path = TEMP_DIR / "playlist.mp3"
-    shuffled = list(tracks)
-    random.shuffle(shuffled)
     list_path = TEMP_DIR / "playlist_concat.txt"
     list_path.write_text(
-        "\n".join(f"file '{track.resolve()}'" for track in shuffled) + "\n",
+        "\n".join(f"file '{track.resolve()}'" for track in tracks) + "\n",
         encoding="utf-8",
     )
     cmd = ["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(list_path), "-c", "copy", str(playlist_path)]
@@ -301,12 +297,13 @@ def _extract_thumbnail(video_path: Path, thumb_path: Path, timestamp_s: float = 
 def _build_metadata(
     mood: str, broll_meta: dict, bgm_metas: list[dict], duration_s: float, video_path: Path, slug: str
 ) -> dict:
-    title = branded_title(mood, suffix="(1 Hour)")
+    minutes = max(1, round(duration_s / 60))
+    title = branded_title(mood, suffix=f"({minutes} Min Mix)")
     photographer = str(broll_meta.get("photographer") or "")
 
     bucket = playlist_bucket_for_title(title)
     description_lines = [
-        f"1 hour of {mood.lower()} lofi beats -- chill music to relax, study or unwind to.",
+        f"{SONGS_PER_MIX} songs of {mood.lower()} lofi beats -- chill music to relax, study or unwind to.",
         "",
         f"\U0001f319 Part of the {bucket} collection on Amber Hours -- rainy night "
         "anime lofi, cozy beats for late nights, playing 24/7 on the channel live stream.",
@@ -338,7 +335,8 @@ def _build_metadata(
     tags = [mood.lower()] if mood.lower() not in {tag.lower() for tag in DEFAULT_TAGS} else []
     tags += DEFAULT_TAGS
 
-    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    now = datetime.now(timezone.utc)
+    today = now.strftime("%Y-%m-%d")
 
     return {
         "title": title,
@@ -351,7 +349,7 @@ def _build_metadata(
         "story_id": slug,
         "is_short": False,
         "youtube_category_id": YOUTUBE_CATEGORY_ID,
-        "packaging": {"pinned_comment": "What should tomorrow's 1-hour mix be? \U0001f319"},
+        "packaging": {"pinned_comment": "What should the next mix be? \U0001f319"},
         "pre_publish_audit": {"approved": True, "reason": "lofi_no_claims_to_vet"},
         "source": "pixabay",
         "pexels_video_id": str(broll_meta.get("pixabay_video_id") or ""),
@@ -360,14 +358,15 @@ def _build_metadata(
         "source_license": str(broll_meta.get("license") or ""),
         "source_license_evidence": str(broll_meta.get("license_evidence") or ""),
         "bgm_track_ids": [str(m.get("track_id") or "") for m in bgm_metas if m.get("track_id")],
-        # A dedicated daily slot key (not the hourly canonical grid the
-        # Shorts publish_slot uses) so upload_youtube.py's per-slot
-        # idempotency check (duplicate_slot_uploaded) never mistakes this
-        # for -- or gets shadowed by -- an hourly Short published in the
-        # same clock hour. Still naturally caught as a real duplicate if
-        # this job somehow runs twice on the same day.
-        "publish_slot": "daily-mix",
-        "publish_slot_key": f"daily-mix-{today}",
+        # An hourly slot key -- distinct from the 10-minute canonical grid
+        # the Shorts publish_slot uses (a "mix-HH" prefix), so
+        # upload_youtube.py's per-slot idempotency check
+        # (duplicate_slot_uploaded) never mistakes this for -- or gets
+        # shadowed by -- a Short published in the same clock hour. Still
+        # naturally caught as a real duplicate if this job somehow runs
+        # twice in the same hour.
+        "publish_slot": f"mix-{now.hour:02d}",
+        "publish_slot_key": f"mix-{today}-{now.hour:02d}",
     }
 
 
@@ -380,10 +379,17 @@ def main() -> int:
         return 1
     broll_path = PINNED_BROLL_CLIP
 
-    bgm_tracks = sorted(BGM_DIR.glob("jamendo_*.mp3"))
-    if not bgm_tracks:
-        log.error("No bgm tracks found in %s -- run scripts/sync_jamendo_music.py first.", BGM_DIR)
+    all_bgm_tracks = sorted(BGM_DIR.glob("jamendo_*.mp3"))
+    if len(all_bgm_tracks) < SONGS_PER_MIX:
+        log.error(
+            "Need %d bgm tracks for a mix, only %d available in %s -- run "
+            "scripts/sync_jamendo_music.py first.",
+            SONGS_PER_MIX,
+            len(all_bgm_tracks),
+            BGM_DIR,
+        )
         return 1
+    bgm_tracks = random.sample(all_bgm_tracks, SONGS_PER_MIX)
 
     broll_meta = _load_sidecar(broll_path)
     bgm_metas = [_load_sidecar(t) for t in bgm_tracks]
@@ -402,17 +408,21 @@ def main() -> int:
     if playlist_path is None:
         log.error("Could not build a bgm playlist.")
         return 1
+    duration_s = sum(_media_duration_s(track) for track in bgm_tracks)
+    if duration_s <= 0:
+        log.error("Could not determine playlist duration from the selected tracks.")
+        return 1
 
     slug = f"lofimix-{int(time.time())}-{random.randint(1000, 9999)}"
     video_path = VIDEOS_DIR / f"mix-{slug}.mp4"
     meta_path = video_path.with_suffix(".json")
 
-    log.info("Stage 4/4: composing %.0fs mix at %s", TARGET_DURATION_S, video_path.name)
-    if not _compose_mix(filtered_segment, playlist_path, video_path, TARGET_DURATION_S):
+    log.info("Stage 4/4: composing %.0fs mix at %s", duration_s, video_path.name)
+    if not _compose_mix(filtered_segment, playlist_path, video_path, duration_s):
         log.error("Mix composition failed for %s", slug)
         return 1
 
-    metadata = _build_metadata(mood, broll_meta, bgm_metas, TARGET_DURATION_S, video_path, slug)
+    metadata = _build_metadata(mood, broll_meta, bgm_metas, duration_s, video_path, slug)
     thumb_path = VIDEOS_DIR / f"mix-{slug}_thumb.jpg"
     if _extract_thumbnail(video_path, thumb_path):
         try:
@@ -423,7 +433,7 @@ def main() -> int:
     else:
         log.warning("No custom thumbnail for %s -- YouTube will auto-pick a frame.", slug)
     meta_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False), encoding="utf-8")
-    log.info("Generated %s (%.0fs): %s", video_path.name, TARGET_DURATION_S, metadata["title"])
+    log.info("Generated %s (%.0fs): %s", video_path.name, duration_s, metadata["title"])
     return 0
 
 
