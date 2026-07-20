@@ -1,0 +1,45 @@
+name: "Admin: search b-roll candidates"
+
+# Manual-only, read-only diagnostic: searches Pixabay for a fixed set of
+# queries and prints every hit's tags/dims/download URL, unfiltered by
+# looks_anime_styled() -- a human decision aid for picking/auditing a
+# clip (see scripts/search_broll_candidates.py), not a pipeline step. No
+# state is written; nothing here downloads or publishes anything.
+
+on:
+  workflow_dispatch:
+    inputs:
+      queries:
+        description: "Space-separated Pixabay search queries"
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v7.0.0
+
+      - name: "Python 3.11"
+        uses: actions/setup-python@v6.3.0
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: "Instalar dependencias Python"
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: "Buscar candidatos de b-roll"
+        run: python scripts/search_broll_candidates.py ${{ inputs.queries }}
