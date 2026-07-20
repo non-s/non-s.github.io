@@ -479,8 +479,8 @@ class DynamicStreamer:
             time.sleep(120)
 
     def run(self):
-        if not PINNED_BROLL_CLIP.exists() and not list(BROLL_DIR.glob("pixabay_*.mp4")):
-            log.error("No lofi b-roll clips found (no pinned clip, %s empty).", BROLL_DIR)
+        if not _pinned_broll_candidates() and not list(BROLL_DIR.glob("pixabay_*.mp4")):
+            log.error("No lofi b-roll clips found (no pinned clip/pool, %s empty).", BROLL_DIR)
             return
 
         # Make sure a broadcast exists and is bound *before* we start

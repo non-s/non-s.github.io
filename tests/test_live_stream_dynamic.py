@@ -66,6 +66,50 @@ def test_pick_broll_clip_prefers_pinned_clip_when_present(streamer, tmp_path, mo
     assert streamer._pick_broll_clip() == pinned
 
 
+def test_run_bails_out_without_starting_when_pinned_pool_and_broll_dir_both_empty(streamer, tmp_path, monkeypatch):
+    """Regression: run()'s startup guard used to only check the legacy
+    single-file PINNED_BROLL_CLIP, so migrating the committed clip into
+    PINNED_BROLL_DIR (a real pool, see _pinned_broll_candidates()) made the
+    guard always see "nothing available" and bail before ever calling
+    ensure_live_broadcast() -- even though _pick_broll_clip() would have
+    found the pool clip just fine. This is what actually happened in
+    production: the relay looped exiting immediately for ~2 hours straight
+    with the channel never going live, because PINNED_BROLL_DIR had a real
+    clip in it that the guard never looked at."""
+    monkeypatch.setattr(live_stream_dynamic, "BROLL_DIR", tmp_path / "empty_broll")
+    (tmp_path / "empty_broll").mkdir()
+    ensure_broadcast = MagicMock()
+    monkeypatch.setattr(streamer, "ensure_live_broadcast", ensure_broadcast)
+
+    streamer.run()
+
+    ensure_broadcast.assert_not_called()
+
+
+def test_run_proceeds_past_the_guard_when_only_the_pinned_pool_has_a_clip(streamer, tmp_path, monkeypatch):
+    """Mirror of the regression above: a pool-only clip (no legacy
+    PINNED_BROLL_CLIP, no BROLL_DIR fallback) must be enough for run() to
+    get past the startup guard and reach ensure_live_broadcast()."""
+    monkeypatch.setattr(live_stream_dynamic, "BROLL_DIR", tmp_path / "empty_broll")
+    (tmp_path / "empty_broll").mkdir()
+    pool = tmp_path / "pinned_pool"
+    pool.mkdir()
+    (pool / "rain_window_01.mp4").write_bytes(b"x")
+    monkeypatch.setattr(live_stream_dynamic, "PINNED_BROLL_DIR", pool)
+    monkeypatch.setattr(streamer, "ensure_live_broadcast", MagicMock())
+    monkeypatch.setattr(live_stream_dynamic.threading, "Thread", MagicMock())
+    # run()'s main loop is an infinite `while True` around a real ffmpeg
+    # subprocess -- not something to execute in a unit test. build_stream_command()
+    # returning None short-circuits that inner loop back to the guard check
+    # we actually care about, so raise once we're sure the guard let us in.
+    monkeypatch.setattr(streamer, "build_stream_command", MagicMock(side_effect=RuntimeError("reached main loop")))
+
+    with pytest.raises(RuntimeError, match="reached main loop"):
+        streamer.run()
+
+    streamer.ensure_live_broadcast.assert_called_once()
+
+
 def test_select_pinned_broll_clip_returns_none_with_no_pool_and_no_legacy_clip(tmp_path, monkeypatch):
     monkeypatch.setattr(live_stream_dynamic, "PINNED_BROLL_DIR", tmp_path / "no_pool")
     monkeypatch.setattr(live_stream_dynamic, "PINNED_BROLL_CLIP", tmp_path / "no_legacy.mp4")
