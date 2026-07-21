@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+
 from PIL import Image
 
 import scripts.rebrand_video_thumbnails as rvt
@@ -111,3 +113,30 @@ def test_extract_vertical_content_leaves_a_native_vertical_image_alone(tmp_path)
 
     with Image.open(path) as im:
         assert im.size == (1080, 1920)
+
+
+def test_main_does_not_fail_the_run_when_rate_limited_before_anything_applied(tmp_path, monkeypatch, capsys):
+    """Regression: hitting thumbnails().set()'s rate limit on the very
+    first video used to land in `failed`, so `return 1 if failed and not
+    applied` exited 1 -- turning the documented, expected "stop the run,
+    let the next schedule pick up the rest" cooldown behaviour into a red
+    workflow run every time it happened. Only genuine per-video errors
+    (the `except Exception` branch) should make the run exit non-zero."""
+    _write_marker(tmp_path, "short-1.done", video_id="SHORT1")
+    monkeypatch.setattr(rvt, "get_youtube_service", lambda: object())
+    monkeypatch.setattr(rvt.time, "sleep", lambda seconds: None)
+
+    def _raise_rate_limited(youtube, plan, tmp_dir):
+        raise rvt._RateLimited("uploadRateLimitExceeded")
+
+    monkeypatch.setattr(rvt, "apply_plan", _raise_rate_limited)
+    monkeypatch.setattr(
+        "sys.argv", ["rebrand_video_thumbnails.py", "--videos-dir", str(tmp_path), "--apply", "--json"]
+    )
+
+    exit_code = rvt.main()
+
+    payload = json.loads(capsys.readouterr().out)
+    assert exit_code == 0
+    assert payload["rate_limited"] is True
+    assert payload["failed"] == []

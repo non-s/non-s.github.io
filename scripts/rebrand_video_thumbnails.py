@@ -286,7 +286,11 @@ def main() -> int:
                         len(runnable),
                         exc,
                     )
-                    failed.append({"video_id": plan["video_id"], "error": f"rate_limited: {exc}"})
+                    # Not appended to `failed`: per the cooldown note above,
+                    # stopping here is the intended graceful behaviour, not
+                    # an error worth a red workflow run -- `rate_limited` in
+                    # the payload already surfaces it, and whatever wasn't
+                    # applied just picks up on the next scheduled run.
                     rate_limited = True
                     break
                 except Exception as exc:
