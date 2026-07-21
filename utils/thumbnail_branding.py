@@ -1,15 +1,18 @@
 """Stamp the Amber Hours look onto a raw b-roll thumbnail still.
 
-generate_lofi_short.py's and generate_lofi_mix.py's _extract_thumbnail()
-grab a bare ffmpeg frame from the rendered video -- no branding, no text,
-just whatever the b-roll happened to look like at that timestamp. That
-frame is what a viewer sees next to every other lofi channel's thumbnail,
-so it needs to visibly say "Amber Hours" the way _assets/branding/
-thumbnail_1280x720.png (the live stream's thumbnail) already does: night
-sky, skyline silhouette, amber glow. This module composites that same look
-onto the per-video still, in place, so Shorts and the horizontal mix carry
-one consistent identity instead of an unbranded frame grab. The live
-thumbnail itself is a hand-made static asset and is untouched here.
+generate_lofi_short.py and generate_lofi_mix.py no longer call
+brand_short_thumbnail()/brand_mix_thumbnail() directly (chat,
+2026-07-21): both now use _assets/branding/thumbnail_1280x720.png
+itself as the pinned video clip AND the upload thumbnail for every
+format, so there's no separate per-video frame left to brand. These
+functions are still live for scripts/rebrand_video_thumbnails.py's
+retroactive admin sweep, which grabs a bare ffmpeg frame from an
+already-published video (no branding, no text baked in) and composites
+this same look onto it in place, so older catalog videos published
+before that switch still carry the same "Amber Hours" identity: night
+sky, skyline silhouette, amber glow, matching thumbnail_1280x720.png
+(the live stream's thumbnail, a hand-made static asset, untouched
+here).
 
 Approved as a design direction in chat on 2026-07-18 (mockups generated
 with the same palette lifted from thumbnail_1280x720.png); text is drawn

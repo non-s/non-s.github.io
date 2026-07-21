@@ -4,21 +4,15 @@ name: "YouTube Bot - Shorts only"
 # run fetches/refreshes a small b-roll+bgm library and generates one fresh
 # Short on demand. upload_youtube.py's own per-canonical-slot dedup (see
 # duplicate_slot_uploaded() in scripts/upload_intent.py) keeps a slot from
-# publishing twice. Publish cadence is one Short every 10 minutes -- the
-# 10-minute grid in utils/audience_expansion.py's GLOBAL_PUBLISH_WINDOWS
-# defines the canonical slots this cron polls.
+# publishing twice. Publish cadence is one Short every 2 hours (12/day) --
+# the grid in utils/audience_expansion.py's GLOBAL_PUBLISH_WINDOWS defines
+# the canonical slots this cron polls. Deliberately sparse: YouTube's own
+# account-level upload cap (`uploadLimitExceeded`, independent of this
+# repo's own quota guard) started rejecting uploads at the 10-minute
+# cadence this used to run at, combined with the mix's own volume.
 on:
   schedule:
-    # One entry per minute mark (not `*/10`) -- scripts/check_schedule_sync.py
-    # and scripts/audit_slot_contracts.py's cron parsers only resolve a
-    # literal digit or `*` per cron entry, matching this repo's established
-    # style (the old 2/22/42 recovery-net crons were the same shape).
-    - cron: "0 * * * *"
-    - cron: "10 * * * *"
-    - cron: "20 * * * *"
-    - cron: "30 * * * *"
-    - cron: "40 * * * *"
-    - cron: "50 * * * *"
+    - cron: "0 0,2,4,6,8,10,12,14,16,18,20,22 * * *"
   workflow_dispatch:
     inputs:
       reason:
@@ -51,13 +45,16 @@ jobs:
       MEDIA_LIFECYCLE_CLEANUP: ${{ vars.MEDIA_LIFECYCLE_CLEANUP || '1' }}
       QUOTA_GUARD_MODE: ${{ vars.QUOTA_GUARD_MODE || 'block' }}
       QUOTA_GUARD_MAX_DAILY_RATIO: ${{ vars.QUOTA_GUARD_MAX_DAILY_RATIO || '0.95' }}
-      # Raised to cover the 10-minute Shorts cadence (~144 uploads/day) plus
-      # the hourly mix (~24/day) -- see utils/audience_expansion.py's
-      # GLOBAL_PUBLISH_WINDOWS and lofi-mix-daily.yml. This only relaxes
-      # this repo's own internal guard; it does not raise the underlying
-      # Google Cloud project's real YouTube Data API quota.
-      YOUTUBE_DAILY_QUOTA_BUDGET: "60000"
-      YOUTUBE_DAILY_UPLOAD_BUDGET: "200"
+      # Real combined volume is ~20/day (Shorts every 2h = 12, mix every 3h
+      # = 8 -- see utils/audience_expansion.py's GLOBAL_PUBLISH_WINDOWS and
+      # lofi-mix-daily.yml), deliberately sparse after YouTube's own
+      # account-level upload cap (`uploadLimitExceeded`) started rejecting
+      # uploads at a denser cadence. Kept near the documented defaults
+      # (docs/ENVIRONMENT.md) rather than raised, so this guard still
+      # catches a future cadence misconfiguration early instead of quietly
+      # allowing another runaway burst.
+      YOUTUBE_DAILY_QUOTA_BUDGET: "10000"
+      YOUTUBE_DAILY_UPLOAD_BUDGET: "30"
       YOUTUBE_DESCRIPTION_MODE: ${{ vars.YOUTUBE_DESCRIPTION_MODE || 'full' }}
       CHANNEL_PLAYLIST_PREFIX: ${{ vars.CHANNEL_PLAYLIST_PREFIX || '' }}
       # "#chillbeats" was a generic head-term hashtag that doesn't say

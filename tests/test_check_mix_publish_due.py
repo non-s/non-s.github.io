@@ -46,8 +46,8 @@ def test_due_when_no_marker_exists_yet(tmp_path):
     assert last_id == ""
 
 
-def test_not_due_before_30_minutes_have_passed(tmp_path, monkeypatch):
-    recent = datetime.now(timezone.utc) - timedelta(minutes=10)
+def test_not_due_before_3_hours_have_passed(tmp_path, monkeypatch):
+    recent = datetime.now(timezone.utc) - timedelta(hours=1)
     _write_marker(tmp_path, "mix-lofimix-1-1.done", publish_ts_utc=recent.isoformat())
     monkeypatch.setattr(check_mix_publish_due, "VIDEOS_DIR", tmp_path)
 
@@ -56,8 +56,8 @@ def test_not_due_before_30_minutes_have_passed(tmp_path, monkeypatch):
     assert hours_since < check_mix_publish_due.MIN_HOURS_BETWEEN_PUBLISHES
 
 
-def test_due_once_30_minutes_have_passed(tmp_path):
-    old = datetime.now(timezone.utc) - timedelta(minutes=45)
+def test_due_once_3_hours_have_passed(tmp_path):
+    old = datetime.now(timezone.utc) - timedelta(hours=4)
     _write_marker(tmp_path, "mix-lofimix-1-1.done", publish_ts_utc=old.isoformat())
 
     last_ts, last_id = check_mix_publish_due.last_mix_publish(tmp_path)

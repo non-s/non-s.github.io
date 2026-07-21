@@ -25,8 +25,18 @@ def test_global_strategy_covers_major_regions():
     strategy = global_strategy()
 
     assert strategy["mode"] == "global"
-    # 6 windows/hour (10-minute Shorts cadence) -- every hour must still be
-    # represented at least once, in ascending order.
-    hours = [item["utc_hour"] for item in strategy["publish_windows"]]
-    assert sorted(set(hours)) == list(range(24))
+    # Every-2-hours Shorts cadence (12 slots/day, deliberately sparse --
+    # see GLOBAL_PUBLISH_WINDOWS's docstring): even hours only, but every
+    # region bucket _region_for_hour() can return must still get at least
+    # one slot, in ascending order.
+    windows = strategy["publish_windows"]
+    hours = [item["utc_hour"] for item in windows]
     assert hours == sorted(hours)
+    assert hours == list(range(0, 24, 2))
+    labels = {item["label"] for item in windows}
+    assert labels == {
+        "Americas evening and late scroll",
+        "Asia/Oceania evening",
+        "Europe/Africa daytime",
+        "Americas daytime",
+    }

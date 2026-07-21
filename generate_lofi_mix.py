@@ -4,10 +4,11 @@ exactly 3 Jamendo tracks back to back, no narration. Published every 30
 minutes as the companion to generate_lofi_short.py's vertical Shorts.
 
 Companion to generate_lofi_short.py's vertical Shorts. Loops one fixed
-committed clip (PINNED_BROLL_CLIP -- see its own comment; a different,
-also-pinned clip from generate_lofi_short.py's and
-scripts/live_stream_dynamic.py's own, so live/Shorts/mix each have a
-distinct fixed visual) and bakes the same seamless crossfade loop
+committed clip (PINNED_BROLL_CLIP) -- the channel's branding
+illustration (_assets/branding/thumbnail_1280x720.png, rendered to
+video), the same one generate_lofi_short.py and
+scripts/live_stream_dynamic.py use, so live/Shorts/mix all show the
+same picture -- and bakes the same seamless crossfade loop
 live_stream_dynamic.py uses so the clip has no visible jump cut at the
 wrap-around point.
 
@@ -41,7 +42,6 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from utils.lofi_branding import HOOK_BY_MOOD, branded_title, playlist_bucket_for_title  # noqa: E402
-from utils.thumbnail_branding import brand_mix_thumbnail  # noqa: E402
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("generate_lofi_mix")
@@ -49,6 +49,10 @@ log = logging.getLogger("generate_lofi_mix")
 # See generate_lofi_short.py's PINNED_BROLL_CLIP comment for why this is a
 # single committed asset instead of a Pixabay-synced rotating pool.
 PINNED_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_mix_clip.mp4"
+# Used directly as the YouTube thumbnail too (instead of extracting +
+# re-branding a video frame) so the video and its cover image show the
+# exact same picture PINNED_BROLL_CLIP was rendered from.
+BRAND_THUMBNAIL_IMAGE = ROOT / "_assets" / "branding" / "thumbnail_1280x720.png"
 BGM_DIR = ROOT / "_assets" / "audio" / "bgm"
 VIDEOS_DIR = ROOT / "_videos"
 TEMP_DIR = ROOT / "_videos" / "temp_mix"
@@ -285,31 +289,6 @@ def _compose_mix(filtered_segment: Path, playlist_path: Path, output_path: Path,
     return output_path.exists() and output_path.stat().st_size > 0
 
 
-def _extract_thumbnail(video_path: Path, thumb_path: Path, timestamp_s: float = 5.0) -> bool:
-    cmd = [
-        "ffmpeg",
-        "-y",
-        "-ss",
-        f"{timestamp_s:.2f}",
-        "-i",
-        str(video_path),
-        "-vframes",
-        "1",
-        "-q:v",
-        "2",
-        str(thumb_path),
-    ]
-    try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
-    except Exception as exc:
-        log.warning("thumbnail extraction failed to run: %s", exc)
-        return False
-    if result.returncode != 0:
-        log.warning("thumbnail extraction exited %d: %s", result.returncode, result.stderr[-500:])
-        return False
-    return thumb_path.exists() and thumb_path.stat().st_size > 0
-
-
 def _build_metadata(
     mood: str, broll_meta: dict, bgm_metas: list[dict], duration_s: float, video_path: Path, slug: str
 ) -> dict:
@@ -353,7 +332,6 @@ def _build_metadata(
 
     now = datetime.now(timezone.utc)
     today = now.strftime("%Y-%m-%d")
-    minute_bucket = 30 if now.minute >= 30 else 0
 
     return {
         "title": title,
@@ -368,24 +346,23 @@ def _build_metadata(
         "youtube_category_id": YOUTUBE_CATEGORY_ID,
         "packaging": {"pinned_comment": "What should the next mix be? \U0001f319"},
         "pre_publish_audit": {"approved": True, "reason": "lofi_no_claims_to_vet"},
-        "source": "pixabay",
+        "source": str(broll_meta.get("source") or "branding"),
         "pexels_video_id": str(broll_meta.get("pixabay_video_id") or ""),
         "source_clip_id": str(broll_meta.get("pixabay_video_id") or ""),
         "source_url": str(broll_meta.get("license_evidence") or ""),
         "source_license": str(broll_meta.get("license") or ""),
         "source_license_evidence": str(broll_meta.get("license_evidence") or ""),
         "bgm_track_ids": [str(m.get("track_id") or "") for m in bgm_metas if m.get("track_id")],
-        # A 30-minute-bucket slot key (mix-HH-00 or mix-HH-30) -- distinct
-        # from the 10-minute canonical grid the Shorts publish_slot uses
-        # (a "mix-HH" prefix would collide across both halves of the same
-        # hour), so upload_youtube.py's per-slot idempotency check
-        # (duplicate_slot_uploaded) allows one mix per 30-minute window
-        # and never mistakes this for -- or gets shadowed by -- a Short
-        # published in the same clock hour. Still naturally caught as a
-        # real duplicate if this job somehow runs twice in the same
-        # window.
-        "publish_slot": f"mix-{now.hour:02d}-{minute_bucket:02d}",
-        "publish_slot_key": f"mix-{today}-{now.hour:02d}-{minute_bucket:02d}",
+        # An hourly slot key -- distinct from the Shorts publish_slot's
+        # own grid (a "mix-HH" prefix), so upload_youtube.py's per-slot
+        # idempotency check (duplicate_slot_uploaded) never mistakes this
+        # for -- or gets shadowed by -- a Short published in the same
+        # clock hour. The 3-hour publish cadence (check_mix_publish_due.py)
+        # means two mixes never land in the same hour, so hour granularity
+        # is enough; still naturally caught as a real duplicate if this
+        # job somehow runs twice in the same hour.
+        "publish_slot": f"mix-{now.hour:02d}",
+        "publish_slot_key": f"mix-{today}-{now.hour:02d}",
     }
 
 
@@ -441,15 +418,10 @@ def main() -> int:
         return 1
 
     metadata = _build_metadata(mood, broll_meta, bgm_metas, duration_s, video_path, slug)
-    thumb_path = VIDEOS_DIR / f"mix-{slug}_thumb.jpg"
-    if _extract_thumbnail(video_path, thumb_path):
-        try:
-            brand_mix_thumbnail(thumb_path, mood)
-        except Exception as exc:
-            log.warning("thumbnail branding failed for %s, keeping raw frame: %s", slug, exc)
-        metadata["thumbnail"] = str(thumb_path)
+    if BRAND_THUMBNAIL_IMAGE.exists():
+        metadata["thumbnail"] = str(BRAND_THUMBNAIL_IMAGE)
     else:
-        log.warning("No custom thumbnail for %s -- YouTube will auto-pick a frame.", slug)
+        log.warning("Brand thumbnail image missing: %s -- YouTube will auto-pick a frame.", BRAND_THUMBNAIL_IMAGE)
     meta_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False), encoding="utf-8")
     log.info("Generated %s (%.0fs): %s", video_path.name, duration_s, metadata["title"])
     return 0

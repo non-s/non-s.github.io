@@ -9,9 +9,11 @@ error, nothing to retry. lofi-mix-daily.yml polls every 15 minutes
 instead, and this script is the guard that keeps that from publishing one
 mix every 15 minutes: a run only does the real work when the elapsed time
 since the last published mix's `_videos/mix-*.done` marker has crossed the
-threshold (30 minutes, the mix's publish cadence), so a single missed
-poll costs at most ~15 minutes of drift instead of losing the rest of the
-window.
+threshold (3 hours, the mix's publish cadence -- deliberately sparse:
+YouTube's own account-level upload cap, `uploadLimitExceeded`, started
+rejecting uploads at the previous 30-minute cadence combined with the
+Shorts volume), so a single missed poll costs at most ~15 minutes of
+drift instead of losing the rest of the window.
 """
 
 from __future__ import annotations
@@ -27,7 +29,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 VIDEOS_DIR = ROOT / "_videos"
-MIN_HOURS_BETWEEN_PUBLISHES = 0.5
+MIN_HOURS_BETWEEN_PUBLISHES = 3.0
 
 
 def _parse_ts(value: str) -> datetime | None:

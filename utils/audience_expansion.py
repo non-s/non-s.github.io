@@ -35,13 +35,20 @@ def _region_for_hour(hour: int) -> tuple[str, list[str]]:
     return "Americas daytime", ["North America", "Latin America"]
 
 
-def _ten_minute_window(hour: int, minute: int) -> dict:
-    """Return one UTC publishing slot for the 10-minute Shorts cadence."""
+def _two_hourly_window(hour: int) -> dict:
+    """Return one UTC publishing slot for the every-2-hours Shorts cadence.
+
+    Was a 10-minute grid (144 slots/day); YouTube's own account-level
+    upload cap (`uploadLimitExceeded`, independent of this repo's own
+    quota guard) started rejecting uploads at that volume combined with
+    the mix's cadence, so this is deliberately sparse -- 12 slots/day,
+    only even hours -- not literally every hour of the day.
+    """
     label, regions = _region_for_hour(hour)
-    return {"slot": f"{hour:02d}:{minute:02d}", "utc_hour": hour, "label": label, "regions": regions}
+    return {"slot": f"{hour:02d}:00", "utc_hour": hour, "label": label, "regions": regions}
 
 
-GLOBAL_PUBLISH_WINDOWS = [_ten_minute_window(hour, minute) for hour in range(24) for minute in range(0, 60, 10)]
+GLOBAL_PUBLISH_WINDOWS = [_two_hourly_window(hour) for hour in range(0, 24, 2)]
 
 
 def _clean_token(value: str) -> str:

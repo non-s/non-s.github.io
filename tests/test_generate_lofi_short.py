@@ -261,12 +261,7 @@ def test_main_writes_video_and_metadata_pair_on_success(tmp_path, monkeypatch):
         return True
 
     monkeypatch.setattr(lofi, "_compose_short", fake_compose)
-
-    def fake_thumbnail(video_path, thumb_path, timestamp_s=2.0):
-        thumb_path.write_bytes(b"fake-jpg")
-        return True
-
-    monkeypatch.setattr(lofi, "_extract_thumbnail", fake_thumbnail)
+    monkeypatch.setattr(lofi, "BRAND_THUMBNAIL_IMAGE", _touch(tmp_path / "thumbnail_1280x720.png"))
 
     assert lofi.main() == 0
 
@@ -277,11 +272,13 @@ def test_main_writes_video_and_metadata_pair_on_success(tmp_path, monkeypatch):
     meta = json.loads(meta_path.read_text())
     assert meta["video"] == str(videos[0])
     assert meta["pre_publish_audit"]["approved"] is True
-    assert meta["thumbnail"] == str(videos_dir / f"{videos[0].stem}_thumb.jpg")
-    assert Path(meta["thumbnail"]).exists()
+    assert meta["thumbnail"] == str(lofi.BRAND_THUMBNAIL_IMAGE)
 
 
-def test_main_brands_the_thumbnail_with_the_picked_mood(tmp_path, monkeypatch):
+def test_main_uses_the_brand_thumbnail_image_regardless_of_mood(tmp_path, monkeypatch):
+    """The thumbnail is now the one fixed branding image every format
+    shares -- unlike the old per-mood-rebranded frame, it's identical no
+    matter which mood main() happens to pick."""
     bgm_dir = tmp_path / "bgm"
     videos_dir = tmp_path / "_videos"
     bgm_dir.mkdir()
@@ -291,20 +288,17 @@ def test_main_brands_the_thumbnail_with_the_picked_mood(tmp_path, monkeypatch):
     monkeypatch.setattr(lofi, "PINNED_BROLL_CLIP", _touch(tmp_path / "pinned_short_clip.mp4"))
     monkeypatch.setattr(lofi, "BGM_DIR", bgm_dir)
     monkeypatch.setattr(lofi, "_compose_short", lambda broll, bgm, out, dur: out.write_bytes(b"x") or True)
-    monkeypatch.setattr(
-        lofi, "_extract_thumbnail", lambda video_path, thumb_path, **k: thumb_path.write_bytes(b"x") or True
-    )
+    monkeypatch.setattr(lofi, "BRAND_THUMBNAIL_IMAGE", _touch(tmp_path / "thumbnail_1280x720.png"))
     monkeypatch.setattr(lofi, "_pick_mood", lambda: "Rain Window")
 
-    calls = []
-    monkeypatch.setattr(lofi, "brand_short_thumbnail", lambda path, mood: calls.append((path, mood)))
-
     assert lofi.main() == 0
-    assert len(calls) == 1
-    assert calls[0][1] == "Rain Window"
+
+    meta_path = next(videos_dir.glob("short-*.json"))
+    meta = json.loads(meta_path.read_text())
+    assert meta["thumbnail"] == str(lofi.BRAND_THUMBNAIL_IMAGE)
 
 
-def test_main_omits_thumbnail_field_when_extraction_fails(tmp_path, monkeypatch):
+def test_main_omits_thumbnail_field_when_brand_image_missing(tmp_path, monkeypatch):
     bgm_dir = tmp_path / "bgm"
     videos_dir = tmp_path / "_videos"
     bgm_dir.mkdir()
@@ -314,7 +308,7 @@ def test_main_omits_thumbnail_field_when_extraction_fails(tmp_path, monkeypatch)
     monkeypatch.setattr(lofi, "PINNED_BROLL_CLIP", _touch(tmp_path / "pinned_short_clip.mp4"))
     monkeypatch.setattr(lofi, "BGM_DIR", bgm_dir)
     monkeypatch.setattr(lofi, "_compose_short", lambda broll, bgm, out, dur: out.write_bytes(b"x") or True)
-    monkeypatch.setattr(lofi, "_extract_thumbnail", lambda *a, **k: False)
+    monkeypatch.setattr(lofi, "BRAND_THUMBNAIL_IMAGE", tmp_path / "missing_thumbnail.png")
 
     assert lofi.main() == 0
 

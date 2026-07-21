@@ -34,7 +34,6 @@ from utils.lofi_branding import (  # noqa: E402
     branded_title,
     playlist_bucket_for_title,
 )
-from utils.thumbnail_branding import brand_short_thumbnail  # noqa: E402
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("generate_lofi_short")
@@ -43,13 +42,17 @@ log = logging.getLogger("generate_lofi_short")
 # Pixabay-synced BROLL_DIR pool this used to pick from occasionally let an
 # off-brand clip through despite the anime-style tag filter -- a stock 3D
 # "man with a stack of books" render published as "Late Night Library Lofi"
-# was the one that triggered this. Standardizing on a single hand-picked
-# clip per format (this one for Shorts, generate_lofi_mix.py's own for the
-# horizontal mix, scripts/live_stream_dynamic.py's PINNED_BROLL_DIR for the
-# live) removes tag-based curation from the loop entirely -- only the mood
-# (title/tags/bgm pairing, still varied per video) and the music actually
-# change now.
+# was the one that triggered this). It's now the channel's own branding
+# illustration rendered to video -- the same clip generate_lofi_mix.py and
+# scripts/live_stream_dynamic.py use, so every format shows the same
+# picture -- which removes tag-based curation from the loop entirely: only
+# the mood (title/tags/bgm pairing, still varied per video) and the music
+# actually change now.
 PINNED_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_short_clip.mp4"
+# Used directly as the YouTube thumbnail too (instead of extracting +
+# re-branding a video frame) so the video and its cover image show the
+# exact same picture PINNED_BROLL_CLIP was rendered from.
+BRAND_THUMBNAIL_IMAGE = ROOT / "_assets" / "branding" / "thumbnail_1280x720.png"
 BGM_DIR = ROOT / "_assets" / "audio" / "bgm"
 VIDEOS_DIR = ROOT / "_videos"
 
@@ -166,7 +169,7 @@ def _build_metadata(
         "story_id": story_id,
         "packaging": {"pinned_comment": "What mood should the next loop be? \U0001f31a"},
         "pre_publish_audit": {"approved": True, "reason": "lofi_no_claims_to_vet"},
-        "source": "pixabay",
+        "source": str(broll_meta.get("source") or "branding"),
         # upload_youtube.py's ledger field is named after the original
         # Pexels-only pipeline but is provider-agnostic in practice (it
         # just needs *a* source clip id); keeping the key avoids touching
@@ -290,15 +293,10 @@ def main() -> int:
         return 1
 
     metadata = _build_metadata(mood, broll_meta, bgm_meta, duration_s, video_path, story_id=slug)
-    thumb_path = VIDEOS_DIR / f"short-{slug}_thumb.jpg"
-    if _extract_thumbnail(video_path, thumb_path):
-        try:
-            brand_short_thumbnail(thumb_path, mood)
-        except Exception as exc:
-            log.warning("thumbnail branding failed for %s, keeping raw frame: %s", slug, exc)
-        metadata["thumbnail"] = str(thumb_path)
+    if BRAND_THUMBNAIL_IMAGE.exists():
+        metadata["thumbnail"] = str(BRAND_THUMBNAIL_IMAGE)
     else:
-        log.warning("No custom thumbnail for %s -- YouTube will auto-pick a frame.", slug)
+        log.warning("Brand thumbnail image missing: %s -- YouTube will auto-pick a frame.", BRAND_THUMBNAIL_IMAGE)
     meta_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False), encoding="utf-8")
     log.info("Generated %s (%.1fs): %s", video_path.name, duration_s, metadata["title"])
     return 0

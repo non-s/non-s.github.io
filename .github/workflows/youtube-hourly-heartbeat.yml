@@ -1,12 +1,17 @@
 name: "YouTube hourly heartbeat"
 
-# Lightweight backup for GitHub schedule drift. The main publisher already
-# runs every 10 minutes and youtube-watchdog.yml checks every 10 minutes
-# too; this job is a coarser once-an-hour sanity dispatcher (did ANY
-# publisher run happen this hour), not a long-lived sleeping runner.
+# Automatic `schedule:` trigger disabled (chat, 2026-07-21): this checked
+# "did ANY publisher run happen this literal clock hour" via
+# scripts/youtube_slot_dispatch.py's `current_hour_slot()`, which assumes
+# an hourly-or-denser cadence. Since the Shorts cadence dropped to every
+# 2 hours (utils/audience_expansion.py's GLOBAL_PUBLISH_WINDOWS -- see
+# its docstring for why), this would have found "no run" on every
+# intentionally-skipped odd hour and dispatched an extra Short there,
+# quietly doubling the cadence right back up. youtube-watchdog.yml
+# already covers recovery correctly (it audits against the real
+# PUBLISH_SLOTS_UTC grid, not a fixed hourly assumption); kept as a
+# manual-only workflow_dispatch tool instead of deleting it outright.
 on:
-  schedule:
-    - cron: "13 * * * *"
   workflow_dispatch:
     inputs:
       reason:

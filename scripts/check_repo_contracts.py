@@ -54,7 +54,7 @@ WORKFLOW_TOKENS = {
         "upload_intents.jsonl",
     ),
     ".github/workflows/youtube-watchdog.yml": (
-        'PUBLISH_SLOT_WINDOW_MINUTES: "10"',
+        'PUBLISH_SLOT_WINDOW_MINUTES: "120"',
         "PUBLISH_SLOTS_UTC",
         "watchdog recovery for missed slot",
         "python scripts/youtube_slot_dispatch.py watchdog",

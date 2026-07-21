@@ -3,32 +3,35 @@
 [![Production quality gate](https://github.com/non-s/non-s.github.io/actions/workflows/quality-gate.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/quality-gate.yml)
 [![YouTube Bot - Shorts only](https://github.com/non-s/non-s.github.io/actions/workflows/youtube-bot.yml/badge.svg)](https://github.com/non-s/non-s.github.io/actions/workflows/youtube-bot.yml)
 
-Automated pipeline that turns free-licensed Pixabay anime/illustrated
-b-roll (the "Lofi Girl" studying-loop look) and Creative Commons (CC BY,
-commercial-safe) music into looping lofi YouTube Shorts, a daily 1-hour
-horizontal mix, and a 24/7 lofi live stream -- no narration, clip + music
-only -- published through the official YouTube Data API under the
-**Amber Hours** brand.
+Automated pipeline that turns the channel's own branding illustration
+and Creative Commons (CC BY, commercial-safe) Jamendo music into looping
+lofi YouTube Shorts, a horizontal mix, and a 24/7 lofi live stream -- no
+narration, clip + music only -- published through the official YouTube
+Data API under the **Amber Hours** brand.
 
-- Cadence: `youtube-bot.yml` (Shorts) fires up to 3x/hour (`:02`, `:22`,
-  `:42`, the extra two as a recovery net for delayed/dropped GitHub
-  schedule events); `lofi-mix-daily.yml` fires once a day. Both use
-  `upload_youtube.py`'s per-canonical-slot dedup, so a slot never
-  publishes twice.
+- Cadence: `youtube-bot.yml` (Shorts) publishes every **2 hours**
+  (12/day); `lofi-mix-daily.yml` publishes every **3 hours** (8/day).
+  Both are deliberately sparse -- YouTube's own account-level upload cap
+  (`uploadLimitExceeded`, independent of this repo's own quota guard)
+  started rejecting uploads at a much denser cadence (10-minute Shorts +
+  30-minute mix). Both use `upload_youtube.py`'s per-canonical-slot
+  dedup, so a slot never publishes twice.
 - Duration: Shorts are **30-58 seconds**, randomized. The horizontal mix
-  is a short **3-song** mix (duration = the sum of the 3 tracks), published
-  every 30 minutes.
+  is a short **3-song** mix (duration = the sum of the 3 tracks).
 - Category: YouTube **Music** (`categoryId=10`) for both formats.
-- Content: each format (Shorts, mix, 24/7 live) loops one fixed, committed
-  visual (`_assets/video/pinned_*`) under Jamendo CC BY-licensed music,
-  with a branded title/description/thumbnail. The pinned visuals are
-  procedurally generated in-repo with ffmpeg (`gradients`/`geq`/`overlay`
-  -- an animated gradient, a soft glow, film grain and a vignette; see each
-  `pinned_*.json` sidecar), not sourced from a stock library -- earlier
-  revisions used Pixabay anime-style b-roll (`video_type=animation`) for
-  this; Pexels was tried before that but has no genuine illustrated
-  content -- checked live, its "anime" search results are cosplay footage
-  and mistagged live-action.
+- Content: every format (Shorts, mix, 24/7 live) loops the exact same
+  fixed, committed visual (`_assets/video/pinned_*`) under Jamendo CC
+  BY-licensed music, with a branded title/description. That visual is
+  the channel's own branding illustration
+  (`_assets/branding/thumbnail_1280x720.png` -- night skyline, moon,
+  amber glow, drawn in `utils/thumbnail_branding.py`) rendered to video,
+  also used directly as each upload's YouTube thumbnail -- not sourced
+  from a stock library or generated art. Earlier revisions tried Pixabay
+  anime-style b-roll (`video_type=animation`), then an original
+  ffmpeg-procedural gradient background, before landing on the branding
+  illustration; Pexels was tried before Pixabay but has no genuine
+  illustrated content -- checked live, its "anime" search results are
+  cosplay footage and mistagged live-action.
 
 ## Sub-niche: rainy-night anime lofi
 
@@ -45,14 +48,17 @@ module's docstring for the full reasoning.
 
 ```mermaid
 flowchart LR
-    subgraph Sync["Media libraries (GitHub Actions cache)"]
-        broll["scripts/sync_lofi_broll.py<br/>-> _assets/video/lofi_broll<br/>(Pixabay anime clips)"]
+    subgraph Fixed["Fixed assets (committed, not synced)"]
+        brand["_assets/branding/thumbnail_1280x720.png<br/>rendered to _assets/video/pinned_*<br/>(same picture for Shorts/mix/live + thumbnail)"]
+    end
+
+    subgraph Sync["Media library (GitHub Actions cache)"]
         bgm["scripts/sync_jamendo_music.py<br/>-> _assets/audio/bgm<br/>(Jamendo CC BY tracks)"]
     end
 
     subgraph Generate["Generation"]
         short["generate_lofi_short.py<br/>vertical Short, 30-58s"]
-        mix["generate_lofi_mix.py<br/>horizontal mix, 1 hour"]
+        mix["generate_lofi_mix.py<br/>horizontal mix, 3 songs"]
         live["scripts/live_stream_dynamic.py<br/>24/7 live relay"]
     end
 
@@ -67,11 +73,11 @@ flowchart LR
         rotation["token-rotation-check.yml<br/>monthly"]
     end
 
-    broll --> short
+    brand --> short
     bgm --> short
-    broll --> mix
+    brand --> mix
     bgm --> mix
-    broll --> live
+    brand --> live
     bgm --> live
     short --> upload
     mix --> upload
@@ -83,18 +89,19 @@ flowchart LR
     orphans -.monitors.-> YouTube
 ```
 
-The b-roll/bgm libraries (`_assets/video/lofi_broll`, `_assets/audio/bgm`)
-are gitignored and persist across ephemeral runners via GitHub Actions
-cache (`actions/cache`, key `lofi-media-*`) instead of git, so the Jamendo
-library grows toward its ~150-track target over many runs instead of
-resetting to empty every time. The live relay streams straight to RTMP
-with `-stream_loop -1` on both the video clip and the audio playlist --
-there is no bake-to-file step, so a crash/restart is back on air within
-seconds regardless of playlist size. The looped clip is preprocessed once
-with a short crossfade baked between its tail and head so the loop
-wrap-around has no visible jump cut. The live relay's pinned visual
-rotates weekly across a small curated pool (`_assets/video/pinned_live_clips/`)
-instead of looping one clip forever.
+The bgm library (`_assets/audio/bgm`) is gitignored and persists across
+ephemeral runners via GitHub Actions cache (`actions/cache`, key
+`lofi-media-*`) instead of git, so the Jamendo library grows toward its
+~150-track target over many runs instead of resetting to empty every
+time. The live relay streams straight to RTMP with `-stream_loop -1` on
+both the video clip and the audio playlist -- there is no bake-to-file
+step, so a crash/restart is back on air within seconds regardless of
+playlist size. The looped clip is preprocessed once with a short
+crossfade baked between its tail and head so the loop wrap-around has
+no visible jump cut. The visual itself is the committed branding
+illustration (see "Content" above), not synced/rotated per run --
+`_assets/video/pinned_live_clips/` is a pool directory in name only,
+holding the one branding-derived clip every format shares.
 
 This channel was rebuilt from an earlier nature-science-facts format
 (narrated Shorts, editorial scoring pipeline, trend hijacking, a story
@@ -122,10 +129,11 @@ rotate the YouTube token are in [RUNBOOK.md](RUNBOOK.md).
   OAuth JSON token, not an API key. Generate it once with
   `auth_youtube.py` or the `Build auth_youtube.exe (Windows)` workflow.
   See [SETUP.md](SETUP.md).
-- `PIXABAY_API_KEY` -- anime/illustrated b-roll for Shorts, the mix, and
-  the live loop.
 - `YOUTUBE_STREAM_KEY` -- only needed for the 24/7 live relay
   (`live-stream.yml`).
+
+No Pixabay key is needed -- the visual is the committed branding
+illustration (see "Content" above), not synced stock footage.
 
 Jamendo music sync (`scripts/sync_jamendo_music.py`) uses a registered
 Jamendo client id (`CLIENT_ID` in that script) and needs no separate

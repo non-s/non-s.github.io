@@ -29,21 +29,16 @@ def test_workflows_parse_and_include_pipeline_steps():
     assert "_data/analytics/api_quota_ledger.jsonl" in youtube_workflow
     assert "if: always() && env.PUBLISH_QUOTA_BLOCKED != '1'" in youtube_workflow
     assert "Salvar marcadores no git" in youtube_workflow
-    assert 'cron: "0 * * * *"' in youtube_workflow
-    assert 'cron: "10 * * * *"' in youtube_workflow
-    assert 'cron: "20 * * * *"' in youtube_workflow
-    assert 'cron: "30 * * * *"' in youtube_workflow
-    assert 'cron: "40 * * * *"' in youtube_workflow
-    assert 'cron: "50 * * * *"' in youtube_workflow
+    assert 'cron: "0 0,2,4,6,8,10,12,14,16,18,20,22 * * *"' in youtube_workflow
 
     watchdog_workflow = (ROOT / ".github/workflows/youtube-watchdog.yml").read_text(encoding="utf-8")
     assert 'cron: "7,17,27,37,47,57 * * * *"' in watchdog_workflow
     assert 'GRACE_MINUTES: "12"' in watchdog_workflow
-    assert 'PUBLISH_SLOT_WINDOW_MINUTES: "10"' in watchdog_workflow
+    assert 'PUBLISH_SLOT_WINDOW_MINUTES: "120"' in watchdog_workflow
     assert "python scripts/youtube_slot_dispatch.py watchdog" in watchdog_workflow
 
     heartbeat_workflow = (ROOT / ".github/workflows/youtube-hourly-heartbeat.yml").read_text(encoding="utf-8")
-    assert 'cron: "13 * * * *"' in heartbeat_workflow
+    assert "schedule:" not in heartbeat_workflow
     assert 'TARGET_WORKFLOW: "youtube-bot.yml"' in heartbeat_workflow
     assert "PUBLISH_HEARTBEAT_RECENT_RUN_TOLERANCE_MINUTES || '20'" in heartbeat_workflow
     assert 'PUBLISH_SLOT_WINDOW_MINUTES: "60"' in heartbeat_workflow
