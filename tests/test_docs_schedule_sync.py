@@ -13,11 +13,11 @@ def test_current_repo_schedule_contract_is_in_sync():
 
 
 def test_schedule_sync_detects_missing_workflow_slot(tmp_path):
-    _write_contract_files(tmp_path, cron="23 14,19,23 * * *")
+    _write_contract_files(tmp_path, cron="0 14,20,22 * * *")
 
     errors = check_schedule_sync(tmp_path)
 
-    assert any("05:00" in error and "youtube-bot.yml" in error for error in errors)
+    assert any("06:00" in error and "youtube-bot.yml" in error for error in errors)
 
 
 def test_schedule_sync_detects_missing_docs(tmp_path):
