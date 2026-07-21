@@ -48,11 +48,9 @@ WORKFLOW_TOKENS = {
         "quota_preflight.py youtube-bot",
         "media_lifecycle.py --cleanup --audit-tracked",
         "merge_jsonl_state.py",
-        "sync_lofi_broll.py",
         "sync_jamendo_music.py",
         "generate_lofi_short.py",
         "python upload_youtube.py --language=en",
-        "PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}",
         "upload_intents.jsonl",
     ),
     ".github/workflows/youtube-watchdog.yml": (

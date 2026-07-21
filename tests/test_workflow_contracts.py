@@ -19,10 +19,9 @@ def test_workflows_parse_and_include_pipeline_steps():
     assert "quota_preflight.py youtube-bot --json --check-only" in youtube_workflow
     assert "Sincronizar main remoto antes da decisao" in youtube_workflow
     assert "git checkout -B main origin/main" in youtube_workflow
-    assert "scripts/sync_lofi_broll.py" in youtube_workflow
     assert "scripts/sync_jamendo_music.py" in youtube_workflow
     assert "generate_lofi_short.py" in youtube_workflow
-    assert "PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}" in youtube_workflow
+    assert "PIXABAY_API_KEY" not in youtube_workflow
     assert "YouTube automation state -" in youtube_workflow
     assert "merge_jsonl_state.py" in youtube_workflow
     assert "jsonl_merge_paths" in youtube_workflow
@@ -82,7 +81,7 @@ def test_youtube_publisher_syncs_latest_main_before_publish_decision():
 
     sync_index = names.index("Sincronizar main remoto antes da decisao")
     assert sync_index < names.index("Quota preflight")
-    assert sync_index < names.index("Sincronizar bibliotecas de b-roll e musica lofi")
+    assert sync_index < names.index("Sincronizar biblioteca de musica lofi")
     assert sync_index < names.index("Gerar Short lofi")
     assert sync_index < names.index("Upload Shorts para YouTube")
 

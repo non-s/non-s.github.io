@@ -50,7 +50,6 @@ jobs:
     permissions:
       contents: write
     env:
-      PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
       UPLOAD_IDEMPOTENCY_MODE: ${{ vars.UPLOAD_IDEMPOTENCY_MODE || 'block' }}
       UPLOAD_SLOT_IDEMPOTENCY_MODE: ${{ vars.UPLOAD_SLOT_IDEMPOTENCY_MODE || 'block' }}
       MEDIA_LIFECYCLE_CLEANUP: ${{ vars.MEDIA_LIFECYCLE_CLEANUP || '1' }}
@@ -118,14 +117,12 @@ jobs:
         with:
           path: |
             _assets/audio/bgm
-            _assets/video/lofi_broll
           key: lofi-media-${{ github.run_id }}
           restore-keys: |
             lofi-media-
-      - name: "Sincronizar bibliotecas de b-roll e musica lofi"
+      - name: "Sincronizar biblioteca de musica lofi"
         if: steps.gate.outputs.due == 'true'
         run: |
-          python scripts/sync_lofi_broll.py
           python scripts/sync_jamendo_music.py
         env:
           PYTHONIOENCODING: utf-8
