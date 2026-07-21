@@ -71,7 +71,7 @@ def check_auth() -> bool:
 
 
 def _collect_pending_meta(videos_dir: Path) -> list[Path]:
-    return sorted(p for p in videos_dir.glob("*.json") if p.stem.startswith(("short-", "roundup-", "mix-")))
+    return sorted(p for p in videos_dir.glob("*.json") if p.stem.startswith(("short-", "roundup-", "mix-", "storm-")))
 
 
 def _normalise_tags(tags) -> list[str]:

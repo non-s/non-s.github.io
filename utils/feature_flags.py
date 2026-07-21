@@ -210,6 +210,35 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Cap on comment replies posted per community-comment-replies.yml run.",
         "Lower it, or set COMMUNITY_ENGAGEMENT_ENABLED to 0.",
     ),
+    FeatureFlag(
+        "STORM_AMBIENCE_ENABLED",
+        "0",
+        "publishing",
+        "Master switch for the storm-ambience.yml pillar (real rain/thunder ambience), "
+        "independent of YOUTUBE_PUBLISHING_ENABLED.",
+        "Set to 0 to pause this pillar.",
+    ),
+    FeatureFlag(
+        "STORM_MIN_DURATION_MINUTES",
+        "45",
+        "publishing",
+        "Minimum runtime (minutes) for a generated storm-ambience video.",
+        "Lower it for faster/smaller uploads.",
+    ),
+    FeatureFlag(
+        "STORM_MAX_DURATION_MINUTES",
+        "75",
+        "publishing",
+        "Maximum runtime (minutes) for a generated storm-ambience video.",
+        "Lower it for faster/smaller uploads.",
+    ),
+    FeatureFlag(
+        "STORM_MUSIC_LAYER_PROBABILITY",
+        "0.35",
+        "publishing",
+        "Chance (0.0-1.0) a storm-ambience video also layers in one quiet Jamendo track.",
+        "Set to 0 for pure rain/thunder ambience only.",
+    ),
 )
 
 

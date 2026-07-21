@@ -82,6 +82,14 @@ On Windows, you can instead run the **Build auth_youtube.exe (Windows)** workflo
    automated. Independent of `YOUTUBE_PUBLISHING_ENABLED`: posting under the
    channel's identity is its own trust boundary. Optionally tune
    `COMMENT_REPLY_MAX_PER_RUN` (default 15).
+7. Optionally set the repository variable `STORM_AMBIENCE_ENABLED=1` to turn
+   on the second content pillar (real rain/thunder ambience -- see
+   README.md's "Second pillar" section): `storm-ambience.yml` publishes on
+   its own twice-daily schedule, needs no new secret (reuses
+   `YOUTUBE_TOKEN`), and can run whether or not `YOUTUBE_PUBLISHING_ENABLED`
+   is on. Optionally tune `STORM_MIN_DURATION_MINUTES` /
+   `STORM_MAX_DURATION_MINUTES` (default 45-75) and
+   `STORM_MUSIC_LAYER_PROBABILITY` (default 0.35).
 
 See [RUNBOOK.md](RUNBOOK.md) for what each reliability workflow does and
 what to do when one of them alerts.

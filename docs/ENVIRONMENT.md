@@ -50,6 +50,10 @@ English-only when no `MISTRAL_API_KEY`/`CEREBRAS_API_KEY`/
 | `YOUTUBE_DAILY_UPLOAD_BUDGET` | `100` | operations | Conservative daily YouTube upload-call budget. | Match the Google Cloud upload quota. |
 | `COMMUNITY_ENGAGEMENT_ENABLED` | `0` | community | Master switch for comment replies and the weekly Community post draft, independent of `YOUTUBE_PUBLISHING_ENABLED`. | Set to 0 to pause both. |
 | `COMMENT_REPLY_MAX_PER_RUN` | `15` | community | Cap on comment replies posted per `community-comment-replies.yml` run. | Lower it, or set `COMMUNITY_ENGAGEMENT_ENABLED` to 0. |
+| `STORM_AMBIENCE_ENABLED` | `0` | publishing | Master switch for the `storm-ambience.yml` pillar (real rain/thunder ambience), independent of `YOUTUBE_PUBLISHING_ENABLED`. | Set to 0 to pause this pillar. |
+| `STORM_MIN_DURATION_MINUTES` | `45` | publishing | Minimum runtime (minutes) for a generated storm-ambience video. | Lower it for faster/smaller uploads. |
+| `STORM_MAX_DURATION_MINUTES` | `75` | publishing | Maximum runtime (minutes) for a generated storm-ambience video. | Lower it for faster/smaller uploads. |
+| `STORM_MUSIC_LAYER_PROBABILITY` | `0.35` | publishing | Chance (0.0-1.0) a storm-ambience video also layers in one quiet Jamendo track. | Set to 0 for pure rain/thunder ambience only. |
 
 YouTube `videos.insert` calls use their own daily upload bucket. Keep
 `YOUTUBE_DAILY_UPLOAD_BUDGET=100` unless Google Cloud shows a different
