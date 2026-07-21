@@ -6,6 +6,11 @@ google-api-python-client>=2.198.0,<3.0
 google-auth>=2.55.2,<3.0
 google-auth-oauthlib>=1.4.0,<2.0
 opencv-python-headless>=5.0.0.93,<6.0
+# utils/storm_audio.py's procedural rain/thunder synthesis (FFT-based
+# periodic noise, no scipy needed) -- was only a transitive dependency of
+# opencv-python-headless before; declared directly since this module now
+# genuinely needs it regardless of that package's own fate.
+numpy>=2.0.0,<3.0
 defusedxml>=0.7.1,<0.8.0
 PyYAML>=6.0.3,<7.0
 yt-dlp>=2023.12.30

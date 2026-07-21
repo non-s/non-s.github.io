@@ -71,6 +71,44 @@ generators and the retroactive rebrand scripts pull from, so a viewer
 sees one consistent "Amber Hours" identity across every format. See that
 module's docstring for the full reasoning.
 
+## Second pillar: real storm/rain ambience
+
+"Anime lofi" is one of YouTube's most saturated searches -- every title,
+tag, and hashtag above already leans into a narrow sub-niche just to get
+a foothold in it. Rather than fight harder for the same search terms,
+`generate_storm_ambience.py` targets a different, much larger, and much
+less lofi-saturated intent instead: "rain sounds for sleep",
+"thunderstorm ambience", the searches an insomniac, a parent settling a
+baby, or someone masking tinnitus actually types (see
+`utils/storm_branding.py`'s module docstring). Still published as "Amber
+Hours" -- one channel, two pillars, not a second channel starting from
+zero subscribers.
+
+- **Visual**: `scripts/generate_storm_scene.py` draws its own animated
+  scene (overcast sky, storm clouds, heavier wind-blown rain, an
+  occasional lightning flash) -- same seamless-loop technique as the
+  lofi pillar's clips (`utils/brand_motion.py`), just a longer 14s loop
+  so a flash doesn't repeat every few seconds.
+- **Audio**: `utils/storm_audio.py` *synthesizes* rain and distant
+  thunder procedurally (FFT-shaped periodic noise -- exactly loop-safe by
+  construction, no crossfade needed) instead of looping a recorded
+  sample, so there's no recording to license, clear, or run out of. An
+  optional quiet Jamendo track (`STORM_MUSIC_LAYER_PROBABILITY`, default
+  35% of videos) layers underneath. The video loop, the rain-bed loop,
+  and the optional music track all have different, non-matching periods,
+  so the combined video never feels like it's repeating in lockstep even
+  though each layer loops individually.
+- **Real footage (optional, curated, not automatic)**:
+  `scripts/search_storm_broll_candidates.py` searches Pixabay for real
+  storm/rain b-roll (`video_type="film"`) for a human to hand-pick from --
+  deliberately not wired into the runtime pipeline, per
+  `docs/adr/0004-pinned-broll-per-format.md`'s "one hand-picked clip beats
+  N auto-selected ones" decision, which real-world footage needs even
+  more than illustrated b-roll did.
+- Opt-in via `STORM_AMBIENCE_ENABLED` (see SETUP.md), independent of
+  `YOUTUBE_PUBLISHING_ENABLED` -- a second content pillar is its own
+  decision from whether the first one is running.
+
 ## Community engagement
 
 Opt-in via the `COMMUNITY_ENGAGEMENT_ENABLED` repository variable (see

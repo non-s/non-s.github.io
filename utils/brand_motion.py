@@ -124,3 +124,32 @@ def turntable_spin_offset(radius: float, phase: float, cycles: int = 1) -> tuple
     spinning. phase=1.0 gives the same angle as phase=0.0."""
     angle = 2 * math.pi * cycles * phase
     return math.cos(angle) * radius * 0.35, math.sin(angle) * radius * 0.12
+
+
+def lightning_flash(
+    w: int,
+    h: int,
+    phase: float,
+    flash_phases: tuple[float, ...],
+    *,
+    flash_width: float = 0.012,
+    color: tuple[int, int, int] = (232, 238, 255),
+) -> Image.Image:
+    """A brief full-frame flash overlay for a storm scene.
+
+    `flash_phases` are phase positions (0.0-1.0) within the loop where a
+    flash peaks; each one decays sharply over `flash_width` of the loop so
+    it reads as an instant of lightning, not a strobing background.
+    Distance to each flash phase is measured on the circle (wrapping
+    0.0/1.0 together), so this is loop-safe regardless of where a flash is
+    placed -- including right at the seam."""
+    intensity = 0.0
+    for flash_phase in flash_phases:
+        distance = abs(phase - flash_phase)
+        distance = min(distance, 1.0 - distance)
+        local = max(0.0, 1.0 - distance / flash_width)
+        intensity = max(intensity, local**3)
+    layer = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    if intensity <= 0:
+        return layer
+    return Image.new("RGBA", (w, h), (*color, int(200 * intensity)))
