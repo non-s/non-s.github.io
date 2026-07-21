@@ -401,8 +401,7 @@ def main() -> int:
     all_bgm_tracks = sorted(BGM_DIR.glob("jamendo_*.mp3"))
     if len(all_bgm_tracks) < SONGS_PER_MIX:
         log.error(
-            "Need %d bgm tracks for a mix, only %d available in %s -- run "
-            "scripts/sync_jamendo_music.py first.",
+            "Need %d bgm tracks for a mix, only %d available in %s -- run " "scripts/sync_jamendo_music.py first.",
             SONGS_PER_MIX,
             len(all_bgm_tracks),
             BGM_DIR,
