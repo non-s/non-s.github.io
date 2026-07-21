@@ -6,7 +6,7 @@ import wave
 
 import numpy as np
 
-from utils.storm_audio import SAMPLE_RATE, generate_rain_bed, write_wav
+from utils.storm_audio import SAMPLE_RATE, _periodic_noise, _rain_droplets, generate_rain_bed, write_wav
 
 
 def test_generate_rain_bed_has_expected_shape_and_dtype():
@@ -53,6 +53,49 @@ def test_generate_rain_bed_with_zero_thunder_is_quieter_on_average():
     with_thunder = generate_rain_bed(duration_s=10.0, seed=9, thunder_count=3, thunder_level=0.9)
     without_thunder = generate_rain_bed(duration_s=10.0, seed=9, thunder_count=0)
     assert np.abs(with_thunder).max() >= np.abs(without_thunder).max()
+
+
+def test_rain_droplets_returns_expected_length():
+    n = int(2.0 * SAMPLE_RATE)
+    drops = _rain_droplets(n, seed=1)
+    assert drops.shape == (n,)
+    assert np.max(np.abs(drops)) <= 1.0
+
+
+def test_rain_droplets_is_deterministic_for_the_same_seed():
+    n = int(1.0 * SAMPLE_RATE)
+    a = _rain_droplets(n, seed=11)
+    b = _rain_droplets(n, seed=11)
+    assert np.array_equal(a, b)
+
+
+def test_rain_droplets_have_more_texture_than_flat_shaped_noise():
+    """Regression for the first real upload sounding like flat static/hiss:
+    the droplet scatter must have a higher crest factor (peak/RMS) than the
+    pure shaped-noise wash it replaced as the dominant layer -- a flat,
+    continuous noise bed has a low crest factor by definition, while real
+    rain's sparse, sharp droplet transients push it up."""
+    n = int(5.0 * SAMPLE_RATE)
+    drops = _rain_droplets(n, seed=3)
+    wash = _periodic_noise(n, seed=3)
+
+    def crest_factor(signal):
+        rms = np.sqrt(np.mean(signal**2))
+        return np.max(np.abs(signal)) / rms
+
+    assert crest_factor(drops) > crest_factor(wash)
+
+
+def test_generate_rain_bed_has_a_textured_not_flat_crest_factor():
+    """End-to-end regression: the full bed (wash + droplets) should read
+    as textured rain, not stationary static -- pin a crest factor floor
+    comfortably above the ~5.1 the pure-wash version measured at before
+    this fix."""
+    bed = generate_rain_bed(duration_s=5.0, seed=4, thunder_count=0)
+    mono = bed[:, 0]
+    rms = np.sqrt(np.mean(mono**2))
+    crest_factor = np.max(np.abs(mono)) / rms
+    assert crest_factor > 6.5
 
 
 def test_write_wav_round_trips_duration_and_channels(tmp_path):

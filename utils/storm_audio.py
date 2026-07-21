@@ -14,6 +14,21 @@ needed. Thunder is layered on top as short, contained bursts (not part of
 the periodic bed), positioned with margin so no burst's tail is cut by
 the loop seam.
 
+The first real upload made it obvious that a *pure* shaped-noise bed
+(the original version of `_periodic_noise`, still used underneath as a
+quiet base "wash") reads as flat static/hiss, not rain -- a continuous
+colored-noise signal has no time-domain texture, and texture is exactly
+what a listener uses to tell "rain" from "detuned radio." Real rain is a
+wash *plus* a dense scatter of short, sparse-but-audible droplet
+transients riding on top of it (higher crest factor / more "grain").
+`_rain_droplets` adds that: thousands of short filtered-noise grains
+placed at random offsets *inside* a fixed-length buffer, wrapping any
+grain that overhangs the far end back to sample 0 (`% n_samples`) so the
+grain-scatter buffer is exactly as loop-safe as the spectral wash, by the
+same "one fixed-length buffer repeated" logic -- no discontinuity is
+possible since nothing about the construction singles out sample 0 or
+sample n-1 as special.
+
 No API key, network call, or external asset required -- this works
 standalone. generate_storm_ambience.py renders this loop's WAV as the
 audio bed and mixes it under an optional quiet Jamendo track.
@@ -69,6 +84,66 @@ def _periodic_envelope(
     return np.clip(envelope, 1 - depth, 1 + depth)
 
 
+def _rain_droplets(
+    n_samples: int,
+    seed: int,
+    *,
+    density_per_s: float = 550.0,
+    grain_variants: int = 40,
+) -> np.ndarray:
+    """A dense scatter of short filtered-noise "droplet" grains, exactly
+    periodic over `n_samples` by construction: every grain is added into
+    a fixed-length buffer with its index wrapped `% n_samples`, so a grain
+    that overhangs the far end simply continues from sample 0 -- the
+    buffer never has a seam to begin with, whether or not any individual
+    grain straddles the wrap point.
+
+    This is what turns the flat wash from `_periodic_noise` into
+    something a listener actually recognizes as rain: individual drop
+    transients (short, high-passed, fast-decay clicks) at random
+    times/amplitudes, dense enough to read as continuous but with real
+    time-domain grain -- the opposite of stationary hiss.
+    """
+    rng = np.random.default_rng(seed + 5000)
+    duration_s = n_samples / SAMPLE_RATE
+    count = max(0, int(duration_s * density_per_s))
+    buffer = np.zeros(n_samples)
+    if count == 0:
+        return buffer
+
+    max_grain_len = max(2, int(0.014 * SAMPLE_RATE))
+    min_grain_len = max(1, int(0.003 * SAMPLE_RATE))
+    grains: list[np.ndarray] = []
+    for _ in range(grain_variants):
+        grain_len = int(rng.integers(min_grain_len, max_grain_len + 1))
+        noise = rng.uniform(-1, 1, size=grain_len)
+        # A crude high-pass (first difference) gives the noise a "ticky"
+        # character; a light low-pass afterward rounds off the harshest
+        # edge without erasing the transient -- the combination reads as
+        # a short droplet click, not a pop or a hiss.
+        highpassed = np.diff(noise, prepend=0.0)
+        grain = _one_pole_lowpass(highpassed, cutoff_hz=float(rng.uniform(2000.0, 6000.0)))
+        t = np.arange(grain_len) / SAMPLE_RATE
+        decay = np.exp(-t / rng.uniform(0.003, 0.012))
+        grain = grain * decay
+        peak = np.max(np.abs(grain)) or 1.0
+        grains.append(grain / peak)
+
+    starts = rng.integers(0, n_samples, size=count)
+    variants = rng.integers(0, grain_variants, size=count)
+    # Exponential amplitude spread: mostly quiet drops, occasional louder
+    # "splash" -- a real crest-factor spread, not a uniform blur.
+    amps = np.clip(rng.exponential(scale=0.35, size=count), 0.0, 1.4)
+
+    for start, variant_idx, amp in zip(starts, variants, amps):
+        grain = grains[variant_idx]
+        idx = (start + np.arange(grain.shape[0])) % n_samples
+        np.add.at(buffer, idx, grain * amp)
+
+    peak = np.max(np.abs(buffer)) or 1.0
+    return buffer / peak
+
+
 def _one_pole_lowpass(x: np.ndarray, cutoff_hz: float) -> np.ndarray:
     """Simple recursive low-pass -- cheap and enough to turn broadband
     noise into a dull, distant "rumble" for thunder; no scipy dependency
@@ -116,8 +191,16 @@ def generate_rain_bed(
     ends of the loop so a burst's tail is never cut by the wrap.
     """
     n_samples = int(duration_s * SAMPLE_RATE)
-    left = _periodic_noise(n_samples, seed) * _periodic_envelope(n_samples, seed)
-    right = _periodic_noise(n_samples, seed + 1000) * _periodic_envelope(n_samples, seed + 1000)
+    # Quiet, duller "wash" (a low body underneath) plus a dense droplet
+    # scatter (the actual textured "rain" character) -- a pure wash alone
+    # is what read as flat static/hiss on the first real upload; see this
+    # module's docstring.
+    wash_left = _periodic_noise(n_samples, seed, high_hz=2500.0) * _periodic_envelope(n_samples, seed)
+    wash_right = _periodic_noise(n_samples, seed + 1000, high_hz=2500.0) * _periodic_envelope(n_samples, seed + 1000)
+    drops_left = _rain_droplets(n_samples, seed + 4000)
+    drops_right = _rain_droplets(n_samples, seed + 4100)
+    left = wash_left * 0.35 + drops_left * 0.9
+    right = wash_right * 0.35 + drops_right * 0.9
     bed = np.stack([left, right], axis=1) * rain_level
 
     rng = np.random.default_rng(seed + 2000)
