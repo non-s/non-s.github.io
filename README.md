@@ -16,12 +16,17 @@ only -- published through the official YouTube Data API under the
   `upload_youtube.py`'s per-canonical-slot dedup, so a slot never
   publishes twice.
 - Duration: Shorts are **30-58 seconds**, randomized. The horizontal mix
-  is a fixed **1 hour**.
+  is a short **3-song** mix (duration = the sum of the 3 tracks), published
+  every 30 minutes.
 - Category: YouTube **Music** (`categoryId=10`) for both formats.
-- Content: a random Pixabay anime-style clip (`video_type=animation` --
-  girl studying, rain windows, cozy rooms, night cities, ...) looped
-  under Jamendo CC BY-licensed music, with a branded title/description/
-  thumbnail. Pexels was tried first but has no genuine illustrated
+- Content: each format (Shorts, mix, 24/7 live) loops one fixed, committed
+  visual (`_assets/video/pinned_*`) under Jamendo CC BY-licensed music,
+  with a branded title/description/thumbnail. The pinned visuals are
+  procedurally generated in-repo with ffmpeg (`gradients`/`geq`/`overlay`
+  -- an animated gradient, a soft glow, film grain and a vignette; see each
+  `pinned_*.json` sidecar), not sourced from a stock library -- earlier
+  revisions used Pixabay anime-style b-roll (`video_type=animation`) for
+  this; Pexels was tried before that but has no genuine illustrated
   content -- checked live, its "anime" search results are cosplay footage
   and mistagged live-action.
 
