@@ -42,17 +42,21 @@ log = logging.getLogger("generate_lofi_short")
 # Pixabay-synced BROLL_DIR pool this used to pick from occasionally let an
 # off-brand clip through despite the anime-style tag filter -- a stock 3D
 # "man with a stack of books" render published as "Late Night Library Lofi"
-# was the one that triggered this). It's now the channel's own branding
-# illustration rendered to video -- the same clip generate_lofi_mix.py and
-# scripts/live_stream_dynamic.py use, so every format shows the same
-# picture -- which removes tag-based curation from the loop entirely: only
-# the mood (title/tags/bgm pairing, still varied per video) and the music
-# actually change now.
+# was the one that triggered this). It's now an original branding
+# illustration rendered to video -- a rainy-window scene drawn specifically
+# for this format (chat, 2026-07-21), distinct from generate_lofi_mix.py's
+# and scripts/live_stream_dynamic.py's own so the three formats don't look
+# identical on a channel page -- which removes tag-based curation from the
+# loop entirely: only the mood (title/tags/bgm pairing, still varied per
+# video) and the music actually change now.
 PINNED_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_short_clip.mp4"
 # Used directly as the YouTube thumbnail too (instead of extracting +
 # re-branding a video frame) so the video and its cover image show the
-# exact same picture PINNED_BROLL_CLIP was rendered from.
-BRAND_THUMBNAIL_IMAGE = ROOT / "_assets" / "branding" / "thumbnail_1280x720.png"
+# exact same picture PINNED_BROLL_CLIP was rendered from. Its own scene
+# (rainy window, native 9:16 -- chat, 2026-07-21), distinct from the
+# live's and generate_lofi_mix.py's so the three formats don't all look
+# identical on a channel page.
+BRAND_THUMBNAIL_IMAGE = ROOT / "_assets" / "branding" / "shorts_scene_1080x1920.png"
 BGM_DIR = ROOT / "_assets" / "audio" / "bgm"
 VIDEOS_DIR = ROOT / "_videos"
 

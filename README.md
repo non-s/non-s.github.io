@@ -19,19 +19,35 @@ Data API under the **Amber Hours** brand.
 - Duration: Shorts are **30-58 seconds**, randomized. The horizontal mix
   is a short **3-song** mix (duration = the sum of the 3 tracks).
 - Category: YouTube **Music** (`categoryId=10`) for both formats.
-- Content: every format (Shorts, mix, 24/7 live) loops the exact same
-  fixed, committed visual (`_assets/video/pinned_*`) under Jamendo CC
-  BY-licensed music, with a branded title/description. That visual is
-  the channel's own branding illustration
-  (`_assets/branding/thumbnail_1280x720.png` -- night skyline, moon,
-  amber glow, drawn in `utils/thumbnail_branding.py`) rendered to video,
-  also used directly as each upload's YouTube thumbnail -- not sourced
-  from a stock library or generated art. Earlier revisions tried Pixabay
-  anime-style b-roll (`video_type=animation`), then an original
-  ffmpeg-procedural gradient background, before landing on the branding
-  illustration; Pexels was tried before Pixabay but has no genuine
-  illustrated content -- checked live, its "anime" search results are
-  cosplay footage and mistagged live-action.
+- Content: every format loops one fixed, committed visual
+  (`_assets/video/pinned_*`) under Jamendo CC BY-licensed music, with a
+  branded title/description -- and each format gets its **own** hand-coded
+  illustration (chat, 2026-07-21: an earlier revision reused one shared
+  image everywhere, which read as repetitive) so the channel page doesn't
+  show the same picture three times over:
+  - **Live**: `_assets/branding/thumbnail_1280x720.png` -- night skyline,
+    crescent moon, big amber glow, "AMBER HOURS" wordmark + "24/7 LIVE"
+    badge. Drawn in `utils/thumbnail_branding.py`.
+  - **Shorts**: `_assets/branding/shorts_scene_1080x1920.png` -- a rainy
+    window looking out over the skyline (native vertical composition,
+    rain streaks, moon, warm glow), a potted plant and a steaming mug on
+    the sill.
+  - **Mix**: `_assets/branding/mix_scene_1920x1080.png` -- a lofi
+    listening nook: turntable + a stack of vinyl + headphones on a desk,
+    wide skyline and moon behind.
+
+  All three are original Pillow-drawn vector illustrations -- the live's
+  in `utils/thumbnail_branding.py`, the Shorts/mix scenes in
+  `scripts/generate_brand_scenes.py` -- rendered to video and used
+  directly as each upload's YouTube thumbnail too, so the video and its
+  cover image always match -- not sourced from a stock library or AI
+  image generation (no such tool was available when these were made).
+  Earlier revisions tried Pixabay anime-style b-roll
+  (`video_type=animation`), then an original ffmpeg-procedural gradient
+  background, before landing on hand-drawn illustrations; Pexels was
+  tried before Pixabay but has no genuine illustrated content -- checked
+  live, its "anime" search results are cosplay footage and mistagged
+  live-action.
 
 ## Sub-niche: rainy-night anime lofi
 
@@ -49,7 +65,9 @@ module's docstring for the full reasoning.
 ```mermaid
 flowchart LR
     subgraph Fixed["Fixed assets (committed, not synced)"]
-        brand["_assets/branding/thumbnail_1280x720.png<br/>rendered to _assets/video/pinned_*<br/>(same picture for Shorts/mix/live + thumbnail)"]
+        brandShort["shorts_scene_1080x1920.png<br/>-> pinned_short_clip.mp4 + thumbnail"]
+        brandMix["mix_scene_1920x1080.png<br/>-> pinned_mix_clip.mp4 + thumbnail"]
+        brandLive["thumbnail_1280x720.png<br/>-> pinned_live_clips/*.mp4 + thumbnail"]
     end
 
     subgraph Sync["Media library (GitHub Actions cache)"]
@@ -73,11 +91,11 @@ flowchart LR
         rotation["token-rotation-check.yml<br/>monthly"]
     end
 
-    brand --> short
+    brandShort --> short
     bgm --> short
-    brand --> mix
+    brandMix --> mix
     bgm --> mix
-    brand --> live
+    brandLive --> live
     bgm --> live
     short --> upload
     mix --> upload

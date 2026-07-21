@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """Generate one short horizontal lofi mix video: a looping b-roll clip +
-exactly 3 Jamendo tracks back to back, no narration. Published every 30
-minutes as the companion to generate_lofi_short.py's vertical Shorts.
+exactly 3 Jamendo tracks back to back, no narration. Published every 3
+hours as the companion to generate_lofi_short.py's vertical Shorts.
 
 Companion to generate_lofi_short.py's vertical Shorts. Loops one fixed
-committed clip (PINNED_BROLL_CLIP) -- the channel's branding
-illustration (_assets/branding/thumbnail_1280x720.png, rendered to
-video), the same one generate_lofi_short.py and
-scripts/live_stream_dynamic.py use, so live/Shorts/mix all show the
-same picture -- and bakes the same seamless crossfade loop
+committed clip (PINNED_BROLL_CLIP) -- an original branding illustration
+rendered to video, a turntable-and-headphones listening-nook scene drawn
+specifically for this format (chat, 2026-07-21), distinct from the
+live's (_assets/branding/thumbnail_1280x720.png) and
+generate_lofi_short.py's own so the three formats don't look identical
+on a channel page -- and bakes the same seamless crossfade loop
 live_stream_dynamic.py uses so the clip has no visible jump cut at the
 wrap-around point.
 
@@ -51,8 +52,11 @@ log = logging.getLogger("generate_lofi_mix")
 PINNED_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_mix_clip.mp4"
 # Used directly as the YouTube thumbnail too (instead of extracting +
 # re-branding a video frame) so the video and its cover image show the
-# exact same picture PINNED_BROLL_CLIP was rendered from.
-BRAND_THUMBNAIL_IMAGE = ROOT / "_assets" / "branding" / "thumbnail_1280x720.png"
+# exact same picture PINNED_BROLL_CLIP was rendered from. Its own scene
+# (turntable + headphones listening nook, native 16:9 -- chat,
+# 2026-07-21), distinct from the live's and generate_lofi_short.py's so
+# the three formats don't all look identical on a channel page.
+BRAND_THUMBNAIL_IMAGE = ROOT / "_assets" / "branding" / "mix_scene_1920x1080.png"
 BGM_DIR = ROOT / "_assets" / "audio" / "bgm"
 VIDEOS_DIR = ROOT / "_videos"
 TEMP_DIR = ROOT / "_videos" / "temp_mix"
