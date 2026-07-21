@@ -15,6 +15,50 @@ def test_pick_scene_returns_a_known_hook_scene():
     assert scene.lower() in HOOK_BY_SCENE
 
 
+def test_build_metadata_uses_ai_copy_when_available(tmp_path, monkeypatch):
+    ai_result = {
+        "title": "Deep Sleep Rain & Thunder -- Amber Hours",
+        "description": "A calm rain session for deep sleep.",
+        "hashtags": ["rainsounds", "sleep"],
+    }
+    monkeypatch.setattr(storm, "generate_video_copy", lambda **kwargs: ai_result)
+    video_path = tmp_path / "storm-ambience-ai.mp4"
+
+    meta = storm._build_metadata("deep sleep", 3600.0, video_path, slug="s-ai", music_meta=None, broll_meta={})
+
+    assert meta["title"] == ai_result["title"]
+    assert "A calm rain session for deep sleep." in meta["description"]
+    assert "amber hours" in meta["tags"]
+    assert "rainsounds" in meta["tags"]
+
+
+def test_build_metadata_always_appends_the_synthesized_disclosure(tmp_path, monkeypatch):
+    """Regardless of whether the AI or the template wrote the description,
+    the "not a recording" disclosure must always be present -- it's a
+    factual/no-fake-claims guarantee, not something left to the AI's
+    discretion."""
+    ai_result = {
+        "title": "T -- Amber Hours",
+        "description": "Some AI text with no mention of synthesis.",
+        "hashtags": ["rain"],
+    }
+    monkeypatch.setattr(storm, "generate_video_copy", lambda **kwargs: ai_result)
+    video_path = tmp_path / "storm-ambience-disclosure.mp4"
+
+    meta = storm._build_metadata("focus", 3600.0, video_path, slug="s-disc", music_meta=None, broll_meta={})
+
+    assert "procedurally synthesized" in meta["description"]
+
+
+def test_build_metadata_falls_back_to_template_when_ai_returns_none(tmp_path, monkeypatch):
+    monkeypatch.setattr(storm, "generate_video_copy", lambda **kwargs: None)
+    video_path = tmp_path / "storm-ambience-fallback.mp4"
+
+    meta = storm._build_metadata("focus", 3600.0, video_path, slug="s-fb", music_meta=None, broll_meta={})
+
+    assert meta["title"] == storm.branded_title("focus", suffix="(1.0 Hours)")
+
+
 def test_build_metadata_uses_hours_label_for_long_videos(tmp_path):
     video_path = tmp_path / "storm-ambience-1.mp4"
 

@@ -105,6 +105,24 @@ zero subscribers.
   `docs/adr/0004-pinned-broll-per-format.md`'s "one hand-picked clip beats
   N auto-selected ones" decision, which real-world footage needs even
   more than illustrated b-roll did.
+- **Shorts**: `generate_storm_short.py` mirrors `generate_lofi_short.py`'s
+  shape -- the same animated scene rendered vertically (1080x1920,
+  `build_storm_short_frame()`), a shorter non-matching rain-bed loop, 30-58s
+  runtime. Published by `storm-shorts.yml` every 2 hours, gated by the same
+  `STORM_AMBIENCE_ENABLED` variable as the long-form videos.
+- **Live**: setting the repository variable `LIVE_CONTENT_PILLAR=storm`
+  switches the 24/7 relay (`scripts/live_stream_dynamic.py`) from the
+  lofi desk loop to the storm scene, mixing the synthesized rain bed (plus
+  the same optional Jamendo layer) instead of the lofi bgm playlist. Default
+  stays `lofi` so the live relay doesn't change pillar on its own.
+- **AI titling**: `utils/ai_titling.py` asks an AI provider (Gemini first,
+  if `GEMINI_API_KEY` is set, via `utils/ai_helper.py`'s existing
+  Cerebras/Groq/Mistral fallback chain) to write each storm video's title,
+  description and hashtags, given only the scene, duration and format --
+  never inventing facts, and always instructed to ignore any instruction
+  embedded in that input. Falls back to the template title/description
+  (same as the lofi pillar always uses) if no key is configured or the
+  call fails.
 - Opt-in via `STORM_AMBIENCE_ENABLED` (see SETUP.md), independent of
   `YOUTUBE_PUBLISHING_ENABLED` -- a second content pillar is its own
   decision from whether the first one is running.

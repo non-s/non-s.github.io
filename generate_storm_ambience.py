@@ -42,6 +42,7 @@ ROOT = Path(__file__).resolve().parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from utils.ai_titling import generate_video_copy  # noqa: E402
 from utils.storm_audio import generate_rain_bed, write_wav  # noqa: E402
 from utils.storm_branding import HOOK_BY_SCENE, branded_title, playlist_bucket_for_title  # noqa: E402
 
@@ -214,6 +215,28 @@ def _compose_storm(
     return output_path.exists() and output_path.stat().st_size > 0
 
 
+_ALWAYS_ON_DISCLOSURE = (
+    "The rain and thunder in this video are procedurally synthesized, not a looped recording "
+    "-- no sample to run out of, no license to clear."
+)
+
+
+def _music_credit_line(music_meta: dict | None) -> str:
+    if not music_meta:
+        return ""
+    track_name = str(music_meta.get("track_name") or "").strip()
+    if not track_name:
+        return ""
+    artist_name = str(music_meta.get("artist_name") or "").strip()
+    license_url = str(music_meta.get("license_ccurl") or "").strip()
+    credit = f'Soft music underneath: "{track_name}"'
+    if artist_name:
+        credit += f" by {artist_name}"
+    if license_url:
+        credit += f" ({license_url})"
+    return credit
+
+
 def _build_metadata(
     scene: str,
     duration_s: float,
@@ -225,8 +248,9 @@ def _build_metadata(
 ) -> dict:
     hours = duration_s / 3600
     duration_label = f"({hours:.1f} Hours)" if hours >= 1 else f"({max(1, round(duration_s / 60))} Min)"
-    title = branded_title(scene, suffix=duration_label)
-    bucket = playlist_bucket_for_title(title)
+    template_title = branded_title(scene, suffix=duration_label)
+    bucket = playlist_bucket_for_title(template_title)
+    music_credit = _music_credit_line(music_meta)
 
     description_lines = [
         f"{scene.lower()} rain sounds with distant thunder -- real ambience to help you sleep, "
@@ -234,30 +258,41 @@ def _build_metadata(
         "",
         f"\U0001f327️ Part of the {bucket} collection on Amber Hours.",
         "",
-        "\U0001f3a7 The rain and thunder in this video are procedurally synthesized, not a looped "
-        "recording -- no sample to run out of, no license to clear.",
+        f"\U0001f3a7 {_ALWAYS_ON_DISCLOSURE}",
     ]
-    if music_meta:
-        track_name = str(music_meta.get("track_name") or "").strip()
-        artist_name = str(music_meta.get("artist_name") or "").strip()
-        license_url = str(music_meta.get("license_ccurl") or "").strip()
-        if track_name:
-            credit = f'\n\U0001f3b5 Soft music underneath: "{track_name}"'
-            if artist_name:
-                credit += f" by {artist_name}"
-            if license_url:
-                credit += f" ({license_url})"
-            description_lines.append(credit)
+    if music_credit:
+        description_lines.append(f"\n\U0001f3b5 {music_credit}")
 
     tags = [scene.lower()] if scene.lower() not in {tag.lower() for tag in DEFAULT_TAGS} else []
     tags += DEFAULT_TAGS
+
+    title = template_title
+    description = "\n".join(description_lines).strip()
+
+    # Gemini takes over title/description/hashtags when GEMINI_API_KEY is
+    # configured (see utils/ai_titling.py) -- degrades to the template
+    # above on any missing key, provider failure, or bad response, so this
+    # pipeline still never *requires* an AI key.
+    ai_copy = generate_video_copy(
+        format_label="long-form rain & thunder ambience",
+        scene=scene,
+        duration_s=duration_s,
+        fallback_title=template_title,
+        credits_lines=[music_credit] if music_credit else None,
+    )
+    if ai_copy:
+        title = ai_copy["title"]
+        description = f"{ai_copy['description']}\n\n{_ALWAYS_ON_DISCLOSURE}".strip()
+        tags = ai_copy["hashtags"]
+        if "amber hours" not in tags:
+            tags.append("amber hours")
 
     now = datetime.now(timezone.utc)
     today = now.strftime("%Y-%m-%d")
 
     return {
         "title": title,
-        "description": "\n".join(description_lines).strip(),
+        "description": description,
         "category": CATEGORY,
         "series": f"{bucket} {SERIES_SUFFIX}",
         "tags": tags,

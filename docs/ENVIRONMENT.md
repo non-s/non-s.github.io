@@ -16,6 +16,15 @@ translation feature in `upload_youtube.py` degrades gracefully to
 English-only when no `MISTRAL_API_KEY`/`CEREBRAS_API_KEY`/
 `GEMINI_API_KEY`/`GROQ_API_KEY` is configured.
 
+The storm pillar (`generate_storm_ambience.py`, `generate_storm_short.py`)
+goes further: `utils/ai_titling.py` calls `utils/ai_helper.py`'s
+`ai_text(..., json_mode=True)` to write each video's title, description and
+hashtags. That routes to Gemini first when `GEMINI_API_KEY` is set (falling
+back through Cerebras/Groq/Mistral, whichever keys are configured); with no
+key configured at all, it falls back to the template title/description the
+same way the lofi pipeline always has. `GEMINI_API_KEY` is optional either
+way, never required.
+
 ## Feature Flag Registry
 
 | Flag | Default | Owner | Purpose | Rollback |
@@ -54,6 +63,7 @@ English-only when no `MISTRAL_API_KEY`/`CEREBRAS_API_KEY`/
 | `STORM_MIN_DURATION_MINUTES` | `45` | publishing | Minimum runtime (minutes) for a generated storm-ambience video. | Lower it for faster/smaller uploads. |
 | `STORM_MAX_DURATION_MINUTES` | `75` | publishing | Maximum runtime (minutes) for a generated storm-ambience video. | Lower it for faster/smaller uploads. |
 | `STORM_MUSIC_LAYER_PROBABILITY` | `0.35` | publishing | Chance (0.0-1.0) a storm-ambience video also layers in one quiet Jamendo track. | Set to 0 for pure rain/thunder ambience only. |
+| `LIVE_CONTENT_PILLAR` | `lofi` | publishing | Which pillar `scripts/live_stream_dynamic.py` broadcasts: `lofi` (anime desk loop) or `storm` (rain & thunder ambience). | Set to `lofi` to restore the original 24/7 live stream. |
 
 YouTube `videos.insert` calls use their own daily upload bucket. Keep
 `YOUTUBE_DAILY_UPLOAD_BUDGET=100` unless Google Cloud shows a different

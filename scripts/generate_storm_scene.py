@@ -110,6 +110,35 @@ def build_storm_frame(phase: float) -> Image.Image:
     return canvas.convert("RGB")
 
 
+W_SHORT, H_SHORT = 1080, 1920
+
+
+def build_storm_short_frame(phase: float) -> Image.Image:
+    """1080x1920 vertical -- native Shorts composition of the same storm
+    scene (own skyline/cloud/rain seeds so it doesn't look like a crop of
+    the horizontal scene)."""
+    w, h = W_SHORT, H_SHORT
+    canvas = vgrad(w, h, SKY_TOP, SKY_MID).convert("RGBA")
+
+    canvas = Image.alpha_composite(canvas, animated_stars(w, h, 70, seed=511, phase=phase, y_max_ratio=0.35, cycles=4))
+    canvas = Image.alpha_composite(canvas, storm_clouds(w, h, seed=29, base_y_ratio=0.3))
+    canvas = Image.alpha_composite(canvas, skyline(w, h, int(h * 0.84), seed=71, max_h_ratio=0.22, window_color=CREAM))
+    canvas = Image.alpha_composite(
+        canvas, animated_rain(w, h, 300, seed=31, phase=phase, angle_deg=22, cycles=_rain_cycles(h))
+    )
+    canvas = Image.alpha_composite(canvas, lightning_flash(w, h, phase, FLASH_PHASES))
+
+    wordmark(canvas, (int(w * 0.07), int(h * 0.035)), int(h * 0.032))
+    rounded_badge(
+        canvas,
+        (int(w * 0.07), int(h * 0.1), int(w * 0.55), int(h * 0.032)),
+        "RAIN & THUNDER",
+        fill=(60, 68, 90),
+    )
+
+    return canvas.convert("RGB")
+
+
 def _encode_loop(frames_dir: Path, out_path: Path) -> bool:
     cmd = [
         "ffmpeg",
@@ -137,13 +166,13 @@ def _encode_loop(frames_dir: Path, out_path: Path) -> bool:
     return out_path.exists() and out_path.stat().st_size > 0
 
 
-def render_loop(out_path: Path) -> bool:
+def render_loop(build_fn, out_path: Path) -> bool:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="storm_loop_") as tmp:
         tmp_dir = Path(tmp)
         for i in range(LOOP_FRAMES):
             phase = i / LOOP_FRAMES
-            build_storm_frame(phase).save(tmp_dir / f"frame_{i:04d}.png")
+            build_fn(phase).save(tmp_dir / f"frame_{i:04d}.png")
         ok = _encode_loop(tmp_dir, out_path)
     if ok:
         log.info("wrote %s (%d frames, %ss loop)", out_path, LOOP_FRAMES, LOOP_SECONDS)
@@ -152,17 +181,20 @@ def render_loop(out_path: Path) -> bool:
 
 def main() -> int:
     out_dir = ROOT / "_assets" / "branding"
-    thumb_path = out_dir / "storm_scene_1920x1080.png"
     out_dir.mkdir(parents=True, exist_ok=True)
-    build_storm_frame(0.0).save(thumb_path)
-    log.info("wrote %s", thumb_path)
+
+    build_storm_frame(0.0).save(out_dir / "storm_scene_1920x1080.png")
+    log.info("wrote %s", out_dir / "storm_scene_1920x1080.png")
+    build_storm_short_frame(0.0).save(out_dir / "storm_short_scene_1080x1920.png")
+    log.info("wrote %s", out_dir / "storm_short_scene_1080x1920.png")
 
     if shutil.which("ffmpeg") is None:
-        log.error("ffmpeg not found on PATH -- skipping pinned clip render (thumbnail was still written).")
+        log.error("ffmpeg not found on PATH -- skipping pinned clip renders (thumbnails were still written).")
         return 1
 
-    clip_path = ROOT / "_assets" / "video" / "pinned_storm_clip.mp4"
-    return 0 if render_loop(clip_path) else 1
+    ok = render_loop(build_storm_frame, ROOT / "_assets" / "video" / "pinned_storm_clip.mp4")
+    ok = render_loop(build_storm_short_frame, ROOT / "_assets" / "video" / "pinned_storm_short_clip.mp4") and ok
+    return 0 if ok else 1
 
 
 if __name__ == "__main__":

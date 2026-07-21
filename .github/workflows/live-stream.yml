@@ -81,6 +81,7 @@ jobs:
       - name: Run Live Stream
         env:
           YOUTUBE_STREAM_KEY: ${{ secrets.YOUTUBE_STREAM_KEY }}
+          LIVE_CONTENT_PILLAR: ${{ vars.LIVE_CONTENT_PILLAR || 'lofi' }}
         # We run this in a while loop so if the relay exits (ffmpeg crash,
         # unhandled error) it restarts instantly instead of ending the job
         # early. GitHub will forcibly kill the runner at 6 hours regardless,
