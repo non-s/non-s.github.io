@@ -2,7 +2,13 @@
 
 from __future__ import annotations
 
-from utils.lofi_branding import bgm_speeds_for_mood, branded_title, mood_energy, playlist_bucket_for_title
+from utils.lofi_branding import (
+    HOOK_BY_MOOD,
+    bgm_speeds_for_mood,
+    branded_title,
+    mood_energy,
+    playlist_bucket_for_title,
+)
 
 
 def test_branded_title_uses_known_mood_hook():
@@ -51,3 +57,24 @@ def test_mood_energy_is_lively_only_for_the_two_visually_busy_moods():
 def test_bgm_speeds_for_mood_excludes_high_energy_tracks_from_calm_moods():
     assert bgm_speeds_for_mood("rain window") == {"verylow", "low", "medium"}
     assert bgm_speeds_for_mood("night city") == {"medium", "high"}
+
+
+def test_no_two_moods_share_the_same_hook_text():
+    """Regression guard for the 2026-07-21 incident: "lofi girl" and "study
+    desk" both hooked to "Late Night Study Anime Lofi", so the two moods
+    were guaranteed to collide on title eventually -- which tripped
+    upload_youtube.py's collision dedup and published "... | Lofi girl" (a
+    competitor's brand name) as a visible tag suffix. Every mood's hook
+    must stay unique so _pick_mood() can never reproduce that."""
+    hooks = [hook for hook, _emoji in HOOK_BY_MOOD.values()]
+    assert len(hooks) == len(set(hooks))
+
+
+def test_no_mood_or_hook_names_a_third_party_channel_or_brand():
+    """ "lofi girl" specifically -- and any future mood -- must not put a
+    well-known competitor's name in a public title/tag/description."""
+    blocked_terms = ("lofi girl", "chilledcow", "chillhop")
+    for mood, (hook, _emoji) in HOOK_BY_MOOD.items():
+        haystack = f"{mood} {hook}".lower()
+        for term in blocked_terms:
+            assert term not in haystack, f"{mood!r} references {term!r}"

@@ -48,6 +48,8 @@ English-only when no `MISTRAL_API_KEY`/`CEREBRAS_API_KEY`/
 | `QUOTA_LEDGER_ENABLED` | `1` | operations | Write API quota ledger artifacts. | Set to 0. |
 | `YOUTUBE_DAILY_QUOTA_BUDGET` | `10000` | operations | Conservative daily YouTube quota unit budget. | Raise only after checking API quota. |
 | `YOUTUBE_DAILY_UPLOAD_BUDGET` | `100` | operations | Conservative daily YouTube upload-call budget. | Match the Google Cloud upload quota. |
+| `COMMUNITY_ENGAGEMENT_ENABLED` | `0` | community | Master switch for comment replies and the weekly Community post draft, independent of `YOUTUBE_PUBLISHING_ENABLED`. | Set to 0 to pause both. |
+| `COMMENT_REPLY_MAX_PER_RUN` | `15` | community | Cap on comment replies posted per `community-comment-replies.yml` run. | Lower it, or set `COMMUNITY_ENGAGEMENT_ENABLED` to 0. |
 
 YouTube `videos.insert` calls use their own daily upload bucket. Keep
 `YOUTUBE_DAILY_UPLOAD_BUDGET=100` unless Google Cloud shows a different

@@ -59,5 +59,7 @@ Optional:
 - `FLEX_SLOT_UTC`
 - `MIN_SLOT_PUBLISH_SCORE`
 - `MIN_QUEUE_OPPORTUNITY_SCORE`
+- `COMMUNITY_ENGAGEMENT_ENABLED` (comment replies + weekly Community post draft, see README)
+- `COMMENT_REPLY_MAX_PER_RUN` (default 15)
 
 See `docs/ENVIRONMENT.md` for the operating checklist.
