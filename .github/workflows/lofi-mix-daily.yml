@@ -1,7 +1,7 @@
-name: "Lofi Mix - hourly short mix"
+name: "Lofi Mix - short mix every 30 minutes"
 
-# Companion to youtube-bot.yml's vertical Shorts: once an hour, renders and
-# publishes one short horizontal lofi mix (fresh Pixabay clip looped +
+# Companion to youtube-bot.yml's vertical Shorts: every 30 minutes, renders
+# and publishes one short horizontal lofi mix (fresh Pixabay clip looped +
 # exactly 3 Jamendo tracks back to back, no narration). generate_lofi_mix.py
 # only ever encodes the short crossfade-baked clip once and loops the
 # already-encoded result to fill the playlist's length, so this stays well
@@ -14,10 +14,11 @@ name: "Lofi Mix - hourly short mix"
 # minutes instead (the same "check often, publish rarely" pattern
 # youtube-bot.yml already uses for Shorts) and the very first step
 # (`scripts/check_mix_publish_due.py`) is a cheap gate: every subsequent
-# step -- the actual sync/render/upload work -- only runs once 1h has
-# actually passed since the last committed `_videos/mix-*.done` marker, so
-# at most one mix still publishes per hour, and a single missed poll now
-# costs ~15 minutes of drift instead of losing the rest of the hour.
+# step -- the actual sync/render/upload work -- only runs once 30 minutes
+# has actually passed since the last committed `_videos/mix-*.done`
+# marker, so at most one mix still publishes per 30-minute window, and a
+# single missed poll now costs ~15 minutes of drift instead of losing the
+# rest of the window.
 on:
   schedule:
     - cron: "*/15 * * * *"
@@ -28,7 +29,7 @@ on:
         required: false
         default: "manual"
       force:
-        description: "Publish now even if 1h hasn't passed since the last mix"
+        description: "Publish now even if 30 minutes hasn't passed since the last mix"
         type: boolean
         required: false
         default: false
@@ -73,12 +74,12 @@ jobs:
         run: |
           git fetch origin main
           git checkout -B main origin/main
-      - name: "Verificar se ja passou 1h desde o ultimo mix"
+      - name: "Verificar se ja passaram 30min desde o ultimo mix"
         id: gate
         run: |
           if [ "${{ inputs.force }}" = "true" ]; then
             echo "due=true" >> "$GITHUB_OUTPUT"
-            echo "Forced by workflow_dispatch input; skipping the 1h check."
+            echo "Forced by workflow_dispatch input; skipping the 30min check."
           else
             result="$(python3 scripts/check_mix_publish_due.py --json)"
             echo "$result"

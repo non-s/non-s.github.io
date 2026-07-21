@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate one short horizontal lofi mix video: a looping b-roll clip +
-exactly 3 Jamendo tracks back to back, no narration. Published hourly
-as the companion to generate_lofi_short.py's vertical Shorts.
+exactly 3 Jamendo tracks back to back, no narration. Published every 30
+minutes as the companion to generate_lofi_short.py's vertical Shorts.
 
 Companion to generate_lofi_short.py's vertical Shorts. Loops one fixed
 committed clip (PINNED_BROLL_CLIP -- see its own comment; a different,
@@ -353,6 +353,7 @@ def _build_metadata(
 
     now = datetime.now(timezone.utc)
     today = now.strftime("%Y-%m-%d")
+    minute_bucket = 30 if now.minute >= 30 else 0
 
     return {
         "title": title,
@@ -374,15 +375,17 @@ def _build_metadata(
         "source_license": str(broll_meta.get("license") or ""),
         "source_license_evidence": str(broll_meta.get("license_evidence") or ""),
         "bgm_track_ids": [str(m.get("track_id") or "") for m in bgm_metas if m.get("track_id")],
-        # An hourly slot key -- distinct from the 10-minute canonical grid
-        # the Shorts publish_slot uses (a "mix-HH" prefix), so
-        # upload_youtube.py's per-slot idempotency check
-        # (duplicate_slot_uploaded) never mistakes this for -- or gets
-        # shadowed by -- a Short published in the same clock hour. Still
-        # naturally caught as a real duplicate if this job somehow runs
-        # twice in the same hour.
-        "publish_slot": f"mix-{now.hour:02d}",
-        "publish_slot_key": f"mix-{today}-{now.hour:02d}",
+        # A 30-minute-bucket slot key (mix-HH-00 or mix-HH-30) -- distinct
+        # from the 10-minute canonical grid the Shorts publish_slot uses
+        # (a "mix-HH" prefix would collide across both halves of the same
+        # hour), so upload_youtube.py's per-slot idempotency check
+        # (duplicate_slot_uploaded) allows one mix per 30-minute window
+        # and never mistakes this for -- or gets shadowed by -- a Short
+        # published in the same clock hour. Still naturally caught as a
+        # real duplicate if this job somehow runs twice in the same
+        # window.
+        "publish_slot": f"mix-{now.hour:02d}-{minute_bucket:02d}",
+        "publish_slot_key": f"mix-{today}-{now.hour:02d}-{minute_bucket:02d}",
     }
 
 
