@@ -37,3 +37,18 @@ Both generators (`generate_lofi_short.py`, `generate_lofi_mix.py`) loop this sin
 - `generate_lofi_short.py` — pinned clip usage in Shorts
 - `generate_lofi_mix.py` — pinned clip usage in mix
 - `scripts/live_stream_dynamic.py` — pinned clip rotation in 24/7 stream
+
+## Update (2026-07-21): storm pillar takes the opposite tradeoff, on purpose
+
+This ADR's decision still fully applies to the **lofi** pillar above.
+The **storm/rain ambience** pillar (`generate_storm_ambience.py`,
+`generate_storm_short.py`) deliberately does the opposite: it fetches a
+rotating pool of *real* Pixabay footage automatically
+(`scripts/sync_storm_broll.py`) and picks a random clip per video, only
+falling back to a single illustrated clip when that pool is empty. This
+was an explicit, informed call by the channel owner, not an oversight of
+this ADR's reasoning -- real rain/storm footage is the norm for this
+content niche, and the tag-relevance gate this ADR's "curation risk"
+concern argues for is still applied (`utils.broll.looks_storm_relevant`/
+`is_on_brand_storm_clip`, checked at both download and selection time),
+just automatically instead of by a human eyeballing every candidate.

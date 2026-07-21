@@ -34,6 +34,18 @@ def test_storm_clouds_draws_something():
     assert any(pixel[3] > 0 for pixel in layer.getdata())
 
 
+def test_build_storm_short_frame_returns_expected_size_and_mode():
+    frame = storm_scene.build_storm_short_frame(0.5)
+    assert frame.size == (storm_scene.W_SHORT, storm_scene.H_SHORT)
+    assert frame.mode == "RGB"
+
+
+def test_build_storm_short_frame_phase_0_equals_phase_1():
+    a = storm_scene.build_storm_short_frame(0.0)
+    b = storm_scene.build_storm_short_frame(1.0)
+    assert list(a.getdata()) == list(b.getdata())
+
+
 def test_encode_loop_builds_expected_ffmpeg_command(tmp_path, monkeypatch):
     calls = []
 

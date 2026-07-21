@@ -42,12 +42,24 @@ ROOT = Path(__file__).resolve().parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from utils.ai_titling import generate_video_copy  # noqa: E402
+from utils.broll import pick_storm_broll_file  # noqa: E402
 from utils.storm_audio import generate_rain_bed, write_wav  # noqa: E402
 from utils.storm_branding import HOOK_BY_SCENE, branded_title, playlist_bucket_for_title  # noqa: E402
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("generate_storm_ambience")
 
+# Real Pixabay rain/storm footage (scripts/sync_storm_broll.py) is tried
+# first -- picked at random from the synced pool the same way
+# generate_lofi_mix.py used to before ADR 0004, just without that ADR's
+# concern applying here: is_on_brand_storm_clip() already re-checks tag
+# relevance at selection time, same double-gate as the lofi pillar's
+# is_on_brand_broll_clip. Falls back to the illustrated pinned clip
+# whenever the pool is empty (no PIXABAY_API_KEY configured, or the sync
+# step hasn't run yet) so this pipeline never *requires* the real-footage
+# path to produce a video.
+STORM_BROLL_DIR = ROOT / "_assets" / "video" / "storm_broll"
 PINNED_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_storm_clip.mp4"
 # Used directly as the YouTube thumbnail too, same reasoning as
 # generate_lofi_mix.py's BRAND_THUMBNAIL_IMAGE.
@@ -65,6 +77,7 @@ SERIES_SUFFIX = "Ambience"
 YOUTUBE_CATEGORY_ID = "10"  # Music -- consistent with the rest of the channel's uploads
 
 RAIN_BED_SECONDS = 53.0  # deliberately not a round multiple of the video loop's 14s -- see module docstring
+LOOP_CROSSFADE_S = 1.0  # same value/technique as generate_lofi_mix.py's identical constant
 MIN_DURATION_MINUTES = float(os.environ.get("STORM_MIN_DURATION_MINUTES", "45"))
 MAX_DURATION_MINUTES = float(os.environ.get("STORM_MAX_DURATION_MINUTES", "75"))
 MUSIC_LAYER_PROBABILITY = float(os.environ.get("STORM_MUSIC_LAYER_PROBABILITY", "0.35"))
@@ -96,6 +109,69 @@ def _load_sidecar(media_path: Path) -> dict:
 
 def _pick_scene() -> str:
     return random.choice(list(HOOK_BY_SCENE.keys())).title()
+
+
+def _media_duration_s(path: Path) -> float:
+    cmd = ["ffprobe", "-v", "quiet", "-show_entries", "format=duration", "-of", "csv=p=0", str(path)]
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=15)
+        return float(result.stdout.strip())
+    except Exception:
+        return 0.0
+
+
+def _prepare_seamless_loop_clip(clip_path: Path) -> Path:
+    """Bake a short crossfade between the clip's tail and head once, so
+    looping it via -stream_loop has no visible hard cut/motion-snap at the
+    seam. The illustrated pinned clip is already a mathematically seamless
+    loop by construction (utils/brand_motion.py), so this is a no-op-ish
+    pass for it, but real Pixabay footage (scripts/sync_storm_broll.py)
+    has no such guarantee -- its motion (falling rain, drifting clouds)
+    would otherwise visibly jump backward every repeat over a 45-75 minute
+    video. Exact same technique as generate_lofi_mix.py's identical
+    helper (see its docstring for why the concat operand order matters)."""
+    out_path = TEMP_DIR / f"seamless_{clip_path.stem}.mp4"
+    if out_path.exists() and out_path.stat().st_size > 0:
+        return out_path
+
+    duration = _media_duration_s(clip_path)
+    fade = min(LOOP_CROSSFADE_S, duration / 6) if duration > 3 else 0.0
+    if fade <= 0:
+        return clip_path
+
+    filter_complex = (
+        f"[0:v]trim=0:{fade:.3f},setpts=PTS-STARTPTS[start];"
+        f"[0:v]trim={duration - fade:.3f}:{duration:.3f},setpts=PTS-STARTPTS[end];"
+        f"[0:v]trim={fade:.3f}:{duration - fade:.3f},setpts=PTS-STARTPTS[mid];"
+        f"[end][start]xfade=transition=fade:duration={fade:.3f}:offset=0[blend];"
+        "[mid][blend]concat=n=2:v=1:a=0[out]"
+    )
+    cmd = [
+        "ffmpeg",
+        "-y",
+        "-i",
+        str(clip_path),
+        "-filter_complex",
+        filter_complex,
+        "-map",
+        "[out]",
+        "-an",
+        "-pix_fmt",
+        "yuv420p",
+        "-preset",
+        "veryfast",
+        str(out_path),
+    ]
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+    except Exception as exc:
+        log.warning("Failed to bake seamless loop clip, using raw clip instead: %s", exc)
+        return clip_path
+    if result.returncode != 0 or not out_path.exists() or out_path.stat().st_size == 0:
+        log.warning("ffmpeg seamless-loop bake failed, using raw clip instead: %s", result.stderr[-500:])
+        return clip_path
+    log.info("Baked seamless loop clip from %s (crossfade=%.2fs).", clip_path.name, fade)
+    return out_path
 
 
 def _bake_filtered_segment(clip_path: Path) -> Path | None:
@@ -214,6 +290,28 @@ def _compose_storm(
     return output_path.exists() and output_path.stat().st_size > 0
 
 
+_ALWAYS_ON_DISCLOSURE = (
+    "The rain and thunder in this video are procedurally synthesized, not a looped recording "
+    "-- no sample to run out of, no license to clear."
+)
+
+
+def _music_credit_line(music_meta: dict | None) -> str:
+    if not music_meta:
+        return ""
+    track_name = str(music_meta.get("track_name") or "").strip()
+    if not track_name:
+        return ""
+    artist_name = str(music_meta.get("artist_name") or "").strip()
+    license_url = str(music_meta.get("license_ccurl") or "").strip()
+    credit = f'Soft music underneath: "{track_name}"'
+    if artist_name:
+        credit += f" by {artist_name}"
+    if license_url:
+        credit += f" ({license_url})"
+    return credit
+
+
 def _build_metadata(
     scene: str,
     duration_s: float,
@@ -225,8 +323,9 @@ def _build_metadata(
 ) -> dict:
     hours = duration_s / 3600
     duration_label = f"({hours:.1f} Hours)" if hours >= 1 else f"({max(1, round(duration_s / 60))} Min)"
-    title = branded_title(scene, suffix=duration_label)
-    bucket = playlist_bucket_for_title(title)
+    template_title = branded_title(scene, suffix=duration_label)
+    bucket = playlist_bucket_for_title(template_title)
+    music_credit = _music_credit_line(music_meta)
 
     description_lines = [
         f"{scene.lower()} rain sounds with distant thunder -- real ambience to help you sleep, "
@@ -234,30 +333,41 @@ def _build_metadata(
         "",
         f"\U0001f327️ Part of the {bucket} collection on Amber Hours.",
         "",
-        "\U0001f3a7 The rain and thunder in this video are procedurally synthesized, not a looped "
-        "recording -- no sample to run out of, no license to clear.",
+        f"\U0001f3a7 {_ALWAYS_ON_DISCLOSURE}",
     ]
-    if music_meta:
-        track_name = str(music_meta.get("track_name") or "").strip()
-        artist_name = str(music_meta.get("artist_name") or "").strip()
-        license_url = str(music_meta.get("license_ccurl") or "").strip()
-        if track_name:
-            credit = f'\n\U0001f3b5 Soft music underneath: "{track_name}"'
-            if artist_name:
-                credit += f" by {artist_name}"
-            if license_url:
-                credit += f" ({license_url})"
-            description_lines.append(credit)
+    if music_credit:
+        description_lines.append(f"\n\U0001f3b5 {music_credit}")
 
     tags = [scene.lower()] if scene.lower() not in {tag.lower() for tag in DEFAULT_TAGS} else []
     tags += DEFAULT_TAGS
+
+    title = template_title
+    description = "\n".join(description_lines).strip()
+
+    # Gemini takes over title/description/hashtags when GEMINI_API_KEY is
+    # configured (see utils/ai_titling.py) -- degrades to the template
+    # above on any missing key, provider failure, or bad response, so this
+    # pipeline still never *requires* an AI key.
+    ai_copy = generate_video_copy(
+        format_label="long-form rain & thunder ambience",
+        scene=scene,
+        duration_s=duration_s,
+        fallback_title=template_title,
+        credits_lines=[music_credit] if music_credit else None,
+    )
+    if ai_copy:
+        title = ai_copy["title"]
+        description = f"{ai_copy['description']}\n\n{_ALWAYS_ON_DISCLOSURE}".strip()
+        tags = ai_copy["hashtags"]
+        if "amber hours" not in tags:
+            tags.append("amber hours")
 
     now = datetime.now(timezone.utc)
     today = now.strftime("%Y-%m-%d")
 
     return {
         "title": title,
-        "description": "\n".join(description_lines).strip(),
+        "description": description,
         "category": CATEGORY,
         "series": f"{bucket} {SERIES_SUFFIX}",
         "tags": tags,
@@ -269,8 +379,8 @@ def _build_metadata(
         "packaging": {"pinned_comment": "What should the next storm sound like? \U0001f327️"},
         "pre_publish_audit": {"approved": True, "reason": "storm_ambience_no_claims_to_vet"},
         "source": str(broll_meta.get("source") or "branding"),
-        "source_clip_id": "",
-        "source_url": "",
+        "source_clip_id": str(broll_meta.get("pixabay_video_id") or ""),
+        "source_url": str(broll_meta.get("license_evidence") or ""),
         "source_license": str(broll_meta.get("license") or ""),
         "source_license_evidence": str(broll_meta.get("license_evidence") or ""),
         "bgm_track_ids": [str(music_meta.get("track_id"))] if music_meta and music_meta.get("track_id") else [],
@@ -286,18 +396,30 @@ def main() -> int:
     VIDEOS_DIR.mkdir(parents=True, exist_ok=True)
     TEMP_DIR.mkdir(parents=True, exist_ok=True)
 
-    if not PINNED_BROLL_CLIP.exists():
-        log.error("Pinned storm clip missing: %s -- run scripts/generate_storm_scene.py first.", PINNED_BROLL_CLIP)
+    broll_path = pick_storm_broll_file(STORM_BROLL_DIR)
+    if broll_path is not None:
+        log.info("Using real storm b-roll clip: %s", broll_path.name)
+    elif PINNED_BROLL_CLIP.exists():
+        log.info("No synced real storm b-roll available -- using the illustrated pinned clip.")
+        broll_path = PINNED_BROLL_CLIP
+    else:
+        log.error(
+            "No storm b-roll available: %s is empty and %s is missing -- run "
+            "scripts/sync_storm_broll.py or scripts/generate_storm_scene.py first.",
+            STORM_BROLL_DIR,
+            PINNED_BROLL_CLIP,
+        )
         return 1
 
-    broll_meta = _load_sidecar(PINNED_BROLL_CLIP)
+    broll_meta = _load_sidecar(broll_path)
     scene = _pick_scene()
     duration_s = random.uniform(MIN_DURATION_MINUTES * 60, MAX_DURATION_MINUTES * 60)
 
-    log.info("Stage 1/4: baking filtered segment from %s", PINNED_BROLL_CLIP.name)
-    filtered_segment = _bake_filtered_segment(PINNED_BROLL_CLIP)
+    log.info("Stage 1/4: baking filtered segment from %s", broll_path.name)
+    seamless_clip = _prepare_seamless_loop_clip(broll_path)
+    filtered_segment = _bake_filtered_segment(seamless_clip)
     if filtered_segment is None:
-        log.error("Could not prepare a loopable video segment from %s", PINNED_BROLL_CLIP.name)
+        log.error("Could not prepare a loopable video segment from %s", broll_path.name)
         return 1
 
     log.info("Stage 2/4: synthesizing rain/thunder bed")

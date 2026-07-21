@@ -78,6 +78,16 @@ PINNED_BROLL_DIR = ROOT / "_assets" / "video" / "pinned_live_clips"
 PINNED_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_live_clip.mp4"
 _PINNED_ROTATION_PERIOD_DAYS = 7
 
+# Second pillar (growth pass, 2026-07-21): real rain/thunder ambience
+# instead of/alongside the lofi loop -- see utils/storm_branding.py's
+# module docstring for the "why". Defaults to "lofi" so every existing
+# caller/test keeps today's exact behavior; set LIVE_CONTENT_PILLAR=storm
+# to run the 24/7 relay as rain/thunder ambience instead. Reuses
+# generate_storm_ambience.py's own pinned clip (scripts/generate_storm_scene.py)
+# rather than a separate live-only asset -- it's already a seamless loop.
+LIVE_CONTENT_PILLAR = os.environ.get("LIVE_CONTENT_PILLAR", "lofi").strip().lower()
+STORM_PINNED_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_storm_clip.mp4"
+
 TARGET_W = 1920
 TARGET_H = 1080
 TARGET_FPS = 30
@@ -88,7 +98,21 @@ LOOP_CROSSFADE_S = 1.0
 # The Jazz Hop Cafe all title around this same pattern) -- splitting them
 # instead of only using one combined phrase covers more real search
 # queries than the previous title did.
-BROADCAST_TITLE = "Rainy Night Anime Lofi — Amber Hours \U0001f319 [24/7 LIVE]"
+_LOFI_BROADCAST_TITLE = "Rainy Night Anime Lofi — Amber Hours \U0001f319 [24/7 LIVE]"
+_LOFI_BROADCAST_DESCRIPTION = (
+    "Non-stop lofi beats, looping live -- cozy visuals and chill music to relax, study or unwind to."
+)
+_STORM_BROADCAST_TITLE = "Rain & Thunder — Amber Hours \U0001f327️ [24/7 LIVE]"
+_STORM_BROADCAST_DESCRIPTION = (
+    "Non-stop real rain and thunder ambience, looping live -- to help you sleep, focus, or relax. "
+    "The rain and thunder are procedurally synthesized, not a looped recording."
+)
+if LIVE_CONTENT_PILLAR == "storm":
+    BROADCAST_TITLE = _STORM_BROADCAST_TITLE
+    BROADCAST_DESCRIPTION = _STORM_BROADCAST_DESCRIPTION
+else:
+    BROADCAST_TITLE = _LOFI_BROADCAST_TITLE
+    BROADCAST_DESCRIPTION = _LOFI_BROADCAST_DESCRIPTION
 
 # Every literal value BROADCAST_TITLE has ever held before the current one --
 # see _rebrand_if_stale()'s docstring for why this list (not "anything that
@@ -98,10 +122,6 @@ _LEGACY_BROADCAST_TITLES = {
     "\U0001f534 24/7 Lofi Beats to Relax/Study to | Live",
     "\U0001f534 24/7 Wild Nature & Animal Secrets | Ao Vivo | En Vivo",
 }
-
-BROADCAST_DESCRIPTION = (
-    "Non-stop lofi beats, looping live -- cozy visuals and chill music to relax, study or unwind to."
-)
 
 
 def _pinned_broll_candidates() -> list[Path]:
@@ -286,6 +306,10 @@ class DynamicStreamer:
             log.warning(f"Failed to rebrand stale broadcast: {e}")
 
     def _pick_broll_clip(self) -> Path | None:
+        if LIVE_CONTENT_PILLAR == "storm":
+            # No rotating pool for this pillar yet -- one pinned animated
+            # scene, same as generate_storm_ambience.py/generate_storm_short.py.
+            return STORM_PINNED_BROLL_CLIP if STORM_PINNED_BROLL_CLIP.exists() else None
         pinned = _select_pinned_broll_clip()
         if pinned:
             return pinned
@@ -295,6 +319,27 @@ class DynamicStreamer:
         # that only got onto disk despite lacking that evidence.
         clips = [p for p in BROLL_DIR.glob("pixabay_*.mp4") if is_on_brand_broll_clip(p)]
         return random.choice(clips) if clips else None
+
+    def _build_storm_audio_inputs(self) -> tuple[Path, Path | None]:
+        """Rain/thunder bed (always present) + an optional quiet bgm track
+        underneath -- same design as generate_storm_ambience.py's
+        MUSIC_LAYER_PROBABILITY, re-rolled on every relay restart."""
+        from utils.storm_audio import generate_rain_bed, write_wav
+
+        rain_bed_path = self.temp_dir / "storm_rain_bed.wav"
+        if not (rain_bed_path.exists() and rain_bed_path.stat().st_size > 0):
+            bed = generate_rain_bed(
+                duration_s=75.0, seed=random.randint(0, 1_000_000), thunder_count=random.randint(1, 3)
+            )
+            write_wav(bed, rain_bed_path)
+
+        music_path = None
+        probability = float(os.environ.get("STORM_MUSIC_LAYER_PROBABILITY", "0.35"))
+        if random.random() < probability:
+            tracks = list(BGM_DIR.glob("jamendo_*.mp3"))
+            if tracks:
+                music_path = random.choice(tracks)
+        return rain_bed_path, music_path
 
     def _build_bgm_playlist(self) -> Path | None:
         """Concatenate every locally available bgm track into one file, so
@@ -415,11 +460,9 @@ class DynamicStreamer:
         """
         clip_path = self._pick_broll_clip()
         if not clip_path:
-            log.error("No lofi b-roll clip found in %s to loop.", BROLL_DIR)
+            log.error("No %s b-roll clip found to loop.", LIVE_CONTENT_PILLAR)
             return None
         video_input = self._prepare_seamless_loop_clip(clip_path)
-
-        playlist_path = self._build_bgm_playlist()
 
         video_filter = (
             f"scale={TARGET_W}:{TARGET_H}:force_original_aspect_ratio=increase,"
@@ -432,11 +475,25 @@ class DynamicStreamer:
         )
 
         cmd = ["ffmpeg", "-y", "-re", "-stream_loop", "-1", "-i", str(video_input)]
-        if playlist_path:
-            cmd += ["-re", "-stream_loop", "-1", "-i", str(playlist_path), "-map", "0:v", "-map", "1:a"]
+        if LIVE_CONTENT_PILLAR == "storm":
+            rain_bed_path, music_path = self._build_storm_audio_inputs()
+            cmd += ["-re", "-stream_loop", "-1", "-i", str(rain_bed_path)]
+            if music_path:
+                cmd += ["-re", "-stream_loop", "-1", "-i", str(music_path)]
+                filter_complex = (
+                    "[1:a]volume=1.0[rain];[2:a]volume=0.16[music];"
+                    "[rain][music]amix=inputs=2:duration=first:dropout_transition=0[a]"
+                )
+                cmd += ["-filter_complex", filter_complex, "-map", "0:v", "-map", "[a]"]
+            else:
+                cmd += ["-map", "0:v", "-map", "1:a"]
         else:
-            log.warning("No bgm tracks found in %s; streaming this clip with silent audio.", BGM_DIR)
-            cmd += ["-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo", "-map", "0:v", "-map", "1:a"]
+            playlist_path = self._build_bgm_playlist()
+            if playlist_path:
+                cmd += ["-re", "-stream_loop", "-1", "-i", str(playlist_path), "-map", "0:v", "-map", "1:a"]
+            else:
+                log.warning("No bgm tracks found in %s; streaming this clip with silent audio.", BGM_DIR)
+                cmd += ["-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo", "-map", "0:v", "-map", "1:a"]
 
         if self.stream_key == "test":
             output = ["-f", "flv", "test_output.flv"]

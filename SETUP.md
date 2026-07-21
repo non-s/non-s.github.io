@@ -84,12 +84,29 @@ On Windows, you can instead run the **Build auth_youtube.exe (Windows)** workflo
    `COMMENT_REPLY_MAX_PER_RUN` (default 15).
 7. Optionally set the repository variable `STORM_AMBIENCE_ENABLED=1` to turn
    on the second content pillar (real rain/thunder ambience -- see
-   README.md's "Second pillar" section): `storm-ambience.yml` publishes on
-   its own twice-daily schedule, needs no new secret (reuses
-   `YOUTUBE_TOKEN`), and can run whether or not `YOUTUBE_PUBLISHING_ENABLED`
-   is on. Optionally tune `STORM_MIN_DURATION_MINUTES` /
-   `STORM_MAX_DURATION_MINUTES` (default 45-75) and
-   `STORM_MUSIC_LAYER_PROBABILITY` (default 0.35).
+   README.md's "Second pillar" section): `storm-ambience.yml` publishes
+   long-form videos on its own twice-daily schedule and `storm-shorts.yml`
+   publishes vertical Shorts every 2 hours, both gated by the same
+   variable. Neither needs a new secret -- both reuse `YOUTUBE_TOKEN`,
+   and both now also reuse the `PIXABAY_API_KEY` already required in step
+   1 to automatically fetch real rain/storm b-roll footage
+   (`scripts/sync_storm_broll.py`; falls back to the illustrated pinned
+   clip if that key is missing or the sync hasn't run yet -- see
+   README.md's "Second pillar" section). Both workflows can run whether
+   or not `YOUTUBE_PUBLISHING_ENABLED` is on. Optionally tune
+   `STORM_MIN_DURATION_MINUTES` / `STORM_MAX_DURATION_MINUTES` (default
+   45-75) and `STORM_MUSIC_LAYER_PROBABILITY` (default 0.35).
+8. Optionally set `GEMINI_API_KEY` (or `CEREBRAS_API_KEY`/`GROQ_API_KEY`/
+   `MISTRAL_API_KEY`) to let `utils/ai_titling.py` write each storm-pillar
+   video's title, description and hashtags with AI instead of the template
+   text -- Gemini is tried first when its key is set. With no key
+   configured the storm pillar still works, just with template copy.
+9. To switch the 24/7 live relay from the original lofi loop to the rain
+   & thunder pillar, set the repository variable
+   `LIVE_CONTENT_PILLAR=storm` (`live-stream.yml` reads it and passes it
+   to `scripts/live_stream_dynamic.py`; the watchdog just relaunches
+   `live-stream.yml`, so no separate change is needed there). Leave it
+   unset (or `lofi`) to keep the original anime desk loop live.
 
 See [RUNBOOK.md](RUNBOOK.md) for what each reliability workflow does and
 what to do when one of them alerts.

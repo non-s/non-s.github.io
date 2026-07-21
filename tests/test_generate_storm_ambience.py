@@ -15,6 +15,50 @@ def test_pick_scene_returns_a_known_hook_scene():
     assert scene.lower() in HOOK_BY_SCENE
 
 
+def test_build_metadata_uses_ai_copy_when_available(tmp_path, monkeypatch):
+    ai_result = {
+        "title": "Deep Sleep Rain & Thunder -- Amber Hours",
+        "description": "A calm rain session for deep sleep.",
+        "hashtags": ["rainsounds", "sleep"],
+    }
+    monkeypatch.setattr(storm, "generate_video_copy", lambda **kwargs: ai_result)
+    video_path = tmp_path / "storm-ambience-ai.mp4"
+
+    meta = storm._build_metadata("deep sleep", 3600.0, video_path, slug="s-ai", music_meta=None, broll_meta={})
+
+    assert meta["title"] == ai_result["title"]
+    assert "A calm rain session for deep sleep." in meta["description"]
+    assert "amber hours" in meta["tags"]
+    assert "rainsounds" in meta["tags"]
+
+
+def test_build_metadata_always_appends_the_synthesized_disclosure(tmp_path, monkeypatch):
+    """Regardless of whether the AI or the template wrote the description,
+    the "not a recording" disclosure must always be present -- it's a
+    factual/no-fake-claims guarantee, not something left to the AI's
+    discretion."""
+    ai_result = {
+        "title": "T -- Amber Hours",
+        "description": "Some AI text with no mention of synthesis.",
+        "hashtags": ["rain"],
+    }
+    monkeypatch.setattr(storm, "generate_video_copy", lambda **kwargs: ai_result)
+    video_path = tmp_path / "storm-ambience-disclosure.mp4"
+
+    meta = storm._build_metadata("focus", 3600.0, video_path, slug="s-disc", music_meta=None, broll_meta={})
+
+    assert "procedurally synthesized" in meta["description"]
+
+
+def test_build_metadata_falls_back_to_template_when_ai_returns_none(tmp_path, monkeypatch):
+    monkeypatch.setattr(storm, "generate_video_copy", lambda **kwargs: None)
+    video_path = tmp_path / "storm-ambience-fallback.mp4"
+
+    meta = storm._build_metadata("focus", 3600.0, video_path, slug="s-fb", music_meta=None, broll_meta={})
+
+    assert meta["title"] == storm.branded_title("focus", suffix="(1.0 Hours)")
+
+
 def test_build_metadata_uses_hours_label_for_long_videos(tmp_path):
     video_path = tmp_path / "storm-ambience-1.mp4"
 
@@ -75,6 +119,54 @@ def test_build_metadata_publish_slot_uses_the_storm_prefix(tmp_path):
 
     assert meta["publish_slot"].startswith("storm-")
     assert meta["publish_slot_key"].startswith("storm-")
+
+
+def test_build_metadata_carries_real_broll_source_fields(tmp_path):
+    video_path = tmp_path / "storm-ambience-6.mp4"
+    broll_meta = {
+        "source": "pixabay",
+        "pixabay_video_id": "555",
+        "license": "Pixabay Content License (free for commercial use, no attribution required)",
+        "license_evidence": "https://pixabay.com/videos/id-555",
+    }
+
+    meta = storm._build_metadata("focus", 3600.0, video_path, slug="s-5", music_meta=None, broll_meta=broll_meta)
+
+    assert meta["source"] == "pixabay"
+    assert meta["source_clip_id"] == "555"
+    assert meta["source_url"] == "https://pixabay.com/videos/id-555"
+    assert meta["source_license"] == broll_meta["license"]
+
+
+def test_prepare_seamless_loop_clip_returns_raw_clip_for_short_source(tmp_path, monkeypatch):
+    monkeypatch.setattr(storm, "_media_duration_s", lambda path: 0.0)
+    clip_path = tmp_path / "pixabay_1.mp4"
+
+    out = storm._prepare_seamless_loop_clip(clip_path)
+
+    assert out == clip_path
+
+
+def test_prepare_seamless_loop_clip_bakes_a_crossfade_for_a_longer_clip(tmp_path, monkeypatch):
+    monkeypatch.setattr(storm, "TEMP_DIR", tmp_path)
+    monkeypatch.setattr(storm, "_media_duration_s", lambda path: 12.0)
+    calls = []
+
+    def fake_run(cmd, **kwargs):
+        calls.append(cmd)
+        Path(cmd[-1]).write_bytes(b"fake-mp4")
+        result = MagicMock()
+        result.returncode = 0
+        result.stderr = ""
+        return result
+
+    monkeypatch.setattr(storm.subprocess, "run", fake_run)
+    clip_path = tmp_path / "pixabay_1.mp4"
+
+    out = storm._prepare_seamless_loop_clip(clip_path)
+
+    assert out == tmp_path / "seamless_pixabay_1.mp4"
+    assert "xfade" in calls[-1][calls[-1].index("-filter_complex") + 1]
 
 
 def test_bake_filtered_segment_builds_expected_ffmpeg_command(tmp_path, monkeypatch):

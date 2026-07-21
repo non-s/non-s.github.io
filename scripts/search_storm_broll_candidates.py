@@ -31,28 +31,16 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from utils.broll import fetch_pixabay  # noqa: E402
+from utils.broll import fetch_pixabay, looks_storm_relevant  # noqa: E402,F401
 
-# Loose relevance check, same spirit as utils.broll.looks_anime_styled but
-# for real-footage storm relevance instead of an illustrated style --
-# purely advisory here (printed as a hint), never a filter: a human is
-# looking at every candidate's download_url before anything gets pinned.
-_STORM_SIGNALS = (
-    "rain",
-    "storm",
-    "thunder",
-    "lightning",
-    "cloud",
-    "night",
-    "window",
-    "downpour",
-    "monsoon",
-)
-
-
-def looks_storm_relevant(tags: str) -> bool:
-    tags = (tags or "").lower()
-    return any(signal in tags for signal in _STORM_SIGNALS)
+# looks_storm_relevant now lives in utils/broll.py so
+# scripts/sync_storm_broll.py's download-time gate and
+# generate_storm_ambience.py/generate_storm_short.py's selection-time gate
+# can share the exact same check this search script's hint uses -- see
+# utils/broll.py's is_on_brand_storm_clip docstring for why that second
+# gate matters. Re-exported here (the `noqa: F401` above) so this stays a
+# purely advisory, non-filtering hint in *this* script: a human is looking
+# at every candidate's download_url before anything gets pinned by hand.
 
 
 DEFAULT_QUERIES = (

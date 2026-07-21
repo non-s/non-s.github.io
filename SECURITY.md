@@ -61,5 +61,11 @@ Optional:
 - `MIN_QUEUE_OPPORTUNITY_SCORE`
 - `COMMUNITY_ENGAGEMENT_ENABLED` (comment replies + weekly Community post draft, see README)
 - `COMMENT_REPLY_MAX_PER_RUN` (default 15)
+- `GEMINI_API_KEY` / `CEREBRAS_API_KEY` / `GROQ_API_KEY` / `MISTRAL_API_KEY`
+  (AI text providers -- optional translation, and optional AI-written
+  titles/descriptions/hashtags for the storm pillar via
+  `utils/ai_titling.py`; treated as provider-key material per "What we do"
+  above)
+- `LIVE_CONTENT_PILLAR` (`lofi` or `storm`, see README)
 
 See `docs/ENVIRONMENT.md` for the operating checklist.
