@@ -26,12 +26,19 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from utils.ai_titling import generate_video_copy  # noqa: E402
+from utils.broll import pick_storm_broll_file  # noqa: E402
 from utils.storm_audio import generate_rain_bed, write_wav  # noqa: E402
 from utils.storm_branding import HOOK_BY_SCENE, branded_title, playlist_bucket_for_title  # noqa: E402
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("generate_storm_short")
 
+# Same real-footage-first, illustrated-fallback selection as
+# generate_storm_ambience.py -- see its STORM_BROLL_DIR comment. The pool
+# is shared between both formats: a real horizontal Pixabay clip gets
+# center-cropped to vertical by the same scale/crop filter that already
+# handles the illustrated vertical scene.
+STORM_BROLL_DIR = ROOT / "_assets" / "video" / "storm_broll"
 PINNED_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_storm_short_clip.mp4"
 BRAND_THUMBNAIL_IMAGE = ROOT / "_assets" / "branding" / "storm_short_scene_1080x1920.png"
 VIDEOS_DIR = ROOT / "_videos"
@@ -42,6 +49,7 @@ TARGET_H = 1920
 MIN_DURATION_S = 30.0
 MAX_DURATION_S = 58.0
 FADE_S = 1.5
+LOOP_CROSSFADE_S = 1.0  # same value/technique as generate_storm_ambience.py's identical constant
 RAIN_BED_SECONDS = 37.0  # short + non-matching period vs. the 14s video loop and the ambience pillar's 53s bed
 
 CATEGORY = "storm_ambience"
@@ -58,8 +66,76 @@ DEFAULT_TAGS = [
 ]
 
 
+def _load_sidecar(media_path: Path) -> dict:
+    meta_path = media_path.with_suffix(".json")
+    try:
+        data = json.loads(meta_path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
 def _pick_scene() -> str:
     return random.choice(list(HOOK_BY_SCENE.keys())).title()
+
+
+def _media_duration_s(path: Path) -> float:
+    cmd = ["ffprobe", "-v", "quiet", "-show_entries", "format=duration", "-of", "csv=p=0", str(path)]
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=15)
+        return float(result.stdout.strip())
+    except Exception:
+        return 0.0
+
+
+def _prepare_seamless_loop_clip(clip_path: Path) -> Path:
+    """Same technique as generate_storm_ambience.py's identical helper: a
+    short crossfade between the clip's tail and head so -stream_loop has
+    no visible hard cut/motion-snap. The illustrated pinned Short clip is
+    already seamless by construction; real Pixabay footage (usually
+    shorter than a 30-58s Short, so it loops at least once) is not."""
+    out_path = TEMP_DIR / f"seamless_{clip_path.stem}.mp4"
+    if out_path.exists() and out_path.stat().st_size > 0:
+        return out_path
+
+    duration = _media_duration_s(clip_path)
+    fade = min(LOOP_CROSSFADE_S, duration / 6) if duration > 3 else 0.0
+    if fade <= 0:
+        return clip_path
+
+    filter_complex = (
+        f"[0:v]trim=0:{fade:.3f},setpts=PTS-STARTPTS[start];"
+        f"[0:v]trim={duration - fade:.3f}:{duration:.3f},setpts=PTS-STARTPTS[end];"
+        f"[0:v]trim={fade:.3f}:{duration - fade:.3f},setpts=PTS-STARTPTS[mid];"
+        f"[end][start]xfade=transition=fade:duration={fade:.3f}:offset=0[blend];"
+        "[mid][blend]concat=n=2:v=1:a=0[out]"
+    )
+    cmd = [
+        "ffmpeg",
+        "-y",
+        "-i",
+        str(clip_path),
+        "-filter_complex",
+        filter_complex,
+        "-map",
+        "[out]",
+        "-an",
+        "-pix_fmt",
+        "yuv420p",
+        "-preset",
+        "veryfast",
+        str(out_path),
+    ]
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+    except Exception as exc:
+        log.warning("Failed to bake seamless loop clip, using raw clip instead: %s", exc)
+        return clip_path
+    if result.returncode != 0 or not out_path.exists() or out_path.stat().st_size == 0:
+        log.warning("ffmpeg seamless-loop bake failed, using raw clip instead: %s", result.stderr[-500:])
+        return clip_path
+    log.info("Baked seamless loop clip from %s (crossfade=%.2fs).", clip_path.name, fade)
+    return out_path
 
 
 def _prepare_rain_bed(seed: int) -> Path:
@@ -127,7 +203,7 @@ def _compose_short(broll_path: Path, rain_bed_path: Path, output_path: Path, dur
     return output_path.exists() and output_path.stat().st_size > 0
 
 
-def _build_metadata(scene: str, duration_s: float, video_path: Path, slug: str) -> dict:
+def _build_metadata(scene: str, duration_s: float, video_path: Path, slug: str, *, broll_meta: dict) -> dict:
     template_title = branded_title(scene)
     bucket = playlist_bucket_for_title(template_title)
 
@@ -175,11 +251,11 @@ def _build_metadata(scene: str, duration_s: float, video_path: Path, slug: str) 
         "story_id": slug,
         "packaging": {"pinned_comment": "What should the next rain Short sound like? \U0001f327️"},
         "pre_publish_audit": {"approved": True, "reason": "storm_ambience_no_claims_to_vet"},
-        "source": "branding",
-        "source_clip_id": "",
-        "source_url": "",
-        "source_license": "",
-        "source_license_evidence": "",
+        "source": str(broll_meta.get("source") or "branding"),
+        "source_clip_id": str(broll_meta.get("pixabay_video_id") or ""),
+        "source_url": str(broll_meta.get("license_evidence") or ""),
+        "source_license": str(broll_meta.get("license") or ""),
+        "source_license_evidence": str(broll_meta.get("license_evidence") or ""),
         "bgm_track_id": "",
         "bgm_license_ccurl": "",
     }
@@ -189,25 +265,36 @@ def main() -> int:
     VIDEOS_DIR.mkdir(parents=True, exist_ok=True)
     TEMP_DIR.mkdir(parents=True, exist_ok=True)
 
-    if not PINNED_BROLL_CLIP.exists():
+    broll_path = pick_storm_broll_file(STORM_BROLL_DIR)
+    if broll_path is not None:
+        log.info("Using real storm b-roll clip: %s", broll_path.name)
+    elif PINNED_BROLL_CLIP.exists():
+        log.info("No synced real storm b-roll available -- using the illustrated pinned clip.")
+        broll_path = PINNED_BROLL_CLIP
+    else:
         log.error(
-            "Pinned storm Short clip missing: %s -- run scripts/generate_storm_scene.py first.", PINNED_BROLL_CLIP
+            "No storm b-roll available: %s is empty and %s is missing -- run "
+            "scripts/sync_storm_broll.py or scripts/generate_storm_scene.py first.",
+            STORM_BROLL_DIR,
+            PINNED_BROLL_CLIP,
         )
         return 1
 
+    broll_meta = _load_sidecar(broll_path)
     scene = _pick_scene()
     duration_s = round(random.uniform(MIN_DURATION_S, MAX_DURATION_S), 1)
     rain_bed_path = _prepare_rain_bed(seed=random.randint(0, 1_000_000))
+    seamless_clip = _prepare_seamless_loop_clip(broll_path)
 
     slug = f"stormshort-{int(time.time())}-{random.randint(1000, 9999)}"
     video_path = VIDEOS_DIR / f"storm-{slug}.mp4"
     meta_path = video_path.with_suffix(".json")
 
-    if not _compose_short(PINNED_BROLL_CLIP, rain_bed_path, video_path, duration_s):
+    if not _compose_short(seamless_clip, rain_bed_path, video_path, duration_s):
         log.error("Storm Short composition failed for %s", slug)
         return 1
 
-    metadata = _build_metadata(scene, duration_s, video_path, slug)
+    metadata = _build_metadata(scene, duration_s, video_path, slug, broll_meta=broll_meta)
     if BRAND_THUMBNAIL_IMAGE.exists():
         metadata["thumbnail"] = str(BRAND_THUMBNAIL_IMAGE)
     else:

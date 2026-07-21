@@ -87,11 +87,15 @@ On Windows, you can instead run the **Build auth_youtube.exe (Windows)** workflo
    README.md's "Second pillar" section): `storm-ambience.yml` publishes
    long-form videos on its own twice-daily schedule and `storm-shorts.yml`
    publishes vertical Shorts every 2 hours, both gated by the same
-   variable. Neither needs a new secret (both reuse `YOUTUBE_TOKEN`), and
-   both can run whether or not `YOUTUBE_PUBLISHING_ENABLED` is on.
-   Optionally tune `STORM_MIN_DURATION_MINUTES` /
-   `STORM_MAX_DURATION_MINUTES` (default 45-75) and
-   `STORM_MUSIC_LAYER_PROBABILITY` (default 0.35).
+   variable. Neither needs a new secret -- both reuse `YOUTUBE_TOKEN`,
+   and both now also reuse the `PIXABAY_API_KEY` already required in step
+   1 to automatically fetch real rain/storm b-roll footage
+   (`scripts/sync_storm_broll.py`; falls back to the illustrated pinned
+   clip if that key is missing or the sync hasn't run yet -- see
+   README.md's "Second pillar" section). Both workflows can run whether
+   or not `YOUTUBE_PUBLISHING_ENABLED` is on. Optionally tune
+   `STORM_MIN_DURATION_MINUTES` / `STORM_MAX_DURATION_MINUTES` (default
+   45-75) and `STORM_MUSIC_LAYER_PROBABILITY` (default 0.35).
 8. Optionally set `GEMINI_API_KEY` (or `CEREBRAS_API_KEY`/`GROQ_API_KEY`/
    `MISTRAL_API_KEY`) to let `utils/ai_titling.py` write each storm-pillar
    video's title, description and hashtags with AI instead of the template

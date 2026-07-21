@@ -18,7 +18,7 @@ def test_pick_scene_returns_a_known_hook_scene():
 def test_build_metadata_uses_template_title_by_default(tmp_path):
     video_path = tmp_path / "storm-stormshort-1.mp4"
 
-    meta = storm_short._build_metadata("deep sleep", 45.0, video_path, slug="stormshort-1700000000-1234")
+    meta = storm_short._build_metadata("deep sleep", 45.0, video_path, slug="stormshort-1700000000-1234", broll_meta={})
 
     assert meta["title"] == storm_short.branded_title("deep sleep")
     assert meta["category"] == "storm_ambience"
@@ -28,9 +28,26 @@ def test_build_metadata_uses_template_title_by_default(tmp_path):
 def test_build_metadata_includes_shorts_hashtag(tmp_path):
     video_path = tmp_path / "storm-stormshort-2.mp4"
 
-    meta = storm_short._build_metadata("focus", 45.0, video_path, slug="s-1")
+    meta = storm_short._build_metadata("focus", 45.0, video_path, slug="s-1", broll_meta={})
 
     assert "#Shorts" in meta["description"]
+
+
+def test_build_metadata_carries_real_broll_source_fields(tmp_path):
+    video_path = tmp_path / "storm-stormshort-real.mp4"
+    broll_meta = {
+        "source": "pixabay",
+        "pixabay_video_id": "999",
+        "license": "Pixabay Content License (free for commercial use, no attribution required)",
+        "license_evidence": "https://pixabay.com/videos/id-999",
+    }
+
+    meta = storm_short._build_metadata("focus", 45.0, video_path, slug="s-real", broll_meta=broll_meta)
+
+    assert meta["source"] == "pixabay"
+    assert meta["source_clip_id"] == "999"
+    assert meta["source_url"] == "https://pixabay.com/videos/id-999"
+    assert meta["source_license"] == broll_meta["license"]
 
 
 def test_build_metadata_uses_ai_copy_when_available(tmp_path, monkeypatch):
@@ -42,7 +59,7 @@ def test_build_metadata_uses_ai_copy_when_available(tmp_path, monkeypatch):
     monkeypatch.setattr(storm_short, "generate_video_copy", lambda **kwargs: ai_result)
     video_path = tmp_path / "storm-stormshort-3.mp4"
 
-    meta = storm_short._build_metadata("focus", 45.0, video_path, slug="s-2")
+    meta = storm_short._build_metadata("focus", 45.0, video_path, slug="s-2", broll_meta={})
 
     assert meta["title"] == ai_result["title"]
     assert "A short rain moment to reset." in meta["description"]
@@ -54,7 +71,7 @@ def test_build_metadata_falls_back_to_template_when_ai_returns_none(tmp_path, mo
     monkeypatch.setattr(storm_short, "generate_video_copy", lambda **kwargs: None)
     video_path = tmp_path / "storm-stormshort-4.mp4"
 
-    meta = storm_short._build_metadata("focus", 45.0, video_path, slug="s-3")
+    meta = storm_short._build_metadata("focus", 45.0, video_path, slug="s-3", broll_meta={})
 
     assert meta["title"] == storm_short.branded_title("focus")
 
@@ -107,3 +124,48 @@ def test_compose_short_returns_false_on_ffmpeg_failure(tmp_path, monkeypatch):
 
     ok = storm_short._compose_short(tmp_path / "b.mp4", tmp_path / "r.wav", tmp_path / "out.mp4", 30.0)
     assert ok is False
+
+
+def test_load_sidecar_returns_empty_dict_when_missing(tmp_path):
+    assert storm_short._load_sidecar(tmp_path / "missing.mp4") == {}
+
+
+def test_load_sidecar_reads_matching_json(tmp_path):
+    video_path = tmp_path / "clip.mp4"
+    video_path.with_suffix(".json").write_text('{"source": "pixabay"}', encoding="utf-8")
+
+    assert storm_short._load_sidecar(video_path) == {"source": "pixabay"}
+
+
+def test_prepare_seamless_loop_clip_returns_raw_clip_for_short_source(tmp_path, monkeypatch):
+    """duration <= 3s (the ffprobe-failure default of 0.0 included) skips
+    the crossfade bake entirely -- there isn't enough clip to trim a fade
+    out of, so the raw clip is used as-is."""
+    monkeypatch.setattr(storm_short, "_media_duration_s", lambda path: 0.0)
+    clip_path = tmp_path / "pixabay_1.mp4"
+
+    out = storm_short._prepare_seamless_loop_clip(clip_path)
+
+    assert out == clip_path
+
+
+def test_prepare_seamless_loop_clip_bakes_a_crossfade_for_a_longer_clip(tmp_path, monkeypatch):
+    monkeypatch.setattr(storm_short, "TEMP_DIR", tmp_path)
+    monkeypatch.setattr(storm_short, "_media_duration_s", lambda path: 12.0)
+    calls = []
+
+    def fake_run(cmd, **kwargs):
+        calls.append(cmd)
+        Path(cmd[-1]).write_bytes(b"fake-mp4")
+        result = MagicMock()
+        result.returncode = 0
+        result.stderr = ""
+        return result
+
+    monkeypatch.setattr(storm_short.subprocess, "run", fake_run)
+    clip_path = tmp_path / "pixabay_1.mp4"
+
+    out = storm_short._prepare_seamless_loop_clip(clip_path)
+
+    assert out == tmp_path / "seamless_pixabay_1.mp4"
+    assert "xfade" in calls[-1][calls[-1].index("-filter_complex") + 1]

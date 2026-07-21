@@ -98,13 +98,23 @@ zero subscribers.
   and the optional music track all have different, non-matching periods,
   so the combined video never feels like it's repeating in lockstep even
   though each layer loops individually.
-- **Real footage (optional, curated, not automatic)**:
-  `scripts/search_storm_broll_candidates.py` searches Pixabay for real
-  storm/rain b-roll (`video_type="film"`) for a human to hand-pick from --
-  deliberately not wired into the runtime pipeline, per
-  `docs/adr/0004-pinned-broll-per-format.md`'s "one hand-picked clip beats
-  N auto-selected ones" decision, which real-world footage needs even
-  more than illustrated b-roll did.
+- **Real footage, automatic**: `scripts/sync_storm_broll.py` downloads
+  real Pixabay storm/rain b-roll (`video_type="film"`) into a rotating
+  pool (`_assets/video/storm_broll/`, capped at 16, same shape as the
+  lofi pillar's `scripts/sync_lofi_broll.py`), gated by the same tag
+  relevance check at both download and selection time
+  (`utils.broll.looks_storm_relevant`/`is_on_brand_storm_clip`).
+  `generate_storm_ambience.py` and `generate_storm_short.py` pick a
+  random real clip from that pool first, falling back to the illustrated
+  scene only when the pool is empty (no `PIXABAY_API_KEY` configured, or
+  the sync hasn't run yet). Real footage doesn't loop as cleanly as the
+  hand-drawn scene by construction, so a short crossfade
+  (`_prepare_seamless_loop_clip`, same `xfade` technique as
+  `generate_lofi_mix.py`) is baked once at the loop seam before the video
+  is looped to fill the target runtime.
+  `scripts/search_storm_broll_candidates.py` still exists as a read-only
+  admin helper for eyeballing candidates by hand, same as before, just no
+  longer the only path real footage can take.
 - **Shorts**: `generate_storm_short.py` mirrors `generate_lofi_short.py`'s
   shape -- the same animated scene rendered vertically (1080x1920,
   `build_storm_short_frame()`), a shorter non-matching rain-bed loop, 30-58s

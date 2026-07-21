@@ -56,6 +56,58 @@ def _write_clip(directory, name, query, tags="anime, cozy"):
     return video_path
 
 
+def test_looks_storm_relevant_accepts_any_signal_keyword():
+    for tag in ["rain", "Storm", "thunder night", "lightning, cloud", "downpour"]:
+        assert broll.looks_storm_relevant(tag) is True
+
+
+def test_looks_storm_relevant_rejects_generic_stock_tags():
+    assert broll.looks_storm_relevant("man, books, library, office") is False
+
+
+def test_looks_storm_relevant_handles_empty_input():
+    assert broll.looks_storm_relevant("") is False
+    assert broll.looks_storm_relevant(None) is False
+
+
+def test_is_on_brand_storm_clip_accepts_storm_tagged_sidecar(tmp_path):
+    video_path = tmp_path / "pixabay_1.mp4"
+    video_path.write_bytes(b"x")
+    video_path.with_suffix(".json").write_text(json.dumps({"tags": "rain, night, window"}))
+    assert broll.is_on_brand_storm_clip(video_path) is True
+
+
+def test_is_on_brand_storm_clip_rejects_offbrand_sidecar(tmp_path):
+    video_path = tmp_path / "pixabay_1.mp4"
+    video_path.write_bytes(b"x")
+    video_path.with_suffix(".json").write_text(json.dumps({"tags": "man, library, book"}))
+    assert broll.is_on_brand_storm_clip(video_path) is False
+
+
+def test_is_on_brand_storm_clip_rejects_missing_sidecar(tmp_path):
+    video_path = tmp_path / "pixabay_1.mp4"
+    video_path.write_bytes(b"x")
+    assert broll.is_on_brand_storm_clip(video_path) is False
+
+
+def test_pick_storm_broll_file_returns_none_when_directory_empty(tmp_path):
+    assert broll.pick_storm_broll_file(tmp_path) is None
+
+
+def test_pick_storm_broll_file_skips_offbrand_clips(tmp_path):
+    video_path = tmp_path / "pixabay_1.mp4"
+    video_path.write_bytes(b"x")
+    video_path.with_suffix(".json").write_text(json.dumps({"tags": "man, library, book"}))
+    assert broll.pick_storm_broll_file(tmp_path) is None
+
+
+def test_pick_storm_broll_file_returns_an_on_brand_clip(tmp_path):
+    video_path = tmp_path / "pixabay_1.mp4"
+    video_path.write_bytes(b"x")
+    video_path.with_suffix(".json").write_text(json.dumps({"tags": "rain, thunder, night"}))
+    assert broll.pick_storm_broll_file(tmp_path) == video_path
+
+
 def test_is_preferred_mood_clip_matches_rain_night_snow_queries(tmp_path):
     rain = _write_clip(tmp_path, "pixabay_1.mp4", "anime rain window cozy")
     night = _write_clip(tmp_path, "pixabay_2.mp4", "anime night city window")

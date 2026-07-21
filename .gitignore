@@ -119,3 +119,10 @@ _data/*.lock
 venv/
 _assets/audio/bgm/jamendo_*.mp3
 _data/brand_card_cache/
+
+# Rotating real-footage cache (scripts/sync_storm_broll.py) -- runtime-only,
+# same "restored from Actions cache, never committed" pattern as
+# _assets/video/lofi_broll (its *.mp4 files are covered by the blanket
+# *.mp4 rule above; this covers the sidecar JSONs, which no existing rule
+# catches).
+_assets/video/storm_broll/

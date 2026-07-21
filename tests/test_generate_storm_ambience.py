@@ -121,6 +121,54 @@ def test_build_metadata_publish_slot_uses_the_storm_prefix(tmp_path):
     assert meta["publish_slot_key"].startswith("storm-")
 
 
+def test_build_metadata_carries_real_broll_source_fields(tmp_path):
+    video_path = tmp_path / "storm-ambience-6.mp4"
+    broll_meta = {
+        "source": "pixabay",
+        "pixabay_video_id": "555",
+        "license": "Pixabay Content License (free for commercial use, no attribution required)",
+        "license_evidence": "https://pixabay.com/videos/id-555",
+    }
+
+    meta = storm._build_metadata("focus", 3600.0, video_path, slug="s-5", music_meta=None, broll_meta=broll_meta)
+
+    assert meta["source"] == "pixabay"
+    assert meta["source_clip_id"] == "555"
+    assert meta["source_url"] == "https://pixabay.com/videos/id-555"
+    assert meta["source_license"] == broll_meta["license"]
+
+
+def test_prepare_seamless_loop_clip_returns_raw_clip_for_short_source(tmp_path, monkeypatch):
+    monkeypatch.setattr(storm, "_media_duration_s", lambda path: 0.0)
+    clip_path = tmp_path / "pixabay_1.mp4"
+
+    out = storm._prepare_seamless_loop_clip(clip_path)
+
+    assert out == clip_path
+
+
+def test_prepare_seamless_loop_clip_bakes_a_crossfade_for_a_longer_clip(tmp_path, monkeypatch):
+    monkeypatch.setattr(storm, "TEMP_DIR", tmp_path)
+    monkeypatch.setattr(storm, "_media_duration_s", lambda path: 12.0)
+    calls = []
+
+    def fake_run(cmd, **kwargs):
+        calls.append(cmd)
+        Path(cmd[-1]).write_bytes(b"fake-mp4")
+        result = MagicMock()
+        result.returncode = 0
+        result.stderr = ""
+        return result
+
+    monkeypatch.setattr(storm.subprocess, "run", fake_run)
+    clip_path = tmp_path / "pixabay_1.mp4"
+
+    out = storm._prepare_seamless_loop_clip(clip_path)
+
+    assert out == tmp_path / "seamless_pixabay_1.mp4"
+    assert "xfade" in calls[-1][calls[-1].index("-filter_complex") + 1]
+
+
 def test_bake_filtered_segment_builds_expected_ffmpeg_command(tmp_path, monkeypatch):
     monkeypatch.setattr(storm, "TEMP_DIR", tmp_path)
     calls = []

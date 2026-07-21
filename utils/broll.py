@@ -99,6 +99,56 @@ def is_on_brand_broll_clip(video_path: Path) -> bool:
     return looks_anime_styled(str(meta.get("tags") or ""))
 
 
+# Storm pillar counterpart: real-world rain/storm footage (video_type=
+# "film", not "animation") instead of an illustrated look, so the check
+# is topical relevance instead of art style -- same double-gate shape as
+# ANIME_STYLE_SIGNALS/looks_anime_styled/is_on_brand_broll_clip above:
+# checked once at download time (scripts/sync_storm_broll.py) and again
+# at selection time (generate_storm_ambience.py, generate_storm_short.py)
+# so a clip that reaches the shared pool some other way still can't be
+# picked for a published video.
+STORM_RELEVANCE_SIGNALS = {
+    "rain",
+    "storm",
+    "thunder",
+    "lightning",
+    "cloud",
+    "night",
+    "window",
+    "downpour",
+    "monsoon",
+}
+
+
+def looks_storm_relevant(tags: str) -> bool:
+    tags = (tags or "").lower()
+    return any(signal in tags for signal in STORM_RELEVANCE_SIGNALS)
+
+
+def is_on_brand_storm_clip(video_path: Path) -> bool:
+    meta_path = video_path.with_suffix(".json")
+    try:
+        meta = json.loads(meta_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return False
+    if not isinstance(meta, dict):
+        return False
+    return looks_storm_relevant(str(meta.get("tags") or ""))
+
+
+def pick_storm_broll_file(directory: Path, pattern: str = "pixabay_*.mp4") -> Path | None:
+    """Random pick among real, on-topic storm/rain clips in `directory`.
+
+    Plain uniform choice (unlike pick_weighted_broll_file's mood/
+    performance weighting) -- the storm pillar doesn't have per-scene
+    b-roll moods or performance data to weight by yet.
+    """
+    candidates = [p for p in sorted(directory.glob(pattern)) if is_on_brand_storm_clip(p)]
+    if not candidates:
+        return None
+    return random.choice(candidates)
+
+
 _PREFERRED_MOOD_SIGNALS = ("rain", "night", "snow")
 _PREFERRED_WEIGHT = 3
 
