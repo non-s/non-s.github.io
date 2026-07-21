@@ -30,7 +30,12 @@ def test_workflows_parse_and_include_pipeline_steps():
     assert "_data/analytics/api_quota_ledger.jsonl" in youtube_workflow
     assert "if: always() && env.PUBLISH_QUOTA_BLOCKED != '1'" in youtube_workflow
     assert "Salvar marcadores no git" in youtube_workflow
-    assert 'cron: "*/10 * * * *"' in youtube_workflow
+    assert 'cron: "0 * * * *"' in youtube_workflow
+    assert 'cron: "10 * * * *"' in youtube_workflow
+    assert 'cron: "20 * * * *"' in youtube_workflow
+    assert 'cron: "30 * * * *"' in youtube_workflow
+    assert 'cron: "40 * * * *"' in youtube_workflow
+    assert 'cron: "50 * * * *"' in youtube_workflow
 
     watchdog_workflow = (ROOT / ".github/workflows/youtube-watchdog.yml").read_text(encoding="utf-8")
     assert 'cron: "7,17,27,37,47,57 * * * *"' in watchdog_workflow
