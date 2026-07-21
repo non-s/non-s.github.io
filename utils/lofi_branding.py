@@ -21,7 +21,17 @@ DEFAULT_EMOJI = "\U0001f319"  # moon
 # new query added there still gets an on-brand title without this table
 # needing to change in lockstep.
 HOOK_BY_MOOD: dict[str, tuple[str, str]] = {
-    "lofi girl": ("Late Night Study Anime Lofi", "\U0001f56f️"),
+    # Was "lofi girl" (chat, growth pass 2026-07-21): that key's own lowercased
+    # text became a video tag and leaked into descriptions ("lofi girl lofi
+    # beats...") on every video with this mood, and its hook text was
+    # byte-identical to "study desk"'s -- the two moods collided on title the
+    # first time both got picked, tripping upload_youtube.py's dedup path and
+    # publishing "... | Lofi girl" (a giant competitor's brand name) as a
+    # visible tag suffix. Renamed to its own visual motif (the potted plant
+    # already drawn on the windowsill in every Shorts/live scene) with a
+    # distinct hook so it can no longer collide with "study desk", and no
+    # longer rides a competitor's name for search traffic.
+    "windowsill desk": ("Windowsill Study Anime Lofi", "\U0001fab4"),
     "rain window": ("Rainy Night Anime Lofi", "\U0001f327️"),
     "night city": ("Midnight City Anime Lofi", "\U0001f303"),
     "study desk": ("Late Night Study Anime Lofi", "\U0001f56f️"),

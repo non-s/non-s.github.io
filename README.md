@@ -24,7 +24,17 @@ Data API under the **Amber Hours** brand.
   branded title/description -- and each format gets its **own** hand-coded
   illustration (chat, 2026-07-21: an earlier revision reused one shared
   image everywhere, which read as repetitive) so the channel page doesn't
-  show the same picture three times over:
+  show the same picture three times over. The pinned clip is itself a
+  4-second **animated** loop -- falling rain, twinkling stars, a gentle
+  amber-glow pulse, rising mug steam, a spinning record label on the mix --
+  not a single static frame repeated for the whole duration (chat,
+  2026-07-21 growth pass: a static loop was the single biggest visual gap
+  against channels whose backgrounds actually move). Every periodic motion
+  is built from an integer number of cycles across the loop so frame 0 and
+  the frame after the last one are pixel-identical -- no crossfade needed
+  to hide the seam. See `scripts/generate_brand_loops.py` and
+  `utils/brand_motion.py`. The upload thumbnail stays a separate static
+  PNG (below), unaffected:
   - **Live**: `_assets/branding/thumbnail_1280x720.png` -- night skyline,
     crescent moon, big amber glow, "AMBER HOURS" wordmark + "24/7 LIVE"
     badge. Drawn in `utils/thumbnail_branding.py`.
@@ -38,8 +48,9 @@ Data API under the **Amber Hours** brand.
 
   All three are original Pillow-drawn vector illustrations -- the live's
   in `utils/thumbnail_branding.py`, the Shorts/mix scenes in
-  `scripts/generate_brand_scenes.py` -- rendered to video and used
-  directly as each upload's YouTube thumbnail too, so the video and its
+  `scripts/generate_brand_scenes.py` -- used directly as each upload's
+  YouTube thumbnail, and as the starting frame of that format's animated
+  pinned clip (`scripts/generate_brand_loops.py`), so the video and its
   cover image always match -- not sourced from a stock library or AI
   image generation (no such tool was available when these were made).
   Earlier revisions tried Pixabay anime-style b-roll
@@ -59,6 +70,22 @@ cozy anime lofi**. `utils/lofi_branding.py` is the shared vocabulary
 generators and the retroactive rebrand scripts pull from, so a viewer
 sees one consistent "Amber Hours" identity across every format. See that
 module's docstring for the full reasoning.
+
+## Community engagement
+
+Opt-in via the `COMMUNITY_ENGAGEMENT_ENABLED` repository variable (see
+SETUP.md), independent of `YOUTUBE_PUBLISHING_ENABLED`:
+
+- `community-comment-replies.yml` replies to fresh top-level comments
+  across the channel through the official `commentThreads`/`comments`
+  API -- a local ledger, a link/spam skip, and a per-run cap keep it from
+  ever double-replying or engaging with spam (`scripts/reply_to_comments.py`,
+  `utils/community_replies.py`).
+- `community-post-draft.yml` commits one ready-to-paste Community-tab post
+  suggestion a week (`scripts/draft_community_post.py`,
+  `utils/community_posts.py`). The Community tab has no public API (see
+  SECURITY.md), so this is an operator-assist artifact, not automation --
+  a human still pastes it into YouTube Studio.
 
 ## Pipeline
 

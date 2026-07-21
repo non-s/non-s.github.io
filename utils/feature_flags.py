@@ -195,6 +195,21 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Conservative daily YouTube upload-call budget.",
         "Match the Google Cloud upload quota.",
     ),
+    FeatureFlag(
+        "COMMUNITY_ENGAGEMENT_ENABLED",
+        "0",
+        "community",
+        "Master switch for comment replies and the weekly Community post draft, "
+        "independent of YOUTUBE_PUBLISHING_ENABLED.",
+        "Set to 0 to pause both.",
+    ),
+    FeatureFlag(
+        "COMMENT_REPLY_MAX_PER_RUN",
+        "15",
+        "community",
+        "Cap on comment replies posted per community-comment-replies.yml run.",
+        "Lower it, or set COMMUNITY_ENGAGEMENT_ENABLED to 0.",
+    ),
 )
 
 

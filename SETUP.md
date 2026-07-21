@@ -71,6 +71,17 @@ On Windows, you can instead run the **Build auth_youtube.exe (Windows)** workflo
    `live-stream-watchdog.yml` keeps the relay running on its own.
 5. Optionally create the repository variable `YOUTUBE_PRIVACY`: `public`,
    `unlisted`, or `private`. Default: `public`.
+6. Optionally set the repository variable `COMMUNITY_ENGAGEMENT_ENABLED=1`
+   to turn on community engagement: `community-comment-replies.yml` replies
+   to fresh top-level comments across the channel (official
+   `commentThreads`/`comments` API, see `scripts/reply_to_comments.py`'s
+   docstring for its dedup/spam/rate-limit guardrails), and
+   `community-post-draft.yml` commits one ready-to-paste Community-tab post
+   suggestion a week to `_data/community/suggested_post.json` -- the
+   Community tab has no public API, so that one is paste-it-yourself, not
+   automated. Independent of `YOUTUBE_PUBLISHING_ENABLED`: posting under the
+   channel's identity is its own trust boundary. Optionally tune
+   `COMMENT_REPLY_MAX_PER_RUN` (default 15).
 
 See [RUNBOOK.md](RUNBOOK.md) for what each reliability workflow does and
 what to do when one of them alerts.
