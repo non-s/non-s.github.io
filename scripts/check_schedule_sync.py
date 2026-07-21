@@ -14,7 +14,10 @@ if str(ROOT) not in sys.path:
 
 from utils.publish_schedule import CANONICAL_SLOTS_UTC  # noqa: E402
 
-PUBLISH_SLOT_PROXY_MINUTES = {2, 20, 22, 40, 42}
+# :20/:40 dropped from the legacy {2,20,22,40,42} recovery-proxy set --
+# they're now real canonical slot minutes in their own right (10-minute
+# Shorts grid), not stand-ins for the top of the hour.
+PUBLISH_SLOT_PROXY_MINUTES = {2, 22, 42}
 
 
 def _read(path: Path) -> str:

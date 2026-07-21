@@ -26,11 +26,16 @@ def test_time_semantics_use_pacific_days_and_views_cutover():
 
 
 def test_slot_audit_checks_bot_watchdog_docs_and_temporal_fields(tmp_path):
+    # Matches the real 10-minute Shorts grid (utils/audience_expansion.py's
+    # GLOBAL_PUBLISH_WINDOWS) -- audit_slot_contracts() always checks
+    # against the real global CANONICAL_SLOTS_UTC, so this fixture's slot
+    # count/cadence has to match it, not an arbitrary smaller grid.
     (tmp_path / ".github" / "workflows").mkdir(parents=True)
     (tmp_path / "docs").mkdir()
-    slots = " ".join(f"{hour:02d}:00" for hour in range(24))
+    slots = " ".join(f"{hour:02d}:{minute:02d}" for hour in range(24) for minute in (0, 10, 20, 30, 40, 50))
+    bot_cron = "\n".join(f'    - cron: "{minute} * * * *"' for minute in (0, 10, 20, 30, 40, 50))
     (tmp_path / ".github" / "workflows" / "youtube-bot.yml").write_text(
-        'on:\n  schedule:\n    - cron: "0 * * * *"\n',
+        f"on:\n  schedule:\n{bot_cron}\n",
         encoding="utf-8",
     )
     (tmp_path / ".github" / "workflows" / "youtube-watchdog.yml").write_text(slots, encoding="utf-8")

@@ -25,4 +25,8 @@ def test_global_strategy_covers_major_regions():
     strategy = global_strategy()
 
     assert strategy["mode"] == "global"
-    assert [item["utc_hour"] for item in strategy["publish_windows"]] == list(range(24))
+    # 6 windows/hour (10-minute Shorts cadence) -- every hour must still be
+    # represented at least once, in ascending order.
+    hours = [item["utc_hour"] for item in strategy["publish_windows"]]
+    assert sorted(set(hours)) == list(range(24))
+    assert hours == sorted(hours)

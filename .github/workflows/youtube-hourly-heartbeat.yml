@@ -1,8 +1,9 @@
 name: "YouTube hourly heartbeat"
 
 # Lightweight backup for GitHub schedule drift. The main publisher already
-# runs at :02/:22/:42 and youtube-watchdog.yml checks every 10 minutes; this
-# job is a short sanity dispatcher, not a long-lived sleeping runner.
+# runs every 10 minutes and youtube-watchdog.yml checks every 10 minutes
+# too; this job is a coarser once-an-hour sanity dispatcher (did ANY
+# publisher run happen this hour), not a long-lived sleeping runner.
 on:
   schedule:
     - cron: "13 * * * *"

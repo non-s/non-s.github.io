@@ -71,10 +71,20 @@ def _recovery_delay_minutes(env: Mapping[str, str] | None = None) -> int:
     return max(0, _env_int("PUBLISH_RECOVERY_DELAY_MINUTES", 40, env))
 
 
-def _target_slot_from_scheduled_time(scheduled: datetime) -> str:
+def _target_slot_from_scheduled_time(
+    scheduled: datetime, schedule: dict | None = None, env: Mapping[str, str] | None = None
+) -> str:
     scheduled = scheduled.astimezone(timezone.utc)
-    canonical_minutes = {int(str(slot).split(":", 1)[1]) for slot in CANONICAL_SLOTS_UTC}
-    if scheduled.minute in canonical_minutes:
+    # Minute-of-hour values actually in play for THIS evaluation -- the
+    # caller's `schedule` override when given, else the real global grid
+    # (144 slots/day, minutes {0,10,20,30,40,50} as of the 10-minute Shorts
+    # cadence). Using the global grid unconditionally here (as before) meant
+    # a caller-supplied narrower `schedule` (e.g. one hourly slot) still got
+    # matched against the *global* minute set, misclassifying a legitimate
+    # recovery-proxy minute as a standalone slot whenever it happened to
+    # collide with the real grid's spacing.
+    candidate_minutes = {int(str(slot).split(":", 1)[1]) for slot in _schedule_slots(schedule, env)}
+    if scheduled.minute in candidate_minutes:
         target = scheduled
     elif scheduled.minute in {2, 20, 22, 40, 42}:
         target = scheduled.replace(minute=0)
@@ -166,7 +176,7 @@ def event_schedule_slot_label(
                 scheduled = datetime.combine(slot_date, time(hour, minute, tzinfo=timezone.utc), tzinfo=timezone.utc)
                 delay = current - scheduled
                 if timedelta(0) <= delay <= max_delay:
-                    target = _target_slot_from_scheduled_time(scheduled)
+                    target = _target_slot_from_scheduled_time(scheduled, schedule, env)
                     if target in _schedule_slots(schedule, env):
                         candidates.append((scheduled, target))
     if not candidates:

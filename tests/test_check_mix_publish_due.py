@@ -101,7 +101,7 @@ def test_main_json_output_reports_due_and_hours_since(tmp_path, monkeypatch, cap
 
 
 def test_main_json_output_not_due_yet(tmp_path, monkeypatch, capsys):
-    recent = datetime.now(timezone.utc) - timedelta(hours=1)
+    recent = datetime.now(timezone.utc) - timedelta(minutes=10)
     _write_marker(tmp_path, "mix-lofimix-1-1.done", publish_ts_utc=recent.isoformat())
     monkeypatch.setattr(check_mix_publish_due, "VIDEOS_DIR", tmp_path)
     monkeypatch.setattr(check_mix_publish_due.sys, "argv", ["check_mix_publish_due.py", "--json"])
