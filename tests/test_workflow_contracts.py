@@ -38,7 +38,9 @@ def test_workflows_parse_and_include_pipeline_steps():
     assert "python scripts/youtube_slot_dispatch.py watchdog" in watchdog_workflow
 
     heartbeat_workflow = (ROOT / ".github/workflows/youtube-hourly-heartbeat.yml").read_text(encoding="utf-8")
-    assert "schedule" not in yaml.safe_load(heartbeat_workflow)["on"]
+    # PyYAML 1.1 parses an unquoted `on:` key as the boolean True, not the
+    # string "on" -- this is the well-known GitHub Actions/YAML gotcha.
+    assert "schedule" not in yaml.safe_load(heartbeat_workflow)[True]
     assert 'TARGET_WORKFLOW: "youtube-bot.yml"' in heartbeat_workflow
     assert "PUBLISH_HEARTBEAT_RECENT_RUN_TOLERANCE_MINUTES || '20'" in heartbeat_workflow
     assert 'PUBLISH_SLOT_WINDOW_MINUTES: "60"' in heartbeat_workflow
