@@ -124,7 +124,9 @@ def test_build_metadata_carries_real_broll_source_fields(tmp_path):
 
 
 def test_prepare_seamless_loop_clip_returns_raw_clip_for_short_source(tmp_path, monkeypatch):
-    monkeypatch.setattr(storm, "_media_duration_s", lambda path: 0.0)
+    import utils.ffmpeg_helpers as fh
+    monkeypatch.setattr(storm, "TEMP_DIR", tmp_path)
+    monkeypatch.setattr(fh, "media_duration_s", lambda path: 0.0)
     clip_path = tmp_path / "pixabay_1.mp4"
 
     out = storm._prepare_seamless_loop_clip(clip_path)
@@ -133,8 +135,9 @@ def test_prepare_seamless_loop_clip_returns_raw_clip_for_short_source(tmp_path, 
 
 
 def test_prepare_seamless_loop_clip_bakes_a_crossfade_for_a_longer_clip(tmp_path, monkeypatch):
+    import utils.ffmpeg_helpers as fh
     monkeypatch.setattr(storm, "TEMP_DIR", tmp_path)
-    monkeypatch.setattr(storm, "_media_duration_s", lambda path: 12.0)
+    monkeypatch.setattr(fh, "media_duration_s", lambda path: 12.0)
     calls = []
 
     def fake_run(cmd, **kwargs):
@@ -145,7 +148,7 @@ def test_prepare_seamless_loop_clip_bakes_a_crossfade_for_a_longer_clip(tmp_path
         result.stderr = ""
         return result
 
-    monkeypatch.setattr(storm.subprocess, "run", fake_run)
+    monkeypatch.setattr(fh.subprocess, "run", fake_run)
     clip_path = tmp_path / "pixabay_1.mp4"
 
     out = storm._prepare_seamless_loop_clip(clip_path)

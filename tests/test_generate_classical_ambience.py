@@ -57,7 +57,8 @@ def test_pick_track_touches_the_chosen_file_so_it_is_not_repeated_immediately(tm
 
 
 def test_prepare_seamless_loop_clip_returns_raw_clip_for_short_source(tmp_path, monkeypatch):
-    monkeypatch.setattr(classical, "_media_duration_s", lambda path: 0.0)
+    import utils.ffmpeg_helpers as fh
+    monkeypatch.setattr(fh, "media_duration_s", lambda path: 0.0)
     clip_path = tmp_path / "pinned_classical_ambience.mp4"
 
     out = classical._prepare_seamless_loop_clip(clip_path)
@@ -67,7 +68,8 @@ def test_prepare_seamless_loop_clip_returns_raw_clip_for_short_source(tmp_path, 
 
 def test_prepare_seamless_loop_clip_bakes_a_crossfade_for_a_longer_clip(tmp_path, monkeypatch):
     monkeypatch.setattr(classical, "TEMP_DIR", tmp_path)
-    monkeypatch.setattr(classical, "_media_duration_s", lambda path: 60.0)
+    import utils.ffmpeg_helpers as fh
+    monkeypatch.setattr(fh, "media_duration_s", lambda path: 60.0)
     calls = []
 
     def fake_run(cmd, **kwargs):
@@ -78,7 +80,7 @@ def test_prepare_seamless_loop_clip_bakes_a_crossfade_for_a_longer_clip(tmp_path
         result.stderr = ""
         return result
 
-    monkeypatch.setattr(classical.subprocess, "run", fake_run)
+    monkeypatch.setattr(fh.subprocess, "run", fake_run)
     clip_path = tmp_path / "pinned_classical_ambience.mp4"
 
     out = classical._prepare_seamless_loop_clip(clip_path)

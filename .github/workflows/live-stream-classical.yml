@@ -38,6 +38,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v7.0.0
+        with:
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@v6.3.0
@@ -88,3 +90,7 @@ jobs:
             python scripts/live_stream_classical.py
             sleep 5
           done
+      - name: "Delete YouTube token"
+        if: always()
+        run: |
+          shred -u youtube_token.json 2>/dev/null || rm -f youtube_token.json

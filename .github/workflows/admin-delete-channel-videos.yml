@@ -47,7 +47,9 @@ jobs:
           fi
 
       - name: "Apagar videos do canal"
-        run: python scripts/delete_channel_videos.py ${{ github.event.inputs.video_ids }}
+        env:
+          VIDEO_IDS: ${{ github.event.inputs.video_ids }}
+        run: python scripts/delete_channel_videos.py $VIDEO_IDS
 
       - name: "Apagar tokens do YouTube no final"
         if: always()

@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: "Checkout"
         uses: actions/checkout@v7.0.0
+        with:
+          persist-credentials: false
       - name: "Python 3.11"
         uses: actions/setup-python@v6.3.0
         with:
@@ -43,7 +45,9 @@ jobs:
           printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
           chmod 600 youtube_token.json
       - name: "Delete video(s)"
-        run: python scripts/delete_video.py ${{ github.event.inputs.video_ids }}
+        env:
+          VIDEO_IDS: ${{ github.event.inputs.video_ids }}
+        run: python scripts/delete_video.py $VIDEO_IDS
       - name: "Delete token"
         if: always()
         run: |

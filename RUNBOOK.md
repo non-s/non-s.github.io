@@ -15,10 +15,9 @@ name in that issue:
 
 | Workflow | What it means when it fails |
 | --- | --- |
-| `YouTube Bot - Shorts only` | A Shorts publish run itself failed -- check the run log first (auth, quota, or a real bug). |
+| `Storm Shorts - rain & thunder` | A Shorts publish run itself failed -- check the run log first (auth, quota, or a real bug). |
 | `24/7 Live Stream Relay` | A live-relay job crashed or hit its 6h timeout. Usually self-heals via the watchdog below; only chase it if the channel is actually offline. |
 | `24/7 live stream watchdog` | The watchdog itself failed to run (rare -- usually a `gh` auth or API issue, not the stream). |
-| `YouTube publishing watchdog` | Couldn't dispatch a recovery run for a missed Shorts slot. |
 | `Publishing health check` | **No real upload has landed within the staleness window while publishing is enabled** -- the clearest sign of silent degradation (see below). |
 | `Admin: detect orphaned video markers` | The weekly YouTube-API sweep for deleted videos failed to run (auth/quota), not that an orphan was found (that's a normal log line, not a failure). |
 | `Token rotation check` | `YOUTUBE_TOKEN` is overdue for rotation (see below) -- or has never been recorded as rotated at all. |

@@ -17,9 +17,12 @@ Only the current `main` branch is maintained. There are no LTS branches.
 
 In scope:
 
-- The Python automation pipeline (`generate_lofi_short.py`,
-  `generate_lofi_mix.py`, `upload_youtube.py`, `auth_youtube.py`,
-  `scripts/live_stream_dynamic.py`, `utils/`).
+- The Python automation pipeline (`generate_storm_ambience.py`,
+  `generate_storm_short.py`, `generate_baby_noise_ambience.py`,
+  `generate_baby_noise_short.py`, `generate_classical_ambience.py`,
+  `generate_cute_animal_short.py`, `upload_youtube.py`, `auth_youtube.py`,
+  `scripts/live_stream_dynamic.py`, `scripts/live_stream_classical.py`,
+  `utils/`).
 - The GitHub Actions workflows under `.github/workflows/`.
 
 Out of scope:
@@ -66,6 +69,6 @@ Optional:
   titles/descriptions/hashtags for the storm pillar via
   `utils/ai_titling.py`; treated as provider-key material per "What we do"
   above)
-- `LIVE_CONTENT_PILLAR` (`lofi` or `storm`, see README)
+- `GEMINI_API_KEY` / `CEREBRAS_API_KEY` / `GROQ_API_KEY` / `MISTRAL_API_KEY`
 
 See `docs/ENVIRONMENT.md` for the operating checklist.

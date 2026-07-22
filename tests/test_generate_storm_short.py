@@ -141,7 +141,9 @@ def test_prepare_seamless_loop_clip_returns_raw_clip_for_short_source(tmp_path, 
     """duration <= 3s (the ffprobe-failure default of 0.0 included) skips
     the crossfade bake entirely -- there isn't enough clip to trim a fade
     out of, so the raw clip is used as-is."""
-    monkeypatch.setattr(storm_short, "_media_duration_s", lambda path: 0.0)
+    import utils.ffmpeg_helpers as fh
+    monkeypatch.setattr(storm_short, "TEMP_DIR", tmp_path)
+    monkeypatch.setattr(fh, "media_duration_s", lambda path: 0.0)
     clip_path = tmp_path / "pixabay_1.mp4"
 
     out = storm_short._prepare_seamless_loop_clip(clip_path)
@@ -150,8 +152,9 @@ def test_prepare_seamless_loop_clip_returns_raw_clip_for_short_source(tmp_path, 
 
 
 def test_prepare_seamless_loop_clip_bakes_a_crossfade_for_a_longer_clip(tmp_path, monkeypatch):
+    import utils.ffmpeg_helpers as fh
     monkeypatch.setattr(storm_short, "TEMP_DIR", tmp_path)
-    monkeypatch.setattr(storm_short, "_media_duration_s", lambda path: 12.0)
+    monkeypatch.setattr(fh, "media_duration_s", lambda path: 12.0)
     calls = []
 
     def fake_run(cmd, **kwargs):
@@ -162,7 +165,7 @@ def test_prepare_seamless_loop_clip_bakes_a_crossfade_for_a_longer_clip(tmp_path
         result.stderr = ""
         return result
 
-    monkeypatch.setattr(storm_short.subprocess, "run", fake_run)
+    monkeypatch.setattr(fh.subprocess, "run", fake_run)
     clip_path = tmp_path / "pixabay_1.mp4"
 
     out = storm_short._prepare_seamless_loop_clip(clip_path)

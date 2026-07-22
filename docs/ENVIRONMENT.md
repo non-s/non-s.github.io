@@ -81,7 +81,7 @@ every 2 hours, even hours only (12 slots/day):
 12:00, 14:00, 16:00, 18:00, 20:00, 22:00
 ```
 
-This was the lofi Shorts pipeline's publish cadence; that pipeline was
+This was the earlier Shorts pipeline's publish cadence; that pipeline was
 removed when the channel pivoted fully to the storm/rain ambience pillar
 (growth pass, 2026-07-21), which publishes on its own, separate cadence
 (`storm-ambience.yml` twice daily, `storm-shorts.yml` every 2 hours,

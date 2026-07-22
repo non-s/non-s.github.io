@@ -6,9 +6,5 @@ contracts:
     python scripts/audit_slot_contracts.py
     python scripts/check_repo_contracts.py
 
-doctor:
-    python scripts/doctor.py --json
-
 dashboard:
-    python scripts/run_intelligence_suite.py dashboard --strict
     python scripts/build_dashboard.py

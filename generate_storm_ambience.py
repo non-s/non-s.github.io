@@ -51,11 +51,39 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from utils.ai_titling import generate_video_copy  # noqa: E402
+from utils.ffmpeg_helpers import (  # noqa: E402
+    bake_filtered_segment,
+    load_sidecar,
+    media_duration_s,
+    prepare_seamless_loop_clip,
+)
 from utils.storm_audio import generate_rain_bed, write_wav  # noqa: E402
 from utils.storm_branding import HOOK_BY_SCENE, branded_title, playlist_bucket_for_title  # noqa: E402
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("generate_storm_ambience")
+
+# Backward-compat aliases (tests may import the _-prefixed names from this module).
+_load_sidecar = load_sidecar
+_media_duration_s = media_duration_s
+
+
+def _prepare_seamless_loop_clip(clip_path: Path) -> Path:
+    return prepare_seamless_loop_clip(
+        clip_path, temp_dir=TEMP_DIR, loop_crossfade_s=LOOP_CROSSFADE_S, logger=log
+    )
+
+
+def _bake_filtered_segment(clip_path: Path) -> Path | None:
+    return bake_filtered_segment(
+        clip_path,
+        temp_dir=TEMP_DIR,
+        target_w=TARGET_W,
+        target_h=TARGET_H,
+        target_fps=TARGET_FPS,
+        gop_size=40,
+        logger=log,
+    )
 
 # One fixed, real Pixabay clip (chat, 2026-07-21: the channel owner picked
 # this specific willow-branches-in-the-rain clip by hand and asked for it
@@ -104,130 +132,8 @@ DEFAULT_TAGS = [
 ]
 
 
-def _load_sidecar(media_path: Path) -> dict:
-    meta_path = media_path.with_suffix(".json")
-    try:
-        data = json.loads(meta_path.read_text(encoding="utf-8"))
-    except Exception:
-        return {}
-    return data if isinstance(data, dict) else {}
-
-
 def _pick_scene() -> str:
     return random.choice(list(HOOK_BY_SCENE.keys())).title()
-
-
-def _media_duration_s(path: Path) -> float:
-    cmd = ["ffprobe", "-v", "quiet", "-show_entries", "format=duration", "-of", "csv=p=0", str(path)]
-    try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=15)
-        return float(result.stdout.strip())
-    except Exception:
-        return 0.0
-
-
-def _prepare_seamless_loop_clip(clip_path: Path) -> Path:
-    """Bake a short crossfade between the clip's tail and head once, so
-    looping it via -stream_loop has no visible hard cut/motion-snap at the
-    seam. The illustrated pinned clip is already a mathematically seamless
-    loop by construction (utils/brand_motion.py), so this is a no-op-ish
-    pass for it, but real Pixabay footage (scripts/sync_storm_broll.py)
-    has no such guarantee -- its motion (falling rain, drifting clouds)
-    would otherwise visibly jump backward every repeat over a 45-75 minute
-    video. Exact same technique as generate_lofi_mix.py's identical
-    helper (see its docstring for why the concat operand order matters)."""
-    out_path = TEMP_DIR / f"seamless_{clip_path.stem}.mp4"
-    if out_path.exists() and out_path.stat().st_size > 0:
-        return out_path
-
-    duration = _media_duration_s(clip_path)
-    fade = min(LOOP_CROSSFADE_S, duration / 6) if duration > 3 else 0.0
-    if fade <= 0:
-        return clip_path
-
-    filter_complex = (
-        f"[0:v]trim=0:{fade:.3f},setpts=PTS-STARTPTS[start];"
-        f"[0:v]trim={duration - fade:.3f}:{duration:.3f},setpts=PTS-STARTPTS[end];"
-        f"[0:v]trim={fade:.3f}:{duration - fade:.3f},setpts=PTS-STARTPTS[mid];"
-        f"[end][start]xfade=transition=fade:duration={fade:.3f}:offset=0[blend];"
-        "[mid][blend]concat=n=2:v=1:a=0[out]"
-    )
-    cmd = [
-        "ffmpeg",
-        "-y",
-        "-i",
-        str(clip_path),
-        "-filter_complex",
-        filter_complex,
-        "-map",
-        "[out]",
-        "-an",
-        "-pix_fmt",
-        "yuv420p",
-        "-preset",
-        "veryfast",
-        str(out_path),
-    ]
-    try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
-    except Exception as exc:
-        log.warning("Failed to bake seamless loop clip, using raw clip instead: %s", exc)
-        return clip_path
-    if result.returncode != 0 or not out_path.exists() or out_path.stat().st_size == 0:
-        log.warning("ffmpeg seamless-loop bake failed, using raw clip instead: %s", result.stderr[-500:])
-        return clip_path
-    log.info("Baked seamless loop clip from %s (crossfade=%.2fs).", clip_path.name, fade)
-    return out_path
-
-
-def _bake_filtered_segment(clip_path: Path) -> Path | None:
-    """Same approach as generate_lofi_mix.py's identical helper: apply the
-    scale/zoompan filter chain ONCE against the pinned clip's own short
-    duration, producing a small already-encoded segment the final render
-    can loop with -c:v copy."""
-    out_path = TEMP_DIR / f"filtered_{clip_path.stem}.mp4"
-    if out_path.exists() and out_path.stat().st_size > 0:
-        return out_path
-
-    video_filter = (
-        f"scale={TARGET_W}:{TARGET_H}:force_original_aspect_ratio=increase,"
-        f"crop={TARGET_W}:{TARGET_H},fps={TARGET_FPS},setsar=1,format=yuv420p"
-    )
-    cmd = [
-        "ffmpeg",
-        "-y",
-        "-i",
-        str(clip_path),
-        "-vf",
-        video_filter,
-        "-an",
-        "-r",
-        str(TARGET_FPS),
-        "-c:v",
-        "libx264",
-        "-preset",
-        "veryfast",
-        "-profile:v",
-        "high",
-        "-g",
-        "40",
-        "-keyint_min",
-        "40",
-        "-sc_threshold",
-        "0",
-        "-crf",
-        "20",
-        str(out_path),
-    ]
-    try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=180)
-    except Exception as exc:
-        log.error("Failed to bake filtered segment: %s", exc)
-        return None
-    if result.returncode != 0 or not out_path.exists() or out_path.stat().st_size == 0:
-        log.error("ffmpeg filtered-segment bake failed: %s", result.stderr[-1500:])
-        return None
-    return out_path
 
 
 def _prepare_rain_bed(seed: int) -> Path:

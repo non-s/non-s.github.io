@@ -50,9 +50,43 @@ if str(ROOT) not in sys.path:
 from utils.ai_titling import generate_animal_short_copy  # noqa: E402
 from utils.animal_branding import HOOK_BY_SCENE, branded_title, playlist_bucket_for_title  # noqa: E402
 from utils.broll import pick_animal_broll_file  # noqa: E402
+from utils.ffmpeg_helpers import (  # noqa: E402
+    compose_short as _compose_short_impl,
+    extract_thumbnail_frame,
+    load_sidecar,
+    media_duration_s,
+    prepare_seamless_loop_clip,
+)
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("generate_cute_animal_short")
+
+# Backward-compat aliases (tests may import the _-prefixed names from this module).
+_load_sidecar = load_sidecar
+_media_duration_s = media_duration_s
+
+
+def _prepare_seamless_loop_clip(clip_path: Path) -> Path:
+    return prepare_seamless_loop_clip(
+        clip_path, temp_dir=TEMP_DIR, loop_crossfade_s=LOOP_CROSSFADE_S, logger=log
+    )
+
+
+def _extract_thumbnail_frame(clip_path: Path, seed: int) -> Path | None:
+    return extract_thumbnail_frame(clip_path, seed, temp_dir=TEMP_DIR, logger=log)
+
+
+def _compose_short(broll_path: Path, jazz_path: Path | None, output_path: Path, duration_s: float) -> bool:
+    return _compose_short_impl(
+        broll_path,
+        jazz_path,
+        output_path,
+        duration_s,
+        target_w=TARGET_W,
+        target_h=TARGET_H,
+        fade_s=FADE_S,
+        logger=log,
+    )
 
 ANIMAL_BROLL_DIR = ROOT / "_assets" / "video" / "animal_broll"
 JAZZ_DIR = ROOT / "_assets" / "audio" / "animal_jazz"
@@ -81,98 +115,8 @@ DEFAULT_TAGS = [
 ]
 
 
-def _load_sidecar(media_path: Path) -> dict:
-    meta_path = media_path.with_suffix(".json")
-    try:
-        data = json.loads(meta_path.read_text(encoding="utf-8"))
-    except Exception:
-        return {}
-    return data if isinstance(data, dict) else {}
-
-
 def _pick_scene() -> str:
     return random.choice(list(HOOK_BY_SCENE.keys())).title()
-
-
-def _media_duration_s(path: Path) -> float:
-    cmd = ["ffprobe", "-v", "quiet", "-show_entries", "format=duration", "-of", "csv=p=0", str(path)]
-    try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=15)
-        return float(result.stdout.strip())
-    except Exception:
-        return 0.0
-
-
-def _prepare_seamless_loop_clip(clip_path: Path) -> Path:
-    """Same technique as generate_storm_short.py's identical helper: a
-    short crossfade between the clip's tail and head so -stream_loop has
-    no visible hard cut. Real Pixabay animal footage is usually shorter
-    than a 30-58s Short, so it loops at least once."""
-    out_path = TEMP_DIR / f"seamless_{clip_path.stem}.mp4"
-    if out_path.exists() and out_path.stat().st_size > 0:
-        return out_path
-
-    duration = _media_duration_s(clip_path)
-    fade = min(LOOP_CROSSFADE_S, duration / 6) if duration > 3 else 0.0
-    if fade <= 0:
-        return clip_path
-
-    filter_complex = (
-        f"[0:v]trim=0:{fade:.3f},setpts=PTS-STARTPTS[start];"
-        f"[0:v]trim={duration - fade:.3f}:{duration:.3f},setpts=PTS-STARTPTS[end];"
-        f"[0:v]trim={fade:.3f}:{duration - fade:.3f},setpts=PTS-STARTPTS[mid];"
-        f"[end][start]xfade=transition=fade:duration={fade:.3f}:offset=0[blend];"
-        "[mid][blend]concat=n=2:v=1:a=0[out]"
-    )
-    cmd = [
-        "ffmpeg",
-        "-y",
-        "-i",
-        str(clip_path),
-        "-filter_complex",
-        filter_complex,
-        "-map",
-        "[out]",
-        "-an",
-        "-pix_fmt",
-        "yuv420p",
-        "-preset",
-        "veryfast",
-        str(out_path),
-    ]
-    try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
-    except Exception as exc:
-        log.warning("Failed to bake seamless loop clip, using raw clip instead: %s", exc)
-        return clip_path
-    if result.returncode != 0 or not out_path.exists() or out_path.stat().st_size == 0:
-        log.warning("ffmpeg seamless-loop bake failed, using raw clip instead: %s", result.stderr[-500:])
-        return clip_path
-    log.info("Baked seamless loop clip from %s (crossfade=%.2fs).", clip_path.name, fade)
-    return out_path
-
-
-def _extract_thumbnail_frame(clip_path: Path, seed: int) -> Path | None:
-    """Grab one real frame from the actual clip this run used, a couple
-    seconds in (not frame 0, which can land on an encoder artifact) --
-    same reasoning as the rain pillar's real-frame thumbnail fix, applied
-    from day one here instead of retrofitted later. Deliberately not a
-    fixed pre-picked frame (unlike the rain pillar's 3 static clips):
-    this pillar's whole point is variety, so the thumbnail should vary
-    with whichever clip actually got used."""
-    out_path = TEMP_DIR / f"thumb_{seed}.jpg"
-    duration = _media_duration_s(clip_path)
-    offset = min(2.0, max(duration / 3, 0.0))
-    cmd = ["ffmpeg", "-y", "-i", str(clip_path), "-ss", f"{offset:.2f}", "-vframes", "1", str(out_path)]
-    try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
-    except Exception as exc:
-        log.warning("Failed to extract thumbnail frame: %s", exc)
-        return None
-    if result.returncode != 0 or not out_path.exists() or out_path.stat().st_size == 0:
-        log.warning("ffmpeg thumbnail-frame extraction failed: %s", result.stderr[-500:])
-        return None
-    return out_path
 
 
 def _pick_jazz_track() -> Path | None:
@@ -180,63 +124,6 @@ def _pick_jazz_track() -> Path | None:
     if not tracks:
         return None
     return random.choice(tracks)
-
-
-def _compose_short(broll_path: Path, jazz_path: Path | None, output_path: Path, duration_s: float) -> bool:
-    fade_out_start = max(duration_s - FADE_S, 0.0)
-    video_filter = (
-        f"scale={TARGET_W}:{TARGET_H}:force_original_aspect_ratio=increase,"
-        f"crop={TARGET_W}:{TARGET_H},"
-        f"setsar=1,fade=t=in:st=0:d={FADE_S},fade=t=out:st={fade_out_start:.3f}:d={FADE_S}[v]"
-    )
-    cmd = ["ffmpeg", "-y", "-stream_loop", "-1", "-i", str(broll_path)]
-    if jazz_path is not None:
-        cmd += ["-stream_loop", "-1", "-i", str(jazz_path)]
-        audio_filter = f"afade=t=in:st=0:d={FADE_S},afade=t=out:st={fade_out_start:.3f}:d={FADE_S}[a]"
-        filter_complex = f"[0:v]{video_filter};[1:a]{audio_filter}"
-        audio_args = ["-map", "[a]"]
-    else:
-        # No jazz track available this run (thin library) -- still ship
-        # the real animal clip with silent audio rather than skip the
-        # whole upload over a missing music layer.
-        cmd += ["-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo"]
-        filter_complex = f"[0:v]{video_filter}"
-        audio_args = ["-map", "1:a"]
-    cmd += [
-        "-filter_complex",
-        filter_complex,
-        "-map",
-        "[v]",
-        *audio_args,
-        "-t",
-        f"{duration_s:.3f}",
-        "-c:v",
-        "libx264",
-        "-preset",
-        "medium",
-        "-crf",
-        "20",
-        "-pix_fmt",
-        "yuv420p",
-        "-c:a",
-        "aac",
-        "-b:a",
-        "160k",
-        "-ar",
-        "44100",
-        "-movflags",
-        "+faststart",
-        str(output_path),
-    ]
-    try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
-    except Exception as exc:
-        log.error("ffmpeg failed to run: %s", exc)
-        return False
-    if result.returncode != 0:
-        log.error("ffmpeg exited %d: %s", result.returncode, result.stderr[-2000:])
-        return False
-    return output_path.exists() and output_path.stat().st_size > 0
 
 
 def _music_credit_line(jazz_meta: dict | None) -> str:

@@ -63,8 +63,9 @@ jobs:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
           COMMENT_REPLY_MAX_PER_RUN: ${{ vars.COMMENT_REPLY_MAX_PER_RUN || '15' }}
+          DRY_RUN: ${{ github.event.inputs.dry_run }}
         run: |
-          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+          if [ "$DRY_RUN" = "true" ]; then
             python scripts/reply_to_comments.py --dry-run
           else
             python scripts/reply_to_comments.py

@@ -47,9 +47,37 @@ if str(ROOT) not in sys.path:
 
 from utils.ai_titling import generate_classical_video_copy  # noqa: E402
 from utils.classical_branding import HOOK_BY_MOOD, branded_title, playlist_bucket_for_title  # noqa: E402
+from utils.ffmpeg_helpers import (  # noqa: E402
+    bake_filtered_segment,
+    load_sidecar,
+    media_duration_s,
+    prepare_seamless_loop_clip,
+)
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("generate_classical_ambience")
+
+# Backward-compat aliases (tests may import the _-prefixed names from this module).
+_load_sidecar = load_sidecar
+_media_duration_s = media_duration_s
+
+
+def _prepare_seamless_loop_clip(clip_path: Path) -> Path:
+    return prepare_seamless_loop_clip(
+        clip_path, temp_dir=TEMP_DIR, loop_crossfade_s=LOOP_CROSSFADE_S, logger=log
+    )
+
+
+def _bake_filtered_segment(clip_path: Path) -> Path | None:
+    return bake_filtered_segment(
+        clip_path,
+        temp_dir=TEMP_DIR,
+        target_w=TARGET_W,
+        target_h=TARGET_H,
+        target_fps=TARGET_FPS,
+        gop_size=60,
+        logger=log,
+    )
 
 # The one fixed, real Pixabay clip the channel owner hand-picked after
 # reviewing real preview frames of several candidates (chat, 2026-07-22)
@@ -84,26 +112,8 @@ DEFAULT_TAGS = [
 ]
 
 
-def _load_sidecar(media_path: Path) -> dict:
-    meta_path = media_path.with_suffix(".json")
-    try:
-        data = json.loads(meta_path.read_text(encoding="utf-8"))
-    except Exception:
-        return {}
-    return data if isinstance(data, dict) else {}
-
-
 def _pick_mood() -> str:
     return random.choice(list(HOOK_BY_MOOD.keys())).title()
-
-
-def _media_duration_s(path: Path) -> float:
-    cmd = ["ffprobe", "-v", "quiet", "-show_entries", "format=duration", "-of", "csv=p=0", str(path)]
-    try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=15)
-        return float(result.stdout.strip())
-    except Exception:
-        return 0.0
 
 
 def _pick_track() -> Path | None:
@@ -123,105 +133,6 @@ def _pick_track() -> Path | None:
     chosen = tracks[0]
     chosen.touch()
     return chosen
-
-
-def _prepare_seamless_loop_clip(clip_path: Path) -> Path:
-    """Bake a short crossfade between the clip's tail and head once, so
-    looping it via -stream_loop has no visible hard cut/motion-snap at
-    the seam -- same technique as every other pillar's identical
-    helper."""
-    out_path = TEMP_DIR / f"seamless_{clip_path.stem}.mp4"
-    if out_path.exists() and out_path.stat().st_size > 0:
-        return out_path
-
-    duration = _media_duration_s(clip_path)
-    fade = min(LOOP_CROSSFADE_S, duration / 6) if duration > 3 else 0.0
-    if fade <= 0:
-        return clip_path
-
-    filter_complex = (
-        f"[0:v]trim=0:{fade:.3f},setpts=PTS-STARTPTS[start];"
-        f"[0:v]trim={duration - fade:.3f}:{duration:.3f},setpts=PTS-STARTPTS[end];"
-        f"[0:v]trim={fade:.3f}:{duration - fade:.3f},setpts=PTS-STARTPTS[mid];"
-        f"[end][start]xfade=transition=fade:duration={fade:.3f}:offset=0[blend];"
-        "[mid][blend]concat=n=2:v=1:a=0[out]"
-    )
-    cmd = [
-        "ffmpeg",
-        "-y",
-        "-i",
-        str(clip_path),
-        "-filter_complex",
-        filter_complex,
-        "-map",
-        "[out]",
-        "-an",
-        "-pix_fmt",
-        "yuv420p",
-        "-preset",
-        "veryfast",
-        str(out_path),
-    ]
-    try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
-    except Exception as exc:
-        log.warning("Failed to bake seamless loop clip, using raw clip instead: %s", exc)
-        return clip_path
-    if result.returncode != 0 or not out_path.exists() or out_path.stat().st_size == 0:
-        log.warning("ffmpeg seamless-loop bake failed, using raw clip instead: %s", result.stderr[-500:])
-        return clip_path
-    log.info("Baked seamless loop clip from %s (crossfade=%.2fs).", clip_path.name, fade)
-    return out_path
-
-
-def _bake_filtered_segment(clip_path: Path) -> Path | None:
-    """Same approach as every other pillar's identical helper: apply the
-    scale filter chain ONCE against the pinned clip's own short duration,
-    producing a small already-encoded segment the final render can loop
-    with -c:v copy."""
-    out_path = TEMP_DIR / f"filtered_{clip_path.stem}.mp4"
-    if out_path.exists() and out_path.stat().st_size > 0:
-        return out_path
-
-    video_filter = (
-        f"scale={TARGET_W}:{TARGET_H}:force_original_aspect_ratio=increase,"
-        f"crop={TARGET_W}:{TARGET_H},fps={TARGET_FPS},setsar=1,format=yuv420p"
-    )
-    cmd = [
-        "ffmpeg",
-        "-y",
-        "-i",
-        str(clip_path),
-        "-vf",
-        video_filter,
-        "-an",
-        "-r",
-        str(TARGET_FPS),
-        "-c:v",
-        "libx264",
-        "-preset",
-        "veryfast",
-        "-profile:v",
-        "high",
-        "-g",
-        "60",
-        "-keyint_min",
-        "60",
-        "-sc_threshold",
-        "0",
-        "-crf",
-        "20",
-        str(out_path),
-    ]
-    try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=180)
-    except Exception as exc:
-        log.error("Failed to bake filtered segment: %s", exc)
-        return None
-    if result.returncode != 0 or not out_path.exists() or out_path.stat().st_size == 0:
-        log.error("ffmpeg filtered-segment bake failed: %s", result.stderr[-1500:])
-        return None
-    return out_path
 
 
 def _compose_classical(filtered_segment: Path, track_path: Path, output_path: Path, duration_s: float) -> bool:

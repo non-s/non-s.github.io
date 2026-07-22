@@ -19,7 +19,7 @@ def test_build_storm_frame_phase_0_equals_phase_1():
     must be mathematically seamless, not just visually close."""
     a = storm_scene.build_storm_frame(0.0)
     b = storm_scene.build_storm_frame(1.0)
-    assert list(a.getdata()) == list(b.getdata())
+    assert list(a.get_flattened_data()) == list(b.get_flattened_data())
 
 
 def test_build_storm_frame_at_a_flash_phase_is_brighter_than_between_flashes():
@@ -31,7 +31,7 @@ def test_build_storm_frame_at_a_flash_phase_is_brighter_than_between_flashes():
 def test_storm_clouds_draws_something():
     layer = storm_scene.storm_clouds(400, 300, seed=1)
     assert layer.size == (400, 300)
-    assert any(pixel[3] > 0 for pixel in layer.getdata())
+    assert any(pixel[3] > 0 for pixel in layer.get_flattened_data())
 
 
 def test_build_storm_short_frame_returns_expected_size_and_mode():
@@ -43,7 +43,7 @@ def test_build_storm_short_frame_returns_expected_size_and_mode():
 def test_build_storm_short_frame_phase_0_equals_phase_1():
     a = storm_scene.build_storm_short_frame(0.0)
     b = storm_scene.build_storm_short_frame(1.0)
-    assert list(a.getdata()) == list(b.getdata())
+    assert list(a.get_flattened_data()) == list(b.get_flattened_data())
 
 
 def test_encode_loop_builds_expected_ffmpeg_command(tmp_path, monkeypatch):

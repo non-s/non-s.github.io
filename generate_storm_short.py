@@ -26,11 +26,40 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from utils.ai_titling import generate_video_copy  # noqa: E402
+from utils.ffmpeg_helpers import (  # noqa: E402
+    compose_short as _compose_short_impl,
+    load_sidecar,
+    media_duration_s,
+    prepare_seamless_loop_clip,
+)
 from utils.storm_audio import generate_rain_bed, write_wav  # noqa: E402
 from utils.storm_branding import HOOK_BY_SCENE, branded_title, playlist_bucket_for_title  # noqa: E402
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("generate_storm_short")
+
+# Backward-compat aliases (tests may import the _-prefixed names from this module).
+_load_sidecar = load_sidecar
+_media_duration_s = media_duration_s
+
+
+def _prepare_seamless_loop_clip(clip_path: Path) -> Path:
+    return prepare_seamless_loop_clip(
+        clip_path, temp_dir=TEMP_DIR, loop_crossfade_s=LOOP_CROSSFADE_S, logger=log
+    )
+
+
+def _compose_short(broll_path: Path, rain_bed_path: Path, output_path: Path, duration_s: float) -> bool:
+    return _compose_short_impl(
+        broll_path,
+        rain_bed_path,
+        output_path,
+        duration_s,
+        target_w=TARGET_W,
+        target_h=TARGET_H,
+        fade_s=FADE_S,
+        logger=log,
+    )
 
 # One fixed, real Pixabay clip (chat, 2026-07-21: the channel owner picked
 # this specific rainy-porch-with-lantern clip by hand and asked for it to
@@ -69,76 +98,8 @@ DEFAULT_TAGS = [
 ]
 
 
-def _load_sidecar(media_path: Path) -> dict:
-    meta_path = media_path.with_suffix(".json")
-    try:
-        data = json.loads(meta_path.read_text(encoding="utf-8"))
-    except Exception:
-        return {}
-    return data if isinstance(data, dict) else {}
-
-
 def _pick_scene() -> str:
     return random.choice(list(HOOK_BY_SCENE.keys())).title()
-
-
-def _media_duration_s(path: Path) -> float:
-    cmd = ["ffprobe", "-v", "quiet", "-show_entries", "format=duration", "-of", "csv=p=0", str(path)]
-    try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=15)
-        return float(result.stdout.strip())
-    except Exception:
-        return 0.0
-
-
-def _prepare_seamless_loop_clip(clip_path: Path) -> Path:
-    """Same technique as generate_storm_ambience.py's identical helper: a
-    short crossfade between the clip's tail and head so -stream_loop has
-    no visible hard cut/motion-snap. The illustrated pinned Short clip is
-    already seamless by construction; real Pixabay footage (usually
-    shorter than a 30-58s Short, so it loops at least once) is not."""
-    out_path = TEMP_DIR / f"seamless_{clip_path.stem}.mp4"
-    if out_path.exists() and out_path.stat().st_size > 0:
-        return out_path
-
-    duration = _media_duration_s(clip_path)
-    fade = min(LOOP_CROSSFADE_S, duration / 6) if duration > 3 else 0.0
-    if fade <= 0:
-        return clip_path
-
-    filter_complex = (
-        f"[0:v]trim=0:{fade:.3f},setpts=PTS-STARTPTS[start];"
-        f"[0:v]trim={duration - fade:.3f}:{duration:.3f},setpts=PTS-STARTPTS[end];"
-        f"[0:v]trim={fade:.3f}:{duration - fade:.3f},setpts=PTS-STARTPTS[mid];"
-        f"[end][start]xfade=transition=fade:duration={fade:.3f}:offset=0[blend];"
-        "[mid][blend]concat=n=2:v=1:a=0[out]"
-    )
-    cmd = [
-        "ffmpeg",
-        "-y",
-        "-i",
-        str(clip_path),
-        "-filter_complex",
-        filter_complex,
-        "-map",
-        "[out]",
-        "-an",
-        "-pix_fmt",
-        "yuv420p",
-        "-preset",
-        "veryfast",
-        str(out_path),
-    ]
-    try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
-    except Exception as exc:
-        log.warning("Failed to bake seamless loop clip, using raw clip instead: %s", exc)
-        return clip_path
-    if result.returncode != 0 or not out_path.exists() or out_path.stat().st_size == 0:
-        log.warning("ffmpeg seamless-loop bake failed, using raw clip instead: %s", result.stderr[-500:])
-        return clip_path
-    log.info("Baked seamless loop clip from %s (crossfade=%.2fs).", clip_path.name, fade)
-    return out_path
 
 
 def _prepare_rain_bed(seed: int) -> Path:
@@ -148,62 +109,6 @@ def _prepare_rain_bed(seed: int) -> Path:
     bed = generate_rain_bed(duration_s=RAIN_BED_SECONDS, seed=seed, thunder_count=random.randint(0, 1))
     write_wav(bed, bed_path)
     return bed_path
-
-
-def _compose_short(broll_path: Path, rain_bed_path: Path, output_path: Path, duration_s: float) -> bool:
-    fade_out_start = max(duration_s - FADE_S, 0.0)
-    video_filter = (
-        f"scale={TARGET_W}:{TARGET_H}:force_original_aspect_ratio=increase,"
-        f"crop={TARGET_W}:{TARGET_H},"
-        f"setsar=1,fade=t=in:st=0:d={FADE_S},fade=t=out:st={fade_out_start:.3f}:d={FADE_S}[v]"
-    )
-    audio_filter = f"afade=t=in:st=0:d={FADE_S},afade=t=out:st={fade_out_start:.3f}:d={FADE_S}[a]"
-    cmd = [
-        "ffmpeg",
-        "-y",
-        "-stream_loop",
-        "-1",
-        "-i",
-        str(broll_path),
-        "-stream_loop",
-        "-1",
-        "-i",
-        str(rain_bed_path),
-        "-filter_complex",
-        f"[0:v]{video_filter};[1:a]{audio_filter}",
-        "-map",
-        "[v]",
-        "-map",
-        "[a]",
-        "-t",
-        f"{duration_s:.3f}",
-        "-c:v",
-        "libx264",
-        "-preset",
-        "medium",
-        "-crf",
-        "20",
-        "-pix_fmt",
-        "yuv420p",
-        "-c:a",
-        "aac",
-        "-b:a",
-        "160k",
-        "-ar",
-        "44100",
-        "-movflags",
-        "+faststart",
-        str(output_path),
-    ]
-    try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
-    except Exception as exc:
-        log.error("ffmpeg failed to run: %s", exc)
-        return False
-    if result.returncode != 0:
-        log.error("ffmpeg exited %d: %s", result.returncode, result.stderr[-2000:])
-        return False
-    return output_path.exists() and output_path.stat().st_size > 0
 
 
 def _build_metadata(scene: str, duration_s: float, video_path: Path, slug: str, *, broll_meta: dict) -> dict:
