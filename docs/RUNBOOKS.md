@@ -11,12 +11,11 @@
 
 ## Media Library Looks Empty
 
-1. Trigger `admin-resync-broll.yml` to force a fresh b-roll sync.
-2. Trigger `admin-check-media-library.yml` to see current bgm/b-roll
-   counts.
-3. If Jamendo/Pixabay supply is thin, the next scheduled `youtube-bot.yml`
-   run will keep retrying — an empty-supply cycle is a skip, not a
-   failure.
+Each format loops one fixed, committed real clip (`_assets/video/pinned_storm_*`)
+and a procedurally-synthesized rain/thunder bed -- there's no external
+media-fetch step in the scheduled pipeline to go stale. If a pinned clip
+is ever missing, the generator falls back to the illustrated scene and
+logs a warning; check `_assets/video/` for the expected files.
 
 ## Studio Reach Import
 

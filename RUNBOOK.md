@@ -30,11 +30,12 @@ name in that issue:
 1. Is `YOUTUBE_PUBLISHING_ENABLED` really meant to be `1` right now? If
    publishing was intentionally paused, this is a false positive --
    nothing to do.
-2. Check the last few `YouTube Bot - Shorts only` / `Lofi Mix - daily`
-   runs: are they green but producing nothing? Look for "No new
-   downloadable" warnings in the log -- that points at an empty/stale
-   `_assets/video/lofi_broll` or `_assets/audio/bgm` library, most often
-   because `PIXABAY_API_KEY` or the Jamendo API is failing silently.
+2. Check the last few `Storm Ambience - rain & thunder for sleep` /
+   `Storm Shorts - rain & thunder` runs: are they green but producing
+   nothing? Each format loops one fixed, committed real clip now (no
+   live fetch, no external dependency to go stale) -- an upload-step
+   failure here is far more likely `uploadLimitExceeded` (see below)
+   than a missing-media issue.
 3. `scripts/check_publishing_health.py` can be run locally (or via
    `workflow_dispatch`) for the exact numbers: hours since the last real
    upload, and why it's counted as stale.

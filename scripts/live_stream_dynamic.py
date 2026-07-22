@@ -58,8 +58,6 @@ from utils.youtube_oauth import can_manage_comments, credentials_from_token_info
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger(__name__)
 
-BGM_DIR = ROOT / "_assets" / "audio" / "bgm"
-
 # The 24/7 relay's one committed, seamless-loop storm scene -- same asset
 # generate_storm_ambience.py/generate_storm_short.py fall back to when no
 # real Pixabay clip is synced. See scripts/generate_storm_scene.py.
@@ -283,10 +281,11 @@ class DynamicStreamer:
             return STORM_REAL_PINNED_CLIP
         return STORM_PINNED_BROLL_CLIP if STORM_PINNED_BROLL_CLIP.exists() else None
 
-    def _build_storm_audio_inputs(self) -> tuple[Path, Path | None]:
-        """Rain/thunder bed (always present) + an optional quiet bgm track
-        underneath -- same design as generate_storm_ambience.py's
-        MUSIC_LAYER_PROBABILITY, re-rolled on every relay restart."""
+    def _build_storm_audio_input(self) -> Path:
+        """Rain/thunder bed -- the whole audio, no music layer (chat,
+        2026-07-22: tried an optional quiet Jamendo layer, dropped it --
+        Jamendo's catalog is music, not sound effects, so it never
+        actually delivered rain sound, just added complexity)."""
         from utils.storm_audio import generate_rain_bed, write_wav
 
         rain_bed_path = self.temp_dir / "storm_rain_bed.wav"
@@ -295,14 +294,7 @@ class DynamicStreamer:
                 duration_s=75.0, seed=random.randint(0, 1_000_000), thunder_count=random.randint(1, 3)
             )
             write_wav(bed, rain_bed_path)
-
-        music_path = None
-        probability = float(os.environ.get("STORM_MUSIC_LAYER_PROBABILITY", "0.35"))
-        if random.random() < probability:
-            tracks = list(BGM_DIR.glob("jamendo_*.mp3"))
-            if tracks:
-                music_path = random.choice(tracks)
-        return rain_bed_path, music_path
+        return rain_bed_path
 
     def _prepare_seamless_loop_clip(self, clip_path: Path) -> Path:
         """Bake a short crossfade between the clip's tail and its head once,
@@ -382,11 +374,11 @@ class DynamicStreamer:
     def build_stream_command(self) -> list[str] | None:
         """Build the ffmpeg command that streams straight to RTMP: one
         looped (seamlessly crossfaded) clip as video, the synthesized
-        rain/thunder bed (plus an optional quiet music track) looped as
-        audio -- no intermediate bake-to-file step. The video loop is a
-        few seconds of work on a short clip, so a restart (crash, cooldown
-        loop) starts producing stream output again within seconds instead
-        of waiting through a fresh multi-hour re-encode.
+        rain/thunder bed looped as audio -- no intermediate bake-to-file
+        step. The video loop is a few seconds of work on a short clip, so
+        a restart (crash, cooldown loop) starts producing stream output
+        again within seconds instead of waiting through a fresh
+        multi-hour re-encode.
         """
         clip_path = self._pick_broll_clip()
         if not clip_path:
@@ -405,17 +397,8 @@ class DynamicStreamer:
         )
 
         cmd = ["ffmpeg", "-y", "-re", "-stream_loop", "-1", "-i", str(video_input)]
-        rain_bed_path, music_path = self._build_storm_audio_inputs()
-        cmd += ["-re", "-stream_loop", "-1", "-i", str(rain_bed_path)]
-        if music_path:
-            cmd += ["-re", "-stream_loop", "-1", "-i", str(music_path)]
-            filter_complex = (
-                "[1:a]volume=1.0[rain];[2:a]volume=0.16[music];"
-                "[rain][music]amix=inputs=2:duration=first:dropout_transition=0[a]"
-            )
-            cmd += ["-filter_complex", filter_complex, "-map", "0:v", "-map", "[a]"]
-        else:
-            cmd += ["-map", "0:v", "-map", "1:a"]
+        rain_bed_path = self._build_storm_audio_input()
+        cmd += ["-re", "-stream_loop", "-1", "-i", str(rain_bed_path), "-map", "0:v", "-map", "1:a"]
 
         if self.stream_key == "test":
             output = ["-f", "flv", "test_output.flv"]

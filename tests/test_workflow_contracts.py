@@ -18,7 +18,6 @@ def test_workflows_parse_and_include_pipeline_steps():
     storm_workflow = (ROOT / ".github/workflows/storm-ambience.yml").read_text(encoding="utf-8")
     assert "Sincronizar main remoto antes da decisao" in storm_workflow
     assert "git checkout -B main origin/main" in storm_workflow
-    assert "scripts/sync_jamendo_music.py" in storm_workflow
     assert "generate_storm_ambience.py" in storm_workflow
     assert "Storm ambience automation state -" in storm_workflow
     assert yaml.safe_load(storm_workflow)["concurrency"]["group"] == "storm-ambience"
@@ -55,7 +54,6 @@ def test_storm_publisher_syncs_latest_main_before_publish_decision():
     names = [step.get("name") for step in steps]
 
     sync_index = names.index("Sincronizar main remoto antes da decisao")
-    assert sync_index < names.index("Sincronizar biblioteca de musica")
     assert sync_index < names.index("Gerar video de ambiencia de tempestade")
     assert sync_index < names.index("Upload para o YouTube")
 

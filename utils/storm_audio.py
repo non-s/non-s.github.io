@@ -31,7 +31,9 @@ sample n-1 as special.
 
 No API key, network call, or external asset required -- this works
 standalone. generate_storm_ambience.py renders this loop's WAV as the
-audio bed and mixes it under an optional quiet Jamendo track.
+entire audio bed -- no music layer (chat, 2026-07-22: an optional quiet
+Jamendo layer was tried and dropped; Jamendo's catalog is music, not
+sound effects, so it never delivered rain sound, just extra complexity).
 """
 
 from __future__ import annotations

@@ -232,13 +232,6 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Maximum runtime (minutes) for a generated storm-ambience video.",
         "Lower it for faster/smaller uploads.",
     ),
-    FeatureFlag(
-        "STORM_MUSIC_LAYER_PROBABILITY",
-        "0.35",
-        "publishing",
-        "Chance (0.0-1.0) a storm-ambience video also layers in one quiet Jamendo track.",
-        "Set to 0 for pure rain/thunder ambience only.",
-    ),
 )
 
 

@@ -1,15 +1,13 @@
 name: "Storm Ambience - rain & thunder for sleep"
 
-# New content pillar (growth pass, 2026-07-21): real "rain sounds for
-# sleep" / "thunderstorm ambience" search intent instead of the
-# oversaturated "anime lofi" terms the rest of the channel competes on --
+# Real "rain sounds for sleep" / "thunderstorm ambience" search intent --
 # see utils/storm_branding.py's module docstring. generate_storm_ambience.py
-# loops the pinned animated storm clip (bake-once, loop-cheaply, same
-# technique as generate_lofi_mix.py) under a procedurally-synthesized
-# rain/thunder bed (utils/storm_audio.py, no external asset needed) and an
-# optional quiet Jamendo track. Deliberately sparse cadence (2/day) while
-# this pillar is new -- see README's "Cadence" note on why the existing
-# formats already learned that lesson the hard way (uploadLimitExceeded).
+# loops a fixed real Pixabay clip (bake-once, loop-cheaply) under a
+# procedurally-synthesized rain/thunder bed (utils/storm_audio.py, no
+# external asset needed, no music layer -- see that script's module
+# docstring for why a Jamendo layer was tried and dropped). Deliberately
+# sparse cadence (2/day) -- see README's "Cadence" note on why this
+# channel already learned the uploadLimitExceeded lesson the hard way.
 #
 # Gated by its own STORM_AMBIENCE_ENABLED variable, independent of
 # YOUTUBE_PUBLISHING_ENABLED -- a new content pillar is its own decision
@@ -47,14 +45,13 @@ jobs:
       MEDIA_LIFECYCLE_CLEANUP: ${{ vars.MEDIA_LIFECYCLE_CLEANUP || '1' }}
       QUOTA_GUARD_MODE: ${{ vars.QUOTA_GUARD_MODE || 'block' }}
       QUOTA_GUARD_MAX_DAILY_RATIO: ${{ vars.QUOTA_GUARD_MAX_DAILY_RATIO || '0.95' }}
-      # Shared daily counters with youtube-bot.yml/lofi-mix-daily.yml --
-      # all three must agree on these values.
+      # Shared daily counters with storm-shorts.yml -- both must agree on
+      # these values.
       YOUTUBE_DAILY_QUOTA_BUDGET: "10000"
       YOUTUBE_DAILY_UPLOAD_BUDGET: "30"
       YOUTUBE_DESCRIPTION_MODE: ${{ vars.YOUTUBE_DESCRIPTION_MODE || 'full' }}
       STORM_MIN_DURATION_MINUTES: ${{ vars.STORM_MIN_DURATION_MINUTES || '45' }}
       STORM_MAX_DURATION_MINUTES: ${{ vars.STORM_MAX_DURATION_MINUTES || '75' }}
-      STORM_MUSIC_LAYER_PROBABILITY: ${{ vars.STORM_MUSIC_LAYER_PROBABILITY || '0.35' }}
     steps:
       - name: "Checkout"
         uses: actions/checkout@v7.0.0
@@ -86,22 +83,6 @@ jobs:
             printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
             chmod 600 youtube_token.json
           fi
-      - name: "Restaurar biblioteca de musica do cache"
-        uses: actions/cache@v4
-        with:
-          path: |
-            _assets/audio/bgm
-          key: lofi-media-${{ github.run_id }}
-          restore-keys: |
-            lofi-media-
-      - name: "Sincronizar biblioteca de musica"
-        # Best-effort: the optional quiet music layer degrades to pure
-        # rain/thunder (no error) when this library is empty -- see
-        # generate_storm_ambience.py's MUSIC_LAYER_PROBABILITY branch.
-        run: python scripts/sync_jamendo_music.py || echo "::warning::Jamendo sync failed this cycle; continuing with pure rain/thunder ambience."
-        env:
-          PYTHONIOENCODING: utf-8
-          PYTHONUNBUFFERED: "1"
       - name: "Gerar video de ambiencia de tempestade"
         run: python generate_storm_ambience.py
         env:

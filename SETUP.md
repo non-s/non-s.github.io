@@ -70,12 +70,11 @@ On Windows, you can instead run the **Build auth_youtube.exe (Windows)** workflo
    twice a day and `storm-shorts.yml` publishes vertical Shorts every 2
    hours, both gated by this variable, independent of
    `YOUTUBE_PUBLISHING_ENABLED`. Neither needs a new secret beyond
-   `YOUTUBE_TOKEN` and `PIXABAY_API_KEY` (real rain/storm b-roll footage
-   via `scripts/sync_storm_broll.py`; falls back to the illustrated
-   pinned clip if that key is missing or the sync hasn't run yet).
+   `YOUTUBE_TOKEN` -- each format loops one fixed, hand-picked real
+   Pixabay clip committed in the repo, falling back to the illustrated
+   pinned scene only if that file is ever missing.
    Optionally tune `STORM_MIN_DURATION_MINUTES` / `STORM_MAX_DURATION_MINUTES`
-   (default 45-75, tighten toward exactly 1 hour with e.g. 55/65) and
-   `STORM_MUSIC_LAYER_PROBABILITY` (default 0.35).
+   (default 45-75, tighten toward exactly 1 hour with e.g. 55/65).
 3. `live-stream.yml` needs `YOUTUBE_STREAM_KEY` set -- once it is,
    `live-stream-watchdog.yml` keeps the relay running on its own, looping
    the pinned storm scene under the synthesized rain/thunder bed.

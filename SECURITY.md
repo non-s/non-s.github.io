@@ -24,8 +24,8 @@ In scope:
 
 Out of scope:
 
-- Third-party services we integrate with (YouTube, Pixabay, Jamendo).
-  Report those upstream.
+- Third-party services we integrate with (YouTube, Pixabay). Report
+  those upstream.
 - Issues already known and tracked publicly in the GitHub issue tracker.
 - Denial-of-service, social engineering, or physical attacks against
   infrastructure we don't control.

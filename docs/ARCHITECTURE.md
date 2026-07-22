@@ -1,17 +1,14 @@
 # Amber Hours Architecture
 
-Amber Hours is a zero-cost rain & thunder ambience production loop:
-real-world Pixabay storm/rain b-roll (falling back to an original
-animated storm scene) + procedurally-synthesized rain/thunder audio
-become a long-form ambience video, looping vertical YouTube Shorts, and
-a 24/7 YouTube Live relay, with no narration and no editorial/story
-queue.
+Amber Hours is a zero-cost rain & thunder ambience production loop: one
+fixed, real Pixabay clip per format (falling back to an original
+animated storm scene if ever missing) + procedurally-synthesized
+rain/thunder audio (no music layer) become a long-form ambience video,
+looping vertical YouTube Shorts, and a 24/7 YouTube Live relay, with no
+narration and no editorial/story queue.
 
 ## Core Loops
 
-- Media sync: `scripts/sync_storm_broll.py` (Pixabay storm/rain b-roll
-  cache), `scripts/sync_jamendo_music.py` (Jamendo bgm cache, feeds the
-  optional quiet music layer).
 - Production: `generate_storm_ambience.py` renders one ~1-hour ambience
   video per run; `generate_storm_short.py` renders one vertical Short.
 - Upload: `upload_youtube.py` publishes through the official YouTube Data

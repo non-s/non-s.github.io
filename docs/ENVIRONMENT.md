@@ -5,11 +5,9 @@
 | Name | Required | Use |
 | --- | --- | --- |
 | `YOUTUBE_TOKEN` | yes | OAuth token JSON for official YouTube Data API upload and optional Analytics API reads. |
-| `PIXABAY_API_KEY` | yes | Free Pixabay API key used for the storm pillar's real rain/storm b-roll (`video_type=film`, `scripts/sync_storm_broll.py`). |
+| `PIXABAY_API_KEY` | only for the admin b-roll resync/search tools (`admin-resync-broll.yml`, `admin-search-broll-candidates.yml`) | The scheduled pipeline no longer fetches footage live -- each format loops one fixed, hand-picked real Pixabay clip committed in the repo. |
 | `YOUTUBE_STREAM_KEY` | only for the 24/7 live relay (`live-stream.yml`) | RTMP stream key the live relay pushes to. |
 
-Jamendo music sync (`scripts/sync_jamendo_music.py`) uses a registered
-Jamendo client id hardcoded in that script and needs no separate secret.
 No AI text provider key is required — title/description text is
 template-based by default; an optional translation feature in
 `upload_youtube.py` degrades gracefully to English-only when no
@@ -61,7 +59,6 @@ either way, never required.
 | `STORM_AMBIENCE_ENABLED` | `0` | publishing | Master switch for the `storm-ambience.yml` pillar (real rain/thunder ambience), independent of `YOUTUBE_PUBLISHING_ENABLED`. | Set to 0 to pause this pillar. |
 | `STORM_MIN_DURATION_MINUTES` | `45` | publishing | Minimum runtime (minutes) for a generated storm-ambience video. | Lower it for faster/smaller uploads. |
 | `STORM_MAX_DURATION_MINUTES` | `75` | publishing | Maximum runtime (minutes) for a generated storm-ambience video. | Lower it for faster/smaller uploads. |
-| `STORM_MUSIC_LAYER_PROBABILITY` | `0.35` | publishing | Chance (0.0-1.0) a storm-ambience video also layers in one quiet Jamendo track. | Set to 0 for pure rain/thunder ambience only. |
 
 YouTube `videos.insert` calls use their own daily upload bucket. Keep
 `YOUTUBE_DAILY_UPLOAD_BUDGET=100` unless Google Cloud shows a different

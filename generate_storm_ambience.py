@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
 """Generate one long-form "real rain & thunder ambience" video: the
 animated storm scene looped under a procedurally-synthesized rain/thunder
-bed, with an optional quiet Jamendo track mixed underneath. No narration.
+bed. No narration, no music layer -- pure rain and thunder is the whole
+point of this niche (chat, 2026-07-22: the channel owner tried Jamendo as
+a background-music layer and decided against it -- Jamendo's catalog is
+music, not sound effects, so even its best-tagged "rain" results are
+ambient/new-age *songs* loosely tagged nature, not rain sound, and the
+commercially-safe yield was too thin (~1.5%-6% in live checks) to be
+worth the added complexity for a layer that didn't serve the format).
 
 New pillar (growth pass, 2026-07-21): picked over another lofi variant
 specifically to stop competing on "anime lofi" -- one of YouTube's most
@@ -18,12 +24,10 @@ whole length. Renders at real 4K (3840x2160, chat 2026-07-21: the channel
 owner explicitly asked for it across every format, accepting the
 reliability tradeoff -- see utils/broll.py's fetch_pixabay() comment for
 the OOM risk this reintroduces and why it's accepted rather than newly
-mitigated). The rain/thunder bed
-(utils/storm_audio.py) is a WAV loop with its own, deliberately
-non-matching period, and an optional Jamendo track loops on its own period
-too -- three independent cycle lengths mean the combined video is never
-audibly/visibly repeating in lockstep, even though each layer loops
-individually.
+mitigated). The rain/thunder bed (utils/storm_audio.py) is a WAV loop
+with its own, deliberately non-matching period vs. the video loop, so the
+combined video is never audibly/visibly repeating in lockstep even
+though each layer loops individually.
 
 Writes `_videos/storm-*.mp4` + matching `.json` that
 upload_youtube.py's `_collect_pending_meta()` picks up (extended to
@@ -65,7 +69,6 @@ FALLBACK_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_storm_clip.mp4"
 # Used directly as the YouTube thumbnail too, same reasoning as
 # generate_lofi_mix.py's BRAND_THUMBNAIL_IMAGE.
 BRAND_THUMBNAIL_IMAGE = ROOT / "_assets" / "branding" / "storm_scene_1920x1080.png"
-BGM_DIR = ROOT / "_assets" / "audio" / "bgm"
 VIDEOS_DIR = ROOT / "_videos"
 TEMP_DIR = ROOT / "_videos" / "temp_storm"
 
@@ -81,8 +84,6 @@ RAIN_BED_SECONDS = 53.0  # deliberately not a round multiple of the video loop's
 LOOP_CROSSFADE_S = 1.0  # same value/technique as generate_lofi_mix.py's identical constant
 MIN_DURATION_MINUTES = float(os.environ.get("STORM_MIN_DURATION_MINUTES", "45"))
 MAX_DURATION_MINUTES = float(os.environ.get("STORM_MAX_DURATION_MINUTES", "75"))
-MUSIC_LAYER_PROBABILITY = float(os.environ.get("STORM_MUSIC_LAYER_PROBABILITY", "0.35"))
-MUSIC_LAYER_VOLUME = 0.16  # quiet enough that rain/thunder stays the actual point
 
 # Real pt-BR search-intent tags for this niche (content language pivot,
 # chat 2026-07-21) -- actual phrases people search, not machine
@@ -238,7 +239,6 @@ def _prepare_rain_bed(seed: int) -> Path:
 def _compose_storm(
     filtered_segment: Path,
     rain_bed_path: Path,
-    music_path: Path | None,
     output_path: Path,
     duration_s: float,
 ) -> bool:
@@ -253,15 +253,8 @@ def _compose_storm(
         "-1",
         "-i",
         str(rain_bed_path),
-    ]
-    if music_path is not None:
-        cmd += ["-stream_loop", "-1", "-i", str(music_path)]
-        filter_complex = f"[1:a]volume=1.0[rain];[2:a]volume={MUSIC_LAYER_VOLUME}[music];[rain][music]amix=inputs=2:duration=first:dropout_transition=0[a]"
-    else:
-        filter_complex = "[1:a]volume=1.0[a]"
-    cmd += [
         "-filter_complex",
-        filter_complex,
+        "[1:a]volume=1.0[a]",
         "-map",
         "0:v",
         "-map",
@@ -297,36 +290,18 @@ _ALWAYS_ON_DISCLOSURE = (
 )
 
 
-def _music_credit_line(music_meta: dict | None) -> str:
-    if not music_meta:
-        return ""
-    track_name = str(music_meta.get("track_name") or "").strip()
-    if not track_name:
-        return ""
-    artist_name = str(music_meta.get("artist_name") or "").strip()
-    license_url = str(music_meta.get("license_ccurl") or "").strip()
-    credit = f'Música suave ao fundo: "{track_name}"'
-    if artist_name:
-        credit += f" por {artist_name}"
-    if license_url:
-        credit += f" ({license_url})"
-    return credit
-
-
 def _build_metadata(
     scene: str,
     duration_s: float,
     video_path: Path,
     slug: str,
     *,
-    music_meta: dict | None,
     broll_meta: dict,
 ) -> dict:
     hours = duration_s / 3600
     duration_label = f"({hours:.1f} Horas)" if hours >= 1 else f"({max(1, round(duration_s / 60))} Min)"
     template_title = branded_title(scene, suffix=duration_label)
     bucket = playlist_bucket_for_title(template_title)
-    music_credit = _music_credit_line(music_meta)
 
     description_lines = [
         "Som real de chuva com trovão ao longe -- ambiência para ajudar você a dormir, "
@@ -336,8 +311,6 @@ def _build_metadata(
         "",
         f"\U0001f3a7 {_ALWAYS_ON_DISCLOSURE}",
     ]
-    if music_credit:
-        description_lines.append(f"\n\U0001f3b5 {music_credit}")
 
     tags = [scene.lower()] if scene.lower() not in {tag.lower() for tag in DEFAULT_TAGS} else []
     tags += DEFAULT_TAGS
@@ -354,7 +327,6 @@ def _build_metadata(
         scene=scene,
         duration_s=duration_s,
         fallback_title=template_title,
-        credits_lines=[music_credit] if music_credit else None,
     )
     if ai_copy:
         title = ai_copy["title"]
@@ -384,7 +356,6 @@ def _build_metadata(
         "source_url": str(broll_meta.get("license_evidence") or ""),
         "source_license": str(broll_meta.get("license") or ""),
         "source_license_evidence": str(broll_meta.get("license_evidence") or ""),
-        "bgm_track_ids": [str(music_meta.get("track_id"))] if music_meta and music_meta.get("track_id") else [],
         # A daily-multiple-slots key, distinct from the Shorts/mix grids --
         # see generate_lofi_mix.py's identical publish_slot comment for why
         # this matters for upload_youtube.py's per-slot idempotency check.
@@ -414,39 +385,26 @@ def main() -> int:
     scene = _pick_scene()
     duration_s = random.uniform(MIN_DURATION_MINUTES * 60, MAX_DURATION_MINUTES * 60)
 
-    log.info("Stage 1/4: baking filtered segment from %s", broll_path.name)
+    log.info("Stage 1/3: baking filtered segment from %s", broll_path.name)
     seamless_clip = _prepare_seamless_loop_clip(broll_path)
     filtered_segment = _bake_filtered_segment(seamless_clip)
     if filtered_segment is None:
         log.error("Could not prepare a loopable video segment from %s", broll_path.name)
         return 1
 
-    log.info("Stage 2/4: synthesizing rain/thunder bed")
+    log.info("Stage 2/3: synthesizing rain/thunder bed")
     rain_bed_path = _prepare_rain_bed(seed=random.randint(0, 1_000_000))
-
-    music_path: Path | None = None
-    music_meta: dict | None = None
-    if random.random() < MUSIC_LAYER_PROBABILITY:
-        all_bgm_tracks = sorted(BGM_DIR.glob("jamendo_*.mp3"))
-        if all_bgm_tracks:
-            music_path = random.choice(all_bgm_tracks)
-            music_meta = _load_sidecar(music_path)
-            log.info("Stage 3/4: layering a quiet music track (%s)", music_path.name)
-        else:
-            log.info("Stage 3/4: no bgm tracks available, skipping the optional music layer")
-    else:
-        log.info("Stage 3/4: pure rain/thunder ambience (no music layer this time)")
 
     slug = f"ambience-{int(time.time())}-{random.randint(1000, 9999)}"
     video_path = VIDEOS_DIR / f"storm-{slug}.mp4"
     meta_path = video_path.with_suffix(".json")
 
-    log.info("Stage 4/4: composing %.0fs storm ambience at %s", duration_s, video_path.name)
-    if not _compose_storm(filtered_segment, rain_bed_path, music_path, video_path, duration_s):
+    log.info("Stage 3/3: composing %.0fs storm ambience at %s", duration_s, video_path.name)
+    if not _compose_storm(filtered_segment, rain_bed_path, video_path, duration_s):
         log.error("Storm ambience composition failed for %s", slug)
         return 1
 
-    metadata = _build_metadata(scene, duration_s, video_path, slug, music_meta=music_meta, broll_meta=broll_meta)
+    metadata = _build_metadata(scene, duration_s, video_path, slug, broll_meta=broll_meta)
     if BRAND_THUMBNAIL_IMAGE.exists():
         metadata["thumbnail"] = str(BRAND_THUMBNAIL_IMAGE)
     else:

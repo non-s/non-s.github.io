@@ -35,13 +35,13 @@ module docstring for the full vocabulary reasoning).
 - **Audio**: `utils/storm_audio.py` *synthesizes* rain and distant
   thunder procedurally (FFT-shaped periodic noise -- exactly loop-safe by
   construction, no crossfade needed) instead of looping a recorded
-  sample, so there's no recording to license, clear, or run out of. An
-  optional quiet Jamendo track (`STORM_MUSIC_LAYER_PROBABILITY`, default
-  35% of videos, CC-BY commercial-safe only -- see `_commercially_safe()`
-  in `scripts/sync_jamendo_music.py`) layers underneath. The video loop,
-  the rain-bed loop, and the optional music track all have different,
-  non-matching periods, so the combined video never feels like it's
-  repeating in lockstep even though each layer loops individually.
+  sample, so there's no recording to license, clear, or run out of. No
+  music layer (chat, 2026-07-22: an optional quiet Jamendo layer was
+  tried and dropped -- Jamendo's catalog is music, not sound effects, so
+  it never delivered rain sound). The video loop and the rain-bed loop
+  have different, non-matching periods, so the combined video never
+  feels like it's repeating in lockstep even though each layer loops
+  individually.
 - **Real footage, automatic**: `scripts/sync_storm_broll.py` downloads
   real Pixabay storm/rain b-roll (`video_type="film"`) into a rotating
   pool (`_assets/video/storm_broll/`, capped at 16), gated by a tag
@@ -63,10 +63,9 @@ module docstring for the full vocabulary reasoning).
   the same animated scene rendered vertically (1080x1920,
   `build_storm_short_frame()`), a shorter non-matching rain-bed loop,
   30-58s runtime. Published by `storm-shorts.yml` every 2 hours.
-- **Live**: the 24/7 relay (`scripts/live_stream_dynamic.py`) loops the
-  one pinned storm scene (`_assets/video/pinned_storm_clip.mp4`),
-  mixing the synthesized rain bed (plus the same optional Jamendo layer)
-  straight to RTMP.
+- **Live**: the 24/7 relay (`scripts/live_stream_dynamic.py`) loops one
+  pinned real clip (`_assets/video/pinned_storm_live.mp4`), mixing the
+  synthesized rain bed straight to RTMP.
 - **AI titling**: `utils/ai_titling.py` asks an AI provider (Gemini first,
   if `GEMINI_API_KEY` is set, via `utils/ai_helper.py`'s Cerebras/Groq/
   Mistral fallback chain) to write each video's title, description and
@@ -102,11 +101,6 @@ flowchart LR
         brandStorm["storm_scene_1920x1080.png<br/>-> pinned_storm_clip.mp4 + thumbnail"]
     end
 
-    subgraph Sync["Media library (GitHub Actions cache)"]
-        bgm["scripts/sync_jamendo_music.py<br/>-> _assets/audio/bgm<br/>(Jamendo CC BY tracks, optional layer)"]
-        broll["scripts/sync_storm_broll.py<br/>-> _assets/video/storm_broll<br/>(real Pixabay rain/storm footage)"]
-    end
-
     subgraph Generate["Generation"]
         long["generate_storm_ambience.py<br/>~1 hour ambience video"]
         short["generate_storm_short.py<br/>vertical Short, 30-58s"]
@@ -127,10 +121,6 @@ flowchart LR
     brandStorm --> long
     brandStorm --> short
     brandStorm --> live
-    broll --> long
-    broll --> short
-    bgm --> long
-    bgm --> live
     long --> upload
     short --> upload
     live -->|self-hosted RTMP push| YouTube[(YouTube)]
@@ -140,11 +130,7 @@ flowchart LR
     orphans -.monitors.-> YouTube
 ```
 
-The bgm library (`_assets/audio/bgm`) and the storm b-roll pool
-(`_assets/video/storm_broll`) are gitignored and persist across
-ephemeral runners via GitHub Actions cache (`actions/cache`) instead of
-git, so they grow toward their target size over many runs instead of
-resetting to empty every time. The live relay streams straight to RTMP
+The live relay streams straight to RTMP
 with `-stream_loop -1` on both the video clip and audio -- there is no
 bake-to-file step, so a crash/restart is back on air within seconds. The
 looped clip is preprocessed once with a short crossfade baked between
@@ -156,8 +142,8 @@ queue), then briefly ran a "rainy-night anime lofi" format before fully
 pivoting to this rain/thunder ambience pillar (growth pass, 2026-07-21) --
 each prior pipeline and its exclusive scripts/docs/workflows were removed
 once the channel moved on; a handful of shared modules (b-roll fetching,
-upload, media lifecycle, Jamendo sync) survived every cleanup because the
-current pipeline still uses them.
+upload, media lifecycle) survived every cleanup because the current
+pipeline still uses them.
 
 Basic view/watch-time analytics come from manual YouTube Studio CSV
 exports via `studio-reach-import.yml` and `reporting-backfill.yml`, and
@@ -183,8 +169,6 @@ rotate the YouTube token are in [RUNBOOK.md](RUNBOOK.md).
   (`scripts/sync_storm_broll.py`); falls back to the illustrated pinned
   scene if missing.
 
-Jamendo music sync (`scripts/sync_jamendo_music.py`) uses a registered
-Jamendo client id (`CLIENT_ID` in that script) and needs no separate
-GitHub secret. No AI text provider key is required -- title/description
-text is template-based unless `GEMINI_API_KEY` (or an equivalent
-provider key) is configured.
+No AI text provider key is required -- title/description text is
+template-based unless `GEMINI_API_KEY` (or an equivalent provider key)
+is configured.

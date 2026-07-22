@@ -174,7 +174,7 @@ def test_build_stream_command_writes_local_file_in_test_mode(streamer, tmp_path,
     monkeypatch.setattr(live_stream_dynamic, "STORM_PINNED_BROLL_CLIP", storm_clip)
     monkeypatch.setattr(live_stream_dynamic, "STORM_REAL_PINNED_CLIP", tmp_path / "missing_real_clip.mp4")
     monkeypatch.setattr(streamer, "_prepare_seamless_loop_clip", lambda clip: clip)
-    monkeypatch.setattr(streamer, "_build_storm_audio_inputs", lambda: (tmp_path / "rain.wav", None))
+    monkeypatch.setattr(streamer, "_build_storm_audio_input", lambda: tmp_path / "rain.wav")
     streamer.stream_key = "test"
 
     cmd = streamer.build_stream_command()
@@ -188,7 +188,7 @@ def test_build_stream_command_streams_to_rtmp_with_real_stream_key(streamer, tmp
     monkeypatch.setattr(live_stream_dynamic, "STORM_PINNED_BROLL_CLIP", storm_clip)
     monkeypatch.setattr(live_stream_dynamic, "STORM_REAL_PINNED_CLIP", tmp_path / "missing_real_clip.mp4")
     monkeypatch.setattr(streamer, "_prepare_seamless_loop_clip", lambda clip: clip)
-    monkeypatch.setattr(streamer, "_build_storm_audio_inputs", lambda: (tmp_path / "rain.wav", None))
+    monkeypatch.setattr(streamer, "_build_storm_audio_input", lambda: tmp_path / "rain.wav")
     streamer.stream_key = "real-secret-key"
 
     cmd = streamer.build_stream_command()
@@ -381,68 +381,30 @@ def test_ensure_live_broadcast_noop_without_youtube_client(streamer):
     assert streamer.broadcast_id is None
 
 
-def test_build_storm_audio_inputs_always_returns_a_rain_bed(streamer, tmp_path, monkeypatch):
-    monkeypatch.setattr(live_stream_dynamic, "BGM_DIR", tmp_path / "empty_bgm")
-    (tmp_path / "empty_bgm").mkdir()
-    monkeypatch.setattr(live_stream_dynamic.random, "random", lambda: 0.99)  # above any reasonable probability
-
-    rain_bed_path, music_path = streamer._build_storm_audio_inputs()
+def test_build_storm_audio_input_returns_a_rain_bed(streamer):
+    rain_bed_path = streamer._build_storm_audio_input()
 
     assert rain_bed_path.exists()
     assert rain_bed_path.stat().st_size > 0
-    assert music_path is None
 
 
-def test_build_storm_audio_inputs_reuses_an_existing_rain_bed(streamer, tmp_path, monkeypatch):
-    monkeypatch.setattr(live_stream_dynamic, "BGM_DIR", tmp_path / "empty_bgm")
-    (tmp_path / "empty_bgm").mkdir()
-    monkeypatch.setattr(live_stream_dynamic.random, "random", lambda: 0.99)
-
-    first_path, _ = streamer._build_storm_audio_inputs()
+def test_build_storm_audio_input_reuses_an_existing_rain_bed(streamer):
+    first_path = streamer._build_storm_audio_input()
     first_mtime = first_path.stat().st_mtime_ns
 
-    second_path, _ = streamer._build_storm_audio_inputs()
+    second_path = streamer._build_storm_audio_input()
 
     assert second_path == first_path
     assert second_path.stat().st_mtime_ns == first_mtime
 
 
-def test_build_storm_audio_inputs_can_layer_music_when_probability_hits(streamer, tmp_path, monkeypatch):
-    bgm_dir = tmp_path / "bgm"
-    bgm_dir.mkdir()
-    (bgm_dir / "jamendo_1.mp3").write_bytes(b"x")
-    monkeypatch.setattr(live_stream_dynamic, "BGM_DIR", bgm_dir)
-    monkeypatch.setattr(live_stream_dynamic.random, "random", lambda: 0.0)  # below any reasonable probability
-
-    _, music_path = streamer._build_storm_audio_inputs()
-
-    assert music_path == bgm_dir / "jamendo_1.mp3"
-
-
-def test_build_stream_command_mixes_rain_and_music(streamer, tmp_path, monkeypatch):
+def test_build_stream_command_is_pure_rain_no_music_layer(streamer, tmp_path, monkeypatch):
     storm_clip = tmp_path / "pinned_storm_clip.mp4"
     storm_clip.write_bytes(b"x")
     monkeypatch.setattr(live_stream_dynamic, "STORM_PINNED_BROLL_CLIP", storm_clip)
     monkeypatch.setattr(live_stream_dynamic, "STORM_REAL_PINNED_CLIP", tmp_path / "missing_real_clip.mp4")
     monkeypatch.setattr(streamer, "_prepare_seamless_loop_clip", lambda clip: clip)
-    music_path = tmp_path / "music.mp3"
-    monkeypatch.setattr(streamer, "_build_storm_audio_inputs", lambda: (tmp_path / "rain.wav", music_path))
-
-    cmd = streamer.build_stream_command()
-
-    assert cmd is not None
-    assert str(music_path) in cmd
-    assert "amix" in cmd[cmd.index("-filter_complex") + 1]
-    assert cmd.count("-stream_loop") == 3
-
-
-def test_build_stream_command_pure_rain_without_music(streamer, tmp_path, monkeypatch):
-    storm_clip = tmp_path / "pinned_storm_clip.mp4"
-    storm_clip.write_bytes(b"x")
-    monkeypatch.setattr(live_stream_dynamic, "STORM_PINNED_BROLL_CLIP", storm_clip)
-    monkeypatch.setattr(live_stream_dynamic, "STORM_REAL_PINNED_CLIP", tmp_path / "missing_real_clip.mp4")
-    monkeypatch.setattr(streamer, "_prepare_seamless_loop_clip", lambda clip: clip)
-    monkeypatch.setattr(streamer, "_build_storm_audio_inputs", lambda: (tmp_path / "rain.wav", None))
+    monkeypatch.setattr(streamer, "_build_storm_audio_input", lambda: tmp_path / "rain.wav")
 
     cmd = streamer.build_stream_command()
 
