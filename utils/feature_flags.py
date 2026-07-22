@@ -241,6 +241,29 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "and STORM_AMBIENCE_ENABLED.",
         "Set to 0 to pause this pillar.",
     ),
+    FeatureFlag(
+        "BABY_NOISE_ENABLED",
+        "0",
+        "publishing",
+        "Master switch for the baby-noise-ambience.yml/baby-noise-shorts.yml pillar "
+        "(procedurally-synthesized white/pink/brown noise, published as Amber Hours), "
+        "independent of YOUTUBE_PUBLISHING_ENABLED/STORM_AMBIENCE_ENABLED/CUTE_ANIMALS_ENABLED.",
+        "Set to 0 to pause this pillar.",
+    ),
+    FeatureFlag(
+        "BABY_NOISE_MIN_DURATION_MINUTES",
+        "180",
+        "publishing",
+        "Minimum runtime (minutes) for a generated baby-noise ambience video.",
+        "Lower it for faster/smaller uploads.",
+    ),
+    FeatureFlag(
+        "BABY_NOISE_MAX_DURATION_MINUTES",
+        "300",
+        "publishing",
+        "Maximum runtime (minutes) for a generated baby-noise ambience video.",
+        "Lower it for faster/smaller uploads.",
+    ),
 )
 
 

@@ -129,6 +129,82 @@ audiences. Same channel/account for now, its own on-screen identity.
   alongside the rain pillar or instead of it (given the shared account
   upload cap) is the channel owner's call, not made here.
 
+## Third pillar: white/pink/brown noise for baby sleep (off by default)
+
+A third, independent content pillar (acting-founder growth pass,
+2026-07-22, not a literal owner instruction -- see the chat log for the
+reasoning): procedurally-synthesized white/pink/brown noise
+(`utils/noise_audio.py`) under real, calm Pixabay nursery/night footage.
+Same **Amber Hours** brand as the rain pillar (unlike "Pata Jazz"): the
+promise -- real ambient sound to help you sleep, focus, or calm down --
+is identical, just a different scene/audience within it. The rain
+pillar's own `utils/storm_branding.py` already lists "baby sleep" and
+"tinnitus" scenes, but its audio is rain/thunder texture; this pillar
+delivers the plain noise-color sound those two audiences specifically
+search for and expect, which rain texture doesn't actually provide.
+
+- **Audio**: `utils/noise_audio.py` synthesizes real white (flat
+  spectrum), pink (-3dB/octave), and brown (-6dB/octave) noise via the
+  same exactly-periodic FFT-shaping technique `utils/storm_audio.py`
+  already uses for its rain wash -- verified live against the standard
+  power-law definitions (measured -0.0, -3.0, -6.0 dB/octave respectively
+  across a 5-octave span), not just "it ran without crashing". No
+  thunder, no droplet texture, no music layer -- plain noise-color sound
+  is the actual product this audience wants.
+- **Video**: `scripts/sync_noise_broll.py` keeps a rotating pool of real,
+  calm Pixabay clips (`_assets/video/noise_broll/`, capped at 16) --
+  nursery/night-sky/candle-glow footage, nothing bright or busy. Rotation
+  here (unlike the rain pillar's 3 fixed pinned clips) is a stand-in for
+  "no one was available to hand-pick specific clips tonight," not a
+  deliberate design choice; convert to fixed pinned clips later the same
+  way the rain pillar's owner did, if preferred. No illustrated fallback
+  exists yet (same as the "Pata Jazz" pillar) -- an empty pool skips the
+  run rather than faking a placeholder. Real-frame thumbnails from day
+  one (learned from the rain pillar's original illustrated-vs-real
+  mismatch).
+- **Long-form duration**: 3-5 hours by default
+  (`BABY_NOISE_MIN_DURATION_MINUTES`/`BABY_NOISE_MAX_DURATION_MINUTES`),
+  deliberately short of the "8-12 hour all night" videos common in this
+  niche -- see `generate_baby_noise_ambience.py`'s module docstring for
+  the extrapolated compose-time math (from the rain pillar's own real
+  run today) this range and its 90-minute job timeout are padded well
+  above. A proven, working 3-5h video now beats an unverified 8-12h one
+  that might time out; raising the range once real run logs confirm the
+  actual scaling is a config edit, not a code change.
+- **Titling**: `utils/ai_titling.py`'s `generate_baby_noise_copy()` asks
+  Gemini for a warm, reassuring, practical pt-BR title/description/
+  hashtags (a tired parent at 2am, not a hype creator) -- explicitly
+  instructed to never claim a medical/developmental benefit, only that
+  the sound is calming/constant. Falls back to
+  `utils/baby_noise_branding.py`'s template vocabulary when no AI key is
+  configured or the call fails.
+- **Formats**: long-form (`generate_baby_noise_ambience.py`,
+  `baby-noise-ambience.yml`, once/day) and Shorts
+  (`generate_baby_noise_short.py`, `baby-noise-shorts.yml`, every 4
+  hours) -- no live relay for this pillar (the channel already runs one
+  24/7 live for rain; adding a second is a separate resourcing decision,
+  not built unprompted here).
+- Gated by its own `BABY_NOISE_ENABLED` repository variable (see
+  SETUP.md), independent of `STORM_AMBIENCE_ENABLED`/
+  `CUTE_ANIMALS_ENABLED`/`YOUTUBE_PUBLISHING_ENABLED` -- **off by
+  default**.
+
+### Which pillars can run together?
+
+All three content pillars share one YouTube account-level daily upload
+cap that this repo's own internal quota-guard does not control or know
+the real value of. This account hit `uploadLimitExceeded` twice in one
+day at a combined ~14 uploads/day across the rain pillar alone. Each
+pillar's *own* cadence was chosen conservatively in isolation (rain:
+2 long-form + 12 Shorts/day; Pata Jazz: 8 Shorts/day; baby noise: 1
+long-form + 6 Shorts/day), but running all three simultaneously at full
+designed cadence would be roughly 14 + 8 + 7 = 29 uploads/day -- very
+likely over whatever the account's real cap turns out to be. This isn't
+a bug to fix in code; it's a real decision the channel owner needs to
+make: which pillar(s) to actually run together given the shared ceiling,
+possibly after phone-verifying the channel (which usually raises the
+cap) to see how much headroom that actually buys.
+
 ## Community engagement
 
 Opt-in via the `COMMUNITY_ENGAGEMENT_ENABLED` repository variable (see

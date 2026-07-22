@@ -60,6 +60,9 @@ either way, never required.
 | `STORM_MIN_DURATION_MINUTES` | `45` | publishing | Minimum runtime (minutes) for a generated storm-ambience video. | Lower it for faster/smaller uploads. |
 | `STORM_MAX_DURATION_MINUTES` | `75` | publishing | Maximum runtime (minutes) for a generated storm-ambience video. | Lower it for faster/smaller uploads. |
 | `CUTE_ANIMALS_ENABLED` | `0` | publishing | Master switch for the cute-animals-shorts.yml pillar (real cute-animal clips + real Jamendo jazz, published as "Pata Jazz"), independent of YOUTUBE_PUBLISHING_ENABLED and STORM_AMBIENCE_ENABLED. | Set to 0 to pause this pillar. |
+| `BABY_NOISE_ENABLED` | `0` | publishing | Master switch for the baby-noise-ambience.yml/baby-noise-shorts.yml pillar (procedurally-synthesized white/pink/brown noise, published as Amber Hours), independent of YOUTUBE_PUBLISHING_ENABLED/STORM_AMBIENCE_ENABLED/CUTE_ANIMALS_ENABLED. | Set to 0 to pause this pillar. |
+| `BABY_NOISE_MIN_DURATION_MINUTES` | `180` | publishing | Minimum runtime (minutes) for a generated baby-noise ambience video. | Lower it for faster/smaller uploads. |
+| `BABY_NOISE_MAX_DURATION_MINUTES` | `300` | publishing | Maximum runtime (minutes) for a generated baby-noise ambience video. | Lower it for faster/smaller uploads. |
 
 YouTube `videos.insert` calls use their own daily upload bucket. Keep
 `YOUTUBE_DAILY_UPLOAD_BUDGET=100` unless Google Cloud shows a different

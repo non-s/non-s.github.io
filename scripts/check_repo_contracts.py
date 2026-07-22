@@ -57,9 +57,21 @@ WORKFLOW_TOKENS = {
         "python upload_youtube.py --language=en",
         "CUTE_ANIMALS_ENABLED",
     ),
+    ".github/workflows/baby-noise-ambience.yml": (
+        "generate_baby_noise_ambience.py",
+        "python upload_youtube.py --language=en",
+        "BABY_NOISE_ENABLED",
+    ),
+    ".github/workflows/baby-noise-shorts.yml": (
+        "generate_baby_noise_short.py",
+        "python upload_youtube.py --language=en",
+        "BABY_NOISE_ENABLED",
+    ),
     ".github/workflows/ops-alert.yml": (
         "Storm Ambience - rain & thunder for sleep",
         "Storm Shorts - rain & thunder",
+        "Baby Noise Ambience - white/pink/brown noise",
+        "Baby Noise Shorts - white/pink/brown noise",
         "Production quality gate",
         "Build + deploy dashboard",
         "CodeQL",

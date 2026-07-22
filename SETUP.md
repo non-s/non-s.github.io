@@ -87,6 +87,19 @@ On Windows, you can instead run the **Build auth_youtube.exe (Windows)** workflo
    (`cute-animals-shorts.yml`'s cron) -- see README.md's "Cadence" note
    for why this is deliberately not the higher frequency originally
    considered, and edit that workflow's cron directly to change it.
+3c. Optionally set the repository variable `BABY_NOISE_ENABLED=1` to turn
+   on the third, independent white/pink/brown-noise pillar (see README.md)
+   -- off by default. Needs no new secret beyond `YOUTUBE_TOKEN`/
+   `PIXABAY_API_KEY` (already required above); the noise audio itself is
+   procedurally synthesized, no external dependency at all. Runs on its
+   own conservative cadence (long-form once/day, Shorts every 4 hours --
+   `baby-noise-ambience.yml`/`baby-noise-shorts.yml`'s crons). Optionally
+   tune `BABY_NOISE_MIN_DURATION_MINUTES`/`BABY_NOISE_MAX_DURATION_MINUTES`
+   (default 180-300, i.e. 3-5 hours). **Read README.md's "Which pillars
+   can run together?" note before enabling this alongside the other two
+   pillars** -- all three share one account-level YouTube upload cap, and
+   running everything's full designed cadence at once will very likely
+   exceed it.
 4. Optionally create the repository variable `YOUTUBE_PRIVACY`: `public`,
    `unlisted`, or `private`. Default: `public`.
 5. Optionally set the repository variable `COMMUNITY_ENGAGEMENT_ENABLED=1`

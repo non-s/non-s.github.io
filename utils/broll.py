@@ -3,9 +3,10 @@
 The storm pillar needs real-world rain/storm footage -- see
 fetch_pixabay()'s docstring for why Pixabay (checked live) is the source
 used; Pexels was tried first and removed once that became clear. The
-cute-animal Shorts pillar (chat, 2026-07-22) reuses the same
-fetch_pixabay()/download_clip() plumbing with its own relevance signals
-below -- one HTTP/cache layer, one per-pillar topical filter each.
+cute-animal Shorts pillar and the baby white/brown-noise pillar (both
+chat, 2026-07-22) reuse the same fetch_pixabay()/download_clip() plumbing
+with their own relevance signals below -- one HTTP/cache layer, one
+per-pillar topical filter each.
 """
 
 from __future__ import annotations
@@ -134,6 +135,57 @@ def is_on_brand_animal_clip(video_path: Path) -> bool:
 def pick_animal_broll_file(directory: Path, pattern: str = "pixabay_*.mp4") -> Path | None:
     """Random pick among real, on-topic cute-animal clips in `directory`."""
     candidates = [p for p in sorted(directory.glob(pattern)) if is_on_brand_animal_clip(p)]
+    if not candidates:
+        return None
+    return random.choice(candidates)
+
+
+# Baby white/brown-noise ambience pillar (acting-founder growth pass,
+# 2026-07-22): same double-gate shape as STORM_RELEVANCE_SIGNALS/
+# ANIMAL_RELEVANCE_SIGNALS above -- calm, dim, non-distracting nursery/
+# night visuals, not the rain/storm scene (this pillar's audio is plain
+# noise-color, not rain texture) and not the playful animal-content tags.
+NOISE_RELEVANCE_SIGNALS = {
+    "night",
+    "star",
+    "stars",
+    "sky",
+    "candle",
+    "blanket",
+    "cozy",
+    "soft",
+    "light",
+    "room",
+    "nursery",
+    "moon",
+    "glow",
+    "lamp",
+    "baby",
+    "sleep",
+    "crib",
+    "calm",
+}
+
+
+def looks_noise_relevant(tags: str) -> bool:
+    tags = (tags or "").lower()
+    return any(signal in tags for signal in NOISE_RELEVANCE_SIGNALS)
+
+
+def is_on_brand_noise_clip(video_path: Path) -> bool:
+    meta_path = video_path.with_suffix(".json")
+    try:
+        meta = json.loads(meta_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return False
+    if not isinstance(meta, dict):
+        return False
+    return looks_noise_relevant(str(meta.get("tags") or ""))
+
+
+def pick_noise_broll_file(directory: Path, pattern: str = "pixabay_*.mp4") -> Path | None:
+    """Random pick among real, on-topic calm nursery/night clips in `directory`."""
+    candidates = [p for p in sorted(directory.glob(pattern)) if is_on_brand_noise_clip(p)]
     if not candidates:
         return None
     return random.choice(candidates)

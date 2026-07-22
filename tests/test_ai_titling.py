@@ -170,3 +170,73 @@ def test_generate_animal_short_copy_calls_ai_text_with_json_mode_and_pata_jazz_s
     assert "Late Night Swing" in captured["prompt"]
     assert "Pata Jazz" in captured["system"]
     assert "Amber Hours" not in captured["system"]
+
+
+def test_generate_baby_noise_copy_returns_none_when_no_provider_configured(monkeypatch):
+    monkeypatch.setattr(ai_titling, "ai_text", lambda *a, **k: "")
+
+    result = ai_titling.generate_baby_noise_copy(
+        scene="white noise", color="white", duration_s=10800.0, fallback_title="Ruído Branco -- Amber Hours"
+    )
+
+    assert result is None
+
+
+def test_generate_baby_noise_copy_parses_a_valid_response(monkeypatch):
+    payload = json.dumps(
+        {
+            "title": "Ruído Marrom para o Bebê Dormir -- Amber Hours",
+            "description": "Um som grave e constante para acalmar seu bebê a noite toda.",
+            "hashtags": ["#RuidoMarrom", "Bebe", "dormir "],
+        }
+    )
+    monkeypatch.setattr(ai_titling, "ai_text", lambda *a, **k: payload)
+
+    result = ai_titling.generate_baby_noise_copy(
+        scene="brown noise", color="brown", duration_s=10800.0, fallback_title="Ruído Marrom -- Amber Hours"
+    )
+
+    assert result["title"] == "Ruído Marrom para o Bebê Dormir -- Amber Hours"
+    assert "acalmar seu bebê" in result["description"]
+    assert result["hashtags"] == ["ruidomarrom", "bebe", "dormir"]
+
+
+def test_generate_baby_noise_copy_returns_none_on_invalid_json(monkeypatch):
+    monkeypatch.setattr(ai_titling, "ai_text", lambda *a, **k: "not json at all")
+
+    result = ai_titling.generate_baby_noise_copy(
+        scene="focus", color="pink", duration_s=3600.0, fallback_title="Ruído Rosa -- Amber Hours"
+    )
+
+    assert result is None
+
+
+def test_generate_baby_noise_copy_returns_none_when_a_required_field_is_missing(monkeypatch):
+    monkeypatch.setattr(ai_titling, "ai_text", lambda *a, **k: json.dumps({"title": "Only a title"}))
+
+    result = ai_titling.generate_baby_noise_copy(
+        scene="focus", color="pink", duration_s=3600.0, fallback_title="Ruído Rosa -- Amber Hours"
+    )
+
+    assert result is None
+
+
+def test_generate_baby_noise_copy_calls_ai_text_with_json_mode_and_names_the_color(monkeypatch):
+    captured = {}
+
+    def fake_ai_text(prompt, system="", json_mode=False, **kwargs):
+        captured["prompt"] = prompt
+        captured["system"] = system
+        captured["json_mode"] = json_mode
+        return json.dumps({"title": "T -- Amber Hours", "description": "D", "hashtags": ["ruido"]})
+
+    monkeypatch.setattr(ai_titling, "ai_text", fake_ai_text)
+
+    ai_titling.generate_baby_noise_copy(
+        scene="tinnitus", color="white", duration_s=3600.0, fallback_title="Ruído Branco -- Amber Hours"
+    )
+
+    assert captured["json_mode"] is True
+    assert "tinnitus" in captured["prompt"]
+    assert "white" in captured["prompt"]
+    assert "Amber Hours" in captured["system"]

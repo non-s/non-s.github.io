@@ -100,6 +100,7 @@ jobs:
             utils/youtube_oauth.py \
             utils/brand_motion.py utils/community_replies.py utils/community_posts.py \
             utils/storm_audio.py utils/storm_branding.py utils/ai_titling.py \
+            utils/noise_audio.py utils/baby_noise_branding.py \
             scripts/check_schedule_sync.py scripts/check_repo_contracts.py \
             scripts/import_studio_reach_export.py scripts/reporting_bootstrap.py scripts/reporting_pull.py \
             scripts/audit_slot_contracts.py scripts/upload_intent.py \
@@ -111,6 +112,8 @@ jobs:
             scripts/reply_to_comments.py scripts/draft_community_post.py \
             scripts/generate_storm_scene.py scripts/search_storm_broll_candidates.py scripts/sync_storm_broll.py \
             generate_storm_ambience.py generate_storm_short.py \
+            scripts/sync_noise_broll.py \
+            generate_baby_noise_ambience.py generate_baby_noise_short.py \
             upload_youtube.py auth_youtube.py
           python -m ruff check \
             utils/analytics_schema.py utils/publish_schedule.py utils/studio_reach_schema.py \
@@ -122,6 +125,7 @@ jobs:
             utils/youtube_oauth.py \
             utils/brand_motion.py utils/community_replies.py utils/community_posts.py \
             utils/storm_audio.py utils/storm_branding.py utils/ai_titling.py \
+            utils/noise_audio.py utils/baby_noise_branding.py \
             scripts/check_schedule_sync.py scripts/check_repo_contracts.py \
             scripts/import_studio_reach_export.py scripts/reporting_bootstrap.py scripts/reporting_pull.py \
             scripts/audit_slot_contracts.py scripts/upload_intent.py \
@@ -133,6 +137,8 @@ jobs:
             scripts/reply_to_comments.py scripts/draft_community_post.py \
             scripts/generate_storm_scene.py scripts/search_storm_broll_candidates.py scripts/sync_storm_broll.py \
             generate_storm_ambience.py generate_storm_short.py \
+            scripts/sync_noise_broll.py \
+            generate_baby_noise_ambience.py generate_baby_noise_short.py \
             upload_youtube.py auth_youtube.py
 
       - name: "Audit dependencies"
