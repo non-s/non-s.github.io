@@ -1,8 +1,11 @@
-"""Pixabay b-roll discovery for the rain/storm ambience pipeline.
+"""Pixabay b-roll discovery, shared across content pillars.
 
 The storm pillar needs real-world rain/storm footage -- see
 fetch_pixabay()'s docstring for why Pixabay (checked live) is the source
-used; Pexels was tried first and removed once that became clear.
+used; Pexels was tried first and removed once that became clear. The
+cute-animal Shorts pillar (chat, 2026-07-22) reuses the same
+fetch_pixabay()/download_clip() plumbing with its own relevance signals
+below -- one HTTP/cache layer, one per-pillar topical filter each.
 """
 
 from __future__ import annotations
@@ -85,6 +88,52 @@ def pick_storm_broll_file(directory: Path, pattern: str = "pixabay_*.mp4") -> Pa
     b-roll moods or performance data to weight by yet.
     """
     candidates = [p for p in sorted(directory.glob(pattern)) if is_on_brand_storm_clip(p)]
+    if not candidates:
+        return None
+    return random.choice(candidates)
+
+
+# Cute-animal Shorts pillar (chat, 2026-07-22): same double-gate shape as
+# STORM_RELEVANCE_SIGNALS above (checked once at download time in
+# scripts/sync_animal_broll.py, again at selection time in
+# generate_cute_animal_short.py), just a different topic. Deliberately
+# broad across several animals rather than one species -- variety across
+# uploads is this pillar's whole appeal (see generate_cute_animal_short.py's
+# module docstring), unlike the storm pillar's single fixed scene.
+ANIMAL_RELEVANCE_SIGNALS = {
+    "cat",
+    "kitten",
+    "puppy",
+    "dog",
+    "bunny",
+    "rabbit",
+    "hamster",
+    "pet",
+    "animal",
+    "paw",
+    "fur",
+}
+
+
+def looks_animal_relevant(tags: str) -> bool:
+    tags = (tags or "").lower()
+    return any(signal in tags for signal in ANIMAL_RELEVANCE_SIGNALS)
+
+
+def is_on_brand_animal_clip(video_path: Path) -> bool:
+    meta_path = video_path.with_suffix(".json")
+    try:
+        meta = json.loads(meta_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return False
+    if not isinstance(meta, dict):
+        return False
+    return looks_animal_relevant(str(meta.get("tags") or ""))
+
+
+def pick_animal_broll_file(directory: Path, pattern: str = "pixabay_*.mp4") -> Path | None:
+    """Random pick among real, on-topic cute-animal clips in `directory`."""
+    candidates = [p for p in sorted(directory.glob(pattern)) if is_on_brand_animal_clip(p)]
     if not candidates:
         return None
     return random.choice(candidates)

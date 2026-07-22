@@ -232,6 +232,15 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "Maximum runtime (minutes) for a generated storm-ambience video.",
         "Lower it for faster/smaller uploads.",
     ),
+    FeatureFlag(
+        "CUTE_ANIMALS_ENABLED",
+        "0",
+        "publishing",
+        "Master switch for the cute-animals-shorts.yml pillar (real cute-animal clips + "
+        'real Jamendo jazz, published as "Pata Jazz"), independent of YOUTUBE_PUBLISHING_ENABLED '
+        "and STORM_AMBIENCE_ENABLED.",
+        "Set to 0 to pause this pillar.",
+    ),
 )
 
 

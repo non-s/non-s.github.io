@@ -77,6 +77,58 @@ module docstring for the full vocabulary reasoning).
   SETUP.md) -- turns both `storm-ambience.yml` and `storm-shorts.yml` on
   or off together.
 
+## Second pillar: "Pata Jazz" cute-animal Shorts (off by default)
+
+A second, fully independent content pillar (chat, 2026-07-22): real
+Pixabay footage of cute animals (cats, dogs, puppies, kittens, bunnies,
+hamsters) set to real jazz music, published as its own brand, **"Pata
+Jazz"** -- deliberately not "Amber Hours". That name already means "real
+rain/thunder ambience for sleep" to anyone who has seen the channel;
+reusing it on playful, upbeat cute-animal content would confuse both
+audiences. Same channel/account for now, its own on-screen identity.
+
+- **Video**: `scripts/sync_animal_broll.py` keeps a rotating pool of real
+  Pixabay clips (`_assets/video/animal_broll/`, capped at 24) -- the
+  opposite design from the rain pillar's 3 fixed pinned clips on purpose:
+  variety across many different animals is this pillar's whole appeal,
+  not a single consistent scene. `generate_cute_animal_short.py` picks a
+  random on-topic clip each run and extracts a real thumbnail frame from
+  it directly (learned from the rain pillar's earlier illustrated-vs-real
+  thumbnail mismatch -- this pillar never makes that mistake in the first
+  place). No illustrated fallback exists for this pillar; if the pool is
+  ever empty, the run is skipped rather than faking a placeholder.
+- **Audio**: `scripts/sync_animal_jazz.py` syncs real, commercially-safe
+  (CC BY only, same `_commercially_safe()` license check the rain
+  pillar's abandoned Jamendo experiment used) jazz tracks from Jamendo.
+  Unlike that abandoned experiment -- which tried to source *rain sound*
+  from Jamendo and found the catalog is music, not sound effects -- jazz
+  is an actual music genre Jamendo genuinely has, so this is a legitimate
+  fit. The commercially-safe yield is thin either way (checked live,
+  2026-07-22: roughly 1.5-2% of raw search results), so this library
+  starts small and grows slowly over many scheduled runs, same as every
+  other synced library in this repo. Falls back to silent audio (not a
+  failed run) whenever the jazz pool is empty.
+- **Titling**: `utils/ai_titling.py`'s `generate_animal_short_copy()` asks
+  Gemini for a playful, warm pt-BR title/description/hashtags (very
+  different tone from the calm/sleep-focused rain pillar), falling back
+  to `utils/animal_branding.py`'s template vocabulary when no AI key is
+  configured or the call fails.
+- **Cadence**: deliberately conservative, NOT the "24/day, one per hour"
+  originally floated. This same account already hit YouTube's own
+  `uploadLimitExceeded` (account-level daily upload cap, independent of
+  this repo's internal quota-guard) twice in one day at a combined ~14
+  uploads/day across the rain pillar -- direct evidence the real per-day
+  cap on this freshly-reset channel is low. `cute-animals-shorts.yml`
+  defaults to 8/day (every 3 hours); raise it by editing that workflow's
+  cron once the channel's real daily cap is confirmed higher (e.g. after
+  phone-verifying the channel) or once a decision is made to pause the
+  rain pillar to free up quota headroom for this one.
+- Gated by its own `CUTE_ANIMALS_ENABLED` repository variable (see
+  SETUP.md), independent of `STORM_AMBIENCE_ENABLED` and
+  `YOUTUBE_PUBLISHING_ENABLED` -- **off by default**. Whether to run this
+  alongside the rain pillar or instead of it (given the shared account
+  upload cap) is the channel owner's call, not made here.
+
 ## Community engagement
 
 Opt-in via the `COMMUNITY_ENGAGEMENT_ENABLED` repository variable (see

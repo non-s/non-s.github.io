@@ -59,6 +59,7 @@ either way, never required.
 | `STORM_AMBIENCE_ENABLED` | `0` | publishing | Master switch for the `storm-ambience.yml` pillar (real rain/thunder ambience), independent of `YOUTUBE_PUBLISHING_ENABLED`. | Set to 0 to pause this pillar. |
 | `STORM_MIN_DURATION_MINUTES` | `45` | publishing | Minimum runtime (minutes) for a generated storm-ambience video. | Lower it for faster/smaller uploads. |
 | `STORM_MAX_DURATION_MINUTES` | `75` | publishing | Maximum runtime (minutes) for a generated storm-ambience video. | Lower it for faster/smaller uploads. |
+| `CUTE_ANIMALS_ENABLED` | `0` | publishing | Master switch for the cute-animals-shorts.yml pillar (real cute-animal clips + real Jamendo jazz, published as "Pata Jazz"), independent of YOUTUBE_PUBLISHING_ENABLED and STORM_AMBIENCE_ENABLED. | Set to 0 to pause this pillar. |
 
 YouTube `videos.insert` calls use their own daily upload bucket. Keep
 `YOUTUBE_DAILY_UPLOAD_BUDGET=100` unless Google Cloud shows a different

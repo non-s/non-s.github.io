@@ -78,6 +78,15 @@ On Windows, you can instead run the **Build auth_youtube.exe (Windows)** workflo
 3. `live-stream.yml` needs `YOUTUBE_STREAM_KEY` set -- once it is,
    `live-stream-watchdog.yml` keeps the relay running on its own, looping
    the pinned storm scene under the synthesized rain/thunder bed.
+3b. Optionally set the repository variable `CUTE_ANIMALS_ENABLED=1` to
+   turn on the second, independent "Pata Jazz" cute-animal Shorts pillar
+   (see README.md) -- off by default. Needs no new secret beyond
+   `YOUTUBE_TOKEN`/`PIXABAY_API_KEY` (already required above); Jamendo
+   jazz sync needs no secret, same as the rain pillar's earlier Jamendo
+   integration. Runs on its own conservative 8/day cadence
+   (`cute-animals-shorts.yml`'s cron) -- see README.md's "Cadence" note
+   for why this is deliberately not the higher frequency originally
+   considered, and edit that workflow's cron directly to change it.
 4. Optionally create the repository variable `YOUTUBE_PRIVACY`: `public`,
    `unlisted`, or `private`. Default: `public`.
 5. Optionally set the repository variable `COMMUNITY_ENGAGEMENT_ENABLED=1`

@@ -60,6 +60,45 @@ def test_pick_storm_broll_file_returns_an_on_brand_clip(tmp_path):
     assert broll.pick_storm_broll_file(tmp_path) == video_path
 
 
+def test_looks_animal_relevant_accepts_any_signal_keyword():
+    for tag in ["cat", "Kitten", "puppy playing", "dog, paw", "bunny fur"]:
+        assert broll.looks_animal_relevant(tag) is True
+
+
+def test_looks_animal_relevant_rejects_generic_stock_tags():
+    assert broll.looks_animal_relevant("man, books, library, office") is False
+
+
+def test_looks_animal_relevant_handles_empty_input():
+    assert broll.looks_animal_relevant("") is False
+    assert broll.looks_animal_relevant(None) is False
+
+
+def test_is_on_brand_animal_clip_accepts_animal_tagged_sidecar(tmp_path):
+    video_path = tmp_path / "pixabay_1.mp4"
+    video_path.write_bytes(b"x")
+    video_path.with_suffix(".json").write_text(json.dumps({"tags": "cat, kitten, cute"}))
+    assert broll.is_on_brand_animal_clip(video_path) is True
+
+
+def test_is_on_brand_animal_clip_rejects_offbrand_sidecar(tmp_path):
+    video_path = tmp_path / "pixabay_1.mp4"
+    video_path.write_bytes(b"x")
+    video_path.with_suffix(".json").write_text(json.dumps({"tags": "rain, thunder, night"}))
+    assert broll.is_on_brand_animal_clip(video_path) is False
+
+
+def test_pick_animal_broll_file_returns_none_when_directory_empty(tmp_path):
+    assert broll.pick_animal_broll_file(tmp_path) is None
+
+
+def test_pick_animal_broll_file_returns_an_on_brand_clip(tmp_path):
+    video_path = tmp_path / "pixabay_1.mp4"
+    video_path.write_bytes(b"x")
+    video_path.with_suffix(".json").write_text(json.dumps({"tags": "cat, kitten, cute"}))
+    assert broll.pick_animal_broll_file(tmp_path) == video_path
+
+
 def _pixabay_payload():
     return {
         "hits": [

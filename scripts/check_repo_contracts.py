@@ -52,6 +52,11 @@ WORKFLOW_TOKENS = {
         "generate_storm_short.py",
         "python upload_youtube.py --language=en",
     ),
+    ".github/workflows/cute-animals-shorts.yml": (
+        "generate_cute_animal_short.py",
+        "python upload_youtube.py --language=en",
+        "CUTE_ANIMALS_ENABLED",
+    ),
     ".github/workflows/ops-alert.yml": (
         "Storm Ambience - rain & thunder for sleep",
         "Storm Shorts - rain & thunder",
