@@ -16,11 +16,15 @@ def test_pick_scene_returns_a_known_hook_scene():
 
 
 def test_build_metadata_uses_template_title_by_default(tmp_path):
+    from utils.storm_branding import HOOK_BY_SCENE
+
     video_path = tmp_path / "storm-stormshort-1.mp4"
 
     meta = storm_short._build_metadata("deep sleep", 45.0, video_path, slug="stormshort-1700000000-1234", broll_meta={})
 
-    assert meta["title"] == storm_short.branded_title("deep sleep")
+    hooks, emoji = HOOK_BY_SCENE["deep sleep"]
+    assert meta["title"].endswith(f" -- Amber Hours {emoji}")
+    assert any(meta["title"].startswith(hook) for hook in hooks)
     assert meta["category"] == "storm_ambience"
     assert "is_short" not in meta  # defaults to True in upload_youtube.py, matching generate_lofi_short.py
 
@@ -68,12 +72,16 @@ def test_build_metadata_uses_ai_copy_when_available(tmp_path, monkeypatch):
 
 
 def test_build_metadata_falls_back_to_template_when_ai_returns_none(tmp_path, monkeypatch):
+    from utils.storm_branding import HOOK_BY_SCENE
+
     monkeypatch.setattr(storm_short, "generate_video_copy", lambda **kwargs: None)
     video_path = tmp_path / "storm-stormshort-4.mp4"
 
     meta = storm_short._build_metadata("focus", 45.0, video_path, slug="s-3", broll_meta={})
 
-    assert meta["title"] == storm_short.branded_title("focus")
+    hooks, emoji = HOOK_BY_SCENE["focus"]
+    assert meta["title"].endswith(f" -- Amber Hours {emoji}")
+    assert any(meta["title"].startswith(hook) for hook in hooks)
 
 
 def test_prepare_rain_bed_writes_a_wav_file(tmp_path, monkeypatch):
@@ -142,6 +150,7 @@ def test_prepare_seamless_loop_clip_returns_raw_clip_for_short_source(tmp_path, 
     the crossfade bake entirely -- there isn't enough clip to trim a fade
     out of, so the raw clip is used as-is."""
     import utils.ffmpeg_helpers as fh
+
     monkeypatch.setattr(storm_short, "TEMP_DIR", tmp_path)
     monkeypatch.setattr(fh, "media_duration_s", lambda path: 0.0)
     clip_path = tmp_path / "pixabay_1.mp4"
@@ -153,6 +162,7 @@ def test_prepare_seamless_loop_clip_returns_raw_clip_for_short_source(tmp_path, 
 
 def test_prepare_seamless_loop_clip_bakes_a_crossfade_for_a_longer_clip(tmp_path, monkeypatch):
     import utils.ffmpeg_helpers as fh
+
     monkeypatch.setattr(storm_short, "TEMP_DIR", tmp_path)
     monkeypatch.setattr(fh, "media_duration_s", lambda path: 12.0)
     calls = []

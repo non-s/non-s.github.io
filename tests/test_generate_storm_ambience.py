@@ -51,12 +51,16 @@ def test_build_metadata_always_appends_the_synthesized_disclosure(tmp_path, monk
 
 
 def test_build_metadata_falls_back_to_template_when_ai_returns_none(tmp_path, monkeypatch):
+    from utils.storm_branding import HOOK_BY_SCENE
+
     monkeypatch.setattr(storm, "generate_video_copy", lambda **kwargs: None)
     video_path = tmp_path / "storm-ambience-fallback.mp4"
 
     meta = storm._build_metadata("focus", 3600.0, video_path, slug="s-fb", broll_meta={})
 
-    assert meta["title"] == storm.branded_title("focus", suffix="(1.0 Horas)")
+    hooks, emoji = HOOK_BY_SCENE["focus"]
+    assert meta["title"].endswith(f"(1.0 Horas) -- Amber Hours {emoji}")
+    assert any(meta["title"].startswith(hook) for hook in hooks)
 
 
 def test_build_metadata_uses_hours_label_for_long_videos(tmp_path):
@@ -125,6 +129,7 @@ def test_build_metadata_carries_real_broll_source_fields(tmp_path):
 
 def test_prepare_seamless_loop_clip_returns_raw_clip_for_short_source(tmp_path, monkeypatch):
     import utils.ffmpeg_helpers as fh
+
     monkeypatch.setattr(storm, "TEMP_DIR", tmp_path)
     monkeypatch.setattr(fh, "media_duration_s", lambda path: 0.0)
     clip_path = tmp_path / "pixabay_1.mp4"
@@ -136,6 +141,7 @@ def test_prepare_seamless_loop_clip_returns_raw_clip_for_short_source(tmp_path, 
 
 def test_prepare_seamless_loop_clip_bakes_a_crossfade_for_a_longer_clip(tmp_path, monkeypatch):
     import utils.ffmpeg_helpers as fh
+
     monkeypatch.setattr(storm, "TEMP_DIR", tmp_path)
     monkeypatch.setattr(fh, "media_duration_s", lambda path: 12.0)
     calls = []

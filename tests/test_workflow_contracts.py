@@ -2,13 +2,33 @@ from pathlib import Path
 
 import yaml
 
-from scripts.check_workflow_contracts import check_workflow_contracts
+from scripts.check_workflow_contracts import _is_valid_action_ref, check_workflow_contracts
 
 ROOT = Path(__file__).resolve().parent.parent
 
 
 def test_all_workflows_follow_safety_contracts():
     assert check_workflow_contracts(ROOT) == []
+
+
+def test_action_ref_validation():
+    # Official actions require a semver tag.
+    assert _is_valid_action_ref("actions/checkout@v4")
+    assert _is_valid_action_ref("actions/checkout@v4.0.0")
+    assert _is_valid_action_ref("actions/checkout@v7.0.0")
+    assert _is_valid_action_ref("github/codeql-action/init@v4")
+    # SHA pinning is always allowed.
+    assert _is_valid_action_ref("actions/checkout@a81bbbf8298c0fa03ea29cdc473d45769f953675")
+    # Branch or mutable refs are rejected.
+    assert not _is_valid_action_ref("actions/checkout@main")
+    assert not _is_valid_action_ref("actions/checkout@master")
+    assert not _is_valid_action_ref("actions/checkout@HEAD")
+    # Malformed or missing refs are rejected.
+    assert not _is_valid_action_ref("actions/checkout")
+    assert not _is_valid_action_ref("actions/checkout@v4-beta")
+    # Third-party actions need at least a semver-looking tag.
+    assert _is_valid_action_ref("some-org/some-action@v1")
+    assert not _is_valid_action_ref("some-org/some-action@main")
 
 
 def test_workflows_parse_and_include_pipeline_steps():

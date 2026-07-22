@@ -46,7 +46,9 @@ def test_computes_a_relative_weight_once_a_bucket_has_enough_samples(tmp_path):
     # "Chuva para Dormir Profundamente" bucket: 3 videos averaging 50 views (worse than channel avg).
     for i, views in enumerate([40, 50, 60], start=1):
         _write_metric(metrics_path, f"CAT{i}", views)
-        _write_marker(videos_dir, f"short-cat-{i}.done", f"CAT{i}", "Chuva Forte para Dormir Profundamente -- Amber Hours")
+        _write_marker(
+            videos_dir, f"short-cat-{i}.done", f"CAT{i}", "Chuva Forte para Dormir Profundamente -- Amber Hours"
+        )
 
     weights = broll_performance.mood_performance_weights(
         metrics_path=metrics_path, videos_dir=videos_dir, min_samples=3
@@ -67,7 +69,9 @@ def test_weights_are_clamped_to_the_configured_bounds(tmp_path):
         _write_marker(videos_dir, f"short-rain-{i}.done", f"RAIN{i}", "Trovão ao Longe e Chuva -- Amber Hours")
     for i, views in enumerate([1, 1, 1], start=1):
         _write_metric(metrics_path, f"CAT{i}", views)
-        _write_marker(videos_dir, f"short-cat-{i}.done", f"CAT{i}", "Chuva Forte para Dormir Profundamente -- Amber Hours")
+        _write_marker(
+            videos_dir, f"short-cat-{i}.done", f"CAT{i}", "Chuva Forte para Dormir Profundamente -- Amber Hours"
+        )
 
     weights = broll_performance.mood_performance_weights(
         metrics_path=metrics_path, videos_dir=videos_dir, min_samples=3

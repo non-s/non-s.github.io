@@ -10,7 +10,7 @@ straight to the fallback chain.
 
 from __future__ import annotations
 
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 import pytest
 import requests
@@ -33,6 +33,7 @@ def _isolated_cache(monkeypatch, tmp_path):
     monkeypatch.setenv("AI_CACHE_PATH", str(tmp_path / "c.jsonl"))
     monkeypatch.setenv("AI_CACHE_ENABLED", "1")
     import importlib
+
     from utils import ai_cache as _ac
 
     importlib.reload(_ac)

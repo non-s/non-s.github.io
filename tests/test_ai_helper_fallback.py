@@ -6,7 +6,7 @@ _call_gemini, _call_groq) so the tests run offline.
 
 from __future__ import annotations
 
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 import pytest
 import requests
@@ -34,6 +34,7 @@ def _clear_keys(monkeypatch, tmp_path):
     monkeypatch.setenv("AI_CACHE_PATH", str(tmp_path / "ai_cache.jsonl"))
     monkeypatch.setenv("AI_CACHE_ENABLED", "1")
     import importlib
+
     from utils import ai_cache as _ac
 
     importlib.reload(_ac)
@@ -214,6 +215,7 @@ def test_cache_hit_skips_every_provider(monkeypatch, fast_sleep, tmp_path):
     monkeypatch.setenv("CEREBRAS_API_KEY", "c")
 
     import importlib
+
     from utils import ai_cache as _ac
 
     importlib.reload(_ac)
@@ -250,6 +252,7 @@ def test_fallback_result_is_cached_under_primary_key(monkeypatch, fast_sleep, tm
     monkeypatch.setenv("CEREBRAS_API_KEY", "c")
 
     import importlib
+
     from utils import ai_cache as _ac
 
     importlib.reload(_ac)

@@ -5,7 +5,6 @@ import pytest
 pytest.importorskip("googleapiclient")
 
 import upload_youtube
-from scripts.upload_intent import read_intents, write_upload_intent
 
 
 def test_upload_main_returns_when_quota_guard_blocks(tmp_path, monkeypatch):

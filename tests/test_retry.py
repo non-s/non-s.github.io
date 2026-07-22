@@ -1,6 +1,7 @@
 """Tests for utils/retry.py"""
 
 import pytest
+
 from utils.retry import retry_call, with_retry
 
 

@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from upload_youtube import get_youtube_service
+from upload_youtube import get_youtube_service  # noqa: E402
 
 
 def main() -> int:

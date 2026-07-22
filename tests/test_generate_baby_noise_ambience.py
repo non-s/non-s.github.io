@@ -133,6 +133,7 @@ def test_build_metadata_carries_real_broll_source_fields(tmp_path, monkeypatch):
 
 def test_prepare_seamless_loop_clip_returns_raw_clip_for_short_source(tmp_path, monkeypatch):
     import utils.ffmpeg_helpers as fh
+
     monkeypatch.setattr(fh, "media_duration_s", lambda path: 0.0)
     clip_path = tmp_path / "pixabay_1.mp4"
 
@@ -144,6 +145,7 @@ def test_prepare_seamless_loop_clip_returns_raw_clip_for_short_source(tmp_path, 
 def test_prepare_seamless_loop_clip_bakes_a_crossfade_for_a_longer_clip(tmp_path, monkeypatch):
     monkeypatch.setattr(noise_ambience, "TEMP_DIR", tmp_path)
     import utils.ffmpeg_helpers as fh
+
     monkeypatch.setattr(fh, "media_duration_s", lambda path: 12.0)
     calls = []
 
