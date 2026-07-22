@@ -1,40 +1,40 @@
-"""Tests for utils/animal_branding.py."""
+import pytest
 
-from __future__ import annotations
-
-from utils.animal_branding import HOOK_BY_SCENE, branded_title, playlist_bucket_for_title
-
-
-def test_branded_title_uses_known_scene_hook():
-    title = branded_title("cat")
-
-    assert title.startswith(HOOK_BY_SCENE["cat"][0])
-    assert title.endswith("-- Pata Jazz " + HOOK_BY_SCENE["cat"][1])
-
-
-def test_branded_title_falls_back_for_unknown_scene():
-    title = branded_title("iguana")
-
-    assert "Fofura Total -- iguana" in title
-    assert "Pata Jazz" in title
+from utils.animal_branding import (
+    ALL_SCENES,
+    ALLOWED_ANIMAL_KEYWORDS,
+    BROLL_QUERIES,
+    JAMENDO_SEARCH_TERMS,
+    hook_for_scene,
+    is_allowed_animal_text,
+    random_scene,
+)
 
 
-def test_branded_title_inserts_suffix_before_brand():
-    title = branded_title("puppy", suffix="(Parte 2)")
-
-    assert "(Parte 2) -- Pata Jazz" in title
-
-
-def test_does_not_reuse_amber_hours_brand():
-    for scene in HOOK_BY_SCENE:
-        assert "amber hours" not in branded_title(scene).lower()
+def test_scenes_only_cats_and_dogs():
+    for scene in ALL_SCENES:
+        text = f"{scene} video"
+        assert is_allowed_animal_text(text), f"{scene!r} deve ser permitido"
 
 
-def test_playlist_bucket_matches_cat_signal():
-    title = branded_title("cat")
+def test_hooks_return_tuple():
+    for scene in ALL_SCENES:
+        hook, emoji = hook_for_scene(scene)
+        assert isinstance(hook, str)
+        assert isinstance(emoji, str)
 
-    assert playlist_bucket_for_title(title) == "Gatinhos Fofos"
+
+def test_random_scene_in_allowed():
+    scene = random_scene()
+    assert scene in ALL_SCENES
 
 
-def test_playlist_bucket_defaults_when_no_signal_matches():
-    assert playlist_bucket_for_title("Something Unrelated -- Pata Jazz") == "Fofura Total"
+def test_no_disallowed_animals():
+    bad = ["bird", "rabbit", "bunny", "hamster", "storm", "rain", "thunder"]
+    for word in bad:
+        assert not is_allowed_animal_text(word)
+
+
+def test_jazz_terms_only():
+    for term in JAMENDO_SEARCH_TERMS:
+        assert "jazz" in term.lower() or "bossa" in term.lower()

@@ -1,0 +1,85 @@
+name: "Pata Jazz - Shorts"
+
+on:
+  schedule:
+    # 2 shorts por dia: 08:30 e 14:30 BRT (UTC-3 -> 11:30 e 17:30 UTC)
+    - cron: "30 11,17 * * *"
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Motivo do disparo manual"
+        required: false
+        default: "manual"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pata-jazz-shorts
+  cancel-in-progress: false
+
+jobs:
+  generate-and-upload:
+    name: "Gerar e publicar Short Pata Jazz"
+    if: ${{ vars.PATA_JAZZ_ENABLED == '1' && vars.PATA_JAZZ_SHORTS_ENABLED == '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: write
+    env:
+      YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+      - name: "Python 3.11"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: "Instalar FFmpeg"
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
+      - name: "Instalar dependencias"
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: "Restaurar token YouTube"
+        env:
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+        run: |
+          umask 077
+          if [ -n "$YOUTUBE_TOKEN" ]; then
+            printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
+            chmod 600 youtube_token.json
+          fi
+      - name: "Cache b-roll"
+        uses: actions/cache@v4
+        with:
+          path: _assets/video/animal_broll
+          key: animal-broll-${{ github.run_id }}
+          restore-keys: animal-broll-
+      - name: "Cache jazz"
+        uses: actions/cache@v4
+        with:
+          path: _assets/audio/animal_jazz
+          key: animal-jazz-${{ github.run_id }}
+          restore-keys: animal-jazz-
+      - name: "Sincronizar b-roll (gatos/cachorros)"
+        env:
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+        run: python scripts/sync_animal_broll.py || echo "::warning::B-roll sync falhou"
+      - name: "Sincronizar jazz"
+        env:
+          JAMENDO_CLIENT_ID: ${{ secrets.JAMENDO_CLIENT_ID }}
+        run: python scripts/sync_jazz_music.py || echo "::warning::Jazz sync falhou"
+      - name: "Gerar Short"
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python generate_pata_jazz_short.py
+      - name: "Upload para YouTube"
+        if: hashFiles('youtube_token.json') != ''
+        run: python upload_youtube.py --mode upload --language=pt
+      - name: "Apagar token"
+        if: always()
+        run: rm -f youtube_token.json

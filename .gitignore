@@ -1,143 +1,34 @@
-# Build / runtime
-__pycache__/
-*.pyc
-*.pyo
-*.log
-.coverage
-.venv/
-.claude/
-
-# Env / secrets
 .env
 .env.local
-.env.*.local
-*.env
-
-# Private keys / certs
-*.pem
-*.key
-*.crt
-*.p12
-*.pfx
-id_rsa
-id_ed25519
-
-# OAuth tokens
-token.json
 youtube_token.json
-client_secret*.json
-*oauth*client*.json
-credentials*.json
-service-account*.json
-
-# Local optional TTS / render caches
-.tts-cache/
-.coqui-cache/
-tmp_render/
-render_tmp/
-_data/audio_cache/
-_data/music_cache/
-_data/archive_audio_cache/
-_data/archive_audio_candidates.json
-_data/archive_video_candidates.json
-_data/published_thumbnails/*.jpg
-_data/published_thumbnails/*.jpeg
-_data/published_thumbnails/*.png
-
-# Never version rendered audio/video. YouTube keeps the published media;
-# this repo keeps only metadata, markers and analytics memory.
-*.aac
-*.avi
-*.flac
-*.m4a
-*.mkv
-*.mov
-*.mp3
-*.mp4
-*.oga
-*.ogg
-*.wav
-*.webm
-assets/audio/
-assets/video/
-assets/videos/
-
-# Exception: each format's permanently pinned b-roll clip is a small,
-# deliberately committed static asset (not rendered/generated output) --
-# one fixed real clip per format (ambience/short/live), chosen by the
-# channel owner from real Pixabay downloads; the illustrated *_clip.mp4
-# variants stay committed too as the last-resort fallback if a real clip
-# ever goes missing. Only the audio bed varies run to run.
-!_assets/video/pinned_storm_clip.mp4
-!_assets/video/pinned_storm_clip.json
-!_assets/video/pinned_storm_short_clip.mp4
-!_assets/video/pinned_storm_short_clip.json
-!_assets/video/pinned_storm_ambience.mp4
-!_assets/video/pinned_storm_ambience.json
-!_assets/video/pinned_storm_live.mp4
-!_assets/video/pinned_storm_live.json
-!_assets/video/pinned_storm_short_real.mp4
-!_assets/video/pinned_storm_short_real.json
-!_assets/video/pinned_classical_ambience.mp4
-!_assets/video/pinned_classical_ambience.json
-
-# Video pipeline binaries
-_videos/*.mp4
-_videos/*.mp3
-_videos/*.wav
-_videos/*.jpg
-_videos/*.jpeg
-_videos/*.png
-_videos/*.webm
-_videos_pt-BR/*.mp4
-_videos_pt-BR/*.mp3
-_videos_pt-BR/*.wav
-_videos_pt-BR/*.jpg
-_videos_pt-BR/*.jpeg
-_videos_pt-BR/*.png
-_videos_pt-BR/*.webm
-
-# OS / editor
-.DS_Store
-Thumbs.db
-.idea/
+client_secret.json
+credentials.json
+token.pickle
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
 .vscode/
+.idea/
 
-# Generated dashboard build
-_site/
+# Generated media
+_videos/*
+_assets/video/animal_broll/*
+_assets/audio/animal_jazz/*
+_assets/thumbnails/*
+!_assets/.gitkeep
+!_assets/video/.gitkeep
+!_assets/audio/.gitkeep
+!_assets/thumbnails/.gitkeep
+!_videos/.gitkeep
 
-# AI agent session scratch (not project source)
-/.agents/
+# Data files that may contain tokens or sensitive counters
+_data/*
+!_data/.gitkeep
 
-# Stray local debug artifacts
-/1
-diff_analyzer.py
-
-# Regenerable LLM response cache
-_data/ai_cache.jsonl
-
-# fcntl lock sidecar for serialising queue access between scripts
-_data/*.lock
-
-venv/
-_assets/audio/bgm/jamendo_*.mp3
-_data/brand_card_cache/
-
-# Rotating real-footage cache (scripts/sync_storm_broll.py) -- runtime-only,
-# same "restored from Actions cache, never committed" pattern as
-# _assets/video/lofi_broll (its *.mp4 files are covered by the blanket
-# *.mp4 rule above; this covers the sidecar JSONs, which no existing rule
-# catches).
-_assets/video/storm_broll/
-
-# Same pattern for the cute-animal Shorts pillar's two rotating caches
-# (scripts/sync_animal_broll.py, scripts/sync_animal_jazz.py).
-_assets/video/animal_broll/
-_assets/audio/animal_jazz/
-
-# Same pattern for the classical-ambience pillar's synced Jamendo library
-# (scripts/sync_classical_music.py) -- runtime-only, restored from
-# Actions cache, never committed. The one pinned video clip for this
-# pillar is NOT here -- see the `!_assets/video/pinned_classical_ambience.*`
-# exception above, it's a fixed, deliberately committed asset.
-_assets/audio/classical/
+# Logs
+*.log
