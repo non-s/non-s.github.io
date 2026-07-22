@@ -173,7 +173,7 @@ def create_live_stream(
 
 def transition_broadcast(broadcast_id: str, status: str) -> None:
     service = get_youtube_service()
-    service.liveBroadcasts().transition(broadcastId=broadcast_id, part="status", broadcastStatus=status).execute()
+    service.liveBroadcasts().transition(id=broadcast_id, part="status", broadcastStatus=status).execute()
     log.info("Broadcast %s transicionado para %s", broadcast_id, status)
 
 

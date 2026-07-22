@@ -27,6 +27,8 @@ def run_ffmpeg(args: list[str], **kwargs) -> subprocess.CompletedProcess:
     log.info("Executando ffmpeg: %s", " ".join(cmd))
     kwargs.setdefault("capture_output", True)
     kwargs.setdefault("text", True)
+    kwargs.setdefault("encoding", "utf-8")
+    kwargs.setdefault("errors", "replace")
     result = subprocess.run(cmd, **kwargs)
     if result.returncode != 0:
         log.error("FFmpeg falhou: %s", result.stderr[-2000:] if result.stderr else "")
