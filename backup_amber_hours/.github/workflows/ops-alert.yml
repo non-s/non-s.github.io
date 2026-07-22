@@ -1,0 +1,90 @@
+name: "Ops alert"
+
+on:
+  workflow_run:
+    workflows:
+      - "Storm Ambience - rain & thunder for sleep"
+      - "Storm Shorts - rain & thunder"
+      - "Cute Animals Shorts - Pata Jazz"
+      - "Baby Noise Ambience - white/pink/brown noise"
+      - "Baby Noise Shorts - white/pink/brown noise"
+      - "Classical Ambience - Amber Hours Classical"
+      - "24/7 Live Stream Relay"
+      - "24/7 live stream watchdog"
+      - "24/7 Live Stream Relay - Classical"
+      - "24/7 live stream watchdog - Classical"
+      - "Production quality gate"
+      - "Build + deploy dashboard"
+      - "CodeQL"
+      - "Security, SBOM and license audit"
+      - "Production smoke"
+      - "Publishing health check"
+      - "Admin: detect orphaned video markers"
+      - "Token rotation check"
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Manual alert reason"
+        required: false
+        default: "operator smoke test"
+
+permissions:
+  contents: read
+  issues: write
+  actions: read
+
+concurrency:
+  group: ops-alert-${{ github.event.workflow_run.id || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  issue-alert:
+    name: "Create or update operations alert issue"
+    if: >-
+      ${{
+        vars.OPS_ALERTS_ENABLED != '0' &&
+        (
+          github.event_name == 'workflow_dispatch' ||
+          contains(fromJSON('["failure","cancelled","timed_out","action_required"]'), github.event.workflow_run.conclusion)
+        )
+      }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ALERT_TITLE: "Wild Brief automation alert"
+      WORKFLOW_NAME: ${{ github.event.workflow_run.name || 'manual ops alert' }}
+      WORKFLOW_CONCLUSION: ${{ github.event.workflow_run.conclusion || 'manual' }}
+      WORKFLOW_URL: ${{ github.event.workflow_run.html_url || github.server_url }}
+      WORKFLOW_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+      MANUAL_REASON: ${{ inputs.reason || '' }}
+    steps:
+      - name: "Open or update alert issue"
+        run: |
+          set -euo pipefail
+          existing="$(gh issue list --state open --search "${ALERT_TITLE} in:title" --json number --jq '.[0].number // ""')"
+          body="$(mktemp)"
+          {
+            echo "## Automation attention required"
+            echo
+            echo "- Workflow: \`${WORKFLOW_NAME}\`"
+            echo "- Conclusion: \`${WORKFLOW_CONCLUSION}\`"
+            echo "- Commit: \`${WORKFLOW_SHA}\`"
+            echo "- Run: ${WORKFLOW_URL}"
+            if [ -n "${MANUAL_REASON}" ]; then
+              echo "- Manual reason: ${MANUAL_REASON}"
+            fi
+            echo
+            echo "Local checks:"
+            echo
+            echo "\`\`\`powershell"
+            echo ".\\.venv\\Scripts\\python.exe scripts\\check_repo_contracts.py"
+            echo ".\\.venv\\Scripts\\python.exe -m pytest -q"
+            echo "\`\`\`"
+          } > "$body"
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body-file "$body"
+          else
+            gh issue create --title "${ALERT_TITLE}" --body-file "$body"
+          fi

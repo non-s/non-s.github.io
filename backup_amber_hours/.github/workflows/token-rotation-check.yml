@@ -1,0 +1,80 @@
+name: "Token rotation check"
+
+# Long-lived OAuth refresh tokens (YOUTUBE_TOKEN) don't expire on their
+# own, which is exactly why nothing else prompts for rotating them
+# periodically. This checks _data/security/token_rotation.json monthly
+# and fails when the recorded last-rotation date is missing or older
+# than its configured window -- wired into ops-alert.yml like any other
+# monitored workflow, so an overdue rotation raises the same alert a
+# hard failure would.
+#
+# Run manually with mark_rotated=true right after actually rotating the
+# token in Google/GitHub Secrets, to record today as the new baseline.
+on:
+  schedule:
+    - cron: "5 8 1 * *"
+  workflow_dispatch:
+    inputs:
+      mark_rotated:
+        description: "Just rotated the token? Record today as the new baseline."
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: token-rotation-check
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: "Check YOUTUBE_TOKEN rotation age"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v7.0.0
+        with:
+          fetch-depth: 0
+
+      - name: "Python 3.11"
+        uses: actions/setup-python@v6.3.0
+        with:
+          python-version: "3.11"
+
+      - name: "Record rotation"
+        if: ${{ inputs.mark_rotated == 'true' }}
+        run: python scripts/check_token_rotation.py --mark-rotated
+
+      - name: "Commit rotation record"
+        if: ${{ inputs.mark_rotated == 'true' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add _data/security/token_rotation.json
+          if git diff --cached --quiet; then
+            echo "No change to commit."
+            exit 0
+          fi
+          git commit -m "Record YOUTUBE_TOKEN rotation"
+          for attempt in 1 2 3; do
+            git rebase --abort 2>/dev/null || true
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
+            sleep $((attempt * 5))
+          done
+          echo "Failed to push rotation record." >&2
+          exit 1
+
+      - name: "Check rotation age"
+        if: ${{ inputs.mark_rotated != 'true' }}
+        run: python scripts/check_token_rotation.py

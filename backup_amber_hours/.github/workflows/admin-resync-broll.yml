@@ -1,0 +1,71 @@
+name: "Admin: force-resync b-roll library"
+
+# Manual-only: clears every cached b-roll clip and re-runs the normal
+# sync, so a source-selection change in utils.fetch_pixabay (e.g. the
+# medium-vs-large video tier fix) takes effect immediately instead of
+# waiting for the existing cached clips to rotate out naturally over
+# many sync runs.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  resync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v7.0.0
+
+      - name: "Python 3.11"
+        uses: actions/setup-python@v6.3.0
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: "Instalar dependencias Python"
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: "Restore lofi media libraries from cache"
+        uses: actions/cache@v4
+        with:
+          path: |
+            _assets/audio/bgm
+            _assets/video/lofi_broll
+          key: lofi-media-${{ github.run_id }}
+          restore-keys: |
+            lofi-media-
+
+      - name: "Clear b-roll library"
+        run: |
+          rm -f _assets/video/lofi_broll/pixabay_*.mp4 _assets/video/lofi_broll/pixabay_*.json
+          echo "Cleared. Remaining:"
+          find _assets/video/lofi_broll -name 'pixabay_*' 2>/dev/null | sort
+
+      - name: "Sync b-roll"
+        # main() only downloads up to 2 new clips per run -- loop a few
+        # times so the rebuilt library has reasonable variety instead of
+        # just 1-2 clips.
+        env:
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+        run: |
+          for i in 1 2 3 4; do
+            python scripts/sync_lofi_broll.py
+          done
+
+      - name: "New library"
+        run: |
+          for meta in _assets/video/lofi_broll/pixabay_*.json; do
+            [ -e "$meta" ] || continue
+            echo "--- $(basename "$meta") ---"
+            cat "$meta"
+            echo
+          done

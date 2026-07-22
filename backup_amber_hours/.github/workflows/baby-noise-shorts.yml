@@ -1,0 +1,226 @@
+name: "Baby Noise Shorts - white/pink/brown noise"
+
+# Vertical-Short companion to baby-noise-ambience.yml's long-form videos
+# -- same pillar, same BABY_NOISE_ENABLED gate. See
+# generate_baby_noise_ambience.py's module docstring for the full pillar
+# reasoning.
+#
+# Cadence (every 4 hours = 6/day) is deliberately conservative, same
+# reasoning as cute-animals-shorts.yml's identical note: this account hit
+# YouTube's own uploadLimitExceeded (account-level daily upload cap,
+# independent of this repo's internal quota-guard) twice in one day at a
+# combined ~14 uploads/day across the rain pillar alone -- direct
+# evidence the real per-day cap on this freshly-reset channel is low.
+# Running storm-shorts (12/day) + cute-animals-shorts (8/day) +
+# baby-noise-shorts (6/day) + baby-noise-ambience (1/day) + storm-ambience
+# (2/day) all at once would be ~29 uploads/day, very likely over
+# whatever the account's real cap turns out to be -- the owner needs to
+# choose which pillars actually run together, not assume all four fit;
+# see README.md's "Which pillars can run together" note. Raise this
+# cadence later by editing the cron below once the real cap is confirmed
+# higher (e.g. after phone-verifying the channel) or once some pillars
+# are paused to free up headroom.
+#
+# Gated by its own BABY_NOISE_ENABLED variable, independent of
+# STORM_AMBIENCE_ENABLED/CUTE_ANIMALS_ENABLED/YOUTUBE_PUBLISHING_ENABLED.
+
+on:
+  schedule:
+    - cron: "15 1,5,9,13,17,21 * * *"
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Why this run was started"
+        required: false
+        default: "manual"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: baby-noise-shorts
+  cancel-in-progress: false
+
+jobs:
+  generate-and-upload:
+    name: "Gerar e publicar Short de ruido para bebe"
+    if: ${{ vars.BABY_NOISE_ENABLED == '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    env:
+      UPLOAD_IDEMPOTENCY_MODE: ${{ vars.UPLOAD_IDEMPOTENCY_MODE || 'block' }}
+      UPLOAD_SLOT_IDEMPOTENCY_MODE: ${{ vars.UPLOAD_SLOT_IDEMPOTENCY_MODE || 'block' }}
+      MEDIA_LIFECYCLE_CLEANUP: ${{ vars.MEDIA_LIFECYCLE_CLEANUP || '1' }}
+      QUOTA_GUARD_MODE: ${{ vars.QUOTA_GUARD_MODE || 'block' }}
+      QUOTA_GUARD_MAX_DAILY_RATIO: ${{ vars.QUOTA_GUARD_MAX_DAILY_RATIO || '0.95' }}
+      YOUTUBE_DAILY_QUOTA_BUDGET: "10000"
+      YOUTUBE_DAILY_UPLOAD_BUDGET: "30"
+      YOUTUBE_DESCRIPTION_MODE: ${{ vars.YOUTUBE_DESCRIPTION_MODE || 'full' }}
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v7.0.0
+        with:
+          fetch-depth: 0
+      - name: "Sincronizar main remoto antes da decisao"
+        run: |
+          git fetch origin main
+          git checkout -B main origin/main
+      - name: "Python 3.11"
+        uses: actions/setup-python@v6.3.0
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: "Instalar FFmpeg"
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
+      - name: "Instalar dependencias Python"
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: "Restaurar tokens do YouTube"
+        env:
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+        run: |
+          umask 077
+          if [ -n "$YOUTUBE_TOKEN" ]; then
+            printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
+            chmod 600 youtube_token.json
+          fi
+      - name: "Restaurar biblioteca de b-roll de ruido do cache"
+        uses: actions/cache@v4
+        with:
+          path: |
+            _assets/video/noise_broll
+          key: noise-broll-${{ github.run_id }}
+          restore-keys: |
+            noise-broll-
+      - name: "Sincronizar b-roll real calmo (Pixabay)"
+        run: python scripts/sync_noise_broll.py || echo "::warning::Noise b-roll sync failed this cycle."
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUNBUFFERED: "1"
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+      - name: "Gerar Short de ruido para bebe"
+        run: python generate_baby_noise_short.py
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUNBUFFERED: "1"
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      - name: "Upload do Short para o YouTube"
+        if: hashFiles('youtube_token.json') != ''
+        run: python upload_youtube.py --language=en
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUNBUFFERED: "1"
+          YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
+          MEDIA_LIFECYCLE_CLEANUP: 0
+      - name: "Aplicar ciclo de vida da midia"
+        run: python scripts/media_lifecycle.py --cleanup --audit-tracked --json
+      - name: "Salvar marcadores no git"
+        if: always()
+        run: |
+          git config user.name "Wild Brief Bot"
+          git config user.email "bot@wildbrief.com"
+          state_paths=(
+            _data/provider_stats.jsonl
+            _data/analytics/latest.json
+            _data/analytics/api_quota_ledger.jsonl
+            _data/analytics/api_quota_latest.json
+            _data/upload_intents.jsonl
+            _data/media_lifecycle_report.json
+          )
+          jsonl_merge_paths=(
+            _data/analytics/api_quota_ledger.jsonl
+            _data/provider_stats.jsonl
+            _data/upload_intents.jsonl
+          )
+          mapfile -t new_marker_paths < <(
+            git status --porcelain=v1 --untracked-files=normal -- _videos 2>/dev/null \
+              | grep -E '^\?\? .*\.done$' \
+              | cut -c4-
+          )
+          state_dir="$(mktemp -d)"
+          for path in "${state_paths[@]}"; do
+            if [ -e "$path" ]; then
+              mkdir -p "$state_dir/$(dirname "$path")"
+              cp "$path" "$state_dir/$path"
+            fi
+          done
+          for path in "${new_marker_paths[@]}"; do
+            [ -e "$path" ] || continue
+            mkdir -p "$state_dir/$(dirname "$path")"
+            cp "$path" "$state_dir/$path"
+          done
+          git fetch origin main
+          git reset --hard origin/main
+          python scripts/merge_jsonl_state.py "$state_dir" "${jsonl_merge_paths[@]}"
+          cp -R "$state_dir"/. .
+          rm -rf "$state_dir"
+          for path in "${state_paths[@]}"; do
+            [ -e "$path" ] && git add "$path"
+          done
+          for path in "${new_marker_paths[@]}"; do
+            [ -e "$path" ] && git add "$path"
+          done
+          if git diff --cached --quiet; then
+            echo "Nenhum arquivo novo para salvar."
+            exit 0
+          fi
+          git commit -m "Baby Noise Shorts automation state - $(date -u +'%Y-%m-%d')"
+          for attempt in 1 2 3; do
+            if git push origin HEAD; then
+              exit 0
+            fi
+            echo "Push rejected on attempt ${attempt}; replaying generated state on latest main."
+            retry_dir="$(mktemp -d)"
+            for path in "${state_paths[@]}"; do
+              if [ -e "$path" ]; then
+                mkdir -p "$retry_dir/$(dirname "$path")"
+                cp "$path" "$retry_dir/$path"
+              fi
+            done
+            for path in "${new_marker_paths[@]}"; do
+              [ -e "$path" ] || continue
+              mkdir -p "$retry_dir/$(dirname "$path")"
+              cp "$path" "$retry_dir/$path"
+            done
+            git fetch origin main
+            git reset --hard origin/main
+            python scripts/merge_jsonl_state.py "$retry_dir" "${jsonl_merge_paths[@]}"
+            cp -R "$retry_dir"/. .
+            rm -rf "$retry_dir"
+            for path in "${state_paths[@]}"; do
+              [ -e "$path" ] && git add "$path"
+            done
+            for path in "${new_marker_paths[@]}"; do
+              [ -e "$path" ] && git add "$path"
+            done
+            if git diff --cached --quiet; then
+              echo "Latest main already contains generated state."
+              exit 0
+            fi
+            git commit -m "Baby Noise Shorts automation state - $(date -u +'%Y-%m-%d')"
+            sleep $((attempt * 5))
+          done
+          echo "Push failed after retries."
+          exit 1
+      - name: "Log de execucao"
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: "baby-noise-shorts-log-${{ github.run_number }}"
+          path: |
+            upload_youtube.log
+          retention-days: 7
+          if-no-files-found: ignore
+      - name: "Apagar tokens do YouTube no final"
+        if: always()
+        run: |
+          for path in youtube_token.json; do
+            if [ -f "$path" ]; then
+              shred -u "$path" 2>/dev/null || rm -f "$path"
+            fi
+          done

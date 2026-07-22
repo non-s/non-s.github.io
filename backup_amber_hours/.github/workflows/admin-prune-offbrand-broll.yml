@@ -1,0 +1,49 @@
+name: "Admin: prune off-brand b-roll"
+
+# Manual-only: removes b-roll clips whose metadata shows no real
+# anime-style evidence from the shared media-library cache (see
+# scripts/prune_offbrand_broll.py). Restoring the cache, editing the
+# files, and letting the job finish normally is enough -- actions/cache
+# auto-saves the (now pruned) directory contents under this run's key in
+# its automatic post-job step, same mechanism sync steps rely on to grow
+# the library.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  prune:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v7.0.0
+
+      - name: "Python 3.11"
+        uses: actions/setup-python@v6.3.0
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: "Restore lofi media libraries from cache"
+        uses: actions/cache@v4
+        with:
+          path: |
+            _assets/audio/bgm
+            _assets/video/lofi_broll
+          key: lofi-media-${{ github.run_id }}
+          restore-keys: |
+            lofi-media-
+
+      - name: "Prune off-brand b-roll clips"
+        run: python scripts/prune_offbrand_broll.py
+
+      - name: "Remaining library"
+        run: |
+          find _assets/video/lofi_broll -name 'pixabay_*.mp4' 2>/dev/null | sort
