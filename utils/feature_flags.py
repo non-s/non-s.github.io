@@ -1,4 +1,4 @@
-"""Central registry for Wild Brief feature flags.
+"""Central registry for Amber Hours feature flags.
 
 The registry is intentionally small and static: it gives docs, tests and
 workflow checks one place to validate the operator surface without importing

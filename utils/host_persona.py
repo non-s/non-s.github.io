@@ -1,24 +1,21 @@
 """
-utils/host_persona.py â€” Single source of truth for the channel's host identity.
+utils/host_persona.py — Single source of truth for the channel's host identity.
 
 Why this exists
 ---------------
 Automated channels that monetize all share one trait: a recognizable
-identity. Six rotating voices reading stock footage = AI slop. ONE host
-with a name, a pair of recurring catchphrases, and consistent POV =
-"this channel has a person behind it" â€” which is exactly the signal
-YouTube Shorts viewers and discovery both reward.
+identity. A consistent voice and recurring catchphrases give the impression
+that "this channel has a person behind it" — which is the signal YouTube
+viewers and discovery reward.
 
-The persona is read by:
-  * `fetch_animals.py` â†’ injected into the AI prompt so every script
-    sounds like the SAME person wrote it
-  * `generate_shorts.py` â†’ drives voice selection + sign-off line
-  * `utils/comment_replies.py` â†’ reply panel in first-person voice
+The persona is read by content generators and community-engagement scripts
+when an operator wants to inject a host voice into titles, descriptions,
+comments or community posts.
 
 Operator override
 -----------------
 Drop `_data/host_persona.json` to override the defaults. The shipped
-defaults are tuned for Wild Brief, a daily animal-facts Shorts channel.
+defaults are tuned for Amber Hours, a calming ambience channel.
 """
 
 from __future__ import annotations
@@ -37,70 +34,55 @@ PERSONA_FILE = Path(os.environ.get("HOST_PERSONA_FILE", "_data/host_persona.json
 @dataclass
 class HostPersona:
     """A channel's host identity. Every field is optional with a
-    sensible default â€” the operator can override piecewise."""
+    sensible default — the operator can override piecewise."""
 
     # Channel identity. The narrator stays invisible: viewers should
-    # subscribe to Wild Brief, never feel sent toward a third party.
-    name: str = "Wild Brief"
+    # subscribe to Amber Hours, never feel sent toward a third party.
+    name: str = "Amber Hours"
 
     # The persistent character / point of view the LLM should adopt
-    # when writing the voice-over. Goes verbatim into the system prompt.
-    # Stronger framing here = more consistent voice across stories.
+    # when writing in first person. Goes verbatim into the system prompt.
     pov: str = (
-        "You are the recurring narrator of Wild Brief, a daily Shorts "
-        "channel exclusively about animals. Write every script in FIRST "
-        "PERSON ('I love this one', 'here's what blew my mind') as if "
-        "you are speaking directly to a friend who follows the channel "
-        "daily. Build on the channel's running tone: "
-        "curious, warm, surprising, anti-clickbait, the angle nobody "
-        "tells you. Add one small host reaction or observation, but do "
-        "not invent personal field experience. Prefer plain spoken "
-        "phrases, contractions, and concrete body/behavior details over "
-        "encyclopedia language. NEVER write in third person ('this channel', 'we "
-        "cover'). NEVER mention a host name, promote a third party, or "
-        "drift away from the featured animal. NEVER refer to yourself "
-        "as an AI, bot, or assistant."
+        "You are the calm, friendly voice of Amber Hours, a channel that "
+        "publishes rain, thunder and soothing ambience to help people sleep, "
+        "focus and relax. Write warmly and directly, as if speaking to a "
+        "friend who needs to unwind. Keep claims humble, avoid hype, and "
+        "never promise medical outcomes. NEVER write in third person "
+        "('this channel', 'we cover'). NEVER mention a host name, promote a "
+        "third party, or drift away from the featured soundscape. NEVER refer "
+        "to yourself as an AI, bot, or assistant."
     )
 
-    # Recurring opening line spoken at the very start of every Short.
-    # Pre-rendered to MP3 once per voice (see utils.intro_outro) and
-    # concatenated to every render. Kept short (â‰¤ 1 s of audio) so
-    # the hook lands before the Shorts feed swipe-away window
-    # (~2 s) â€” a 2-second intro burns half that budget on branding.
+    # Recurring opening line spoken at the very start of every video.
     intro_line: str = ""
 
-    # Closing sign-off â€” kept to ~1 second so a 30 s Short doesn't lose
-    # 7% of its airtime to outro chatter. Punchy is the goal.
-    outro_line: str = "Follow for one animal signal a day."
+    # Closing sign-off — kept short so long-form ambience doesn't lose time
+    # to outro chatter.
+    outro_line: str = "Rest well with Amber Hours."
 
     # Signature catchphrases the AI should weave in occasionally.
-    # NOT every Short â€” overused they grate. Mention in the prompt
-    # so the LLM uses them sparingly.
+    # NOT every video — overused they grate.
     catchphrases: list[str] = field(
         default_factory=lambda: [
-            "Here's the part nobody tells you:",
-            "My favorite part:",
-            "Watch this one twice:",
-            "I love this detail:",
+            "Here's a moment of calm:",
+            "Settle in:",
+            "Breathe with this one:",
+            "Let the sound carry you:",
         ]
     )
 
-    # Pinned-first-comment template. `{handle}` interpolates the
-    # channel handle from the upload metadata.
+    # Pinned-first-comment template. `{name}` interpolates the channel name.
     first_comment_template: str = (
-        "New here? Follow {name} for one animal signal a day.\n\n"
-        ""
-        "Which animal should I cover next? Drop it below ðŸ‘‡"
+        "New here? Subscribe to {name} for rain, thunder and calming sounds.\n\n"
+        "What should we publish next? Drop your idea below."
     )
 
     # Channel handle (without the @). Used in CTAs and watermarks.
-    handle: str = "wildbrief"
+    handle: str = "amberhours"
 
-    # Channel tagline â€” appears in long-form description, never in Shorts.
-    tagline: str = "One weird animal fact a day. Wild Brief."
+    # Channel tagline — appears in long-form description, never in Shorts.
+    tagline: str = "Rain, thunder and calm sounds for sleep and focus."
 
-
-# â”€â”€ Loader / saver â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 _DEFAULT = HostPersona()
 
@@ -143,20 +125,13 @@ def save(persona: HostPersona, path: Path | None = None) -> None:
     )
 
 
-# â”€â”€ Prompt injection helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-
-
 def system_prompt_overlay(persona: HostPersona | None = None) -> str:
-    """Build the text we PREPEND to ai_helper.py's system prompt.
-
-    fetch_animals.py uses this so every story's script is generated AS
-    the host, not as an anonymous narrator.
-    """
+    """Build the text we PREPEND to ai_helper.py's system prompt."""
     persona = persona or load()
     parts = [persona.pov]
     if persona.catchphrases:
         catch = "; ".join(f'"{p}"' for p in persona.catchphrases[:3])
-        parts.append(f"Use one of these signature openers occasionally (not every " f"Short â€” feels canned): {catch}")
+        parts.append(f"Use one of these signature openers occasionally (not every " f"video — feels canned): {catch}")
     return " ".join(parts)
 
 
@@ -164,6 +139,6 @@ def first_comment_text(persona: HostPersona | None = None) -> str:
     """Render the pinned first-comment text."""
     persona = persona or load()
     return (
-        f"New here? Follow {persona.name} for one animal signal a day.\n\n"
-        "Which animal should I decode next? Drop it below."
+        f"New here? Subscribe to {persona.name} for rain, thunder and calming sounds.\n\n"
+        "What should we publish next? Drop your idea below."
     )

@@ -1,4 +1,4 @@
-"""Canonical adaptive publish schedule for Wild Brief."""
+"""Canonical adaptive publish schedule for Amber Hours."""
 
 from __future__ import annotations
 

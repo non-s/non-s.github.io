@@ -24,7 +24,7 @@ import requests
 
 log = logging.getLogger(__name__)
 
-_USER_AGENT = "WildBrief-Bot/4.0 (+https://non-s.github.io)"
+_USER_AGENT = "AmberHours-Bot/4.0 (+https://non-s.github.io)"
 _TIMEOUT = 20
 _CACHE_DIR = Path(os.environ.get("BROLL_CACHE_DIR", "_data/broll_cache"))
 _CACHE_TTL_S = 86400 * 7

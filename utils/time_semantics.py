@@ -1,4 +1,4 @@
-"""Shared UTC/Pacific time semantics for Wild Brief automation."""
+"""Shared UTC/Pacific time semantics for Amber Hours automation."""
 
 from __future__ import annotations
 

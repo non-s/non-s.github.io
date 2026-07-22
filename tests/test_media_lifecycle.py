@@ -55,7 +55,7 @@ def test_tracked_media_risks_flags_generated_media_only(tmp_path):
         paths=[
             "assets/audio/posts/old.mp3",
             "_videos/short-demo_thumb.jpg",
-            "scripts/assets/wildbrief_profile.png",
+            "scripts/assets/amberhours_profile.png",
             "utils/media_lifecycle.py",
         ],
     )

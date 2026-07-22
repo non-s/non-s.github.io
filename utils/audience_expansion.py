@@ -1,27 +1,26 @@
-"""Global audience helpers for Wild Brief Shorts.
+"""Global audience helpers for Amber Hours content.
 
-The channel should feel international by default: simple English,
-universal nature discovery terms and publish windows spread across
-major time zones. This module keeps those choices in one place so the
-automation can expand globally without hard-coding one target country.
+The channel should feel international by default: simple, calming terms
+and publish windows spread across major time zones. This module keeps
+those choices in one place so the automation can expand globally without
+hard-coding one target country.
 """
 
 from __future__ import annotations
 
 from datetime import datetime, timezone
 
-GLOBAL_HASHTAGS = ["Shorts", "NatureFacts", "WildBrief", "EarthScience", "Nature"]
+GLOBAL_HASHTAGS = ["Shorts", "RainSounds", "SleepSounds", "Ambience", "Nature"]
 
 GLOBAL_SEARCH_TAGS = [
-    "nature facts",
-    "earth science",
-    "wildlife",
-    "natural phenomena",
+    "rain sounds",
+    "thunder sounds",
+    "sleep sounds",
+    "ambience",
     "nature",
-    "nature shorts",
-    "biology",
-    "geology",
-    "wild brief",
+    "relaxation",
+    "calming",
+    "focus sounds",
 ]
 
 
@@ -76,7 +75,7 @@ def merge_search_tags(queue_tags: list[str] | tuple[str, ...] | None, category: 
     evergreen = [str(category or "").lower(), f"{str(category or '').lower()} facts"]
     seen: set[str] = set()
     out: list[str] = []
-    for tag in [*(queue_tags or []), *GLOBAL_SEARCH_TAGS, *evergreen, "wild brief", "shorts"]:
+    for tag in [*(queue_tags or []), *GLOBAL_SEARCH_TAGS, *evergreen, "shorts"]:
         cleaned = str(tag).strip().lower().lstrip("#")
         if not cleaned or cleaned in seen:
             continue

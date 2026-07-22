@@ -1,5 +1,5 @@
 """
-Shared utilities for Wild Brief automation scripts.
+Shared utilities for Amber Hours automation scripts.
 
 Modules:
   retry       — retry_call() helper and with_retry() decorator with exponential back-off

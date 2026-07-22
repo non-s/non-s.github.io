@@ -254,14 +254,14 @@ def test_playlist_titles_use_series_and_category():
 
 
 def test_playlist_titles_apply_configured_prefix(monkeypatch):
-    monkeypatch.setattr(upload_youtube, "PLAYLIST_PREFIX", "Wild Brief | ")
+    monkeypatch.setattr(upload_youtube, "PLAYLIST_PREFIX", "Amber Hours |")
     titles = _playlist_titles({"series": "Watch The Cue", "category": "birds"})
 
     assert titles == [
-        "Wild Brief | Start Here",
-        "Wild Brief | Watch The Cue",
-        "Wild Brief | Birds",
-        "Wild Brief | Chuva E Tempestade",
+        "Amber Hours |Start Here",
+        "Amber Hours |Watch The Cue",
+        "Amber Hours |Birds",
+        "Amber Hours |Chuva E Tempestade",
     ]
 
 
@@ -383,7 +383,7 @@ class _YouTube:
 
 def test_post_upload_operations_adds_playlists(monkeypatch):
     monkeypatch.setenv("YOUTUBE_POST_UPLOAD_AUTOMATION", "1")
-    monkeypatch.setattr(upload_youtube, "PLAYLIST_PREFIX", "Wild Brief | ")
+    monkeypatch.setattr(upload_youtube, "PLAYLIST_PREFIX", "Amber Hours |")
     youtube = _YouTube()
     result = run_post_upload_operations(
         youtube,
@@ -396,10 +396,10 @@ def test_post_upload_operations_adds_playlists(monkeypatch):
 
     assert result["enabled"] is True
     assert [item["title"] for item in result["playlists"]] == [
-        "Wild Brief | Start Here",
-        "Wild Brief | Watch The Cue",
-        "Wild Brief | Birds",
-        "Wild Brief | Chuva E Tempestade",
+        "Amber Hours |Start Here",
+        "Amber Hours |Watch The Cue",
+        "Amber Hours |Birds",
+        "Amber Hours |Chuva E Tempestade",
     ]
     assert all(item["added"] for item in result["playlists"])
     assert youtube._playlist_items.added == [

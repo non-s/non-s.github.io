@@ -1,4 +1,4 @@
-"""JSONL schemas for Wild Brief growth analytics.
+"""JSONL schemas for Amber Hours growth analytics.
 
 The builders here normalize partial YouTube/API/sidecar data into stable rows.
 They are intentionally tolerant of missing fields so scheduled jobs can keep
