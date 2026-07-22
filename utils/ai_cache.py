@@ -49,7 +49,10 @@ except ImportError:  # pragma: no cover — Windows local dev only
 log = logging.getLogger(__name__)
 
 # Configurable so tests / local dev can override without env juggling.
-_DEFAULT_TTL_DAYS = float(os.environ.get("AI_CACHE_TTL_DAYS", "30"))
+# Default dropped from 30 to 7 days in the API optimization pass: the
+# channel pivots frequently, and month-old title/description/hashtag
+# variants are often stale.
+_DEFAULT_TTL_DAYS = float(os.environ.get("AI_CACHE_TTL_DAYS", "7"))
 _DEFAULT_PATH = Path(os.environ.get("AI_CACHE_PATH", "_data/ai_cache.jsonl"))
 _ENABLED = os.environ.get("AI_CACHE_ENABLED", "1") not in ("0", "false", "False")
 # Template version is folded into every cache key. Bump it when the

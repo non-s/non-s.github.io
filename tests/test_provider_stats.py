@@ -23,12 +23,12 @@ def test_no_data_returns_default_order(isolated_log):
 
 
 def test_records_get_written(isolated_log):
-    provider_stats.record("mistral", success=True)
-    provider_stats.record("cerebras", success=False, status=429)
+    provider_stats.record("gemini", success=True)
+    provider_stats.record("gemini", success=False, status=429)
     body = isolated_log.read_text(encoding="utf-8").strip().split("\n")
     assert len(body) == 2
     e0 = json.loads(body[0])
-    assert e0["provider"] == "mistral"
+    assert e0["provider"] == "gemini"
     assert e0["ok"] is True
     e1 = json.loads(body[1])
     assert e1["ok"] is False
@@ -37,38 +37,31 @@ def test_records_get_written(isolated_log):
 
 def test_success_rate_basic(isolated_log):
     for _ in range(3):
-        provider_stats.record("mistral", success=True)
-    provider_stats.record("mistral", success=False)
-    rate = provider_stats.success_rate("mistral")
+        provider_stats.record("gemini", success=True)
+    provider_stats.record("gemini", success=False)
+    rate = provider_stats.success_rate("gemini")
     assert rate is not None
     assert 0.7 < rate < 0.8  # 3/4 = 0.75
 
 
 def test_success_rate_no_data_returns_none(isolated_log):
-    assert provider_stats.success_rate("mistral") is None
+    assert provider_stats.success_rate("gemini") is None
 
 
 def test_preferred_chain_sorts_by_rate(isolated_log):
-    # Mistral: 0 % success → push to back.
+    # Dead provider vs healthy one.
     for _ in range(10):
-        provider_stats.record("mistral", success=False, status=429)
-    # Cerebras: 100 % success → front.
+        provider_stats.record("gemini", success=False, status=429)
     for _ in range(10):
-        provider_stats.record("cerebras", success=True)
-    # Gemini: 50 % success → middle.
-    for _ in range(5):
-        provider_stats.record("gemini", success=True)
-        provider_stats.record("gemini", success=False)
-    chain = provider_stats.preferred_chain()
-    assert chain[0] == "cerebras"
-    assert chain[-1] == "mistral"
-    assert chain.index("gemini") < chain.index("mistral")
+        provider_stats.record("other", success=True)
+    chain = provider_stats.preferred_chain(default=("gemini", "other"))
+    assert chain[0] == "other"
+    assert chain[-1] == "gemini"
 
 
-def test_preferred_chain_for_json_starts_with_json_strength_provider(isolated_log):
+def test_preferred_chain_for_json_returns_gemini(isolated_log):
     chain = provider_stats.preferred_chain_for_task("auto", json_mode=True)
-    assert chain[0] == "gemini"
-    assert chain.index("cerebras") < chain.index("mistral")
+    assert chain == ["gemini"]
 
 
 def test_provider_cooldown_pushes_recent_429_to_back(isolated_log, monkeypatch):
@@ -79,7 +72,7 @@ def test_provider_cooldown_pushes_recent_429_to_back(isolated_log, monkeypatch):
         + "\n"
         + json.dumps({"ts": now - 10, "provider": "gemini", "ok": False, "status": 429})
         + "\n"
-        + json.dumps({"ts": now - 5, "provider": "cerebras", "ok": True, "status": None})
+        + json.dumps({"ts": now - 5, "provider": "other", "ok": True, "status": None})
         + "\n",
         encoding="utf-8",
     )
@@ -90,26 +83,24 @@ def test_provider_cooldown_pushes_recent_429_to_back(isolated_log, monkeypatch):
 
 
 def test_preferred_chain_unknown_providers_keep_default_rank(isolated_log):
-    # Only one provider has data — the others should appear in default order.
+    # Only one provider has data -- the default one should keep its rank.
     for _ in range(5):
-        provider_stats.record("groq", success=True)
-    chain = provider_stats.preferred_chain()
-    # groq has data, scores 1.0; placed first.
-    assert chain[0] == "groq"
-    # Remaining keep their default relative order.
-    remaining = [p for p in chain if p != "groq"]
-    expected = [p for p in provider_stats.DEFAULT_ORDER if p != "groq"]
+        provider_stats.record("other", success=True)
+    chain = provider_stats.preferred_chain(default=("gemini", "other"))
+    assert chain[0] == "other"
+    remaining = [p for p in chain if p != "other"]
+    expected = [p for p in provider_stats.DEFAULT_ORDER if p != "other"]
     assert remaining == expected
 
 
 def test_window_size_caps_old_entries(isolated_log, monkeypatch):
     monkeypatch.setattr(provider_stats, "WINDOW_SIZE", 5)
-    # 5 failures, then 5 successes — newest are the 5 successes.
+    # 5 failures, then 5 successes -- newest are the 5 successes.
     for _ in range(5):
-        provider_stats.record("mistral", success=False)
+        provider_stats.record("gemini", success=False)
     for _ in range(5):
-        provider_stats.record("mistral", success=True)
-    rate = provider_stats.success_rate("mistral")
+        provider_stats.record("gemini", success=True)
+    rate = provider_stats.success_rate("gemini")
     # Only the latest 5 count → 1.0 success.
     assert rate == 1.0
 
@@ -119,9 +110,9 @@ def test_prune_drops_old(isolated_log):
     old_ts = time.time() - 30 * 86400
     new_ts = time.time()
     isolated_log.write_text(
-        json.dumps({"ts": old_ts, "provider": "mistral", "ok": True})
+        json.dumps({"ts": old_ts, "provider": "gemini", "ok": True})
         + "\n"
-        + json.dumps({"ts": new_ts, "provider": "mistral", "ok": True})
+        + json.dumps({"ts": new_ts, "provider": "gemini", "ok": True})
         + "\n",
         encoding="utf-8",
     )
@@ -132,4 +123,4 @@ def test_prune_drops_old(isolated_log):
 def test_record_handles_unwritable_path(monkeypatch):
     monkeypatch.setattr(provider_stats, "STATS_LOG", Path("/proc/never-writable/x.jsonl"))
     # Should not raise.
-    provider_stats.record("mistral", success=True)
+    provider_stats.record("gemini", success=True)

@@ -28,6 +28,7 @@ def _isolate_state_files(tmp_path_factory, monkeypatch):
         ("utils.broll", "_CACHE_DIR", "broll_cache"),
         ("utils.host_persona", "PERSONA_FILE", "host_persona.json"),
         ("utils.provider_stats", "STATS_LOG", "provider_stats.jsonl"),
+        ("utils.jamendo_cache", "_DEFAULT_PATH", "jamendo_search_cache.jsonl"),
     ]
     for module_name, attr, frag in overrides:
         try:
@@ -37,15 +38,15 @@ def _isolate_state_files(tmp_path_factory, monkeypatch):
         if hasattr(mod, attr):
             monkeypatch.setattr(mod, attr, cache_root / frag, raising=False)
 
-    # The Mistral-429 circuit breaker in utils.ai_helper holds module-
-    # level state (`_mistral_429_streak`, `_mistral_circuit_open`).
-    # Without an explicit reset, a 429-heavy test that trips the breaker
-    # leaks "Mistral disabled" mode into every following test in the
-    # same pytest process. Reset it once per test up front.
+    # The Gemini circuit breaker in utils.ai_helper holds module-level
+    # state (`_gemini_429_streak`, `_gemini_circuit_open`). Without an
+    # explicit reset, a failure-heavy test that trips the breaker leaks
+    # "Gemini disabled" mode into every following test in the same pytest
+    # process. Reset it once per test up front.
     try:
         from utils import ai_helper as _ah
 
-        _ah._reset_mistral_circuit_breaker()
+        _ah._reset_gemini_circuit_breaker()
     except Exception:
         pass
 

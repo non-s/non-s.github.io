@@ -36,16 +36,17 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from utils.broll import fetch_pixabay, looks_storm_relevant  # noqa: E402,F401
+from utils.broll import (  # noqa: E402
+    STORM_RELEVANCE_SIGNALS,
+    score_relevance,
+    search_pixabay,
+)
 
-# looks_storm_relevant now lives in utils/broll.py so
-# scripts/sync_storm_broll.py's download-time gate and
-# generate_storm_ambience.py/generate_storm_short.py's selection-time gate
-# can share the exact same check this search script's hint uses -- see
-# utils/broll.py's is_on_brand_storm_clip docstring for why that second
-# gate matters. Re-exported here (the `noqa: F401` above) so this stays a
-# purely advisory, non-filtering hint in *this* script: a human is looking
-# at every candidate's download_url before anything gets pinned by hand.
+# Re-export the relevance helper for the JSON hint column. It is the same
+# check used by scripts/sync_storm_broll.py and the runtime selection gates
+# -- see utils/broll.py's is_on_brand_storm_clip docstring for why that
+# second gate matters. In *this* script the hint is purely advisory; a human
+# reviews every candidate before anything is pinned by hand.
 
 
 DEFAULT_QUERIES = (
@@ -53,6 +54,12 @@ DEFAULT_QUERIES = (
     "thunderstorm lightning night sky",
     "rain city street night",
     "rain on window slow motion",
+    "raindrops glass night",
+    "dark storm clouds",
+    "rain falling trees",
+    "night rain balcony",
+    "torrential rain street",
+    "stormy sea rain",
 )
 
 
@@ -65,6 +72,7 @@ def main() -> int:
         help='One or more Pixabay search queries, "|"-delimited.',
     )
     parser.add_argument("--per-query", type=int, default=8)
+    parser.add_argument("--pages", type=int, default=2)
     parser.add_argument(
         "--video-type",
         default="film",
@@ -77,7 +85,14 @@ def main() -> int:
     for query in (q.strip() for q in args.queries.split("|")):
         if not query:
             continue
-        clips = fetch_pixabay(query, per_page=args.per_query, video_type=args.video_type)
+        clips = search_pixabay(
+            [query],
+            per_page=args.per_query,
+            pages=args.pages,
+            video_type=args.video_type,
+            signals=STORM_RELEVANCE_SIGNALS,
+            min_score=1,
+        )
         results[query] = [
             {
                 "id": clip.source_metadata.get("pixabay_video_id"),
@@ -89,7 +104,9 @@ def main() -> int:
                 "page_url": clip.url,
                 "photographer": clip.source_metadata.get("photographer"),
                 "photographer_url": clip.source_metadata.get("photographer_url"),
-                "storm_relevant_tag_match": looks_storm_relevant(str(clip.source_metadata.get("tags") or "")),
+                "storm_relevant_tag_match": score_relevance(
+                    str(clip.source_metadata.get("tags") or ""), STORM_RELEVANCE_SIGNALS
+                ),
             }
             for clip in clips
         ]

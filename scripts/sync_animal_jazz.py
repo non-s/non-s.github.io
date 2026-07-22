@@ -40,6 +40,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from utils import jamendo_cache  # noqa: E402
 from utils.circuit_breaker import CircuitBreaker  # noqa: E402
 
 logging.basicConfig(level=logging.INFO)
@@ -67,13 +68,13 @@ MOOD_TAGS = "jazz+swing+bossanova+bigband+bebop+smoothjazz+lounge+chillout+cafe+
 PREFERRED_JAZZ_GENRES = {"jazz", "swing", "bigband", "bebop", "smoothjazz", "jazzhop", "freejazz", "fusionjazz"}
 
 
-def _fetch_candidates_ex(limit: int = FETCH_LIMIT, offset: int = 0) -> tuple[list[dict], bool]:
+def _fetch_candidates_ex(tags: str = MOOD_TAGS, limit: int = FETCH_LIMIT, offset: int = 0) -> tuple[list[dict], bool]:
     """Same shape as the removed sync_jamendo_music.py's identical
     helper -- see its docstring for the retry/circuit-breaker reasoning,
     preserved here since the underlying Jamendo API flakiness is
     unrelated to which tags/pillar is searching."""
     query = (
-        f"{API_URL}?client_id={CLIENT_ID}&format=json&fuzzytags={MOOD_TAGS}"
+        f"{API_URL}?client_id={CLIENT_ID}&format=json&fuzzytags={tags}"
         f"&include=licenses+musicinfo&audioformat=mp32&limit={limit}&offset={offset}"
     )
     hard_failure = False
@@ -181,7 +182,9 @@ def main() -> int:
         if breaker.is_open:
             log.warning("Jamendo circuit breaker open after repeated failures; skipping remaining offsets.")
             break
-        tracks, hard_failure = _fetch_candidates_ex(offset=offset)
+        tracks, hard_failure = jamendo_cache.cached_search(
+            MOOD_TAGS, offset, FETCH_LIMIT, _fetch_candidates_ex
+        )
         if hard_failure:
             breaker.record_failure()
         else:
@@ -204,6 +207,7 @@ def main() -> int:
             jazz_genre,
             len(existing_ids),
         )
+        jamendo_cache.prune()
         return 0
 
     random.shuffle(candidates)
@@ -214,6 +218,7 @@ def main() -> int:
         if _download_track(track):
             downloaded += 1
     log.info("Animal jazz sync complete: %d new track(s).", downloaded)
+    jamendo_cache.prune()
     return 0
 
 

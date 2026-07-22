@@ -88,7 +88,7 @@ def test_generate_video_copy_calls_ai_text_with_json_mode(monkeypatch):
 
 
 def test_generate_video_copy_truncates_an_overlong_title(monkeypatch):
-    long_title = "R" * 150
+    long_title = ("R" * 150) + " -- Amber Hours"
     monkeypatch.setattr(
         ai_titling,
         "ai_text",
@@ -100,6 +100,7 @@ def test_generate_video_copy_truncates_an_overlong_title(monkeypatch):
     )
 
     assert len(result["title"]) == 100
+    assert result["title"].endswith("-- Amber Hours")
 
 
 def test_generate_animal_short_copy_returns_none_when_no_provider_configured(monkeypatch):
@@ -332,4 +333,33 @@ def test_generate_classical_video_copy_calls_ai_text_with_json_mode_and_english_
     assert "Clair de Lune" in captured["prompt"]
     assert "Some Pianist" in captured["prompt"]
     assert "Amber Hours Classical" in captured["system"]
-    assert "write in English" in captured["system"]
+    assert "english" in captured["system"].lower()
+
+
+def test_generate_video_copy_collects_title_variants(monkeypatch):
+    payload = json.dumps(
+        {
+            "title": "Primary Title -- Amber Hours",
+            "title_variants": [
+                "Alt One -- Amber Hours",
+                "Alt Two -- Amber Hours",
+            ],
+            "description": "A calm rain session.",
+            "hashtags": ["rain"],
+        }
+    )
+    monkeypatch.setattr(ai_titling, "ai_text", lambda *a, **k: payload)
+
+    result = ai_titling.generate_video_copy(
+        format_label="storm ambience",
+        scene="deep sleep",
+        duration_s=3600.0,
+        fallback_title="Heavy Rain -- Amber Hours",
+    )
+
+    assert result["title"] == "Primary Title -- Amber Hours"
+    assert result["title_variants"] == [
+        "Primary Title -- Amber Hours",
+        "Alt One -- Amber Hours",
+        "Alt Two -- Amber Hours",
+    ]

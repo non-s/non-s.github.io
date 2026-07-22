@@ -119,6 +119,6 @@ def test_download_track_writes_sidecar_metadata(tmp_path, monkeypatch):
 
 def test_main_skips_gracefully_when_no_candidates_found(tmp_path, monkeypatch):
     monkeypatch.setattr(sync_animal_jazz, "JAZZ_DIR", tmp_path)
-    monkeypatch.setattr(sync_animal_jazz, "_fetch_candidates_ex", lambda offset=0: ([], False))
+    monkeypatch.setattr(sync_animal_jazz, "_fetch_candidates_ex", lambda tags, offset=0, limit=200: ([], False))
 
     assert sync_animal_jazz.main() == 0

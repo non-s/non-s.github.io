@@ -26,7 +26,13 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.search_storm_broll_candidates import DEFAULT_QUERIES as STORM_QUERIES  # noqa: E402
-from utils.broll import BrollClip, download_clip, fetch_pixabay, looks_storm_relevant  # noqa: E402
+from utils.broll import (  # noqa: E402
+    STORM_RELEVANCE_SIGNALS,
+    BrollClip,
+    download_clip,
+    score_relevance,
+    search_pixabay,
+)
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("storm_broll_sync")
@@ -36,7 +42,7 @@ MAX_CLIPS = 16
 
 
 def _looks_storm_relevant(clip: BrollClip) -> bool:
-    return looks_storm_relevant(str(clip.source_metadata.get("tags") or ""))
+    return score_relevance(str(clip.source_metadata.get("tags") or ""), STORM_RELEVANCE_SIGNALS) >= 1
 
 
 def _downloadable(clip: BrollClip, existing_ids: set[str]) -> bool:
@@ -93,17 +99,21 @@ def main() -> int:
             log.info("Removed old storm clip %s to rotate library.", stale.name)
             existing_ids.discard(stale.stem.removeprefix("pixabay_"))
 
-    queries = random.sample(STORM_QUERIES, k=min(3, len(STORM_QUERIES)))
-    candidates: list[BrollClip] = []
-    for query in queries:
-        candidates.extend(fetch_pixabay(query, per_page=8, video_type="film"))
+    queries = random.sample(STORM_QUERIES, k=min(4, len(STORM_QUERIES)))
+    candidates = search_pixabay(
+        queries,
+        per_page=8,
+        pages=2,
+        video_type="film",
+        signals=STORM_RELEVANCE_SIGNALS,
+        min_score=1,
+    )
 
     downloadable = [clip for clip in candidates if _downloadable(clip, existing_ids)]
     if not downloadable:
         log.warning("No new downloadable storm b-roll clips found this run.")
         return 0
 
-    random.shuffle(downloadable)
     downloaded = 0
     seen_this_run: set[str] = set()
     for clip in downloadable:

@@ -64,7 +64,7 @@ def test_download_returns_false_when_download_fails(tmp_path, monkeypatch):
 
 def test_main_skips_gracefully_when_no_candidates_found(tmp_path, monkeypatch):
     monkeypatch.setattr(sync_animal_broll, "BROLL_DIR", tmp_path)
-    monkeypatch.setattr(sync_animal_broll, "fetch_pixabay", lambda *a, **k: [])
+    monkeypatch.setattr(sync_animal_broll, "search_pixabay", lambda *a, **k: [])
 
     assert sync_animal_broll.main() == 0
 
@@ -72,7 +72,7 @@ def test_main_skips_gracefully_when_no_candidates_found(tmp_path, monkeypatch):
 def test_main_rotates_oldest_clips_once_pool_is_full(tmp_path, monkeypatch):
     monkeypatch.setattr(sync_animal_broll, "BROLL_DIR", tmp_path)
     monkeypatch.setattr(sync_animal_broll, "MAX_CLIPS", 2)
-    monkeypatch.setattr(sync_animal_broll, "fetch_pixabay", lambda *a, **k: [])
+    monkeypatch.setattr(sync_animal_broll, "search_pixabay", lambda *a, **k: [])
     for i in range(5):
         video = tmp_path / f"pixabay_{i}.mp4"
         video.write_bytes(b"x")

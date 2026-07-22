@@ -1,24 +1,19 @@
 """
 utils/ai_helper.py — AI text generation and content analysis.
 
-Primary:    Mistral La Plateforme (free tier, 500k tokens/mo, ~1 RPS).
-Fallback 1: Cerebras (OpenAI-compatible, 1M tokens/DAY free at 30 RPM)
-Fallback 2: Google Gemini (15 RPM + 1500 req/day free on flash-lite)
-Fallback 3: Groq (OpenAI-compatible, ~14k req/day free, very fast)
+Provider: Google Gemini (only real API in the project).
 
-Fallbacks fire in order, only when the previous provider hits a
-transient failure (429 / 5xx / network). Each fallback is opt-in via
-its API key env var:
+Gemini free tier — 15 RPM, 1,500 requests/day on flash-lite. We throttle
+requests to ~4 s apart by default and keep a small in-run circuit breaker:
+after `GEMINI_429_CIRCUIT_THRESHOLD` consecutive transient failures (429 /
+5xx / timeout), we stop calling Gemini for the rest of the process and
+return an empty string so callers can fall back to deterministic templates.
 
-  CEREBRAS_API_KEY  → Cerebras fallback
-  GEMINI_API_KEY    → Gemini fallback
-  GROQ_API_KEY      → Groq fallback
-
-Without any fallback key set, behaviour matches the Mistral-only world.
-This chain means a single story has up to 4 chances to survive a
-provider hiccup — drastically reducing the "Mistral 429 → drop story"
-loss rate on the free-tier budget.
+No other AI provider is wired anymore. Cerebras, Groq and Mistral were
+removed because their keys are no longer part of the project.
 """
+
+from __future__ import annotations
 
 import logging
 import os
@@ -45,65 +40,42 @@ def _host_persona_block() -> str:
 log = logging.getLogger(__name__)
 
 _session = requests.Session()
-_session.headers.update({"User-Agent": "WildBrief-Bot/3.0 (+https://non-s.github.io)"})
-
-_MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions"
-_MISTRAL_MODEL = os.environ.get("MISTRAL_MODEL", "mistral-small-latest")
-
-# Cerebras has a 1M token/day free tier and uses an OpenAI-compatible
-# API at api.cerebras.ai/v1. We call it ONLY after Mistral exhausts its
-# 3 retries on 429 — it's the "we ran out of free tier on the primary,
-# don't drop the story" parachute.
-_CEREBRAS_API_URL = "https://api.cerebras.ai/v1/chat/completions"
-_CEREBRAS_MODEL = os.environ.get("CEREBRAS_MODEL", "llama-3.3-70b")
+_session.headers.update({"User-Agent": "AmberHours-Bot/1.0 (+https://non-s.github.io)"})
 
 # Google Gemini free tier — 15 RPM, 1,500 requests/day on flash-lite.
-# Uses a different request shape than OpenAI-compat APIs, so we have
-# a dedicated _call_gemini below. Pinned dated model names (gemini-1.5-*,
-# gemini-2.0-flash-lite, gemini-2.5-flash-lite) get sunset/closed to new
-# keys over time (checked live, 2026-07-22: all three either 404 or
-# "no longer available to new users" on a freshly created key) -- the
-# "-latest" alias always resolves to whatever model Google currently
-# offers new keys, so it doesn't need updating again the next time a
-# pinned version gets retired.
+# "-latest" alias always resolves to whatever model Google currently offers
+# new keys, so it doesn't need updating again the next time a pinned version
+# gets retired.
 _GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 _GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-flash-lite-latest")
 
-# Groq — OpenAI-compatible API, free tier ~14k req/day on llama-3.3-70b
-# and llama-3.1-8b. Very fast (sub-second usually).
-_GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-_GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
-
-# Mistral free tier is nominally 1 request/second but sustained traffic
-# hits 429 well before that. 8s gives a comfortable 8x margin over the
-# documented limit — costs ~7 min per 50-post run but eliminates the
-# retry-and-drop loop entirely. Override via MISTRAL_MIN_INTERVAL env.
-_MIN_INTERVAL = float(os.environ.get("MISTRAL_MIN_INTERVAL", "8.0"))
+# Free tier is nominally 15 requests/minute. 4 s spacing gives a comfortable
+# margin below the documented limit while still keeping throughput reasonable.
+# Override via GEMINI_MIN_INTERVAL env.
+_MIN_INTERVAL = float(os.environ.get("GEMINI_MIN_INTERVAL", "4.0"))
 _call_lock = threading.Lock()
 _last_call_ts = 0.0
 
-# In-run circuit breaker: when Mistral 429s repeatedly (free-tier
-# quota gone for the day, sustained burst limit), keep trying it on
-# every story costs ~30s per failure (3 attempts × waits). After
-# `_MISTRAL_429_CIRCUIT_THRESHOLD` consecutive give-ups in the same
-# process, skip Mistral and go straight to the fallback chain for
-# the rest of the run. Successful Mistral call resets the streak.
-# Earlier queue-refresh runs hit the 25-min workflow timeout exactly
-# because we burned the whole budget on 36 consecutive Mistral 429s.
-_MISTRAL_429_CIRCUIT_THRESHOLD = int(os.environ.get("MISTRAL_429_CIRCUIT_THRESHOLD", "3"))
+# In-run circuit breaker: when Gemini 429s repeatedly (free-tier quota gone
+# for the day, sustained burst limit), keep trying it on every call costs ~30s
+# per failure (3 attempts × waits). After `_GEMINI_429_CIRCUIT_THRESHOLD`
+# consecutive give-ups in the same process, skip Gemini and return "" so
+# callers fall back to deterministic templates. A successful Gemini call
+# resets the streak.
+_GEMINI_429_CIRCUIT_THRESHOLD = int(os.environ.get("GEMINI_429_CIRCUIT_THRESHOLD", "3"))
 _PROVIDER_429_MAX_WAIT_SECONDS = float(os.environ.get("AI_PROVIDER_429_MAX_WAIT_SECONDS", "8"))
-_mistral_429_streak = 0
-_mistral_circuit_open = False
+_gemini_429_streak = 0
+_gemini_circuit_open = False
 
 
-def _reset_mistral_circuit_breaker() -> None:
+def _reset_gemini_circuit_breaker() -> None:
     """Test hook — re-arm the breaker between tests. Module-level state
     persists across pytest items because Python caches the import, so
     a 429 streak set up by one test would otherwise carry into the
     next. Production code never calls this."""
-    global _mistral_429_streak, _mistral_circuit_open
-    _mistral_429_streak = 0
-    _mistral_circuit_open = False
+    global _gemini_429_streak, _gemini_circuit_open
+    _gemini_429_streak = 0
+    _gemini_circuit_open = False
 
 
 def _bounded_429_wait(retry_after: int | float, fallback: int | float) -> float:
@@ -127,67 +99,6 @@ def _throttle() -> None:
         if 0 < elapsed < _MIN_INTERVAL:
             sleep(_MIN_INTERVAL - elapsed)
         _last_call_ts = time.time()
-
-
-def _call_mistral(sys_msg: str, prompt: str, timeout: int, key: str, json_mode: bool = False) -> str:
-    _throttle()
-    payload: dict = {
-        "model": _MISTRAL_MODEL,
-        "messages": [
-            {"role": "system", "content": sys_msg},
-            {"role": "user", "content": prompt},
-        ],
-        "temperature": 0.7,
-        "max_tokens": 3000,
-    }
-    if json_mode:
-        # Forces Mistral to emit syntactically valid JSON. Eliminates the
-        # "Expecting ',' delimiter" / unescaped-quote / trailing-comma
-        # class of parse errors that were sinking entire posts at the
-        # quality gate. Requires a 'json' word somewhere in the messages
-        # (we already say "JSON" in the user prompt for these calls).
-        payload["response_format"] = {"type": "json_object"}
-    r = _session.post(
-        _MISTRAL_API_URL,
-        json=payload,
-        headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
-        timeout=timeout,
-    )
-    r.raise_for_status()
-    return r.json()["choices"][0]["message"]["content"].strip()
-
-
-def _call_cerebras(sys_msg: str, prompt: str, timeout: int, key: str, json_mode: bool = False) -> str:
-    """
-    Drop-in OpenAI-compatible call to Cerebras as a Mistral fallback.
-    Same payload shape, same response shape — `choices[0].message.content`.
-
-    Note: Cerebras free tier is 30 req/min, but it does NOT enforce the
-    8-second throttle Mistral does. We still call _throttle() to share
-    the rate budget — both providers benefit from the spacing if we're
-    failing-over often.
-    """
-    _throttle()
-    payload: dict = {
-        "model": _CEREBRAS_MODEL,
-        "messages": [
-            {"role": "system", "content": sys_msg},
-            {"role": "user", "content": prompt},
-        ],
-        "temperature": 0.7,
-        "max_tokens": 3000,
-    }
-    if json_mode:
-        # Cerebras supports the same OpenAI-style response_format flag.
-        payload["response_format"] = {"type": "json_object"}
-    r = _session.post(
-        _CEREBRAS_API_URL,
-        json=payload,
-        headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
-        timeout=timeout,
-    )
-    r.raise_for_status()
-    return r.json()["choices"][0]["message"]["content"].strip()
 
 
 def _call_gemini(sys_msg: str, prompt: str, timeout: int, key: str, json_mode: bool = False) -> str:
@@ -230,30 +141,6 @@ def _call_gemini(sys_msg: str, prompt: str, timeout: int, key: str, json_mode: b
         raise RuntimeError(f"Gemini response missing text: {data}") from exc
 
 
-def _call_groq(sys_msg: str, prompt: str, timeout: int, key: str, json_mode: bool = False) -> str:
-    """Groq — OpenAI-compatible, free tier ~14k req/day. Last fallback."""
-    _throttle()
-    payload: dict = {
-        "model": _GROQ_MODEL,
-        "messages": [
-            {"role": "system", "content": sys_msg},
-            {"role": "user", "content": prompt},
-        ],
-        "temperature": 0.7,
-        "max_tokens": 3000,
-    }
-    if json_mode:
-        payload["response_format"] = {"type": "json_object"}
-    r = _session.post(
-        _GROQ_API_URL,
-        json=payload,
-        headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
-        timeout=timeout,
-    )
-    r.raise_for_status()
-    return r.json()["choices"][0]["message"]["content"].strip()
-
-
 def _default_system_prompt() -> str:
     return (
         _host_persona_block() + " "
@@ -276,96 +163,74 @@ def _default_system_prompt() -> str:
     )
 
 
-def _ai_provider_registry() -> dict[str, tuple[str, str, object]]:
-    return {
-        "gemini": ("GEMINI_API_KEY", "Gemini", _call_gemini),
-        "mistral": ("MISTRAL_API_KEY", "Mistral", _call_mistral),
-        "cerebras": ("CEREBRAS_API_KEY", "Cerebras", _call_cerebras),
-        "groq": ("GROQ_API_KEY", "Groq", _call_groq),
-    }
-
-
 def ai_text(
     prompt: str, system: str = "", seed: int = 0, timeout: int = 30, json_mode: bool = False, task: str = "auto"
 ) -> str:
-    """Route text generation across the healthiest configured provider."""
+    """Call the configured Gemini provider, with cache + circuit breaker."""
+    global _gemini_429_streak, _gemini_circuit_open
     sys_msg = system or _default_system_prompt()
-    registry = _ai_provider_registry()
-    chain = provider_stats.preferred_chain_for_task(
-        task=task,
-        json_mode=json_mode,
-        prompt_chars=len(prompt) + len(sys_msg),
-    )
-    configured = [name for name in chain if name in registry and os.environ.get(registry[name][0], "")]
-    if not configured:
-        log.error(
-            "No AI provider key configured. Set MISTRAL_API_KEY, " "CEREBRAS_API_KEY, GEMINI_API_KEY or GROQ_API_KEY."
-        )
+    key = os.environ.get("GEMINI_API_KEY", "")
+    if not key:
+        log.error("No AI provider key configured. Set GEMINI_API_KEY.")
+        return ""
+
+    if _gemini_circuit_open:
+        log.warning("Gemini circuit breaker is open; skipping AI call.")
         return ""
 
     cache_prompt = f"{sys_msg}\x1f{prompt}"
-    cache_model_hint = "router:" + ",".join(sorted(configured))
+    cache_model_hint = "gemini"
     cached = ai_cache.get(cache_prompt, model_hint=cache_model_hint, json_mode=json_mode)
     if cached:
         return cached
 
-    global _mistral_429_streak, _mistral_circuit_open
-    for index, name in enumerate(configured):
-        if name == "mistral" and _mistral_circuit_open:
-            continue
-        env_var, label, caller = registry[name]
-        key = os.environ.get(env_var, "")
-        for attempt in range(2):
-            try:
-                log.info(
-                    "AI router %s %s for task=%s",
-                    "selected" if index == 0 else "fallback",
-                    label,
-                    task,
-                )
-                out = caller(sys_msg, prompt, timeout, key, json_mode=json_mode)
-                ai_cache.put(cache_prompt, out, model_hint=cache_model_hint, json_mode=json_mode)
-                provider_stats.record(name, success=True)
-                if name == "mistral":
-                    _mistral_429_streak = 0
-                return out
-            except requests.exceptions.HTTPError as e:
-                status = e.response.status_code if e.response is not None else 0
-                provider_stats.record(name, success=False, status=status)
-                if status == 429 and attempt < 1:
-                    hdr = (e.response.headers.get("Retry-After") if e.response is not None else None) or "0"
-                    try:
-                        retry_after = int(float(hdr))
-                    except (TypeError, ValueError):
-                        retry_after = 0
-                    wait = _bounded_429_wait(retry_after, 5)
-                    log.warning("%s 429 - retry in %ss (attempt %d/2)", label, wait, attempt + 1)
-                    sleep(wait)
-                    continue
-                if name == "mistral" and (status == 429 or (500 <= status < 600)):
-                    _mistral_429_streak += 1
-                    if _mistral_429_streak >= _MISTRAL_429_CIRCUIT_THRESHOLD:
-                        _mistral_circuit_open = True
-                log.warning("%s HTTP %s - moving on", label, status)
-                if status not in (429, 500, 502, 503, 504):
-                    return ""
-                break
-            except Exception as exc:
-                provider_stats.record(name, success=False, status=None)
-                log.warning("%s error (attempt %d/2): %s", label, attempt + 1, exc)
-                if name == "mistral" and isinstance(
-                    exc,
-                    (
-                        requests.exceptions.Timeout,
-                        requests.exceptions.ConnectionError,
-                        requests.exceptions.RequestException,
-                    ),
-                ):
-                    _mistral_429_streak += 1
-                    if _mistral_429_streak >= _MISTRAL_429_CIRCUIT_THRESHOLD:
-                        _mistral_circuit_open = True
-                if attempt < 1:
-                    sleep(3)
-                    continue
-                break
+    for attempt in range(2):
+        try:
+            log.info("AI call to Gemini for task=%s (attempt %d/2)", task, attempt + 1)
+            out = _call_gemini(sys_msg, prompt, timeout, key, json_mode=json_mode)
+            ai_cache.put(cache_prompt, out, model_hint=cache_model_hint, json_mode=json_mode)
+            provider_stats.record("gemini", success=True)
+            _gemini_429_streak = 0
+            return out
+        except requests.exceptions.HTTPError as e:
+            status = e.response.status_code if e.response is not None else 0
+            provider_stats.record("gemini", success=False, status=status)
+            if status == 429 and attempt < 1:
+                hdr = (e.response.headers.get("Retry-After") if e.response is not None else None) or "0"
+                try:
+                    retry_after = int(float(hdr))
+                except (TypeError, ValueError):
+                    retry_after = 0
+                wait = _bounded_429_wait(retry_after, 5)
+                log.warning("Gemini 429 - retry in %ss (attempt %d/2)", wait, attempt + 1)
+                sleep(wait)
+                continue
+            if status == 429 or (500 <= status < 600):
+                _gemini_429_streak += 1
+                if _gemini_429_streak >= _GEMINI_429_CIRCUIT_THRESHOLD:
+                    _gemini_circuit_open = True
+                    log.error("Gemini circuit breaker opened after %d consecutive failures", _gemini_429_streak)
+            log.warning("Gemini HTTP %s - giving up", status)
+            if status not in (429, 500, 502, 503, 504):
+                return ""
+            break
+        except Exception as exc:
+            provider_stats.record("gemini", success=False, status=None)
+            log.warning("Gemini error (attempt %d/2): %s", attempt + 1, exc)
+            if isinstance(
+                exc,
+                (
+                    requests.exceptions.Timeout,
+                    requests.exceptions.ConnectionError,
+                    requests.exceptions.RequestException,
+                ),
+            ):
+                _gemini_429_streak += 1
+                if _gemini_429_streak >= _GEMINI_429_CIRCUIT_THRESHOLD:
+                    _gemini_circuit_open = True
+                    log.error("Gemini circuit breaker opened after %d consecutive failures", _gemini_429_streak)
+            if attempt < 1:
+                sleep(3)
+                continue
+            break
     return ""

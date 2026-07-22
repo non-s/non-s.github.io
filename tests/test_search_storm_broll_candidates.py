@@ -2,6 +2,7 @@ import json
 from unittest.mock import MagicMock
 
 import scripts.search_storm_broll_candidates as search_storm
+from utils import broll
 from utils.broll import BrollClip
 
 
@@ -21,7 +22,7 @@ def test_main_prints_one_result_list_per_query_using_film_video_type(monkeypatch
         },
     )
     fetch = MagicMock(return_value=[clip])
-    monkeypatch.setattr(search_storm, "fetch_pixabay", fetch)
+    monkeypatch.setattr(search_storm, "search_pixabay", fetch)
     monkeypatch.setattr(search_storm.sys, "argv", ["search_storm_broll_candidates.py", "heavy rain window night"])
 
     assert search_storm.main() == 0
@@ -30,24 +31,31 @@ def test_main_prints_one_result_list_per_query_using_film_video_type(monkeypatch
     assert list(out.keys()) == ["heavy rain window night"]
     hit = out["heavy rain window night"][0]
     assert hit["id"] == "123"
-    assert hit["storm_relevant_tag_match"] is True
-    fetch.assert_called_once_with("heavy rain window night", per_page=8, video_type="film")
+    assert hit["storm_relevant_tag_match"] == 3
+    fetch.assert_called_once_with(
+        ["heavy rain window night"],
+        per_page=8,
+        pages=2,
+        video_type="film",
+        signals=search_storm.STORM_RELEVANCE_SIGNALS,
+        min_score=1,
+    )
 
 
 def test_main_defaults_to_the_built_in_storm_queries_when_none_given(monkeypatch, capsys):
     fetch = MagicMock(return_value=[])
-    monkeypatch.setattr(search_storm, "fetch_pixabay", fetch)
+    monkeypatch.setattr(search_storm, "search_pixabay", fetch)
     monkeypatch.setattr(search_storm.sys, "argv", ["search_storm_broll_candidates.py"])
 
     search_storm.main()
 
-    called_queries = {call.args[0] for call in fetch.call_args_list}
+    called_queries = {call.args[0][0] for call in fetch.call_args_list}
     assert called_queries == set(search_storm.DEFAULT_QUERIES)
 
 
 def test_main_splits_pipe_delimited_queries(monkeypatch, capsys):
     fetch = MagicMock(return_value=[])
-    monkeypatch.setattr(search_storm, "fetch_pixabay", fetch)
+    monkeypatch.setattr(search_storm, "search_pixabay", fetch)
     monkeypatch.setattr(
         search_storm.sys,
         "argv",
@@ -56,14 +64,28 @@ def test_main_splits_pipe_delimited_queries(monkeypatch, capsys):
 
     search_storm.main()
 
-    fetch.assert_any_call("heavy rain window night", per_page=8, video_type="film")
-    fetch.assert_any_call("thunderstorm lightning night sky", per_page=8, video_type="film")
+    fetch.assert_any_call(
+        ["heavy rain window night"],
+        per_page=8,
+        pages=2,
+        video_type="film",
+        signals=search_storm.STORM_RELEVANCE_SIGNALS,
+        min_score=1,
+    )
+    fetch.assert_any_call(
+        ["thunderstorm lightning night sky"],
+        per_page=8,
+        pages=2,
+        video_type="film",
+        signals=search_storm.STORM_RELEVANCE_SIGNALS,
+        min_score=1,
+    )
     assert fetch.call_count == 2
 
 
 def test_main_passes_through_a_custom_video_type(monkeypatch, capsys):
     fetch = MagicMock(return_value=[])
-    monkeypatch.setattr(search_storm, "fetch_pixabay", fetch)
+    monkeypatch.setattr(search_storm, "search_pixabay", fetch)
     monkeypatch.setattr(
         search_storm.sys,
         "argv",
@@ -72,11 +94,18 @@ def test_main_passes_through_a_custom_video_type(monkeypatch, capsys):
 
     search_storm.main()
 
-    fetch.assert_called_once_with("cartoon piano cozy room", per_page=8, video_type="animation")
+    fetch.assert_called_once_with(
+        ["cartoon piano cozy room"],
+        per_page=8,
+        pages=2,
+        video_type="animation",
+        signals=search_storm.STORM_RELEVANCE_SIGNALS,
+        min_score=1,
+    )
 
 
 def test_looks_storm_relevant_flags_expected_signals():
-    assert search_storm.looks_storm_relevant("rain, night, city")
-    assert search_storm.looks_storm_relevant("Thunderstorm over the hills")
-    assert not search_storm.looks_storm_relevant("man, books, library")
-    assert not search_storm.looks_storm_relevant("")
+    assert broll.looks_storm_relevant("rain, night, city")
+    assert broll.looks_storm_relevant("Thunderstorm over the hills")
+    assert not broll.looks_storm_relevant("man, books, library")
+    assert not broll.looks_storm_relevant("")

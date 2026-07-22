@@ -5,22 +5,21 @@
 | Name | Required | Use |
 | --- | --- | --- |
 | `YOUTUBE_TOKEN` | yes | OAuth token JSON for official YouTube Data API upload and optional Analytics API reads. |
-| `PIXABAY_API_KEY` | only for the admin b-roll resync/search tools (`admin-resync-broll.yml`, `admin-search-broll-candidates.yml`) | The scheduled pipeline no longer fetches footage live -- each format loops one fixed, hand-picked real Pixabay clip committed in the repo. |
+| `PIXABAY_API_KEY` | required by the rotating b-roll sync workflows (`sync-storm-broll.yml`, `sync-animal-broll.yml`, `sync-noise-broll.yml`) and the admin search tool (`search-storm-broll-candidates.yml`) | Searches real Pixabay footage across multiple queries and pages; `utils/broll.py` ranks results by pillar-specific tag relevance. |
 | `YOUTUBE_STREAM_KEY` | only for the 24/7 live relay (`live-stream.yml`) | RTMP stream key the live relay pushes to. |
 
 No AI text provider key is required — title/description text is
-template-based by default; an optional translation feature in
-`upload_youtube.py` degrades gracefully to English-only when no
-`MISTRAL_API_KEY`/`CEREBRAS_API_KEY`/`GEMINI_API_KEY`/`GROQ_API_KEY` is
-configured.
+template-based by default. `utils/ai_titling.py` calls `utils/ai_helper.py`'s
+`ai_text(..., json_mode=True)` to write each video's title, description,
+hashtags and a few title variants. Only `GEMINI_API_KEY` is wired in this
+project; with no key configured, or when Gemini is unavailable, the call
+returns an empty response and the pipeline falls back to the deterministic
+template title/description. `GEMINI_API_KEY` is optional either way, never
+required.
 
-`utils/ai_titling.py` calls `utils/ai_helper.py`'s
-`ai_text(..., json_mode=True)` to write each storm video's title,
-description and hashtags. That routes to Gemini first when
-`GEMINI_API_KEY` is set (falling back through Cerebras/Groq/Mistral,
-whichever keys are configured); with no key configured at all, it falls
-back to the template title/description. `GEMINI_API_KEY` is optional
-either way, never required.
+`utils/jamendo_cache.py` keeps Jamendo search results on disk for
+`JAMENDO_CACHE_TTL_HOURS` (default 24) so re-scans don't burn API quota.
+`utils/ai_cache.py` caches AI responses for `AI_CACHE_TTL_DAYS` (default 7).
 
 ## Feature Flag Registry
 

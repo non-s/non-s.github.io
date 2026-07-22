@@ -142,7 +142,7 @@ def test_download_track_writes_sidecar_metadata(tmp_path, monkeypatch):
 
 def test_main_skips_gracefully_when_no_candidates_found(tmp_path, monkeypatch):
     monkeypatch.setattr(sync_classical, "CLASSICAL_DIR", tmp_path)
-    monkeypatch.setattr(sync_classical, "_fetch_candidates_ex", lambda offset=0: ([], False))
+    monkeypatch.setattr(sync_classical, "_fetch_candidates_ex", lambda tags, offset=0, limit=200: ([], False))
 
     assert sync_classical.main() == 0
 
@@ -150,7 +150,7 @@ def test_main_skips_gracefully_when_no_candidates_found(tmp_path, monkeypatch):
 def test_main_rotates_out_oldest_tracks_once_at_max(tmp_path, monkeypatch):
     monkeypatch.setattr(sync_classical, "CLASSICAL_DIR", tmp_path)
     monkeypatch.setattr(sync_classical, "MAX_TRACKS", 2)
-    monkeypatch.setattr(sync_classical, "_fetch_candidates_ex", lambda offset=0: ([], False))
+    monkeypatch.setattr(sync_classical, "_fetch_candidates_ex", lambda tags, offset=0, limit=200: ([], False))
     for i in range(3):
         (tmp_path / f"jamendo_{i}.mp3").write_bytes(b"x")
         (tmp_path / f"jamendo_{i}.json").write_text("{}", encoding="utf-8")

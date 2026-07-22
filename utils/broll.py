@@ -24,7 +24,7 @@ import requests
 
 log = logging.getLogger(__name__)
 
-_USER_AGENT = "WildBrief-Bot/4.0 (+https://non-s.github.io)"
+_USER_AGENT = "AmberHours-Bot/1.0 (+https://non-s.github.io)"
 _TIMEOUT = 20
 _CACHE_DIR = Path(os.environ.get("BROLL_CACHE_DIR", "_data/broll_cache"))
 _CACHE_TTL_S = 86400 * 7
@@ -191,6 +191,17 @@ def pick_noise_broll_file(directory: Path, pattern: str = "pixabay_*.mp4") -> Pa
     return random.choice(candidates)
 
 
+def score_relevance(tags: str, signals: set[str]) -> int:
+    """Return the number of distinct relevance signals present in `tags`.
+
+    Used by `search_pixabay()` to rank results from multiple queries and
+    pages so the most on-brand clips are tried first. The count is simple
+    but stable across the small tag vocabularies Pixabay returns.
+    """
+    tags_lower = (tags or "").lower()
+    return sum(1 for signal in signals if signal in tags_lower)
+
+
 @dataclasses.dataclass
 class BrollClip:
     """One b-roll candidate returned by Pexels."""
@@ -335,6 +346,54 @@ def fetch_pixabay(query: str, per_page: int = 8, page: int = 1, video_type: str 
         )
     _cache_put(cache_path, [dataclasses.asdict(clip) for clip in out])
     return out
+
+
+def search_pixabay(
+    queries: list[str],
+    *,
+    per_page: int = 8,
+    pages: int = 1,
+    video_type: str = "film",
+    signals: set[str] | None = None,
+    min_score: int = 1,
+) -> list[BrollClip]:
+    """Run several Pixabay queries across multiple pages, deduplicate,
+    and rank by relevance.
+
+    Pagination lets us pull more than `per_page` results per query without
+    raising per_page above Pixabay's 200 cap. Relevance scoring uses the
+    pillar-specific signal sets (e.g. STORM_RELEVANCE_SIGNALS) so the
+    clips that match the most on-brand tags are tried first. Clips that
+    don't match at least `min_score` signals are dropped when `signals` is
+    provided.
+    """
+    seen: dict[str, BrollClip] = {}
+    scores: dict[str, int] = {}
+    for query in queries:
+        for page in range(1, max(1, int(pages)) + 1):
+            for clip in fetch_pixabay(query, per_page=per_page, page=page, video_type=video_type):
+                clip_id = str(clip.source_metadata.get("pixabay_video_id") or "")
+                if not clip_id or clip_id in seen:
+                    continue
+                if signals is not None:
+                    score = score_relevance(str(clip.source_metadata.get("tags") or ""), signals)
+                    if score < min_score:
+                        continue
+                    scores[clip_id] = score
+                seen[clip_id] = clip
+
+    if not seen:
+        return []
+
+    def _sort_key(item: tuple[str, BrollClip]) -> tuple:
+        clip_id, clip = item
+        # Primary: relevance score (descending). Secondary: pixel count
+        # (descending), so higher-resolution clips win ties.
+        score = scores.get(clip_id, 0)
+        pixels = clip.width * clip.height
+        return (-score, -pixels)
+
+    return [clip for _, clip in sorted(seen.items(), key=_sort_key)]
 
 
 def download_clip(clip: BrollClip, dest: Path, max_bytes: int | None = None) -> bool:

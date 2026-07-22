@@ -1,23 +1,17 @@
 """
-utils/provider_stats.py — Track AI provider success rates, reorder chain.
+utils/provider_stats.py — Track AI provider success rates and cooldown.
 
 Why this exists
 ---------------
-The fallback chain (Mistral → Cerebras → Gemini → Groq) runs in a
-fixed order, but free-tier providers ROTATE which one's at capacity
-hour by hour. If Cerebras is 429-ing every call right now, we waste
-~5 s of timeout + 1 throttle slot on it before reaching Gemini. Over
-a 100-story run that's 8 minutes of pure waste.
+ai_helper.py now has a single real provider (Google Gemini). This
+module still records every call's (provider, status) into
+`_data/provider_stats.jsonl` so we can detect when Gemini is entering
+cooldown (consecutive 429s) and so the ledger can be inspected later.
+`preferred_chain()` is kept generic but, with only one provider in the
+project, it mostly returns `["gemini"]`.
 
-This module:
-  1. Records every call's (provider, status) into `_data/provider_stats.jsonl`
-  2. `preferred_chain()` returns the four providers ranked by recent
-     success rate — failing ones get pushed to the back
-  3. ai_helper.py consults it to decide order on every call
-
-Decay: we look at the LAST 50 calls per provider. Older data is
-ignored so a provider that's recovered after an outage climbs back
-to the front within an hour or two.
+Decay: we look at the LAST 50 calls per provider. Older data is ignored
+so a recovered provider climbs back quickly.
 """
 
 from __future__ import annotations
@@ -39,14 +33,14 @@ STATS_LOG = Path(os.environ.get("PROVIDER_STATS_LOG", "_data/provider_stats.json
 WINDOW_SIZE = int(os.environ.get("PROVIDER_STATS_WINDOW", "50"))
 
 # Canonical ordering when we have no data yet (or the file is
-# unreadable). Matches the historical chain in ai_helper.py.
-DEFAULT_ORDER: tuple[str, ...] = ("mistral", "cerebras", "gemini", "groq")
+# unreadable). Gemini is the only real provider in the project.
+DEFAULT_ORDER: tuple[str, ...] = ("gemini",)
 TASK_DEFAULTS: dict[str, tuple[str, ...]] = {
-    "json": ("gemini", "cerebras", "groq", "mistral"),
-    "longform": ("gemini", "cerebras", "mistral", "groq"),
-    "rewrite": ("groq", "cerebras", "mistral", "gemini"),
-    "classification": ("groq", "cerebras", "gemini", "mistral"),
-    "creative": ("gemini", "mistral", "cerebras", "groq"),
+    "json": ("gemini",),
+    "longform": ("gemini",),
+    "rewrite": ("gemini",),
+    "classification": ("gemini",),
+    "creative": ("gemini",),
     "auto": DEFAULT_ORDER,
 }
 COOLDOWN_SECONDS = int(os.environ.get("PROVIDER_COOLDOWN_SECONDS", "900"))

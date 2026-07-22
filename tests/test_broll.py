@@ -245,3 +245,51 @@ def test_download_clip_aborts_oversized(tmp_path):
         session.get.return_value = fake
         factory.return_value = session
         assert not broll.download_clip(clip, dest)
+
+
+def test_score_relevance_counts_matching_signals():
+    assert broll.score_relevance("rain, thunder, night", broll.STORM_RELEVANCE_SIGNALS) == 3
+    assert broll.score_relevance("man, books, library", broll.STORM_RELEVANCE_SIGNALS) == 0
+    assert broll.score_relevance("", broll.STORM_RELEVANCE_SIGNALS) == 0
+
+
+def test_search_pixabay_deduplicates_and_ranks_by_relevance(monkeypatch, tmp_path):
+    monkeypatch.setenv("PIXABAY_API_KEY", "x")
+    monkeypatch.setattr(broll, "_CACHE_DIR", tmp_path / "c")
+
+    def _fake_fetch(query, per_page=8, page=1, video_type="film"):
+        if page > 1:
+            return []
+        return [
+            broll.BrollClip(
+                source="pixabay",
+                url=f"https://pixabay.com/videos/id-{i}/",
+                download_url=f"https://cdn.pixabay.com/video/{i}.mp4",
+                width=1920,
+                height=1080,
+                duration_s=10.0,
+                source_metadata={"pixabay_video_id": str(i), "tags": tags},
+            )
+            for i, tags in enumerate(
+                ["rain, thunder, night", "rain, window", "cat, cute"], start=1
+            )
+        ]
+
+    monkeypatch.setattr(broll, "fetch_pixabay", _fake_fetch)
+    clips = broll.search_pixabay(
+        ["heavy rain", "thunderstorm"],
+        per_page=8,
+        pages=2,
+        video_type="film",
+        signals=broll.STORM_RELEVANCE_SIGNALS,
+        min_score=1,
+    )
+    # Clip 1 has 3 signals, clip 2 has 2 signals, clip 3 is off-topic and dropped.
+    assert [c.source_metadata["pixabay_video_id"] for c in clips] == ["1", "2"]
+
+
+def test_search_pixabay_returns_empty_when_fetcher_empty(monkeypatch, tmp_path):
+    monkeypatch.setenv("PIXABAY_API_KEY", "x")
+    monkeypatch.setattr(broll, "_CACHE_DIR", tmp_path / "c")
+    monkeypatch.setattr(broll, "fetch_pixabay", lambda *a, **k: [])
+    assert broll.search_pixabay(["x"], signals=broll.STORM_RELEVANCE_SIGNALS) == []
