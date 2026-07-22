@@ -177,6 +177,14 @@ def test_mandatory_attribution_line_includes_real_track_artist_and_license():
     assert "Creative Commons Attribution" in line
 
 
+def test_render_targets_stay_within_1080p_to_avoid_runner_oom():
+    """The pinned clip is 4K, but baking a 4K segment reliably kills the
+    GitHub Actions runner (SIGTERM). 1080p is plenty for study ambience and
+    keeps the bake fast enough."""
+    assert classical.TARGET_W <= 1920
+    assert classical.TARGET_H <= 1080
+
+
 def test_mandatory_attribution_line_degrades_gracefully_on_missing_fields():
     line = classical._mandatory_attribution_line({})
 

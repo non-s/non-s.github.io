@@ -91,9 +91,9 @@ CLASSICAL_DIR = ROOT / "_assets" / "audio" / "classical"
 VIDEOS_DIR = ROOT / "_videos"
 TEMP_DIR = ROOT / "_videos" / "temp_classical"
 
-TARGET_W = 3840
-TARGET_H = 2160
-TARGET_FPS = 30  # matches the pinned clip's own real-footage frame rate
+TARGET_W = 1920
+TARGET_H = 1080
+TARGET_FPS = 30  # 1080p keeps the bake fast enough for GitHub Actions runners
 
 CATEGORY = "classical_ambience"
 SERIES_SUFFIX = "Ambience"
