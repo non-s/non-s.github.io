@@ -197,6 +197,12 @@ def test_build_stream_command_streams_to_rtmp_with_real_stream_key(streamer, tmp
 
 
 def test_ensure_live_broadcast_reuses_active_broadcast(streamer):
+    # A title that is neither blank nor in _LEGACY_BROADCAST_TITLES (the
+    # fallback template itself is now IN that set, since a fallback-titled
+    # broadcast should get upgraded to a fresh AI title -- see
+    # test_rebrand_if_stale_replaces_the_fallback_template below) --
+    # this one stands in for "already carrying a current, non-stale
+    # title" (e.g. a previous run's own AI-generated title).
     fake_youtube = MagicMock()
     fake_youtube.liveBroadcasts().list().execute.return_value = {
         "items": [
@@ -204,8 +210,8 @@ def test_ensure_live_broadcast_reuses_active_broadcast(streamer):
                 "id": "abc123",
                 "status": {"lifeCycleStatus": "live"},
                 "snippet": {
-                    "title": live_stream_dynamic.BROADCAST_TITLE,
-                    "description": live_stream_dynamic.BROADCAST_DESCRIPTION,
+                    "title": "Chuva Forte na Cabana da Floresta -- Amber Hours",
+                    "description": "Some previously AI-generated description.",
                 },
             }
         ]
@@ -217,6 +223,34 @@ def test_ensure_live_broadcast_reuses_active_broadcast(streamer):
     assert streamer.broadcast_id == "abc123"
     fake_youtube.liveBroadcasts().insert.assert_not_called()
     fake_youtube.liveBroadcasts().update.assert_not_called()
+
+
+def test_rebrand_if_stale_replaces_the_fallback_template(streamer):
+    """The fallback template title is itself treated as stale/upgradeable
+    -- once real AI titling exists, a broadcast still carrying the
+    fallback should get replaced by this run's self.broadcast_title on
+    its next check-in, same as any other legacy title."""
+    fake_youtube = MagicMock()
+    fake_youtube.liveBroadcasts().list().execute.return_value = {
+        "items": [
+            {
+                "id": "abc123",
+                "status": {"lifeCycleStatus": "live"},
+                "snippet": {
+                    "title": live_stream_dynamic._FALLBACK_BROADCAST_TITLE,
+                    "description": live_stream_dynamic._FALLBACK_BROADCAST_DESCRIPTION,
+                },
+            }
+        ]
+    }
+    streamer.youtube = fake_youtube
+
+    streamer.ensure_live_broadcast()
+
+    update_call = fake_youtube.liveBroadcasts().update
+    update_call.assert_called_once()
+    assert update_call.call_args.kwargs["body"]["snippet"]["title"] == streamer.broadcast_title
+    assert update_call.call_args.kwargs["body"]["snippet"]["description"] == streamer.broadcast_description
 
 
 def test_ensure_live_broadcast_rebrands_stale_active_broadcast(streamer):
@@ -242,8 +276,8 @@ def test_ensure_live_broadcast_rebrands_stale_active_broadcast(streamer):
     fake_youtube.liveBroadcasts().insert.assert_not_called()
     update_call = fake_youtube.liveBroadcasts().update.call_args
     assert update_call.kwargs["body"]["id"] == "abc123"
-    assert update_call.kwargs["body"]["snippet"]["title"] == live_stream_dynamic.BROADCAST_TITLE
-    assert update_call.kwargs["body"]["snippet"]["description"] == live_stream_dynamic.BROADCAST_DESCRIPTION
+    assert update_call.kwargs["body"]["snippet"]["title"] == live_stream_dynamic._FALLBACK_BROADCAST_TITLE
+    assert update_call.kwargs["body"]["snippet"]["description"] == live_stream_dynamic._FALLBACK_BROADCAST_DESCRIPTION
     assert update_call.kwargs["body"]["snippet"]["scheduledStartTime"] == "2026-07-15T00:00:00Z"
 
 
@@ -270,8 +304,8 @@ def test_ensure_live_broadcast_rebrands_the_old_lofi_broadcast(streamer):
     streamer.ensure_live_broadcast()
 
     update_call = fake_youtube.liveBroadcasts().update.call_args
-    assert update_call.kwargs["body"]["snippet"]["title"] == live_stream_dynamic.BROADCAST_TITLE
-    assert update_call.kwargs["body"]["snippet"]["description"] == live_stream_dynamic.BROADCAST_DESCRIPTION
+    assert update_call.kwargs["body"]["snippet"]["title"] == live_stream_dynamic._FALLBACK_BROADCAST_TITLE
+    assert update_call.kwargs["body"]["snippet"]["description"] == live_stream_dynamic._FALLBACK_BROADCAST_DESCRIPTION
 
 
 def test_ensure_live_broadcast_leaves_a_manually_retitled_broadcast_alone(streamer):
@@ -316,7 +350,7 @@ def test_ensure_live_broadcast_rebrands_a_blank_title(streamer):
     streamer.ensure_live_broadcast()
 
     update_call = fake_youtube.liveBroadcasts().update.call_args
-    assert update_call.kwargs["body"]["snippet"]["title"] == live_stream_dynamic.BROADCAST_TITLE
+    assert update_call.kwargs["body"]["snippet"]["title"] == live_stream_dynamic._FALLBACK_BROADCAST_TITLE
 
 
 def test_ensure_live_broadcast_creates_storm_branded_broadcast_when_none_active(streamer):
@@ -333,7 +367,7 @@ def test_ensure_live_broadcast_creates_storm_branded_broadcast_when_none_active(
     assert streamer.broadcast_id == "new-broadcast-1"
     insert_call = fake_youtube.liveBroadcasts().insert.call_args
     body = insert_call.kwargs["body"]
-    assert body["snippet"]["title"] == live_stream_dynamic.BROADCAST_TITLE
+    assert body["snippet"]["title"] == live_stream_dynamic._FALLBACK_BROADCAST_TITLE
     assert "chuva" in body["snippet"]["title"].lower()
     assert "lofi" not in body["snippet"]["title"].lower()
     assert "animal" not in body["snippet"]["title"].lower()

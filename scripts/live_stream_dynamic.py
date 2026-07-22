@@ -52,6 +52,7 @@ if str(ROOT) not in sys.path:
 
 from googleapiclient.discovery import build  # noqa: E402
 
+from utils.ai_titling import generate_live_broadcast_copy  # noqa: E402
 from utils.youtube_oauth import can_manage_comments, credentials_from_token_info, load_token_info  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -83,25 +84,28 @@ TARGET_H = 1080
 TARGET_FPS = 30
 LOOP_CROSSFADE_S = 1.0
 
-BROADCAST_TITLE = "Chuva e Trovão — Amber Hours \U0001f327️ [24/7 AO VIVO]"
-BROADCAST_DESCRIPTION = (
+_FALLBACK_BROADCAST_TITLE = "Chuva e Trovão — Amber Hours \U0001f327️ [24/7 AO VIVO]"
+_FALLBACK_BROADCAST_DESCRIPTION = (
     "Ambiência real de chuva e trovão sem parar, ao vivo -- para ajudar você a dormir, focar ou "
     "relaxar. A chuva e o trovão são sintetizados por computador, não uma gravação em loop."
 )
+_BROADCAST_DISCLOSURE = "A chuva e o trovão são sintetizados por computador, não uma gravação em loop."
 
-# Every literal value BROADCAST_TITLE has ever held before the current one --
-# see _rebrand_if_stale()'s docstring for why this list (not "anything that
-# doesn't match BROADCAST_TITLE") is the staleness check. Includes the
-# channel's earlier "rainy-night anime lofi" identity (growth pass,
-# 2026-07-21: the channel fully moved to the rain/thunder ambience pillar),
-# so an already-live broadcast still carrying that title gets auto-corrected
-# on its next check-in instead of being left alone forever.
+# Every literal title this broadcast has ever carried before AI-generated
+# titles (chat, 2026-07-22) -- see _rebrand_if_stale()'s docstring for why
+# this fixed list (not "anything that doesn't match self.broadcast_title")
+# is the staleness check. Includes the channel's earlier "rainy-night
+# anime lofi" identity and the pt-BR template title that was the sole
+# title before AI titling existed, so an already-live broadcast still
+# carrying any of those gets auto-corrected on its next check-in instead
+# of being left alone forever.
 _LEGACY_BROADCAST_TITLES = {
     "lofi hip hop radio \U0001f4da beats to relax/study to [24/7 LIVE]",
     "\U0001f534 24/7 Lofi Beats to Relax/Study to | Live",
     "\U0001f534 24/7 Wild Nature & Animal Secrets | Ao Vivo | En Vivo",
     "Rainy Night Anime Lofi — Amber Hours \U0001f319 [24/7 LIVE]",
     "Rain & Thunder — Amber Hours \U0001f327️ [24/7 LIVE]",
+    _FALLBACK_BROADCAST_TITLE,
 }
 
 
@@ -129,6 +133,17 @@ class DynamicStreamer:
         self.youtube = self._get_youtube_client()
         self.stream_id = None
         self.broadcast_id = None
+        self.broadcast_title, self.broadcast_description = self._broadcast_copy()
+
+    def _broadcast_copy(self) -> tuple[str, str]:
+        """AI-generated title/description for the persistent broadcast,
+        computed once per process start -- degrades to the hardcoded
+        template (same contract as generate_video_copy) when no AI
+        provider key is configured or the call fails."""
+        ai_copy = generate_live_broadcast_copy(scene="Rain & Thunder", disclosure=_BROADCAST_DISCLOSURE)
+        if ai_copy:
+            return ai_copy["title"], ai_copy["description"]
+        return _FALLBACK_BROADCAST_TITLE, _FALLBACK_BROADCAST_DESCRIPTION
 
     def _get_youtube_client(self):
         token_file = ROOT / "youtube_token.json"
@@ -194,8 +209,8 @@ class DynamicStreamer:
                     part="snippet,status,contentDetails",
                     body={
                         "snippet": {
-                            "title": BROADCAST_TITLE,
-                            "description": BROADCAST_DESCRIPTION,
+                            "title": self.broadcast_title,
+                            "description": self.broadcast_description,
                             "scheduledStartTime": datetime.now(timezone.utc).isoformat(),
                         },
                         "status": {
@@ -234,11 +249,13 @@ class DynamicStreamer:
         older branding would otherwise just keep reusing its stale title
         forever, even though the video/audio streaming through it is
         already rain/thunder. This used to treat ANY mismatch against the
-        current BROADCAST_TITLE constant as "stale" and silently overwrite
-        it -- which meant a channel owner retitling the live from YouTube
-        Studio got reverted on the very next check-in cycle, with no way
-        to make a manual edit stick. Only known-legacy strings (or a blank
-        title) count as stale now; anything else is left alone.
+        current title as "stale" and silently overwrite it -- which meant
+        a channel owner retitling the live from YouTube Studio got
+        reverted on the very next check-in cycle, with no way to make a
+        manual edit stick. Only known-legacy strings (or a blank title)
+        count as stale now; anything else is left alone -- including a
+        previous run's own AI-generated title, so this doesn't fight a
+        still-live broadcast over wording every 120s.
         """
         snippet = broadcast_item.get("snippet") or {}
         current_title = snippet.get("title") or ""
@@ -250,8 +267,8 @@ class DynamicStreamer:
                 body={
                     "id": broadcast_item.get("id"),
                     "snippet": {
-                        "title": BROADCAST_TITLE,
-                        "description": BROADCAST_DESCRIPTION,
+                        "title": self.broadcast_title,
+                        "description": self.broadcast_description,
                         "scheduledStartTime": snippet.get("scheduledStartTime")
                         or datetime.now(timezone.utc).isoformat(),
                     },

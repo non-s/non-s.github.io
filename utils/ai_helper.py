@@ -59,9 +59,15 @@ _CEREBRAS_MODEL = os.environ.get("CEREBRAS_MODEL", "llama-3.3-70b")
 
 # Google Gemini free tier — 15 RPM, 1,500 requests/day on flash-lite.
 # Uses a different request shape than OpenAI-compat APIs, so we have
-# a dedicated _call_gemini below.
+# a dedicated _call_gemini below. Pinned dated model names (gemini-1.5-*,
+# gemini-2.0-flash-lite, gemini-2.5-flash-lite) get sunset/closed to new
+# keys over time (checked live, 2026-07-22: all three either 404 or
+# "no longer available to new users" on a freshly created key) -- the
+# "-latest" alias always resolves to whatever model Google currently
+# offers new keys, so it doesn't need updating again the next time a
+# pinned version gets retired.
 _GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-_GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash-lite")
+_GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-flash-lite-latest")
 
 # Groq — OpenAI-compatible API, free tier ~14k req/day on llama-3.3-70b
 # and llama-3.1-8b. Very fast (sub-second usually).
@@ -185,8 +191,17 @@ def _call_cerebras(sys_msg: str, prompt: str, timeout: int, key: str, json_mode:
 
 
 def _call_gemini(sys_msg: str, prompt: str, timeout: int, key: str, json_mode: bool = False) -> str:
-    """Google Gemini (generative-language) with Google Search Grounding!
-    Uses real-time Google Search to fetch up-to-date facts and SEO trends.
+    """Google Gemini (generative-language).
+
+    No Google Search Grounding tool (checked live, 2026-07-22: it's a
+    separate paid feature -- every call with `tools: [{"googleSearch":
+    {}}]` attached returned 429 RESOURCE_EXHAUSTED on a fresh free-tier
+    key, even though the exact same request without it succeeded).
+    Neither real caller needs live search anyway: utils/ai_titling.py's
+    system prompt explicitly forbids inventing facts beyond what it's
+    given, and upload_youtube.py's translation call is pure translation --
+    grounding was dead weight actively burning the paid quota bucket for
+    no benefit.
     """
     _throttle()
     url = _GEMINI_API_URL.format(model=_GEMINI_MODEL) + f"?key={key}"
@@ -202,7 +217,6 @@ def _call_gemini(sys_msg: str, prompt: str, timeout: int, key: str, json_mode: b
             "temperature": 0.7,
             "maxOutputTokens": 3000,
         },
-        "tools": [{"googleSearch": {}}],
     }
     if json_mode:
         body["generationConfig"]["responseMimeType"] = "application/json"
