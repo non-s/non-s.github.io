@@ -1,0 +1,71 @@
+name: 24/7 Live Stream Relay
+
+on:
+  schedule:
+    # Runs every 5 hours and 50 minutes. We use a Cron that triggers hourly, 
+    # but the script will handle running for 5.8 hours before exiting.
+    # Actually, a simpler approach is repository_dispatch or workflow_dispatch,
+    # but to loop automatically we can use a cron that runs every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  # Do NOT cancel an in-progress run here. live-stream-watchdog.yml
+  # re-dispatches this workflow every 10 minutes whenever it doesn't see an
+  # active/queued run; with cancel-in-progress:true, any watchdog dispatch
+  # that races a still-healthy stream (API/status lag, or the 6h cron firing
+  # close to a watchdog check) kills a good stream instead of a dead one.
+  # With this false, a redundant dispatch just queues behind the current
+  # run and starts once it actually ends (crash or the 360min timeout).
+  cancel-in-progress: false
+
+jobs:
+  stream:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360 # 6 hours max
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7.0.0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6.3.0
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg curl
+          pip install -r requirements.txt
+      - name: Restore YouTube Token
+        env:
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+        run: |
+          if [ -n "$YOUTUBE_TOKEN" ]; then
+            printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
+            chmod 600 youtube_token.json
+            echo "Token restored."
+          else
+            echo "No YouTube token configured."
+          fi
+
+      - name: Run Live Stream
+        env:
+          YOUTUBE_STREAM_KEY: ${{ secrets.YOUTUBE_STREAM_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        # We run this in a while loop so if the relay exits (ffmpeg crash,
+        # unhandled error) it restarts instantly instead of ending the job
+        # early. GitHub will forcibly kill the runner at 6 hours regardless,
+        # and the cron/watchdog start a new one.
+        run: |
+          mkdir -p _videos
+          while true; do
+            python scripts/live_stream_dynamic.py
+            sleep 5
+          done

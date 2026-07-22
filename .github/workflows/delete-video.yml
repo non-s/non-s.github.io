@@ -1,0 +1,50 @@
+name: "Delete YouTube video (manual)"
+
+# Manual-only operator tool: deletes one or more videos from the channel
+# by ID. Never runs on a schedule.
+on:
+  workflow_dispatch:
+    inputs:
+      video_ids:
+        description: "Space-separated YouTube video ID(s) to delete"
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: delete-video-${{ github.run_id }}
+
+jobs:
+  delete:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v7.0.0
+      - name: "Python 3.11"
+        uses: actions/setup-python@v6.3.0
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: "Install dependencies"
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: "Restore YouTube token"
+        env:
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+        run: |
+          umask 077
+          if [ -z "$YOUTUBE_TOKEN" ]; then
+            echo "::error::YOUTUBE_TOKEN secret is not configured."
+            exit 1
+          fi
+          printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
+          chmod 600 youtube_token.json
+      - name: "Delete video(s)"
+        run: python scripts/delete_video.py ${{ github.event.inputs.video_ids }}
+      - name: "Delete token"
+        if: always()
+        run: |
+          shred -u youtube_token.json 2>/dev/null || rm -f youtube_token.json

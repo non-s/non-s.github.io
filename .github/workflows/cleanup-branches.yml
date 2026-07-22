@@ -1,0 +1,68 @@
+name: "🧹 Cleanup Old Branches"
+on:
+  schedule:
+    - cron: "0 4 * * 0"  # Sundays 4h UTC
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (only log, don't delete)"
+        required: false
+        default: "false"
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cleanup-branches
+  cancel-in-progress: true
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7.0.0
+        with:
+          fetch-depth: 0
+      - name: "🧹 Delete merged branches"
+        env:
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        run: |
+          git fetch --prune
+          # Cutoff: branches merged AND with no commit in the last 14 days.
+          CUTOFF_EPOCH=$(date -u -d '14 days ago' +%s)
+          MERGED=$(git branch -r --merged origin/main \
+            | grep -v 'origin/main\|origin/master\|HEAD' \
+            | sed 's|origin/||')
+          COUNT=0
+          SKIPPED=0
+          for branch in $MERGED; do
+            # Only touch our bot branches.
+            if ! echo "$branch" | grep -qE '^(claude/|worktree-|fix/)'; then
+              continue
+            fi
+            # Age check via epoch comparison — string compare on ISO
+            # dates only works while years stay 4-digit, but more
+            # importantly `[ "$a" \> "$b" ]` is non-portable and quoted
+            # the wrong way (returns wrong result on busybox sh).
+            LAST_EPOCH=$(git log -1 --format=%ct "origin/$branch" 2>/dev/null || echo '')
+            if [ -z "$LAST_EPOCH" ] || [ "$LAST_EPOCH" -gt "$CUTOFF_EPOCH" ]; then
+              LAST_HUMAN=$(git log -1 --format=%cs "origin/$branch" 2>/dev/null || echo 'unknown')
+              echo "  ⏭  skipping $branch (last commit $LAST_HUMAN — newer than 14d cutoff)"
+              SKIPPED=$((SKIPPED+1))
+              continue
+            fi
+            LAST_HUMAN=$(git log -1 --format=%cs "origin/$branch" 2>/dev/null || echo 'unknown')
+            if [ "$DRY_RUN" = "true" ]; then
+              echo "  📝 [dry-run] would delete $branch (last commit $LAST_HUMAN)"
+            else
+              if git push origin --delete "$branch" 2>/dev/null; then
+                COUNT=$((COUNT+1))
+                echo "  ✅ deleted $branch"
+              fi
+            fi
+          done
+          echo "✅ Deleted $COUNT branches (skipped $SKIPPED younger than 14d)"

@@ -1,0 +1,56 @@
+name: "Admin: check channel branding"
+
+# Manual-only, read-only diagnostic: prints snippet.title vs
+# brandingSettings.channel.title so a channel-title update can be
+# verified as actually applied (it can be silently ignored on channels
+# tied to a personal Google Account instead of a Brand Account).
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v7.0.0
+
+      - name: "Python 3.11"
+        uses: actions/setup-python@v6.3.0
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: "Instalar dependencias Python"
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: "Restaurar tokens do YouTube"
+        env:
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+        run: |
+          umask 077
+          if [ -n "$YOUTUBE_TOKEN" ]; then
+            printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
+            chmod 600 youtube_token.json
+          fi
+
+      - name: "Checar branding do canal"
+        run: python scripts/check_channel_branding.py
+
+      - name: "Apagar tokens do YouTube no final"
+        if: always()
+        run: |
+          for path in youtube_token.json; do
+            if [ -f "$path" ]; then
+              shred -u "$path" 2>/dev/null || rm -f "$path"
+            fi
+          done

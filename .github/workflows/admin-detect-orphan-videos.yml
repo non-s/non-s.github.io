@@ -1,0 +1,90 @@
+name: "Admin: detect orphaned video markers"
+
+# Weekly (re-runnable/idempotent) sweep: checks every _videos/*.done
+# marker's video_id against the real YouTube API and logs any that no
+# longer exist to _data/orphaned_videos.jsonl (see
+# scripts/detect_orphan_videos.py / utils/orphan_registry.py) --
+# scripts/rebrand_video_thumbnails.py already reads that log to skip
+# ids it shouldn't bother acting on. Read-only against YouTube itself
+# (only ever calls videos.list); the only side effect is that log file.
+
+on:
+  schedule:
+    - cron: "20 9 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: admin-detect-orphan-videos
+  cancel-in-progress: false
+
+jobs:
+  detect:
+    name: "Detect orphaned video markers"
+    if: ${{ vars.YOUTUBE_PUBLISHING_ENABLED == '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v7.0.0
+        with:
+          fetch-depth: 0
+
+      - name: "Python 3.11"
+        uses: actions/setup-python@v6.3.0
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: "Install dependencies"
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: "Restore YouTube token"
+        env:
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+        run: |
+          if [ -z "$YOUTUBE_TOKEN" ]; then
+            echo "YOUTUBE_TOKEN is required to check video status." >&2
+            exit 1
+          fi
+          umask 077
+          printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
+          chmod 600 youtube_token.json
+
+      - name: "Detect orphaned markers"
+        run: python scripts/detect_orphan_videos.py
+
+      - name: "Commit orphan registry"
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # append_orphans() only creates _data/orphaned_videos.jsonl when there's
+          # at least one new orphan to log -- the common case (nothing new found)
+          # leaves it absent, so `git add` must not assume it exists.
+          if [ -f _data/orphaned_videos.jsonl ]; then
+            git add _data/orphaned_videos.jsonl
+          fi
+          if git diff --cached --quiet; then
+            echo "No newly-detected orphans to commit."
+            exit 0
+          fi
+          git commit -m "Log newly-detected orphaned video marker(s)"
+          for attempt in 1 2 3; do
+            git rebase --abort 2>/dev/null || true
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
+            sleep $((attempt * 5))
+          done
+          echo "Failed to push orphan registry." >&2
+          exit 1
+
+      - name: "Remove YouTube token"
+        if: always()
+        run: rm -f youtube_token.json

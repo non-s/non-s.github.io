@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Pagina nao encontrada - non-s</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07111f;
+      --panel: #0d1628;
+      --text: #e5f3ff;
+      --muted: #a7b5c8;
+      --accent: #38bdf8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    main {
+      width: min(100%, 680px);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 32px;
+    }
+    p { color: var(--muted); line-height: 1.6; }
+    .code { color: var(--accent); font: 700 0.9rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    h1 { margin: 10px 0 12px; font-size: clamp(2rem, 6vw, 3rem); }
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    a {
+      display: inline-flex;
+      color: #03101f;
+      background: var(--accent);
+      border-radius: 6px;
+      padding: 11px 14px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    a.secondary {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.08);
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="code">404 / non-s.github.io</div>
+    <h1>Pagina nao encontrada</h1>
+    <p>O endereco pode ter mudado ou sido digitado com erro. Volte ao inicio ou acesse diretamente um dos projetos publicados.</p>
+    <nav aria-label="Projetos publicados">
+      <a href="/">Inicio</a>
+      <a class="secondary" href="/TakStud/">TakStud</a>
+      <a class="secondary" href="/MathQuest-/">MathQuest</a>
+      <a class="secondary" href="/CHAMADA-/">Chamada</a>
+      <a class="secondary" href="/Non-s/">Non-s</a>
+      <a class="secondary" href="/Portfolio/">Portfolio</a>
+      <a class="secondary" href="/Uplift/">Uplift</a>
+      <a class="secondary" href="/CLI-P2P/">CLI-P2P</a>
+    </nav>
+  </main>
+</body>
+</html>

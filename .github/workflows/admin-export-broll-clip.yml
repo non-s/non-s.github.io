@@ -1,0 +1,52 @@
+name: "Admin: export a b-roll clip"
+
+# Manual-only: uploads one cached b-roll clip (mp4 + json sidecar) as a
+# downloadable artifact, by Pixabay video id. Used to pull a clip out of
+# the shared, rotating media-library cache so it can be committed into
+# the repo directly when it needs to be permanently pinned (safe from
+# the shared library's oldest-first rotation).
+on:
+  workflow_dispatch:
+    inputs:
+      pixabay_video_id:
+        description: "Pixabay video id of the clip to export (e.g. 359841)"
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  export-clip:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v7.0.0
+
+      - name: "Restore lofi media libraries from cache"
+        uses: actions/cache@v4
+        with:
+          path: |
+            _assets/audio/bgm
+            _assets/video/lofi_broll
+          key: lofi-media-${{ github.run_id }}
+          restore-keys: |
+            lofi-media-
+
+      - name: "Stage clip for export"
+        run: |
+          mkdir -p _export
+          id="${{ github.event.inputs.pixabay_video_id }}"
+          cp "_assets/video/lofi_broll/pixabay_${id}.mp4" _export/ || { echo "::error::clip not found in cache"; exit 1; }
+          cp "_assets/video/lofi_broll/pixabay_${id}.json" _export/ || true
+          ls -la _export
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: "broll-clip-${{ github.event.inputs.pixabay_video_id }}"
+          path: _export
+          retention-days: 1
