@@ -1,10 +1,6 @@
 name: "Pata Jazz - Live em Loop Infinito"
 
 on:
-  schedule:
-    # Dispara a cada 5h50m para manter a live ativa o maximo possivel dentro do
-    # limite de 6h do GitHub Actions free runner.
-    - cron: "50 0,6,12,18 * * *"
   workflow_dispatch:
     inputs:
       reason:
