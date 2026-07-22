@@ -106,8 +106,9 @@ def _generate_short(duration: int = 35, target_resolution: tuple[int, int] = (10
     THUMB_DIR.mkdir(parents=True, exist_ok=True)
 
     # Ajuste o clipe para 9:16, centralizando e preenchendo a tela.
+    # Expressao sem virgulas internas para nao confundir o parser do -vf.
     vf = (
-        f"crop='min(iw,ih*9/16):min(ih,iw*16/9)':(iw-min(iw,ih*9/16))/2:(ih-min(ih,iw*16/9))/2,"
+        f"crop='ih*9/16:ih:(iw-ih*9/16)/2:0',"
         f"scale={target_resolution[0]}:{target_resolution[1]},"
         f"setsar=1/1"
     )
