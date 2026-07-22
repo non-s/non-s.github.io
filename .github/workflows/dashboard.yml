@@ -53,8 +53,8 @@ jobs:
         run: python scripts/build_dashboard.py
       - name: "Persist refreshed analytics"
         run: |
-          git config user.name "Wild Brief Bot"
-          git config user.email "bot@wildbrief.com"
+          git config user.name "Amber Hours Bot"
+          git config user.email "bot@noreply.amberhours.invalid"
           for path in index.html _data/analytics/latest.json _data/analytics/dashboard_history.jsonl _data/analytics/studio_reach_daily.jsonl _data/analytics/studio_reach_latest.json _data/analytics/reporting_bootstrap.json _data/analytics/reporting_pull.json _data/analytics/reporting_video_metrics.jsonl _data/analytics/api_quota_ledger.jsonl _data/analytics/api_quota_latest.json; do
             [ -e "$path" ] && git add "$path"
           done

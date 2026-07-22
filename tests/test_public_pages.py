@@ -6,7 +6,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_root_404_page_links_to_published_projects():
     html = (ROOT / "404.html").read_text(encoding="utf-8")
 
-    assert "Pagina nao encontrada" in html
+    assert "Página não encontrada" in html
     for path in ("/", "/TakStud/", "/MathQuest-/", "/CHAMADA-/", "/Non-s/", "/Portfolio/", "/Uplift/", "/CLI-P2P/"):
         assert f'href="{path}"' in html
 

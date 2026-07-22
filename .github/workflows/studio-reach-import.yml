@@ -29,8 +29,8 @@ jobs:
         run: python scripts/import_studio_reach_export.py
       - name: "Persist reach analytics"
         run: |
-          git config user.name "Wild Brief Bot"
-          git config user.email "bot@wildbrief.com"
+          git config user.name "Amber Hours Bot"
+          git config user.email "bot@noreply.amberhours.invalid"
           git add _data/analytics/studio_reach_daily.jsonl _data/analytics/studio_reach_latest.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No Studio Reach data to persist."

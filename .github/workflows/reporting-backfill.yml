@@ -31,8 +31,8 @@ jobs:
         run: python scripts/reporting_pull.py
       - name: "Persist reporting artifacts"
         run: |
-          git config user.name "Wild Brief Bot"
-          git config user.email "bot@wildbrief.com"
+          git config user.name "Amber Hours Bot"
+          git config user.email "bot@noreply.amberhours.invalid"
           git add _data/analytics/reporting_bootstrap.json _data/analytics/reporting_pull.json _data/analytics/reporting_video_metrics.jsonl 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No Reporting backfill data to persist."

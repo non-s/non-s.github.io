@@ -39,6 +39,6 @@ analytics imports present.
 ## Alert Issue
 
 The free GitHub Issues alert workflow (`ops-alert.yml`) opens or comments
-on `Wild Brief automation alert` when a critical workflow fails. Treat the
+on `Amber Hours automation alert` when a critical workflow fails. Treat the
 issue as the active incident room, paste the failed run URL, and close it
 only after the health check above passes again.

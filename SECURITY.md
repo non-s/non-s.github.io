@@ -56,7 +56,8 @@ Required:
 
 Optional:
 
-- `YOUTUBE_STREAM_KEY` (24/7 live relay only)
+- `YOUTUBE_STREAM_KEY` (24/7 rain live relay only)
+- `YOUTUBE_STREAM_KEY_CLASSICAL` (24/7 classical live relay only)
 - `ADAPTIVE_CADENCE_ENABLED`
 - `ALLOW_FLEX_SLOT`
 - `FLEX_SLOT_UTC`
@@ -69,6 +70,5 @@ Optional:
   titles/descriptions/hashtags for the storm pillar via
   `utils/ai_titling.py`; treated as provider-key material per "What we do"
   above)
-- `GEMINI_API_KEY` / `CEREBRAS_API_KEY` / `GROQ_API_KEY` / `MISTRAL_API_KEY`
 
 See `docs/ENVIRONMENT.md` for the operating checklist.

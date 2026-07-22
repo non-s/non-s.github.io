@@ -6,7 +6,7 @@ Accepted.
 
 ## Context
 
-Wild Brief must grow without paid services. The system can use free API quota,
+Amber Hours must grow without paid services. The system can use free API quota,
 operator-provided exports and local deterministic scoring, but it should not
 depend on paid inference, private endpoints or unavailable browser automation.
 

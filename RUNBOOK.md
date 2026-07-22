@@ -2,7 +2,7 @@
 
 Operational guide for the Amber Hours pipeline: what each reliability
 workflow watches, what to do when `ops-alert.yml` opens/updates its
-"Wild Brief automation alert" issue, and routine maintenance procedures.
+"Amber Hours automation alert" issue, and routine maintenance procedures.
 See [README.md](README.md) for the pipeline overview and
 [SETUP.md](SETUP.md) for first-time setup.
 
@@ -15,26 +15,36 @@ name in that issue:
 
 | Workflow | What it means when it fails |
 | --- | --- |
+| `Storm Ambience - rain & thunder for sleep` | A long-form ambience publish run failed -- check the run log first (auth, quota, missing pinned clip, or a real bug). |
 | `Storm Shorts - rain & thunder` | A Shorts publish run itself failed -- check the run log first (auth, quota, or a real bug). |
-| `24/7 Live Stream Relay` | A live-relay job crashed or hit its 6h timeout. Usually self-heals via the watchdog below; only chase it if the channel is actually offline. |
+| `Cute Animals Shorts - Pata Jazz` | A cute-animal Shorts publish run failed -- check auth, quota, jazz pool empty, or animal b-roll pool empty. |
+| `Baby Noise Ambience - white/pink/brown noise` | A long-form baby-noise publish run failed -- check auth, quota, or a real bug. |
+| `Baby Noise Shorts - white/pink/brown noise` | A baby-noise Shorts publish run failed. |
+| `Classical Ambience - Amber Hours Classical` | A classical long-form publish run failed -- check auth, quota, or classical music pool empty. |
+| `24/7 Live Stream Relay` | The rain live-relay job crashed or hit its 6h timeout. Usually self-heals via the watchdog below; only chase it if the channel is actually offline. |
 | `24/7 live stream watchdog` | The watchdog itself failed to run (rare -- usually a `gh` auth or API issue, not the stream). |
+| `24/7 Live Stream Relay - Classical` | The classical live-relay job crashed or hit its 6h timeout. |
+| `24/7 live stream watchdog - Classical` | The classical watchdog itself failed to run. |
 | `Publishing health check` | **No real upload has landed within the staleness window while publishing is enabled** -- the clearest sign of silent degradation (see below). |
 | `Admin: detect orphaned video markers` | The weekly YouTube-API sweep for deleted videos failed to run (auth/quota), not that an orphan was found (that's a normal log line, not a failure). |
 | `Token rotation check` | `YOUTUBE_TOKEN` is overdue for rotation (see below) -- or has never been recorded as rotated at all. |
 | `CodeQL` / `Security, SBOM and license audit` | A real code-scanning finding or a dependency/secret-pattern hit -- open the run and read the finding before dismissing. |
 | `Production quality gate` / `Production smoke` | A regular CI check failed on `main` -- treat like any failing test suite. |
+| `Build + deploy dashboard` | The dashboard refresh or GitHub Pages deploy failed. |
 
 ### Publishing health check fired -- what to actually check
 
 1. Is `YOUTUBE_PUBLISHING_ENABLED` really meant to be `1` right now? If
    publishing was intentionally paused, this is a false positive --
-   nothing to do.
-2. Check the last few `Storm Ambience - rain & thunder for sleep` /
-   `Storm Shorts - rain & thunder` runs: are they green but producing
-   nothing? Each format loops one fixed, committed real clip now (no
-   live fetch, no external dependency to go stale) -- an upload-step
-   failure here is far more likely `uploadLimitExceeded` (see below)
-   than a missing-media issue.
+   nothing to do. Note that each content pillar has its own independent
+   flag (`STORM_AMBIENCE_ENABLED`, `CUTE_ANIMALS_ENABLED`,
+   `BABY_NOISE_ENABLED`, `CLASSICAL_AMBIENCE_ENABLED`); a pillar being
+   disabled is also expected to produce no uploads for that pillar.
+2. Check the last few runs of the enabled pillars. Are they green but
+   producing nothing? Each format loops fixed, committed real clips or
+   uses procedurally-synthesized audio (no live fetch, no external
+   dependency to go stale) -- an upload-step failure here is far more
+   likely `uploadLimitExceeded` (see below) than a missing-media issue.
 3. `scripts/check_publishing_health.py` can be run locally (or via
    `workflow_dispatch`) for the exact numbers: hours since the last real
    upload, and why it's counted as stale.

@@ -10,12 +10,12 @@ python -m pytest -q
 python scripts/check_schedule_sync.py
 python scripts/audit_slot_contracts.py
 python scripts/check_repo_contracts.py
-python scripts/doctor.py --json
+python scripts/check_workflow_contracts.py
 ```
 
 ## Automation rules
 
-- Keep `utils/publish_schedule.py`, `youtube-bot.yml`, `youtube-watchdog.yml` and docs in slot sync.
+- Keep `utils/publish_schedule.py`, workflow schedules and docs in slot sync.
 - Add rollback flags to `.env.example`, `docs/ENVIRONMENT.md` and `utils/feature_flags.py`.
 - Prefer warn mode for new production gates until real channel data proves the block threshold.
 - Do not commit OAuth tokens, rendered media, private audio assets or local caches.
