@@ -25,12 +25,12 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v7.0.0
+        uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
 
       - name: "Restore lofi media libraries from cache"
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             _assets/audio/bgm
