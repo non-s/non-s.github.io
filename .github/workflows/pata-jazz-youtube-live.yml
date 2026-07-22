@@ -83,7 +83,9 @@ jobs:
       - name: "Executar live Pata Jazz"
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python scripts/run_live.py
+        run: |
+          python -c "from generate_pata_jazz_live import _build_looping_input; print('ok')"
+          python scripts/run_live.py
       - name: "Apagar token"
         if: always()
         run: rm -f youtube_token.json

@@ -19,7 +19,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 from utils.ai_helper import ai_text
 from utils.animal_branding import hook_for_scene, random_scene
-from utils.ffmpeg_helpers import build_concat_demuxer, run_ffmpeg
+from utils.ffmpeg_helpers import run_ffmpeg
 from utils.media_pool import ensure_dirs, pick_audio, pick_videos, pool_stats
 
 ROOT = Path(__file__).resolve().parent
@@ -112,42 +112,30 @@ def _generate_short(duration: int = 35, target_resolution: tuple[int, int] = (10
         f"setsar=1:1"
     )
 
-    audio_args: list[str] = []
+    inputs = ["-i", str(video)]
+    output_args: list[str] = [
+        "-vf",
+        vf,
+        "-c:v",
+        "libx264",
+        "-preset",
+        "fast",
+        "-crf",
+        "23",
+        "-t",
+        str(duration),
+        "-r",
+        "30",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+    ]
     if audio_path:
-        audio_args = [
-            "-i",
-            str(audio_path),
-            "-c:a",
-            "aac",
-            "-b:a",
-            "128k",
-            "-shortest",
-        ]
+        inputs += ["-i", str(audio_path)]
+        output_args += ["-c:a", "aac", "-b:a", "128k", "-shortest"]
 
-    run_ffmpeg(
-        [
-            "-i",
-            str(video),
-            "-vf",
-            vf,
-            "-c:v",
-            "libx264",
-            "-preset",
-            "fast",
-            "-crf",
-            "23",
-            "-t",
-            str(duration),
-            "-r",
-            "30",
-            "-pix_fmt",
-            "yuv420p",
-            "-movflags",
-            "+faststart",
-        ]
-        + audio_args
-        + [str(output)]
-    )
+    run_ffmpeg(inputs + output_args + [str(output)])
 
     _make_thumbnail(scene, hook, emoji, thumb)
 
