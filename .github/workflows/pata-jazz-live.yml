@@ -88,8 +88,13 @@ jobs:
         run: |
           python upload_youtube.py --mode live --privacy ${{ vars.YOUTUBE_PRIVACY || 'public' }} > live_meta.json
           cat live_meta.json
-          echo "stream_url=$(jq -r .ingestion_url live_meta.json)" >> "$GITHUB_OUTPUT"
-          echo "broadcast_id=$(jq -r .broadcast_id live_meta.json)" >> "$GITHUB_OUTPUT"
+          python -c "
+import json
+with open('live_meta.json') as f:
+    data = json.load(f)
+print(f\"stream_url={data['ingestion_url']}\")
+print(f\"broadcast_id={data['broadcast_id']}\")
+" >> "$GITHUB_OUTPUT"
       - name: "Transmitir loop infinito"
         if: steps.create_live.outputs.stream_url != ''
         env:

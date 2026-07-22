@@ -26,8 +26,8 @@ from utils.media_pool import VIDEO_DIR, ensure_dirs
 log = logging.getLogger(__name__)
 
 PIXABAY_API_URL = "https://pixabay.com/api/videos/"
-MAX_PER_QUERY = 5
-MAX_POOL_SIZE = 100
+MAX_PER_QUERY = 15
+MAX_POOL_SIZE = 300
 
 
 def _safe_name(query: str, idx: int, url: str, ext: str) -> str:

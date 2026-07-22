@@ -26,9 +26,20 @@ BROLL_QUERIES: list[str] = [
     "cute cat",
     "kitten playing",
     "sleepy cat",
+    "cat playing",
+    "adorable cat",
+    "funny cat",
+    "cute kitten",
+    "kitten sleeping",
+    "playful kitten",
     "cute puppy",
+    "puppy playing",
+    "sleepy puppy",
     "dog playing",
     "happy dog",
+    "cute dog",
+    "adorable puppy",
+    "puppy dog",
 ]
 
 # Tags Jamendo: apenas jazz.

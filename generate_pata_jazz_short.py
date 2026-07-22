@@ -80,77 +80,77 @@ def _generate_description(scene: str, hook: str) -> tuple[str, str]:
 
 
 def _generate_short(duration: int = 35, target_resolution: tuple[int, int] = (1080, 1920)) -> Path:
+    """Gera um Short com UM clipe e UMA musica de jazz.
+
+    YouTube Shorts exige aspecto 9:16, sem bordas pretas e duracao curta.
+    Por isso cortamos/padronizamos o clipe para ocupar toda a tela vertical.
+    """
     ensure_dirs()
     stats = pool_stats()
     if stats["videos"] == 0:
         log.error("Pool de b-roll vazio. Execute scripts/sync_animal_broll.py primeiro.")
         raise RuntimeError("Pool de b-roll vazio")
+    if stats["audio"] == 0:
+        log.warning("Pool de jazz vazio. Video sera gerado sem audio.")
 
     scene = random_scene()
     hook, emoji = hook_for_scene(scene)
-    videos = pick_videos(min_count=1, max_count=min(5, stats["videos"]))
+    video = random.choice(pick_videos(min_count=1, max_count=1))
     audio_path = pick_audio()
 
     output_stem = f"pata_jazz_short_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}"
     output = OUTPUT_DIR / f"{output_stem}.mp4"
-    concat_txt = OUTPUT_DIR / f"{output_stem}_concat.txt"
     thumb = THUMB_DIR / f"{output_stem}.png"
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     THUMB_DIR.mkdir(parents=True, exist_ok=True)
 
-    # Pre-processa clips para vertical e mesma resolucao
-    processed: list[Path] = []
-    for i, v in enumerate(videos):
-        proc = OUTPUT_DIR / f"{output_stem}_clip_{i}.mp4"
-        run_ffmpeg(
-            [
-                "-i",
-                str(v),
-                "-vf",
-                f"scale={target_resolution[0]}:{target_resolution[1]}:force_original_aspect_ratio=decrease,"
-                f"pad={target_resolution[0]}:{target_resolution[1]}:(ow-iw)/2:(oh-ih)/2:black",
-                "-c:v",
-                "libx264",
-                "-preset",
-                "fast",
-                "-crf",
-                "23",
-                "-an",
-                "-t",
-                str(duration),
-                str(proc),
-            ]
-        )
-        processed.append(proc)
+    # Ajuste o clipe para 9:16, centralizando e preenchendo a tela.
+    vf = (
+        f"crop='min(iw,ih*9/16):min(ih,iw*16/9)':(iw-min(iw,ih*9/16))/2:(ih-min(ih,iw*16/9))/2,"
+        f"scale={target_resolution[0]}:{target_resolution[1]},"
+        f"setsar=1:1"
+    )
 
-    build_concat_demuxer([str(p) for p in processed], str(concat_txt))
-
-    # Cria loop ate atingir duracao alvo
     audio_args: list[str] = []
     if audio_path:
         audio_args = [
-            "-stream_loop",
-            "-1",
             "-i",
             str(audio_path),
-            "-shortest",
             "-c:a",
             "aac",
             "-b:a",
             "128k",
+            "-shortest",
         ]
 
     run_ffmpeg(
-        ["-stream_loop", "-1", "-f", "concat", "-safe", "0", "-i", str(concat_txt)]
+        [
+            "-i",
+            str(video),
+            "-vf",
+            vf,
+            "-c:v",
+            "libx264",
+            "-preset",
+            "fast",
+            "-crf",
+            "23",
+            "-t",
+            str(duration),
+            "-r",
+            "30",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart",
+        ]
         + audio_args
-        + ["-t", str(duration), "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(output)]
+        + [str(output)]
     )
 
-    # Thumbnail
     _make_thumbnail(scene, hook, emoji, thumb)
 
-    # Metadata
     title, description = _generate_description(scene, hook)
     meta = {
         "title": title,
@@ -164,15 +164,9 @@ def _generate_short(duration: int = 35, target_resolution: tuple[int, int] = (10
         "thumbnail": str(thumb),
         "audio": str(audio_path) if audio_path else None,
     }
-    meta_path = output.with_suffix(".json")
     import json
 
-    meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
-
-    # Limpa intermediarios
-    for p in processed:
-        p.unlink(missing_ok=True)
-    concat_txt.unlink(missing_ok=True)
+    output.with_suffix(".json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
 
     log.info("Short gerado: %s", output)
     return output
