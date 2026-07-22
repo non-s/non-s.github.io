@@ -8,7 +8,7 @@ on:
         required: false
         default: "manual"
       duration_minutes:
-        description: "Duracao da transmissao em minutos (0 = ate cancelar)"
+        description: "Duracao da transmissao em minutos"
         required: false
         default: "350"
       resolution:
@@ -19,12 +19,8 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  group: pata-jazz-live
-  cancel-in-progress: true
-
 jobs:
-  live-stream:
+  generate-and-upload:
     name: "Transmitir live Pata Jazz em loop"
     if: ${{ vars.PATA_JAZZ_ENABLED == '1' && vars.PATA_JAZZ_LIVE_ENABLED == '1' }}
     runs-on: ubuntu-latest
