@@ -1,4 +1,4 @@
-name: "Pata Jazz - Live em Loop Infinito"
+name: "Pata Jazz Live"
 
 on:
   workflow_dispatch:
@@ -20,7 +20,7 @@ permissions:
   contents: read
 
 jobs:
-  generate-and-upload:
+  live-stream:
     name: "Transmitir live Pata Jazz em loop"
     if: ${{ vars.PATA_JAZZ_ENABLED == '1' && vars.PATA_JAZZ_LIVE_ENABLED == '1' }}
     runs-on: ubuntu-latest
