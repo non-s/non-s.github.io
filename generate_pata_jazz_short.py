@@ -109,7 +109,7 @@ def _generate_short(duration: int = 35, target_resolution: tuple[int, int] = (10
     vf = (
         f"crop='min(iw,ih*9/16):min(ih,iw*16/9)':(iw-min(iw,ih*9/16))/2:(ih-min(ih,iw*16/9))/2,"
         f"scale={target_resolution[0]}:{target_resolution[1]},"
-        f"setsar=1:1"
+        f"setsar=1/1"
     )
 
     inputs = ["-i", str(video)]
