@@ -68,9 +68,7 @@ _media_duration_s = media_duration_s
 
 
 def _prepare_seamless_loop_clip(clip_path: Path) -> Path:
-    return prepare_seamless_loop_clip(
-        clip_path, temp_dir=TEMP_DIR, loop_crossfade_s=LOOP_CROSSFADE_S, logger=log
-    )
+    return prepare_seamless_loop_clip(clip_path, temp_dir=TEMP_DIR, loop_crossfade_s=LOOP_CROSSFADE_S, logger=log)
 
 
 def _bake_filtered_segment(clip_path: Path) -> Path | None:
@@ -87,6 +85,7 @@ def _bake_filtered_segment(clip_path: Path) -> Path | None:
 
 def _extract_thumbnail_frame(clip_path: Path, seed: int) -> Path | None:
     return extract_thumbnail_frame(clip_path, seed, temp_dir=TEMP_DIR, logger=log)
+
 
 # Rotating real-footage pool (scripts/sync_noise_broll.py) -- no fixed
 # pinned clip and no illustrated fallback exist for this pillar yet (see

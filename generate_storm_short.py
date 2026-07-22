@@ -16,7 +16,7 @@ from __future__ import annotations
 import json
 import logging
 import random
-import subprocess
+import subprocess  # noqa: F401  # re-exported for test monkeypatch
 import sys
 import time
 from pathlib import Path
@@ -27,7 +27,7 @@ if str(ROOT) not in sys.path:
 
 from utils.ai_titling import generate_video_copy  # noqa: E402
 from utils.ffmpeg_helpers import (  # noqa: E402
-    compose_short as _compose_short_impl,
+    compose_short,
     load_sidecar,
     media_duration_s,
     prepare_seamless_loop_clip,
@@ -44,13 +44,11 @@ _media_duration_s = media_duration_s
 
 
 def _prepare_seamless_loop_clip(clip_path: Path) -> Path:
-    return prepare_seamless_loop_clip(
-        clip_path, temp_dir=TEMP_DIR, loop_crossfade_s=LOOP_CROSSFADE_S, logger=log
-    )
+    return prepare_seamless_loop_clip(clip_path, temp_dir=TEMP_DIR, loop_crossfade_s=LOOP_CROSSFADE_S, logger=log)
 
 
 def _compose_short(broll_path: Path, rain_bed_path: Path, output_path: Path, duration_s: float) -> bool:
-    return _compose_short_impl(
+    return compose_short(
         broll_path,
         rain_bed_path,
         output_path,
@@ -60,6 +58,7 @@ def _compose_short(broll_path: Path, rain_bed_path: Path, output_path: Path, dur
         fade_s=FADE_S,
         logger=log,
     )
+
 
 # One fixed, real Pixabay clip (chat, 2026-07-21: the channel owner picked
 # this specific rainy-porch-with-lantern clip by hand and asked for it to

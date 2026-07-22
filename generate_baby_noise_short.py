@@ -16,7 +16,7 @@ from __future__ import annotations
 import json
 import logging
 import random
-import subprocess
+import subprocess  # noqa: F401  # re-exported for test monkeypatch
 import sys
 import time
 from pathlib import Path
@@ -29,7 +29,7 @@ from utils.ai_titling import generate_baby_noise_copy  # noqa: E402
 from utils.baby_noise_branding import HOOK_BY_SCENE, branded_title, playlist_bucket_for_title  # noqa: E402
 from utils.broll import pick_noise_broll_file  # noqa: E402
 from utils.ffmpeg_helpers import (  # noqa: E402
-    compose_short as _compose_short_impl,
+    compose_short,
     extract_thumbnail_frame,
     load_sidecar,
     media_duration_s,
@@ -46,9 +46,7 @@ _media_duration_s = media_duration_s
 
 
 def _prepare_seamless_loop_clip(clip_path: Path) -> Path:
-    return prepare_seamless_loop_clip(
-        clip_path, temp_dir=TEMP_DIR, loop_crossfade_s=LOOP_CROSSFADE_S, logger=log
-    )
+    return prepare_seamless_loop_clip(clip_path, temp_dir=TEMP_DIR, loop_crossfade_s=LOOP_CROSSFADE_S, logger=log)
 
 
 def _extract_thumbnail_frame(clip_path: Path, seed: int) -> Path | None:
@@ -56,7 +54,7 @@ def _extract_thumbnail_frame(clip_path: Path, seed: int) -> Path | None:
 
 
 def _compose_short(broll_path: Path, noise_bed_path: Path, output_path: Path, duration_s: float) -> bool:
-    return _compose_short_impl(
+    return compose_short(
         broll_path,
         noise_bed_path,
         output_path,
@@ -66,6 +64,7 @@ def _compose_short(broll_path: Path, noise_bed_path: Path, output_path: Path, du
         fade_s=FADE_S,
         logger=log,
     )
+
 
 NOISE_BROLL_DIR = ROOT / "_assets" / "video" / "noise_broll"
 VIDEOS_DIR = ROOT / "_videos"

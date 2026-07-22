@@ -69,9 +69,7 @@ _media_duration_s = media_duration_s
 
 
 def _prepare_seamless_loop_clip(clip_path: Path) -> Path:
-    return prepare_seamless_loop_clip(
-        clip_path, temp_dir=TEMP_DIR, loop_crossfade_s=LOOP_CROSSFADE_S, logger=log
-    )
+    return prepare_seamless_loop_clip(clip_path, temp_dir=TEMP_DIR, loop_crossfade_s=LOOP_CROSSFADE_S, logger=log)
 
 
 def _bake_filtered_segment(clip_path: Path) -> Path | None:
@@ -84,6 +82,7 @@ def _bake_filtered_segment(clip_path: Path) -> Path | None:
         gop_size=40,
         logger=log,
     )
+
 
 # One fixed, real Pixabay clip (chat, 2026-07-21: the channel owner picked
 # this specific willow-branches-in-the-rain clip by hand and asked for it
