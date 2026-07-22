@@ -1,8 +1,17 @@
 name: "Pata Jazz - Live Simple"
 on:
   workflow_dispatch:
+    inputs:
+      duration_minutes:
+        description: "Duracao"
+        required: false
+        default: "350"
+concurrency:
+  group: pata-jazz-live
+  cancel-in-progress: true
 jobs:
   live-stream:
     runs-on: ubuntu-latest
+    timeout-minutes: 360
     steps:
-      - run: echo "Live dispatch funcionou"
+      - run: echo "Live dispatch funcionou - ${{ github.event.inputs.duration_minutes }}"
