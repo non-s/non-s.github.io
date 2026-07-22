@@ -185,11 +185,20 @@ def main() -> int:
     parser.add_argument("--title", default="")
     parser.add_argument("--description", default="")
     parser.add_argument("--resolution", default="1080p", choices=["1080p", "720p", "480p"])
+    parser.add_argument("--broadcast-id", default="")
+    parser.add_argument("--transition", choices=["live", "complete"], default="")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 
     try:
+        if args.transition:
+            if not args.broadcast_id:
+                log.error("--broadcast-id obrigatorio com --transition")
+                return 1
+            transition_broadcast(args.broadcast_id, args.transition)
+            return 0
+
         if args.mode == "upload":
             video_id = upload_video(language=args.language, privacy=args.privacy)
             if not video_id:

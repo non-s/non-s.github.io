@@ -102,15 +102,7 @@ jobs:
       - name: "Encerrar live no YouTube"
         if: always() && steps.create_live.outputs.broadcast_id != ''
         run: |
-          python -c "
-import sys
-sys.path.insert(0, '.')
-from upload_youtube import transition_broadcast
-try:
-    transition_broadcast('${{ steps.create_live.outputs.broadcast_id }}', 'complete')
-except Exception as e:
-    print('Erro ao finalizar live:', e)
-"
+          python upload_youtube.py --mode live --broadcast-id "${{ steps.create_live.outputs.broadcast_id }}" --transition complete
       - name: "Apagar token"
         if: always()
         run: rm -f youtube_token.json live_meta.json
