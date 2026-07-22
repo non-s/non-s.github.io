@@ -35,11 +35,11 @@ jobs:
       QUOTA_GUARD_MAX_DAILY_RATIO: ${{ vars.QUOTA_GUARD_MAX_DAILY_RATIO || '0.95' }}
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v7.0.0
+        uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0
       - name: "Python 3.11"
-        uses: actions/setup-python@v6.3.0
+        uses: actions/setup-python@v7.0.0
         with:
           python-version: "3.11"
           cache: "pip"
