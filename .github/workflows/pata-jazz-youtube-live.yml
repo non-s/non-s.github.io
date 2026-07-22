@@ -1,105 +1,13 @@
-name: "Pata Jazz Live"
-
+name: "Pata Jazz YouTube Live"
 on:
   workflow_dispatch:
     inputs:
       reason:
-        description: "Motivo do disparo manual"
+        description: "Motivo"
         required: false
         default: "manual"
-      duration_minutes:
-        description: "Duracao da transmissao em minutos"
-        required: false
-        default: "350"
-      resolution:
-        description: "Resolucao da live"
-        required: false
-        default: "1920x1080"
-
-permissions:
-  contents: read
-
 jobs:
-  live-stream:
-    name: "Transmitir live Pata Jazz em loop"
-    if: ${{ vars.PATA_JAZZ_ENABLED == '1' && vars.PATA_JAZZ_LIVE_ENABLED == '1' }}
+  test:
     runs-on: ubuntu-latest
-    timeout-minutes: 360
-    env:
-      YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
     steps:
-      - name: "Checkout"
-        uses: actions/checkout@v4
-      - name: "Python 3.11"
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-          cache: "pip"
-      - name: "Instalar FFmpeg"
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y ffmpeg
-      - name: "Instalar dependencias"
-        run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: "Restaurar token YouTube"
-        env:
-          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
-        run: |
-          umask 077
-          if [ -n "$YOUTUBE_TOKEN" ]; then
-            printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
-            chmod 600 youtube_token.json
-          fi
-      - name: "Cache b-roll"
-        uses: actions/cache@v4
-        with:
-          path: _assets/video/animal_broll
-          key: animal-broll-${{ github.run_id }}
-          restore-keys: animal-broll-
-      - name: "Cache jazz"
-        uses: actions/cache@v4
-        with:
-          path: _assets/audio/animal_jazz
-          key: animal-jazz-${{ github.run_id }}
-          restore-keys: animal-jazz-
-      - name: "Sincronizar b-roll"
-        env:
-          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
-        run: python scripts/sync_animal_broll.py || echo "::warning::B-roll sync falhou"
-      - name: "Sincronizar jazz"
-        env:
-          JAMENDO_CLIENT_ID: ${{ secrets.JAMENDO_CLIENT_ID }}
-        run: python scripts/sync_jazz_music.py || echo "::warning::Jazz sync falhou"
-      - name: "Criar live no YouTube"
-        id: create_live
-        if: hashFiles('youtube_token.json') != ''
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: |
-          python upload_youtube.py --mode live --privacy ${{ vars.YOUTUBE_PRIVACY || 'public' }} > live_meta.json
-          cat live_meta.json
-          python -c "
-import json
-with open('live_meta.json') as f:
-    data = json.load(f)
-print(f\"stream_url={data['ingestion_url']}\")
-print(f\"broadcast_id={data['broadcast_id']}\")
-" >> "$GITHUB_OUTPUT"
-      - name: "Transmitir loop infinito"
-        if: steps.create_live.outputs.stream_url != ''
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: |
-          python generate_pata_jazz_live.py \
-            --stream-url "${{ steps.create_live.outputs.stream_url }}" \
-            --duration ${{ github.event.inputs.duration_minutes || '350' }} \
-            --resolution ${{ github.event.inputs.resolution || '1920x1080' }}
-      - name: "Encerrar live no YouTube"
-        if: always() && steps.create_live.outputs.broadcast_id != ''
-        run: |
-          python upload_youtube.py --mode live --broadcast-id "${{ steps.create_live.outputs.broadcast_id }}" --transition complete
-      - name: "Apagar token"
-        if: always()
-        run: rm -f youtube_token.json live_meta.json
+      - run: echo "${{ github.event.inputs.reason }}"
