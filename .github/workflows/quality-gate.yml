@@ -60,7 +60,7 @@ jobs:
 
       - name: "Run test suite"
         run: |
-          python -m pytest -q --cov=utils --cov=scripts --cov-report=term-missing --cov-fail-under=20
+          python -m pytest -q --cov=utils --cov=scripts --cov-report=term-missing --cov-fail-under=60
 
       - name: "Check publish schedule contract"
         run: |
