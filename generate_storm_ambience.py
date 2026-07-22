@@ -59,6 +59,7 @@ from utils.ffmpeg_helpers import (  # noqa: E402
 )
 from utils.storm_audio import generate_rain_bed, write_wav  # noqa: E402
 from utils.storm_branding import HOOK_BY_SCENE, branded_title, playlist_bucket_for_title  # noqa: E402
+from utils.title_history import select_title  # noqa: E402
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("generate_storm_ambience")
@@ -238,7 +239,8 @@ def _build_metadata(
         fallback_title=template_title,
     )
     if ai_copy:
-        title = ai_copy["title"]
+        variants = ai_copy.get("title_variants") or [ai_copy["title"]]
+        title = select_title(variants)
         description = f"{ai_copy['description']}\n\n{_ALWAYS_ON_DISCLOSURE}".strip()
         tags = ai_copy["hashtags"]
         if "amber hours" not in tags:

@@ -57,6 +57,7 @@ from utils.ffmpeg_helpers import (  # noqa: E402
     media_duration_s,
     prepare_seamless_loop_clip,
 )
+from utils.title_history import select_title  # noqa: E402
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("generate_cute_animal_short")
@@ -176,7 +177,8 @@ def _build_metadata(
         music_credit=music_credit or None,
     )
     if ai_copy:
-        title = ai_copy["title"]
+        variants = ai_copy.get("title_variants") or [ai_copy["title"]]
+        title = select_title(variants)
         description = f"{ai_copy['description']}\n\n#Shorts".strip()
         tags = ai_copy["hashtags"]
         if "pata jazz" not in tags:
