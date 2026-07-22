@@ -1,9 +1,8 @@
-"""Pixabay b-roll discovery for the lofi Shorts/mix/live pipeline.
+"""Pixabay b-roll discovery for the rain/storm ambience pipeline.
 
-The lofi pipeline needs an anime/illustrated-style loop, not real-world
-footage -- see fetch_pixabay()'s docstring for why Pixabay (checked live)
-is the only source that actually has that content; Pexels was tried first
-and removed once that became clear.
+The storm pillar needs real-world rain/storm footage -- see
+fetch_pixabay()'s docstring for why Pixabay (checked live) is the source
+used; Pexels was tried first and removed once that became clear.
 """
 
 from __future__ import annotations
@@ -19,9 +18,6 @@ from pathlib import Path
 
 import requests
 
-from utils.broll_performance import mood_performance_weights
-from utils.lofi_branding import playlist_bucket_for_title
-
 log = logging.getLogger(__name__)
 
 _USER_AGENT = "WildBrief-Bot/4.0 (+https://non-s.github.io)"
@@ -30,8 +26,8 @@ _CACHE_DIR = Path(os.environ.get("BROLL_CACHE_DIR", "_data/broll_cache"))
 _CACHE_TTL_S = 86400 * 7
 _PIXABAY_API = "https://pixabay.com/api/videos/"
 
-# youtube-bot.yml can call fetch_pixabay() many times within one process
-# run; this throttle keeps real (non-cached) calls from bursting.
+# The storm workflows can call fetch_pixabay() many times within one
+# process run; this throttle keeps real (non-cached) calls from bursting.
 _MIN_REQUEST_INTERVAL_S = float(os.environ.get("BROLL_MIN_INTERVAL_S", "0"))
 _last_request_ts = 0.0
 
@@ -44,62 +40,7 @@ def _throttle() -> None:
     _last_request_ts = time.time()
 
 
-# Pixabay's video_type=animation category also contains generic 3D
-# corporate/motion-graphics stock clips -- checked live: a sync run for
-# the query "anime library reading" downloaded a plain 3D "man with a
-# stack of books" explainer-video clip (Pixabay id 115021, tagged just
-# "man" as its first/title tag), which then played on the live relay
-# looking nothing like the intended Lofi-Girl-style loop, and was later
-# also picked up as a Short's b-roll since nothing checked style at
-# selection time either. video_type alone doesn't guarantee the actual
-# illustrated look, so require at least one of Pixabay's own tags to
-# name an anime/cartoon style -- both when a clip is downloaded
-# (scripts/sync_lofi_broll.py) and again whenever one is picked off disk
-# for output (generate_lofi_short.py, generate_lofi_mix.py,
-# scripts/live_stream_dynamic.py), so a clip that reaches the shared
-# library some other way (stale cache, manual copy, a sync run on older
-# code) still can't end up in a published video.
-ANIME_STYLE_SIGNALS = {
-    "anime",
-    "cartoon",
-    "manga",
-    "chibi",
-    "kawaii",
-    "toon",
-    "illustration",
-    "illustrated",
-    "drawn",
-    "hand-drawn",
-    "handdrawn",
-    "comic",
-}
-
-
-def looks_anime_styled(tags: str) -> bool:
-    tags = (tags or "").lower()
-    return any(signal in tags for signal in ANIME_STYLE_SIGNALS)
-
-
-def is_on_brand_broll_clip(video_path: Path) -> bool:
-    """True if `video_path`'s sidecar JSON has anime-style tag evidence.
-
-    Selection-time counterpart to scripts/sync_lofi_broll.py's
-    download-time gate: a clip already sitting in the shared media-library
-    cache (pre-dating that filter, restored from a stale cache, or copied
-    in by hand) must not be picked for a Short/mix/live loop just because
-    it's on disk.
-    """
-    meta_path = video_path.with_suffix(".json")
-    try:
-        meta = json.loads(meta_path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        return False
-    if not isinstance(meta, dict):
-        return False
-    return looks_anime_styled(str(meta.get("tags") or ""))
-
-
-# Storm pillar counterpart: real-world rain/storm footage (video_type=
+# Real-world rain/storm footage (video_type=
 # "film", not "animation") instead of an illustrated look, so the check
 # is topical relevance instead of art style -- same double-gate shape as
 # ANIME_STYLE_SIGNALS/looks_anime_styled/is_on_brand_broll_clip above:
@@ -147,59 +88,6 @@ def pick_storm_broll_file(directory: Path, pattern: str = "pixabay_*.mp4") -> Pa
     if not candidates:
         return None
     return random.choice(candidates)
-
-
-_PREFERRED_MOOD_SIGNALS = ("rain", "night", "snow")
-_PREFERRED_WEIGHT = 3
-
-
-def _clip_query(video_path: Path) -> str:
-    meta_path = video_path.with_suffix(".json")
-    try:
-        meta = json.loads(meta_path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        return ""
-    return str(meta.get("query") or "") if isinstance(meta, dict) else ""
-
-
-def is_preferred_mood_clip(video_path: Path) -> bool:
-    """True if this clip's source query names the rainy-night/cozy-anime
-    sub-niche picked in chat on 2026-07-19. Used to weight random b-roll
-    selection toward it so new Shorts/mixes actually reflect the channel's
-    chosen identity instead of diluting it evenly across all ten b-roll
-    moods (the same problem that started that conversation).
-    """
-    query = _clip_query(video_path).lower()
-    return any(signal in query for signal in _PREFERRED_MOOD_SIGNALS)
-
-
-def pick_weighted_broll_file(
-    directory: Path, pattern: str, performance_weights: dict[str, float] | None = None
-) -> Path | None:
-    """Random pick among on-brand clips in `directory`, but a rainy-night/
-    night-city/snow clip is _PREFERRED_WEIGHT times as likely to be chosen
-    as any other single clip -- further scaled by `performance_weights`
-    (playlist bucket -> multiplier), defaulting to
-    utils.broll_performance.mood_performance_weights() when not given, so
-    a bucket that's actually performed better/worse on this channel skews
-    selection odds further, on top of that fixed editorial bias. That
-    default is a no-op ({} -> every multiplier falls back to 1.0) until
-    there's enough real per-video view data to compute it from -- see
-    utils/broll_performance.py's docstring.
-    """
-    candidates = [p for p in sorted(directory.glob(pattern)) if is_on_brand_broll_clip(p)]
-    if not candidates:
-        return None
-    if performance_weights is None:
-        performance_weights = mood_performance_weights()
-    weights = []
-    for p in candidates:
-        weight = float(_PREFERRED_WEIGHT if is_preferred_mood_clip(p) else 1)
-        if performance_weights:
-            bucket = playlist_bucket_for_title(_clip_query(p))
-            weight *= performance_weights.get(bucket, 1.0)
-        weights.append(weight)
-    return random.choices(candidates, weights=weights, k=1)[0]
 
 
 @dataclasses.dataclass
@@ -299,19 +187,26 @@ def fetch_pixabay(query: str, per_page: int = 8, page: int = 1, video_type: str 
     out: list[BrollClip] = []
     for video in videos:
         files = video.get("videos") or {}
-        # "medium" (Pixabay's ~1280x720 tier) is preferred over "large"
-        # (often 4K) on purpose: both consumers of this clip re-encode it
-        # at most to 1920x1080 (TARGET_W/TARGET_H in live_stream_dynamic.py),
-        # so a 4K source buys nothing visually but is far more expensive to
-        # decode/re-encode. Checked live: re-encoding a "large" clip
-        # through the live relay's loop-crossfade filter graph
+        # "large" (Pixabay's ~4K tier) is preferred over "medium" (chat,
+        # 2026-07-21: the channel owner explicitly asked for real 4K across
+        # every format -- long-form, Shorts, and the live relay -- and
+        # accepted the reliability tradeoff this reverses. Re-encoding a
+        # "large" clip through the loop-crossfade filter graph
         # (utils/broll.py -> scripts/live_stream_dynamic.py
-        # _prepare_seamless_loop_clip) used enough memory on a standard
-        # GitHub Actions runner to get the whole job SIGTERM'd (exit 143)
-        # partway through, twice in a row, with no application-level error
-        # at all -- only visible by comparing timing against actual OOM
-        # behavior, since the process left no traceback.
-        item = files.get("medium") or files.get("large") or files.get("small") or files.get("tiny")
+        # _prepare_seamless_loop_clip) previously used enough memory on a
+        # standard GitHub Actions runner to get the whole job SIGTERM'd
+        # (exit 143) partway through, twice in a row, with no application-
+        # level error at all -- only visible by comparing timing against
+        # actual OOM behavior, since the process left no traceback. That
+        # incident is why "medium" was preferred before; every consumer
+        # now renders at 3840x2160 (TARGET_W/TARGET_H in
+        # generate_storm_ambience.py/generate_storm_short.py/
+        # live_stream_dynamic.py) so the 4K source is no longer discarded
+        # at re-encode time, at the cost of reintroducing that OOM risk --
+        # the live relay's existing self-heal loop (ffmpeg crash -> 5s
+        # cooldown -> restart, plus live-stream-watchdog.yml) is the
+        # accepted mitigation, not a new one.
+        item = files.get("large") or files.get("medium") or files.get("small") or files.get("tiny")
         if not item or not item.get("url"):
             continue
         tags = str(video.get("tags") or "")

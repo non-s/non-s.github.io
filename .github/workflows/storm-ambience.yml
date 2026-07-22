@@ -86,7 +86,7 @@ jobs:
             printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
             chmod 600 youtube_token.json
           fi
-      - name: "Restaurar biblioteca de musica lofi do cache"
+      - name: "Restaurar biblioteca de musica do cache"
         uses: actions/cache@v4
         with:
           path: |
@@ -94,7 +94,7 @@ jobs:
           key: lofi-media-${{ github.run_id }}
           restore-keys: |
             lofi-media-
-      - name: "Sincronizar biblioteca de musica lofi"
+      - name: "Sincronizar biblioteca de musica"
         # Best-effort: the optional quiet music layer degrades to pure
         # rain/thunder (no error) when this library is empty -- see
         # generate_storm_ambience.py's MUSIC_LAYER_PROBABILITY branch.

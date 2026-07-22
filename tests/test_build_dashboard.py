@@ -130,7 +130,7 @@ def test_render_html_shows_branding_mix_and_collision_rate_from_real_markers(tmp
         json.dumps(
             {
                 "video_id": "V1",
-                "title": "Rainy Night Anime Lofi",
+                "title": "Trovão ao Longe e Chuva para Aliviar a Insônia",
                 "upload_title_dedupe": {"applied": True},
             }
         ),
@@ -140,7 +140,7 @@ def test_render_html_shows_branding_mix_and_collision_rate_from_real_markers(tmp
         json.dumps(
             {
                 "video_id": "V2",
-                "title": "Sleepy Cat Anime Lofi",
+                "title": "Som de Chuva Suave para Ajudar o Bebê a Dormir",
                 "upload_title_dedupe": {"applied": False},
             }
         ),
@@ -150,8 +150,8 @@ def test_render_html_shows_branding_mix_and_collision_rate_from_real_markers(tmp
     body = dashboard.render_html()
 
     assert "Branding mix" in body
-    assert "Rainy Night Lofi" in body
-    assert "Cozy Cat Lofi" in body
+    assert "Som de Trovão" in body
+    assert "Chuva para o Bebê Dormir" in body
     assert "Title collision rate" in body
     assert "50%" in body
 

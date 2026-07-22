@@ -4,12 +4,11 @@ _data/analytics/reporting_video_metrics.jsonl (built by
 scripts/reporting_pull.py from a manually-imported YouTube Reporting API
 CSV, or studio-reach-import.yml's Shorts Reach import) has one row per
 video with a real `views` count. Joined here against each `.done`
-marker's title -- via the same utils.lofi_branding.playlist_bucket_for_title()
-grouping used for playlists -- this computes a per-mood-bucket weight
-multiplier so utils.broll.pick_weighted_broll_file() can lean toward
-moods that have actually performed better on this channel, instead of
-only the fixed rain/night/snow editorial bias picked before there was
-any real data to go on.
+marker's title -- via the same utils.storm_branding.playlist_bucket_for_title()
+grouping used for playlists -- this computes a per-scene-bucket weight
+multiplier so a future b-roll picker can lean toward scenes that have
+actually performed better on this channel, instead of picking uniformly
+at random with no real data to go on.
 
 As of 2026-07-19 reporting_video_metrics.jsonl has zero rows -- the
 channel's analytics epoch only just reset and no CSV has been imported
@@ -26,7 +25,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from utils.lofi_branding import playlist_bucket_for_title
+from utils.storm_branding import playlist_bucket_for_title
 
 ROOT = Path(__file__).resolve().parents[1]
 METRICS_PATH = ROOT / "_data" / "analytics" / "reporting_video_metrics.jsonl"

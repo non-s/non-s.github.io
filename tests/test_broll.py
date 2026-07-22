@@ -8,54 +8,6 @@ from unittest.mock import MagicMock, patch
 from utils import broll
 
 
-def test_looks_anime_styled_accepts_any_signal_keyword():
-    for tag in ["anime", "Cartoon", "manga girl", "kawaii style", "hand-drawn loop"]:
-        assert broll.looks_anime_styled(tag) is True
-
-
-def test_looks_anime_styled_rejects_generic_stock_tags():
-    assert broll.looks_anime_styled("man, train, window, business, office") is False
-
-
-def test_looks_anime_styled_handles_empty_input():
-    assert broll.looks_anime_styled("") is False
-    assert broll.looks_anime_styled(None) is False
-
-
-def test_is_on_brand_broll_clip_accepts_anime_tagged_sidecar(tmp_path):
-    video_path = tmp_path / "pixabay_1.mp4"
-    video_path.write_bytes(b"x")
-    video_path.with_suffix(".json").write_text(json.dumps({"tags": "anime, girl, study, lofi"}))
-    assert broll.is_on_brand_broll_clip(video_path) is True
-
-
-def test_is_on_brand_broll_clip_rejects_offbrand_sidecar(tmp_path):
-    video_path = tmp_path / "pixabay_1.mp4"
-    video_path.write_bytes(b"x")
-    video_path.with_suffix(".json").write_text(json.dumps({"tags": "man, library, book"}))
-    assert broll.is_on_brand_broll_clip(video_path) is False
-
-
-def test_is_on_brand_broll_clip_rejects_missing_sidecar(tmp_path):
-    video_path = tmp_path / "pixabay_1.mp4"
-    video_path.write_bytes(b"x")
-    assert broll.is_on_brand_broll_clip(video_path) is False
-
-
-def test_is_on_brand_broll_clip_rejects_corrupt_sidecar(tmp_path):
-    video_path = tmp_path / "pixabay_1.mp4"
-    video_path.write_bytes(b"x")
-    video_path.with_suffix(".json").write_text("not json")
-    assert broll.is_on_brand_broll_clip(video_path) is False
-
-
-def _write_clip(directory, name, query, tags="anime, cozy"):
-    video_path = directory / name
-    video_path.write_bytes(b"x")
-    video_path.with_suffix(".json").write_text(json.dumps({"query": query, "tags": tags}))
-    return video_path
-
-
 def test_looks_storm_relevant_accepts_any_signal_keyword():
     for tag in ["rain", "Storm", "thunder night", "lightning, cloud", "downpour"]:
         assert broll.looks_storm_relevant(tag) is True
@@ -108,68 +60,6 @@ def test_pick_storm_broll_file_returns_an_on_brand_clip(tmp_path):
     assert broll.pick_storm_broll_file(tmp_path) == video_path
 
 
-def test_is_preferred_mood_clip_matches_rain_night_snow_queries(tmp_path):
-    rain = _write_clip(tmp_path, "pixabay_1.mp4", "anime rain window cozy")
-    night = _write_clip(tmp_path, "pixabay_2.mp4", "anime night city window")
-    snow = _write_clip(tmp_path, "pixabay_3.mp4", "anime snow window night")
-    cat = _write_clip(tmp_path, "pixabay_4.mp4", "anime cat sleeping cozy")
-    assert broll.is_preferred_mood_clip(rain) is True
-    assert broll.is_preferred_mood_clip(night) is True
-    assert broll.is_preferred_mood_clip(snow) is True
-    assert broll.is_preferred_mood_clip(cat) is False
-
-
-def test_pick_weighted_broll_file_returns_none_when_directory_empty(tmp_path):
-    assert broll.pick_weighted_broll_file(tmp_path, "pixabay_*.mp4") is None
-
-
-def test_pick_weighted_broll_file_skips_offbrand_clips(tmp_path):
-    _write_clip(tmp_path, "pixabay_1.mp4", "man library book", tags="man, library, book")
-    assert broll.pick_weighted_broll_file(tmp_path, "pixabay_*.mp4") is None
-
-
-def test_pick_weighted_broll_file_favors_preferred_mood_over_many_trials(tmp_path):
-    rain = _write_clip(tmp_path, "pixabay_1.mp4", "anime rain window cozy")
-    cat = _write_clip(tmp_path, "pixabay_2.mp4", "anime cat sleeping cozy")
-    picks = [broll.pick_weighted_broll_file(tmp_path, "pixabay_*.mp4") for _ in range(400)]
-    rain_count = picks.count(rain)
-    cat_count = picks.count(cat)
-    assert rain_count + cat_count == 400
-    # weighted 3:1 -- allow a wide margin so this isn't flaky, just checks
-    # the preferred clip clearly dominates rather than a coin flip.
-    assert rain_count > cat_count * 1.5
-
-
-def test_pick_weighted_broll_file_applies_real_performance_weight_on_top(tmp_path):
-    """A clip in a real-performance-boosted bucket should win far more
-    often than the fixed 3:1 editorial bias alone would predict, once a
-    performance_weights multiplier is supplied for its bucket."""
-    cozy_cat = _write_clip(tmp_path, "pixabay_1.mp4", "anime cat sleeping cozy")  # "Cozy Cat Lofi" bucket, base=1
-    rain = _write_clip(tmp_path, "pixabay_2.mp4", "anime rain window cozy")  # "Rainy Night Lofi" bucket, base=3
-
-    # Without any performance data: rain (weight 3) beats cat (weight 1).
-    picks = [broll.pick_weighted_broll_file(tmp_path, "pixabay_*.mp4", performance_weights={}) for _ in range(400)]
-    assert picks.count(rain) > picks.count(cozy_cat)
-
-    # With cat's bucket boosted 2x and rain's bucket cut to 0.5x, cat should
-    # now win instead (1*2=2 vs 3*0.5=1.5).
-    boosted = {"Cozy Cat Lofi": 2.0, "Rainy Night Lofi": 0.5}
-    picks = [broll.pick_weighted_broll_file(tmp_path, "pixabay_*.mp4", performance_weights=boosted) for _ in range(400)]
-    assert picks.count(cozy_cat) > picks.count(rain)
-
-
-def test_pick_weighted_broll_file_defaults_to_mood_performance_weights(tmp_path, monkeypatch):
-    """When performance_weights isn't given, it should be computed via
-    utils.broll_performance.mood_performance_weights() rather than always
-    behaving as if no performance data exists."""
-    clip = _write_clip(tmp_path, "pixabay_1.mp4", "anime rain window cozy")
-    monkeypatch.setattr(broll, "mood_performance_weights", lambda: {"Rainy Night Lofi": 5.0})
-
-    # Just needs to not blow up and still return the only candidate --
-    # the weight value itself doesn't change the outcome with one clip.
-    assert broll.pick_weighted_broll_file(tmp_path, "pixabay_*.mp4") == clip
-
-
 def _pixabay_payload():
     return {
         "hits": [
@@ -204,7 +94,7 @@ def test_pixabay_returns_clips_when_key_set(monkeypatch, tmp_path):
     assert len(clips) == 1
     clip = clips[0]
     assert clip.source == "pixabay"
-    assert clip.download_url == "https://cdn.pixabay.com/video/medium.mp4"
+    assert clip.download_url == "https://cdn.pixabay.com/video/large.mp4"
     assert clip.title == "girl"
     assert clip.license_evidence == "https://pixabay.com/videos/id-214500/"
     assert clip.source_metadata["pixabay_video_id"] == "214500"
@@ -214,11 +104,11 @@ def test_pixabay_returns_clips_when_key_set(monkeypatch, tmp_path):
     assert str(session.get.call_args.args[0]).endswith("/api/videos/")
 
 
-def test_pixabay_falls_back_to_large_when_medium_missing(monkeypatch, tmp_path):
+def test_pixabay_falls_back_to_medium_when_large_missing(monkeypatch, tmp_path):
     monkeypatch.setenv("PIXABAY_API_KEY", "x")
     monkeypatch.setattr(broll, "_CACHE_DIR", tmp_path / "c")
     payload = _pixabay_payload()
-    del payload["hits"][0]["videos"]["medium"]
+    del payload["hits"][0]["videos"]["large"]
     fake = MagicMock(status_code=200)
     fake.json.return_value = payload
     with patch.object(broll, "_session") as factory:
@@ -226,7 +116,7 @@ def test_pixabay_falls_back_to_large_when_medium_missing(monkeypatch, tmp_path):
         session.get.return_value = fake
         factory.return_value = session
         clips = broll.fetch_pixabay("anime lofi")
-    assert clips[0].download_url == "https://cdn.pixabay.com/video/large.mp4"
+    assert clips[0].download_url == "https://cdn.pixabay.com/video/medium.mp4"
 
 
 def test_pixabay_returns_empty_without_key(monkeypatch):

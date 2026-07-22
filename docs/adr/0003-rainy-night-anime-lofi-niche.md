@@ -1,7 +1,11 @@
 # ADR 0003: Rainy-Night Anime Lofi as Sub-Niche
 
 ## Status
-Accepted
+Superseded (2026-07-21) -- the channel pivoted fully to the real
+rain/thunder ambience pillar (`generate_storm_ambience.py`,
+`utils/storm_branding.py`); the lofi format and every script/workflow
+exclusive to it were removed. Kept here as a historical record of why
+the sub-niche was chosen at the time.
 
 ## Context
 Lofi and chillhop are saturated head terms. Channels like Lofi Girl dominate broad searches. A small new channel cannot compete on generic "lofi" alone.

@@ -1,20 +1,23 @@
 # Amber Hours Architecture
 
-Amber Hours is a zero-cost lofi radio production loop: free-licensed
-Pixabay anime b-roll + Creative Commons (CC BY) Jamendo music become
-looping lofi YouTube Shorts and a 24/7 YouTube Live relay, with no
-narration and no editorial/story queue.
+Amber Hours is a zero-cost rain & thunder ambience production loop:
+real-world Pixabay storm/rain b-roll (falling back to an original
+animated storm scene) + procedurally-synthesized rain/thunder audio
+become a long-form ambience video, looping vertical YouTube Shorts, and
+a 24/7 YouTube Live relay, with no narration and no editorial/story
+queue.
 
 ## Core Loops
 
-- Media sync: `scripts/sync_lofi_broll.py` (Pixabay b-roll cache),
-  `scripts/sync_jamendo_music.py` (Jamendo bgm cache).
-- Production: `generate_lofi_short.py` renders one Short per run from the
-  synced libraries.
+- Media sync: `scripts/sync_storm_broll.py` (Pixabay storm/rain b-roll
+  cache), `scripts/sync_jamendo_music.py` (Jamendo bgm cache, feeds the
+  optional quiet music layer).
+- Production: `generate_storm_ambience.py` renders one ~1-hour ambience
+  video per run; `generate_storm_short.py` renders one vertical Short.
 - Upload: `upload_youtube.py` publishes through the official YouTube Data
   API and writes `.done` sidecars.
 - Live: `scripts/live_stream_dynamic.py` runs the 24/7 RTMP relay (one
-  looped clip + the full local bgm playlist).
+  looped storm clip + the synthesized rain/thunder bed).
 - Learning: optional manual imports via
   `scripts/import_studio_reach_export.py` and `scripts/reporting_pull.py`
   feed the GitHub Pages dashboard (`scripts/build_dashboard.py`).

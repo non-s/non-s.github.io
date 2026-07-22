@@ -25,29 +25,24 @@ def test_time_semantics_use_pacific_days_and_views_cutover():
     assert views_regime("2025-04-01T07:00:00+00:00") == CURRENT_VIEWS_REGIME
 
 
-def test_slot_audit_checks_bot_watchdog_docs_and_temporal_fields(tmp_path):
+def test_slot_audit_checks_docs_and_temporal_fields(tmp_path):
     # Matches the real every-2-hours Shorts grid (utils/audience_expansion.py's
     # GLOBAL_PUBLISH_WINDOWS) -- audit_slot_contracts() always checks
     # against the real global CANONICAL_SLOTS_UTC, so this fixture's slot
     # count/cadence has to match it, not an arbitrary smaller grid.
-    (tmp_path / ".github" / "workflows").mkdir(parents=True)
     (tmp_path / "docs").mkdir()
     slots = " ".join(f"{hour:02d}:00" for hour in range(0, 24, 2))
-    bot_cron = '    - cron: "0 0,2,4,6,8,10,12,14,16,18,20,22 * * *"'
-    (tmp_path / ".github" / "workflows" / "youtube-bot.yml").write_text(
-        f"on:\n  schedule:\n{bot_cron}\n",
-        encoding="utf-8",
-    )
-    (tmp_path / ".github" / "workflows" / "youtube-watchdog.yml").write_text(slots, encoding="utf-8")
     docs = slots + " publish_ts_utc publish_day_pt quota_day_pt views_regime"
     (tmp_path / "README.md").write_text(docs, encoding="utf-8")
     (tmp_path / "docs" / "ENVIRONMENT.md").write_text(docs, encoding="utf-8")
 
     assert audit_slot_contracts(tmp_path)["ok"] is True
-    (tmp_path / ".github" / "workflows" / "youtube-watchdog.yml").write_text("14:00 20:00 22:00", encoding="utf-8")
+
+    (tmp_path / "README.md").write_text(docs.replace("06:00", ""), encoding="utf-8")
+    (tmp_path / "docs" / "ENVIRONMENT.md").write_text(docs.replace("06:00", ""), encoding="utf-8")
 
     errors = audit_slot_contracts(tmp_path)["errors"]
-    assert any("06:00" in error and "watchdog" in error for error in errors)
+    assert any("06:00" in error for error in errors)
 
 
 def test_retention_warehouse_and_analytics_row_include_new_fields():

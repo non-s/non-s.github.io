@@ -249,7 +249,7 @@ def test_playlist_titles_use_series_and_category():
         "Start Here",
         "Watch The Cue",
         "Birds",
-        "Cozy Anime Lofi",
+        "Chuva E Tempestade",
     ]
 
 
@@ -261,20 +261,28 @@ def test_playlist_titles_apply_configured_prefix(monkeypatch):
         "Wild Brief | Start Here",
         "Wild Brief | Watch The Cue",
         "Wild Brief | Birds",
-        "Wild Brief | Cozy Anime Lofi",
+        "Wild Brief | Chuva E Tempestade",
     ]
 
 
 def test_playlist_titles_group_by_mood_signal_in_the_title():
     titles = _playlist_titles(
-        {"title": "Rainy Night Anime Lofi — Amber Hours \U0001f327️", "series": "Lofi Beats", "category": "lofi"}
+        {
+            "title": "Trovão ao Longe e Chuva para Aliviar a Insônia -- Amber Hours \U0001f329️",
+            "series": "Storm Ambience",
+            "category": "storm_ambience",
+        }
     )
-    assert "Rainy Night Lofi" in titles
+    assert "Som De Trovão" in titles
 
     titles = _playlist_titles(
-        {"title": "Sleepy Cat Anime Lofi — Amber Hours \U0001f43e", "series": "Lofi Beats", "category": "lofi"}
+        {
+            "title": "Som de Chuva Suave para Ajudar o Bebê a Dormir -- Amber Hours \U0001f37c",
+            "series": "Storm Ambience",
+            "category": "storm_ambience",
+        }
     )
-    assert "Cozy Cat Lofi" in titles
+    assert "Chuva Para O Bebê Dormir" in titles
 
 
 class _Req:
@@ -391,7 +399,7 @@ def test_post_upload_operations_adds_playlists(monkeypatch):
         "Wild Brief | Start Here",
         "Wild Brief | Watch The Cue",
         "Wild Brief | Birds",
-        "Wild Brief | Cozy Anime Lofi",
+        "Wild Brief | Chuva E Tempestade",
     ]
     assert all(item["added"] for item in result["playlists"])
     assert youtube._playlist_items.added == [

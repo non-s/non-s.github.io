@@ -47,7 +47,7 @@ def test_build_metadata_always_appends_the_synthesized_disclosure(tmp_path, monk
 
     meta = storm._build_metadata("focus", 3600.0, video_path, slug="s-disc", music_meta=None, broll_meta={})
 
-    assert "procedurally synthesized" in meta["description"]
+    assert "sintetizados por computador" in meta["description"]
 
 
 def test_build_metadata_falls_back_to_template_when_ai_returns_none(tmp_path, monkeypatch):
@@ -56,7 +56,7 @@ def test_build_metadata_falls_back_to_template_when_ai_returns_none(tmp_path, mo
 
     meta = storm._build_metadata("focus", 3600.0, video_path, slug="s-fb", music_meta=None, broll_meta={})
 
-    assert meta["title"] == storm.branded_title("focus", suffix="(1.0 Hours)")
+    assert meta["title"] == storm.branded_title("focus", suffix="(1.0 Horas)")
 
 
 def test_build_metadata_uses_hours_label_for_long_videos(tmp_path):
@@ -66,7 +66,7 @@ def test_build_metadata_uses_hours_label_for_long_videos(tmp_path):
         "deep sleep", 3.5 * 3600, video_path, slug="ambience-1700000000-1234", music_meta=None, broll_meta={}
     )
 
-    assert "(3.5 Hours)" in meta["title"]
+    assert "(3.5 Horas)" in meta["title"]
     assert meta["category"] == "storm_ambience"
     assert meta["is_short"] is False
 
@@ -109,7 +109,7 @@ def test_build_metadata_tags_lead_with_the_scene_then_default_tags(tmp_path):
     meta = storm._build_metadata("deep sleep", 3600.0, video_path, slug="s-3", music_meta=None, broll_meta={})
 
     assert meta["tags"][0] == "deep sleep"
-    assert "rain sounds for sleep" in meta["tags"]
+    assert "chuva para dormir" in meta["tags"]
 
 
 def test_build_metadata_publish_slot_uses_the_storm_prefix(tmp_path):

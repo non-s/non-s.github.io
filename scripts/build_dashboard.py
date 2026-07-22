@@ -173,8 +173,8 @@ def render_html() -> str:
         "th{color:#9aa4b2;font-weight:500}",
         "a{color:#7dd3fc} small{color:#9aa4b2}",
         "</style></head><body>",
-        "<h1>Amber Hours — lofi radio</h1>",
-        "<small>24/7 lofi live stream + lofi Shorts, no narration. "
+        "<h1>Amber Hours — rain & thunder ambience</h1>",
+        "<small>24/7 rain & thunder live stream + Shorts, no narration. "
         f"Snapshot generated {html.escape(str(generated_at) or 'unknown')}.</small>",
         "<div class='tiles'>",
         _stat_tile("Total views", f"{int(total_views or 0):,}"),

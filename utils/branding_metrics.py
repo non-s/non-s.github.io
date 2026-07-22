@@ -17,7 +17,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from utils.lofi_branding import playlist_bucket_for_title
+from utils.storm_branding import playlist_bucket_for_title
 
 ROOT = Path(__file__).resolve().parents[1]
 VIDEOS_DIR = ROOT / "_videos"

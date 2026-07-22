@@ -44,8 +44,8 @@ BRAND_THUMBNAIL_IMAGE = ROOT / "_assets" / "branding" / "storm_short_scene_1080x
 VIDEOS_DIR = ROOT / "_videos"
 TEMP_DIR = ROOT / "_videos" / "temp_storm_short"
 
-TARGET_W = 1080
-TARGET_H = 1920
+TARGET_W = 2160
+TARGET_H = 3840
 MIN_DURATION_S = 30.0
 MAX_DURATION_S = 58.0
 FADE_S = 1.5
@@ -55,13 +55,13 @@ RAIN_BED_SECONDS = 37.0  # short + non-matching period vs. the 14s video loop an
 CATEGORY = "storm_ambience"
 SERIES_SUFFIX = "Shorts"
 DEFAULT_TAGS = [
-    "rain sounds",
-    "rain sounds for sleep",
-    "thunderstorm sounds",
-    "rain and thunder",
-    "sleep sounds",
-    "relaxing rain",
-    "white noise",
+    "som de chuva",
+    "chuva para dormir",
+    "som de chuva para dormir",
+    "trovão e chuva",
+    "chuva forte",
+    "chuva relaxante",
+    "ruído branco",
     "amber hours",
 ]
 
@@ -208,13 +208,13 @@ def _build_metadata(scene: str, duration_s: float, video_path: Path, slug: str, 
     bucket = playlist_bucket_for_title(template_title)
 
     disclosure = (
-        "The rain and thunder in this video are procedurally synthesized, not a looped recording "
-        "-- no sample to run out of, no license to clear."
+        "A chuva e o trovão deste vídeo são sintetizados por computador, não uma gravação em loop "
+        "-- nenhuma amostra para se esgotar, nenhuma licença para verificar."
     )
     description_lines = [
-        f"{scene.lower()} rain sounds with distant thunder -- a quick rain break to help you relax.",
+        "Som real de chuva com trovão ao longe -- uma pausa rápida de chuva para relaxar.",
         "",
-        f"\U0001f327️ Part of the {bucket} collection on Amber Hours.",
+        f"\U0001f327️ Parte da coleção {bucket} no Amber Hours.",
         "",
         f"\U0001f3a7 {disclosure}",
         "",
@@ -249,7 +249,7 @@ def _build_metadata(scene: str, duration_s: float, video_path: Path, slug: str, 
         "video": str(video_path),
         "duration_s": duration_s,
         "story_id": slug,
-        "packaging": {"pinned_comment": "What should the next rain Short sound like? \U0001f327️"},
+        "packaging": {"pinned_comment": "Como deveria ser o próximo Short de chuva? \U0001f327️"},
         "pre_publish_audit": {"approved": True, "reason": "storm_ambience_no_claims_to_vet"},
         "source": str(broll_meta.get("source") or "branding"),
         "source_clip_id": str(broll_meta.get("pixabay_video_id") or ""),

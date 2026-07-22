@@ -41,13 +41,17 @@ def test_counts_total_and_collisions(tmp_path):
 
 
 def test_groups_by_playlist_bucket_from_the_title(tmp_path):
-    _write_marker(tmp_path, "short-1.done", video_id="V1", title="Rainy Night Anime Lofi")
-    _write_marker(tmp_path, "short-2.done", video_id="V2", title="Rain on the Window Anime Lofi")
-    _write_marker(tmp_path, "short-3.done", video_id="V3", title="Sleepy Cat Anime Lofi")
+    _write_marker(tmp_path, "short-1.done", video_id="V1", title="Trovão ao Longe e Chuva para Aliviar a Insônia")
+    _write_marker(tmp_path, "short-2.done", video_id="V2", title="Som de Chuva para Mascarar o Zumbido no Ouvido")
+    _write_marker(tmp_path, "short-3.done", video_id="V3", title="Som de Chuva Suave para Ajudar o Bebê a Dormir")
 
     stats = branding_metrics.collect_branding_stats(tmp_path)
 
-    assert stats["playlist_buckets"] == {"Rainy Night Lofi": 2, "Cozy Cat Lofi": 1}
+    assert stats["playlist_buckets"] == {
+        "Som de Trovão": 1,
+        "Ruído Branco de Chuva": 1,
+        "Chuva para o Bebê Dormir": 1,
+    }
 
 
 def test_groups_by_series_when_present(tmp_path):

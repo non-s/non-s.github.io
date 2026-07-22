@@ -1,29 +1,25 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-live_stream_dynamic.py -- 24/7 lofi live relay with self-healing broadcast.
+live_stream_dynamic.py -- 24/7 rain & thunder live relay with self-healing
+broadcast.
 
-The "Lofi Girl" format this channel is modeled on isn't several different
-video clips cut together -- it's one single looping animation with a music
-playlist rotating underneath, for hours. So this relay loops ONE fixed
-anime clip, committed directly into the repo at
-_assets/video/pinned_live_clip.mp4 (PINNED_BROLL_CLIP below) rather than
-picked randomly from the rotating Pixabay-synced library the Shorts
-generator uses -- that library still varies run to run, which doesn't fit
-a single persistent visual identity for the 24/7 stream. It concatenates
-every locally available Jamendo track into one playlist that plays
-through in sequence and then repeats -- not a single song on loop for the
-whole session.
+This channel's 24/7 live format isn't several different video clips cut
+together -- it's one single looping animated storm scene with a
+procedurally-synthesized rain/thunder bed (plus an optional quiet Jamendo
+track) underneath, for hours. So this relay loops ONE fixed storm clip,
+committed directly into the repo at _assets/video/pinned_storm_clip.mp4
+(STORM_PINNED_BROLL_CLIP below) -- see utils/storm_branding.py's module
+docstring for why this pillar (real "rain sounds for sleep"/"thunderstorm
+ambience" search intent) is the channel's whole identity now.
 
 A single ffmpeg process streams straight to RTMP with `-stream_loop -1` on
-both the video clip and the audio playlist -- there is no bake-to-file
-step sized to the playlist's length. That used to mean a restart had to
-re-encode a segment as long as the whole bgm library before any stream
-data went out; with a ~150-track library that could take hours. Now a
-restart just relaunches ffmpeg against the same (cached) inputs and is
-back on air within seconds. The video clip is preprocessed once with a
-short crossfade baked between its tail and its head, so looping it
-forever has no visible jump cut at the wrap-around point.
+both the video clip and the audio inputs -- there is no bake-to-file step
+sized to the stream's length, so a restart just relaunches ffmpeg against
+the same (cached) inputs and is back on air within seconds. The video clip
+is preprocessed once with a short crossfade baked between its tail and its
+head, so looping it forever has no visible jump cut at the wrap-around
+point.
 
 A background thread keeps a public broadcast bound to the stream key at
 all times -- ffmpeg can push RTMP data forever, but that alone never puts
@@ -33,8 +29,8 @@ created and bound whenever none is active.
 This used to also run an AI "virtual host" that answered live chat
 questions with synthesized speech cut into the stream. That feature has
 been removed: this channel's format is deliberately narration-free (loop +
-music only), and a spoken voice answering chat mid-loop would break that
-format on every question asked.
+ambience only), and a spoken voice answering chat mid-loop would break
+that format on every question asked.
 """
 
 import logging
@@ -53,100 +49,47 @@ if str(ROOT) not in sys.path:
 
 from googleapiclient.discovery import build  # noqa: E402
 
-from utils.broll import is_on_brand_broll_clip  # noqa: E402
 from utils.youtube_oauth import can_manage_comments, credentials_from_token_info, load_token_info  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger(__name__)
 
 BGM_DIR = ROOT / "_assets" / "audio" / "bgm"
-BROLL_DIR = ROOT / "_assets" / "video" / "lofi_broll"
 
-# The live relay loops exactly one visual at a time, matching the real
-# "Lofi Girl" format (one animation, music rotates underneath) -- committed
-# into the repo directly (not the rotating, gitignored BROLL_DIR cache) so
-# it's never affected by that library's oldest-first rotation and survives
-# every restart with no re-sync needed. A small curated pool in
-# PINNED_BROLL_DIR rotates slowly (weekly) instead of it being the exact
-# same loop forever -- still one persistent visual per stretch, just
-# refreshed periodically so a viewer who checks in for hours across
-# several days doesn't see an identical loop indefinitely. Falls back to
-# the single legacy PINNED_BROLL_CLIP untouched when the pool has 0 or 1
-# clips curated (true today -- adding more curated "rainy night" clips to
-# PINNED_BROLL_DIR is what actually turns rotation on).
-PINNED_BROLL_DIR = ROOT / "_assets" / "video" / "pinned_live_clips"
-PINNED_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_live_clip.mp4"
-_PINNED_ROTATION_PERIOD_DAYS = 7
-
-# Second pillar (growth pass, 2026-07-21): real rain/thunder ambience
-# instead of/alongside the lofi loop -- see utils/storm_branding.py's
-# module docstring for the "why". Defaults to "lofi" so every existing
-# caller/test keeps today's exact behavior; set LIVE_CONTENT_PILLAR=storm
-# to run the 24/7 relay as rain/thunder ambience instead. Reuses
-# generate_storm_ambience.py's own pinned clip (scripts/generate_storm_scene.py)
-# rather than a separate live-only asset -- it's already a seamless loop.
-LIVE_CONTENT_PILLAR = os.environ.get("LIVE_CONTENT_PILLAR", "lofi").strip().lower()
+# The 24/7 relay's one committed, seamless-loop storm scene -- same asset
+# generate_storm_ambience.py/generate_storm_short.py fall back to when no
+# real Pixabay clip is synced. See scripts/generate_storm_scene.py.
 STORM_PINNED_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_storm_clip.mp4"
 
-TARGET_W = 1920
-TARGET_H = 1080
+# Real 4K (chat, 2026-07-21: the channel owner explicitly asked for it
+# across every format, including this live relay, accepting the OOM risk
+# this reintroduces on a standard GitHub Actions runner -- see
+# utils/broll.py's fetch_pixabay() comment for the full history/tradeoff).
+TARGET_W = 3840
+TARGET_H = 2160
 TARGET_FPS = 30
 LOOP_CROSSFADE_S = 1.0
 
-# "lofi hip hop radio" + "beats to relax/study to" are the two proven
-# high-search-volume phrases in this genre (Lofi Girl, Chillhop Music,
-# The Jazz Hop Cafe all title around this same pattern) -- splitting them
-# instead of only using one combined phrase covers more real search
-# queries than the previous title did.
-_LOFI_BROADCAST_TITLE = "Rainy Night Anime Lofi — Amber Hours \U0001f319 [24/7 LIVE]"
-_LOFI_BROADCAST_DESCRIPTION = (
-    "Non-stop lofi beats, looping live -- cozy visuals and chill music to relax, study or unwind to."
+BROADCAST_TITLE = "Chuva e Trovão — Amber Hours \U0001f327️ [24/7 AO VIVO]"
+BROADCAST_DESCRIPTION = (
+    "Ambiência real de chuva e trovão sem parar, ao vivo -- para ajudar você a dormir, focar ou "
+    "relaxar. A chuva e o trovão são sintetizados por computador, não uma gravação em loop."
 )
-_STORM_BROADCAST_TITLE = "Rain & Thunder — Amber Hours \U0001f327️ [24/7 LIVE]"
-_STORM_BROADCAST_DESCRIPTION = (
-    "Non-stop real rain and thunder ambience, looping live -- to help you sleep, focus, or relax. "
-    "The rain and thunder are procedurally synthesized, not a looped recording."
-)
-if LIVE_CONTENT_PILLAR == "storm":
-    BROADCAST_TITLE = _STORM_BROADCAST_TITLE
-    BROADCAST_DESCRIPTION = _STORM_BROADCAST_DESCRIPTION
-else:
-    BROADCAST_TITLE = _LOFI_BROADCAST_TITLE
-    BROADCAST_DESCRIPTION = _LOFI_BROADCAST_DESCRIPTION
 
 # Every literal value BROADCAST_TITLE has ever held before the current one --
 # see _rebrand_if_stale()'s docstring for why this list (not "anything that
-# doesn't match BROADCAST_TITLE") is the staleness check.
+# doesn't match BROADCAST_TITLE") is the staleness check. Includes the
+# channel's earlier "rainy-night anime lofi" identity (growth pass,
+# 2026-07-21: the channel fully moved to the rain/thunder ambience pillar),
+# so an already-live broadcast still carrying that title gets auto-corrected
+# on its next check-in instead of being left alone forever.
 _LEGACY_BROADCAST_TITLES = {
     "lofi hip hop radio \U0001f4da beats to relax/study to [24/7 LIVE]",
     "\U0001f534 24/7 Lofi Beats to Relax/Study to | Live",
     "\U0001f534 24/7 Wild Nature & Animal Secrets | Ao Vivo | En Vivo",
+    "Rainy Night Anime Lofi — Amber Hours \U0001f319 [24/7 LIVE]",
+    "Rain & Thunder — Amber Hours \U0001f327️ [24/7 LIVE]",
 }
-
-
-def _pinned_broll_candidates() -> list[Path]:
-    if PINNED_BROLL_DIR.is_dir():
-        clips = sorted(p for p in PINNED_BROLL_DIR.glob("*.mp4") if p.is_file())
-        if clips:
-            return clips
-    return [PINNED_BROLL_CLIP] if PINNED_BROLL_CLIP.exists() else []
-
-
-def _select_pinned_broll_clip(now: datetime | None = None) -> Path | None:
-    """Deterministic (no state file needed): with N curated clips, which
-    one is "current" changes every _PINNED_ROTATION_PERIOD_DAYS days, in
-    lockstep across every relay process/restart since it's derived purely
-    from the calendar date. A single candidate (today's real state)
-    always returns that one clip -- identical to the old fixed-clip
-    behavior."""
-    candidates = _pinned_broll_candidates()
-    if not candidates:
-        return None
-    if len(candidates) == 1:
-        return candidates[0]
-    current = now or datetime.now(timezone.utc)
-    period_index = current.toordinal() // _PINNED_ROTATION_PERIOD_DAYS
-    return candidates[period_index % len(candidates)]
 
 
 def _media_duration_s(path: Path) -> float:
@@ -277,12 +220,12 @@ class DynamicStreamer:
         active -- an already-live/ready/testing broadcast created under
         older branding would otherwise just keep reusing its stale title
         forever, even though the video/audio streaming through it is
-        already lofi. This used to treat ANY mismatch against the current
-        BROADCAST_TITLE constant as "stale" and silently overwrite it --
-        which meant a channel owner retitling the live from YouTube Studio
-        got reverted on the very next check-in cycle, with no way to make
-        a manual edit stick. Only known-legacy strings (or a blank title)
-        count as stale now; anything else is left alone.
+        already rain/thunder. This used to treat ANY mismatch against the
+        current BROADCAST_TITLE constant as "stale" and silently overwrite
+        it -- which meant a channel owner retitling the live from YouTube
+        Studio got reverted on the very next check-in cycle, with no way
+        to make a manual edit stick. Only known-legacy strings (or a blank
+        title) count as stale now; anything else is left alone.
         """
         snippet = broadcast_item.get("snippet") or {}
         current_title = snippet.get("title") or ""
@@ -301,24 +244,12 @@ class DynamicStreamer:
                     },
                 },
             ).execute()
-            log.info("Rebranded stale broadcast %s to current lofi title.", broadcast_item.get("id"))
+            log.info("Rebranded stale broadcast %s to current rain & thunder title.", broadcast_item.get("id"))
         except Exception as e:
             log.warning(f"Failed to rebrand stale broadcast: {e}")
 
     def _pick_broll_clip(self) -> Path | None:
-        if LIVE_CONTENT_PILLAR == "storm":
-            # No rotating pool for this pillar yet -- one pinned animated
-            # scene, same as generate_storm_ambience.py/generate_storm_short.py.
-            return STORM_PINNED_BROLL_CLIP if STORM_PINNED_BROLL_CLIP.exists() else None
-        pinned = _select_pinned_broll_clip()
-        if pinned:
-            return pinned
-        # Same anime-style tag check sync_lofi_broll.py applies at
-        # download time, re-applied here: falling back to the rotating
-        # BROLL_DIR pool (no PINNED_BROLL_CLIP) must not surface a clip
-        # that only got onto disk despite lacking that evidence.
-        clips = [p for p in BROLL_DIR.glob("pixabay_*.mp4") if is_on_brand_broll_clip(p)]
-        return random.choice(clips) if clips else None
+        return STORM_PINNED_BROLL_CLIP if STORM_PINNED_BROLL_CLIP.exists() else None
 
     def _build_storm_audio_inputs(self) -> tuple[Path, Path | None]:
         """Rain/thunder bed (always present) + an optional quiet bgm track
@@ -340,34 +271,6 @@ class DynamicStreamer:
             if tracks:
                 music_path = random.choice(tracks)
         return rain_bed_path, music_path
-
-    def _build_bgm_playlist(self) -> Path | None:
-        """Concatenate every locally available bgm track into one file, so
-        the loop segment plays through the whole library in sequence
-        instead of a single track repeating for the whole session."""
-        tracks = list(BGM_DIR.glob("jamendo_*.mp3"))
-        if not tracks:
-            return None
-        playlist_path = self.temp_dir / "playlist.mp3"
-        if playlist_path.exists() and playlist_path.stat().st_size > 0:
-            return playlist_path
-        random.shuffle(tracks)
-        list_path = self.temp_dir / "playlist_concat.txt"
-        list_path.write_text(
-            "\n".join(f"file '{track.resolve()}'" for track in tracks) + "\n",
-            encoding="utf-8",
-        )
-        cmd = ["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(list_path), "-c", "copy", str(playlist_path)]
-        try:
-            result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
-        except Exception as exc:
-            log.error(f"Failed to build bgm playlist: {exc}")
-            return None
-        if result.returncode != 0 or not playlist_path.exists():
-            log.error(f"ffmpeg playlist concat exited {result.returncode}: {result.stderr[-500:]}")
-            return None
-        log.info("Built bgm playlist from %d track(s).", len(tracks))
-        return playlist_path
 
     def _prepare_seamless_loop_clip(self, clip_path: Path) -> Path:
         """Bake a short crossfade between the clip's tail and its head once,
@@ -393,16 +296,12 @@ class DynamicStreamer:
             return clip_path
 
         # `mid` must be concat's FIRST input, `blend` its second -- see
-        # generate_lofi_mix.py's identical function for the full
+        # generate_storm_ambience.py's identical function for the full
         # reasoning. With the original [blend][mid] order this deadlocks
         # ffmpeg's internal frame queue on longer/higher-fps clips (each
         # of `mid`'s frames backs up unread until concat reaches segment
         # 1, since `blend` can't emit anything until the demuxer reaches
-        # the clip's tail) -- confirmed via generate_lofi_mix.py hitting
-        # exactly this on a 60fps pinned clip. Not yet observed here since
-        # today's pinned live clips are short, but it's the same graph and
-        # the pinned pool rotates, so fix it here too before a longer/
-        # higher-fps clip trips it on the 24/7 stream.
+        # the clip's tail).
         filter_complex = (
             f"[0:v]trim=0:{fade:.3f},setpts=PTS-STARTPTS[start];"
             f"[0:v]trim={duration - fade:.3f}:{duration:.3f},setpts=PTS-STARTPTS[end];"
@@ -450,17 +349,16 @@ class DynamicStreamer:
 
     def build_stream_command(self) -> list[str] | None:
         """Build the ffmpeg command that streams straight to RTMP: one
-        looped (seamlessly crossfaded) clip as video, the whole local bgm
-        playlist looped as audio -- no intermediate bake-to-file step.
-        Concatenating the playlist is a fast `-c copy` remux regardless of
-        how many tracks it holds, and the video loop is a few seconds of
-        work on a short clip, so a restart (crash, cooldown loop) starts
-        producing stream output again within seconds instead of waiting
-        through a fresh multi-hour re-encode sized to the playlist length.
+        looped (seamlessly crossfaded) clip as video, the synthesized
+        rain/thunder bed (plus an optional quiet music track) looped as
+        audio -- no intermediate bake-to-file step. The video loop is a
+        few seconds of work on a short clip, so a restart (crash, cooldown
+        loop) starts producing stream output again within seconds instead
+        of waiting through a fresh multi-hour re-encode.
         """
         clip_path = self._pick_broll_clip()
         if not clip_path:
-            log.error("No %s b-roll clip found to loop.", LIVE_CONTENT_PILLAR)
+            log.error("No storm b-roll clip found to loop.")
             return None
         video_input = self._prepare_seamless_loop_clip(clip_path)
 
@@ -475,25 +373,17 @@ class DynamicStreamer:
         )
 
         cmd = ["ffmpeg", "-y", "-re", "-stream_loop", "-1", "-i", str(video_input)]
-        if LIVE_CONTENT_PILLAR == "storm":
-            rain_bed_path, music_path = self._build_storm_audio_inputs()
-            cmd += ["-re", "-stream_loop", "-1", "-i", str(rain_bed_path)]
-            if music_path:
-                cmd += ["-re", "-stream_loop", "-1", "-i", str(music_path)]
-                filter_complex = (
-                    "[1:a]volume=1.0[rain];[2:a]volume=0.16[music];"
-                    "[rain][music]amix=inputs=2:duration=first:dropout_transition=0[a]"
-                )
-                cmd += ["-filter_complex", filter_complex, "-map", "0:v", "-map", "[a]"]
-            else:
-                cmd += ["-map", "0:v", "-map", "1:a"]
+        rain_bed_path, music_path = self._build_storm_audio_inputs()
+        cmd += ["-re", "-stream_loop", "-1", "-i", str(rain_bed_path)]
+        if music_path:
+            cmd += ["-re", "-stream_loop", "-1", "-i", str(music_path)]
+            filter_complex = (
+                "[1:a]volume=1.0[rain];[2:a]volume=0.16[music];"
+                "[rain][music]amix=inputs=2:duration=first:dropout_transition=0[a]"
+            )
+            cmd += ["-filter_complex", filter_complex, "-map", "0:v", "-map", "[a]"]
         else:
-            playlist_path = self._build_bgm_playlist()
-            if playlist_path:
-                cmd += ["-re", "-stream_loop", "-1", "-i", str(playlist_path), "-map", "0:v", "-map", "1:a"]
-            else:
-                log.warning("No bgm tracks found in %s; streaming this clip with silent audio.", BGM_DIR)
-                cmd += ["-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo", "-map", "0:v", "-map", "1:a"]
+            cmd += ["-map", "0:v", "-map", "1:a"]
 
         if self.stream_key == "test":
             output = ["-f", "flv", "test_output.flv"]
@@ -517,12 +407,18 @@ class DynamicStreamer:
             "60",
             "-sc_threshold",
             "0",
+            # YouTube's own recommended live-encoder bitrate for 4K/2160p at
+            # 30fps is roughly 35-45 Mbps (their live encoder settings
+            # guidance scales ~2x higher than the plain-upload VOD table for
+            # the same resolution/framerate); 40000k sits in the middle of
+            # that band. -bufsize at 2x -maxrate is the same ratio the prior
+            # 1080p values used (9000k = 2x 4500k).
             "-b:v",
-            "4500k",
+            "40000k",
             "-maxrate",
-            "4500k",
+            "40000k",
             "-bufsize",
-            "9000k",
+            "80000k",
             "-c:a",
             "aac",
             "-b:a",
@@ -547,8 +443,8 @@ class DynamicStreamer:
             time.sleep(120)
 
     def run(self):
-        if not _pinned_broll_candidates() and not list(BROLL_DIR.glob("pixabay_*.mp4")):
-            log.error("No lofi b-roll clips found (no pinned clip/pool, %s empty).", BROLL_DIR)
+        if not STORM_PINNED_BROLL_CLIP.exists():
+            log.error("No storm b-roll clip found at %s.", STORM_PINNED_BROLL_CLIP)
             return
 
         # Make sure a broadcast exists and is bound *before* we start

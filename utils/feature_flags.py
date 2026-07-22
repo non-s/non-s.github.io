@@ -26,7 +26,7 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "YOUTUBE_PUBLISHING_ENABLED",
         "0",
         "publishing",
-        "Master switch for the hourly lofi Shorts publisher.",
+        "Master switch for general publishing/health-check automation.",
         "Set to 0 to pause publishing entirely.",
     ),
     FeatureFlag(
@@ -238,14 +238,6 @@ FLAGS: tuple[FeatureFlag, ...] = (
         "publishing",
         "Chance (0.0-1.0) a storm-ambience video also layers in one quiet Jamendo track.",
         "Set to 0 for pure rain/thunder ambience only.",
-    ),
-    FeatureFlag(
-        "LIVE_CONTENT_PILLAR",
-        "lofi",
-        "publishing",
-        "Which pillar scripts/live_stream_dynamic.py broadcasts: lofi (anime desk loop) or storm "
-        "(rain & thunder ambience).",
-        "Set to lofi to restore the original 24/7 live stream.",
     ),
 )
 

@@ -55,18 +55,18 @@ jobs:
             echo "No YouTube token configured."
           fi
 
-      - name: Restore lofi bgm library from cache
+      - name: Restore bgm library from cache
         # Gitignored/untracked -- a fresh runner always starts empty.
         # Actions cache (not git) is what makes the library accumulate
         # toward ~150 bgm tracks over time instead of resetting every
         # run: the key is unique per run so a save always happens, and
         # restore-keys pulls in the most recent previous library first.
-        # The video side no longer needs syncing/caching here: the relay
-        # loops one clip at a time from a small curated pool committed
-        # directly into the repo at _assets/video/pinned_live_clips/ (see
-        # PINNED_BROLL_DIR in live_stream_dynamic.py), rotating slowly
-        # (weekly) instead of picking randomly from the rotating
-        # Pixabay-synced library the Shorts pipeline still uses.
+        # The video side needs no syncing/caching here: the relay loops
+        # one clip, the committed storm scene at
+        # _assets/video/pinned_storm_clip.mp4 (STORM_PINNED_BROLL_CLIP in
+        # live_stream_dynamic.py). This bgm library only feeds the
+        # optional quiet music layer under the synthesized rain/thunder
+        # bed (STORM_MUSIC_LAYER_PROBABILITY).
         uses: actions/cache@v4
         with:
           path: |
@@ -81,7 +81,6 @@ jobs:
       - name: Run Live Stream
         env:
           YOUTUBE_STREAM_KEY: ${{ secrets.YOUTUBE_STREAM_KEY }}
-          LIVE_CONTENT_PILLAR: ${{ vars.LIVE_CONTENT_PILLAR || 'lofi' }}
         # We run this in a while loop so if the relay exits (ffmpeg crash,
         # unhandled error) it restarts instantly instead of ending the job
         # early. GitHub will forcibly kill the runner at 6 hours regardless,

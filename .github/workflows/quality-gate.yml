@@ -88,49 +88,51 @@ jobs:
             scripts/audit_slot_contracts.py scripts/upload_intent.py \
             --ignore-missing-imports --follow-imports=silent --check-untyped-defs
 
-      - name: "Lint lofi pipeline modules"
+      - name: "Lint pipeline modules"
         run: |
           python -m black --check --diff \
             utils/analytics_schema.py utils/publish_schedule.py utils/studio_reach_schema.py \
             utils/api_quota_budget.py utils/feature_flags.py \
             utils/media_lifecycle.py utils/time_semantics.py utils/retention_warehouse.py \
             utils/ai_helper.py utils/ai_cache.py utils/provider_stats.py utils/broll.py \
+            utils/broll_performance.py \
             utils/host_persona.py utils/panic.py utils/retry.py utils/audience_expansion.py \
-            utils/youtube_oauth.py utils/lofi_branding.py utils/thumbnail_branding.py \
+            utils/youtube_oauth.py \
             utils/brand_motion.py utils/community_replies.py utils/community_posts.py \
             utils/storm_audio.py utils/storm_branding.py utils/ai_titling.py \
             scripts/check_schedule_sync.py scripts/check_repo_contracts.py \
             scripts/import_studio_reach_export.py scripts/reporting_bootstrap.py scripts/reporting_pull.py \
             scripts/audit_slot_contracts.py scripts/upload_intent.py \
             scripts/security_manifest.py scripts/media_lifecycle.py scripts/production_smoke.py \
-            scripts/sync_lofi_broll.py scripts/sync_jamendo_music.py scripts/live_stream_dynamic.py \
-            scripts/merge_jsonl_state.py scripts/quota_preflight.py scripts/youtube_slot_dispatch.py \
-            scripts/build_dashboard.py scripts/rebrand_video_titles.py scripts/repair_youtube_metadata.py \
-            scripts/rebrand_video_thumbnails.py scripts/generate_brand_scenes.py scripts/generate_brand_loops.py \
+            scripts/sync_jamendo_music.py scripts/live_stream_dynamic.py \
+            scripts/merge_jsonl_state.py scripts/quota_preflight.py \
+            scripts/build_dashboard.py scripts/repair_youtube_metadata.py \
+            scripts/generate_brand_scenes.py \
             scripts/reply_to_comments.py scripts/draft_community_post.py \
             scripts/generate_storm_scene.py scripts/search_storm_broll_candidates.py scripts/sync_storm_broll.py \
-            generate_lofi_short.py generate_lofi_mix.py generate_storm_ambience.py generate_storm_short.py \
+            generate_storm_ambience.py generate_storm_short.py \
             upload_youtube.py auth_youtube.py
           python -m ruff check \
             utils/analytics_schema.py utils/publish_schedule.py utils/studio_reach_schema.py \
             utils/api_quota_budget.py utils/feature_flags.py \
             utils/media_lifecycle.py utils/time_semantics.py utils/retention_warehouse.py \
             utils/ai_helper.py utils/ai_cache.py utils/provider_stats.py utils/broll.py \
+            utils/broll_performance.py \
             utils/host_persona.py utils/panic.py utils/retry.py utils/audience_expansion.py \
-            utils/youtube_oauth.py utils/lofi_branding.py utils/thumbnail_branding.py \
+            utils/youtube_oauth.py \
             utils/brand_motion.py utils/community_replies.py utils/community_posts.py \
             utils/storm_audio.py utils/storm_branding.py utils/ai_titling.py \
             scripts/check_schedule_sync.py scripts/check_repo_contracts.py \
             scripts/import_studio_reach_export.py scripts/reporting_bootstrap.py scripts/reporting_pull.py \
             scripts/audit_slot_contracts.py scripts/upload_intent.py \
             scripts/security_manifest.py scripts/media_lifecycle.py scripts/production_smoke.py \
-            scripts/sync_lofi_broll.py scripts/sync_jamendo_music.py scripts/live_stream_dynamic.py \
-            scripts/merge_jsonl_state.py scripts/quota_preflight.py scripts/youtube_slot_dispatch.py \
-            scripts/build_dashboard.py scripts/rebrand_video_titles.py scripts/repair_youtube_metadata.py \
-            scripts/rebrand_video_thumbnails.py scripts/generate_brand_scenes.py scripts/generate_brand_loops.py \
+            scripts/sync_jamendo_music.py scripts/live_stream_dynamic.py \
+            scripts/merge_jsonl_state.py scripts/quota_preflight.py \
+            scripts/build_dashboard.py scripts/repair_youtube_metadata.py \
+            scripts/generate_brand_scenes.py \
             scripts/reply_to_comments.py scripts/draft_community_post.py \
             scripts/generate_storm_scene.py scripts/search_storm_broll_candidates.py scripts/sync_storm_broll.py \
-            generate_lofi_short.py generate_lofi_mix.py generate_storm_ambience.py generate_storm_short.py \
+            generate_storm_ambience.py generate_storm_short.py \
             upload_youtube.py auth_youtube.py
 
       - name: "Audit dependencies"

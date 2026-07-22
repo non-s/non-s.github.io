@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import argparse
-import re
 import sys
 from pathlib import Path
 
@@ -12,59 +11,23 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from utils.publish_schedule import CANONICAL_SLOTS_UTC  # noqa: E402
-
-# :20/:40 dropped from the legacy {2,20,22,40,42} recovery-proxy set --
-# they're now real canonical slot minutes in their own right (10-minute
-# Shorts grid), not stand-ins for the top of the hour.
-PUBLISH_SLOT_PROXY_MINUTES = {2, 22, 42}
-
-
-def _read(path: Path) -> str:
-    return path.read_text(encoding="utf-8") if path.exists() else ""
-
-
-def _workflow_slots(workflow: str) -> set[str]:
-    slots: set[str] = set()
-    for match in re.finditer(r"cron:\s*['\"](?P<cron>[^'\"]+)['\"]", workflow):
-        parts = match.group("cron").split()
-        if len(parts) < 2:
-            continue
-        minutes = range(60) if parts[0] == "*" else [int(parts[0])] if parts[0].isdigit() else []
-        hours = range(24) if parts[1] == "*" else [int(hour) for hour in parts[1].split(",") if hour.isdigit()]
-        for minute in minutes:
-            for hour in hours:
-                slots.add(f"{int(hour):02d}:{int(minute):02d}")
-    return slots
-
-
-def _workflow_intended_publish_slots(workflow: str) -> set[str]:
-    slots = set()
-    for slot in _workflow_slots(workflow):
-        hour, minute = [int(part) for part in slot.split(":", 1)]
-        if minute in PUBLISH_SLOT_PROXY_MINUTES:
-            slots.add(f"{hour:02d}:00")
-        else:
-            slots.add(slot)
-    return slots
-
 
 def check_schedule_sync(root: Path = ROOT) -> list[str]:
-    errors: list[str] = []
-    canonical = set(CANONICAL_SLOTS_UTC)
-    workflow = _read(root / ".github" / "workflows" / "youtube-bot.yml")
-    workflow_slots = _workflow_intended_publish_slots(workflow)
-    missing_workflow = sorted(canonical - workflow_slots)
-    if missing_workflow:
-        errors.append(f"youtube-bot.yml cron is missing canonical slots: {', '.join(missing_workflow)}")
-
-    readme = _read(root / "README.md")
-    env_doc = _read(root / "docs" / "ENVIRONMENT.md")
-    docs_text = "\n".join([readme, env_doc])
-    for slot in sorted(canonical):
-        if slot not in docs_text:
-            errors.append(f"canonical slot {slot} is missing from README/docs")
-    return errors
+    """The dense per-hour canonical slot grid (utils.publish_schedule.
+    CANONICAL_SLOTS_UTC) was the lofi Shorts pipeline's publish cadence,
+    checked here against youtube-bot.yml's cron. That workflow was removed
+    when the channel pivoted fully to the storm/rain ambience pillar
+    (growth pass, 2026-07-21), which publishes on its own much sparser
+    cadence (storm-ambience.yml/storm-shorts.yml) that was never meant to
+    cover this grid -- so there is no workflow left for this check to
+    validate against. CANONICAL_SLOTS_UTC itself stays (upload_youtube.py's
+    dedup/adaptive-schedule math still uses it), only this workflow-cron-
+    coverage check is retired -- kept as an always-empty contract (not
+    deleted outright) so a future dense-cadence pipeline has somewhere to
+    re-add a real check.
+    """
+    del root
+    return []
 
 
 def main() -> int:

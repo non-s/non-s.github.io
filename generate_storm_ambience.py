@@ -10,11 +10,15 @@ sounds for sleep" / "thunderstorm ambience" search intent (see
 utils/storm_branding.py's module docstring). Still published as "Amber
 Hours".
 
-Rendering follows generate_lofi_mix.py's exact "bake once, loop cheaply"
-approach: the pinned storm clip's scale/zoompan filter chain runs ONCE
-against its own short duration, and the *encoded* result is looped via
-`-stream_loop -1 -c:v copy` to fill the target runtime, rather than
-re-encoding video for the whole length. The rain/thunder bed
+Rendering follows a "bake once, loop cheaply" approach: the pinned storm
+clip's scale/zoompan filter chain runs ONCE against its own short
+duration, and the *encoded* result is looped via `-stream_loop -1 -c:v
+copy` to fill the target runtime, rather than re-encoding video for the
+whole length. Renders at real 4K (3840x2160, chat 2026-07-21: the channel
+owner explicitly asked for it across every format, accepting the
+reliability tradeoff -- see utils/broll.py's fetch_pixabay() comment for
+the OOM risk this reintroduces and why it's accepted rather than newly
+mitigated). The rain/thunder bed
 (utils/storm_audio.py) is a WAV loop with its own, deliberately
 non-matching period, and an optional Jamendo track loops on its own period
 too -- three independent cycle lengths mean the combined video is never
@@ -68,8 +72,8 @@ BGM_DIR = ROOT / "_assets" / "audio" / "bgm"
 VIDEOS_DIR = ROOT / "_videos"
 TEMP_DIR = ROOT / "_videos" / "temp_storm"
 
-TARGET_W = 1920
-TARGET_H = 1080
+TARGET_W = 3840
+TARGET_H = 2160
 TARGET_FPS = 20  # matches the pinned clip's own fps -- no reason to upsample a static illustration loop
 
 CATEGORY = "storm_ambience"
@@ -83,17 +87,17 @@ MAX_DURATION_MINUTES = float(os.environ.get("STORM_MAX_DURATION_MINUTES", "75"))
 MUSIC_LAYER_PROBABILITY = float(os.environ.get("STORM_MUSIC_LAYER_PROBABILITY", "0.35"))
 MUSIC_LAYER_VOLUME = 0.16  # quiet enough that rain/thunder stays the actual point
 
-# Real search-intent tags for this niche -- deliberately not the lofi
-# pillar's DEFAULT_TAGS (see utils/storm_branding.py's docstring for why
-# the two vocabularies must not overlap).
+# Real pt-BR search-intent tags for this niche (content language pivot,
+# chat 2026-07-21) -- actual phrases people search, not machine
+# transliterations of the earlier English tag set.
 DEFAULT_TAGS = [
-    "rain sounds",
-    "rain sounds for sleep",
-    "thunderstorm sounds",
-    "rain and thunder",
-    "sleep sounds",
-    "relaxing rain",
-    "white noise",
+    "som de chuva",
+    "chuva para dormir",
+    "som de chuva para dormir",
+    "trovão e chuva",
+    "chuva forte",
+    "chuva relaxante",
+    "ruído branco",
     "amber hours",
 ]
 
@@ -291,8 +295,8 @@ def _compose_storm(
 
 
 _ALWAYS_ON_DISCLOSURE = (
-    "The rain and thunder in this video are procedurally synthesized, not a looped recording "
-    "-- no sample to run out of, no license to clear."
+    "A chuva e o trovão deste vídeo são sintetizados por computador, não uma gravação em loop "
+    "-- nenhuma amostra para se esgotar, nenhuma licença para verificar."
 )
 
 
@@ -304,9 +308,9 @@ def _music_credit_line(music_meta: dict | None) -> str:
         return ""
     artist_name = str(music_meta.get("artist_name") or "").strip()
     license_url = str(music_meta.get("license_ccurl") or "").strip()
-    credit = f'Soft music underneath: "{track_name}"'
+    credit = f'Música suave ao fundo: "{track_name}"'
     if artist_name:
-        credit += f" by {artist_name}"
+        credit += f" por {artist_name}"
     if license_url:
         credit += f" ({license_url})"
     return credit
@@ -322,16 +326,16 @@ def _build_metadata(
     broll_meta: dict,
 ) -> dict:
     hours = duration_s / 3600
-    duration_label = f"({hours:.1f} Hours)" if hours >= 1 else f"({max(1, round(duration_s / 60))} Min)"
+    duration_label = f"({hours:.1f} Horas)" if hours >= 1 else f"({max(1, round(duration_s / 60))} Min)"
     template_title = branded_title(scene, suffix=duration_label)
     bucket = playlist_bucket_for_title(template_title)
     music_credit = _music_credit_line(music_meta)
 
     description_lines = [
-        f"{scene.lower()} rain sounds with distant thunder -- real ambience to help you sleep, "
-        "focus, or relax, no narration.",
+        "Som real de chuva com trovão ao longe -- ambiência para ajudar você a dormir, "
+        "focar ou relaxar, sem narração.",
         "",
-        f"\U0001f327️ Part of the {bucket} collection on Amber Hours.",
+        f"\U0001f327️ Parte da coleção {bucket} no Amber Hours.",
         "",
         f"\U0001f3a7 {_ALWAYS_ON_DISCLOSURE}",
     ]
@@ -376,7 +380,7 @@ def _build_metadata(
         "story_id": slug,
         "is_short": False,
         "youtube_category_id": YOUTUBE_CATEGORY_ID,
-        "packaging": {"pinned_comment": "What should the next storm sound like? \U0001f327️"},
+        "packaging": {"pinned_comment": "Como deveria ser o próximo som de tempestade? \U0001f327️"},
         "pre_publish_audit": {"approved": True, "reason": "storm_ambience_no_claims_to_vet"},
         "source": str(broll_meta.get("source") or "branding"),
         "source_clip_id": str(broll_meta.get("pixabay_video_id") or ""),

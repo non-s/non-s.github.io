@@ -13,34 +13,35 @@ from __future__ import annotations
 
 import zlib
 
-from utils.lofi_branding import HOOK_BY_MOOD
+from utils.storm_branding import HOOK_BY_SCENE
 
 
-def _sample_moods(n: int = 3) -> list[str]:
-    """A few evenly-spread mood names from the real, current vocabulary
-    (utils.lofi_branding.HOOK_BY_MOOD) -- pulled live rather than hardcoded,
-    so renaming or adding a mood there never leaves a stale option here."""
-    moods = sorted(HOOK_BY_MOOD.keys())
-    if not moods:
+def _sample_scenes(n: int = 3) -> list[str]:
+    """A few evenly-spread scene names from the real, current vocabulary
+    (utils.storm_branding.HOOK_BY_SCENE) -- pulled live rather than
+    hardcoded, so renaming or adding a scene there never leaves a stale
+    option here."""
+    scenes = sorted(HOOK_BY_SCENE.keys())
+    if not scenes:
         return []
-    step = max(1, len(moods) // n)
-    return [mood.title() for mood in moods[::step][:n]]
+    step = max(1, len(scenes) // n)
+    return [scene.title() for scene in scenes[::step][:n]]
 
 
 def _poll_options_text() -> str:
-    return " / ".join(_sample_moods())
+    return " / ".join(_sample_scenes())
 
 
 POST_TEMPLATES: tuple[str, ...] = (
-    "\U0001f319 What should the next Amber Hours loop be? {options} -- drop your pick below.",
-    "Cozy check-in: what are you doing while an Amber Hours loop plays right now? Studying, "
-    "working, or just winding down? \U0001fab4",
-    "New loops drop every couple hours around here \U0001f327️ -- which time of night is "
-    "your favorite to listen to: rainy, snowy, or midnight city?",
-    "Thanks for hanging out in the Amber Hours nook this week \U0001f319 -- more rainy-night lofi on the way.",
-    "Quick poll: {options} -- which mood matches your vibe tonight?",
-    "Behind the loop: every Amber Hours scene is hand-drawn, not stock footage or AI art "
-    "\U0001fab4 -- glad you're here for it.",
+    "\U0001f327️ What should the next Amber Hours rain scene be? {options} -- drop your pick below.",
+    "Cozy check-in: what are you doing while the rain plays right now? Sleeping, studying, or just "
+    "winding down? \U0001f4a4",
+    "New rain & thunder loops drop every couple hours around here \U0001f329️ -- do you prefer it "
+    "with distant thunder, or just steady rain?",
+    "Thanks for hanging out in the Amber Hours rain room this week \U0001f327️ -- more storm ambience on the way.",
+    "Quick poll: {options} -- which one matches what you need tonight?",
+    "Behind the loop: the rain and thunder are procedurally synthesized, not a looped recording "
+    "\U0001f4a7 -- no sample to run out of, ever.",
 )
 
 
