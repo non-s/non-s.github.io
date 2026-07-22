@@ -40,7 +40,10 @@ log = logging.getLogger("generate_storm_short")
 # file is ever missing.
 PINNED_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_storm_short_real.mp4"
 FALLBACK_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_storm_short_clip.mp4"
-BRAND_THUMBNAIL_IMAGE = ROOT / "_assets" / "branding" / "storm_short_scene_1080x1920.png"
+# A real frame extracted from PINNED_BROLL_CLIP itself (chat, 2026-07-22:
+# see generate_storm_ambience.py's identical constant for the reasoning).
+BRAND_THUMBNAIL_IMAGE = ROOT / "_assets" / "branding" / "storm_short_thumbnail.jpg"
+FALLBACK_THUMBNAIL_IMAGE = ROOT / "_assets" / "branding" / "storm_short_scene_1080x1920.png"
 VIDEOS_DIR = ROOT / "_videos"
 TEMP_DIR = ROOT / "_videos" / "temp_storm_short"
 
@@ -295,8 +298,11 @@ def main() -> int:
     metadata = _build_metadata(scene, duration_s, video_path, slug, broll_meta=broll_meta)
     if BRAND_THUMBNAIL_IMAGE.exists():
         metadata["thumbnail"] = str(BRAND_THUMBNAIL_IMAGE)
+    elif FALLBACK_THUMBNAIL_IMAGE.exists():
+        log.warning("Real thumbnail frame missing -- using the illustrated fallback.")
+        metadata["thumbnail"] = str(FALLBACK_THUMBNAIL_IMAGE)
     else:
-        log.warning("Brand thumbnail image missing: %s -- YouTube will auto-pick a frame.", BRAND_THUMBNAIL_IMAGE)
+        log.warning("No thumbnail image available -- YouTube will auto-pick a frame.")
     meta_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False), encoding="utf-8")
     log.info("Generated %s (%.1fs): %s", video_path.name, duration_s, metadata["title"])
     return 0

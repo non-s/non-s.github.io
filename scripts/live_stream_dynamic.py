@@ -51,6 +51,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from googleapiclient.discovery import build  # noqa: E402
+from googleapiclient.http import MediaFileUpload  # noqa: E402
 
 from utils.ai_titling import generate_live_broadcast_copy  # noqa: E402
 from utils.youtube_oauth import can_manage_comments, credentials_from_token_info, load_token_info  # noqa: E402
@@ -235,8 +236,24 @@ class DynamicStreamer:
             log.info(
                 f"Created and bound new broadcast {new_broadcast_id}. It will auto-go-live once video data arrives."
             )
+            self._set_thumbnail(new_broadcast_id)
         except Exception as e:
             log.error(f"Failed to create/bind a new broadcast: {e}")
+
+    def _set_thumbnail(self, video_id: str) -> None:
+        """Set a real frame from STORM_REAL_PINNED_CLIP as the broadcast's
+        thumbnail (chat, 2026-07-22: same reasoning as the long-form/Short
+        generators -- a hand-drawn preview was misleading once the visual
+        became real footage). Best-effort: a failure here never blocks the
+        broadcast itself from going live."""
+        thumbnail_path = ROOT / "_assets" / "branding" / "storm_live_thumbnail.jpg"
+        if not thumbnail_path.exists():
+            return
+        try:
+            media = MediaFileUpload(str(thumbnail_path), mimetype="image/jpeg")
+            self.youtube.thumbnails().set(videoId=video_id, media_body=media).execute()
+        except Exception as e:
+            log.warning(f"Failed to set live broadcast thumbnail: {e}")
 
     def _rebrand_if_stale(self, broadcast_item: dict) -> None:
         """Fix an already-active broadcast's title/description only if

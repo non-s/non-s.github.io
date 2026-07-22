@@ -66,9 +66,13 @@ log = logging.getLogger("generate_storm_ambience")
 # video.
 PINNED_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_storm_ambience.mp4"
 FALLBACK_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_storm_clip.mp4"
-# Used directly as the YouTube thumbnail too, same reasoning as
-# generate_lofi_mix.py's BRAND_THUMBNAIL_IMAGE.
-BRAND_THUMBNAIL_IMAGE = ROOT / "_assets" / "branding" / "storm_scene_1920x1080.png"
+# A real frame extracted from PINNED_BROLL_CLIP itself (chat, 2026-07-22:
+# the illustrated thumbnail below was misleading once the video content
+# became real footage -- a viewer searching for real rain sounds saw a
+# cartoon-style preview, then real footage on click). Falls back to the
+# illustration only if this extracted frame is ever missing.
+BRAND_THUMBNAIL_IMAGE = ROOT / "_assets" / "branding" / "storm_ambience_thumbnail.jpg"
+FALLBACK_THUMBNAIL_IMAGE = ROOT / "_assets" / "branding" / "storm_scene_1920x1080.png"
 VIDEOS_DIR = ROOT / "_videos"
 TEMP_DIR = ROOT / "_videos" / "temp_storm"
 
@@ -407,8 +411,11 @@ def main() -> int:
     metadata = _build_metadata(scene, duration_s, video_path, slug, broll_meta=broll_meta)
     if BRAND_THUMBNAIL_IMAGE.exists():
         metadata["thumbnail"] = str(BRAND_THUMBNAIL_IMAGE)
+    elif FALLBACK_THUMBNAIL_IMAGE.exists():
+        log.warning("Real thumbnail frame missing -- using the illustrated fallback.")
+        metadata["thumbnail"] = str(FALLBACK_THUMBNAIL_IMAGE)
     else:
-        log.warning("Brand thumbnail image missing: %s -- YouTube will auto-pick a frame.", BRAND_THUMBNAIL_IMAGE)
+        log.warning("No thumbnail image available -- YouTube will auto-pick a frame.")
     meta_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False), encoding="utf-8")
     log.info("Generated %s (%.0fs): %s", video_path.name, duration_s, metadata["title"])
     return 0

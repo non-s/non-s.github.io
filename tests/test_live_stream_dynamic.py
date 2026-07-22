@@ -373,6 +373,18 @@ def test_ensure_live_broadcast_creates_storm_branded_broadcast_when_none_active(
     assert "animal" not in body["snippet"]["title"].lower()
     assert "nature" not in body["snippet"]["title"].lower()
     fake_youtube.liveBroadcasts().bind.assert_called()
+    fake_youtube.thumbnails().set.assert_called_once()
+    assert fake_youtube.thumbnails().set.call_args.kwargs["videoId"] == "new-broadcast-1"
+
+
+def test_set_thumbnail_skips_silently_when_file_missing(streamer, monkeypatch, tmp_path):
+    fake_youtube = MagicMock()
+    streamer.youtube = fake_youtube
+    monkeypatch.setattr(live_stream_dynamic, "ROOT", tmp_path)
+
+    streamer._set_thumbnail("some-video-id")
+
+    fake_youtube.thumbnails().set.assert_not_called()
 
 
 def test_ensure_live_broadcast_noop_without_youtube_client(streamer):
