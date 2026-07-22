@@ -802,11 +802,16 @@ def upload_video(youtube, meta: dict, *, sequence_index: int = 0) -> str | None:
             "tags": _normalise_tags(meta.get("tags")),
             # "10" (Music) is the fallback, not "15" (Pets & Animals) --
             # that was the right default back when this uploader mainly
-            # shipped animal-fact content, but every generator feeding it
-            # today (generate_lofi_short.py, generate_lofi_mix.py) is lofi
-            # music, and Shorts never set youtube_category_id explicitly.
+            # shipped animal-fact content; the only generator feeding it
+            # today (generate_storm_ambience.py/generate_storm_short.py)
+            # never sets youtube_category_id explicitly either.
             "categoryId": str(meta.get("youtube_category_id") or "10"),
-            "defaultLanguage": "en",
+            # Channel content is Brazilian Portuguese (pt-BR) -- title/
+            # description/tags are all written in pt-BR now (see
+            # utils/storm_branding.py, utils/ai_titling.py). Not related to
+            # the --language CLI flag/_LANGUAGE variable above, which picks
+            # a _videos*/token-file path, not this metadata field.
+            "defaultLanguage": "pt-BR",
         },
         "status": status,
     }
