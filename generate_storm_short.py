@@ -26,20 +26,20 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from utils.ai_titling import generate_video_copy  # noqa: E402
-from utils.broll import pick_storm_broll_file  # noqa: E402
 from utils.storm_audio import generate_rain_bed, write_wav  # noqa: E402
 from utils.storm_branding import HOOK_BY_SCENE, branded_title, playlist_bucket_for_title  # noqa: E402
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("generate_storm_short")
 
-# Same real-footage-first, illustrated-fallback selection as
-# generate_storm_ambience.py -- see its STORM_BROLL_DIR comment. The pool
-# is shared between both formats: a real horizontal Pixabay clip gets
-# center-cropped to vertical by the same scale/crop filter that already
-# handles the illustrated vertical scene.
-STORM_BROLL_DIR = ROOT / "_assets" / "video" / "storm_broll"
-PINNED_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_storm_short_clip.mp4"
+# One fixed, real Pixabay clip (chat, 2026-07-21: the channel owner picked
+# this specific rainy-porch-with-lantern clip by hand and asked for it to
+# be the one clip this format always uses -- not a random pick from a
+# pool) -- see _assets/video/pinned_storm_short_real.json for its
+# source/license. Falls back to the illustrated pinned clip only if this
+# file is ever missing.
+PINNED_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_storm_short_real.mp4"
+FALLBACK_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_storm_short_clip.mp4"
 BRAND_THUMBNAIL_IMAGE = ROOT / "_assets" / "branding" / "storm_short_scene_1080x1920.png"
 VIDEOS_DIR = ROOT / "_videos"
 TEMP_DIR = ROOT / "_videos" / "temp_storm_short"
@@ -265,18 +265,16 @@ def main() -> int:
     VIDEOS_DIR.mkdir(parents=True, exist_ok=True)
     TEMP_DIR.mkdir(parents=True, exist_ok=True)
 
-    broll_path = pick_storm_broll_file(STORM_BROLL_DIR)
-    if broll_path is not None:
-        log.info("Using real storm b-roll clip: %s", broll_path.name)
-    elif PINNED_BROLL_CLIP.exists():
-        log.info("No synced real storm b-roll available -- using the illustrated pinned clip.")
+    if PINNED_BROLL_CLIP.exists():
         broll_path = PINNED_BROLL_CLIP
+    elif FALLBACK_BROLL_CLIP.exists():
+        log.warning("Pinned real Short clip missing -- using the illustrated fallback.")
+        broll_path = FALLBACK_BROLL_CLIP
     else:
         log.error(
-            "No storm b-roll available: %s is empty and %s is missing -- run "
-            "scripts/sync_storm_broll.py or scripts/generate_storm_scene.py first.",
-            STORM_BROLL_DIR,
+            "No storm b-roll available: both %s and %s are missing.",
             PINNED_BROLL_CLIP,
+            FALLBACK_BROLL_CLIP,
         )
         return 1
 

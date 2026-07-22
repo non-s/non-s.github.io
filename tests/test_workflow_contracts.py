@@ -20,7 +20,6 @@ def test_workflows_parse_and_include_pipeline_steps():
     assert "git checkout -B main origin/main" in storm_workflow
     assert "scripts/sync_jamendo_music.py" in storm_workflow
     assert "generate_storm_ambience.py" in storm_workflow
-    assert "PIXABAY_API_KEY" in storm_workflow
     assert "Storm ambience automation state -" in storm_workflow
     assert yaml.safe_load(storm_workflow)["concurrency"]["group"] == "storm-ambience"
     assert "Salvar marcadores no git" in storm_workflow

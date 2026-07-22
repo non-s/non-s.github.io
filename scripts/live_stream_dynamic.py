@@ -4,14 +4,17 @@
 live_stream_dynamic.py -- 24/7 rain & thunder live relay with self-healing
 broadcast.
 
-This channel's 24/7 live format isn't several different video clips cut
-together -- it's one single looping animated storm scene with a
-procedurally-synthesized rain/thunder bed (plus an optional quiet Jamendo
-track) underneath, for hours. So this relay loops ONE fixed storm clip,
-committed directly into the repo at _assets/video/pinned_storm_clip.mp4
-(STORM_PINNED_BROLL_CLIP below) -- see utils/storm_branding.py's module
-docstring for why this pillar (real "rain sounds for sleep"/"thunderstorm
-ambience" search intent) is the channel's whole identity now.
+This channel's 24/7 live format loops ONE fixed real Pixabay clip (chat,
+2026-07-21: the channel owner picked this specific rainy-cabin clip by
+hand and asked for it to be the one clip this relay always uses -- not a
+random pick from a synced pool), committed at
+_assets/video/pinned_storm_live.mp4 -- see that file's matching .json for
+its source/license. The illustrated clip committed at
+_assets/video/pinned_storm_clip.mp4 (STORM_PINNED_BROLL_CLIP below) is
+only the last-resort fallback for when the real clip is missing. See
+utils/storm_branding.py's module docstring for why this pillar (real
+"rain sounds for sleep"/"thunderstorm ambience" search intent) is the
+channel's whole identity now.
 
 A single ffmpeg process streams straight to RTMP with `-stream_loop -1` on
 both the video clip and the audio inputs -- there is no bake-to-file step
@@ -60,6 +63,10 @@ BGM_DIR = ROOT / "_assets" / "audio" / "bgm"
 # generate_storm_ambience.py/generate_storm_short.py fall back to when no
 # real Pixabay clip is synced. See scripts/generate_storm_scene.py.
 STORM_PINNED_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_storm_clip.mp4"
+# The one fixed real clip this relay always loops -- tried first;
+# STORM_PINNED_BROLL_CLIP above is only the fallback if this file is ever
+# missing.
+STORM_REAL_PINNED_CLIP = ROOT / "_assets" / "video" / "pinned_storm_live.mp4"
 
 # Real 4K (chat, 2026-07-21: the channel owner explicitly asked for it
 # across every format, including this live relay, accepting the OOM risk
@@ -249,6 +256,8 @@ class DynamicStreamer:
             log.warning(f"Failed to rebrand stale broadcast: {e}")
 
     def _pick_broll_clip(self) -> Path | None:
+        if STORM_REAL_PINNED_CLIP.exists():
+            return STORM_REAL_PINNED_CLIP
         return STORM_PINNED_BROLL_CLIP if STORM_PINNED_BROLL_CLIP.exists() else None
 
     def _build_storm_audio_inputs(self) -> tuple[Path, Path | None]:
@@ -443,8 +452,12 @@ class DynamicStreamer:
             time.sleep(120)
 
     def run(self):
-        if not STORM_PINNED_BROLL_CLIP.exists():
-            log.error("No storm b-roll clip found at %s.", STORM_PINNED_BROLL_CLIP)
+        if not STORM_REAL_PINNED_CLIP.exists() and not STORM_PINNED_BROLL_CLIP.exists():
+            log.error(
+                "No storm b-roll clip found: both %s and %s are missing.",
+                STORM_REAL_PINNED_CLIP,
+                STORM_PINNED_BROLL_CLIP,
+            )
             return
 
         # Make sure a broadcast exists and is bound *before* we start

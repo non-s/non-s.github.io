@@ -73,23 +73,6 @@ jobs:
             printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
             chmod 600 youtube_token.json
           fi
-      - name: "Restaurar biblioteca de b-roll de tempestade do cache"
-        uses: actions/cache@v4
-        with:
-          path: |
-            _assets/video/storm_broll
-          key: storm-broll-${{ github.run_id }}
-          restore-keys: |
-            storm-broll-
-      - name: "Sincronizar b-roll real de tempestade (Pixabay)"
-        # Best-effort: generate_storm_short.py falls back to the
-        # illustrated pinned Short clip (pick_storm_broll_file returns
-        # None) when this library is empty.
-        run: python scripts/sync_storm_broll.py || echo "::warning::Storm b-roll sync failed this cycle; continuing with the illustrated pinned clip."
-        env:
-          PYTHONIOENCODING: utf-8
-          PYTHONUNBUFFERED: "1"
-          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
       - name: "Gerar Short de tempestade"
         run: python generate_storm_short.py
         env:

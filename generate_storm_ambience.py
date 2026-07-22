@@ -47,24 +47,21 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from utils.ai_titling import generate_video_copy  # noqa: E402
-from utils.broll import pick_storm_broll_file  # noqa: E402
 from utils.storm_audio import generate_rain_bed, write_wav  # noqa: E402
 from utils.storm_branding import HOOK_BY_SCENE, branded_title, playlist_bucket_for_title  # noqa: E402
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("generate_storm_ambience")
 
-# Real Pixabay rain/storm footage (scripts/sync_storm_broll.py) is tried
-# first -- picked at random from the synced pool the same way
-# generate_lofi_mix.py used to before ADR 0004, just without that ADR's
-# concern applying here: is_on_brand_storm_clip() already re-checks tag
-# relevance at selection time, same double-gate as the lofi pillar's
-# is_on_brand_broll_clip. Falls back to the illustrated pinned clip
-# whenever the pool is empty (no PIXABAY_API_KEY configured, or the sync
-# step hasn't run yet) so this pipeline never *requires* the real-footage
-# path to produce a video.
-STORM_BROLL_DIR = ROOT / "_assets" / "video" / "storm_broll"
-PINNED_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_storm_clip.mp4"
+# One fixed, real Pixabay clip (chat, 2026-07-21: the channel owner picked
+# this specific willow-branches-in-the-rain clip by hand and asked for it
+# to be the one clip this format always uses -- not a random pick from a
+# synced pool) -- see _assets/video/pinned_storm_ambience.json for its
+# source/license. Falls back to the illustrated pinned clip only if this
+# file is ever missing, so the pipeline never *requires* it to produce a
+# video.
+PINNED_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_storm_ambience.mp4"
+FALLBACK_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_storm_clip.mp4"
 # Used directly as the YouTube thumbnail too, same reasoning as
 # generate_lofi_mix.py's BRAND_THUMBNAIL_IMAGE.
 BRAND_THUMBNAIL_IMAGE = ROOT / "_assets" / "branding" / "storm_scene_1920x1080.png"
@@ -74,7 +71,7 @@ TEMP_DIR = ROOT / "_videos" / "temp_storm"
 
 TARGET_W = 3840
 TARGET_H = 2160
-TARGET_FPS = 20  # matches the pinned clip's own fps -- no reason to upsample a static illustration loop
+TARGET_FPS = 20  # matches the illustrated fallback clip's own fps; the pinned real clip is resampled to it too
 
 CATEGORY = "storm_ambience"
 SERIES_SUFFIX = "Ambience"
@@ -400,18 +397,16 @@ def main() -> int:
     VIDEOS_DIR.mkdir(parents=True, exist_ok=True)
     TEMP_DIR.mkdir(parents=True, exist_ok=True)
 
-    broll_path = pick_storm_broll_file(STORM_BROLL_DIR)
-    if broll_path is not None:
-        log.info("Using real storm b-roll clip: %s", broll_path.name)
-    elif PINNED_BROLL_CLIP.exists():
-        log.info("No synced real storm b-roll available -- using the illustrated pinned clip.")
+    if PINNED_BROLL_CLIP.exists():
         broll_path = PINNED_BROLL_CLIP
+    elif FALLBACK_BROLL_CLIP.exists():
+        log.warning("Pinned real ambience clip missing -- using the illustrated fallback.")
+        broll_path = FALLBACK_BROLL_CLIP
     else:
         log.error(
-            "No storm b-roll available: %s is empty and %s is missing -- run "
-            "scripts/sync_storm_broll.py or scripts/generate_storm_scene.py first.",
-            STORM_BROLL_DIR,
+            "No storm b-roll available: both %s and %s are missing.",
             PINNED_BROLL_CLIP,
+            FALLBACK_BROLL_CLIP,
         )
         return 1
 

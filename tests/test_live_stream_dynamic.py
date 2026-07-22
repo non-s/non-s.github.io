@@ -18,6 +18,7 @@ def streamer(monkeypatch, tmp_path):
 
 def test_pick_broll_clip_returns_none_without_pinned_clip(streamer, tmp_path, monkeypatch):
     monkeypatch.setattr(live_stream_dynamic, "STORM_PINNED_BROLL_CLIP", tmp_path / "missing.mp4")
+    monkeypatch.setattr(live_stream_dynamic, "STORM_REAL_PINNED_CLIP", tmp_path / "missing_real_clip.mp4")
 
     assert streamer._pick_broll_clip() is None
 
@@ -26,12 +27,25 @@ def test_pick_broll_clip_returns_the_pinned_storm_clip(streamer, tmp_path, monke
     storm_clip = tmp_path / "pinned_storm_clip.mp4"
     storm_clip.write_bytes(b"x")
     monkeypatch.setattr(live_stream_dynamic, "STORM_PINNED_BROLL_CLIP", storm_clip)
+    monkeypatch.setattr(live_stream_dynamic, "STORM_REAL_PINNED_CLIP", tmp_path / "missing_real_clip.mp4")
 
     assert streamer._pick_broll_clip() == storm_clip
 
 
+def test_pick_broll_clip_prefers_the_real_clip_over_the_illustrated_one(streamer, tmp_path, monkeypatch):
+    real_clip = tmp_path / "pinned_storm_live.mp4"
+    real_clip.write_bytes(b"x")
+    illustrated_clip = tmp_path / "pinned_storm_clip.mp4"
+    illustrated_clip.write_bytes(b"x")
+    monkeypatch.setattr(live_stream_dynamic, "STORM_REAL_PINNED_CLIP", real_clip)
+    monkeypatch.setattr(live_stream_dynamic, "STORM_PINNED_BROLL_CLIP", illustrated_clip)
+
+    assert streamer._pick_broll_clip() == real_clip
+
+
 def test_run_bails_out_without_starting_when_no_pinned_clip(streamer, tmp_path, monkeypatch):
     monkeypatch.setattr(live_stream_dynamic, "STORM_PINNED_BROLL_CLIP", tmp_path / "missing.mp4")
+    monkeypatch.setattr(live_stream_dynamic, "STORM_REAL_PINNED_CLIP", tmp_path / "missing_real_clip.mp4")
     ensure_broadcast = MagicMock()
     monkeypatch.setattr(streamer, "ensure_live_broadcast", ensure_broadcast)
 
@@ -44,6 +58,7 @@ def test_run_proceeds_past_the_guard_when_pinned_clip_exists(streamer, tmp_path,
     storm_clip = tmp_path / "pinned_storm_clip.mp4"
     storm_clip.write_bytes(b"x")
     monkeypatch.setattr(live_stream_dynamic, "STORM_PINNED_BROLL_CLIP", storm_clip)
+    monkeypatch.setattr(live_stream_dynamic, "STORM_REAL_PINNED_CLIP", tmp_path / "missing_real_clip.mp4")
     monkeypatch.setattr(streamer, "ensure_live_broadcast", MagicMock())
     monkeypatch.setattr(live_stream_dynamic.threading, "Thread", MagicMock())
     # run()'s main loop is an infinite `while True` around a real ffmpeg
@@ -148,6 +163,7 @@ def test_prepare_seamless_loop_clip_falls_back_to_raw_on_ffmpeg_failure(streamer
 
 def test_build_stream_command_returns_none_without_pinned_clip(streamer, tmp_path, monkeypatch):
     monkeypatch.setattr(live_stream_dynamic, "STORM_PINNED_BROLL_CLIP", tmp_path / "missing.mp4")
+    monkeypatch.setattr(live_stream_dynamic, "STORM_REAL_PINNED_CLIP", tmp_path / "missing_real_clip.mp4")
 
     assert streamer.build_stream_command() is None
 
@@ -156,6 +172,7 @@ def test_build_stream_command_writes_local_file_in_test_mode(streamer, tmp_path,
     storm_clip = tmp_path / "pinned_storm_clip.mp4"
     storm_clip.write_bytes(b"x")
     monkeypatch.setattr(live_stream_dynamic, "STORM_PINNED_BROLL_CLIP", storm_clip)
+    monkeypatch.setattr(live_stream_dynamic, "STORM_REAL_PINNED_CLIP", tmp_path / "missing_real_clip.mp4")
     monkeypatch.setattr(streamer, "_prepare_seamless_loop_clip", lambda clip: clip)
     monkeypatch.setattr(streamer, "_build_storm_audio_inputs", lambda: (tmp_path / "rain.wav", None))
     streamer.stream_key = "test"
@@ -169,6 +186,7 @@ def test_build_stream_command_streams_to_rtmp_with_real_stream_key(streamer, tmp
     storm_clip = tmp_path / "pinned_storm_clip.mp4"
     storm_clip.write_bytes(b"x")
     monkeypatch.setattr(live_stream_dynamic, "STORM_PINNED_BROLL_CLIP", storm_clip)
+    monkeypatch.setattr(live_stream_dynamic, "STORM_REAL_PINNED_CLIP", tmp_path / "missing_real_clip.mp4")
     monkeypatch.setattr(streamer, "_prepare_seamless_loop_clip", lambda clip: clip)
     monkeypatch.setattr(streamer, "_build_storm_audio_inputs", lambda: (tmp_path / "rain.wav", None))
     streamer.stream_key = "real-secret-key"
@@ -371,6 +389,7 @@ def test_build_stream_command_mixes_rain_and_music(streamer, tmp_path, monkeypat
     storm_clip = tmp_path / "pinned_storm_clip.mp4"
     storm_clip.write_bytes(b"x")
     monkeypatch.setattr(live_stream_dynamic, "STORM_PINNED_BROLL_CLIP", storm_clip)
+    monkeypatch.setattr(live_stream_dynamic, "STORM_REAL_PINNED_CLIP", tmp_path / "missing_real_clip.mp4")
     monkeypatch.setattr(streamer, "_prepare_seamless_loop_clip", lambda clip: clip)
     music_path = tmp_path / "music.mp3"
     monkeypatch.setattr(streamer, "_build_storm_audio_inputs", lambda: (tmp_path / "rain.wav", music_path))
@@ -387,6 +406,7 @@ def test_build_stream_command_pure_rain_without_music(streamer, tmp_path, monkey
     storm_clip = tmp_path / "pinned_storm_clip.mp4"
     storm_clip.write_bytes(b"x")
     monkeypatch.setattr(live_stream_dynamic, "STORM_PINNED_BROLL_CLIP", storm_clip)
+    monkeypatch.setattr(live_stream_dynamic, "STORM_REAL_PINNED_CLIP", tmp_path / "missing_real_clip.mp4")
     monkeypatch.setattr(streamer, "_prepare_seamless_loop_clip", lambda clip: clip)
     monkeypatch.setattr(streamer, "_build_storm_audio_inputs", lambda: (tmp_path / "rain.wav", None))
 

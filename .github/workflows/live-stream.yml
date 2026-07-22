@@ -61,12 +61,8 @@ jobs:
         # toward ~150 bgm tracks over time instead of resetting every
         # run: the key is unique per run so a save always happens, and
         # restore-keys pulls in the most recent previous library first.
-        # The video side needs no syncing/caching here: the relay loops
-        # one clip, the committed storm scene at
-        # _assets/video/pinned_storm_clip.mp4 (STORM_PINNED_BROLL_CLIP in
-        # live_stream_dynamic.py). This bgm library only feeds the
-        # optional quiet music layer under the synthesized rain/thunder
-        # bed (STORM_MUSIC_LAYER_PROBABILITY).
+        # This bgm library feeds the optional quiet music layer under the
+        # synthesized rain/thunder bed (STORM_MUSIC_LAYER_PROBABILITY).
         uses: actions/cache@v4
         with:
           path: |

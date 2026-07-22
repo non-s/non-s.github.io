@@ -64,19 +64,20 @@ assets/videos/
 
 # Exception: each format's permanently pinned b-roll clip is a small,
 # deliberately committed static asset (not rendered/generated output) --
-# one fixed clip per format (Shorts/mix/live), only the music varies.
-!_assets/video/pinned_live_clip.mp4
-!_assets/video/pinned_live_clip.json
-!_assets/video/pinned_live_clips/*.mp4
-!_assets/video/pinned_live_clips/*.json
-!_assets/video/pinned_short_clip.mp4
-!_assets/video/pinned_short_clip.json
-!_assets/video/pinned_mix_clip.mp4
-!_assets/video/pinned_mix_clip.json
+# one fixed real clip per format (ambience/short/live), chosen by the
+# channel owner from real Pixabay downloads; the illustrated *_clip.mp4
+# variants stay committed too as the last-resort fallback if a real clip
+# ever goes missing. Only the audio bed varies run to run.
 !_assets/video/pinned_storm_clip.mp4
 !_assets/video/pinned_storm_clip.json
 !_assets/video/pinned_storm_short_clip.mp4
 !_assets/video/pinned_storm_short_clip.json
+!_assets/video/pinned_storm_ambience.mp4
+!_assets/video/pinned_storm_ambience.json
+!_assets/video/pinned_storm_live.mp4
+!_assets/video/pinned_storm_live.json
+!_assets/video/pinned_storm_short_real.mp4
+!_assets/video/pinned_storm_short_real.json
 
 # Video pipeline binaries
 _videos/*.mp4
