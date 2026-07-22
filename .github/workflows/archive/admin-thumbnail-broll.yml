@@ -20,6 +20,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - name: "Legacy workflow guard"
+        run: |
+          echo "::error::This workflow thumbnailed clips from the removed lofi b-roll library (_assets/video/lofi_broll). It is intentionally disabled. To thumbnail current libraries, adapt the loop to _assets/video/storm_broll, _assets/video/animal_broll or _assets/video/noise_broll."
+          exit 1
       - name: "Checkout"
         uses: actions/checkout@v7.0.0
         with:

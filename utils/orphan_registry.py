@@ -3,9 +3,9 @@
 A `.done` marker records that upload_youtube.py successfully published a
 video once, but nothing kept that in sync if the video was later removed
 from YouTube -- by a manual deletion, a copyright strike, or (before it
-was fixed) the marker-resurrection concurrency race in youtube-bot.yml/
-lofi-mix-daily.yml's "Salvar marcadores no git" step, which could bring
-back a marker for a video that had already been correctly deleted.
+was fixed) the marker-resurrection concurrency race in older workflows'
+"save markers to git" step, which could bring back a marker for a video
+that had already been correctly deleted.
 scripts/rebrand_video_thumbnails.py used to hand-maintain a
 `_KNOWN_DELETED_VIDEO_IDS` constant for the two ids found this way by
 manual investigation; this module is the general version of that --

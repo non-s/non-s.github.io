@@ -102,8 +102,8 @@ jobs:
       - name: "Salvar marcadores no git"
         if: always()
         run: |
-          git config user.name "Wild Brief Bot"
-          git config user.email "bot@wildbrief.com"
+          git config user.name "Amber Hours Bot"
+          git config user.email "bot@noreply.amberhours.invalid"
           state_paths=(
             _data/provider_stats.jsonl
             _data/analytics/latest.json
@@ -117,10 +117,10 @@ jobs:
             _data/provider_stats.jsonl
             _data/upload_intents.jsonl
           )
-          # Same fix as youtube-bot.yml/lofi-mix-daily.yml's identically
-          # structured step -- see their comments for the full rationale:
-          # only snapshot/restore *.done markers this run itself just
-          # created, never the whole _videos/*.done glob.
+          # Only snapshot/restore *.done markers this run itself just
+          # created, never the whole _videos/*.done glob. This avoids the
+          # marker-resurrection race where a concurrent run could bring back
+          # a marker for a video that had already been deleted.
           mapfile -t new_marker_paths < <(
             git status --porcelain=v1 --untracked-files=normal -- _videos 2>/dev/null \
               | grep -E '^\?\? .*\.done$' \

@@ -22,6 +22,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - name: "Legacy workflow guard"
+        run: |
+          echo "::error::This workflow was built for the removed lofi b-roll library (_assets/video/lofi_broll). It is intentionally disabled. Use scripts/prune_offbrand_broll.py only after pointing it at a current library (storm_broll, animal_broll, noise_broll)."
+          exit 1
       - name: "Checkout"
         uses: actions/checkout@v7.0.0
         with:

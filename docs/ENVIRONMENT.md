@@ -5,7 +5,7 @@
 | Name | Required | Use |
 | --- | --- | --- |
 | `YOUTUBE_TOKEN` | yes | OAuth token JSON for official YouTube Data API upload and optional Analytics API reads. |
-| `PIXABAY_API_KEY` | only for the admin b-roll resync/search tools (`admin-resync-broll.yml`, `admin-search-broll-candidates.yml`) | The scheduled pipeline no longer fetches footage live -- each format loops one fixed, hand-picked real Pixabay clip committed in the repo. |
+| `PIXABAY_API_KEY` | only for the admin b-roll search tool (`admin-search-broll-candidates.yml`) | The scheduled pipeline no longer fetches footage live -- each format loops one fixed, hand-picked real Pixabay clip committed in the repo. |
 | `YOUTUBE_STREAM_KEY` | only for the 24/7 live relay (`live-stream.yml`) | RTMP stream key the live relay pushes to. |
 
 No AI text provider key is required — title/description text is

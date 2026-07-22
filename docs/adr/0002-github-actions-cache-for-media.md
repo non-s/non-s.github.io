@@ -28,6 +28,6 @@ Use **GitHub Actions cache** (`actions/cache`) to persist media libraries (`_ass
 3. **Re-download every run:** Simpler but wastes API quota and time
 
 ## See Also
-- `.github/workflows/youtube-bot.yml` — cache restore/save steps
-- `scripts/sync_lofi_broll.py` — Pixabay sync with cache-aware state
-- `scripts/sync_jamendo_music.py` — Jamendo sync with cache-aware state
+- `scripts/sync_storm_broll.py` — Pixabay sync with cache-aware state
+- `scripts/sync_noise_broll.py` — Pixabay sync with cache-aware state
+- `scripts/sync_animal_broll.py` — Pixabay sync with cache-aware state

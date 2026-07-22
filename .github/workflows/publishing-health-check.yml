@@ -1,9 +1,9 @@
 name: "Publishing health check"
 
 # ops-alert.yml already catches a *failed* workflow_run. This catches the
-# quieter failure mode: youtube-bot.yml/lofi-mix-daily.yml keep reporting
-# success (green checkmark, exit 0) while actually uploading nothing --
-# an empty/stale media library, a sustained Pixabay/Jamendo outage, or an
+# quieter failure mode: content workflows can keep reporting success
+# (green checkmark, exit 0) while actually uploading nothing -- an
+# empty/stale media library, a sustained Pixabay/Jamendo outage, or an
 # unnoticed upstream contract change could all zero out uploads for hours
 # without a single run ever erroring. This job fails (non-zero exit) when
 # scripts/check_publishing_health.py finds the most recent real upload is

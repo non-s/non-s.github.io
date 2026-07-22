@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Detect silent degradation in the lofi publishing pipeline.
+"""Detect silent degradation in the publishing pipeline.
 
-youtube-bot.yml and lofi-mix-daily.yml can both "succeed" (green
-checkmark, exit 0) on a run that uploaded nothing at all -- an empty or
-stale b-roll/bgm library, a sustained Pixabay/Jamendo outage, or an
-unnoticed upstream API contract change could all silently zero out
-uploads for hours or days while every run keeps reporting success.
+Content workflows can "succeed" (green checkmark, exit 0) on a run that
+uploaded nothing at all -- an empty or stale b-roll/bgm library, a
+sustained Pixabay/Jamendo outage, or an unnoticed upstream API contract
+change could all silently zero out uploads for hours or days while every
+run keeps reporting success.
 ops-alert.yml already catches genuinely *failed* runs; this catches the
 quieter case by checking how long it's actually been since a real upload
 landed, and failing (non-zero exit) if that's too long while publishing

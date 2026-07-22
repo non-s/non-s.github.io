@@ -20,6 +20,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - name: "Legacy workflow guard"
+        run: |
+          echo "::error::This workflow counted tracks/clips in the removed lofi media library (_assets/audio/bgm + _assets/video/lofi_broll). It is intentionally disabled. Inspect current libraries locally under _assets/video/storm_broll, _assets/video/animal_broll, _assets/video/noise_broll and _assets/audio/jazz."
+          exit 1
       - name: "Checkout"
         uses: actions/checkout@v7.0.0
         with:
