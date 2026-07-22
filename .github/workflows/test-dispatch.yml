@@ -1,0 +1,13 @@
+name: "Test Dispatch"
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Motivo"
+        required: false
+        default: "test"
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ github.event.inputs.reason }}"
