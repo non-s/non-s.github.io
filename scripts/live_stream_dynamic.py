@@ -68,12 +68,18 @@ STORM_PINNED_BROLL_CLIP = ROOT / "_assets" / "video" / "pinned_storm_clip.mp4"
 # missing.
 STORM_REAL_PINNED_CLIP = ROOT / "_assets" / "video" / "pinned_storm_live.mp4"
 
-# Real 4K (chat, 2026-07-21: the channel owner explicitly asked for it
-# across every format, including this live relay, accepting the OOM risk
-# this reintroduces on a standard GitHub Actions runner -- see
-# utils/broll.py's fetch_pixabay() comment for the full history/tradeoff).
-TARGET_W = 3840
-TARGET_H = 2160
+# Reverted to 1080p for THIS relay only (chat, 2026-07-22): tried real 4K
+# here too, but measured live -- a 4K veryfast encode of real (non-
+# illustrated) footage ran at ~0.5x realtime even on an 8-core box, and
+# this relay runs on a 2-vCPU GitHub Actions runner with `-re` pacing
+# input to realtime, so it never produced data fast enough for YouTube to
+# leave the broadcast's "ready" lifecycle state -- unlike the one-shot
+# renders (generate_storm_ambience.py/generate_storm_short.py), which have
+# no realtime constraint and finish 4K fine within their job timeout.
+# Those two formats stay at 4K; only this always-on relay needs to fit a
+# hard realtime budget, so it's the one that has to give.
+TARGET_W = 1920
+TARGET_H = 1080
 TARGET_FPS = 30
 LOOP_CROSSFADE_S = 1.0
 
@@ -416,18 +422,17 @@ class DynamicStreamer:
             "60",
             "-sc_threshold",
             "0",
-            # YouTube's own recommended live-encoder bitrate for 4K/2160p at
-            # 30fps is roughly 35-45 Mbps (their live encoder settings
-            # guidance scales ~2x higher than the plain-upload VOD table for
-            # the same resolution/framerate); 40000k sits in the middle of
-            # that band. -bufsize at 2x -maxrate is the same ratio the prior
-            # 1080p values used (9000k = 2x 4500k).
+            # 1080p/30fps live-encoder bitrate (YouTube's own recommended
+            # band is ~4.5-9 Mbps for this resolution/framerate); a bit
+            # above the original 4500k since this is real footage, not a
+            # simple hand-drawn loop. -bufsize at 2x -maxrate, same ratio
+            # as before.
             "-b:v",
-            "40000k",
+            "6000k",
             "-maxrate",
-            "40000k",
+            "6000k",
             "-bufsize",
-            "80000k",
+            "12000k",
             "-c:a",
             "aac",
             "-b:a",
