@@ -6,10 +6,10 @@ from utils.storm_branding import HOOK_BY_SCENE, branded_title, playlist_bucket_f
 
 
 def test_branded_title_uses_known_scene_hook():
-    assert (
-        branded_title("deep sleep")
-        == "Chuva Forte e Trovão ao Longe para Dormir Profundamente -- Amber Hours \U0001f634"
-    )
+    title = branded_title("deep sleep")
+    hooks, emoji = HOOK_BY_SCENE["deep sleep"]
+    assert title.endswith(f" -- Amber Hours {emoji}")
+    assert any(title.startswith(hook) for hook in hooks)
 
 
 def test_branded_title_falls_back_for_unknown_scene():
@@ -17,10 +17,10 @@ def test_branded_title_falls_back_for_unknown_scene():
 
 
 def test_branded_title_inserts_suffix_before_the_brand_dash():
-    assert (
-        branded_title("focus", suffix="(3 Horas)")
-        == "Som de Chuva para Estudar e Focar (3 Horas) -- Amber Hours \U0001f4d6"
-    )
+    title = branded_title("focus", suffix="(3 Horas)")
+    hooks, emoji = HOOK_BY_SCENE["focus"]
+    assert title.endswith(f"(3 Horas) -- Amber Hours {emoji}")
+    assert any(title.startswith(hook) for hook in hooks)
 
 
 def test_playlist_bucket_groups_thunder_scenes_together():
@@ -37,16 +37,26 @@ def test_no_two_scenes_share_the_same_hook_text():
     """Same regression guard as the earlier lofi pillar's -- two scenes
     with byte-identical hook text would guarantee a title collision the
     first time both got picked."""
-    hooks = [hook for hook, _emoji in HOOK_BY_SCENE.values()]
-    assert len(hooks) == len(set(hooks))
+    all_hooks: set[str] = set()
+    for hooks, _emoji in HOOK_BY_SCENE.values():
+        for hook in hooks:
+            assert hook not in all_hooks, f"duplicate hook: {hook!r}"
+            all_hooks.add(hook)
 
 
 def test_no_scene_or_hook_mentions_anime_or_lofi():
     """This pillar exists specifically to stop competing on the
-    "anime lofi" search term the channel's earlier (now-removed) format
+    'anime lofi' search term the channel's earlier (now-removed) format
     leaned into -- its own vocabulary must not reintroduce it."""
     blocked_terms = ("anime", "lofi", "lofi girl")
-    for scene, (hook, _emoji) in HOOK_BY_SCENE.items():
-        haystack = f"{scene} {hook}".lower()
+    for scene, (hooks, _emoji) in HOOK_BY_SCENE.items():
+        haystack = f"{scene} {' '.join(hooks)}".lower()
         for term in blocked_terms:
             assert term not in haystack, f"{scene!r} references {term!r}"
+
+
+def test_same_scene_can_produce_varied_titles():
+    """With multiple hooks per scene, repeated calls should not always
+    return the same title."""
+    titles = {branded_title("insomnia") for _ in range(20)}
+    assert len(titles) > 1, "expected title pool randomization"
