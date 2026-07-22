@@ -1,17 +1,29 @@
 name: "Admin: search b-roll candidates"
 
 # Manual-only, read-only diagnostic: searches Pixabay for a fixed set of
-# queries and prints every hit's tags/dims/download URL, unfiltered by
-# looks_anime_styled() -- a human decision aid for picking/auditing a
-# clip (see scripts/search_broll_candidates.py), not a pipeline step. No
+# queries and prints every hit's tags/dims/download URL -- a human
+# decision aid for picking/auditing a clip
+# (scripts/search_storm_broll_candidates.py), not a pipeline step. No
 # state is written; nothing here downloads or publishes anything.
+#
+# Fixed 2026-07-22: this used to call scripts/search_broll_candidates.py,
+# which was deleted in the lofi-pillar cleanup earlier that day -- this
+# workflow was left broken (any dispatch would have failed at the run
+# step) until caught here. Now calls the still-present storm search
+# script, which already supports both video_type=film (real footage,
+# its default) and video_type=animation (illustrated/cartoon) via
+# --video-type.
 
 on:
   workflow_dispatch:
     inputs:
       queries:
-        description: '"|"-delimited Pixabay search queries (e.g. "anime rain window|anime cozy room")'
+        description: '"|"-delimited Pixabay search queries (e.g. "cartoon piano cozy room|cartoon rain window")'
         required: true
+      video_type:
+        description: 'Pixabay video_type: "film" (real footage) or "animation" (illustrated/cartoon)'
+        required: false
+        default: "film"
 
 permissions:
   contents: read
@@ -44,4 +56,5 @@ jobs:
       - name: "Buscar candidatos de b-roll"
         env:
           QUERIES: ${{ inputs.queries }}
-        run: python scripts/search_broll_candidates.py "$QUERIES"
+          VIDEO_TYPE: ${{ inputs.video_type }}
+        run: python scripts/search_storm_broll_candidates.py "$QUERIES" --video-type "$VIDEO_TYPE"

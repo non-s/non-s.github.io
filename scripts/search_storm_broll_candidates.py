@@ -15,9 +15,14 @@ download_url (no API key needed to view it) before one is ever downloaded
 and pinned as `_assets/video/pinned_storm_clip.mp4`, replacing the
 illustrated scene scripts/generate_storm_scene.py draws by default.
 
-`video_type="film"` (real footage) instead of the lofi pipeline's
-"animation" -- see utils.broll.fetch_pixabay's docstring for that
-distinction.
+Defaults to `video_type="film"` (real footage); pass `--video-type
+animation` for illustrated/cartoon-style candidates instead (chat,
+2026-07-22: reused for a one-off cartoon-clip search for a possible new
+classical/piano pillar, not just storm/rain -- see
+utils.broll.fetch_pixabay's docstring for the film/animation
+distinction). The `storm_relevant_tag_match` hint below is storm-specific
+regardless of video_type -- ignore it when searching for anything else,
+it's advisory only, never a filter.
 """
 
 from __future__ import annotations
@@ -60,13 +65,19 @@ def main() -> int:
         help='One or more Pixabay search queries, "|"-delimited.',
     )
     parser.add_argument("--per-query", type=int, default=8)
+    parser.add_argument(
+        "--video-type",
+        default="film",
+        choices=["film", "animation"],
+        help='Pixabay video_type: "film" (real footage) or "animation" (illustrated/cartoon).',
+    )
     args = parser.parse_args()
 
     results = {}
     for query in (q.strip() for q in args.queries.split("|")):
         if not query:
             continue
-        clips = fetch_pixabay(query, per_page=args.per_query, video_type="film")
+        clips = fetch_pixabay(query, per_page=args.per_query, video_type=args.video_type)
         results[query] = [
             {
                 "id": clip.source_metadata.get("pixabay_video_id"),

@@ -61,6 +61,20 @@ def test_main_splits_pipe_delimited_queries(monkeypatch, capsys):
     assert fetch.call_count == 2
 
 
+def test_main_passes_through_a_custom_video_type(monkeypatch, capsys):
+    fetch = MagicMock(return_value=[])
+    monkeypatch.setattr(search_storm, "fetch_pixabay", fetch)
+    monkeypatch.setattr(
+        search_storm.sys,
+        "argv",
+        ["search_storm_broll_candidates.py", "cartoon piano cozy room", "--video-type", "animation"],
+    )
+
+    search_storm.main()
+
+    fetch.assert_called_once_with("cartoon piano cozy room", per_page=8, video_type="animation")
+
+
 def test_looks_storm_relevant_flags_expected_signals():
     assert search_storm.looks_storm_relevant("rain, night, city")
     assert search_storm.looks_storm_relevant("Thunderstorm over the hills")
