@@ -189,21 +189,92 @@ search for and expect, which rain texture doesn't actually provide.
   `CUTE_ANIMALS_ENABLED`/`YOUTUBE_PUBLISHING_ENABLED` -- **off by
   default**.
 
+## Fourth pillar: "Amber Hours Classical" (off by default)
+
+A fourth, independent content pillar (chat, 2026-07-22): real, licensed
+classical/orchestral/piano recordings from Jamendo, one real track per
+video (not a mixed bed, not a music layer under something else -- the
+licensed track *is* the whole point here), looping under one fixed,
+hand-picked real Pixabay clip (an anime-style "studying at a rainy
+window" scene, `_assets/video/pinned_classical_ambience.mp4`, chosen by
+the channel owner after reviewing real preview frames of several
+candidates). The only pillar on this channel published in **English**
+rather than pt-BR -- the channel owner was explicit about this.
+
+- **Why classical**: checked live across many genres the same night --
+  `fuzzytags=classical+orchestral+piano` returned ~18.5-19%
+  commercially-safe (CC BY) results out of 200 raw, by far the best of
+  everything tried (jazz ~1.5-2%, folk ~9%, electronic ~8.5%, everything
+  else lower). The matches are genuinely on-genre real classical
+  recordings (e.g. Kimiko Ishizaka's Open Goldberg Variations), not
+  mistagged filler.
+- **Video**: the one fixed pinned clip, no rotation, no illustrated
+  fallback (none exists for this pillar -- if it's ever missing, the
+  generator exits with a clear error rather than faking a placeholder).
+  A real thumbnail frame was extracted from it once and committed
+  (`_assets/branding/classical_ambience_thumbnail.jpg`) -- this pillar
+  never had the illustrated-vs-real thumbnail mismatch the rain pillar
+  had to fix retroactively, because there was never an illustration to
+  begin with.
+- **Audio**: `scripts/sync_classical_music.py` syncs real CC BY classical
+  tracks toward a ~150-track target (the channel owner's explicit ask,
+  for the live's rotation) -- see that script's module docstring for the
+  realistic ramp-up math given the measured yield. `generate_classical_
+  ambience.py` picks the least-recently-used track (mtime-based
+  round-robin, not pure random -- meaningful at an hourly cadence) and
+  renders a video whose *exact* duration is that track's own real length
+  -- the pinned clip loops to fill it, the track itself plays once,
+  start to finish.
+- **Mandatory attribution**: every video's description ends with an
+  exact, unconditional credit line -- real track name, real artist name,
+  real CC BY license URL -- appended in code after either the AI-written
+  or template description, every single time. This is a legal
+  requirement of the CC BY license, not a stylistic choice the AI is
+  free to paraphrase away.
+- **No Shorts companion** for this pillar -- long-form only, at roughly
+  hourly cadence (`classical-ambience.yml`, ~24/day) explicitly taking
+  the role Shorts would have played. The channel owner chose this
+  cadence aware that the account hit `uploadLimitExceeded` around
+  ~23-24/day when multiple pillars were stacked earlier -- since every
+  other pillar is currently disabled, this one running alone at ~24/day
+  is an informed choice, not an oversight.
+- **Live**: `scripts/live_stream_classical.py` is its own dedicated 24/7
+  relay (not a branch added to `scripts/live_stream_dynamic.py`, which
+  stays rain-only) -- the same pinned clip loops under a real, shuffled,
+  concatenated playlist of every currently-synced classical track (same
+  technique the old, removed lofi live pillar used for its bgm
+  playlist). Needs its **own** stream key (`YOUTUBE_STREAM_KEY_CLASSICAL`
+  -- create a second persistent live stream in YouTube Studio, Go Live ->
+  Stream) -- reusing the rain pillar's `YOUTUBE_STREAM_KEY` would make
+  both relays fight over the same RTMP ingestion point the moment both
+  are ever enabled together. Gated by its own `live-stream-classical-
+  watchdog.yml`, same 5-minute self-healing pattern as the rain pillar's
+  watchdog.
+- Gated by two independent repository variables (see SETUP.md):
+  `CLASSICAL_AMBIENCE_ENABLED` (long-form uploads) and
+  `CLASSICAL_LIVE_ENABLED` (the live relay) -- **both off by default**.
+  The channel owner asked to build this pillar completely before turning
+  anything on ("build first, publish after").
+
 ### Which pillars can run together?
 
-All three content pillars share one YouTube account-level daily upload
+All four content pillars share one YouTube account-level daily upload
 cap that this repo's own internal quota-guard does not control or know
 the real value of. This account hit `uploadLimitExceeded` twice in one
 day at a combined ~14 uploads/day across the rain pillar alone. Each
-pillar's *own* cadence was chosen conservatively in isolation (rain:
-2 long-form + 12 Shorts/day; Pata Jazz: 8 Shorts/day; baby noise: 1
-long-form + 6 Shorts/day), but running all three simultaneously at full
-designed cadence would be roughly 14 + 8 + 7 = 29 uploads/day -- very
-likely over whatever the account's real cap turns out to be. This isn't
-a bug to fix in code; it's a real decision the channel owner needs to
-make: which pillar(s) to actually run together given the shared ceiling,
-possibly after phone-verifying the channel (which usually raises the
-cap) to see how much headroom that actually buys.
+pillar's *own* cadence was chosen in isolation (rain: 2 long-form + 12
+Shorts/day; Pata Jazz: 8 Shorts/day; baby noise: 1 long-form + 6
+Shorts/day; classical: ~24 long-form/day), but running all four
+simultaneously at full designed cadence would be roughly
+14 + 8 + 7 + 24 = 53 uploads/day -- almost certainly over whatever the
+account's real cap turns out to be. This isn't a bug to fix in code;
+it's a real decision the channel owner needs to make: which pillar(s) to
+actually run together given the shared ceiling, possibly after
+phone-verifying the channel (which usually raises the cap) to see how
+much headroom that actually buys. Classical's ~24/day cadence in
+particular was chosen specifically *because* every other pillar is
+currently disabled -- it was not designed to be layered on top of the
+other three at their own full cadence.
 
 ## Community engagement
 

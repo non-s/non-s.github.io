@@ -114,6 +114,8 @@ jobs:
             generate_storm_ambience.py generate_storm_short.py \
             scripts/sync_noise_broll.py scripts/sync_animal_broll.py scripts/sync_animal_jazz.py \
             generate_baby_noise_ambience.py generate_baby_noise_short.py generate_cute_animal_short.py \
+            generate_classical_ambience.py scripts/sync_classical_music.py scripts/live_stream_classical.py \
+            utils/classical_branding.py \
             upload_youtube.py auth_youtube.py
           python -m ruff check \
             utils/analytics_schema.py utils/publish_schedule.py utils/studio_reach_schema.py \
@@ -139,6 +141,8 @@ jobs:
             generate_storm_ambience.py generate_storm_short.py \
             scripts/sync_noise_broll.py scripts/sync_animal_broll.py scripts/sync_animal_jazz.py \
             generate_baby_noise_ambience.py generate_baby_noise_short.py generate_cute_animal_short.py \
+            generate_classical_ambience.py scripts/sync_classical_music.py scripts/live_stream_classical.py \
+            utils/classical_branding.py \
             upload_youtube.py auth_youtube.py
 
       - name: "Audit dependencies"

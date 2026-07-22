@@ -10,6 +10,10 @@ Open **Settings -> Secrets and variables -> Actions** and add:
   falls back to the illustrated pinned scene if missing
 - `YOUTUBE_STREAM_KEY` -- only needed for the 24/7 live relay
   (`live-stream.yml`)
+- `YOUTUBE_STREAM_KEY_CLASSICAL` -- only needed for the classical
+  pillar's own 24/7 live relay (`live-stream-classical.yml`) -- a
+  second, separate persistent stream created in YouTube Studio, not the
+  same key as `YOUTUBE_STREAM_KEY` above
 
 The earlier nature-Shorts pipeline (`fetch-content.yml`,
 `QUEUE_REFRESH_ENABLED`) used `PEXELS_API_KEY`/`PEXELS` and an AI text
@@ -100,6 +104,21 @@ On Windows, you can instead run the **Build auth_youtube.exe (Windows)** workflo
    pillars** -- all three share one account-level YouTube upload cap, and
    running everything's full designed cadence at once will very likely
    exceed it.
+3d. Optionally set the repository variable `CLASSICAL_AMBIENCE_ENABLED=1`
+   to turn on the fourth, independent classical/orchestral/piano pillar
+   (see README.md) -- off by default, published in English as "Amber
+   Hours Classical". Needs no new secret beyond `YOUTUBE_TOKEN` (Jamendo
+   needs no secret, same as every other pillar's Jamendo integration).
+   Runs hourly (~24/day, `classical-ambience.yml`'s cron) -- see
+   README.md's cadence note for why this pillar's cadence was chosen
+   assuming the other three are disabled, not as something to layer on
+   top of them. Separately, set `CLASSICAL_LIVE_ENABLED=1` to turn on
+   this pillar's own 24/7 live relay (`live-stream-classical.yml`) -- it
+   needs its own **new** secret, `YOUTUBE_STREAM_KEY_CLASSICAL`: create a
+   second persistent live stream in YouTube Studio (Go Live -> Stream,
+   not the same stream used for the rain pillar's live) and paste that
+   stream key in. **Read README.md's "Which pillars can run together?"
+   note before enabling this alongside any other pillar.**
 4. Optionally create the repository variable `YOUTUBE_PRIVACY`: `public`,
    `unlisted`, or `private`. Default: `public`.
 5. Optionally set the repository variable `COMMUNITY_ENGAGEMENT_ENABLED=1`

@@ -240,3 +240,96 @@ def test_generate_baby_noise_copy_calls_ai_text_with_json_mode_and_names_the_col
     assert "tinnitus" in captured["prompt"]
     assert "white" in captured["prompt"]
     assert "Amber Hours" in captured["system"]
+
+
+def test_generate_classical_video_copy_returns_none_when_no_provider_configured(monkeypatch):
+    monkeypatch.setattr(ai_titling, "ai_text", lambda *a, **k: "")
+
+    result = ai_titling.generate_classical_video_copy(
+        mood="deep focus",
+        duration_s=1800.0,
+        track_name="Goldberg Variations, Aria",
+        artist_name="Kimiko Ishizaka",
+        fallback_title="Classical Piano for Deep Focus -- Amber Hours Classical",
+    )
+
+    assert result is None
+
+
+def test_generate_classical_video_copy_parses_a_valid_response(monkeypatch):
+    payload = json.dumps(
+        {
+            "title": "Bach's Goldberg Variations for Deep Focus -- Amber Hours Classical",
+            "description": "Kimiko Ishizaka performs the Aria from Bach's Goldberg Variations. "
+            "Perfect for reading, studying or a quiet evening.",
+            "hashtags": ["#ClassicalMusic", "Piano", "focus "],
+        }
+    )
+    monkeypatch.setattr(ai_titling, "ai_text", lambda *a, **k: payload)
+
+    result = ai_titling.generate_classical_video_copy(
+        mood="deep focus",
+        duration_s=1800.0,
+        track_name="Goldberg Variations, Aria",
+        artist_name="Kimiko Ishizaka",
+        fallback_title="Classical Piano for Deep Focus -- Amber Hours Classical",
+    )
+
+    assert result["title"] == "Bach's Goldberg Variations for Deep Focus -- Amber Hours Classical"
+    assert "Kimiko Ishizaka" in result["description"]
+    assert result["hashtags"] == ["classicalmusic", "piano", "focus"]
+
+
+def test_generate_classical_video_copy_returns_none_on_invalid_json(monkeypatch):
+    monkeypatch.setattr(ai_titling, "ai_text", lambda *a, **k: "not json at all")
+
+    result = ai_titling.generate_classical_video_copy(
+        mood="sleep",
+        duration_s=1800.0,
+        track_name="Nocturne",
+        artist_name="Someone",
+        fallback_title="Classical Music for Sleep -- Amber Hours Classical",
+    )
+
+    assert result is None
+
+
+def test_generate_classical_video_copy_returns_none_when_a_required_field_is_missing(monkeypatch):
+    monkeypatch.setattr(ai_titling, "ai_text", lambda *a, **k: json.dumps({"title": "Only a title"}))
+
+    result = ai_titling.generate_classical_video_copy(
+        mood="sleep",
+        duration_s=1800.0,
+        track_name="Nocturne",
+        artist_name="Someone",
+        fallback_title="Classical Music for Sleep -- Amber Hours Classical",
+    )
+
+    assert result is None
+
+
+def test_generate_classical_video_copy_calls_ai_text_with_json_mode_and_english_system(monkeypatch):
+    captured = {}
+
+    def fake_ai_text(prompt, system="", json_mode=False, **kwargs):
+        captured["prompt"] = prompt
+        captured["system"] = system
+        captured["json_mode"] = json_mode
+        return json.dumps({"title": "T -- Amber Hours Classical", "description": "D", "hashtags": ["classical"]})
+
+    monkeypatch.setattr(ai_titling, "ai_text", fake_ai_text)
+
+    ai_titling.generate_classical_video_copy(
+        mood="reading",
+        duration_s=900.0,
+        track_name="Clair de Lune",
+        artist_name="Some Pianist",
+        fallback_title="Classical Music for Reading -- Amber Hours Classical",
+    )
+
+    assert captured["json_mode"] is True
+    assert "reading" in captured["prompt"]
+    assert "Clair de Lune" in captured["prompt"]
+    assert "Some Pianist" in captured["prompt"]
+    assert "Amber Hours Classical" in captured["system"]
+    assert "write in English" in captured["system"]

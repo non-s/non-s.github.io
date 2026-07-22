@@ -63,6 +63,8 @@ either way, never required.
 | `BABY_NOISE_ENABLED` | `0` | publishing | Master switch for the baby-noise-ambience.yml/baby-noise-shorts.yml pillar (procedurally-synthesized white/pink/brown noise, published as Amber Hours), independent of YOUTUBE_PUBLISHING_ENABLED/STORM_AMBIENCE_ENABLED/CUTE_ANIMALS_ENABLED. | Set to 0 to pause this pillar. |
 | `BABY_NOISE_MIN_DURATION_MINUTES` | `180` | publishing | Minimum runtime (minutes) for a generated baby-noise ambience video. | Lower it for faster/smaller uploads. |
 | `BABY_NOISE_MAX_DURATION_MINUTES` | `300` | publishing | Maximum runtime (minutes) for a generated baby-noise ambience video. | Lower it for faster/smaller uploads. |
+| `CLASSICAL_AMBIENCE_ENABLED` | `0` | publishing | Master switch for classical-ambience.yml (real, licensed classical/orchestral/piano tracks, one per video, published as Amber Hours Classical), independent of every other pillar's switch. | Set to 0 to pause this pillar. |
+| `CLASSICAL_LIVE_ENABLED` | `0` | publishing | Master switch for live-stream-classical.yml (the classical pillar's own 24/7 live relay, independent stream key from the rain pillar's live), independent of CLASSICAL_AMBIENCE_ENABLED and every other pillar's live/upload switches. | Set to 0 to pause this live relay. |
 
 YouTube `videos.insert` calls use their own daily upload bucket. Keep
 `YOUTUBE_DAILY_UPLOAD_BUDGET=100` unless Google Cloud shows a different
