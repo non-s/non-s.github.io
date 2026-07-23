@@ -7,6 +7,7 @@ Resolucao: 1920x1080, duracao ~3-5 minutos, musica de jazz real em background.
 from __future__ import annotations
 
 import argparse
+import json
 import logging
 import os
 import random
@@ -14,12 +15,11 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont
-
-from utils.ai_helper import ai_text
 from utils.animal_branding import hook_for_scene, random_scene
 from utils.ffmpeg_helpers import run_ffmpeg
 from utils.media_pool import ensure_dirs, pick_audio, pick_videos, pool_stats
+from utils.metadata_engine import clean_title, generate_metadata
+from utils.thumbnail_engine import make_horizontal_thumbnail
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT_DIR = ROOT / "_videos"
@@ -27,47 +27,14 @@ THUMB_DIR = ROOT / "_assets" / "thumbnails"
 
 log = logging.getLogger(__name__)
 
-
-def _make_thumbnail(scene: str, hook: str, output: Path) -> None:
-    width, height = 1280, 720
-    img = Image.new("RGB", (width, height), "#1a1a2e")
-    draw = ImageDraw.Draw(img)
-    try:
-        font_large = ImageFont.truetype("arial.ttf", 64)
-        font_small = ImageFont.truetype("arial.ttf", 36)
-    except Exception:
-        font_large = ImageFont.load_default()
-        font_small = font_large
-
-    draw.text((width // 2 - 200, 200), "Pata Jazz", font=font_large, fill="#f4a261")
-    draw.text((width // 2 - 250, 320), hook, font=font_small, fill="#f8f8ff")
-    draw.text((width // 2 - 80, 420), "🐾🎷", font=font_large, fill="#f8f8ff")
-    img.save(output)
+DEFAULT_DURATION = 240
+DEFAULT_RESOLUTION = (1920, 1080)
 
 
-def _generate_metadata(scene: str, hook: str) -> tuple[str, str]:
-    prompt = (
-        f"Crie um titulo amigavel (maximo 100 caracteres) e uma descricao de 2 a 4 linhas "
-        f"para um video do YouTube sobre {hook} com jazz de fundo. "
-        f"O canal e Pata Jazz (gatos e cachorros fofos + jazz). "
-        f"Retorne APENAS JSON com chaves 'title' e 'description'."
-    )
-    out = ai_text(prompt, json_mode=True, task="horizontal_metadata")
-    title = f"{hook} | Pata Jazz"
-    description = f"{hook} com jazz suave de fundo. Curta, relaxe e acompanhe os bichinhos fofos. 🐾🎷 #PataJazz"
-    if out:
-        try:
-            import json
-
-            data = json.loads(out)
-            title = str(data.get("title", title))[:100]
-            description = str(data.get("description", description))[:4000]
-        except Exception:
-            pass
-    return title, description
-
-
-def _generate_horizontal(duration: int = 240, resolution: tuple[int, int] = (1920, 1080)) -> Path:
+def _generate_horizontal(
+    duration: int = DEFAULT_DURATION,
+    resolution: tuple[int, int] = DEFAULT_RESOLUTION,
+) -> Path:
     """Gera um video horizontal com UM clipe e UMA musica de jazz."""
     ensure_dirs()
     stats = pool_stats()
@@ -77,7 +44,7 @@ def _generate_horizontal(duration: int = 240, resolution: tuple[int, int] = (192
         log.warning("Pool de jazz vazio. Video sera gerado sem audio.")
 
     scene = random_scene()
-    hook, _ = hook_for_scene(scene)
+    hook, emoji = hook_for_scene(scene)
     video = random.choice(pick_videos(min_count=1, max_count=1))
     audio_path = pick_audio()
 
@@ -88,55 +55,56 @@ def _generate_horizontal(duration: int = 240, resolution: tuple[int, int] = (192
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     THUMB_DIR.mkdir(parents=True, exist_ok=True)
 
+    w, h = resolution
+    # Crop central 16:9 seguro, escala e preenche para qualquer source.
     vf = (
         f"crop='min(iw,ih*16/9):min(ih,iw*9/16):0:0',"
-        f"scale={resolution[0]}:{resolution[1]}:force_original_aspect_ratio=decrease,"
-        f"pad={resolution[0]}:{resolution[1]}:(ow-iw)/2:(oh-ih)/2:black,"
+        f"scale={w}:{h}:force_original_aspect_ratio=decrease,"
+        f"pad={w}:{h}:(ow-iw)/2:(oh-ih)/2:black,"
         f"setsar=1/1"
     )
 
     inputs = ["-i", str(video)]
     output_args: list[str] = [
-        "-vf",
-        vf,
-        "-c:v",
-        "libx264",
-        "-preset",
-        "fast",
-        "-crf",
-        "23",
-        "-t",
-        str(duration),
-        "-r",
-        "30",
-        "-pix_fmt",
-        "yuv420p",
-        "-movflags",
-        "+faststart",
+        "-vf", vf,
+        "-c:v", "libx264",
+        "-preset", "fast",
+        "-crf", "23",
+        "-t", str(duration),
+        "-r", "30",
+        "-pix_fmt", "yuv420p",
+        "-movflags", "+faststart",
     ]
     if audio_path:
-        # Loop a unica musica para cobrir toda a duracao do video.
         inputs += ["-stream_loop", "-1", "-i", str(audio_path)]
         output_args += ["-c:a", "aac", "-b:a", "192k", "-shortest"]
 
     run_ffmpeg(inputs + output_args + [str(output)])
 
-    _make_thumbnail(scene, hook, thumb)
+    make_horizontal_thumbnail(hook, emoji, thumb)
 
-    title, description = _generate_metadata(scene, hook)
+    metadata = generate_metadata(
+        hook=hook,
+        scene=scene,
+        duration=duration,
+        kind="horizontal",
+        emoji=emoji,
+        fallback_title=clean_title(f"{hook} | Pata Jazz"),
+        fallback_description=(
+            f"{hook} com jazz suave de fundo. "
+            "Curta, relaxe e acompanhe os bichinhos fofos. 🐾🎷 #PataJazz"
+        ),
+    )
     meta = {
-        "title": title,
-        "description": description,
+        **metadata,
         "scene": scene,
         "hook": hook,
         "duration": duration,
-        "resolution": f"{resolution[0]}x{resolution[1]}",
+        "resolution": f"{w}x{h}",
         "video": str(output),
         "thumbnail": str(thumb),
         "audio": str(audio_path) if audio_path else None,
     }
-    import json
-
     output.with_suffix(".json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
 
     log.info("Video horizontal gerado: %s", output)
@@ -145,7 +113,7 @@ def _generate_horizontal(duration: int = 240, resolution: tuple[int, int] = (192
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Gerar video horizontal Pata Jazz")
-    parser.add_argument("--duration", type=int, default=240, help="Duracao em segundos")
+    parser.add_argument("--duration", type=int, default=DEFAULT_DURATION, help="Duracao em segundos")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
