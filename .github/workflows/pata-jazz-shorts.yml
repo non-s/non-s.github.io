@@ -2,8 +2,8 @@ name: "Pata Jazz - Shorts"
 
 on:
   schedule:
-    # 2 shorts por dia: 08:30 e 14:30 BRT (UTC-3 -> 11:30 e 17:30 UTC)
-    - cron: "30 11,17 * * *"
+    # 1 short por dia: 08:30 BRT (UTC-3 -> 11:30 UTC)
+    - cron: "30 11 * * *"
   workflow_dispatch:
     inputs:
       reason:

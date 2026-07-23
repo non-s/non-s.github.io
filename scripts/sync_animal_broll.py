@@ -54,6 +54,7 @@ def search_and_download(api_key: str, query: str, max_results: int = 5) -> int:
         "per_page": max(3, max_results * 2),
         "safesearch": "true",
         "orientation": "horizontal",
+        "video_type": "film",  # exclui animacao/cartoon — so video real
     }
     try:
         r = requests.get(PIXABAY_API_URL, params=params, headers=headers, timeout=30)
@@ -70,13 +71,20 @@ def search_and_download(api_key: str, query: str, max_results: int = 5) -> int:
             break
         tags = hit.get("tags", "")
         user = hit.get("user", "")
-        text_signal = f"{hit.get('pageURL', '')} {tags} {user}"
+        page_url = hit.get("pageURL", "")
+        text_signal = f"{page_url} {tags} {user}"
         if not is_allowed_animal_text(text_signal):
-            log.info("Ignorando hit nao permitido: %s", tags)
+            log.info("Ignorando hit nao permitido (filtro de texto): %s", tags)
             continue
+        # Filtro extra: verifica o campo type do video (film = real, animation = cartoon)
         videos = hit.get("videos", {})
         video = videos.get("large") or videos.get("medium") or videos.get("small")
         if not video:
+            continue
+        # Rejeita explicitamente videos marcados como animacao
+        video_type = str(hit.get("type", "")).lower()
+        if video_type and "animat" in video_type:
+            log.info("Ignorando hit de animacao (type=%s): %s", video_type, tags)
             continue
         url = video.get("url", "")
         ext = Path(urlparse(url).path).suffix.lstrip(".") or "mp4"
