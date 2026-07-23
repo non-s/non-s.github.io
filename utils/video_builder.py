@@ -106,7 +106,8 @@ def build_pata_jazz_video(
 
     run_ffmpeg(inputs + output_args + [str(output)])
 
-    spec.thumbnail_maker(hook, emoji, thumb)
+    # Passa o video_path para o thumbnail maker usar frame real
+    spec.thumbnail_maker(hook, emoji, thumb, video_path=output)
 
     fallback_title = clean_title(f"{hook} | Pata Jazz")
     metadata = generate_metadata(

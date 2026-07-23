@@ -7,9 +7,15 @@ from __future__ import annotations
 import json
 import logging
 import re
-from typing import Any
+from typing import Any, Literal
 
 from utils.ai_helper import ai_text
+from utils.seo_keywords import (
+    generate_title,
+    generate_description,
+    generate_hashtags,
+    optimize_for_search,
+)
 
 log = logging.getLogger(__name__)
 
@@ -33,33 +39,73 @@ def generate_metadata(
     hook: str,
     scene: str,
     duration: int,
-    kind: str,
+    kind: Literal["short", "horizontal", "live"],
     emoji: str,
     fallback_title: str = "",
     fallback_description: str = "",
 ) -> dict[str, Any]:
-    """Gera metadados completos usando Gemini, com fallback local seguro."""
+    """Gera metadados completos usando Gemini + SEO otimizado, com fallback local seguro."""
+    # Extrai informações da cena para SEO
+    animal = "gato" if "cat" in scene.lower() or "gato" in scene.lower() else "cachorro"
+    acao = "relaxando" if "sleep" in scene.lower() or "relax" in scene.lower() else "brincando"
+    estilo_musical = "jazz relaxante"
+    
+    # Gera título otimizado com SEO
+    title = generate_title(
+        animal=animal,
+        acao=acao,
+        estilo_musical=estilo_musical,
+        kind=kind,
+        emoji=emoji,
+        duracao=duration // 60 if kind != "short" else None,
+    )
+    
+    # Gera hashtags estratégicas em camadas
+    categoria = "fofura"
+    if "sleep" in scene.lower() or "relax" in scene.lower():
+        categoria = "relaxamento"
+    elif "play" in scene.lower() or "fun" in scene.lower():
+        categoria = "diversao"
+    
+    hashtags = generate_hashtags(animal=animal, categoria=categoria, kind=kind)
+    
+    # Tenta melhorar com IA (opcional)
     prompt = _build_metadata_prompt(hook, scene, duration, kind, emoji)
     out = ai_text(prompt, json_mode=True, task=f"{kind}_metadata")
 
-    title = fallback_title or f"{hook} | Pata Jazz"
-    description = fallback_description or (
-        f"{hook} com jazz de fundo. 🐾🎷 Curta, relaxe e acompanhe os bichinhos fofos. #PataJazz"
+    description = fallback_description or generate_description(
+        hook=hook,
+        kind=kind,
+        hashtags=hashtags,
+        include_cta=True,
     )
-    hashtags: list[str] = ["#PataJazz", "#Gatos", "#Cachorros", "#Jazz"]
 
     if out:
         try:
             data = json.loads(out)
-            title = str(data.get("title", title))[:100]
-            description = str(data.get("description", description))[:5000]
+            # Usa título da IA se for melhor, senão mantém título SEO
+            ai_title = str(data.get("title", ""))[:100]
+            if ai_title and len(ai_title) > len(title):
+                title = ai_title
+            
+            # Usa descrição da IA se disponível
+            ai_description = str(data.get("description", ""))[:5000]
+            if ai_description:
+                description = ai_description
+            
+            # Merge de hashtags
             raw_hashtags = data.get("hashtags", [])
             if isinstance(raw_hashtags, str):
                 raw_hashtags = raw_hashtags.split()
-            hashtags = [str(h).strip() for h in raw_hashtags if str(h).strip()][:15]
+            ai_hashtags = [str(h).strip() for h in raw_hashtags if str(h).strip()][:15]
+            if ai_hashtags:
+                hashtags = list(dict.fromkeys(hashtags + ai_hashtags))[:15]
         except Exception:
-            log.warning("Falha ao parsear metadata JSON; usando fallback.")
+            log.warning("Falha ao parsear metadata JSON; usando fallback otimizado.")
 
+    # Otimização final para busca
+    title, description = optimize_for_search(title, description)
+    
     # Garante que as hashtags apareçam na descrição
     if hashtags and not any(h in description for h in hashtags):
         description = f"{description}\n\n{' '.join(hashtags)}"
