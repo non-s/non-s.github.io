@@ -1,0 +1,59 @@
+name: "Pata Jazz - Sync de Conteudo"
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Renova o pool de conteudo 2x por semana (terca e sexta, 06:00 UTC = 03:00 BRT)
+    - cron: "0 6 * * 2,5"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pata-jazz-sync
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    name: "Sincronizar b-roll e jazz"
+    if: ${{ vars.PATA_JAZZ_ENABLED == '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: "Python 3.11"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: "Instalar FFmpeg"
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
+      - name: "Instalar dependencias"
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: "Cache b-roll"
+        uses: actions/cache@v4
+        with:
+          path: _assets/video/animal_broll
+          key: animal-broll-${{ github.run_id }}
+          restore-keys: animal-broll-
+      - name: "Cache jazz"
+        uses: actions/cache@v4
+        with:
+          path: _assets/audio/animal_jazz
+          key: animal-jazz-${{ github.run_id }}
+          restore-keys: animal-jazz-
+      - name: "Sincronizar b-roll (gatos/cachorros)"
+        env:
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+        run: python scripts/sync_animal_broll.py
+      - name: "Sincronizar jazz"
+        env:
+          JAMENDO_CLIENT_ID: ${{ secrets.JAMENDO_CLIENT_ID }}
+        run: python scripts/sync_jazz_music.py

@@ -1,0 +1,101 @@
+name: "Pata Jazz - Batch Manual"
+
+on:
+  workflow_dispatch:
+    inputs:
+      kind:
+        description: "Tipo de conteudo a gerar"
+        required: true
+        default: "short"
+        type: choice
+        options:
+          - short
+          - horizontal
+          - live
+      count:
+        description: "Quantidade (1 a 3)"
+        required: true
+        default: "1"
+        type: choice
+        options:
+          - "1"
+          - "2"
+          - "3"
+      upload:
+        description: "Fazer upload para o YouTube?"
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pata-jazz-batch-${{ github.event.inputs.kind }}
+  cancel-in-progress: true
+
+jobs:
+  batch:
+    name: "Gerar e publicar conteudo Pata Jazz"
+    if: ${{ vars.PATA_JAZZ_ENABLED == '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
+      BATCH_KIND: ${{ github.event.inputs.kind }}
+      BATCH_COUNT: ${{ github.event.inputs.count }}
+      BATCH_UPLOAD: ${{ github.event.inputs.upload }}
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: "Python 3.11"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: "Instalar FFmpeg"
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
+      - name: "Instalar dependencias"
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: "Restaurar token YouTube"
+        env:
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+        run: |
+          umask 077
+          if [ -n "$YOUTUBE_TOKEN" ]; then
+            printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
+            chmod 600 youtube_token.json
+          fi
+      - name: "Cache b-roll"
+        uses: actions/cache@v4
+        with:
+          path: _assets/video/animal_broll
+          key: animal-broll-${{ github.run_id }}
+          restore-keys: animal-broll-
+      - name: "Cache jazz"
+        uses: actions/cache@v4
+        with:
+          path: _assets/audio/animal_jazz
+          key: animal-jazz-${{ github.run_id }}
+          restore-keys: animal-jazz-
+      - name: "Sincronizar b-roll"
+        env:
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+        run: python scripts/sync_animal_broll.py || echo "::warning::B-roll sync falhou"
+      - name: "Sincronizar jazz"
+        env:
+          JAMENDO_CLIENT_ID: ${{ secrets.JAMENDO_CLIENT_ID }}
+        run: python scripts/sync_jazz_music.py || echo "::warning::Jazz sync falhou"
+      - name: "Executar batch"
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python scripts/batch_generate.py
+      - name: "Apagar token"
+        if: always()
+        run: rm -f youtube_token.json

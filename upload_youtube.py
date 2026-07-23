@@ -44,12 +44,16 @@ def _latest_video_meta(prefix: str = "pata_jazz_") -> tuple[Path, dict] | None:
     return None
 
 
-def _build_tags(scene: str) -> list[str]:
+def _build_tags(scene: str, hashtags: list[str] | None = None) -> list[str]:
     base = ["Pata Jazz", "gato", "cachorro", "jazz", "fofo", "relaxante"]
     if "cat" in scene or "kitten" in scene:
         base.extend(["gatinho", "cat", "kitten"])
     if "dog" in scene or "puppy" in scene:
         base.extend(["cachorrinho", "dog", "puppy"])
+    if hashtags:
+        # Remove o # para normalizar e junta com as tags base
+        cleaned = [h.lstrip("#") for h in hashtags]
+        base.extend(cleaned)
     return list(dict.fromkeys(base))[:15]
 
 
@@ -62,7 +66,7 @@ def upload_video(language: str = "pt", privacy: str = "public", prefix: str = "p
 
     title = str(meta.get("title", "Pata Jazz"))[:100]
     description = str(meta.get("description", ""))[:5000]
-    tags = _build_tags(meta.get("scene", ""))
+    tags = _build_tags(meta.get("scene", ""), meta.get("hashtags"))
     thumbnail = Path(meta.get("thumbnail", ""))
 
     body = {

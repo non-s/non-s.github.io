@@ -16,14 +16,27 @@ HOOK_BY_SCENE: dict[str, tuple[str, str]] = {
     "puppy": ("Filhote de Cachorro Fofo Demais", "\U0001f436"),
     "dog": ("Cachorro Fofo Brincando", "\U0001f415"),
     "sleepy cat": ("Gatinho Dormindo de um Jeito Fofo", "\U0001f634"),
+    "sleepy dog": ("Cachorrinho Dormindo Tranquilo", "\U0001f634"),
     "playful dog": ("Cachorrinho Brincalhao e Feliz", "\U0001f60a"),
+    "cat playing": ("Gatinho Brincando e se Divertindo", "\U0001f431"),
+    "puppy playing": ("Filhote de Cachorro Brincando", "\U0001f436"),
+    "dog relaxing": ("Cachorrinho Relaxando", "\U0001f615"),
+    "cat relaxing": ("Gatinho Relaxando", "\U0001f431"),
 }
 
 ALL_SCENES: list[str] = list(HOOK_BY_SCENE.keys())
 
 
 # Tags Jamendo: apenas jazz.
-JAMENDO_SEARCH_TERMS: list[str] = ["jazz", "smooth jazz", "bossa nova"]
+JAMENDO_SEARCH_TERMS: list[str] = [
+    "jazz",
+    "smooth jazz",
+    "bossa nova",
+    "coffee jazz",
+    "relaxing jazz",
+    "soft jazz",
+    "jazz instrumental",
+]
 
 # Palavras-chave Pixabay restritas a gatos e cachorros REAIS.
 # Queries evitam termos genericos que trazem animacao/cartoon.
@@ -43,10 +56,17 @@ BROLL_QUERIES: list[str] = [
     "puppy playing real",
     "sleepy cat real",
     "sleepy dog real",
+    "cat relaxing real",
+    "dog relaxing real",
+    "kitten playing real",
+    "puppy dog real",
 ]
 
 # Categorias Pixabay permitidas no filtro local.
-ALLOWED_ANIMAL_KEYWORDS: set[str] = {"cat", "cats", "kitten", "kitty", "dog", "dogs", "puppy", "puppies", "animal", "pet"}
+ALLOWED_ANIMAL_KEYWORDS: set[str] = {
+    "cat", "cats", "kitten", "kitty", "dog", "dogs", "puppy", "puppies",
+    "animal", "pet", "feline", "canine",
+}
 
 # Palavras que indicam cartoon, animacao, ilustracao ou conteudo nao-real.
 BLOCKED_BROLL_KEYWORDS: set[str] = {
