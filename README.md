@@ -107,15 +107,17 @@ Salve o JSON resultante como `_data/youtube_token.json` (ou use o secret `YOUTUB
 - `PATA_JAZZ_LIVE_ENABLED` — `1` para live.
 - `YOUTUBE_PRIVACY` — `public`, `unlisted` ou `private`.
 
-## Grade de publicação (GitHub Actions)
+## Grade de publicação (GitHub Actions) - PLANO 7 DIAS
 
 | Conteúdo | Frequência | Horário BRT | Workflow |
 |---|---|---|---|
-| **Shorts** | 12 por dia (de hora em hora) | 08:30, 09:30 … 19:30 | `pata-jazz-shorts.yml` |
-| **Vídeo horizontal** | 1 por dia | 12:00 | `pata-jazz-horizontal.yml` |
-| **Live** | ~24h/dia em 4 turnos | 00:00, 06:00, 12:00, 18:00 | `pata-jazz-youtube-live.yml` |
+| **Shorts** | 3 por dia | 08:30, 14:30, 19:30 | `pata-jazz-shorts.yml` |
+| **Vídeo horizontal** | 2 por semana | Terça 10:00, Sexta 16:00 | `pata-jazz-horizontal.yml` |
+| **Live** | 1 por semana | Quarta 19:00 (6h) | `pata-jazz-youtube-live.yml` |
 
-> **Observação sobre a live "infinita":** o runner gratuito do GitHub Actions tem limite de ~6h. Por isso a live roda em **4 turnos de ~5h50**, com pequenos gaps de ~10 min entre eles. Para uma live verdadeiramente 24h contínua, é necessário um runner pago, VPS ou cloud externa.
+**Total semanal:** 21 Shorts + 2 Horizontais + 1 Live = **24 vídeos/semana**
+
+> **Observação sobre a live:** O runner gratuito do GitHub Actions tem limite de ~6h por execução. A live semanal roda por 6 horas contínuas. Para lives 24/7 verdadeiras, é necessário runner pago, VPS ou cloud externa.
 
 ## Execução local
 
