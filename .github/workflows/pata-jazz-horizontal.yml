@@ -2,8 +2,11 @@ name: "Pata Jazz - Videos Horizontais"
 
 on:
   schedule:
-    # 1 video longo por dia ao meio-dia BRT (12:00 -> 15:00 UTC)
-    - cron: "0 15 * * *"
+    # 2 videos horizontais por semana - Terça e Sexta (Plano 7 Dias)
+    # Terça: 10:00 BRT (13:00 UTC)
+    # Sexta: 16:00 BRT (19:00 UTC)
+    - cron: "0 13 * * 2"
+    - cron: "0 19 * * 5"
   workflow_dispatch:
     inputs:
       reason:

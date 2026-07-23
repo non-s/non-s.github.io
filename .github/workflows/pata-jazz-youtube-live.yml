@@ -16,14 +16,10 @@ on:
         required: false
         default: "1920x1080"
   schedule:
-    # Aproximacao de "loop infinito" usando runner gratuito do GitHub (~6h limite).
-    # Quatro turnos de ~5h50 ao longo do dia com gaps pequenos de 20 min entre elas.
-    # Turnos BRT: 00:00, 06:00, 12:00, 18:00 (UTC: 03:00, 09:00, 15:00, 21:00).
-    # Com isso o canal fica ao vivo quase 24h/dia sem custo extra.
-    - cron: "0 3 * * *"
-    - cron: "0 9 * * *"
-    - cron: "0 15 * * *"
-    - cron: "0 21 * * *"
+    # 1 live por semana - Quarta-feira (Plano 7 Dias)
+    # Live: 19:00 BRT (22:00 UTC) - Duração: ~6 horas (limite GitHub Actions)
+    # Perfeito para engajamento noturno (trabalho/estudo/relaxamento)
+    - cron: "0 22 * * 3"
 
 permissions:
   contents: read
