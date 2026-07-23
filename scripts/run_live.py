@@ -3,7 +3,10 @@ scripts/run_live.py — orquestra a live Pata Jazz no GitHub Actions.
 
 Cria a transmissao no YouTube, constroi o loop de video e a playlist de audio,
 e inicia o stream via FFmpeg. Ao finalizar (por SIGTERM ou duracao), encerra
-a transmissao no YouTube.
+a transmissao no YouTube seguindo o ciclo de status correto.
+
+Referencias do ciclo de vida da YouTube Live API:
+    ready -> testing -> live -> complete
 """
 
 from __future__ import annotations
@@ -13,6 +16,7 @@ import logging
 import os
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -22,6 +26,16 @@ from generate_pata_jazz_live import _build_looping_input, _run_ffmpeg_stream, _s
 from upload_youtube import create_live_stream, transition_broadcast
 
 log = logging.getLogger(__name__)
+
+
+def _try_transition(broadcast_id: str, status: str) -> bool:
+    """Transiciona o broadcast e retorna True se bem-sucedido."""
+    try:
+        transition_broadcast(broadcast_id, status)
+        return True
+    except Exception as exc:
+        log.warning("Falha ao transicionar broadcast %s para %s: %s", broadcast_id, status, exc)
+        return False
 
 
 def main() -> int:
@@ -34,7 +48,10 @@ def main() -> int:
     w, h = (int(x) for x in resolution.split("x"))
 
     log.info("Criando live no YouTube...")
-    meta = create_live_stream(privacy=privacy, resolution="1080p" if w >= 1920 else "720p")
+    meta = create_live_stream(
+        privacy=privacy,
+        resolution="1080p" if w >= 1920 else "720p",
+    )
     if not meta:
         log.error("Falha ao criar live.")
         return 1
@@ -45,10 +62,12 @@ def main() -> int:
 
     output_stem = f"pata_jazz_live_{meta['stream_id']}"
     try:
-        loop_input, audio_playlist = _build_looping_input(output_stem, target_resolution=(w, h), clip_duration=30)
+        loop_input, audio_playlist = _build_looping_input(
+            output_stem, target_resolution=(w, h), clip_duration=30
+        )
     except Exception as exc:
         log.exception("Falha ao construir loop: %s", exc)
-        transition_broadcast(broadcast_id, "complete")
+        _try_transition(broadcast_id, "complete")
         return 1
 
     _save_live_meta(
@@ -58,15 +77,32 @@ def main() -> int:
         audio_playlist=str(audio_playlist) if audio_playlist else None,
     )
 
-    log.info("Iniciando stream infinito para %s", stream_url)
-    code = _run_ffmpeg_stream(loop_input, stream_url, duration_minutes=duration_minutes, audio_playlist=audio_playlist)
-    log.info("Stream encerrado com codigo %s", code)
+    # Ciclo correto da YouTube Live API: testing -> live -> complete
+    if not _try_transition(broadcast_id, "testing"):
+        log.error("Nao foi possivel colocar a live em 'testing'.")
+        _try_transition(broadcast_id, "complete")
+        return 1
 
-    log.info("Encerrando live no YouTube...")
+    # Pequena pausa para o backend do YouTube processar a transicao
+    time.sleep(2)
+
+    if not _try_transition(broadcast_id, "live"):
+        log.warning("Nao foi possivel colocar a live no ar; tentando encerrar.")
+        _try_transition(broadcast_id, "complete")
+        return 1
+
+    log.info("Iniciando stream para %s", stream_url)
+    code = 1
     try:
-        transition_broadcast(broadcast_id, "complete")
-    except Exception as exc:
-        log.warning("Erro ao finalizar live: %s", exc)
+        code = _run_ffmpeg_stream(
+            loop_input,
+            stream_url,
+            duration_minutes=duration_minutes,
+            audio_playlist=audio_playlist,
+        )
+    finally:
+        log.info("Stream encerrado com codigo %s. Finalizando live...", code)
+        _try_transition(broadcast_id, "complete")
 
     return 0 if code in (0, -15, 255) else code
 
