@@ -89,8 +89,9 @@ def _generate_horizontal(duration: int = 240, resolution: tuple[int, int] = (192
     THUMB_DIR.mkdir(parents=True, exist_ok=True)
 
     vf = (
-        f"crop='iw:iw*9/16:0:(ih-iw*9/16)/2',"
-        f"scale={resolution[0]}:{resolution[1]},"
+        f"crop='min(iw,ih*16/9):min(ih,iw*9/16):0:0',"
+        f"scale={resolution[0]}:{resolution[1]}:force_original_aspect_ratio=decrease,"
+        f"pad={resolution[0]}:{resolution[1]}:(ow-iw)/2:(oh-ih)/2:black,"
         f"setsar=1/1"
     )
 

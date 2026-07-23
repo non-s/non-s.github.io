@@ -37,13 +37,20 @@ def _safe_name(query: str, idx: int, url: str, ext: str) -> str:
 
 def _download_video(url: str, dest: Path) -> bool:
     try:
-        r = requests.get(url, timeout=60)
-        r.raise_for_status()
-        dest.write_bytes(r.content)
+        with requests.get(url, timeout=120, stream=True) as r:
+            r.raise_for_status()
+            with open(dest, "wb") as f:
+                for chunk in r.iter_content(chunk_size=64 * 1024):
+                    if chunk:
+                        f.write(chunk)
         return True
     except Exception as exc:
         log.warning("Falha ao baixar %s: %s", url, exc)
         return False
+
+
+# Backward-compat alias mantido para eventuais chamadas antigas.
+_download = _download_video
 
 
 def search_and_download(api_key: str, query: str, max_results: int = 5) -> int:

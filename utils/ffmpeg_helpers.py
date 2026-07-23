@@ -39,7 +39,8 @@ def run_ffmpeg(args: list[str], **kwargs) -> subprocess.CompletedProcess:
 def build_concat_demuxer(paths: Iterable[str], output_txt: str) -> None:
     with open(output_txt, "w", encoding="utf-8") as f:
         for p in paths:
-            f.write(f"file '{Path(p).resolve().as_posix()}'\n")
+            safe = Path(p).resolve().as_posix().replace("'", r"\'")
+            f.write(f"file '{safe}'\n")
 
 
 def get_video_duration(path: str) -> float:

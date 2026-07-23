@@ -24,13 +24,13 @@ jobs:
     if: ${{ vars.PATA_JAZZ_ENABLED == '1' && vars.PATA_JAZZ_SHORTS_ENABLED == '1' }}
     runs-on: ubuntu-latest
     timeout-minutes: 25
-    permissions:
-      contents: write
     env:
       YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
     steps:
       - name: "Checkout"
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - name: "Python 3.11"
         uses: actions/setup-python@v5
         with:
@@ -79,7 +79,7 @@ jobs:
         run: python generate_pata_jazz_short.py
       - name: "Upload para YouTube"
         if: hashFiles('youtube_token.json') != ''
-        run: python upload_youtube.py --mode upload --language=pt
+        run: python upload_youtube.py --mode upload --language=pt --prefix pata_jazz_short_
       - name: "Apagar token"
         if: always()
         run: rm -f youtube_token.json

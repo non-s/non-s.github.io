@@ -22,19 +22,22 @@ concurrency:
   group: pata-jazz-horizontal
   cancel-in-progress: false
 
+env:
+  GENERATE_DURATION: ${{ github.event.inputs.duration || '300' }}
+
 jobs:
   generate-and-upload:
     name: "Gerar e publicar video horizontal Pata Jazz"
     if: ${{ vars.PATA_JAZZ_ENABLED == '1' && vars.PATA_JAZZ_HORIZONTAL_ENABLED == '1' }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    permissions:
-      contents: write
     env:
       YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
     steps:
       - name: "Checkout"
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - name: "Python 3.11"
         uses: actions/setup-python@v5
         with:
@@ -80,10 +83,10 @@ jobs:
       - name: "Gerar video horizontal"
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python generate_pata_jazz_horizontal.py --duration ${{ github.event.inputs.duration || '300' }}
+        run: python generate_pata_jazz_horizontal.py --duration "$GENERATE_DURATION"
       - name: "Upload para YouTube"
         if: hashFiles('youtube_token.json') != ''
-        run: python upload_youtube.py --mode upload --language=pt
+        run: python upload_youtube.py --mode upload --language=pt --prefix pata_jazz_horizontal_
       - name: "Apagar token"
         if: always()
         run: rm -f youtube_token.json
