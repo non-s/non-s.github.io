@@ -69,13 +69,13 @@ jobs:
             chmod 600 youtube_token.json
           fi
       - name: "Cache b-roll"
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: _assets/video/animal_broll
           key: animal-broll-${{ github.run_id }}
           restore-keys: animal-broll-
       - name: "Cache jazz"
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: _assets/audio/animal_jazz
           key: animal-jazz-${{ github.run_id }}
