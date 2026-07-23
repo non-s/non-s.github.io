@@ -100,9 +100,11 @@ def hook_for_scene(scene: str) -> tuple[str, str]:
 
 def is_allowed_animal_text(text: str) -> bool:
     lowered = text.lower()
-    if any(kw in lowered for kw in BLOCKED_BROLL_KEYWORDS):
+    # Normaliza underscores para espacos para matching (ex: ai_art -> ai art)
+    normalized = lowered.replace("_", " ")
+    if any(kw in lowered or kw in normalized for kw in BLOCKED_BROLL_KEYWORDS):
         return False
-    return any(kw in lowered for kw in ALLOWED_ANIMAL_KEYWORDS)
+    return any(kw in lowered or kw in normalized for kw in ALLOWED_ANIMAL_KEYWORDS)
 
 
 def channel_title_prefix() -> str:
