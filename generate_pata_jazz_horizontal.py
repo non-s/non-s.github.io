@@ -114,7 +114,8 @@ def _generate_horizontal(duration: int = 240, resolution: tuple[int, int] = (192
         "+faststart",
     ]
     if audio_path:
-        inputs += ["-i", str(audio_path)]
+        # Loop a unica musica para cobrir toda a duracao do video.
+        inputs += ["-stream_loop", "-1", "-i", str(audio_path)]
         output_args += ["-c:a", "aac", "-b:a", "192k", "-shortest"]
 
     run_ffmpeg(inputs + output_args + [str(output)])

@@ -38,14 +38,23 @@ def _is_jazz(hit: dict) -> bool:
 
 
 def _download(url: str, dest: Path) -> bool:
-    try:
-        r = requests.get(url, timeout=120)
-        r.raise_for_status()
-        dest.write_bytes(r.content)
-        return True
-    except Exception as exc:
-        log.warning("Falha ao baixar audio %s: %s", url, exc)
-        return False
+    # Faz download em streaming com retries. Isso evita IncompleteRead em arquivos grandes.
+    for attempt in range(3):
+        try:
+            with requests.get(url, timeout=120, stream=True) as r:
+                r.raise_for_status()
+                with open(dest, "wb") as f:
+                    for chunk in r.iter_content(chunk_size=64 * 1024):
+                        if chunk:
+                            f.write(chunk)
+            return True
+        except Exception as exc:
+            log.warning("Falha ao baixar audio %s (tentativa %d/3): %s", url, attempt + 1, exc)
+            if attempt < 2:
+                import time
+
+                time.sleep(2 ** attempt)
+    return False
 
 
 def search_and_download(term: str, max_results: int = 5) -> int:

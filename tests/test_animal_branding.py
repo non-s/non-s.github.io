@@ -35,6 +35,18 @@ def test_no_disallowed_animals():
         assert not is_allowed_animal_text(word)
 
 
+def test_blocked_cartoon_content():
+    blocked = [
+        "cute cat cartoon",
+        "animated dog",
+        "kitten 3d illustration",
+        "puppy drawing vector",
+        "ai generated cat",
+    ]
+    for word in blocked:
+        assert not is_allowed_animal_text(word)
+
+
 def test_jazz_terms_only():
     for term in JAMENDO_SEARCH_TERMS:
         assert "jazz" in term.lower() or "bossa" in term.lower()

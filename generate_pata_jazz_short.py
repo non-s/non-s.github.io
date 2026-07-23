@@ -133,7 +133,8 @@ def _generate_short(duration: int = 35, target_resolution: tuple[int, int] = (10
         "+faststart",
     ]
     if audio_path:
-        inputs += ["-i", str(audio_path)]
+        # Loop a musica para cobrir toda a duracao do video.
+        inputs += ["-stream_loop", "-1", "-i", str(audio_path)]
         output_args += ["-c:a", "aac", "-b:a", "128k", "-shortest"]
 
     run_ffmpeg(inputs + output_args + [str(output)])

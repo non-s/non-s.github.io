@@ -16,7 +16,9 @@ on:
         required: false
         default: "1920x1080"
   schedule:
-    - cron: "50 0,6,12,18 * * *"
+    # Uma unica live por dia (limite do runner gratis ~6h).
+    # Inicia as 08:00 BRT (11:00 UTC) e transmite ate ~13:50.
+    - cron: "0 11 * * *"
 
 permissions:
   contents: read

@@ -21,32 +21,57 @@ HOOK_BY_SCENE: dict[str, tuple[str, str]] = {
 
 ALL_SCENES: list[str] = list(HOOK_BY_SCENE.keys())
 
-# Palavras-chave Pixabay restritas a gatos e cachorros.
-BROLL_QUERIES: list[str] = [
-    "cute cat",
-    "kitten playing",
-    "sleepy cat",
-    "cat playing",
-    "adorable cat",
-    "funny cat",
-    "cute kitten",
-    "kitten sleeping",
-    "playful kitten",
-    "cute puppy",
-    "puppy playing",
-    "sleepy puppy",
-    "dog playing",
-    "happy dog",
-    "cute dog",
-    "adorable puppy",
-    "puppy dog",
-]
 
 # Tags Jamendo: apenas jazz.
 JAMENDO_SEARCH_TERMS: list[str] = ["jazz", "smooth jazz", "bossa nova"]
 
+# Palavras-chave Pixabay restritas a gatos e cachorros REAIS.
+# Queries evitam termos genericos que trazem animacao/cartoon.
+BROLL_QUERIES: list[str] = [
+    "real cat",
+    "real kitten",
+    "cute cat real",
+    "cat playing real",
+    "adorable cat",
+    "cute kitten real",
+    "real puppy",
+    "real dog",
+    "cute puppy real",
+    "dog playing real",
+    "happy dog real",
+    "cute dog real",
+    "puppy playing real",
+    "sleepy cat real",
+    "sleepy dog real",
+]
+
 # Categorias Pixabay permitidas no filtro local.
-ALLOWED_ANIMAL_KEYWORDS: set[str] = {"cat", "cats", "kitten", "kitty", "dog", "dogs", "puppy", "puppies"}
+ALLOWED_ANIMAL_KEYWORDS: set[str] = {"cat", "cats", "kitten", "kitty", "dog", "dogs", "puppy", "puppies", "animal", "pet"}
+
+# Palavras que indicam cartoon, animacao, ilustracao ou conteudo nao-real.
+BLOCKED_BROLL_KEYWORDS: set[str] = {
+    "cartoon",
+    "animation",
+    "animated",
+    "3d",
+    "3 d",
+    "illustration",
+    "drawing",
+    "vector",
+    "clipart",
+    "artificial",
+    "ai generated",
+    "ai-generated",
+    "cute illustration",
+    "motion graphic",
+    "graphic",
+    "sticker",
+    "emoji",
+    "sketch",
+    "comic",
+    "manga",
+    "anime",
+}
 
 
 def random_scene() -> str:
@@ -59,6 +84,8 @@ def hook_for_scene(scene: str) -> tuple[str, str]:
 
 def is_allowed_animal_text(text: str) -> bool:
     lowered = text.lower()
+    if any(kw in lowered for kw in BLOCKED_BROLL_KEYWORDS):
+        return False
     return any(kw in lowered for kw in ALLOWED_ANIMAL_KEYWORDS)
 
 
