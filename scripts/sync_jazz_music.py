@@ -26,8 +26,8 @@ log = logging.getLogger(__name__)
 
 JAMENDO_API_URL = "https://api.jamendo.com/v3.0/tracks"
 CLIENT_ID = os.environ.get("JAMENDO_CLIENT_ID", "")
-MAX_PER_TERM = 25
-MAX_POOL_SIZE = 150
+MAX_PER_TERM = 30
+MAX_POOL_SIZE = 200
 
 
 def _is_jazz(hit: dict) -> bool:

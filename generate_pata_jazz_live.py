@@ -12,7 +12,6 @@ from __future__ import annotations
 import argparse
 import json
 import logging
-import os
 import random
 import signal
 import subprocess
@@ -23,6 +22,7 @@ from pathlib import Path
 
 from utils.animal_branding import hook_for_scene, random_scene
 from utils.ffmpeg_helpers import build_concat_demuxer, get_video_duration, run_ffmpeg
+from utils.log_config import configure_logging, log_exception_to_file
 from utils.media_pool import audio_pool, ensure_dirs, pick_videos, pool_stats
 
 ROOT = Path(__file__).resolve().parent
@@ -88,9 +88,14 @@ def _build_audio_playlist(output_stem: str) -> tuple[Path | None, float]:
 def _build_looping_input(
     output_stem: str,
     target_resolution: tuple[int, int] = (1920, 1080),
-    clip_duration: int = 30,
+    clip_duration: int = 45,
+    video_count: int = 40,
 ) -> tuple[Path, Path | None]:
-    """Constroi arquivo de video loop com varios clips e playlist de audio."""
+    """Constroi arquivo de video loop com varios clips fofos e playlist de jazz.
+
+    Usa mais clips (horizontal) para maior variedade visual e uma playlist com
+    ate 150 faixas (ou o maximo disponivel) para audio longo e diversificado.
+    """
     ensure_dirs()
     stats = pool_stats()
     if stats["videos"] == 0:
@@ -98,7 +103,8 @@ def _build_looping_input(
 
     scene = random_scene()
     hook, emoji = hook_for_scene(scene)
-    videos = pick_videos(min_count=2, max_count=min(20, stats["videos"]))
+    # Live horizontal: usa muitos clips fofos para loop rico.
+    videos = pick_videos(min_count=min(10, stats["videos"]), max_count=min(video_count, stats["videos"]), cuteness_sort=True)
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -157,7 +163,13 @@ def _build_looping_input(
         p.unlink(missing_ok=True)
     concat_txt.unlink(missing_ok=True)
 
-    log.info("Arquivo de loop gerado: %s (duracao do ciclo: %ss)", loop_input, total_loop_duration)
+    log.info(
+        "Loop de live gerado: %s (ciclo: %ss, clips: %d, audio playlist: %s)",
+        loop_input,
+        total_loop_duration,
+        len(videos),
+        playlist_txt,
+    )
     return loop_input, playlist_txt
 
 
@@ -258,7 +270,7 @@ def main() -> int:
     parser.add_argument("--resolution", type=str, default="1920x1080", help="Ex: 1920x1080 ou 1280x720")
     args = parser.parse_args()
 
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    configure_logging()
 
     if not args.stream_url:
         log.error("URL de ingestao nao fornecida. Use --stream-url.")
@@ -273,6 +285,7 @@ def main() -> int:
         loop_input, audio_playlist = _build_looping_input(output_stem, target_resolution=(w, h), clip_duration=30)
     except Exception as exc:
         log.exception("Falha ao construir loop: %s", exc)
+        log_exception_to_file(exc, OUTPUT_DIR)
         return 1
 
     title = _load_live_title()

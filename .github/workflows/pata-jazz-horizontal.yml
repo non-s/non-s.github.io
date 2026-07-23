@@ -2,8 +2,8 @@ name: "Pata Jazz - Videos Horizontais"
 
 on:
   schedule:
-    # 1 video longo por dia as 19:00 BRT (22:00 UTC)
-    - cron: "0 22 * * *"
+    # 1 video longo por dia ao meio-dia BRT (12:00 -> 15:00 UTC)
+    - cron: "0 15 * * *"
   workflow_dispatch:
     inputs:
       reason:
@@ -33,6 +33,9 @@ jobs:
     timeout-minutes: 45
     env:
       YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+      JAMENDO_CLIENT_ID: ${{ secrets.JAMENDO_CLIENT_ID }}
     steps:
       - name: "Checkout"
         uses: actions/checkout@v4
@@ -73,16 +76,10 @@ jobs:
           key: animal-jazz-${{ github.run_id }}
           restore-keys: animal-jazz-
       - name: "Sincronizar b-roll"
-        env:
-          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
         run: python scripts/sync_animal_broll.py || echo "::warning::B-roll sync falhou"
       - name: "Sincronizar jazz"
-        env:
-          JAMENDO_CLIENT_ID: ${{ secrets.JAMENDO_CLIENT_ID }}
         run: python scripts/sync_jazz_music.py || echo "::warning::Jazz sync falhou"
       - name: "Gerar video horizontal"
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python generate_pata_jazz_horizontal.py --duration "$GENERATE_DURATION"
       - name: "Upload para YouTube"
         if: hashFiles('youtube_token.json') != ''

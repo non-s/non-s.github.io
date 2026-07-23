@@ -2,8 +2,20 @@ name: "Pata Jazz - Shorts"
 
 on:
   schedule:
-    # 1 short por dia: 08:30 BRT (UTC-3 -> 11:30 UTC)
+    # 12 shorts por dia, de hora em hora, das 08:30 as 19:30 BRT (11:30..22:30 UTC).
+    # Escolhido 12/dia para evitar throttling de upload do YouTube em canais pequenos.
     - cron: "30 11 * * *"
+    - cron: "30 12 * * *"
+    - cron: "30 13 * * *"
+    - cron: "30 14 * * *"
+    - cron: "30 15 * * *"
+    - cron: "30 16 * * *"
+    - cron: "30 17 * * *"
+    - cron: "30 18 * * *"
+    - cron: "30 19 * * *"
+    - cron: "30 20 * * *"
+    - cron: "30 21 * * *"
+    - cron: "30 22 * * *"
   workflow_dispatch:
     inputs:
       reason:
@@ -23,9 +35,12 @@ jobs:
     name: "Gerar e publicar Short Pata Jazz"
     if: ${{ vars.PATA_JAZZ_ENABLED == '1' && vars.PATA_JAZZ_SHORTS_ENABLED == '1' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 12
     env:
       YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+      JAMENDO_CLIENT_ID: ${{ secrets.JAMENDO_CLIENT_ID }}
     steps:
       - name: "Checkout"
         uses: actions/checkout@v4
@@ -66,16 +81,10 @@ jobs:
           key: animal-jazz-${{ github.run_id }}
           restore-keys: animal-jazz-
       - name: "Sincronizar b-roll (gatos/cachorros)"
-        env:
-          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
         run: python scripts/sync_animal_broll.py || echo "::warning::B-roll sync falhou"
       - name: "Sincronizar jazz"
-        env:
-          JAMENDO_CLIENT_ID: ${{ secrets.JAMENDO_CLIENT_ID }}
         run: python scripts/sync_jazz_music.py || echo "::warning::Jazz sync falhou"
       - name: "Gerar Short"
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python generate_pata_jazz_short.py
       - name: "Upload para YouTube"
         if: hashFiles('youtube_token.json') != ''

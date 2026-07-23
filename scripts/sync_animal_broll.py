@@ -58,10 +58,11 @@ def search_and_download(api_key: str, query: str, max_results: int = 5) -> int:
     params = {
         "key": api_key,
         "q": query,
-        "per_page": max(3, max_results * 2),
+        "per_page": max(6, max_results * 3),
         "safesearch": "true",
         "orientation": "horizontal",
         "video_type": "film",  # exclui animacao/cartoon — so video real
+        "order": "popular",  # prioriza os clips mais apreciados (geralmente mais fofos)
     }
     try:
         r = requests.get(PIXABAY_API_URL, params=params, headers=headers, timeout=30)
@@ -72,6 +73,9 @@ def search_and_download(api_key: str, query: str, max_results: int = 5) -> int:
         return 0
 
     hits = data.get("hits", [])
+    # Ordena por "likes" (desc) para favorecer os clips mais fofos/populares.
+    hits = sorted(hits, key=lambda h: int(h.get("likes", 0) or 0), reverse=True)
+
     downloaded = 0
     for idx, hit in enumerate(hits):
         if downloaded >= max_results:
@@ -93,14 +97,23 @@ def search_and_download(api_key: str, query: str, max_results: int = 5) -> int:
         if video_type and "animat" in video_type:
             log.info("Ignorando hit de animacao (type=%s): %s", video_type, tags)
             continue
+        # Prefere clips que parecam "fofinhos" pelas tags (kitten/puppy/cute/sleepy).
+        lower_tags = tags.lower()
+        is_extra_cute = any(kw in lower_tags for kw in ("kitten", "puppy", "cute", "sleepy", "adorable", "baby"))
         url = video.get("url", "")
         ext = Path(urlparse(url).path).suffix.lstrip(".") or "mp4"
         dest = VIDEO_DIR / _safe_name(query, idx, url, ext)
         if dest.exists():
             continue
         if _download_video(url, dest):
+            try:
+                # Salva metadados Pixabay para futura triagem por popularidade.
+                meta_dest = dest.with_suffix(".json")
+                meta_dest.write_text(json.dumps(hit, ensure_ascii=False, indent=2), encoding="utf-8")
+            except Exception:
+                pass
             downloaded += 1
-            log.info("Baixado %s", dest.name)
+            log.info("Baixado %s (likes=%s, cute=%s)", dest.name, hit.get("likes"), is_extra_cute)
     return downloaded
 
 
@@ -118,13 +131,18 @@ def main() -> int:
         return 0
 
     total = 0
-    for query in BROLL_QUERIES:
+    # Prioriza queries mais fofas primeiro.
+    prioritized_queries = sorted(
+        BROLL_QUERIES,
+        key=lambda q: (0 if any(kw in q for kw in ("kitten", "puppy", "adorable", "cute")) else 1, q),
+    )
+    for query in prioritized_queries:
         if len(list(VIDEO_DIR.glob("*.mp4"))) >= MAX_POOL_SIZE:
             break
         total += search_and_download(api_key, query, MAX_PER_QUERY)
 
     log.info("Sync finalizado. Total de novos clips: %d", total)
-    return 0 if total > 0 else 0
+    return 0 if total >= 0 else 1
 
 
 if __name__ == "__main__":

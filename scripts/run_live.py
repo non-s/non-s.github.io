@@ -24,6 +24,7 @@ sys.path.insert(0, str(ROOT))
 
 from generate_pata_jazz_live import _build_looping_input, _run_ffmpeg_stream, _save_live_meta
 from upload_youtube import create_live_stream, transition_broadcast
+from utils.discord_webhook import notify_live_end, notify_live_start
 
 log = logging.getLogger(__name__)
 
@@ -91,7 +92,12 @@ def main() -> int:
         _try_transition(broadcast_id, "complete")
         return 1
 
+    # Notifica início da live no Discord
+    thumbnail = f"https://img.youtube.com/vi/{broadcast_id}/maxresdefault.jpg"
+    notify_live_start(title=title, stream_url=f"https://youtube.com/watch?v={broadcast_id}", thumbnail=thumbnail)
+
     log.info("Iniciando stream para %s", stream_url)
+    start_time = time.time()
     code = 1
     try:
         code = _run_ffmpeg_stream(
@@ -101,8 +107,11 @@ def main() -> int:
             audio_playlist=audio_playlist,
         )
     finally:
-        log.info("Stream encerrado com codigo %s. Finalizando live...", code)
+        elapsed = (time.time() - start_time) / 60
+        log.info("Stream encerrado com codigo %s (%.1f min). Finalizando live...", code, elapsed)
         _try_transition(broadcast_id, "complete")
+        # Notifica fim da live no Discord
+        notify_live_end(title=title, duration_minutes=int(elapsed))
 
     return 0 if code in (0, -15, 255) else code
 

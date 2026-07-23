@@ -16,9 +16,14 @@ on:
         required: false
         default: "1920x1080"
   schedule:
-    # Uma unica live por dia (limite do runner gratis ~6h).
-    # Inicia as 08:00 BRT (11:00 UTC) e transmite ate ~13:50.
-    - cron: "0 11 * * *"
+    # Aproximacao de "loop infinito" usando runner gratuito do GitHub (~6h limite).
+    # Quatro turnos de ~5h50 ao longo do dia com gaps pequenos de 20 min entre elas.
+    # Turnos BRT: 00:00, 06:00, 12:00, 18:00 (UTC: 03:00, 09:00, 15:00, 21:00).
+    # Com isso o canal fica ao vivo quase 24h/dia sem custo extra.
+    - cron: "0 3 * * *"
+    - cron: "0 9 * * *"
+    - cron: "0 15 * * *"
+    - cron: "0 21 * * *"
 
 permissions:
   contents: read
@@ -39,6 +44,9 @@ jobs:
     timeout-minutes: 360
     env:
       YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+      JAMENDO_CLIENT_ID: ${{ secrets.JAMENDO_CLIENT_ID }}
     steps:
       - name: "Checkout"
         uses: actions/checkout@v4
@@ -79,16 +87,10 @@ jobs:
           key: animal-jazz-${{ github.run_id }}
           restore-keys: animal-jazz-
       - name: "Sincronizar b-roll"
-        env:
-          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
         run: python scripts/sync_animal_broll.py || echo "::warning::B-roll sync falhou"
       - name: "Sincronizar jazz"
-        env:
-          JAMENDO_CLIENT_ID: ${{ secrets.JAMENDO_CLIENT_ID }}
         run: python scripts/sync_jazz_music.py || echo "::warning::Jazz sync falhou"
       - name: "Executar live Pata Jazz"
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           python -c "from generate_pata_jazz_live import _build_looping_input; print('ok')"
           python scripts/run_live.py

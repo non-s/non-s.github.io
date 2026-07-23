@@ -33,11 +33,38 @@ def audio_pool() -> list[Path]:
     return sorted(AUDIO_DIR.glob("*.mp3"))
 
 
-def pick_videos(min_count: int = 1, max_count: int = 5) -> list[Path]:
+def _load_video_metadata(video: Path) -> dict:
+    meta_path = video.with_suffix(".json")
+    if not meta_path.exists():
+        return {}
+    try:
+        with open(meta_path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
+def _cuteness_score(video: Path) -> int:
+    """Score heurístico: preferir clips com likes/views altos e palavras fofas."""
+    meta = _load_video_metadata(video)
+    tags = str(meta.get("tags", "")).lower()
+    likes = int(meta.get("likes", 0) or 0)
+    views = int(meta.get("views", 0) or 0)
+    cute_bonus = sum(10 for kw in ("kitten", "puppy", "adorable", "cute", "sleepy", "baby") if kw in tags)
+    # views e likes contribuem com pesos menores para nao dominar completamente.
+    return cute_bonus + (likes // 20) + (views // 1000)
+
+
+def pick_videos(min_count: int = 1, max_count: int = 5, cuteness_sort: bool = True) -> list[Path]:
     pool = video_pool()
     if not pool:
         return []
     count = random.randint(min_count, min(max_count, len(pool)))
+    if cuteness_sort and len(pool) > count:
+        # Pega os top clips fofos, mas embaralha para nao repetir sempre os mesmos.
+        scored = sorted(pool, key=_cuteness_score, reverse=True)
+        top = scored[: max(count * 3, len(pool) // 2)]
+        return random.sample(top, count)
     return random.sample(pool, count)
 
 

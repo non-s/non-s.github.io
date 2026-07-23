@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import logging
 import os
+import random
 import re
 import threading
 import time
@@ -21,6 +22,8 @@ _GEMINI_MODEL = "gemini-1.5-flash"
 _GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 _MIN_INTERVAL = 1.0  # segundos entre chamadas
 _GEMINI_429_CIRCUIT_THRESHOLD = 5
+_MAX_RETRIES = 3
+_BASE_BACKOFF = 2.0  # segundos
 
 # Throttle + circuit breaker state (protegido por lock para thread-safety)
 _call_lock = threading.Lock()
@@ -86,9 +89,9 @@ def ai_text(
     if json_mode:
         body["generationConfig"]["responseMimeType"] = "application/json"
 
-    for attempt in range(2):
+    for attempt in range(_MAX_RETRIES):
         try:
-            log.info("Gemini task=%s tentativa %d/2", task, attempt + 1)
+            log.info("Gemini task=%s tentativa %d/%d", task, attempt + 1, _MAX_RETRIES)
             r = _session.post(
                 url,
                 json=body,
@@ -106,18 +109,27 @@ def ai_text(
             if status == 429:
                 with _gemini_lock:
                     _gemini_429_streak += 1
-                    wait = min(8, 5)
-                    log.warning("Gemini 429 - aguardando %ss", wait)
-                    sleep(wait)
                     if _gemini_429_streak >= _GEMINI_429_CIRCUIT_THRESHOLD:
                         _gemini_circuit_open = True
+                # Backoff exponencial com jitter para 429
+                wait = min(_BASE_BACKOFF * (2 ** attempt) + random.uniform(0, 1), 8)
+                log.warning("Gemini 429 - aguardando %ss (tentativa %d/%d)", wait, attempt + 1, _MAX_RETRIES)
+                sleep(wait)
                 continue
+            # Para outros erros HTTP, loga e quebra
             log.warning("Gemini HTTP %s - desistindo", status)
             break
+        except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as exc:
+            # Timeout ou connection error: retry com backoff exponencial
+            wait = _BASE_BACKOFF * (2 ** attempt) + random.uniform(0, 1)
+            log.warning("Gemini timeout/connection error (tentativa %d/%d): %s - aguardando %ss", attempt + 1, _MAX_RETRIES, exc, wait)
+            sleep(wait)
+            continue
         except Exception as exc:
-            log.warning("Gemini erro (tentativa %d/2): %s", attempt + 1, exc)
-            if attempt < 1:
-                sleep(3)
+            log.warning("Gemini erro inesperado (tentativa %d/%d): %s", attempt + 1, _MAX_RETRIES, exc)
+            if attempt < _MAX_RETRIES - 1:
+                wait = _BASE_BACKOFF * (2 ** attempt)
+                sleep(wait)
                 continue
             break
     return ""

@@ -14,12 +14,20 @@ from typing import Iterable
 log = logging.getLogger(__name__)
 
 
-def has_ffmpeg() -> bool:
+def _has_binary(name: str) -> bool:
     try:
-        subprocess.run(["ffmpeg", "-version"], capture_output=True, check=True)
+        subprocess.run([name, "-version"], capture_output=True, check=True)
         return True
     except Exception:
         return False
+
+
+def has_ffmpeg() -> bool:
+    return _has_binary("ffmpeg")
+
+
+def has_ffprobe() -> bool:
+    return _has_binary("ffprobe")
 
 
 def run_ffmpeg(args: list[str], **kwargs) -> subprocess.CompletedProcess:

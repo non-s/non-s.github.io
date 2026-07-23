@@ -14,7 +14,9 @@ import argparse
 import json
 import logging
 import os
+import random
 import sys
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -22,6 +24,7 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
 from utils.ai_helper import ai_text
+from utils.log_config import configure_logging, log_exception_to_file
 from utils.youtube_oauth import get_youtube_service
 
 ROOT = Path(__file__).resolve().parent
@@ -29,6 +32,10 @@ OUTPUT_DIR = ROOT / "_videos"
 LIVE_META_DIR = ROOT / "_data"
 
 log = logging.getLogger(__name__)
+
+# Retry config para YouTube API
+_YOUTUBE_MAX_RETRIES = 3
+_YOUTUBE_BASE_BACKOFF = 2.0
 
 
 def _latest_video_meta(prefix: str = "pata_jazz_") -> tuple[Path, dict] | None:
@@ -87,13 +94,13 @@ def upload_video(language: str = "pt", privacy: str = "public", prefix: str = "p
         body=body,
         media_body=MediaFileUpload(str(video_path), chunksize=-1, resumable=True),
     )
-    response = request.execute()
+    response = _retry_youtube_call(request.execute)
     video_id = response["id"]
     log.info("Video enviado: https://youtu.be/%s", video_id)
 
     if thumbnail.exists():
         try:
-            service.thumbnails().set(videoId=video_id, media_body=MediaFileUpload(str(thumbnail))).execute()
+            _retry_youtube_call(service.thumbnails().set(videoId=video_id, media_body=MediaFileUpload(str(thumbnail))).execute)
             log.info("Thumbnail aplicada.")
         except HttpError as exc:
             log.warning("Falha ao aplicar thumbnail: %s", exc)
@@ -138,7 +145,7 @@ def create_live_stream(
         },
     }
 
-    broadcast = service.liveBroadcasts().insert(part="snippet,status,contentDetails", body=broadcast_body).execute()
+    broadcast = _retry_youtube_call(service.liveBroadcasts().insert(part="snippet,status,contentDetails", body=broadcast_body).execute)
     broadcast_id = broadcast["id"]
 
     stream_body = {
@@ -152,13 +159,13 @@ def create_live_stream(
         },
     }
 
-    stream = service.liveStreams().insert(part="snippet,cdn", body=stream_body).execute()
+    stream = _retry_youtube_call(service.liveStreams().insert(part="snippet,cdn", body=stream_body).execute)
     stream_id = stream["id"]
     ingestion_info = stream["cdn"]["ingestionInfo"]
     stream_name = ingestion_info["streamName"]
     ingestion_url = f"rtmp://a.rtmp.youtube.com/live2/{stream_name}"
 
-    service.liveBroadcasts().bind(part="id,contentDetails", id=broadcast_id, streamId=stream_id).execute()
+    _retry_youtube_call(service.liveBroadcasts().bind(part="id,contentDetails", id=broadcast_id, streamId=stream_id).execute)
 
     meta = {
         "broadcast_id": broadcast_id,
@@ -178,8 +185,34 @@ def create_live_stream(
 
 def transition_broadcast(broadcast_id: str, status: str) -> None:
     service = get_youtube_service()
-    service.liveBroadcasts().transition(id=broadcast_id, part="status", broadcastStatus=status).execute()
+    _retry_youtube_call(service.liveBroadcasts().transition(id=broadcast_id, part="status", broadcastStatus=status).execute)
     log.info("Broadcast %s transicionado para %s", broadcast_id, status)
+
+
+def _retry_youtube_call(func, *args, **kwargs):
+    """Executa chamada YouTube API com retry exponencial e circuit breaker."""
+    for attempt in range(_YOUTUBE_MAX_RETRIES):
+        try:
+            return func(*args, **kwargs)
+        except HttpError as e:
+            status = e.resp.status if hasattr(e, 'resp') else 0
+            if status in (429, 500, 502, 503, 504):
+                # Rate limit ou server error: retry com backoff
+                wait = _YOUTUBE_BASE_BACKOFF * (2 ** attempt) + random.uniform(0, 1)
+                log.warning("YouTube API %s - retry em %ss (tentativa %d/%d)", status, wait, attempt + 1, _YOUTUBE_MAX_RETRIES)
+                time.sleep(wait)
+                continue
+            # Erro nao retryable (4xx exceto 429)
+            log.error("YouTube API HTTP %s - nao retryable: %s", status, e)
+            raise
+        except Exception as e:
+            log.warning("YouTube API erro inesperado (tentativa %d/%d): %s", attempt + 1, _YOUTUBE_MAX_RETRIES, e)
+            if attempt < _YOUTUBE_MAX_RETRIES - 1:
+                wait = _YOUTUBE_BASE_BACKOFF * (2 ** attempt)
+                time.sleep(wait)
+                continue
+            raise
+    return None
 
 
 def main() -> int:
@@ -195,7 +228,7 @@ def main() -> int:
     parser.add_argument("--prefix", default="pata_jazz_", help="Prefixo dos arquivos de video a enviar")
     args = parser.parse_args()
 
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    configure_logging()
 
     try:
         if args.transition:
@@ -223,9 +256,11 @@ def main() -> int:
         return 0
     except HttpError as exc:
         log.exception("Erro da YouTube API: %s", exc)
+        log_exception_to_file(exc, OUTPUT_DIR)
         return 1
     except Exception as exc:
         log.exception("Falha no upload: %s", exc)
+        log_exception_to_file(exc, OUTPUT_DIR)
         return 1
 
 
