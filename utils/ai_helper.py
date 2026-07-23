@@ -17,20 +17,20 @@ import requests
 
 log = logging.getLogger(__name__)
 
-_session = requests.Session()
-_session.headers.update({"User-Agent": "PataJazz-Bot/1.0 (+https://non-s.github.io)"})
-
+_GEMINI_MODEL = "gemini-1.5-flash"
 _GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-_GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-flash-lite-latest")
-_MIN_INTERVAL = float(os.environ.get("GEMINI_MIN_INTERVAL", "4.0"))
+_MIN_INTERVAL = 1.0  # segundos entre chamadas
+_GEMINI_429_CIRCUIT_THRESHOLD = 5
+
+# Throttle + circuit breaker state (protegido por lock para thread-safety)
 _call_lock = threading.Lock()
 _last_call_ts = 0.0
-
-_GEMINI_429_CIRCUIT_THRESHOLD = int(os.environ.get("GEMINI_429_CIRCUIT_THRESHOLD", "3"))
+_session = requests.Session()
+_session.headers.update({"User-Agent": "PataJazz-Bot/1.0 (+https://non-s.github.io)"})
+_gemini_lock = threading.Lock()
 _gemini_429_streak = 0
 _gemini_circuit_open = False
-
-_SPAM_PATTERNS = re.compile(
+_SENSATIONAL_PATTERNS = re.compile(
     r"\bclick here\b|\byou won\'t believe\b|\bshoking\b|\bshocking\b",
     re.IGNORECASE,
 )
@@ -70,13 +70,14 @@ def ai_text(
         log.error("GEMINI_API_KEY nao configurada.")
         return ""
 
-    if _gemini_circuit_open:
-        log.warning("Circuit breaker do Gemini aberto; pulando chamada.")
-        return ""
+    with _gemini_lock:
+        if _gemini_circuit_open:
+            log.warning("Circuit breaker do Gemini aberto; pulando chamada.")
+            return ""
 
     sys_msg = system or _default_system_prompt()
     _throttle()
-    url = _GEMINI_API_URL.format(model=_GEMINI_MODEL) + f"?key={key}"
+    url = _GEMINI_API_URL.format(model=_GEMINI_MODEL)
     body: dict = {
         "contents": [{"role": "user", "parts": [{"text": prompt}]}],
         "systemInstruction": {"parts": [{"text": sys_msg}]},
@@ -92,22 +93,24 @@ def ai_text(
                 url,
                 json=body,
                 timeout=timeout,
-                headers={"Content-Type": "application/json"},
+                headers={"Content-Type": "application/json", "x-goog-api-key": key},
             )
             r.raise_for_status()
             data = r.json()
             text = data["candidates"][0]["content"]["parts"][0]["text"].strip()
-            _gemini_429_streak = 0
+            with _gemini_lock:
+                _gemini_429_streak = 0
             return text
         except requests.exceptions.HTTPError as e:
             status = e.response.status_code if e.response is not None else 0
             if status == 429:
-                _gemini_429_streak += 1
-                wait = min(8, 5)
-                log.warning("Gemini 429 - aguardando %ss", wait)
-                sleep(wait)
-                if _gemini_429_streak >= _GEMINI_429_CIRCUIT_THRESHOLD:
-                    _gemini_circuit_open = True
+                with _gemini_lock:
+                    _gemini_429_streak += 1
+                    wait = min(8, 5)
+                    log.warning("Gemini 429 - aguardando %ss", wait)
+                    sleep(wait)
+                    if _gemini_429_streak >= _GEMINI_429_CIRCUIT_THRESHOLD:
+                        _gemini_circuit_open = True
                 continue
             log.warning("Gemini HTTP %s - desistindo", status)
             break

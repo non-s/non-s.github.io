@@ -31,8 +31,8 @@ LIVE_META_DIR = ROOT / "_data"
 log = logging.getLogger(__name__)
 
 
-def _latest_video_meta() -> tuple[Path, dict] | None:
-    candidates = sorted(OUTPUT_DIR.glob("pata_jazz_*.mp4"), key=lambda p: p.stat().st_mtime, reverse=True)
+def _latest_video_meta(prefix: str = "pata_jazz_") -> tuple[Path, dict] | None:
+    candidates = sorted(OUTPUT_DIR.glob(f"{prefix}*.mp4"), key=lambda p: p.stat().st_mtime, reverse=True)
     for video in candidates:
         meta_path = video.with_suffix(".json")
         if meta_path.exists():
@@ -53,12 +53,13 @@ def _build_tags(scene: str) -> list[str]:
     return list(dict.fromkeys(base))[:15]
 
 
-def upload_video(language: str = "pt", privacy: str = "public") -> str | None:
-    found = _latest_video_meta()
+def upload_video(language: str = "pt", privacy: str = "public", prefix: str = "pata_jazz_") -> str | None:
+    found = _latest_video_meta(prefix=prefix)
     if not found:
         log.error("Nenhum video com metadata encontrado em %s", OUTPUT_DIR)
         return None
     video_path, meta = found
+
     title = str(meta.get("title", "Pata Jazz"))[:100]
     description = str(meta.get("description", ""))[:5000]
     tags = _build_tags(meta.get("scene", ""))
@@ -187,6 +188,7 @@ def main() -> int:
     parser.add_argument("--resolution", default="1080p", choices=["1080p", "720p", "480p"])
     parser.add_argument("--broadcast-id", default="")
     parser.add_argument("--transition", choices=["live", "complete"], default="")
+    parser.add_argument("--prefix", default="pata_jazz_", help="Prefixo dos arquivos de video a enviar")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
@@ -200,7 +202,7 @@ def main() -> int:
             return 0
 
         if args.mode == "upload":
-            video_id = upload_video(language=args.language, privacy=args.privacy)
+            video_id = upload_video(language=args.language, privacy=args.privacy, prefix=args.prefix)
             if not video_id:
                 return 1
             print(video_id)

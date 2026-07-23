@@ -34,14 +34,23 @@ log = logging.getLogger(__name__)
 _shutdown = False
 
 
+def _register_signal_handlers() -> None:
+    """Registra handlers de SIGTERM/SIGINT; deve ser chamado apenas dentro de main()."""
+    global _shutdown
+    _shutdown = False
+    signal.signal(signal.SIGTERM, _handle_sigterm)
+    signal.signal(signal.SIGINT, _handle_sigterm)
+
+
 def _handle_sigterm(signum, frame) -> None:
     global _shutdown
     log.info("SIGTERM recebido; iniciando desligamento gracioso da live...")
     _shutdown = True
 
 
-signal.signal(signal.SIGTERM, _handle_sigterm)
-signal.signal(signal.SIGINT, _handle_sigterm)
+# REMOVIDO: signal.signal() no import time. Use _register_signal_handlers() em main().
+# signal.signal(signal.SIGTERM, _handle_sigterm)
+# signal.signal(signal.SIGINT, _handle_sigterm)
 
 
 def _load_live_title() -> str:
@@ -254,6 +263,8 @@ def main() -> int:
     if not args.stream_url:
         log.error("URL de ingestao nao fornecida. Use --stream-url.")
         return 1
+
+    _register_signal_handlers()
 
     w, h = (int(x) for x in args.resolution.split("x"))
     output_stem = f"pata_jazz_live_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}"
