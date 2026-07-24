@@ -174,6 +174,13 @@ def _start_ffmpeg_stream(input_path: Path, stream_url: str, duration_minutes: in
     _build_looping_input), nao um unico arquivo de video ja "baked" - isso
     evita o FFmpeg ter que reabrir um arquivo de video inteiro a cada volta
     do -stream_loop -1, que causava travamentos visiveis na live.
+
+    -re e aplicado nos DOIS inputs (video e audio). Sem -re no audio, o
+    FFmpeg le e decodifica a playlist de audio o mais rapido possivel (sem
+    limitar a 1x tempo real), disputando CPU com a codificacao de video em
+    tempo real no runner de 2 vCPUs do GitHub Actions - isso fazia o encode
+    ir ficando pra tras (speed caindo de ~1x para ~0.5x, frames acumulando
+    e sendo dropados) ate a conexao RTMP quebrar (Broken pipe).
     """
     cmd = [
         "ffmpeg",
@@ -191,6 +198,7 @@ def _start_ffmpeg_stream(input_path: Path, stream_url: str, duration_minutes: in
     ]
     if audio_playlist and audio_playlist.exists():
         cmd += [
+            "-re",
             "-stream_loop",
             "-1",
             "-f",
@@ -205,7 +213,7 @@ def _start_ffmpeg_stream(input_path: Path, stream_url: str, duration_minutes: in
         "-c:v",
         "libx264",
         "-preset",
-        "veryfast",
+        "ultrafast",
         "-b:v",
         "2500k",
         "-maxrate",
