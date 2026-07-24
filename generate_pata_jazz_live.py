@@ -173,8 +173,15 @@ def _build_looping_input(
     return loop_input, playlist_txt
 
 
-def _run_ffmpeg_stream(input_path: Path, stream_url: str, duration_minutes: int = 0, audio_playlist: Path | None = None) -> int:
-    """Executa FFmpeg em modo stream. Retorna codigo de saida."""
+def _start_ffmpeg_stream(input_path: Path, stream_url: str, duration_minutes: int = 0, audio_playlist: Path | None = None) -> subprocess.Popen:
+    """Inicia o processo FFmpeg em modo stream e retorna imediatamente.
+
+    Separado de _wait_ffmpeg_stream para permitir que o chamador comece a
+    enviar dados ao YouTube antes de transicionar o broadcast: a API do
+    YouTube rejeita a transicao para "testing" com 403 invalidTransition
+    ate que o stream vinculado esteja com status.streamStatus == "active",
+    o que so acontece depois que o FFmpeg comeca a enviar video de verdade.
+    """
     cmd = [
         "ffmpeg",
         "-re",
@@ -225,8 +232,11 @@ def _run_ffmpeg_stream(input_path: Path, stream_url: str, duration_minutes: int 
         cmd = cmd[:-1] + ["-t", str(duration_minutes * 60)] + cmd[-1:]
 
     log.info("Iniciando stream: %s", " ".join(cmd))
-    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    return subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
+
+def _wait_ffmpeg_stream(proc: subprocess.Popen) -> int:
+    """Aguarda o processo FFmpeg iniciado por _start_ffmpeg_stream terminar."""
     try:
         while proc.poll() is None:
             if _shutdown:
@@ -249,6 +259,21 @@ def _run_ffmpeg_stream(input_path: Path, stream_url: str, duration_minutes: int 
     if stderr:
         log.info("FFmpeg stderr final: %s", stderr[-1000:])
     return proc.returncode
+
+
+def _terminate_ffmpeg_stream(proc: subprocess.Popen) -> None:
+    """Encerra a forca um processo FFmpeg ja iniciado (usado em caminhos de erro)."""
+    proc.terminate()
+    try:
+        proc.wait(timeout=15)
+    except subprocess.TimeoutExpired:
+        proc.kill()
+
+
+def _run_ffmpeg_stream(input_path: Path, stream_url: str, duration_minutes: int = 0, audio_playlist: Path | None = None) -> int:
+    """Executa FFmpeg em modo stream do inicio ao fim. Retorna codigo de saida."""
+    proc = _start_ffmpeg_stream(input_path, stream_url, duration_minutes=duration_minutes, audio_playlist=audio_playlist)
+    return _wait_ffmpeg_stream(proc)
 
 
 def _save_live_meta(**kwargs) -> None:
