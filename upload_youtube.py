@@ -189,6 +189,30 @@ def transition_broadcast(broadcast_id: str, status: str) -> None:
     log.info("Broadcast %s transicionado para %s", broadcast_id, status)
 
 
+def wait_for_stream_active(stream_id: str, timeout: int = 90, interval: int = 3) -> bool:
+    """Aguarda o liveStream ficar com status.streamStatus == 'active'.
+
+    A API do YouTube rejeita a transicao do broadcast para 'testing' (403
+    invalidTransition) enquanto o stream vinculado nao estiver recebendo
+    dados de video de verdade. E preciso comecar a enviar o FFmpeg antes
+    de chamar transition_broadcast().
+    """
+    service = get_youtube_service()
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        response = _retry_youtube_call(
+            service.liveStreams().list(part="status", id=stream_id).execute
+        )
+        items = (response or {}).get("items", [])
+        status = items[0].get("status", {}).get("streamStatus") if items else None
+        if status == "active":
+            return True
+        log.info("Aguardando stream %s ficar ativo (status atual: %s)...", stream_id, status)
+        time.sleep(interval)
+    log.error("Stream %s nao ficou ativo apos %ss.", stream_id, timeout)
+    return False
+
+
 def _retry_youtube_call(func, *args, **kwargs):
     """Executa chamada YouTube API com retry exponencial e circuit breaker."""
     for attempt in range(_YOUTUBE_MAX_RETRIES):
