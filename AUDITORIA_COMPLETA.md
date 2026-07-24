@@ -95,24 +95,21 @@
 
 ### 9. Cronograma Configurado
 
-#### Shorts (3x/dia)
+#### Shorts (1x/hora)
 ```yaml
-- cron: "30 11 * * *"  # 08:30 BRT
-- cron: "30 17 * * *"  # 14:30 BRT
-- cron: "30 22 * * *"  # 19:30 BRT
+- cron: "0 * * * *"  # Todo horario cheio (24x/dia)
 ```
 **Status:** ✅ Configurado
 
-#### Horizontais (2x/semana)
+#### Horizontais (1x/dia)
 ```yaml
-- cron: "0 13 * * 2"  # Terça 10:00 BRT
-- cron: "0 19 * * 5"  # Sexta 16:00 BRT
+- cron: "0 13 * * *"  # Diario 10:00 BRT (13:00 UTC)
 ```
 **Status:** ✅ Configurado
 
 #### Lives (1x/semana)
 ```yaml
-- cron: "0 22 * * 3"  # Quarta 19:00 BRT
+- cron: "0 22 * * 3"  # Quarta 19:00 BRT (22:00 UTC), 720p maximo
 ```
 **Status:** ✅ Configurado
 

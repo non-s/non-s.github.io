@@ -61,7 +61,7 @@ def _check_envs() -> dict[str, Any]:
 
 
 def _check_youtube_token() -> dict[str, Any]:
-    token_path = DATA_DIR / "youtube_token.json"
+    token_path = ROOT / "youtube_token.json"
     if not token_path.exists():
         return {
             "name": "Token YouTube",
@@ -81,7 +81,7 @@ def _check_youtube_token() -> dict[str, Any]:
 
 
 def _check_client_secret() -> dict[str, Any]:
-    secret_path = DATA_DIR / "client_secret.json"
+    secret_path = ROOT / "client_secret.json"
     if not secret_path.exists():
         return {
             "name": "Client secret Google",

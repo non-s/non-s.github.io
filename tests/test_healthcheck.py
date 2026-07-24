@@ -43,9 +43,9 @@ def test_check_youtube_token_missing():
         def read_text(self, **kwargs):
             return ""
         def __str__(self):
-            return "_data/youtube_token.json"
+            return "youtube_token.json"
 
-    with patch("scripts.healthcheck.DATA_DIR", FakePath()):
+    with patch("scripts.healthcheck.ROOT", FakePath()):
         result = healthcheck._check_youtube_token()
         assert result["ok"] is False
 
@@ -57,9 +57,9 @@ def test_check_client_secret_present():
         def exists(self):
             return True
         def __str__(self):
-            return "_data/client_secret.json"
+            return "client_secret.json"
 
-    with patch("scripts.healthcheck.DATA_DIR", FakePath()):
+    with patch("scripts.healthcheck.ROOT", FakePath()):
         result = healthcheck._check_client_secret()
         assert result["ok"] is True
 

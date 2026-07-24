@@ -347,6 +347,10 @@ def main() -> int:
     _register_signal_handlers()
 
     w, h = (int(x) for x in args.resolution.split("x"))
+    if w >= 1920:
+        log.warning("Resolucao %sx%s nao e suportada no runner gratuito do GitHub Actions "
+                    "(encode nao acompanha o tempo real). Usando 1280x720.", w, h)
+        w, h = 1280, 720
     output_stem = f"pata_jazz_live_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}"
 
     try:

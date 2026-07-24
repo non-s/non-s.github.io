@@ -11,7 +11,7 @@ from typing import Literal
 HIGH_PERFORMANCE_KEYWORDS = {
     "fofura": [
         "fofo", "fofinho", "adorável", "charmoso", "doce",
-        "tíerno", "encantador", "gracioso", "meigo", "amoroso"
+        "terno", "encantador", "gracioso", "meigo", "amoroso"
     ],
     "relaxamento": [
         "relaxante", "calmo", "tranquilo", "sereno", "pacífico",

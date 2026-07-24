@@ -12,9 +12,12 @@ on:
         required: false
         default: "350"
       resolution:
-        description: "Resolucao da live"
+        description: "Resolucao da live (720p maximo suportado no runner gratuito)"
         required: false
         default: "1280x720"
+        type: choice
+        options:
+          - "1280x720"
   schedule:
     # 1 live por semana - Quarta-feira (Plano 7 Dias)
     # Live: 19:00 BRT (22:00 UTC) - Duração: ~6 horas (limite GitHub Actions)

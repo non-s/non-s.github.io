@@ -107,7 +107,11 @@ def build_pata_jazz_video(
         # a selecao automatica do FFmpeg pode escolher o audio embutido no
         # clipe de b-roll (input 0) em vez da musica, deixando o video mudo
         # ou com o som ambiente original do clipe.
-        output_args += ["-map", "1:a:0", "-c:a", "aac", "-b:a", "192k", "-shortest"]
+        # -shortest removido: com -stream_loop -1 em ambos inputs, -shortest
+        # fazia o FFmpeg cortar na duracao do clipe original mais curto (~12s)
+        # em vez de respeitar o -t {spec.duration}. O -t ja limita ambos os
+        # streams corretamente quando ambos estao em loop infinito.
+        output_args += ["-map", "1:a:0", "-c:a", "aac", "-b:a", "192k"]
 
     run_ffmpeg(inputs + output_args + [str(output)])
 
@@ -155,7 +159,7 @@ def short_spec(duration: int = 35) -> VideoSpec:
         default_duration=35,
         crop_filter="crop='ih*9/16:ih:(iw-ih*9/16)/2:0'",
         thumbnail_maker=make_short_thumbnail,
-        fallback_description=f"{random.choice(list(hook_for_scene(random_scene())))} com jazz de fundo. 🐾🎷 #PataJazz",
+        fallback_description=f"{hook_for_scene(random_scene())[0]} com jazz de fundo. 🐾🎷 #PataJazz",
     )
 
 

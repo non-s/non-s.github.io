@@ -51,9 +51,9 @@ def test_retry_youtube_call_exhaust_retries(mock_sleep):
     mock_func = MagicMock()
     error_503 = HttpError(MagicMock(status=503), b'{"error": "unavailable"}')
     mock_func.side_effect = [error_503] * _YOUTUBE_MAX_RETRIES
-    
-    result = _retry_youtube_call(mock_func)
-    assert result is None
+
+    with pytest.raises(RuntimeError, match="maximo de tentativas"):
+        _retry_youtube_call(mock_func)
     assert mock_func.call_count == _YOUTUBE_MAX_RETRIES
     # Sleep é chamado após cada tentativa (incluindo a última)
     assert mock_sleep.call_count == _YOUTUBE_MAX_RETRIES

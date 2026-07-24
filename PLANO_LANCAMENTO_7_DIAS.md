@@ -15,9 +15,9 @@
 
 | Workflow | Frequência | Horário (BRT) | Arquivo |
 |----------|-----------|---------------|---------|
-| **Shorts** | 3x/dia | 08:30, 14:30, 19:30 | `.github/workflows/pata-jazz-shorts.yml` |
-| **Horizontais** | 2x/semana | Terça 10:00, Sexta 16:00 | `.github/workflows/pata-jazz-horizontal.yml` |
-| **Lives** | 1x/semana | Quarta 19:00 (6h) | `.github/workflows/pata-jazz-youtube-live.yml` |
+| **Shorts** | 1x/hora (24x/dia) | Todo horário cheio | `.github/workflows/pata-jazz-shorts.yml` |
+| **Horizontais** | 1x/dia | 10:00 | `.github/workflows/pata-jazz-horizontal.yml` |
+| **Lives** | 1x/semana | Quarta 19:00 (6h, 720p) | `.github/workflows/pata-jazz-youtube-live.yml` |
 
 ### 🚀 Como Funciona:
 
@@ -35,21 +35,21 @@
 ### ✅ Workflows GitHub Actions:
 
 ```yaml
-# Shorts: 3x/dia (08:30, 14:30, 19:30 BRT)
+# Shorts: 1x/hora (todo horário cheio)
 .github/workflows/pata-jazz-shorts.yml
 
-# Horizontais: 2x/semana (Terça 10:00, Sexta 16:00 BRT)
+# Horizontais: 1x/dia (10:00 BRT = 13:00 UTC)
 .github/workflows/pata-jazz-horizontal.yml
 
-# Lives: 1x/semana (Quarta 19:00 BRT, 6h duração)
+# Lives: 1x/semana (Quarta 19:00 BRT = 22:00 UTC, 6h duração, 720p max)
 .github/workflows/pata-jazz-youtube-live.yml
 ```
 
 ### 📊 Frequência Semanal:
-- **21 Shorts** (3 por dia)
-- **2 Vídeos Horizontais** (Terça + Sexta)
-- **1 Live** (Quarta, 6 horas)
-- **Total:** 24 vídeos/semana 🚀
+- **168 Shorts** (24 por dia, 1 por hora)
+- **7 Vídeos Horizontais** (1 por dia)
+- **1 Live** (Quarta, 6 horas, 720p)
+- **Total:** 176 vídeos/semana 🚀
 
 ### ⚙️ Como Funciona:
 1. GitHub Actions dispara no horário agendado

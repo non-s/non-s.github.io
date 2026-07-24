@@ -4,6 +4,7 @@ utils/thumbnail_engine.py — cria thumbnails profissionais para Shorts e vídeo
 
 from __future__ import annotations
 
+import io
 import logging
 import subprocess
 import tempfile
@@ -13,6 +14,42 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageEnhance
 
 log = logging.getLogger(__name__)
+
+_YOUTUBE_THUMBNAIL_MAX_BYTES = 2 * 1024 * 1024  # 2 MB limite da YouTube API
+
+
+def _save_under_2mb(img: Image.Image, output: Path) -> None:
+    """Salva a imagem garantindo que o arquivo final tenha menos de 2 MB.
+
+    A YouTube API rejeita thumbnails maiores que 2 MB (MediaUploadSizeError).
+    Reduz a qualidade JPEG progressivamente; se ainda assim exceder o limite,
+    redimensiona mantendo aspecto ate caber.
+    """
+    for quality in (95, 85, 75, 60, 45, 30):
+        buf = io.BytesIO()
+        img.save(buf, format="PNG" if output.suffix.lower() == ".png" else "JPEG", quality=quality)
+        if buf.tell() <= _YOUTUBE_THUMBNAIL_MAX_BYTES:
+            output.write_bytes(buf.getvalue())
+            log.info("Thumbnail salva (%s, quality=%s, %.0f KB)", output.name, quality, buf.tell() / 1024)
+            return
+        log.warning("Thumbnail ainda tem %.0f KB em quality=%s; reduzindo...", buf.tell() / 1024, quality)
+
+    # Ultimo recurso: redimensionar mantendo aspecto
+    w, h = img.size
+    scale = 0.75
+    while True:
+        w, h = int(w * scale), int(h * scale)
+        resized = img.resize((w, h), Image.Resampling.LANCZOS)
+        buf = io.BytesIO()
+        resized.save(buf, format="PNG" if output.suffix.lower() == ".png" else "JPEG", quality=60)
+        if buf.tell() <= _YOUTUBE_THUMBNAIL_MAX_BYTES:
+            output.write_bytes(buf.getvalue())
+            log.info("Thumbnail redimensionada para %dx%d (%.0f KB)", w, h, buf.tell() / 1024)
+            return
+        if w < 200 or h < 200:
+            output.write_bytes(buf.getvalue())
+            log.warning("Thumbnail nao coube em 2 MB mesmo apos redimensionar; salvando %.0f KB", buf.tell() / 1024)
+            return
 
 # Paleta Pata Jazz (dark, acolhedora, jazz)
 PALETTE = {
@@ -191,7 +228,7 @@ def make_horizontal_thumbnail(
     tw = bbox[2] - bbox[0]
     draw.text(((width - tw) // 2, height - 120), brand, font=font_small, fill=PALETTE["accent"])
 
-    img.save(output, quality=95)
+    _save_under_2mb(img, output)
     log.info("Thumbnail horizontal salva: %s", output)
 
 
@@ -273,5 +310,5 @@ def make_short_thumbnail(
     tw = bbox[2] - bbox[0]
     draw.text(((width - tw) // 2, height - 220), brand, font=font_small, fill=PALETTE["accent"])
 
-    img.save(output, quality=95)
+    _save_under_2mb(img, output)
     log.info("Thumbnail de Short salva: %s", output)

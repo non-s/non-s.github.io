@@ -20,7 +20,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-from googleapiclient.errors import HttpError
+from googleapiclient.errors import HttpError, MediaUploadSizeError
 from googleapiclient.http import MediaFileUpload
 
 from utils.ai_helper import ai_text
@@ -102,7 +102,7 @@ def upload_video(language: str = "pt", privacy: str = "public", prefix: str = "p
         try:
             _retry_youtube_call(service.thumbnails().set(videoId=video_id, media_body=MediaFileUpload(str(thumbnail))).execute)
             log.info("Thumbnail aplicada.")
-        except HttpError as exc:
+        except (HttpError, MediaUploadSizeError) as exc:
             log.warning("Falha ao aplicar thumbnail: %s", exc)
 
     return video_id
@@ -236,7 +236,7 @@ def _retry_youtube_call(func, *args, **kwargs):
                 time.sleep(wait)
                 continue
             raise
-    return None
+    raise RuntimeError("YouTube API: maximo de tentativas excedido sem resposta.")
 
 
 def main() -> int:
