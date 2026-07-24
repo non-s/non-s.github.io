@@ -3,10 +3,16 @@ scripts/run_live.py — orquestra a live Pata Jazz no GitHub Actions.
 
 Cria a transmissao no YouTube, constroi o loop de video e a playlist de audio,
 e inicia o stream via FFmpeg. Ao finalizar (por SIGTERM ou duracao), encerra
-a transmissao no YouTube seguindo o ciclo de status correto.
+a transmissao no YouTube.
 
-Referencias do ciclo de vida da YouTube Live API:
-    ready -> testing -> live -> complete
+create_live_stream() cria o broadcast com enableMonitorStream=False e
+enableAutoStart=True: nessa configuracao a API do YouTube so aceita a
+transicao ready -> live automaticamente assim que o stream vinculado comeca
+a receber video, e rejeita qualquer chamada manual para 'testing' (essa
+fase exige monitorStream habilitado). Por isso este script nao chama
+liveBroadcasts.transition para 'testing' nem 'live' - apenas confirma que
+o stream ficou ativo e deixa o YouTube promover o broadcast sozinho. So a
+transicao final para 'complete' e manual (enableAutoStop=False).
 """
 
 from __future__ import annotations
@@ -84,10 +90,6 @@ def main() -> int:
         audio_playlist=str(audio_playlist) if audio_playlist else None,
     )
 
-    # A API do YouTube rejeita a transicao para 'testing' com 403
-    # invalidTransition ate que o stream vinculado esteja recebendo dados
-    # de video de verdade (status.streamStatus == 'active'). Por isso o
-    # FFmpeg precisa comecar a enviar ANTES de qualquer transicao de status.
     log.info("Iniciando stream para %s", stream_url)
     start_time = time.time()
     proc = _start_ffmpeg_stream(
@@ -100,21 +102,11 @@ def main() -> int:
         _try_transition(broadcast_id, "complete")
         return 1
 
-    # Ciclo correto da YouTube Live API: testing -> live -> complete
-    if not _try_transition(broadcast_id, "testing"):
-        log.error("Nao foi possivel colocar a live em 'testing'.")
-        _terminate_ffmpeg_stream(proc)
-        _try_transition(broadcast_id, "complete")
-        return 1
-
-    # Pequena pausa para o backend do YouTube processar a transicao
-    time.sleep(2)
-
-    if not _try_transition(broadcast_id, "live"):
-        log.warning("Nao foi possivel colocar a live no ar; tentando encerrar.")
-        _terminate_ffmpeg_stream(proc)
-        _try_transition(broadcast_id, "complete")
-        return 1
+    # enableAutoStart=True: o proprio YouTube promove o broadcast para 'live'
+    # assim que o stream fica ativo. Nao chamamos transition('testing') nem
+    # transition('live') aqui - com enableMonitorStream=False a fase de
+    # testing e sempre invalida (403 invalidTransition), e a chamada manual
+    # para 'live' e desnecessaria e redundante com o auto-start.
 
     # Notifica início da live no Discord
     thumbnail = f"https://img.youtube.com/vi/{broadcast_id}/maxresdefault.jpg"
