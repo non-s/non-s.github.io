@@ -55,7 +55,7 @@ def main() -> int:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 
     privacy = os.environ.get("YOUTUBE_PRIVACY", "public")
-    resolution = os.environ.get("LIVE_RESOLUTION", "1920x1080")
+    resolution = os.environ.get("LIVE_RESOLUTION", "1280x720")
     duration_minutes = int(os.environ.get("LIVE_DURATION_MINUTES", "0") or "0")
 
     w, h = (int(x) for x in resolution.split("x"))
@@ -93,7 +93,7 @@ def main() -> int:
     log.info("Iniciando stream para %s", stream_url)
     start_time = time.time()
     proc = _start_ffmpeg_stream(
-        loop_input, stream_url, duration_minutes=duration_minutes, audio_playlist=audio_playlist
+        loop_input, stream_url, duration_minutes=duration_minutes, audio_playlist=audio_playlist, resolution=(w, h)
     )
 
     if not wait_for_stream_active(meta["stream_id"], timeout=90):

@@ -14,7 +14,7 @@ on:
       resolution:
         description: "Resolucao da live"
         required: false
-        default: "1920x1080"
+        default: "1280x720"
   schedule:
     # 1 live por semana - Quarta-feira (Plano 7 Dias)
     # Live: 19:00 BRT (22:00 UTC) - Duração: ~6 horas (limite GitHub Actions)
@@ -30,7 +30,7 @@ concurrency:
 
 env:
   LIVE_DURATION_MINUTES: ${{ github.event.inputs.duration_minutes || '350' }}
-  LIVE_RESOLUTION: ${{ github.event.inputs.resolution || '1920x1080' }}
+  LIVE_RESOLUTION: ${{ github.event.inputs.resolution || '1280x720' }}
 
 jobs:
   live-stream:

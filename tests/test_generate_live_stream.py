@@ -92,6 +92,31 @@ class TestRunFfmpegStreamCommand:
         preset_index = cmd.index("-preset")
         assert cmd[preset_index + 1] == "ultrafast"
 
+    @patch("generate_pata_jazz_live.time.sleep", return_value=None)
+    @patch("generate_pata_jazz_live.subprocess.Popen")
+    def test_720p_uses_lower_bitrate_than_1080p(self, mock_popen, _mock_sleep):
+        """720p tem ~2.25x menos pixels por frame que 1080p; o bitrate deve
+        cair junto para nao desperdicar banda/qualidade num frame menor
+        (1080p30 com ultrafast ainda cai pra tras no runner de 2 vCPUs do
+        GitHub Actions - reduzir a resolucao e o que da folga real de CPU)."""
+        mock_popen.side_effect = _fake_popen
+        stream_url = "rtmp://a.rtmp.youtube.com/live2/abcd-efgh-ijkl-mnop"
+
+        live._start_ffmpeg_stream(Path("concat.txt"), stream_url, duration_minutes=0, resolution=(1280, 720))
+        cmd_720p = mock_popen.call_args[0][0]
+
+        live._start_ffmpeg_stream(Path("concat.txt"), stream_url, duration_minutes=0, resolution=(1920, 1080))
+        cmd_1080p = mock_popen.call_args[0][0]
+
+        bitrate_720p = int(cmd_720p[cmd_720p.index("-b:v") + 1].rstrip("k"))
+        bitrate_1080p = int(cmd_1080p[cmd_1080p.index("-b:v") + 1].rstrip("k"))
+        assert bitrate_720p < bitrate_1080p
+        # -bufsize deve ser 2x o -maxrate, dando folga a picos curtos sem
+        # exigir sustentar o dobro do bitrate indefinidamente.
+        maxrate_720p = int(cmd_720p[cmd_720p.index("-maxrate") + 1].rstrip("k"))
+        bufsize_720p = int(cmd_720p[cmd_720p.index("-bufsize") + 1].rstrip("k"))
+        assert bufsize_720p == maxrate_720p * 2
+
 
 class TestWaitFfmpegStreamErrorSurfacing:
     """A causa raiz de uma falha do FFmpeg costuma estar no meio do stderr,
