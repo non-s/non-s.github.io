@@ -161,7 +161,13 @@ def _build_looping_input(
     return concat_txt, playlist_txt
 
 
-def _start_ffmpeg_stream(input_path: Path, stream_url: str, duration_minutes: int = 0, audio_playlist: Path | None = None) -> subprocess.Popen:
+def _start_ffmpeg_stream(
+    input_path: Path,
+    stream_url: str,
+    duration_minutes: int = 0,
+    audio_playlist: Path | None = None,
+    resolution: tuple[int, int] = (1920, 1080),
+) -> subprocess.Popen:
     """Inicia o processo FFmpeg em modo stream e retorna imediatamente.
 
     Separado de _wait_ffmpeg_stream para permitir que o chamador comece a
@@ -181,7 +187,14 @@ def _start_ffmpeg_stream(input_path: Path, stream_url: str, duration_minutes: in
     tempo real no runner de 2 vCPUs do GitHub Actions - isso fazia o encode
     ir ficando pra tras (speed caindo de ~1x para ~0.5x, frames acumulando
     e sendo dropados) ate a conexao RTMP quebrar (Broken pipe).
+
+    Mesmo com -preset ultrafast, 1080p30 continua caindo pra tras nesse
+    runner (testado: speed cai a ~0.43x e quebra em menos de 1min). Em
+    720p o encode tem ~2.25x menos pixels por frame, o que da folga real
+    de CPU em vez de so trocar preset. O bitrate e escalado junto pra nao
+    desperdicar banda/qualidade num frame menor.
     """
+    video_bitrate_kbps = 2500 if resolution[0] >= 1920 else 1800
     cmd = [
         "ffmpeg",
         "-re",
@@ -215,11 +228,11 @@ def _start_ffmpeg_stream(input_path: Path, stream_url: str, duration_minutes: in
         "-preset",
         "ultrafast",
         "-b:v",
-        "2500k",
+        f"{video_bitrate_kbps}k",
         "-maxrate",
-        "2500k",
+        f"{video_bitrate_kbps}k",
         "-bufsize",
-        "5000k",
+        f"{video_bitrate_kbps * 2}k",
         "-g",
         "60",
         "-r",
@@ -287,9 +300,21 @@ def _terminate_ffmpeg_stream(proc: subprocess.Popen) -> None:
         proc.kill()
 
 
-def _run_ffmpeg_stream(input_path: Path, stream_url: str, duration_minutes: int = 0, audio_playlist: Path | None = None) -> int:
+def _run_ffmpeg_stream(
+    input_path: Path,
+    stream_url: str,
+    duration_minutes: int = 0,
+    audio_playlist: Path | None = None,
+    resolution: tuple[int, int] = (1920, 1080),
+) -> int:
     """Executa FFmpeg em modo stream do inicio ao fim. Retorna codigo de saida."""
-    proc = _start_ffmpeg_stream(input_path, stream_url, duration_minutes=duration_minutes, audio_playlist=audio_playlist)
+    proc = _start_ffmpeg_stream(
+        input_path,
+        stream_url,
+        duration_minutes=duration_minutes,
+        audio_playlist=audio_playlist,
+        resolution=resolution,
+    )
     return _wait_ffmpeg_stream(proc)
 
 
@@ -310,7 +335,7 @@ def main() -> int:
         help="Duracao maxima em minutos (0 = ate processo ser encerrado).",
     )
     parser.add_argument("--stream-url", type=str, default="", help="URL RTMP de ingestao do YouTube")
-    parser.add_argument("--resolution", type=str, default="1920x1080", help="Ex: 1920x1080 ou 1280x720")
+    parser.add_argument("--resolution", type=str, default="1280x720", help="Ex: 1920x1080 ou 1280x720")
     args = parser.parse_args()
 
     configure_logging()
@@ -342,7 +367,9 @@ def main() -> int:
     log.info("Titulo da live: %s", title)
     log.info("Iniciando stream infinito para %s", args.stream_url)
 
-    code = _run_ffmpeg_stream(loop_input, args.stream_url, duration_minutes=args.duration, audio_playlist=audio_playlist)
+    code = _run_ffmpeg_stream(
+        loop_input, args.stream_url, duration_minutes=args.duration, audio_playlist=audio_playlist, resolution=(w, h)
+    )
     log.info("Stream encerrado com codigo %s", code)
     return 0 if code in (0, -15, 255) else code
 
