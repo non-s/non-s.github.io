@@ -25,6 +25,12 @@ PALETTE = {
 }
 
 
+def _hex_to_rgb(hex_color: str) -> tuple[int, int, int]:
+    """Converte uma cor hex '#rrggbb' em uma tupla (r, g, b)."""
+    hex_color = hex_color.lstrip("#")
+    return tuple(int(hex_color[i:i + 2], 16) for i in (0, 2, 4))
+
+
 def _load_fonts() -> tuple[ImageFont.FreeTypeFont, ImageFont.FreeTypeFont]:
     """Tenta carregar fontes comuns; cai em default se necessário."""
     candidates = [
@@ -148,7 +154,7 @@ def make_horizontal_thumbnail(
         draw.rounded_rectangle(
             [40 - i*2, 40 - i*2, width - 40 + i*2, height - 40 + i*2],
             radius=40,
-            outline=(*PALETTE["accent"][1:], int(50 * i / 3)),
+            outline=(*_hex_to_rgb(PALETTE["accent"]), int(50 * i / 3)),
             width=2
         )
     

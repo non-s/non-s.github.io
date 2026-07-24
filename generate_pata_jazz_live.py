@@ -221,7 +221,8 @@ def _run_ffmpeg_stream(input_path: Path, stream_url: str, duration_minutes: int 
         stream_url,
     ]
     if duration_minutes > 0:
-        cmd = cmd[:-2] + ["-t", str(duration_minutes * 60)] + cmd[-2:]
+        # Insere -t logo antes da URL de saida (ultimo elemento).
+        cmd = cmd[:-1] + ["-t", str(duration_minutes * 60)] + cmd[-1:]
 
     log.info("Iniciando stream: %s", " ".join(cmd))
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)

@@ -5,6 +5,34 @@ from unittest.mock import patch, MagicMock
 import utils.thumbnail_engine as thumbnail_engine
 
 
+def test_hex_to_rgb():
+    """Converte cores hex da paleta em tuplas RGB válidas."""
+    assert thumbnail_engine._hex_to_rgb("#f4a261") == (244, 162, 97)
+    assert thumbnail_engine._hex_to_rgb("0f0f23") == (15, 15, 35)
+
+
+class TestThumbnailEngineRealRender:
+    """Renderiza com Pillow de verdade (sem mocks) para pegar erros de tipo
+    que os testes mockados abaixo não conseguem detectar, ex.: cores mal
+    formadas passadas para ImageDraw."""
+
+    def test_make_horizontal_thumbnail_real_render(self, tmp_path):
+        output = tmp_path / "horizontal.png"
+        thumbnail_engine.make_horizontal_thumbnail(
+            hook="Gatinhos Fofos", emoji="🐱", output=output, brand="Pata Jazz"
+        )
+        assert output.exists()
+        assert output.stat().st_size > 0
+
+    def test_make_short_thumbnail_real_render(self, tmp_path):
+        output = tmp_path / "short.png"
+        thumbnail_engine.make_short_thumbnail(
+            hook="Meow Monday", emoji="🎷", output=output, brand="Pata Jazz"
+        )
+        assert output.exists()
+        assert output.stat().st_size > 0
+
+
 class TestThumbnailEngine:
     """Testes para thumbnail_engine."""
     
