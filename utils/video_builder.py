@@ -89,7 +89,7 @@ def build_pata_jazz_video(
 
     output, thumb, _ = _prepare_output_paths(stem_prefix, output_dir, thumb_dir)
 
-    inputs = ["-i", str(video)]
+    inputs = ["-stream_loop", "-1", "-i", str(video)]
     output_args: list[str] = [
         "-vf", _build_video_filter(spec),
         "-c:v", "libx264",
