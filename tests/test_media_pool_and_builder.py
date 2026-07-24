@@ -49,11 +49,25 @@ def test_short_spec_is_vertical():
     assert "crop" in spec.crop_filter
 
 
+def test_short_spec_crop_is_horizontally_centered():
+    """Recortar a partir de x=0 pega a borda esquerda do clipe original
+    (geralmente parede/fundo), nao o animal centralizado no quadro - o
+    crop precisa ser centralizado horizontalmente."""
+    spec = short_spec()
+    assert ":0:0'" not in spec.crop_filter
+    assert "(iw-ih*9/16)/2" in spec.crop_filter
+
+
 def test_horizontal_spec_is_horizontal():
     spec = horizontal_spec()
     assert spec.width == 1920
     assert spec.height == 1080
     assert "crop" in spec.crop_filter
+
+
+def test_horizontal_spec_crop_is_centered():
+    spec = horizontal_spec()
+    assert ":0:0'" not in spec.crop_filter
 
 
 def test_video_spec_has_required_fields():

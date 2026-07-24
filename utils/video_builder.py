@@ -153,7 +153,7 @@ def short_spec(duration: int = 35) -> VideoSpec:
         height=1920,
         duration=duration,
         default_duration=35,
-        crop_filter="crop='ih*9/16:ih:0:0'",
+        crop_filter="crop='ih*9/16:ih:(iw-ih*9/16)/2:0'",
         thumbnail_maker=make_short_thumbnail,
         fallback_description=f"{random.choice(list(hook_for_scene(random_scene())))} com jazz de fundo. 🐾🎷 #PataJazz",
     )
@@ -168,7 +168,10 @@ def horizontal_spec(duration: int = 240) -> VideoSpec:
         height=1080,
         duration=duration,
         default_duration=240,
-        crop_filter="crop='min(iw,ih*16/9):min(ih,iw*9/16):0:0'",
+        crop_filter=(
+            "crop='min(iw,ih*16/9):min(ih,iw*9/16):"
+            "(iw-min(iw,ih*16/9))/2:(ih-min(ih,iw*9/16))/2'"
+        ),
         thumbnail_maker=make_horizontal_thumbnail,
         fallback_description=(
             "Gatinhos e cachorrinhos fofos com jazz suave de fundo. "
