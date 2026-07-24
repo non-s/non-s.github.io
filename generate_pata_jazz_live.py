@@ -256,7 +256,17 @@ def _wait_ffmpeg_stream(proc: subprocess.Popen) -> int:
 
     stdout, stderr = proc.communicate()
     if stderr:
-        log.info("FFmpeg stderr final: %s", stderr[-1000:])
+        # A causa raiz de uma falha costuma aparecer no meio do stderr, nao
+        # no final (que geralmente e so o resumo de estatisticas do libx264).
+        # Um tail curto escondia esses erros; aqui destacamos linhas que
+        # parecem erro em qualquer ponto do output, alem de um tail maior.
+        error_lines = [
+            line for line in stderr.splitlines()
+            if any(kw in line.lower() for kw in ("error", "failed", "invalid", "broken pipe", "connection reset"))
+        ]
+        if error_lines:
+            log.error("FFmpeg linhas de erro detectadas:\n%s", "\n".join(error_lines[-30:]))
+        log.info("FFmpeg stderr (ultimos 6000 chars): %s", stderr[-6000:])
     return proc.returncode
 
 

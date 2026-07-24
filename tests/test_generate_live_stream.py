@@ -1,4 +1,5 @@
 """Testes unitários para a construção do comando FFmpeg da live."""
+import logging
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
@@ -56,3 +57,41 @@ class TestRunFfmpegStreamCommand:
             "-stream_loop", "-1", "-f", "concat", "-safe", "0",
         ]
         assert cmd[10:12] == ["-i", "concat.txt"]
+
+
+class TestWaitFfmpegStreamErrorSurfacing:
+    """A causa raiz de uma falha do FFmpeg costuma estar no meio do stderr,
+    nao no final (que e so o resumo de estatisticas do libx264) - um tail
+    curto escondia esses erros em falhas reais da live."""
+
+    def _fake_proc(self, stderr: str):
+        proc = MagicMock()
+        proc.poll.side_effect = [None, 0]
+        proc.communicate.return_value = ("", stderr)
+        proc.returncode = 187
+        return proc
+
+    @patch("generate_pata_jazz_live.time.sleep", return_value=None)
+    def test_error_shaped_lines_are_surfaced(self, _mock_sleep, caplog):
+        stderr = (
+            "frame=  100 fps=30 q=23.0 size=512kB time=00:00:03.33\n"
+            "[flv @ 0x1] Error muxing packet: Broken pipe\n"
+            "frame=  101 fps=30 q=23.0 size=520kB time=00:00:03.36\n"
+            + ("x" * 5000)
+            + "\nConversion failed!\n"
+        )
+        proc = self._fake_proc(stderr)
+
+        with caplog.at_level(logging.ERROR, logger="generate_pata_jazz_live"):
+            code = live._wait_ffmpeg_stream(proc)
+
+        assert code == 187
+        assert any("Error muxing packet" in rec.message for rec in caplog.records)
+
+    @patch("generate_pata_jazz_live.time.sleep", return_value=None)
+    def test_no_error_keywords_does_not_crash(self, _mock_sleep, caplog):
+        proc = self._fake_proc("frame=  1 fps=30 q=23.0 size=1kB time=00:00:00.03\n")
+
+        code = live._wait_ffmpeg_stream(proc)
+
+        assert code == 187
