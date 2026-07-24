@@ -107,15 +107,15 @@ Salve o JSON resultante como `_data/youtube_token.json` (ou use o secret `YOUTUB
 - `PATA_JAZZ_LIVE_ENABLED` — `1` para live.
 - `YOUTUBE_PRIVACY` — `public`, `unlisted` ou `private`.
 
-## Grade de publicação (GitHub Actions) - PLANO 7 DIAS
+## Grade de publicação (GitHub Actions)
 
 | Conteúdo | Frequência | Horário BRT | Workflow |
 |---|---|---|---|
-| **Shorts** | 3 por dia | 08:30, 14:30, 19:30 | `pata-jazz-shorts.yml` |
-| **Vídeo horizontal** | 2 por semana | Terça 10:00, Sexta 16:00 | `pata-jazz-horizontal.yml` |
+| **Shorts** | 1 por hora | Todo horário cheio | `pata-jazz-shorts.yml` |
+| **Vídeo horizontal** | 1 por dia | 10:00 | `pata-jazz-horizontal.yml` |
 | **Live** | 1 por semana | Quarta 19:00 (6h) | `pata-jazz-youtube-live.yml` |
 
-**Total semanal:** 21 Shorts + 2 Horizontais + 1 Live = **24 vídeos/semana**
+**Total semanal:** 168 Shorts + 7 Horizontais + 1 Live = **176 vídeos/semana**
 
 > **Observação sobre a live:** O runner gratuito do GitHub Actions tem limite de ~6h por execução. A live semanal roda por 6 horas contínuas. Para lives 24/7 verdadeiras, é necessário runner pago, VPS ou cloud externa.
 
