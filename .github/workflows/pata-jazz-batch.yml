@@ -47,7 +47,7 @@ jobs:
       BATCH_UPLOAD: ${{ github.event.inputs.upload }}
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           persist-credentials: false
       - name: "Python 3.11"
