@@ -38,3 +38,21 @@ class TestRunFfmpegStreamCommand:
 
         cmd = mock_popen.call_args[0][0]
         assert cmd[-3:] == ["-f", "flv", stream_url]
+
+    @patch("generate_pata_jazz_live.time.sleep", return_value=None)
+    @patch("generate_pata_jazz_live.subprocess.Popen")
+    def test_video_input_uses_concat_demuxer_not_single_file(self, mock_popen, _mock_sleep):
+        """O video de loop e um playlist concat lido com -stream_loop -1, nao
+        um unico arquivo mp4 pre-renderizado (que exigia reabrir o arquivo
+        inteiro a cada volta do loop, travando a live visivelmente)."""
+        mock_popen.side_effect = _fake_popen
+        stream_url = "rtmp://a.rtmp.youtube.com/live2/abcd-efgh-ijkl-mnop"
+
+        live._start_ffmpeg_stream(Path("concat.txt"), stream_url, duration_minutes=0)
+
+        cmd = mock_popen.call_args[0][0]
+        assert cmd[:10] == [
+            "ffmpeg", "-re", "-fflags", "+genpts",
+            "-stream_loop", "-1", "-f", "concat", "-safe", "0",
+        ]
+        assert cmd[10:12] == ["-i", "concat.txt"]

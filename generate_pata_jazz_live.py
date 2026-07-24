@@ -89,12 +89,18 @@ def _build_looping_input(
     output_stem: str,
     target_resolution: tuple[int, int] = (1920, 1080),
     clip_duration: int = 45,
-    video_count: int = 40,
+    video_count: int = 90,
 ) -> tuple[Path, Path | None]:
-    """Constroi arquivo de video loop com varios clips fofos e playlist de jazz.
+    """Pre-processa clips fofos e monta a playlist (concat demuxer) usada no loop da live.
 
-    Usa mais clips (horizontal) para maior variedade visual e uma playlist com
-    ate 150 faixas (ou o maximo disponivel) para audio longo e diversificado.
+    Cada clip e normalizado individualmente (resolucao/codec) para que o
+    demuxer concat funcione bem quando transmitido com -stream_loop -1
+    diretamente pelo FFmpeg (ver _start_ffmpeg_stream), sem um passo extra de
+    "rebake" num unico arquivo grande: rebake exigia um re-encode completo
+    (minutos de espera so pra gerar poucos minutos de video) e cada reinicio
+    do loop obrigava o FFmpeg a reabrir um unico arquivo de video inteiro,
+    causando travamentos visiveis na live a cada ciclo. Usar bem mais clips
+    (ate 90, ~45min de ciclo) reduz bastante a frequencia desses reinicios.
     """
     ensure_dirs()
     stats = pool_stats()
@@ -103,8 +109,12 @@ def _build_looping_input(
 
     scene = random_scene()
     hook, emoji = hook_for_scene(scene)
-    # Live horizontal: usa muitos clips fofos para loop rico.
-    videos = pick_videos(min_count=min(10, stats["videos"]), max_count=min(video_count, stats["videos"]), cuteness_sort=True)
+    # Live horizontal: usa muitos clips fofos para um ciclo de loop longo.
+    videos = pick_videos(
+        min_count=min(60, stats["videos"]),
+        max_count=min(video_count, stats["videos"]),
+        cuteness_sort=True,
+    )
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -132,45 +142,23 @@ def _build_looping_input(
         )
         processed.append(proc)
 
+    # concat_txt e os clips referenciados por ele precisam sobreviver a live
+    # inteira: o FFmpeg de streaming reabre esse playlist a cada volta do
+    # -stream_loop -1, entao nao apagamos nada aqui.
     concat_txt = OUTPUT_DIR / f"{output_stem}_concat.txt"
     build_concat_demuxer([str(p) for p in processed], str(concat_txt))
 
-    loop_input = OUTPUT_DIR / f"{output_stem}_loop.mp4"
     total_loop_duration = clip_duration * len(videos)
-    run_ffmpeg(
-        [
-            "-stream_loop",
-            "-1",
-            "-f",
-            "concat",
-            "-safe",
-            "0",
-            "-i",
-            str(concat_txt),
-            "-t",
-            str(total_loop_duration),
-            "-pix_fmt",
-            "yuv420p",
-            "-movflags",
-            "+faststart",
-            str(loop_input),
-        ]
-    )
-
     playlist_txt, _ = _build_audio_playlist(output_stem)
 
-    for p in processed:
-        p.unlink(missing_ok=True)
-    concat_txt.unlink(missing_ok=True)
-
     log.info(
-        "Loop de live gerado: %s (ciclo: %ss, clips: %d, audio playlist: %s)",
-        loop_input,
+        "Playlist de loop da live gerada: %s (ciclo: %ss, clips: %d, audio playlist: %s)",
+        concat_txt,
         total_loop_duration,
         len(videos),
         playlist_txt,
     )
-    return loop_input, playlist_txt
+    return concat_txt, playlist_txt
 
 
 def _start_ffmpeg_stream(input_path: Path, stream_url: str, duration_minutes: int = 0, audio_playlist: Path | None = None) -> subprocess.Popen:
@@ -181,12 +169,23 @@ def _start_ffmpeg_stream(input_path: Path, stream_url: str, duration_minutes: in
     YouTube rejeita a transicao para "testing" com 403 invalidTransition
     ate que o stream vinculado esteja com status.streamStatus == "active",
     o que so acontece depois que o FFmpeg comeca a enviar video de verdade.
+
+    input_path e um playlist do demuxer concat (gerado por
+    _build_looping_input), nao um unico arquivo de video ja "baked" - isso
+    evita o FFmpeg ter que reabrir um arquivo de video inteiro a cada volta
+    do -stream_loop -1, que causava travamentos visiveis na live.
     """
     cmd = [
         "ffmpeg",
         "-re",
+        "-fflags",
+        "+genpts",
         "-stream_loop",
         "-1",
+        "-f",
+        "concat",
+        "-safe",
+        "0",
         "-i",
         str(input_path),
     ]
