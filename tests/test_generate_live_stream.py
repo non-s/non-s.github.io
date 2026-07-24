@@ -58,6 +58,40 @@ class TestRunFfmpegStreamCommand:
         ]
         assert cmd[10:12] == ["-i", "concat.txt"]
 
+    @patch("generate_pata_jazz_live.time.sleep", return_value=None)
+    @patch("generate_pata_jazz_live.subprocess.Popen")
+    def test_audio_input_is_also_read_in_real_time(self, mock_popen, _mock_sleep, tmp_path):
+        """Sem -re no input de audio, o FFmpeg le/decodifica a playlist de
+        audio o mais rapido possivel, disputando CPU com a codificacao de
+        video em tempo real e derrubando a live (Broken pipe apos alguns
+        minutos, com o encode ficando cada vez mais atras do tempo real)."""
+        mock_popen.side_effect = _fake_popen
+        stream_url = "rtmp://a.rtmp.youtube.com/live2/abcd-efgh-ijkl-mnop"
+        audio_playlist = tmp_path / "audio.txt"
+        audio_playlist.write_text("")
+
+        live._start_ffmpeg_stream(
+            Path("concat.txt"), stream_url, duration_minutes=0, audio_playlist=audio_playlist
+        )
+
+        cmd = mock_popen.call_args[0][0]
+        expected_audio_block = ["-re", "-stream_loop", "-1", "-f", "concat", "-safe", "0", "-i", str(audio_playlist)]
+        audio_value_index = cmd.index(str(audio_playlist))
+        start = audio_value_index - (len(expected_audio_block) - 1)
+        assert cmd[start:audio_value_index + 1] == expected_audio_block
+
+    @patch("generate_pata_jazz_live.time.sleep", return_value=None)
+    @patch("generate_pata_jazz_live.subprocess.Popen")
+    def test_uses_ultrafast_preset_for_cpu_headroom(self, mock_popen, _mock_sleep):
+        mock_popen.side_effect = _fake_popen
+        stream_url = "rtmp://a.rtmp.youtube.com/live2/abcd-efgh-ijkl-mnop"
+
+        live._start_ffmpeg_stream(Path("concat.txt"), stream_url, duration_minutes=0)
+
+        cmd = mock_popen.call_args[0][0]
+        preset_index = cmd.index("-preset")
+        assert cmd[preset_index + 1] == "ultrafast"
+
 
 class TestWaitFfmpegStreamErrorSurfacing:
     """A causa raiz de uma falha do FFmpeg costuma estar no meio do stderr,
