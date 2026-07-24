@@ -1,0 +1,49 @@
+name: "Pata Jazz - Analytics Semanal"
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Toda segundas 06:00 UTC (03:00 BRT) - coleta metricas da semana
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pata-jazz-analytics
+  cancel-in-progress: true
+
+jobs:
+  analytics:
+    name: "Coletar metricas do canal"
+    if: ${{ vars.PATA_JAZZ_ENABLED == '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: "Python 3.11"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: "Instalar dependencias"
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: "Restaurar token YouTube"
+        env:
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+        run: |
+          umask 077
+          if [ -n "$YOUTUBE_TOKEN" ]; then
+            printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
+            chmod 600 youtube_token.json
+          fi
+      - name: "Coletar analytics"
+        run: python scripts/collect_analytics.py
+      - name: "Apagar token"
+        if: always()
+        run: rm -f youtube_token.json

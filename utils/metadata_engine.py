@@ -105,7 +105,14 @@ def generate_metadata(
 
     # Otimização final para busca
     title, description = optimize_for_search(title, description)
-    
+
+    # Garante prefixo de marca "Pata Jazz |" para consistencia
+    if not title.startswith("Pata Jazz"):
+        title = f"Pata Jazz | {title}"
+    # Limita a 100 chars (limite do YouTube)
+    if len(title) > 100:
+        title = title[:97] + "..."
+
     # Garante que as hashtags apareçam na descrição
     if hashtags and not any(h in description for h in hashtags):
         description = f"{description}\n\n{' '.join(hashtags)}"

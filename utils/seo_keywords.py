@@ -239,8 +239,8 @@ def optimize_for_search(title: str, description: str) -> tuple[str, str]:
     if not has_keyword:
         # Adiciona keyword ao final do título se couber
         keyword = random.choice(primary_keywords)
-        if len(title) + len(keyword) + 3 <= 100:
-            title = f"{title} | {keyword}"
+        if len(title) + len(keyword) + 2 <= 90:
+            title = f"{title}, {keyword}"
     
     # Adiciona keywords semanticamente relacionadas à descrição
     related_terms = [

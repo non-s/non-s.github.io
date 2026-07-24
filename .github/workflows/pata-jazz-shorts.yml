@@ -2,8 +2,11 @@ name: "Pata Jazz - Shorts"
 
 on:
   schedule:
-    # 1 short por hora, 24x por dia
-    - cron: "0 * * * *"
+    # 4 shorts por dia: 07:00, 13:00, 18:00, 22:00 BRT (UTC-3)
+    # = 10:00, 16:00, 21:00, 01:00 UTC
+    # Razao: YouTube API permite 6 uploads/dia (10k unidades / 1600 por upload)
+    # 4 shorts + 1 horizontal = 5 uploads/dia, dentro do limite com folga
+    - cron: "0 10,16,21,1 * * *"
   workflow_dispatch:
     inputs:
       reason:

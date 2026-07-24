@@ -1,25 +1,52 @@
 """
 utils/content_strategy.py — calendário editorial, SEO e estratégia de conteúdo Pata Jazz.
+
+Mapeia horário do dia -> mood para escolher cenas apropriadas:
+  Manhã (06-12): diversao (energia, gatos brincando)
+  Tarde  (12-18): fofura (fofo, gatinhos dormindo)
+  Noite  (18-24): relax (relaxamento, cachorros dormindo)
+  Madrugada (00-06): relax
 """
 
 from __future__ import annotations
 
 import random
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
-# Melhores horários observados para o nicho (BRT = UTC-3)
+# Janelas de publicação (BRT = UTC-3)
 PUBLISH_SLOTS = {
-    "short": ["07:30", "11:30", "18:30"],      # Shorts: manhã, almoço, noite
-    "horizontal": ["19:00", "20:30", "21:30"],  # Longos: pico noite
-    "live": ["08:00", "14:00", "19:00"],       # Lives: manhã, tarde, noite
+    "short": ["07:00", "13:00", "18:00", "22:00"],
+    "horizontal": ["10:00"],
+    "live": ["19:00"],
 }
 
-# Categorias de cenas com variação sazonal
+# Categorias de cenas
 SCENE_CATEGORIES: dict[str, list[str]] = {
     "fofura": ["cat", "kitten", "puppy", "dog", "sleepy cat"],
-    "diversao": ["playful dog", "cat playing", "puppy playing", "dog running"],
+    "diversao": ["playful dog", "cat playing", "puppy playing", "dog relaxing"],
     "relax": ["sleepy cat", "sleepy dog", "cat relaxing", "dog relaxing"],
 }
+
+# Mapeamento de faixa horaria (BRT) -> mood
+# Manha = energia/diversao, Tarde = fofura, Noite = relax
+_HOURLY_MOOD: dict[int, str] = {}
+for h in range(24):
+    if 6 <= h < 12:
+        _HOURLY_MOOD[h] = "diversao"
+    elif 12 <= h < 18:
+        _HOURLY_MOOD[h] = "fofura"
+    else:
+        _HOURLY_MOOD[h] = "relax"
+
+
+def current_brt_hour() -> int:
+    """Retorna a hora atual em BRT (UTC-3)."""
+    return (datetime.now(timezone.utc) + timedelta(hours=-3)).hour
+
+
+def mood_for_now() -> str:
+    """Retorna o mood apropriado para a hora atual (BRT)."""
+    return _HOURLY_MOOD.get(current_brt_hour(), "fofura")
 
 
 def best_slot_for(kind: str, weekday: int | None = None) -> str:
@@ -27,7 +54,6 @@ def best_slot_for(kind: str, weekday: int | None = None) -> str:
     slots = PUBLISH_SLOTS.get(kind, ["12:00"])
     if weekday is None:
         weekday = datetime.now(timezone.utc).weekday()
-    # Finais de semana: empurra para horários mais tarde
     if weekday >= 5:
         return slots[-1]
     return slots[0]
@@ -40,14 +66,17 @@ def pick_scene_category(mood: str = "") -> str:
     return random.choice(list(SCENE_CATEGORIES.keys()))
 
 
+def scene_for_mood(mood: str) -> str:
+    """Retorna uma cena especifica (ex: 'sleepy cat') para o mood dado."""
+    scenes = SCENE_CATEGORIES.get(mood, SCENE_CATEGORIES["fofura"])
+    return random.choice(scenes)
+
+
 def weekly_calendar() -> list[dict]:
     """Gera uma sugestão de calendário semanal equilibrado."""
+    days = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"]
+    moods_cycle = ["fofura", "relax", "fofura", "diversao", "diversao", "relax", "fofura"]
     return [
-        {"day": "Seg", "type": "short", "slot": best_slot_for("short", 0), "mood": "fofura"},
-        {"day": "Ter", "type": "short", "slot": best_slot_for("short", 1), "mood": "relax"},
-        {"day": "Qua", "type": "horizontal", "slot": best_slot_for("horizontal", 2), "mood": "fofura"},
-        {"day": "Qui", "type": "short", "slot": best_slot_for("short", 3), "mood": "diversao"},
-        {"day": "Sex", "type": "horizontal", "slot": best_slot_for("horizontal", 4), "mood": "diversao"},
-        {"day": "Sab", "type": "live", "slot": best_slot_for("live", 5), "mood": "relax"},
-        {"day": "Dom", "type": "short", "slot": best_slot_for("short", 6), "mood": "fofura"},
+        {"day": days[i], "type": "short", "slot": best_slot_for("short", i), "mood": moods_cycle[i]}
+        for i in range(7)
     ]

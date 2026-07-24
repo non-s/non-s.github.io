@@ -105,6 +105,36 @@ def upload_video(language: str = "pt", privacy: str = "public", prefix: str = "p
         except (HttpError, MediaUploadSizeError) as exc:
             log.warning("Falha ao aplicar thumbnail: %s", exc)
 
+    # Upload de legenda SRT se existir
+    caption_path = Path(meta.get("caption", ""))
+    if caption_path.exists():
+        try:
+            caption_body = {
+                "snippet": {
+                    "videoId": video_id,
+                    "language": "pt-BR",
+                    "name": "Portugues",
+                    "isDraft": False,
+                }
+            }
+            _retry_youtube_call(
+                service.captions().insert(
+                    part="snippet",
+                    body=caption_body,
+                    media_body=MediaFileUpload(str(caption_path), mimetype="text/vtt"),
+                ).execute
+            )
+            log.info("Legenda aplicada.")
+        except (HttpError, MediaUploadSizeError) as exc:
+            log.warning("Falha ao aplicar legenda: %s", exc)
+
+    # Adiciona a playlist automatica
+    try:
+        from utils.playlist_manager import add_video_to_playlist
+        add_video_to_playlist(service, video_id, kind=meta.get("kind", ""))
+    except Exception as exc:
+        log.warning("Falha ao adicionar a playlist: %s", exc)
+
     return video_id
 
 

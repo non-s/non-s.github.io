@@ -1,7 +1,8 @@
 """
 generate_pata_jazz_horizontal.py — gera videos longos horizontais de gatos/cachorros + jazz.
 
-Resolucao: 1920x1080, duracao ~3-5 minutos, musica de jazz real em background.
+Resolucao: 1920x1080, duracao ~4min, musica de jazz real em background.
+Mood selecionado automaticamente pelo horario.
 """
 
 from __future__ import annotations
@@ -14,7 +15,7 @@ from pathlib import Path
 
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.video_builder import build_pata_jazz_video, horizontal_spec
-from utils.content_strategy import pick_scene_category, weekly_calendar
+from utils.content_strategy import mood_for_now, scene_for_mood
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT_DIR = ROOT / "_videos"
@@ -26,24 +27,15 @@ DEFAULT_DURATION = 240
 
 
 def _generate_horizontal(duration: int = DEFAULT_DURATION) -> Path:
-    """Gera um video horizontal com UM clipe e UMA musica de jazz.
-    
-    Usa content_strategy para selecionar mood baseado no dia da semana.
+    """Gera um video horizontal com clipes de gatos/cachorros + musica de jazz.
+
+    Mood automatico pela hora atual (BRT).
     """
-    # Seleciona mood baseado no calendário editorial
-    calendar = weekly_calendar()
-    try:
-        from datetime import datetime, timezone
-        weekday = datetime.now(timezone.utc).weekday()
-        today_entry = next((e for e in calendar if e["day"].lower() == ["seg", "ter", "qua", "qui", "sex", "sab", "dom"][weekday]), None)
-        mood = today_entry["mood"] if today_entry else "fofura"
-    except Exception:
-        mood = "fofura"
-    
-    category = pick_scene_category(mood)
-    log.info("Usando categoria '%s' (mood: %s) para video horizontal", category, mood)
-    
-    spec = horizontal_spec(duration=duration)
+    mood = mood_for_now()
+    scene = scene_for_mood(mood)
+    log.info("Mood=%s, cena=%s", mood, scene)
+
+    spec = horizontal_spec(duration=duration, scene=scene, mood=mood)
     return build_pata_jazz_video(
         spec=spec,
         output_dir=OUTPUT_DIR,
