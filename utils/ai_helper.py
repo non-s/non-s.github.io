@@ -18,7 +18,7 @@ import requests
 
 log = logging.getLogger(__name__)
 
-_GEMINI_MODEL = "gemini-1.5-flash"
+_GEMINI_MODEL = "gemini-flash-latest"
 _GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 _MIN_INTERVAL = 1.0  # segundos entre chamadas
 _GEMINI_429_CIRCUIT_THRESHOLD = 5
