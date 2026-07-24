@@ -91,6 +91,7 @@ def build_pata_jazz_video(
 
     inputs = ["-stream_loop", "-1", "-i", str(video)]
     output_args: list[str] = [
+        "-map", "0:v:0",
         "-vf", _build_video_filter(spec),
         "-c:v", "libx264",
         "-preset", "fast",
@@ -102,7 +103,11 @@ def build_pata_jazz_video(
     ]
     if audio_path:
         inputs += ["-stream_loop", "-1", "-i", str(audio_path)]
-        output_args += ["-c:a", "aac", "-b:a", "192k", "-shortest"]
+        # Mapeia explicitamente o audio da faixa de jazz (input 1). Sem isso,
+        # a selecao automatica do FFmpeg pode escolher o audio embutido no
+        # clipe de b-roll (input 0) em vez da musica, deixando o video mudo
+        # ou com o som ambiente original do clipe.
+        output_args += ["-map", "1:a:0", "-c:a", "aac", "-b:a", "192k", "-shortest"]
 
     run_ffmpeg(inputs + output_args + [str(output)])
 
