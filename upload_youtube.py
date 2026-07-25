@@ -20,7 +20,7 @@ import time
 from datetime import UTC, datetime
 from pathlib import Path
 
-from googleapiclient.errors import HttpError, MediaUploadSizeError
+from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
 from utils.ai_helper import ai_text
@@ -55,6 +55,17 @@ def _latest_video_meta(prefix: str = "pata_jazz_") -> tuple[Path, dict] | None:
     return None
 
 
+def _meta_path(meta: dict, key: str) -> Path | None:
+    """Path(meta.get(key, "")) para uma chave ausente/vazia vira Path("") ==
+    Path(".") - e .exists() no diretorio atual e sempre True, entao codigo
+    como MediaFileUpload(str(thumbnail)) tenta abrir um diretorio como
+    arquivo e explode com IsADirectoryError em vez de so pular o upload
+    opcional. So constroi o Path se o valor for realmente uma string nao-vazia.
+    """
+    value = meta.get(key)
+    return Path(value) if value else None
+
+
 def _build_tags(scene: str, hashtags: list[str] | None = None) -> list[str]:
     base = ["Pata Jazz", "gato", "cachorro", "jazz", "fofo", "relaxante"]
     if "cat" in scene or "kitten" in scene:
@@ -78,7 +89,7 @@ def upload_video(language: str = "pt", privacy: str = "public", prefix: str = "p
     title = str(meta.get("title", "Pata Jazz"))[:100]
     description = str(meta.get("description", ""))[:5000]
     tags = _build_tags(meta.get("scene", ""), meta.get("hashtags"))
-    thumbnail = Path(meta.get("thumbnail", ""))
+    thumbnail = _meta_path(meta, "thumbnail")
 
     body = {
         "snippet": {
@@ -102,18 +113,26 @@ def upload_video(language: str = "pt", privacy: str = "public", prefix: str = "p
     video_id = response["id"]
     log.info("Video enviado: https://youtu.be/%s", video_id)
 
-    if thumbnail.exists():
+    if thumbnail and thumbnail.exists():
         try:
             # Re-verifica existencia (TOCTOU) e instancia MediaFileUpload dentro do try.
             thumb_media = MediaFileUpload(str(thumbnail))
             _retry_youtube_call(service.thumbnails().set(videoId=video_id, media_body=thumb_media).execute)
             log.info("Thumbnail aplicada.")
-        except (HttpError, MediaUploadSizeError) as exc:
+        except Exception as exc:
+            # Nao so (HttpError, MediaUploadSizeError): _retry_youtube_call
+            # levanta RuntimeError quando esgota as tentativas em erros
+            # retryable persistentes (ex: 503 repetido), e isso escapava
+            # sem ser pego aqui - derrubando upload_video() inteiro (pulando
+            # legenda e playlist) mesmo com o video ja publicado com sucesso
+            # (confirmado em producao: run 30155769151, thumbnail falhou
+            # apos esgotar retries e o RuntimeError nao pego matou o job,
+            # que ficou "failure" apesar do upload ja ter ido ao ar).
             log.warning("Falha ao aplicar thumbnail: %s", exc)
 
     # Upload de legenda SRT se existir
-    caption_path = Path(meta.get("caption", ""))
-    if caption_path.exists():
+    caption_path = _meta_path(meta, "caption")
+    if caption_path and caption_path.exists():
         try:
             caption_body = {
                 "snippet": {
@@ -133,13 +152,20 @@ def upload_video(language: str = "pt", privacy: str = "public", prefix: str = "p
                 ).execute
             )
             log.info("Legenda aplicada.")
-        except (HttpError, MediaUploadSizeError) as exc:
+        except Exception as exc:
+            # Ver comentario equivalente no bloco de thumbnail acima.
             log.warning("Falha ao aplicar legenda: %s", exc)
 
-    # Adiciona a playlist automatica
+    # Adiciona as playlists automaticas: por formato (kind) e por mood.
+    # add_video_to_playlist so adiciona a UMA playlist por chamada (mood tem
+    # prioridade se os dois forem passados juntos), entao sao duas chamadas
+    # separadas - senao as playlists por mood (PLAYLISTS_BY_MOOD) nunca sao
+    # populadas, ja que meta["mood"] nunca era passado antes.
     try:
         from utils.playlist_manager import add_video_to_playlist
         add_video_to_playlist(service, video_id, kind=meta.get("kind", ""))
+        if meta.get("mood"):
+            add_video_to_playlist(service, video_id, mood=meta["mood"])
     except Exception as exc:
         log.warning("Falha ao adicionar a playlist: %s", exc)
 
@@ -192,7 +218,11 @@ def create_live_stream(
         },
         "cdn": {
             "resolution": resolution,
-            "frameRate": "30fps",
+            # "variable" (nao "30fps"/"60fps" fixo): scripts/run_live.py ja
+            # trocou o encode real para 24fps para reduzir carga de CPU, e
+            # pode voltar a mudar - declarar um fps fixo aqui so cria
+            # divergencia com o que o FFmpeg realmente envia.
+            "frameRate": "variable",
             "ingestionType": "rtmp",
         },
     }
@@ -227,13 +257,29 @@ def transition_broadcast(broadcast_id: str, status: str) -> None:
     log.info("Broadcast %s transicionado para %s", broadcast_id, status)
 
 
+def delete_broadcast(broadcast_id: str) -> None:
+    """Apaga um broadcast que nunca chegou a ficar 'live'.
+
+    transition(..., 'complete') so e valido a partir de 'testing'/'live';
+    chamado sobre um broadcast ainda em 'ready' (stream nunca confirmou
+    active) provavelmente tambem 403. Usado como fallback de limpeza para
+    nao deixar broadcasts orfaos "ready" acumulando no canal.
+    """
+    service = get_youtube_service()
+    _retry_youtube_call(service.liveBroadcasts().delete(id=broadcast_id).execute)
+    log.info("Broadcast %s (nunca ficou ativo) apagado.", broadcast_id)
+
+
 def wait_for_stream_active(stream_id: str, timeout: int = 90, interval: int = 3) -> bool:
     """Aguarda o liveStream ficar com status.streamStatus == 'active'.
 
-    A API do YouTube rejeita a transicao do broadcast para 'testing' (403
-    invalidTransition) enquanto o stream vinculado nao estiver recebendo
-    dados de video de verdade. E preciso comecar a enviar o FFmpeg antes
-    de chamar transition_broadcast().
+    Confirma que o YouTube esta de fato recebendo video do FFmpeg. Com
+    enableAutoStart=True (ver create_live_stream), o proprio YouTube promove
+    o broadcast de 'ready' para 'live' assim que isso acontece - nao chame
+    transition_broadcast(..., 'testing') nesse fluxo: broadcasts criados com
+    enableMonitorStream=False sempre rejeitam a fase de testing (403
+    invalidTransition), independente de quando a chamada e feita, pois essa
+    fase exige monitor stream habilitado.
 
     Se a API retornar items vazio repetidamente, o stream_id provavelmente
     esta errado - aborta cedo para nao esperar o timeout inteiro.
@@ -263,14 +309,19 @@ def wait_for_stream_active(stream_id: str, timeout: int = 90, interval: int = 3)
 
 
 def _retry_youtube_call(func, *args, **kwargs):
-    """Executa chamada YouTube API com retry exponencial e circuit breaker."""
+    """Executa chamada YouTube API com retry e backoff exponencial.
+
+    Sem circuit breaker (ao contrario de utils.ai_helper.ai_text, que tem
+    um de verdade para o Gemini) - cada chamada tenta ate _YOUTUBE_MAX_RETRIES
+    vezes independente de falhas anteriores nesta run.
+    """
     for attempt in range(_YOUTUBE_MAX_RETRIES):
         try:
             return func(*args, **kwargs)
         except HttpError as e:
             status = e.resp.status if hasattr(e, 'resp') else 0
-            if status in (429, 500, 502, 503, 504):
-                # Rate limit ou server error: retry com backoff
+            if status in (409, 429, 500, 502, 503, 504):
+                # Rate limit, conflito temporario (409) ou erro de servidor: retry com backoff
                 wait = _YOUTUBE_BASE_BACKOFF * (2 ** attempt) + random.uniform(0, 1)
                 log.warning("YouTube API %s - retry em %ss (tentativa %d/%d)", status, wait, attempt + 1, _YOUTUBE_MAX_RETRIES)
                 time.sleep(wait)

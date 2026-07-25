@@ -216,7 +216,12 @@ def _build_multi_clip_short(
     if audio_path:
         # Indice do audio = numero de clipes processados (videos 0..n-1, audio n).
         cmd_args += ["-map", f"{n_clips}:a:0", "-c:a", "aac", "-b:a", "192k"]
-        cmd_args += ["-t", str(spec.duration)]
+
+    # -t sempre aplicado (nao so quando ha audio): sem ele, a duracao do
+    # xfade final e sum(per_clip) - (n_clips-1)*xfade_duration, que fica
+    # abaixo de spec.duration por causa do truncamento inteiro de per_clip -
+    # o suficiente para estourar TOLERANCE_SECONDS na validacao (video_validator).
+    cmd_args += ["-t", str(spec.duration)]
 
     cmd_args += [str(output)]
     run_ffmpeg(cmd_args)
@@ -313,7 +318,12 @@ def build_pata_jazz_video(
     except Exception as exc:
         log.warning("Falha ao gerar legenda: %s", exc)
 
-    validation = validate_generated_video(output, meta["resolution"], spec.duration)
+    # expect_audio=False quando o pool de jazz estava vazio (audio_path is
+    # None): sem isso a validacao sempre exige audio e derruba a geracao
+    # inteira toda vez que sync_jazz_music.py falha ou o pool esta vazio,
+    # em vez de so publicar o video sem trilha como _validate_source_pools
+    # ja pretendia permitir (so avisa, nao levanta excecao).
+    validation = validate_generated_video(output, meta["resolution"], spec.duration, expect_audio=audio_path is not None)
     if not validation.ok:
         raise RuntimeError(f"Vídeo gerado não passou na validação: {'; '.join(validation.errors)}")
     log.info("%s gerado e validado: %s", spec.kind.capitalize(), output)

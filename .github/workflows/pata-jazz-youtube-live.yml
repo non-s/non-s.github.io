@@ -8,9 +8,9 @@ on:
         required: false
         default: "manual"
       duration_minutes:
-        description: "Duracao da transmissao em minutos (0 = ate cancelar)"
+        description: "Duracao da transmissao em minutos (0 = ate cancelar, max 340)"
         required: false
-        default: "350"
+        default: "320"
       resolution:
         description: "Resolucao da live (720p maximo suportado no runner gratuito)"
         required: false
@@ -19,20 +19,28 @@ on:
         options:
           - "1280x720"
   schedule:
-    # 1 live por semana - Quarta-feira (Plano 7 Dias)
-    # Live: 19:00 BRT (22:00 UTC) - Duração: ~6 horas (limite GitHub Actions)
-    # Perfeito para engajamento noturno (trabalho/estudo/relaxamento)
-    - cron: "0 22 * * 3"
+    # Canal sempre ao vivo: cada sessao dura ~320min (LIVE_DURATION_MINUTES),
+    # limitado pelo timeout de job do GitHub Actions (nao existe job "eterno").
+    # Disparar a cada 6h (360min, > 320) faz o PROXIMO run ser enfileirado
+    # (nao cancelado - ver cancel-in-progress abaixo) um pouco antes da
+    # sessao atual terminar, entao ele comeca assim que ela acaba, sem
+    # esperar ate o proximo horario "redondo". O unico "buraco" real entre
+    # uma sessao e outra e o tempo de preparo da proxima (build do loop de
+    # clipes + criacao do broadcast), nao um dia inteiro parado como antes.
+    - cron: "0 */6 * * *"
 
 permissions:
   contents: read
 
 concurrency:
   group: pata-jazz-live
-  cancel-in-progress: true
+  # false (nao cancela): a proxima sessao disparada pelo cron espera a
+  # atual terminar naturalmente (transition('complete') + limpeza) em vez
+  # de matar a live no meio para comecar uma nova - handoff mais limpo.
+  cancel-in-progress: false
 
 env:
-  LIVE_DURATION_MINUTES: ${{ github.event.inputs.duration_minutes || '350' }}
+  LIVE_DURATION_MINUTES: ${{ github.event.inputs.duration_minutes || '320' }}
   LIVE_RESOLUTION: ${{ github.event.inputs.resolution || '1280x720' }}
 
 jobs:
@@ -40,7 +48,13 @@ jobs:
     name: "Transmitir live Pata Jazz"
     if: ${{ vars.PATA_JAZZ_ENABLED == '1' && vars.PATA_JAZZ_LIVE_ENABLED == '1' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 375
+    # O limite real de job do GitHub Actions hospedado e 360min (hard cap da
+    # plataforma - declarar mais que isso e simplesmente ignorado). 355 fica
+    # dentro desse teto com uma pequena folga para os ultimos passos (ex:
+    # "Apagar token") depois que scripts/run_live.py termina; os ~320min de
+    # LIVE_DURATION_MINUTES + preparo (sync + build do loop, ~15min tipico)
+    # + limpeza precisam caber dentro dos 355min do job.
+    timeout-minutes: 355
     env:
       YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}

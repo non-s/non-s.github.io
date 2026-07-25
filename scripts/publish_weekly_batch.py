@@ -4,7 +4,10 @@ scripts/publish_weekly_batch.py — publica proximos 6 videos gerados como publi
 Le os metadados em _videos/*.json, encontra videos ainda nao publicados,
 faz upload de ate 6 por vez (limite de quota do YouTube) e os marca como
 publicos. Se ja foram feitos upload como private, apenas atualiza o
-privacyStatus para public (custa 50 unidades vs 1.600 do insert).
+privacyStatus para public (custa bem menos que um insert novo). Na pratica
+isso so vale para os PRIMEIROS 6 videos do lote (uploaded como private no
+job "generate" do workflow) - os outros 29 nunca tem video_id ainda, entao
+os proximos ~5 dias de publish fazem inserts normais mesmo, nao updates.
 
 Este script e parte do lote semanal: e disparado uma vez por dia pelo
 workflow pata-jazz-weekly.yml ate que todos os 35 videos estejam publicos.
@@ -24,7 +27,7 @@ sys.path.insert(0, str(ROOT))
 
 from googleapiclient.http import MediaFileUpload
 
-from upload_youtube import _build_tags, _retry_youtube_call
+from upload_youtube import _build_tags, _meta_path, _retry_youtube_call
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.youtube_oauth import get_youtube_service
 
@@ -108,8 +111,8 @@ def _publish_video(service, video_path: Path, meta: dict, language: str = "pt") 
     log.info("Video enviado: https://youtu.be/%s", video_id)
 
     # Thumbnail
-    thumbnail = Path(meta.get("thumbnail", ""))
-    if thumbnail.exists():
+    thumbnail = _meta_path(meta, "thumbnail")
+    if thumbnail and thumbnail.exists():
         try:
             thumb_media = MediaFileUpload(str(thumbnail))
             _retry_youtube_call(service.thumbnails().set(videoId=video_id, media_body=thumb_media).execute)
@@ -118,8 +121,8 @@ def _publish_video(service, video_path: Path, meta: dict, language: str = "pt") 
             log.warning("Falha ao aplicar thumbnail: %s", exc)
 
     # Legenda
-    caption_path = Path(meta.get("caption", ""))
-    if caption_path.exists():
+    caption_path = _meta_path(meta, "caption")
+    if caption_path and caption_path.exists():
         try:
             caption_body = {
                 "snippet": {
@@ -141,10 +144,13 @@ def _publish_video(service, video_path: Path, meta: dict, language: str = "pt") 
         except Exception as exc:
             log.warning("Falha ao aplicar legenda: %s", exc)
 
-    # Playlist
+    # Playlist: por formato (kind) e por mood (chamadas separadas - ver
+    # comentario equivalente em upload_youtube.py:upload_video).
     try:
         from utils.playlist_manager import add_video_to_playlist
         add_video_to_playlist(service, video_id, kind=meta.get("kind", ""))
+        if meta.get("mood"):
+            add_video_to_playlist(service, video_id, mood=meta["mood"])
     except Exception as exc:
         log.warning("Falha ao adicionar a playlist: %s", exc)
 

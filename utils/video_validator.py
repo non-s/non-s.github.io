@@ -151,7 +151,9 @@ def validate_video(
     return VideoValidation(ok=ok, errors=errors, info=info)
 
 
-def validate_generated_video(path: Path, expected_resolution: str, expected_duration: int) -> VideoValidation:
+def validate_generated_video(
+    path: Path, expected_resolution: str, expected_duration: int, expect_audio: bool = True
+) -> VideoValidation:
     """Valida um vídeo gerado pelo Pata Jazz a partir da string de resolução."""
     try:
         w, h = (int(x) for x in expected_resolution.split("x"))
@@ -161,4 +163,6 @@ def validate_generated_video(path: Path, expected_resolution: str, expected_dura
             errors=[f"Resolução esperada inválida: {expected_resolution}"],
             info={},
         )
-    return validate_video(path, expected_width=w, expected_height=h, expected_duration=expected_duration)
+    return validate_video(
+        path, expected_width=w, expected_height=h, expected_duration=expected_duration, expect_audio=expect_audio
+    )

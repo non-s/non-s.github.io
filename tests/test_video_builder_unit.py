@@ -88,3 +88,65 @@ class TestVideoBuilderUnits:
         cmd = captured["args"]
         map_values = [cmd[i + 1] for i, v in enumerate(cmd) if v == "-map"]
         assert map_values == ["0:v:0", "1:a:0"]
+
+    def test_build_pata_jazz_video_does_not_require_audio_when_pool_empty(self, tmp_path):
+        """Sem musica de jazz disponivel (pool vazio), pick_audio() retorna
+        None e o video e gerado sem trilha - a validacao nao pode continuar
+        exigindo audio nesse caso, senao toda geracao falha sempre que o
+        pool de jazz estiver vazio, mesmo o video em si estando correto."""
+        spec = video_builder.VideoSpec(
+            kind="test",
+            width=100,
+            height=100,
+            duration=5,
+            default_duration=5,
+            crop_filter="crop=100:100",
+            thumbnail_maker=lambda *a, **kw: None,
+            fallback_description="desc",
+        )
+
+        captured = {}
+
+        def fake_validate(*args, **kwargs):
+            captured["kwargs"] = kwargs
+            captured["args"] = args
+            return VideoValidation(ok=True, errors=[], info={})
+
+        with patch("utils.video_builder.ensure_dirs"), \
+             patch("utils.video_builder.pool_stats", return_value={"videos": 1, "audio": 0}), \
+             patch("utils.video_builder.random_scene", return_value="scene"), \
+             patch("utils.video_builder.hook_for_scene", return_value=("hook", "🐾")), \
+             patch("utils.video_builder.pick_videos", return_value=[Path("video.mp4")]), \
+             patch("utils.video_builder.pick_audio", return_value=None), \
+             patch("utils.video_builder.run_ffmpeg"), \
+             patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}), \
+             patch("utils.video_builder.validate_generated_video", side_effect=fake_validate):
+            video_builder.build_pata_jazz_video(
+                spec=spec, output_dir=tmp_path, thumb_dir=tmp_path, stem_prefix="test"
+            )
+
+        assert captured["kwargs"].get("expect_audio") is False
+
+    def test_multi_clip_short_caps_duration_without_audio(self, tmp_path):
+        """Sem audio (pool de jazz vazio), o xfade final ainda precisa de -t:
+        sum(per_clip) - (n_clips-1)*xfade_duration fica abaixo de spec.duration
+        por causa do truncamento inteiro de per_clip, o que sem -t produziria
+        um video curto demais e reprovaria em video_validator (tolerancia de
+        1.5s)."""
+        spec = video_builder.short_spec(duration=35)
+        videos = [Path(f"video{i}.mp4") for i in range(3)]
+
+        captured_cmds = []
+
+        def fake_run_ffmpeg(args):
+            captured_cmds.append(args)
+
+        with patch("utils.video_builder.random", **{"sample.return_value": videos, "randint.return_value": 3}), \
+             patch("utils.video_builder.run_ffmpeg", side_effect=fake_run_ffmpeg):
+            video_builder._build_multi_clip_short(
+                spec, videos, audio_path=None, output=tmp_path / "out.mp4", hook="hook",
+            )
+
+        final_cmd = captured_cmds[-1]
+        assert "-t" in final_cmd
+        assert final_cmd[final_cmd.index("-t") + 1] == "35"

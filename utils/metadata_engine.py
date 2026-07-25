@@ -115,10 +115,13 @@ def generate_metadata(
     if len(title) > 100:
         title = title[:97] + "..."
 
-    # Garante que as hashtags apareçam na descrição.
-    # Usa regex com boundary de palavra para evitar falso-positivo
-    # (ex: "#Gato" combinando com "#Gatos" ou "dogato").
-    if hashtags and not any(re.search(rf"\b{re.escape(h)}\b", description) for h in hashtags):
+    # Garante que as hashtags apareçam na descrição (evita duplicar quando
+    # generate_description ja as incluiu). So boundary de palavra DEPOIS da
+    # hashtag (nao antes: "#" e o char antes dele - espaco/inicio - sao
+    # ambos nao-palavra, entao \b nunca bate ali, o que fazia essa checagem
+    # falhar sempre e duplicar as hashtags em toda descricao). O boundary
+    # final ainda evita falso-positivo tipo "#Gato" combinando com "#Gatos".
+    if hashtags and not any(re.search(rf"{re.escape(h)}\b", description) for h in hashtags):
         description = f"{description}\n\n{' '.join(hashtags)}"
 
     return {

@@ -2,7 +2,58 @@
 
 from __future__ import annotations
 
+from datetime import UTC, datetime
+from unittest.mock import patch
+
 from utils import content_strategy
+
+
+def _mock_now(utc_hour: int):
+    """Mock de datetime.now(UTC) fixado numa hora UTC especifica."""
+    return patch(
+        "utils.content_strategy.datetime",
+        **{"now.return_value": datetime(2026, 7, 25, utc_hour, 0, 0, tzinfo=UTC)},
+    )
+
+
+class TestCurrentBrtHour:
+    def test_converts_utc_to_brt_minus_3(self):
+        # 15:00 UTC - 3h = 12:00 BRT
+        with _mock_now(15):
+            assert content_strategy.current_brt_hour() == 12
+
+    def test_wraps_around_midnight(self):
+        # 1:00 UTC - 3h = 22:00 BRT do dia anterior
+        with _mock_now(1):
+            assert content_strategy.current_brt_hour() == 22
+
+
+class TestMoodForNow:
+    def test_morning_is_diversao(self):
+        # 6h-12h BRT = 9h-15h UTC
+        with _mock_now(10):  # 7h BRT
+            assert content_strategy.mood_for_now() == "diversao"
+
+    def test_afternoon_is_fofura(self):
+        # 12h-18h BRT = 15h-21h UTC
+        with _mock_now(16):  # 13h BRT
+            assert content_strategy.mood_for_now() == "fofura"
+
+    def test_night_is_relax(self):
+        # 18h-24h e 0h-6h BRT = relax
+        with _mock_now(22):  # 19h BRT
+            assert content_strategy.mood_for_now() == "relax"
+
+
+class TestSceneForMood:
+    def test_returns_scene_from_correct_category(self):
+        for mood, scenes in content_strategy.SCENE_CATEGORIES.items():
+            for _ in range(10):  # random.choice - checa varias vezes
+                assert content_strategy.scene_for_mood(mood) in scenes
+
+    def test_unknown_mood_falls_back_to_fofura(self):
+        scene = content_strategy.scene_for_mood("mood-que-nao-existe")
+        assert scene in content_strategy.SCENE_CATEGORIES["fofura"]
 
 
 def test_best_slot_for_short():

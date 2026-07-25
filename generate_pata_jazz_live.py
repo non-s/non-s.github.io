@@ -183,10 +183,12 @@ def _start_ffmpeg_stream(
     """Inicia o processo FFmpeg em modo stream e retorna imediatamente.
 
     Separado de _wait_ffmpeg_stream para permitir que o chamador comece a
-    enviar dados ao YouTube antes de transicionar o broadcast: a API do
-    YouTube rejeita a transicao para "testing" com 403 invalidTransition
-    ate que o stream vinculado esteja com status.streamStatus == "active",
-    o que so acontece depois que o FFmpeg comeca a enviar video de verdade.
+    enviar dados ao YouTube e depois confirme o stream ficando ativo (ver
+    upload_youtube.wait_for_stream_active) antes de notificar o inicio da
+    live. Nao ha transicao manual para "testing" nesse fluxo - broadcasts
+    criados com enableMonitorStream=False sempre rejeitam essa fase (403
+    invalidTransition) independente do timing; enableAutoStart=True promove
+    o broadcast para "live" sozinho assim que o stream fica ativo.
 
     input_path e um playlist do demuxer concat (gerado por
     _build_looping_input), nao um unico arquivo de video ja "baked" - isso
@@ -205,6 +207,13 @@ def _start_ffmpeg_stream(
     720p o encode tem ~2.25x menos pixels por frame, o que da folga real
     de CPU em vez de so trocar preset. O bitrate e escalado junto pra nao
     desperdicar banda/qualidade num frame menor.
+
+    Mesmo em 720p30 o runner ainda cai pra tras periodicamente (medido:
+    Broken pipe a cada ~2.8min em media, speed caindo a ~0.43x pouco antes
+    - ver run_live._MAX_RECONNECTS, que reconecta quando isso acontece em
+    vez de derrubar a live inteira). -r 24 (em vez de 30) reduz ~20% do
+    trabalho de encode por segundo para tornar essas quebras mais raras;
+    -g 48 mantem o GOP em ~2s (48 frames a 24fps) como antes (60 a 30fps).
 
     O stderr do FFmpeg e redirecionado para um arquivo de log em _videos/
     em vez de PIPE: o FFmpeg produz muito stderr (logs de progresso
@@ -252,9 +261,9 @@ def _start_ffmpeg_stream(
         "-bufsize",
         f"{video_bitrate_kbps * 2}k",
         "-g",
-        "60",
+        "48",
         "-r",
-        "30",
+        "24",
         "-c:a",
         "aac",
         "-b:a",
@@ -374,6 +383,15 @@ def _save_live_meta(**kwargs) -> None:
 
 
 def main() -> int:
+    """CLI standalone para teste manual/local - NAO e usado em producao.
+
+    O workflow .github/workflows/pata-jazz-youtube-live.yml roda
+    `python scripts/run_live.py`, que importa as funcoes deste modulo
+    (_build_looping_input, _start_ffmpeg_stream etc.) mas tem seu proprio
+    main() com todo o ciclo de vida do broadcast (criar, aguardar stream
+    ficar ativo, reconectar, encerrar). Corrigir um bug de streaming aqui
+    (fluxo abaixo) NAO afeta a live de verdade - edite scripts/run_live.py.
+    """
     parser = argparse.ArgumentParser(description="Live Pata Jazz em loop infinito")
     parser.add_argument(
         "--duration",

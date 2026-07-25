@@ -62,14 +62,18 @@ def _client_secrets_path() -> str | None:
         old_umask = os.umask(0o077)
         try:
             fd, tmp_path = tempfile.mkstemp(prefix="client_secret_", suffix=".json")
+        finally:
+            os.umask(old_umask)
+        # tmp_path so existe se mkstemp() teve sucesso; separado do bloco
+        # acima para nao referenciar uma variavel nao definida no except
+        # caso o proprio mkstemp() falhe (mascarando o erro real com NameError).
+        try:
             with os.fdopen(fd, "w", encoding="utf-8") as f:
                 f.write(client_secret)
             return tmp_path
         except Exception:
             Path(tmp_path).unlink(missing_ok=True)
             raise
-        finally:
-            os.umask(old_umask)
     client_secret_path = os.environ.get("YOUTUBE_CLIENT_SECRET_PATH", str(ROOT / "client_secret.json"))
     if Path(client_secret_path).exists():
         return client_secret_path
