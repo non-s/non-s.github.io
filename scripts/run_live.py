@@ -116,11 +116,18 @@ def main() -> int:
 
     log.info("Iniciando stream para %s", stream_url)
     start_time = time.time()
+
+    # Transiciona broadcast para "testing" ANTES de iniciar o stream.
+    # Com enableMonitorStream=False, o YouTube as vezes rejeita a conexao
+    # RTMP (Broken pipe em ~1 min) se o broadcast estiver em estado "ready".
+    # transition("testing") garante que o YouTube aceite o stream.
+    _try_transition(broadcast_id, "testing")
+
     proc = _start_ffmpeg_stream(
         loop_input, stream_url, duration_minutes=duration_minutes, audio_playlist=audio_playlist, resolution=(w, h)
     )
 
-    if not wait_for_stream_active(meta["stream_id"], timeout=90):
+    if not wait_for_stream_active(meta["stream_id"], timeout=120):
         log.error("Stream nao ficou ativo a tempo; abortando live.")
         _terminate_ffmpeg_stream(proc)
         _try_transition(broadcast_id, "complete")
