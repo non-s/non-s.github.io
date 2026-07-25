@@ -136,10 +136,16 @@ def upload_video(language: str = "pt", privacy: str = "public", prefix: str = "p
         except (HttpError, MediaUploadSizeError) as exc:
             log.warning("Falha ao aplicar legenda: %s", exc)
 
-    # Adiciona a playlist automatica
+    # Adiciona as playlists automaticas: por formato (kind) e por mood.
+    # add_video_to_playlist so adiciona a UMA playlist por chamada (mood tem
+    # prioridade se os dois forem passados juntos), entao sao duas chamadas
+    # separadas - senao as playlists por mood (PLAYLISTS_BY_MOOD) nunca sao
+    # populadas, ja que meta["mood"] nunca era passado antes.
     try:
         from utils.playlist_manager import add_video_to_playlist
         add_video_to_playlist(service, video_id, kind=meta.get("kind", ""))
+        if meta.get("mood"):
+            add_video_to_playlist(service, video_id, mood=meta["mood"])
     except Exception as exc:
         log.warning("Falha ao adicionar a playlist: %s", exc)
 

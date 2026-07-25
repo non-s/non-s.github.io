@@ -318,7 +318,12 @@ def build_pata_jazz_video(
     except Exception as exc:
         log.warning("Falha ao gerar legenda: %s", exc)
 
-    validation = validate_generated_video(output, meta["resolution"], spec.duration)
+    # expect_audio=False quando o pool de jazz estava vazio (audio_path is
+    # None): sem isso a validacao sempre exige audio e derruba a geracao
+    # inteira toda vez que sync_jazz_music.py falha ou o pool esta vazio,
+    # em vez de so publicar o video sem trilha como _validate_source_pools
+    # ja pretendia permitir (so avisa, nao levanta excecao).
+    validation = validate_generated_video(output, meta["resolution"], spec.duration, expect_audio=audio_path is not None)
     if not validation.ok:
         raise RuntimeError(f"Vídeo gerado não passou na validação: {'; '.join(validation.errors)}")
     log.info("%s gerado e validado: %s", spec.kind.capitalize(), output)

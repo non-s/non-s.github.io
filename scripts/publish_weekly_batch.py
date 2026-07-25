@@ -141,10 +141,13 @@ def _publish_video(service, video_path: Path, meta: dict, language: str = "pt") 
         except Exception as exc:
             log.warning("Falha ao aplicar legenda: %s", exc)
 
-    # Playlist
+    # Playlist: por formato (kind) e por mood (chamadas separadas - ver
+    # comentario equivalente em upload_youtube.py:upload_video).
     try:
         from utils.playlist_manager import add_video_to_playlist
         add_video_to_playlist(service, video_id, kind=meta.get("kind", ""))
+        if meta.get("mood"):
+            add_video_to_playlist(service, video_id, mood=meta["mood"])
     except Exception as exc:
         log.warning("Falha ao adicionar a playlist: %s", exc)
 

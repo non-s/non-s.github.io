@@ -36,6 +36,26 @@ class TestMetadataEngine:
         assert "#jazz" in metadata["hashtags"] or "#music" in metadata["hashtags"]
 
     @patch('utils.metadata_engine.ai_text')
+    def test_generate_metadata_does_not_duplicate_hashtags(self, mock_ai_text):
+        """generate_description ja inclui as hashtags no fim; o check de
+        'ja tem hashtag' precisa reconhecer isso e nao duplicar (regressao:
+        um \\b antes do '#' nunca batia, entao duplicava sempre)."""
+        mock_ai_text.return_value = ""  # forca fallback local (sem AI)
+
+        metadata = metadata_engine.generate_metadata(
+            hook="Gato dançante",
+            scene="cat",
+            duration=25,
+            kind="short",
+            emoji="🐱",
+        )
+
+        for tag in metadata["hashtags"]:
+            assert metadata["description"].count(tag) == 1, (
+                f"hashtag {tag} duplicada na descricao: {metadata['description']!r}"
+            )
+
+    @patch('utils.metadata_engine.ai_text')
     def test_generate_metadata_ai_failure(self, mock_ai_text):
         """Testa fallback quando AI falha (retorna string vazia)."""
         mock_ai_text.return_value = ""
