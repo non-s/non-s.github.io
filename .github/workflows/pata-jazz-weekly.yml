@@ -65,6 +65,18 @@ jobs:
             echo "=== Gerando short $i/28 ==="
             python generate_pata_jazz_short.py || echo "::warning::Short $i falhou, continuando"
           done
+      - name: "Salvar progresso parcial (shorts)"
+        # actions/cache@v4 so salva via post-job hook no fim do job - se o
+        # job estourar o timeout-minutes durante o loop de horizontais logo
+        # abaixo, esse hook nunca roda e os 28 shorts inteiros seriam
+        # perdidos. actions/cache/save salva IMEDIATAMENTE aqui, entao os
+        # shorts sobrevivem mesmo que o resto do job nao termine. A chave
+        # comeca com "weekly-videos-" para continuar batendo com o
+        # restore-keys do job publish.
+        uses: actions/cache/save@v4
+        with:
+          path: _videos
+          key: weekly-videos-shorts-${{ github.run_id }}
       - name: "Gerar 7 horizontais"
         run: |
           for i in $(seq 1 7); do

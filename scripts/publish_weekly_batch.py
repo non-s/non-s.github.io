@@ -4,7 +4,10 @@ scripts/publish_weekly_batch.py — publica proximos 6 videos gerados como publi
 Le os metadados em _videos/*.json, encontra videos ainda nao publicados,
 faz upload de ate 6 por vez (limite de quota do YouTube) e os marca como
 publicos. Se ja foram feitos upload como private, apenas atualiza o
-privacyStatus para public (custa 50 unidades vs 1.600 do insert).
+privacyStatus para public (custa bem menos que um insert novo). Na pratica
+isso so vale para os PRIMEIROS 6 videos do lote (uploaded como private no
+job "generate" do workflow) - os outros 29 nunca tem video_id ainda, entao
+os proximos ~5 dias de publish fazem inserts normais mesmo, nao updates.
 
 Este script e parte do lote semanal: e disparado uma vez por dia pelo
 workflow pata-jazz-weekly.yml ate que todos os 35 videos estejam publicos.
