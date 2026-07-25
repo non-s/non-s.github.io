@@ -96,7 +96,16 @@ jobs:
 
   publish:
     name: "Publicar proximos 6 videos (private -> public)"
-    if: ${{ vars.PATA_JAZZ_ENABLED == '1' && (github.event.inputs.action == 'all' || github.event.inputs.action == 'publish' || github.event_name == 'schedule') }}
+    needs: [generate]
+    # needs.generate.result e 'skipped' quando o job generate nao roda (action=publish
+    # ou disparo por schedule); nesses casos o publish deve seguir normalmente.
+    # Quando action=all, aguarda o generate terminar antes de publicar (evita
+    # rodar em paralelo e nao encontrar o cache de videos ainda nao salvo).
+    if: |
+      !cancelled() &&
+      vars.PATA_JAZZ_ENABLED == '1' &&
+      (needs.generate.result == 'success' || needs.generate.result == 'skipped') &&
+      (github.event.inputs.action == 'all' || github.event.inputs.action == 'publish' || github.event_name == 'schedule')
     runs-on: ubuntu-latest
     timeout-minutes: 60
     env:

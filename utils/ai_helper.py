@@ -19,9 +19,9 @@ log = logging.getLogger(__name__)
 
 _GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash-001")
 _GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-_MIN_INTERVAL = 1.0  # segundos entre chamadas
+_MIN_INTERVAL = 2.0  # segundos entre chamadas
 _GEMINI_429_CIRCUIT_THRESHOLD = 5
-_GEMINI_CIRCUIT_RESET_SECONDS = 60  # tempo para tentar half-open
+_GEMINI_CIRCUIT_RESET_SECONDS = 120  # tempo para tentar half-open
 _MAX_RETRIES = 3
 _BASE_BACKOFF = 2.0  # segundos
 

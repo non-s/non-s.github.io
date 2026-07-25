@@ -12,6 +12,8 @@ import logging
 from pathlib import Path
 from typing import Any
 
+from upload_youtube import _retry_youtube_call
+
 log = logging.getLogger(__name__)
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -67,9 +69,11 @@ def _find_or_create_playlist(service: Any, title: str) -> str:
         found_ids: list[str] = []
         page_token = ""
         while len(found_ids) < 200:
-            resp = service.playlists().list(
-                part="id,snippet", mine=True, maxResults=50, pageToken=page_token
-            ).execute()
+            resp = _retry_youtube_call(
+                service.playlists().list(
+                    part="id,snippet", mine=True, maxResults=50, pageToken=page_token
+                ).execute
+            )
             for item in resp.get("items", []):
                 if item.get("snippet", {}).get("title", "") == title:
                     pid = item["id"]
@@ -88,7 +92,7 @@ def _find_or_create_playlist(service: Any, title: str) -> str:
             "snippet": {"title": title, "description": "Playlist automatica do canal Pata Jazz"},
             "status": {"privacyStatus": "public"},
         }
-        resp = service.playlists().insert(part="snippet,status", body=body).execute()
+        resp = _retry_youtube_call(service.playlists().insert(part="snippet,status", body=body).execute)
         pid = resp["id"]
         _playlist_cache[title] = pid
         _save_cache()
@@ -116,7 +120,7 @@ def add_video_to_playlist(service: Any, video_id: str, mood: str = "", kind: str
 
     try:
         body = {"snippet": {"playlistId": pid, "resourceId": {"kind": "youtube#video", "videoId": video_id}}}
-        service.playlistItems().insert(part="snippet", body=body).execute()
+        _retry_youtube_call(service.playlistItems().insert(part="snippet", body=body).execute)
         log.info("Video %s adicionado a playlist '%s'", video_id, target_title)
     except Exception as exc:
         log.warning("Erro ao adicionar video a playlist: %s", exc)

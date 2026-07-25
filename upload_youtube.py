@@ -269,8 +269,8 @@ def _retry_youtube_call(func, *args, **kwargs):
             return func(*args, **kwargs)
         except HttpError as e:
             status = e.resp.status if hasattr(e, 'resp') else 0
-            if status in (429, 500, 502, 503, 504):
-                # Rate limit ou server error: retry com backoff
+            if status in (409, 429, 500, 502, 503, 504):
+                # Rate limit, conflito temporario (409) ou erro de servidor: retry com backoff
                 wait = _YOUTUBE_BASE_BACKOFF * (2 ** attempt) + random.uniform(0, 1)
                 log.warning("YouTube API %s - retry em %ss (tentativa %d/%d)", status, wait, attempt + 1, _YOUTUBE_MAX_RETRIES)
                 time.sleep(wait)
