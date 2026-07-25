@@ -9,8 +9,8 @@ e aguardar o processo do FFmpeg em generate_pata_jazz_live.py.
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-import upload_youtube
 import generate_pata_jazz_live as live
+import upload_youtube
 
 
 def _fake_popen(*_args, **_kwargs):

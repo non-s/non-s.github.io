@@ -50,27 +50,10 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
-      - name: "Restaurar token YouTube"
-        env:
-          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
-        run: |
-          umask 077
-          if [ -n "$YOUTUBE_TOKEN" ]; then
-            printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
-            chmod 600 youtube_token.json
-          fi
-      - name: "Cache b-roll"
-        uses: actions/cache@v4
+      - name: "Restaurar token e caches"
+        uses: ./.github/actions/restore-token-and-cache
         with:
-          path: _assets/video/animal_broll
-          key: animal-broll-${{ github.run_id }}
-          restore-keys: animal-broll-
-      - name: "Cache jazz"
-        uses: actions/cache@v4
-        with:
-          path: _assets/audio/animal_jazz
-          key: animal-jazz-${{ github.run_id }}
-          restore-keys: animal-jazz-
+          youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
       - name: "Sincronizar b-roll (gatos/cachorros)"
         run: python scripts/sync_animal_broll.py || echo "::warning::B-roll sync falhou"
       - name: "Sincronizar jazz"
@@ -80,6 +63,18 @@ jobs:
       - name: "Upload para YouTube"
         if: hashFiles('youtube_token.json') != ''
         run: python upload_youtube.py --mode upload --language=pt --prefix pata_jazz_short_
+      - name: "Upload artifacts"
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shorts-output-${{ github.run_id }}
+          path: |
+            _videos/*.mp4
+            _videos/*.json
+            _videos/*.srt
+            _videos/last_error.txt
+          if-no-files-found: ignore
+          retention-days: 7
       - name: "Apagar token"
         if: always()
         run: rm -f youtube_token.json

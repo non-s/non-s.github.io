@@ -21,6 +21,7 @@ from typing import Any
 
 from utils import ffmpeg_helpers, media_pool
 from utils.log_config import configure_logging
+from utils.youtube_oauth import _client_secrets_path, _token_path
 
 log = logging.getLogger(__name__)
 
@@ -29,6 +30,7 @@ DATA_DIR = ROOT / "_data"
 REQUIRED_ENVS = [
     "GEMINI_API_KEY",
     "PIXABAY_API_KEY",
+    "JAMENDO_CLIENT_ID",
 ]
 LIVE_REQUIRED_ENVS = [
     "YOUTUBE_TOKEN_PATH",
@@ -61,7 +63,7 @@ def _check_envs() -> dict[str, Any]:
 
 
 def _check_youtube_token() -> dict[str, Any]:
-    token_path = ROOT / "youtube_token.json"
+    token_path = Path(_token_path())
     if not token_path.exists():
         return {
             "name": "Token YouTube",
@@ -81,14 +83,14 @@ def _check_youtube_token() -> dict[str, Any]:
 
 
 def _check_client_secret() -> dict[str, Any]:
-    secret_path = ROOT / "client_secret.json"
-    if not secret_path.exists():
+    secret_path = _client_secrets_path()
+    if not secret_path:
         return {
             "name": "Client secret Google",
             "ok": False,
-            "info": f"{secret_path} não encontrado; baixe do Google Cloud Console",
+            "info": "não encontrado; configure YOUTUBE_CLIENT_SECRET ou YOUTUBE_CLIENT_SECRET_PATH",
         }
-    return {"name": "Client secret Google", "ok": True, "info": "arquivo presente"}
+    return {"name": "Client secret Google", "ok": True, "info": f"{secret_path}"}
 
 
 def _check_asset_pool() -> dict[str, Any]:
@@ -145,7 +147,7 @@ def run_healthcheck(mode: str = "all") -> int:
         mode: 'all' para todos os checks, 'live' apenas para pré-requisitos de live.
     """
     configure_logging()
-    
+
     if mode == "live":
         checks = [
             _check_python(),

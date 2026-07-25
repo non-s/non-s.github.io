@@ -3,19 +3,14 @@ Testes unitários para utils/media_pool.py
 """
 
 import json
-import random
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
-
 from utils.media_pool import (
-    AUDIO_DIR,
-    VIDEO_DIR,
     _cuteness_score,
     _load_video_metadata,
-    available_audio_metadata,
     audio_pool,
+    available_audio_metadata,
     pick_audio,
     pick_videos,
     video_pool,

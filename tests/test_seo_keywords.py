@@ -2,16 +2,15 @@
 tests/test_seo_keywords.py — testa geração de títulos e descrições otimizadas.
 """
 
-import pytest
 from utils.seo_keywords import (
-    generate_title,
-    generate_description,
-    generate_hashtags,
-    optimize_for_search,
-    pick_title_pattern,
+    CTAS,
     HIGH_PERFORMANCE_KEYWORDS,
     TITLE_PATTERNS,
-    CTAS,
+    generate_description,
+    generate_hashtags,
+    generate_title,
+    optimize_for_search,
+    pick_title_pattern,
 )
 
 
@@ -91,7 +90,7 @@ class TestGenerateTitle:
         all_keywords = []
         for category in HIGH_PERFORMANCE_KEYWORDS.values():
             all_keywords.extend(category)
-        
+
         title_lower = title.lower()
         uses_keyword = any(kw.lower() in title_lower for kw in all_keywords)
         assert uses_keyword or True  # Pode não usar devido ao pattern
@@ -226,9 +225,9 @@ class TestOptimizeForSearch:
         """Otimiza título adicionando keyword se necessário."""
         title = "Gatinho Fofo"
         description = "Descrição teste"
-        
+
         optimized_title, optimized_desc = optimize_for_search(title, description)
-        
+
         # Deve manter o título ou adicionar keyword
         assert len(optimized_title) >= len(title)
         # "Gatinho" já contém "gato", então está ok
@@ -238,9 +237,9 @@ class TestOptimizeForSearch:
         """Otimiza descrição com keywords relacionadas."""
         title = "Gato Jazz"
         description = "Descrição básica"
-        
+
         optimized_title, optimized_desc = optimize_for_search(title, description)
-        
+
         # Deve adicionar termos relacionados
         related_terms = ["relaxamento", "meditação", "estudo", "trabalho", "concentração"]
         has_related = any(term in optimized_desc.lower() for term in related_terms)
@@ -250,9 +249,9 @@ class TestOptimizeForSearch:
         """Preserva título que já tem keywords."""
         title = "Gato Jazz Relaxante para Dormir"
         description = "Descrição"
-        
+
         optimized_title, _ = optimize_for_search(title, description)
-        
+
         # Não deve modificar muito se já tem keywords
         assert "Gato Jazz" in optimized_title
 
@@ -267,19 +266,19 @@ class TestIntegration:
         estilo = "jazz relaxante"
         kind = "short"
         emoji = "🐱"
-        
+
         # Gera título
         title = generate_title(animal, acao, estilo, kind, emoji)
         assert len(title) <= 100
-        
+
         # Gera hashtags
         hashtags = generate_hashtags(animal, "relaxamento", kind)
         assert len(hashtags) <= 15
-        
+
         # Gera descrição
         description = generate_description(title, kind, hashtags)
         assert len(description) > 0
-        
+
         # Otimiza para busca
         final_title, final_desc = optimize_for_search(title, description)
         assert len(final_title) <= 100

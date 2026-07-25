@@ -22,7 +22,7 @@ from utils.ffmpeg_helpers import get_video_duration
 
 log = logging.getLogger(__name__)
 
-TOLERANCE_SECONDS = 1.0
+TOLERANCE_SECONDS = 1.5  # Shorts com crossfade podem ter duracao ligeiramente diferente
 
 
 @dataclass(frozen=True)
@@ -49,7 +49,7 @@ def _run_ffprobe(path: Path) -> dict:
         )
         return json.loads(result.stdout)
     except Exception as exc:
-        raise RuntimeError(f"ffprobe falhou para {path}: {exc}")
+        raise RuntimeError(f"ffprobe falhou para {path}: {exc}") from exc
 
 
 def _extract_stream_info(probe: dict) -> dict[str, Any]:
@@ -120,6 +120,15 @@ def validate_video(
                 f"(esperado {expected_width}x{expected_height})."
             )
         video_br = info.get("video_bit_rate")
+        # Se o probe nao reportar bit_rate (comum para alguns streams),
+        # estima a partir do tamanho do arquivo e duracao para nao pular a
+        # validacao silenciosamente.
+        if video_br is None and duration > 0:
+            try:
+                file_size_bits = path.stat().st_size * 8
+                video_br = int(file_size_bits / duration) if duration else None
+            except OSError:
+                video_br = None
         if video_br is not None and video_br < min_video_bitrate_kbps * 1000:
             errors.append(f"Bitrate de vídeo muito baixo: {video_br // 1000} kbps.")
 

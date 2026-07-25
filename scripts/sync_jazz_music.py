@@ -20,14 +20,18 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from utils.animal_branding import JAMENDO_SEARCH_TERMS
+from utils.log_config import configure_logging
 from utils.media_pool import AUDIO_DIR, ensure_dirs
 
 log = logging.getLogger(__name__)
 
 JAMENDO_API_URL = "https://api.jamendo.com/v3.0/tracks"
-CLIENT_ID = os.environ.get("JAMENDO_CLIENT_ID", "")
 MAX_PER_TERM = 30
 MAX_POOL_SIZE = 200
+
+
+def _client_id() -> str:
+    return os.environ.get("JAMENDO_CLIENT_ID", "")
 
 
 def _is_jazz(hit: dict) -> bool:
@@ -57,14 +61,18 @@ def _download(url: str, dest: Path) -> bool:
     return False
 
 
-def search_and_download(term: str, max_results: int = 5) -> int:
+def search_and_download(term: str, max_results: int = 5, client_id: str = "") -> int:
     params = {
-        "client_id": CLIENT_ID,
+        "client_id": client_id,
         "search": term,
         "limit": max(10, max_results * 3),
         "include": "musicinfo",
         "audioformat": "mp32",
         "ccmixter": "no",
+        # Filtra apenas musicas com licenca Creative Commons que permite
+        # uso comercial (para o canal poder monetizar sem risco legal).
+        "license_cc": "yes",
+        "commercialuse": "yes",
     }
     try:
         r = requests.get(JAMENDO_API_URL, params=params, timeout=30)
@@ -100,8 +108,9 @@ def search_and_download(term: str, max_results: int = 5) -> int:
 
 
 def main() -> int:
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-    if not CLIENT_ID:
+    configure_logging()
+    client_id = _client_id()
+    if not client_id:
         log.error("JAMENDO_CLIENT_ID nao configurada.")
         return 1
 
@@ -115,7 +124,7 @@ def main() -> int:
     for term in JAMENDO_SEARCH_TERMS:
         if len(list(AUDIO_DIR.glob("*.mp3"))) >= MAX_POOL_SIZE:
             break
-        total += search_and_download(term, MAX_PER_TERM)
+        total += search_and_download(term, MAX_PER_TERM, client_id=client_id)
 
     log.info("Sync finalizado. Total de novas faixas: %d", total)
     return 0

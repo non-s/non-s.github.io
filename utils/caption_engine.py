@@ -36,12 +36,21 @@ def generate_srt(hook: str, scene: str, duration: int, kind: str, emoji: str) ->
     return _fallback_srt(hook, duration)
 
 
+def _fmt_ts(seconds: float) -> str:
+    """Formata segundos como timestamp SRT ``HH:MM:SS,mmm`` (zero-padded)."""
+    ms = int(round(seconds * 1000))
+    h, ms = divmod(ms, 3_600_000)
+    m, ms = divmod(ms, 60_000)
+    s, ms = divmod(ms, 1000)
+    return f"{h:02d}:{m:02d}:{s:02d},{ms:03d}"
+
+
 def _fallback_srt(hook: str, duration: int) -> str:
     """Gera SRT simples com o hook dividido em 3 partes."""
     lines = [
-        ("0:00:00,000", "0:00:03,000", hook[:40]),
-        ("0:00:03,000", "0:00:08,000", "Bem-vindo ao Pata Jazz"),
-        ("0:00:08,000", f"0:{duration//60:02d}:{duration%60:02d},000", "Gatinhos e cachorrinhos + jazz"),
+        (_fmt_ts(0.0), _fmt_ts(min(3.0, duration)), hook[:40]),
+        (_fmt_ts(min(3.0, duration)), _fmt_ts(min(8.0, duration)), "Bem-vindo ao Pata Jazz"),
+        (_fmt_ts(min(8.0, duration)), _fmt_ts(float(duration)), "Gatinhos e cachorrinhos + jazz"),
     ]
 
     srt_lines: list[str] = []

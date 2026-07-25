@@ -9,7 +9,6 @@ import generate_pata_jazz_live as live
 def _fake_popen(*_args, **_kwargs):
     proc = MagicMock()
     proc.poll.side_effect = [None, 0]
-    proc.communicate.return_value = ("", "")
     proc.returncode = 0
     return proc
 
@@ -121,17 +120,23 @@ class TestRunFfmpegStreamCommand:
 class TestWaitFfmpegStreamErrorSurfacing:
     """A causa raiz de uma falha do FFmpeg costuma estar no meio do stderr,
     nao no final (que e so o resumo de estatisticas do libx264) - um tail
-    curto escondia esses erros em falhas reais da live."""
+    curto escondia esses erros em falhas reais da live.
 
-    def _fake_proc(self, stderr: str):
+    Como o stderr agora e redirecionado para um arquivo de log (evitando
+    deadlock de pipe), o teste grava o conteudo no arquivo esperado e
+    valida que as linhas de erro sao extraidas dele.
+    """
+
+    def _fake_proc(self, stderr_tail: str):
         proc = MagicMock()
         proc.poll.side_effect = [None, 0]
-        proc.communicate.return_value = ("", stderr)
         proc.returncode = 187
         return proc
 
     @patch("generate_pata_jazz_live.time.sleep", return_value=None)
-    def test_error_shaped_lines_are_surfaced(self, _mock_sleep, caplog):
+    @patch("generate_pata_jazz_live.OUTPUT_DIR")
+    def test_error_shaped_lines_are_surfaced(self, _mock_outdir, _mock_sleep, caplog, tmp_path):
+        _mock_outdir.__truediv__ = lambda self, other: tmp_path / other
         stderr = (
             "frame=  100 fps=30 q=23.0 size=512kB time=00:00:03.33\n"
             "[flv @ 0x1] Error muxing packet: Broken pipe\n"
@@ -139,6 +144,7 @@ class TestWaitFfmpegStreamErrorSurfacing:
             + ("x" * 5000)
             + "\nConversion failed!\n"
         )
+        (tmp_path / "live_ffmpeg.log").write_text(stderr, encoding="utf-8")
         proc = self._fake_proc(stderr)
 
         with caplog.at_level(logging.ERROR, logger="generate_pata_jazz_live"):
@@ -148,8 +154,13 @@ class TestWaitFfmpegStreamErrorSurfacing:
         assert any("Error muxing packet" in rec.message for rec in caplog.records)
 
     @patch("generate_pata_jazz_live.time.sleep", return_value=None)
-    def test_no_error_keywords_does_not_crash(self, _mock_sleep, caplog):
-        proc = self._fake_proc("frame=  1 fps=30 q=23.0 size=1kB time=00:00:00.03\n")
+    @patch("generate_pata_jazz_live.OUTPUT_DIR")
+    def test_no_error_keywords_does_not_crash(self, _mock_outdir, _mock_sleep, caplog, tmp_path):
+        _mock_outdir.__truediv__ = lambda self, other: tmp_path / other
+        (tmp_path / "live_ffmpeg.log").write_text(
+            "frame=  1 fps=30 q=23.0 size=1kB time=00:00:00.03\n", encoding="utf-8"
+        )
+        proc = self._fake_proc("")
 
         code = live._wait_ffmpeg_stream(proc)
 

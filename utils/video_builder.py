@@ -14,15 +14,20 @@ from __future__ import annotations
 import json
 import logging
 import random
+import subprocess
+import uuid
+from collections.abc import Callable
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Callable
 
 from utils.animal_branding import hook_for_scene, random_scene
+from utils.caption_engine import generate_srt, save_srt
 from utils.ffmpeg_helpers import get_video_duration, run_ffmpeg
 from utils.media_pool import ensure_dirs, pick_audio, pick_videos, pool_stats
 from utils.metadata_engine import clean_title, generate_metadata
+from utils.thumbnail_engine import make_horizontal_thumbnail, make_short_thumbnail
+from utils.video_validator import validate_generated_video
 
 log = logging.getLogger(__name__)
 
@@ -60,7 +65,8 @@ def _build_overlay_filter(hook: str, width: int, height: int) -> str:
     Texto branco com sombra preta na parte inferior do video.
     Fade in/out suave para nao aparecer/desaparecer abruptamente.
     """
-    safe_hook = hook.replace("'", r"\'").replace(":", r"\:").replace("\\", r"\\")
+    # Escape em ordem correta: backslash primeiro, depois aspas e dois-pontos.
+    safe_hook = hook.replace("\\", r"\\").replace("'", r"\'").replace(":", r"\:")
     font_size = 48 if width > height else 56  # Shorts fonte maior
     y_pos = height - 200 if width > height else height - 350
     return (
@@ -74,10 +80,14 @@ def _build_overlay_filter(hook: str, width: int, height: int) -> str:
 
 
 def _prepare_output_paths(stem_prefix: str, output_dir: Path, thumb_dir: Path) -> tuple[Path, Path, str]:
-    """Cria diretórios e retorna (video_path, thumb_path, stem)."""
+    """Cria diretórios e retorna (video_path, thumb_path, stem).
+
+    Inclui um sufixo aleatorio curto para evitar colisao quando dois
+    videos sao gerados no mesmo segundo (batch rapido).
+    """
     output_dir.mkdir(parents=True, exist_ok=True)
     thumb_dir.mkdir(parents=True, exist_ok=True)
-    stem = f"{stem_prefix}_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}"
+    stem = f"{stem_prefix}_{datetime.now(UTC).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:4]}"
     return output_dir / f"{stem}.mp4", thumb_dir / f"{stem}.png", stem
 
 
@@ -131,11 +141,18 @@ def _build_multi_clip_short(
     Cada clipe e normalizado para o aspecto-alvo e concatenado com xfade.
     A musica de jazz toda por toda a duracao total.
     """
-    import random as _rng
-
-    n_clips = min(len(videos), _rng.randint(2, 3))
-    selected = _rng.sample(videos, n_clips)
+    n_clips = min(len(videos), random.randint(2, 3))
+    selected = random.sample(videos, n_clips)
     per_clip = spec.duration // n_clips
+
+    # Valida que cada clipe e longo o suficiente para o xfade cobrir sem
+    # produzir frames pretos ou erros do FFmpeg. Se per_clip for muito
+    # curto (clipe termina antes do offset do xfade), reduz n_clips.
+    xfade_duration = 0.5
+    while n_clips > 1 and per_clip <= xfade_duration * (n_clips - 1):
+        n_clips -= 1
+        selected = selected[:n_clips]
+        per_clip = spec.duration // n_clips
 
     # Normaliza cada clipe individualmente
     processed: list[Path] = []
@@ -156,7 +173,6 @@ def _build_multi_clip_short(
         run_ffmpeg(["-i", str(processed[0]), "-c", "copy", str(output)])
         return
 
-    xfade_duration = 0.5
     filter_parts: list[str] = []
     offsets: list[float] = []
 
@@ -209,11 +225,15 @@ def build_pata_jazz_video(
     output_dir: Path,
     thumb_dir: Path,
     stem_prefix: str,
+    dry_run: bool = False,
 ) -> Path:
     """Pipeline comum de geração de vídeo Pata Jazz.
 
     Shorts usam 2-3 clipes com crossfade; horizontais usam 1 clipe em loop.
     Retorna o caminho do vídeo gerado.
+
+    Em modo ``dry_run`` não executa FFmpeg nem gera arquivos: apenas seleciona
+    assets, imprime o spec e retorna um path fake (não-existente).
     """
     ensure_dirs()
     _validate_source_pools()
@@ -224,6 +244,13 @@ def build_pata_jazz_video(
 
     output, thumb, _ = _prepare_output_paths(stem_prefix, output_dir, thumb_dir)
 
+    if dry_run:
+        log.info("[DRY-RUN] kind=%s scene=%s hook=%s emoji=%s audio=%s",
+                 spec.kind, scene, hook, emoji, audio_path)
+        log.info("[DRY-RUN] seria gravado em %s (thumbnail %s)", output, thumb)
+        log.info("[DRY-RUN] resolução=%dx%d duração=%ds", spec.width, spec.height, spec.duration)
+        return output
+
     if spec.kind == "short":
         # Multi-clip com crossfade para Shorts
         videos = pick_videos(min_count=2, max_count=3, cuteness_sort=True)
@@ -231,11 +258,17 @@ def build_pata_jazz_video(
             _build_multi_clip_short(spec, videos, audio_path, output, hook=hook)
         else:
             # Fallback: 1 clipe em loop
-            video = random.choice(pick_videos(min_count=1, max_count=1))
+            single = pick_videos(min_count=1, max_count=1)
+            if not single:
+                raise RuntimeError("Pool de b-roll insuficiente para gerar o video.")
+            video = random.choice(single)
             _build_single_clip_video(spec, video, audio_path, output, hook=hook)
     else:
         # Horizontais: 1 clipe em loop (sem overlay de hook, e mais longo)
-        video = random.choice(pick_videos(min_count=1, max_count=1))
+        single = pick_videos(min_count=1, max_count=1)
+        if not single:
+            raise RuntimeError("Pool de b-roll insuficiente para gerar o video.")
+        video = random.choice(single)
         _build_single_clip_video(spec, video, audio_path, output)
 
     # Passa o video_path para o thumbnail maker usar frame real
@@ -267,7 +300,6 @@ def build_pata_jazz_video(
 
     # Gera legenda SRT automatica
     try:
-        from utils.caption_engine import generate_srt, save_srt
         srt_content = generate_srt(hook, scene, spec.duration, spec.kind, emoji)
         srt_path = save_srt(srt_content, output)
         meta["caption"] = str(srt_path)
@@ -275,7 +307,6 @@ def build_pata_jazz_video(
     except Exception as exc:
         log.warning("Falha ao gerar legenda: %s", exc)
 
-    from utils.video_validator import validate_generated_video
     validation = validate_generated_video(output, meta["resolution"], spec.duration)
     if not validation.ok:
         raise RuntimeError(f"Vídeo gerado não passou na validação: {'; '.join(validation.errors)}")
@@ -285,7 +316,6 @@ def build_pata_jazz_video(
 
 def short_spec(duration: int = 35, scene: str = "", mood: str = "") -> VideoSpec:
     """Especificação padrão para Shorts verticais 1080x1920."""
-    from utils.thumbnail_engine import make_short_thumbnail
     return VideoSpec(
         kind="short",
         width=1080,
@@ -302,7 +332,6 @@ def short_spec(duration: int = 35, scene: str = "", mood: str = "") -> VideoSpec
 
 def horizontal_spec(duration: int = 240, scene: str = "", mood: str = "") -> VideoSpec:
     """Especificação padrão para vídeos horizontais 1920x1080."""
-    from utils.thumbnail_engine import make_horizontal_thumbnail
     return VideoSpec(
         kind="horizontal",
         width=1920,
@@ -328,8 +357,6 @@ def inspect_video(path: Path) -> dict:
 
     Inclui duração, largura, altura, bitrate, codec de vídeo e de áudio.
     """
-    import subprocess
-
     info: dict = {"path": str(path), "duration": get_video_duration(str(path))}
     try:
         result = subprocess.run(

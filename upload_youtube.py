@@ -17,7 +17,7 @@ import os
 import random
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from googleapiclient.errors import HttpError, MediaUploadSizeError
@@ -40,14 +40,18 @@ _YOUTUBE_BASE_BACKOFF = 2.0
 
 def _latest_video_meta(prefix: str = "pata_jazz_") -> tuple[Path, dict] | None:
     candidates = sorted(OUTPUT_DIR.glob(f"{prefix}*.mp4"), key=lambda p: p.stat().st_mtime, reverse=True)
+    skipped = 0
     for video in candidates:
         meta_path = video.with_suffix(".json")
         if meta_path.exists():
             try:
                 data = json.loads(meta_path.read_text(encoding="utf-8"))
+                if skipped:
+                    log.warning("Video mais recente (%d) sem metadata foi pulado; usando %s.", skipped, video.name)
                 return video, data
             except Exception:
                 continue
+        skipped += 1
     return None
 
 
@@ -100,7 +104,9 @@ def upload_video(language: str = "pt", privacy: str = "public", prefix: str = "p
 
     if thumbnail.exists():
         try:
-            _retry_youtube_call(service.thumbnails().set(videoId=video_id, media_body=MediaFileUpload(str(thumbnail))).execute)
+            # Re-verifica existencia (TOCTOU) e instancia MediaFileUpload dentro do try.
+            thumb_media = MediaFileUpload(str(thumbnail))
+            _retry_youtube_call(service.thumbnails().set(videoId=video_id, media_body=thumb_media).execute)
             log.info("Thumbnail aplicada.")
         except (HttpError, MediaUploadSizeError) as exc:
             log.warning("Falha ao aplicar thumbnail: %s", exc)
@@ -117,11 +123,13 @@ def upload_video(language: str = "pt", privacy: str = "public", prefix: str = "p
                     "isDraft": False,
                 }
             }
+            # .srt usa mimetype application/x-subrip; .vtt usa text/vtt.
+            cap_mimetype = "text/vtt" if caption_path.suffix.lower() == ".vtt" else "application/x-subrip"
             _retry_youtube_call(
                 service.captions().insert(
                     part="snippet",
                     body=caption_body,
-                    media_body=MediaFileUpload(str(caption_path), mimetype="text/vtt"),
+                    media_body=MediaFileUpload(str(caption_path), mimetype=cap_mimetype),
                 ).execute
             )
             log.info("Legenda aplicada.")
@@ -164,7 +172,7 @@ def create_live_stream(
         "snippet": {
             "title": title,
             "description": description,
-            "scheduledStartTime": datetime.now(timezone.utc).isoformat(),
+            "scheduledStartTime": datetime.now(UTC).isoformat(),
         },
         "status": {"privacyStatus": privacy, "selfDeclaredMadeForKids": False},
         "contentDetails": {
@@ -180,7 +188,7 @@ def create_live_stream(
 
     stream_body = {
         "snippet": {
-            "title": f"Pata Jazz stream {datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}",
+            "title": f"Pata Jazz stream {datetime.now(UTC).strftime('%Y%m%d_%H%M%S')}",
         },
         "cdn": {
             "resolution": resolution,
@@ -226,18 +234,29 @@ def wait_for_stream_active(stream_id: str, timeout: int = 90, interval: int = 3)
     invalidTransition) enquanto o stream vinculado nao estiver recebendo
     dados de video de verdade. E preciso comecar a enviar o FFmpeg antes
     de chamar transition_broadcast().
+
+    Se a API retornar items vazio repetidamente, o stream_id provavelmente
+    esta errado - aborta cedo para nao esperar o timeout inteiro.
     """
     service = get_youtube_service()
     deadline = time.time() + timeout
+    empty_count = 0
     while time.time() < deadline:
         response = _retry_youtube_call(
             service.liveStreams().list(part="status", id=stream_id).execute
         )
         items = (response or {}).get("items", [])
-        status = items[0].get("status", {}).get("streamStatus") if items else None
-        if status == "active":
-            return True
-        log.info("Aguardando stream %s ficar ativo (status atual: %s)...", stream_id, status)
+        if not items:
+            empty_count += 1
+            if empty_count >= 3:
+                log.error("Stream %s nao encontrado apos %d consultas; abortando.", stream_id, empty_count)
+                return False
+        else:
+            empty_count = 0
+            status = items[0].get("status", {}).get("streamStatus")
+            if status == "active":
+                return True
+            log.info("Aguardando stream %s ficar ativo (status atual: %s)...", stream_id, status)
         time.sleep(interval)
     log.error("Stream %s nao ficou ativo apos %ss.", stream_id, timeout)
     return False
@@ -273,7 +292,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Upload Pata Jazz para YouTube")
     parser.add_argument("--mode", choices=["upload", "live"], default="upload")
     parser.add_argument("--language", default="pt")
-    parser.add_argument("--privacy", default=os.environ.get("YOUTUBE_PRIVACY", "public"))
+    parser.add_argument("--privacy", default=os.environ.get("YOUTUBE_PRIVACY", "public"),
+                        choices=["public", "unlisted", "private"])
     parser.add_argument("--title", default="")
     parser.add_argument("--description", default="")
     parser.add_argument("--resolution", default="1080p", choices=["1080p", "720p", "480p"])

@@ -5,6 +5,7 @@ utils/seo_keywords.py — Keywords e padrões de títulos otimizados para YouTub
 from __future__ import annotations
 
 import random
+import textwrap
 from typing import Literal
 
 # Keywords de alta performance para o nicho pet + jazz
@@ -97,16 +98,16 @@ def generate_title(
 ) -> str:
     """Gera título otimizado usando padrões de alta performance."""
     pattern = pick_title_pattern(kind)
-    
+
     # Seleciona adjetivos relevantes
     adjetivos_fofura = random.sample(HIGH_PERFORMANCE_KEYWORDS["fofura"], 2)
     adjetivos_relax = random.sample(HIGH_PERFORMANCE_KEYWORDS["relaxamento"], 1)
     adjetivo = random.choice(adjetivos_fofura + adjetivos_relax)
-    
+
     # Seleciona emoção/benefício
     emocao = random.choice(list(EMOCAO_BENEFICIOS.keys()))
     beneficio = random.choice(EMOCAO_BENEFICIOS[emocao])
-    
+
     # Tenta preencher o padrão, caindo para versão simplificada se falhar
     try:
         title = pattern.format(
@@ -121,15 +122,19 @@ def generate_title(
     except KeyError:
         # Fallback para pattern mais simples
         title = f"{adjetivo.title()} {animal} + {estilo_musical} {emoji}"
-    
+
     # Limpeza final
     title = " ".join(title.split())  # Remove espaços duplos
     title = title.strip()
-    
-    # Garante que está dentro do limite (100 chars para YouTube)
+
+    # Garante que está dentro do limite (100 chars para YouTube).
+    # Usa textwrap.shorten para cortar em boundary de palavra quando possivel.
     if len(title) > 100:
-        title = title[:97] + "..."
-    
+        title = textwrap.shorten(title, width=100, placeholder="...")
+        # textwrap.shorten corta no meio; se ficar muito curto, fallback simples.
+        if not title or len(title) > 100:
+            title = title[:97] + "..."
+
     return title
 
 
@@ -147,7 +152,7 @@ def generate_description(
         f"{hook} 💫 Seu momento diário de paz com pets adoráveis e jazz suave!",
     ]
     intro = random.choice(intro_templates)
-    
+
     # Corpo da descrição (varia por formato)
     if kind == "short":
         corpo = (
@@ -169,16 +174,16 @@ def generate_description(
             "Deixe esta live rodando enquanto trabalha, estuda ou relaxa. "
             "Sempre terá um bichinho fofo e jazz de qualidade para você! 🎵"
         )
-    
+
     # CTA (opcional)
     cta = ""
     if include_cta:
         cta_text = random.choice(CTAS)
         cta = "\n\n" + cta_text
-    
+
     # Hashtags
     hashtags_str = " ".join(hashtags[:15])  # YouTube limita a 15
-    
+
     return f"{intro}{corpo}{cta}\n\n{hashtags_str}"
 
 
@@ -189,10 +194,10 @@ def generate_hashtags(
 ) -> list[str]:
     """Gera conjunto estratégico de hashtags em camadas."""
     hashtags = []
-    
+
     # Camada 1: Brand (sempre presente)
     hashtags.extend(HASHTAGS_POR_CATEGORIA["brand"][:2])
-    
+
     # Camada 2: Animal específico
     if "cat" in animal.lower() or "gato" in animal.lower():
         hashtags.extend(["#Gatos", "#Gatinhos", "#CatLover"])
@@ -200,10 +205,10 @@ def generate_hashtags(
         hashtags.extend(["#Cachorros", "#Cachorrinhos", "#DogLover"])
     else:
         hashtags.extend(HASHTAGS_POR_CATEGORIA["animal"][:2])
-    
+
     # Camada 3: Música
     hashtags.extend(HASHTAGS_POR_CATEGORIA["musica"][:3])
-    
+
     # Camada 4: Emoção/Categoria
     if categoria == "fofura":
         hashtags.extend(["#Fofura", "#PetsFofos", "#AnimalFofo"])
@@ -211,16 +216,16 @@ def generate_hashtags(
         hashtags.extend(HASHTAGS_POR_CATEGORIA["emocao"][:3])
     elif categoria == "diversao":
         hashtags.extend(["#Diversao", "#PetsEngracados", "#AnimaisEngracados"])
-    
+
     # Camada 5: Formato
     if kind == "short":
         hashtags.extend(["#Shorts", "#YouTubeShorts"])
     elif kind == "live":
         hashtags.extend(["#Live", "#AoVivo", "#247"])
-    
+
     # Remove duplicatas e limita a 15
     hashtags = list(dict.fromkeys(hashtags))[:15]
-    
+
     return hashtags
 
 
@@ -228,28 +233,28 @@ def optimize_for_search(title: str, description: str) -> tuple[str, str]:
     """Otimiza título e descrição para busca do YouTube."""
     # Palavras-chave primárias para o nicho
     primary_keywords = [
-        "gato jazz", "cachorro jazz", "pet relaxante", 
+        "gato jazz", "cachorro jazz", "pet relaxante",
         "musica para pets", "gatinho fofo", "cachorrinho fofo"
     ]
-    
+
     # Verifica se pelo menos uma keyword primária está presente
     title_lower = title.lower()
     has_keyword = any(kw in title_lower for kw in primary_keywords)
-    
+
     if not has_keyword:
         # Adiciona keyword ao final do título se couber
         keyword = random.choice(primary_keywords)
         if len(title) + len(keyword) + 2 <= 90:
             title = f"{title}, {keyword}"
-    
+
     # Adiciona keywords semanticamente relacionadas à descrição
     related_terms = [
         "relaxamento", "meditação", "estudo", "trabalho",
         "concentração", "paz interior", "bem-estar"
     ]
-    
+
     if not any(term in description.lower() for term in related_terms):
         term = random.choice(related_terms)
         description += f"\n\nIdeal para momentos de {term}."
-    
+
     return title, description

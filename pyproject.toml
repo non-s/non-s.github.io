@@ -1,0 +1,40 @@
+[project]
+name = "pata-jazz"
+version = "1.0.0"
+description = "Canal automatizado de YouTube: gatos/cachorros fofos + jazz relaxante."
+requires-python = ">=3.11"
+dependencies = [
+    "google-api-python-client>=2.130.0,<3.0.0",
+    "google-auth>=2.29.0,<3.0.0",
+    "google-auth-oauthlib>=1.2.0,<2.0.0",
+    "requests>=2.31.0,<3.0.0",
+    "Pillow>=10.3.0,<12.0.0",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = ["E501", "W293"]
+
+[tool.ruff.lint.per-file-ignores]
+# E402 (import fora do topo) so faz sentido onde ha sys.path.insert antes dos imports.
+"scripts/*" = ["E402"]
+"tests/*" = ["B017", "F841"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.coverage.run]
+# Cobertura focada em utils (logica central). Os geradores (generate_pata_jazz_*.py,
+# upload_youtube.py) sao thin wrappers que delegam para utils e sao exercitados
+# em CI via dry-run/integracao; inclui-los no source baixaria a metrica sem gerar
+# valor de diagnostico real.
+source = ["utils"]
+
+[tool.coverage.report]
+fail_under = 70
+show_missing = true

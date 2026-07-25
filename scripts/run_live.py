@@ -17,10 +17,9 @@ transicao final para 'complete' e manual (enableAutoStop=False).
 
 from __future__ import annotations
 
-import json
 import logging
 import os
-import subprocess
+import re
 import sys
 import time
 from pathlib import Path
@@ -37,8 +36,11 @@ from generate_pata_jazz_live import (
 )
 from upload_youtube import create_live_stream, transition_broadcast, wait_for_stream_active
 from utils.discord_webhook import notify_live_end, notify_live_start
+from utils.log_config import configure_logging
 
 log = logging.getLogger(__name__)
+
+OUTPUT_DIR = ROOT / "_videos"
 
 
 def _try_transition(broadcast_id: str, status: str) -> bool:
@@ -51,12 +53,34 @@ def _try_transition(broadcast_id: str, status: str) -> bool:
         return False
 
 
+def _cleanup_live_artifacts(output_stem: str) -> None:
+    """Remove arquivos temporários da live (liveclip_*.mp4, *_concat.txt, *_audio_playlist.txt)."""
+    patterns = [
+        f"{output_stem}_liveclip_*.mp4",
+        f"{output_stem}_concat.txt",
+        f"{output_stem}_audio_playlist.txt",
+    ]
+    for pattern in patterns:
+        for f in OUTPUT_DIR.glob(pattern):
+            try:
+                f.unlink(missing_ok=True)
+            except Exception:
+                pass
+
+
 def main() -> int:
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    configure_logging()
 
     privacy = os.environ.get("YOUTUBE_PRIVACY", "public")
     resolution = os.environ.get("LIVE_RESOLUTION", "1280x720")
     duration_minutes = int(os.environ.get("LIVE_DURATION_MINUTES", "0") or "0")
+
+    if not re.fullmatch(r"\d+x\d+", resolution):
+        log.error("LIVE_RESOLUTION invalida '%s'. Use o formato WxH (ex: 1280x720).", resolution)
+        return 1
+    if not 0 <= duration_minutes <= 360:
+        log.error("LIVE_DURATION_MINUTES invalido: %d (use 0 a 360).", duration_minutes)
+        return 1
 
     w, h = (int(x) for x in resolution.split("x"))
 
@@ -121,8 +145,11 @@ def main() -> int:
         _try_transition(broadcast_id, "complete")
         # Notifica fim da live no Discord
         notify_live_end(title=title, duration_minutes=int(elapsed))
+        # Limpa arquivos temporários da live
+        _cleanup_live_artifacts(output_stem)
 
-    return 0 if code in (0, -15, 255) else code
+    # 0 = sucesso, -15 = SIGTERM (desligamento gracoso do GHA).
+    return 0 if code in (0, -15) else code
 
 
 if __name__ == "__main__":

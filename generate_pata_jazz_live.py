@@ -13,11 +13,12 @@ import argparse
 import json
 import logging
 import random
+import re
 import signal
 import subprocess
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from utils.animal_branding import hook_for_scene, random_scene
@@ -48,11 +49,6 @@ def _handle_sigterm(signum, frame) -> None:
     _shutdown = True
 
 
-# REMOVIDO: signal.signal() no import time. Use _register_signal_handlers() em main().
-# signal.signal(signal.SIGTERM, _handle_sigterm)
-# signal.signal(signal.SIGINT, _handle_sigterm)
-
-
 def _load_live_title() -> str:
     """Le titulo gerado por upload_youtube.py do estado da live, se existir."""
     state = LIVE_META_DIR / "live_state.json"
@@ -60,25 +56,41 @@ def _load_live_title() -> str:
         try:
             data = json.loads(state.read_text(encoding="utf-8"))
             return str(data.get("title", ""))[:100]
-        except Exception:
-            pass
+        except Exception as exc:
+            log.warning("live_state.json invalido, usando titulo default: %s", exc)
     return "Pata Jazz 🐾🎷 | Gatinhos e Cachorrinhos Fofos ao Vivo"
 
 
 def _build_audio_playlist(output_stem: str) -> tuple[Path | None, float]:
-    """Cria arquivo de playlist com todas as musicas jazz disponiveis."""
-    audio_files = sorted([str(p) for p in audio_pool()])
-    if not audio_files:
+    """Cria arquivo de playlist com todas as musicas jazz disponiveis.
+
+    Faixas com duracao 0 (corrompidas ou ilegiveis pelo ffprobe) sao
+    ignoradas para nao subestimar o tempo total e evitar que o demuxer
+    concat engasgue em arquivos vazios.
+    """
+    all_files = sorted([str(p) for p in audio_pool()])
+    if not all_files:
         return None, 0.0
 
-    random.shuffle(audio_files)
-    playlist_txt = OUTPUT_DIR / f"{output_stem}_audio_playlist.txt"
-    build_concat_demuxer(audio_files, str(playlist_txt))
+    total_duration = 0.0
+    valid_files: list[str] = []
+    for p in all_files:
+        d = get_video_duration(p)
+        if d > 0:
+            total_duration += d
+            valid_files.append(p)
+        else:
+            log.warning("Faixa com duracao invalida (0s), ignorando: %s", p)
+    if not valid_files:
+        return None, 0.0
 
-    total_duration = sum(get_video_duration(p) for p in audio_files)
+    random.shuffle(valid_files)
+    playlist_txt = OUTPUT_DIR / f"{output_stem}_audio_playlist.txt"
+    build_concat_demuxer(valid_files, str(playlist_txt))
+
     log.info(
         "Playlist de audio: %d faixas, ~%.0fs (~%.1fh)",
-        len(audio_files),
+        len(valid_files),
         total_duration,
         total_duration / 3600,
     )
@@ -193,6 +205,12 @@ def _start_ffmpeg_stream(
     720p o encode tem ~2.25x menos pixels por frame, o que da folga real
     de CPU em vez de so trocar preset. O bitrate e escalado junto pra nao
     desperdicar banda/qualidade num frame menor.
+
+    O stderr do FFmpeg e redirecionado para um arquivo de log em _videos/
+    em vez de PIPE: o FFmpeg produz muito stderr (logs de progresso
+    continuos) e se o buffer da pipe (~64KB) encher sem ninguem drenar, o
+    processo bloqueia em write e o stream RTMP congela. Redirecionar para
+    arquivo evita o deadlock e permite inspecao posterior.
     """
     video_bitrate_kbps = 2500 if resolution[0] >= 1920 else 1800
     cmd = [
@@ -252,11 +270,24 @@ def _start_ffmpeg_stream(
         cmd = cmd[:-1] + ["-t", str(duration_minutes * 60)] + cmd[-1:]
 
     log.info("Iniciando stream: %s", " ".join(cmd))
-    return subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    log_path = OUTPUT_DIR / "live_ffmpeg.log"
+    # Abre o arquivo de log e mantem o handle aberto pelo tempo de vida do processo.
+    # Usamos stdout=DEVNULL (FFmpeg so escreve progresso em stderr) e stderr para o arquivo.
+    log_handle = open(log_path, "ab", buffering=0)  # noqa: SIM115 - mantido aberto pelo processo
+    proc = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=log_handle)
+    # Anexa o handle ao proc para que seja fechado no termino.
+    proc._log_handle = log_handle  # type: ignore[attr-defined]
+    return proc
 
 
 def _wait_ffmpeg_stream(proc: subprocess.Popen) -> int:
-    """Aguarda o processo FFmpeg iniciado por _start_ffmpeg_stream terminar."""
+    """Aguarda o processo FFmpeg iniciado por _start_ffmpeg_stream terminar.
+
+    O stderr do FFmpeg ja esta redirecionado para um arquivo de log (sem
+    risco de deadlock de pipe). Aqui apenas fazemos poll do processo e
+    lidamos com o desligamento gracoso via SIGTERM.
+    """
     try:
         while proc.poll() is None:
             if _shutdown:
@@ -275,20 +306,30 @@ def _wait_ffmpeg_stream(proc: subprocess.Popen) -> int:
         except subprocess.TimeoutExpired:
             proc.kill()
 
-    stdout, stderr = proc.communicate()
-    if stderr:
-        # A causa raiz de uma falha costuma aparecer no meio do stderr, nao
-        # no final (que geralmente e so o resumo de estatisticas do libx264).
-        # Um tail curto escondia esses erros; aqui destacamos linhas que
-        # parecem erro em qualquer ponto do output, alem de um tail maior.
+    # Fecha o handle do log aberto em _start_ffmpeg_stream.
+    log_handle = getattr(proc, "_log_handle", None)
+    if log_handle:
+        try:
+            log_handle.close()
+        except Exception:
+            pass
+
+    code = proc.returncode
+    # Le as ultimas linhas do arquivo de log para diagnostico.
+    log_path = OUTPUT_DIR / "live_ffmpeg.log"
+    try:
+        stderr_tail = log_path.read_bytes()[-8000:].decode("utf-8", errors="replace") if log_path.exists() else ""
+    except Exception:
+        stderr_tail = ""
+    if stderr_tail:
         error_lines = [
-            line for line in stderr.splitlines()
+            line for line in stderr_tail.splitlines()
             if any(kw in line.lower() for kw in ("error", "failed", "invalid", "broken pipe", "connection reset"))
         ]
         if error_lines:
             log.error("FFmpeg linhas de erro detectadas:\n%s", "\n".join(error_lines[-30:]))
-        log.info("FFmpeg stderr (ultimos 6000 chars): %s", stderr[-6000:])
-    return proc.returncode
+        log.info("FFmpeg log (ultimos 6000 chars): %s", stderr_tail[-6000:])
+    return code if code is not None else 1
 
 
 def _terminate_ffmpeg_stream(proc: subprocess.Popen) -> None:
@@ -298,6 +339,12 @@ def _terminate_ffmpeg_stream(proc: subprocess.Popen) -> None:
         proc.wait(timeout=15)
     except subprocess.TimeoutExpired:
         proc.kill()
+    log_handle = getattr(proc, "_log_handle", None)
+    if log_handle:
+        try:
+            log_handle.close()
+        except Exception:
+            pass
 
 
 def _run_ffmpeg_stream(
@@ -322,7 +369,7 @@ def _save_live_meta(**kwargs) -> None:
     LIVE_META_DIR.mkdir(parents=True, exist_ok=True)
     path = LIVE_META_DIR / "live_state.json"
     data = kwargs.copy()
-    data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    data["updated_at"] = datetime.now(UTC).isoformat()
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
@@ -344,6 +391,14 @@ def main() -> int:
         log.error("URL de ingestao nao fornecida. Use --stream-url.")
         return 1
 
+    if not re.fullmatch(r"\d+x\d+", args.resolution):
+        log.error("Resolucao invalida '%s'. Use o formato WxH (ex: 1280x720).", args.resolution)
+        return 1
+
+    if not 0 <= args.duration <= 360:
+        log.error("Duracao invalida: %d minutos (use 0 a 360).", args.duration)
+        return 1
+
     _register_signal_handlers()
 
     w, h = (int(x) for x in args.resolution.split("x"))
@@ -351,7 +406,7 @@ def main() -> int:
         log.warning("Resolucao %sx%s nao e suportada no runner gratuito do GitHub Actions "
                     "(encode nao acompanha o tempo real). Usando 1280x720.", w, h)
         w, h = 1280, 720
-    output_stem = f"pata_jazz_live_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}"
+    output_stem = f"pata_jazz_live_{datetime.now(UTC).strftime('%Y%m%d_%H%M%S')}"
 
     try:
         loop_input, audio_playlist = _build_looping_input(output_stem, target_resolution=(w, h), clip_duration=30)
@@ -375,7 +430,8 @@ def main() -> int:
         loop_input, args.stream_url, duration_minutes=args.duration, audio_playlist=audio_playlist, resolution=(w, h)
     )
     log.info("Stream encerrado com codigo %s", code)
-    return 0 if code in (0, -15, 255) else code
+    # 0 = sucesso, -15 = SIGTERM (desligamento gracoso solicitado pelo GHA).
+    return 0 if code in (0, -15) else code
 
 
 if __name__ == "__main__":

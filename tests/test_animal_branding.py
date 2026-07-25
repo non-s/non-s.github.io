@@ -1,9 +1,6 @@
-import pytest
 
 from utils.animal_branding import (
     ALL_SCENES,
-    ALLOWED_ANIMAL_KEYWORDS,
-    BROLL_QUERIES,
     JAMENDO_SEARCH_TERMS,
     hook_for_scene,
     is_allowed_animal_text,

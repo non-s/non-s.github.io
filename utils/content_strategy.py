@@ -11,7 +11,7 @@ Mapeia horário do dia -> mood para escolher cenas apropriadas:
 from __future__ import annotations
 
 import random
-from datetime import datetime, timezone, timedelta
+from datetime import UTC, datetime, timedelta
 
 # Janelas de publicação (BRT = UTC-3)
 PUBLISH_SLOTS = {
@@ -28,20 +28,16 @@ SCENE_CATEGORIES: dict[str, list[str]] = {
 }
 
 # Mapeamento de faixa horaria (BRT) -> mood
-# Manha = energia/diversao, Tarde = fofura, Noite = relax
-_HOURLY_MOOD: dict[int, str] = {}
-for h in range(24):
-    if 6 <= h < 12:
-        _HOURLY_MOOD[h] = "diversao"
-    elif 12 <= h < 18:
-        _HOURLY_MOOD[h] = "fofura"
-    else:
-        _HOURLY_MOOD[h] = "relax"
+# Manha = energia/diversao, Tarde = fofura, Noite/Madrugada = relax
+_HOURLY_MOOD: dict[int, str] = {
+    h: ("diversao" if 6 <= h < 12 else "fofura" if 12 <= h < 18 else "relax")
+    for h in range(24)
+}
 
 
 def current_brt_hour() -> int:
     """Retorna a hora atual em BRT (UTC-3)."""
-    return (datetime.now(timezone.utc) + timedelta(hours=-3)).hour
+    return (datetime.now(UTC) - timedelta(hours=3)).hour
 
 
 def mood_for_now() -> str:
@@ -53,7 +49,7 @@ def best_slot_for(kind: str, weekday: int | None = None) -> str:
     """Retorna o melhor horário de publicação para o tipo de conteúdo."""
     slots = PUBLISH_SLOTS.get(kind, ["12:00"])
     if weekday is None:
-        weekday = datetime.now(timezone.utc).weekday()
+        weekday = datetime.now(UTC).weekday()
     if weekday >= 5:
         return slots[-1]
     return slots[0]
@@ -73,10 +69,17 @@ def scene_for_mood(mood: str) -> str:
 
 
 def weekly_calendar() -> list[dict]:
-    """Gera uma sugestão de calendário semanal equilibrado."""
+    """Gera uma sugestão de calendário semanal equilibrado.
+
+    Alterna shorts, horizontal e live conforme o plano de publicacao:
+    shorts diarios, horizontal 1x/dia (dias uteis), live 1x/semana (quarta).
+    """
     days = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"]
     moods_cycle = ["fofura", "relax", "fofura", "diversao", "diversao", "relax", "fofura"]
-    return [
-        {"day": days[i], "type": "short", "slot": best_slot_for("short", i), "mood": moods_cycle[i]}
-        for i in range(7)
-    ]
+    calendar = []
+    for i, day in enumerate(days):
+        if i == 2:  # Quarta: live + shorts
+            calendar.append({"day": day, "type": "live", "slot": best_slot_for("live", i), "mood": moods_cycle[i]})
+        else:
+            calendar.append({"day": day, "type": "short", "slot": best_slot_for("short", i), "mood": moods_cycle[i]})
+    return calendar

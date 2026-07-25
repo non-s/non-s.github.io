@@ -63,27 +63,10 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
-      - name: "Restaurar token YouTube"
-        env:
-          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
-        run: |
-          umask 077
-          if [ -n "$YOUTUBE_TOKEN" ]; then
-            printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
-            chmod 600 youtube_token.json
-          fi
-      - name: "Cache b-roll"
-        uses: actions/cache@v4
+      - name: "Restaurar token e caches"
+        uses: ./.github/actions/restore-token-and-cache
         with:
-          path: _assets/video/animal_broll
-          key: animal-broll-${{ github.run_id }}
-          restore-keys: animal-broll-
-      - name: "Cache jazz"
-        uses: actions/cache@v4
-        with:
-          path: _assets/audio/animal_jazz
-          key: animal-jazz-${{ github.run_id }}
-          restore-keys: animal-jazz-
+          youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
       - name: "Sincronizar b-roll"
         env:
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}

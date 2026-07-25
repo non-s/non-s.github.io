@@ -40,7 +40,7 @@ jobs:
     name: "Transmitir live Pata Jazz"
     if: ${{ vars.PATA_JAZZ_ENABLED == '1' && vars.PATA_JAZZ_LIVE_ENABLED == '1' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 360
+    timeout-minutes: 375
     env:
       YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -64,35 +64,16 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
-      - name: "Restaurar token YouTube"
-        env:
-          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
-        run: |
-          umask 077
-          if [ -n "$YOUTUBE_TOKEN" ]; then
-            printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
-            chmod 600 youtube_token.json
-          fi
-      - name: "Cache b-roll"
-        uses: actions/cache@v4
+      - name: "Restaurar token e caches"
+        uses: ./.github/actions/restore-token-and-cache
         with:
-          path: _assets/video/animal_broll
-          key: animal-broll-${{ github.run_id }}
-          restore-keys: animal-broll-
-      - name: "Cache jazz"
-        uses: actions/cache@v4
-        with:
-          path: _assets/audio/animal_jazz
-          key: animal-jazz-${{ github.run_id }}
-          restore-keys: animal-jazz-
+          youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
       - name: "Sincronizar b-roll"
         run: python scripts/sync_animal_broll.py || echo "::warning::B-roll sync falhou"
       - name: "Sincronizar jazz"
         run: python scripts/sync_jazz_music.py || echo "::warning::Jazz sync falhou"
       - name: "Executar live Pata Jazz"
-        run: |
-          python -c "from generate_pata_jazz_live import _build_looping_input; print('ok')"
-          python scripts/run_live.py
+        run: python scripts/run_live.py
       - name: "Apagar token"
         if: always()
         run: rm -f youtube_token.json

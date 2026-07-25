@@ -11,6 +11,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from utils.youtube_oauth import (
+    ROOT,
     SCOPES,
     _client_secrets_path,
     _load_token,
@@ -24,9 +25,9 @@ class TestYoutubeOauth:
     """Testes para o módulo youtube_oauth."""
 
     def test_token_path_default(self):
-        """Testa caminho padrão do token."""
+        """Testa caminho padrão do token (resolvido relativo ao ROOT do projeto)."""
         with patch.dict(os.environ, {}, clear=True):
-            assert _token_path() == "youtube_token.json"
+            assert _token_path() == str(ROOT / "youtube_token.json")
 
     def test_token_path_from_env(self):
         """Testa caminho do token via variável de ambiente."""

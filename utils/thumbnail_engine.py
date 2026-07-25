@@ -11,7 +11,7 @@ import tempfile
 import textwrap
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageEnhance
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 
 log = logging.getLogger(__name__)
 
@@ -37,7 +37,7 @@ def _save_under_2mb(img: Image.Image, output: Path) -> None:
     # Ultimo recurso: redimensionar mantendo aspecto
     w, h = img.size
     scale = 0.75
-    while True:
+    while w >= 200 and h >= 200:
         w, h = int(w * scale), int(h * scale)
         resized = img.resize((w, h), Image.Resampling.LANCZOS)
         buf = io.BytesIO()
@@ -46,10 +46,11 @@ def _save_under_2mb(img: Image.Image, output: Path) -> None:
             output.write_bytes(buf.getvalue())
             log.info("Thumbnail redimensionada para %dx%d (%.0f KB)", w, h, buf.tell() / 1024)
             return
-        if w < 200 or h < 200:
-            output.write_bytes(buf.getvalue())
-            log.warning("Thumbnail nao coube em 2 MB mesmo apos redimensionar; salvando %.0f KB", buf.tell() / 1024)
-            return
+    # Nao coube mesmo apos redimensionar: salva a menor versao mesmo assim.
+    buf = io.BytesIO()
+    resized.save(buf, format="PNG" if output.suffix.lower() == ".png" else "JPEG", quality=60)
+    output.write_bytes(buf.getvalue())
+    log.warning("Thumbnail nao coube em 2 MB mesmo apos redimensionar; salvando %.0f KB", buf.tell() / 1024)
 
 # Paleta Pata Jazz (dark, acolhedora, jazz)
 PALETTE = {
@@ -69,7 +70,13 @@ def _hex_to_rgb(hex_color: str) -> tuple[int, int, int]:
 
 
 def _load_fonts() -> tuple[ImageFont.FreeTypeFont, ImageFont.FreeTypeFont]:
-    """Tenta carregar fontes comuns; cai em default se necessário."""
+    """Tenta carregar fontes comuns; falha com erro claro se nenhuma disponivel.
+
+    Usa ImageFont.truetype com fallback em varias plataformas (Linux CI,
+    Windows local). Se nenhuma fonte TrueType estiver disponivel, levanta
+    RuntimeError em vez de silenciosamente usar a fonte bitmap default
+    (que torna a thumbnail ilegivel).
+    """
     candidates = [
         ("arial.ttf", 120, 48),
         ("DejaVuSans.ttf", 120, 48),
@@ -81,16 +88,18 @@ def _load_fonts() -> tuple[ImageFont.FreeTypeFont, ImageFont.FreeTypeFont]:
             return ImageFont.truetype(font_path, large), ImageFont.truetype(font_path, small)
         except Exception:
             continue
-    default = ImageFont.load_default()
-    return default, default
+    raise RuntimeError(
+        "Nenhuma fonte TrueType encontrada. Instale DejaVu/arial ou configure PIL_IMAGE_FONT_PATH."
+    )
 
 
 def extract_frame_from_video(video_path: Path, timestamp: str = "00:00:01") -> Image.Image | None:
     """Extrai um frame específico do vídeo usando FFmpeg."""
+    tmp_path: str | None = None
     try:
         with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
             tmp_path = tmp.name
-        
+
         cmd = [
             "ffmpeg",
             "-ss", timestamp,
@@ -100,20 +109,26 @@ def extract_frame_from_video(video_path: Path, timestamp: str = "00:00:01") -> I
             "-y",
             tmp_path
         ]
-        
+
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
-        
+
         if result.returncode == 0:
+            # Image.open e lazy: carrega o conteudo antes de fechar/unlink.
             img = Image.open(tmp_path)
-            Path(tmp_path).unlink(missing_ok=True)
+            img.load()
             return img
         else:
             log.warning("FFmpeg falhou ao extrair frame: %s", result.stderr)
-            Path(tmp_path).unlink(missing_ok=True)
             return None
+    except subprocess.TimeoutExpired:
+        log.warning("FFmpeg excedeu 30s ao extrair frame de %s", video_path)
+        return None
     except Exception as e:
         log.error("Erro ao extrair frame do vídeo: %s", e)
         return None
+    finally:
+        if tmp_path:
+            Path(tmp_path).unlink(missing_ok=True)
 
 
 def enhance_thumbnail_image(img: Image.Image) -> Image.Image:
@@ -121,40 +136,33 @@ def enhance_thumbnail_image(img: Image.Image) -> Image.Image:
     # Aumenta saturação e contraste
     enhancer = ImageEnhance.Color(img)
     img = enhancer.enhance(1.3)  # +30% saturação
-    
+
     enhancer = ImageEnhance.Contrast(img)
     img = enhancer.enhance(1.2)  # +20% contraste
-    
+
     enhancer = ImageEnhance.Brightness(img)
     img = enhancer.enhance(1.1)  # +10% brilho
-    
+
     # Aplica leve sharpen
     img = img.filter(ImageFilter.SHARPEN)
-    
+
     return img
 
 
 def create_gradient_background(width: int, height: int) -> Image.Image:
-    """Cria um fundo com gradiente suave."""
-    img = Image.new("RGB", (width, height), PALETTE["gradient_start"])
-    draw = ImageDraw.Draw(img)
-    
-    for y in range(height):
-        r = int(
-            int(PALETTE["gradient_start"][1:3], 16) * (1 - y/height) + 
-            int(PALETTE["gradient_end"][1:3], 16) * (y/height)
-        )
-        g = int(
-            int(PALETTE["gradient_start"][3:5], 16) * (1 - y/height) + 
-            int(PALETTE["gradient_end"][3:5], 16) * (y/height)
-        )
-        b = int(
-            int(PALETTE["gradient_start"][5:7], 16) * (1 - y/height) + 
-            int(PALETTE["gradient_end"][5:7], 16) * (y/height)
-        )
-        draw.line([(0, y), (width, y)], fill=(r, g, b))
-    
-    return img
+    """Cria um fundo com gradiente suave (vertical).
+
+    Gera duas imagens solidas com as cores de inicio e fim, depois mistura
+    usando uma mascara em gradiente (Image.linear_gradient, Pillow >=9.1).
+    Muito mais rapido que o loop linha-a-linha anterior.
+    """
+    start_img = Image.new("RGB", (width, height), _hex_to_rgb(PALETTE["gradient_start"]))
+    end_img = Image.new("RGB", (width, height), _hex_to_rgb(PALETTE["gradient_end"]))
+    # linear_gradient("L") gera 256x256; redimensiona para o tamanho final
+    # e usa como mascara alpha para o paste do end_img sobre o start_img.
+    mask = Image.linear_gradient("L").resize((width, height))
+    start_img.paste(end_img, (0, 0), mask)
+    return start_img
 
 
 def make_horizontal_thumbnail(
@@ -166,7 +174,7 @@ def make_horizontal_thumbnail(
 ) -> None:
     """Thumbnail 1280x720 para vídeos longos horizontais."""
     width, height = 1280, 720
-    
+
     # Tenta usar frame do vídeo se disponível
     background = None
     if video_path and video_path.exists():
@@ -177,11 +185,12 @@ def make_horizontal_thumbnail(
             # Aplica overlay escuro para melhor legibilidade
             overlay = Image.new("RGBA", (width, height), (0, 0, 0, 128))
             background = Image.alpha_composite(background.convert("RGBA"), overlay).convert("RGB")
-    
+
     if not background:
         background = create_gradient_background(width, height)
-    
-    img = background
+
+    # Converte para RGBA para que fills com alpha (shadows) funcionem.
+    img = background.convert("RGBA")
     draw = ImageDraw.Draw(img)
 
     font_large, font_small = _load_fonts()
@@ -194,7 +203,7 @@ def make_horizontal_thumbnail(
             outline=(*_hex_to_rgb(PALETTE["accent"]), int(50 * i / 3)),
             width=2
         )
-    
+
     draw.rounded_rectangle(
         [40, 40, width - 40, height - 40], radius=40, outline=PALETTE["subtle"], width=4
     )
@@ -203,7 +212,7 @@ def make_horizontal_thumbnail(
     bbox = draw.textbbox((0, 0), emoji, font=font_large)
     tw = bbox[2] - bbox[0]
     x_center = (width - tw) // 2
-    
+
     # Shadow
     draw.text((x_center + 4, 104), emoji, font=font_large, fill=(0, 0, 0, 128))
     # Principal
@@ -216,7 +225,7 @@ def make_horizontal_thumbnail(
         bbox = draw.textbbox((0, 0), line, font=font_small)
         tw = bbox[2] - bbox[0]
         x = (width - tw) // 2
-        
+
         # Shadow
         draw.text((x + 2, y + 2), line, font=font_small, fill=(0, 0, 0, 180))
         # Principal
@@ -228,7 +237,7 @@ def make_horizontal_thumbnail(
     tw = bbox[2] - bbox[0]
     draw.text(((width - tw) // 2, height - 120), brand, font=font_small, fill=PALETTE["accent"])
 
-    _save_under_2mb(img, output)
+    _save_under_2mb(img.convert("RGB"), output)
     log.info("Thumbnail horizontal salva: %s", output)
 
 
@@ -241,7 +250,7 @@ def make_short_thumbnail(
 ) -> None:
     """Thumbnail 1080x1920 para Shorts verticais."""
     width, height = 1080, 1920
-    
+
     # Tenta usar frame do vídeo se disponível
     background = None
     if video_path and video_path.exists():
@@ -250,7 +259,7 @@ def make_short_thumbnail(
             # Crop central para formato vertical
             bg_width, bg_height = background.size
             target_ratio = width / height
-            
+
             if bg_width / bg_height > target_ratio:
                 # Vídeo é mais largo, crop horizontal
                 new_width = int(bg_height * target_ratio)
@@ -261,17 +270,18 @@ def make_short_thumbnail(
                 new_height = int(bg_width / target_ratio)
                 top = (bg_height - new_height) // 2
                 background = background.crop((0, top, bg_width, top + new_height))
-            
+
             background = background.resize((width, height), Image.Resampling.LANCZOS)
             background = enhance_thumbnail_image(background)
             # Aplica overlay escuro para melhor legibilidade
             overlay = Image.new("RGBA", (width, height), (0, 0, 0, 100))
             background = Image.alpha_composite(background.convert("RGBA"), overlay).convert("RGB")
-    
+
     if not background:
         background = create_gradient_background(width, height)
-    
-    img = background
+
+    # Converte para RGBA para que fills com alpha (shadows) funcionem.
+    img = background.convert("RGBA")
     draw = ImageDraw.Draw(img)
 
     font_large, font_small = _load_fonts()
@@ -285,7 +295,7 @@ def make_short_thumbnail(
     bbox = draw.textbbox((0, 0), emoji, font=font_large)
     tw = bbox[2] - bbox[0]
     x_center = (width - tw) // 2
-    
+
     # Shadow
     draw.text((x_center + 6, 526), emoji, font=font_large, fill=(0, 0, 0, 128))
     # Principal
@@ -298,7 +308,7 @@ def make_short_thumbnail(
         bbox = draw.textbbox((0, 0), line, font=font_small)
         tw = bbox[2] - bbox[0]
         x = (width - tw) // 2
-        
+
         # Shadow
         draw.text((x + 3, y + 3), line, font=font_small, fill=(0, 0, 0, 180))
         # Principal
@@ -310,5 +320,5 @@ def make_short_thumbnail(
     tw = bbox[2] - bbox[0]
     draw.text(((width - tw) // 2, height - 220), brand, font=font_small, fill=PALETTE["accent"])
 
-    _save_under_2mb(img, output)
+    _save_under_2mb(img.convert("RGB"), output)
     log.info("Thumbnail de Short salva: %s", output)

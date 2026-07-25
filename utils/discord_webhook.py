@@ -8,6 +8,8 @@ from __future__ import annotations
 
 import logging
 import os
+import random
+import time
 from typing import Any
 
 import requests
@@ -16,6 +18,8 @@ log = logging.getLogger(__name__)
 
 _DISCORD_WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL", "")
 _TIMEOUT = 10  # segundos
+_MAX_RETRIES = 3
+_BASE_BACKOFF = 2.0
 
 
 def send_notification(
@@ -38,33 +42,44 @@ def send_notification(
     if not _DISCORD_WEBHOOK_URL:
         log.warning("DISCORD_WEBHOOK_URL não configurado; pulando notificação.")
         return False
-    
+
     embed: dict[str, Any] = {
         "title": title,
         "description": message,
         "color": color,
     }
-    
+
     if thumbnail_url:
         embed["thumbnail"] = {"url": thumbnail_url}
-    
+
     payload = {
         "embeds": [embed],
         "username": "Pata Jazz Bot 🐾🎷",
     }
-    
+
     try:
-        response = requests.post(
-            _DISCORD_WEBHOOK_URL,
-            json=payload,
-            timeout=_TIMEOUT,
-            headers={"Content-Type": "application/json"},
-        )
-        response.raise_for_status()
-        log.info("Notificação Discord enviada: %s", title)
-        return True
-    except requests.exceptions.RequestException as exc:
-        log.error("Falha ao enviar notificação Discord: %s", exc)
+        for attempt in range(_MAX_RETRIES):
+            try:
+                response = requests.post(
+                    _DISCORD_WEBHOOK_URL,
+                    json=payload,
+                    timeout=_TIMEOUT,
+                    headers={"Content-Type": "application/json"},
+                )
+                response.raise_for_status()
+                log.info("Notificação Discord enviada: %s", title)
+                return True
+            except requests.exceptions.RequestException as exc:
+                if attempt < _MAX_RETRIES - 1:
+                    wait = _BASE_BACKOFF * (2 ** attempt) + random.uniform(0, 1)
+                    log.warning("Discord falhou (tentativa %d/%d): %s - retry em %.1fs", attempt + 1, _MAX_RETRIES, exc, wait)
+                    time.sleep(wait)
+                    continue
+                log.error("Falha ao enviar notificação Discord apos %d tentativas: %s", _MAX_RETRIES, exc)
+                return False
+        return False
+    except Exception as exc:
+        log.error("Erro inesperado ao enviar notificação Discord: %s", exc)
         return False
 
 

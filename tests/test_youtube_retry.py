@@ -7,7 +7,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 from googleapiclient.errors import HttpError
 
-from upload_youtube import _retry_youtube_call, _YOUTUBE_MAX_RETRIES
+from upload_youtube import _YOUTUBE_MAX_RETRIES, _retry_youtube_call
 
 
 def test_retry_youtube_call_success():
@@ -25,7 +25,7 @@ def test_retry_youtube_call_retry_429(mock_sleep):
     # Primeira chamada falha com 429, segunda tem sucesso
     error_429 = HttpError(MagicMock(status=429), b'{"error": "rate limit"}')
     mock_func.side_effect = [error_429, {"id": "test123"}]
-    
+
     result = _retry_youtube_call(mock_func)
     assert result == {"id": "test123"}
     assert mock_func.call_count == 2
@@ -38,7 +38,7 @@ def test_retry_youtube_call_retry_503(mock_sleep):
     mock_func = MagicMock()
     error_503 = HttpError(MagicMock(status=503), b'{"error": "unavailable"}')
     mock_func.side_effect = [error_503, error_503, {"id": "test123"}]
-    
+
     result = _retry_youtube_call(mock_func)
     assert result == {"id": "test123"}
     assert mock_func.call_count == 3
@@ -64,8 +64,8 @@ def test_retry_youtube_call_non_retryable_400():
     mock_func = MagicMock()
     error_400 = HttpError(MagicMock(status=400), b'{"error": "bad request"}')
     mock_func.side_effect = error_400
-    
+
     with pytest.raises(HttpError):
         _retry_youtube_call(mock_func)
-    
+
     assert mock_func.call_count == 1  # Sem retry

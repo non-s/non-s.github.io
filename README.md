@@ -11,12 +11,15 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 ## Recursos inteligentes
 
 - **Mood por horário**: Shorts e horizontais selecionam cenas baseado na hora (manhã = diversão, tarde = fofura, noite = relax)
-- **Multi-clip com crossfade**: Shorts usam 2-3 clipes com transição suave em vez de 1 clipe repetido
+- **Multi-clip com crossfade**: Shorts usam 2-3 clipes com transição suave em vez de 1 clipe repetido (validação automática garante que cada clipe é longo o suficiente para o xfade)
 - **Text overlay**: Hook aparece como texto no vídeo nos primeiros 3 segundos (drawtext FFmpeg)
-- **Legendas automáticas**: SRT gerado via Gemini e enviado como caption track
-- **Playlists automáticas**: Videos adicionados a playlists por mood/formato
-- **Analytics semanal**: Coleta de métricas para feedback loop
+- **Legendas automáticas**: SRT gerado via Gemini e enviado como caption track (mimetype correto por extensão)
+- **Playlists automáticas**: Videos adicionados a playlists por mood/formato (cache persistente em `_data/playlist_cache.json`)
+- **Analytics semanal**: Coleta de métricas para feedback loop (com guard contra paginação infinita)
 - **Marca consistente**: Todos os títulos começam com "Pata Jazz |"
+- **Robustez de APIs**: Circuit breaker no Gemini (429/502/503), retry exponencial no Discord/YouTube, fallback local em todas as chamadas de IA
+- **Thumbnails com shadow RGBA**: Gradiente via `Image.linear_gradient` (Pillow ≥9.1), shadows com alpha real
+- **Live sem deadlock**: stderr do FFmpeg redirecionado para arquivo (evita congelamento em lives longas)
 
 ## APIs reais utilizadas
 
@@ -29,10 +32,11 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 
 ## Stack
 
-- **Python 3.11+** (CI roda 3.11; local testado com 3.12)
-- **FFmpeg** — codificação, concatenação, xfade, drawtext e ffprobe
-- **Pillow** — thumbnails
-- **pytest** — testes unitários
+- **Python 3.11+** (CI roda 3.11; local testado com 3.12/3.14)
+- **FFmpeg** — codificação, concatenação, xfade, drawtext e ffprobe (com timeout)
+- **Pillow ≥10.3** — thumbnails (gradiente, shadows RGBA, fontes TrueType)
+- **pytest** — testes unitários (178 testes, cobertura ≥70% de `utils/`)
+- **ruff** — lint (regras E, F, W, I, UP, B)
 - **GitHub Actions** — CI/CD e agendamento
 
 ## Estrutura
@@ -80,7 +84,7 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 ### 1. Dependências locais
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements-dev.txt  # inclui ruff, pytest, pytest-cov
 ```
 
 Instale também o FFmpeg e certifique-se de que `ffmpeg` e `ffprobe` estão no PATH.
@@ -92,7 +96,8 @@ Crie um arquivo `.env` (ou exporte manualmente) com as chaves abaixo:
 ```bash
 GEMINI_API_KEY=xxx
 PIXABAY_API_KEY=xxx
-JAMENDO_CLIENT_ID=xxx  # opcional
+JAMENDO_CLIENT_ID=xxx  # opcional (recomendado)
+GEMINI_MODEL=gemini-2.0-flash-001  # opcional (default)
 YOUTUBE_PRIVACY=public
 ```
 
@@ -104,7 +109,7 @@ Para upload e live, é necessário um token OAuth do YouTube. Execute uma vez:
 python utils/youtube_oauth.py
 ```
 
-Salve o JSON resultante como `_data/youtube_token.json` (ou use o secret `YOUTUBE_TOKEN` no GitHub Actions).
+Salve o JSON resultante como `youtube_token.json` na raiz do projeto (ou use o secret `YOUTUBE_TOKEN` no GitHub Actions).
 
 ## Variáveis do GitHub Actions
 
@@ -157,16 +162,24 @@ python scripts/sync_jazz_music.py
 python generate_pata_jazz_short.py
 ```
 
-### Fazer upload
+Use `--dry-run` para simular sem executar FFmpeg nem gerar arquivos:
 
 ```bash
-python upload_youtube.py --language=pt --privacy=public _videos/seu_video.mp4
+python generate_pata_jazz_short.py --dry-run
+```
+
+### Fazer upload
+
+O upload usa o vídeo mais recente gerado (metadados em `_videos/*.json`):
+
+```bash
+python upload_youtube.py --mode upload --language=pt --prefix pata_jazz_short_
 ```
 
 ### Iniciar uma live
 
 ```bash
-python generate_pata_jazz_live.py --privacy=public --loop-minutes=30
+python generate_pata_jazz_live.py --stream-url rtmp://a.rtmp.youtube.com/live2/xxxx --duration 30 --resolution 1280x720
 ```
 
 ### Coletar analytics
@@ -188,10 +201,13 @@ python -m compileall -q .
 |---------|----------------|---------|
 | `Pool de b-roll vazio` | Nenhum vídeo baixado ainda | Rode `scripts/sync_animal_broll.py` |
 | `Pool de jazz vazio` | Nenhuma música baixada ainda | Rode `scripts/sync_jazz_music.py` |
-| `Validation failed: resolução` | FFmpeg gerou arquivo fora do formato | Verifique logs em `_videos/last_error.txt` |
+| `Validation failed: resolução` | FFmpeg gerou arquivo fora do formato | Verifique logs em `_videos/last_error.txt` (histórico com timestamp) |
 | Upload retorna 401 | Token OAuth expirado | Renove em `utils/youtube_oauth.py` |
-| Live cai após alguns minutos | Loop ou bitrate inconsistente | Use `--loop-minutes` menor e verifique FFmpeg |
-| Thumbnail > 2MB | Imagem muito grande | Já tratado por `_save_under_2mb()` |
+| Live cai após alguns minutos | Deadlock de pipe (corrigido) | stderr agora vai para `_videos/live_ffmpeg.log` |
+| Thumbnail > 2MB | Imagem muito grande | Já tratado por `_save_under_2mb()` (redimensiona se necessário) |
+| `Nenhuma fonte TrueType encontrada` | Fontes não instaladas | Instale DejaVu/arial ou defina `PIL_IMAGE_FONT_PATH` |
+| Gemini retorna vazio | Circuit breaker aberto ou modelo inválido | Verifique `GEMINI_MODEL` (default: `gemini-2.0-flash-001`) |
+| `Circuit breaker do Gemini aberto` | Muitas respostas 429/503 | Aguarde 60s (reset automático) ou verifique quota |
 
 ## Licença
 

@@ -11,9 +11,9 @@ from typing import Any, Literal
 
 from utils.ai_helper import ai_text
 from utils.seo_keywords import (
-    generate_title,
     generate_description,
     generate_hashtags,
+    generate_title,
     optimize_for_search,
 )
 
@@ -46,58 +46,60 @@ def generate_metadata(
 ) -> dict[str, Any]:
     """Gera metadados completos usando Gemini + SEO otimizado, com fallback local seguro."""
     # Extrai informações da cena para SEO
-    animal = "gato" if "cat" in scene.lower() or "gato" in scene.lower() else "cachorro"
-    acao = "relaxando" if "sleep" in scene.lower() or "relax" in scene.lower() else "brincando"
+    s = scene.lower()
+    animal = "gato" if ("cat" in s or "kitten" in s) else "cachorro"
+    acao = "relaxando" if ("sleep" in s or "relax" in s) else "brincando"
     estilo_musical = "jazz relaxante"
-    
-    # Gera título otimizado com SEO
-    title = generate_title(
+
+    # Gera título otimizado com SEO, usando fallback_title como base se fornecido
+    title = fallback_title or generate_title(
         animal=animal,
         acao=acao,
         estilo_musical=estilo_musical,
         kind=kind,
         emoji=emoji,
-        duracao=duration // 60 if kind != "short" else None,
+        duracao=round(duration / 60) if kind != "short" else None,
     )
-    
+
     # Gera hashtags estratégicas em camadas
     categoria = "fofura"
-    if "sleep" in scene.lower() or "relax" in scene.lower():
+    if "sleep" in s or "relax" in s:
         categoria = "relaxamento"
-    elif "play" in scene.lower() or "fun" in scene.lower():
+    elif "play" in s or "fun" in s:
         categoria = "diversao"
-    
+
     hashtags = generate_hashtags(animal=animal, categoria=categoria, kind=kind)
-    
+
     # Tenta melhorar com IA (opcional)
     prompt = _build_metadata_prompt(hook, scene, duration, kind, emoji)
     out = ai_text(prompt, json_mode=True, task=f"{kind}_metadata")
 
-    description = fallback_description or generate_description(
+    description = generate_description(
         hook=hook,
         kind=kind,
         hashtags=hashtags,
         include_cta=True,
-    )
+    ) or fallback_description
 
     if out:
         try:
             data = json.loads(out)
-            # Usa título da IA se for melhor, senão mantém título SEO
-            ai_title = str(data.get("title", ""))[:100]
-            if ai_title and len(ai_title) > len(title):
+            # Usa título da IA se for valido e nao vazio; senao mantém título SEO.
+            ai_title = str(data.get("title", "")).strip()[:100]
+            if ai_title:
                 title = ai_title
-            
+
             # Usa descrição da IA se disponível
-            ai_description = str(data.get("description", ""))[:5000]
+            ai_description = str(data.get("description", "")).strip()[:5000]
             if ai_description:
                 description = ai_description
-            
-            # Merge de hashtags
+
+            # Merge de hashtags (filtra apenas strings, evita alucinacoes de dict/list)
             raw_hashtags = data.get("hashtags", [])
             if isinstance(raw_hashtags, str):
                 raw_hashtags = raw_hashtags.split()
-            ai_hashtags = [str(h).strip() for h in raw_hashtags if str(h).strip()][:15]
+            ai_hashtags = [str(h).strip() for h in raw_hashtags
+                           if isinstance(h, str) and h.strip()][:15]
             if ai_hashtags:
                 hashtags = list(dict.fromkeys(hashtags + ai_hashtags))[:15]
         except Exception:
@@ -113,8 +115,10 @@ def generate_metadata(
     if len(title) > 100:
         title = title[:97] + "..."
 
-    # Garante que as hashtags apareçam na descrição
-    if hashtags and not any(h in description for h in hashtags):
+    # Garante que as hashtags apareçam na descrição.
+    # Usa regex com boundary de palavra para evitar falso-positivo
+    # (ex: "#Gato" combinando com "#Gatos" ou "dogato").
+    if hashtags and not any(re.search(rf"\b{re.escape(h)}\b", description) for h in hashtags):
         description = f"{description}\n\n{' '.join(hashtags)}"
 
     return {

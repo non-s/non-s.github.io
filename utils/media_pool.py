@@ -6,10 +6,9 @@ from __future__ import annotations
 
 import json
 import logging
-import os
 import random
+from collections.abc import Iterator
 from pathlib import Path
-from typing import Iterator
 
 from utils.animal_branding import is_allowed_animal_text
 
@@ -38,7 +37,7 @@ def _load_video_metadata(video: Path) -> dict:
     if not meta_path.exists():
         return {}
     try:
-        with open(meta_path, "r", encoding="utf-8") as f:
+        with open(meta_path, encoding="utf-8") as f:
             return json.load(f)
     except Exception:
         return {}
@@ -59,7 +58,12 @@ def pick_videos(min_count: int = 1, max_count: int = 5, cuteness_sort: bool = Tr
     pool = video_pool()
     if not pool:
         return []
-    count = random.randint(min_count, min(max_count, len(pool)))
+    # Garante limites validos para randint: min_count <= upper, e upper <= len(pool).
+    upper = min(max_count, len(pool))
+    lower = min(min_count, upper)
+    count = random.randint(lower, upper)
+    if count > len(pool):
+        count = len(pool)
     if cuteness_sort and len(pool) > count:
         # Pega os top clips fofos, mas embaralha para nao repetir sempre os mesmos.
         scored = sorted(pool, key=_cuteness_score, reverse=True)
@@ -76,7 +80,7 @@ def pick_audio() -> Path | None:
 def available_audio_metadata() -> Iterator[dict]:
     for p in sorted(AUDIO_DIR.glob("*.json")):
         try:
-            with open(p, "r", encoding="utf-8") as f:
+            with open(p, encoding="utf-8") as f:
                 yield json.load(f)
         except Exception:
             continue

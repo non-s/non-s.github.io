@@ -7,6 +7,7 @@ O filtro local garante que o arquivo tenha palavras-chave de gato/cachorro.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import os
@@ -21,6 +22,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from utils.animal_branding import BROLL_QUERIES, is_allowed_animal_text
+from utils.log_config import configure_logging
 from utils.media_pool import VIDEO_DIR, ensure_dirs
 
 log = logging.getLogger(__name__)
@@ -32,7 +34,8 @@ MAX_POOL_SIZE = 300
 
 def _safe_name(query: str, idx: int, url: str, ext: str) -> str:
     base = re.sub(r"[^a-z0-9]", "_", query.lower())
-    return f"{base}_{idx:02d}_{hash(url) % 10000:04d}.{ext}"
+    url_hash = hashlib.sha1(url.encode("utf-8")).hexdigest()[:8]
+    return f"{base}_{idx:02d}_{url_hash}.{ext}"
 
 
 def _download_video(url: str, dest: Path) -> bool:
@@ -101,7 +104,11 @@ def search_and_download(api_key: str, query: str, max_results: int = 5) -> int:
         lower_tags = tags.lower()
         is_extra_cute = any(kw in lower_tags for kw in ("kitten", "puppy", "cute", "sleepy", "adorable", "baby"))
         url = video.get("url", "")
-        ext = Path(urlparse(url).path).suffix.lstrip(".") or "mp4"
+        raw_ext = Path(urlparse(url).path).suffix.lstrip(".").lower() or "mp4"
+        # Valida extensao contra whitelist para evitar path traversal / formatos inesperados.
+        if raw_ext not in ("mp4", "webm", "mov", "m4v"):
+            raw_ext = "mp4"
+        ext = raw_ext
         dest = VIDEO_DIR / _safe_name(query, idx, url, ext)
         if dest.exists():
             continue
@@ -118,7 +125,7 @@ def search_and_download(api_key: str, query: str, max_results: int = 5) -> int:
 
 
 def main() -> int:
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    configure_logging()
     api_key = os.environ.get("PIXABAY_API_KEY")
     if not api_key:
         log.error("PIXABAY_API_KEY nao configurada.")

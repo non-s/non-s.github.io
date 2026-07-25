@@ -3,12 +3,9 @@
 from __future__ import annotations
 
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
-import pytest
-
-from utils import media_pool, video_builder
-from utils.media_pool import VIDEO_DIR, AUDIO_DIR, pick_audio, pick_videos, pool_stats, video_pool, audio_pool
+from utils.media_pool import audio_pool, pick_audio, pick_videos, pool_stats, video_pool
 from utils.video_builder import VideoSpec, horizontal_spec, inspect_video, short_spec
 
 

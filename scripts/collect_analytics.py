@@ -13,7 +13,7 @@ from __future__ import annotations
 import json
 import logging
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -28,6 +28,14 @@ DATA_DIR = ROOT / "_data"
 MAX_VIDEOS = 50
 
 
+def _to_int(value) -> int:
+    """Converte string/int/None para int de forma segura."""
+    try:
+        return int(value) if value is not None else 0
+    except (TypeError, ValueError):
+        return 0
+
+
 def collect_video_stats(service) -> list[dict]:
     """Busca estatisticas dos videos mais recentes do canal."""
     # Primeiro: lista IDs dos videos recentes
@@ -38,11 +46,14 @@ def collect_video_stats(service) -> list[dict]:
 
     channel_id = channels["items"][0]["id"]
     uploads_playlist = channels["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
+    _ = channel_id  # disponível para debug futuro
 
-    # Lista videos da playlist de uploads
+    # Lista videos da playlist de uploads (com guard contra loop infinito)
     video_ids: list[str] = []
     page_token = ""
-    while len(video_ids) < MAX_VIDEOS:
+    pages = 0
+    while len(video_ids) < MAX_VIDEOS and pages < 20:
+        pages += 1
         resp = service.playlistItems().list(
             part="snippet",
             playlistId=uploads_playlist,
@@ -53,7 +64,7 @@ def collect_video_stats(service) -> list[dict]:
             vid = item.get("snippet", {}).get("resourceId", {}).get("videoId")
             if vid:
                 video_ids.append(vid)
-        page_token = resp.get("nextPageToken", "")
+        page_token = resp.get("nextPageToken") or ""
         if not page_token:
             break
 
@@ -78,9 +89,9 @@ def collect_video_stats(service) -> list[dict]:
                 "title": snippet.get("title", ""),
                 "published_at": snippet.get("publishedAt", ""),
                 "duration": content.get("duration", ""),
-                "views": int(statistics.get("viewCount", 0)),
-                "likes": int(statistics.get("likeCount", 0)),
-                "comments": int(statistics.get("commentCount", 0)),
+                "views": _to_int(statistics.get("viewCount")),
+                "likes": _to_int(statistics.get("likeCount")),
+                "comments": _to_int(statistics.get("commentCount")),
             })
 
     return stats
@@ -110,7 +121,7 @@ def main() -> int:
     total_comments = sum(v["comments"] for v in stats)
 
     report = {
-        "collected_at": datetime.now(timezone.utc).isoformat(),
+        "collected_at": datetime.now(UTC).isoformat(),
         "total_videos": len(stats),
         "total_views": total_views,
         "total_likes": total_likes,

@@ -9,13 +9,12 @@ from __future__ import annotations
 
 import argparse
 import logging
-import os
 import sys
 from pathlib import Path
 
+from utils.content_strategy import current_brt_hour, mood_for_now, scene_for_mood
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.video_builder import build_pata_jazz_video, short_spec
-from utils.content_strategy import mood_for_now, scene_for_mood
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT_DIR = ROOT / "_videos"
@@ -26,7 +25,7 @@ log = logging.getLogger(__name__)
 DEFAULT_DURATION = 35
 
 
-def _generate_short(duration: int = DEFAULT_DURATION) -> Path:
+def _generate_short(duration: int = DEFAULT_DURATION, dry_run: bool = False) -> Path:
     """Gera um Short vertical com clipes de gatos/cachorros + musica de jazz.
 
     Seleciona o mood automaticamente pela hora atual (BRT):
@@ -36,7 +35,7 @@ def _generate_short(duration: int = DEFAULT_DURATION) -> Path:
     """
     mood = mood_for_now()
     scene = scene_for_mood(mood)
-    log.info("Mood=%s, cena=%s, horario BRT=%dh", mood, scene, None)
+    log.info("Mood=%s, cena=%s, horario BRT=%dh", mood, scene, current_brt_hour())
 
     spec = short_spec(duration=duration, scene=scene, mood=mood)
     return build_pata_jazz_video(
@@ -44,21 +43,20 @@ def _generate_short(duration: int = DEFAULT_DURATION) -> Path:
         output_dir=OUTPUT_DIR,
         thumb_dir=THUMB_DIR,
         stem_prefix="pata_jazz_short",
+        dry_run=dry_run,
     )
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Gerar Short Pata Jazz")
     parser.add_argument("--duration", type=int, default=DEFAULT_DURATION, help="Duracao em segundos")
-    parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--dry-run", action="store_true", help="Simula sem executar FFmpeg nem gerar arquivos")
     args = parser.parse_args()
 
     configure_logging()
-    if args.dry_run:
-        os.environ.setdefault("GEMINI_API_KEY", "dry-run")
 
     try:
-        _generate_short(duration=args.duration)
+        _generate_short(duration=args.duration, dry_run=args.dry_run)
         return 0
     except Exception as exc:
         log.exception("Falha ao gerar Short: %s", exc)

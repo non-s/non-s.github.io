@@ -29,37 +29,23 @@ def test_check_envs_missing():
 
 
 def test_check_envs_ok():
-    with patch.dict("os.environ", {"GEMINI_API_KEY": "x", "PIXABAY_API_KEY": "y"}):
+    with patch.dict("os.environ", {
+        "GEMINI_API_KEY": "x",
+        "PIXABAY_API_KEY": "y",
+        "JAMENDO_CLIENT_ID": "z",
+    }):
         result = healthcheck._check_envs()
         assert result["ok"] is True
 
 
 def test_check_youtube_token_missing():
-    class FakePath:
-        def __truediv__(self, other):
-            return self
-        def exists(self):
-            return False
-        def read_text(self, **kwargs):
-            return ""
-        def __str__(self):
-            return "youtube_token.json"
-
-    with patch("scripts.healthcheck.ROOT", FakePath()):
+    with patch("scripts.healthcheck._token_path", return_value="/nonexistent/youtube_token.json"):
         result = healthcheck._check_youtube_token()
         assert result["ok"] is False
 
 
 def test_check_client_secret_present():
-    class FakePath:
-        def __truediv__(self, other):
-            return self
-        def exists(self):
-            return True
-        def __str__(self):
-            return "client_secret.json"
-
-    with patch("scripts.healthcheck.ROOT", FakePath()):
+    with patch("scripts.healthcheck._client_secrets_path", return_value="client_secret.json"):
         result = healthcheck._check_client_secret()
         assert result["ok"] is True
 

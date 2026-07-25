@@ -1,0 +1,33 @@
+name: "Restaurar token YouTube e caches"
+description: "Restaura o token OAuth do YouTube e os caches de b-roll/jazz usados pelos workflows Pata Jazz."
+
+inputs:
+  youtube-token:
+    description: "Secret YOUTUBE_TOKEN (JSON do token OAuth)"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: "Restaurar token YouTube"
+      shell: bash
+      env:
+        YOUTUBE_TOKEN: ${{ inputs.youtube-token }}
+      run: |
+        umask 077
+        if [ -n "$YOUTUBE_TOKEN" ]; then
+          printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
+          chmod 600 youtube_token.json
+        fi
+    - name: "Cache b-roll"
+      uses: actions/cache@v4
+      with:
+        path: _assets/video/animal_broll
+        key: animal-broll-${{ github.run_id }}
+        restore-keys: animal-broll-
+    - name: "Cache jazz"
+      uses: actions/cache@v4
+      with:
+        path: _assets/audio/animal_jazz
+        key: animal-jazz-${{ github.run_id }}
+        restore-keys: animal-jazz-
