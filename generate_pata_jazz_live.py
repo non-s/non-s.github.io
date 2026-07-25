@@ -183,10 +183,12 @@ def _start_ffmpeg_stream(
     """Inicia o processo FFmpeg em modo stream e retorna imediatamente.
 
     Separado de _wait_ffmpeg_stream para permitir que o chamador comece a
-    enviar dados ao YouTube antes de transicionar o broadcast: a API do
-    YouTube rejeita a transicao para "testing" com 403 invalidTransition
-    ate que o stream vinculado esteja com status.streamStatus == "active",
-    o que so acontece depois que o FFmpeg comeca a enviar video de verdade.
+    enviar dados ao YouTube e depois confirme o stream ficando ativo (ver
+    upload_youtube.wait_for_stream_active) antes de notificar o inicio da
+    live. Nao ha transicao manual para "testing" nesse fluxo - broadcasts
+    criados com enableMonitorStream=False sempre rejeitam essa fase (403
+    invalidTransition) independente do timing; enableAutoStart=True promove
+    o broadcast para "live" sozinho assim que o stream fica ativo.
 
     input_path e um playlist do demuxer concat (gerado por
     _build_looping_input), nao um unico arquivo de video ja "baked" - isso

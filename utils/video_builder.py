@@ -216,7 +216,12 @@ def _build_multi_clip_short(
     if audio_path:
         # Indice do audio = numero de clipes processados (videos 0..n-1, audio n).
         cmd_args += ["-map", f"{n_clips}:a:0", "-c:a", "aac", "-b:a", "192k"]
-        cmd_args += ["-t", str(spec.duration)]
+
+    # -t sempre aplicado (nao so quando ha audio): sem ele, a duracao do
+    # xfade final e sum(per_clip) - (n_clips-1)*xfade_duration, que fica
+    # abaixo de spec.duration por causa do truncamento inteiro de per_clip -
+    # o suficiente para estourar TOLERANCE_SECONDS na validacao (video_validator).
+    cmd_args += ["-t", str(spec.duration)]
 
     cmd_args += [str(output)]
     run_ffmpeg(cmd_args)

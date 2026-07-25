@@ -230,10 +230,13 @@ def transition_broadcast(broadcast_id: str, status: str) -> None:
 def wait_for_stream_active(stream_id: str, timeout: int = 90, interval: int = 3) -> bool:
     """Aguarda o liveStream ficar com status.streamStatus == 'active'.
 
-    A API do YouTube rejeita a transicao do broadcast para 'testing' (403
-    invalidTransition) enquanto o stream vinculado nao estiver recebendo
-    dados de video de verdade. E preciso comecar a enviar o FFmpeg antes
-    de chamar transition_broadcast().
+    Confirma que o YouTube esta de fato recebendo video do FFmpeg. Com
+    enableAutoStart=True (ver create_live_stream), o proprio YouTube promove
+    o broadcast de 'ready' para 'live' assim que isso acontece - nao chame
+    transition_broadcast(..., 'testing') nesse fluxo: broadcasts criados com
+    enableMonitorStream=False sempre rejeitam a fase de testing (403
+    invalidTransition), independente de quando a chamada e feita, pois essa
+    fase exige monitor stream habilitado.
 
     Se a API retornar items vazio repetidamente, o stream_id provavelmente
     esta errado - aborta cedo para nao esperar o timeout inteiro.

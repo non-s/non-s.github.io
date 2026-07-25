@@ -88,3 +88,27 @@ class TestVideoBuilderUnits:
         cmd = captured["args"]
         map_values = [cmd[i + 1] for i, v in enumerate(cmd) if v == "-map"]
         assert map_values == ["0:v:0", "1:a:0"]
+
+    def test_multi_clip_short_caps_duration_without_audio(self, tmp_path):
+        """Sem audio (pool de jazz vazio), o xfade final ainda precisa de -t:
+        sum(per_clip) - (n_clips-1)*xfade_duration fica abaixo de spec.duration
+        por causa do truncamento inteiro de per_clip, o que sem -t produziria
+        um video curto demais e reprovaria em video_validator (tolerancia de
+        1.5s)."""
+        spec = video_builder.short_spec(duration=35)
+        videos = [Path(f"video{i}.mp4") for i in range(3)]
+
+        captured_cmds = []
+
+        def fake_run_ffmpeg(args):
+            captured_cmds.append(args)
+
+        with patch("utils.video_builder.random", **{"sample.return_value": videos, "randint.return_value": 3}), \
+             patch("utils.video_builder.run_ffmpeg", side_effect=fake_run_ffmpeg):
+            video_builder._build_multi_clip_short(
+                spec, videos, audio_path=None, output=tmp_path / "out.mp4", hook="hook",
+            )
+
+        final_cmd = captured_cmds[-1]
+        assert "-t" in final_cmd
+        assert final_cmd[final_cmd.index("-t") + 1] == "35"
