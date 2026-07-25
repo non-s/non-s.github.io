@@ -192,7 +192,11 @@ def create_live_stream(
         },
         "cdn": {
             "resolution": resolution,
-            "frameRate": "30fps",
+            # "variable" (nao "30fps"/"60fps" fixo): scripts/run_live.py ja
+            # trocou o encode real para 24fps para reduzir carga de CPU, e
+            # pode voltar a mudar - declarar um fps fixo aqui so cria
+            # divergencia com o que o FFmpeg realmente envia.
+            "frameRate": "variable",
             "ingestionType": "rtmp",
         },
     }
@@ -225,6 +229,19 @@ def transition_broadcast(broadcast_id: str, status: str) -> None:
     service = get_youtube_service()
     _retry_youtube_call(service.liveBroadcasts().transition(id=broadcast_id, part="status", broadcastStatus=status).execute)
     log.info("Broadcast %s transicionado para %s", broadcast_id, status)
+
+
+def delete_broadcast(broadcast_id: str) -> None:
+    """Apaga um broadcast que nunca chegou a ficar 'live'.
+
+    transition(..., 'complete') so e valido a partir de 'testing'/'live';
+    chamado sobre um broadcast ainda em 'ready' (stream nunca confirmou
+    active) provavelmente tambem 403. Usado como fallback de limpeza para
+    nao deixar broadcasts orfaos "ready" acumulando no canal.
+    """
+    service = get_youtube_service()
+    _retry_youtube_call(service.liveBroadcasts().delete(id=broadcast_id).execute)
+    log.info("Broadcast %s (nunca ficou ativo) apagado.", broadcast_id)
 
 
 def wait_for_stream_active(stream_id: str, timeout: int = 90, interval: int = 3) -> bool:

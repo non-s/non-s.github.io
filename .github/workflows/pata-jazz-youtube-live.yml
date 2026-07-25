@@ -8,9 +8,9 @@ on:
         required: false
         default: "manual"
       duration_minutes:
-        description: "Duracao da transmissao em minutos (0 = ate cancelar)"
+        description: "Duracao da transmissao em minutos (0 = ate cancelar, max 340)"
         required: false
-        default: "350"
+        default: "320"
       resolution:
         description: "Resolucao da live (720p maximo suportado no runner gratuito)"
         required: false
@@ -19,9 +19,9 @@ on:
         options:
           - "1280x720"
   schedule:
-    # Canal sempre ao vivo: cada sessao dura ~350min (LIVE_DURATION_MINUTES),
+    # Canal sempre ao vivo: cada sessao dura ~320min (LIVE_DURATION_MINUTES),
     # limitado pelo timeout de job do GitHub Actions (nao existe job "eterno").
-    # Disparar a cada 6h (360min, > 350) faz o PROXIMO run ser enfileirado
+    # Disparar a cada 6h (360min, > 320) faz o PROXIMO run ser enfileirado
     # (nao cancelado - ver cancel-in-progress abaixo) um pouco antes da
     # sessao atual terminar, entao ele comeca assim que ela acaba, sem
     # esperar ate o proximo horario "redondo". O unico "buraco" real entre
@@ -40,7 +40,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  LIVE_DURATION_MINUTES: ${{ github.event.inputs.duration_minutes || '350' }}
+  LIVE_DURATION_MINUTES: ${{ github.event.inputs.duration_minutes || '320' }}
   LIVE_RESOLUTION: ${{ github.event.inputs.resolution || '1280x720' }}
 
 jobs:
@@ -48,7 +48,13 @@ jobs:
     name: "Transmitir live Pata Jazz"
     if: ${{ vars.PATA_JAZZ_ENABLED == '1' && vars.PATA_JAZZ_LIVE_ENABLED == '1' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 375
+    # O limite real de job do GitHub Actions hospedado e 360min (hard cap da
+    # plataforma - declarar mais que isso e simplesmente ignorado). 355 fica
+    # dentro desse teto com uma pequena folga para os ultimos passos (ex:
+    # "Apagar token") depois que scripts/run_live.py termina; os ~320min de
+    # LIVE_DURATION_MINUTES + preparo (sync + build do loop, ~15min tipico)
+    # + limpeza precisam caber dentro dos 355min do job.
+    timeout-minutes: 355
     env:
       YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}

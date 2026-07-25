@@ -40,14 +40,16 @@ class TestRunLiveMain:
     @patch("scripts.run_live._build_looping_input", return_value=(Path("loop.mp4"), Path("playlist.txt")))
     @patch("scripts.run_live._try_transition")
     @patch("scripts.run_live.create_live_stream", return_value=_base_meta())
+    @patch("scripts.run_live._register_signal_handlers")
     def test_does_not_transition_to_testing_only_complete_at_end(
-        self, mock_create, mock_try_transition, mock_loop, mock_save,
+        self, mock_register_signals, mock_create, mock_try_transition, mock_loop, mock_save,
         mock_start_ffmpeg, mock_wait_active, mock_wait_ffmpeg,
         mock_notify_start, mock_notify_end,
     ):
         code = run_live.main()
 
         assert code == 0
+        mock_register_signals.assert_called_once()
         mock_wait_active.assert_called_once_with("stream123", timeout=120)
         # Nenhuma transicao manual para 'testing' (sempre invalida nessa config);
         # so a transicao final para 'complete'.
@@ -94,10 +96,11 @@ class TestRunLiveMain:
     ):
         """FFmpeg cai com codigo de erro antes da duracao total: reconecta em
         vez de desistir da live inteira."""
-        # time.time(): start_time, depois duas leituras por iteracao do loop
-        # (checagem de elapsed no topo + log no finally). Damos valores
-        # crescentes o suficiente para permitir 1 reconexao e depois concluir.
-        mock_time.time.side_effect = [0, 10, 10, 700, 700, 700]
+        # time.time(): start_time, depois por iteracao do loop: elapsed (topo),
+        # segment_start, segment_seconds, e (se reconectar) elapsed_min do log.
+        # Damos valores crescentes com segmentos >=15s (nao conta como falha
+        # rapida) o suficiente para 1 reconexao e depois concluir.
+        mock_time.time.side_effect = [0, 5, 5, 25, 25, 30, 30, 700, 700, 700]
         mock_time.sleep = MagicMock()
 
         with patch(
@@ -110,3 +113,40 @@ class TestRunLiveMain:
         assert mock_start_ffmpeg.call_count == 2
         mock_notify_start.assert_called_once()  # so notifica inicio uma vez
         mock_time.sleep.assert_called_with(run_live._RECONNECT_DELAY_SECONDS)
+
+
+class TestEndBroadcast:
+    """_end_broadcast: fallback de limpeza para nao deixar broadcast orfao.
+
+    transition('complete') so e valido a partir de 'testing'/'live'. Se o
+    stream nunca ficou ativo e a transicao falha, o broadcast provavelmente
+    ainda esta em 'ready' - apagar evita deixa-lo preso no canal. Mas se o
+    stream JA ficou ativo (foi ao vivo de verdade), nao faz sentido apagar
+    so porque a transicao final falhou por algum motivo transiente.
+    """
+
+    @patch("scripts.run_live.delete_broadcast")
+    @patch("scripts.run_live._try_transition", return_value=True)
+    def test_no_fallback_when_transition_succeeds(self, mock_try_transition, mock_delete):
+        run_live._end_broadcast("bcast123", went_active=False)
+        mock_delete.assert_not_called()
+
+    @patch("scripts.run_live.delete_broadcast")
+    @patch("scripts.run_live._try_transition", return_value=False)
+    def test_falls_back_to_delete_when_never_active(self, mock_try_transition, mock_delete):
+        run_live._end_broadcast("bcast123", went_active=False)
+        mock_delete.assert_called_once_with("bcast123")
+
+    @patch("scripts.run_live.delete_broadcast")
+    @patch("scripts.run_live._try_transition", return_value=False)
+    def test_does_not_delete_a_broadcast_that_went_live(self, mock_try_transition, mock_delete):
+        run_live._end_broadcast("bcast123", went_active=True)
+        mock_delete.assert_not_called()
+
+    @patch("scripts.run_live.delete_broadcast", side_effect=RuntimeError("api down"))
+    @patch("scripts.run_live._try_transition", return_value=False)
+    def test_swallows_delete_failure_too(self, mock_try_transition, mock_delete):
+        """Nao deve propagar excecao mesmo se nem transicionar nem apagar
+        funcionar - so loga, para nao quebrar o resto da limpeza no finally."""
+        run_live._end_broadcast("bcast123", went_active=False)
+        mock_delete.assert_called_once()
