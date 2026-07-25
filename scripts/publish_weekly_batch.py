@@ -27,7 +27,7 @@ sys.path.insert(0, str(ROOT))
 
 from googleapiclient.http import MediaFileUpload
 
-from upload_youtube import _build_tags, _retry_youtube_call
+from upload_youtube import _build_tags, _meta_path, _retry_youtube_call
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.youtube_oauth import get_youtube_service
 
@@ -111,8 +111,8 @@ def _publish_video(service, video_path: Path, meta: dict, language: str = "pt") 
     log.info("Video enviado: https://youtu.be/%s", video_id)
 
     # Thumbnail
-    thumbnail = Path(meta.get("thumbnail", ""))
-    if thumbnail.exists():
+    thumbnail = _meta_path(meta, "thumbnail")
+    if thumbnail and thumbnail.exists():
         try:
             thumb_media = MediaFileUpload(str(thumbnail))
             _retry_youtube_call(service.thumbnails().set(videoId=video_id, media_body=thumb_media).execute)
@@ -121,8 +121,8 @@ def _publish_video(service, video_path: Path, meta: dict, language: str = "pt") 
             log.warning("Falha ao aplicar thumbnail: %s", exc)
 
     # Legenda
-    caption_path = Path(meta.get("caption", ""))
-    if caption_path.exists():
+    caption_path = _meta_path(meta, "caption")
+    if caption_path and caption_path.exists():
         try:
             caption_body = {
                 "snippet": {

@@ -93,7 +93,11 @@ class TestGenerateTitle:
 
         title_lower = title.lower()
         uses_keyword = any(kw.lower() in title_lower for kw in all_keywords)
-        assert uses_keyword or True  # Pode não usar devido ao pattern
+        # "jazz" (estilo_musical) esta em HIGH_PERFORMANCE_KEYWORDS["musica"] e
+        # aparece literalmente em todos os patterns de "short" (todos incluem
+        # {estilo_musical}), entao isso sempre deve ser verdadeiro - "or True"
+        # tornava essa asserção incapaz de falhar independente do resultado.
+        assert uses_keyword
 
     def test_generate_title_within_limit(self):
         """Título respeita limite de 100 caracteres."""

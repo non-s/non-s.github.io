@@ -55,6 +55,17 @@ def _latest_video_meta(prefix: str = "pata_jazz_") -> tuple[Path, dict] | None:
     return None
 
 
+def _meta_path(meta: dict, key: str) -> Path | None:
+    """Path(meta.get(key, "")) para uma chave ausente/vazia vira Path("") ==
+    Path(".") - e .exists() no diretorio atual e sempre True, entao codigo
+    como MediaFileUpload(str(thumbnail)) tenta abrir um diretorio como
+    arquivo e explode com IsADirectoryError em vez de so pular o upload
+    opcional. So constroi o Path se o valor for realmente uma string nao-vazia.
+    """
+    value = meta.get(key)
+    return Path(value) if value else None
+
+
 def _build_tags(scene: str, hashtags: list[str] | None = None) -> list[str]:
     base = ["Pata Jazz", "gato", "cachorro", "jazz", "fofo", "relaxante"]
     if "cat" in scene or "kitten" in scene:
@@ -78,7 +89,7 @@ def upload_video(language: str = "pt", privacy: str = "public", prefix: str = "p
     title = str(meta.get("title", "Pata Jazz"))[:100]
     description = str(meta.get("description", ""))[:5000]
     tags = _build_tags(meta.get("scene", ""), meta.get("hashtags"))
-    thumbnail = Path(meta.get("thumbnail", ""))
+    thumbnail = _meta_path(meta, "thumbnail")
 
     body = {
         "snippet": {
@@ -102,7 +113,7 @@ def upload_video(language: str = "pt", privacy: str = "public", prefix: str = "p
     video_id = response["id"]
     log.info("Video enviado: https://youtu.be/%s", video_id)
 
-    if thumbnail.exists():
+    if thumbnail and thumbnail.exists():
         try:
             # Re-verifica existencia (TOCTOU) e instancia MediaFileUpload dentro do try.
             thumb_media = MediaFileUpload(str(thumbnail))
@@ -112,8 +123,8 @@ def upload_video(language: str = "pt", privacy: str = "public", prefix: str = "p
             log.warning("Falha ao aplicar thumbnail: %s", exc)
 
     # Upload de legenda SRT se existir
-    caption_path = Path(meta.get("caption", ""))
-    if caption_path.exists():
+    caption_path = _meta_path(meta, "caption")
+    if caption_path and caption_path.exists():
         try:
             caption_body = {
                 "snippet": {
