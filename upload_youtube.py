@@ -20,7 +20,7 @@ import time
 from datetime import UTC, datetime
 from pathlib import Path
 
-from googleapiclient.errors import HttpError, MediaUploadSizeError
+from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
 from utils.ai_helper import ai_text
@@ -119,7 +119,15 @@ def upload_video(language: str = "pt", privacy: str = "public", prefix: str = "p
             thumb_media = MediaFileUpload(str(thumbnail))
             _retry_youtube_call(service.thumbnails().set(videoId=video_id, media_body=thumb_media).execute)
             log.info("Thumbnail aplicada.")
-        except (HttpError, MediaUploadSizeError) as exc:
+        except Exception as exc:
+            # Nao so (HttpError, MediaUploadSizeError): _retry_youtube_call
+            # levanta RuntimeError quando esgota as tentativas em erros
+            # retryable persistentes (ex: 503 repetido), e isso escapava
+            # sem ser pego aqui - derrubando upload_video() inteiro (pulando
+            # legenda e playlist) mesmo com o video ja publicado com sucesso
+            # (confirmado em producao: run 30155769151, thumbnail falhou
+            # apos esgotar retries e o RuntimeError nao pego matou o job,
+            # que ficou "failure" apesar do upload ja ter ido ao ar).
             log.warning("Falha ao aplicar thumbnail: %s", exc)
 
     # Upload de legenda SRT se existir
@@ -144,7 +152,8 @@ def upload_video(language: str = "pt", privacy: str = "public", prefix: str = "p
                 ).execute
             )
             log.info("Legenda aplicada.")
-        except (HttpError, MediaUploadSizeError) as exc:
+        except Exception as exc:
+            # Ver comentario equivalente no bloco de thumbnail acima.
             log.warning("Falha ao aplicar legenda: %s", exc)
 
     # Adiciona as playlists automaticas: por formato (kind) e por mood.

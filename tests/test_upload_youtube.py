@@ -41,6 +41,73 @@ class TestMetaPath:
         assert result == Path("/tmp/x.png")
 
 
+class TestUploadVideoSurvivesOptionalStepFailures:
+    """Thumbnail/legenda sao passos opcionais - se falharem (mesmo esgotando
+    retries), upload_video() precisa continuar e retornar o video_id, ja
+    que o video em si ja foi publicado com sucesso antes desses passos.
+
+    Regressao real observada em producao (run 30155769151, main): thumbnail
+    esgotou retries, _retry_youtube_call levantou RuntimeError (nao
+    HttpError/MediaUploadSizeError), o except do bloco de thumbnail nao
+    pegava RuntimeError, e isso derrubava upload_video() inteiro - pulando
+    legenda e playlist e fazendo o job aparecer como "failure" no GitHub
+    Actions apesar do video ja estar publico no canal.
+    """
+
+    def _setup(self, tmp_path, monkeypatch, **extra_meta):
+        monkeypatch.setattr(upload_youtube, "OUTPUT_DIR", tmp_path)
+        thumb_path = tmp_path / "thumb.png"
+        thumb_path.write_bytes(b"fake png")
+        caption_path = tmp_path / "cap.srt"
+        caption_path.write_text("1\n00:00:00,000 --> 00:00:01,000\nhi\n")
+        meta = {
+            "title": "Gatinho Fofo", "description": "desc", "scene": "cat",
+            "kind": "short", "mood": "relax",
+            "thumbnail": str(thumb_path), "caption": str(caption_path),
+        }
+        meta.update(extra_meta)
+        _write_video_with_meta(tmp_path, meta)
+        service = MagicMock()
+        service.videos().insert().execute.return_value = {"id": "vid-ok"}
+        return service
+
+    def test_runtime_error_from_thumbnail_retry_exhaustion_does_not_crash(self, tmp_path, monkeypatch):
+        service = self._setup(tmp_path, monkeypatch)
+
+        def fake_retry(func, *a, **kw):
+            # Simula _retry_youtube_call esgotando tentativas: a chamada de
+            # thumbnail (identificada pelo mock em service.thumbnails())
+            # levanta RuntimeError; as outras (insert, caption, etc) passam.
+            if "thumbnails" in str(func):
+                raise RuntimeError("YouTube API: maximo de tentativas excedido sem resposta.")
+            return func(*a, **kw)
+
+        with patch("upload_youtube.get_youtube_service", return_value=service), \
+             patch("upload_youtube._retry_youtube_call", side_effect=fake_retry), \
+             patch("utils.playlist_manager.add_video_to_playlist") as mock_add:
+            video_id = upload_youtube.upload_video(prefix="pata_jazz_")
+
+        assert video_id == "vid-ok"
+        # Execucao continuou apos a falha do thumbnail: playlist ainda foi chamada.
+        assert mock_add.call_count == 2
+
+    def test_runtime_error_from_caption_retry_exhaustion_does_not_crash(self, tmp_path, monkeypatch):
+        service = self._setup(tmp_path, monkeypatch)
+
+        def fake_retry(func, *a, **kw):
+            if "captions" in str(func):
+                raise RuntimeError("YouTube API: maximo de tentativas excedido sem resposta.")
+            return func(*a, **kw)
+
+        with patch("upload_youtube.get_youtube_service", return_value=service), \
+             patch("upload_youtube._retry_youtube_call", side_effect=fake_retry), \
+             patch("utils.playlist_manager.add_video_to_playlist") as mock_add:
+            video_id = upload_youtube.upload_video(prefix="pata_jazz_")
+
+        assert video_id == "vid-ok"
+        assert mock_add.call_count == 2
+
+
 class TestUploadVideoPlaylists:
     def test_adds_to_both_kind_and_mood_playlists(self, tmp_path, monkeypatch):
         monkeypatch.setattr(upload_youtube, "OUTPUT_DIR", tmp_path)
