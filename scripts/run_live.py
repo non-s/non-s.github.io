@@ -13,6 +13,10 @@ fase exige monitorStream habilitado). Por isso este script nao chama
 liveBroadcasts.transition para 'testing' nem 'live' - apenas confirma que
 o stream ficou ativo e deixa o YouTube promover o broadcast sozinho. So a
 transicao final para 'complete' e manual (enableAutoStop=False).
+
+Se o FFmpeg cair antes da duracao total (Broken pipe por instabilidade de
+rede/CPU no runner gratuito), o main() reconecta automaticamente ao mesmo
+broadcast/stream em vez de encerrar a live inteira - ver _MAX_RECONNECTS.
 """
 
 from __future__ import annotations
@@ -41,6 +45,8 @@ from utils.log_config import configure_logging
 log = logging.getLogger(__name__)
 
 OUTPUT_DIR = ROOT / "_videos"
+_MAX_RECONNECTS = 15
+_RECONNECT_DELAY_SECONDS = 5
 
 
 def _try_transition(broadcast_id: str, status: str) -> bool:
@@ -116,39 +122,66 @@ def main() -> int:
 
     log.info("Iniciando stream para %s", stream_url)
     start_time = time.time()
+    target_seconds = duration_minutes * 60 if duration_minutes > 0 else 0
 
-    # Transiciona broadcast para "testing" ANTES de iniciar o stream.
-    # Com enableMonitorStream=False, o YouTube as vezes rejeita a conexao
-    # RTMP (Broken pipe em ~1 min) se o broadcast estiver em estado "ready".
-    # transition("testing") garante que o YouTube aceite o stream.
-    _try_transition(broadcast_id, "testing")
-
-    proc = _start_ffmpeg_stream(
-        loop_input, stream_url, duration_minutes=duration_minutes, audio_playlist=audio_playlist, resolution=(w, h)
-    )
-
-    if not wait_for_stream_active(meta["stream_id"], timeout=120):
-        log.error("Stream nao ficou ativo a tempo; abortando live.")
-        _terminate_ffmpeg_stream(proc)
-        _try_transition(broadcast_id, "complete")
-        return 1
-
-    # enableAutoStart=True: o proprio YouTube promove o broadcast para 'live'
-    # assim que o stream fica ativo. Nao chamamos transition('testing') nem
-    # transition('live') aqui - com enableMonitorStream=False a fase de
-    # testing e sempre invalida (403 invalidTransition), e a chamada manual
-    # para 'live' e desnecessaria e redundante com o auto-start.
-
-    # Notifica início da live no Discord
-    thumbnail = f"https://img.youtube.com/vi/{broadcast_id}/maxresdefault.jpg"
-    notify_live_start(title=title, stream_url=f"https://youtube.com/watch?v={broadcast_id}", thumbnail=thumbnail)
-
+    # Nao chamamos transition('testing') nem transition('live') aqui: com
+    # enableMonitorStream=False a fase de testing e sempre invalida (403
+    # invalidTransition), nao importa a ordem das chamadas - so existe fase
+    # de testing quando o monitor stream esta habilitado. enableAutoStart=True
+    # promove o broadcast de 'ready' para 'live' sozinho assim que o stream
+    # vinculado comeca a receber video de verdade (confirmado por
+    # wait_for_stream_active abaixo).
+    stream_confirmed_active = False
+    reconnect_count = 0
     code = 1
     try:
-        code = _wait_ffmpeg_stream(proc)
+        while True:
+            elapsed = time.time() - start_time
+            if target_seconds and elapsed >= target_seconds:
+                code = 0
+                break
+
+            remaining_minutes = max(1, int((target_seconds - elapsed) / 60)) if target_seconds else 0
+            proc = _start_ffmpeg_stream(
+                loop_input, stream_url, duration_minutes=remaining_minutes,
+                audio_playlist=audio_playlist, resolution=(w, h),
+            )
+
+            if not stream_confirmed_active:
+                if not wait_for_stream_active(meta["stream_id"], timeout=120):
+                    log.error("Stream nao ficou ativo a tempo; abortando live.")
+                    _terminate_ffmpeg_stream(proc)
+                    _try_transition(broadcast_id, "complete")
+                    return 1
+                stream_confirmed_active = True
+                thumbnail = f"https://img.youtube.com/vi/{broadcast_id}/maxresdefault.jpg"
+                notify_live_start(title=title, stream_url=f"https://youtube.com/watch?v={broadcast_id}", thumbnail=thumbnail)
+
+            code = _wait_ffmpeg_stream(proc)
+
+            # 0 = -t atingido (segmento completo), -15 = SIGTERM (cancelamento
+            # do GHA ou fim da duracao total) - nao reconectar nesses casos.
+            if code in (0, -15):
+                break
+
+            reconnect_count += 1
+            if reconnect_count > _MAX_RECONNECTS:
+                log.error("FFmpeg falhou %d vezes seguidas; desistindo da live.", reconnect_count)
+                break
+
+            elapsed_min = (time.time() - start_time) / 60
+            log.warning(
+                "FFmpeg encerrou inesperadamente (codigo %s) apos %.1f min de execucao; "
+                "reconectando ao mesmo broadcast (tentativa %d/%d)...",
+                code, elapsed_min, reconnect_count, _MAX_RECONNECTS,
+            )
+            time.sleep(_RECONNECT_DELAY_SECONDS)
     finally:
         elapsed = (time.time() - start_time) / 60
-        log.info("Stream encerrado com codigo %s (%.1f min). Finalizando live...", code, elapsed)
+        log.info(
+            "Stream encerrado com codigo %s (%.1f min, %d reconexoes). Finalizando live...",
+            code, elapsed, reconnect_count,
+        )
         _try_transition(broadcast_id, "complete")
         # Notifica fim da live no Discord
         notify_live_end(title=title, duration_minutes=int(elapsed))
