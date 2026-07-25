@@ -218,11 +218,11 @@ def create_live_stream(
         },
         "cdn": {
             "resolution": resolution,
-            # "variable" (nao "30fps"/"60fps" fixo): scripts/run_live.py ja
-            # trocou o encode real para 24fps para reduzir carga de CPU, e
-            # pode voltar a mudar - declarar um fps fixo aqui so cria
-            # divergencia com o que o FFmpeg realmente envia.
-            "frameRate": "variable",
+            # A API rejeita "variable" com HTTP 400 invalidFrameRate (confirmado
+            # em producao) - so "resolution" aceita "variable", frameRate exige
+            # um valor fixo. "30fps" e apenas metadado/hint para o YouTube; nao
+            # precisa bater exatamente com o fps real do encode do FFmpeg.
+            "frameRate": "30fps",
             "ingestionType": "rtmp",
         },
     }
