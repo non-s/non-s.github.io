@@ -198,6 +198,12 @@ def _build_multi_clip_short(
     for p in processed:
         inputs += ["-i", str(p)]
 
+    # Input de audio deve vir ANTES das opcoes de output (FFmpeg exige que
+    # opcoes de input como -stream_loop precedam -i, e todas as opcoes de
+    # input venham antes das de output).
+    if audio_path:
+        inputs += ["-stream_loop", "-1", "-i", str(audio_path)]
+
     final_label = prev_label
     cmd_args = inputs + [
         "-filter_complex", ";".join(filter_parts),
@@ -208,7 +214,7 @@ def _build_multi_clip_short(
     ]
 
     if audio_path:
-        cmd_args += ["-stream_loop", "-1", "-i", str(audio_path)]
+        # Indice do audio = numero de clipes processados (videos 0..n-1, audio n).
         cmd_args += ["-map", f"{n_clips}:a:0", "-c:a", "aac", "-b:a", "192k"]
         cmd_args += ["-t", str(spec.duration)]
 
