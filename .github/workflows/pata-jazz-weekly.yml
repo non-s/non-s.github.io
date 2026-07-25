@@ -1,0 +1,134 @@
+name: "Pata Jazz - Lote Semanal"
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Etapa: all (gerar+publicar), generate (so gerar), publish (so publicar proximos 6)"
+        required: true
+        default: "all"
+        type: choice
+        options:
+          - all
+          - generate
+          - publish
+  schedule:
+    # Dispara o publish 1x por dia as 04:00 UTC (01:00 BRT) ate o lote acabar
+    - cron: "0 4 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pata-jazz-weekly
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    name: "Gerar 35 videos (28 shorts + 7 horizontais)"
+    if: ${{ vars.PATA_JAZZ_ENABLED == '1' && (github.event.inputs.action == 'all' || github.event.inputs.action == 'generate') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+      JAMENDO_CLIENT_ID: ${{ secrets.JAMENDO_CLIENT_ID }}
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: "Python 3.11"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: "Instalar FFmpeg"
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
+      - name: "Instalar dependencias"
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: "Restaurar token e caches"
+        uses: ./.github/actions/restore-token-and-cache
+        with:
+          youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
+      - name: "Sincronizar b-roll"
+        run: python scripts/sync_animal_broll.py || echo "::warning::B-roll sync falhou"
+      - name: "Sincronizar jazz"
+        run: python scripts/sync_jazz_music.py || echo "::warning::Jazz sync falhou"
+      - name: "Gerar 28 shorts"
+        run: |
+          for i in $(seq 1 28); do
+            echo "=== Gerando short $i/28 ==="
+            python generate_pata_jazz_short.py || echo "::warning::Short $i falhou, continuando"
+          done
+      - name: "Gerar 7 horizontais"
+        run: |
+          for i in $(seq 1 7); do
+            echo "=== Gerando horizontal $i/7 ==="
+            python generate_pata_jazz_horizontal.py || echo "::warning::Horizontal $i falhou, continuando"
+          done
+      - name: "Salvar cache de videos gerados"
+        uses: actions/cache@v4
+        with:
+          path: _videos
+          key: weekly-videos-${{ github.run_id }}
+      - name: "Contar videos gerados"
+        id: count
+        run: |
+          shorts=$(ls _videos/pata_jazz_short_*.mp4 2>/dev/null | wc -l)
+          horizontals=$(ls _videos/pata_jazz_horizontal_*.mp4 2>/dev/null | wc -l)
+          total=$((shorts + horizontals))
+          echo "shorts=$shorts" >> $GITHUB_OUTPUT
+          echo "horizontals=$horizontals" >> $GITHUB_OUTPUT
+          echo "total=$total" >> $GITHUB_OUTPUT
+          echo "Total gerado: $total (shorts=$shorts, horizontais=$horizontals)"
+      - name: "Fazer upload dos primeiros 6 (private)"
+        env:
+          YOUTUBE_PRIVACY: private
+        run: python scripts/publish_weekly_batch.py
+      - name: "Apagar token"
+        if: always()
+        run: rm -f youtube_token.json
+
+  publish:
+    name: "Publicar proximos 6 videos (private -> public)"
+    if: ${{ vars.PATA_JAZZ_ENABLED == '1' && (github.event.inputs.action == 'all' || github.event.inputs.action == 'publish' || github.event_name == 'schedule') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: "Python 3.11"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: "Instalar dependencias"
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: "Restaurar token e caches"
+        uses: ./.github/actions/restore-token-and-cache
+        with:
+          youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
+      - name: "Restaurar cache de videos gerados"
+        uses: actions/cache@v4
+        with:
+          path: _videos
+          key: weekly-videos
+          restore-keys: weekly-videos-
+      - name: "Publicar proximos 6 videos"
+        env:
+          YOUTUBE_PRIVACY: public
+        run: python scripts/publish_weekly_batch.py
+      - name: "Apagar token"
+        if: always()
+        run: rm -f youtube_token.json
