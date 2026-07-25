@@ -46,8 +46,8 @@ def main() -> int:
     if kind not in ("short", "horizontal", "live"):
         log.error("BATCH_KIND invalido: %s", kind)
         return 1
-    if not 1 <= count <= 3:
-        log.error("BATCH_COUNT deve ser entre 1 e 3")
+    if not 1 <= count <= 10:
+        log.error("BATCH_COUNT deve ser entre 1 e 10")
         return 1
 
     for i in range(count):
