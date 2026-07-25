@@ -208,6 +208,13 @@ def _start_ffmpeg_stream(
     de CPU em vez de so trocar preset. O bitrate e escalado junto pra nao
     desperdicar banda/qualidade num frame menor.
 
+    Mesmo em 720p30 o runner ainda cai pra tras periodicamente (medido:
+    Broken pipe a cada ~2.8min em media, speed caindo a ~0.43x pouco antes
+    - ver run_live._MAX_RECONNECTS, que reconecta quando isso acontece em
+    vez de derrubar a live inteira). -r 24 (em vez de 30) reduz ~20% do
+    trabalho de encode por segundo para tornar essas quebras mais raras;
+    -g 48 mantem o GOP em ~2s (48 frames a 24fps) como antes (60 a 30fps).
+
     O stderr do FFmpeg e redirecionado para um arquivo de log em _videos/
     em vez de PIPE: o FFmpeg produz muito stderr (logs de progresso
     continuos) e se o buffer da pipe (~64KB) encher sem ninguem drenar, o
@@ -254,9 +261,9 @@ def _start_ffmpeg_stream(
         "-bufsize",
         f"{video_bitrate_kbps * 2}k",
         "-g",
-        "60",
+        "48",
         "-r",
-        "30",
+        "24",
         "-c:a",
         "aac",
         "-b:a",

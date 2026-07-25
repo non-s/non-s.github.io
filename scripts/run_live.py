@@ -45,8 +45,14 @@ from utils.log_config import configure_logging
 log = logging.getLogger(__name__)
 
 OUTPUT_DIR = ROOT / "_videos"
-_MAX_RECONNECTS = 15
+_MAX_RECONNECTS = 200
 _RECONNECT_DELAY_SECONDS = 5
+# 15 era baixo demais: uma run de teste de 20 min mediu FFmpeg quebrando
+# (Broken pipe, encode caindo para ~0.43x tempo real) a cada ~2.8 min em
+# media no runner gratuito de 2 vCPUs - ou seja, uma live de 350 min
+# precisa de ~125 reconexoes so nesse ritmo. Com 200 tentativas (a 5s de
+# espera cada) ha folga real; se cair mais rapido que isso o problema e
+# outro (broadcast/stream invalido) e desistir ainda faz sentido.
 
 
 def _try_transition(broadcast_id: str, status: str) -> bool:
