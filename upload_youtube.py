@@ -289,7 +289,12 @@ def wait_for_stream_active(stream_id: str, timeout: int = 90, interval: int = 3)
 
 
 def _retry_youtube_call(func, *args, **kwargs):
-    """Executa chamada YouTube API com retry exponencial e circuit breaker."""
+    """Executa chamada YouTube API com retry e backoff exponencial.
+
+    Sem circuit breaker (ao contrario de utils.ai_helper.ai_text, que tem
+    um de verdade para o Gemini) - cada chamada tenta ate _YOUTUBE_MAX_RETRIES
+    vezes independente de falhas anteriores nesta run.
+    """
     for attempt in range(_YOUTUBE_MAX_RETRIES):
         try:
             return func(*args, **kwargs)

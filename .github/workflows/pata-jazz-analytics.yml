@@ -37,6 +37,16 @@ jobs:
         uses: ./.github/actions/restore-token-and-cache
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
+      - name: "Restaurar/persistir analytics"
+        # Sem isso, _data/analytics.json e escrito e perdido junto com o
+        # runner efemero a cada semana - nada mais no repo le esse arquivo
+        # de volta hoje, mas ao menos fica disponivel entre runs para uso
+        # futuro (dashboards, feedback loop) em vez de ser sempre descartado.
+        uses: actions/cache@v4
+        with:
+          path: _data/analytics.json
+          key: analytics-${{ github.run_id }}
+          restore-keys: analytics-
       - name: "Coletar analytics"
         run: python scripts/collect_analytics.py
       - name: "Apagar token"

@@ -5,8 +5,8 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 ## Formatos
 
 - **Shorts** (`generate_pata_jazz_short.py`) — vertical 1080×1920, ~35s, **2-3 clipes com crossfade + 1 música de jazz + text overlay do hook nos primeiros 3s**.
-- **Vídeos horizontais** (`generate_pata_jazz_horizontal.py`) — 1920×1080, ~4min, **1 clipe + 1 música de jazz**.
-- **Live em loop infinito** (`generate_pata_jazz_live.py`) — transmissão horizontal 720p com **vários clipes de gatos/cachorros** e **playlist de até 150 faixas de jazz**.
+- **Vídeos horizontais** (`generate_pata_jazz_horizontal.py`) — 1920×1080, ~5min (300s, passado explicitamente pelo workflow; o default do script é 240s/4min quando rodado sem `--duration`), **1 clipe + 1 música de jazz**.
+- **Live 24/7** (`generate_pata_jazz_live.py` + `scripts/run_live.py`) — transmissão horizontal 720p contínua com **vários clipes de gatos/cachorros** e **playlist de até 150 faixas de jazz** em loop infinito. Cada sessão do GitHub Actions dura ~350min (limite de job); sessões são encadeadas automaticamente (ver Grade de publicação) para o canal nunca ficar offline. Reconecta sozinha (até 200x) se o FFmpeg cair no meio da sessão.
 
 ## Recursos inteligentes
 
@@ -133,13 +133,14 @@ Salve o JSON resultante como `youtube_token.json` na raiz do projeto (ou use o s
 |---|---|---|---|
 | **Shorts** | 4 por dia | 07:00, 13:00, 18:00, 22:00 | `pata-jazz-shorts.yml` |
 | **Vídeo horizontal** | 1 por dia | 10:00 | `pata-jazz-horizontal.yml` |
-| **Live** | 1 por semana | Quarta 19:00 (6h, 720p) | `pata-jazz-youtube-live.yml` |
+| **Live** | 24/7, sessões de ~320min encadeadas | a cada 6h (`0 */6 * * *` UTC) | `pata-jazz-youtube-live.yml` |
 | **Sync de assets** | 2x por semana | Ter e Sex 03:00 | `pata-jazz-sync.yml` |
 | **Analytics** | 1x por semana | Segunda 03:00 | `pata-jazz-analytics.yml` |
+| **Lote semanal** (manual/eventual) | Gera 28 shorts + 7 horizontais de uma vez, publica 6/dia até esgotar | disparo manual + cron diário 04:00 UTC enquanto houver lote pendente | `pata-jazz-weekly.yml` |
 
-**Total semanal:** 28 Shorts + 7 Horizontais + 1 Live = **36 vídeos/semana**
+**Total semanal (crons diários):** 28 Shorts + 7 Horizontais = **35 vídeos/semana**, mais a live contínua. O lote semanal (`pata-jazz-weekly.yml`) é um mecanismo separado e não roda por padrão — só produz vídeos extras quando disparado manualmente com `action: all`/`generate`.
 
-> **Nota sobre quota:** A YouTube API permite 10.000 unidades/dia. Cada upload custa 1.600 unidades. 4 Shorts + 1 Horizontal = 8.000 unidades/dia (dentro do limite com folga).
+> **Nota sobre quota:** desde jun/2026 `videos.insert` tem cota própria (~100 uploads/dia), separada do pool de 10.000 unidades/dia compartilhado pelos outros endpoints (thumbnail, caption, playlist, criação de live). Uso normal (5 uploads/dia + 4 sessões de live/dia) fica bem abaixo dos dois limites. Se for rodar `pata-jazz-weekly.yml` manualmente enquanto os crons diários também estão ativos, ainda vale conferir a soma antes de disparar em dias de pico.
 
 ## Execução local
 
@@ -207,7 +208,7 @@ python -m compileall -q .
 | Thumbnail > 2MB | Imagem muito grande | Já tratado por `_save_under_2mb()` (redimensiona se necessário) |
 | `Nenhuma fonte TrueType encontrada` | Fontes não instaladas | Instale DejaVu/arial ou defina `PIL_IMAGE_FONT_PATH` |
 | Gemini retorna vazio | Circuit breaker aberto ou modelo inválido | Verifique `GEMINI_MODEL` (default: `gemini-2.0-flash-001`) |
-| `Circuit breaker do Gemini aberto` | Muitas respostas 429/503 | Aguarde 60s (reset automático) ou verifique quota |
+| `Circuit breaker do Gemini aberto` | Muitas respostas 429/503 | Aguarde 120s (reset automático) ou verifique quota |
 
 ## Licença
 

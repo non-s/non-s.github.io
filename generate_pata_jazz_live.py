@@ -383,6 +383,15 @@ def _save_live_meta(**kwargs) -> None:
 
 
 def main() -> int:
+    """CLI standalone para teste manual/local - NAO e usado em producao.
+
+    O workflow .github/workflows/pata-jazz-youtube-live.yml roda
+    `python scripts/run_live.py`, que importa as funcoes deste modulo
+    (_build_looping_input, _start_ffmpeg_stream etc.) mas tem seu proprio
+    main() com todo o ciclo de vida do broadcast (criar, aguardar stream
+    ficar ativo, reconectar, encerrar). Corrigir um bug de streaming aqui
+    (fluxo abaixo) NAO afeta a live de verdade - edite scripts/run_live.py.
+    """
     parser = argparse.ArgumentParser(description="Live Pata Jazz em loop infinito")
     parser.add_argument(
         "--duration",
