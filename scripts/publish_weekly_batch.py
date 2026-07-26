@@ -118,6 +118,14 @@ def _publish_video(service, video_path: Path, meta: dict, language: str = "en") 
     video_id = response["id"]
     log.info("Video enviado: https://youtu.be/%s", video_id)
 
+    # Ver comentario equivalente em upload_youtube.py:upload_video.
+    actual_privacy = response.get("status", {}).get("privacyStatus")
+    if actual_privacy != privacy:
+        log.error(
+            "Video %s saiu com privacyStatus=%r, esperado %r - confira manualmente.",
+            video_id, actual_privacy, privacy,
+        )
+
     # Thumbnail
     thumbnail = _meta_path(meta, "thumbnail")
     if thumbnail and thumbnail.exists():
@@ -162,12 +170,6 @@ def _publish_video(service, video_path: Path, meta: dict, language: str = "en") 
             add_video_to_playlist(service, video_id, mood=meta["mood"])
     except Exception as exc:
         log.warning("Falha ao adicionar a playlist: %s", exc)
-
-    try:
-        from utils.discord_webhook import notify_video_upload
-        notify_video_upload(title, f"https://youtu.be/{video_id}")
-    except Exception as exc:
-        log.warning("Falha ao notificar Discord: %s", exc)
 
     return video_id
 
