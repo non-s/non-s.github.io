@@ -74,6 +74,12 @@ jobs:
         uses: ./.github/actions/restore-token-and-cache
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
+      - name: "Healthcheck (pre-flight)"
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+          JAMENDO_CLIENT_ID: ${{ secrets.JAMENDO_CLIENT_ID }}
+        run: python scripts/healthcheck.py --mode live
       - name: "Sincronizar b-roll"
         env:
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
