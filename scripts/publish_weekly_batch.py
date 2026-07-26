@@ -59,7 +59,7 @@ def _find_unpublished_videos(prefix: str = "pata_jazz_") -> list[tuple[Path, dic
     return unpublished
 
 
-def _publish_video(service, video_path: Path, meta: dict, language: str = "pt") -> str | None:
+def _publish_video(service, video_path: Path, meta: dict, language: str = "en") -> str | None:
     """Faz upload de um video como publico e retorna o video_id.
 
     Se o video ja tem um video_id no metadata (upload previo como private),
@@ -118,7 +118,8 @@ def _publish_video(service, video_path: Path, meta: dict, language: str = "pt") 
             _retry_youtube_call(service.thumbnails().set(videoId=video_id, media_body=thumb_media).execute)
             log.info("Thumbnail aplicada.")
         except Exception as exc:
-            log.warning("Falha ao aplicar thumbnail: %s", exc)
+            hint = " (canal sem verificacao por telefone bloqueia thumbnail customizada - confira em youtube.com/verify)" if "403" in str(exc) else ""
+            log.warning("Falha ao aplicar thumbnail: %s%s", exc, hint)
 
     # Legenda
     caption_path = _meta_path(meta, "caption")
@@ -127,8 +128,8 @@ def _publish_video(service, video_path: Path, meta: dict, language: str = "pt") 
             caption_body = {
                 "snippet": {
                     "videoId": video_id,
-                    "language": "pt-BR",
-                    "name": "Portugues",
+                    "language": "en",
+                    "name": "English",
                     "isDraft": False,
                 }
             }

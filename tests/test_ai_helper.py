@@ -12,8 +12,8 @@ class TestAiHelper:
         prompt = ai_helper._default_system_prompt()
 
         assert "Pata Jazz" in prompt
-        assert "portugues do Brasil" in prompt
-        assert "gatos e cachorros" in prompt
+        assert "English" in prompt
+        assert "cats and dogs" in prompt
         assert "clickbait" in prompt
 
     @patch('utils.ai_helper.os.environ')

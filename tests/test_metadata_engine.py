@@ -1,5 +1,6 @@
 """Testes para metadata_engine.py."""
 import json
+import re
 from unittest.mock import patch
 
 import utils.metadata_engine as metadata_engine
@@ -50,8 +51,13 @@ class TestMetadataEngine:
             emoji="🐱",
         )
 
+        # Conta ocorrencias por palavra inteira (\b apos a tag), nao por
+        # substring crua: hashtags como "#Cute" e "#CutePets" convivem no
+        # mesmo conjunto, e "#CutePets".count("#Cute") mentiria "2" mesmo
+        # com cada hashtag aparecendo exatamente uma vez de verdade.
         for tag in metadata["hashtags"]:
-            assert metadata["description"].count(tag) == 1, (
+            occurrences = len(re.findall(rf"{re.escape(tag)}\b", metadata["description"]))
+            assert occurrences == 1, (
                 f"hashtag {tag} duplicada na descricao: {metadata['description']!r}"
             )
 

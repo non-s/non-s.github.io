@@ -67,11 +67,11 @@ def _meta_path(meta: dict, key: str) -> Path | None:
 
 
 def _build_tags(scene: str, hashtags: list[str] | None = None) -> list[str]:
-    base = ["Pata Jazz", "gato", "cachorro", "jazz", "fofo", "relaxante"]
+    base = ["Pata Jazz", "cat", "dog", "jazz", "cute", "relaxing"]
     if "cat" in scene or "kitten" in scene:
-        base.extend(["gatinho", "cat", "kitten"])
+        base.extend(["kitten", "cute cat"])
     if "dog" in scene or "puppy" in scene:
-        base.extend(["cachorrinho", "dog", "puppy"])
+        base.extend(["puppy", "cute dog"])
     if hashtags:
         # Remove o # para normalizar e junta com as tags base
         cleaned = [h.lstrip("#") for h in hashtags]
@@ -79,7 +79,7 @@ def _build_tags(scene: str, hashtags: list[str] | None = None) -> list[str]:
     return list(dict.fromkeys(base))[:15]
 
 
-def upload_video(language: str = "pt", privacy: str = "public", prefix: str = "pata_jazz_") -> str | None:
+def upload_video(language: str = "en", privacy: str = "public", prefix: str = "pata_jazz_") -> str | None:
     found = _latest_video_meta(prefix=prefix)
     if not found:
         log.error("Nenhum video com metadata encontrado em %s", OUTPUT_DIR)
@@ -128,7 +128,8 @@ def upload_video(language: str = "pt", privacy: str = "public", prefix: str = "p
             # (confirmado em producao: run 30155769151, thumbnail falhou
             # apos esgotar retries e o RuntimeError nao pego matou o job,
             # que ficou "failure" apesar do upload ja ter ido ao ar).
-            log.warning("Falha ao aplicar thumbnail: %s", exc)
+            hint = " (canal sem verificacao por telefone bloqueia thumbnail customizada - confira em youtube.com/verify)" if "403" in str(exc) else ""
+            log.warning("Falha ao aplicar thumbnail: %s%s", exc, hint)
 
     # Upload de legenda SRT se existir
     caption_path = _meta_path(meta, "caption")
@@ -137,8 +138,8 @@ def upload_video(language: str = "pt", privacy: str = "public", prefix: str = "p
             caption_body = {
                 "snippet": {
                     "videoId": video_id,
-                    "language": "pt-BR",
-                    "name": "Portugues",
+                    "language": "en",
+                    "name": "English",
                     "isDraft": False,
                 }
             }
@@ -360,7 +361,7 @@ def _retry_youtube_call(func, *args, **kwargs):
 def main() -> int:
     parser = argparse.ArgumentParser(description="Upload Pata Jazz para YouTube")
     parser.add_argument("--mode", choices=["upload", "live"], default="upload")
-    parser.add_argument("--language", default="pt")
+    parser.add_argument("--language", default="en")
     parser.add_argument("--privacy", default=os.environ.get("YOUTUBE_PRIVACY", "public"),
                         choices=["public", "unlisted", "private"])
     parser.add_argument("--title", default="")

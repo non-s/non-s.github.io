@@ -21,11 +21,11 @@ def generate_srt(hook: str, scene: str, duration: int, kind: str, emoji: str) ->
     Retorna o texto completo do arquivo .srt.
     """
     prompt = (
-        f"Crie legendas em portugues do Brasil para um {'Short' if kind == 'short' else 'video'} "
-        f"de {duration} segundos sobre {hook} {emoji}. "
-        f"O canal e Pata Jazz (gatos e cachorros fofos + jazz relaxante). "
-        f"Crie 4-6 linhas de legenda curtas (max 40 chars cada), distribuindo ao longo da duracao. "
-        f"Retorne APENAS o formato SRT (numerado, com timestamps HH:MM:SS,mmm --> HH:MM:SS,mmm)."
+        f"Create English captions for a {duration}-second {'Short' if kind == 'short' else 'video'} "
+        f"about {hook} {emoji}. "
+        f"The channel is Pata Jazz (cute cats and dogs + relaxing jazz). "
+        f"Create 4-6 short caption lines (max 40 chars each), spread across the duration. "
+        f"Return ONLY the SRT format (numbered, with timestamps HH:MM:SS,mmm --> HH:MM:SS,mmm)."
     )
     out = ai_text(prompt, task="caption")
 
@@ -49,8 +49,8 @@ def _fallback_srt(hook: str, duration: int) -> str:
     """Gera SRT simples com o hook dividido em 3 partes."""
     lines = [
         (_fmt_ts(0.0), _fmt_ts(min(3.0, duration)), hook[:40]),
-        (_fmt_ts(min(3.0, duration)), _fmt_ts(min(8.0, duration)), "Bem-vindo ao Pata Jazz"),
-        (_fmt_ts(min(8.0, duration)), _fmt_ts(float(duration)), "Gatinhos e cachorrinhos + jazz"),
+        (_fmt_ts(min(3.0, duration)), _fmt_ts(min(8.0, duration)), "Welcome to Pata Jazz"),
+        (_fmt_ts(min(8.0, duration)), _fmt_ts(float(duration)), "Cats and dogs + jazz"),
     ]
 
     srt_lines: list[str] = []
