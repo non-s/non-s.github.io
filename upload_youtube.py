@@ -173,14 +173,28 @@ def upload_video(language: str = "pt", privacy: str = "public", prefix: str = "p
 
 
 def _generate_live_title() -> str:
+    # Em ingles: o formato "ambient pet livestream 24/7" e um genero dominado
+    # por busca em ingles (ex.: canais como Relax My Dog tem milhoes de
+    # inscritos com esse exato formato), com volume de busca muito maior que
+    # os equivalentes em portugues para o mesmo conteudo (visual/musical,
+    # sem dependencia de idioma).
     prompt = (
-        "Crie um titulo curto e fofo (maximo 80 caracteres) para uma live do YouTube "
-        "de gatinhos e cachorrinhos com jazz de fundo, em loop infinito. "
-        "Retorne APENAS o texto do titulo, sem aspas."
+        "Create a short, warm YouTube live stream title (max 80 characters) for a "
+        "24/7 looping live stream of cats and dogs with relaxing jazz music playing. "
+        "Target searches like 'calming music for dogs' or 'relaxing music for cats'. "
+        "Return ONLY the title text, no quotes."
     )
     out = ai_text(prompt, task="live_title")
     title = out.strip().replace('"', "") if out else ""
-    return title or "Pata Jazz 🐾🎷 | Gatinhos e Cachorrinhos Fofos ao Vivo"
+    return title or "Pata Jazz 🐾🎷 | Calming Music for Cats & Dogs - 24/7 Live"
+
+
+LIVE_TAGS = [
+    "relaxing music for dogs", "calming music for cats", "jazz for pets",
+    "dog anxiety music", "cat sleep music", "music for pets",
+    "background music for cats and dogs", "study jazz music",
+    "cats and dogs live stream", "24/7 live stream", "Pata Jazz",
+]
 
 
 def create_live_stream(
@@ -192,7 +206,11 @@ def create_live_stream(
     service = get_youtube_service()
 
     title = title or _generate_live_title()
-    description = description or "Live relaxante com gatinhos e cachorrinhos fofos e jazz de fundo."
+    description = description or (
+        "A 24/7 live stream of cats and dogs with relaxing jazz music - great "
+        "background sound for calming an anxious pet, studying, working or sleeping.\n\n"
+        + " ".join(f"#{t.replace(' ', '')}" for t in LIVE_TAGS[:8])
+    )
 
     broadcast_body = {
         "snippet": {
