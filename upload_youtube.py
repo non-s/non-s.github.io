@@ -23,6 +23,7 @@ from pathlib import Path
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
+from utils import ffmpeg_helpers
 from utils.ai_helper import ai_text
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.youtube_oauth import get_youtube_service
@@ -85,6 +86,14 @@ def upload_video(language: str = "en", privacy: str = "public", prefix: str = "p
         log.error("Nenhum video com metadata encontrado em %s", OUTPUT_DIR)
         return None
     video_path, meta = found
+
+    # Sanity check antes de gastar quota da API: um .mp4 com duracao 0 (ffprobe
+    # nao consegue ler, encode truncado, etc) sempre indica arquivo corrompido -
+    # nunca um video legitimo de 0s. Aborta cedo em vez de subir lixo pro canal.
+    duration = ffmpeg_helpers.get_video_duration(str(video_path))
+    if duration <= 0:
+        log.error("Video %s com duracao invalida (%.1fs) - upload abortado.", video_path.name, duration)
+        return None
 
     title = str(meta.get("title", "Pata Jazz"))[:100]
     description = str(meta.get("description", ""))[:5000]
@@ -169,6 +178,12 @@ def upload_video(language: str = "en", privacy: str = "public", prefix: str = "p
             add_video_to_playlist(service, video_id, mood=meta["mood"])
     except Exception as exc:
         log.warning("Falha ao adicionar a playlist: %s", exc)
+
+    try:
+        from utils.discord_webhook import notify_video_upload
+        notify_video_upload(title, f"https://youtu.be/{video_id}")
+    except Exception as exc:
+        log.warning("Falha ao notificar Discord: %s", exc)
 
     return video_id
 

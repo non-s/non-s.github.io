@@ -17,6 +17,7 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 - **Playlists automáticas**: Videos adicionados a playlists por mood/formato (cache persistente em `_data/playlist_cache.json`)
 - **Analytics semanal**: Coleta de métricas para feedback loop (com guard contra paginação infinita)
 - **Marca consistente**: Todos os títulos começam com "Pata Jazz |"
+- **Conteúdo em inglês**: título, descrição, hashtags e legendas são gerados em inglês (`utils/seo_keywords.py`, `utils/metadata_engine.py`, `utils/caption_engine.py`) - o formato pet+jazz não depende de idioma e o volume de busca em inglês é muito maior que o equivalente em português. O system prompt padrão do Gemini (`utils/ai_helper.py::_default_system_prompt`) também reforça isso - qualquer chamada de IA que precise de outro idioma tem que passar `system=` explicitamente.
 - **Robustez de APIs**: Circuit breaker no Gemini (429/502/503), retry exponencial no Discord/YouTube, fallback local em todas as chamadas de IA
 - **Thumbnails com shadow RGBA**: Gradiente via `Image.linear_gradient` (Pillow ≥9.1), shadows com alpha real
 - **Live sem deadlock**: stderr do FFmpeg redirecionado para arquivo (evita congelamento em lives longas)
@@ -35,7 +36,7 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 - **Python 3.11+** (CI roda 3.11; local testado com 3.12/3.14)
 - **FFmpeg** — codificação, concatenação, xfade, drawtext e ffprobe (com timeout)
 - **Pillow ≥10.3** — thumbnails (gradiente, shadows RGBA, fontes TrueType)
-- **pytest** — testes unitários (178 testes, cobertura ≥70% de `utils/`)
+- **pytest** — testes unitários (210 testes, cobertura ≥70% de `utils/`)
 - **ruff** — lint (regras E, F, W, I, UP, B)
 - **GitHub Actions** — CI/CD e agendamento
 
@@ -117,7 +118,9 @@ Salve o JSON resultante como `youtube_token.json` na raiz do projeto (ou use o s
 
 - `GEMINI_API_KEY`
 - `PIXABAY_API_KEY`
+- `JAMENDO_CLIENT_ID`
 - `YOUTUBE_TOKEN` — JSON do token OAuth do YouTube
+- `DISCORD_WEBHOOK_URL` — opcional; sem ele, `utils/discord_webhook.py` só loga um warning e segue (nenhum passo falha por falta desse secret). Sem configurar, nenhuma notificação (início/fim de live, upload, falha de workflow) é enviada de verdade.
 
 ### Variables
 
@@ -136,11 +139,11 @@ Salve o JSON resultante como `youtube_token.json` na raiz do projeto (ou use o s
 | **Live** | 24/7, sessões de ~320min encadeadas | a cada 6h (`0 */6 * * *` UTC) | `pata-jazz-youtube-live.yml` |
 | **Sync de assets** | 2x por semana | Ter e Sex 03:00 | `pata-jazz-sync.yml` |
 | **Analytics** | 1x por semana | Segunda 03:00 | `pata-jazz-analytics.yml` |
-| **Lote semanal** (manual/eventual) | Gera 28 shorts + 7 horizontais de uma vez, publica 6/dia até esgotar | disparo manual + cron diário 04:00 UTC enquanto houver lote pendente | `pata-jazz-weekly.yml` |
+| **Lote semanal** (manual/eventual) | Gera 28 shorts + 7 horizontais de uma vez, publica 6/dia até esgotar | só disparo manual (`action: all`/`generate`/`publish`) | `pata-jazz-weekly.yml` |
 
-**Total semanal (crons diários):** 28 Shorts + 7 Horizontais = **35 vídeos/semana**, mais a live contínua. O lote semanal (`pata-jazz-weekly.yml`) é um mecanismo separado e não roda por padrão — só produz vídeos extras quando disparado manualmente com `action: all`/`generate`.
+**Total semanal (crons diários):** 4 Shorts/dia + 1 Horizontal/dia = **35 vídeos/semana**, mais a live contínua. O lote semanal (`pata-jazz-weekly.yml`) é um mecanismo separado e não roda por padrão — só produz vídeos extras quando disparado manualmente com `action: all`/`generate`/`publish`.
 
-> **Nota sobre quota:** desde jun/2026 `videos.insert` tem cota própria (~100 uploads/dia), separada do pool de 10.000 unidades/dia compartilhado pelos outros endpoints (thumbnail, caption, playlist, criação de live). Uso normal (5 uploads/dia + 4 sessões de live/dia) fica bem abaixo dos dois limites. Se for rodar `pata-jazz-weekly.yml` manualmente enquanto os crons diários também estão ativos, ainda vale conferir a soma antes de disparar em dias de pico.
+> **Nota sobre quota (histórico):** o lote semanal já teve um cron diário próprio de "publicar próximos 6" rodando em paralelo aos crons de Shorts/Horizontal - isso empilhava ~11 uploads/dia, passando da quota de ~10.000 unidades/dia da API (cada upload custa ~1.600 unidades) e causando falhas em produção (24-25/07). O cron foi removido; hoje só os crons de Shorts (4/dia) + Horizontal (1/dia) publicam automaticamente. Se for rodar `pata-jazz-weekly.yml` manualmente, ainda vale conferir a soma de uploads do dia antes de disparar.
 
 ## Execução local
 
@@ -174,7 +177,7 @@ python generate_pata_jazz_short.py --dry-run
 O upload usa o vídeo mais recente gerado (metadados em `_videos/*.json`):
 
 ```bash
-python upload_youtube.py --mode upload --language=pt --prefix pata_jazz_short_
+python upload_youtube.py --mode upload --language=en --prefix pata_jazz_short_
 ```
 
 ### Iniciar uma live
