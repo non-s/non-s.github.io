@@ -28,6 +28,7 @@ sys.path.insert(0, str(ROOT))
 from googleapiclient.http import MediaFileUpload
 
 from upload_youtube import _build_tags, _meta_path, _retry_youtube_call
+from utils import ffmpeg_helpers
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.youtube_oauth import get_youtube_service
 
@@ -87,6 +88,13 @@ def _publish_video(service, video_path: Path, meta: dict, language: str = "en") 
             return existing_id
         except Exception as exc:
             log.warning("Falha ao atualizar privacy do video %s: %s. Fazendo novo upload.", existing_id, exc)
+
+    # Sanity check antes de gastar quota da API: ver comentario equivalente
+    # em upload_youtube.py:upload_video.
+    duration = ffmpeg_helpers.get_video_duration(str(video_path))
+    if duration <= 0:
+        log.error("Video %s com duracao invalida (%.1fs) - upload abortado.", video_path.name, duration)
+        return None
 
     # Novo upload
     body = {
@@ -154,6 +162,12 @@ def _publish_video(service, video_path: Path, meta: dict, language: str = "en") 
             add_video_to_playlist(service, video_id, mood=meta["mood"])
     except Exception as exc:
         log.warning("Falha ao adicionar a playlist: %s", exc)
+
+    try:
+        from utils.discord_webhook import notify_video_upload
+        notify_video_upload(title, f"https://youtu.be/{video_id}")
+    except Exception as exc:
+        log.warning("Falha ao notificar Discord: %s", exc)
 
     return video_id
 

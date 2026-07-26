@@ -56,6 +56,9 @@ class TestUploadVideoSurvivesOptionalStepFailures:
 
     def _setup(self, tmp_path, monkeypatch, **extra_meta):
         monkeypatch.setattr(upload_youtube, "OUTPUT_DIR", tmp_path)
+        # video de teste e so bytes fake (nao um .mp4 de verdade), entao
+        # ffprobe nao acha duracao - mocka pra passar do sanity check.
+        monkeypatch.setattr(upload_youtube.ffmpeg_helpers, "get_video_duration", lambda path: 30.0)
         thumb_path = tmp_path / "thumb.png"
         thumb_path.write_bytes(b"fake png")
         caption_path = tmp_path / "cap.srt"
@@ -111,6 +114,7 @@ class TestUploadVideoSurvivesOptionalStepFailures:
 class TestUploadVideoPlaylists:
     def test_adds_to_both_kind_and_mood_playlists(self, tmp_path, monkeypatch):
         monkeypatch.setattr(upload_youtube, "OUTPUT_DIR", tmp_path)
+        monkeypatch.setattr(upload_youtube.ffmpeg_helpers, "get_video_duration", lambda path: 30.0)
         _write_video_with_meta(tmp_path, {
             "title": "Gatinho Fofo",
             "description": "desc",
@@ -136,6 +140,7 @@ class TestUploadVideoPlaylists:
         """Sem meta['mood'], so a chamada por kind deve acontecer (nao passar
         mood='' para add_video_to_playlist, que trataria como sem alvo)."""
         monkeypatch.setattr(upload_youtube, "OUTPUT_DIR", tmp_path)
+        monkeypatch.setattr(upload_youtube.ffmpeg_helpers, "get_video_duration", lambda path: 30.0)
         _write_video_with_meta(tmp_path, {
             "title": "Gatinho Fofo",
             "description": "desc",
@@ -157,6 +162,7 @@ class TestUploadVideoPlaylists:
         """Falha ao adicionar a playlist e so um warning - upload_video ainda
         retorna o video_id normalmente."""
         monkeypatch.setattr(upload_youtube, "OUTPUT_DIR", tmp_path)
+        monkeypatch.setattr(upload_youtube.ffmpeg_helpers, "get_video_duration", lambda path: 30.0)
         _write_video_with_meta(tmp_path, {
             "title": "Gatinho Fofo", "description": "desc", "scene": "cat", "kind": "short", "mood": "relax",
         })
