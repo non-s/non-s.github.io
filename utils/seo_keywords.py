@@ -1,5 +1,9 @@
 """
 utils/seo_keywords.py — Keywords e padrões de títulos otimizados para YouTube.
+
+Em ingles: o nicho pet+jazz e dominado por volume de busca em ingles
+("relaxing music for cats/dogs", "pet anxiety music") - o conteudo em si
+(visual + instrumental) nao depende de idioma, entao ingles maximiza alcance.
 """
 
 from __future__ import annotations
@@ -10,21 +14,21 @@ from typing import Literal
 
 # Keywords de alta performance para o nicho pet + jazz
 HIGH_PERFORMANCE_KEYWORDS = {
-    "fofura": [
-        "fofo", "fofinho", "adorável", "charmoso", "doce",
-        "terno", "encantador", "gracioso", "meigo", "amoroso"
+    "cuteness": [
+        "cute", "adorable", "charming", "sweet",
+        "precious", "lovable", "gentle", "tender"
     ],
-    "relaxamento": [
-        "relaxante", "calmo", "tranquilo", "sereno", "pacífico",
-        "meditativo", "suave", "aconchegante", "reconfortante", "zen"
+    "relaxation": [
+        "relaxing", "calm", "calming", "soothing", "peaceful",
+        "gentle", "cozy", "tranquil", "mellow", "zen"
     ],
-    "diversao": [
-        "engraçado", "hilário", "divertido", "brincalhão", "travesso",
-        "curioso", "espontâneo", "animado", "vibrante", "energético"
+    "fun": [
+        "funny", "playful", "silly", "energetic",
+        "curious", "spontaneous", "lively", "cheerful"
     ],
-    "musica": [
-        "jazz", "smooth jazz", "jazz relaxante", "música ambiente",
-        "jazz instrumental", "café jazz", "lounge jazz", "soft jazz"
+    "music": [
+        "jazz", "smooth jazz", "relaxing jazz", "ambient music",
+        "jazz instrumental", "coffee shop jazz", "lounge jazz", "soft jazz"
     ]
 }
 
@@ -32,53 +36,53 @@ HIGH_PERFORMANCE_KEYWORDS = {
 TITLE_PATTERNS: dict[str, list[str]] = {
     "short": [
         "{emoji} {adjetivo} {animal} + {estilo_musical}",
-        "Quando {animal} {acao} com {estilo_musical} 🎵",
-        "{adjetivo} {animal} curtindo {estilo_musical} {emoji}",
-        "POV: {animal} {acao} no seu {estilo_musical} diário",
-        "O {adjetivo} {animal} que você precisa hoje {emoji}",
+        "When a {animal} {acao} to {estilo_musical} 🎵",
+        "{adjetivo} {animal} enjoying {estilo_musical} {emoji}",
+        "POV: a {animal} {acao} to your daily {estilo_musical}",
+        "The {adjetivo} {animal} you needed today {emoji}",
     ],
     "horizontal": [
-        "{adjetivo} {animal} + {estilo_musical} por {duracao} minutos",
-        "Relaxe com {animal} {adjetivo} e {estilo_musical}",
-        "{estilo_musical} + {animal} {adjetivo} para relaxar",
-        "Ambiente {adjetivo} de {animal} com {estilo_musical}",
-        "Sessão {adjetivo}: {animal} + {estilo_musical} {emoji}",
+        "{adjetivo} {animal} + {estilo_musical} for {duracao} minutes",
+        "Relax with a {adjetivo} {animal} and {estilo_musical}",
+        "{estilo_musical} + {adjetivo} {animal} to relax",
+        "A {adjetivo} {animal} ambience with {estilo_musical}",
+        "{adjetivo} session: {animal} + {estilo_musical} {emoji}",
     ],
     "live": [
-        "🔴 AO VIVO: {animal} {adjetivo} + {estilo_musical} 24/7",
-        "Rádio {estilo_musical} com {animal} {adjetivo} - AO VIVO",
-        "LIVE: Relaxe com {animal} e {estilo_musical} o dia todo",
-        "🔴 AO VIVO: {estilo_musical} Non-Stop + {animal} {adjetivo}",
+        "🔴 LIVE: {adjetivo} {animal} + {estilo_musical} 24/7",
+        "{estilo_musical} Radio with a {adjetivo} {animal} - LIVE",
+        "LIVE: Relax with a {animal} and {estilo_musical} all day",
+        "🔴 LIVE: Non-Stop {estilo_musical} + {adjetivo} {animal}",
     ]
 }
 
 # Emoções e benefícios que geram engajamento
 EMOCAO_BENEFICIOS = {
-    "feliz": ["alegria", "felicidade", "sorriso", "bem-estar"],
-    "calmo": ["paz", "tranquilidade", "serenidade", "relaxamento"],
-    "conforto": ["aconchego", "conforto", "carinho", "amor"],
-    "nostalgia": ["saudade", "memória", "nostalgia", "recordação"],
-    "foco": ["concentração", "foco", "produtividade", "clareza"],
+    "happy": ["joy", "happiness", "smiles", "well-being"],
+    "calm": ["peace", "tranquility", "serenity", "relaxation"],
+    "comfort": ["coziness", "comfort", "warmth", "love"],
+    "nostalgia": ["nostalgia", "memories", "fond memories"],
+    "focus": ["concentration", "focus", "productivity", "clarity"],
 }
 
 # CTAs (Call-to-Action) para descrições
 CTAS = [
-    "🐾 Inscreva-se para mais fofura diária!",
-    "🎷 Ative o sininho para não perder nenhum vídeo!",
-    "💬 Comente qual bichinho você quer ver amanhã!",
-    "👍 Deixe seu like se isso trouxe paz ao seu dia!",
-    "🔗 Compartilhe com quem precisa de um momento zen!",
-    "📱 Siga @PataJazz para conteúdo exclusivo!",
+    "🐾 Subscribe for more cuteness every day!",
+    "🎷 Hit the bell so you never miss a video!",
+    "💬 Comment which pet you want to see tomorrow!",
+    "👍 Leave a like if this brought some peace to your day!",
+    "🔗 Share with someone who needs a zen moment!",
+    "📱 Follow @PataJazz for exclusive content!",
 ]
 
 # Hashtags estratégicas por categoria
 HASHTAGS_POR_CATEGORIA = {
-    "brand": ["#PataJazz", "#GatoJazz", "#CachorroJazz", "#PetJazz"],
-    "animal": ["#Gatos", "#Cachorros", "#Gatinhos", "#Cachorrinhos", "#Pets", "#Animais"],
-    "musica": ["#Jazz", "#MusicaRelaxante", "#SmoothJazz", "#JazzInstrumental", "#MusicaAmbiente"],
-    "emocao": ["#Fofura", "#Relaxamento", "#Paz", "#Tranquilidade", "#BemEstar", "#Zen"],
-    "formato": ["#Shorts", "#YouTubeShorts", "#VideoRelaxante", "#ASMR"],
-    "nicho": ["#CatLover", "#DogLover", "#PetLover", "#JazzLover", "#MusicaEAnimais"],
+    "brand": ["#PataJazz", "#CatJazz", "#DogJazz", "#PetJazz"],
+    "animal": ["#Cats", "#Dogs", "#Kittens", "#Puppies", "#Pets", "#Animals"],
+    "musica": ["#Jazz", "#RelaxingMusic", "#SmoothJazz", "#JazzInstrumental", "#AmbientMusic"],
+    "emocao": ["#Cute", "#Relaxation", "#Peaceful", "#Calm", "#WellBeing", "#Zen"],
+    "formato": ["#Shorts", "#YouTubeShorts", "#RelaxingVideo", "#ASMR"],
+    "nicho": ["#CatLover", "#DogLover", "#PetLover", "#JazzLover", "#MusicForPets"],
 }
 
 
@@ -100,9 +104,9 @@ def generate_title(
     pattern = pick_title_pattern(kind)
 
     # Seleciona adjetivos relevantes
-    adjetivos_fofura = random.sample(HIGH_PERFORMANCE_KEYWORDS["fofura"], 2)
-    adjetivos_relax = random.sample(HIGH_PERFORMANCE_KEYWORDS["relaxamento"], 1)
-    adjetivo = random.choice(adjetivos_fofura + adjetivos_relax)
+    adjetivos_cuteness = random.sample(HIGH_PERFORMANCE_KEYWORDS["cuteness"], 2)
+    adjetivos_relax = random.sample(HIGH_PERFORMANCE_KEYWORDS["relaxation"], 1)
+    adjetivo = random.choice(adjetivos_cuteness + adjetivos_relax)
 
     # Seleciona emoção/benefício
     emocao = random.choice(list(EMOCAO_BENEFICIOS.keys()))
@@ -147,32 +151,32 @@ def generate_description(
     """Gera descrição otimizada com SEO e CTAs."""
     # Introdução com keywords
     intro_templates = [
-        f"{hook} 🐾 Bem-vindo ao Pata Jazz, onde gatinhos e cachorrinhos encontram o jazz perfeito!",
-        f"{hook} 🎷 Relaxe, curta e se encante com essa combinação única de fofura e música!",
-        f"{hook} 💫 Seu momento diário de paz com pets adoráveis e jazz suave!",
+        f"{hook} 🐾 Welcome to Pata Jazz, where cats and dogs meet the perfect jazz!",
+        f"{hook} 🎷 Relax, enjoy, and fall in love with this unique blend of cuteness and music!",
+        f"{hook} 💫 Your daily moment of peace with adorable pets and soft jazz!",
     ]
     intro = random.choice(intro_templates)
 
     # Corpo da descrição (varia por formato)
     if kind == "short":
         corpo = (
-            "\n\n✨ Este Short foi criado para trazer um momento de alegria ao seu dia! "
-            "Gatinhos e cachorrinhos fofos + jazz relaxante = felicidade garantida! 🐱🐶"
+            "\n\n✨ This Short was made to bring a moment of joy to your day! "
+            "Cute cats and dogs + relaxing jazz = guaranteed happiness! 🐱🐶"
         )
     elif kind == "horizontal":
         corpo = (
-            "\n\n✨ Aproveite este vídeo relaxante com pets adoráveis e uma trilha de jazz cuidadosamente selecionada. "
-            "Perfeito para:\n"
-            "  • Relaxar após um dia cansativo\n"
-            "  • Focar nos estudos ou trabalho\n"
-            "  • Dormir com tranquilidade\n"
-            "  • Simplesmente curtir a fofura!"
+            "\n\n✨ Enjoy this relaxing video with adorable pets and a carefully picked jazz soundtrack. "
+            "Perfect for:\n"
+            "  • Unwinding after a tiring day\n"
+            "  • Focusing while you study or work\n"
+            "  • Falling asleep peacefully\n"
+            "  • Just enjoying the cuteness!"
         )
     else:  # live
         corpo = (
-            "\n\n🔴 TRANSMISSÃO AO VIVO 24/7!\n"
-            "Deixe esta live rodando enquanto trabalha, estuda ou relaxa. "
-            "Sempre terá um bichinho fofo e jazz de qualidade para você! 🎵"
+            "\n\n🔴 LIVE 24/7 STREAM!\n"
+            "Leave this live running while you work, study or relax. "
+            "There's always a cute pet and quality jazz waiting for you! 🎵"
         )
 
     # CTA (opcional)
@@ -189,7 +193,7 @@ def generate_description(
 
 def generate_hashtags(
     animal: str,
-    categoria: str = "fofura",
+    categoria: str = "cuteness",
     kind: Literal["short", "horizontal", "live"] = "short",
 ) -> list[str]:
     """Gera conjunto estratégico de hashtags em camadas."""
@@ -200,9 +204,9 @@ def generate_hashtags(
 
     # Camada 2: Animal específico
     if "cat" in animal.lower() or "gato" in animal.lower():
-        hashtags.extend(["#Gatos", "#Gatinhos", "#CatLover"])
+        hashtags.extend(["#Cats", "#Kittens", "#CatLover"])
     elif "dog" in animal.lower() or "cachorro" in animal.lower():
-        hashtags.extend(["#Cachorros", "#Cachorrinhos", "#DogLover"])
+        hashtags.extend(["#Dogs", "#Puppies", "#DogLover"])
     else:
         hashtags.extend(HASHTAGS_POR_CATEGORIA["animal"][:2])
 
@@ -210,18 +214,18 @@ def generate_hashtags(
     hashtags.extend(HASHTAGS_POR_CATEGORIA["musica"][:3])
 
     # Camada 4: Emoção/Categoria
-    if categoria == "fofura":
-        hashtags.extend(["#Fofura", "#PetsFofos", "#AnimalFofo"])
-    elif categoria == "relaxamento":
+    if categoria in ("cuteness", "fofura"):
+        hashtags.extend(["#Cute", "#CutePets", "#AdorableAnimal"])
+    elif categoria in ("relaxation", "relaxamento"):
         hashtags.extend(HASHTAGS_POR_CATEGORIA["emocao"][:3])
-    elif categoria == "diversao":
-        hashtags.extend(["#Diversao", "#PetsEngracados", "#AnimaisEngracados"])
+    elif categoria in ("fun", "diversao"):
+        hashtags.extend(["#Fun", "#FunnyPets", "#FunnyAnimals"])
 
     # Camada 5: Formato
     if kind == "short":
         hashtags.extend(["#Shorts", "#YouTubeShorts"])
     elif kind == "live":
-        hashtags.extend(["#Live", "#AoVivo", "#247"])
+        hashtags.extend(["#Live", "#LiveStream", "#247"])
 
     # Remove duplicatas e limita a 15
     hashtags = list(dict.fromkeys(hashtags))[:15]
@@ -233,8 +237,9 @@ def optimize_for_search(title: str, description: str) -> tuple[str, str]:
     """Otimiza título e descrição para busca do YouTube."""
     # Palavras-chave primárias para o nicho
     primary_keywords = [
-        "gato jazz", "cachorro jazz", "pet relaxante",
-        "musica para pets", "gatinho fofo", "cachorrinho fofo"
+        "cat jazz", "dog jazz", "relaxing pet music",
+        "music for pets", "cute kitten", "cute puppy",
+        "calming music for dogs", "relaxing music for cats",
     ]
 
     # Verifica se pelo menos uma keyword primária está presente
@@ -249,12 +254,12 @@ def optimize_for_search(title: str, description: str) -> tuple[str, str]:
 
     # Adiciona keywords semanticamente relacionadas à descrição
     related_terms = [
-        "relaxamento", "meditação", "estudo", "trabalho",
-        "concentração", "paz interior", "bem-estar"
+        "relaxation", "meditation", "studying", "working",
+        "focus", "inner peace", "well-being",
     ]
 
     if not any(term in description.lower() for term in related_terms):
         term = random.choice(related_terms)
-        description += f"\n\nIdeal para momentos de {term}."
+        description += f"\n\nGreat for moments of {term}."
 
     return title, description

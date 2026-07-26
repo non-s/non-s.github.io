@@ -340,7 +340,7 @@ def short_spec(duration: int = 35, scene: str = "", mood: str = "") -> VideoSpec
         default_duration=35,
         crop_filter="crop='ih*9/16:ih:(iw-ih*9/16)/2:0'",
         thumbnail_maker=make_short_thumbnail,
-        fallback_description=f"{hook_for_scene(scene or random_scene())[0]} com jazz de fundo. 🐾🎷 #PataJazz",
+        fallback_description=f"{hook_for_scene(scene or random_scene())[0]} with jazz playing. 🐾🎷 #PataJazz",
         scene=scene,
         mood=mood,
     )
@@ -360,8 +360,8 @@ def horizontal_spec(duration: int = 240, scene: str = "", mood: str = "") -> Vid
         ),
         thumbnail_maker=make_horizontal_thumbnail,
         fallback_description=(
-            "Gatinhos e cachorrinhos fofos com jazz suave de fundo. "
-            "Curta, relaxe e acompanhe os bichinhos. 🐾🎷 #PataJazz"
+            "Cute cats and dogs with soft jazz playing in the background. "
+            "Enjoy, relax and watch the pets. 🐾🎷 #PataJazz"
         ),
         scene=scene,
         mood=mood,

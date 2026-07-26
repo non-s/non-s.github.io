@@ -24,14 +24,15 @@ def _build_metadata_prompt(hook: str, scene: str, duration: int, kind: str, emoj
     target_len = 80 if kind == "short" else 100
     desc_lines = 3 if kind == "short" else 4
     return (
-        f"Crie metadados em português do Brasil para um {'Short' if kind == 'short' else 'vídeo'} "
-        f"do YouTube sobre {hook} {emoji}. O canal é Pata Jazz (gatos e cachorros fofos + jazz relaxante). "
-        f"Duração: ~{duration}s. "
-        f"Regras:\n"
-        f"- Título amigável, fofo, SEM clickbait, SEM palavras sensacionalistas, máximo {target_len} caracteres.\n"
-        f"- Descrição de {desc_lines} linhas, leve, com tom fofo, com emoji de gato/cachorro e jazz.\n"
-        f"- 5 a 8 hashtags relevantes separadas por espaço.\n"
-        f"Retorne APENAS JSON com chaves: title, description, hashtags."
+        f"Create English YouTube metadata for a {'Short' if kind == 'short' else 'video'} "
+        f"about {hook} {emoji}. The channel is Pata Jazz (cute cats and dogs + relaxing jazz), "
+        f"targeting searches like 'relaxing music for cats/dogs' and 'pet anxiety music'. "
+        f"Duration: ~{duration}s. "
+        f"Rules:\n"
+        f"- Warm, cute title, NO clickbait, NO sensationalist words, max {target_len} characters.\n"
+        f"- {desc_lines}-line description, light and cute tone, with a cat/dog and jazz emoji.\n"
+        f"- 5 to 8 relevant hashtags separated by spaces.\n"
+        f"Return ONLY JSON with keys: title, description, hashtags."
     )
 
 
@@ -47,9 +48,9 @@ def generate_metadata(
     """Gera metadados completos usando Gemini + SEO otimizado, com fallback local seguro."""
     # Extrai informações da cena para SEO
     s = scene.lower()
-    animal = "gato" if ("cat" in s or "kitten" in s) else "cachorro"
-    acao = "relaxando" if ("sleep" in s or "relax" in s) else "brincando"
-    estilo_musical = "jazz relaxante"
+    animal = "cat" if ("cat" in s or "kitten" in s) else "dog"
+    acao = "relaxing" if ("sleep" in s or "relax" in s) else "playing"
+    estilo_musical = "relaxing jazz"
 
     # Gera título otimizado com SEO, usando fallback_title como base se fornecido
     title = fallback_title or generate_title(
@@ -62,11 +63,11 @@ def generate_metadata(
     )
 
     # Gera hashtags estratégicas em camadas
-    categoria = "fofura"
+    categoria = "cuteness"
     if "sleep" in s or "relax" in s:
-        categoria = "relaxamento"
+        categoria = "relaxation"
     elif "play" in s or "fun" in s:
-        categoria = "diversao"
+        categoria = "fun"
 
     hashtags = generate_hashtags(animal=animal, categoria=categoria, kind=kind)
 

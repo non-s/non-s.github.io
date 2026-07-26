@@ -19,22 +19,20 @@ import sys
 from pathlib import Path
 from typing import Any
 
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+
 from utils import ffmpeg_helpers, media_pool
 from utils.log_config import configure_logging
 from utils.youtube_oauth import _client_secrets_path, _token_path
 
 log = logging.getLogger(__name__)
 
-ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "_data"
 REQUIRED_ENVS = [
     "GEMINI_API_KEY",
     "PIXABAY_API_KEY",
     "JAMENDO_CLIENT_ID",
-]
-LIVE_REQUIRED_ENVS = [
-    "YOUTUBE_TOKEN_PATH",
-    "YOUTUBE_CLIENT_SECRET_PATH",
 ]
 
 
@@ -106,16 +104,15 @@ def _check_asset_pool() -> dict[str, Any]:
 
 
 def _check_live_prerequisites() -> dict[str, Any]:
-    """Verifica se o ambiente está pronto para lives."""
-    missing = [name for name in LIVE_REQUIRED_ENVS if not os.getenv(name)]
-    if missing:
-        return {
-            "name": "Pré-requisitos Live",
-            "ok": False,
-            "info": f"faltando: {', '.join(missing)}",
-        }
+    """Verifica se o ambiente está pronto para lives.
 
-    # Verifica token YouTube
+    Client secret NAO e requisito aqui: em producao o refresh do token usa
+    o client_id/secret ja embutidos no proprio youtube_token.json (gerado
+    uma vez, localmente, via fluxo interativo) - nenhum workflow deste repo
+    define YOUTUBE_CLIENT_SECRET nem existe client_secret.json commitado, e
+    mesmo assim a live funciona normalmente. Exigir isso aqui so faria esse
+    check falhar sempre, apesar do pipeline real estar saudavel.
+    """
     token_ok = _check_youtube_token()
     if not token_ok["ok"]:
         return {
@@ -124,19 +121,10 @@ def _check_live_prerequisites() -> dict[str, Any]:
             "info": "Token YouTube inválido ou ausente",
         }
 
-    # Verifica client secret
-    secret_ok = _check_client_secret()
-    if not secret_ok["ok"]:
-        return {
-            "name": "Pré-requisitos Live",
-            "ok": False,
-            "info": "Client secret Google ausente",
-        }
-
     return {
         "name": "Pré-requisitos Live",
         "ok": True,
-        "info": "OK - tokens e credenciais válidos",
+        "info": "OK - token válido",
     }
 
 

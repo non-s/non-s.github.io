@@ -58,6 +58,8 @@ jobs:
         uses: ./.github/actions/restore-token-and-cache
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
+      - name: "Healthcheck (pre-flight)"
+        run: python scripts/healthcheck.py --mode live
       - name: "Sincronizar b-roll"
         run: python scripts/sync_animal_broll.py || echo "::warning::B-roll sync falhou"
       - name: "Sincronizar jazz"
@@ -66,7 +68,7 @@ jobs:
         run: python generate_pata_jazz_horizontal.py --duration "$GENERATE_DURATION"
       - name: "Upload para YouTube"
         if: hashFiles('youtube_token.json') != ''
-        run: python upload_youtube.py --mode upload --language=pt --prefix pata_jazz_horizontal_
+        run: python upload_youtube.py --mode upload --language=en --prefix pata_jazz_horizontal_
       - name: "Upload artifacts"
         if: always()
         uses: actions/upload-artifact@v4
