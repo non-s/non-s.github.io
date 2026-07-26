@@ -14,7 +14,7 @@ from utils.seo_keywords import (
     _MAX_HASHTAGS,
     generate_description,
     generate_hashtags,
-    generate_title,
+    generate_title_with_pattern,
     optimize_for_search,
 )
 
@@ -54,14 +54,18 @@ def generate_metadata(
     estilo_musical = "relaxing jazz"
 
     # Gera título otimizado com SEO, usando fallback_title como base se fornecido
-    title = fallback_title or generate_title(
-        animal=animal,
-        acao=acao,
-        estilo_musical=estilo_musical,
-        kind=kind,
-        emoji=emoji,
-        duracao=round(duration / 60) if kind != "short" else None,
-    )
+    title_pattern = "fallback_title"
+    if fallback_title:
+        title = fallback_title
+    else:
+        title, title_pattern = generate_title_with_pattern(
+            animal=animal,
+            acao=acao,
+            estilo_musical=estilo_musical,
+            kind=kind,
+            emoji=emoji,
+            duracao=round(duration / 60) if kind != "short" else None,
+        )
 
     # Gera hashtags estratégicas em camadas
     categoria = "cuteness"
@@ -90,6 +94,7 @@ def generate_metadata(
             ai_title = str(data.get("title", "")).strip()[:100]
             if ai_title:
                 title = ai_title
+                title_pattern = "ai_generated"
 
             # Usa descrição da IA se disponível
             ai_description = str(data.get("description", "")).strip()[:5000]
@@ -134,6 +139,7 @@ def generate_metadata(
         "title": title,
         "description": description,
         "hashtags": hashtags,
+        "title_pattern": title_pattern,
     }
 
 
