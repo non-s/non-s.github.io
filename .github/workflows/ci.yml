@@ -34,3 +34,8 @@ jobs:
         run: python -m compileall -q .
       - name: "Pytest + coverage"
         run: pytest -q --cov=utils --cov-report=term-missing --cov-fail-under=70
+      - name: "Vulnerability audit (advisory)"
+        # Nao falha o build: uma CVE nova publicada depois nao deveria travar
+        # PRs sem relacao nenhuma com a mudanca. Fica visivel no log pra
+        # revisao humana decidir quando atualizar.
+        run: pip-audit -r requirements.txt || echo "::warning::pip-audit encontrou vulnerabilidades - revisar dependencias"
