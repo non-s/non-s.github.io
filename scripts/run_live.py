@@ -48,6 +48,14 @@ log = logging.getLogger(__name__)
 OUTPUT_DIR = ROOT / "_videos"
 _MAX_RECONNECTS = 200
 _RECONNECT_DELAY_SECONDS = 5
+# Confirmado em producao (run 30178358662): o FFmpeg pode travar sem sair
+# e sem respeitar seu proprio -t (write RTMP bloqueado por instabilidade
+# de rede), rodando ate o job inteiro bater o timeout duro do GitHub
+# Actions - que forca SIGKILL nos processos orfaos antes do finally poder
+# chamar transition('complete'), deixando a broadcast presa "ao vivo"
+# para sempre. Folga generosa (nao e um segmento CPU-bound, e so pra
+# cobrir flush do muxer + latencia de rede na saida normal).
+_SEGMENT_WATCHDOG_GRACE_SECONDS = 90
 # 15 era baixo demais: uma run de teste de 20 min mediu FFmpeg quebrando
 # (Broken pipe, encode caindo para ~0.43x tempo real) a cada ~2.8 min em
 # media no runner gratuito de 2 vCPUs - ou seja, uma live de 350 min
@@ -201,7 +209,10 @@ def main() -> int:
                 thumbnail = f"https://img.youtube.com/vi/{broadcast_id}/maxresdefault.jpg"
                 notify_live_start(title=title, stream_url=f"https://youtube.com/watch?v={broadcast_id}", thumbnail=thumbnail)
 
-            code = _wait_ffmpeg_stream(proc)
+            segment_max_seconds = (
+                remaining_minutes * 60 + _SEGMENT_WATCHDOG_GRACE_SECONDS if remaining_minutes else None
+            )
+            code = _wait_ffmpeg_stream(proc, max_seconds=segment_max_seconds)
             segment_seconds = time.time() - segment_start
 
             # 0 = -t atingido (segmento completo), -15 = SIGTERM (cancelamento
