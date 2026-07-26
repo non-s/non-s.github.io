@@ -96,15 +96,20 @@ def pick_title_pattern(kind: Literal["short", "horizontal", "live"]) -> str:
     return random.choice(patterns)
 
 
-def generate_title(
+def generate_title_with_pattern(
     animal: str,
     acao: str,
     estilo_musical: str,
     kind: Literal["short", "horizontal", "live"],
     emoji: str,
     duracao: int | None = None,
-) -> str:
-    """Gera título otimizado usando padrões de alta performance."""
+) -> tuple[str, str]:
+    """Gera título otimizado e retorna tambem o padrao usado (para tracking).
+
+    Guardar qual padrao gerou qual titulo e o que falta pra algum dia
+    correlacionar performance (views/likes) com o padrao - hoje generate_title()
+    descartava essa informacao, entao nao havia como saber depois.
+    """
     pattern = pick_title_pattern(kind)
 
     # Seleciona adjetivos relevantes
@@ -143,6 +148,22 @@ def generate_title(
         if not title or len(title) > 100:
             title = title[:97] + "..."
 
+    return title, pattern
+
+
+def generate_title(
+    animal: str,
+    acao: str,
+    estilo_musical: str,
+    kind: Literal["short", "horizontal", "live"],
+    emoji: str,
+    duracao: int | None = None,
+) -> str:
+    """Gera título otimizado usando padrões de alta performance."""
+    title, _pattern = generate_title_with_pattern(
+        animal=animal, acao=acao, estilo_musical=estilo_musical,
+        kind=kind, emoji=emoji, duracao=duracao,
+    )
     return title
 
 

@@ -122,6 +122,18 @@ def upload_video(language: str = "en", privacy: str = "public", prefix: str = "p
     video_id = response["id"]
     log.info("Video enviado: https://youtu.be/%s", video_id)
 
+    # A resposta do insert() ja inclui "status" (pedido no part= acima) - da
+    # pra conferir se o vídeo saiu mesmo com o privacyStatus pedido sem gastar
+    # outra chamada. Vídeo preso em "private"/"processing" quando devia ser
+    # público some do canal em silêncio; melhor logar alto do que descobrir
+    # dias depois.
+    actual_privacy = response.get("status", {}).get("privacyStatus")
+    if actual_privacy != privacy:
+        log.error(
+            "Video %s saiu com privacyStatus=%r, esperado %r - confira manualmente.",
+            video_id, actual_privacy, privacy,
+        )
+
     if thumbnail and thumbnail.exists():
         try:
             # Re-verifica existencia (TOCTOU) e instancia MediaFileUpload dentro do try.
@@ -178,12 +190,6 @@ def upload_video(language: str = "en", privacy: str = "public", prefix: str = "p
             add_video_to_playlist(service, video_id, mood=meta["mood"])
     except Exception as exc:
         log.warning("Falha ao adicionar a playlist: %s", exc)
-
-    try:
-        from utils.discord_webhook import notify_video_upload
-        notify_video_upload(title, f"https://youtu.be/{video_id}")
-    except Exception as exc:
-        log.warning("Falha ao notificar Discord: %s", exc)
 
     return video_id
 
