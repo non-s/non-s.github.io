@@ -12,6 +12,10 @@ import random
 import textwrap
 from typing import Literal
 
+# YouTube aceita ate 15 hashtags, mas descricoes com muitas leem como spam;
+# 8 cobre marca + animal + musica + formato sem exagerar.
+_MAX_HASHTAGS = 8
+
 # Keywords de alta performance para o nicho pet + jazz
 HIGH_PERFORMANCE_KEYWORDS = {
     "cuteness": [
@@ -80,7 +84,7 @@ HASHTAGS_POR_CATEGORIA = {
     "brand": ["#PataJazz", "#CatJazz", "#DogJazz", "#PetJazz"],
     "animal": ["#Cats", "#Dogs", "#Kittens", "#Puppies", "#Pets", "#Animals"],
     "musica": ["#Jazz", "#RelaxingMusic", "#SmoothJazz", "#JazzInstrumental", "#AmbientMusic"],
-    "emocao": ["#Cute", "#Relaxation", "#Peaceful", "#Calm", "#WellBeing", "#Zen"],
+    "emocao": ["#Relaxation", "#Peaceful", "#Calm", "#WellBeing", "#Zen", "#Cute"],
     "formato": ["#Shorts", "#YouTubeShorts", "#RelaxingVideo", "#ASMR"],
     "nicho": ["#CatLover", "#DogLover", "#PetLover", "#JazzLover", "#MusicForPets"],
 }
@@ -186,7 +190,7 @@ def generate_description(
         cta = "\n\n" + cta_text
 
     # Hashtags
-    hashtags_str = " ".join(hashtags[:15])  # YouTube limita a 15
+    hashtags_str = " ".join(hashtags[:_MAX_HASHTAGS])  # YouTube aceita ate 15, mas mais que ~8 comeca a ler como spam
 
     return f"{intro}{corpo}{cta}\n\n{hashtags_str}"
 
@@ -196,7 +200,13 @@ def generate_hashtags(
     categoria: str = "cuteness",
     kind: Literal["short", "horizontal", "live"] = "short",
 ) -> list[str]:
-    """Gera conjunto estratégico de hashtags em camadas."""
+    """Gera conjunto estratégico de hashtags em camadas.
+
+    Orcamento fixo por camada (2+2+1+1+2=8=_MAX_HASHTAGS) para que as 5
+    camadas (brand, animal, musica, categoria, formato) sempre apareçam -
+    fatias maiores nas primeiras camadas comiam o orcamento inteiro antes
+    das ultimas serem consideradas (formato nunca sobrevivia ao slice final).
+    """
     hashtags = []
 
     # Camada 1: Brand (sempre presente)
@@ -204,31 +214,31 @@ def generate_hashtags(
 
     # Camada 2: Animal específico
     if "cat" in animal.lower() or "gato" in animal.lower():
-        hashtags.extend(["#Cats", "#Kittens", "#CatLover"])
+        hashtags.extend(["#Cats", "#CatLover"])
     elif "dog" in animal.lower() or "cachorro" in animal.lower():
-        hashtags.extend(["#Dogs", "#Puppies", "#DogLover"])
+        hashtags.extend(["#Dogs", "#DogLover"])
     else:
         hashtags.extend(HASHTAGS_POR_CATEGORIA["animal"][:2])
 
     # Camada 3: Música
-    hashtags.extend(HASHTAGS_POR_CATEGORIA["musica"][:3])
+    hashtags.extend(HASHTAGS_POR_CATEGORIA["musica"][:1])
 
     # Camada 4: Emoção/Categoria
     if categoria in ("cuteness", "fofura"):
-        hashtags.extend(["#Cute", "#CutePets", "#AdorableAnimal"])
+        hashtags.extend(["#Cute"])
     elif categoria in ("relaxation", "relaxamento"):
-        hashtags.extend(HASHTAGS_POR_CATEGORIA["emocao"][:3])
+        hashtags.extend(HASHTAGS_POR_CATEGORIA["emocao"][:1])
     elif categoria in ("fun", "diversao"):
-        hashtags.extend(["#Fun", "#FunnyPets", "#FunnyAnimals"])
+        hashtags.extend(["#Fun"])
 
     # Camada 5: Formato
     if kind == "short":
         hashtags.extend(["#Shorts", "#YouTubeShorts"])
     elif kind == "live":
-        hashtags.extend(["#Live", "#LiveStream", "#247"])
+        hashtags.extend(["#Live", "#LiveStream"])
 
-    # Remove duplicatas e limita a 15
-    hashtags = list(dict.fromkeys(hashtags))[:15]
+    # Remove duplicatas e aplica o teto final (camadas ja somam _MAX_HASHTAGS)
+    hashtags = list(dict.fromkeys(hashtags))[:_MAX_HASHTAGS]
 
     return hashtags
 

@@ -11,6 +11,7 @@ from typing import Any, Literal
 
 from utils.ai_helper import ai_text
 from utils.seo_keywords import (
+    _MAX_HASHTAGS,
     generate_description,
     generate_hashtags,
     generate_title,
@@ -100,9 +101,13 @@ def generate_metadata(
             if isinstance(raw_hashtags, str):
                 raw_hashtags = raw_hashtags.split()
             ai_hashtags = [str(h).strip() for h in raw_hashtags
-                           if isinstance(h, str) and h.strip()][:15]
+                           if isinstance(h, str) and h.strip()][:_MAX_HASHTAGS]
             if ai_hashtags:
-                hashtags = list(dict.fromkeys(hashtags + ai_hashtags))[:15]
+                # AI hashtags primeiro: generate_hashtags() ja preenche o
+                # orcamento de _MAX_HASHTAGS sozinho (brand+animal+musica+
+                # categoria+formato), entao "hashtags + ai_hashtags" nunca
+                # deixava as sugestoes da IA sobreviverem ao slice final.
+                hashtags = list(dict.fromkeys(ai_hashtags + hashtags))[:_MAX_HASHTAGS]
         except Exception:
             log.warning("Falha ao parsear metadata JSON; usando fallback otimizado.")
 
