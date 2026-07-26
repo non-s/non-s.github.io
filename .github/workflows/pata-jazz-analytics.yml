@@ -49,6 +49,16 @@ jobs:
           restore-keys: analytics-
       - name: "Coletar analytics"
         run: python scripts/collect_analytics.py
+      - name: "Upload analytics como artifact"
+        # O cache acima so serve pra passar o arquivo pro proximo run (nao
+        # da pra inspecionar um cache de fora). Como artifact, o relatorio
+        # fica baixavel via API/UI - e o que faltava pra esses dados
+        # servirem de algo em vez de morrer no runner efemero.
+        uses: actions/upload-artifact@v4
+        with:
+          name: analytics-report
+          path: _data/analytics.json
+          retention-days: 90
       - name: "Apagar token"
         if: always()
         run: rm -f youtube_token.json
