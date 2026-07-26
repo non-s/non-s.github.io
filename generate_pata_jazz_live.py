@@ -290,13 +290,25 @@ def _start_ffmpeg_stream(
     return proc
 
 
-def _wait_ffmpeg_stream(proc: subprocess.Popen) -> int:
+def _wait_ffmpeg_stream(proc: subprocess.Popen, max_seconds: float | None = None) -> int:
     """Aguarda o processo FFmpeg iniciado por _start_ffmpeg_stream terminar.
 
     O stderr do FFmpeg ja esta redirecionado para um arquivo de log (sem
     risco de deadlock de pipe). Aqui apenas fazemos poll do processo e
     lidamos com o desligamento gracoso via SIGTERM.
+
+    max_seconds e um watchdog: confirmado em producao que o FFmpeg pode
+    travar (parar de progredir sem crashar nem respeitar seu proprio -t,
+    provavelmente um write RTMP bloqueado por instabilidade de rede) por
+    dezenas de minutos sem sair sozinho. Sem esse watchdog o processo so
+    e derrubado quando o job inteiro bate o timeout duro do GitHub Actions
+    (SIGKILL forcado nos processos orfaos, sem chance do codigo chamar
+    transition('complete') - broadcast fica preso "ao vivo" para sempre).
+    Se o segmento passar de max_seconds sem sair, tratamos como travado:
+    matamos o FFmpeg e devolvemos o controle para o loop de reconexao em
+    run_live.py, que ja lida com FFmpeg morrendo antes da duracao pedida.
     """
+    start = time.time()
     try:
         while proc.poll() is None:
             if _shutdown:
@@ -306,6 +318,18 @@ def _wait_ffmpeg_stream(proc: subprocess.Popen) -> int:
                     proc.wait(timeout=30)
                 except subprocess.TimeoutExpired:
                     proc.kill()
+                    proc.wait(timeout=10)
+                break
+            if max_seconds and (time.time() - start) > max_seconds:
+                log.warning(
+                    "FFmpeg parece travado (sem sair apos %.0fs, esperado ~%.0fs); forcando encerramento.",
+                    time.time() - start, max_seconds,
+                )
+                proc.kill()
+                try:
+                    proc.wait(timeout=10)
+                except subprocess.TimeoutExpired:
+                    pass
                 break
             time.sleep(5)
     except Exception:

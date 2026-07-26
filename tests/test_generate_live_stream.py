@@ -165,3 +165,49 @@ class TestWaitFfmpegStreamErrorSurfacing:
         code = live._wait_ffmpeg_stream(proc)
 
         assert code == 187
+
+
+class TestWaitFfmpegStreamWatchdog:
+    """Confirmado em producao (run 30178358662): o FFmpeg pode travar - parar
+    de progredir sem crashar e sem respeitar seu proprio -t - e ficar rodando
+    ate o job inteiro bater o timeout duro do GitHub Actions, que forca
+    SIGKILL antes do finally poder chamar transition('complete'). O watchdog
+    de max_seconds precisa matar esse processo travado sozinho, sem depender
+    do temporizador externo do GHA."""
+
+    @patch("generate_pata_jazz_live.time.sleep", return_value=None)
+    @patch("generate_pata_jazz_live.OUTPUT_DIR")
+    def test_hung_process_is_killed_after_max_seconds(self, _mock_outdir, _mock_sleep, tmp_path):
+        _mock_outdir.__truediv__ = lambda self, other: tmp_path / other
+        (tmp_path / "live_ffmpeg.log").write_text("frame=1\n", encoding="utf-8")
+
+        proc = MagicMock()
+        proc.poll.return_value = None  # nunca sai sozinho - travado.
+        proc.returncode = -9  # kill() reaped: SIGKILL.
+
+        fake_now = [0.0]
+
+        def _advancing_time():
+            fake_now[0] += 10
+            return fake_now[0]
+
+        with patch("generate_pata_jazz_live.time.time", side_effect=_advancing_time):
+            code = live._wait_ffmpeg_stream(proc, max_seconds=60)
+
+        proc.kill.assert_called_once()
+        assert code == -9
+
+    @patch("generate_pata_jazz_live.time.sleep", return_value=None)
+    @patch("generate_pata_jazz_live.OUTPUT_DIR")
+    def test_process_exiting_before_max_seconds_is_not_killed(self, _mock_outdir, _mock_sleep, tmp_path):
+        _mock_outdir.__truediv__ = lambda self, other: tmp_path / other
+        (tmp_path / "live_ffmpeg.log").write_text("frame=1\n", encoding="utf-8")
+
+        proc = MagicMock()
+        proc.poll.side_effect = [None, 0]
+        proc.returncode = 0
+
+        code = live._wait_ffmpeg_stream(proc, max_seconds=6000)
+
+        proc.kill.assert_not_called()
+        assert code == 0
