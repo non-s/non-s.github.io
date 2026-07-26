@@ -33,6 +33,7 @@ jobs:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
       JAMENDO_CLIENT_ID: ${{ secrets.JAMENDO_CLIENT_ID }}
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
     steps:
       - name: "Checkout"
         uses: actions/checkout@v4
@@ -81,3 +82,6 @@ jobs:
       - name: "Apagar token"
         if: always()
         run: rm -f youtube_token.json
+      - name: "Notificar falha no Discord"
+        if: failure()
+        run: python scripts/notify_failure.py "Pata Jazz - Shorts"
