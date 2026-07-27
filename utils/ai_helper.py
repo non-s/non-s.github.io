@@ -9,6 +9,7 @@ from __future__ import annotations
 import logging
 import os
 import random
+import re
 import threading
 import time
 from time import sleep
@@ -16,6 +17,26 @@ from time import sleep
 import requests
 
 log = logging.getLogger(__name__)
+
+# Padroes que nunca deveriam aparecer num titulo/descricao/legenda gerados.
+# O system prompt (abaixo) ja instrui o modelo a ignorar instrucoes
+# embutidas no conteudo, mas isso guia a geracao - nao impede um output
+# ruim de ser aceito depois. Uma checagem barata aqui evita publicar algo
+# caso o texto gerado escape das instrucoes (link suspeito, HTML, ou o
+# modelo "respondendo" a uma instrucao em vez de gerar o texto pedido).
+_SUSPICIOUS_PATTERNS = (
+    r"https?://",
+    r"<[a-z][\s\S]*>",  # tag HTML tipo <script>, <a href>
+    r"ignore (all )?(previous|above) instructions",
+    r"system prompt",
+    r"you are (now |an? )?(ai|assistant|chatbot)",
+)
+_SUSPICIOUS_RE = re.compile("|".join(_SUSPICIOUS_PATTERNS), re.IGNORECASE)
+
+
+def is_safe_ai_text(text: str) -> bool:
+    """Confere se um texto gerado por IA parece seguro pra publicar."""
+    return bool(text) and not _SUSPICIOUS_RE.search(text)
 
 _GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash-001")
 _GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"

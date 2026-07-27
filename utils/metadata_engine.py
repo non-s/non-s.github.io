@@ -9,7 +9,7 @@ import logging
 import re
 from typing import Any, Literal
 
-from utils.ai_helper import ai_text
+from utils.ai_helper import ai_text, is_safe_ai_text
 from utils.seo_keywords import (
     _MAX_HASHTAGS,
     generate_description,
@@ -90,16 +90,21 @@ def generate_metadata(
     if out:
         try:
             data = json.loads(out)
-            # Usa título da IA se for valido e nao vazio; senao mantém título SEO.
+            # Usa título da IA se for valido, nao vazio e nao suspeito; senao
+            # mantém título SEO.
             ai_title = str(data.get("title", "")).strip()[:100]
-            if ai_title:
+            if ai_title and is_safe_ai_text(ai_title):
                 title = ai_title
                 title_pattern = "ai_generated"
+            elif ai_title:
+                log.warning("Titulo da IA rejeitado (padrao suspeito): %r", ai_title)
 
-            # Usa descrição da IA se disponível
+            # Usa descrição da IA se disponível e nao suspeita
             ai_description = str(data.get("description", "")).strip()[:5000]
-            if ai_description:
+            if ai_description and is_safe_ai_text(ai_description):
                 description = ai_description
+            elif ai_description:
+                log.warning("Descricao da IA rejeitada (padrao suspeito): %r", ai_description)
 
             # Merge de hashtags (filtra apenas strings, evita alucinacoes de dict/list)
             raw_hashtags = data.get("hashtags", [])

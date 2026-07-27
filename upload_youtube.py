@@ -24,7 +24,7 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
 from utils import ffmpeg_helpers
-from utils.ai_helper import ai_text
+from utils.ai_helper import ai_text, is_safe_ai_text
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.youtube_oauth import get_youtube_service
 
@@ -208,6 +208,9 @@ def _generate_live_title() -> str:
     )
     out = ai_text(prompt, task="live_title")
     title = out.strip().replace('"', "") if out else ""
+    if title and not is_safe_ai_text(title):
+        log.warning("Titulo de live da IA rejeitado (padrao suspeito): %r", title)
+        title = ""
     return title or "Pata Jazz 🐾🎷 | Calming Music for Cats & Dogs - 24/7 Live"
 
 

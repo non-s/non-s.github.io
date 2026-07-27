@@ -24,6 +24,28 @@ def _write_video_with_meta(output_dir: Path, meta: dict, stem: str = "pata_jazz_
     (output_dir / f"{stem}.json").write_text(json.dumps(meta), encoding="utf-8")
 
 
+class TestGenerateLiveTitle:
+    """_generate_live_title() rejeita titulo suspeito vindo da IA."""
+
+    @patch("upload_youtube.ai_text")
+    def test_uses_ai_title_when_safe(self, mock_ai_text):
+        mock_ai_text.return_value = "Calming Jazz for Sleepy Cats"
+        assert upload_youtube._generate_live_title() == "Calming Jazz for Sleepy Cats"
+
+    @patch("upload_youtube.ai_text")
+    def test_falls_back_when_ai_title_suspicious(self, mock_ai_text):
+        mock_ai_text.return_value = "Click here: https://scam.example.com"
+        title = upload_youtube._generate_live_title()
+        assert "https://" not in title
+        assert "Pata Jazz" in title
+
+    @patch("upload_youtube.ai_text")
+    def test_falls_back_when_ai_returns_empty(self, mock_ai_text):
+        mock_ai_text.return_value = ""
+        title = upload_youtube._generate_live_title()
+        assert "Pata Jazz" in title
+
+
 class TestMetaPath:
     """meta.get(key, "") vira Path("") == Path(".") quando a chave esta
     ausente/vazia, e '.'.exists() e sempre True (cwd sempre existe) -
