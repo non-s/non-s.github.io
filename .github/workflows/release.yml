@@ -1,0 +1,84 @@
+name: "Pata Jazz - Release Semanal"
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Todo domingo 00:00 UTC - gera um release com os commits feat:/fix:/security: da semana.
+    - cron: "0 0 * * 0"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pata-jazz-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: "Gerar release semanal"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: "Checkout (full history para git log da semana)"
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: "Gerar tag e release notes"
+        id: notes
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Tag no formato vYYYY-MM-DD (data da semana). Usa domingo como
+          # referencia - o cron roda no domingo 00:00 UTC, entao a tag
+          # representa a semana que acabou de terminar.
+          tag="v$(date -u +%Y-%m-%d)"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+          # Janela: commits dos ultimos 7 dias ate agora.
+          since=$(date -u -d '7 days ago' +%Y-%m-%d)
+          {
+            echo "## Release $tag"
+            echo ""
+            echo "Commits feat:/fix:/security:/refactor:/docs: entre $since e $(date -u +%Y-%m-%d)."
+            echo ""
+            echo "### Features"
+            echo ""
+            git log --since="$since" --pretty=format:'- %s (%h)' --grep='^feat' -i || true
+            echo ""
+            echo ""
+            echo "### Fixes"
+            echo ""
+            git log --since="$since" --pretty=format:'- %s (%h)' --grep='^fix' -i || true
+            echo ""
+            echo ""
+            echo "### Security"
+            echo ""
+            git log --since="$since" --pretty=format:'- %s (%h)' --grep='^security' -i || true
+            echo ""
+            echo ""
+            echo "### Refactor"
+            echo ""
+            git log --since="$since" --pretty=format:'- %s (%h)' --grep='^refactor' -i || true
+            echo ""
+            echo ""
+            echo "### Docs"
+            echo ""
+            git log --since="$since" --pretty=format:'- %s (%h)' --grep='^docs' -i || true
+            echo ""
+          } > release_notes.md
+          echo "## Release notes geradas:"
+          cat release_notes.md
+      - name: "Publicar release no GitHub"
+        # softprops/action-gh-release@v1 (pinned por SHA do commit apontado
+        # pela tag v1: de2c0eb89ae2a093876385947365aca7b0e5f844). v1 e a
+        # linha estavel que o projeto ja referencia; v2/v3 existem mas
+        # exigem Node 20+ no runner - v1 funciona em ubuntu-latest sem
+        # restricoes adicionais.
+        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v1
+        with:
+          tag_name: ${{ steps.notes.outputs.tag }}
+          name: ${{ steps.notes.outputs.tag }}
+          body_path: release_notes.md
+          draft: false
+          prerelease: false
