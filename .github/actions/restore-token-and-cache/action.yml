@@ -35,11 +35,17 @@ runs:
       # Sem isso, cada workflow (shorts/horizontal/live/batch/weekly/analytics)
       # comeca de um checkout limpo e esses arquivos nunca sobrevivem entre
       # runs - o anti-repeat de b-roll/jazz (recent_media.json), o cache de
-      # playlists (playlist_cache.json) e o feedback loop de performance por
+      # playlists (playlist_cache.json), o feedback loop de performance por
       # cena (video_tags.json escrito no upload, scene_performance.json
       # escrito pelo collect_analytics.py e lido de volta por
-      # content_strategy.scene_for_mood) ficariam sempre vazios/zerados a
-      # cada run, sem nunca dar erro - so silenciosamente nunca funcionando.
+      # content_strategy.scene_for_mood) e o historico de audiencia da live
+      # (live_viewer_history.json, escrito por upload_youtube.record_live_
+      # viewer_snapshot a cada segmento de FFmpeg) ficariam sempre vazios/
+      # zerados a cada run, sem nunca dar erro - so silenciosamente nunca
+      # funcionando. live_viewer_history.json em particular so acumula
+      # dentro de uma unica sessao de live (~320min); sem cache, cada novo
+      # ciclo do cron a cada 6h apagaria todo o historico de audiencia das
+      # sessoes anteriores.
       uses: actions/cache@v4
       with:
         path: |
@@ -47,5 +53,6 @@ runs:
           _data/playlist_cache.json
           _data/video_tags.json
           _data/scene_performance.json
+          _data/live_viewer_history.json
         key: pata-jazz-data-${{ github.run_id }}
         restore-keys: pata-jazz-data-
