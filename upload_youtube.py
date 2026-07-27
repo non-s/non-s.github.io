@@ -85,12 +85,13 @@ _MAX_VIDEO_TAGS = 500
 
 
 def _record_video_tags(video_id: str, meta: dict) -> None:
-    """Persiste scene/hook/mood do video enviado, indexado por video_id.
+    """Persiste scene/hook/mood/title_pattern do video enviado, indexado por video_id.
 
     collect_analytics.py so tinha views agregadas sem nenhuma pista de qual
-    cena/hook gerou qual video - o "feedback loop" mencionado no docstring
-    daquele modulo nunca existiu de verdade. Esse mapeamento e o que falta
-    pra cruzar performance real (views) com a cena que a gerou.
+    cena/hook/padrao de titulo gerou qual video - o "feedback loop"
+    mencionado no docstring daquele modulo nunca existiu de verdade. Esse
+    mapeamento e o que falta pra cruzar performance real (views) com o que
+    gerou cada video.
     """
     scene = meta.get("scene", "")
     if not scene:
@@ -104,6 +105,7 @@ def _record_video_tags(video_id: str, meta: dict) -> None:
         "hook": meta.get("hook", ""),
         "mood": meta.get("mood", ""),
         "kind": meta.get("kind", ""),
+        "title_pattern": meta.get("title_pattern", ""),
         "uploaded_at": datetime.now(UTC).isoformat(),
     }
     # Mantem so as N mais recentes (por ordem de insercao) pra nao crescer pra sempre.

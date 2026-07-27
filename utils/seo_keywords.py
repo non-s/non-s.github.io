@@ -8,9 +8,14 @@ Em ingles: o nicho pet+jazz e dominado por volume de busca em ingles
 
 from __future__ import annotations
 
+import json
 import random
 import textwrap
+from pathlib import Path
 from typing import Literal
+
+ROOT = Path(__file__).resolve().parent.parent
+_TITLE_PATTERN_PERFORMANCE_FILE = ROOT / "_data" / "title_pattern_performance.json"
 
 # YouTube aceita ate 15 hashtags, mas descricoes com muitas leem como spam;
 # 8 cobre marca + animal + musica + formato sem exagerar.
@@ -90,10 +95,35 @@ HASHTAGS_POR_CATEGORIA = {
 }
 
 
+def _title_pattern_weights() -> dict[str, float]:
+    """Le _data/title_pattern_performance.json (gerado por collect_analytics.py
+    a partir de views reais por padrao de titulo). Ausente/corrompido = sem
+    preferencia. Mesmo mecanismo de utils.content_strategy._scene_weights,
+    so que indexado pelo texto do padrao (title_pattern) em vez da cena -
+    title_pattern ja era gravado em video_tags.json desde que
+    generate_title_with_pattern existe, mas nunca era lido de volta."""
+    try:
+        data = json.loads(_TITLE_PATTERN_PERFORMANCE_FILE.read_text(encoding="utf-8"))
+        return data if isinstance(data, dict) else {}
+    except Exception:
+        return {}
+
+
 def pick_title_pattern(kind: Literal["short", "horizontal", "live"]) -> str:
-    """Seleciona um padrão de título otimizado para o formato."""
+    """Seleciona um padrão de título otimizado para o formato.
+
+    Quando ha dados reais de performance (title_pattern_performance.json),
+    a escolha e ponderada por eles em vez de puramente uniforme - padroes
+    que historicamente tiveram mais views por video ficam mais provaveis,
+    sem nunca zerar a chance dos outros (ver _MIN_WEIGHT em
+    collect_analytics.py).
+    """
     patterns = TITLE_PATTERNS.get(kind, TITLE_PATTERNS["short"])
-    return random.choice(patterns)
+    weights_by_pattern = _title_pattern_weights()
+    if not weights_by_pattern:
+        return random.choice(patterns)
+    weights = [weights_by_pattern.get(p, 1.0) for p in patterns]
+    return random.choices(patterns, weights=weights, k=1)[0]
 
 
 def generate_title_with_pattern(

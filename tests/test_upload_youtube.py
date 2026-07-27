@@ -303,7 +303,11 @@ class TestRecordVideoTags:
         monkeypatch.setattr(upload_youtube, "_VIDEO_TAGS_FILE", tags_file)
 
         upload_youtube._record_video_tags(
-            "vid1", {"scene": "cat", "hook": "Cute Cat", "mood": "fofura", "kind": "short"}
+            "vid1",
+            {
+                "scene": "cat", "hook": "Cute Cat", "mood": "fofura", "kind": "short",
+                "title_pattern": "{emoji} {adjetivo} {animal}",
+            },
         )
 
         data = json.loads(tags_file.read_text(encoding="utf-8"))
@@ -311,7 +315,17 @@ class TestRecordVideoTags:
         assert data["vid1"]["hook"] == "Cute Cat"
         assert data["vid1"]["mood"] == "fofura"
         assert data["vid1"]["kind"] == "short"
+        assert data["vid1"]["title_pattern"] == "{emoji} {adjetivo} {animal}"
         assert "uploaded_at" in data["vid1"]
+
+    def test_title_pattern_defaults_to_empty_string_when_missing(self, tmp_path, monkeypatch):
+        tags_file = tmp_path / "video_tags.json"
+        monkeypatch.setattr(upload_youtube, "_VIDEO_TAGS_FILE", tags_file)
+
+        upload_youtube._record_video_tags("vid1", {"scene": "cat"})
+
+        data = json.loads(tags_file.read_text(encoding="utf-8"))
+        assert data["vid1"]["title_pattern"] == ""
 
     def test_skips_when_scene_missing(self, tmp_path, monkeypatch):
         tags_file = tmp_path / "video_tags.json"
