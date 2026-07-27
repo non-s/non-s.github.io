@@ -447,3 +447,186 @@ class TestRecordLiveViewerSnapshot:
         self._isolate(tmp_path, monkeypatch)
         with patch("upload_youtube.get_youtube_service", side_effect=RuntimeError("no creds")):
             upload_youtube.record_live_viewer_snapshot("bcast123")  # nao deve levantar
+
+
+class TestTryResumeExistingBroadcast:
+    """_try_resume_existing_broadcast(): reaproveita o broadcast/stream da
+    sessao anterior (salvo em live_state.json) em vez de criar um novo -
+    sem isso, cada sessao do GitHub Actions criava um link de live diferente
+    mesmo quando o encadeamento entre sessoes tinha gap real de poucos
+    minutos, quebrando a impressao de "1 live que nunca para". Qualquer
+    situacao ambigua (arquivo ausente, broadcast/stream nao encontrado,
+    lifecycle terminal, erro de API) deve cair no fallback seguro (None ->
+    create_live_stream cria um broadcast novo, igual ao comportamento antes
+    desta funcao existir)."""
+
+    def _isolate(self, tmp_path, monkeypatch):
+        state_file = tmp_path / "live_state.json"
+        monkeypatch.setattr(upload_youtube, "_LIVE_STATE_FILE", state_file)
+        return state_file
+
+    def _service_with(self, broadcast_items=None, stream_items=None):
+        service = MagicMock()
+
+        def broadcasts_list_side_effect(**kwargs):
+            resp = MagicMock()
+            resp.execute.return_value = {"items": broadcast_items if broadcast_items is not None else []}
+            return resp
+
+        def streams_list_side_effect(**kwargs):
+            resp = MagicMock()
+            resp.execute.return_value = {"items": stream_items if stream_items is not None else []}
+            return resp
+
+        service.liveBroadcasts().list.side_effect = broadcasts_list_side_effect
+        service.liveStreams().list.side_effect = streams_list_side_effect
+        return service
+
+    def test_returns_none_when_no_state_file(self, tmp_path, monkeypatch):
+        self._isolate(tmp_path, monkeypatch)
+        service = MagicMock()
+        assert upload_youtube._try_resume_existing_broadcast(service) is None
+
+    def test_returns_none_when_state_file_corrupted(self, tmp_path, monkeypatch):
+        state_file = self._isolate(tmp_path, monkeypatch)
+        state_file.write_text("not json", encoding="utf-8")
+        service = MagicMock()
+        assert upload_youtube._try_resume_existing_broadcast(service) is None
+
+    def test_returns_none_when_state_file_missing_required_keys(self, tmp_path, monkeypatch):
+        state_file = self._isolate(tmp_path, monkeypatch)
+        state_file.write_text(json.dumps({"title": "x"}), encoding="utf-8")
+        service = MagicMock()
+        assert upload_youtube._try_resume_existing_broadcast(service) is None
+
+    def test_returns_none_when_broadcast_not_found(self, tmp_path, monkeypatch):
+        state_file = self._isolate(tmp_path, monkeypatch)
+        state_file.write_text(json.dumps({"broadcast_id": "b1", "stream_id": "s1"}), encoding="utf-8")
+        service = self._service_with(broadcast_items=[])
+
+        assert upload_youtube._try_resume_existing_broadcast(service) is None
+
+    def test_returns_none_when_lifecycle_is_complete(self, tmp_path, monkeypatch):
+        state_file = self._isolate(tmp_path, monkeypatch)
+        state_file.write_text(json.dumps({"broadcast_id": "b1", "stream_id": "s1"}), encoding="utf-8")
+        service = self._service_with(broadcast_items=[{"status": {"lifeCycleStatus": "complete"}}])
+
+        assert upload_youtube._try_resume_existing_broadcast(service) is None
+
+    def test_returns_none_when_lifecycle_is_revoked(self, tmp_path, monkeypatch):
+        state_file = self._isolate(tmp_path, monkeypatch)
+        state_file.write_text(json.dumps({"broadcast_id": "b1", "stream_id": "s1"}), encoding="utf-8")
+        service = self._service_with(broadcast_items=[{"status": {"lifeCycleStatus": "revoked"}}])
+
+        assert upload_youtube._try_resume_existing_broadcast(service) is None
+
+    def test_returns_none_when_stream_not_found(self, tmp_path, monkeypatch):
+        state_file = self._isolate(tmp_path, monkeypatch)
+        state_file.write_text(json.dumps({"broadcast_id": "b1", "stream_id": "s1"}), encoding="utf-8")
+        service = self._service_with(broadcast_items=[{"status": {"lifeCycleStatus": "live"}}], stream_items=[])
+
+        assert upload_youtube._try_resume_existing_broadcast(service) is None
+
+    def test_returns_none_on_api_exception(self, tmp_path, monkeypatch):
+        state_file = self._isolate(tmp_path, monkeypatch)
+        state_file.write_text(json.dumps({"broadcast_id": "b1", "stream_id": "s1"}), encoding="utf-8")
+        service = MagicMock()
+        service.liveBroadcasts().list.side_effect = RuntimeError("api down")
+
+        assert upload_youtube._try_resume_existing_broadcast(service) is None
+
+    def test_resumes_when_lifecycle_is_live(self, tmp_path, monkeypatch):
+        state_file = self._isolate(tmp_path, monkeypatch)
+        state_file.write_text(
+            json.dumps({
+                "broadcast_id": "b1", "stream_id": "s1",
+                "title": "Pata Jazz Live", "description": "desc", "privacy": "public",
+            }),
+            encoding="utf-8",
+        )
+        service = self._service_with(
+            broadcast_items=[{"status": {"lifeCycleStatus": "live"}}],
+            stream_items=[{"cdn": {"ingestionInfo": {"streamName": "abcd-1234"}}}],
+        )
+
+        result = upload_youtube._try_resume_existing_broadcast(service)
+
+        assert result == {
+            "broadcast_id": "b1",
+            "stream_id": "s1",
+            "stream_name": "abcd-1234",
+            "ingestion_url": "rtmp://a.rtmp.youtube.com/live2/abcd-1234",
+            "title": "Pata Jazz Live",
+            "description": "desc",
+            "privacy": "public",
+        }
+
+    def test_resumes_when_lifecycle_is_ready(self, tmp_path, monkeypatch):
+        """'ready' (upcoming, ainda nao foi ao ar) tambem e reaproveitavel -
+        cleanup_orphan_broadcasts ja cuida de apagar um 'ready' velho demais
+        antes desta funcao rodar."""
+        state_file = self._isolate(tmp_path, monkeypatch)
+        state_file.write_text(json.dumps({"broadcast_id": "b1", "stream_id": "s1"}), encoding="utf-8")
+        service = self._service_with(
+            broadcast_items=[{"status": {"lifeCycleStatus": "ready"}}],
+            stream_items=[{"cdn": {"ingestionInfo": {"streamName": "abcd-1234"}}}],
+        )
+
+        result = upload_youtube._try_resume_existing_broadcast(service)
+
+        assert result is not None
+        assert result["broadcast_id"] == "b1"
+
+
+class TestCreateLiveStreamResume:
+    """create_live_stream(): so cria um broadcast novo quando nao ha um
+    reaproveitavel - o caminho de reaproveitamento nao deve chamar
+    liveBroadcasts().insert()/liveStreams().insert() de jeito nenhum."""
+
+    def _isolate(self, tmp_path, monkeypatch):
+        state_file = tmp_path / "live_state.json"
+        monkeypatch.setattr(upload_youtube, "_LIVE_STATE_FILE", state_file)
+        return state_file
+
+    def test_reuses_existing_broadcast_without_creating_new(self, tmp_path, monkeypatch):
+        state_file = self._isolate(tmp_path, monkeypatch)
+        resumed_meta = {
+            "broadcast_id": "b1", "stream_id": "s1", "stream_name": "abcd",
+            "ingestion_url": "rtmp://a.rtmp.youtube.com/live2/abcd",
+            "title": "t", "description": "d", "privacy": "public",
+        }
+        service = MagicMock()
+        with (
+            patch("upload_youtube.get_youtube_service", return_value=service),
+            patch("upload_youtube.cleanup_orphan_broadcasts"),
+            patch("upload_youtube._try_resume_existing_broadcast", return_value=resumed_meta),
+        ):
+            result = upload_youtube.create_live_stream(privacy="public", resolution="720p")
+
+        assert result == resumed_meta
+        service.liveBroadcasts().insert.assert_not_called()
+        service.liveStreams().insert.assert_not_called()
+        assert json.loads(state_file.read_text(encoding="utf-8")) == resumed_meta
+
+    def test_creates_new_broadcast_when_nothing_resumable(self, tmp_path, monkeypatch):
+        state_file = self._isolate(tmp_path, monkeypatch)
+        service = MagicMock()
+        service.liveBroadcasts().insert().execute.return_value = {"id": "new_broadcast"}
+        service.liveStreams().insert().execute.return_value = {
+            "id": "new_stream",
+            "cdn": {"ingestionInfo": {"streamName": "new-key"}},
+        }
+        with (
+            patch("upload_youtube.get_youtube_service", return_value=service),
+            patch("upload_youtube.cleanup_orphan_broadcasts"),
+            patch("upload_youtube._try_resume_existing_broadcast", return_value=None),
+            patch("upload_youtube._generate_live_title", return_value="Generated Title"),
+        ):
+            result = upload_youtube.create_live_stream(privacy="public", resolution="720p")
+
+        assert result["broadcast_id"] == "new_broadcast"
+        assert result["stream_id"] == "new_stream"
+        assert result["ingestion_url"] == "rtmp://a.rtmp.youtube.com/live2/new-key"
+        service.liveBroadcasts().insert.assert_called()
+        service.liveStreams().insert.assert_called()
+        assert json.loads(state_file.read_text(encoding="utf-8"))["broadcast_id"] == "new_broadcast"

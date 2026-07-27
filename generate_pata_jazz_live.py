@@ -449,9 +449,21 @@ def _run_ffmpeg_stream(
 
 
 def _save_live_meta(**kwargs) -> None:
+    """Atualiza _data/live_state.json, mesclando com o conteudo ja existente.
+
+    upload_youtube.create_live_stream() grava broadcast_id/stream_id/
+    ingestion_url nesse mesmo arquivo logo antes desta funcao ser chamada
+    (ver run_live.py) - sobrescrever tudo aqui apagava exatamente os campos
+    que upload_youtube._try_resume_existing_broadcast precisa pra
+    reaproveitar o broadcast na proxima sessao em vez de criar um novo.
+    """
     LIVE_META_DIR.mkdir(parents=True, exist_ok=True)
     path = LIVE_META_DIR / "live_state.json"
-    data = kwargs.copy()
+    try:
+        existing = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    except Exception:
+        existing = {}
+    data = {**existing, **kwargs}
     data["updated_at"] = datetime.now(UTC).isoformat()
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 

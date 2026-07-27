@@ -2,8 +2,7 @@
 scripts/run_live.py — orquestra a live Pata Jazz no GitHub Actions.
 
 Cria a transmissao no YouTube, constroi o loop de video e a playlist de audio,
-e inicia o stream via FFmpeg. Ao finalizar (por SIGTERM ou duracao), encerra
-a transmissao no YouTube.
+e inicia o stream via FFmpeg.
 
 create_live_stream() cria o broadcast com enableMonitorStream=False e
 enableAutoStart=True: nessa configuracao a API do YouTube so aceita a
@@ -11,12 +10,28 @@ transicao ready -> live automaticamente assim que o stream vinculado comeca
 a receber video, e rejeita qualquer chamada manual para 'testing' (essa
 fase exige monitorStream habilitado). Por isso este script nao chama
 liveBroadcasts.transition para 'testing' nem 'live' - apenas confirma que
-o stream ficou ativo e deixa o YouTube promover o broadcast sozinho. So a
-transicao final para 'complete' e manual (enableAutoStop=False).
+o stream ficou ativo e deixa o YouTube promover o broadcast sozinho.
 
 Se o FFmpeg cair antes da duracao total (Broken pipe por instabilidade de
 rede/CPU no runner gratuito), o main() reconecta automaticamente ao mesmo
 broadcast/stream em vez de encerrar a live inteira - ver _MAX_RECONNECTS.
+
+Ao final de uma sessao NORMAL (duracao atingida ou SIGTERM do GitHub Actions
+- job timeout ou cancelamento), o broadcast NAO e finalizado: fica "live"
+sem receber video ate a proxima sessao do cron reconectar no mesmo
+broadcast/stream (ver upload_youtube.create_live_stream ->
+_try_resume_existing_broadcast). Antes dessa mudanca, cada sessao criava um
+broadcast novo mesmo com o encadeamento entre sessoes tendo gap real de
+poucos minutos - o broadcast anterior virava VOD e um link novo aparecia no
+canal a cada ~5h20, quebrando a impressao de "1 live que nunca para" mesmo
+com a infraestrutura funcionando direito por baixo. So finaliza de fato
+quando o stream nunca ficou ativo, ou quando as reconexoes se esgotam / o
+broadcast parece ter morrido do lado do YouTube - nesses casos e mais
+seguro reiniciar do zero na proxima sessao do que deixar um broadcast
+quebrado pendurado. cleanup_orphan_broadcasts() continua sendo o limite de
+seguranca absoluto: se uma sessao nunca chegar a rodar (var desabilitada,
+CI fora do ar por muito tempo), o proximo disparo forca 'complete' num
+broadcast 'active' ha mais de _MAX_ACTIVE_AGE_MINUTES.
 """
 
 from __future__ import annotations
@@ -190,11 +205,20 @@ def main() -> int:
     reconnect_count = 0
     consecutive_fast_failures = 0
     code = 1
+    # Default seguro: finaliza o broadcast a menos que um dos dois casos
+    # "saida normal" abaixo explicitamente desligue isso. Cobre tanto o
+    # caminho feliz (reconnect_count/consecutive_fast_failures esgotados)
+    # quanto qualquer saida futura que eu esqueca de marcar aqui.
+    should_finalize_broadcast = True
     try:
         while True:
             elapsed = time.time() - start_time
             if target_seconds and elapsed >= target_seconds:
                 code = 0
+                # Fim natural da duracao desta sessao, nao uma falha - deixa
+                # o broadcast "live" para a proxima sessao do cron reaproveitar
+                # (ver docstring do modulo).
+                should_finalize_broadcast = False
                 break
 
             remaining_minutes = max(1, int((target_seconds - elapsed) / 60)) if target_seconds else 0
@@ -226,6 +250,10 @@ def main() -> int:
             # 0 = -t atingido (segmento completo), -15 = SIGTERM (cancelamento
             # do GHA ou fim da duracao total) - nao reconectar nesses casos.
             if code in (0, -15):
+                # Mesmo raciocinio do target_seconds acima: SIGTERM aqui e o
+                # GHA cedendo o runner (timeout do job ou cancelamento
+                # manual), nao uma falha da live em si - deixa pendurado.
+                should_finalize_broadcast = False
                 break
 
             reconnect_count += 1
@@ -262,11 +290,18 @@ def main() -> int:
             time.sleep(_RECONNECT_DELAY_SECONDS)
     finally:
         elapsed = (time.time() - start_time) / 60
-        log.info(
-            "Stream encerrado com codigo %s (%.1f min, %d reconexoes). Finalizando live...",
-            code, elapsed, reconnect_count,
-        )
-        _end_broadcast(broadcast_id, went_active=stream_confirmed_active)
+        if should_finalize_broadcast:
+            log.info(
+                "Stream encerrado com codigo %s (%.1f min, %d reconexoes). Finalizando live...",
+                code, elapsed, reconnect_count,
+            )
+            _end_broadcast(broadcast_id, went_active=stream_confirmed_active)
+        else:
+            log.info(
+                "Sessao encerrada normalmente com codigo %s (%.1f min, %d reconexoes). "
+                "Broadcast %s mantido 'live' para a proxima sessao reaproveitar.",
+                code, elapsed, reconnect_count, broadcast_id,
+            )
         # Limpa arquivos temporários da live
         _cleanup_live_artifacts(output_stem)
 

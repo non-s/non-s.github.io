@@ -6,7 +6,7 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 
 - **Shorts** (`generate_pata_jazz_short.py`) — vertical 1080×1920, ~35s, **2-3 clipes com crossfade + 1 música de jazz + text overlay do hook nos primeiros 3s**.
 - **Vídeos horizontais** (`generate_pata_jazz_horizontal.py`) — 1920×1080, ~5min (300s, passado explicitamente pelo workflow; o default do script é 240s/4min quando rodado sem `--duration`), **1 clipe + 1 música de jazz**.
-- **Live 24/7** (`generate_pata_jazz_live.py` + `scripts/run_live.py`) — transmissão horizontal 720p contínua com **vários clipes de gatos/cachorros** e **playlist de até 150 faixas de jazz** em loop infinito. Cada sessão do GitHub Actions dura ~350min (limite de job); sessões são encadeadas automaticamente (ver Grade de publicação) para o canal nunca ficar offline. Reconecta sozinha (até 200x) se o FFmpeg cair no meio da sessão.
+- **Live 24/7** (`generate_pata_jazz_live.py` + `scripts/run_live.py`) — transmissão horizontal 720p contínua com **vários clipes de gatos/cachorros** e **playlist de até 150 faixas de jazz** em loop infinito. Cada sessão do GitHub Actions dura ~350min (limite de job); ao final de uma sessão normal (duração atingida ou SIGTERM do GHA) o broadcast **não é finalizado** - fica "live" sem receber vídeo até a próxima sessão do cron reconectar no mesmo broadcast/stream (`upload_youtube._try_resume_existing_broadcast`), em vez de criar um link novo a cada ~6h. Só finaliza de fato quando o stream nunca ficou ativo ou as reconexões se esgotam (broadcast provavelmente morto do lado do YouTube). Reconecta sozinha (até 200x) se o FFmpeg cair no meio da sessão.
 
 ## Recursos inteligentes
 
@@ -37,7 +37,7 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 - **Python 3.11+** (CI roda 3.11; local testado com 3.12/3.14)
 - **FFmpeg** — codificação, concatenação, xfade, drawtext e ffprobe (com timeout)
 - **Pillow ≥10.3** — thumbnails (gradiente, shadows RGBA, fontes TrueType)
-- **pytest** — testes unitários (283 testes, cobertura ≥70% de `utils/`)
+- **pytest** — testes unitários (300 testes, cobertura ≥70% de `utils/`)
 - **ruff** — lint (regras E, F, W, I, UP, B)
 - **GitHub Actions** — CI/CD e agendamento
 
