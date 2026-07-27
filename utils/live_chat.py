@@ -117,6 +117,9 @@ class LiveChatWatcher:
         self._thread: threading.Thread | None = None
         self._stop_event = threading.Event()
         self._overlay_clear_at: float = 0.0
+        # 4.2 - Set em memoria de user_id ja saudados como novos inscritos/
+        # membros, para nao duplicar o popup nos proximos pollings do chat.
+        self._welcomed_members: set[str] = set()
 
     # ---- comandos -----------------------------------------------------
 
@@ -307,9 +310,17 @@ class LiveChatWatcher:
             log.warning("Falha ao buscar mensagens do chat: %s", exc)
             return
         for item in items:
-            text = (item.get("snippet", {}) or {})
-            text = text.get("textMessageDetails", {}).get("messageText", "")
-            author = (item.get("authorDetails", {}) or {}).get("displayName", "")
+            snippet = item.get("snippet", {}) or {}
+            author_details = item.get("authorDetails", {}) or {}
+            text = snippet.get("textMessageDetails", {}).get("messageText", "")
+            author = author_details.get("displayName", "")
+
+            # 4.2 - Reacao visual a novos inscritos/membros da live. Eventos
+            # de membership chegam como itens de chat com authorDetails flags
+            # especificas (isChatSponsor, isNewMember). Exibe um popup
+            # "Welcome @user!" no overlay para aumentar senso de comunidade.
+            self._maybe_handle_membership(author_details, snippet)
+
             parsed = self.parse_command(text)
             if parsed is None:
                 continue
@@ -318,6 +329,31 @@ class LiveChatWatcher:
             reply = self.handle_command(command, argument, author=author)
             if reply:
                 self._write_overlay(reply)
+
+    def _maybe_handle_membership(self, author_details: dict, snippet: dict) -> None:
+        """Detecta novos inscritos/membros e exibe popup de boas-vindas.
+
+        YouTube envia eventos de membership como itens de chat com
+        snippet.type='membership' ou authorDetails.isChatSponsor=True.
+        Como nao queremos duplicar o popup para o mesmo usuario em pollings
+        consecutivos, usamos um set em memoria dos user_id ja saudados.
+        """
+        user_id = author_details.get("channelId", "")
+        if not user_id:
+            return
+        event_type = snippet.get("type", "")
+        is_sponsor = author_details.get("isChatSponsor", False)
+        is_new_member = author_details.get("isNewMember", False)
+        if event_type == "membership" or is_sponsor or is_new_member:
+            if user_id in self._welcomed_members:
+                return
+            self._welcomed_members.add(user_id)
+            # Limita o set para nao crescer indefinidamente em lives longas.
+            if len(self._welcomed_members) > 200:
+                self._welcomed_members = set(list(self._welcomed_members)[-200:])
+            display = author_details.get("displayName", "someone")
+            emoji = "\U0001f389" if is_new_member else "\U0001f496"
+            self._write_overlay(f"{emoji} Welcome {display}! Thanks for joining!")
 
     def _run(self) -> None:
         while not self._stop_event.is_set():

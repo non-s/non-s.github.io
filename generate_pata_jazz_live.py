@@ -131,6 +131,54 @@ def _consume_next_scene() -> str | None:
     return None
 
 
+def _most_requested_scene() -> str | None:
+    """Le _data/live_scene_requests.json (alimentado por !request no chat) e
+    retorna a cena mais pedida na sessao atual.
+
+    Pedidos antigos (>2h) sao ignorados para que a preferencia da audiencia
+    reflita a sessao em andamento, nao acumulo historico. Retorna None se
+    nao houver pedidos validos.
+    """
+    path = LIVE_META_DIR / "live_scene_requests.json"
+    if not path.exists():
+        return None
+    try:
+        requests = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(requests, list):
+            return None
+    except Exception as exc:
+        log.debug("live_scene_requests.json corrompido: %s", exc)
+        return None
+
+    now = datetime.now(UTC)
+    counts: dict[str, int] = {}
+    for req in requests:
+        if not isinstance(req, dict):
+            continue
+        scene = str(req.get("scene", "")).lower().strip()
+        if scene not in ALL_SCENES:
+            continue
+        ts = req.get("requested_at", "")
+        try:
+            s = ts.strip()
+            if s.endswith("Z"):
+                s = s[:-1] + "+00:00"
+            dt = datetime.fromisoformat(s) if s else None
+            if dt and dt.tzinfo is None:
+                dt = dt.replace(tzinfo=UTC)
+            if dt is not None and (now - dt).total_seconds() > 7200:  # >2h
+                continue
+        except Exception:
+            pass
+        counts[scene] = counts.get(scene, 0) + 1
+
+    if not counts:
+        return None
+    best = max(counts, key=counts.get)
+    log.info("Cena mais pedida no chat: %s (%d pedidos)", best, counts[best])
+    return best
+
+
 def _build_looping_input(
     output_stem: str,
     target_resolution: tuple[int, int] = (1920, 1080),
@@ -153,7 +201,9 @@ def _build_looping_input(
     if stats["videos"] == 0:
         raise RuntimeError("Pool de b-roll vazio")
 
-    scene = _consume_next_scene() or random_scene()
+    # Prioridade de cena: 1) !scene (one-shot forcado), 2) !request (cena mais
+    # pedida na sessao), 3) random_scene (sorteio legado).
+    scene = _consume_next_scene() or _most_requested_scene() or random_scene()
     hook, emoji = hook_for_scene(scene)
     # Live horizontal: usa muitos clips fofos para um ciclo de loop longo.
     videos = pick_videos(
@@ -425,6 +475,17 @@ def _start_ffmpeg_stream(
             "-i",
             str(audio_playlist),
         ]
+    else:
+        # Fallback de audio sintetico: sem pool de jazz, a live ficaria em
+        # silencio total - catastrófico para uma "relaxing jazz live". Um
+        # ruido rosa suave (amplitude ~0.02, abaixo do normal de musica)
+        # mantem a live minimamente audível enquanto o sync reestabelece,
+        # sem parecer erro/estatica. Volume baixo nao compete com o
+        # eventual retorno do pool na proxima sessao.
+        log.warning(
+            "Pool de jazz vazio; usando fallback de audio sintetico (pink noise)."
+        )
+        cmd += ["-f", "lavfi", "-i", "anoisesrc=color=pink:amplitude=0.02"]
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     LIVE_META_DIR.mkdir(parents=True, exist_ok=True)
