@@ -48,3 +48,9 @@ jobs:
           python -m mypy utils/ scripts/ upload_youtube.py generate_pata_jazz_short.py
           generate_pata_jazz_horizontal.py generate_pata_jazz_live.py
           || echo "::warning::mypy encontrou problemas de tipo"
+      - name: "Security scan (advisory)"
+        # Mesma logica advisory do type check acima: primeira vez que roda em
+        # CI (esta limpo hoje - ver commit que adicionou usedforsecurity=False
+        # no unico hit real ate agora), mas nao deveria travar PRs por um
+        # falso-positivo novo do bandit sem revisao humana primeiro.
+        run: bandit -r utils/ scripts/ *.py -ll -q || echo "::warning::bandit encontrou possiveis problemas de seguranca"
