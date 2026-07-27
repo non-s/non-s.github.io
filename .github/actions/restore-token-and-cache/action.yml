@@ -35,17 +35,18 @@ runs:
       # Sem isso, cada workflow (shorts/horizontal/live/batch/weekly/analytics)
       # comeca de um checkout limpo e esses arquivos nunca sobrevivem entre
       # runs - o anti-repeat de b-roll/jazz (recent_media.json), o cache de
-      # playlists (playlist_cache.json), o feedback loop de performance por
-      # cena (video_tags.json escrito no upload, scene_performance.json
-      # escrito pelo collect_analytics.py e lido de volta por
-      # content_strategy.scene_for_mood), o historico de audiencia da live
-      # (live_viewer_history.json, escrito por upload_youtube.record_live_
-      # viewer_snapshot a cada segmento de FFmpeg) e o broadcast/stream da
-      # live em si (live_state.json, que upload_youtube.
-      # _try_resume_existing_broadcast le para reaproveitar o mesmo
-      # broadcast entre sessoes em vez de criar um link novo a cada ~6h)
-      # ficariam sempre vazios/zerados a cada run, sem nunca dar erro - so
-      # silenciosamente nunca funcionando. live_viewer_history.json e
+      # playlists (playlist_cache.json), os feedback loops de performance por
+      # cena e por padrao de titulo (video_tags.json escrito no upload,
+      # scene_performance.json/title_pattern_performance.json escritos pelo
+      # collect_analytics.py e lidos de volta por content_strategy.
+      # scene_for_mood/seo_keywords.pick_title_pattern), o historico de
+      # audiencia da live (live_viewer_history.json, escrito por
+      # upload_youtube.record_live_viewer_snapshot a cada segmento de FFmpeg)
+      # e o broadcast/stream da live em si (live_state.json, que
+      # upload_youtube._try_resume_existing_broadcast le para reaproveitar o
+      # mesmo broadcast entre sessoes em vez de criar um link novo a cada
+      # ~6h) ficariam sempre vazios/zerados a cada run, sem nunca dar erro -
+      # so silenciosamente nunca funcionando. live_viewer_history.json e
       # live_state.json em particular so fazem sentido dentro de uma unica
       # sessao de live (~320min) sem esse cache; sem ele, cada novo ciclo do
       # cron a cada 6h apagaria o historico de audiencia e forcaria criar um
@@ -57,6 +58,7 @@ runs:
           _data/playlist_cache.json
           _data/video_tags.json
           _data/scene_performance.json
+          _data/title_pattern_performance.json
           _data/live_viewer_history.json
           _data/live_state.json
         key: pata-jazz-data-${{ github.run_id }}

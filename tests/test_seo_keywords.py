@@ -2,6 +2,9 @@
 tests/test_seo_keywords.py — testa geração de títulos e descrições otimizadas.
 """
 
+import json
+
+import utils.seo_keywords as seo_keywords
 from utils.seo_keywords import (
     CTAS,
     HIGH_PERFORMANCE_KEYWORDS,
@@ -33,6 +36,53 @@ class TestPickTitlePattern:
         pattern = pick_title_pattern("live")
         assert pattern in TITLE_PATTERNS["live"]
         assert "LIVE" in pattern.upper()
+
+
+class TestTitlePatternWeights:
+    """pick_title_pattern pondera pela performance real
+    (title_pattern_performance.json, gerado por collect_analytics.py)
+    quando ela existe, sem nunca excluir nenhum padrao do formato - mesmo
+    mecanismo de content_strategy.scene_for_mood, so que title_pattern era
+    gravado em video_tags.json mas nunca lido de volta ate agora."""
+
+    def _isolate(self, tmp_path, monkeypatch):
+        perf_file = tmp_path / "title_pattern_performance.json"
+        monkeypatch.setattr(seo_keywords, "_TITLE_PATTERN_PERFORMANCE_FILE", perf_file)
+        return perf_file
+
+    def test_no_performance_file_falls_back_to_uniform(self, tmp_path, monkeypatch):
+        self._isolate(tmp_path, monkeypatch)
+        assert seo_keywords._title_pattern_weights() == {}
+
+    def test_reads_weights_from_file(self, tmp_path, monkeypatch):
+        perf_file = self._isolate(tmp_path, monkeypatch)
+        perf_file.write_text(json.dumps({"pattern-x": 2.0}), encoding="utf-8")
+
+        assert seo_keywords._title_pattern_weights() == {"pattern-x": 2.0}
+
+    def test_corrupted_file_falls_back_to_empty(self, tmp_path, monkeypatch):
+        perf_file = self._isolate(tmp_path, monkeypatch)
+        perf_file.write_text("not json", encoding="utf-8")
+
+        assert seo_keywords._title_pattern_weights() == {}
+
+    def test_pick_title_pattern_still_stays_within_kind_when_weighted(self, tmp_path, monkeypatch):
+        perf_file = self._isolate(tmp_path, monkeypatch)
+        weighted = {p: 2.5 for p in TITLE_PATTERNS["short"][:1]}
+        perf_file.write_text(json.dumps(weighted), encoding="utf-8")
+
+        for _ in range(20):
+            assert pick_title_pattern("short") in TITLE_PATTERNS["short"]
+
+    def test_heavily_weighted_pattern_is_picked_far_more_often(self, tmp_path, monkeypatch):
+        perf_file = self._isolate(tmp_path, monkeypatch)
+        patterns = TITLE_PATTERNS["short"]
+        perf_file.write_text(
+            json.dumps({patterns[0]: 2.5, patterns[1]: 0.4}), encoding="utf-8"
+        )
+
+        results = [pick_title_pattern("short") for _ in range(200)]
+        assert results.count(patterns[0]) > results.count(patterns[1])
 
 
 class TestGenerateTitle:

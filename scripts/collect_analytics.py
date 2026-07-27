@@ -4,11 +4,13 @@ scripts/collect_analytics.py — coleta metricas dos videos do canal Pata Jazz.
 Usa a YouTube Data API para buscar views, likes, comentarios e duracao dos
 videos recentes. Salva um relatorio em _data/analytics.json para analise.
 
-Este script e disparado por um workflow semanal e alimenta o feedback loop:
-cruza video_tags.json (cena que gerou cada video, gravado no upload) com as
-views coletadas aqui e grava um peso por cena em scene_performance.json, que
-utils.content_strategy.scene_for_mood usa pra priorizar cenas com melhor
-performance na geracao futura (nunca eliminando as demais - ver pesos min/max).
+Este script e disparado por um workflow semanal e alimenta dois feedback
+loops com o mesmo mecanismo: cruza video_tags.json (cena/padrao de titulo
+que gerou cada video, gravado no upload) com as views coletadas aqui e
+grava um peso relativo em scene_performance.json / title_pattern_performance.json,
+que utils.content_strategy.scene_for_mood e utils.seo_keywords.pick_title_pattern
+usam pra priorizar o que performa melhor na geracao futura (nunca eliminando
+as demais opcoes - ver pesos min/max).
 """
 
 from __future__ import annotations
@@ -37,6 +39,11 @@ SCENE_PERFORMANCE_FILE = DATA_DIR / "scene_performance.json"
 _MIN_SCENE_SAMPLES = 3  # cena com poucos videos ainda: peso fica neutro (nao ha o suficiente pra confiar)
 _MIN_SCENE_WEIGHT = 0.4
 _MAX_SCENE_WEIGHT = 2.5
+
+TITLE_PATTERN_PERFORMANCE_FILE = DATA_DIR / "title_pattern_performance.json"
+_MIN_TITLE_PATTERN_SAMPLES = 3
+_MIN_TITLE_PATTERN_WEIGHT = 0.4
+_MAX_TITLE_PATTERN_WEIGHT = 2.5
 
 
 def _to_int(value) -> int:
@@ -126,30 +133,44 @@ def _load_scene_performance() -> dict[str, float]:
         return {}
 
 
-def _compute_scene_performance(stats: list[dict], video_tags: dict) -> dict[str, float]:
-    """Calcula um peso relativo por cena a partir das views reais coletadas.
+def _load_title_pattern_performance() -> dict[str, float]:
+    try:
+        return (
+            json.loads(TITLE_PATTERN_PERFORMANCE_FILE.read_text(encoding="utf-8"))
+            if TITLE_PATTERN_PERFORMANCE_FILE.exists() else {}
+        )
+    except Exception:
+        return {}
 
-    upload_youtube.py::_record_video_tags grava, por video_id, qual cena o
-    gerou; aqui cruzamos isso com as views desse video_id pra saber que
-    cenas performam melhor que a media. video_tags so tem os uploads mais
+
+def _compute_weighted_performance(
+    stats: list[dict], video_tags: dict, tag_key: str,
+    min_samples: int, min_weight: float, max_weight: float,
+) -> dict[str, float]:
+    """Calcula um peso relativo por valor de tag_key (ex: 'scene' ou
+    'title_pattern' em video_tags.json) a partir das views reais coletadas.
+
+    upload_youtube.py::_record_video_tags grava, por video_id, qual valor
+    gerou o video; aqui cruzamos isso com as views desse video_id pra saber
+    o que performa melhor que a media. video_tags so tem os uploads mais
     recentes (_MAX_VIDEO_TAGS), entao videos antigos sem tag no mapeamento
     sao ignorados no calculo - nao ha problema, o peso e so uma tendencia
     recente, nao um historico completo.
 
     Peso 1.0 = na media. >1.0 = performa acima da media (mais provavel de
-    ser escolhida por content_strategy.scene_for_mood). Limitado a
-    [_MIN_SCENE_WEIGHT, _MAX_SCENE_WEIGHT] pra nunca zerar nem monopolizar
-    uma cena so por causa de uma amostra pequena ou um video viral isolado.
+    ser escolhido de volta). Limitado a [min_weight, max_weight] pra nunca
+    zerar nem monopolizar uma opcao so por causa de uma amostra pequena ou
+    um video viral isolado.
     """
-    views_by_scene: dict[str, list[int]] = {}
+    views_by_key: dict[str, list[int]] = {}
     for video in stats:
         tag = video_tags.get(video["video_id"])
-        scene = tag.get("scene") if tag else ""
-        if not scene:
+        key = tag.get(tag_key) if tag else ""
+        if not key:
             continue
-        views_by_scene.setdefault(scene, []).append(video["views"])
+        views_by_key.setdefault(key, []).append(video["views"])
 
-    all_views = [v for views in views_by_scene.values() for v in views]
+    all_views = [v for views in views_by_key.values() for v in views]
     if not all_views:
         return {}
     overall_avg = sum(all_views) / len(all_views)
@@ -157,13 +178,32 @@ def _compute_scene_performance(stats: list[dict], video_tags: dict) -> dict[str,
         return {}
 
     weights: dict[str, float] = {}
-    for scene, views in views_by_scene.items():
-        if len(views) < _MIN_SCENE_SAMPLES:
+    for key, views in views_by_key.items():
+        if len(views) < min_samples:
             continue
-        scene_avg = sum(views) / len(views)
-        weights[scene] = max(_MIN_SCENE_WEIGHT, min(_MAX_SCENE_WEIGHT, scene_avg / overall_avg))
+        key_avg = sum(views) / len(views)
+        weights[key] = max(min_weight, min(max_weight, key_avg / overall_avg))
 
     return weights
+
+
+def _compute_scene_performance(stats: list[dict], video_tags: dict) -> dict[str, float]:
+    """Calcula um peso relativo por cena a partir das views reais coletadas
+    (ver content_strategy.scene_for_mood). Generalizacao em
+    _compute_weighted_performance."""
+    return _compute_weighted_performance(
+        stats, video_tags, "scene", _MIN_SCENE_SAMPLES, _MIN_SCENE_WEIGHT, _MAX_SCENE_WEIGHT
+    )
+
+
+def _compute_title_pattern_performance(stats: list[dict], video_tags: dict) -> dict[str, float]:
+    """Calcula um peso relativo por padrao de titulo a partir das views
+    reais coletadas (ver seo_keywords.pick_title_pattern). Generalizacao em
+    _compute_weighted_performance."""
+    return _compute_weighted_performance(
+        stats, video_tags, "title_pattern",
+        _MIN_TITLE_PATTERN_SAMPLES, _MIN_TITLE_PATTERN_WEIGHT, _MAX_TITLE_PATTERN_WEIGHT,
+    )
 
 
 def main() -> int:
@@ -215,9 +255,15 @@ def main() -> int:
 
     _append_history(report)
 
-    scene_weights = _compute_scene_performance(stats, _load_video_tags())
+    video_tags = _load_video_tags()
+
+    scene_weights = _compute_scene_performance(stats, video_tags)
     if scene_weights:
         _update_scene_performance(scene_weights)
+
+    title_pattern_weights = _compute_title_pattern_performance(stats, video_tags)
+    if title_pattern_weights:
+        _update_title_pattern_performance(title_pattern_weights)
 
     return 0
 
@@ -263,6 +309,24 @@ def _update_scene_performance(scene_weights: dict[str, float]) -> None:
         log.info("Performance por cena atualizada: %s (%d cenas)", SCENE_PERFORMANCE_FILE, len(merged))
     except Exception as exc:
         log.warning("Falha ao salvar performance por cena: %s", exc)
+
+
+def _update_title_pattern_performance(title_pattern_weights: dict[str, float]) -> None:
+    """Grava title_pattern_weights em TITLE_PATTERN_PERFORMANCE_FILE,
+    mesclando com o conteudo ja existente em vez de sobrescrever - mesmo
+    raciocinio de _update_scene_performance (um padrao pode cair abaixo de
+    _MIN_TITLE_PATTERN_SAMPLES so por azar de amostragem numa semana
+    especifica, e sobrescrever apagaria o peso ja calculado dele).
+    """
+    merged = {**_load_title_pattern_performance(), **title_pattern_weights}
+    try:
+        TITLE_PATTERN_PERFORMANCE_FILE.write_text(json.dumps(merged, ensure_ascii=False, indent=2), encoding="utf-8")
+        log.info(
+            "Performance por padrao de titulo atualizada: %s (%d padroes)",
+            TITLE_PATTERN_PERFORMANCE_FILE, len(merged),
+        )
+    except Exception as exc:
+        log.warning("Falha ao salvar performance por padrao de titulo: %s", exc)
 
 
 if __name__ == "__main__":

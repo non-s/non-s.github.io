@@ -311,3 +311,77 @@ class TestUpdateScenePerformance:
         collect_analytics._update_scene_performance({"cat": 2.0})
 
         assert json.loads(perf_file.read_text(encoding="utf-8"))["cat"] == 2.0
+
+
+class TestComputeTitlePatternPerformance:
+    """_compute_title_pattern_performance: mesmo mecanismo de
+    _compute_scene_performance (generalizado em _compute_weighted_performance),
+    so que cruzando views com o padrao de titulo (title_pattern em
+    video_tags.json) em vez da cena - title_pattern ja era gravado no
+    upload mas nunca fechava o loop de volta."""
+
+    def _stats(self, *, a_views, b_views):
+        stats = [{"video_id": f"a{i}", "views": v} for i, v in enumerate(a_views)]
+        stats += [{"video_id": f"b{i}", "views": v} for i, v in enumerate(b_views)]
+        return stats
+
+    def _tags(self, *, a_count, b_count):
+        tags = {f"a{i}": {"title_pattern": "pattern-a"} for i in range(a_count)}
+        tags.update({f"b{i}": {"title_pattern": "pattern-b"} for i in range(b_count)})
+        return tags
+
+    def test_no_tagged_videos_returns_empty(self):
+        stats = [{"video_id": "untagged1", "views": 100}]
+        assert collect_analytics._compute_title_pattern_performance(stats, {}) == {}
+
+    def test_pattern_with_too_few_samples_is_skipped(self):
+        stats = self._stats(a_views=[100, 100], b_views=[10, 10, 10])
+        tags = self._tags(a_count=2, b_count=3)
+
+        weights = collect_analytics._compute_title_pattern_performance(stats, tags)
+
+        assert "pattern-a" not in weights
+        assert "pattern-b" in weights
+
+    def test_above_average_pattern_gets_weight_above_one(self):
+        stats = self._stats(a_views=[1000, 1000, 1000], b_views=[10, 10, 10])
+        tags = self._tags(a_count=3, b_count=3)
+
+        weights = collect_analytics._compute_title_pattern_performance(stats, tags)
+
+        assert weights["pattern-a"] > 1.0
+        assert weights["pattern-b"] < 1.0
+
+    def test_weight_is_capped_at_max(self):
+        stats = self._stats(a_views=[1_000_000] * 3, b_views=[1] * 30)
+        tags = self._tags(a_count=3, b_count=30)
+
+        weights = collect_analytics._compute_title_pattern_performance(stats, tags)
+
+        assert weights["pattern-a"] == collect_analytics._MAX_TITLE_PATTERN_WEIGHT
+        assert weights["pattern-b"] == collect_analytics._MIN_TITLE_PATTERN_WEIGHT
+
+
+class TestUpdateTitlePatternPerformance:
+    """_update_title_pattern_performance mescla por cima do arquivo
+    existente em vez de sobrescrever - mesmo raciocinio de
+    _update_scene_performance."""
+
+    def test_writes_new_file_when_none_exists(self, tmp_path, monkeypatch):
+        perf_file = tmp_path / "title_pattern_performance.json"
+        monkeypatch.setattr(collect_analytics, "TITLE_PATTERN_PERFORMANCE_FILE", perf_file)
+
+        collect_analytics._update_title_pattern_performance({"pattern-a": 1.8})
+
+        assert json.loads(perf_file.read_text(encoding="utf-8")) == {"pattern-a": 1.8}
+
+    def test_preserves_pattern_missing_from_fresh_weights(self, tmp_path, monkeypatch):
+        perf_file = tmp_path / "title_pattern_performance.json"
+        perf_file.write_text(json.dumps({"pattern-a": 1.5, "pattern-b": 2.1}), encoding="utf-8")
+        monkeypatch.setattr(collect_analytics, "TITLE_PATTERN_PERFORMANCE_FILE", perf_file)
+
+        collect_analytics._update_title_pattern_performance({"pattern-a": 1.2})
+
+        result = json.loads(perf_file.read_text(encoding="utf-8"))
+        assert result["pattern-a"] == 1.2
+        assert result["pattern-b"] == 2.1
