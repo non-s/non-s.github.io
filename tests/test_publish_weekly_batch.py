@@ -120,7 +120,7 @@ class TestPublishVideo:
         video_path.write_bytes(b"x")
         meta = {"title": "T", "video_id": "gone789"}
 
-        with patch("utils.playlist_manager.add_video_to_playlist"):
+        with patch("utils.youtube_post_upload.add_video_to_playlist"):
             result = publish_weekly_batch._publish_video(service, video_path, meta)
 
         assert result == "new456"
@@ -143,7 +143,7 @@ class TestPublishVideo:
         video_path = tmp_path / "v.mp4"
         video_path.write_bytes(b"x")
 
-        with patch("utils.playlist_manager.add_video_to_playlist"):
+        with patch("utils.youtube_post_upload.add_video_to_playlist"):
             result = publish_weekly_batch._publish_video(service, video_path, {"title": "T", "scene": "cat"})
 
         assert result == "vid1"
@@ -255,7 +255,7 @@ class TestPublishVideoMediaBranches:
         video_path = tmp_path / "v.mp4"
         video_path.write_bytes(b"x")
 
-        with patch("utils.playlist_manager.add_video_to_playlist", side_effect=Exception("pl boom")), \
+        with patch("utils.youtube_post_upload.add_video_to_playlist", side_effect=Exception("pl boom")), \
              caplog.at_level("WARNING"):
             result = publish_weekly_batch._publish_video(service, video_path, {"title": "T", "mood": "relax"})
 

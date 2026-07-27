@@ -28,6 +28,7 @@ from utils.channel_config import active_channel
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.state_lock import state_lock
 from utils.youtube_oauth import get_youtube_service
+from utils.youtube_post_upload import add_to_playlists, apply_caption, apply_thumbnail
 from utils.youtube_retry import retry_youtube_call as _retry_youtube_call
 
 ROOT = Path(__file__).resolve().parent
@@ -176,66 +177,9 @@ def upload_video(language: str = "en", privacy: str = "public", prefix: str = "p
 
     _record_video_tags(video_id, meta)
 
-    if thumbnail and thumbnail.exists():
-        try:
-            # Re-verifica existencia (TOCTOU) e instancia MediaFileUpload dentro do try.
-            thumb_media = MediaFileUpload(str(thumbnail))
-            _retry_youtube_call(service.thumbnails().set(videoId=video_id, media_body=thumb_media).execute)
-            log.info("Thumbnail aplicada.")
-        except Exception as exc:
-            # Nao so (HttpError, MediaUploadSizeError): _retry_youtube_call
-            # levanta RuntimeError quando esgota as tentativas em erros
-            # retryable persistentes (ex: 503 repetido), e isso escapava
-            # sem ser pego aqui - derrubando upload_video() inteiro (pulando
-            # legenda e playlist) mesmo com o video ja publicado com sucesso
-            # (confirmado em producao: run 30155769151, thumbnail falhou
-            # apos esgotar retries e o RuntimeError nao pego matou o job,
-            # que ficou "failure" apesar do upload ja ter ido ao ar).
-            hint = (
-                " (canal sem verificacao por telefone bloqueia thumbnail customizada "
-                "- confira em youtube.com/verify)"
-                if "403" in str(exc) else ""
-            )
-            log.warning("Falha ao aplicar thumbnail: %s%s", exc, hint)
-
-    # Upload de legenda SRT se existir
-    caption_path = _meta_path(meta, "caption")
-    if caption_path and caption_path.exists():
-        try:
-            caption_body = {
-                "snippet": {
-                    "videoId": video_id,
-                    "language": "en",
-                    "name": "English",
-                    "isDraft": False,
-                }
-            }
-            # .srt usa mimetype application/x-subrip; .vtt usa text/vtt.
-            cap_mimetype = "text/vtt" if caption_path.suffix.lower() == ".vtt" else "application/x-subrip"
-            _retry_youtube_call(
-                service.captions().insert(
-                    part="snippet",
-                    body=caption_body,
-                    media_body=MediaFileUpload(str(caption_path), mimetype=cap_mimetype),
-                ).execute
-            )
-            log.info("Legenda aplicada.")
-        except Exception as exc:
-            # Ver comentario equivalente no bloco de thumbnail acima.
-            log.warning("Falha ao aplicar legenda: %s", exc)
-
-    # Adiciona as playlists automaticas: por formato (kind) e por mood.
-    # add_video_to_playlist so adiciona a UMA playlist por chamada (mood tem
-    # prioridade se os dois forem passados juntos), entao sao duas chamadas
-    # separadas - senao as playlists por mood (PLAYLISTS_BY_MOOD) nunca sao
-    # populadas, ja que meta["mood"] nunca era passado antes.
-    try:
-        from utils.playlist_manager import add_video_to_playlist
-        add_video_to_playlist(service, video_id, kind=meta.get("kind", ""))
-        if meta.get("mood"):
-            add_video_to_playlist(service, video_id, mood=meta["mood"])
-    except Exception as exc:
-        log.warning("Falha ao adicionar a playlist: %s", exc)
+    apply_thumbnail(service, video_id, thumbnail, _retry_youtube_call)
+    apply_caption(service, video_id, _meta_path(meta, "caption"), _retry_youtube_call)
+    add_to_playlists(service, video_id, meta)
 
     return video_id
 

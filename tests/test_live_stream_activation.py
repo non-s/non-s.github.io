@@ -45,8 +45,9 @@ class TestWaitForStreamActive:
             "items": [{"status": {"streamStatus": "ready"}}]
         }
         # time.time retorna t0 para o deadline, depois t0 (entra no loop),
-        # t0+100 (sai do loop) - sem depender de relogio real.
-        mock_time.side_effect = [0.0, 0.0, 100.0]
+        # t0 (continua no loop com interval=0), t0+100 (sai do loop), t0+100
+        # (logging interno do makeRecord tambem chama time.time no Linux).
+        mock_time.side_effect = [0.0, 0.0, 0.0, 100.0, 100.0, 100.0]
 
         assert live_broadcast.wait_for_stream_active("stream123", timeout=10, interval=0) is False
 

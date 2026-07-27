@@ -34,6 +34,9 @@ jobs:
     if: ${{ vars.PATA_JAZZ_ENABLED == '1' && (github.event.inputs.action == 'all' || github.event.inputs.action == 'generate') }}
     runs-on: ubuntu-latest
     timeout-minutes: 180
+    # workflow_dispatch manual: geracao massiva de conteudo + upload.
+    # Requer ambiente protegido com reviewer obrigatorio.
+    environment: production
     env:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
@@ -112,6 +115,9 @@ jobs:
       (github.event.inputs.action == 'all' || github.event.inputs.action == 'publish')
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    # workflow_dispatch manual: publicacao em massa que consome quota.
+    # Requer ambiente protegido com reviewer obrigatorio.
+    environment: production
     env:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
     steps:
