@@ -62,7 +62,7 @@ def _download(url: str, dest: Path) -> bool:
 
 
 def search_and_download(term: str, max_results: int = 5, client_id: str = "") -> int:
-    params = {
+    params: dict[str, str | int] = {
         "client_id": client_id,
         "search": term,
         "limit": max(10, max_results * 3),

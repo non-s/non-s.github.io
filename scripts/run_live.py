@@ -39,8 +39,13 @@ from generate_pata_jazz_live import (
     _terminate_ffmpeg_stream,
     _wait_ffmpeg_stream,
 )
-from upload_youtube import create_live_stream, delete_broadcast, transition_broadcast, wait_for_stream_active
-from utils.discord_webhook import notify_live_end, notify_live_start
+from upload_youtube import (
+    create_live_stream,
+    delete_broadcast,
+    record_live_viewer_snapshot,
+    transition_broadcast,
+    wait_for_stream_active,
+)
 from utils.log_config import configure_logging
 
 log = logging.getLogger(__name__)
@@ -206,14 +211,17 @@ def main() -> int:
                     _end_broadcast(broadcast_id, went_active=False)
                     return 1
                 stream_confirmed_active = True
-                thumbnail = f"https://img.youtube.com/vi/{broadcast_id}/maxresdefault.jpg"
-                notify_live_start(title=title, stream_url=f"https://youtube.com/watch?v={broadcast_id}", thumbnail=thumbnail)
 
             segment_max_seconds = (
                 remaining_minutes * 60 + _SEGMENT_WATCHDOG_GRACE_SECONDS if remaining_minutes else None
             )
             code = _wait_ffmpeg_stream(proc, max_seconds=segment_max_seconds)
             segment_seconds = time.time() - segment_start
+            # Ponto natural para uma amostra de concurrentViewers - uma vez
+            # por segmento (poucos minutos, ver _wait_ffmpeg_stream), sem
+            # acoplar chamada de API ao loop de espera do FFmpeg em si.
+            if stream_confirmed_active:
+                record_live_viewer_snapshot(broadcast_id)
 
             # 0 = -t atingido (segmento completo), -15 = SIGTERM (cancelamento
             # do GHA ou fim da duracao total) - nao reconectar nesses casos.
@@ -259,8 +267,6 @@ def main() -> int:
             code, elapsed, reconnect_count,
         )
         _end_broadcast(broadcast_id, went_active=stream_confirmed_active)
-        # Notifica fim da live no Discord
-        notify_live_end(title=title, duration_minutes=int(elapsed))
         # Limpa arquivos temporários da live
         _cleanup_live_artifacts(output_stem)
 

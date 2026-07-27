@@ -39,3 +39,12 @@ jobs:
         # PRs sem relacao nenhuma com a mudanca. Fica visivel no log pra
         # revisao humana decidir quando atualizar.
         run: pip-audit -r requirements.txt || echo "::warning::pip-audit encontrou vulnerabilidades - revisar dependencias"
+      - name: "Type check (advisory)"
+        # Advisory por enquanto: esta 100% limpo hoje (utils/, scripts/,
+        # geradores e upload_youtube.py), mas e a primeira vez que roda em CI -
+        # melhor nao travar builds de primeira caso apareca algo inesperado
+        # em alguma combinacao de arquivos que eu nao tenha checado localmente.
+        run: >
+          python -m mypy utils/ scripts/ upload_youtube.py generate_pata_jazz_short.py
+          generate_pata_jazz_horizontal.py generate_pata_jazz_live.py
+          || echo "::warning::mypy encontrou problemas de tipo"

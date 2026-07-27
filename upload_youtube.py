@@ -24,7 +24,7 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
 from utils import ffmpeg_helpers
-from utils.ai_helper import ai_text
+from utils.ai_helper import ai_text, is_safe_ai_text
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.youtube_oauth import get_youtube_service
 
@@ -80,6 +80,43 @@ def _build_tags(scene: str, hashtags: list[str] | None = None) -> list[str]:
     return list(dict.fromkeys(base))[:15]
 
 
+_VIDEO_TAGS_FILE = LIVE_META_DIR / "video_tags.json"
+_MAX_VIDEO_TAGS = 500
+
+
+def _record_video_tags(video_id: str, meta: dict) -> None:
+    """Persiste scene/hook/mood do video enviado, indexado por video_id.
+
+    collect_analytics.py so tinha views agregadas sem nenhuma pista de qual
+    cena/hook gerou qual video - o "feedback loop" mencionado no docstring
+    daquele modulo nunca existiu de verdade. Esse mapeamento e o que falta
+    pra cruzar performance real (views) com a cena que a gerou.
+    """
+    scene = meta.get("scene", "")
+    if not scene:
+        return
+    try:
+        existing = json.loads(_VIDEO_TAGS_FILE.read_text(encoding="utf-8")) if _VIDEO_TAGS_FILE.exists() else {}
+    except Exception:
+        existing = {}
+    existing[video_id] = {
+        "scene": scene,
+        "hook": meta.get("hook", ""),
+        "mood": meta.get("mood", ""),
+        "kind": meta.get("kind", ""),
+        "uploaded_at": datetime.now(UTC).isoformat(),
+    }
+    # Mantem so as N mais recentes (por ordem de insercao) pra nao crescer pra sempre.
+    if len(existing) > _MAX_VIDEO_TAGS:
+        for old_key in list(existing.keys())[: len(existing) - _MAX_VIDEO_TAGS]:
+            del existing[old_key]
+    try:
+        _VIDEO_TAGS_FILE.parent.mkdir(parents=True, exist_ok=True)
+        _VIDEO_TAGS_FILE.write_text(json.dumps(existing, ensure_ascii=False, indent=2), encoding="utf-8")
+    except Exception as exc:
+        log.warning("Falha ao salvar video_tags: %s", exc)
+
+
 def upload_video(language: str = "en", privacy: str = "public", prefix: str = "pata_jazz_") -> str | None:
     found = _latest_video_meta(prefix=prefix)
     if not found:
@@ -133,6 +170,8 @@ def upload_video(language: str = "en", privacy: str = "public", prefix: str = "p
             "Video %s saiu com privacyStatus=%r, esperado %r - confira manualmente.",
             video_id, actual_privacy, privacy,
         )
+
+    _record_video_tags(video_id, meta)
 
     if thumbnail and thumbnail.exists():
         try:
@@ -194,6 +233,55 @@ def upload_video(language: str = "en", privacy: str = "public", prefix: str = "p
     return video_id
 
 
+LIVE_VIEWER_HISTORY_FILE = LIVE_META_DIR / "live_viewer_history.json"
+_MAX_VIEWER_SNAPSHOTS = 500
+
+
+def record_live_viewer_snapshot(video_id: str) -> None:
+    """Consulta liveStreamingDetails.concurrentViewers e acrescenta um
+    snapshot a LIVE_VIEWER_HISTORY_FILE.
+
+    Chamado por run_live.py uma vez por segmento de FFmpeg (a cada poucos
+    minutos, ja que segmentos costumam durar so alguns minutos antes de
+    reconectar - ver _SEGMENT_WATCHDOG_GRACE_SECONDS em run_live.py) em vez
+    de rodar dentro do proprio loop de espera do FFmpeg: assim nao acopla
+    uma chamada de API/rede ao watchdog que supervisiona o processo, que ja
+    teve historico de causar quedas quando sobrecarregado.
+
+    O id de um liveBroadcast tambem serve como id de video no endpoint
+    videos.list (mesma entidade), entao nao precisamos de nenhuma chamada
+    extra so para descobrir o video_id.
+    """
+    try:
+        service = get_youtube_service()
+        resp = _retry_youtube_call(
+            service.videos().list(part="liveStreamingDetails", id=video_id).execute
+        )
+        items = resp.get("items", [])
+        if not items:
+            return
+        viewers = items[0].get("liveStreamingDetails", {}).get("concurrentViewers")
+        if viewers is None:
+            return
+        viewers = int(viewers)
+    except Exception as exc:
+        log.warning("Falha ao consultar concurrentViewers da live %s: %s", video_id, exc)
+        return
+
+    snapshot = {"collected_at": datetime.now(UTC).isoformat(), "video_id": video_id, "concurrent_viewers": viewers}
+    try:
+        history = json.loads(LIVE_VIEWER_HISTORY_FILE.read_text(encoding="utf-8")) if LIVE_VIEWER_HISTORY_FILE.exists() else []
+    except Exception:
+        history = []
+    history.append(snapshot)
+    history = history[-_MAX_VIEWER_SNAPSHOTS:]
+    try:
+        LIVE_VIEWER_HISTORY_FILE.parent.mkdir(parents=True, exist_ok=True)
+        LIVE_VIEWER_HISTORY_FILE.write_text(json.dumps(history, ensure_ascii=False, indent=2), encoding="utf-8")
+    except Exception as exc:
+        log.warning("Falha ao salvar historico de viewers: %s", exc)
+
+
 def _generate_live_title() -> str:
     # Em ingles: o formato "ambient pet livestream 24/7" e um genero dominado
     # por busca em ingles (ex.: canais como Relax My Dog tem milhoes de
@@ -208,6 +296,9 @@ def _generate_live_title() -> str:
     )
     out = ai_text(prompt, task="live_title")
     title = out.strip().replace('"', "") if out else ""
+    if title and not is_safe_ai_text(title):
+        log.warning("Titulo de live da IA rejeitado (padrao suspeito): %r", title)
+        title = ""
     return title or "Pata Jazz 🐾🎷 | Calming Music for Cats & Dogs - 24/7 Live"
 
 
@@ -218,6 +309,75 @@ LIVE_TAGS = [
     "cats and dogs live stream", "24/7 live stream", "Pata Jazz",
 ]
 
+# Uma sessao normal (run_live.py) dura ate LIVE_DURATION_MINUTES (~320) +
+# folga de preparo/limpeza, tudo dentro do timeout-minutes:355 do job. Uma
+# margem generosa acima disso (6h) separa "sessao normal ainda rodando" de
+# "run crashou sem chamar _end_broadcast" (ex: falha de infra do runner que
+# nao da nem chance do bloco finally rodar).
+_MAX_ACTIVE_AGE_MINUTES = 360
+# 'ready' que nunca virou 'live' em ~20min quase certamente nunca vai virar -
+# o proprio run_live.py desiste e chama _end_broadcast bem antes disso
+# (wait_for_stream_active tem timeout de 120s).
+_MAX_READY_AGE_MINUTES = 20
+
+
+def _broadcast_age_minutes(timestamp: str | None) -> float | None:
+    if not timestamp:
+        return None
+    try:
+        published = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return (datetime.now(UTC) - published).total_seconds() / 60
+
+
+def cleanup_orphan_broadcasts(service) -> int:
+    """Limpa broadcasts orfaos deixados por uma run anterior que crashou
+    sem rodar o finally de run_live.py (_end_broadcast).
+
+    Duas categorias, cada uma com sua propria nocao de "orfao":
+    - 'ready' (upcoming) ha mais que _MAX_READY_AGE_MINUTES: nunca foi ao
+      ar e nao vai mais - apaga (mesma logica de delete_broadcast).
+    - 'active' ha mais que _MAX_ACTIVE_AGE_MINUTES: sessao rodando muito
+      alem do esperado - forca transition('complete').
+
+    Nunca levanta excecao: chamado no inicio de create_live_stream() e uma
+    falha aqui nao deveria impedir a criacao da nova live.
+    """
+    cleaned = 0
+    try:
+        upcoming = _retry_youtube_call(
+            service.liveBroadcasts().list(part="id,snippet", broadcastStatus="upcoming", mine=True).execute
+        )
+        for item in upcoming.get("items", []):
+            age = _broadcast_age_minutes(item.get("snippet", {}).get("scheduledStartTime"))
+            if age is not None and age > _MAX_READY_AGE_MINUTES:
+                log.warning("Broadcast orfao %s preso em 'ready' ha %.0fmin - apagando.", item["id"], age)
+                try:
+                    delete_broadcast(item["id"])
+                    cleaned += 1
+                except Exception as exc:
+                    log.warning("Falha ao apagar broadcast orfao %s: %s", item["id"], exc)
+
+        active = _retry_youtube_call(
+            service.liveBroadcasts().list(part="id,snippet", broadcastStatus="active", mine=True).execute
+        )
+        for item in active.get("items", []):
+            age = _broadcast_age_minutes(item.get("snippet", {}).get("actualStartTime"))
+            if age is not None and age > _MAX_ACTIVE_AGE_MINUTES:
+                log.warning("Broadcast orfao %s preso em 'active' ha %.0fmin - encerrando.", item["id"], age)
+                try:
+                    transition_broadcast(item["id"], "complete")
+                    cleaned += 1
+                except Exception as exc:
+                    log.warning("Falha ao encerrar broadcast orfao %s: %s", item["id"], exc)
+    except Exception as exc:
+        log.warning("Falha ao verificar broadcasts orfaos (nao bloqueia a nova live): %s", exc)
+
+    if cleaned:
+        log.info("Limpeza de broadcasts orfaos: %d encerrado(s)/apagado(s).", cleaned)
+    return cleaned
+
 
 def create_live_stream(
     title: str = "",
@@ -226,6 +386,7 @@ def create_live_stream(
     resolution: str = "1080p",
 ) -> dict | None:
     service = get_youtube_service()
+    cleanup_orphan_broadcasts(service)
 
     title = title or _generate_live_title()
     description = description or (

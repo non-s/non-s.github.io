@@ -18,6 +18,13 @@ ROOT = Path(__file__).resolve().parent.parent
 VIDEO_DIR = ROOT / "_assets" / "video" / "animal_broll"
 AUDIO_DIR = ROOT / "_assets" / "audio" / "animal_jazz"
 
+# Historico de itens usados recentemente, para nao repetir o mesmo clipe/faixa
+# em sequencia quando o pool e pequeno. Persistido em _data/ (gitignored) para
+# sobreviver entre runs do workflow (cache do GitHub Actions cobre esse path).
+_RECENT_FILE = ROOT / "_data" / "recent_media.json"
+_RECENT_VIDEO_WINDOW = 15
+_RECENT_AUDIO_WINDOW = 8
+
 
 def video_pool() -> list[Path]:
     paths = sorted(VIDEO_DIR.glob("*.mp4"))
@@ -54,10 +61,65 @@ def _cuteness_score(video: Path) -> int:
     return cute_bonus + (likes // 20) + (views // 1000)
 
 
-def pick_videos(min_count: int = 1, max_count: int = 5, cuteness_sort: bool = True) -> list[Path]:
+def _load_recent() -> dict[str, list[str]]:
+    try:
+        return json.loads(_RECENT_FILE.read_text(encoding="utf-8"))
+    except Exception:
+        return {"videos": [], "audio": []}
+
+
+def _remember_recent(kind: str, names: list[str], window: int) -> None:
+    data = _load_recent()
+    updated = (data.get(kind, []) + names)[-window:]
+    data[kind] = updated
+    try:
+        _RECENT_FILE.parent.mkdir(parents=True, exist_ok=True)
+        _RECENT_FILE.write_text(json.dumps(data), encoding="utf-8")
+    except Exception as exc:
+        log.warning("Falha ao salvar historico de midia recente: %s", exc)
+
+
+def _avoid_recent(pool: list[Path], kind: str, min_needed: int) -> list[Path]:
+    """Remove itens usados recentemente do pool, a menos que isso deixe menos
+    candidatos do que o necessario - nesse caso repetir e melhor que travar."""
+    recent_names = set(_load_recent().get(kind, []))
+    if not recent_names:
+        return pool
+    filtered = [p for p in pool if p.name not in recent_names]
+    return filtered if len(filtered) >= min_needed else pool
+
+
+_CAT_KEYWORDS = ("cat", "kitten")
+_DOG_KEYWORDS = ("dog", "puppy")
+
+
+def _filter_by_animal(pool: list[Path], animal: str, min_needed: int) -> list[Path]:
+    """Restringe o pool aos clipes cujo nome de arquivo bate com o animal
+    pedido (nomes vem da query do Pixabay - ver scripts/sync_animal_broll.py
+    _safe_name - entao "real_cat_00_xxxx.mp4" contem "cat", etc).
+
+    Sem isso, pick_videos() escolhia do pool inteiro sem olhar pra `scene`:
+    um video cujo hook/titulo diz "gatinho dormindo" podia mostrar cachorros
+    no b-roll, ja que a selecao de clipe e a selecao de cena eram
+    completamente desacopladas.
+    """
+    keywords = _CAT_KEYWORDS if animal in ("cat", "kitten") else _DOG_KEYWORDS
+    filtered = [p for p in pool if any(kw in p.name.lower() for kw in keywords)]
+    return filtered if len(filtered) >= min_needed else pool
+
+
+def pick_videos(
+    min_count: int = 1,
+    max_count: int = 5,
+    cuteness_sort: bool = True,
+    animal: str = "",
+) -> list[Path]:
     pool = video_pool()
     if not pool:
         return []
+    if animal:
+        pool = _filter_by_animal(pool, animal, min_count)
+    pool = _avoid_recent(pool, "videos", min_count)
     # Garante limites validos para randint: min_count <= upper, e upper <= len(pool).
     upper = min(max_count, len(pool))
     lower = min(min_count, upper)
@@ -68,13 +130,21 @@ def pick_videos(min_count: int = 1, max_count: int = 5, cuteness_sort: bool = Tr
         # Pega os top clips fofos, mas embaralha para nao repetir sempre os mesmos.
         scored = sorted(pool, key=_cuteness_score, reverse=True)
         top = scored[: max(count * 3, len(pool) // 2)]
-        return random.sample(top, count)
-    return random.sample(pool, count)
+        chosen = random.sample(top, count)
+    else:
+        chosen = random.sample(pool, count)
+    _remember_recent("videos", [p.name for p in chosen], _RECENT_VIDEO_WINDOW)
+    return chosen
 
 
 def pick_audio() -> Path | None:
     pool = audio_pool()
-    return random.choice(pool) if pool else None
+    if not pool:
+        return None
+    pool = _avoid_recent(pool, "audio", min_needed=1)
+    chosen = random.choice(pool)
+    _remember_recent("audio", [chosen.name], _RECENT_AUDIO_WINDOW)
+    return chosen
 
 
 def available_audio_metadata() -> Iterator[dict]:

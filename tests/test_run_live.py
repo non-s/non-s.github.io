@@ -31,8 +31,7 @@ def _base_meta():
 
 
 class TestRunLiveMain:
-    @patch("scripts.run_live.notify_live_end")
-    @patch("scripts.run_live.notify_live_start")
+    @patch("scripts.run_live.record_live_viewer_snapshot")
     @patch("scripts.run_live._wait_ffmpeg_stream", return_value=0)
     @patch("scripts.run_live.wait_for_stream_active", return_value=True)
     @patch("scripts.run_live._start_ffmpeg_stream", return_value=MagicMock())
@@ -43,8 +42,7 @@ class TestRunLiveMain:
     @patch("scripts.run_live._register_signal_handlers")
     def test_does_not_transition_to_testing_only_complete_at_end(
         self, mock_register_signals, mock_create, mock_try_transition, mock_loop, mock_save,
-        mock_start_ffmpeg, mock_wait_active, mock_wait_ffmpeg,
-        mock_notify_start, mock_notify_end,
+        mock_start_ffmpeg, mock_wait_active, mock_wait_ffmpeg, mock_viewer_snapshot,
     ):
         code = run_live.main()
 
@@ -56,9 +54,9 @@ class TestRunLiveMain:
         statuses = [call.args[1] for call in mock_try_transition.call_args_list]
         assert "testing" not in statuses
         assert statuses == ["complete"]
+        mock_viewer_snapshot.assert_called_once_with("bcast123")
 
-    @patch("scripts.run_live.notify_live_end")
-    @patch("scripts.run_live.notify_live_start")
+    @patch("scripts.run_live.record_live_viewer_snapshot")
     @patch("scripts.run_live._terminate_ffmpeg_stream")
     @patch("scripts.run_live.wait_for_stream_active", return_value=False)
     @patch("scripts.run_live._start_ffmpeg_stream", return_value=MagicMock())
@@ -68,20 +66,20 @@ class TestRunLiveMain:
     @patch("scripts.run_live.create_live_stream", return_value=_base_meta())
     def test_aborts_and_terminates_ffmpeg_if_stream_never_active(
         self, mock_create, mock_try_transition, mock_loop, mock_save,
-        mock_start_ffmpeg, mock_wait_active, mock_terminate,
-        mock_notify_start, mock_notify_end,
+        mock_start_ffmpeg, mock_wait_active, mock_terminate, mock_viewer_snapshot,
     ):
         code = run_live.main()
 
         assert code == 1
         mock_terminate.assert_called_once()
-        mock_notify_start.assert_not_called()
         statuses = [call.args[1] for call in mock_try_transition.call_args_list]
         assert "testing" not in statuses
         assert "complete" in statuses
+        # Stream nunca ficou ativo - nao ha segmento concluido pra tirar
+        # amostra de viewers.
+        mock_viewer_snapshot.assert_not_called()
 
-    @patch("scripts.run_live.notify_live_end")
-    @patch("scripts.run_live.notify_live_start")
+    @patch("scripts.run_live.record_live_viewer_snapshot")
     @patch("scripts.run_live._try_transition")
     @patch("scripts.run_live.wait_for_stream_active", return_value=True)
     @patch("scripts.run_live._start_ffmpeg_stream", return_value=MagicMock())
@@ -91,8 +89,7 @@ class TestRunLiveMain:
     @patch("scripts.run_live.time")
     def test_reconnects_after_unexpected_ffmpeg_exit(
         self, mock_time, mock_create, mock_loop, mock_save,
-        mock_start_ffmpeg, mock_wait_active, mock_try_transition,
-        mock_notify_start, mock_notify_end,
+        mock_start_ffmpeg, mock_wait_active, mock_try_transition, mock_viewer_snapshot,
     ):
         """FFmpeg cai com codigo de erro antes da duracao total: reconecta em
         vez de desistir da live inteira."""
@@ -111,8 +108,9 @@ class TestRunLiveMain:
         assert code == 0
         assert mock_wait_ffmpeg.call_count == 2
         assert mock_start_ffmpeg.call_count == 2
-        mock_notify_start.assert_called_once()  # so notifica inicio uma vez
         mock_time.sleep.assert_called_with(run_live._RECONNECT_DELAY_SECONDS)
+        # Uma amostra por segmento concluido (2 segmentos: 1 reconexao + fim).
+        assert mock_viewer_snapshot.call_count == 2
 
 
 class TestEndBroadcast:

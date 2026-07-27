@@ -6,6 +6,9 @@ import json
 from pathlib import Path
 from unittest.mock import patch
 
+import pytest
+
+import utils.media_pool as media_pool
 from utils.media_pool import (
     _cuteness_score,
     _load_video_metadata,
@@ -15,6 +18,15 @@ from utils.media_pool import (
     pick_videos,
     video_pool,
 )
+
+
+@pytest.fixture(autouse=True)
+def _isolate_recent_media_file(tmp_path, monkeypatch):
+    """pick_videos()/pick_audio() persistem historico em _RECENT_FILE (path
+    real do repo) - sem isolar, testes escrevem no disco de verdade e o
+    historico de uma run vaza pra proxima (nomes de mock se repetem entre
+    testes deste arquivo)."""
+    monkeypatch.setattr(media_pool, "_RECENT_FILE", tmp_path / "recent_media.json")
 
 
 class TestMediaPool:
@@ -249,3 +261,89 @@ class TestMediaPool:
                 result = list(available_audio_metadata())
 
         assert len(result) == 0
+
+
+class TestAvoidRecent:
+    """pick_videos()/pick_audio() evitam repetir os itens usados mais recentemente."""
+
+    def test_pick_audio_avoids_last_used_track(self):
+        pool = [Path(f"/fake/audio{i}.mp3") for i in range(3)]
+        with patch("utils.media_pool.audio_pool", return_value=pool):
+            first = pick_audio()
+            second = pick_audio()
+
+        assert first is not None and second is not None
+        assert first != second
+
+    def test_pick_audio_falls_back_when_pool_too_small(self):
+        """So 1 faixa no pool: precisa poder repetir em vez de travar."""
+        pool = [Path("/fake/only.mp3")]
+        with patch("utils.media_pool.audio_pool", return_value=pool):
+            first = pick_audio()
+            second = pick_audio()
+
+        assert first == pool[0]
+        assert second == pool[0]
+
+    @patch("utils.media_pool.random.sample")
+    @patch("utils.media_pool.random.randint")
+    @patch("utils.media_pool.video_pool")
+    def test_pick_videos_excludes_recently_used_names(self, mock_video_pool, mock_randint, mock_sample):
+        mock_videos = [Path(f"/fake/path/video{i}.mp4") for i in range(5)]
+        mock_video_pool.return_value = mock_videos
+        mock_randint.return_value = 2
+        mock_sample.return_value = mock_videos[:2]
+
+        pick_videos(min_count=2, max_count=2, cuteness_sort=False)
+        # Primeira chamada: nada no historico ainda, pool completo (5 videos).
+        assert len(mock_sample.call_args_list[0].args[0]) == 5
+
+        pick_videos(min_count=2, max_count=2, cuteness_sort=False)
+        # Segunda chamada: os 2 usados na primeira devem estar fora do pool.
+        second_pool = mock_sample.call_args_list[1].args[0]
+        assert len(second_pool) == 3
+        assert not (set(p.name for p in second_pool) & {"video0.mp4", "video1.mp4"})
+
+
+class TestFilterByAnimal:
+    """pick_videos(animal=...) restringe o b-roll ao animal do scene, pra
+    nao mostrar cachorro num video cujo titulo/hook fala de gato."""
+
+    def test_pick_videos_with_cat_filter_excludes_dog_clips(self):
+        pool = [
+            Path("/fake/real_cat_00_aaa.mp4"),
+            Path("/fake/cute_kitten_real_01_bbb.mp4"),
+            Path("/fake/real_dog_00_ccc.mp4"),
+            Path("/fake/real_puppy_00_ddd.mp4"),
+        ]
+        with patch("utils.media_pool.video_pool", return_value=pool):
+            result = pick_videos(min_count=1, max_count=2, cuteness_sort=False, animal="cat")
+
+        assert all("cat" in p.name or "kitten" in p.name for p in result)
+
+    def test_pick_videos_with_dog_filter_excludes_cat_clips(self):
+        pool = [
+            Path("/fake/real_cat_00_aaa.mp4"),
+            Path("/fake/real_dog_00_ccc.mp4"),
+            Path("/fake/real_puppy_00_ddd.mp4"),
+        ]
+        with patch("utils.media_pool.video_pool", return_value=pool):
+            result = pick_videos(min_count=1, max_count=2, cuteness_sort=False, animal="dog")
+
+        assert all("cat" not in p.name for p in result)
+
+    def test_falls_back_to_full_pool_when_animal_filter_too_narrow(self):
+        """So tem gato no pool, mas pediram cachorro: cair pro pool inteiro
+        em vez de falhar por falta de clipe."""
+        pool = [Path("/fake/real_cat_00_aaa.mp4"), Path("/fake/real_cat_01_bbb.mp4")]
+        with patch("utils.media_pool.video_pool", return_value=pool):
+            result = pick_videos(min_count=2, max_count=2, cuteness_sort=False, animal="dog")
+
+        assert len(result) == 2
+
+    def test_no_animal_filter_keeps_old_behavior(self):
+        pool = [Path("/fake/real_cat_00_aaa.mp4"), Path("/fake/real_dog_00_ccc.mp4")]
+        with patch("utils.media_pool.video_pool", return_value=pool):
+            result = pick_videos(min_count=2, max_count=2, cuteness_sort=False)
+
+        assert len(result) == 2

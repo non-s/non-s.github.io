@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from datetime import UTC, datetime
 from unittest.mock import patch
 
@@ -54,6 +55,47 @@ class TestSceneForMood:
     def test_unknown_mood_falls_back_to_fofura(self):
         scene = content_strategy.scene_for_mood("mood-que-nao-existe")
         assert scene in content_strategy.SCENE_CATEGORIES["fofura"]
+
+
+class TestSceneWeights:
+    """scene_for_mood pondera pela performance real (scene_performance.json,
+    gerado por collect_analytics.py) quando ela existe, sem nunca excluir
+    nenhuma cena da categoria."""
+
+    def _isolate(self, tmp_path, monkeypatch):
+        perf_file = tmp_path / "scene_performance.json"
+        monkeypatch.setattr(content_strategy, "_SCENE_PERFORMANCE_FILE", perf_file)
+        return perf_file
+
+    def test_no_performance_file_falls_back_to_uniform(self, tmp_path, monkeypatch):
+        self._isolate(tmp_path, monkeypatch)
+        assert content_strategy._scene_weights() == {}
+
+    def test_reads_weights_from_file(self, tmp_path, monkeypatch):
+        perf_file = self._isolate(tmp_path, monkeypatch)
+        perf_file.write_text(json.dumps({"cat": 2.0}), encoding="utf-8")
+
+        assert content_strategy._scene_weights() == {"cat": 2.0}
+
+    def test_corrupted_file_falls_back_to_empty(self, tmp_path, monkeypatch):
+        perf_file = self._isolate(tmp_path, monkeypatch)
+        perf_file.write_text("not json", encoding="utf-8")
+
+        assert content_strategy._scene_weights() == {}
+
+    def test_scene_for_mood_still_stays_within_category_when_weighted(self, tmp_path, monkeypatch):
+        perf_file = self._isolate(tmp_path, monkeypatch)
+        perf_file.write_text(json.dumps({"sleepy cat": 2.5, "sleepy dog": 0.4}), encoding="utf-8")
+
+        for _ in range(20):
+            assert content_strategy.scene_for_mood("relax") in content_strategy.SCENE_CATEGORIES["relax"]
+
+    def test_heavily_weighted_scene_is_picked_far_more_often(self, tmp_path, monkeypatch):
+        perf_file = self._isolate(tmp_path, monkeypatch)
+        perf_file.write_text(json.dumps({"sleepy cat": 2.5, "sleepy dog": 0.4}), encoding="utf-8")
+
+        results = [content_strategy.scene_for_mood("relax") for _ in range(200)]
+        assert results.count("sleepy cat") > results.count("sleepy dog")
 
 
 def test_best_slot_for_short():

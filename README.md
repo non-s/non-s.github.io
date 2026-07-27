@@ -15,10 +15,11 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 - **Text overlay**: Hook aparece como texto no vídeo nos primeiros 3 segundos (drawtext FFmpeg)
 - **Legendas automáticas**: SRT gerado via Gemini e enviado como caption track (mimetype correto por extensão)
 - **Playlists automáticas**: Videos adicionados a playlists por mood/formato (cache persistente em `_data/playlist_cache.json`)
-- **Analytics semanal**: Coleta de métricas para feedback loop (com guard contra paginação infinita)
+- **Analytics semanal com feedback loop real**: coleta views/likes/comentários, cruza com a cena que gerou cada vídeo (`_data/video_tags.json`, gravado no upload) e grava um peso por cena em `_data/scene_performance.json` — `scene_for_mood()` passa a preferir cenas com melhor performance real, sem nunca zerar as demais
+- **Contagem de espectadores da live**: uma amostra de `concurrentViewers` por segmento de FFmpeg, salva em `_data/live_viewer_history.json`
 - **Marca consistente**: Todos os títulos começam com "Pata Jazz |"
 - **Conteúdo em inglês**: título, descrição, hashtags e legendas são gerados em inglês (`utils/seo_keywords.py`, `utils/metadata_engine.py`, `utils/caption_engine.py`) - o formato pet+jazz não depende de idioma e o volume de busca em inglês é muito maior que o equivalente em português. O system prompt padrão do Gemini (`utils/ai_helper.py::_default_system_prompt`) também reforça isso - qualquer chamada de IA que precise de outro idioma tem que passar `system=` explicitamente.
-- **Robustez de APIs**: Circuit breaker no Gemini (429/502/503), retry exponencial no Discord/YouTube, fallback local em todas as chamadas de IA
+- **Robustez de APIs**: Circuit breaker no Gemini (429/502/503), retry exponencial no YouTube, fallback local em todas as chamadas de IA
 - **Thumbnails com shadow RGBA**: Gradiente via `Image.linear_gradient` (Pillow ≥9.1), shadows com alpha real
 - **Live sem deadlock**: stderr do FFmpeg redirecionado para arquivo (evita congelamento em lives longas)
 
@@ -36,7 +37,7 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 - **Python 3.11+** (CI roda 3.11; local testado com 3.12/3.14)
 - **FFmpeg** — codificação, concatenação, xfade, drawtext e ffprobe (com timeout)
 - **Pillow ≥10.3** — thumbnails (gradiente, shadows RGBA, fontes TrueType)
-- **pytest** — testes unitários (210 testes, cobertura ≥70% de `utils/`)
+- **pytest** — testes unitários (266 testes, cobertura ≥70% de `utils/`)
 - **ruff** — lint (regras E, F, W, I, UP, B)
 - **GitHub Actions** — CI/CD e agendamento
 
@@ -64,7 +65,6 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 │   ├── animal_branding.py    # Identidade Pata Jazz
 │   ├── caption_engine.py     # Legendas SRT automáticas
 │   ├── content_strategy.py   # Mood por horário e calendário
-│   ├── discord_webhook.py    # Notificações Discord
 │   ├── ffmpeg_helpers.py      # FFmpeg e ffprobe
 │   ├── log_config.py         # Logging centralizado
 │   ├── media_pool.py         # Pool de mídia local
@@ -120,7 +120,6 @@ Salve o JSON resultante como `youtube_token.json` na raiz do projeto (ou use o s
 - `PIXABAY_API_KEY`
 - `JAMENDO_CLIENT_ID`
 - `YOUTUBE_TOKEN` — JSON do token OAuth do YouTube
-- `DISCORD_WEBHOOK_URL` — opcional; sem ele, `utils/discord_webhook.py` só loga um warning e segue (nenhum passo falha por falta desse secret). Sem configurar, nenhuma notificação (início/fim de live, upload, falha de workflow) é enviada de verdade.
 
 ### Variables
 

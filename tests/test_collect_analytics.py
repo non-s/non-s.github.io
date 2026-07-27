@@ -1,7 +1,67 @@
 """Testes para collect_analytics.py."""
+import json
 from unittest.mock import MagicMock
 
 import scripts.collect_analytics as collect_analytics
+
+
+class TestAppendHistory:
+    def _report(self, collected_at="2026-01-01T00:00:00+00:00", views=100):
+        return {
+            "collected_at": collected_at,
+            "total_videos": 5,
+            "total_views": views,
+            "total_likes": 1,
+            "total_comments": 0,
+            "avg_views": views // 5,
+            "top_10": [],
+            "bottom_10": [],
+            "all_videos": [{"video_id": "x"}],
+        }
+
+    def test_creates_history_file_with_one_snapshot(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(collect_analytics, "HISTORY_FILE", tmp_path / "history.json")
+
+        collect_analytics._append_history(self._report())
+
+        history = json.loads((tmp_path / "history.json").read_text())
+        assert len(history) == 1
+        assert history[0]["total_views"] == 100
+        # Snapshot e compacto - nao carrega all_videos/top_10/bottom_10.
+        assert "all_videos" not in history[0]
+
+    def test_appends_to_existing_history(self, tmp_path, monkeypatch):
+        history_path = tmp_path / "history.json"
+        monkeypatch.setattr(collect_analytics, "HISTORY_FILE", history_path)
+        history_path.write_text(json.dumps([{"collected_at": "2025-01-01", "total_views": 10}]))
+
+        collect_analytics._append_history(self._report(views=200))
+
+        history = json.loads(history_path.read_text())
+        assert len(history) == 2
+        assert history[-1]["total_views"] == 200
+
+    def test_caps_history_at_max_entries(self, tmp_path, monkeypatch):
+        history_path = tmp_path / "history.json"
+        monkeypatch.setattr(collect_analytics, "HISTORY_FILE", history_path)
+        monkeypatch.setattr(collect_analytics, "MAX_HISTORY_ENTRIES", 3)
+        history_path.write_text(json.dumps([{"total_views": i} for i in range(3)]))
+
+        collect_analytics._append_history(self._report(views=999))
+
+        history = json.loads(history_path.read_text())
+        assert len(history) == 3
+        assert history[-1]["total_views"] == 999
+
+    def test_corrupted_history_file_does_not_crash(self, tmp_path, monkeypatch):
+        history_path = tmp_path / "history.json"
+        monkeypatch.setattr(collect_analytics, "HISTORY_FILE", history_path)
+        history_path.write_text("not valid json{{{")
+
+        collect_analytics._append_history(self._report())
+
+        history = json.loads(history_path.read_text())
+        assert len(history) == 1
 
 
 class TestCollectVideoStats:
@@ -117,3 +177,80 @@ class TestCollectVideoStats:
         collect_analytics.collect_video_stats(service)
 
         assert service.playlistItems().list.return_value.execute.call_count == 20
+
+
+class TestLoadVideoTags:
+    def test_missing_file_returns_empty_dict(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(collect_analytics, "VIDEO_TAGS_FILE", tmp_path / "video_tags.json")
+        assert collect_analytics._load_video_tags() == {}
+
+    def test_reads_existing_file(self, tmp_path, monkeypatch):
+        tags_file = tmp_path / "video_tags.json"
+        tags_file.write_text(json.dumps({"vid1": {"scene": "cat"}}), encoding="utf-8")
+        monkeypatch.setattr(collect_analytics, "VIDEO_TAGS_FILE", tags_file)
+
+        assert collect_analytics._load_video_tags() == {"vid1": {"scene": "cat"}}
+
+    def test_corrupted_file_returns_empty_dict(self, tmp_path, monkeypatch):
+        tags_file = tmp_path / "video_tags.json"
+        tags_file.write_text("not json", encoding="utf-8")
+        monkeypatch.setattr(collect_analytics, "VIDEO_TAGS_FILE", tags_file)
+
+        assert collect_analytics._load_video_tags() == {}
+
+
+class TestComputeScenePerformance:
+    """_compute_scene_performance: cruza views (stats) com a cena que gerou
+    cada video (video_tags) pra calcular um peso relativo por cena."""
+
+    def _stats(self, *, cat_views, dog_views):
+        stats = [{"video_id": f"cat{i}", "views": v} for i, v in enumerate(cat_views)]
+        stats += [{"video_id": f"dog{i}", "views": v} for i, v in enumerate(dog_views)]
+        return stats
+
+    def _tags(self, *, cat_count, dog_count):
+        tags = {f"cat{i}": {"scene": "cat"} for i in range(cat_count)}
+        tags.update({f"dog{i}": {"scene": "dog"} for i in range(dog_count)})
+        return tags
+
+    def test_no_tagged_videos_returns_empty(self):
+        stats = [{"video_id": "untagged1", "views": 100}]
+        assert collect_analytics._compute_scene_performance(stats, {}) == {}
+
+    def test_scene_with_too_few_samples_is_skipped(self):
+        """_MIN_SCENE_SAMPLES = 3: uma ou duas amostras e ruido demais pra
+        confiar num peso - fica de fora do resultado (peso neutro implicito)."""
+        stats = self._stats(cat_views=[100, 100], dog_views=[10, 10, 10])
+        tags = self._tags(cat_count=2, dog_count=3)
+
+        weights = collect_analytics._compute_scene_performance(stats, tags)
+
+        assert "cat" not in weights
+        assert "dog" in weights
+
+    def test_above_average_scene_gets_weight_above_one(self):
+        stats = self._stats(cat_views=[1000, 1000, 1000], dog_views=[10, 10, 10])
+        tags = self._tags(cat_count=3, dog_count=3)
+
+        weights = collect_analytics._compute_scene_performance(stats, tags)
+
+        assert weights["cat"] > 1.0
+        assert weights["dog"] < 1.0
+
+    def test_weight_is_capped_at_max(self):
+        # Grupos com contagens desiguais (3 vs 30) pra puxar a media geral bem
+        # abaixo da media do cat - com grupos do mesmo tamanho o peso maximo
+        # possivel tende a 2.0 (nunca alcancaria o cap de 2.5).
+        stats = self._stats(cat_views=[1_000_000] * 3, dog_views=[1] * 30)
+        tags = self._tags(cat_count=3, dog_count=30)
+
+        weights = collect_analytics._compute_scene_performance(stats, tags)
+
+        assert weights["cat"] == collect_analytics._MAX_SCENE_WEIGHT
+        assert weights["dog"] == collect_analytics._MIN_SCENE_WEIGHT
+
+    def test_all_zero_views_returns_empty(self):
+        stats = self._stats(cat_views=[0, 0, 0], dog_views=[0, 0, 0])
+        tags = self._tags(cat_count=3, dog_count=3)
+
+        assert collect_analytics._compute_scene_performance(stats, tags) == {}

@@ -38,13 +38,17 @@ jobs:
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
       - name: "Restaurar/persistir analytics"
-        # Sem isso, _data/analytics.json e escrito e perdido junto com o
+        # Sem isso, _data/analytics*.json e escrito e perdido junto com o
         # runner efemero a cada semana - nada mais no repo le esse arquivo
         # de volta hoje, mas ao menos fica disponivel entre runs para uso
         # futuro (dashboards, feedback loop) em vez de ser sempre descartado.
+        # analytics_history.json precisa sobreviver entre runs de verdade
+        # (e onde a serie historica se acumula) - so cache resolve isso.
         uses: actions/cache@v4
         with:
-          path: _data/analytics.json
+          path: |
+            _data/analytics.json
+            _data/analytics_history.json
           key: analytics-${{ github.run_id }}
           restore-keys: analytics-
       - name: "Coletar analytics"
@@ -57,7 +61,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: analytics-report
-          path: _data/analytics.json
+          path: |
+            _data/analytics.json
+            _data/analytics_history.json
           retention-days: 90
       - name: "Apagar token"
         if: always()

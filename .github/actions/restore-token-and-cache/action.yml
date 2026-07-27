@@ -31,3 +31,21 @@ runs:
         path: _assets/audio/animal_jazz
         key: animal-jazz-${{ github.run_id }}
         restore-keys: animal-jazz-
+    - name: "Cache estado persistente (_data)"
+      # Sem isso, cada workflow (shorts/horizontal/live/batch/weekly/analytics)
+      # comeca de um checkout limpo e esses arquivos nunca sobrevivem entre
+      # runs - o anti-repeat de b-roll/jazz (recent_media.json), o cache de
+      # playlists (playlist_cache.json) e o feedback loop de performance por
+      # cena (video_tags.json escrito no upload, scene_performance.json
+      # escrito pelo collect_analytics.py e lido de volta por
+      # content_strategy.scene_for_mood) ficariam sempre vazios/zerados a
+      # cada run, sem nunca dar erro - so silenciosamente nunca funcionando.
+      uses: actions/cache@v4
+      with:
+        path: |
+          _data/recent_media.json
+          _data/playlist_cache.json
+          _data/video_tags.json
+          _data/scene_performance.json
+        key: pata-jazz-data-${{ github.run_id }}
+        restore-keys: pata-jazz-data-
