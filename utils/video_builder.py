@@ -260,6 +260,12 @@ def build_pata_jazz_video(
     scene = spec.scene if spec.scene else random_scene()
     hook, emoji = hook_for_scene(scene)
     audio_path = pick_audio()
+    # Deriva o animal do scene para o b-roll bater com o hook/titulo - sem
+    # isso pick_videos() escolhia do pool inteiro (gato OU cachorro) sem
+    # olhar pra cena, entao um titulo "gatinho dormindo" podia sair com
+    # clipes de cachorro no video.
+    s = scene.lower()
+    animal = "cat" if ("cat" in s or "kitten" in s) else "dog"
 
     output, thumb, _ = _prepare_output_paths(stem_prefix, output_dir, thumb_dir)
 
@@ -272,19 +278,19 @@ def build_pata_jazz_video(
 
     if spec.kind == "short":
         # Multi-clip com crossfade para Shorts
-        videos = pick_videos(min_count=2, max_count=3, cuteness_sort=True)
+        videos = pick_videos(min_count=2, max_count=3, cuteness_sort=True, animal=animal)
         if len(videos) >= 2:
             _build_multi_clip_short(spec, videos, audio_path, output, hook=hook)
         else:
             # Fallback: 1 clipe em loop
-            single = pick_videos(min_count=1, max_count=1)
+            single = pick_videos(min_count=1, max_count=1, animal=animal)
             if not single:
                 raise RuntimeError("Pool de b-roll insuficiente para gerar o video.")
             video = random.choice(single)
             _build_single_clip_video(spec, video, audio_path, output, hook=hook)
     else:
         # Horizontais: 1 clipe em loop (sem overlay de hook, e mais longo)
-        single = pick_videos(min_count=1, max_count=1)
+        single = pick_videos(min_count=1, max_count=1, animal=animal)
         if not single:
             raise RuntimeError("Pool de b-roll insuficiente para gerar o video.")
         video = random.choice(single)

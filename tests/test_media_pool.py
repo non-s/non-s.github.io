@@ -303,3 +303,47 @@ class TestAvoidRecent:
         second_pool = mock_sample.call_args_list[1].args[0]
         assert len(second_pool) == 3
         assert not (set(p.name for p in second_pool) & {"video0.mp4", "video1.mp4"})
+
+
+class TestFilterByAnimal:
+    """pick_videos(animal=...) restringe o b-roll ao animal do scene, pra
+    nao mostrar cachorro num video cujo titulo/hook fala de gato."""
+
+    def test_pick_videos_with_cat_filter_excludes_dog_clips(self):
+        pool = [
+            Path("/fake/real_cat_00_aaa.mp4"),
+            Path("/fake/cute_kitten_real_01_bbb.mp4"),
+            Path("/fake/real_dog_00_ccc.mp4"),
+            Path("/fake/real_puppy_00_ddd.mp4"),
+        ]
+        with patch("utils.media_pool.video_pool", return_value=pool):
+            result = pick_videos(min_count=1, max_count=2, cuteness_sort=False, animal="cat")
+
+        assert all("cat" in p.name or "kitten" in p.name for p in result)
+
+    def test_pick_videos_with_dog_filter_excludes_cat_clips(self):
+        pool = [
+            Path("/fake/real_cat_00_aaa.mp4"),
+            Path("/fake/real_dog_00_ccc.mp4"),
+            Path("/fake/real_puppy_00_ddd.mp4"),
+        ]
+        with patch("utils.media_pool.video_pool", return_value=pool):
+            result = pick_videos(min_count=1, max_count=2, cuteness_sort=False, animal="dog")
+
+        assert all("cat" not in p.name for p in result)
+
+    def test_falls_back_to_full_pool_when_animal_filter_too_narrow(self):
+        """So tem gato no pool, mas pediram cachorro: cair pro pool inteiro
+        em vez de falhar por falta de clipe."""
+        pool = [Path("/fake/real_cat_00_aaa.mp4"), Path("/fake/real_cat_01_bbb.mp4")]
+        with patch("utils.media_pool.video_pool", return_value=pool):
+            result = pick_videos(min_count=2, max_count=2, cuteness_sort=False, animal="dog")
+
+        assert len(result) == 2
+
+    def test_no_animal_filter_keeps_old_behavior(self):
+        pool = [Path("/fake/real_cat_00_aaa.mp4"), Path("/fake/real_dog_00_ccc.mp4")]
+        with patch("utils.media_pool.video_pool", return_value=pool):
+            result = pick_videos(min_count=2, max_count=2, cuteness_sort=False)
+
+        assert len(result) == 2

@@ -89,10 +89,36 @@ def _avoid_recent(pool: list[Path], kind: str, min_needed: int) -> list[Path]:
     return filtered if len(filtered) >= min_needed else pool
 
 
-def pick_videos(min_count: int = 1, max_count: int = 5, cuteness_sort: bool = True) -> list[Path]:
+_CAT_KEYWORDS = ("cat", "kitten")
+_DOG_KEYWORDS = ("dog", "puppy")
+
+
+def _filter_by_animal(pool: list[Path], animal: str, min_needed: int) -> list[Path]:
+    """Restringe o pool aos clipes cujo nome de arquivo bate com o animal
+    pedido (nomes vem da query do Pixabay - ver scripts/sync_animal_broll.py
+    _safe_name - entao "real_cat_00_xxxx.mp4" contem "cat", etc).
+
+    Sem isso, pick_videos() escolhia do pool inteiro sem olhar pra `scene`:
+    um video cujo hook/titulo diz "gatinho dormindo" podia mostrar cachorros
+    no b-roll, ja que a selecao de clipe e a selecao de cena eram
+    completamente desacopladas.
+    """
+    keywords = _CAT_KEYWORDS if animal in ("cat", "kitten") else _DOG_KEYWORDS
+    filtered = [p for p in pool if any(kw in p.name.lower() for kw in keywords)]
+    return filtered if len(filtered) >= min_needed else pool
+
+
+def pick_videos(
+    min_count: int = 1,
+    max_count: int = 5,
+    cuteness_sort: bool = True,
+    animal: str = "",
+) -> list[Path]:
     pool = video_pool()
     if not pool:
         return []
+    if animal:
+        pool = _filter_by_animal(pool, animal, min_count)
     pool = _avoid_recent(pool, "videos", min_count)
     # Garante limites validos para randint: min_count <= upper, e upper <= len(pool).
     upper = min(max_count, len(pool))
