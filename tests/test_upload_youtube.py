@@ -10,7 +10,18 @@ import json
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 import upload_youtube
+
+
+@pytest.fixture(autouse=True)
+def _isolate_video_tags_file(tmp_path, monkeypatch):
+    """upload_video() agora grava scene/hook/mood por video_id em
+    _VIDEO_TAGS_FILE (ver _record_video_tags) - sem isolar isso todo teste
+    desse modulo que chama upload_video() escreveria no _data/video_tags.json
+    real do repo."""
+    monkeypatch.setattr(upload_youtube, "_VIDEO_TAGS_FILE", tmp_path / "video_tags.json")
 
 
 def _write_video_with_meta(output_dir: Path, meta: dict, stem: str = "pata_jazz_short_20260101") -> None:
@@ -280,3 +291,77 @@ class TestUploadVideoPlaylists:
     def test_returns_none_when_no_video_found(self, tmp_path, monkeypatch):
         monkeypatch.setattr(upload_youtube, "OUTPUT_DIR", tmp_path)
         assert upload_youtube.upload_video(prefix="pata_jazz_") is None
+
+
+class TestRecordVideoTags:
+    """_record_video_tags(): mapeamento video_id -> scene/hook/mood que
+    collect_analytics.py cruza com views reais para o feedback loop de
+    scene_for_mood (utils/content_strategy.py)."""
+
+    def test_writes_scene_hook_mood_kind(self, tmp_path, monkeypatch):
+        tags_file = tmp_path / "video_tags.json"
+        monkeypatch.setattr(upload_youtube, "_VIDEO_TAGS_FILE", tags_file)
+
+        upload_youtube._record_video_tags(
+            "vid1", {"scene": "cat", "hook": "Cute Cat", "mood": "fofura", "kind": "short"}
+        )
+
+        data = json.loads(tags_file.read_text(encoding="utf-8"))
+        assert data["vid1"]["scene"] == "cat"
+        assert data["vid1"]["hook"] == "Cute Cat"
+        assert data["vid1"]["mood"] == "fofura"
+        assert data["vid1"]["kind"] == "short"
+        assert "uploaded_at" in data["vid1"]
+
+    def test_skips_when_scene_missing(self, tmp_path, monkeypatch):
+        tags_file = tmp_path / "video_tags.json"
+        monkeypatch.setattr(upload_youtube, "_VIDEO_TAGS_FILE", tags_file)
+
+        upload_youtube._record_video_tags("vid1", {"hook": "Cute Cat"})
+
+        assert not tags_file.exists()
+
+    def test_merges_with_existing_entries(self, tmp_path, monkeypatch):
+        tags_file = tmp_path / "video_tags.json"
+        tags_file.write_text(json.dumps({"old_vid": {"scene": "dog"}}), encoding="utf-8")
+        monkeypatch.setattr(upload_youtube, "_VIDEO_TAGS_FILE", tags_file)
+
+        upload_youtube._record_video_tags("vid1", {"scene": "cat"})
+
+        data = json.loads(tags_file.read_text(encoding="utf-8"))
+        assert set(data.keys()) == {"old_vid", "vid1"}
+
+    def test_caps_at_max_video_tags(self, tmp_path, monkeypatch):
+        tags_file = tmp_path / "video_tags.json"
+        monkeypatch.setattr(upload_youtube, "_VIDEO_TAGS_FILE", tags_file)
+        monkeypatch.setattr(upload_youtube, "_MAX_VIDEO_TAGS", 3)
+
+        for i in range(3):
+            upload_youtube._record_video_tags(f"vid{i}", {"scene": "cat"})
+        upload_youtube._record_video_tags("vid_new", {"scene": "cat"})
+
+        data = json.loads(tags_file.read_text(encoding="utf-8"))
+        assert len(data) == 3
+        assert "vid0" not in data  # o mais antigo foi descartado
+        assert "vid_new" in data
+
+    def test_upload_video_persists_tags_end_to_end(self, tmp_path, monkeypatch):
+        tags_file = tmp_path / "video_tags.json"
+        monkeypatch.setattr(upload_youtube, "_VIDEO_TAGS_FILE", tags_file)
+        monkeypatch.setattr(upload_youtube, "OUTPUT_DIR", tmp_path)
+        monkeypatch.setattr(upload_youtube.ffmpeg_helpers, "get_video_duration", lambda path: 30.0)
+        _write_video_with_meta(tmp_path, {
+            "title": "Gatinho Fofo", "description": "desc", "scene": "cat", "kind": "short", "mood": "relax",
+        })
+
+        service = MagicMock()
+        service.videos().insert().execute.return_value = {"id": "vid_e2e", "status": {"privacyStatus": "public"}}
+
+        with patch("upload_youtube.get_youtube_service", return_value=service), \
+             patch("utils.playlist_manager.add_video_to_playlist"):
+            video_id = upload_youtube.upload_video(prefix="pata_jazz_")
+
+        assert video_id == "vid_e2e"
+        data = json.loads(tags_file.read_text(encoding="utf-8"))
+        assert data["vid_e2e"]["scene"] == "cat"
+        assert data["vid_e2e"]["mood"] == "relax"

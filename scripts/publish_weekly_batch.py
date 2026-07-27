@@ -27,7 +27,7 @@ sys.path.insert(0, str(ROOT))
 
 from googleapiclient.http import MediaFileUpload
 
-from upload_youtube import _build_tags, _meta_path, _retry_youtube_call
+from upload_youtube import _build_tags, _meta_path, _record_video_tags, _retry_youtube_call
 from utils import ffmpeg_helpers
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.youtube_oauth import get_youtube_service
@@ -125,6 +125,8 @@ def _publish_video(service, video_path: Path, meta: dict, language: str = "en") 
             "Video %s saiu com privacyStatus=%r, esperado %r - confira manualmente.",
             video_id, actual_privacy, privacy,
         )
+
+    _record_video_tags(video_id, meta)
 
     # Thumbnail
     thumbnail = _meta_path(meta, "thumbnail")

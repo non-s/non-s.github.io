@@ -6,7 +6,18 @@ import json
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 import scripts.publish_weekly_batch as publish_weekly_batch
+import upload_youtube
+
+
+@pytest.fixture(autouse=True)
+def _isolate_video_tags_file(tmp_path, monkeypatch):
+    """_publish_video() chama _record_video_tags (upload_youtube.py) no
+    caminho de upload novo - isola pra nao escrever no _data/video_tags.json
+    real do repo."""
+    monkeypatch.setattr(upload_youtube, "_VIDEO_TAGS_FILE", tmp_path / "video_tags.json")
 
 
 def _write_video(output_dir: Path, stem: str, meta: dict) -> Path:

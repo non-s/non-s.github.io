@@ -80,6 +80,43 @@ def _build_tags(scene: str, hashtags: list[str] | None = None) -> list[str]:
     return list(dict.fromkeys(base))[:15]
 
 
+_VIDEO_TAGS_FILE = LIVE_META_DIR / "video_tags.json"
+_MAX_VIDEO_TAGS = 500
+
+
+def _record_video_tags(video_id: str, meta: dict) -> None:
+    """Persiste scene/hook/mood do video enviado, indexado por video_id.
+
+    collect_analytics.py so tinha views agregadas sem nenhuma pista de qual
+    cena/hook gerou qual video - o "feedback loop" mencionado no docstring
+    daquele modulo nunca existiu de verdade. Esse mapeamento e o que falta
+    pra cruzar performance real (views) com a cena que a gerou.
+    """
+    scene = meta.get("scene", "")
+    if not scene:
+        return
+    try:
+        existing = json.loads(_VIDEO_TAGS_FILE.read_text(encoding="utf-8")) if _VIDEO_TAGS_FILE.exists() else {}
+    except Exception:
+        existing = {}
+    existing[video_id] = {
+        "scene": scene,
+        "hook": meta.get("hook", ""),
+        "mood": meta.get("mood", ""),
+        "kind": meta.get("kind", ""),
+        "uploaded_at": datetime.now(UTC).isoformat(),
+    }
+    # Mantem so as N mais recentes (por ordem de insercao) pra nao crescer pra sempre.
+    if len(existing) > _MAX_VIDEO_TAGS:
+        for old_key in list(existing.keys())[: len(existing) - _MAX_VIDEO_TAGS]:
+            del existing[old_key]
+    try:
+        _VIDEO_TAGS_FILE.parent.mkdir(parents=True, exist_ok=True)
+        _VIDEO_TAGS_FILE.write_text(json.dumps(existing, ensure_ascii=False, indent=2), encoding="utf-8")
+    except Exception as exc:
+        log.warning("Falha ao salvar video_tags: %s", exc)
+
+
 def upload_video(language: str = "en", privacy: str = "public", prefix: str = "pata_jazz_") -> str | None:
     found = _latest_video_meta(prefix=prefix)
     if not found:
@@ -133,6 +170,8 @@ def upload_video(language: str = "en", privacy: str = "public", prefix: str = "p
             "Video %s saiu com privacyStatus=%r, esperado %r - confira manualmente.",
             video_id, actual_privacy, privacy,
         )
+
+    _record_video_tags(video_id, meta)
 
     if thumbnail and thumbnail.exists():
         try:

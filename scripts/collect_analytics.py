@@ -5,7 +5,10 @@ Usa a YouTube Data API para buscar views, likes, comentarios e duracao dos
 videos recentes. Salva um relatorio em _data/analytics.json para analise.
 
 Este script e disparado por um workflow semanal e alimenta o feedback loop:
-cenas e hooks com melhor performance sao priorizados na geracao futura.
+cruza video_tags.json (cena que gerou cada video, gravado no upload) com as
+views coletadas aqui e grava um peso por cena em scene_performance.json, que
+utils.content_strategy.scene_for_mood usa pra priorizar cenas com melhor
+performance na geracao futura (nunca eliminando as demais - ver pesos min/max).
 """
 
 from __future__ import annotations
@@ -29,6 +32,11 @@ DATA_DIR = ROOT / "_data"
 MAX_VIDEOS = 50
 HISTORY_FILE = DATA_DIR / "analytics_history.json"
 MAX_HISTORY_ENTRIES = 104  # ~2 anos de snapshots semanais
+VIDEO_TAGS_FILE = DATA_DIR / "video_tags.json"
+SCENE_PERFORMANCE_FILE = DATA_DIR / "scene_performance.json"
+_MIN_SCENE_SAMPLES = 3  # cena com poucos videos ainda: peso fica neutro (nao ha o suficiente pra confiar)
+_MIN_SCENE_WEIGHT = 0.4
+_MAX_SCENE_WEIGHT = 2.5
 
 
 def _to_int(value) -> int:
@@ -104,6 +112,53 @@ def collect_video_stats(service) -> list[dict]:
     return stats
 
 
+def _load_video_tags() -> dict:
+    try:
+        return json.loads(VIDEO_TAGS_FILE.read_text(encoding="utf-8")) if VIDEO_TAGS_FILE.exists() else {}
+    except Exception:
+        return {}
+
+
+def _compute_scene_performance(stats: list[dict], video_tags: dict) -> dict[str, float]:
+    """Calcula um peso relativo por cena a partir das views reais coletadas.
+
+    upload_youtube.py::_record_video_tags grava, por video_id, qual cena o
+    gerou; aqui cruzamos isso com as views desse video_id pra saber que
+    cenas performam melhor que a media. video_tags so tem os uploads mais
+    recentes (_MAX_VIDEO_TAGS), entao videos antigos sem tag no mapeamento
+    sao ignorados no calculo - nao ha problema, o peso e so uma tendencia
+    recente, nao um historico completo.
+
+    Peso 1.0 = na media. >1.0 = performa acima da media (mais provavel de
+    ser escolhida por content_strategy.scene_for_mood). Limitado a
+    [_MIN_SCENE_WEIGHT, _MAX_SCENE_WEIGHT] pra nunca zerar nem monopolizar
+    uma cena so por causa de uma amostra pequena ou um video viral isolado.
+    """
+    views_by_scene: dict[str, list[int]] = {}
+    for video in stats:
+        tag = video_tags.get(video["video_id"])
+        scene = tag.get("scene") if tag else ""
+        if not scene:
+            continue
+        views_by_scene.setdefault(scene, []).append(video["views"])
+
+    all_views = [v for views in views_by_scene.values() for v in views]
+    if not all_views:
+        return {}
+    overall_avg = sum(all_views) / len(all_views)
+    if overall_avg <= 0:
+        return {}
+
+    weights: dict[str, float] = {}
+    for scene, views in views_by_scene.items():
+        if len(views) < _MIN_SCENE_SAMPLES:
+            continue
+        scene_avg = sum(views) / len(views)
+        weights[scene] = max(_MIN_SCENE_WEIGHT, min(_MAX_SCENE_WEIGHT, scene_avg / overall_avg))
+
+    return weights
+
+
 def main() -> int:
     configure_logging()
     DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -152,6 +207,17 @@ def main() -> int:
     log.info("Analytics salvo: %s (%d videos, %d views total)", out_path, len(stats), total_views)
 
     _append_history(report)
+
+    scene_weights = _compute_scene_performance(stats, _load_video_tags())
+    if scene_weights:
+        try:
+            SCENE_PERFORMANCE_FILE.write_text(
+                json.dumps(scene_weights, ensure_ascii=False, indent=2), encoding="utf-8"
+            )
+            log.info("Performance por cena atualizada: %s (%d cenas)", SCENE_PERFORMANCE_FILE, len(scene_weights))
+        except Exception as exc:
+            log.warning("Falha ao salvar performance por cena: %s", exc)
+
     return 0
 
 

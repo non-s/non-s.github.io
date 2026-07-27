@@ -10,8 +10,13 @@ Mapeia horário do dia -> mood para escolher cenas apropriadas:
 
 from __future__ import annotations
 
+import json
 import random
 from datetime import UTC, datetime, timedelta
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+_SCENE_PERFORMANCE_FILE = ROOT / "_data" / "scene_performance.json"
 
 # Janelas de publicação (BRT = UTC-3)
 PUBLISH_SLOTS = {
@@ -62,10 +67,30 @@ def pick_scene_category(mood: str = "") -> str:
     return random.choice(list(SCENE_CATEGORIES.keys()))
 
 
+def _scene_weights() -> dict[str, float]:
+    """Le _data/scene_performance.json (gerado por collect_analytics.py a
+    partir de views reais por cena). Ausente/corrompido = sem preferencia."""
+    try:
+        data = json.loads(_SCENE_PERFORMANCE_FILE.read_text(encoding="utf-8"))
+        return data if isinstance(data, dict) else {}
+    except Exception:
+        return {}
+
+
 def scene_for_mood(mood: str) -> str:
-    """Retorna uma cena especifica (ex: 'sleepy cat') para o mood dado."""
+    """Retorna uma cena especifica (ex: 'sleepy cat') para o mood dado.
+
+    Quando ha dados reais de performance (scene_performance.json), a
+    escolha e ponderada por eles em vez de puramente uniforme - cenas que
+    historicamente tiveram mais views por video ficam mais provaveis, sem
+    nunca zerar a chance das outras (ver _MIN_WEIGHT em collect_analytics.py).
+    """
     scenes = SCENE_CATEGORIES.get(mood, SCENE_CATEGORIES["fofura"])
-    return random.choice(scenes)
+    weights_by_scene = _scene_weights()
+    if not weights_by_scene:
+        return random.choice(scenes)
+    weights = [weights_by_scene.get(scene, 1.0) for scene in scenes]
+    return random.choices(scenes, weights=weights, k=1)[0]
 
 
 def weekly_calendar() -> list[dict]:

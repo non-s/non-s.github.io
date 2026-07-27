@@ -15,7 +15,7 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 - **Text overlay**: Hook aparece como texto no vídeo nos primeiros 3 segundos (drawtext FFmpeg)
 - **Legendas automáticas**: SRT gerado via Gemini e enviado como caption track (mimetype correto por extensão)
 - **Playlists automáticas**: Videos adicionados a playlists por mood/formato (cache persistente em `_data/playlist_cache.json`)
-- **Analytics semanal**: Coleta de métricas para feedback loop (com guard contra paginação infinita)
+- **Analytics semanal com feedback loop real**: coleta views/likes/comentários, cruza com a cena que gerou cada vídeo (`_data/video_tags.json`, gravado no upload) e grava um peso por cena em `_data/scene_performance.json` — `scene_for_mood()` passa a preferir cenas com melhor performance real, sem nunca zerar as demais
 - **Marca consistente**: Todos os títulos começam com "Pata Jazz |"
 - **Conteúdo em inglês**: título, descrição, hashtags e legendas são gerados em inglês (`utils/seo_keywords.py`, `utils/metadata_engine.py`, `utils/caption_engine.py`) - o formato pet+jazz não depende de idioma e o volume de busca em inglês é muito maior que o equivalente em português. O system prompt padrão do Gemini (`utils/ai_helper.py::_default_system_prompt`) também reforça isso - qualquer chamada de IA que precise de outro idioma tem que passar `system=` explicitamente.
 - **Robustez de APIs**: Circuit breaker no Gemini (429/502/503), retry exponencial no YouTube, fallback local em todas as chamadas de IA
@@ -36,7 +36,7 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 - **Python 3.11+** (CI roda 3.11; local testado com 3.12/3.14)
 - **FFmpeg** — codificação, concatenação, xfade, drawtext e ffprobe (com timeout)
 - **Pillow ≥10.3** — thumbnails (gradiente, shadows RGBA, fontes TrueType)
-- **pytest** — testes unitários (210 testes, cobertura ≥70% de `utils/`)
+- **pytest** — testes unitários (260 testes, cobertura ≥70% de `utils/`)
 - **ruff** — lint (regras E, F, W, I, UP, B)
 - **GitHub Actions** — CI/CD e agendamento
 

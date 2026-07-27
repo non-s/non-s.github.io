@@ -64,11 +64,15 @@ def _find_or_create_playlist(service: Any, title: str) -> str:
     if title in _playlist_cache:
         return _playlist_cache[title]
 
-    # Busca playlists existentes (pagina todas, ate 200).
+    # Busca playlists existentes (pagina todas, com guard contra loop
+    # infinito - se a playlist buscada nunca for encontrada, o unico jeito
+    # de sair do loop e o pageToken acabar; um guard por numero de paginas
+    # evita depender so disso, igual ao mesmo padrao em collect_analytics.py).
     try:
-        found_ids: list[str] = []
         page_token = ""
-        while len(found_ids) < 200:
+        pages = 0
+        while pages < 20:
+            pages += 1
             resp = _retry_youtube_call(
                 service.playlists().list(
                     part="id,snippet", mine=True, maxResults=50, pageToken=page_token
