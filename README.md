@@ -37,7 +37,7 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 - **Python 3.11+** (CI roda 3.11; local testado com 3.12/3.14)
 - **FFmpeg** — codificação, concatenação, xfade, drawtext e ffprobe (com timeout)
 - **Pillow ≥10.3** — thumbnails (gradiente, shadows RGBA, fontes TrueType)
-- **pytest** — testes unitários (266 testes, cobertura ≥70% de `utils/`)
+- **pytest** — testes unitários (256 testes, cobertura ≥70% de `utils/`)
 - **ruff** — lint (regras E, F, W, I, UP, B)
 - **GitHub Actions** — CI/CD e agendamento
 
