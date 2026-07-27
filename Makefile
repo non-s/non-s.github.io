@@ -1,0 +1,40 @@
+.PHONY: test test-cov lint format typecheck security healthcheck sync generate-short generate-horizontal dashboard clean all
+
+test:
+	pytest -q
+
+test-cov:
+	pytest -q --cov --cov-report=term-missing
+
+lint:
+	ruff check .
+
+format:
+	ruff format . && ruff check --fix .
+
+typecheck:
+	mypy utils/ scripts/ upload_youtube.py generate_pata_jazz_short.py generate_pata_jazz_horizontal.py generate_pata_jazz_live.py
+
+security:
+	bandit -r utils/ scripts/ *.py -ll -q && pip-audit -r requirements.txt
+
+healthcheck:
+	python scripts/healthcheck.py
+
+sync:
+	python scripts/sync_animal_broll.py && python scripts/sync_jazz_music.py
+
+generate-short:
+	python generate_pata_jazz_short.py
+
+generate-horizontal:
+	python generate_pata_jazz_horizontal.py
+
+dashboard:
+	python scripts/generate_dashboard.py
+
+clean:
+	rm -rf __pycache__ .pytest_cache .ruff_cache .mypy_cache .coverage htmlcov
+	find . -type d -name __pycache__ -prune -exec rm -rf {} +
+
+all: lint test typecheck

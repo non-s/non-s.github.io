@@ -130,7 +130,7 @@ def _check_live_prerequisites() -> dict[str, Any]:
 
 def run_healthcheck(mode: str = "all") -> int:
     """Executa healthcheck.
-    
+
     Args:
         mode: 'all' para todos os checks, 'live' apenas para pré-requisitos de live.
     """

@@ -154,15 +154,23 @@ def _featurize(
     scenes: list[str], title_patterns: list[str],
 ) -> list[float]:
     """Constrói o vetor de features para uma amostra/previsão. A primeira
-    cena/padrão são a referência (não ganham coluna) — ver _feature_names."""
+    cena/padrão são a referência (não ganham coluna) — ver _feature_names.
+
+    hour_of_day e day_of_week sao normalizados para [0, 1] para que nao
+    dominem os pesos dos one-hot (0/1) por pura escala: sem normalizacao,
+    hour=23 tem magnitude 23x maior que qualquer one-hot, e o bias fica
+    distorcido tentando compensar — a regressao atribui peso negativo a
+    hour mesmo quando nao ha correlacao real, e a previsao absoluta vira
+    ruido dependente do horario consultado em vez da contribuicao da
+    cena/padrao."""
     vec = [1.0]  # bias
     scene_l = scene.strip().lower()
     for c in scenes[1:]:  # primeira = referência, omitida
         vec.append(1.0 if c == scene_l else 0.0)
     for p in title_patterns[1:]:  # primeiro = referência, omitido
         vec.append(1.0 if p == title_pattern else 0.0)
-    vec.append(float(hour))
-    vec.append(float(day_of_week))
+    vec.append(float(hour) / 23.0)
+    vec.append(float(day_of_week) / 6.0)
     return vec
 
 

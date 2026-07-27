@@ -50,7 +50,7 @@ class TestFeaturizeOneHot:
         assert vec[0] == 1.0
         assert vec[1:2] == [0.0]  # scene:dog (cat é a referência)
         assert vec[2:3] == [0.0]  # pattern:pat-b (pat-a é a referência)
-        assert vec[3] == 10.0
+        assert vec[3] == 10.0 / 23.0  # hour=10 normalizado
         assert vec[4] == 0.0
 
     def test_unknown_scene_yields_zero_one_hot(self):
@@ -64,8 +64,9 @@ class TestFeaturizeOneHot:
         vec = pv._featurize("cat", "pat", hour=23, day_of_week=6,
                             scenes=["cat"], title_patterns=["pat"])
         # bias + 0 scene + 0 pattern + hour + dow = 3 (referências únicas).
-        assert vec[-2] == 23.0
-        assert vec[-1] == 6.0
+        # Normalizados para [0,1]: hour=23 -> 1.0, dow=6 -> 1.0.
+        assert vec[-2] == 1.0
+        assert vec[-1] == 1.0
 
     def test_case_insensitive_scene(self):
         # 2 cenas; cat é referência. dog (segunda) ganha coluna 1.
