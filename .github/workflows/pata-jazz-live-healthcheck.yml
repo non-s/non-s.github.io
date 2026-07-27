@@ -1,0 +1,81 @@
+name: "Pata Jazz - Checagem de Saude da Live"
+
+on:
+  workflow_dispatch:
+  schedule:
+    # A cada 2h - a live ja reconecta sozinha em falhas curtas (ver
+    # scripts/run_live.py); essa checagem so serve pra pegar uma ausencia
+    # real e persistente de broadcast "active" no canal.
+    - cron: "0 */2 * * *"
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: pata-jazz-live-healthcheck
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: "Verificar se a live esta realmente ao vivo"
+    if: ${{ vars.PATA_JAZZ_ENABLED == '1' && vars.PATA_JAZZ_LIVE_ENABLED == '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: "Python 3.11"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: "Instalar dependencias"
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: "Restaurar token YouTube"
+        # So o token, sem os caches de b-roll/jazz/_data (essa checagem
+        # nao gera nem le nenhum vídeo/asset - so consulta a API).
+        shell: bash
+        env:
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+        run: |
+          umask 077
+          if [ -n "$YOUTUBE_TOKEN" ]; then
+            printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
+            chmod 600 youtube_token.json
+          fi
+      - name: "Verificar live"
+        id: check
+        run: python scripts/check_live_health.py
+      - name: "Abrir issue se a live estiver fora do ar"
+        if: ${{ steps.check.outputs.live_active == 'false' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Idempotente: falha silenciosamente se o label ja existir.
+          gh label create "live-down" --repo "${{ github.repository }}" \
+            --color "d73a4a" --description "Live do Pata Jazz fora do ar" || true
+          existing=$(gh issue list --repo "${{ github.repository }}" --label live-down --state open --json number --jq '.[0].number')
+          if [ -z "$existing" ]; then
+            gh issue create --repo "${{ github.repository }}" \
+              --title "🔴 Live Pata Jazz fora do ar" \
+              --body "A checagem automática (\`pata-jazz-live-healthcheck.yml\`) não encontrou nenhum broadcast \`active\` no canal. Verifique o workflow \`pata-jazz-youtube-live.yml\` e o YouTube Studio. Esta issue fecha automaticamente quando a checagem encontrar a live de volta." \
+              --label live-down
+          else
+            echo "Issue #$existing ja aberta; nao duplicando."
+          fi
+      - name: "Fechar issue se a live estiver de volta"
+        if: ${{ steps.check.outputs.live_active == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for num in $(gh issue list --repo "${{ github.repository }}" --label live-down --state open --json number --jq '.[].number'); do
+            gh issue close "$num" --repo "${{ github.repository }}" --comment "Live voltou ao ar - fechando automaticamente."
+          done
+      - name: "Apagar token"
+        if: always()
+        run: rm -f youtube_token.json
