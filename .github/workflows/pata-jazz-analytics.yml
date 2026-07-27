@@ -53,7 +53,14 @@ jobs:
           restore-keys: analytics-
       - name: "Coletar analytics"
         run: python scripts/collect_analytics.py
-      - name: "Upload analytics como artifact"
+      - name: "Gerar dashboard HTML"
+        # So le os JSONs que os steps acima ja escreveram/restauraram - sem
+        # rede, sem dependencia nova. Ainda nao publicado (GitHub Pages
+        # tornaria isso publico na internet, o que exige decisao explicita
+        # de quem administra o canal) - por enquanto so vira artifact
+        # baixavel, igual ao analytics-report abaixo.
+        run: python scripts/generate_dashboard.py
+      - name: "Upload analytics e dashboard como artifact"
         # O cache acima so serve pra passar o arquivo pro proximo run (nao
         # da pra inspecionar um cache de fora). Como artifact, o relatorio
         # fica baixavel via API/UI - e o que faltava pra esses dados
@@ -64,6 +71,7 @@ jobs:
           path: |
             _data/analytics.json
             _data/analytics_history.json
+            _dashboard/index.html
           retention-days: 90
       - name: "Apagar token"
         if: always()
