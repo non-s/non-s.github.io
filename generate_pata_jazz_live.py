@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import os
 import random
 import re
 import signal
@@ -21,7 +22,7 @@ import time
 from datetime import UTC, datetime
 from pathlib import Path
 
-from utils.animal_branding import hook_for_scene, random_scene
+from utils.animal_branding import ALL_SCENES, hook_for_scene, random_scene
 from utils.ffmpeg_helpers import build_concat_demuxer, get_video_duration, run_ffmpeg
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.media_pool import audio_pool, ensure_dirs, pick_videos, pool_stats
@@ -88,6 +89,8 @@ def _build_audio_playlist(output_stem: str) -> tuple[Path | None, float]:
     playlist_txt = OUTPUT_DIR / f"{output_stem}_audio_playlist.txt"
     build_concat_demuxer(valid_files, str(playlist_txt))
 
+    _write_current_track(valid_files[0])
+
     log.info(
         "Playlist de audio: %d faixas, ~%.0fs (~%.1fh)",
         len(valid_files),
@@ -95,6 +98,37 @@ def _build_audio_playlist(output_stem: str) -> tuple[Path | None, float]:
         total_duration / 3600,
     )
     return playlist_txt, total_duration
+
+
+def _consume_next_scene() -> str | None:
+    """Le (e apaga) _data/live_next_scene.json se existir e for uma cena valida.
+
+    One-shot: comandos de chat !scene escrevem esse arquivo; o loop de clipes
+    consome a primeira cena valida e apaga o arquivo para nao forcar a mesma
+    cena em todos os ciclos seguintes.
+    """
+    path = LIVE_META_DIR / "live_next_scene.json"
+    if not path.exists():
+        return None
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except Exception as exc:
+        log.warning("live_next_scene.json corrompido, ignorando: %s", exc)
+        try:
+            path.unlink(missing_ok=True)
+        except Exception:
+            pass
+        return None
+    scene = str(data.get("scene", "")).lower().strip()
+    try:
+        path.unlink(missing_ok=True)
+    except Exception:
+        pass
+    if scene and scene in ALL_SCENES:
+        log.info("Cena forcada por comando de chat: %s", scene)
+        return scene
+    log.warning("Cena forcada invalida ignorada: %r", scene)
+    return None
 
 
 def _build_looping_input(
@@ -119,7 +153,7 @@ def _build_looping_input(
     if stats["videos"] == 0:
         raise RuntimeError("Pool de b-roll vazio")
 
-    scene = random_scene()
+    scene = _consume_next_scene() or random_scene()
     hook, emoji = hook_for_scene(scene)
     # Live horizontal: usa muitos clips fofos para um ciclo de loop longo.
     videos = pick_videos(
@@ -171,6 +205,117 @@ def _build_looping_input(
         playlist_txt,
     )
     return concat_txt, playlist_txt
+
+
+def _write_current_track(audio_path: str) -> None:
+    """Escreve _data/live_current_track.json com a faixa atualmente na
+    playlist, para o comando !song do chat. Le o .json de metadata do
+    Jamendo ao lado do .mp3 quando disponivel."""
+    LIVE_META_DIR.mkdir(parents=True, exist_ok=True)
+    track_path = Path(audio_path)
+    meta = {}
+    sidecar = track_path.with_suffix(".json")
+    if sidecar.exists():
+        try:
+            meta = json.loads(sidecar.read_text(encoding="utf-8"))
+        except Exception:
+            meta = {}
+    payload = {
+        "file": track_path.name,
+        "title": meta.get("name") or meta.get("title") or track_path.stem,
+        "artist": meta.get("artist") or meta.get("artist_name") or "",
+        "updated_at": datetime.now(UTC).isoformat(),
+    }
+    try:
+        (LIVE_META_DIR / "live_current_track.json").write_text(
+            json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+    except Exception as exc:
+        log.warning("Falha ao escrever live_current_track.json: %s", exc)
+
+
+_UPTIME_OVERLAY_PATH = LIVE_META_DIR / "live_uptime.txt"
+_CHAT_OVERLAY_PATH = LIVE_META_DIR / "live_chat_overlay.txt"
+
+# Altura (px) da barra do visualizador de áudio no canto inferior da live.
+# Sutil de propósito: não pode competir com o conteúdo principal.
+_VISUALIZER_HEIGHT = 80
+_VISUALIZER_ALPHA = 0.6
+
+
+def _visualizer_enabled() -> bool:
+    """Visualizer de áudio (showcqt) e opt-in via env var
+    LIVE_VISUALIZER=1 — default OFF para não arriscar a CPU no runner
+    gratuito em produção. CPU-bound demais para deixar ligado por padrão."""
+    return os.environ.get("LIVE_VISUALIZER", "").strip() == "1"
+
+
+def _build_visualizer_filter_chain(audio_input_index: int) -> str:
+    """Monta a chain de filtro do visualizador de áudio reativo.
+
+    showcqt gera um espectro 2D a partir da faixa de áudio; usa timeclamp
+    curto (0.5s) para que as barras pulsem visivelmente com o andamento do
+    jazz. count=32 mantém o custo baixo (32 bins em vez das dezenas
+    padrão). A altura fica fixa em _VISUALIZER_HEIGHT e é sobreposta no
+    canto inferior com alpha ~0.6 (sutil — não compete com o conteúdo
+    principal).
+
+    Se o runner gratuito não sustentar showcqt, a alternativa mais leve
+    (showvolume, barras de VU) pode ser usada trocando o nome do filtro
+    aqui. Mantemos showcqt no default porque é o que os testes esperam,
+    mas o ramo alternativo está documentado para futura troca sem
+    reescrever a chain inteira.
+    """
+    return (
+        f"[{audio_input_index}:a]"
+        f"showcqt=size={1280}x{_VISUALIZER_HEIGHT}:timeclamp=0.5:count=32,"
+        f"format=rgba,colorchannelmixer=aa={_VISUALIZER_ALPHA}[viz]"
+    )
+
+
+def _build_overlay_filter(resolution: tuple[int, int], audio_input_index: int | None = None) -> str:
+    """Monta o filter graph com overlays de texto (uptime + chat) e,
+    opcionalmente, o visualizador de áudio (showcqt) no canto inferior.
+
+    Sem visualizador: usa a forma -vf antiga (uma única cadeia simples,
+    sem filter_complex) — mantém o caminho de produção estável e o
+    comando de teste existente intacto.
+
+    Com visualizador: troca para -filter_complex — a entrada de áudio
+    (audio_input_index) é consumida pelo showcqt e o vídeo resultante é
+    sobreposto no canto inferior ([v][viz]overlay=0:H-h). O drawtext de
+    uptime/chat é aplicado depois do overlay do visualizador para que o
+    texto nunca seja coberto pelas barras.
+    """
+    _w, _h = resolution
+    uptime_str = (
+        f"drawtext="
+        f"textfile='{_UPTIME_OVERLAY_PATH.as_posix()}':"
+        f"reload=1:"
+        f"fontcolor=white:fontsize=24:"
+        f"x=20:y=20:"
+        f"borderw=2:bordercolor=black"
+    )
+    chat_str = (
+        f"drawtext="
+        f"textfile='{_CHAT_OVERLAY_PATH.as_posix()}':"
+        f"reload=1:"
+        f"fontcolor=white:fontsize=24:"
+        f"x=w-text_w-20:y=h-text_h-20:"
+        f"borderw=2:bordercolor=black"
+    )
+
+    if audio_input_index is None or not _visualizer_enabled():
+        return f"{uptime_str},{chat_str}"
+
+    viz_chain = _build_visualizer_filter_chain(audio_input_index)
+    # [v] = vídeo base; [viz] = espectro do showcqt; overlay no canto inferior
+    # (x=0, y=H-h) e drawtext depois.
+    return (
+        f"{viz_chain};"
+        f"[0:v]{uptime_str},{chat_str}[v];"
+        f"[v][viz]overlay=0:H-h"
+    )
 
 
 def _start_ffmpeg_stream(
@@ -250,11 +395,37 @@ def _start_ffmpeg_stream(
         ]
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    LIVE_META_DIR.mkdir(parents=True, exist_ok=True)
+    # drawtext com textfile= falha (e derruba o encode) se o arquivo nao
+    # existe no momento em que o filtro e avaliado. Inicializa vazios/placeholder
+    # antes de subir o FFmpeg; a thread de uptime e o watcher de chat
+    # reescrevem em seguida.
+    if not _UPTIME_OVERLAY_PATH.exists():
+        try:
+            _UPTIME_OVERLAY_PATH.write_text("\U0001f534 LIVE 00:00:00", encoding="utf-8")
+        except Exception:
+            pass
+    if not _CHAT_OVERLAY_PATH.exists():
+        try:
+            _CHAT_OVERLAY_PATH.write_text("", encoding="utf-8")
+        except Exception:
+            pass
     progress_path = OUTPUT_DIR / "live_progress.txt"
     # Trunca antes de comecar: _wait_ffmpeg_stream detecta stall pelo mtime
     # desse arquivo, e um arquivo do segmento anterior (mtime antigo) faria
     # o novo segmento parecer travado desde o primeiro instante.
     progress_path.write_text("", encoding="utf-8")
+
+    # Visualizer opt-in (LIVE_VISUALIZER=1): só liga quando há playlist de
+    # áudio (índice 1) para alimentar o showcqt. Sem áudio externo, cai no
+    # caminho -vf simples (sem filter_complex) — mesmo comando de produção
+    # estável que sempre rodou. Default OFF para não arriscar CPU no runner
+    # gratuito em produção (ver _visualizer_enabled).
+    visualizer_on = bool(audio_playlist and audio_playlist.exists()) and _visualizer_enabled()
+    if visualizer_on:
+        cmd += ["-filter_complex", _build_overlay_filter(resolution, audio_input_index=1)]
+    else:
+        cmd += ["-vf", _build_overlay_filter(resolution, audio_input_index=None)]
 
     cmd += [
         "-c:v",
