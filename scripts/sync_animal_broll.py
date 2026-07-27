@@ -36,7 +36,9 @@ MIN_HEIGHT = 360
 
 def _safe_name(query: str, idx: int, url: str, ext: str) -> str:
     base = re.sub(r"[^a-z0-9]", "_", query.lower())
-    url_hash = hashlib.sha1(url.encode("utf-8")).hexdigest()[:8]
+    # usedforsecurity=False: so gera um sufixo curto pra nome de arquivo
+    # (evitar colisao), nao ha nada criptografico ou sensivel aqui.
+    url_hash = hashlib.sha1(url.encode("utf-8"), usedforsecurity=False).hexdigest()[:8]
     return f"{base}_{idx:02d}_{url_hash}.{ext}"
 
 
