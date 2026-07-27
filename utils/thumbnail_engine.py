@@ -66,7 +66,8 @@ PALETTE = {
 def _hex_to_rgb(hex_color: str) -> tuple[int, int, int]:
     """Converte uma cor hex '#rrggbb' em uma tupla (r, g, b)."""
     hex_color = hex_color.lstrip("#")
-    return tuple(int(hex_color[i:i + 2], 16) for i in (0, 2, 4))
+    r, g, b = (int(hex_color[i:i + 2], 16) for i in (0, 2, 4))
+    return r, g, b
 
 
 def _load_fonts() -> tuple[ImageFont.FreeTypeFont, ImageFont.FreeTypeFont]:
@@ -134,14 +135,9 @@ def extract_frame_from_video(video_path: Path, timestamp: str = "00:00:01") -> I
 def enhance_thumbnail_image(img: Image.Image) -> Image.Image:
     """Aplica melhorias de imagem para destacar a thumbnail."""
     # Aumenta saturação e contraste
-    enhancer = ImageEnhance.Color(img)
-    img = enhancer.enhance(1.3)  # +30% saturação
-
-    enhancer = ImageEnhance.Contrast(img)
-    img = enhancer.enhance(1.2)  # +20% contraste
-
-    enhancer = ImageEnhance.Brightness(img)
-    img = enhancer.enhance(1.1)  # +10% brilho
+    img = ImageEnhance.Color(img).enhance(1.3)  # +30% saturação
+    img = ImageEnhance.Contrast(img).enhance(1.2)  # +20% contraste
+    img = ImageEnhance.Brightness(img).enhance(1.1)  # +10% brilho
 
     # Aplica leve sharpen
     img = img.filter(ImageFilter.SHARPEN)

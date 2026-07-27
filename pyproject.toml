@@ -38,3 +38,10 @@ source = ["utils"]
 [tool.coverage.report]
 fail_under = 70
 show_missing = true
+
+[tool.mypy]
+python_version = "3.11"
+# google-api-python-client, google-auth*, PIL e requests nao publicam stubs
+# completos - sem isso, toda chamada a essas libs vira ruido de import-not-found
+# em vez de erro de tipo de verdade.
+ignore_missing_imports = true

@@ -16,10 +16,10 @@ import logging
 import random
 import subprocess
 import uuid
-from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Literal, Protocol
 
 from utils.animal_branding import hook_for_scene, random_scene
 from utils.caption_engine import generate_srt, save_srt
@@ -32,17 +32,25 @@ from utils.video_validator import validate_generated_video
 log = logging.getLogger(__name__)
 
 
+class _ThumbnailMaker(Protocol):
+    """Assinatura real de make_short_thumbnail/make_horizontal_thumbnail -
+    um Callable[[str, str, Path], None] simples nao cobria o kwarg
+    video_path usado em _build_video (linha ~286)."""
+
+    def __call__(self, hook: str, emoji: str, output: Path, *, video_path: Path | None = None) -> None: ...
+
+
 @dataclass(frozen=True)
 class VideoSpec:
     """Especificação de um vídeo a ser gerado."""
 
-    kind: str
+    kind: Literal["short", "horizontal", "live"]
     width: int
     height: int
     duration: int
     default_duration: int
     crop_filter: str
-    thumbnail_maker: Callable[[str, str, Path], None]
+    thumbnail_maker: _ThumbnailMaker
     fallback_description: str
     scene: str = ""
     mood: str = ""
