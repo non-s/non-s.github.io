@@ -14,10 +14,44 @@ import time
 
 from googleapiclient.errors import HttpError
 
+from utils.quota_tracker import record_usage
+
 log = logging.getLogger(__name__)
 
 _YOUTUBE_MAX_RETRIES = 3
 _YOUTUBE_BASE_BACKOFF = 2.0
+
+
+def _infer_resource_method(func) -> tuple[str | None, str | None]:
+    """Tenta extrair (resource, method) de um callable da googleapiclient
+    (ex.: service.videos().insert(...).execute). Retorna (None, None) se
+    nao for possivel inferir - chamadas que nao vem da API nao sao contadas."""
+    try:
+        # HttpRequest da googleapiclient tem atributo .uri com o resource
+        # no path (/youtube/v3/videos) e .method (POST/GET). Mapeamos para
+        # o nome do metodo (insert/list/etc) via heuristic no body/uri.
+        uri = getattr(func, "uri", "") or ""
+        http_method = (getattr(func, "method", "") or "").upper()
+        # Ex.: https://www.googleapis.com/youtube/v3/videos?...
+        parts = uri.split("/youtube/v3/", 1)
+        if len(parts) != 2:
+            return None, None
+        rest = parts[1].split("?", 1)[0]
+        resource = rest.split("/", 1)[0]
+        method = None
+        if http_method == "POST":
+            method = "insert"
+        elif http_method == "GET":
+            method = "list"
+        elif http_method == "PUT":
+            method = "update"
+        elif http_method == "DELETE":
+            method = "delete"
+        elif http_method == "PATCH":
+            method = "bind"
+        return resource or None, method
+    except Exception:
+        return None, None
 
 
 def retry_youtube_call(func, *args, **kwargs):
@@ -34,10 +68,18 @@ def retry_youtube_call(func, *args, **kwargs):
     esses bugs como "falha de rede" e tentava 3x com backoff, fazendo a
     chamada demorar ~10s a mais pra falhar do mesmo jeito e escondendo o
     traceback real de quem debuga o log.
+
+    Tambem registra o consumo de quota em _data/quota_usage.json (via
+    utils.quota_tracker.record_usage) quando consegue inferir o
+    resource/method do HttpRequest. A contagem so acontece apos sucesso
+    (chamadas que falham e fazem retry contam uma vez quando finalmente
+    sucedem - falhas de rede nao gastam quota do lado do YouTube).
     """
     for attempt in range(_YOUTUBE_MAX_RETRIES):
         try:
-            return func(*args, **kwargs)
+            result = func(*args, **kwargs)
+            _record_quota(func)
+            return result
         except HttpError as e:
             status = e.resp.status if hasattr(e, 'resp') else 0
             if status in (409, 429, 500, 502, 503, 504):
@@ -61,3 +103,16 @@ def retry_youtube_call(func, *args, **kwargs):
                 continue
             raise
     raise RuntimeError("YouTube API: maximo de tentativas excedido sem resposta.")
+
+
+def _record_quota(func) -> None:
+    """Best-effort: registra quota consumida por uma chamada que acabou de
+    suceder. Falhas aqui (inferencia sem .uri, IOError no arquivo) sao
+    silenciosas - quota tracking e observabilidade, nao pode quebrar a
+    chamada de negocio."""
+    try:
+        resource, method = _infer_resource_method(func)
+        if resource and method:
+            record_usage(resource, method)
+    except Exception as exc:
+        log.debug("Quota tracking pulada: %s", exc)

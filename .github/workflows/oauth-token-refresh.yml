@@ -1,0 +1,62 @@
+name: "OAuth Token Refresh"
+
+on:
+  schedule:
+    # Domingo as 02:00 UTC (renova o refresh_token semanalmente antes que
+    # expire por desuso apos 90 dias, padrao do Google).
+    - cron: "0 2 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  secrets: write
+
+concurrency:
+  group: oauth-token-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    name: "Renovar token OAuth do YouTube"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: "Python 3.11"
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: "Instalar dependencias"
+        run: |
+          pip install --no-cache-dir --upgrade pip
+          pip install --no-cache-dir -r requirements.txt
+      - name: "Instalar GitHub CLI"
+        # gh ja vem pre-instalado no ubuntu-latest; garante versao estavel.
+        run: |
+          if ! command -v gh >/dev/null 2>&1; then
+            echo "gh nao encontrado no runner"; exit 1
+          fi
+      - name: "Restaurar token YouTube"
+        env:
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+        run: |
+          umask 077
+          if [ -n "$YOUTUBE_TOKEN" ]; then
+            printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
+            chmod 600 youtube_token.json
+          else
+            echo "::error::Secret YOUTUBE_TOKEN ausente."
+            exit 1
+          fi
+      - name: "Renovar token e atualizar secret"
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: python scripts/refresh_oauth_token.py
+      - name: "Apagar token local"
+        if: always()
+        run: rm -f youtube_token.json

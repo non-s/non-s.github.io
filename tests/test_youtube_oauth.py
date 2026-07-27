@@ -171,7 +171,7 @@ class TestYoutubeOauth:
 
         assert service == mock_service
         mock_flow.from_client_secrets_file.assert_called_once_with("/path/to/secret.json", SCOPES)
-        mock_flow_instance.run_local_server.assert_called_once_with(port=0)
+        mock_flow_instance.run_local_server.assert_called_once_with(port=0, timeout=60)
         mock_save.assert_called_once_with(mock_creds)
 
     @patch("utils.youtube_oauth._load_token")

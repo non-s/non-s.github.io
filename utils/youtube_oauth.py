@@ -187,7 +187,7 @@ def get_youtube_service() -> Resource:
             raise RuntimeError("Nenhuma credencial do YouTube encontrada.")
         try:
             flow = InstalledAppFlow.from_client_secrets_file(secrets_path, SCOPES)
-            creds = flow.run_local_server(port=0)
+            creds = flow.run_local_server(port=0, timeout=60)
         finally:
             # Remove apenas arquivos temporarios criados por este modulo.
             if secrets_path.startswith(tempfile.gettempdir()):
