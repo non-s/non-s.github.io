@@ -84,10 +84,27 @@ PALETTE_B = {
     "gradient_end": "#1a1a3e",
 }
 
+# Variante C: hook truncado (texto menor, wrap_width maior) + emoji gigante
+# (fonte 2x maior). Usa a paleta default de A, mas com emoji maior para
+# gerar impacto visual diferente sem mudar cores.
+PALETTE_C = {
+    "bg": "#0f0f23",
+    "accent": "#f4a261",
+    "text": "#f8f8ff",
+    "subtle": "#2a2a40",
+    "gradient_start": "#1a1a3e",
+    "gradient_end": "#0f0f23",
+}
+
 
 def _palette_for(variant: str) -> dict:
-    """Seleciona a paleta pela variante (A=default, B=accent trocado/gradiente invertido)."""
-    return PALETTE_B if variant == "B" else PALETTE
+    """Seleciona a paleta pela variante (A=default, B=accent trocado/gradiente
+    invertido, C=mesma paleta de A mas emoji maior via _emoji_font_size)."""
+    if variant == "B":
+        return PALETTE_B
+    if variant == "C":
+        return PALETTE_C
+    return PALETTE
 
 
 def _hex_to_rgb(hex_color: str) -> tuple[int, int, int]:
@@ -119,6 +136,40 @@ def _load_fonts() -> tuple[ImageFont.FreeTypeFont, ImageFont.FreeTypeFont]:
     raise RuntimeError(
         "Nenhuma fonte TrueType encontrada. Instale DejaVu/arial ou configure PIL_IMAGE_FONT_PATH."
     )
+
+
+def _load_font_path() -> str | None:
+    """Retorna o caminho da primeira fonte TrueType disponivel, ou None."""
+    candidates = [
+        "arial.ttf",
+        "DejaVuSans.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        "C:/Windows/Fonts/arial.ttf",
+    ]
+    for font_path in candidates:
+        try:
+            ImageFont.truetype(font_path, 16)
+            return font_path
+        except Exception:
+            continue
+    return None
+
+
+def _fonts_for_variant(variant: str) -> tuple[ImageFont.FreeTypeFont, ImageFont.FreeTypeFont]:
+    """Carrega fontes com tamanho adequado por variante.
+
+    Variante C usa emoji 2x maior (font_large 2x) e hook menor (font_small
+    reduzido) para impacto visual diferente sem mudar a paleta.
+    """
+    font_path = _load_font_path()
+    if font_path is None:
+        raise RuntimeError(
+            "Nenhuma fonte TrueType encontrada. Instale DejaVu/arial ou configure PIL_IMAGE_FONT_PATH."
+        )
+    if variant == "C":
+        # Emoji 2x maior, hook menor.
+        return ImageFont.truetype(font_path, 240), ImageFont.truetype(font_path, 40)
+    return ImageFont.truetype(font_path, 120), ImageFont.truetype(font_path, 48)
 
 
 def extract_frame_from_video(video_path: Path, timestamp: str = "00:00:01") -> Image.Image | None:
@@ -218,13 +269,23 @@ def _render_thumbnail(
 ) -> None:
     """Pipeline compartilhado de renderizacao de thumbnail.
 
-    ``variant`` ("A" default ou "B") seleciona a paleta e reduz o
-    hook_wrap_width da cfg (texto maior na variante B) para A/B testing.
+    ``variant`` ("A" default, "B" ou "C") seleciona a paleta/fonte:
+    - A: paleta default, fonte 120/48.
+    - B: accent trocado + gradiente invertido, wrap width menor (texto
+      maior, mais impacto visual).
+    - C: hook truncado (wrap_width maior, texto menor) + emoji gigente
+      (fonte 2x maior) — mesmo esquema de paleta de A.
     """
     cfg = layout_config
     pal = _palette_for(variant)
-    # Variante B: wrap width menor -> texto maior, mais impacto visual.
-    wrap_width = cfg.hook_wrap_width if variant != "B" else max(8, cfg.hook_wrap_width - 4)
+    if variant == "B":
+        wrap_width = max(8, cfg.hook_wrap_width - 4)
+    elif variant == "C":
+        # Hook menor (texto maior via wrap_width maior = mais chars por
+        # linha, fonte pequena).
+        wrap_width = cfg.hook_wrap_width + 6
+    else:
+        wrap_width = cfg.hook_wrap_width
 
     # Tenta usar frame do vídeo se disponível
     background = None
@@ -258,7 +319,7 @@ def _render_thumbnail(
     img = background.convert("RGBA")
     draw = ImageDraw.Draw(img)
 
-    font_large, font_small = _load_fonts()
+    font_large, font_small = _fonts_for_variant(variant)
 
     # Borda com glow effect
     for i in range(3, 0, -1):

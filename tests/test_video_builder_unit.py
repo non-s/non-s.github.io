@@ -153,8 +153,8 @@ class TestVideoBuilderUnits:
         assert final_cmd[final_cmd.index("-t") + 1] == "35"
 
     def test_build_generates_both_thumbnail_variants_and_registers_list(self, tmp_path):
-        """A/B testing: build_pata_jazz_video gera variante A e B da thumbnail
-        e registra ambas em meta['thumbnails'] (lista), mantendo
+        """A/B/C testing: build_pata_jazz_video gera variante A, B e C da
+        thumbnail e registra todas em meta['thumbnails'] (lista), mantendo
         meta['thumbnail'] (legado) apontando para A pra backward compat."""
         spec = video_builder.VideoSpec(
             kind="test",
@@ -178,30 +178,31 @@ class TestVideoBuilderUnits:
              patch("utils.video_builder.run_ffmpeg"), \
              patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}), \
              patch("utils.video_builder.validate_generated_video",
-                   return_value=VideoValidation(ok=True, errors=[], info={})):
+                    return_value=VideoValidation(ok=True, errors=[], info={})):
             video_builder.build_pata_jazz_video(
                 spec=spec, output_dir=tmp_path, thumb_dir=tmp_path, stem_prefix="test"
             )
 
-        # thumbnail_maker chamado 2x: A e B.
+        # thumbnail_maker chamado 3x: A, B e C.
         variants = [kw.get("variant", "A") for _, kw in calls]
-        assert variants == ["A", "B"]
+        assert variants == ["A", "B", "C"]
         meta_path = tmp_path / "test_test.mp4"
         # build grava o .json ao lado do .mp4 (output stem).
         json_files = list(tmp_path.glob("*.json"))
         assert json_files, "meta JSON deve ser escrito"
         meta = json.loads(json_files[0].read_text(encoding="utf-8"))
         assert "thumbnails" in meta
-        assert len(meta["thumbnails"]) == 2
+        assert len(meta["thumbnails"]) == 3
         assert meta["thumbnails"][0].endswith("_thumb_a.png")
         assert meta["thumbnails"][1].endswith("_thumb_b.png")
+        assert meta["thumbnails"][2].endswith("_thumb_c.png")
         # Backward compat: thumbnail (legado) aponta pra variante A.
         assert meta["thumbnail"] == meta["thumbnails"][0]
 
     def test_build_falls_back_to_single_thumbnail_when_variant_b_fails(self, tmp_path):
-        """Se a variante B falhar (fonte/paleta indisponivel, etc), build
-        registra so a variante A em thumbnails - publicacao nao pode quebrar
-        porque a rotacao B e opcional."""
+        """Se a variante B (ou C) falhar (fonte/paleta indisponivel, etc), build
+        registra so as variantes que deram certo em thumbnails - publicacao
+        nao pode quebrar porque a rotacao B/C e opcional."""
         spec = video_builder.VideoSpec(
             kind="test",
             width=100,
@@ -214,8 +215,8 @@ class TestVideoBuilderUnits:
         )
 
         def maker_side_effect(*a, **kw):
-            if kw.get("variant") == "B":
-                raise RuntimeError("variant B boom")
+            if kw.get("variant") in ("B", "C"):
+                raise RuntimeError("variant boom")
 
         spec.thumbnail_maker.side_effect = maker_side_effect
 
@@ -228,12 +229,13 @@ class TestVideoBuilderUnits:
              patch("utils.video_builder.run_ffmpeg"), \
              patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}), \
              patch("utils.video_builder.validate_generated_video",
-                   return_value=VideoValidation(ok=True, errors=[], info={})):
+                    return_value=VideoValidation(ok=True, errors=[], info={})):
             video_builder.build_pata_jazz_video(
                 spec=spec, output_dir=tmp_path, thumb_dir=tmp_path, stem_prefix="test"
             )
 
         json_files = list(tmp_path.glob("*.json"))
         meta = json.loads(json_files[0].read_text(encoding="utf-8"))
+        # So A foi gerada (B e C falharam).
         assert len(meta["thumbnails"]) == 1
         assert meta["thumbnails"][0].endswith("_thumb_a.png")

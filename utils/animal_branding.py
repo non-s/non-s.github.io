@@ -21,6 +21,20 @@ from utils.channel_config import ChannelConfig, active_channel
 _AI_HOOK_CACHE: dict[tuple[str, str], tuple[str, float]] = {}
 _AI_HOOK_TTL = 3600.0  # 1h
 
+# Historico dos ultimos 10 hooks gerados por cena para evitar repeticao
+# proxima (similares em >80% das palavras-chave).
+_AI_HOOK_HISTORY: dict[str, list[str]] = {}
+_AI_HOOK_HISTORY_MAX = 10
+
+# Tamanho ideal do hook (chars). Fora de [min, max] rejeita.
+_AI_HOOK_MIN_LEN = 20
+_AI_HOOK_MAX_LEN = 70
+_AI_HOOK_IDEAL_MIN = 30
+_AI_HOOK_IDEAL_MAX = 60
+
+# Palavras com viés negativo que nao combinam com tom cute/jazzy.
+_AI_HOOK_NEGATIVE_WORDS = {"sad", "dead", "angry", "hate"}
+
 # Subconjunto permitido: apenas gatos e cachorros. Cada cena tem 3+ hooks
 # para variar o texto entre videos que caem na mesma cena.
 HOOK_BY_SCENE: dict[str, list[tuple[str, str]]] = {
@@ -178,6 +192,12 @@ def generate_hook_with_ai(scene: str, mood: str = "") -> str:
 
     Cache em memoria por (scene, mood) por 1h evita chamar a IA a cada video
     do mesmo batch que cai na mesma cena.
+
+    Validacao de qualidade (rejeita e pede outro, ate 1 retry):
+    - Tamanho: 20-70 chars (ideal 30-60).
+    - Sentimento: sem palavras negativas (sad, dead, angry, hate).
+    - Repeticao proxima: >80% similar a um dos ultimos 10 hooks da cena.
+    Apos esgotar retry, fallback para hook hardcoded da cena.
     """
     key = (scene, mood)
     now = time.time()
@@ -191,15 +211,80 @@ def generate_hook_with_ai(scene: str, mood: str = "") -> str:
         f"video about a {scene}. Cute and jazzy tone, no clickbait, no emojis, "
         f"no quotes, in English.{mood_hint} Return only the hook text."
     )
-    out = ai_text(prompt, task="hook")
-    if not out or not is_safe_ai_text(out):
+
+    hook = ""
+    for _attempt in range(2):
+        out = ai_text(prompt, task="hook")
+        if not out or not is_safe_ai_text(out):
+            break
+        candidate = out.strip().strip('"').strip()
+        if _validate_hook(candidate, scene):
+            hook = candidate
+            break
+
+    if not hook:
         _AI_HOOK_CACHE[key] = ("", now)
         return ""
-    hook = out.strip().strip('"').strip()
-    if len(hook) > 60:
-        hook = hook[:60].rstrip()
+
+    if len(hook) > _AI_HOOK_IDEAL_MAX:
+        hook = hook[:_AI_HOOK_IDEAL_MAX].rstrip()
     _AI_HOOK_CACHE[key] = (hook, now)
+    _record_hook_history(scene, hook)
     return hook
+
+
+def _validate_hook(hook: str, scene: str) -> bool:
+    """Valida tamanho, sentimento e similaridade com historico recente.
+
+    Retorna True se o hook for aceitavel, False caso contrario (para retry ou
+    fallback). Tamanho rejeita <20 ou >70; ideal 30-60 (aceito, mas nao
+    rejeita fora do ideal — apenas o limite duro rejeita). Sentimento rejeita
+    palavras negativas. Similaridade rejeita >80% das palavras-chave em
+    comum com um dos ultimos _AI_HOOK_HISTORY_MAX hooks da cena.
+    """
+    if not hook:
+        return False
+    if len(hook) < _AI_HOOK_MIN_LEN or len(hook) > _AI_HOOK_MAX_LEN:
+        return False
+    lowered = hook.lower()
+    if any(word in lowered for word in _AI_HOOK_NEGATIVE_WORDS):
+        return False
+    if _is_similar_to_recent(hook, scene):
+        return False
+    return True
+
+
+def _keyword_set(hook: str) -> set[str]:
+    """Conjunto de palavras-chave (lowercased, alfanumericas) do hook."""
+    return {w for w in hook.lower().split() if w.isalnum()}
+
+
+def _is_similar_to_recent(hook: str, scene: str) -> bool:
+    """True se hook compartilha >80% das palavras-chave com algum dos ultimos
+    hooks gerados para a mesma cena."""
+    history = _AI_HOOK_HISTORY.get(scene, [])
+    if not history:
+        return False
+    new_words = _keyword_set(hook)
+    if not new_words:
+        return False
+    for prev in history:
+        prev_words = _keyword_set(prev)
+        if not prev_words:
+            continue
+        intersection = new_words & prev_words
+        smaller = min(len(new_words), len(prev_words))
+        if smaller > 0 and len(intersection) / smaller > 0.8:
+            return True
+    return False
+
+
+def _record_hook_history(scene: str, hook: str) -> None:
+    """Adiciona hook ao historico da cena (mantendo os ultimos N)."""
+    history = _AI_HOOK_HISTORY.setdefault(scene, [])
+    history.append(hook)
+    if len(history) > _AI_HOOK_HISTORY_MAX:
+        del history[: len(history) - _AI_HOOK_HISTORY_MAX]
 
 
 def hook_for_scene(scene: str, mood: str = "", use_ai: bool = True) -> tuple[str, str]:

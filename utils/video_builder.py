@@ -303,18 +303,22 @@ def build_pata_jazz_video(
         video = random.choice(single)
         _build_single_clip_video(spec, video, audio_path, output)
 
-    # A/B testing: gera duas variantes de thumbnail. thumb e o caminho base
-    # ({stem}.png); as variantes sao {stem}_thumb_a.png e {stem}_thumb_b.png.
-    # O caminho "thumbnail" (legado) aponta pra variante A pra backward compat.
+    # A/B/C testing: gera tres variantes de thumbnail. thumb e o caminho base
+    # ({stem}.png); as variantes sao {stem}_thumb_a.png, {stem}_thumb_b.png e
+    # {stem}_thumb_c.png. O caminho "thumbnail" (legado) aponta pra variante A
+    # pra backward compat.
     thumb_a = thumb.with_name(f"{thumb.stem}_thumb_a.png")
     thumb_b = thumb.with_name(f"{thumb.stem}_thumb_b.png")
+    thumb_c = thumb.with_name(f"{thumb.stem}_thumb_c.png")
     spec.thumbnail_maker(hook, emoji, thumb_a, video_path=output, variant="A")
-    try:
-        spec.thumbnail_maker(hook, emoji, thumb_b, video_path=output, variant="B")
-    except Exception as exc:
-        # Variante B e opcional - se falhar, A ainda e suficiente pra publicar.
-        log.warning("Falha ao gerar variante B de thumbnail: %s", exc)
-        thumb_b = Path()
+    generated = [str(thumb_a)]
+    for variant, thumb_path in (("B", thumb_b), ("C", thumb_c)):
+        try:
+            spec.thumbnail_maker(hook, emoji, thumb_path, video_path=output, variant=variant)
+            generated.append(str(thumb_path))
+        except Exception as exc:
+            # Variantes B e C sao opcionais - se falhar, A ainda e suficiente.
+            log.warning("Falha ao gerar variante %s de thumbnail: %s", variant, exc)
 
     fallback_title = clean_title(f"{hook} | Pata Jazz")
     metadata = generate_metadata(
@@ -336,7 +340,7 @@ def build_pata_jazz_video(
         "resolution": f"{spec.width}x{spec.height}",
         "video": str(output),
         "thumbnail": str(thumb_a),
-        "thumbnails": [str(thumb_a), str(thumb_b)] if thumb_b.name else [str(thumb_a)],
+        "thumbnails": generated,
         "audio": str(audio_path) if audio_path else None,
     }
     output.with_suffix(".json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")

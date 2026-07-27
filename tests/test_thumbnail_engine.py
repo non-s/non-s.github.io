@@ -91,7 +91,7 @@ class TestThumbnailVariantB:
 
     @patch("utils.thumbnail_engine.ImageDraw")
     @patch("utils.thumbnail_engine._save_under_2mb")
-    @patch("utils.thumbnail_engine._load_fonts", return_value=(MagicMock(), MagicMock()))
+    @patch("utils.thumbnail_engine._fonts_for_variant", return_value=(MagicMock(), MagicMock()))
     @patch("utils.thumbnail_engine.extract_frame_from_video", return_value=None)
     def test_variant_b_passes_palette_b_to_render(self, mock_extract, mock_fonts, mock_save, mock_draw, tmp_path):
         """_render_thumbnail com variant='B' deve usar PALETTE_B - captura o
@@ -110,6 +110,48 @@ class TestThumbnailVariantB:
         _render_thumbnail(1080, 1920, "hook", "🐱", out_path, "brand", None, cfg, variant="B")
         # O fill do emoji principal (nao a shadow) e PALETTE_B["accent"].
         assert thumbnail_engine.PALETTE_B["accent"] in {str(f) for f in captured_fills if isinstance(f, str)}
+
+
+class TestThumbnailVariantC:
+    """Variante C: hook truncado (texto menor) + emoji gigante (fonte 2x maior).
+    Mesma paleta de A para nao competir em cores, mas impacto visual diferente
+    via escala do emoji."""
+
+    def test_variant_c_renders_real(self, tmp_path):
+        out_a = tmp_path / "thumb_a.png"
+        out_c = tmp_path / "thumb_c.png"
+        thumbnail_engine.make_short_thumbnail(
+            hook="Meow Monday", emoji="🎷", output=out_a, variant="A"
+        )
+        thumbnail_engine.make_short_thumbnail(
+            hook="Meow Monday", emoji="🎷", output=out_c, variant="C"
+        )
+        assert out_a.exists() and out_a.stat().st_size > 0
+        assert out_c.exists() and out_c.stat().st_size > 0
+
+    def test_variant_c_uses_palette_c(self):
+        assert thumbnail_engine._palette_for("C") is thumbnail_engine.PALETTE_C
+        # Paleta C mantem o accent default (nao troca cor, so escala do emoji).
+        assert thumbnail_engine.PALETTE_C["accent"] == thumbnail_engine.PALETTE["accent"]
+
+    def test_variant_c_uses_larger_emoji_font(self, tmp_path):
+        """Variante C usa emoji 2x maior (240 vs 120) - verifica via mock."""
+        with patch("utils.thumbnail_engine._load_font_path", return_value="arial.ttf"), \
+             patch("utils.thumbnail_engine.ImageFont.truetype") as mock_truetype:
+            mock_truetype.side_effect = lambda path, size: MagicMock(size=size)
+            font_large, font_small = thumbnail_engine._fonts_for_variant("C")
+            # font_large deve ser 240 (2x do default 120).
+            assert font_large.size == 240
+            # font_small menor que o default 48.
+            assert font_small.size < 48
+
+    def test_variant_a_uses_default_font_sizes(self, tmp_path):
+        with patch("utils.thumbnail_engine._load_font_path", return_value="arial.ttf"), \
+             patch("utils.thumbnail_engine.ImageFont.truetype") as mock_truetype:
+            mock_truetype.side_effect = lambda path, size: MagicMock(size=size)
+            font_large, font_small = thumbnail_engine._fonts_for_variant("A")
+            assert font_large.size == 120
+            assert font_small.size == 48
 
 
 class TestThumbnailEngine:
@@ -174,7 +216,7 @@ class TestRenderThumbnailWithVideo:
 
     @patch("utils.thumbnail_engine.ImageDraw")
     @patch("utils.thumbnail_engine._save_under_2mb")
-    @patch("utils.thumbnail_engine._load_fonts", return_value=(MagicMock(), MagicMock()))
+    @patch("utils.thumbnail_engine._fonts_for_variant", return_value=(MagicMock(), MagicMock()))
     @patch("utils.thumbnail_engine.extract_frame_from_video")
     def test_with_video_path_uses_frame(self, mock_extract, mock_fonts, mock_save, mock_draw, tmp_path):
         frame = Image.new("RGB", (640, 480), (10, 20, 30))
@@ -188,7 +230,7 @@ class TestRenderThumbnailWithVideo:
 
     @patch("utils.thumbnail_engine.ImageDraw")
     @patch("utils.thumbnail_engine._save_under_2mb")
-    @patch("utils.thumbnail_engine._load_fonts", return_value=(MagicMock(), MagicMock()))
+    @patch("utils.thumbnail_engine._fonts_for_variant", return_value=(MagicMock(), MagicMock()))
     @patch("utils.thumbnail_engine.extract_frame_from_video")
     def test_without_video_path_uses_gradient(self, mock_extract, mock_fonts, mock_save, mock_draw, tmp_path):
         out = tmp_path / "thumb.png"
@@ -198,7 +240,7 @@ class TestRenderThumbnailWithVideo:
 
     @patch("utils.thumbnail_engine.ImageDraw")
     @patch("utils.thumbnail_engine._save_under_2mb")
-    @patch("utils.thumbnail_engine._load_fonts", return_value=(MagicMock(), MagicMock()))
+    @patch("utils.thumbnail_engine._fonts_for_variant", return_value=(MagicMock(), MagicMock()))
     @patch("utils.thumbnail_engine.extract_frame_from_video", return_value=None)
     def test_video_path_but_extraction_fails_falls_back_to_gradient(
         self, mock_extract, mock_fonts, mock_save, mock_draw, tmp_path
@@ -212,7 +254,7 @@ class TestRenderThumbnailWithVideo:
 
     @patch("utils.thumbnail_engine.ImageDraw")
     @patch("utils.thumbnail_engine._save_under_2mb")
-    @patch("utils.thumbnail_engine._load_fonts", return_value=(MagicMock(), MagicMock()))
+    @patch("utils.thumbnail_engine._fonts_for_variant", return_value=(MagicMock(), MagicMock()))
     @patch("utils.thumbnail_engine.extract_frame_from_video")
     def test_with_crop_target_ratio(self, mock_extract, mock_fonts, mock_save, mock_draw, tmp_path):
         # frame muito largo (1920x480) com crop_target_ratio=9/16 -> corta laterais

@@ -134,8 +134,191 @@ PATA_JAZZ: ChannelConfig = ChannelConfig(
 )
 
 
+PATA_LOFI: ChannelConfig = ChannelConfig(
+    name="Pata Lofi",
+    brand_prefix="Pata Lofi |",
+    hashtag_brand=["#PataLofi", "#LofiPets", "#LofiCats", "#LofiDogs"],
+    base_tags=["Pata Lofi", "cat", "dog", "lofi", "study", "chill", "beats"],
+    playlists_by_mood={
+        "relax": "Pata Lofi | Relaxar e Dormir",
+        "fofura": "Pata Lofi | Fofura Diaria",
+        "diversao": "Pata Lofi | Pets Felizes",
+    },
+    playlists_by_kind={
+        "short": "Pata Lofi | Shorts",
+        "horizontal": "Pata Lofi | Videos Completos",
+    },
+    live_tags=[
+        "lofi hip hop",
+        "lofi study music",
+        "lofi chill beats",
+        "lofi for pets",
+        "calming music for cats",
+        "relaxing music for dogs",
+        "lofi background music",
+        "study beats",
+        "chill lofi",
+        "24/7 live stream",
+        "Pata Lofi",
+    ],
+    live_title_prompt=(
+        "Create a short, warm YouTube live stream title (max 80 characters) for a "
+        "24/7 looping live stream of cats and dogs with relaxing lofi hip hop beats. "
+        "Target searches like 'lofi study music' or 'lofi chill beats'. "
+        "Return ONLY the title text, no quotes."
+    ),
+    seo_keywords={
+        "cuteness": [
+            "cute", "adorable", "charming", "sweet",
+            "precious", "lovable", "gentle", "tender",
+        ],
+        "relaxation": [
+            "relaxing", "calm", "calming", "soothing", "peaceful",
+            "gentle", "cozy", "tranquil", "mellow", "zen",
+        ],
+        "fun": [
+            "funny", "playful", "silly", "energetic",
+            "curious", "spontaneous", "lively", "cheerful",
+        ],
+        "music": [
+            "lofi", "lofi hip hop", "lofi beats", "chill beats",
+            "study beats", "lofi instrumental", "lofi background music",
+            "chill lofi", "lofi chill",
+        ],
+    },
+    title_patterns={
+        "short": [
+            "{emoji} {adjetivo} {animal} + {estilo_musical}",
+            "When a {animal} {acao} to {estilo_musical} 🎵",
+            "{adjetivo} {animal} enjoying {estilo_musical} {emoji}",
+            "POV: a {animal} {acao} to your daily {estilo_musical}",
+            "The {adjetivo} {animal} you needed today {emoji}",
+        ],
+        "horizontal": [
+            "{adjetivo} {animal} + {estilo_musical} for {duracao} minutes",
+            "Relax with a {adjetivo} {animal} and {estilo_musical}",
+            "{estilo_musical} + {adjetivo} {animal} to relax",
+            "A {adjetivo} {animal} ambience with {estilo_musical}",
+            "{adjetivo} session: {animal} + {estilo_musical} {emoji}",
+        ],
+        "live": [
+            "🔴 LIVE: {adjetivo} {animal} + {estilo_musical} 24/7",
+            "{estilo_musical} Radio with a {adjetivo} {animal} - LIVE",
+            "LIVE: Relax with a {animal} and {estilo_musical} all day",
+            "🔴 LIVE: Non-Stop {estilo_musical} + {adjetivo} {animal}",
+        ],
+    },
+    emojis={"brand": "🐾🎧"},
+    scene_categories={
+        "fofura": ["cat", "kitten", "puppy", "dog", "sleepy cat"],
+        "diversao": ["playful dog", "cat playing", "puppy playing", "dog relaxing"],
+        "relax": ["sleepy cat", "sleepy dog", "cat relaxing", "dog relaxing"],
+    },
+    hourly_mood={
+        h: ("diversao" if 6 <= h < 12 else "fofura" if 12 <= h < 18 else "relax")
+        for h in range(24)
+    },
+    default_description=(
+        "A 24/7 live stream of cats and dogs with relaxing lofi hip hop beats - great "
+        "background sound for studying, working, relaxing or sleeping."
+    ),
+)
+
+
+PATA_CLASSICAL: ChannelConfig = ChannelConfig(
+    name="Pata Classical",
+    brand_prefix="Pata Classical |",
+    hashtag_brand=["#PataClassical", "#ClassicalPets", "#PianoCats", "#OrchestraDogs"],
+    base_tags=["Pata Classical", "cat", "dog", "classical", "piano", "orchestra"],
+    playlists_by_mood={
+        "relax": "Pata Classical | Relaxar e Dormir",
+        "fofura": "Pata Classical | Fofura Diaria",
+        "diversao": "Pata Classical | Pets Felizes",
+    },
+    playlists_by_kind={
+        "short": "Pata Classical | Shorts",
+        "horizontal": "Pata Classical | Videos Completos",
+    },
+    live_tags=[
+        "classical music for pets",
+        "calming piano music",
+        "orchestra music",
+        "classical relaxation",
+        "calming music for cats",
+        "relaxing music for dogs",
+        "piano background music",
+        "classical music study",
+        "24/7 live stream",
+        "Pata Classical",
+    ],
+    live_title_prompt=(
+        "Create a short, warm YouTube live stream title (max 80 characters) for a "
+        "24/7 looping live stream of cats and dogs with relaxing classical music. "
+        "Target searches like 'classical music for pets' or 'calming piano music'. "
+        "Return ONLY the title text, no quotes."
+    ),
+    seo_keywords={
+        "cuteness": [
+            "cute", "adorable", "charming", "sweet",
+            "precious", "lovable", "gentle", "tender",
+        ],
+        "relaxation": [
+            "relaxing", "calm", "calming", "soothing", "peaceful",
+            "gentle", "cozy", "tranquil", "mellow", "zen",
+        ],
+        "fun": [
+            "funny", "playful", "silly", "energetic",
+            "curious", "spontaneous", "lively", "cheerful",
+        ],
+        "music": [
+            "classical", "piano", "orchestra", "classical music",
+            "classical instrumental", "calm piano", "classical relaxation",
+            "soft classical", "piano background",
+        ],
+    },
+    title_patterns={
+        "short": [
+            "{emoji} {adjetivo} {animal} + {estilo_musical}",
+            "When a {animal} {acao} to {estilo_musical} 🎵",
+            "{adjetivo} {animal} enjoying {estilo_musical} {emoji}",
+            "POV: a {animal} {acao} to your daily {estilo_musical}",
+            "The {adjetivo} {animal} you needed today {emoji}",
+        ],
+        "horizontal": [
+            "{adjetivo} {animal} + {estilo_musical} for {duracao} minutes",
+            "Relax with a {adjetivo} {animal} and {estilo_musical}",
+            "{estilo_musical} + {adjetivo} {animal} to relax",
+            "A {adjetivo} {animal} ambience with {estilo_musical}",
+            "{adjetivo} session: {animal} + {estilo_musical} {emoji}",
+        ],
+        "live": [
+            "🔴 LIVE: {adjetivo} {animal} + {estilo_musical} 24/7",
+            "{estilo_musical} Radio with a {adjetivo} {animal} - LIVE",
+            "LIVE: Relax with a {animal} and {estilo_musical} all day",
+            "🔴 LIVE: Non-Stop {estilo_musical} + {adjetivo} {animal}",
+        ],
+    },
+    emojis={"brand": "🐾🎻"},
+    scene_categories={
+        "fofura": ["cat", "kitten", "puppy", "dog", "sleepy cat"],
+        "diversao": ["playful dog", "cat playing", "puppy playing", "dog relaxing"],
+        "relax": ["sleepy cat", "sleepy dog", "cat relaxing", "dog relaxing"],
+    },
+    hourly_mood={
+        h: ("diversao" if 6 <= h < 12 else "fofura" if 12 <= h < 18 else "relax")
+        for h in range(24)
+    },
+    default_description=(
+        "A 24/7 live stream of cats and dogs with relaxing classical music - great "
+        "background sound for calming an anxious pet, studying, working or sleeping."
+    ),
+)
+
+
 CHANNELS: dict[str, ChannelConfig] = {
     "pata_jazz": PATA_JAZZ,
+    "pata_lofi": PATA_LOFI,
+    "pata_classical": PATA_CLASSICAL,
 }
 
 active_channel: ChannelConfig = PATA_JAZZ

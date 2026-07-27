@@ -11,7 +11,15 @@ import pytest
 
 from utils import channel_config
 from utils.animal_branding import ALL_SCENES, random_scene
-from utils.channel_config import CHANNELS, PATA_JAZZ, ChannelConfig, active_channel, set_channel
+from utils.channel_config import (
+    CHANNELS,
+    PATA_CLASSICAL,
+    PATA_JAZZ,
+    PATA_LOFI,
+    ChannelConfig,
+    active_channel,
+    set_channel,
+)
 
 
 @pytest.fixture(autouse=True)
@@ -174,6 +182,55 @@ class TestRegistryAndSetActive:
             channel_config.CHANNELS.clear()
             channel_config.CHANNELS.update(original)
             set_channel("pata_jazz")
+
+
+class TestPataLofiConfig:
+    def test_is_channel_config_instance(self):
+        assert isinstance(PATA_LOFI, ChannelConfig)
+
+    def test_name(self):
+        assert PATA_LOFI.name == "Pata Lofi"
+
+    def test_base_tags_contain_lofi_keywords(self):
+        assert "lofi" in PATA_LOFI.base_tags
+        assert "study" in PATA_LOFI.base_tags
+        assert "chill" in PATA_LOFI.base_tags
+        assert "beats" in PATA_LOFI.base_tags
+
+    def test_in_registry(self):
+        assert "pata_lofi" in CHANNELS
+        assert CHANNELS["pata_lofi"] is PATA_LOFI
+
+    def test_set_channel_changes_base_tags(self):
+        before = channel_config.active_channel.base_tags
+        set_channel("pata_lofi")
+        after = channel_config.active_channel.base_tags
+        assert after is PATA_LOFI.base_tags
+        assert before != after
+
+
+class TestPataClassicalConfig:
+    def test_is_channel_config_instance(self):
+        assert isinstance(PATA_CLASSICAL, ChannelConfig)
+
+    def test_name(self):
+        assert PATA_CLASSICAL.name == "Pata Classical"
+
+    def test_base_tags_contain_classical_keywords(self):
+        assert "classical" in PATA_CLASSICAL.base_tags
+        assert "piano" in PATA_CLASSICAL.base_tags
+        assert "orchestra" in PATA_CLASSICAL.base_tags
+
+    def test_in_registry(self):
+        assert "pata_classical" in CHANNELS
+        assert CHANNELS["pata_classical"] is PATA_CLASSICAL
+
+    def test_set_channel_changes_base_tags(self):
+        before = channel_config.active_channel.base_tags
+        set_channel("pata_classical")
+        after = channel_config.active_channel.base_tags
+        assert after is PATA_CLASSICAL.base_tags
+        assert before != after
 
 
 class TestBackwardCompat:

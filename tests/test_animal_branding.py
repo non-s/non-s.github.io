@@ -75,7 +75,7 @@ class TestGenerateHookWithAi:
 
         def fake_ai_text(*a, **k):
             calls["n"] += 1
-            return "Cached Cat Hook"
+            return "Cached Cat Hook Moment"
 
         monkeypatch.setattr(ab, "ai_text", fake_ai_text)
         generate_hook_with_ai("cat")
@@ -115,3 +115,55 @@ class TestHookForSceneWithAi:
         hook, emoji = hook_for_scene("sleepy cat")
         assert isinstance(hook, str)
         assert isinstance(emoji, str)
+
+
+class TestHookValidation:
+    def setup_method(self):
+        ab._AI_HOOK_CACHE.clear()
+        ab._AI_HOOK_HISTORY.clear()
+
+    def test_too_short_hook_rejected_and_falls_back(self, monkeypatch):
+        # IA devolve hook curto (< 20 chars) — deve rejeitar e tentar de novo
+        # (retry tambem curto) — cai no fallback vazio (cache ""), e
+        # hook_for_scene cai no hardcoded.
+        monkeypatch.setattr(ab, "ai_text", lambda *a, **k: "Hi cat")
+        hook, _ = hook_for_scene("cat", use_ai=True)
+        hardcoded = [h for h, _ in ab.HOOK_BY_SCENE["cat"]]
+        assert hook in hardcoded
+
+    def test_too_long_hook_truncated_to_ideal_max(self, monkeypatch):
+        long_hook = "A" * 80
+        monkeypatch.setattr(ab, "ai_text", lambda *a, **k: long_hook)
+        out = generate_hook_with_ai("cat")
+        # 80 chars: > _AI_HOOK_MAX_LEN (70) -> rejeitado, retry idem -> "".
+        assert out == ""
+
+    def test_negative_hook_rejected(self, monkeypatch):
+        monkeypatch.setattr(ab, "ai_text", lambda *a, **k: "Sad cat is very cute today")
+        hook, _ = hook_for_scene("cat", use_ai=True)
+        hardcoded = [h for h, _ in ab.HOOK_BY_SCENE["cat"]]
+        assert hook in hardcoded
+
+    def test_similar_to_recent_rejected(self, monkeypatch):
+        # Primeira chamada aceita "Cute Cat Jazz Moment".
+        monkeypatch.setattr(ab, "ai_text", lambda *a, **k: "Cute Cat Jazz Moment")
+        first = generate_hook_with_ai("cat")
+        assert first == "Cute Cat Jazz Moment"
+        # Limpa o cache para forcar nova chamada a IA; o historico permanece.
+        ab._AI_HOOK_CACHE.clear()
+        # Segunda chamada devolve hook com mesmas palavras-chave (similar >80%).
+        monkeypatch.setattr(ab, "ai_text", lambda *a, **k: "Cute Cat Jazz Today")
+        out = generate_hook_with_ai("cat")
+        # Rejeitado por similaridade -> retry idem -> "" (cache).
+        assert out == ""
+
+    def test_valid_hook_accepted(self, monkeypatch):
+        monkeypatch.setattr(ab, "ai_text", lambda *a, **k: "A Cute Cat Being Mischievous Today")
+        out = generate_hook_with_ai("cat")
+        assert out == "A Cute Cat Being Mischievous Today"
+
+    def test_validate_hook_directly(self):
+        assert ab._validate_hook("A Cute Cat Being Mischievous Today", "cat") is True
+        assert ab._validate_hook("Hi", "cat") is False
+        assert ab._validate_hook("x" * 80, "cat") is False
+        assert ab._validate_hook("Sad cat is very cute today", "cat") is False
