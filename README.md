@@ -37,7 +37,7 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 - **Python 3.11+** (CI roda 3.11; local testado com 3.12/3.14)
 - **FFmpeg** — codificação, concatenação, xfade, drawtext e ffprobe (com timeout)
 - **Pillow ≥10.3** — thumbnails (gradiente, shadows RGBA, fontes TrueType)
-- **pytest** — testes unitários (267 testes, cobertura ≥70% de `utils/`)
+- **pytest** — testes unitários (283 testes, cobertura ≥70% de `utils/`)
 - **ruff** — lint (regras E, F, W, I, UP, B)
 - **GitHub Actions** — CI/CD e agendamento
 
@@ -64,7 +64,7 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 │   ├── ai_helper.py          # Chamadas Gemini
 │   ├── animal_branding.py    # Identidade Pata Jazz
 │   ├── caption_engine.py     # Legendas SRT automáticas
-│   ├── content_strategy.py   # Mood por horário e calendário
+│   ├── content_strategy.py   # Mood por horário (e peso por cena, se houver dados de performance)
 │   ├── ffmpeg_helpers.py      # FFmpeg e ffprobe
 │   ├── log_config.py         # Logging centralizado
 │   ├── media_pool.py         # Pool de mídia local
