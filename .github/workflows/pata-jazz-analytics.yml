@@ -8,6 +8,8 @@ on:
 
 permissions:
   contents: read
+  pages: write
+  id-token: write
 
 concurrency:
   group: pata-jazz-analytics
@@ -19,6 +21,12 @@ jobs:
     if: ${{ vars.PATA_JAZZ_ENABLED == '1' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    environment:
+      # actions/deploy-pages so publica atraves do ambiente "github-pages" -
+      # e o proprio GitHub que cria esse ambiente automaticamente na primeira
+      # vez que um workflow com essa permissao roda.
+      name: github-pages
+      url: ${{ steps.deploy-pages.outputs.page_url }}
     steps:
       - name: "Checkout"
         uses: actions/checkout@v4
@@ -55,11 +63,25 @@ jobs:
         run: python scripts/collect_analytics.py
       - name: "Gerar dashboard HTML"
         # So le os JSONs que os steps acima ja escreveram/restauraram - sem
-        # rede, sem dependencia nova. Ainda nao publicado (GitHub Pages
-        # tornaria isso publico na internet, o que exige decisao explicita
-        # de quem administra o canal) - por enquanto so vira artifact
-        # baixavel, igual ao analytics-report abaixo.
+        # rede, sem dependencia nova.
         run: python scripts/generate_dashboard.py
+      - name: "Configurar GitHub Pages"
+        # Habilita o Pages no repo (build type "workflow") automaticamente
+        # na primeira vez, usando a permissao pages:write acima - nao exige
+        # configuracao manual previa em Settings > Pages.
+        uses: actions/configure-pages@v5
+      - name: "Upload do dashboard como Pages artifact"
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _dashboard
+      - name: "Publicar no GitHub Pages"
+        # Repo se chama non-s.github.io, entao isso publica na raiz do
+        # dominio (https://non-s.github.io/), nao num subcaminho - so os
+        # dados ja publicos no proprio YouTube (views/likes/titulos) e os
+        # pesos de performance por cena/padrao de titulo ficam visiveis;
+        # nenhum token/segredo passa perto deste job.
+        id: deploy-pages
+        uses: actions/deploy-pages@v4
       - name: "Upload analytics e dashboard como artifact"
         # O cache acima so serve pra passar o arquivo pro proximo run (nao
         # da pra inspecionar um cache de fora). Como artifact, o relatorio
