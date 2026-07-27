@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import logging
+import random
 import sys
 from pathlib import Path
 
@@ -23,6 +24,16 @@ THUMB_DIR = ROOT / "_assets" / "thumbnails"
 log = logging.getLogger(__name__)
 
 DEFAULT_DURATION = 35
+# Faixa usada quando --duration nao e passado explicitamente: variedade de
+# duracao entre Shorts (todos saindo com exatamente 35s toda vez e outro
+# sinal de conteudo repetitivo/automatizado). utils.video_builder ja ajusta
+# o numero de clipes e o offset do crossfade dinamicamente pra qualquer
+# duracao (_build_multi_clip_short), entao variar aqui e seguro.
+DURATION_RANGE = (28, 42)
+
+
+def _pick_duration() -> int:
+    return random.randint(*DURATION_RANGE)
 
 
 def _generate_short(duration: int = DEFAULT_DURATION, dry_run: bool = False) -> Path:
@@ -49,14 +60,16 @@ def _generate_short(duration: int = DEFAULT_DURATION, dry_run: bool = False) -> 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Gerar Short Pata Jazz")
-    parser.add_argument("--duration", type=int, default=DEFAULT_DURATION, help="Duracao em segundos")
+    parser.add_argument("--duration", type=int, default=None,
+                         help=f"Duracao em segundos (default: aleatorio entre {DURATION_RANGE[0]}-{DURATION_RANGE[1]})")
     parser.add_argument("--dry-run", action="store_true", help="Simula sem executar FFmpeg nem gerar arquivos")
     args = parser.parse_args()
 
     configure_logging()
+    duration = args.duration if args.duration is not None else _pick_duration()
 
     try:
-        _generate_short(duration=args.duration, dry_run=args.dry_run)
+        _generate_short(duration=duration, dry_run=args.dry_run)
         return 0
     except Exception as exc:
         log.exception("Falha ao gerar Short: %s", exc)
