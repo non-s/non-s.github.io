@@ -14,13 +14,19 @@ analytics) - cada secao mostra um aviso em vez de quebrar o script inteiro.
 from __future__ import annotations
 
 import json
+import logging
 import sys
+import urllib.error
+import urllib.request
 from datetime import UTC, datetime
 from html import escape
 from pathlib import Path
 
+log = logging.getLogger(__name__)
+
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "_data"
+DASHBOARD_DIR = ROOT / "_dashboard"
 
 ANALYTICS_FILE = DATA_DIR / "analytics.json"
 HISTORY_FILE = DATA_DIR / "analytics_history.json"
@@ -32,8 +38,11 @@ VIEW_PREDICTOR_FILE = DATA_DIR / "view_predictor.json"
 _MAX_HISTORY_ROWS = 12
 _MAX_LIVE_SNAPSHOTS = 20
 
-# Chart.js 4.x via jsdelivr (CDN estavel, sem build).
+# Chart.js 4.x via jsdelivr (CDN estavel, sem build). SRI calculado a partir
+# do arquivo oficial da versao; fallback offline copiado para _dashboard/.
 _CHART_JS_CDN = "https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"
+_CHART_JS_SRI = "sha384-JUh163oCRItcbPme8pYnROHQMC6fNKTBWtRG3I3I0erJkzNgL7uxKlNwcrcFKeqF"
+_CHART_JS_FALLBACK = "chart.umd.min.js"
 
 
 def _load_json(path: Path, default):
@@ -231,6 +240,36 @@ def _build_top_videos_dataset(analytics: dict) -> dict:
     }
 
 
+def _ensure_chart_js_fallback(output_dir: Path) -> None:
+    """Copia uma versao offline do Chart.js para _dashboard/.
+
+    Se o CDN falhar no navegador do usuario, o <script> troca para este
+    arquivo local. Tenta primeiro baixar a versao oficial para garantir que
+    o fallback seja identico ao CDN; se a rede nao estiver disponivel na
+    geracao, usa uma copia ja existente em _dashboard/ (ou gera o HTML
+    sem fallback, que ainda funciona via CDN).
+    """
+    fallback_path = output_dir / _CHART_JS_FALLBACK
+    existing = fallback_path.exists()
+    try:
+        # URL fixa e conhecida (jsdelivr CDN). O uso de urllib aqui e
+        # seguro porque o destino e controlado; bandit B310 alerta sobre
+        # schemes arbitrarios, mas o valor e hardcoded HTTPS.
+        with urllib.request.urlopen(_CHART_JS_CDN, timeout=30) as resp:  # nosec B310
+            data = resp.read()
+        output_dir.mkdir(parents=True, exist_ok=True)
+        fallback_path.write_bytes(data)
+        log.info("Fallback Chart.js atualizado em %s (%d bytes).", fallback_path, len(data))
+        return
+    except urllib.error.URLError as exc:
+        log.warning("Nao foi possivel baixar Chart.js para fallback offline: %s", exc)
+    except OSError as exc:
+        log.warning("Erro ao salvar Chart.js offline: %s", exc)
+
+    if existing:
+        log.info("Mantendo Chart.js offline existente em %s.", fallback_path)
+
+
 def build_dashboard_html() -> str:
     analytics = _load_json(ANALYTICS_FILE, {})
     history = _load_json(HISTORY_FILE, [])
@@ -374,7 +413,10 @@ def build_dashboard_html() -> str:
 
   <footer>Gerado em {generated_at}</footer>
 
-  <script src="{_CHART_JS_CDN}"></script>
+  <script src="{_CHART_JS_CDN}"
+          integrity="{_CHART_JS_SRI}"
+          crossorigin="anonymous"
+          onerror="this.onerror=null;this.src='{_CHART_JS_FALLBACK}'"></script>
   <script>
     // Dados embutidos (dashboard autocontido, sem backend).
     var HISTORY_DS = {history_json};
@@ -623,8 +665,10 @@ def build_dashboard_html() -> str:
 
 
 def main() -> int:
+    # Usa ROOT dinamicamente para respeitar monkeypatches em testes.
     output_dir = ROOT / "_dashboard"
     output_dir.mkdir(parents=True, exist_ok=True)
+    _ensure_chart_js_fallback(output_dir)
     output_path = output_dir / "index.html"
     output_path.write_text(build_dashboard_html(), encoding="utf-8")
     print(f"Dashboard gerado: {output_path}")

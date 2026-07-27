@@ -47,6 +47,9 @@ jobs:
     if: ${{ vars.PATA_JAZZ_ENABLED == '1' }}
     runs-on: ubuntu-latest
     timeout-minutes: 180
+    # workflow_dispatch: acao destrutiva/alta quota (ate 10 videos + upload).
+    # Requer ambiente protegido com reviewer obrigatorio.
+    environment: production
     env:
       YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
       BATCH_KIND: ${{ github.event.inputs.kind }}

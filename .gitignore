@@ -43,6 +43,9 @@ _assets/thumbnails/*
 # Data files that may contain tokens or sensitive counters
 _data/*
 !_data/.gitkeep
+# Locks residuais do filelock (utils/state_lock.py) - temporarios e podem
+# travar jobs se persistirem apos crash do processo anterior.
+_data/*.lock
 
 # Dashboard HTML gerado por scripts/generate_dashboard.py
 _dashboard/

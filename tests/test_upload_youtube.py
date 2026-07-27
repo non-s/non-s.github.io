@@ -200,7 +200,7 @@ class TestUploadVideoSurvivesOptionalStepFailures:
 
         with patch("upload_youtube.get_youtube_service", return_value=service), \
              patch("upload_youtube._retry_youtube_call", side_effect=fake_retry), \
-             patch("utils.playlist_manager.add_video_to_playlist") as mock_add:
+             patch("utils.youtube_post_upload.add_video_to_playlist") as mock_add:
             video_id = upload_youtube.upload_video(prefix="pata_jazz_")
 
         assert video_id == "vid-ok"
@@ -217,7 +217,7 @@ class TestUploadVideoSurvivesOptionalStepFailures:
 
         with patch("upload_youtube.get_youtube_service", return_value=service), \
              patch("upload_youtube._retry_youtube_call", side_effect=fake_retry), \
-             patch("utils.playlist_manager.add_video_to_playlist") as mock_add:
+             patch("utils.youtube_post_upload.add_video_to_playlist") as mock_add:
             video_id = upload_youtube.upload_video(prefix="pata_jazz_")
 
         assert video_id == "vid-ok"
@@ -240,7 +240,7 @@ class TestUploadVideoPlaylists:
         service.videos().insert().execute.return_value = {"id": "vid123"}
 
         with patch("upload_youtube.get_youtube_service", return_value=service), \
-             patch("utils.playlist_manager.add_video_to_playlist") as mock_add:
+             patch("utils.youtube_post_upload.add_video_to_playlist") as mock_add:
             video_id = upload_youtube.upload_video(prefix="pata_jazz_")
 
         assert video_id == "vid123"
@@ -265,7 +265,7 @@ class TestUploadVideoPlaylists:
         service.videos().insert().execute.return_value = {"id": "vid456"}
 
         with patch("upload_youtube.get_youtube_service", return_value=service), \
-             patch("utils.playlist_manager.add_video_to_playlist") as mock_add:
+             patch("utils.youtube_post_upload.add_video_to_playlist") as mock_add:
             upload_youtube.upload_video(prefix="pata_jazz_")
 
         assert mock_add.call_count == 1
@@ -284,7 +284,7 @@ class TestUploadVideoPlaylists:
         service.videos().insert().execute.return_value = {"id": "vid789"}
 
         with patch("upload_youtube.get_youtube_service", return_value=service), \
-             patch("utils.playlist_manager.add_video_to_playlist", side_effect=RuntimeError("api down")):
+             patch("utils.youtube_post_upload.add_video_to_playlist", side_effect=RuntimeError("api down")):
             video_id = upload_youtube.upload_video(prefix="pata_jazz_")
 
         assert video_id == "vid789"
@@ -399,7 +399,7 @@ class TestRecordVideoTags:
         service.videos().insert().execute.return_value = {"id": "vid_e2e", "status": {"privacyStatus": "public"}}
 
         with patch("upload_youtube.get_youtube_service", return_value=service), \
-             patch("utils.playlist_manager.add_video_to_playlist"):
+             patch("utils.youtube_post_upload.add_video_to_playlist"):
             video_id = upload_youtube.upload_video(prefix="pata_jazz_")
 
         assert video_id == "vid_e2e"

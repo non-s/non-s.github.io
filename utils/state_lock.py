@@ -12,6 +12,8 @@ funciona em Linux (CI) e Windows (dev local) sem precisar de fcntl/msvcrt.
 from __future__ import annotations
 
 import logging
+import os
+import time
 from collections.abc import Iterator
 from contextlib import contextmanager
 from pathlib import Path
@@ -19,6 +21,39 @@ from pathlib import Path
 from filelock import FileLock
 
 log = logging.getLogger(__name__)
+
+# Locks mais antigos que este limite (em segundos) sao considerados
+# residuais de um processo que morreu sem liberar o lock. O filelock
+# moderno ja protege contra isso via flock/lockf, mas em runners
+# efemeros (GitHub Actions) ou sistemas de arquivos compartilhados um
+# arquivo .lock abandonado pode fazer o proximo job esperar ate o
+# timeout. A limpeza e conservadora: so remove se estiver realmente
+# velho.
+_STALE_LOCK_SECONDS = 300.0
+
+
+def _prune_stale_lock(lock_path: Path) -> None:
+    """Remove um arquivo de lock abandonado se ele for mais velho que
+    ``_STALE_LOCK_SECONDS``.
+
+    Nao remove locks recentes: outro processo legitimo pode estar
+    ativamente usando o arquivo. O filelock por padrao tambem cria o
+    lock apenas durante o ``with``, entao um .lock presente e velho
+    indica falha anterior.
+    """
+    try:
+        if not lock_path.exists():
+            return
+        mtime = lock_path.stat().st_mtime
+        age = time.time() - mtime
+        if age > _STALE_LOCK_SECONDS:
+            log.warning("Removendo lock residuo (%d s) em %s", int(age), lock_path)
+            os.remove(lock_path)
+    except FileNotFoundError:
+        # Outro processo ja removeu entre exists() e remove().
+        pass
+    except OSError as exc:
+        log.warning("Nao foi possivel remover lock residuo %s: %s", lock_path, exc)
 
 
 @contextmanager
@@ -31,6 +66,9 @@ def state_lock(path: Path, timeout: float = 30.0) -> Iterator[None]:
     Timeout (derivado de OSError) - nao e silencioso de proposito: perder
     o lock e pior do que falhar alto.
 
+    Antes de adquirir, remove locks residuais antigos para evitar que um
+    processo morto deixe o proximo job travado.
+
     Uso tipico::
 
         with state_lock(_VIDEO_TAGS_FILE):
@@ -38,7 +76,9 @@ def state_lock(path: Path, timeout: float = 30.0) -> Iterator[None]:
             existing[video_id] = {...}
             _save(existing)
     """
-    lock = FileLock(str(path) + ".lock", timeout=timeout)
+    lock_path = Path(str(path) + ".lock")
+    _prune_stale_lock(lock_path)
+    lock = FileLock(str(lock_path), timeout=timeout)
     try:
         with lock:
             yield
