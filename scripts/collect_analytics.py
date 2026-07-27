@@ -26,6 +26,8 @@ log = logging.getLogger(__name__)
 
 DATA_DIR = ROOT / "_data"
 MAX_VIDEOS = 50
+HISTORY_FILE = DATA_DIR / "analytics_history.json"
+MAX_HISTORY_ENTRIES = 104  # ~2 anos de snapshots semanais
 
 
 def _to_int(value) -> int:
@@ -135,7 +137,34 @@ def main() -> int:
     out_path = DATA_DIR / "analytics.json"
     out_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     log.info("Analytics salvo: %s (%d videos, %d views total)", out_path, len(stats), total_views)
+
+    _append_history(report)
     return 0
+
+
+def _append_history(report: dict) -> None:
+    """Acrescenta um snapshot compacto (so os agregados, nao all_videos) ao
+    historico - analytics.json sozinho sobrescreve toda semana, entao sem
+    isso nao da pra ver tendencia nenhuma ao longo do tempo depois."""
+    snapshot = {
+        "collected_at": report["collected_at"],
+        "total_videos": report["total_videos"],
+        "total_views": report["total_views"],
+        "total_likes": report["total_likes"],
+        "total_comments": report["total_comments"],
+        "avg_views": report["avg_views"],
+    }
+    try:
+        history = json.loads(HISTORY_FILE.read_text(encoding="utf-8")) if HISTORY_FILE.exists() else []
+    except Exception:
+        history = []
+    history.append(snapshot)
+    history = history[-MAX_HISTORY_ENTRIES:]
+    try:
+        HISTORY_FILE.write_text(json.dumps(history, ensure_ascii=False, indent=2), encoding="utf-8")
+        log.info("Historico de analytics atualizado: %s (%d snapshots)", HISTORY_FILE, len(history))
+    except Exception as exc:
+        log.warning("Falha ao salvar historico de analytics: %s", exc)
 
 
 if __name__ == "__main__":

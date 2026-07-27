@@ -1,7 +1,67 @@
 """Testes para collect_analytics.py."""
+import json
 from unittest.mock import MagicMock
 
 import scripts.collect_analytics as collect_analytics
+
+
+class TestAppendHistory:
+    def _report(self, collected_at="2026-01-01T00:00:00+00:00", views=100):
+        return {
+            "collected_at": collected_at,
+            "total_videos": 5,
+            "total_views": views,
+            "total_likes": 1,
+            "total_comments": 0,
+            "avg_views": views // 5,
+            "top_10": [],
+            "bottom_10": [],
+            "all_videos": [{"video_id": "x"}],
+        }
+
+    def test_creates_history_file_with_one_snapshot(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(collect_analytics, "HISTORY_FILE", tmp_path / "history.json")
+
+        collect_analytics._append_history(self._report())
+
+        history = json.loads((tmp_path / "history.json").read_text())
+        assert len(history) == 1
+        assert history[0]["total_views"] == 100
+        # Snapshot e compacto - nao carrega all_videos/top_10/bottom_10.
+        assert "all_videos" not in history[0]
+
+    def test_appends_to_existing_history(self, tmp_path, monkeypatch):
+        history_path = tmp_path / "history.json"
+        monkeypatch.setattr(collect_analytics, "HISTORY_FILE", history_path)
+        history_path.write_text(json.dumps([{"collected_at": "2025-01-01", "total_views": 10}]))
+
+        collect_analytics._append_history(self._report(views=200))
+
+        history = json.loads(history_path.read_text())
+        assert len(history) == 2
+        assert history[-1]["total_views"] == 200
+
+    def test_caps_history_at_max_entries(self, tmp_path, monkeypatch):
+        history_path = tmp_path / "history.json"
+        monkeypatch.setattr(collect_analytics, "HISTORY_FILE", history_path)
+        monkeypatch.setattr(collect_analytics, "MAX_HISTORY_ENTRIES", 3)
+        history_path.write_text(json.dumps([{"total_views": i} for i in range(3)]))
+
+        collect_analytics._append_history(self._report(views=999))
+
+        history = json.loads(history_path.read_text())
+        assert len(history) == 3
+        assert history[-1]["total_views"] == 999
+
+    def test_corrupted_history_file_does_not_crash(self, tmp_path, monkeypatch):
+        history_path = tmp_path / "history.json"
+        monkeypatch.setattr(collect_analytics, "HISTORY_FILE", history_path)
+        history_path.write_text("not valid json{{{")
+
+        collect_analytics._append_history(self._report())
+
+        history = json.loads(history_path.read_text())
+        assert len(history) == 1
 
 
 class TestCollectVideoStats:
