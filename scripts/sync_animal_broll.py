@@ -30,6 +30,8 @@ log = logging.getLogger(__name__)
 PIXABAY_API_URL = "https://pixabay.com/api/videos/"
 MAX_PER_QUERY = 15
 MAX_POOL_SIZE = 300
+MIN_WIDTH = 640
+MIN_HEIGHT = 360
 
 
 def _safe_name(query: str, idx: int, url: str, ext: str) -> str:
@@ -58,7 +60,7 @@ _download = _download_video
 
 def search_and_download(api_key: str, query: str, max_results: int = 5) -> int:
     headers = {"User-Agent": "PataJazz-Bot/1.0"}
-    params = {
+    params: dict[str, str | int] = {
         "key": api_key,
         "q": query,
         "per_page": max(6, max_results * 3),
@@ -94,6 +96,14 @@ def search_and_download(api_key: str, query: str, max_results: int = 5) -> int:
         videos = hit.get("videos", {})
         video = videos.get("large") or videos.get("medium") or videos.get("small")
         if not video:
+            continue
+        # Rejeita clips abaixo da resolucao minima - qualidade baixa demais pra
+        # thumbnail/frame extraction e pra encher a tela em video horizontal.
+        # Campos ausentes (API mudou ou hit incompleto) nao bloqueiam o clip -
+        # so pula a checagem em vez de descartar por falta de dado.
+        w, h = video.get("width"), video.get("height")
+        if w and h and (int(w) < MIN_WIDTH or int(h) < MIN_HEIGHT):
+            log.info("Ignorando hit de baixa resolucao (%sx%s): %s", w, h, tags)
             continue
         # Rejeita explicitamente videos marcados como animacao
         video_type = str(hit.get("type", "")).lower()
