@@ -71,7 +71,7 @@ def main() -> int:
 
         if upload and kind != "live":
             prefix = f"pata_jazz_{kind}_"
-            rc = _run([sys.executable, "upload_youtube.py", "--mode", "upload", "--language", "pt", "--prefix", prefix])
+            rc = _run([sys.executable, "upload_youtube.py", "--mode", "upload", "--language", "en", "--prefix", prefix])
             if rc != 0:
                 log.error("Falha no upload %s %d", kind, i + 1)
                 return rc
