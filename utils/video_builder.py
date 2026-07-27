@@ -58,6 +58,9 @@ class VideoSpec:
     fallback_description: str
     scene: str = ""
     mood: str = ""
+    # Hint de padrao de titulo otimizado por previsao (utils/slot_optimizer).
+    # Vazio = generate_metadata usa o comportamento legado (sortear/IA).
+    title_pattern_hint: str = ""
 
 
 def _build_video_filter(spec: VideoSpec) -> str:
@@ -329,6 +332,7 @@ def build_pata_jazz_video(
         emoji=emoji,
         fallback_title=fallback_title,
         fallback_description=spec.fallback_description,
+        title_pattern_hint=spec.title_pattern_hint,
     )
     meta = {
         **metadata,
@@ -374,7 +378,7 @@ def build_pata_jazz_video(
     return output
 
 
-def short_spec(duration: int = 35, scene: str = "", mood: str = "") -> VideoSpec:
+def short_spec(duration: int = 35, scene: str = "", mood: str = "", title_pattern_hint: str = "") -> VideoSpec:
     """Especificação padrão para Shorts verticais 1080x1920."""
     return VideoSpec(
         kind="short",
@@ -387,10 +391,11 @@ def short_spec(duration: int = 35, scene: str = "", mood: str = "") -> VideoSpec
         fallback_description=f"{hook_for_scene(scene or random_scene())[0]} with jazz playing. 🐾🎷 #PataJazz",
         scene=scene,
         mood=mood,
+        title_pattern_hint=title_pattern_hint,
     )
 
 
-def horizontal_spec(duration: int = 240, scene: str = "", mood: str = "") -> VideoSpec:
+def horizontal_spec(duration: int = 240, scene: str = "", mood: str = "", title_pattern_hint: str = "") -> VideoSpec:
     """Especificação padrão para vídeos horizontais 1920x1080."""
     return VideoSpec(
         kind="horizontal",
@@ -409,6 +414,7 @@ def horizontal_spec(duration: int = 240, scene: str = "", mood: str = "") -> Vid
         ),
         scene=scene,
         mood=mood,
+        title_pattern_hint=title_pattern_hint,
     )
 
 

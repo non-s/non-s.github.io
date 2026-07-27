@@ -11,10 +11,12 @@ import argparse
 import logging
 import random
 import sys
+from datetime import UTC, datetime
 from pathlib import Path
 
 from utils.content_strategy import current_brt_hour, mood_for_now, scene_for_mood
 from utils.log_config import configure_logging, log_exception_to_file
+from utils.slot_optimizer import optimized_scene_and_pattern
 from utils.video_builder import build_pata_jazz_video, short_spec
 
 ROOT = Path(__file__).resolve().parent
@@ -43,12 +45,26 @@ def _generate_short(duration: int = DEFAULT_DURATION, dry_run: bool = False) -> 
       manha  (06-12): diversao (energia, brincando)
       tarde  (12-18): fofura (fofo, dormindo)
       noite  (18-06): relax (relaxamento, calmo)
+
+    A cena/padrao sao escolhidos por previsao de views (utils/slot_optimizer)
+    quando o modelo preditivo esta treinado; sem modelo, cai no sorteio
+    ponderado por performance historica (content_strategy).
     """
     mood = mood_for_now()
-    scene = scene_for_mood(mood)
-    log.info("Mood=%s, cena=%s, horario BRT=%dh", mood, scene, current_brt_hour())
+    fallback_scene = scene_for_mood(mood)
+    now = datetime.now(UTC)
+    scene, pattern_hint = optimized_scene_and_pattern(
+        mood=mood,
+        fallback_scene=fallback_scene,
+        hour=now.hour,
+        day_of_week=now.weekday(),
+    )
+    log.info(
+        "Mood=%s, cena=%s, padrao=%s, horario BRT=%dh",
+        mood, scene, pattern_hint or "(sorteio)", current_brt_hour(),
+    )
 
-    spec = short_spec(duration=duration, scene=scene, mood=mood)
+    spec = short_spec(duration=duration, scene=scene, mood=mood, title_pattern_hint=pattern_hint or "")
     return build_pata_jazz_video(
         spec=spec,
         output_dir=OUTPUT_DIR,

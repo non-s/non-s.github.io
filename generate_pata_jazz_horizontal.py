@@ -10,10 +10,12 @@ from __future__ import annotations
 import argparse
 import logging
 import sys
+from datetime import UTC, datetime
 from pathlib import Path
 
 from utils.content_strategy import mood_for_now, scene_for_mood
 from utils.log_config import configure_logging, log_exception_to_file
+from utils.slot_optimizer import optimized_scene_and_pattern
 from utils.video_builder import build_pata_jazz_video, horizontal_spec
 
 ROOT = Path(__file__).resolve().parent
@@ -28,13 +30,21 @@ DEFAULT_DURATION = 240
 def _generate_horizontal(duration: int = DEFAULT_DURATION, dry_run: bool = False) -> Path:
     """Gera um video horizontal com clipes de gatos/cachorros + musica de jazz.
 
-    Mood automatico pela hora atual (BRT).
+    Mood automatico pela hora atual (BRT). Cena/padrao escolhidos por
+    previsao de views (utils/slot_optimizer) quando modelo treinado.
     """
     mood = mood_for_now()
-    scene = scene_for_mood(mood)
-    log.info("Mood=%s, cena=%s", mood, scene)
+    fallback_scene = scene_for_mood(mood)
+    now = datetime.now(UTC)
+    scene, pattern_hint = optimized_scene_and_pattern(
+        mood=mood,
+        fallback_scene=fallback_scene,
+        hour=now.hour,
+        day_of_week=now.weekday(),
+    )
+    log.info("Mood=%s, cena=%s, padrao=%s", mood, scene, pattern_hint or "(sorteio)")
 
-    spec = horizontal_spec(duration=duration, scene=scene, mood=mood)
+    spec = horizontal_spec(duration=duration, scene=scene, mood=mood, title_pattern_hint=pattern_hint or "")
     return build_pata_jazz_video(
         spec=spec,
         output_dir=OUTPUT_DIR,

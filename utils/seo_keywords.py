@@ -139,14 +139,27 @@ def generate_title_with_pattern(
     kind: Literal["short", "horizontal", "live"],
     emoji: str,
     duracao: int | None = None,
+    pattern: str | None = None,
 ) -> tuple[str, str]:
     """Gera título otimizado e retorna tambem o padrao usado (para tracking).
 
     Guardar qual padrao gerou qual titulo e o que falta pra algum dia
     correlacionar performance (views/likes) com o padrao - hoje generate_title()
     descartava essa informacao, entao nao havia como saber depois.
+
+    ``pattern`` (quando fornecido por utils/slot_optimizer) obriga o uso do
+    padrao passado; caso contrario, sorteia/pondera como antes.
     """
-    pattern = pick_title_pattern(kind)
+    if pattern:
+        # Valida que o padrao pertence ao canal; se nao, ignora e sortea.
+        all_patterns = active_channel.title_patterns.get(kind, active_channel.title_patterns["short"])
+        if pattern in all_patterns:
+            chosen = pattern
+        else:
+            log.debug("Padrao %r nao existe para kind=%s; sorteando.", pattern, kind)
+            chosen = pick_title_pattern(kind)
+    else:
+        chosen = pick_title_pattern(kind)
 
     # Seleciona adjetivos relevantes
     kws = active_channel.seo_keywords
@@ -160,7 +173,7 @@ def generate_title_with_pattern(
 
     # Tenta preencher o padrão, caindo para versão simplificada se falhar
     try:
-        title = pattern.format(
+        title = chosen.format(
             emoji=emoji,
             animal=animal,
             acao=acao,
@@ -185,7 +198,7 @@ def generate_title_with_pattern(
         if not title or len(title) > 100:
             title = title[:97] + "..."
 
-    return title, pattern
+    return title, chosen
 
 
 def generate_title(
