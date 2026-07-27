@@ -24,6 +24,85 @@ def _write_video_with_meta(output_dir: Path, meta: dict, stem: str = "pata_jazz_
     (output_dir / f"{stem}.json").write_text(json.dumps(meta), encoding="utf-8")
 
 
+class TestCleanupOrphanBroadcasts:
+    """cleanup_orphan_broadcasts(): varre e limpa broadcasts presos de uma
+    run anterior que crashou sem rodar o finally de run_live.py."""
+
+    def _service_with(self, upcoming_items=None, active_items=None):
+        service = MagicMock()
+
+        def list_side_effect(**kwargs):
+            resp = MagicMock()
+            if kwargs.get("broadcastStatus") == "upcoming":
+                resp.execute.return_value = {"items": upcoming_items or []}
+            else:
+                resp.execute.return_value = {"items": active_items or []}
+            return resp
+
+        service.liveBroadcasts().list.side_effect = list_side_effect
+        return service
+
+    def _iso_minutes_ago(self, minutes: float) -> str:
+        from datetime import UTC, datetime, timedelta
+        return (datetime.now(UTC) - timedelta(minutes=minutes)).isoformat()
+
+    def test_deletes_stale_ready_broadcast(self):
+        service = self._service_with(
+            upcoming_items=[{"id": "old_ready", "snippet": {"scheduledStartTime": self._iso_minutes_ago(60)}}]
+        )
+        with patch("upload_youtube.delete_broadcast") as mock_delete:
+            cleaned = upload_youtube.cleanup_orphan_broadcasts(service)
+
+        mock_delete.assert_called_once_with("old_ready")
+        assert cleaned == 1
+
+    def test_keeps_recent_ready_broadcast(self):
+        service = self._service_with(
+            upcoming_items=[{"id": "fresh_ready", "snippet": {"scheduledStartTime": self._iso_minutes_ago(2)}}]
+        )
+        with patch("upload_youtube.delete_broadcast") as mock_delete:
+            cleaned = upload_youtube.cleanup_orphan_broadcasts(service)
+
+        mock_delete.assert_not_called()
+        assert cleaned == 0
+
+    def test_completes_stale_active_broadcast(self):
+        service = self._service_with(
+            active_items=[{"id": "stuck_live", "snippet": {"actualStartTime": self._iso_minutes_ago(500)}}]
+        )
+        with patch("upload_youtube.transition_broadcast") as mock_transition:
+            cleaned = upload_youtube.cleanup_orphan_broadcasts(service)
+
+        mock_transition.assert_called_once_with("stuck_live", "complete")
+        assert cleaned == 1
+
+    def test_keeps_normal_running_session(self):
+        service = self._service_with(
+            active_items=[{"id": "normal_live", "snippet": {"actualStartTime": self._iso_minutes_ago(100)}}]
+        )
+        with patch("upload_youtube.transition_broadcast") as mock_transition:
+            cleaned = upload_youtube.cleanup_orphan_broadcasts(service)
+
+        mock_transition.assert_not_called()
+        assert cleaned == 0
+
+    def test_never_raises_even_if_api_call_fails(self):
+        service = MagicMock()
+        service.liveBroadcasts().list.side_effect = RuntimeError("api down")
+
+        cleaned = upload_youtube.cleanup_orphan_broadcasts(service)
+
+        assert cleaned == 0
+
+    def test_missing_timestamp_is_skipped_not_crashed(self):
+        service = self._service_with(upcoming_items=[{"id": "no_ts", "snippet": {}}])
+        with patch("upload_youtube.delete_broadcast") as mock_delete:
+            cleaned = upload_youtube.cleanup_orphan_broadcasts(service)
+
+        mock_delete.assert_not_called()
+        assert cleaned == 0
+
+
 class TestGenerateLiveTitle:
     """_generate_live_title() rejeita titulo suspeito vindo da IA."""
 

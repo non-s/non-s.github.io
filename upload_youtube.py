@@ -221,6 +221,75 @@ LIVE_TAGS = [
     "cats and dogs live stream", "24/7 live stream", "Pata Jazz",
 ]
 
+# Uma sessao normal (run_live.py) dura ate LIVE_DURATION_MINUTES (~320) +
+# folga de preparo/limpeza, tudo dentro do timeout-minutes:355 do job. Uma
+# margem generosa acima disso (6h) separa "sessao normal ainda rodando" de
+# "run crashou sem chamar _end_broadcast" (ex: falha de infra do runner que
+# nao da nem chance do bloco finally rodar).
+_MAX_ACTIVE_AGE_MINUTES = 360
+# 'ready' que nunca virou 'live' em ~20min quase certamente nunca vai virar -
+# o proprio run_live.py desiste e chama _end_broadcast bem antes disso
+# (wait_for_stream_active tem timeout de 120s).
+_MAX_READY_AGE_MINUTES = 20
+
+
+def _broadcast_age_minutes(timestamp: str | None) -> float | None:
+    if not timestamp:
+        return None
+    try:
+        published = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return (datetime.now(UTC) - published).total_seconds() / 60
+
+
+def cleanup_orphan_broadcasts(service) -> int:
+    """Limpa broadcasts orfaos deixados por uma run anterior que crashou
+    sem rodar o finally de run_live.py (_end_broadcast).
+
+    Duas categorias, cada uma com sua propria nocao de "orfao":
+    - 'ready' (upcoming) ha mais que _MAX_READY_AGE_MINUTES: nunca foi ao
+      ar e nao vai mais - apaga (mesma logica de delete_broadcast).
+    - 'active' ha mais que _MAX_ACTIVE_AGE_MINUTES: sessao rodando muito
+      alem do esperado - forca transition('complete').
+
+    Nunca levanta excecao: chamado no inicio de create_live_stream() e uma
+    falha aqui nao deveria impedir a criacao da nova live.
+    """
+    cleaned = 0
+    try:
+        upcoming = _retry_youtube_call(
+            service.liveBroadcasts().list(part="id,snippet", broadcastStatus="upcoming", mine=True).execute
+        )
+        for item in upcoming.get("items", []):
+            age = _broadcast_age_minutes(item.get("snippet", {}).get("scheduledStartTime"))
+            if age is not None and age > _MAX_READY_AGE_MINUTES:
+                log.warning("Broadcast orfao %s preso em 'ready' ha %.0fmin - apagando.", item["id"], age)
+                try:
+                    delete_broadcast(item["id"])
+                    cleaned += 1
+                except Exception as exc:
+                    log.warning("Falha ao apagar broadcast orfao %s: %s", item["id"], exc)
+
+        active = _retry_youtube_call(
+            service.liveBroadcasts().list(part="id,snippet", broadcastStatus="active", mine=True).execute
+        )
+        for item in active.get("items", []):
+            age = _broadcast_age_minutes(item.get("snippet", {}).get("actualStartTime"))
+            if age is not None and age > _MAX_ACTIVE_AGE_MINUTES:
+                log.warning("Broadcast orfao %s preso em 'active' ha %.0fmin - encerrando.", item["id"], age)
+                try:
+                    transition_broadcast(item["id"], "complete")
+                    cleaned += 1
+                except Exception as exc:
+                    log.warning("Falha ao encerrar broadcast orfao %s: %s", item["id"], exc)
+    except Exception as exc:
+        log.warning("Falha ao verificar broadcasts orfaos (nao bloqueia a nova live): %s", exc)
+
+    if cleaned:
+        log.info("Limpeza de broadcasts orfaos: %d encerrado(s)/apagado(s).", cleaned)
+    return cleaned
+
 
 def create_live_stream(
     title: str = "",
@@ -229,6 +298,7 @@ def create_live_stream(
     resolution: str = "1080p",
 ) -> dict | None:
     service = get_youtube_service()
+    cleanup_orphan_broadcasts(service)
 
     title = title or _generate_live_title()
     description = description or (
