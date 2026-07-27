@@ -33,8 +33,8 @@ class TestMetadataEngine:
         assert len(metadata["title"]) > 0
         assert len(metadata["title"]) <= 100  # Limite YouTube
         assert "Descrição incrível" in metadata["description"]
-        assert "#gato" in metadata["hashtags"] or "#cat" in metadata["hashtags"]
-        assert "#jazz" in metadata["hashtags"] or "#music" in metadata["hashtags"]
+        assert "#gato" in metadata["hashtags"]
+        assert "#jazz" in metadata["hashtags"]
 
     @patch('utils.metadata_engine.ai_text')
     def test_generate_metadata_does_not_duplicate_hashtags(self, mock_ai_text):
@@ -84,6 +84,7 @@ class TestMetadataEngine:
         # SEO 2.0 deve gerar título válido mesmo sem AI
         assert len(metadata["title"]) > 0
         assert len(metadata["title"]) <= 100  # Limite YouTube
+        assert metadata["title"].startswith("Pata Jazz |")
 
     @patch('utils.metadata_engine.ai_text')
     def test_generate_metadata_rejects_suspicious_ai_title(self, mock_ai_text):

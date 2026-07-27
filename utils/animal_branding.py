@@ -13,6 +13,13 @@ videos nao relacionados (mesma cena sorteada = mesmo texto, sempre).
 from __future__ import annotations
 
 import random
+import time
+
+from utils.ai_helper import ai_text, is_safe_ai_text
+from utils.channel_config import ChannelConfig, active_channel
+
+_AI_HOOK_CACHE: dict[tuple[str, str], tuple[str, float]] = {}
+_AI_HOOK_TTL = 3600.0  # 1h
 
 # Subconjunto permitido: apenas gatos e cachorros. Cada cena tem 3+ hooks
 # para variar o texto entre videos que caem na mesma cena.
@@ -160,11 +167,48 @@ BLOCKED_BROLL_KEYWORDS: set[str] = {
 }
 
 
-def random_scene() -> str:
-    return random.choice(ALL_SCENES)
+def random_scene(channel: ChannelConfig | None = None) -> str:
+    ch = channel or active_channel
+    scenes = [s for group in ch.scene_categories.values() for s in group]
+    return random.choice(scenes if scenes else ALL_SCENES)
 
 
-def hook_for_scene(scene: str) -> tuple[str, str]:
+def generate_hook_with_ai(scene: str, mood: str = "") -> str:
+    """Gera hook curto via Gemini. Retorna "" se indisponivel ou inseguro.
+
+    Cache em memoria por (scene, mood) por 1h evita chamar a IA a cada video
+    do mesmo batch que cai na mesma cena.
+    """
+    key = (scene, mood)
+    now = time.time()
+    cached = _AI_HOOK_CACHE.get(key)
+    if cached and now - cached[1] < _AI_HOOK_TTL:
+        return cached[0]
+
+    mood_hint = f" mood: {mood}." if mood else ""
+    prompt = (
+        f"Write a single short YouTube video hook (max 60 characters) for a "
+        f"video about a {scene}. Cute and jazzy tone, no clickbait, no emojis, "
+        f"no quotes, in English.{mood_hint} Return only the hook text."
+    )
+    out = ai_text(prompt, task="hook")
+    if not out or not is_safe_ai_text(out):
+        _AI_HOOK_CACHE[key] = ("", now)
+        return ""
+    hook = out.strip().strip('"').strip()
+    if len(hook) > 60:
+        hook = hook[:60].rstrip()
+    _AI_HOOK_CACHE[key] = (hook, now)
+    return hook
+
+
+def hook_for_scene(scene: str, mood: str = "", use_ai: bool = True) -> tuple[str, str]:
+    if use_ai:
+        ai_hook = generate_hook_with_ai(scene, mood)
+        if ai_hook:
+            hooks = HOOK_BY_SCENE.get(scene, HOOK_BY_SCENE["cat"])
+            emoji = hooks[0][1]
+            return ai_hook, emoji
     return random.choice(HOOK_BY_SCENE.get(scene, HOOK_BY_SCENE["cat"]))
 
 
@@ -178,5 +222,12 @@ def is_allowed_animal_text(text: str) -> bool:
     return any(kw in combined for kw in ALLOWED_ANIMAL_KEYWORDS)
 
 
-def channel_title_prefix() -> str:
-    return "Pata Jazz"
+def detect_animal(scene: str) -> str:
+    """Retorna "cat" ou "dog" a partir da descricao da cena."""
+    s = scene.lower()
+    return "cat" if ("cat" in s or "kitten" in s) else "dog"
+
+
+def channel_title_prefix(channel: ChannelConfig | None = None) -> str:
+    ch = channel or active_channel
+    return ch.name

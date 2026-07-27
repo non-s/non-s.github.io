@@ -1,7 +1,12 @@
 """Testes unitários para a construção do comando FFmpeg da live."""
+import json
 import logging
+import signal
+import time
 from pathlib import Path
 from unittest.mock import MagicMock, patch
+
+import pytest
 
 import generate_pata_jazz_live as live
 
@@ -115,6 +120,83 @@ class TestRunFfmpegStreamCommand:
         maxrate_720p = int(cmd_720p[cmd_720p.index("-maxrate") + 1].rstrip("k"))
         bufsize_720p = int(cmd_720p[cmd_720p.index("-bufsize") + 1].rstrip("k"))
         assert bufsize_720p == maxrate_720p * 2
+
+
+class TestAudioVisualizer:
+    """Visualizer de áudio reativo (showcqt) na borda inferior da live.
+
+    Opt-in via LIVE_VISUALIZER=1 — default OFF para não arriscar CPU no
+    runner gratuito em produção. Os testes garantem que o caminho default
+    (sem visualizador) não inclui o filtro, e que o caminho opt-in injeta
+    o showcqt + overlay no canto inferior."""
+
+    def test_default_off_does_not_include_showcqt(self, monkeypatch):
+        monkeypatch.delenv("LIVE_VISUALIZER", raising=False)
+        assert live._visualizer_enabled() is False
+        assert "showcqt" not in live._build_overlay_filter((1280, 720), audio_input_index=1)
+        assert "showcqt" not in live._build_overlay_filter((1280, 720), audio_input_index=None)
+
+    @patch("generate_pata_jazz_live.time.sleep", return_value=None)
+    @patch("generate_pata_jazz_live.subprocess.Popen")
+    def test_cmd_without_visualizer_has_no_showcqt(self, mock_popen, _mock_sleep, monkeypatch):
+        monkeypatch.delenv("LIVE_VISUALIZER", raising=False)
+        mock_popen.side_effect = _fake_popen
+        stream_url = "rtmp://a.rtmp.youtube.com/live2/abcd-efgh-ijkl-mnop"
+        audio_playlist = Path("audio.txt")
+
+        live._start_ffmpeg_stream(Path("concat.txt"), stream_url, audio_playlist=audio_playlist)
+
+        cmd = mock_popen.call_args[0][0]
+        assert not any("showcqt" in str(arg) for arg in cmd)
+        assert "-vf" in cmd
+        assert "-filter_complex" not in cmd
+
+    @patch("generate_pata_jazz_live.time.sleep", return_value=None)
+    @patch("generate_pata_jazz_live.subprocess.Popen")
+    def test_cmd_with_visualizer_includes_showcqt_and_overlay(self, mock_popen, _mock_sleep, monkeypatch, tmp_path):
+        monkeypatch.setenv("LIVE_VISUALIZER", "1")
+        mock_popen.side_effect = _fake_popen
+        stream_url = "rtmp://a.rtmp.youtube.com/live2/abcd-efgh-ijkl-mnop"
+        audio_playlist = tmp_path / "audio.txt"
+        audio_playlist.write_text("")
+
+        live._start_ffmpeg_stream(Path("concat.txt"), stream_url, audio_playlist=audio_playlist)
+
+        cmd = mock_popen.call_args[0][0]
+        assert "-filter_complex" in cmd
+        fc = cmd[cmd.index("-filter_complex") + 1]
+        assert "showcqt" in fc
+        assert "overlay=0:H-h" in fc
+        # drawtext ainda presente (não pode sumir quando visualizer liga).
+        assert "drawtext" in fc
+
+    @patch("generate_pata_jazz_live.time.sleep", return_value=None)
+    @patch("generate_pata_jazz_live.subprocess.Popen")
+    def test_cmd_with_visualizer_without_audio_falls_back_to_vf(self, mock_popen, _mock_sleep, monkeypatch):
+        """Sem playlist de áudio não há como alimentar o showcqt — cai no
+        caminho -vf simples mesmo com LIVE_VISUALIZER=1."""
+        monkeypatch.setenv("LIVE_VISUALIZER", "1")
+        mock_popen.side_effect = _fake_popen
+        stream_url = "rtmp://a.rtmp.youtube.com/live2/abcd-efgh-ijkl-mnop"
+
+        live._start_ffmpeg_stream(Path("concat.txt"), stream_url, audio_playlist=None)
+
+        cmd = mock_popen.call_args[0][0]
+        assert "-vf" in cmd
+        assert "-filter_complex" not in cmd
+        assert not any("showcqt" in str(arg) for arg in cmd)
+
+    def test_overlay_position_is_bottom_corner(self, monkeypatch):
+        monkeypatch.setenv("LIVE_VISUALIZER", "1")
+        fc = live._build_overlay_filter((1280, 720), audio_input_index=1)
+        assert "overlay=0:H-h" in fc
+
+    def test_visualizer_alpha_is_subtle(self, monkeypatch):
+        monkeypatch.setenv("LIVE_VISUALIZER", "1")
+        fc = live._build_overlay_filter((1280, 720), audio_input_index=1)
+        # alpha 0.6 = colorchannelmixer=aa=0.6
+        assert "colorchannelmixer=aa=0.6" in fc
+        assert "size=1280x80" in fc
 
 
 class TestWaitFfmpegStreamErrorSurfacing:
@@ -265,3 +347,275 @@ class TestSaveLiveMeta:
 def _read_json(path):
     import json
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+class TestSignalHandlers:
+    def test_register_signal_handlers_sets_shutdown_false(self):
+        live._register_signal_handlers()
+        assert live._shutdown is False
+
+    def test_handle_sigterm_sets_shutdown(self):
+        live._handle_sigterm(signal.SIGTERM, None)
+        assert live._shutdown is True
+        live._shutdown = False  # reset
+
+
+class TestLoadLiveTitle:
+    def test_returns_default_when_no_state(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(live, "LIVE_META_DIR", tmp_path)
+        assert live._load_live_title().startswith("Pata Jazz")
+
+    def test_returns_title_from_state(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(live, "LIVE_META_DIR", tmp_path)
+        (tmp_path / "live_state.json").write_text(
+            json.dumps({"title": "Custom Live Title"}), encoding="utf-8"
+        )
+        assert live._load_live_title() == "Custom Live Title"
+
+    def test_truncates_long_title(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(live, "LIVE_META_DIR", tmp_path)
+        (tmp_path / "live_state.json").write_text(
+            json.dumps({"title": "x" * 200}), encoding="utf-8"
+        )
+        assert len(live._load_live_title()) == 100
+
+    def test_invalid_json_returns_default(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(live, "LIVE_META_DIR", tmp_path)
+        (tmp_path / "live_state.json").write_text("not json", encoding="utf-8")
+        assert live._load_live_title().startswith("Pata Jazz")
+
+
+class TestBuildAudioPlaylist:
+    def test_empty_pool_returns_none(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(live, "audio_pool", lambda: [])
+        monkeypatch.setattr(live, "OUTPUT_DIR", tmp_path)
+        result, dur = live._build_audio_playlist("stem")
+        assert result is None
+        assert dur == 0.0
+
+    def test_all_zero_durations_returns_none(self, tmp_path, monkeypatch):
+        files = [tmp_path / "a.mp3", tmp_path / "b.mp3"]
+        for f in files:
+            f.write_bytes(b"x")
+        monkeypatch.setattr(live, "audio_pool", lambda: files)
+        monkeypatch.setattr(live, "get_video_duration", lambda p: 0.0)
+        monkeypatch.setattr(live, "OUTPUT_DIR", tmp_path)
+        result, dur = live._build_audio_playlist("stem")
+        assert result is None
+        assert dur == 0.0
+
+    def test_builds_playlist_with_valid_files(self, tmp_path, monkeypatch):
+        files = [tmp_path / "a.mp3", tmp_path / "b.mp3", tmp_path / "bad.mp3"]
+        for f in files:
+            f.write_bytes(b"x")
+
+        def _dur(p):
+            return 30.0 if "bad" not in str(p) else 0.0
+
+        monkeypatch.setattr(live, "audio_pool", lambda: files)
+        monkeypatch.setattr(live, "get_video_duration", _dur)
+        monkeypatch.setattr(live, "build_concat_demuxer", lambda paths, out: None)
+        monkeypatch.setattr(live, "OUTPUT_DIR", tmp_path)
+        monkeypatch.setattr(live, "random", MagicMock(shuffle=lambda x: None))
+        result, dur = live._build_audio_playlist("stem")
+        assert result == tmp_path / "stem_audio_playlist.txt"
+        assert dur == 60.0
+
+
+class TestBuildLoopingInput:
+    def test_empty_pool_raises(self, monkeypatch):
+        monkeypatch.setattr(live, "ensure_dirs", lambda: None)
+        monkeypatch.setattr(live, "pool_stats", lambda: {"videos": 0, "audio": 0})
+        with pytest.raises(RuntimeError, match="vazio"):
+            live._build_looping_input("stem")
+
+    def test_builds_concat(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(live, "ensure_dirs", lambda: None)
+        monkeypatch.setattr(live, "pool_stats", lambda: {"videos": 5, "audio": 5})
+        monkeypatch.setattr(live, "random_scene", lambda: "cat")
+        monkeypatch.setattr(live, "hook_for_scene", lambda s: ("hook", "🐱"))
+        vids = [tmp_path / f"v{i}.mp4" for i in range(3)]
+        for v in vids:
+            v.write_bytes(b"x")
+        monkeypatch.setattr(live, "pick_videos", lambda **k: vids)
+        monkeypatch.setattr(live, "run_ffmpeg", lambda args, **k: MagicMock())
+        monkeypatch.setattr(live, "build_concat_demuxer", lambda paths, out: None)
+        monkeypatch.setattr(live, "_build_audio_playlist", lambda stem: (tmp_path / "audio.txt", 100.0))
+        monkeypatch.setattr(live, "OUTPUT_DIR", tmp_path)
+        concat, audio = live._build_looping_input("stem")
+        assert concat == tmp_path / "stem_concat.txt"
+        assert audio == tmp_path / "audio.txt"
+
+
+class TestTerminateFfmpegStream:
+    def test_terminate_then_wait(self):
+        proc = MagicMock()
+        proc.wait.return_value = 0
+        live._terminate_ffmpeg_stream(proc)
+        proc.terminate.assert_called_once()
+
+    def test_terminate_kills_on_timeout(self):
+        import subprocess
+        proc = MagicMock()
+        proc.wait.side_effect = subprocess.TimeoutExpired(cmd="ffmpeg", timeout=15)
+        live._terminate_ffmpeg_stream(proc)
+        proc.kill.assert_called_once()
+
+    def test_closes_log_handle(self):
+        proc = MagicMock()
+        log_handle = MagicMock()
+        proc._log_handle = log_handle
+        proc.wait.return_value = 0
+        live._terminate_ffmpeg_stream(proc)
+        log_handle.close.assert_called_once()
+
+
+class TestWaitFfmpegStreamShutdown:
+    def test_shutdown_flag_terminates_proc(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(live, "OUTPUT_DIR", tmp_path)
+        (tmp_path / "live_ffmpeg.log").write_text("frame=1\n", encoding="utf-8")
+        proc = MagicMock()
+        proc.poll.side_effect = [None, 0]
+        proc.wait.return_value = 0
+        proc.returncode = 0
+        monkeypatch.setattr(live.time, "sleep", lambda s: None)
+        monkeypatch.setattr(live, "_shutdown", True)
+        code = live._wait_ffmpeg_stream(proc)
+        proc.terminate.assert_called_once()
+        assert code == 0
+        live._shutdown = False
+
+    def test_shutdown_kill_on_terminate_timeout(self, tmp_path, monkeypatch):
+        import subprocess
+        monkeypatch.setattr(live, "OUTPUT_DIR", tmp_path)
+        (tmp_path / "live_ffmpeg.log").write_text("frame=1\n", encoding="utf-8")
+        proc = MagicMock()
+        proc.poll.side_effect = [None, 0]
+        proc.wait.side_effect = [subprocess.TimeoutExpired(cmd="ffmpeg", timeout=30), 0]
+        monkeypatch.setattr(live.time, "sleep", lambda s: None)
+        monkeypatch.setattr(live, "_shutdown", True)
+        live._wait_ffmpeg_stream(proc)
+        proc.kill.assert_called_once()
+        live._shutdown = False
+
+    def test_stalled_progress_kills_proc(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(live, "OUTPUT_DIR", tmp_path)
+        (tmp_path / "live_ffmpeg.log").write_text("frame=1\n", encoding="utf-8")
+        progress = tmp_path / "progress.txt"
+        progress.write_text("", encoding="utf-8")
+        # mtime antiga -> idle_seconds > _STALL_GRACE_SECONDS
+        import os
+        old_mtime = time.time() - (live._STALL_GRACE_SECONDS + 100)
+        os.utime(progress, (old_mtime, old_mtime))
+
+        proc = MagicMock()
+        proc.poll.side_effect = [None, 0]
+        proc.returncode = -9
+        proc._progress_path = progress
+        monkeypatch.setattr(live.time, "sleep", lambda s: None)
+        monkeypatch.setattr(live, "_shutdown", False)
+        code = live._wait_ffmpeg_stream(proc)
+        proc.kill.assert_called_once()
+        assert code == -9
+
+    def test_progress_path_as_mock_treated_as_none(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(live, "OUTPUT_DIR", tmp_path)
+        (tmp_path / "live_ffmpeg.log").write_text("frame=1\n", encoding="utf-8")
+        proc = MagicMock()
+        proc.poll.side_effect = [None, 0]
+        proc.returncode = 0
+        # _progress_path auto-criado como MagicMock pelo getattr -> deve ser tratado como None
+        proc._progress_path = MagicMock()
+        monkeypatch.setattr(live.time, "sleep", lambda s: None)
+        monkeypatch.setattr(live, "_shutdown", False)
+        code = live._wait_ffmpeg_stream(proc)
+        assert code == 0
+
+    def test_exception_terminates_proc(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(live, "OUTPUT_DIR", tmp_path)
+        (tmp_path / "live_ffmpeg.log").write_text("frame=1\n", encoding="utf-8")
+        proc = MagicMock()
+        proc.poll.side_effect = [None, 0]
+        proc.wait.return_value = 0
+        # Força exceção dentro do loop via _shutdown acessando propriedade que levanta
+        monkeypatch.setattr(live.time, "sleep", lambda s: None)
+        monkeypatch.setattr(live, "_shutdown", False)
+
+        # Faz proc.poll levantar excecao na 1a chamada para cair no except
+        call_count = {"n": 0}
+
+        def _poll():
+            call_count["n"] += 1
+            if call_count["n"] == 1:
+                raise RuntimeError("boom")
+            return 0
+
+        proc.poll.side_effect = _poll
+        live._wait_ffmpeg_stream(proc)
+        proc.terminate.assert_called_once()
+
+
+class TestMain:
+    def test_no_stream_url_returns_1(self, monkeypatch):
+        monkeypatch.setattr(live, "configure_logging", lambda: None)
+        monkeypatch.setattr("sys.argv", ["generate_pata_jazz_live.py"])
+        assert live.main() == 1
+
+    def test_invalid_resolution_returns_1(self, monkeypatch):
+        monkeypatch.setattr(live, "configure_logging", lambda: None)
+        monkeypatch.setattr("sys.argv", ["x", "--stream-url", "rtmp://x", "--resolution", "abc"])
+        assert live.main() == 1
+
+    def test_invalid_duration_returns_1(self, monkeypatch):
+        monkeypatch.setattr(live, "configure_logging", lambda: None)
+        monkeypatch.setattr("sys.argv", ["x", "--stream-url", "rtmp://x", "--resolution", "1280x720",
+                                          "--duration", "999"])
+        assert live.main() == 1
+
+    def test_build_loop_failure_returns_1(self, monkeypatch):
+        monkeypatch.setattr(live, "configure_logging", lambda: None)
+        monkeypatch.setattr("sys.argv", ["x", "--stream-url", "rtmp://x", "--resolution", "1280x720"])
+        monkeypatch.setattr(live, "_register_signal_handlers", lambda: None)
+        monkeypatch.setattr(live, "_build_looping_input",
+                            MagicMock(side_effect=RuntimeError("boom")))
+        monkeypatch.setattr(live, "log_exception_to_file", lambda *a, **k: None)
+        assert live.main() == 1
+
+    def test_normal_path_returns_zero_code(self, monkeypatch, tmp_path):
+        monkeypatch.setattr(live, "configure_logging", lambda: None)
+        monkeypatch.setattr("sys.argv", ["x", "--stream-url", "rtmp://x", "--resolution", "1280x720"])
+        monkeypatch.setattr(live, "_register_signal_handlers", lambda: None)
+        monkeypatch.setattr(live, "_build_looping_input",
+                            lambda *a, **k: (tmp_path / "loop.txt", tmp_path / "audio.txt"))
+        monkeypatch.setattr(live, "_load_live_title", lambda: "Title")
+        monkeypatch.setattr(live, "_save_live_meta", lambda **k: None)
+        monkeypatch.setattr(live, "_run_ffmpeg_stream", lambda *a, **k: 0)
+        assert live.main() == 0
+
+    def test_1920_downgraded_to_720(self, monkeypatch, tmp_path):
+        captured = {}
+
+        def _build(stem, target_resolution=(0, 0), **k):
+            captured["res"] = target_resolution
+            return (tmp_path / "loop.txt", tmp_path / "audio.txt")
+
+        monkeypatch.setattr(live, "configure_logging", lambda: None)
+        monkeypatch.setattr("sys.argv", ["x", "--stream-url", "rtmp://x", "--resolution", "1920x1080"])
+        monkeypatch.setattr(live, "_register_signal_handlers", lambda: None)
+        monkeypatch.setattr(live, "_build_looping_input", _build)
+        monkeypatch.setattr(live, "_load_live_title", lambda: "Title")
+        monkeypatch.setattr(live, "_save_live_meta", lambda **k: None)
+        monkeypatch.setattr(live, "_run_ffmpeg_stream", lambda *a, **k: 0)
+        live.main()
+        assert captured["res"] == (1280, 720)
+
+    def test_sigterm_returncode_treated_as_success(self, monkeypatch, tmp_path):
+        monkeypatch.setattr(live, "configure_logging", lambda: None)
+        monkeypatch.setattr("sys.argv", ["x", "--stream-url", "rtmp://x", "--resolution", "1280x720"])
+        monkeypatch.setattr(live, "_register_signal_handlers", lambda: None)
+        monkeypatch.setattr(live, "_build_looping_input",
+                            lambda *a, **k: (tmp_path / "loop.txt", tmp_path / "audio.txt"))
+        monkeypatch.setattr(live, "_load_live_title", lambda: "Title")
+        monkeypatch.setattr(live, "_save_live_meta", lambda **k: None)
+        monkeypatch.setattr(live, "_run_ffmpeg_stream", lambda *a, **k: -15)
+        assert live.main() == 0

@@ -4,6 +4,8 @@ tests/test_seo_keywords.py — testa geração de títulos e descrições otimiz
 
 import json
 
+import pytest
+
 import utils.seo_keywords as seo_keywords
 from utils.seo_keywords import (
     CTAS,
@@ -75,6 +77,8 @@ class TestTitlePatternWeights:
             assert pick_title_pattern("short") in TITLE_PATTERNS["short"]
 
     def test_heavily_weighted_pattern_is_picked_far_more_often(self, tmp_path, monkeypatch):
+        import random
+        random.seed(42)
         perf_file = self._isolate(tmp_path, monkeypatch)
         patterns = TITLE_PATTERNS["short"]
         perf_file.write_text(
@@ -88,44 +92,36 @@ class TestTitlePatternWeights:
 class TestGenerateTitle:
     """Testa geração de títulos otimizados."""
 
-    def test_generate_title_short(self):
-        """Gera título para Short."""
-        title = generate_title(
-            animal="cat",
-            acao="sleeping",
-            estilo_musical="relaxing jazz",
-            kind="short",
-            emoji="🐱"
-        )
-        assert len(title) <= 100
-        assert len(title) > 0
-        assert "🐱" in title or "cat" in title.lower()
-
-    def test_generate_title_horizontal(self):
-        """Gera título para vídeo horizontal."""
-        title = generate_title(
-            animal="dog",
-            acao="playing",
-            estilo_musical="smooth jazz",
-            kind="horizontal",
-            emoji="🐶",
-            duracao=4
-        )
-        assert len(title) <= 100
-        # Pelo menos um dos patterns tem duração, mas não é garantido
-        # Então verificamos apenas se tem animal e estilo musical
-        assert "dog" in title.lower() or "smooth jazz" in title.lower()
-
-    def test_generate_title_live(self):
-        """Gera título para live."""
-        title = generate_title(
-            animal="cat",
-            acao="relaxing",
-            estilo_musical="jazz",
-            kind="live",
-            emoji="🔴"
-        )
-        assert "🔴" in title or "LIVE" in title.upper()
+    @pytest.mark.parametrize(
+        "kind,extra,assertion",
+        [
+            (
+                "short",
+                {"animal": "cat", "acao": "sleeping", "estilo_musical": "relaxing jazz", "emoji": "🐱"},
+                lambda t: len(t) <= 100 and len(t) > 0 and ("🐱" in t or "cat" in t.lower()),
+            ),
+            (
+                "horizontal",
+                {
+                    "animal": "dog",
+                    "acao": "playing",
+                    "estilo_musical": "smooth jazz",
+                    "emoji": "🐶",
+                    "duracao": 4,
+                },
+                lambda t: len(t) <= 100 and ("dog" in t.lower() or "smooth jazz" in t.lower()),
+            ),
+            (
+                "live",
+                {"animal": "cat", "acao": "relaxing", "estilo_musical": "jazz", "emoji": "🔴"},
+                lambda t: "🔴" in t or "LIVE" in t.upper(),
+            ),
+        ],
+        ids=["short", "horizontal", "live"],
+    )
+    def test_generate_title_by_kind(self, kind, extra, assertion):
+        title = generate_title(kind=kind, **extra)
+        assert assertion(title)
 
     def test_generate_title_uses_keywords(self):
         """Título usa keywords de alta performance."""
@@ -284,7 +280,11 @@ class TestOptimizeForSearch:
 
         # Deve manter o título ou adicionar keyword
         assert len(optimized_title) >= len(title)
-        assert "cute kitten" in optimized_title.lower() or "cat" in optimized_title.lower() or "dog" in optimized_title.lower()
+        assert (
+            "cute kitten" in optimized_title.lower()
+            or "cat" in optimized_title.lower()
+            or "dog" in optimized_title.lower()
+        )
 
     def test_optimize_description_with_keywords(self):
         """Otimiza descrição com keywords relacionadas."""

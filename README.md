@@ -80,7 +80,8 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 │   ├── video_validator.py    # Validação técnica dos vídeos
 │   └── youtube_oauth.py      # OAuth YouTube
 ├── generate_pata_jazz_*.py   # Geradores
-├── upload_youtube.py         # Upload/insert + live + caption + playlist
+├── upload_youtube.py         # Upload de vídeo (insert + caption + playlist)
+├── live_broadcast.py         # Live 24/7 (liveBroadcast/liveStream + bind)
 └── requirements.txt
 ```
 
@@ -207,6 +208,38 @@ python scripts/generate_dashboard.py  # gera _dashboard/index.html a partir do q
 ```bash
 pytest -q --cov=utils --cov-report=term-missing
 python -m compileall -q .
+```
+
+## Desenvolvimento
+
+### Pre-commit hooks
+
+Rode uma vez após clonar o repositório para instalar os hooks de lint/format/typecheck que rodam a cada commit:
+
+```bash
+pip install pre-commit
+pre-commit install
+```
+
+A partir disso, `ruff check --fix`, `ruff format`, `mypy` e checagens de
+higiene (YAML, merge conflict, trailing whitespace, EOF) rodam automaticamente
+antes de cada commit.
+
+### Makefile
+
+Atalhos para as tarefas comuns de desenvolvimento:
+
+```bash
+make test         # pytest -q
+make test-cov     # pytest -q --cov --cov-report=term-missing
+make lint         # ruff check .
+make format       # ruff format . && ruff check --fix .
+make typecheck    # mypy
+make security     # bandit -ll + pip-audit
+make healthcheck  # python scripts/healthcheck.py
+make sync         # sync b-roll + jazz
+make clean        # remove caches e artefatos
+make all          # lint test typecheck
 ```
 
 ## Troubleshooting

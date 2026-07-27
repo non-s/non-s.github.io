@@ -91,6 +91,8 @@ class TestSceneWeights:
             assert content_strategy.scene_for_mood("relax") in content_strategy.SCENE_CATEGORIES["relax"]
 
     def test_heavily_weighted_scene_is_picked_far_more_often(self, tmp_path, monkeypatch):
+        import random
+        random.seed(42)
         perf_file = self._isolate(tmp_path, monkeypatch)
         perf_file.write_text(json.dumps({"sleepy cat": 2.5, "sleepy dog": 0.4}), encoding="utf-8")
 

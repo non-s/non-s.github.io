@@ -75,9 +75,19 @@ class TestFindUnpublishedVideos:
     def test_orders_by_modification_time(self, tmp_path, monkeypatch):
         monkeypatch.setattr(publish_weekly_batch, "OUTPUT_DIR", tmp_path)
         _write_video(tmp_path, "pata_jazz_short_2", {"title": "second"})
-        import time
-        time.sleep(0.01)
         _write_video(tmp_path, "pata_jazz_short_1", {"title": "first_by_mtime"})
+
+        mtimes = {"pata_jazz_short_2": 100.0, "pata_jazz_short_1": 200.0}
+        real_stat = Path.stat
+
+        def _fake_stat(self, *args, **kwargs):
+            if self.stem in mtimes:
+                result = MagicMock(wraps=real_stat(self, *args, **kwargs))
+                result.st_mtime = mtimes[self.stem]
+                return result
+            return real_stat(self, *args, **kwargs)
+
+        monkeypatch.setattr(Path, "stat", _fake_stat)
 
         result = publish_weekly_batch._find_unpublished_videos()
 
@@ -150,3 +160,163 @@ class TestPublishVideo:
 
         assert result == "vid1"
         assert any("privacyStatus" in rec.message for rec in caplog.records)
+
+
+class TestPublishVideoMediaBranches:
+    def _service_with_duration_ok(self, monkeypatch, duration=30.0):
+        monkeypatch.setattr(publish_weekly_batch.ffmpeg_helpers, "get_video_duration", lambda p: duration)
+
+    def test_applies_thumbnail_when_present(self, tmp_path, monkeypatch):
+        self._service_with_duration_ok(monkeypatch)
+        service = MagicMock()
+        service.videos().insert().execute.return_value = {"id": "vid1", "status": {"privacyStatus": "public"}}
+        video_path = tmp_path / "v.mp4"
+        video_path.write_bytes(b"x")
+        thumb = tmp_path / "thumb.png"
+        thumb.write_bytes(b"png")
+        meta = {"title": "T", "_meta_dir": str(tmp_path), "thumbnail": "thumb.png"}
+
+        with patch("utils.playlist_manager.add_video_to_playlist"), \
+             patch("scripts.publish_weekly_batch._meta_path", return_value=thumb):
+            publish_weekly_batch._publish_video(service, video_path, meta)
+
+        service.thumbnails().set.assert_called_once()
+
+    def test_thumbnail_failure_is_logged_not_fatal(self, tmp_path, monkeypatch, caplog):
+        self._service_with_duration_ok(monkeypatch)
+        service = MagicMock()
+        service.videos().insert().execute.return_value = {"id": "vid1", "status": {"privacyStatus": "public"}}
+        service.thumbnails().set().execute.side_effect = Exception("403 Forbidden")
+        video_path = tmp_path / "v.mp4"
+        video_path.write_bytes(b"x")
+        thumb = tmp_path / "thumb.png"
+        thumb.write_bytes(b"png")
+
+        with patch("utils.playlist_manager.add_video_to_playlist"), \
+             patch("scripts.publish_weekly_batch._meta_path", return_value=thumb), \
+             caplog.at_level("WARNING"):
+            result = publish_weekly_batch._publish_video(service, video_path, {"title": "T"})
+
+        assert result == "vid1"
+        assert any("thumbnail" in rec.message.lower() for rec in caplog.records)
+
+    def test_applies_caption_vtt(self, tmp_path, monkeypatch):
+        self._service_with_duration_ok(monkeypatch)
+        service = MagicMock()
+        service.videos().insert().execute.return_value = {"id": "vid1", "status": {"privacyStatus": "public"}}
+        video_path = tmp_path / "v.mp4"
+        video_path.write_bytes(b"x")
+        caption = tmp_path / "cap.vtt"
+        caption.write_text("WEBVTT\n", encoding="utf-8")
+
+        with patch("utils.playlist_manager.add_video_to_playlist"), \
+             patch("scripts.publish_weekly_batch._meta_path", return_value=caption):
+            publish_weekly_batch._publish_video(service, video_path, {"title": "T"})
+
+        service.captions().insert.assert_called_once()
+
+    def test_applies_caption_ass(self, tmp_path, monkeypatch):
+        self._service_with_duration_ok(monkeypatch)
+        service = MagicMock()
+        service.videos().insert().execute.return_value = {"id": "vid1", "status": {"privacyStatus": "public"}}
+        video_path = tmp_path / "v.mp4"
+        video_path.write_bytes(b"x")
+        caption = tmp_path / "cap.ass"
+        caption.write_text("[Events]\n", encoding="utf-8")
+
+        with patch("utils.playlist_manager.add_video_to_playlist"), \
+             patch("scripts.publish_weekly_batch._meta_path", return_value=caption):
+            publish_weekly_batch._publish_video(service, video_path, {"title": "T"})
+
+        service.captions().insert.assert_called_once()
+
+    def test_caption_failure_is_logged_not_fatal(self, tmp_path, monkeypatch, caplog):
+        self._service_with_duration_ok(monkeypatch)
+        service = MagicMock()
+        service.videos().insert().execute.return_value = {"id": "vid1", "status": {"privacyStatus": "public"}}
+        service.captions().insert().execute.side_effect = Exception("caption boom")
+        video_path = tmp_path / "v.mp4"
+        video_path.write_bytes(b"x")
+        caption = tmp_path / "cap.srt"
+        caption.write_text("1\n", encoding="utf-8")
+
+        with patch("utils.playlist_manager.add_video_to_playlist"), \
+             patch("scripts.publish_weekly_batch._meta_path", return_value=caption), \
+             caplog.at_level("WARNING"):
+            result = publish_weekly_batch._publish_video(service, video_path, {"title": "T"})
+
+        assert result == "vid1"
+        assert any("legenda" in rec.message.lower() for rec in caplog.records)
+
+    def test_playlist_add_failure_is_logged_not_fatal(self, tmp_path, monkeypatch, caplog):
+        self._service_with_duration_ok(monkeypatch)
+        service = MagicMock()
+        service.videos().insert().execute.return_value = {"id": "vid1", "status": {"privacyStatus": "public"}}
+        video_path = tmp_path / "v.mp4"
+        video_path.write_bytes(b"x")
+
+        with patch("utils.playlist_manager.add_video_to_playlist", side_effect=Exception("pl boom")), \
+             caplog.at_level("WARNING"):
+            result = publish_weekly_batch._publish_video(service, video_path, {"title": "T", "mood": "relax"})
+
+        assert result == "vid1"
+        assert any("playlist" in rec.message.lower() for rec in caplog.records)
+
+
+class TestMain:
+    def test_no_service_returns_1(self, monkeypatch):
+        monkeypatch.setattr(publish_weekly_batch, "configure_logging", lambda: None)
+        monkeypatch.setattr(publish_weekly_batch, "get_youtube_service",
+                            MagicMock(side_effect=Exception("auth boom")))
+        assert publish_weekly_batch.main() == 1
+
+    def test_no_unpublished_returns_0(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(publish_weekly_batch, "configure_logging", lambda: None)
+        monkeypatch.setattr(publish_weekly_batch, "get_youtube_service", lambda: MagicMock())
+        monkeypatch.setattr(publish_weekly_batch, "OUTPUT_DIR", tmp_path)  # vazio
+        assert publish_weekly_batch.main() == 0
+
+    def test_publishes_one_video(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(publish_weekly_batch, "configure_logging", lambda: None)
+        service = MagicMock()
+        monkeypatch.setattr(publish_weekly_batch, "get_youtube_service", lambda: service)
+        monkeypatch.setattr(publish_weekly_batch, "OUTPUT_DIR", tmp_path)
+        monkeypatch.setattr(publish_weekly_batch.time, "sleep", lambda s: None)
+        vp = _write_video(tmp_path, "pata_jazz_short_1", {"title": "A"})
+        monkeypatch.setattr(publish_weekly_batch, "_publish_video", lambda *a, **k: "vid1")
+        assert publish_weekly_batch.main() == 0
+        saved = json.loads(vp.with_suffix(".json").read_text(encoding="utf-8"))
+        assert saved["published"] is True
+        assert saved["video_id"] == "vid1"
+
+    def test_publish_video_returns_none_increments_attempts(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(publish_weekly_batch, "configure_logging", lambda: None)
+        service = MagicMock()
+        monkeypatch.setattr(publish_weekly_batch, "get_youtube_service", lambda: service)
+        monkeypatch.setattr(publish_weekly_batch, "OUTPUT_DIR", tmp_path)
+        monkeypatch.setattr(publish_weekly_batch.time, "sleep", lambda s: None)
+        vp = _write_video(tmp_path, "pata_jazz_short_1", {"title": "A"})
+        monkeypatch.setattr(publish_weekly_batch, "_publish_video", lambda *a, **k: None)
+        assert publish_weekly_batch.main() == 0
+        saved = json.loads(vp.with_suffix(".json").read_text(encoding="utf-8"))
+        assert saved.get("publish_attempts") == 1
+
+    def test_publish_video_raises_increments_attempts(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(publish_weekly_batch, "configure_logging", lambda: None)
+        service = MagicMock()
+        monkeypatch.setattr(publish_weekly_batch, "get_youtube_service", lambda: service)
+        monkeypatch.setattr(publish_weekly_batch, "OUTPUT_DIR", tmp_path)
+        monkeypatch.setattr(publish_weekly_batch.time, "sleep", lambda s: None)
+        vp = _write_video(tmp_path, "pata_jazz_short_1", {"title": "A"})
+        monkeypatch.setattr(publish_weekly_batch, "_publish_video",
+                            MagicMock(side_effect=RuntimeError("boom")))
+        monkeypatch.setattr(publish_weekly_batch, "log_exception_to_file", lambda *a, **k: None)
+        assert publish_weekly_batch.main() == 0
+        saved = json.loads(vp.with_suffix(".json").read_text(encoding="utf-8"))
+        assert saved.get("publish_attempts") == 1
+
+    def test_skips_videos_at_max_attempts(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(publish_weekly_batch, "OUTPUT_DIR", tmp_path)
+        _write_video(tmp_path, "pata_jazz_short_1",
+                     {"title": "A", "publish_attempts": publish_weekly_batch._MAX_PUBLISH_ATTEMPTS})
+        assert publish_weekly_batch._find_unpublished_videos() == []

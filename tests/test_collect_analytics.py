@@ -1,6 +1,7 @@
 """Testes para collect_analytics.py."""
 import json
-from unittest.mock import MagicMock
+from datetime import UTC, datetime, timedelta
+from unittest.mock import MagicMock, patch
 
 import scripts.collect_analytics as collect_analytics
 
@@ -238,11 +239,13 @@ class TestComputeScenePerformance:
         assert weights["dog"] < 1.0
 
     def test_weight_is_capped_at_max(self):
-        # Grupos com contagens desiguais (3 vs 30) pra puxar a media geral bem
-        # abaixo da media do cat - com grupos do mesmo tamanho o peso maximo
-        # possivel tende a 2.0 (nunca alcancaria o cap de 2.5).
+        # Com Wilson normalizado pra media 1.0, o peso maximo possivel com K
+        # keys e ~K (quando so uma tem lower>0 e as demais ~0). Precisamos de
+        # 3+ keys pra ultrapassar o cap de 2.5 e exercita-lo de verdade.
         stats = self._stats(cat_views=[1_000_000] * 3, dog_views=[1] * 30)
+        stats += [{"video_id": f"bird{i}", "views": 1} for i in range(30)]
         tags = self._tags(cat_count=3, dog_count=30)
+        tags.update({f"bird{i}": {"scene": "bird"} for i in range(30)})
 
         weights = collect_analytics._compute_scene_performance(stats, tags)
 
@@ -254,6 +257,59 @@ class TestComputeScenePerformance:
         tags = self._tags(cat_count=3, dog_count=3)
 
         assert collect_analytics._compute_scene_performance(stats, tags) == {}
+
+
+class TestComputeWeightedPerformanceWilson:
+    """_compute_weighted_performance usa Wilson score interval (lower bound)
+    sobre a proporcao de videos acima da mediana geral - mais conservador
+    que media simples com amostras pequenas."""
+
+    def _stats_tags(self, scene_specs: dict[str, list[int]]):
+        stats: list[dict] = []
+        tags: dict = {}
+        for scene, views_list in scene_specs.items():
+            for i, v in enumerate(views_list):
+                vid = f"{scene}{i}"
+                stats.append({"video_id": vid, "views": v})
+                tags[vid] = {"scene": scene}
+        return stats, tags
+
+    def test_consistent_above_median_beats_inconsistent(self):
+        # Cena A: 3 videos todos acima da mediana (p=1.0).
+        # Cena B: 3 videos 1 acima 2 abaixo (p=0.33).
+        stats, tags = self._stats_tags({
+            "a": [2000, 2000, 2000],
+            "b": [1000, 100, 50],
+        })
+
+        weights = collect_analytics._compute_scene_performance(stats, tags)
+
+        assert weights["a"] > weights["b"]
+        assert weights["a"] > 1.0
+        assert weights["b"] < 1.0
+
+    def test_viral_inconsistent_penalized_vs_consistent(self):
+        # Cena viral: 1 viral + 2 baixos (p=0.33 mas views altas).
+        # Cena consistente: 2 acima 1 abaixo (p=0.66, views medias).
+        stats, tags = self._stats_tags({
+            "viral": [100000, 100, 100],
+            "consistent": [1000, 1000, 100],
+        })
+
+        weights = collect_analytics._compute_scene_performance(stats, tags)
+
+        assert weights["consistent"] > weights["viral"]
+
+    def test_below_min_samples_is_neutral(self):
+        stats, tags = self._stats_tags({
+            "small": [1000, 1000],
+            "ok": [1000, 1000, 1000],
+        })
+
+        weights = collect_analytics._compute_scene_performance(stats, tags)
+
+        assert "small" not in weights
+        assert "ok" in weights
 
 
 class TestLoadScenePerformance:
@@ -354,7 +410,9 @@ class TestComputeTitlePatternPerformance:
 
     def test_weight_is_capped_at_max(self):
         stats = self._stats(a_views=[1_000_000] * 3, b_views=[1] * 30)
+        stats += [{"video_id": f"c{i}", "views": 1} for i in range(30)]
         tags = self._tags(a_count=3, b_count=30)
+        tags.update({f"c{i}": {"title_pattern": "pattern-c"} for i in range(30)})
 
         weights = collect_analytics._compute_title_pattern_performance(stats, tags)
 
@@ -385,3 +443,159 @@ class TestUpdateTitlePatternPerformance:
         result = json.loads(perf_file.read_text(encoding="utf-8"))
         assert result["pattern-a"] == 1.2
         assert result["pattern-b"] == 2.1
+
+
+class TestMaybeRotateThumbnail:
+    """maybe_rotate_thumbnail: troca a thumbnail da variante A para a B quando
+    o video performa abaixo de _THUMBNAIL_ROTATION_THRESHOLD x a mediana apos
+    _THUMBNAIL_ROTATION_DAYS dias. A YouTube Data API thumbnails.set so aceita
+    1 thumbnail por chamada (nao suporta A/B nativamente); esta rotacao e a
+    alternativa pratica."""
+
+    def _entry(self, *, uploaded_at, views, thumbnails, variant="A"):
+        return {
+            "scene": "cat",
+            "thumbnails": thumbnails,
+            "thumbnail_variant": variant,
+            "uploaded_at": uploaded_at,
+            "views": views,
+        }
+
+    def _thumb_paths(self, tmp_path):
+        a = tmp_path / "thumb_a.png"
+        b = tmp_path / "thumb_b.png"
+        a.write_bytes(b"png-a")
+        b.write_bytes(b"png-b")
+        return str(a), str(b)
+
+    def test_rotates_when_below_median_and_old_enough(self, tmp_path):
+        a, b = self._thumb_paths(tmp_path)
+        now = datetime.now(UTC)
+        uploaded = (now - timedelta(days=10)).isoformat()
+        entry = self._entry(uploaded_at=uploaded, views=10, thumbnails=[a, b])
+        service = MagicMock()
+
+        with patch("scripts.collect_analytics._retry_youtube_call", side_effect=lambda f: f()):
+            rotated = collect_analytics.maybe_rotate_thumbnail(
+                service, "vid1", entry, median_views=1000, now=now
+            )
+
+        assert rotated is True
+        assert entry["thumbnail_variant"] == "B"
+        service.thumbnails().set.assert_called_once()
+
+    def test_no_rotation_when_already_variant_b(self, tmp_path):
+        a, b = self._thumb_paths(tmp_path)
+        now = datetime.now(UTC)
+        uploaded = (now - timedelta(days=30)).isoformat()
+        entry = self._entry(uploaded_at=uploaded, views=1, thumbnails=[a, b], variant="B")
+        service = MagicMock()
+
+        rotated = collect_analytics.maybe_rotate_thumbnail(
+            service, "vid1", entry, median_views=1000, now=now
+        )
+
+        assert rotated is False
+        service.thumbnails().set.assert_not_called()
+
+    def test_no_rotation_when_only_one_thumbnail(self, tmp_path):
+        a, _ = self._thumb_paths(tmp_path)
+        now = datetime.now(UTC)
+        uploaded = (now - timedelta(days=30)).isoformat()
+        entry = self._entry(uploaded_at=uploaded, views=1, thumbnails=[a])
+        service = MagicMock()
+
+        rotated = collect_analytics.maybe_rotate_thumbnail(
+            service, "vid1", entry, median_views=1000, now=now
+        )
+
+        assert rotated is False
+        service.thumbnails().set.assert_not_called()
+
+    def test_no_rotation_when_younger_than_min_days(self, tmp_path):
+        a, b = self._thumb_paths(tmp_path)
+        now = datetime.now(UTC)
+        uploaded = (now - timedelta(days=2)).isoformat()
+        entry = self._entry(uploaded_at=uploaded, views=1, thumbnails=[a, b])
+        service = MagicMock()
+
+        rotated = collect_analytics.maybe_rotate_thumbnail(
+            service, "vid1", entry, median_views=1000, now=now
+        )
+
+        assert rotated is False
+        service.thumbnails().set.assert_not_called()
+
+    def test_no_rotation_when_views_above_threshold(self, tmp_path):
+        """views >= median * threshold (50%) -> ainda performando bem, nao troca."""
+        a, b = self._thumb_paths(tmp_path)
+        now = datetime.now(UTC)
+        uploaded = (now - timedelta(days=30)).isoformat()
+        entry = self._entry(uploaded_at=uploaded, views=600, thumbnails=[a, b])
+        service = MagicMock()
+
+        rotated = collect_analytics.maybe_rotate_thumbnail(
+            service, "vid1", entry, median_views=1000, now=now
+        )
+
+        assert rotated is False
+        service.thumbnails().set.assert_not_called()
+
+    def test_no_rotation_when_median_is_zero(self, tmp_path):
+        a, b = self._thumb_paths(tmp_path)
+        now = datetime.now(UTC)
+        uploaded = (now - timedelta(days=30)).isoformat()
+        entry = self._entry(uploaded_at=uploaded, views=10, thumbnails=[a, b])
+        service = MagicMock()
+
+        rotated = collect_analytics.maybe_rotate_thumbnail(
+            service, "vid1", entry, median_views=0, now=now
+        )
+
+        assert rotated is False
+        service.thumbnails().set.assert_not_called()
+
+    def test_rotation_failure_is_not_fatal(self, tmp_path):
+        a, b = self._thumb_paths(tmp_path)
+        now = datetime.now(UTC)
+        uploaded = (now - timedelta(days=10)).isoformat()
+        entry = self._entry(uploaded_at=uploaded, views=1, thumbnails=[a, b])
+        service = MagicMock()
+
+        with patch("scripts.collect_analytics._retry_youtube_call", side_effect=RuntimeError("api down")):
+            rotated = collect_analytics.maybe_rotate_thumbnail(
+                service, "vid1", entry, median_views=1000, now=now
+            )
+
+        assert rotated is False
+        assert entry["thumbnail_variant"] == "A"
+
+    def test_no_rotation_when_thumbnail_b_file_missing(self, tmp_path):
+        a = tmp_path / "thumb_a.png"
+        a.write_bytes(b"png-a")
+        # thumb_b aponta pra caminho inexistente
+        missing_b = str(tmp_path / "missing_b.png")
+        now = datetime.now(UTC)
+        uploaded = (now - timedelta(days=30)).isoformat()
+        entry = self._entry(uploaded_at=uploaded, views=1, thumbnails=[str(a), missing_b])
+        service = MagicMock()
+
+        rotated = collect_analytics.maybe_rotate_thumbnail(
+            service, "vid1", entry, median_views=1000, now=now
+        )
+
+        assert rotated is False
+        service.thumbnails().set.assert_not_called()
+
+
+class TestMedianViews:
+    def test_empty_stats_returns_zero(self):
+        assert collect_analytics._median_views([]) == 0.0
+
+    def test_odd_count_returns_middle(self):
+        stats = [{"views": v} for v in [10, 5, 20]]
+        assert collect_analytics._median_views(stats) == 10.0
+
+    def test_even_count_returns_average_of_middles(self):
+        stats = [{"views": v} for v in [1, 2, 3, 4]]
+        assert collect_analytics._median_views(stats) == 2.5

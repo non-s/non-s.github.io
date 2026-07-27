@@ -1,6 +1,7 @@
 """Testes unitários para video_builder.py."""
+import json
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -43,7 +44,7 @@ class TestVideoBuilderUnits:
         """Testa build com spec inválida."""
         spec_invalid = {"day": "Seg"}  # Falta type, mood, etc.
 
-        with pytest.raises((KeyError, TypeError, RuntimeError)):
+        with pytest.raises(RuntimeError):
             video_builder.build_pata_jazz_video(
                 spec=spec_invalid,
                 output_dir=Path("test"),
@@ -150,3 +151,89 @@ class TestVideoBuilderUnits:
         final_cmd = captured_cmds[-1]
         assert "-t" in final_cmd
         assert final_cmd[final_cmd.index("-t") + 1] == "35"
+
+    def test_build_generates_both_thumbnail_variants_and_registers_list(self, tmp_path):
+        """A/B testing: build_pata_jazz_video gera variante A e B da thumbnail
+        e registra ambas em meta['thumbnails'] (lista), mantendo
+        meta['thumbnail'] (legado) apontando para A pra backward compat."""
+        spec = video_builder.VideoSpec(
+            kind="test",
+            width=100,
+            height=100,
+            duration=5,
+            default_duration=5,
+            crop_filter="crop=100:100",
+            thumbnail_maker=MagicMock(),
+            fallback_description="desc",
+        )
+        calls: list = []
+        spec.thumbnail_maker.side_effect = lambda *a, **kw: calls.append((a, kw))
+
+        with patch("utils.video_builder.ensure_dirs"), \
+             patch("utils.video_builder.pool_stats", return_value={"videos": 1, "audio": 1}), \
+             patch("utils.video_builder.random_scene", return_value="scene"), \
+             patch("utils.video_builder.hook_for_scene", return_value=("hook", "🐾")), \
+             patch("utils.video_builder.pick_videos", return_value=[Path("video.mp4")]), \
+             patch("utils.video_builder.pick_audio", return_value=Path("audio.mp3")), \
+             patch("utils.video_builder.run_ffmpeg"), \
+             patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}), \
+             patch("utils.video_builder.validate_generated_video",
+                   return_value=VideoValidation(ok=True, errors=[], info={})):
+            video_builder.build_pata_jazz_video(
+                spec=spec, output_dir=tmp_path, thumb_dir=tmp_path, stem_prefix="test"
+            )
+
+        # thumbnail_maker chamado 2x: A e B.
+        variants = [kw.get("variant", "A") for _, kw in calls]
+        assert variants == ["A", "B"]
+        meta_path = tmp_path / "test_test.mp4"
+        # build grava o .json ao lado do .mp4 (output stem).
+        json_files = list(tmp_path.glob("*.json"))
+        assert json_files, "meta JSON deve ser escrito"
+        meta = json.loads(json_files[0].read_text(encoding="utf-8"))
+        assert "thumbnails" in meta
+        assert len(meta["thumbnails"]) == 2
+        assert meta["thumbnails"][0].endswith("_thumb_a.png")
+        assert meta["thumbnails"][1].endswith("_thumb_b.png")
+        # Backward compat: thumbnail (legado) aponta pra variante A.
+        assert meta["thumbnail"] == meta["thumbnails"][0]
+
+    def test_build_falls_back_to_single_thumbnail_when_variant_b_fails(self, tmp_path):
+        """Se a variante B falhar (fonte/paleta indisponivel, etc), build
+        registra so a variante A em thumbnails - publicacao nao pode quebrar
+        porque a rotacao B e opcional."""
+        spec = video_builder.VideoSpec(
+            kind="test",
+            width=100,
+            height=100,
+            duration=5,
+            default_duration=5,
+            crop_filter="crop=100:100",
+            thumbnail_maker=MagicMock(),
+            fallback_description="desc",
+        )
+
+        def maker_side_effect(*a, **kw):
+            if kw.get("variant") == "B":
+                raise RuntimeError("variant B boom")
+
+        spec.thumbnail_maker.side_effect = maker_side_effect
+
+        with patch("utils.video_builder.ensure_dirs"), \
+             patch("utils.video_builder.pool_stats", return_value={"videos": 1, "audio": 1}), \
+             patch("utils.video_builder.random_scene", return_value="scene"), \
+             patch("utils.video_builder.hook_for_scene", return_value=("hook", "🐾")), \
+             patch("utils.video_builder.pick_videos", return_value=[Path("video.mp4")]), \
+             patch("utils.video_builder.pick_audio", return_value=Path("audio.mp3")), \
+             patch("utils.video_builder.run_ffmpeg"), \
+             patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}), \
+             patch("utils.video_builder.validate_generated_video",
+                   return_value=VideoValidation(ok=True, errors=[], info={})):
+            video_builder.build_pata_jazz_video(
+                spec=spec, output_dir=tmp_path, thumb_dir=tmp_path, stem_prefix="test"
+            )
+
+        json_files = list(tmp_path.glob("*.json"))
+        meta = json.loads(json_files[0].read_text(encoding="utf-8"))
+        assert len(meta["thumbnails"]) == 1
+        assert meta["thumbnails"][0].endswith("_thumb_a.png")

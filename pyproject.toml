@@ -9,6 +9,7 @@ dependencies = [
     "google-auth-oauthlib>=1.2.0,<2.0.0",
     "requests>=2.31.0,<3.0.0",
     "Pillow>=12.3.0,<13.0.0",
+    "filelock>=3.13.0,<4.0.0",
 ]
 
 [tool.ruff]
@@ -17,7 +18,7 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B"]
-ignore = ["E501", "W293"]
+ignore = []
 
 [tool.ruff.lint.per-file-ignores]
 # E402 (import fora do topo) so faz sentido onde ha sys.path.insert antes dos imports.
@@ -26,22 +27,24 @@ ignore = ["E501", "W293"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-q"
+addopts = "-q -n auto"
 
 [tool.coverage.run]
-# Cobertura focada em utils (logica central). Os geradores (generate_pata_jazz_*.py,
-# upload_youtube.py) sao thin wrappers que delegam para utils e sao exercitados
-# em CI via dry-run/integracao; inclui-los no source baixaria a metrica sem gerar
-# valor de diagnostico real.
-source = ["utils"]
+# Cobertura inclui utils, scripts e os geradores/upload (thin wrappers que
+# delegam para utils mas sao exercitados em CI via dry-run/integracao).
+source = ["utils", "scripts", "upload_youtube", "live_broadcast", "generate_pata_jazz_live"]
 
 [tool.coverage.report]
-fail_under = 70
+fail_under = 85
 show_missing = true
+exclude_lines = [
+    "if __name__ == \"__main__\":",
+    "pragma: no cover",
+]
 
 [tool.mypy]
 python_version = "3.11"
-# google-api-python-client, google-auth*, PIL e requests nao publicam stubs
-# completos - sem isso, toda chamada a essas libs vira ruido de import-not-found
-# em vez de erro de tipo de verdade.
+
+[[tool.mypy.overrides]]
+module = ["googleapiclient.*", "google_auth_oauthlib.*", "PIL.*", "requests.*"]
 ignore_missing_imports = true

@@ -121,10 +121,13 @@ def main() -> int:
         return 0
 
     total = 0
+    current_count = len(list(AUDIO_DIR.glob("*.mp3")))
     for term in JAMENDO_SEARCH_TERMS:
-        if len(list(AUDIO_DIR.glob("*.mp3"))) >= MAX_POOL_SIZE:
+        if current_count >= MAX_POOL_SIZE:
             break
-        total += search_and_download(term, MAX_PER_TERM, client_id=client_id)
+        downloaded = search_and_download(term, MAX_PER_TERM, client_id=client_id)
+        total += downloaded
+        current_count += downloaded
 
     log.info("Sync finalizado. Total de novas faixas: %d", total)
     return 0

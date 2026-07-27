@@ -10,7 +10,7 @@ from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import generate_pata_jazz_live as live
-import upload_youtube
+import live_broadcast
 
 
 def _fake_popen(*_args, **_kwargs):
@@ -22,8 +22,8 @@ def _fake_popen(*_args, **_kwargs):
 
 
 class TestWaitForStreamActive:
-    @patch("upload_youtube.time.sleep", return_value=None)
-    @patch("upload_youtube.get_youtube_service")
+    @patch("live_broadcast.time.sleep", return_value=None)
+    @patch("live_broadcast.get_youtube_service")
     def test_returns_true_once_stream_becomes_active(self, mock_service, _mock_sleep):
         service = MagicMock()
         mock_service.return_value = service
@@ -33,20 +33,22 @@ class TestWaitForStreamActive:
         ]
         service.liveStreams.return_value.list.return_value.execute.side_effect = responses
 
-        assert upload_youtube.wait_for_stream_active("stream123", timeout=10, interval=0) is True
+        assert live_broadcast.wait_for_stream_active("stream123", timeout=10, interval=0) is True
 
-    @patch("upload_youtube.time.sleep", return_value=None)
-    @patch("upload_youtube.get_youtube_service")
-    def test_times_out_if_never_active(self, mock_service, _mock_sleep):
+    @patch("live_broadcast.time.sleep", return_value=None)
+    @patch("live_broadcast.time.time")
+    @patch("live_broadcast.get_youtube_service")
+    def test_times_out_if_never_active(self, mock_service, mock_time, _mock_sleep):
         service = MagicMock()
         mock_service.return_value = service
         service.liveStreams.return_value.list.return_value.execute.return_value = {
             "items": [{"status": {"streamStatus": "ready"}}]
         }
+        # time.time retorna t0 para o deadline, depois t0 (entra no loop),
+        # t0+100 (sai do loop) - sem depender de relogio real.
+        mock_time.side_effect = [0.0, 0.0, 100.0]
 
-        # timeout minusculo (relogio real): garante que o loop encerra em
-        # False sem precisar mockar time.time (que a logging tambem usa).
-        assert upload_youtube.wait_for_stream_active("stream123", timeout=0.05, interval=0) is False
+        assert live_broadcast.wait_for_stream_active("stream123", timeout=10, interval=0) is False
 
 
 class TestFfmpegStreamStartWaitSplit:

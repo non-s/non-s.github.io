@@ -11,6 +11,7 @@ import pytest
 import utils.media_pool as media_pool
 from utils.media_pool import (
     _cuteness_score,
+    _filter_by_mood,
     _load_video_metadata,
     audio_pool,
     available_audio_metadata,
@@ -267,6 +268,8 @@ class TestAvoidRecent:
     """pick_videos()/pick_audio() evitam repetir os itens usados mais recentemente."""
 
     def test_pick_audio_avoids_last_used_track(self):
+        import random as _random
+        _random.seed(42)
         pool = [Path(f"/fake/audio{i}.mp3") for i in range(3)]
         with patch("utils.media_pool.audio_pool", return_value=pool):
             first = pick_audio()
@@ -347,3 +350,56 @@ class TestFilterByAnimal:
             result = pick_videos(min_count=2, max_count=2, cuteness_sort=False)
 
         assert len(result) == 2
+
+
+def _write_audio_meta(tmp_path, name: str, genres: list[str], tags: str = "") -> Path:
+    audio = tmp_path / name
+    audio.write_bytes(b"")
+    meta = audio.with_suffix(".json")
+    meta.write_text(
+        json.dumps({"musicinfo": {"tags": {"genres": genres}}, "tags": tags}),
+        encoding="utf-8",
+    )
+    return audio
+
+
+class TestPickAudioByMood:
+    """pick_audio(mood=...) filtra faixas por genero da metadata do Jamendo."""
+
+    def test_fofura_filters_by_genres(self, tmp_path):
+        bossa = _write_audio_meta(tmp_path, "a1.mp3", ["bossa nova"])
+        swing = _write_audio_meta(tmp_path, "a2.mp3", ["swing"])
+        with patch("utils.media_pool.audio_pool", return_value=[bossa, swing]):
+            with patch("utils.media_pool.random.choice", side_effect=lambda p: p[0]):
+                result = pick_audio(mood="fofura")
+        assert result == bossa
+
+    def test_relax_filters_by_genres(self, tmp_path):
+        smooth = _write_audio_meta(tmp_path, "a1.mp3", ["smooth jazz"])
+        swing = _write_audio_meta(tmp_path, "a2.mp3", ["swing"])
+        with patch("utils.media_pool.audio_pool", return_value=[smooth, swing]):
+            with patch("utils.media_pool.random.choice", side_effect=lambda p: p[0]):
+                result = pick_audio(mood="relax")
+        assert result == smooth
+
+    def test_no_mood_match_falls_back_to_full_pool(self, tmp_path):
+        swing = _write_audio_meta(tmp_path, "a1.mp3", ["swing"])
+        rock = _write_audio_meta(tmp_path, "a2.mp3", ["rock"])
+        with patch("utils.media_pool.audio_pool", return_value=[swing, rock]):
+            with patch("utils.media_pool.random.choice", side_effect=lambda p: p[0]):
+                result = pick_audio(mood="fofura")
+        assert result == swing
+
+    def test_empty_mood_keeps_old_behavior(self, tmp_path):
+        a1 = _write_audio_meta(tmp_path, "a1.mp3", ["bossa nova"])
+        a2 = _write_audio_meta(tmp_path, "a2.mp3", ["swing"])
+        with patch("utils.media_pool.audio_pool", return_value=[a1, a2]):
+            with patch("utils.media_pool.random.choice", side_effect=lambda p: p[0]):
+                result = pick_audio()
+        assert result == a1
+
+    def test_filter_by_mood_helper_returns_pool_when_too_narrow(self):
+        pool = [Path("/fake/x1.mp3"), Path("/fake/x2.mp3")]
+        with patch("utils.media_pool._load_audio_metadata", return_value={}):
+            result = _filter_by_mood(pool, "fofura", min_needed=1)
+        assert result == pool

@@ -150,15 +150,18 @@ def main() -> int:
         return 0
 
     total = 0
+    current_count = len(list(VIDEO_DIR.glob("*.mp4")))
     # Prioriza queries mais fofas primeiro.
     prioritized_queries = sorted(
         BROLL_QUERIES,
         key=lambda q: (0 if any(kw in q for kw in ("kitten", "puppy", "adorable", "cute")) else 1, q),
     )
     for query in prioritized_queries:
-        if len(list(VIDEO_DIR.glob("*.mp4"))) >= MAX_POOL_SIZE:
+        if current_count >= MAX_POOL_SIZE:
             break
-        total += search_and_download(api_key, query, MAX_PER_QUERY)
+        downloaded = search_and_download(api_key, query, MAX_PER_QUERY)
+        total += downloaded
+        current_count += downloaded
 
     log.info("Sync finalizado. Total de novos clips: %d", total)
     return 0 if total >= 0 else 1

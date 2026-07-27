@@ -12,6 +12,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
+import live_broadcast
 import upload_youtube
 
 
@@ -61,8 +62,8 @@ class TestCleanupOrphanBroadcasts:
         service = self._service_with(
             upcoming_items=[{"id": "old_ready", "snippet": {"scheduledStartTime": self._iso_minutes_ago(60)}}]
         )
-        with patch("upload_youtube.delete_broadcast") as mock_delete:
-            cleaned = upload_youtube.cleanup_orphan_broadcasts(service)
+        with patch("live_broadcast.delete_broadcast") as mock_delete:
+            cleaned = live_broadcast.cleanup_orphan_broadcasts(service)
 
         mock_delete.assert_called_once_with("old_ready")
         assert cleaned == 1
@@ -71,8 +72,8 @@ class TestCleanupOrphanBroadcasts:
         service = self._service_with(
             upcoming_items=[{"id": "fresh_ready", "snippet": {"scheduledStartTime": self._iso_minutes_ago(2)}}]
         )
-        with patch("upload_youtube.delete_broadcast") as mock_delete:
-            cleaned = upload_youtube.cleanup_orphan_broadcasts(service)
+        with patch("live_broadcast.delete_broadcast") as mock_delete:
+            cleaned = live_broadcast.cleanup_orphan_broadcasts(service)
 
         mock_delete.assert_not_called()
         assert cleaned == 0
@@ -81,8 +82,8 @@ class TestCleanupOrphanBroadcasts:
         service = self._service_with(
             active_items=[{"id": "stuck_live", "snippet": {"actualStartTime": self._iso_minutes_ago(500)}}]
         )
-        with patch("upload_youtube.transition_broadcast") as mock_transition:
-            cleaned = upload_youtube.cleanup_orphan_broadcasts(service)
+        with patch("live_broadcast.transition_broadcast") as mock_transition:
+            cleaned = live_broadcast.cleanup_orphan_broadcasts(service)
 
         mock_transition.assert_called_once_with("stuck_live", "complete")
         assert cleaned == 1
@@ -91,8 +92,8 @@ class TestCleanupOrphanBroadcasts:
         service = self._service_with(
             active_items=[{"id": "normal_live", "snippet": {"actualStartTime": self._iso_minutes_ago(100)}}]
         )
-        with patch("upload_youtube.transition_broadcast") as mock_transition:
-            cleaned = upload_youtube.cleanup_orphan_broadcasts(service)
+        with patch("live_broadcast.transition_broadcast") as mock_transition:
+            cleaned = live_broadcast.cleanup_orphan_broadcasts(service)
 
         mock_transition.assert_not_called()
         assert cleaned == 0
@@ -101,14 +102,14 @@ class TestCleanupOrphanBroadcasts:
         service = MagicMock()
         service.liveBroadcasts().list.side_effect = RuntimeError("api down")
 
-        cleaned = upload_youtube.cleanup_orphan_broadcasts(service)
+        cleaned = live_broadcast.cleanup_orphan_broadcasts(service)
 
         assert cleaned == 0
 
     def test_missing_timestamp_is_skipped_not_crashed(self):
         service = self._service_with(upcoming_items=[{"id": "no_ts", "snippet": {}}])
-        with patch("upload_youtube.delete_broadcast") as mock_delete:
-            cleaned = upload_youtube.cleanup_orphan_broadcasts(service)
+        with patch("live_broadcast.delete_broadcast") as mock_delete:
+            cleaned = live_broadcast.cleanup_orphan_broadcasts(service)
 
         mock_delete.assert_not_called()
         assert cleaned == 0
@@ -117,22 +118,22 @@ class TestCleanupOrphanBroadcasts:
 class TestGenerateLiveTitle:
     """_generate_live_title() rejeita titulo suspeito vindo da IA."""
 
-    @patch("upload_youtube.ai_text")
+    @patch("live_broadcast.ai_text")
     def test_uses_ai_title_when_safe(self, mock_ai_text):
         mock_ai_text.return_value = "Calming Jazz for Sleepy Cats"
-        assert upload_youtube._generate_live_title() == "Calming Jazz for Sleepy Cats"
+        assert live_broadcast._generate_live_title() == "Calming Jazz for Sleepy Cats"
 
-    @patch("upload_youtube.ai_text")
+    @patch("live_broadcast.ai_text")
     def test_falls_back_when_ai_title_suspicious(self, mock_ai_text):
         mock_ai_text.return_value = "Click here: https://scam.example.com"
-        title = upload_youtube._generate_live_title()
+        title = live_broadcast._generate_live_title()
         assert "https://" not in title
         assert "Pata Jazz" in title
 
-    @patch("upload_youtube.ai_text")
+    @patch("live_broadcast.ai_text")
     def test_falls_back_when_ai_returns_empty(self, mock_ai_text):
         mock_ai_text.return_value = ""
-        title = upload_youtube._generate_live_title()
+        title = live_broadcast._generate_live_title()
         assert "Pata Jazz" in title
 
 
@@ -327,6 +328,32 @@ class TestRecordVideoTags:
         data = json.loads(tags_file.read_text(encoding="utf-8"))
         assert data["vid1"]["title_pattern"] == ""
 
+    def test_persists_thumbnails_and_default_variant(self, tmp_path, monkeypatch):
+        """_record_video_tags grava a lista de variantes de thumbnail (pra
+        maybe_rotate_thumbnail saber que o video tem B disponivel) e marca
+        thumbnail_variant='A' no upload (A e a publicada inicialmente)."""
+        tags_file = tmp_path / "video_tags.json"
+        monkeypatch.setattr(upload_youtube, "_VIDEO_TAGS_FILE", tags_file)
+
+        upload_youtube._record_video_tags("vid1", {
+            "scene": "cat",
+            "thumbnails": ["/tmp/a.png", "/tmp/b.png"],
+        })
+
+        data = json.loads(tags_file.read_text(encoding="utf-8"))
+        assert data["vid1"]["thumbnails"] == ["/tmp/a.png", "/tmp/b.png"]
+        assert data["vid1"]["thumbnail_variant"] == "A"
+
+    def test_thumbnail_fields_default_when_meta_has_no_thumbnails(self, tmp_path, monkeypatch):
+        tags_file = tmp_path / "video_tags.json"
+        monkeypatch.setattr(upload_youtube, "_VIDEO_TAGS_FILE", tags_file)
+
+        upload_youtube._record_video_tags("vid1", {"scene": "cat"})
+
+        data = json.loads(tags_file.read_text(encoding="utf-8"))
+        assert data["vid1"]["thumbnails"] == []
+        assert data["vid1"]["thumbnail_variant"] == "A"
+
     def test_skips_when_scene_missing(self, tmp_path, monkeypatch):
         tags_file = tmp_path / "video_tags.json"
         monkeypatch.setattr(upload_youtube, "_VIDEO_TAGS_FILE", tags_file)
@@ -387,7 +414,7 @@ class TestRecordLiveViewerSnapshot:
 
     def _isolate(self, tmp_path, monkeypatch):
         history_file = tmp_path / "live_viewer_history.json"
-        monkeypatch.setattr(upload_youtube, "LIVE_VIEWER_HISTORY_FILE", history_file)
+        monkeypatch.setattr(live_broadcast, "LIVE_VIEWER_HISTORY_FILE", history_file)
         return history_file
 
     def test_saves_viewer_count_snapshot(self, tmp_path, monkeypatch):
@@ -397,8 +424,8 @@ class TestRecordLiveViewerSnapshot:
             "items": [{"liveStreamingDetails": {"concurrentViewers": "42"}}]
         }
 
-        with patch("upload_youtube.get_youtube_service", return_value=service):
-            upload_youtube.record_live_viewer_snapshot("bcast123")
+        with patch("live_broadcast.get_youtube_service", return_value=service):
+            live_broadcast.record_live_viewer_snapshot("bcast123")
 
         history = json.loads(history_file.read_text(encoding="utf-8"))
         assert len(history) == 1
@@ -413,15 +440,15 @@ class TestRecordLiveViewerSnapshot:
             "items": [{"liveStreamingDetails": {"concurrentViewers": "10"}}]
         }
 
-        with patch("upload_youtube.get_youtube_service", return_value=service):
-            upload_youtube.record_live_viewer_snapshot("bcast123")
+        with patch("live_broadcast.get_youtube_service", return_value=service):
+            live_broadcast.record_live_viewer_snapshot("bcast123")
 
         history = json.loads(history_file.read_text(encoding="utf-8"))
         assert len(history) == 2
 
     def test_caps_at_max_snapshots(self, tmp_path, monkeypatch):
         history_file = self._isolate(tmp_path, monkeypatch)
-        monkeypatch.setattr(upload_youtube, "_MAX_VIEWER_SNAPSHOTS", 3)
+        monkeypatch.setattr(live_broadcast, "_MAX_VIEWER_SNAPSHOTS", 3)
         history_file.write_text(
             json.dumps([{"video_id": f"old{i}", "concurrent_viewers": i} for i in range(3)]), encoding="utf-8"
         )
@@ -430,8 +457,8 @@ class TestRecordLiveViewerSnapshot:
             "items": [{"liveStreamingDetails": {"concurrentViewers": "99"}}]
         }
 
-        with patch("upload_youtube.get_youtube_service", return_value=service):
-            upload_youtube.record_live_viewer_snapshot("bcast_new")
+        with patch("live_broadcast.get_youtube_service", return_value=service):
+            live_broadcast.record_live_viewer_snapshot("bcast_new")
 
         history = json.loads(history_file.read_text(encoding="utf-8"))
         assert len(history) == 3
@@ -442,8 +469,8 @@ class TestRecordLiveViewerSnapshot:
         service = MagicMock()
         service.videos().list().execute.return_value = {"items": []}
 
-        with patch("upload_youtube.get_youtube_service", return_value=service):
-            upload_youtube.record_live_viewer_snapshot("bcast123")
+        with patch("live_broadcast.get_youtube_service", return_value=service):
+            live_broadcast.record_live_viewer_snapshot("bcast123")
 
         assert not history_file.exists()
 
@@ -452,15 +479,15 @@ class TestRecordLiveViewerSnapshot:
         service = MagicMock()
         service.videos().list().execute.return_value = {"items": [{"liveStreamingDetails": {}}]}
 
-        with patch("upload_youtube.get_youtube_service", return_value=service):
-            upload_youtube.record_live_viewer_snapshot("bcast123")
+        with patch("live_broadcast.get_youtube_service", return_value=service):
+            live_broadcast.record_live_viewer_snapshot("bcast123")
 
         assert not history_file.exists()
 
     def test_service_error_does_not_raise(self, tmp_path, monkeypatch):
         self._isolate(tmp_path, monkeypatch)
-        with patch("upload_youtube.get_youtube_service", side_effect=RuntimeError("no creds")):
-            upload_youtube.record_live_viewer_snapshot("bcast123")  # nao deve levantar
+        with patch("live_broadcast.get_youtube_service", side_effect=RuntimeError("no creds")):
+            live_broadcast.record_live_viewer_snapshot("bcast123")  # nao deve levantar
 
 
 class TestTryResumeExistingBroadcast:
@@ -476,7 +503,7 @@ class TestTryResumeExistingBroadcast:
 
     def _isolate(self, tmp_path, monkeypatch):
         state_file = tmp_path / "live_state.json"
-        monkeypatch.setattr(upload_youtube, "_LIVE_STATE_FILE", state_file)
+        monkeypatch.setattr(live_broadcast, "_LIVE_STATE_FILE", state_file)
         return state_file
 
     def _service_with(self, broadcast_items=None, stream_items=None):
@@ -499,47 +526,47 @@ class TestTryResumeExistingBroadcast:
     def test_returns_none_when_no_state_file(self, tmp_path, monkeypatch):
         self._isolate(tmp_path, monkeypatch)
         service = MagicMock()
-        assert upload_youtube._try_resume_existing_broadcast(service) is None
+        assert live_broadcast._try_resume_existing_broadcast(service) is None
 
     def test_returns_none_when_state_file_corrupted(self, tmp_path, monkeypatch):
         state_file = self._isolate(tmp_path, monkeypatch)
         state_file.write_text("not json", encoding="utf-8")
         service = MagicMock()
-        assert upload_youtube._try_resume_existing_broadcast(service) is None
+        assert live_broadcast._try_resume_existing_broadcast(service) is None
 
     def test_returns_none_when_state_file_missing_required_keys(self, tmp_path, monkeypatch):
         state_file = self._isolate(tmp_path, monkeypatch)
         state_file.write_text(json.dumps({"title": "x"}), encoding="utf-8")
         service = MagicMock()
-        assert upload_youtube._try_resume_existing_broadcast(service) is None
+        assert live_broadcast._try_resume_existing_broadcast(service) is None
 
     def test_returns_none_when_broadcast_not_found(self, tmp_path, monkeypatch):
         state_file = self._isolate(tmp_path, monkeypatch)
         state_file.write_text(json.dumps({"broadcast_id": "b1", "stream_id": "s1"}), encoding="utf-8")
         service = self._service_with(broadcast_items=[])
 
-        assert upload_youtube._try_resume_existing_broadcast(service) is None
+        assert live_broadcast._try_resume_existing_broadcast(service) is None
 
     def test_returns_none_when_lifecycle_is_complete(self, tmp_path, monkeypatch):
         state_file = self._isolate(tmp_path, monkeypatch)
         state_file.write_text(json.dumps({"broadcast_id": "b1", "stream_id": "s1"}), encoding="utf-8")
         service = self._service_with(broadcast_items=[{"status": {"lifeCycleStatus": "complete"}}])
 
-        assert upload_youtube._try_resume_existing_broadcast(service) is None
+        assert live_broadcast._try_resume_existing_broadcast(service) is None
 
     def test_returns_none_when_lifecycle_is_revoked(self, tmp_path, monkeypatch):
         state_file = self._isolate(tmp_path, monkeypatch)
         state_file.write_text(json.dumps({"broadcast_id": "b1", "stream_id": "s1"}), encoding="utf-8")
         service = self._service_with(broadcast_items=[{"status": {"lifeCycleStatus": "revoked"}}])
 
-        assert upload_youtube._try_resume_existing_broadcast(service) is None
+        assert live_broadcast._try_resume_existing_broadcast(service) is None
 
     def test_returns_none_when_stream_not_found(self, tmp_path, monkeypatch):
         state_file = self._isolate(tmp_path, monkeypatch)
         state_file.write_text(json.dumps({"broadcast_id": "b1", "stream_id": "s1"}), encoding="utf-8")
         service = self._service_with(broadcast_items=[{"status": {"lifeCycleStatus": "live"}}], stream_items=[])
 
-        assert upload_youtube._try_resume_existing_broadcast(service) is None
+        assert live_broadcast._try_resume_existing_broadcast(service) is None
 
     def test_returns_none_on_api_exception(self, tmp_path, monkeypatch):
         state_file = self._isolate(tmp_path, monkeypatch)
@@ -547,7 +574,7 @@ class TestTryResumeExistingBroadcast:
         service = MagicMock()
         service.liveBroadcasts().list.side_effect = RuntimeError("api down")
 
-        assert upload_youtube._try_resume_existing_broadcast(service) is None
+        assert live_broadcast._try_resume_existing_broadcast(service) is None
 
     def test_resumes_when_lifecycle_is_live(self, tmp_path, monkeypatch):
         state_file = self._isolate(tmp_path, monkeypatch)
@@ -563,7 +590,7 @@ class TestTryResumeExistingBroadcast:
             stream_items=[{"cdn": {"ingestionInfo": {"streamName": "abcd-1234"}}}],
         )
 
-        result = upload_youtube._try_resume_existing_broadcast(service)
+        result = live_broadcast._try_resume_existing_broadcast(service)
 
         assert result == {
             "broadcast_id": "b1",
@@ -586,7 +613,7 @@ class TestTryResumeExistingBroadcast:
             stream_items=[{"cdn": {"ingestionInfo": {"streamName": "abcd-1234"}}}],
         )
 
-        result = upload_youtube._try_resume_existing_broadcast(service)
+        result = live_broadcast._try_resume_existing_broadcast(service)
 
         assert result is not None
         assert result["broadcast_id"] == "b1"
@@ -599,7 +626,7 @@ class TestCreateLiveStreamResume:
 
     def _isolate(self, tmp_path, monkeypatch):
         state_file = tmp_path / "live_state.json"
-        monkeypatch.setattr(upload_youtube, "_LIVE_STATE_FILE", state_file)
+        monkeypatch.setattr(live_broadcast, "_LIVE_STATE_FILE", state_file)
         return state_file
 
     def test_reuses_existing_broadcast_without_creating_new(self, tmp_path, monkeypatch):
@@ -611,11 +638,11 @@ class TestCreateLiveStreamResume:
         }
         service = MagicMock()
         with (
-            patch("upload_youtube.get_youtube_service", return_value=service),
-            patch("upload_youtube.cleanup_orphan_broadcasts"),
-            patch("upload_youtube._try_resume_existing_broadcast", return_value=resumed_meta),
+            patch("live_broadcast.get_youtube_service", return_value=service),
+            patch("live_broadcast.cleanup_orphan_broadcasts"),
+            patch("live_broadcast._try_resume_existing_broadcast", return_value=resumed_meta),
         ):
-            result = upload_youtube.create_live_stream(privacy="public", resolution="720p")
+            result = live_broadcast.create_live_stream(privacy="public", resolution="720p")
 
         assert result == resumed_meta
         service.liveBroadcasts().insert.assert_not_called()
@@ -631,12 +658,12 @@ class TestCreateLiveStreamResume:
             "cdn": {"ingestionInfo": {"streamName": "new-key"}},
         }
         with (
-            patch("upload_youtube.get_youtube_service", return_value=service),
-            patch("upload_youtube.cleanup_orphan_broadcasts"),
-            patch("upload_youtube._try_resume_existing_broadcast", return_value=None),
-            patch("upload_youtube._generate_live_title", return_value="Generated Title"),
+            patch("live_broadcast.get_youtube_service", return_value=service),
+            patch("live_broadcast.cleanup_orphan_broadcasts"),
+            patch("live_broadcast._try_resume_existing_broadcast", return_value=None),
+            patch("live_broadcast._generate_live_title", return_value="Generated Title"),
         ):
-            result = upload_youtube.create_live_stream(privacy="public", resolution="720p")
+            result = live_broadcast.create_live_stream(privacy="public", resolution="720p")
 
         assert result["broadcast_id"] == "new_broadcast"
         assert result["stream_id"] == "new_stream"
