@@ -1,5 +1,22 @@
 """
 utils/youtube_oauth.py — autenticacao OAuth2 com a YouTube Data API.
+
+Em CI (GitHub Actions), o fluxo manual ``flow.run_local_server`` nao pode
+rodar (nao ha browser). Para que CI funcione, o token salvo em
+``youtube_token.json`` (ou no secret ``YOUTUBE_TOKEN``) deve incluir
+``refresh_token`` + ``client_id``/``client_secret`` para que
+``google-auth`` renove o ``access_token`` expirado em memoria, sem
+interacao humana.
+
+IMPORTANTE (CI): o ``youtube_token.json`` no runner e efemero — e apagado no
+fim do job. O refresh acontece em memoria e o ``access_token`` novo e usado
+naquela run, porem **o secret ``YOUTUBE_TOKEN`` no GitHub NAO e atualizado
+automaticamente** (exigiria ``gh secret set`` com permissoes extras que nao
+configuramos). Consequencia: quando o ``refresh_token`` expirar (90 dias
+padrao do Google sem uso), o refresh vai falhar e a CI quebrara. Nesse caso,
+rodar ``python utils/youtube_oauth.py`` localmente (com
+``YOUTUBE_CLIENT_SECRET`` apontando para o client_secret.json) para gerar um
+token novo e atualizar o secret ``YOUTUBE_TOKEN`` manualmente.
 """
 
 from __future__ import annotations
@@ -8,6 +25,7 @@ import json
 import logging
 import os
 import tempfile
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 from google.auth.transport.requests import Request
@@ -20,6 +38,10 @@ log = logging.getLogger(__name__)
 SCOPES = ["https://www.googleapis.com/auth/youtube.upload", "https://www.googleapis.com/auth/youtube.force-ssl"]
 
 ROOT = Path(__file__).resolve().parent.parent
+
+# Janela de antecipacao do refresh: se faltam menos que isso para expirar,
+# renovamos proativamente para evitar 401 no meio de uma chamada.
+_REFRESH_MARGIN = timedelta(minutes=5)
 
 
 def _token_path() -> str:
@@ -43,10 +65,11 @@ def _load_token() -> Credentials | None:
         return None
 
 
-def _save_token(creds: Credentials) -> None:
-    token_path = _token_path()
+def _save_token(creds: Credentials, token_path: str | None = None) -> None:
+    if token_path is None:
+        token_path = _token_path()
     Path(token_path).parent.mkdir(parents=True, exist_ok=True)
-    # Cria com permissões 0600 desde o inicio para proteger o refresh_token.
+    # Cria com permissoes 0600 desde o inicio para proteger o refresh_token.
     old_umask = os.umask(0o077)
     try:
         with open(token_path, "w", encoding="utf-8") as f:
@@ -58,7 +81,7 @@ def _save_token(creds: Credentials) -> None:
 def _client_secrets_path() -> str | None:
     client_secret = os.environ.get("YOUTUBE_CLIENT_SECRET")
     if client_secret:
-        # Cria o arquivo temporario com permissões restritas desde o inicio.
+        # Cria o arquivo temporario com permissoes restritas desde o inicio.
         old_umask = os.umask(0o077)
         try:
             fd, tmp_path = tempfile.mkstemp(prefix="client_secret_", suffix=".json")
@@ -80,7 +103,77 @@ def _client_secrets_path() -> str | None:
     return None
 
 
+def refresh_token_if_needed(token_path: Path) -> bool:
+    """Renova o ``access_token`` expirado/quoti-expirado em ``token_path``.
+
+    Le o token, e se ``expiry`` < agora + 5 min, chama
+    ``Credentials.refresh(Request())`` e salva o token atualizado de volta no
+    disco. Retorna ``True`` se renovou, ``False`` caso contrario. Nao levanta
+    em falha — loga warning e retorna ``False`` (fallback para o fluxo normal
+    em ``get_youtube_service``).
+
+    Cenarios em que retorna ``False`` sem tentar refresh:
+      - arquivo inexistente ou JSON invalido
+      - token sem ``expiry`` ou sem ``refresh_token`` (sem refresh_token nao
+        ha como renovar; sem expiry nao sabemos se precisa)
+    """
+    try:
+        if not token_path.exists():
+            return False
+        with open(token_path, encoding="utf-8") as f:
+            data = json.load(f)
+    except Exception as exc:
+        log.warning("refresh_token_if_needed: nao foi ler %s: %s", token_path, exc)
+        return False
+
+    if not data.get("refresh_token"):
+        # Sem refresh_token nao ha como renovar; deixa o fluxo normal decidir.
+        return False
+    if not data.get("expiry"):
+        # Sem expiry registrado, nao sabemos se precisa renovar. Deixa o
+        # fluxo normal tratar (credenciais validas/expiradas sao decididas
+        # por Credentials.valid no get_youtube_service).
+        return False
+
+    try:
+        creds = Credentials.from_authorized_user_info(data, SCOPES)
+    except Exception as exc:
+        log.warning("refresh_token_if_needed: token invalido em %s: %s", token_path, exc)
+        return False
+
+    expiry = creds.expiry
+    if expiry is None:
+        return False
+
+    # Normaliza timezone: google-auth devolve naive (UTC) em producao, mas
+    # se vier aware fazemos comparacao contra agora aware para evitar erro.
+    now = datetime.now(expiry.tzinfo) if expiry.tzinfo else datetime.now(UTC).replace(tzinfo=None)
+    if expiry > now + _REFRESH_MARGIN:
+        # Ainda valido por mais que a margem: nada a fazer.
+        return False
+
+    try:
+        creds.refresh(Request())
+    except Exception as exc:
+        log.warning("refresh_token_if_needed: falha ao renovar token em %s: %s", token_path, exc)
+        return False
+
+    try:
+        _save_token(creds, str(token_path))
+    except Exception as exc:
+        # O refresh em si deu certo; so falhou persistir. Loga e ainda
+        # retorna True pois o access_token novo ja esta em creds (utilizado
+        # in-memory pelo get_youtube_service que chama esta funcao).
+        log.warning("refresh_token_if_needed: token renovado mas falhou ao salvar em %s: %s", token_path, exc)
+    return True
+
+
 def get_youtube_service() -> Resource:
+    # Renova proativamente o access_token se proximo da expiracao, antes de
+    # buildar o service. Isso garante que em CI (sem fluxo manual) o token
+    # esteja valido quando ``build`` for chamado.
+    refresh_token_if_needed(Path(_token_path()))
+
     creds = _load_token()
     if creds and not creds.valid:
         if creds.expired and creds.refresh_token:

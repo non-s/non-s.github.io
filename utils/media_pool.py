@@ -11,6 +11,7 @@ from collections.abc import Iterator
 from pathlib import Path
 
 from utils.animal_branding import is_allowed_animal_text
+from utils.state_lock import state_lock
 
 log = logging.getLogger(__name__)
 
@@ -46,8 +47,59 @@ def _load_video_metadata(video: Path) -> dict:
     try:
         with open(meta_path, encoding="utf-8") as f:
             return json.load(f)
-    except Exception:
+    except Exception as exc:
+        log.debug("Metadata de video %s corrompida: %s", meta_path, exc)
         return {}
+
+
+MOOD_GENRES: dict[str, list[str]] = {
+    "fofura": ["bossa nova", "lounge", "chill", "easy listening"],
+    "relax": ["smooth jazz", "ambient", "calm", "meditation"],
+    "diversao": ["swing", "bebop", "fusion", "upbeat"],
+}
+
+
+def _load_audio_metadata(audio: Path) -> dict:
+    meta_path = audio.with_suffix(".json")
+    if not meta_path.exists():
+        return {}
+    try:
+        with open(meta_path, encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as exc:
+        log.debug("Metadata de audio %s corrompida: %s", meta_path, exc)
+        return {}
+
+
+def _audio_genres(meta: dict) -> list[str]:
+    """Extrai generos da metadata do Jamendo (musicinfo.tags.genres + tags top-level)."""
+    genres: list[str] = []
+    musicinfo = meta.get("musicinfo") or {}
+    if isinstance(musicinfo, dict):
+        mtags = musicinfo.get("tags") or {}
+        if isinstance(mtags, dict):
+            g = mtags.get("genres") or []
+            if isinstance(g, list):
+                genres.extend(str(x).lower() for x in g)
+    tags = meta.get("tags", "")
+    if isinstance(tags, str):
+        genres.extend(t.lower() for t in tags.split() if t)
+    elif isinstance(tags, list):
+        genres.extend(str(t).lower() for t in tags)
+    return genres
+
+
+def _filter_by_mood(pool: list[Path], mood: str, min_needed: int) -> list[Path]:
+    """Restringe o pool de audio as faixas cuja metadata bate com o mood.
+    Sem match suficiente, cai para o pool inteiro (mesmo padrao de _filter_by_animal)."""
+    wanted = [g.lower() for g in MOOD_GENRES.get(mood, [])]
+    if not wanted:
+        return pool
+    filtered = [
+        p for p in pool
+        if any(g in wanted for g in _audio_genres(_load_audio_metadata(p)))
+    ]
+    return filtered if len(filtered) >= min_needed else pool
 
 
 def _cuteness_score(video: Path) -> int:
@@ -64,19 +116,21 @@ def _cuteness_score(video: Path) -> int:
 def _load_recent() -> dict[str, list[str]]:
     try:
         return json.loads(_RECENT_FILE.read_text(encoding="utf-8"))
-    except Exception:
+    except Exception as exc:
+        log.debug("recent_media.json ausente/corrompido: %s", exc)
         return {"videos": [], "audio": []}
 
 
 def _remember_recent(kind: str, names: list[str], window: int) -> None:
-    data = _load_recent()
-    updated = (data.get(kind, []) + names)[-window:]
-    data[kind] = updated
-    try:
-        _RECENT_FILE.parent.mkdir(parents=True, exist_ok=True)
-        _RECENT_FILE.write_text(json.dumps(data), encoding="utf-8")
-    except Exception as exc:
-        log.warning("Falha ao salvar historico de midia recente: %s", exc)
+    with state_lock(_RECENT_FILE):
+        data = _load_recent()
+        updated = (data.get(kind, []) + names)[-window:]
+        data[kind] = updated
+        try:
+            _RECENT_FILE.parent.mkdir(parents=True, exist_ok=True)
+            _RECENT_FILE.write_text(json.dumps(data), encoding="utf-8")
+        except Exception as exc:
+            log.warning("Falha ao salvar historico de midia recente: %s", exc)
 
 
 def _avoid_recent(pool: list[Path], kind: str, min_needed: int) -> list[Path]:
@@ -137,10 +191,12 @@ def pick_videos(
     return chosen
 
 
-def pick_audio() -> Path | None:
+def pick_audio(mood: str = "") -> Path | None:
     pool = audio_pool()
     if not pool:
         return None
+    if mood:
+        pool = _filter_by_mood(pool, mood, min_needed=1)
     pool = _avoid_recent(pool, "audio", min_needed=1)
     chosen = random.choice(pool)
     _remember_recent("audio", [chosen.name], _RECENT_AUDIO_WINDOW)
@@ -152,7 +208,8 @@ def available_audio_metadata() -> Iterator[dict]:
         try:
             with open(p, encoding="utf-8") as f:
                 yield json.load(f)
-        except Exception:
+        except Exception as exc:
+            log.debug("Metadata de audio %s corrompida: %s", p, exc)
             continue
 
 

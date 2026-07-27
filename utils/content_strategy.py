@@ -11,9 +11,12 @@ Mapeia horário do dia -> mood para escolher cenas apropriadas:
 from __future__ import annotations
 
 import json
+import logging
 import random
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
+
+log = logging.getLogger(__name__)
 
 ROOT = Path(__file__).resolve().parent.parent
 _SCENE_PERFORMANCE_FILE = ROOT / "_data" / "scene_performance.json"
@@ -49,7 +52,8 @@ def _scene_weights() -> dict[str, float]:
     try:
         data = json.loads(_SCENE_PERFORMANCE_FILE.read_text(encoding="utf-8"))
         return data if isinstance(data, dict) else {}
-    except Exception:
+    except Exception as exc:
+        log.debug("scene_performance.json ausente/corrompido: %s", exc)
         return {}
 
 

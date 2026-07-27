@@ -61,7 +61,14 @@ from upload_youtube import (
     transition_broadcast,
     wait_for_stream_active,
 )
+from utils.live_chat import (
+    LiveChatWatcher,
+    discover_chat_id,
+    start_uptime_writer,
+    stop_uptime_writer,
+)
 from utils.log_config import configure_logging
+from utils.youtube_oauth import get_youtube_service
 
 log = logging.getLogger(__name__)
 
@@ -132,6 +139,28 @@ def _cleanup_live_artifacts(output_stem: str) -> None:
                 pass
 
 
+def _try_start_chat_watcher(
+    broadcast_id: str, start_time: float, current: LiveChatWatcher | None
+) -> LiveChatWatcher | None:
+    """Inicia o LiveChatWatcher se ainda nao foi iniciado e o liveChatId
+    estiver disponivel. Retorna o watcher ativo (ou o existente, ou None se
+    nao foi possivel)."""
+    if current is not None:
+        return current
+    try:
+        service = get_youtube_service()
+        chat_id = discover_chat_id(service, broadcast_id)
+        if not chat_id:
+            log.warning("liveChatId nao disponivel para o broadcast %s; chat desativado.", broadcast_id)
+            return None
+        watcher = LiveChatWatcher(service, chat_id, start_time=start_time)
+        watcher.start()
+        return watcher
+    except Exception as exc:
+        log.warning("Nao foi possivel iniciar o watcher do chat: %s", exc)
+        return None
+
+
 def main() -> int:
     configure_logging()
     # Sem isso, SIGTERM (cancelamento do job ou o hard limit de 360min dos
@@ -194,6 +223,15 @@ def main() -> int:
     start_time = time.time()
     target_seconds = duration_minutes * 60 if duration_minutes > 0 else 0
 
+    # Thread daemon que escreve _data/live_uptime.txt a cada 1s, lido pelo
+    # drawtext do FFmpeg (uptime real desde o inicio da sessao, nao pts:hms
+    # que reseta a cada reconexao).
+    uptime_thread = start_uptime_writer(start_time)
+    # Watcher do chat ao vivo: descobre o liveChatId do broadcast e faz poll
+    # a cada 10s reagindo a comandos (!scene, !uptime, !song, !help). So
+    # reage visualmente no overlay - nao posta mensagens (ToS do YouTube).
+    chat_watcher: LiveChatWatcher | None = None
+
     # Nao chamamos transition('testing') nem transition('live') aqui: com
     # enableMonitorStream=False a fase de testing e sempre invalida (403
     # invalidTransition), nao importa a ordem das chamadas - so existe fase
@@ -204,6 +242,13 @@ def main() -> int:
     stream_confirmed_active = False
     reconnect_count = 0
     consecutive_fast_failures = 0
+    # Revalida o streamStatus a cada _STREAM_REVALIDATE_INTERVAL reconexoes:
+    # o YouTube pode invalidar o stream do lado dele apos uma queda longa
+    # (ex: broadcast que ficou "active" sem receber video por tempo demais),
+    # e so revalidar no primeiro segmento deixaria o loop reconectando cego
+    # ate esgotar _MAX_RECONNECTS. Revalidar de tempos em tempos desiste
+    # cedo se o stream de fato morreu, em vez de ciclar ate o fim.
+    _STREAM_REVALIDATE_INTERVAL = 10
     code = 1
     # Default seguro: finaliza o broadcast a menos que um dos dois casos
     # "saida normal" abaixo explicitamente desligue isso. Cobre tanto o
@@ -235,6 +280,7 @@ def main() -> int:
                     _end_broadcast(broadcast_id, went_active=False)
                     return 1
                 stream_confirmed_active = True
+                chat_watcher = _try_start_chat_watcher(broadcast_id, start_time, chat_watcher)
 
             segment_max_seconds = (
                 remaining_minutes * 60 + _SEGMENT_WATCHDOG_GRACE_SECONDS if remaining_minutes else None
@@ -260,6 +306,18 @@ def main() -> int:
             if reconnect_count > _MAX_RECONNECTS:
                 log.error("FFmpeg falhou %d vezes seguidas; desistindo da live.", reconnect_count)
                 break
+
+            # Revalida o stream a cada _STREAM_REVALIDATE_INTERVAL reconexoes:
+            # cobre o caso de o stream expirar do lado do YouTube em sessoes
+            # longas (ver comentario no topo do bloco de revalidacao).
+            if reconnect_count % _STREAM_REVALIDATE_INTERVAL == 0:
+                log.info("Revalidando stream %s apos %d reconexoes...", meta["stream_id"], reconnect_count)
+                if not wait_for_stream_active(meta["stream_id"], timeout=120):
+                    log.error("Stream %s nao esta mais ativo apos revalidacao; abortando live.", meta["stream_id"])
+                    _end_broadcast(broadcast_id, went_active=stream_confirmed_active)
+                    return 1
+                stream_confirmed_active = True
+                chat_watcher = _try_start_chat_watcher(broadcast_id, start_time, chat_watcher)
 
             # Se varios segmentos seguidos caem quase na hora (bem menos que
             # o intervalo de ~2.8min medido para o CPU cair para tras), o
@@ -304,6 +362,12 @@ def main() -> int:
             )
         # Limpa arquivos temporários da live
         _cleanup_live_artifacts(output_stem)
+        # Para o watcher do chat e a thread de uptime (daemon, mas paramos
+        # explicitamente para apagar o overlay pendente e nao deixar arquivo
+        # obsoleto na tela da proxima sessao).
+        if chat_watcher is not None:
+            chat_watcher.stop()
+        stop_uptime_writer(uptime_thread)
 
     # 0 = sucesso, -15 = SIGTERM (desligamento gracoso do GHA).
     return 0 if code in (0, -15) else code

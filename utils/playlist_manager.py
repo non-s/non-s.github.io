@@ -12,7 +12,9 @@ import logging
 from pathlib import Path
 from typing import Any
 
-from upload_youtube import _retry_youtube_call
+from utils.channel_config import active_channel
+from utils.state_lock import state_lock
+from utils.youtube_retry import retry_youtube_call as _retry_youtube_call
 
 log = logging.getLogger(__name__)
 
@@ -44,17 +46,19 @@ def _load_cache() -> None:
     if _CACHE_FILE.exists():
         try:
             _playlist_cache = json.loads(_CACHE_FILE.read_text(encoding="utf-8"))
-        except Exception:
+        except Exception as exc:
+            log.debug("playlist_cache.json corrompido: %s", exc)
             _playlist_cache = {}
 
 
 def _save_cache() -> None:
     """Persiste o cache de playlist IDs no disco."""
-    try:
-        _DATA_DIR.mkdir(parents=True, exist_ok=True)
-        _CACHE_FILE.write_text(json.dumps(_playlist_cache, ensure_ascii=False, indent=2), encoding="utf-8")
-    except Exception as exc:
-        log.warning("Falha ao salvar cache de playlists: %s", exc)
+    with state_lock(_CACHE_FILE):
+        try:
+            _DATA_DIR.mkdir(parents=True, exist_ok=True)
+            _CACHE_FILE.write_text(json.dumps(_playlist_cache, ensure_ascii=False, indent=2), encoding="utf-8")
+        except Exception as exc:
+            log.warning("Falha ao salvar cache de playlists: %s", exc)
 
 
 def _find_or_create_playlist(service: Any, title: str) -> str:
@@ -68,6 +72,12 @@ def _find_or_create_playlist(service: Any, title: str) -> str:
     # infinito - se a playlist buscada nunca for encontrada, o unico jeito
     # de sair do loop e o pageToken acabar; um guard por numero de paginas
     # evita depender so disso, igual ao mesmo padrao em collect_analytics.py).
+    #
+    # So cria nova playlist se a busca foi bem-sucedida E nao encontrou:
+    # antes, um erro transitório de API (timeout, 503) caia no except e
+    # criava uma playlist duplicada toda vez que falhava - gerando canais
+    # com 5+ copias da mesma playlist "Pata Jazz | Shorts" e afins.
+    found_pid: str | None = None
     try:
         page_token = ""
         pages = 0
@@ -80,17 +90,24 @@ def _find_or_create_playlist(service: Any, title: str) -> str:
             )
             for item in resp.get("items", []):
                 if item.get("snippet", {}).get("title", "") == title:
-                    pid = item["id"]
-                    _playlist_cache[title] = pid
+                    found_pid = item["id"]
+                    _playlist_cache[title] = found_pid
                     _save_cache()
-                    return pid
+                    return found_pid
             page_token = resp.get("nextPageToken", "")
             if not page_token:
                 break
     except Exception as exc:
-        log.warning("Erro ao buscar playlists: %s", exc)
+        # Erro de rede/API: NAO cria playlist nova - se a busca falhou por
+        # motivo transitório, criar duplicata e pior. Retorna "" para o
+        # chamador pular silenciosamente (ja logado aqui).
+        log.warning("Erro ao buscar playlists (nao criando duplicata): %s", exc)
+        return ""
 
-    # Cria nova
+    if found_pid is not None:
+        return found_pid
+
+    # Cria nova (so quando a busca rodou completa e nao achou a playlist)
     try:
         body = {
             "snippet": {"title": title, "description": "Playlist automatica do canal Pata Jazz"},
@@ -110,10 +127,12 @@ def _find_or_create_playlist(service: Any, title: str) -> str:
 def add_video_to_playlist(service: Any, video_id: str, mood: str = "", kind: str = "") -> None:
     """Adiciona um video a playlist apropriada baseada em mood/kind."""
     target_title = ""
-    if mood and mood in PLAYLISTS_BY_MOOD:
-        target_title = PLAYLISTS_BY_MOOD[mood]
-    elif kind and kind in PLAYLISTS_BY_KIND:
-        target_title = PLAYLISTS_BY_KIND[kind]
+    by_mood = active_channel.playlists_by_mood
+    by_kind = active_channel.playlists_by_kind
+    if mood and mood in by_mood:
+        target_title = by_mood[mood]
+    elif kind and kind in by_kind:
+        target_title = by_kind[kind]
 
     if not target_title:
         return

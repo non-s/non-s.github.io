@@ -27,16 +27,21 @@ sys.path.insert(0, str(ROOT))
 
 from googleapiclient.http import MediaFileUpload
 
-from upload_youtube import _build_tags, _meta_path, _record_video_tags, _retry_youtube_call
+from upload_youtube import _build_tags, _meta_path, _record_video_tags
 from utils import ffmpeg_helpers
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.youtube_oauth import get_youtube_service
+from utils.youtube_retry import retry_youtube_call as _retry_youtube_call
 
 log = logging.getLogger(__name__)
 
 OUTPUT_DIR = ROOT / "_videos"
 MAX_UPLOADS_PER_RUN = 6
 UPLOAD_DELAY_SECONDS = 5  # pausa entre uploads para nao saturar a API
+# Maximo de tentativas de publicacao por video antes de desistir: evita
+# loop infinito em arquivo corrompido (duracao 0, metadata invalida) que
+# nunca vai publicar mas continua sendo re-tentado todo dia.
+_MAX_PUBLISH_ATTEMPTS = 3
 
 
 def _find_unpublished_videos(prefix: str = "pata_jazz_") -> list[tuple[Path, dict]]:
@@ -44,6 +49,12 @@ def _find_unpublished_videos(prefix: str = "pata_jazz_") -> list[tuple[Path, dic
 
     Um video e considerado 'nao publicado' se seu .json de metadados
     nao contem a chave 'published=True' ou 'video_id'.
+
+    Videos com 'publish_attempts >= _MAX_PUBLISH_ATTEMPTS' sao ignorados:
+    antes, um arquivo corrompido (duracao 0, metadata invalida, etc) era
+    re-tentado todo dia infinitamente, gastando quota e enchendo o log de
+    erros repetidos. Apos atingir o limite, o video e considerado
+    "permanentemente falhado" e skipado.
     """
     candidates = sorted(OUTPUT_DIR.glob(f"{prefix}*.json"), key=lambda p: p.stat().st_mtime)
     unpublished: list[tuple[Path, dict]] = []
@@ -51,6 +62,12 @@ def _find_unpublished_videos(prefix: str = "pata_jazz_") -> list[tuple[Path, dic
         try:
             data = json.loads(meta_path.read_text(encoding="utf-8"))
             if data.get("published") or data.get("video_id"):
+                continue
+            if data.get("publish_attempts", 0) >= _MAX_PUBLISH_ATTEMPTS:
+                log.warning(
+                    "Video %s descartado: %d tentativas de publicacao sem sucesso (limite %d).",
+                    meta_path.name, data.get("publish_attempts", 0), _MAX_PUBLISH_ATTEMPTS,
+                )
                 continue
             video_path = meta_path.with_suffix(".mp4")
             if video_path.exists():
@@ -136,7 +153,11 @@ def _publish_video(service, video_path: Path, meta: dict, language: str = "en") 
             _retry_youtube_call(service.thumbnails().set(videoId=video_id, media_body=thumb_media).execute)
             log.info("Thumbnail aplicada.")
         except Exception as exc:
-            hint = " (canal sem verificacao por telefone bloqueia thumbnail customizada - confira em youtube.com/verify)" if "403" in str(exc) else ""
+            hint = (
+                " (canal sem verificacao por telefone bloqueia thumbnail customizada "
+                "- confira em youtube.com/verify)"
+                if "403" in str(exc) else ""
+            )
             log.warning("Falha ao aplicar thumbnail: %s%s", exc, hint)
 
     # Legenda
@@ -151,7 +172,13 @@ def _publish_video(service, video_path: Path, meta: dict, language: str = "en") 
                     "isDraft": False,
                 }
             }
-            cap_mimetype = "text/vtt" if caption_path.suffix.lower() == ".vtt" else "application/x-subrip"
+            suffix = caption_path.suffix.lower()
+            if suffix == ".vtt":
+                cap_mimetype = "text/vtt"
+            elif suffix == ".ass":
+                cap_mimetype = "text/x-ssa"
+            else:
+                cap_mimetype = "application/x-subrip"
             _retry_youtube_call(
                 service.captions().insert(
                     part="snippet",
@@ -209,9 +236,30 @@ def main() -> int:
                 log.info("Publicado %d/%d: %s", published, min(len(unpublished), MAX_UPLOADS_PER_RUN), video_id)
                 if published < MAX_UPLOADS_PER_RUN:
                     time.sleep(UPLOAD_DELAY_SECONDS)
+            else:
+                # _publish_video retornou None (duracao invalida, etc):
+                # incrementa o contador de tentativas para que o video seja
+                # skipado apos _MAX_PUBLISH_ATTEMPTS falhas consecutivas.
+                attempts = meta.get("publish_attempts", 0) + 1
+                meta["publish_attempts"] = attempts
+                video_path.with_suffix(".json").write_text(
+                    json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8"
+                )
+                log.warning(
+                    "Video %s falhou (tentativa %d/%d).",
+                    video_path.name, attempts, _MAX_PUBLISH_ATTEMPTS,
+                )
         except Exception as exc:
             log.error("Falha ao publicar %s: %s", video_path.name, exc)
             log_exception_to_file(exc, OUTPUT_DIR)
+            attempts = meta.get("publish_attempts", 0) + 1
+            meta["publish_attempts"] = attempts
+            try:
+                video_path.with_suffix(".json").write_text(
+                    json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8"
+                )
+            except Exception:
+                pass
             continue
 
     log.info("Lote de publicacao concluido: %d videos publicados.", published)

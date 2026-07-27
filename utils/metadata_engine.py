@@ -10,6 +10,7 @@ import re
 from typing import Any, Literal
 
 from utils.ai_helper import ai_text, is_safe_ai_text
+from utils.animal_branding import detect_animal
 from utils.seo_keywords import (
     _MAX_HASHTAGS,
     generate_description,
@@ -48,13 +49,16 @@ def generate_metadata(
 ) -> dict[str, Any]:
     """Gera metadados completos usando Gemini + SEO otimizado, com fallback local seguro."""
     # Extrai informações da cena para SEO
+    animal = detect_animal(scene)
     s = scene.lower()
-    animal = "cat" if ("cat" in s or "kitten" in s) else "dog"
     acao = "relaxing" if ("sleep" in s or "relax" in s) else "playing"
     estilo_musical = "relaxing jazz"
 
-    # Gera título otimizado com SEO, usando fallback_title como base se fornecido
-    title_pattern = "fallback_title"
+    # Gera título otimizado com SEO, usando fallback_title como base se fornecido.
+    # Antes, "fallback_title" era uma magic string que poluia o tracking de
+    # padroes em video_tags.json/title_pattern_performance.json. Agora usamos
+    # um valor explicito para distinguir "fallback fornecido" de "sem padrao".
+    title_pattern = "fallback_provided"
     if fallback_title:
         title = fallback_title
     else:

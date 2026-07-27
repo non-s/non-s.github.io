@@ -21,8 +21,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Literal, Protocol
 
-from utils.animal_branding import hook_for_scene, random_scene
-from utils.caption_engine import generate_srt, save_srt
+from utils.animal_branding import detect_animal, hook_for_scene, random_scene
+from utils.caption_engine import generate_ass, generate_srt, save_ass, save_srt
 from utils.ffmpeg_helpers import get_video_duration, run_ffmpeg
 from utils.media_pool import ensure_dirs, pick_audio, pick_videos, pool_stats
 from utils.metadata_engine import clean_title, generate_metadata
@@ -35,9 +35,13 @@ log = logging.getLogger(__name__)
 class _ThumbnailMaker(Protocol):
     """Assinatura real de make_short_thumbnail/make_horizontal_thumbnail -
     um Callable[[str, str, Path], None] simples nao cobria o kwarg
-    video_path usado em _build_video (linha ~286)."""
+    video_path usado em _build_video (linha ~286), nem o kwarg variant
+    usado na geracao das duas variantes para A/B testing."""
 
-    def __call__(self, hook: str, emoji: str, output: Path, *, video_path: Path | None = None) -> None: ...
+    def __call__(
+        self, hook: str, emoji: str, output: Path, *,
+        video_path: Path | None = None, variant: str = "A",
+    ) -> None: ...
 
 
 @dataclass(frozen=True)
@@ -162,81 +166,85 @@ def _build_multi_clip_short(
         selected = selected[:n_clips]
         per_clip = spec.duration // n_clips
 
-    # Normaliza cada clipe individualmente
+    # Normaliza cada clipe individualmente. try/finally garante limpeza
+    # dos arquivos *_clip_*.mp4 mesmo se o xfade falhar - antes, uma falha
+    # no run_ffmpeg do xfade (linha ~235) deixava os clipes processados
+    # orfaos no disco ate a proxima geracao limpar manualmente.
     processed: list[Path] = []
-    for i, v in enumerate(selected):
-        proc = output.parent / f"{output.stem}_clip_{i}.mp4"
-        run_ffmpeg([
-            "-i", str(v),
-            "-vf", _build_video_filter(spec),
+    try:
+        for i, v in enumerate(selected):
+            proc = output.parent / f"{output.stem}_clip_{i}.mp4"
+            run_ffmpeg([
+                "-i", str(v),
+                "-vf", _build_video_filter(spec),
+                "-c:v", "libx264", "-preset", "fast", "-crf", "23",
+                "-t", str(per_clip), "-r", "30",
+                "-pix_fmt", "yuv420p", "-an",
+                str(proc),
+            ])
+            processed.append(proc)
+
+        # Monta filter complex com xfade
+        if n_clips == 1:
+            run_ffmpeg(["-i", str(processed[0]), "-c", "copy", str(output)])
+            return
+
+        filter_parts: list[str] = []
+        offsets: list[float] = []
+
+        prev_label = "0:v"
+        for i in range(1, n_clips):
+            offset = per_clip * i - xfade_duration * i
+            offsets.append(offset)
+            out_label = f"v{i}"
+            filter_parts.append(
+                f"[{prev_label}][{i}:v]xfade=transition=fade:duration={xfade_duration}:offset={offset}[{out_label}]"
+            )
+            prev_label = out_label
+
+        # Adiciona overlay de texto (hook) no resultado do xfade
+        if hook:
+            overlay_label = "vtxt"
+            filter_parts.append(
+                f"[{prev_label}]{_build_overlay_filter(hook, spec.width, spec.height)}[{overlay_label}]"
+            )
+            prev_label = overlay_label
+
+        inputs: list[str] = []
+        for p in processed:
+            inputs += ["-i", str(p)]
+
+        # Input de audio deve vir ANTES das opcoes de output (FFmpeg exige que
+        # opcoes de input como -stream_loop precedam -i, e todas as opcoes de
+        # input venham antes das de output).
+        if audio_path:
+            inputs += ["-stream_loop", "-1", "-i", str(audio_path)]
+
+        final_label = prev_label
+        cmd_args = inputs + [
+            "-filter_complex", ";".join(filter_parts),
+            "-map", f"[{final_label}]",
             "-c:v", "libx264", "-preset", "fast", "-crf", "23",
-            "-t", str(per_clip), "-r", "30",
-            "-pix_fmt", "yuv420p", "-an",
-            str(proc),
-        ])
-        processed.append(proc)
+            "-pix_fmt", "yuv420p", "-r", "30",
+            "-movflags", "+faststart",
+        ]
 
-    # Monta filter complex com xfade
-    if n_clips == 1:
-        run_ffmpeg(["-i", str(processed[0]), "-c", "copy", str(output)])
-        return
+        if audio_path:
+            # Indice do audio = numero de clipes processados (videos 0..n-1, audio n).
+            cmd_args += ["-map", f"{n_clips}:a:0", "-c:a", "aac", "-b:a", "192k"]
 
-    filter_parts: list[str] = []
-    offsets: list[float] = []
+        # -t sempre aplicado (nao so quando ha audio): sem ele, a duracao do
+        # xfade final e sum(per_clip) - (n_clips-1)*xfade_duration, que fica
+        # abaixo de spec.duration por causa do truncamento inteiro de per_clip -
+        # o suficiente para estourar TOLERANCE_SECONDS na validacao (video_validator).
+        cmd_args += ["-t", str(spec.duration)]
 
-    prev_label = "0:v"
-    for i in range(1, n_clips):
-        offset = per_clip * i - xfade_duration * i
-        offsets.append(offset)
-        out_label = f"v{i}"
-        filter_parts.append(
-            f"[{prev_label}][{i}:v]xfade=transition=fade:duration={xfade_duration}:offset={offset}[{out_label}]"
-        )
-        prev_label = out_label
-
-    # Adiciona overlay de texto (hook) no resultado do xfade
-    if hook:
-        overlay_label = "vtxt"
-        filter_parts.append(
-            f"[{prev_label}]{_build_overlay_filter(hook, spec.width, spec.height)}[{overlay_label}]"
-        )
-        prev_label = overlay_label
-
-    inputs: list[str] = []
-    for p in processed:
-        inputs += ["-i", str(p)]
-
-    # Input de audio deve vir ANTES das opcoes de output (FFmpeg exige que
-    # opcoes de input como -stream_loop precedam -i, e todas as opcoes de
-    # input venham antes das de output).
-    if audio_path:
-        inputs += ["-stream_loop", "-1", "-i", str(audio_path)]
-
-    final_label = prev_label
-    cmd_args = inputs + [
-        "-filter_complex", ";".join(filter_parts),
-        "-map", f"[{final_label}]",
-        "-c:v", "libx264", "-preset", "fast", "-crf", "23",
-        "-pix_fmt", "yuv420p", "-r", "30",
-        "-movflags", "+faststart",
-    ]
-
-    if audio_path:
-        # Indice do audio = numero de clipes processados (videos 0..n-1, audio n).
-        cmd_args += ["-map", f"{n_clips}:a:0", "-c:a", "aac", "-b:a", "192k"]
-
-    # -t sempre aplicado (nao so quando ha audio): sem ele, a duracao do
-    # xfade final e sum(per_clip) - (n_clips-1)*xfade_duration, que fica
-    # abaixo de spec.duration por causa do truncamento inteiro de per_clip -
-    # o suficiente para estourar TOLERANCE_SECONDS na validacao (video_validator).
-    cmd_args += ["-t", str(spec.duration)]
-
-    cmd_args += [str(output)]
-    run_ffmpeg(cmd_args)
-
-    # Limpa arquivos temporarios
-    for p in processed:
-        p.unlink(missing_ok=True)
+        cmd_args += [str(output)]
+        run_ffmpeg(cmd_args)
+    finally:
+        # Limpa arquivos temporarios (sempre, mesmo em falha)
+        for p in processed:
+            p.unlink(missing_ok=True)
 
 
 def build_pata_jazz_video(
@@ -259,13 +267,12 @@ def build_pata_jazz_video(
 
     scene = spec.scene if spec.scene else random_scene()
     hook, emoji = hook_for_scene(scene)
-    audio_path = pick_audio()
+    audio_path = pick_audio(mood=spec.mood)
     # Deriva o animal do scene para o b-roll bater com o hook/titulo - sem
     # isso pick_videos() escolhia do pool inteiro (gato OU cachorro) sem
     # olhar pra cena, entao um titulo "gatinho dormindo" podia sair com
     # clipes de cachorro no video.
-    s = scene.lower()
-    animal = "cat" if ("cat" in s or "kitten" in s) else "dog"
+    animal = detect_animal(scene)
 
     output, thumb, _ = _prepare_output_paths(stem_prefix, output_dir, thumb_dir)
 
@@ -296,8 +303,18 @@ def build_pata_jazz_video(
         video = random.choice(single)
         _build_single_clip_video(spec, video, audio_path, output)
 
-    # Passa o video_path para o thumbnail maker usar frame real
-    spec.thumbnail_maker(hook, emoji, thumb, video_path=output)
+    # A/B testing: gera duas variantes de thumbnail. thumb e o caminho base
+    # ({stem}.png); as variantes sao {stem}_thumb_a.png e {stem}_thumb_b.png.
+    # O caminho "thumbnail" (legado) aponta pra variante A pra backward compat.
+    thumb_a = thumb.with_name(f"{thumb.stem}_thumb_a.png")
+    thumb_b = thumb.with_name(f"{thumb.stem}_thumb_b.png")
+    spec.thumbnail_maker(hook, emoji, thumb_a, video_path=output, variant="A")
+    try:
+        spec.thumbnail_maker(hook, emoji, thumb_b, video_path=output, variant="B")
+    except Exception as exc:
+        # Variante B e opcional - se falhar, A ainda e suficiente pra publicar.
+        log.warning("Falha ao gerar variante B de thumbnail: %s", exc)
+        thumb_b = Path()
 
     fallback_title = clean_title(f"{hook} | Pata Jazz")
     metadata = generate_metadata(
@@ -318,16 +335,23 @@ def build_pata_jazz_video(
         "duration": spec.duration,
         "resolution": f"{spec.width}x{spec.height}",
         "video": str(output),
-        "thumbnail": str(thumb),
+        "thumbnail": str(thumb_a),
+        "thumbnails": [str(thumb_a), str(thumb_b)] if thumb_b.name else [str(thumb_a)],
         "audio": str(audio_path) if audio_path else None,
     }
     output.with_suffix(".json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    # Gera legenda SRT automatica
+    # Gera legenda automatica: Shorts usam ASS estilizado (animado
+    # palavra-a-palavra); horizontais/live continuam com SRT (ASS animado
+    # e overkill para video longo).
     try:
-        srt_content = generate_srt(hook, scene, spec.duration, spec.kind, emoji)
-        srt_path = save_srt(srt_content, output)
-        meta["caption"] = str(srt_path)
+        if spec.kind == "short":
+            cap_content = generate_ass(hook, scene, spec.duration, spec.kind, emoji)
+            cap_path = save_ass(cap_content, output)
+        else:
+            cap_content = generate_srt(hook, scene, spec.duration, spec.kind, emoji)
+            cap_path = save_srt(cap_content, output)
+        meta["caption"] = str(cap_path)
         output.with_suffix(".json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
     except Exception as exc:
         log.warning("Falha ao gerar legenda: %s", exc)
@@ -337,7 +361,9 @@ def build_pata_jazz_video(
     # inteira toda vez que sync_jazz_music.py falha ou o pool esta vazio,
     # em vez de so publicar o video sem trilha como _validate_source_pools
     # ja pretendia permitir (so avisa, nao levanta excecao).
-    validation = validate_generated_video(output, meta["resolution"], spec.duration, expect_audio=audio_path is not None)
+    validation = validate_generated_video(
+        output, meta["resolution"], spec.duration, expect_audio=audio_path is not None
+    )
     if not validation.ok:
         raise RuntimeError(f"Vídeo gerado não passou na validação: {'; '.join(validation.errors)}")
     log.info("%s gerado e validado: %s", spec.kind.capitalize(), output)

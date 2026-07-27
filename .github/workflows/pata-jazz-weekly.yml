@@ -40,11 +40,11 @@ jobs:
       JAMENDO_CLIENT_ID: ${{ secrets.JAMENDO_CLIENT_ID }}
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
       - name: "Python 3.11"
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: "3.11"
           cache: "pip"
@@ -54,8 +54,8 @@ jobs:
           sudo apt-get install -y ffmpeg
       - name: "Instalar dependencias"
         run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install --no-cache-dir --upgrade pip
+          pip install --no-cache-dir -r requirements.txt
       - name: "Restaurar token e caches"
         uses: ./.github/actions/restore-token-and-cache
         with:
@@ -80,7 +80,7 @@ jobs:
         # shorts sobrevivem mesmo que o resto do job nao termine. A chave
         # comeca com "weekly-videos-" para continuar batendo com o
         # restore-keys do job publish.
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: _videos
           key: weekly-videos-shorts-${{ github.run_id }}
@@ -91,7 +91,7 @@ jobs:
             python generate_pata_jazz_horizontal.py || echo "::warning::Horizontal $i falhou, continuando"
           done
       - name: "Salvar cache de videos gerados"
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: _videos
           key: weekly-videos-${{ github.run_id }}
@@ -131,27 +131,32 @@ jobs:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
       - name: "Python 3.11"
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: "3.11"
           cache: "pip"
       - name: "Instalar dependencias"
         run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install --no-cache-dir --upgrade pip
+          pip install --no-cache-dir -r requirements.txt
       - name: "Restaurar token e caches"
         uses: ./.github/actions/restore-token-and-cache
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
       - name: "Restaurar cache de videos gerados"
-        uses: actions/cache@v4
+        # Chave com run_id (nao estatica): cache e imutavel - uma chave
+        # estatica "weekly-videos" travaria para sempre nos videos da primeira
+        # execucao, ignorando os gerados depois. Com run_id restauramos via
+        # restore-keys o cache mais recente que ainda nao foi "finalizado"
+        # (cache hit na chave exata) e salvamos um novo a cada run.
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: _videos
-          key: weekly-videos
+          key: weekly-videos-publish-${{ github.run_id }}
           restore-keys: weekly-videos-
       - name: "Publicar proximos 6 videos"
         env:

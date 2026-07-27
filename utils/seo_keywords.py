@@ -9,10 +9,15 @@ Em ingles: o nicho pet+jazz e dominado por volume de busca em ingles
 from __future__ import annotations
 
 import json
+import logging
 import random
 import textwrap
 from pathlib import Path
 from typing import Literal
+
+from utils.channel_config import active_channel
+
+log = logging.getLogger(__name__)
 
 ROOT = Path(__file__).resolve().parent.parent
 _TITLE_PATTERN_PERFORMANCE_FILE = ROOT / "_data" / "title_pattern_performance.json"
@@ -105,7 +110,8 @@ def _title_pattern_weights() -> dict[str, float]:
     try:
         data = json.loads(_TITLE_PATTERN_PERFORMANCE_FILE.read_text(encoding="utf-8"))
         return data if isinstance(data, dict) else {}
-    except Exception:
+    except Exception as exc:
+        log.debug("title_pattern_performance.json ausente/corrompido: %s", exc)
         return {}
 
 
@@ -118,7 +124,7 @@ def pick_title_pattern(kind: Literal["short", "horizontal", "live"]) -> str:
     sem nunca zerar a chance dos outros (ver _MIN_WEIGHT em
     collect_analytics.py).
     """
-    patterns = TITLE_PATTERNS.get(kind, TITLE_PATTERNS["short"])
+    patterns = active_channel.title_patterns.get(kind, active_channel.title_patterns["short"])
     weights_by_pattern = _title_pattern_weights()
     if not weights_by_pattern:
         return random.choice(patterns)
@@ -143,8 +149,9 @@ def generate_title_with_pattern(
     pattern = pick_title_pattern(kind)
 
     # Seleciona adjetivos relevantes
-    adjetivos_cuteness = random.sample(HIGH_PERFORMANCE_KEYWORDS["cuteness"], 2)
-    adjetivos_relax = random.sample(HIGH_PERFORMANCE_KEYWORDS["relaxation"], 1)
+    kws = active_channel.seo_keywords
+    adjetivos_cuteness = random.sample(kws["cuteness"], 2)
+    adjetivos_relax = random.sample(kws["relaxation"], 1)
     adjetivo = random.choice(adjetivos_cuteness + adjetivos_relax)
 
     # Seleciona emoção/benefício

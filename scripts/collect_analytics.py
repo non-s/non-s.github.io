@@ -17,16 +17,20 @@ from __future__ import annotations
 
 import json
 import logging
+import math
 import sys
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
+
+from googleapiclient.http import MediaFileUpload
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from upload_youtube import _retry_youtube_call
 from utils.log_config import configure_logging
+from utils.state_lock import state_lock
 from utils.youtube_oauth import get_youtube_service
+from utils.youtube_retry import retry_youtube_call as _retry_youtube_call
 
 log = logging.getLogger(__name__)
 
@@ -44,6 +48,14 @@ TITLE_PATTERN_PERFORMANCE_FILE = DATA_DIR / "title_pattern_performance.json"
 _MIN_TITLE_PATTERN_SAMPLES = 3
 _MIN_TITLE_PATTERN_WEIGHT = 0.4
 _MAX_TITLE_PATTERN_WEIGHT = 2.5
+
+# Thumbnail A/B testing: apos _THUMBNAIL_ROTATION_DAYS dias, se o video
+# performar abaixo de _THUMBNAIL_ROTATION_THRESHOLD x a mediana de views do
+# canal, troca a thumbnail ativa (variante A) pela variante B via
+# thumbnails.set. A YouTube Data API so aceita 1 thumbnail por video (nao
+# suporta A/B nativamente); essa rotacao e a alternativa pratica.
+_THUMBNAIL_ROTATION_DAYS = 7
+_THUMBNAIL_ROTATION_THRESHOLD = 0.5
 
 
 def _to_int(value) -> int:
@@ -126,6 +138,98 @@ def _load_video_tags() -> dict:
         return {}
 
 
+def _save_video_tags(tags: dict) -> None:
+    """Salva o mapeamento video_tags.json atomico (state_lock) - usado por
+    maybe_rotate_thumbnail pra marcar thumbnail_variant="B" apos trocar."""
+    with state_lock(VIDEO_TAGS_FILE):
+        try:
+            VIDEO_TAGS_FILE.parent.mkdir(parents=True, exist_ok=True)
+            VIDEO_TAGS_FILE.write_text(json.dumps(tags, ensure_ascii=False, indent=2), encoding="utf-8")
+        except Exception as exc:
+            log.warning("Falha ao salvar video_tags: %s", exc)
+
+
+def _median_views(stats: list[dict]) -> float:
+    """Mediana de views do conjunto de videos coletados. Usada como baseline
+    para decidir se um video esta 'abaixo da mediana' e merece rotacao de
+    thumbnail."""
+    views = sorted(v["views"] for v in stats if "views" in v)
+    if not views:
+        return 0.0
+    mid = len(views) // 2
+    if len(views) % 2 == 1:
+        return float(views[mid])
+    return (views[mid - 1] + views[mid]) / 2
+
+
+def maybe_rotate_thumbnail(
+    service,
+    video_id: str,
+    video_tags_entry: dict,
+    *,
+    median_views: float = 0.0,
+    now: datetime | None = None,
+) -> bool:
+    """Rotaciona a thumbnail de um video da variante A para a B se o video
+    performar abaixo de _THUMBNOT_ROTATION_THRESHOLD x a mediana apos
+    _THUMBNAIL_ROTATION_DAYS dias.
+
+    A YouTube Data API v3 `thumbnails.set` aceita apenas 1 thumbnail por
+    chamada e sobrescreve a anterior - nao suporta A/B nativamente. Esta
+    rotacao e a alternativa pratica: publica A no upload, e se apos N dias o
+    video nao decolar, troca para B (paleta/impacto diferentes) e marca
+    `thumbnail_variant: "B"` no video_tags.json pra nao rotacionar de novo.
+
+    Retorna True se trocou, False caso contrario (ja e B, nao tem 2
+    variantes, < N dias, ou views ainda acima do threshold).
+    """
+    if video_tags_entry.get("thumbnail_variant") == "B":
+        return False
+
+    thumbnails = video_tags_entry.get("thumbnails") or []
+    if len(thumbnails) < 2:
+        return False
+
+    now = now or datetime.now(UTC)
+    uploaded_at = video_tags_entry.get("uploaded_at")
+    if uploaded_at:
+        try:
+            uploaded_dt = datetime.fromisoformat(uploaded_at)
+        except Exception:
+            uploaded_dt = None
+        if uploaded_dt is not None:
+            age = now - uploaded_dt
+            if age < timedelta(days=_THUMBNAIL_ROTATION_DAYS):
+                return False
+
+    if median_views <= 0:
+        return False
+    views = _to_int(video_tags_entry.get("views"))
+    if views >= median_views * _THUMBNAIL_ROTATION_THRESHOLD:
+        return False
+
+    # A segunda thumbnail e a variante B (index 1, ver video_builder).
+    thumb_b = Path(thumbnails[1])
+    if not thumb_b.exists():
+        log.warning("maybe_rotate_thumbnail: variante B ausente (%s) para %s", thumb_b, video_id)
+        return False
+
+    try:
+        _retry_youtube_call(
+            service.thumbnails().set(
+                videoId=video_id, media_body=MediaFileUpload(str(thumb_b))
+            ).execute
+        )
+    except Exception as exc:
+        log.warning("maybe_rotate_thumbnail: falha ao trocar thumbnail de %s: %s", video_id, exc)
+        return False
+
+    log.info("Thumbnail de %s rotacionada A->B (views=%d < %.1f%% da mediana %.0f).",
+             video_id, views, _THUMBNAIL_ROTATION_THRESHOLD * 100, median_views)
+    video_tags_entry["thumbnail_variant"] = "B"
+    return True
+
+
 def _load_scene_performance() -> dict[str, float]:
     try:
         return json.loads(SCENE_PERFORMANCE_FILE.read_text(encoding="utf-8")) if SCENE_PERFORMANCE_FILE.exists() else {}
@@ -161,6 +265,11 @@ def _compute_weighted_performance(
     ser escolhido de volta). Limitado a [min_weight, max_weight] pra nunca
     zerar nem monopolizar uma opcao so por causa de uma amostra pequena ou
     um video viral isolado.
+
+    Usa o lower bound do Wilson score interval (95% confianca) sobre a
+    proporcao de videos acima da mediana geral: mais conservador que a
+    media simples com amostras pequenas - um viral isolado nao infla o
+    peso de uma cena inconsistente.
     """
     views_by_key: dict[str, list[int]] = {}
     for video in stats:
@@ -173,16 +282,35 @@ def _compute_weighted_performance(
     all_views = [v for views in views_by_key.values() for v in views]
     if not all_views:
         return {}
-    overall_avg = sum(all_views) / len(all_views)
-    if overall_avg <= 0:
+    if sum(all_views) <= 0:
         return {}
+    all_views_sorted = sorted(all_views)
+    mid = len(all_views_sorted) // 2
+    if len(all_views_sorted) % 2 == 1:
+        median = all_views_sorted[mid]
+    else:
+        median = (all_views_sorted[mid - 1] + all_views_sorted[mid]) / 2
+
+    z = 1.96
+    raw_lower_bounds: dict[str, float] = {}
+    for key, views in views_by_key.items():
+        n = len(views)
+        if n < min_samples:
+            continue
+        successes = sum(1 for v in views if v > median)
+        p = successes / n
+        denom = 1 + z * z / n
+        lower = (p + z * z / (2 * n) - z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n))) / denom
+        raw_lower_bounds[key] = lower
+
+    if not raw_lower_bounds:
+        return {}
+    avg_lower = sum(raw_lower_bounds.values()) / len(raw_lower_bounds)
 
     weights: dict[str, float] = {}
-    for key, views in views_by_key.items():
-        if len(views) < min_samples:
-            continue
-        key_avg = sum(views) / len(views)
-        weights[key] = max(min_weight, min(max_weight, key_avg / overall_avg))
+    for key, lower in raw_lower_bounds.items():
+        weight = lower / avg_lower if avg_lower > 0 else 1.0
+        weights[key] = max(min_weight, min(max_weight, weight))
 
     return weights
 
@@ -265,6 +393,25 @@ def main() -> int:
     if title_pattern_weights:
         _update_title_pattern_performance(title_pattern_weights)
 
+    # Thumbnail A/B rotation: videos elegiveis (2 variantes, >= 7 dias, abaixo
+    # da mediana) tem a thumbnail trocada da variante A para a B. So roda se houver
+    # videos com 2 variantes registradas no video_tags; caso contrario e no-op.
+    views_by_id = {v["video_id"]: v["views"] for v in stats}
+    median = _median_views(stats)
+    rotated_any = False
+    for vid, entry in video_tags.items():
+        if not isinstance(entry, dict):
+            continue
+        if len(entry.get("thumbnails") or []) < 2:
+            continue
+        entry_with_views = {**entry, "views": views_by_id.get(vid, 0)}
+        if maybe_rotate_thumbnail(service, vid, entry_with_views, median_views=median):
+            # entry_with_views e uma copia; atualiza a entrada real e persiste.
+            entry["thumbnail_variant"] = "B"
+            rotated_any = True
+    if rotated_any:
+        _save_video_tags(video_tags)
+
     return 0
 
 
@@ -280,17 +427,18 @@ def _append_history(report: dict) -> None:
         "total_comments": report["total_comments"],
         "avg_views": report["avg_views"],
     }
-    try:
-        history = json.loads(HISTORY_FILE.read_text(encoding="utf-8")) if HISTORY_FILE.exists() else []
-    except Exception:
-        history = []
-    history.append(snapshot)
-    history = history[-MAX_HISTORY_ENTRIES:]
-    try:
-        HISTORY_FILE.write_text(json.dumps(history, ensure_ascii=False, indent=2), encoding="utf-8")
-        log.info("Historico de analytics atualizado: %s (%d snapshots)", HISTORY_FILE, len(history))
-    except Exception as exc:
-        log.warning("Falha ao salvar historico de analytics: %s", exc)
+    with state_lock(HISTORY_FILE):
+        try:
+            history = json.loads(HISTORY_FILE.read_text(encoding="utf-8")) if HISTORY_FILE.exists() else []
+        except Exception:
+            history = []
+        history.append(snapshot)
+        history = history[-MAX_HISTORY_ENTRIES:]
+        try:
+            HISTORY_FILE.write_text(json.dumps(history, ensure_ascii=False, indent=2), encoding="utf-8")
+            log.info("Historico de analytics atualizado: %s (%d snapshots)", HISTORY_FILE, len(history))
+        except Exception as exc:
+            log.warning("Falha ao salvar historico de analytics: %s", exc)
 
 
 def _update_scene_performance(scene_weights: dict[str, float]) -> None:
@@ -304,11 +452,12 @@ def _update_scene_performance(scene_weights: dict[str, float]) -> None:
     ultimo valor confiavel ate a proxima amostra suficiente.
     """
     merged = {**_load_scene_performance(), **scene_weights}
-    try:
-        SCENE_PERFORMANCE_FILE.write_text(json.dumps(merged, ensure_ascii=False, indent=2), encoding="utf-8")
-        log.info("Performance por cena atualizada: %s (%d cenas)", SCENE_PERFORMANCE_FILE, len(merged))
-    except Exception as exc:
-        log.warning("Falha ao salvar performance por cena: %s", exc)
+    with state_lock(SCENE_PERFORMANCE_FILE):
+        try:
+            SCENE_PERFORMANCE_FILE.write_text(json.dumps(merged, ensure_ascii=False, indent=2), encoding="utf-8")
+            log.info("Performance por cena atualizada: %s (%d cenas)", SCENE_PERFORMANCE_FILE, len(merged))
+        except Exception as exc:
+            log.warning("Falha ao salvar performance por cena: %s", exc)
 
 
 def _update_title_pattern_performance(title_pattern_weights: dict[str, float]) -> None:
@@ -319,14 +468,17 @@ def _update_title_pattern_performance(title_pattern_weights: dict[str, float]) -
     especifica, e sobrescrever apagaria o peso ja calculado dele).
     """
     merged = {**_load_title_pattern_performance(), **title_pattern_weights}
-    try:
-        TITLE_PATTERN_PERFORMANCE_FILE.write_text(json.dumps(merged, ensure_ascii=False, indent=2), encoding="utf-8")
-        log.info(
-            "Performance por padrao de titulo atualizada: %s (%d padroes)",
-            TITLE_PATTERN_PERFORMANCE_FILE, len(merged),
-        )
-    except Exception as exc:
-        log.warning("Falha ao salvar performance por padrao de titulo: %s", exc)
+    with state_lock(TITLE_PATTERN_PERFORMANCE_FILE):
+        try:
+            TITLE_PATTERN_PERFORMANCE_FILE.write_text(
+                json.dumps(merged, ensure_ascii=False, indent=2), encoding="utf-8"
+            )
+            log.info(
+                "Performance por padrao de titulo atualizada: %s (%d padroes)",
+                TITLE_PATTERN_PERFORMANCE_FILE, len(merged),
+            )
+        except Exception as exc:
+            log.warning("Falha ao salvar performance por padrao de titulo: %s", exc)
 
 
 if __name__ == "__main__":

@@ -9,6 +9,7 @@ import logging
 import subprocess
 import tempfile
 import textwrap
+from dataclasses import dataclass
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
@@ -24,15 +25,24 @@ def _save_under_2mb(img: Image.Image, output: Path) -> None:
     A YouTube API rejeita thumbnails maiores que 2 MB (MediaUploadSizeError).
     Reduz a qualidade JPEG progressivamente; se ainda assim exceder o limite,
     redimensiona mantendo aspecto ate caber.
+
+    Para PNG (lossless), o parametro ``quality`` e ignorado - o loop de
+    qualidades 95->30 nao reduz o tamanho, so desperdica CPU. Pula direto
+    para o redimensionamento se a primeira tentativa PNG nao couber.
     """
-    for quality in (95, 85, 75, 60, 45, 30):
+    is_png = output.suffix.lower() == ".png"
+    fmt = "PNG" if is_png else "JPEG"
+    # Para PNG, so testa uma vez (quality e ignorado); para JPEG, itera.
+    qualities = (95,) if is_png else (95, 85, 75, 60, 45, 30)
+    for quality in qualities:
         buf = io.BytesIO()
-        img.save(buf, format="PNG" if output.suffix.lower() == ".png" else "JPEG", quality=quality)
+        img.save(buf, format=fmt, quality=quality)
         if buf.tell() <= _YOUTUBE_THUMBNAIL_MAX_BYTES:
             output.write_bytes(buf.getvalue())
             log.info("Thumbnail salva (%s, quality=%s, %.0f KB)", output.name, quality, buf.tell() / 1024)
             return
-        log.warning("Thumbnail ainda tem %.0f KB em quality=%s; reduzindo...", buf.tell() / 1024, quality)
+        if not is_png:
+            log.warning("Thumbnail ainda tem %.0f KB em quality=%s; reduzindo...", buf.tell() / 1024, quality)
 
     # Ultimo recurso: redimensionar mantendo aspecto
     w, h = img.size
@@ -61,6 +71,23 @@ PALETTE = {
     "gradient_start": "#1a1a3e",
     "gradient_end": "#0f0f23",
 }
+
+# Variante B para A/B testing de thumbnails: accent trocado (vermelho-terracota
+# em vez do laranja-pessego default) e gradiente invertido. Hook wrap_width
+# menor (texto maior, mais impacto visual) e aplicado no caller via cfg.
+PALETTE_B = {
+    "bg": "#0f0f23",
+    "accent": "#e76f51",
+    "text": "#f8f8ff",
+    "subtle": "#2a2a40",
+    "gradient_start": "#0f0f23",
+    "gradient_end": "#1a1a3e",
+}
+
+
+def _palette_for(variant: str) -> dict:
+    """Seleciona a paleta pela variante (A=default, B=accent trocado/gradiente invertido)."""
+    return PALETTE_B if variant == "B" else PALETTE
 
 
 def _hex_to_rgb(hex_color: str) -> tuple[int, int, int]:
@@ -145,15 +172,16 @@ def enhance_thumbnail_image(img: Image.Image) -> Image.Image:
     return img
 
 
-def create_gradient_background(width: int, height: int) -> Image.Image:
+def create_gradient_background(width: int, height: int, palette: dict | None = None) -> Image.Image:
     """Cria um fundo com gradiente suave (vertical).
 
     Gera duas imagens solidas com as cores de inicio e fim, depois mistura
     usando uma mascara em gradiente (Image.linear_gradient, Pillow >=9.1).
     Muito mais rapido que o loop linha-a-linha anterior.
     """
-    start_img = Image.new("RGB", (width, height), _hex_to_rgb(PALETTE["gradient_start"]))
-    end_img = Image.new("RGB", (width, height), _hex_to_rgb(PALETTE["gradient_end"]))
+    pal = palette if palette is not None else PALETTE
+    start_img = Image.new("RGB", (width, height), _hex_to_rgb(pal["gradient_start"]))
+    end_img = Image.new("RGB", (width, height), _hex_to_rgb(pal["gradient_end"]))
     # linear_gradient("L") gera 256x256; redimensiona para o tamanho final
     # e usa como mascara alpha para o paste do end_img sobre o start_img.
     mask = Image.linear_gradient("L").resize((width, height))
@@ -161,29 +189,70 @@ def create_gradient_background(width: int, height: int) -> Image.Image:
     return start_img
 
 
-def make_horizontal_thumbnail(
+@dataclass
+class _LayoutConfig:
+    border_margin: int
+    border_radius: int
+    border_width: int
+    emoji_y: int
+    emoji_shadow_offset: tuple[int, int]
+    hook_y_start: int
+    hook_wrap_width: int
+    hook_line_height: int
+    brand_y: int
+    crop_target_ratio: float | None
+    overlay_alpha: int
+    frame_timestamp: str
+
+
+def _render_thumbnail(
+    width: int,
+    height: int,
     hook: str,
     emoji: str,
     output: Path,
-    brand: str = "Pata Jazz",
-    video_path: Path | None = None,
+    brand: str,
+    video_path: Path | None,
+    layout_config: _LayoutConfig,
+    variant: str = "A",
 ) -> None:
-    """Thumbnail 1280x720 para vídeos longos horizontais."""
-    width, height = 1280, 720
+    """Pipeline compartilhado de renderizacao de thumbnail.
+
+    ``variant`` ("A" default ou "B") seleciona a paleta e reduz o
+    hook_wrap_width da cfg (texto maior na variante B) para A/B testing.
+    """
+    cfg = layout_config
+    pal = _palette_for(variant)
+    # Variante B: wrap width menor -> texto maior, mais impacto visual.
+    wrap_width = cfg.hook_wrap_width if variant != "B" else max(8, cfg.hook_wrap_width - 4)
 
     # Tenta usar frame do vídeo se disponível
     background = None
     if video_path and video_path.exists():
-        background = extract_frame_from_video(video_path, "00:00:02")
+        background = extract_frame_from_video(video_path, cfg.frame_timestamp)
         if background:
+            if cfg.crop_target_ratio is not None:
+                # Crop central para o formato alvo
+                bg_width, bg_height = background.size
+                target_ratio = cfg.crop_target_ratio
+
+                if bg_width / bg_height > target_ratio:
+                    new_width = int(bg_height * target_ratio)
+                    left = (bg_width - new_width) // 2
+                    background = background.crop((left, 0, left + new_width, bg_height))
+                else:
+                    new_height = int(bg_width / target_ratio)
+                    top = (bg_height - new_height) // 2
+                    background = background.crop((0, top, bg_width, top + new_height))
+
             background = background.resize((width, height), Image.Resampling.LANCZOS)
             background = enhance_thumbnail_image(background)
             # Aplica overlay escuro para melhor legibilidade
-            overlay = Image.new("RGBA", (width, height), (0, 0, 0, 128))
+            overlay = Image.new("RGBA", (width, height), (0, 0, 0, cfg.overlay_alpha))
             background = Image.alpha_composite(background.convert("RGBA"), overlay).convert("RGB")
 
     if not background:
-        background = create_gradient_background(width, height)
+        background = create_gradient_background(width, height, pal)
 
     # Converte para RGBA para que fills com alpha (shadows) funcionem.
     img = background.convert("RGBA")
@@ -194,14 +263,17 @@ def make_horizontal_thumbnail(
     # Borda com glow effect
     for i in range(3, 0, -1):
         draw.rounded_rectangle(
-            [40 - i*2, 40 - i*2, width - 40 + i*2, height - 40 + i*2],
-            radius=40,
-            outline=(*_hex_to_rgb(PALETTE["accent"]), int(50 * i / 3)),
+            [cfg.border_margin - i*2, cfg.border_margin - i*2,
+             width - cfg.border_margin + i*2, height - cfg.border_margin + i*2],
+            radius=cfg.border_radius,
+            outline=(*_hex_to_rgb(pal["accent"]), int(50 * i / 3)),
             width=2
         )
 
     draw.rounded_rectangle(
-        [40, 40, width - 40, height - 40], radius=40, outline=PALETTE["subtle"], width=4
+        [cfg.border_margin, cfg.border_margin,
+         width - cfg.border_margin, height - cfg.border_margin],
+        radius=cfg.border_radius, outline=pal["subtle"], width=cfg.border_width
     )
 
     # Emoji com shadow
@@ -209,14 +281,15 @@ def make_horizontal_thumbnail(
     tw = bbox[2] - bbox[0]
     x_center = (width - tw) // 2
 
+    sx, sy = cfg.emoji_shadow_offset
     # Shadow
-    draw.text((x_center + 4, 104), emoji, font=font_large, fill=(0, 0, 0, 128))
+    draw.text((x_center + sx, cfg.emoji_y + sy), emoji, font=font_large, fill=(0, 0, 0, 128))
     # Principal
-    draw.text((x_center, 100), emoji, font=font_large, fill=PALETTE["accent"])
+    draw.text((x_center, cfg.emoji_y), emoji, font=font_large, fill=pal["accent"])
 
     # Hook com wrap e shadow
-    lines = textwrap.wrap(hook, width=22)
-    y = 280
+    lines = textwrap.wrap(hook, width=wrap_width)
+    y = cfg.hook_y_start
     for line in lines[:3]:
         bbox = draw.textbbox((0, 0), line, font=font_small)
         tw = bbox[2] - bbox[0]
@@ -225,16 +298,43 @@ def make_horizontal_thumbnail(
         # Shadow
         draw.text((x + 2, y + 2), line, font=font_small, fill=(0, 0, 0, 180))
         # Principal
-        draw.text((x, y), line, font=font_small, fill=PALETTE["text"])
-        y += 70
+        draw.text((x, y), line, font=font_small, fill=pal["text"])
+        y += cfg.hook_line_height
 
     # Marca com destaque
     bbox = draw.textbbox((0, 0), brand, font=font_small)
     tw = bbox[2] - bbox[0]
-    draw.text(((width - tw) // 2, height - 120), brand, font=font_small, fill=PALETTE["accent"])
+    draw.text(((width - tw) // 2, cfg.brand_y), brand, font=font_small, fill=pal["accent"])
 
     _save_under_2mb(img.convert("RGB"), output)
-    log.info("Thumbnail horizontal salva: %s", output)
+
+
+def make_horizontal_thumbnail(
+    hook: str,
+    emoji: str,
+    output: Path,
+    brand: str = "Pata Jazz",
+    video_path: Path | None = None,
+    variant: str = "A",
+) -> None:
+    """Thumbnail 1280x720 para vídeos longos horizontais."""
+    width, height = 1280, 720
+    cfg = _LayoutConfig(
+        border_margin=40,
+        border_radius=40,
+        border_width=4,
+        emoji_y=100,
+        emoji_shadow_offset=(4, 4),
+        hook_y_start=280,
+        hook_wrap_width=22,
+        hook_line_height=70,
+        brand_y=height - 120,
+        crop_target_ratio=None,
+        overlay_alpha=128,
+        frame_timestamp="00:00:02",
+    )
+    _render_thumbnail(width, height, hook, emoji, output, brand, video_path, cfg, variant=variant)
+    log.info("Thumbnail horizontal salva: %s (variante %s)", output, variant)
 
 
 def make_short_thumbnail(
@@ -243,78 +343,23 @@ def make_short_thumbnail(
     output: Path,
     brand: str = "Pata Jazz",
     video_path: Path | None = None,
+    variant: str = "A",
 ) -> None:
     """Thumbnail 1080x1920 para Shorts verticais."""
     width, height = 1080, 1920
-
-    # Tenta usar frame do vídeo se disponível
-    background = None
-    if video_path and video_path.exists():
-        background = extract_frame_from_video(video_path, "00:00:01")
-        if background:
-            # Crop central para formato vertical
-            bg_width, bg_height = background.size
-            target_ratio = width / height
-
-            if bg_width / bg_height > target_ratio:
-                # Vídeo é mais largo, crop horizontal
-                new_width = int(bg_height * target_ratio)
-                left = (bg_width - new_width) // 2
-                background = background.crop((left, 0, left + new_width, bg_height))
-            else:
-                # Vídeo é mais alto, crop vertical
-                new_height = int(bg_width / target_ratio)
-                top = (bg_height - new_height) // 2
-                background = background.crop((0, top, bg_width, top + new_height))
-
-            background = background.resize((width, height), Image.Resampling.LANCZOS)
-            background = enhance_thumbnail_image(background)
-            # Aplica overlay escuro para melhor legibilidade
-            overlay = Image.new("RGBA", (width, height), (0, 0, 0, 100))
-            background = Image.alpha_composite(background.convert("RGBA"), overlay).convert("RGB")
-
-    if not background:
-        background = create_gradient_background(width, height)
-
-    # Converte para RGBA para que fills com alpha (shadows) funcionem.
-    img = background.convert("RGBA")
-    draw = ImageDraw.Draw(img)
-
-    font_large, font_small = _load_fonts()
-
-    # Borda sutil
-    draw.rounded_rectangle(
-        [60, 60, width - 60, height - 60], radius=60, outline=PALETTE["subtle"], width=6
+    cfg = _LayoutConfig(
+        border_margin=60,
+        border_radius=60,
+        border_width=6,
+        emoji_y=520,
+        emoji_shadow_offset=(6, 6),
+        hook_y_start=760,
+        hook_wrap_width=18,
+        hook_line_height=90,
+        brand_y=height - 220,
+        crop_target_ratio=width / height,
+        overlay_alpha=100,
+        frame_timestamp="00:00:01",
     )
-
-    # Emoji grande com shadow
-    bbox = draw.textbbox((0, 0), emoji, font=font_large)
-    tw = bbox[2] - bbox[0]
-    x_center = (width - tw) // 2
-
-    # Shadow
-    draw.text((x_center + 6, 526), emoji, font=font_large, fill=(0, 0, 0, 128))
-    # Principal
-    draw.text((x_center, 520), emoji, font=font_large, fill=PALETTE["accent"])
-
-    # Hook com wrap e shadow
-    lines = textwrap.wrap(hook, width=18)
-    y = 760
-    for line in lines[:3]:
-        bbox = draw.textbbox((0, 0), line, font=font_small)
-        tw = bbox[2] - bbox[0]
-        x = (width - tw) // 2
-
-        # Shadow
-        draw.text((x + 3, y + 3), line, font=font_small, fill=(0, 0, 0, 180))
-        # Principal
-        draw.text((x, y), line, font=font_small, fill=PALETTE["text"])
-        y += 90
-
-    # Marca com destaque
-    bbox = draw.textbbox((0, 0), brand, font=font_small)
-    tw = bbox[2] - bbox[0]
-    draw.text(((width - tw) // 2, height - 220), brand, font=font_small, fill=PALETTE["accent"])
-
-    _save_under_2mb(img.convert("RGB"), output)
-    log.info("Thumbnail de Short salva: %s", output)
+    _render_thumbnail(width, height, hook, emoji, output, brand, video_path, cfg, variant=variant)
+    log.info("Thumbnail de Short salva: %s (variante %s)", output, variant)

@@ -43,7 +43,13 @@ def log_exception_to_file(exc: BaseException, output_dir: Path, name: str = "las
     output_dir.mkdir(parents=True, exist_ok=True)
     path = output_dir / name
     timestamp = datetime.now(UTC).strftime("%Y-%m-%d %H:%M:%S UTC")
-    entry = f"=== {timestamp} ===\n{traceback.format_exc()}\n\n"
+    # Usa exc.__traceback__ explicitamente: traceback.format_exc() le
+    # sys.exc_info(), que so retorna o traceback correto dentro de um bloco
+    # `except` ativo. Essa funcao e chamada por handlers de nivel superior
+    # (main() do upload_youtube) DEPOIS do except ter terminado, o que faria
+    # format_exc() retornar "NoneType: None" e perder o traceback real.
+    tb = "".join(traceback.format_exception(type(exc), exc, exc.__traceback__))
+    entry = f"=== {timestamp} ===\n{tb}\n\n"
     with open(path, "a", encoding="utf-8") as f:
         f.write(entry)
     return path

@@ -25,9 +25,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from upload_youtube import _retry_youtube_call
 from utils.log_config import configure_logging
 from utils.youtube_oauth import get_youtube_service
+from utils.youtube_retry import retry_youtube_call as _retry_youtube_call
 
 log = logging.getLogger(__name__)
 

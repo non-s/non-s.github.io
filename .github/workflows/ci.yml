@@ -9,6 +9,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     name: "Testes de sintaxe e unidade"
@@ -16,41 +20,40 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
       - name: "Python 3.11"
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: "3.11"
           cache: "pip"
       - name: "Instalar dependencias"
         run: |
-          pip install --upgrade pip
-          pip install -r requirements-dev.txt
+          pip install --no-cache-dir --upgrade pip
+          pip install --no-cache-dir -r requirements-dev.txt
       - name: "Ruff lint"
         run: ruff check .
       - name: "Compile check"
         run: python -m compileall -q .
       - name: "Pytest + coverage"
         run: pytest -q --cov=utils --cov-report=term-missing --cov-fail-under=70
-      - name: "Vulnerability audit (advisory)"
-        # Nao falha o build: uma CVE nova publicada depois nao deveria travar
-        # PRs sem relacao nenhuma com a mudanca. Fica visivel no log pra
-        # revisao humana decidir quando atualizar.
-        run: pip-audit -r requirements.txt || echo "::warning::pip-audit encontrou vulnerabilidades - revisar dependencias"
+      - name: "Vulnerability audit"
+        # Falha o build se pip-audit encontrar CVEs conhecidas nas dependencias
+        # declaradas. Mantido limpo em main: qualquer nova CVE exige bump ou
+        # --ignore-vuln explicito no proprio PR que a introduz.
+        run: pip-audit -r requirements.txt
       - name: "Type check (advisory)"
-        # Advisory por enquanto: esta 100% limpo hoje (utils/, scripts/,
-        # geradores e upload_youtube.py), mas e a primeira vez que roda em CI -
-        # melhor nao travar builds de primeira caso apareca algo inesperado
-        # em alguma combinacao de arquivos que eu nao tenha checado localmente.
+        # Advisory: mypy em codebase sem stubs para googleapiclient/Pillow tem
+        # ruído esperado; nao vale travar PRs por isso enquanto os stubs nao
+        # existirem. Mantido limpo em main (utils/, scripts/, geradores e
+        # upload_youtube.py); qualquer regressao fica visivel no log.
         run: >
           python -m mypy utils/ scripts/ upload_youtube.py generate_pata_jazz_short.py
           generate_pata_jazz_horizontal.py generate_pata_jazz_live.py
           || echo "::warning::mypy encontrou problemas de tipo"
-      - name: "Security scan (advisory)"
-        # Mesma logica advisory do type check acima: primeira vez que roda em
-        # CI (esta limpo hoje - ver commit que adicionou usedforsecurity=False
-        # no unico hit real ate agora), mas nao deveria travar PRs por um
-        # falso-positivo novo do bandit sem revisao humana primeiro.
-        run: bandit -r utils/ scripts/ *.py -ll -q || echo "::warning::bandit encontrou possiveis problemas de seguranca"
+      - name: "Security scan"
+        # Falha o build em issues de severity MEDIUM+ do bandit (-ll filtra
+        # LOW). Falsos-positivos conhecidos levam # nosec no codigo com
+        # comentario explicativo, nao supressao global.
+        run: bandit -r utils/ scripts/ *.py -ll -q
