@@ -19,6 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
+from upload_youtube import _retry_youtube_call
 from utils.log_config import configure_logging
 from utils.youtube_oauth import get_youtube_service
 
@@ -41,7 +42,7 @@ def _to_int(value) -> int:
 def collect_video_stats(service) -> list[dict]:
     """Busca estatisticas dos videos mais recentes do canal."""
     # Primeiro: lista IDs dos videos recentes
-    channels = service.channels().list(part="contentDetails,statistics", mine=True).execute()
+    channels = _retry_youtube_call(service.channels().list(part="contentDetails,statistics", mine=True).execute)
     if not channels.get("items"):
         log.error("Nenhum canal encontrado.")
         return []
@@ -56,12 +57,14 @@ def collect_video_stats(service) -> list[dict]:
     pages = 0
     while len(video_ids) < MAX_VIDEOS and pages < 20:
         pages += 1
-        resp = service.playlistItems().list(
-            part="snippet",
-            playlistId=uploads_playlist,
-            maxResults=50,
-            pageToken=page_token,
-        ).execute()
+        resp = _retry_youtube_call(
+            service.playlistItems().list(
+                part="snippet",
+                playlistId=uploads_playlist,
+                maxResults=50,
+                pageToken=page_token,
+            ).execute
+        )
         for item in resp.get("items", []):
             vid = item.get("snippet", {}).get("resourceId", {}).get("videoId")
             if vid:
@@ -78,10 +81,12 @@ def collect_video_stats(service) -> list[dict]:
     stats: list[dict] = []
     for i in range(0, len(video_ids), 50):
         batch = video_ids[i : i + 50]
-        resp = service.videos().list(
-            part="statistics,snippet,contentDetails",
-            id=",".join(batch),
-        ).execute()
+        resp = _retry_youtube_call(
+            service.videos().list(
+                part="statistics,snippet,contentDetails",
+                id=",".join(batch),
+            ).execute
+        )
         for item in resp.get("items", []):
             snippet = item.get("snippet", {})
             statistics = item.get("statistics", {})
@@ -109,7 +114,15 @@ def main() -> int:
         log.error("Erro ao autenticar YouTube: %s", exc)
         return 1
 
-    stats = collect_video_stats(service)
+    try:
+        stats = collect_video_stats(service)
+    except Exception as exc:
+        # collect_video_stats ja usa _retry_youtube_call (retry+backoff) em
+        # cada chamada - chegar aqui significa que esgotou as tentativas
+        # (ex: erro nao-retryable ou instabilidade persistente). Falha
+        # graciosa em vez de traceback nao tratado derrubando o workflow.
+        log.error("Falha ao coletar estatisticas do YouTube: %s", exc)
+        return 1
     if not stats:
         log.warning("Nenhum dado coletado.")
         return 0
