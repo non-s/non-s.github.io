@@ -10,7 +10,7 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
-from utils.ai_helper import ai_text
+from utils.ai_helper import ai_text, is_safe_ai_text
 
 log = logging.getLogger(__name__)
 
@@ -29,8 +29,14 @@ def generate_srt(hook: str, scene: str, duration: int, kind: str, emoji: str) ->
     )
     out = ai_text(prompt, task="caption")
 
+    # Mesma checagem aplicada a titulo/descricao em metadata_engine.py: a
+    # legenda tambem vira texto publico (caption track do YouTube), entao
+    # nao pode escapar dessa validacao so porque passa por um caminho
+    # diferente.
     if out and " --> " in out:
-        return out.strip()
+        if is_safe_ai_text(out):
+            return out.strip()
+        log.warning("Legenda da IA rejeitada (padrao suspeito); usando fallback local.")
 
     # Fallback: gerar SRT localmente
     return _fallback_srt(hook, duration)
