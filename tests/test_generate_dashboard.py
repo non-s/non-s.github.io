@@ -46,6 +46,18 @@ class TestBuildDashboardHtmlEmpty:
 
         assert html.startswith("<!doctype html>")
 
+    def test_empty_data_still_includes_chart_scaffold(self, tmp_path, monkeypatch):
+        """Mesmo sem dados, o HTML precisa trazer o CDN do Chart.js e os
+        canvases - os graficos so ficam vazios."""
+        _isolate(tmp_path, monkeypatch)
+
+        html = dashboard.build_dashboard_html()
+
+        assert "cdn.jsdelivr.net/npm/chart.js" in html
+        # Cada grafico tem seu canvas.
+        for cid in ("viewsChart", "sceneChart", "titlePatternChart", "liveChart", "topVideosChart"):
+            assert f'id="{cid}"' in html
+
 
 class TestBuildDashboardHtmlWithData:
     def test_includes_summary_cards(self, tmp_path, monkeypatch):
@@ -155,6 +167,90 @@ class TestBuildDashboardHtmlWithData:
 
         assert "30" in html  # pico
         assert "20" in html  # media
+
+
+class TestChartsAndInteractivity:
+    """Chart.js via CDN, graficos embutidos, JSON dos dados e filtro de
+    periodo."""
+
+    def test_includes_chartjs_cdn(self, tmp_path, monkeypatch):
+        _isolate(tmp_path, monkeypatch)
+        html = dashboard.build_dashboard_html()
+        assert "<script src=\"https://cdn.jsdelivr.net/npm/chart.js" in html
+        assert "chart.umd.min.js" in html
+
+    def test_instantiate_chart_for_each_graph(self, tmp_path, monkeypatch):
+        _isolate(tmp_path, monkeypatch)
+        dashboard.ANALYTICS_FILE.write_text(
+            json.dumps({
+                "total_videos": 1, "total_views": 100, "total_likes": 1,
+                "total_comments": 0, "avg_views": 100,
+                "top_10": [{"video_id": "x", "title": "T", "views": 100, "likes": 1}],
+            }),
+            encoding="utf-8",
+        )
+        dashboard.HISTORY_FILE.write_text(
+            json.dumps([
+                {"collected_at": "2026-07-01T00:00:00+00:00", "total_views": 100, "total_likes": 1, "avg_views": 100},
+            ]),
+            encoding="utf-8",
+        )
+        dashboard.SCENE_PERFORMANCE_FILE.write_text(json.dumps({"cat": 1.0}), encoding="utf-8")
+        dashboard.TITLE_PATTERN_PERFORMANCE_FILE.write_text(json.dumps({"pat": 1.0}), encoding="utf-8")
+        dashboard.LIVE_VIEWER_HISTORY_FILE.write_text(
+            json.dumps([{"collected_at": "t", "video_id": "v", "concurrent_viewers": 5}]), encoding="utf-8"
+        )
+
+        html = dashboard.build_dashboard_html()
+
+        # Um new Chart por grafico (5 graficos).
+        assert html.count("new Chart(") == 5
+
+    def test_analytics_history_data_embedded_as_json(self, tmp_path, monkeypatch):
+        _isolate(tmp_path, monkeypatch)
+        history = [
+            {"collected_at": "2026-07-01T00:00:00+00:00", "total_views": 1234, "total_likes": 7, "avg_views": 99},
+        ]
+        dashboard.HISTORY_FILE.write_text(json.dumps(history), encoding="utf-8")
+
+        html = dashboard.build_dashboard_html()
+
+        # Labels e dados aparecem no JSON embutido dentro de <script>.
+        assert "2026-07-01" in html
+        assert "1234" in html
+        assert "HISTORY_DS" in html
+
+    def test_period_filter_present(self, tmp_path, monkeypatch):
+        _isolate(tmp_path, monkeypatch)
+        html = dashboard.build_dashboard_html()
+        assert 'id="period-filter"' in html
+        assert "Últimas 4 semanas" in html
+        assert "Últimas 12 semanas" in html
+        assert "Tudo" in html
+
+    def test_xss_protection_on_embedded_json_labels(self, tmp_path, monkeypatch):
+        """Dados de _data/ injetados em <script> JSON tambem precisam estar
+        escapados (pelo menos a sequencia </script> nao pode aparecer)."""
+        _isolate(tmp_path, monkeypatch)
+        malicious = "</script><script>alert('xss')</script>"
+        dashboard.SCENE_PERFORMANCE_FILE.write_text(
+            json.dumps({malicious: 1.0}), encoding="utf-8"
+        )
+
+        html = dashboard.build_dashboard_html()
+
+        assert "</script><script>alert('xss')</script>" not in html
+        # "</" dentro do JSON embutido precisa estar quebrado (</ -> <\/).
+        assert "<\\/script" in html or "</script>" not in html.split("var SCENE_DS")[1].split("</script>")[0]
+
+    def test_empty_data_does_not_break_charts(self, tmp_path, monkeypatch):
+        _isolate(tmp_path, monkeypatch)
+        html = dashboard.build_dashboard_html()
+        # Sem dados, ainda gera HTML valido e o guard `if (!ds.labels.length) return;`
+        # protege os graficos que dependem de dados (scene/title/live/top).
+        assert html.startswith("<!doctype html>")
+        assert "makeViewsChart" in html
+        assert "makeSceneChart" in html
 
 
 class TestMain:

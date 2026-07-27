@@ -6,9 +6,9 @@ audiencia da live).
 Nenhum dado novo e coletado aqui - so consome o que collect_analytics.py e
 upload_youtube.py ja gravam toda semana. Sem dependencias externas (so
 stdlib), pra nao adicionar peso ao requirements.txt so por causa de um
-relatorio. Sempre gera algo, mesmo com arquivos ausentes (canal novo,
-antes da primeira coleta de analytics) - cada secao mostra um aviso em vez
-de quebrar o script inteiro.
+relatorio. Chart.js entra via CDN no HTML final (sem build). Sempre gera algo,
+mesmo com arquivos ausentes (canal novo, antes da primeira coleta de
+analytics) - cada secao mostra um aviso em vez de quebrar o script inteiro.
 """
 
 from __future__ import annotations
@@ -27,9 +27,13 @@ HISTORY_FILE = DATA_DIR / "analytics_history.json"
 SCENE_PERFORMANCE_FILE = DATA_DIR / "scene_performance.json"
 TITLE_PATTERN_PERFORMANCE_FILE = DATA_DIR / "title_pattern_performance.json"
 LIVE_VIEWER_HISTORY_FILE = DATA_DIR / "live_viewer_history.json"
+VIEW_PREDICTOR_FILE = DATA_DIR / "view_predictor.json"
 
 _MAX_HISTORY_ROWS = 12
 _MAX_LIVE_SNAPSHOTS = 20
+
+# Chart.js 4.x via jsdelivr (CDN estavel, sem build).
+_CHART_JS_CDN = "https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"
 
 
 def _load_json(path: Path, default):
@@ -49,7 +53,10 @@ def _bar(value: float, max_value: float, color: str = "#f4a261") -> str:
 
 
 def _card(label: str, value: str) -> str:
-    return f'<div class="card"><div class="card-value">{escape(value)}</div><div class="card-label">{escape(label)}</div></div>'
+    return (
+        f'<div class="card"><div class="card-value">{escape(value)}</div>'
+        f'<div class="card-label">{escape(label)}</div></div>'
+    )
 
 
 def _render_summary(analytics: dict) -> str:
@@ -135,14 +142,128 @@ def _render_live_audience(snapshots: list) -> str:
     return f'<div class="cards">{"".join(cards)}</div>'
 
 
+_DAY_OF_WEEK_NAMES = [
+    "seg", "ter", "qua", "qui", "sex", "sáb", "dom",
+]
+
+
+def _render_predicted_views(predictor: dict) -> str:
+    """Seção "Predicted views (next 7 days)" — previsões para os próximos
+    4 slots de cron de shorts (10:00, 16:00, 21:00, 01:00 UTC).
+
+    Consome apenas o modelo já salvo em _data/view_predictor.json por
+    scripts/predict_views.py (que treina a partir de analytics + video_tags).
+    Nunca quebra o dashboard: modelo ausente/vazio mostra aviso em vez de erro."""
+    if not predictor or predictor.get("n_samples", 0) == 0:
+        return (
+            "<p class='empty'>Sem modelo de previsão ainda "
+            "(rodar scripts/predict_views.py após coletar analytics).</p>"
+        )
+    from scripts.predict_views import expected_views_for_slot, next_cron_slots
+
+    slots = next_cron_slots(n=4)
+    if not slots:
+        return "<p class='empty'>Não foi possível enumerar os próximos slots de cron.</p>"
+
+    rows = []
+    for hour, dow in slots:
+        predicted = expected_views_for_slot(hour, dow)
+        label = f"{hour:02d}:00 UTC ({_DAY_OF_WEEK_NAMES[dow]})"
+        rows.append(
+            f"<tr><td class='mono'>{escape(label)}</td>"
+            f"<td>{max(0, int(round(predicted)))}</td></tr>"
+        )
+    return (
+        "<table><thead><tr><th>Próximo slot</th><th>Views previstos (7d)</th></tr></thead>"
+        f"<tbody>{''.join(rows)}</tbody></table>"
+    )
+
+
+def _chart_canvas(canvas_id: str, height: str = "300px") -> str:
+    """Container responsivo com canvas para um grafico Chart.js."""
+    return (
+        f'<div class="chart-wrap" style="height:{height}">'
+        f'<canvas id="{canvas_id}"></canvas></div>'
+    )
+
+
+def _build_chart_datasets(history: list) -> dict:
+    """Extrai labels/datasets do historico semanal para o grafico de linha
+    de views totais + media por video."""
+    rows = history[-_MAX_HISTORY_ROWS:] if history else []
+    labels = [str(r.get("collected_at", ""))[:10] for r in rows]
+    total_views = [r.get("total_views", 0) for r in rows]
+    avg_views = [r.get("avg_views", 0) for r in rows]
+    return {"labels": labels, "total_views": total_views, "avg_views": avg_views}
+
+
+def _build_scene_dataset(scene_weights: dict) -> dict:
+    ordered = sorted(scene_weights.items(), key=lambda kv: kv[1], reverse=True)
+    return {
+        "labels": [escape(str(name)) for name, _ in ordered],
+        "weights": [float(w) for _, w in ordered],
+    }
+
+
+def _build_title_pattern_dataset(title_pattern_weights: dict) -> dict:
+    ordered = sorted(title_pattern_weights.items(), key=lambda kv: kv[1], reverse=True)
+    return {
+        "labels": [escape(str(name)) for name, _ in ordered],
+        "weights": [float(w) for _, w in ordered],
+    }
+
+
+def _build_live_dataset(live_snapshots: list) -> dict:
+    recent = live_snapshots[-_MAX_LIVE_SNAPSHOTS:] if live_snapshots else []
+    return {
+        "labels": [str(s.get("collected_at", ""))[:16] for s in recent],
+        "viewers": [s.get("concurrent_viewers", 0) for s in recent],
+    }
+
+
+def _build_top_videos_dataset(analytics: dict) -> dict:
+    top = analytics.get("top_10") if analytics else None
+    if not top:
+        return {"labels": [], "views": []}
+    return {
+        "labels": [escape(str(v.get("title", ""))[:40]) for v in top],
+        "views": [int(v.get("views", 0)) for v in top],
+    }
+
+
 def build_dashboard_html() -> str:
     analytics = _load_json(ANALYTICS_FILE, {})
     history = _load_json(HISTORY_FILE, [])
     scene_weights = _load_json(SCENE_PERFORMANCE_FILE, {})
     title_pattern_weights = _load_json(TITLE_PATTERN_PERFORMANCE_FILE, {})
     live_snapshots = _load_json(LIVE_VIEWER_HISTORY_FILE, [])
+    view_predictor = _load_json(VIEW_PREDICTOR_FILE, {})
 
     generated_at = datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC")
+
+    # Datasets embutidos como JSON (autocontido, sem backend). html.escape nao
+    # se aplica a conteudo de <script> JSON — usamos json.dumps com
+    # ensure_ascii=False e escapamos "</" para evitar fechamento prematuro do
+    # bloco de script. Dados de _data/ (titulos do YouTube, etc.) sao
+    # escapados nos datasets de barra/doughnut (labels) via escape() antes do
+    # dumps.
+    history_ds = _build_chart_datasets(history)
+    scene_ds = _build_scene_dataset(scene_weights)
+    title_ds = _build_title_pattern_dataset(title_pattern_weights)
+    live_ds = _build_live_dataset(live_snapshots)
+    top_ds = _build_top_videos_dataset(analytics)
+
+    def _safe_json(obj) -> str:
+        # Escapa "</" para evitar saida prematura de <script> e mantem JSON
+        # valido. json.dumps ja escapa aspas/barra; so precisamos cuidar do
+        # "</" sequencia.
+        return json.dumps(obj, ensure_ascii=False).replace("</", "<\\/")
+
+    history_json = _safe_json(history_ds)
+    scene_json = _safe_json(scene_ds)
+    title_json = _safe_json(title_ds)
+    live_json = _safe_json(live_ds)
+    top_json = _safe_json(top_ds)
 
     return f"""<!doctype html>
 <html lang="pt-BR">
@@ -162,7 +283,10 @@ def build_dashboard_html() -> str:
   h2 {{ font-size: 1.1rem; margin-top: 40px; border-bottom: 1px solid #2a2a40; padding-bottom: 8px; }}
   .cards {{ display: flex; flex-wrap: wrap; gap: 12px; }}
   .card {{
-    background: #1a1a3e; border-radius: 10px; padding: 16px 20px; min-width: 140px; flex: 1;
+    background: rgba(26, 26, 62, 0.55); backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px); border: 1px solid rgba(244, 162, 97, 0.12);
+    border-radius: 12px; padding: 16px 20px; min-width: 140px; flex: 1;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
   }}
   .card-value {{ font-size: 1.5rem; font-weight: 700; color: #f4a261; }}
   .card-label {{ font-size: 0.8rem; color: #9a9ab8; margin-top: 4px; }}
@@ -174,6 +298,19 @@ def build_dashboard_html() -> str:
   .bar-track {{ width: 100px; height: 8px; background: #2a2a40; border-radius: 4px; overflow: hidden; }}
   .bar-fill {{ height: 100%; border-radius: 4px; }}
   .empty {{ color: #9a9ab8; font-style: italic; }}
+  .chart-wrap {{
+    background: rgba(26, 26, 62, 0.45); backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px); border: 1px solid rgba(244, 162, 97, 0.08);
+    border-radius: 12px; padding: 16px; margin: 12px 0 24px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2); position: relative;
+  }}
+  .chart-wrap canvas {{ max-width: 100%; }}
+  .filters {{ display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 8px 0 4px; }}
+  .filters label {{ color: #9a9ab8; font-size: 0.85rem; }}
+  .filters select {{
+    background: #1a1a3e; color: #f8f8ff; border: 1px solid #2a2a40;
+    border-radius: 6px; padding: 4px 8px; font-size: 0.85rem;
+  }}
   footer {{ margin-top: 48px; color: #6a6a8a; font-size: 0.75rem; }}
 </style>
 </head>
@@ -185,21 +322,216 @@ def build_dashboard_html() -> str:
   {_render_summary(analytics)}
 
   <h2>Tendência semanal</h2>
+  <div class="filters">
+    <label for="period-filter">Período:</label>
+    <select id="period-filter" aria-label="Seletor de período do gráfico de views">
+      <option value="4">Últimas 4 semanas</option>
+      <option value="12" selected>Últimas 12 semanas</option>
+      <option value="0">Tudo</option>
+    </select>
+  </div>
+  {_chart_canvas("viewsChart")}
   {_render_history(history)}
 
-  <h2>Top 10 vídeos</h2>
-  {_render_top_videos(analytics)}
-
-  <h2>Performance por cena</h2>
+  <h2>Views por cena</h2>
+  {_chart_canvas("sceneChart")}
   {_render_weighted_table(scene_weights, "Cena")}
 
-  <h2>Performance por padrão de título</h2>
+  <h2>Views por padrão de título</h2>
+  {_chart_canvas("titlePatternChart", "360px")}
   {_render_weighted_table(title_pattern_weights, "Padrão")}
 
   <h2>Audiência da live</h2>
   {_render_live_audience(live_snapshots)}
+  {_chart_canvas("liveChart")}
+
+  <h2>Top 10 vídeos</h2>
+  {_chart_canvas("topVideosChart", "320px")}
+  {_render_top_videos(analytics)}
+
+  <h2>Previsão de views (próximos 7 dias)</h2>
+  {_render_predicted_views(view_predictor)}
 
   <footer>Gerado em {generated_at}</footer>
+
+  <script src="{_CHART_JS_CDN}"></script>
+  <script>
+    // Dados embutidos (dashboard autocontido, sem backend).
+    var HISTORY_DS = {history_json};
+    var SCENE_DS = {scene_json};
+    var TITLE_DS = {title_json};
+    var LIVE_DS = {live_json};
+    var TOP_DS = {top_json};
+
+    // Paleta Pata Jazz.
+    var ACCENT = "#f4a261";
+    var ACCENT2 = "#2a9d8f";
+    var GRID = "rgba(154, 154, 184, 0.15)";
+    var TICK = "#9a9ab8";
+
+    Chart.defaults.color = TICK;
+    Chart.defaults.borderColor = GRID;
+    Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+
+    function makeViewsChart() {{
+      var ds = HISTORY_DS;
+      var allLabels = ds.labels;
+      var allTotal = ds.total_views;
+      var allAvg = ds.avg_views;
+      var ctx = document.getElementById("viewsChart").getContext("2d");
+
+      function slices(n) {{
+        if (n <= 0 || n >= allLabels.length) {{
+          return [allLabels, allTotal, allAvg];
+        }}
+        var start = Math.max(0, allLabels.length - n);
+        return [
+          allLabels.slice(start),
+          allTotal.slice(start),
+          allAvg.slice(start),
+        ];
+      }}
+
+      function render(n) {{
+        var parts = slices(n);
+        viewsChart.data.labels = parts[0];
+        viewsChart.data.datasets[0].data = parts[1];
+        viewsChart.data.datasets[1].data = parts[2];
+        viewsChart.update();
+      }}
+
+      var initial = slices(parseInt(document.getElementById("period-filter").value, 10) || 0);
+      var viewsChart = new Chart(ctx, {{
+        type: "line",
+        data: {{
+          labels: initial[0],
+          datasets: [
+            {{
+              label: "Views totais",
+              data: initial[1],
+              borderColor: ACCENT,
+              backgroundColor: "rgba(244, 162, 97, 0.15)",
+              fill: true, tension: 0.3, pointRadius: 3,
+            }},
+            {{
+              label: "Média de views/vídeo",
+              data: initial[2],
+              borderColor: ACCENT2,
+              backgroundColor: "rgba(42, 157, 143, 0.10)",
+              fill: false, tension: 0.3, pointRadius: 2, borderDash: [4, 4],
+            }},
+          ],
+        }},
+        options: {{
+          responsive: true, maintainAspectRatio: false,
+          plugins: {{ legend: {{ labels: {{ color: TICK }} }} }},
+          scales: {{
+            x: {{ ticks: {{ color: TICK }}, grid: {{ color: GRID }} }},
+            y: {{ ticks: {{ color: TICK }}, grid: {{ color: GRID }}, beginAtZero: true }},
+          }},
+        }},
+      }});
+
+      document.getElementById("period-filter").addEventListener("change", function (e) {{
+        render(parseInt(e.target.value, 10) || 0);
+      }});
+    }}
+
+    function makeSceneChart() {{
+      var ds = SCENE_DS;
+      if (!ds.labels.length) return;
+      new Chart(document.getElementById("sceneChart").getContext("2d"), {{
+        type: "bar",
+        data: {{
+          labels: ds.labels,
+          datasets: [{{ label: "Peso de performance", data: ds.weights, backgroundColor: ACCENT, borderRadius: 4 }}],
+        }},
+        options: {{
+          responsive: true, maintainAspectRatio: false,
+          plugins: {{ legend: {{ display: false }} }},
+          scales: {{
+            x: {{ ticks: {{ color: TICK }}, grid: {{ display: false }} }},
+            y: {{ ticks: {{ color: TICK }}, grid: {{ color: GRID }}, beginAtZero: true }},
+          }},
+        }},
+      }});
+    }}
+
+    function makeTitlePatternChart() {{
+      var ds = TITLE_DS;
+      if (!ds.labels.length) return;
+      new Chart(document.getElementById("titlePatternChart").getContext("2d"), {{
+        type: "bar",
+        data: {{
+          labels: ds.labels,
+          datasets: [{{ label: "Peso de performance", data: ds.weights, backgroundColor: ACCENT2, borderRadius: 4 }}],
+        }},
+        options: {{
+          indexAxis: "y", responsive: true, maintainAspectRatio: false,
+          plugins: {{ legend: {{ display: false }} }},
+          scales: {{
+            x: {{ ticks: {{ color: TICK }}, grid: {{ color: GRID }}, beginAtZero: true }},
+            y: {{ ticks: {{ color: TICK, autoSkip: false }}, grid: {{ display: false }} }},
+          }},
+        }},
+      }});
+    }}
+
+    function makeLiveChart() {{
+      var ds = LIVE_DS;
+      if (!ds.labels.length) return;
+      new Chart(document.getElementById("liveChart").getContext("2d"), {{
+        type: "line",
+        data: {{
+          labels: ds.labels,
+            datasets: [{{
+              label: "Espectadores simultâneos", data: ds.viewers,
+              borderColor: ACCENT, backgroundColor: "rgba(244, 162, 97, 0.15)",
+              fill: true, tension: 0.25, pointRadius: 2,
+            }}],
+        }},
+        options: {{
+          responsive: true, maintainAspectRatio: false,
+          plugins: {{ legend: {{ display: false }} }},
+          scales: {{
+            x: {{ ticks: {{ color: TICK }}, grid: {{ color: GRID }} }},
+            y: {{ ticks: {{ color: TICK }}, grid: {{ color: GRID }}, beginAtZero: true }},
+          }},
+        }},
+      }});
+    }}
+
+    function makeTopVideosChart() {{
+      var ds = TOP_DS;
+      if (!ds.labels.length) return;
+      new Chart(document.getElementById("topVideosChart").getContext("2d"), {{
+        type: "doughnut",
+        data: {{
+          labels: ds.labels,
+          datasets: [{{
+            data: ds.views,
+            backgroundColor: [
+              "#f4a261", "#e76f51", "#2a9d8f", "#e9c46a", "#264653",
+              "#8ab17d", "#e63946", "#457b9d", "#a8dadc", "#f1faee",
+            ],
+            borderWidth: 0,
+          }}],
+        }},
+        options: {{
+          responsive: true, maintainAspectRatio: false,
+          plugins: {{ legend: {{ position: "right", labels: {{ color: TICK, boxWidth: 12, font: {{ size: 11 }} }} }} }},
+        }},
+      }});
+    }}
+
+    if (window.Chart) {{
+      makeViewsChart();
+      makeSceneChart();
+      makeTitlePatternChart();
+      makeLiveChart();
+      makeTopVideosChart();
+    }}
+  </script>
 </body>
 </html>
 """
