@@ -55,18 +55,42 @@ jobs:
         if: ${{ steps.check.outputs.live_active == 'false' }}
         env:
           GH_TOKEN: ${{ github.token }}
+          LAST_KNOWN_STATUS: ${{ steps.check.outputs.last_known_status }}
+          CHECKED_AT: ${{ steps.check.outputs.checked_at }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           # Idempotente: falha silenciosamente se o label ja existir.
           gh label create "live-down" --repo "${{ github.repository }}" \
             --color "d73a4a" --description "Live do Pata Jazz fora do ar" || true
           existing=$(gh issue list --repo "${{ github.repository }}" --label live-down --state open --json number --jq '.[0].number')
+          # Timestamp UTC para titulo dinamico (YYYY-MM-DD HH:MM UTC)
+          ts=$(date -u +"%Y-%m-%d %H:%M UTC")
+          title="🔴 Live Pata Jazz fora do ar ($ts)"
+          body=$(cat <<EOF
+          A checagem automática (\`pata-jazz-live-healthcheck.yml\`) não encontrou nenhum broadcast \`active\` no canal.
+
+          - **Run falho:** ${RUN_URL}
+          - **Ultima checagem (UTC):** ${CHECKED_AT}
+          - **Ultimo status conhecido:** ${LAST_KNOWN_STATUS:- indisponivel}
+
+          **Acao recomendada:**
+          1. Verifique o workflow [\`pata-jazz-youtube-live.yml\`](${{ github.server_url }}/${{ github.repository }}/actions/workflows/pata-jazz-youtube-live.yml) e o YouTube Studio.
+          2. Para reexecutar manualmente: abra o workflow \`pata-jazz-youtube-live.yml\` e dispare um \`workflow_dispatch\`.
+
+          Esta issue fecha automaticamente quando a checagem encontrar a live de volta.
+          EOF
+          )
           if [ -z "$existing" ]; then
             gh issue create --repo "${{ github.repository }}" \
-              --title "🔴 Live Pata Jazz fora do ar" \
-              --body "A checagem automática (\`pata-jazz-live-healthcheck.yml\`) não encontrou nenhum broadcast \`active\` no canal. Verifique o workflow \`pata-jazz-youtube-live.yml\` e o YouTube Studio. Esta issue fecha automaticamente quando a checagem encontrar a live de volta." \
+              --title "$title" \
+              --body "$body" \
               --label live-down
           else
-            echo "Issue #$existing ja aberta; nao duplicando."
+            # Issue ja aberta: adiciona um comentario com a nova deteccao
+            # (titulo nao pode ser atualizado dinamicamente sem perder
+            # contexto historico, entao so comentamos a nova ocorrencia).
+            gh issue comment "$existing" --repo "${{ github.repository }}" --body "Deteccao repetida em $ts — run: ${RUN_URL}"
+            echo "Issue #$existing ja aberta; adicionado comentario."
           fi
       - name: "Fechar issue se a live estiver de volta"
         if: ${{ steps.check.outputs.live_active == 'true' }}

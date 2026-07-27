@@ -27,7 +27,10 @@ ignore = []
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-q -n auto"
+addopts = "-q -n auto --strict-markers"
+markers = [
+    "integration: tests que fazem I/O real (upload, live)",
+]
 
 [tool.coverage.run]
 # Cobertura inclui utils, scripts e os geradores/upload (thin wrappers que

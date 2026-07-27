@@ -1,4 +1,4 @@
-.PHONY: test test-cov lint format typecheck security healthcheck sync generate-short generate-horizontal dashboard clean all
+.PHONY: test test-cov lint format typecheck security healthcheck sync generate-short generate-horizontal dashboard clean lock all
 
 test:
 	pytest -q
@@ -32,6 +32,9 @@ generate-horizontal:
 
 dashboard:
 	python scripts/generate_dashboard.py
+
+lock:
+	pip-compile --strip-extras --output-file=requirements.lock pyproject.toml requirements-dev.txt
 
 clean:
 	rm -rf __pycache__ .pytest_cache .ruff_cache .mypy_cache .coverage htmlcov
