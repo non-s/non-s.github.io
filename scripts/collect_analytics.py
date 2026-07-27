@@ -119,6 +119,13 @@ def _load_video_tags() -> dict:
         return {}
 
 
+def _load_scene_performance() -> dict[str, float]:
+    try:
+        return json.loads(SCENE_PERFORMANCE_FILE.read_text(encoding="utf-8")) if SCENE_PERFORMANCE_FILE.exists() else {}
+    except Exception:
+        return {}
+
+
 def _compute_scene_performance(stats: list[dict], video_tags: dict) -> dict[str, float]:
     """Calcula um peso relativo por cena a partir das views reais coletadas.
 
@@ -210,13 +217,7 @@ def main() -> int:
 
     scene_weights = _compute_scene_performance(stats, _load_video_tags())
     if scene_weights:
-        try:
-            SCENE_PERFORMANCE_FILE.write_text(
-                json.dumps(scene_weights, ensure_ascii=False, indent=2), encoding="utf-8"
-            )
-            log.info("Performance por cena atualizada: %s (%d cenas)", SCENE_PERFORMANCE_FILE, len(scene_weights))
-        except Exception as exc:
-            log.warning("Falha ao salvar performance por cena: %s", exc)
+        _update_scene_performance(scene_weights)
 
     return 0
 
@@ -244,6 +245,24 @@ def _append_history(report: dict) -> None:
         log.info("Historico de analytics atualizado: %s (%d snapshots)", HISTORY_FILE, len(history))
     except Exception as exc:
         log.warning("Falha ao salvar historico de analytics: %s", exc)
+
+
+def _update_scene_performance(scene_weights: dict[str, float]) -> None:
+    """Grava scene_weights em SCENE_PERFORMANCE_FILE, mesclando com o
+    conteudo ja existente em vez de sobrescrever.
+
+    Com MAX_VIDEOS=50 dividido entre as ~11 cenas possiveis, e comum uma
+    cena cair abaixo de _MIN_SCENE_SAMPLES so por azar de amostragem numa
+    semana especifica - sobrescrever o arquivo inteiro apagaria o peso ja
+    calculado dessa cena (revertendo pra neutro) em vez de so manter o
+    ultimo valor confiavel ate a proxima amostra suficiente.
+    """
+    merged = {**_load_scene_performance(), **scene_weights}
+    try:
+        SCENE_PERFORMANCE_FILE.write_text(json.dumps(merged, ensure_ascii=False, indent=2), encoding="utf-8")
+        log.info("Performance por cena atualizada: %s (%d cenas)", SCENE_PERFORMANCE_FILE, len(merged))
+    except Exception as exc:
+        log.warning("Falha ao salvar performance por cena: %s", exc)
 
 
 if __name__ == "__main__":

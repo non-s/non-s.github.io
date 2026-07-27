@@ -254,3 +254,60 @@ class TestComputeScenePerformance:
         tags = self._tags(cat_count=3, dog_count=3)
 
         assert collect_analytics._compute_scene_performance(stats, tags) == {}
+
+
+class TestLoadScenePerformance:
+    def test_missing_file_returns_empty_dict(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(collect_analytics, "SCENE_PERFORMANCE_FILE", tmp_path / "scene_performance.json")
+        assert collect_analytics._load_scene_performance() == {}
+
+    def test_reads_existing_file(self, tmp_path, monkeypatch):
+        perf_file = tmp_path / "scene_performance.json"
+        perf_file.write_text(json.dumps({"cat": 1.5}), encoding="utf-8")
+        monkeypatch.setattr(collect_analytics, "SCENE_PERFORMANCE_FILE", perf_file)
+
+        assert collect_analytics._load_scene_performance() == {"cat": 1.5}
+
+    def test_corrupted_file_returns_empty_dict(self, tmp_path, monkeypatch):
+        perf_file = tmp_path / "scene_performance.json"
+        perf_file.write_text("not json", encoding="utf-8")
+        monkeypatch.setattr(collect_analytics, "SCENE_PERFORMANCE_FILE", perf_file)
+
+        assert collect_analytics._load_scene_performance() == {}
+
+
+class TestUpdateScenePerformance:
+    """_update_scene_performance mescla por cima do arquivo existente em vez
+    de sobrescrever - uma cena que caiu abaixo de _MIN_SCENE_SAMPLES nesta
+    semana (e por isso ausente do scene_weights recem-calculado) nao pode
+    perder o peso ja conhecido de uma semana anterior."""
+
+    def test_writes_new_file_when_none_exists(self, tmp_path, monkeypatch):
+        perf_file = tmp_path / "scene_performance.json"
+        monkeypatch.setattr(collect_analytics, "SCENE_PERFORMANCE_FILE", perf_file)
+
+        collect_analytics._update_scene_performance({"cat": 1.8})
+
+        assert json.loads(perf_file.read_text(encoding="utf-8")) == {"cat": 1.8}
+
+    def test_preserves_scene_missing_from_fresh_weights(self, tmp_path, monkeypatch):
+        perf_file = tmp_path / "scene_performance.json"
+        perf_file.write_text(json.dumps({"cat": 1.5, "sleepy cat": 2.1}), encoding="utf-8")
+        monkeypatch.setattr(collect_analytics, "SCENE_PERFORMANCE_FILE", perf_file)
+
+        # Esta semana so "cat" teve amostras suficientes; "sleepy cat" nao
+        # aparece no resultado fresco, mas deve sobreviver no arquivo.
+        collect_analytics._update_scene_performance({"cat": 1.2})
+
+        result = json.loads(perf_file.read_text(encoding="utf-8"))
+        assert result["cat"] == 1.2
+        assert result["sleepy cat"] == 2.1
+
+    def test_fresh_weight_overrides_stale_one(self, tmp_path, monkeypatch):
+        perf_file = tmp_path / "scene_performance.json"
+        perf_file.write_text(json.dumps({"cat": 0.5}), encoding="utf-8")
+        monkeypatch.setattr(collect_analytics, "SCENE_PERFORMANCE_FILE", perf_file)
+
+        collect_analytics._update_scene_performance({"cat": 2.0})
+
+        assert json.loads(perf_file.read_text(encoding="utf-8"))["cat"] == 2.0
