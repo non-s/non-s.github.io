@@ -18,7 +18,7 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 - **Analytics semanal**: Coleta de métricas para feedback loop (com guard contra paginação infinita)
 - **Marca consistente**: Todos os títulos começam com "Pata Jazz |"
 - **Conteúdo em inglês**: título, descrição, hashtags e legendas são gerados em inglês (`utils/seo_keywords.py`, `utils/metadata_engine.py`, `utils/caption_engine.py`) - o formato pet+jazz não depende de idioma e o volume de busca em inglês é muito maior que o equivalente em português. O system prompt padrão do Gemini (`utils/ai_helper.py::_default_system_prompt`) também reforça isso - qualquer chamada de IA que precise de outro idioma tem que passar `system=` explicitamente.
-- **Robustez de APIs**: Circuit breaker no Gemini (429/502/503), retry exponencial no Discord/YouTube, fallback local em todas as chamadas de IA
+- **Robustez de APIs**: Circuit breaker no Gemini (429/502/503), retry exponencial no YouTube, fallback local em todas as chamadas de IA
 - **Thumbnails com shadow RGBA**: Gradiente via `Image.linear_gradient` (Pillow ≥9.1), shadows com alpha real
 - **Live sem deadlock**: stderr do FFmpeg redirecionado para arquivo (evita congelamento em lives longas)
 
@@ -64,7 +64,6 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 │   ├── animal_branding.py    # Identidade Pata Jazz
 │   ├── caption_engine.py     # Legendas SRT automáticas
 │   ├── content_strategy.py   # Mood por horário e calendário
-│   ├── discord_webhook.py    # Notificações Discord
 │   ├── ffmpeg_helpers.py      # FFmpeg e ffprobe
 │   ├── log_config.py         # Logging centralizado
 │   ├── media_pool.py         # Pool de mídia local
@@ -120,7 +119,6 @@ Salve o JSON resultante como `youtube_token.json` na raiz do projeto (ou use o s
 - `PIXABAY_API_KEY`
 - `JAMENDO_CLIENT_ID`
 - `YOUTUBE_TOKEN` — JSON do token OAuth do YouTube
-- `DISCORD_WEBHOOK_URL` — opcional; sem ele, `utils/discord_webhook.py` só loga um warning e segue (nenhum passo falha por falta desse secret). Sem configurar, nenhuma notificação (início/fim de live, upload, falha de workflow) é enviada de verdade.
 
 ### Variables
 
