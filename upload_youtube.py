@@ -379,6 +379,79 @@ def cleanup_orphan_broadcasts(service) -> int:
     return cleaned
 
 
+_LIVE_STATE_FILE = LIVE_META_DIR / "live_state.json"
+# lifeCycleStatus que ainda valem a pena reaproveitar em vez de criar um
+# broadcast novo. 'complete' e 'revoked' sao terminais - nunca voltam a
+# aceitar video. Os demais (mesmo 'ready'/'created', que run_live.py nunca
+# deveria deixar parado por muito tempo gracas a cleanup_orphan_broadcasts)
+# ainda podem receber um bind/stream novo de video sem erro.
+_RESUMABLE_LIFECYCLE_STATUSES = {"created", "ready", "testStarting", "testing", "liveStarting", "live"}
+
+
+def _try_resume_existing_broadcast(service) -> dict | None:
+    """Tenta reaproveitar o broadcast/stream da sessao anterior (salvo em
+    _data/live_state.json por esta mesma funcao) em vez de criar um novo.
+
+    Sem isso, toda sessao do GitHub Actions criava um broadcast do zero -
+    mesmo com o encadeamento entre sessoes tendo um gap real de poucos
+    minutos (run_live.py so finaliza no fim natural da sessao ou em erro
+    irrecuperavel), o broadcast anterior virava VOD e um link novo aparecia
+    no canal a cada ~5h20, quebrando a impressao de "1 live que nunca para"
+    mesmo com a infraestrutura de CI funcionando corretamente por baixo.
+
+    So reaproveita se o broadcast salvo ainda existir e seu lifeCycleStatus
+    nao for terminal - qualquer falha (arquivo ausente/invalido, broadcast
+    nao encontrado, stream nao encontrado, erro de rede) cai no fallback
+    seguro de criar um broadcast novo, que e exatamente o comportamento de
+    antes desta funcao existir.
+    """
+    if not _LIVE_STATE_FILE.exists():
+        return None
+    try:
+        saved = json.loads(_LIVE_STATE_FILE.read_text(encoding="utf-8"))
+        broadcast_id = saved["broadcast_id"]
+        stream_id = saved["stream_id"]
+    except Exception:
+        return None
+
+    try:
+        broadcasts = _retry_youtube_call(
+            service.liveBroadcasts().list(part="status", id=broadcast_id).execute
+        )
+        items = broadcasts.get("items", [])
+        if not items:
+            log.info("Broadcast salvo %s nao existe mais; criando um novo.", broadcast_id)
+            return None
+        lifecycle = items[0].get("status", {}).get("lifeCycleStatus")
+        if lifecycle not in _RESUMABLE_LIFECYCLE_STATUSES:
+            log.info("Broadcast salvo %s em lifecycle=%s (terminal); criando um novo.", broadcast_id, lifecycle)
+            return None
+
+        streams = _retry_youtube_call(
+            service.liveStreams().list(part="cdn", id=stream_id).execute
+        )
+        stream_items = streams.get("items", [])
+        if not stream_items:
+            log.info("Stream salvo %s nao existe mais; criando um broadcast novo.", stream_id)
+            return None
+        stream_name = stream_items[0]["cdn"]["ingestionInfo"]["streamName"]
+    except Exception as exc:
+        log.info("Falha ao verificar broadcast salvo (%s); criando um novo.", exc)
+        return None
+
+    meta = {
+        "broadcast_id": broadcast_id,
+        "stream_id": stream_id,
+        "stream_name": stream_name,
+        "ingestion_url": f"rtmp://a.rtmp.youtube.com/live2/{stream_name}",
+        "title": saved.get("title", ""),
+        "description": saved.get("description", ""),
+        "privacy": saved.get("privacy", "public"),
+    }
+    log.info("Reaproveitando broadcast existente %s (lifecycle=%s) em vez de criar um novo.", broadcast_id, lifecycle)
+    return meta
+
+
 def create_live_stream(
     title: str = "",
     description: str = "",
@@ -387,6 +460,12 @@ def create_live_stream(
 ) -> dict | None:
     service = get_youtube_service()
     cleanup_orphan_broadcasts(service)
+
+    resumed = _try_resume_existing_broadcast(service)
+    if resumed:
+        _LIVE_STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
+        _LIVE_STATE_FILE.write_text(json.dumps(resumed, ensure_ascii=False, indent=2), encoding="utf-8")
+        return resumed
 
     title = title or _generate_live_title()
     description = description or (
@@ -445,8 +524,8 @@ def create_live_stream(
         "description": description,
         "privacy": privacy,
     }
-    LIVE_META_DIR.mkdir(parents=True, exist_ok=True)
-    LIVE_META_DIR.joinpath("live_state.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+    _LIVE_STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
+    _LIVE_STATE_FILE.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
 
     log.info("Live criada: broadcast=%s stream=%s url=%s", broadcast_id, stream_id, ingestion_url)
     return meta

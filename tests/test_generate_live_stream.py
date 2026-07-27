@@ -211,3 +211,57 @@ class TestWaitFfmpegStreamWatchdog:
 
         proc.kill.assert_not_called()
         assert code == 0
+
+
+class TestSaveLiveMeta:
+    """_save_live_meta() precisa mesclar com o conteudo ja existente, nao
+    sobrescrever - upload_youtube.create_live_stream() grava broadcast_id/
+    stream_id/ingestion_url em live_state.json logo antes desta funcao ser
+    chamada em run_live.py.main(); sobrescrever apagaria exatamente os
+    campos que upload_youtube._try_resume_existing_broadcast precisa pra
+    reaproveitar o broadcast na proxima sessao."""
+
+    def test_creates_file_when_none_exists(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(live, "LIVE_META_DIR", tmp_path)
+
+        live._save_live_meta(title="t", stream_url="rtmp://x")
+
+        data = _read_json(tmp_path / "live_state.json")
+        assert data["title"] == "t"
+        assert data["stream_url"] == "rtmp://x"
+        assert "updated_at" in data
+
+    def test_preserves_broadcast_id_written_by_create_live_stream(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(live, "LIVE_META_DIR", tmp_path)
+        (tmp_path / "live_state.json").write_text(
+            '{"broadcast_id": "b1", "stream_id": "s1", "ingestion_url": "rtmp://a.rtmp.youtube.com/live2/key"}',
+            encoding="utf-8",
+        )
+
+        live._save_live_meta(title="Pata Jazz Live", stream_url="rtmp://a.rtmp.youtube.com/live2/key")
+
+        data = _read_json(tmp_path / "live_state.json")
+        assert data["broadcast_id"] == "b1"
+        assert data["stream_id"] == "s1"
+        assert data["title"] == "Pata Jazz Live"
+
+    def test_new_call_overrides_same_key(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(live, "LIVE_META_DIR", tmp_path)
+        (tmp_path / "live_state.json").write_text('{"title": "old"}', encoding="utf-8")
+
+        live._save_live_meta(title="new")
+
+        assert _read_json(tmp_path / "live_state.json")["title"] == "new"
+
+    def test_corrupted_existing_file_does_not_crash(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(live, "LIVE_META_DIR", tmp_path)
+        (tmp_path / "live_state.json").write_text("not json", encoding="utf-8")
+
+        live._save_live_meta(title="t")
+
+        assert _read_json(tmp_path / "live_state.json")["title"] == "t"
+
+
+def _read_json(path):
+    import json
+    return json.loads(path.read_text(encoding="utf-8"))
