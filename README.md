@@ -13,12 +13,21 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 - **Mood por horário**: Shorts e horizontais selecionam cenas baseado na hora (manhã = diversão, tarde = fofura, noite = relax)
 - **Multi-clip com crossfade**: Shorts usam 2-3 clipes com transição suave em vez de 1 clipe repetido (validação automática garante que cada clipe é longo o suficiente para o xfade)
 - **Text overlay**: Hook aparece como texto no vídeo nos primeiros 3 segundos (drawtext FFmpeg)
-- **Legendas automáticas**: SRT gerado via Gemini e enviado como caption track (mimetype correto por extensão)
+- **Legendas ASS estilizadas (Shorts)**: legendas animadas com posicionamento/estilo via ASS (FFmpeg `ass=` filter) — exclusivo de Shorts onde o texto é parte do hook visual; horizontais e live usam SRT simples como caption track do YouTube (mais acessível, sem overlay)
+- **Legendas SRT automáticas**: SRT gerado via Gemini e enviado como caption track (mimetype correto por extensão)
+- **Multi-canal**: `utils/channel_config.py` abstrai marca/tags/playlists/prompts por canal — hoje só `Pata Jazz`, mas novos canais (`Pata Lofi`, `Pata Classical`...) podem ser registrados em `CHANNELS` sem duplicar o repo nem mudar os módulos consumidores
+- **Música por mood**: faixas de jazz selecionadas por mood (diversão/fofura/relax) em vez de aleatório puro
+- **AI hooks**: títulos/descrições/hashtags/legendas gerados via Gemini com circuit breaker (429/502/503) e fallback local — nunca quebra o pipeline por falha de IA
+- **Thumbnail A/B**: thumbnails geradas com shadow RGBA real (gradiente via `Image.linear_gradient`), redimensionadas automaticamente para <2MB
+- **Live chat commands**: `utils/live_chat.py` lê o chat ao vivo a cada 10s, parseia comandos `!` (ex.: `!scene <cena>`) e escreve respostas no overlay do FFmpeg — sem postar no chat (evita ToS)
+- **FFT visualizer**: overlay de áudio na live com visualizador FFT em tempo real
+- **Dashboard interativo**: `scripts/generate_dashboard.py` gera relatório HTML autocontido (sem deps novas) com analytics, performance por cena/padrão de título, audiência da live e projeção de views — publicado toda semana em **https://non-s.github.io/** via GitHub Pages
+- **Analytics preditivo**: `scripts/predict_views.py` treina regressão linear (Python puro, sem numpy/scikit-learn) sobre os dados históricos e prevê views nos primeiros 7 dias após o upload por cena/padrão/horário — modelo salvo em `_data/view_predictor.json`, consumido pelo dashboard
 - **Playlists automáticas**: Videos adicionados a playlists por mood/formato (cache persistente em `_data/playlist_cache.json`)
 - **Analytics semanal com feedback loop real**: coleta views/likes/comentários, cruza com a cena e o padrão de título que geraram cada vídeo (`_data/video_tags.json`, gravado no upload) e grava um peso por cena (`_data/scene_performance.json`) e por padrão de título (`_data/title_pattern_performance.json`) — `scene_for_mood()` e `pick_title_pattern()` passam a preferir o que performa melhor de verdade, sem nunca zerar as demais opções
 - **Contagem de espectadores da live**: uma amostra de `concurrentViewers` por segmento de FFmpeg, salva em `_data/live_viewer_history.json`
-- **Dashboard HTML público**: `scripts/generate_dashboard.py` lê o que já está em `_data/` (analytics, performance por cena/padrão de título, audiência da live) e gera um relatório visual autocontido (sem dependências novas), publicado toda semana em **https://non-s.github.io/** via GitHub Pages (`actions/deploy-pages`) — só dados já públicos no próprio YouTube (views/likes/títulos) e os pesos de performance por cena/padrão de título; nenhum token/segredo passa perto desse job
-- **Checagem de saúde da live**: `scripts/check_live_health.py` consulta a cada 2h se há um broadcast `active` de verdade no canal — se não houver, abre uma Issue automática no GitHub (fecha sozinha quando a live volta)
+- **Rastreio de quota YouTube**: `utils/quota_tracker.py` loga unidades de quota gastas em `_data/quota_usage.json` (com lock e thread-safe), com alerta em 8000/dia (limite 10000); `retry_youtube_call` registra automaticamente o custo por endpoint após sucesso
+- **Checagem de saúde da live**: `scripts/check_live_health.py` consulta a cada 2h se há um broadcast `active` de verdade no canal — se não houver, abre uma Issue automática no GitHub com link do run falho, último status conhecido e comando para reexecutar (fecha sozinha quando a live volta)
 - **Marca consistente**: Todos os títulos começam com "Pata Jazz |"
 - **Conteúdo em inglês**: título, descrição, hashtags e legendas são gerados em inglês (`utils/seo_keywords.py`, `utils/metadata_engine.py`, `utils/caption_engine.py`) - o formato pet+jazz não depende de idioma e o volume de busca em inglês é muito maior que o equivalente em português. O system prompt padrão do Gemini (`utils/ai_helper.py::_default_system_prompt`) também reforça isso - qualquer chamada de IA que precise de outro idioma tem que passar `system=` explicitamente.
 - **Robustez de APIs**: Circuit breaker no Gemini (429/502/503), retry exponencial no YouTube, fallback local em todas as chamadas de IA
@@ -47,43 +56,67 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 
 ```
 .
-├── .github/workflows/        # Workflows do GitHub Actions
+├── .github/
+│   ├── actions/restore-token-and-cache/  # Composite action: token + caches _data/
+│   ├── workflows/                        # Workflows GitHub Actions
+│   └── dependabot.yml                    # Updates agrupados (pip + github-actions)
 ├── _assets/
-│   ├── audio/animal_jazz/    # Faixas jazz (Jamendo)
-│   ├── video/animal_broll/   # B-roll de gatos/cachorros (Pixabay)
-│   └── thumbnails/           # Thumbnails geradas
-├── _data/                    # Estado local (analytics, live_state)
-├── _videos/                  # Vídeos gerados e logs de erro
+│   ├── audio/animal_jazz/                # Faixas jazz (Jamendo)
+│   ├── video/animal_broll/               # B-roll de gatos/cachorros (Pixabay)
+│   └── thumbnails/                       # Thumbnails geradas
+├── _data/                                # Estado local (analytics, live_state, quota)
+├── _videos/                              # Vídeos gerados e logs de erro
+├── docs/
+│   ├── ARCHITECTURE.md                   # Fluxo de dados, design, componentes
+│   ├── CONTRIBUTING.md                   # Setup, testes, convenções, novos canais/workflows
+│   └── SELF_HOSTED_RUNNER.md             # Runner self-hosted (live longa)
 ├── scripts/
-│   ├── batch_generate.py     # Geração em lote
-│   ├── check_live_health.py  # Checagem de broadcast "active" (abre issue se cair)
-│   ├── collect_analytics.py  # Coleta de métricas YouTube
-│   ├── generate_dashboard.py # Dashboard HTML a partir dos dados de _data/
-│   ├── healthcheck.py        # Verifica dependências e tokens
-│   ├── run_live.py           # Inicia live com supervisão
-│   ├── sync_animal_broll.py  # Sync Pixabay (gatos/cachorros)
-│   └── sync_jazz_music.py    # Sync Jamendo (jazz)
-├── tests/                    # Testes pytest
+│   ├── batch_generate.py                 # Geração em lote
+│   ├── check_live_health.py              # Checagem de broadcast "active" (abre issue com contexto)
+│   ├── collect_analytics.py              # Coleta de métricas YouTube + feedback loop
+│   ├── generate_dashboard.py             # Dashboard HTML a partir de _data/
+│   ├── healthcheck.py                    # Verifica dependências e tokens
+│   ├── predict_views.py                  # Analytics preditivo (regressão linear)
+│   ├── publish_weekly_batch.py           # Publica próximos N do lote semanal
+│   ├── run_live.py                       # Inicia live com supervisão (reconecta até 200x)
+│   ├── sync_animal_broll.py              # Sync Pixabay (gatos/cachorros)
+│   └── sync_jazz_music.py                # Sync Jamendo (jazz)
+├── tests/                                # Testes pytest
 ├── utils/
-│   ├── ai_helper.py          # Chamadas Gemini
-│   ├── animal_branding.py    # Identidade Pata Jazz
-│   ├── caption_engine.py     # Legendas SRT automáticas
-│   ├── content_strategy.py   # Mood por horário (e peso por cena, se houver dados de performance)
-│   ├── ffmpeg_helpers.py      # FFmpeg e ffprobe
-│   ├── log_config.py         # Logging centralizado
-│   ├── media_pool.py         # Pool de mídia local
-│   ├── metadata_engine.py    # Títulos/descrições/hashtags
-│   ├── playlist_manager.py   # Playlists automáticas YouTube
-│   ├── seo_keywords.py       # SEO otimizado
-│   ├── thumbnail_engine.py   # Geração de thumbnails (<2MB)
-│   ├── video_builder.py      # Pipeline comum (multi-clip + overlay)
-│   ├── video_validator.py    # Validação técnica dos vídeos
-│   └── youtube_oauth.py      # OAuth YouTube
-├── generate_pata_jazz_*.py   # Geradores
-├── upload_youtube.py         # Upload de vídeo (insert + caption + playlist)
-├── live_broadcast.py         # Live 24/7 (liveBroadcast/liveStream + bind)
-└── requirements.txt
+│   ├── ai_helper.py                      # Chamadas Gemini (circuit breaker + fallback)
+│   ├── animal_branding.py                # Identidade Pata Jazz
+│   ├── caption_engine.py                 # Legendas SRT (YouTube) + ASS (Shorts overlay)
+│   ├── channel_config.py                 # Abstração multi-canal (ChannelConfig + CHANNELS)
+│   ├── content_strategy.py               # Mood por horário + cena ponderada por performance
+│   ├── ffmpeg_helpers.py                 # FFmpeg e ffprobe (com timeout)
+│   ├── live_chat.py                      # Le chat ao vivo + comandos ! + overlay FFmpeg
+│   ├── log_config.py                     # Logging centralizado
+│   ├── media_pool.py                     # Pool de mídia local (anti-repeat)
+│   ├── metadata_engine.py                # Títulos/descrições/hashtags
+│   ├── playlist_manager.py               # Playlists automáticas YouTube
+│   ├── quota_tracker.py                  # Rastreio de quota YouTube (_data/quota_usage.json)
+│   ├── seo_keywords.py                   # SEO + pick_title_pattern ponderado por performance
+│   ├── state_lock.py                     # filelock para estado JSON compartilhado
+│   ├── thumbnail_engine.py               # Geração de thumbnails (<2MB, shadow RGBA)
+│   ├── video_builder.py                  # Pipeline comum (multi-clip + overlay + ASS)
+│   ├── video_validator.py                # Validação técnica dos vídeos
+│   ├── youtube_oauth.py                  # OAuth YouTube
+│   └── youtube_retry.py                  # Retry exponencial + registro automático de quota
+├── generate_pata_jazz_*.py               # Geradores (short/horizontal/live)
+├── upload_youtube.py                     # Upload de vídeo (insert + caption + playlist)
+├── live_broadcast.py                     # Live 24/7 (liveBroadcast/liveStream + bind) — separado de upload_youtube
+├── Makefile                              # Atalhos: test, test-cov, lint, format, typecheck, security, sync, clean, all
+├── .pre-commit-config.yaml               # ruff + mypy + higiene (check-yaml, EOF, trailing-whitespace)
+├── pyproject.toml                        # ruff/pytest/coverage/mypy config
+├── requirements.txt                      # Deps runtime
+├── requirements-dev.txt                  # Deps dev (ruff, pytest, mypy, bandit, pip-audit)
+└── requirements.lock                     # Lockfile (pip-compile)
 ```
+
+> **Documentação detalhada:** veja [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+> (fluxo de dados, decisões de design, componentes, workflows, estado
+> persistente) e [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md) (setup, testes,
+> convenções de commit, como adicionar canal/workflow novos).
 
 ## Configuração
 
@@ -211,6 +244,9 @@ python -m compileall -q .
 ```
 
 ## Desenvolvimento
+
+> Guia completo de setup, testes, convenções de commit e como adicionar
+> canais/workflows novos: [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md).
 
 ### Pre-commit hooks
 
