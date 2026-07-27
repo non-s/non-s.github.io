@@ -249,6 +249,13 @@ def _start_ffmpeg_stream(
             str(audio_playlist),
         ]
 
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    progress_path = OUTPUT_DIR / "live_progress.txt"
+    # Trunca antes de comecar: _wait_ffmpeg_stream detecta stall pelo mtime
+    # desse arquivo, e um arquivo do segmento anterior (mtime antigo) faria
+    # o novo segmento parecer travado desde o primeiro instante.
+    progress_path.write_text("", encoding="utf-8")
+
     cmd += [
         "-c:v",
         "libx264",
@@ -270,6 +277,13 @@ def _start_ffmpeg_stream(
         "128k",
         "-ar",
         "44100",
+        # -progress escreve key=value (frame=, out_time_ms=, speed=...)
+        # periodicamente nesse arquivo enquanto o encode avanca de verdade -
+        # _wait_ffmpeg_stream usa o mtime dele pra detectar um travamento em
+        # ~1-2min em vez de esperar o resto da sessao (max_seconds cobre a
+        # duracao inteira do segmento, que pode ser horas logo no inicio).
+        "-progress",
+        str(progress_path),
         "-f",
         "flv",
         stream_url,
@@ -279,7 +293,6 @@ def _start_ffmpeg_stream(
         cmd = cmd[:-1] + ["-t", str(duration_minutes * 60)] + cmd[-1:]
 
     log.info("Iniciando stream: %s", " ".join(cmd))
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     log_path = OUTPUT_DIR / "live_ffmpeg.log"
     # Abre o arquivo de log e mantem o handle aberto pelo tempo de vida do processo.
     # Usamos stdout=DEVNULL (FFmpeg so escreve progresso em stderr) e stderr para o arquivo.
@@ -287,7 +300,11 @@ def _start_ffmpeg_stream(
     proc = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=log_handle)
     # Anexa o handle ao proc para que seja fechado no termino.
     proc._log_handle = log_handle  # type: ignore[attr-defined]
+    proc._progress_path = progress_path  # type: ignore[attr-defined]
     return proc
+
+
+_STALL_GRACE_SECONDS = 75  # folga generosa acima do intervalo normal de -progress (frequente, sub-segundo)
 
 
 def _wait_ffmpeg_stream(proc: subprocess.Popen, max_seconds: float | None = None) -> int:
@@ -297,18 +314,36 @@ def _wait_ffmpeg_stream(proc: subprocess.Popen, max_seconds: float | None = None
     risco de deadlock de pipe). Aqui apenas fazemos poll do processo e
     lidamos com o desligamento gracoso via SIGTERM.
 
-    max_seconds e um watchdog: confirmado em producao que o FFmpeg pode
-    travar (parar de progredir sem crashar nem respeitar seu proprio -t,
-    provavelmente um write RTMP bloqueado por instabilidade de rede) por
-    dezenas de minutos sem sair sozinho. Sem esse watchdog o processo so
-    e derrubado quando o job inteiro bate o timeout duro do GitHub Actions
-    (SIGKILL forcado nos processos orfaos, sem chance do codigo chamar
-    transition('complete') - broadcast fica preso "ao vivo" para sempre).
-    Se o segmento passar de max_seconds sem sair, tratamos como travado:
-    matamos o FFmpeg e devolvemos o controle para o loop de reconexao em
-    run_live.py, que ja lida com FFmpeg morrendo antes da duracao pedida.
+    Dois watchdogs, dois papeis:
+    - stall (mtime de _progress_path, escrito por -progress): detecta um
+      FFmpeg que parou de progredir de verdade em ~_STALL_GRACE_SECONDS.
+      max_seconds sozinho so cobre esse caso perto do FIM do segmento -
+      um travamento logo no INICIO de uma sessao de ~320min ficaria sem
+      deteccao ate quase esse tanto de tempo todo, ja que max_seconds e
+      calculado a partir do tempo RESTANTE da sessao inteira.
+    - max_seconds: confirmado em producao que o FFmpeg pode travar (parar
+      de progredir sem crashar nem respeitar seu proprio -t, provavelmente
+      um write RTMP bloqueado por instabilidade de rede) por dezenas de
+      minutos sem sair sozinho. Continua como backstop absoluto (cobre
+      qualquer cenario onde o arquivo de progresso nao existe/nao e
+      escrito por algum motivo) - sem ele o processo so seria derrubado
+      quando o job inteiro batesse o timeout duro do GitHub Actions
+      (SIGKILL forcado nos processos orfaos, sem chance do codigo chamar
+      transition('complete') - broadcast fica preso "ao vivo" para sempre).
+
+    Em qualquer um dos dois casos, mata o FFmpeg e devolve o controle para
+    o loop de reconexao em run_live.py, que ja lida com FFmpeg morrendo
+    antes da duracao pedida.
     """
     start = time.time()
+    progress_path = getattr(proc, "_progress_path", None)
+    if not isinstance(progress_path, Path):
+        # getattr(..., None) nao basta: um MagicMock (proc de teste, ou
+        # qualquer objeto que nao passou por _start_ffmpeg_stream) auto-cria
+        # o atributo em vez de levantar AttributeError, entao progress_path
+        # viraria outro MagicMock em vez de None e o stat()/mtime abaixo
+        # quebraria com TypeError silenciosamente capturado la embaixo.
+        progress_path = None
     try:
         while proc.poll() is None:
             if _shutdown:
@@ -320,11 +355,26 @@ def _wait_ffmpeg_stream(proc: subprocess.Popen, max_seconds: float | None = None
                     proc.kill()
                     proc.wait(timeout=10)
                 break
-            if max_seconds and (time.time() - start) > max_seconds:
-                log.warning(
-                    "FFmpeg parece travado (sem sair apos %.0fs, esperado ~%.0fs); forcando encerramento.",
-                    time.time() - start, max_seconds,
-                )
+
+            stalled = False
+            if progress_path is not None:
+                try:
+                    idle_seconds = time.time() - progress_path.stat().st_mtime
+                    if idle_seconds > _STALL_GRACE_SECONDS:
+                        stalled = True
+                        log.warning(
+                            "FFmpeg parece travado (sem progresso ha %.0fs, limite %.0fs); forcando encerramento.",
+                            idle_seconds, _STALL_GRACE_SECONDS,
+                        )
+                except OSError:
+                    pass  # arquivo ainda nao existe (ffmpeg nao iniciou a escrever) - nada a checar ainda
+
+            if stalled or (max_seconds and (time.time() - start) > max_seconds):
+                if not stalled:
+                    log.warning(
+                        "FFmpeg parece travado (sem sair apos %.0fs, esperado ~%.0fs); forcando encerramento.",
+                        time.time() - start, max_seconds,
+                    )
                 proc.kill()
                 try:
                     proc.wait(timeout=10)
