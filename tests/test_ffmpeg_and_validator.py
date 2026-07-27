@@ -231,3 +231,84 @@ class TestFfmpegHelpers:
         content = out.read_text(encoding="utf-8")
         assert "file " in content
         assert content.count("file ") == 2
+
+    def test_run_ffmpeg_nonzero_returncode_raises(self):
+        """returncode != 0 deve levantar subprocess.CalledProcessError."""
+        import subprocess
+        with patch("subprocess.run", return_value=MagicMock(returncode=2, stderr="boom", stdout="")):
+            with pytest.raises(subprocess.CalledProcessError):
+                ffmpeg_helpers.run_ffmpeg(["-i", "x", "out.mp4"])
+
+    def test_get_video_duration_timeout_returns_zero(self):
+        """TimeoutExpired no ffprobe -> retorna 0.0 (nao propaga)."""
+        import subprocess
+        with patch("subprocess.run", side_effect=subprocess.TimeoutExpired(cmd="ffprobe", timeout=15)):
+            assert ffmpeg_helpers.get_video_duration("x.mp4") == 0.0
+
+    def test_get_video_duration_value_error_returns_zero(self):
+        """stdout nao-numerico -> ValueError capturado -> 0.0."""
+        with patch("subprocess.run", return_value=MagicMock(returncode=0, stdout="not-a-number\n")):
+            assert ffmpeg_helpers.get_video_duration("x.mp4") == 0.0
+
+
+class TestVideoValidatorBranches:
+    """Cobertura dos branches de erro de ffprobe em video_validator.py."""
+
+    def test_run_ffprobe_raises_on_subprocess_failure(self, tmp_path):
+        """_run_ffprobe encapsula qualquer excecao do subprocess em RuntimeError."""
+        p = tmp_path / "v.mp4"
+        p.write_bytes(b"x")
+        with patch("subprocess.run", side_effect=OSError("ffprobe missing")):
+            with pytest.raises(RuntimeError, match="ffprobe falhou"):
+                video_validator._run_ffprobe(p)
+
+    def test_extract_stream_info_video_without_codec_name(self):
+        """Stream de video sem codec_name -> info['video_codec'] e None."""
+        probe = {
+            "streams": [
+                {"codec_type": "video", "width": 1920, "height": 1080},
+            ]
+        }
+        info = video_validator._extract_stream_info(probe)
+        assert info["has_video"]
+        assert info["video_codec"] is None
+        assert info["video_bit_rate"] is None
+
+    def test_validate_video_audio_missing_when_expected(self, tmp_path):
+        """expect_audio=True e sem stream de audio -> erro de audio ausente."""
+        p = tmp_path / "fake.mp4"
+        p.write_bytes(b"x" * 1024)
+        probe = {
+            "streams": [
+                {"codec_type": "video", "codec_name": "h264", "width": 1920, "height": 1080, "bit_rate": "2000000"},
+            ]
+        }
+        with patch("utils.video_validator._run_ffprobe", return_value=probe), \
+             patch("utils.video_validator.get_video_duration", return_value=30.0):
+            r = validate_video(p, 1920, 1080, 30, expect_audio=True)
+        assert not r.ok
+        assert any("áudio" in e.lower() for e in r.errors)
+
+    def test_validate_video_missing_bitrate_uses_filesize_estimate(self, tmp_path):
+        """video_bit_rate ausente e duration > 0 -> estima do tamanho do arquivo."""
+        p = tmp_path / "tiny.mp4"
+        p.write_bytes(b"x" * 100)  # 800 bits / 30s = ~26 bps
+        probe = {
+            "streams": [
+                {"codec_type": "video", "codec_name": "h264", "width": 1920, "height": 1080},
+                {"codec_type": "audio", "codec_name": "aac"},
+            ]
+        }
+        with patch("utils.video_validator._run_ffprobe", return_value=probe), \
+             patch("utils.video_validator.get_video_duration", return_value=30.0):
+            r = validate_video(p, 1920, 1080, 30, expect_audio=True, min_video_bitrate_kbps=100)
+        assert not r.ok
+        assert any("Bitrate" in e for e in r.errors)
+
+    def test_run_ffprobe_wraps_json_error(self, tmp_path):
+        """_run_ffprobe levanta RuntimeError se json.loads falhar."""
+        p = tmp_path / "v.mp4"
+        p.write_bytes(b"x")
+        with patch("subprocess.run", return_value=MagicMock(stdout="not json", returncode=0)):
+            with pytest.raises(RuntimeError, match="ffprobe falhou"):
+                video_validator._run_ffprobe(p)

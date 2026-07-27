@@ -28,6 +28,12 @@ class TestCurrentBrtHour:
         with _mock_now(1):
             assert content_strategy.current_brt_hour() == 22
 
+    def test_custom_offset_via_env(self, monkeypatch):
+        # offset customizado de -5h: 15:00 UTC - 5h = 10:00
+        monkeypatch.setenv("BRT_OFFSET_HOURS", "-5")
+        with _mock_now(15):
+            assert content_strategy.current_brt_hour() == 10
+
 
 class TestMoodForNow:
     def test_morning_is_diversao(self):

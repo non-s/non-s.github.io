@@ -43,7 +43,8 @@ class TestFeaturizeOneHot:
         patterns = ["pat-a", "pat-b"]
         vec = pv._featurize("cat", "pat-a", hour=10, day_of_week=0,
                             scenes=scenes, title_patterns=patterns)
-        # bias + (scenes-1) + (patterns-1) + hour + dow = 1+1+1+1+1 = 5.
+        # bias + (scenes-1) + (patterns-1) + hour + dow + dom + month +
+        # scene_x_hour (scenes-1 * 2 buckets) = 1+1+1+1+1+1+1+1+2 = 9.
         # Primeira cena (cat) e primeiro padrão (pat-a) são a referência
         # (dummy variable trap) — não ganham coluna; suas contribuições
         # ficam implícitas no bias.
@@ -51,7 +52,12 @@ class TestFeaturizeOneHot:
         assert vec[1:2] == [0.0]  # scene:dog (cat é a referência)
         assert vec[2:3] == [0.0]  # pattern:pat-b (pat-a é a referência)
         assert vec[3] == 10.0 / 23.0  # hour=10 normalizado
-        assert vec[4] == 0.0
+        assert vec[4] == 0.0  # day_of_week=0
+        assert vec[5] == 1.0 / 31.0  # day_of_month default=1
+        assert vec[6] == 1.0 / 12.0  # month default=1
+        # scene_x_hour: 1 (scenes-1) * 2 (buckets-1) = 2 colunas (dog x tarde/noite)
+        # hour=10 -> bucket=manha (referencia, omitido) -> ambas 0.
+        assert vec[7:9] == [0.0, 0.0]
 
     def test_unknown_scene_yields_zero_one_hot(self):
         # "cat" é a referência (omitida); "alien" não está no vocabulário
@@ -63,15 +69,44 @@ class TestFeaturizeOneHot:
     def test_hour_and_day_are_scalar(self):
         vec = pv._featurize("cat", "pat", hour=23, day_of_week=6,
                             scenes=["cat"], title_patterns=["pat"])
-        # bias + 0 scene + 0 pattern + hour + dow = 3 (referências únicas).
+        # bias + 0 scene + 0 pattern + hour + dow + dom + month + 0 scene_x_hour
+        # = 1 + 4 escalares + 0 interacoes (1 cena = referencia).
         # Normalizados para [0,1]: hour=23 -> 1.0, dow=6 -> 1.0.
-        assert vec[-2] == 1.0
-        assert vec[-1] == 1.0
+        assert vec[-4] == 1.0  # hour
+        assert vec[-3] == 1.0  # day_of_week
 
     def test_case_insensitive_scene(self):
         # 2 cenas; cat é referência. dog (segunda) ganha coluna 1.
         vec = pv._featurize("DOG", "pat", 0, 0, scenes=["cat", "dog"], title_patterns=["pat"])
         assert vec[1] == 1.0  # scene:dog
+
+    def test_day_of_month_normalized(self):
+        vec = pv._featurize("cat", "pat", 0, 0, scenes=["cat"], title_patterns=["pat"],
+                            day_of_month=15, month=6)
+        assert vec[-2] == 15.0 / 31.0
+        assert vec[-1] == 6.0 / 12.0
+
+    def test_month_normalized(self):
+        vec = pv._featurize("cat", "pat", 0, 0, scenes=["cat"], title_patterns=["pat"],
+                            day_of_month=1, month=12)
+        assert vec[-1] == 12.0 / 12.0
+
+    def test_scene_x_hour_interaction(self):
+        """scene_x_hour one-hot: dog (segunda cena) x tarde (segundo bucket)
+        ativa quando cena=dog e hour=14 (tarde)."""
+        vec = pv._featurize("dog", "pat", 14, 0, scenes=["cat", "dog"], title_patterns=["pat"])
+        # Ultimas 2 colunas: scene_x_hour:dog:tarde, scene_x_hour:dog:noite.
+        assert vec[-2] == 1.0  # dog x tarde
+        assert vec[-1] == 0.0  # dog x noite
+
+    def test_hour_bucket_classification(self):
+        assert pv._hour_bucket(8) == "manha"
+        assert pv._hour_bucket(14) == "tarde"
+        assert pv._hour_bucket(20) == "noite"
+        assert pv._hour_bucket(2) == "noite"
+        assert pv._hour_bucket(6) == "manha"
+        assert pv._hour_bucket(12) == "tarde"
+        assert pv._hour_bucket(18) == "noite"
 
 
 class TestSolveNormalEquation:
@@ -187,6 +222,75 @@ class TestTrainModelSynthetic:
         _isolate(tmp_path, monkeypatch)
         # Nenhum arquivo de modelo em disco.
         assert pv.predict_views("cat", "pat", 10, 0) == 0.0
+
+
+class TestNewFeaturesAndBackwardCompat:
+    """Item 21: features calendario (day_of_month, month) e interacao
+    scene_x_hour. Modelo antigo (sem essas features) ainda carrega via
+    fallback overall_avg em predict_views quando len(vec) != len(weights)."""
+
+    def test_new_features_appear_in_model(self, tmp_path, monkeypatch):
+        _isolate(tmp_path, monkeypatch)
+        now = datetime.now(UTC)
+        vids = []
+        for i in range(20):
+            pub = (now - timedelta(days=100, hours=i)).isoformat()
+            scene = "cat" if i % 2 == 0 else "dog"
+            pat = "pat-a" if i % 3 != 0 else "pat-b"
+            vids.append((f"vid{i}", scene, pat, pub, 100 + i))
+        _write_analytics_with_tags(tmp_path, videos=vids)
+
+        model = pv.train_model()
+
+        assert "day_of_month" in model["features"]
+        assert "month" in model["features"]
+        # Interacao scene_x_hour: uma coluna por (cena x bucket) exceto
+        # primeira cena x primeiro bucket (referencia).
+        scene_hour_features = [f for f in model["features"] if f.startswith("scene_x_hour:")]
+        assert len(scene_hour_features) > 0
+        # dog x tarde e dog x noite devem aparecer (cat x manha e a referencia).
+        assert "scene_x_hour:dog:tarde" in model["features"]
+        assert "scene_x_hour:dog:noite" in model["features"]
+        # cat e a primeira cena (referencia) -> nao tem scene_x_hour:cat:*.
+        assert not any(f.startswith("scene_x_hour:cat:") for f in model["features"])
+        assert len(model["weights"]) == len(model["features"])
+
+    def test_old_model_without_new_features_still_loads(self, tmp_path, monkeypatch):
+        """Modelo antigo (sem day_of_month/month/scene_x_hour) salvo manualmente:
+        predict_views detecta len(vec) != len(weights) e cai em overall_avg."""
+        _isolate(tmp_path, monkeypatch)
+        # Modelo "antigo" com features legacy (bias + scene + pattern + hour + dow).
+        old_features = ["bias", "scene:dog", "title_pattern:pat-b", "hour_of_day", "day_of_week"]
+        old_weights = [10.0, 2.0, 1.0, 0.5, 0.1]
+        pv.save_model({
+            "features": old_features,
+            "weights": old_weights,
+            "scenes": ["cat", "dog"],
+            "title_patterns": ["pat-a", "pat-b"],
+            "overall_avg": 99.0,
+            "n_samples": 10,
+        })
+
+        # len(vec) novo > len(weights) antigo -> fallback overall_avg.
+        pred = pv.predict_views("cat", "pat-a", 10, 0)
+        assert pred == 99.0
+
+    def test_predict_views_accepts_day_of_month_and_month(self, tmp_path, monkeypatch):
+        """predict_views aceita day_of_month/month como kwargs opcionais
+        (backward compat: sem eles usa a data atual)."""
+        _isolate(tmp_path, monkeypatch)
+        now = datetime.now(UTC)
+        vids = []
+        for i in range(20):
+            pub = (now - timedelta(days=100, hours=i)).isoformat()
+            scene = "cat" if i % 2 == 0 else "dog"
+            pat = "pat-a" if i % 3 != 0 else "pat-b"
+            vids.append((f"vid{i}", scene, pat, pub, 100 + i))
+        _write_analytics_with_tags(tmp_path, videos=vids)
+        pv.save_model(pv.train_model())
+
+        pred = pv.predict_views("cat", "pat-a", 10, 0, day_of_month=15, month=6)
+        assert pred >= 0.0
 
 
 class TestNoDataFallback:

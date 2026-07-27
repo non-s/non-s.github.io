@@ -128,3 +128,29 @@ class TestMainGeneration:
             "LIVE_RESOLUTION": "1280x720",
             "LIVE_DURATION_MINUTES": "30",
         }
+
+
+class TestArgparseInterface:
+    """Argumentos de linha de comando tem prioridade sobre env vars, mas
+    quando ausentes caiem no fallback de env (compat com workflows)."""
+
+    def test_argparse_kind_overrides_env(self, monkeypatch):
+        monkeypatch.setenv("BATCH_KIND", "short")
+        with patch("scripts.batch_generate._run", return_value=0) as mock_run:
+            code = batch_generate.main(["--kind", "horizontal", "--count", "1", "--upload", "false"])
+        assert code == 0
+        calls = [call.args[0] for call in mock_run.call_args_list]
+        assert any("generate_pata_jazz_horizontal.py" in cmd for cmd in calls)
+
+    def test_argparse_falls_back_to_env(self, monkeypatch):
+        monkeypatch.setenv("BATCH_KIND", "short")
+        monkeypatch.setenv("BATCH_COUNT", "2")
+        monkeypatch.setenv("BATCH_UPLOAD", "false")
+        with patch("scripts.batch_generate._run", return_value=0) as mock_run:
+            code = batch_generate.main([])
+        assert code == 0
+        assert mock_run.call_count == 2
+
+    def test_argparse_invalid_kind_returns_1(self):
+        with patch("scripts.batch_generate._run", return_value=0):
+            assert batch_generate.main(["--kind", "invalid", "--count", "1"]) == 1

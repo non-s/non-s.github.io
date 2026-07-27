@@ -102,6 +102,9 @@ class TestHandleCommand:
         assert "!scene" in reply
         assert "!uptime" in reply
         assert "!song" in reply
+        assert "!request" in reply
+        assert "!stats" in reply
+        assert "!next" in reply
 
     def test_uptime_formats_since_start(self, tmp_path):
         watcher = self._make_watcher(tmp_path, start_time=time.time() - 8015)  # 2h13m35s
@@ -161,6 +164,131 @@ class TestHandleCommand:
         watcher = self._make_watcher(tmp_path)
         reply = watcher.handle_command("song", "")
         assert reply is not None
+
+
+class TestRequestCommand:
+    def _make_watcher(self, tmp_path: Path, start_time: float = 0.0) -> LiveChatWatcher:
+        return LiveChatWatcher(
+            service=MagicMock(),
+            chat_id="chat123",
+            start_time=start_time,
+            meta_dir=tmp_path,
+        )
+
+    def test_request_without_argument_returns_usage(self, tmp_path):
+        watcher = self._make_watcher(tmp_path)
+        reply = watcher.handle_command("request", "", author="viewer1")
+        assert "Uso" in reply
+        assert not (tmp_path / "live_scene_requests.json").exists()
+
+    def test_request_invalid_returns_message_and_does_not_write(self, tmp_path):
+        watcher = self._make_watcher(tmp_path)
+        reply = watcher.handle_command("request", "dragon", author="viewer1")
+        assert "desconhecida" in reply.lower() or "invalida" in reply.lower()
+        assert not (tmp_path / "live_scene_requests.json").exists()
+
+    def test_request_valid_writes_scene_requests_json(self, tmp_path):
+        watcher = self._make_watcher(tmp_path)
+        reply = watcher.handle_command("request", "sleepy cat", author="viewer1")
+
+        assert "Pedido registrado" in reply
+        assert "sleepy cat" in reply
+        path = tmp_path / "live_scene_requests.json"
+        assert path.exists()
+        data = json.loads(path.read_text(encoding="utf-8"))
+        assert len(data) == 1
+        assert data[0]["scene"] == "sleepy cat"
+        assert data[0]["requested_by"] == "viewer1"
+        assert "requested_at" in data[0]
+
+    def test_request_appends_to_existing_requests(self, tmp_path):
+        path = tmp_path / "live_scene_requests.json"
+        path.write_text(json.dumps([{
+            "scene": "cat", "requested_by": "other", "requested_at": "2026-01-01"
+        }]), encoding="utf-8")
+        watcher = self._make_watcher(tmp_path)
+        watcher.handle_command("request", "dog", author="viewer2")
+
+        data = json.loads(path.read_text(encoding="utf-8"))
+        assert len(data) == 2
+        assert data[1]["scene"] == "dog"
+        assert data[1]["requested_by"] == "viewer2"
+
+    def test_request_preserves_case_in_argument(self, tmp_path):
+        """Comando deve lowercasing na cena (cenas sao lowercased no
+        consumidor), mas preservar o author."""
+        watcher = self._make_watcher(tmp_path)
+        watcher.handle_command("request", "Sleepy Cat", author="Viewer1")
+        data = json.loads((tmp_path / "live_scene_requests.json").read_text(encoding="utf-8"))
+        assert data[0]["scene"] == "sleepy cat"
+        assert data[0]["requested_by"] == "Viewer1"
+
+
+class TestStatsCommand:
+    def _make_watcher(self, tmp_path: Path) -> LiveChatWatcher:
+        return LiveChatWatcher(
+            service=MagicMock(), chat_id="chat123", start_time=0.0, meta_dir=tmp_path,
+        )
+
+    def test_stats_returns_total_views_from_analytics(self, tmp_path):
+        (tmp_path / "analytics.json").write_text(
+            json.dumps({"total_views": 12345}), encoding="utf-8"
+        )
+        watcher = self._make_watcher(tmp_path)
+        reply = watcher.handle_command("stats", "")
+        assert reply == "Channel views: 12345"
+
+    def test_stats_returns_unavailable_when_no_analytics(self, tmp_path):
+        watcher = self._make_watcher(tmp_path)
+        reply = watcher.handle_command("stats", "")
+        assert "indisponivel" in reply.lower()
+
+    def test_stats_handles_corrupted_analytics(self, tmp_path):
+        (tmp_path / "analytics.json").write_text("not json", encoding="utf-8")
+        watcher = self._make_watcher(tmp_path)
+        reply = watcher.handle_command("stats", "")
+        assert "indisponivel" in reply.lower()
+
+    def test_stats_handles_missing_total_views(self, tmp_path):
+        (tmp_path / "analytics.json").write_text(json.dumps({}), encoding="utf-8")
+        watcher = self._make_watcher(tmp_path)
+        reply = watcher.handle_command("stats", "")
+        assert reply == "Channel views: 0"
+
+
+class TestNextCommand:
+    def _make_watcher(self, tmp_path: Path) -> LiveChatWatcher:
+        return LiveChatWatcher(
+            service=MagicMock(), chat_id="chat123", start_time=0.0, meta_dir=tmp_path,
+        )
+
+    def test_next_returns_unknown_when_no_file(self, tmp_path):
+        watcher = self._make_watcher(tmp_path)
+        reply = watcher.handle_command("next", "")
+        assert reply == "Next clip: Unknown"
+
+    def test_next_returns_scene_and_hook_when_present(self, tmp_path):
+        (tmp_path / "live_next_clip.json").write_text(
+            json.dumps({"scene": "sleepy cat", "hook": "Cozy Nap Time"}), encoding="utf-8"
+        )
+        watcher = self._make_watcher(tmp_path)
+        reply = watcher.handle_command("next", "")
+        assert "Cozy Nap Time" in reply
+        assert "sleepy cat" in reply
+
+    def test_next_returns_scene_only_when_no_hook(self, tmp_path):
+        (tmp_path / "live_next_clip.json").write_text(
+            json.dumps({"scene": "sleepy cat"}), encoding="utf-8"
+        )
+        watcher = self._make_watcher(tmp_path)
+        reply = watcher.handle_command("next", "")
+        assert reply == "Next clip: sleepy cat"
+
+    def test_next_handles_corrupted_file(self, tmp_path):
+        (tmp_path / "live_next_clip.json").write_text("not json", encoding="utf-8")
+        watcher = self._make_watcher(tmp_path)
+        reply = watcher.handle_command("next", "")
+        assert reply == "Next clip: Unknown"
 
 
 class TestOverlayAndHistory:
@@ -270,6 +398,91 @@ class TestDiscoverChatId:
         service = MagicMock()
         service.liveBroadcasts().list().execute.side_effect = RuntimeError("api down")
         assert discover_chat_id(service, "bcast123") is None
+
+
+class TestLiveChatWatcherLoad:
+    """Teste de carga: simula 1000 mensagens chegando em 60s (10 chamadas de
+    100 msgs cada) e verifica que o watcher processa todas rapidamente (nao
+    trava) e que o historico de respostas tem cap (nao cresce indefinidamente)."""
+
+    def _make_watcher(self, tmp_path: Path) -> LiveChatWatcher:
+        return LiveChatWatcher(
+            service=MagicMock(), chat_id="chat123", start_time=0.0, meta_dir=tmp_path,
+            poll_interval=999,
+        )
+
+    def test_processes_1000_messages_under_2s(self, tmp_path):
+        from utils import live_chat as lc
+
+        watcher = self._make_watcher(tmp_path)
+
+        messages_per_call = 100
+        calls = 10
+        total = messages_per_call * calls
+        call_index = {"i": 0}
+
+        def _fake_items(_service, _chat_id, _page_token=""):
+            i = call_index["i"]
+            call_index["i"] += 1
+            items = [
+                {
+                    "snippet": {"textMessageDetails": {"messageText": f"hello {i * messages_per_call + j}"}},
+                    "authorDetails": {"displayName": f"viewer{j}"},
+                }
+                for j in range(messages_per_call)
+            ]
+            return items, "tok" if i < calls - 1 else ""
+
+        start = time.time()
+        with patch.object(lc, "fetch_chat_messages", side_effect=_fake_items):
+            for _ in range(calls):
+                watcher._poll_once()
+        elapsed = time.time() - start
+
+        assert call_index["i"] == calls
+        assert elapsed < 2.0, f"watcher demorou {elapsed:.2f}s para processar {total} mensagens"
+        assert watcher._page_token == ""
+
+    def test_reply_history_has_cap(self, tmp_path):
+        from utils import live_chat as lc
+
+        watcher = self._make_watcher(tmp_path)
+        cap = lc._MAX_REPLY_HISTORY
+        # Simula mais respostas que o cap: o historico precisa parar de crescer.
+        for i in range(cap * 3):
+            watcher._append_reply_history(f"reply {i}")
+        history = json.loads((tmp_path / "live_chat_replies.json").read_text(encoding="utf-8"))
+        assert len(history) <= cap, f"historico cresceu alem do cap {cap}: {len(history)}"
+        assert len(history) == cap
+
+    def test_simulated_60s_via_mocked_time(self, tmp_path):
+        from utils import live_chat as lc
+
+        watcher = self._make_watcher(tmp_path)
+        messages_per_call = 100
+        calls = 10
+        call_index = {"i": 0}
+        fake_now = [0.0]
+
+        def _fake_items(_service, _chat_id, _page_token=""):
+            i = call_index["i"]
+            call_index["i"] += 1
+            fake_now[0] += 6.0  # 60s em 10 chamadas
+            return [
+                {
+                    "snippet": {"textMessageDetails": {"messageText": "!uptime"}},
+                    "authorDetails": {"displayName": "viewer"},
+                }
+                for _ in range(messages_per_call)
+            ], ""
+
+        with patch.object(lc, "fetch_chat_messages", side_effect=_fake_items), \
+             patch.object(lc.time, "time", side_effect=lambda: fake_now[0]):
+            for _ in range(calls):
+                watcher._poll_once()
+
+        assert call_index["i"] == calls
+        assert fake_now[0] == 60.0
 
 
 class TestUptimeWriter:

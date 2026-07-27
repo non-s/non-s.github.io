@@ -1,14 +1,16 @@
 """
 scripts/batch_generate.py — gera múltiplos conteúdos em sequência (short/horizontal/live).
 
-Lê variáveis de ambiente:
-    BATCH_KIND=short|horizontal|live
-    BATCH_COUNT=1..3
-    BATCH_UPLOAD=true|false
+Argumentos de linha de comando (com fallback para env vars, para compat
+com workflows existentes que injetam via environment):
+    --kind=short|horizontal|live   (BATCH_KIND)
+    --count=1..10                   (BATCH_COUNT)
+    --upload=true|false             (BATCH_UPLOAD)
 """
 
 from __future__ import annotations
 
+import argparse
 import logging
 import os
 import subprocess
@@ -32,16 +34,31 @@ def _run(cmd: list[str], env: dict | None = None) -> int:
     return result.returncode
 
 
-def main() -> int:
+def _parse_args(argv: list[str] | None = None) -> tuple[str, int, bool]:
+    """Resolve kind/count/upload: argparse se presente, com fallback para
+    env vars (BATCH_KIND/BATCH_COUNT/BATCH_UPLOAD). Mantem compatibilidade
+    com workflows que injetam via environment."""
+    parser = argparse.ArgumentParser(description="Batch generator Pata Jazz")
+    parser.add_argument("--kind", default=None, help="short|horizontal|live")
+    parser.add_argument("--count", default=None, help="1..10")
+    parser.add_argument("--upload", default=None, help="true|false")
+    args, _ = parser.parse_known_args(argv)
+
+    kind = args.kind or os.environ.get("BATCH_KIND", "short")
+    raw_count = args.count if args.count is not None else os.environ.get("BATCH_COUNT", "1")
+    raw_upload = args.upload if args.upload is not None else os.environ.get("BATCH_UPLOAD", "true")
+    upload = str(raw_upload).lower() in ("1", "true", "yes")
+    try:
+        count = int(raw_count)
+    except (TypeError, ValueError):
+        count = -1
+    return kind, count, upload
+
+
+def main(argv: list[str] | None = None) -> int:
     configure_logging()
 
-    kind = os.environ.get("BATCH_KIND", "short")
-    try:
-        count = int(os.environ.get("BATCH_COUNT", "1"))
-    except ValueError:
-        log.error("BATCH_COUNT invalido: %r", os.environ.get("BATCH_COUNT"))
-        return 1
-    upload = os.environ.get("BATCH_UPLOAD", "true").lower() in ("1", "true", "yes")
+    kind, count, upload = _parse_args(argv)
 
     if kind not in ("short", "horizontal", "live"):
         log.error("BATCH_KIND invalido: %s", kind)

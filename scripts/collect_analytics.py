@@ -92,6 +92,8 @@ def collect_video_stats(service) -> list[dict]:
                 pageToken=page_token,
             ).execute
         )
+        if not resp.get("items"):
+            break
         for item in resp.get("items", []):
             vid = item.get("snippet", {}).get("resourceId", {}).get("videoId")
             if vid:
@@ -170,35 +172,51 @@ def maybe_rotate_thumbnail(
     median_views: float = 0.0,
     now: datetime | None = None,
 ) -> bool:
-    """Rotaciona a thumbnail de um video da variante A para a B se o video
-    performar abaixo de _THUMBNOT_ROTATION_THRESHOLD x a mediana apos
+    """Rotaciona a thumbnail de um video pela sequencia A -> B -> C se o
+    video performar abaixo de _THUMBNAIL_ROTATION_THRESHOLD x a mediana apos
     _THUMBNAIL_ROTATION_DAYS dias.
 
     A YouTube Data API v3 `thumbnails.set` aceita apenas 1 thumbnail por
     chamada e sobrescreve a anterior - nao suporta A/B nativamente. Esta
     rotacao e a alternativa pratica: publica A no upload, e se apos N dias o
     video nao decolar, troca para B (paleta/impacto diferentes) e marca
-    `thumbnail_variant: "B"` no video_tags.json pra nao rotacionar de novo.
+    `thumbnail_variant: "B"` no video_tags.json; se ainda assim continuar
+    underperforming apos mais _THUMBNAIL_ROTATION_DAYS dias, troca para C
+    (emoji gigante, hook truncado) e marca `thumbnail_variant: "C"`.
 
-    Retorna True se trocou, False caso contrario (ja e B, nao tem 2
-    variantes, < N dias, ou views ainda acima do threshold).
+    Retorna True se trocou, False caso contrario (ja e C/ultima variante,
+    nao tem proxima variante, < N dias, ou views ainda acima do threshold).
     """
-    if video_tags_entry.get("thumbnail_variant") == "B":
+    current_variant = video_tags_entry.get("thumbnail_variant", "A")
+    # Sequencia de rotacao A -> B -> C. Se ja estamos na ultima, nao rotaciona.
+    sequence = ["A", "B", "C"]
+    try:
+        idx = sequence.index(current_variant)
+    except ValueError:
+        idx = 0
+    if idx >= len(sequence) - 1:
         return False
 
     thumbnails = video_tags_entry.get("thumbnails") or []
-    if len(thumbnails) < 2:
+    next_variant = sequence[idx + 1]
+    # A proxima variante precisa estar na lista de thumbnails gravadas. Indexa
+    # pela posicao na sequencia (0=A, 1=B, 2=C).
+    next_index = idx + 1
+    if len(thumbnails) <= next_index:
         return False
 
     now = now or datetime.now(UTC)
-    uploaded_at = video_tags_entry.get("uploaded_at")
-    if uploaded_at:
+    # Para a primeira rotacao (A->B), conta desde uploaded_at; para B->C,
+    # conta desde a ultima rotacao (rotated_at gravado quando A->B ocorreu).
+    rotation_anchor_field = "rotated_at" if current_variant != "A" else "uploaded_at"
+    anchor = video_tags_entry.get(rotation_anchor_field) or video_tags_entry.get("uploaded_at")
+    if anchor:
         try:
-            uploaded_dt = datetime.fromisoformat(uploaded_at)
+            anchor_dt = datetime.fromisoformat(anchor)
         except Exception:
-            uploaded_dt = None
-        if uploaded_dt is not None:
-            age = now - uploaded_dt
+            anchor_dt = None
+        if anchor_dt is not None:
+            age = now - anchor_dt
             if age < timedelta(days=_THUMBNAIL_ROTATION_DAYS):
                 return False
 
@@ -208,25 +226,32 @@ def maybe_rotate_thumbnail(
     if views >= median_views * _THUMBNAIL_ROTATION_THRESHOLD:
         return False
 
-    # A segunda thumbnail e a variante B (index 1, ver video_builder).
-    thumb_b = Path(thumbnails[1])
-    if not thumb_b.exists():
-        log.warning("maybe_rotate_thumbnail: variante B ausente (%s) para %s", thumb_b, video_id)
+    # A proxima thumbnail e a variante seguinte (index next_index).
+    thumb_next = Path(thumbnails[next_index])
+    if not thumb_next.exists():
+        log.warning(
+            "maybe_rotate_thumbnail: variante %s ausente (%s) para %s",
+            next_variant, thumb_next, video_id,
+        )
         return False
 
     try:
         _retry_youtube_call(
             service.thumbnails().set(
-                videoId=video_id, media_body=MediaFileUpload(str(thumb_b))
+                videoId=video_id, media_body=MediaFileUpload(str(thumb_next))
             ).execute
         )
     except Exception as exc:
         log.warning("maybe_rotate_thumbnail: falha ao trocar thumbnail de %s: %s", video_id, exc)
         return False
 
-    log.info("Thumbnail de %s rotacionada A->B (views=%d < %.1f%% da mediana %.0f).",
-             video_id, views, _THUMBNAIL_ROTATION_THRESHOLD * 100, median_views)
-    video_tags_entry["thumbnail_variant"] = "B"
+    log.info(
+        "Thumbnail de %s rotacionada %s->%s (views=%d < %.1f%% da mediana %.0f).",
+        video_id, current_variant, next_variant, views,
+        _THUMBNAIL_ROTATION_THRESHOLD * 100, median_views,
+    )
+    video_tags_entry["thumbnail_variant"] = next_variant
+    video_tags_entry["rotated_at"] = now.isoformat()
     return True
 
 
@@ -287,7 +312,7 @@ def _compute_weighted_performance(
     all_views_sorted = sorted(all_views)
     mid = len(all_views_sorted) // 2
     if len(all_views_sorted) % 2 == 1:
-        median = all_views_sorted[mid]
+        median: float = float(all_views_sorted[mid])
     else:
         median = (all_views_sorted[mid - 1] + all_views_sorted[mid]) / 2
 
@@ -393,9 +418,10 @@ def main() -> int:
     if title_pattern_weights:
         _update_title_pattern_performance(title_pattern_weights)
 
-    # Thumbnail A/B rotation: videos elegiveis (2 variantes, >= 7 dias, abaixo
-    # da mediana) tem a thumbnail trocada da variante A para a B. So roda se houver
-    # videos com 2 variantes registradas no video_tags; caso contrario e no-op.
+    # Thumbnail A/B/C rotation: videos elegiveis (>=2 variantes, >=7 dias desde
+    # o upload ou desde a ultima rotacao, abaixo da mediana) tem a thumbnail
+    # trocada para a proxima variante da sequencia A->B->C. So roda se houver
+    # videos com variantes registradas no video_tags; caso contrario e no-op.
     views_by_id = {v["video_id"]: v["views"] for v in stats}
     median = _median_views(stats)
     rotated_any = False
@@ -407,7 +433,9 @@ def main() -> int:
         entry_with_views = {**entry, "views": views_by_id.get(vid, 0)}
         if maybe_rotate_thumbnail(service, vid, entry_with_views, median_views=median):
             # entry_with_views e uma copia; atualiza a entrada real e persiste.
-            entry["thumbnail_variant"] = "B"
+            entry["thumbnail_variant"] = entry_with_views.get("thumbnail_variant", "B")
+            if "rotated_at" in entry_with_views:
+                entry["rotated_at"] = entry_with_views["rotated_at"]
             rotated_any = True
     if rotated_any:
         _save_video_tags(video_tags)

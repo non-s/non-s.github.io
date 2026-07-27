@@ -179,6 +179,27 @@ class TestCollectVideoStats:
 
         assert service.playlistItems().list.return_value.execute.call_count == 20
 
+    def test_empty_page_breaks_even_with_next_page_token(self):
+        """Uma pagina vazia (items == []) com nextPageToken presente deve
+        quebrar imediatamente - nao continuar paginando."""
+        service = MagicMock()
+        service.channels().list.return_value.execute.return_value = {
+            "items": [{
+                "id": "channel123",
+                "contentDetails": {"relatedPlaylists": {"uploads": "uploads_playlist"}},
+            }]
+        }
+        service.playlistItems().list.return_value.execute.side_effect = [
+            {"items": [], "nextPageToken": "page2"},
+            {"items": [{"snippet": {"resourceId": {"videoId": "vid1"}}}], "nextPageToken": ""},
+        ]
+        service.videos().list.return_value.execute.return_value = {"items": []}
+
+        stats = collect_analytics.collect_video_stats(service)
+
+        assert stats == []
+        assert service.playlistItems().list.return_value.execute.call_count == 1
+
 
 class TestLoadVideoTags:
     def test_missing_file_returns_empty_dict(self, tmp_path, monkeypatch):
@@ -446,33 +467,39 @@ class TestUpdateTitlePatternPerformance:
 
 
 class TestMaybeRotateThumbnail:
-    """maybe_rotate_thumbnail: troca a thumbnail da variante A para a B quando
-    o video performa abaixo de _THUMBNAIL_ROTATION_THRESHOLD x a mediana apos
-    _THUMBNAIL_ROTATION_DAYS dias. A YouTube Data API thumbnails.set so aceita
-    1 thumbnail por chamada (nao suporta A/B nativamente); esta rotacao e a
-    alternativa pratica."""
+    """maybe_rotate_thumbnail: rotaciona a thumbnail pela sequencia A->B->C
+    quando o video performa abaixo de _THUMBNAIL_ROTATION_THRESHOLD x a
+    mediana apos _THUMBNAIL_ROTATION_DAYS dias (ou apos a ultima rotacao,
+    para B->C). A YouTube Data API thumbnails.set so aceita 1 thumbnail por
+    chamada (nao suporta A/B nativamente); esta rotacao e a alternativa
+    pratica."""
 
-    def _entry(self, *, uploaded_at, views, thumbnails, variant="A"):
-        return {
+    def _entry(self, *, uploaded_at, views, thumbnails, variant="A", rotated_at=None):
+        entry = {
             "scene": "cat",
             "thumbnails": thumbnails,
             "thumbnail_variant": variant,
             "uploaded_at": uploaded_at,
             "views": views,
         }
+        if rotated_at is not None:
+            entry["rotated_at"] = rotated_at
+        return entry
 
     def _thumb_paths(self, tmp_path):
         a = tmp_path / "thumb_a.png"
         b = tmp_path / "thumb_b.png"
+        c = tmp_path / "thumb_c.png"
         a.write_bytes(b"png-a")
         b.write_bytes(b"png-b")
-        return str(a), str(b)
+        c.write_bytes(b"png-c")
+        return str(a), str(b), str(c)
 
-    def test_rotates_when_below_median_and_old_enough(self, tmp_path):
-        a, b = self._thumb_paths(tmp_path)
+    def test_rotates_a_to_b_when_below_median_and_old_enough(self, tmp_path):
+        a, b, c = self._thumb_paths(tmp_path)
         now = datetime.now(UTC)
         uploaded = (now - timedelta(days=10)).isoformat()
-        entry = self._entry(uploaded_at=uploaded, views=10, thumbnails=[a, b])
+        entry = self._entry(uploaded_at=uploaded, views=10, thumbnails=[a, b, c])
         service = MagicMock()
 
         with patch("scripts.collect_analytics._retry_youtube_call", side_effect=lambda f: f()):
@@ -482,13 +509,49 @@ class TestMaybeRotateThumbnail:
 
         assert rotated is True
         assert entry["thumbnail_variant"] == "B"
+        assert "rotated_at" in entry
         service.thumbnails().set.assert_called_once()
 
-    def test_no_rotation_when_already_variant_b(self, tmp_path):
-        a, b = self._thumb_paths(tmp_path)
+    def test_rotates_b_to_c_when_below_median_after_rotation_age(self, tmp_path):
+        """B->C: precisa estar abaixo da mediana apos _THUMBNAIL_ROTATION_DAYS
+        desde a ULTIMA rotacao (rotated_at), nao desde uploaded_at."""
+        a, b, c = self._thumb_paths(tmp_path)
+        now = datetime.now(UTC)
+        # Upload ha 20 dias; rotacao A->B ha 3 dias (ainda dentro do prazo) —
+        # nao deve rotacionar.
+        uploaded = (now - timedelta(days=20)).isoformat()
+        rotated_recent = (now - timedelta(days=3)).isoformat()
+        entry = self._entry(
+            uploaded_at=uploaded, views=1, thumbnails=[a, b, c],
+            variant="B", rotated_at=rotated_recent,
+        )
+        service = MagicMock()
+        rotated = collect_analytics.maybe_rotate_thumbnail(
+            service, "vid1", entry, median_views=1000, now=now
+        )
+        assert rotated is False
+        service.thumbnails().set.assert_not_called()
+
+        # Agora rotated_at ha 10 dias (fora do prazo) — deve rotacionar B->C.
+        rotated_old = (now - timedelta(days=10)).isoformat()
+        entry = self._entry(
+            uploaded_at=uploaded, views=1, thumbnails=[a, b, c],
+            variant="B", rotated_at=rotated_old,
+        )
+        with patch("scripts.collect_analytics._retry_youtube_call", side_effect=lambda f: f()):
+            rotated = collect_analytics.maybe_rotate_thumbnail(
+                service, "vid1", entry, median_views=1000, now=now
+            )
+        assert rotated is True
+        assert entry["thumbnail_variant"] == "C"
+
+    def test_no_rotation_when_already_variant_c(self, tmp_path):
+        a, b, c = self._thumb_paths(tmp_path)
         now = datetime.now(UTC)
         uploaded = (now - timedelta(days=30)).isoformat()
-        entry = self._entry(uploaded_at=uploaded, views=1, thumbnails=[a, b], variant="B")
+        entry = self._entry(
+            uploaded_at=uploaded, views=1, thumbnails=[a, b, c], variant="C"
+        )
         service = MagicMock()
 
         rotated = collect_analytics.maybe_rotate_thumbnail(
@@ -499,7 +562,7 @@ class TestMaybeRotateThumbnail:
         service.thumbnails().set.assert_not_called()
 
     def test_no_rotation_when_only_one_thumbnail(self, tmp_path):
-        a, _ = self._thumb_paths(tmp_path)
+        a, _, _ = self._thumb_paths(tmp_path)
         now = datetime.now(UTC)
         uploaded = (now - timedelta(days=30)).isoformat()
         entry = self._entry(uploaded_at=uploaded, views=1, thumbnails=[a])
@@ -512,11 +575,30 @@ class TestMaybeRotateThumbnail:
         assert rotated is False
         service.thumbnails().set.assert_not_called()
 
+    def test_no_rotation_when_two_thumbnails_and_already_b(self, tmp_path):
+        """Apenas 2 variantes (A, B) e ja e B: nao ha C para rotacionar."""
+        a, b, _ = self._thumb_paths(tmp_path)
+        now = datetime.now(UTC)
+        uploaded = (now - timedelta(days=30)).isoformat()
+        rotated_old = (now - timedelta(days=30)).isoformat()
+        entry = self._entry(
+            uploaded_at=uploaded, views=1, thumbnails=[a, b],
+            variant="B", rotated_at=rotated_old,
+        )
+        service = MagicMock()
+
+        rotated = collect_analytics.maybe_rotate_thumbnail(
+            service, "vid1", entry, median_views=1000, now=now
+        )
+
+        assert rotated is False
+        service.thumbnails().set.assert_not_called()
+
     def test_no_rotation_when_younger_than_min_days(self, tmp_path):
-        a, b = self._thumb_paths(tmp_path)
+        a, b, c = self._thumb_paths(tmp_path)
         now = datetime.now(UTC)
         uploaded = (now - timedelta(days=2)).isoformat()
-        entry = self._entry(uploaded_at=uploaded, views=1, thumbnails=[a, b])
+        entry = self._entry(uploaded_at=uploaded, views=1, thumbnails=[a, b, c])
         service = MagicMock()
 
         rotated = collect_analytics.maybe_rotate_thumbnail(
@@ -528,10 +610,10 @@ class TestMaybeRotateThumbnail:
 
     def test_no_rotation_when_views_above_threshold(self, tmp_path):
         """views >= median * threshold (50%) -> ainda performando bem, nao troca."""
-        a, b = self._thumb_paths(tmp_path)
+        a, b, c = self._thumb_paths(tmp_path)
         now = datetime.now(UTC)
         uploaded = (now - timedelta(days=30)).isoformat()
-        entry = self._entry(uploaded_at=uploaded, views=600, thumbnails=[a, b])
+        entry = self._entry(uploaded_at=uploaded, views=600, thumbnails=[a, b, c])
         service = MagicMock()
 
         rotated = collect_analytics.maybe_rotate_thumbnail(
@@ -542,10 +624,10 @@ class TestMaybeRotateThumbnail:
         service.thumbnails().set.assert_not_called()
 
     def test_no_rotation_when_median_is_zero(self, tmp_path):
-        a, b = self._thumb_paths(tmp_path)
+        a, b, c = self._thumb_paths(tmp_path)
         now = datetime.now(UTC)
         uploaded = (now - timedelta(days=30)).isoformat()
-        entry = self._entry(uploaded_at=uploaded, views=10, thumbnails=[a, b])
+        entry = self._entry(uploaded_at=uploaded, views=10, thumbnails=[a, b, c])
         service = MagicMock()
 
         rotated = collect_analytics.maybe_rotate_thumbnail(
@@ -556,10 +638,10 @@ class TestMaybeRotateThumbnail:
         service.thumbnails().set.assert_not_called()
 
     def test_rotation_failure_is_not_fatal(self, tmp_path):
-        a, b = self._thumb_paths(tmp_path)
+        a, b, c = self._thumb_paths(tmp_path)
         now = datetime.now(UTC)
         uploaded = (now - timedelta(days=10)).isoformat()
-        entry = self._entry(uploaded_at=uploaded, views=1, thumbnails=[a, b])
+        entry = self._entry(uploaded_at=uploaded, views=1, thumbnails=[a, b, c])
         service = MagicMock()
 
         with patch("scripts.collect_analytics._retry_youtube_call", side_effect=RuntimeError("api down")):
@@ -570,14 +652,17 @@ class TestMaybeRotateThumbnail:
         assert rotated is False
         assert entry["thumbnail_variant"] == "A"
 
-    def test_no_rotation_when_thumbnail_b_file_missing(self, tmp_path):
+    def test_no_rotation_when_next_variant_file_missing(self, tmp_path):
         a = tmp_path / "thumb_a.png"
         a.write_bytes(b"png-a")
-        # thumb_b aponta pra caminho inexistente
+        # thumb_b aponta pra caminho inexistente; thumb_c tambem.
         missing_b = str(tmp_path / "missing_b.png")
+        missing_c = str(tmp_path / "missing_c.png")
         now = datetime.now(UTC)
         uploaded = (now - timedelta(days=30)).isoformat()
-        entry = self._entry(uploaded_at=uploaded, views=1, thumbnails=[str(a), missing_b])
+        entry = self._entry(
+            uploaded_at=uploaded, views=1, thumbnails=[str(a), missing_b, missing_c]
+        )
         service = MagicMock()
 
         rotated = collect_analytics.maybe_rotate_thumbnail(

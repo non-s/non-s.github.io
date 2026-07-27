@@ -244,33 +244,65 @@ _VISUALIZER_ALPHA = 0.6
 
 
 def _visualizer_enabled() -> bool:
-    """Visualizer de áudio (showcqt) e opt-in via env var
-    LIVE_VISUALIZER=1 — default OFF para não arriscar a CPU no runner
-    gratuito em produção. CPU-bound demais para deixar ligado por padrão."""
-    return os.environ.get("LIVE_VISUALIZER", "").strip() == "1"
+    """Visualizador de áudio e opt-in via env var LIVE_VISUALIZER.
+
+    Valores aceitos:
+    - "1" ou "showcqt": espectrograma CQT (default, mesmo que "1" para
+      backward compat com os testes existentes).
+    - "showwaves": osciloscópio (mais leve, alternativa de baixo custo).
+    - "avectorscope": vetorscope de áudio.
+
+    Default OFF (qualquer outro valor, inclusive vazio) para não arriscar a
+    CPU no runner gratuito em produção."""
+    return _visualizer_mode() != ""
+
+
+def _visualizer_mode() -> str:
+    """Retorna o modo do visualizador normalizado, ou "" se desligado."""
+    raw = os.environ.get("LIVE_VISUALIZER", "").strip().lower()
+    if raw in ("1", "showcqt"):
+        return "showcqt"
+    if raw == "showwaves":
+        return "showwaves"
+    if raw == "avectorscope":
+        return "avectorscope"
+    return ""
 
 
 def _build_visualizer_filter_chain(audio_input_index: int) -> str:
     """Monta a chain de filtro do visualizador de áudio reativo.
 
-    showcqt gera um espectro 2D a partir da faixa de áudio; usa timeclamp
-    curto (0.5s) para que as barras pulsem visivelmente com o andamento do
-    jazz. count=32 mantém o custo baixo (32 bins em vez das dezenas
-    padrão). A altura fica fixa em _VISUALIZER_HEIGHT e é sobreposta no
+    Modo default: showcqt (espectro 2D), com timeclamp curto (0.5s) para
+    que as barras pulsem visivelmente com o andamento do jazz, e count=32
+    para manter o custo baixo.
+
+    Modos alternativos:
+    - showwaves: osciloscópio (forma de onda), mais leve que showcqt —
+      alternativa de baixo custo para runners com pouca CPU.
+    - avectorscope: vetorscope de áudio (Lissajous stereo), visual abstrato.
+
+    A altura fica fixa em _VISUALIZER_HEIGHT e o resultado é sobreposto no
     canto inferior com alpha ~0.6 (sutil — não compete com o conteúdo
     principal).
-
-    Se o runner gratuito não sustentar showcqt, a alternativa mais leve
-    (showvolume, barras de VU) pode ser usada trocando o nome do filtro
-    aqui. Mantemos showcqt no default porque é o que os testes esperam,
-    mas o ramo alternativo está documentado para futura troca sem
-    reescrever a chain inteira.
     """
-    return (
-        f"[{audio_input_index}:a]"
-        f"showcqt=size={1280}x{_VISUALIZER_HEIGHT}:timeclamp=0.5:count=32,"
-        f"format=rgba,colorchannelmixer=aa={_VISUALIZER_ALPHA}[viz]"
-    )
+    mode = _visualizer_mode() or "showcqt"
+    size = f"size={1280}x{_VISUALIZER_HEIGHT}"
+    if mode == "showwaves":
+        core = (
+            f"[{audio_input_index}:a]"
+            f"showwaves={size}:mode=line:rate=30:colors=white|white"
+        )
+    elif mode == "avectorscope":
+        core = (
+            f"[{audio_input_index}:a]"
+            f"avectorscope={size}:m=lissajous:s=128x128:dc=1"
+        )
+    else:
+        core = (
+            f"[{audio_input_index}:a]"
+            f"showcqt={size}:timeclamp=0.5:count=32"
+        )
+    return f"{core},format=rgba,colorchannelmixer=aa={_VISUALIZER_ALPHA}[viz]"
 
 
 def _build_overlay_filter(resolution: tuple[int, int], audio_input_index: int | None = None) -> str:

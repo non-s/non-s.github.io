@@ -1,7 +1,10 @@
 """Testes unitários para a construção do comando FFmpeg da live."""
 import json
 import logging
+import os
+import shutil
 import signal
+import subprocess
 import time
 from pathlib import Path
 from unittest.mock import MagicMock, patch
@@ -197,6 +200,78 @@ class TestAudioVisualizer:
         # alpha 0.6 = colorchannelmixer=aa=0.6
         assert "colorchannelmixer=aa=0.6" in fc
         assert "size=1280x80" in fc
+
+
+class TestVisualizerModes:
+    """LIVE_VISUALIZER aceita showcqt (default, =1), showwaves e
+    avectorscope. Cada modo gera o filtro FFmpeg correto."""
+
+    def test_showcqt_is_default_and_equivalent_to_1(self, monkeypatch):
+        monkeypatch.setenv("LIVE_VISUALIZER", "showcqt")
+        assert live._visualizer_enabled() is True
+        assert live._visualizer_mode() == "showcqt"
+        fc = live._build_visualizer_filter_chain(1)
+        assert "showcqt" in fc
+        assert "timeclamp=0.5" in fc
+
+        monkeypatch.setenv("LIVE_VISUALIZER", "1")
+        assert live._visualizer_mode() == "showcqt"
+
+    def test_showwaves_mode_uses_showwaves_filter(self, monkeypatch):
+        monkeypatch.setenv("LIVE_VISUALIZER", "showwaves")
+        assert live._visualizer_mode() == "showwaves"
+        fc = live._build_visualizer_filter_chain(1)
+        assert "showwaves" in fc
+        assert "showcqt" not in fc
+
+    @patch("generate_pata_jazz_live.time.sleep", return_value=None)
+    @patch("generate_pata_jazz_live.subprocess.Popen")
+    def test_showwaves_cmd_includes_showwaves_filter(self, mock_popen, _mock_sleep, monkeypatch, tmp_path):
+        monkeypatch.setenv("LIVE_VISUALIZER", "showwaves")
+        mock_popen.side_effect = _fake_popen
+        stream_url = "rtmp://a.rtmp.youtube.com/live2/abcd-efgh-ijkl-mnop"
+        audio_playlist = tmp_path / "audio.txt"
+        audio_playlist.write_text("")
+
+        live._start_ffmpeg_stream(Path("concat.txt"), stream_url, audio_playlist=audio_playlist)
+
+        cmd = mock_popen.call_args[0][0]
+        assert "-filter_complex" in cmd
+        fc = cmd[cmd.index("-filter_complex") + 1]
+        assert "showwaves" in fc
+        assert "showcqt" not in fc
+
+    def test_avectorscope_mode_uses_avectorscope_filter(self, monkeypatch):
+        monkeypatch.setenv("LIVE_VISUALIZER", "avectorscope")
+        assert live._visualizer_mode() == "avectorscope"
+        fc = live._build_visualizer_filter_chain(1)
+        assert "avectorscope" in fc
+        assert "showcqt" not in fc
+
+    @patch("generate_pata_jazz_live.time.sleep", return_value=None)
+    @patch("generate_pata_jazz_live.subprocess.Popen")
+    def test_avectorscope_cmd_includes_avectorscope_filter(self, mock_popen, _mock_sleep, monkeypatch, tmp_path):
+        monkeypatch.setenv("LIVE_VISUALIZER", "avectorscope")
+        mock_popen.side_effect = _fake_popen
+        stream_url = "rtmp://a.rtmp.youtube.com/live2/abcd-efgh-ijkl-mnop"
+        audio_playlist = tmp_path / "audio.txt"
+        audio_playlist.write_text("")
+
+        live._start_ffmpeg_stream(Path("concat.txt"), stream_url, audio_playlist=audio_playlist)
+
+        cmd = mock_popen.call_args[0][0]
+        fc = cmd[cmd.index("-filter_complex") + 1]
+        assert "avectorscope" in fc
+
+    def test_unknown_mode_disables_visualizer(self, monkeypatch):
+        monkeypatch.setenv("LIVE_VISUALIZER", "foobar")
+        assert live._visualizer_mode() == ""
+        assert live._visualizer_enabled() is False
+
+    def test_empty_env_disables_visualizer(self, monkeypatch):
+        monkeypatch.delenv("LIVE_VISUALIZER", raising=False)
+        assert live._visualizer_mode() == ""
+        assert live._visualizer_enabled() is False
 
 
 class TestWaitFfmpegStreamErrorSurfacing:
@@ -619,3 +694,52 @@ class TestMain:
         monkeypatch.setattr(live, "_save_live_meta", lambda **k: None)
         monkeypatch.setattr(live, "_run_ffmpeg_stream", lambda *a, **k: -15)
         assert live.main() == 0
+
+
+@pytest.mark.integration
+class TestFFTVisualizerReal:
+    """Testa os filtros de visualizador de audio (showcqt, showwaves,
+    avectorscope) com FFmpeg real contra um tom senoidal de 1s.
+
+    Skipped por padrao: so roda com `pytest -m integration` explicito E
+    a env var RUN_FFMPEG_TESTS setada (evita gastar tempo/IO na suíte
+    default). Tambem skip se o ffmpeg nao estiver no PATH.
+    """
+
+    @pytest.fixture(autouse=True)
+    def _require_ffmpeg_env(self):
+        if not shutil.which("ffmpeg"):
+            pytest.skip("ffmpeg nao encontrado no PATH")
+        if not os.environ.get("RUN_FFMPEG_TESTS"):
+            pytest.skip("RUN_FFMPEG_TESTS nao setada: teste de FFmpeg real pulado")
+
+    def _run_visualizer(self, tmp_path, visualizer_filter):
+        """Gera um tom senoidal de 1s e aplica um filtro de visualizador,
+        escrevendo em um arquivo de saida (frame unico, sem stream RTMP)."""
+        out = tmp_path / f"viz_{visualizer_filter}.mp4"
+        cmd = [
+            "ffmpeg", "-y",
+            "-f", "lavfi", "-i", "sine=frequency=440:duration=1",
+            "-f", "lavfi", "-i", "color=c=black:s=320x240:d=1",
+            "-filter_complex", f"[0:a]{visualizer_filter}=size=320x80[v];[1:v][v]overlay=0:H-h",
+            "-t", "1",
+            "-c:v", "libx264", "-pix_fmt", "yuv420p",
+            "-c:a", "aac",
+            str(out),
+        ]
+        proc = subprocess.run(cmd, capture_output=True, timeout=5)
+        assert proc.returncode == 0, (
+            f"FFmpeg falhou para {visualizer_filter} (rc={proc.returncode}): "
+            f"{proc.stderr.decode('utf-8', 'replace')[-500:]}"
+        )
+        assert out.exists() and out.stat().st_size > 0
+        out.unlink(missing_ok=True)
+
+    def test_showcqt_visualizer(self, tmp_path):
+        self._run_visualizer(tmp_path, "showcqt")
+
+    def test_showwaves_visualizer(self, tmp_path):
+        self._run_visualizer(tmp_path, "showwaves")
+
+    def test_avectorscope_visualizer(self, tmp_path):
+        self._run_visualizer(tmp_path, "avectorscope")

@@ -265,7 +265,7 @@ def build_dashboard_html() -> str:
     live_json = _safe_json(live_ds)
     top_json = _safe_json(top_ds)
 
-    return f"""<!doctype html>
+    return rf"""<!doctype html>
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
@@ -312,11 +312,31 @@ def build_dashboard_html() -> str:
     border-radius: 6px; padding: 4px 8px; font-size: 0.85rem;
   }}
   footer {{ margin-top: 48px; color: #6a6a8a; font-size: 0.75rem; }}
+  .refresh-bar {{ display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 24px; }}
+  .refresh-btn {{
+    background: #1a1a3e; color: #f4a261; border: 1px solid rgba(244, 162, 97, 0.4);
+    border-radius: 6px; padding: 6px 14px; font-size: 0.85rem; cursor: pointer;
+  }}
+  .refresh-btn:hover {{ background: #2a2a40; }}
+  .refresh-btn:disabled {{ opacity: 0.5; cursor: wait; }}
+  .refresh-status {{ color: #9a9ab8; font-size: 0.8rem; }}
+  .note {{ color: #6a6a8a; font-size: 0.75rem; margin: 8px 0 0; }}
 </style>
 </head>
 <body>
   <h1>🐾🎷 Pata Jazz — Dashboard</h1>
   <p class="subtitle">Gerado automaticamente a partir dos dados coletados por collect_analytics.py</p>
+
+  <div class="refresh-bar">
+    <button id="refresh-btn" class="refresh-btn" type="button">Atualizar dados</button>
+    <span id="refresh-status" class="refresh-status"></span>
+  </div>
+  <p class="note">
+    Os dados em _data/ só atualizam quando o workflow pata-jazz-analytics.yml roda (semanal).
+    O botão "Atualizar dados" refaz o fetch de analytics.json e live_viewer_history.json
+    hospedados no mesmo GitHub Pages — se já publicados, os gráficos refletem o último snapshot;
+    caso contrário, mantém os dados embutidos na geração estática.
+  </p>
 
   <h2>Resumo geral</h2>
   {_render_summary(analytics)}
@@ -531,6 +551,71 @@ def build_dashboard_html() -> str:
       makeLiveChart();
       makeTopVideosChart();
     }}
+
+    // Item 17: endpoint client-side opcional que busca dados ao vivo do
+    // GitHub Pages (analytics.json + live_viewer_history.json hospedados no
+    // mesmo site). Como o GitHub Pages e estatico, os dados so atualizam quando
+    // o workflow pata-jazz-analytics.yml roda (semanal) - por isso o botao e
+    // opcional e os graficos ja vem populados com o snapshot da geracao.
+    var REFRESH_INTERVAL_MS = 60000;
+    var DATA_BASE = "./";
+    var refreshBtn = document.getElementById("refresh-btn");
+    var refreshStatus = document.getElementById("refresh-status");
+
+    function setRefreshStatus(msg, isErr) {{
+      if (!refreshStatus) return;
+      refreshStatus.textContent = msg;
+      refreshStatus.style.color = isErr ? "#e76f51" : "#9a9ab8";
+    }}
+
+    function fetchLiveAnalytics() {{
+      if (!refreshBtn) return;
+      refreshBtn.disabled = true;
+      setRefreshStatus("Buscando dados...", false);
+      var ts = Date.now();
+      Promise.all([
+        fetch(DATA_BASE + "analytics.json?t=" + ts, {{ cache: "no-store" }})
+          .then(function (r) {{ return r.ok ? r.json() : null; }}).catch(function () {{ return null; }}),
+        fetch(DATA_BASE + "live_viewer_history.json?t=" + ts, {{ cache: "no-store" }})
+          .then(function (r) {{ return r.ok ? r.json() : null; }}).catch(function () {{ return null; }}),
+      ]).then(function (results) {{
+        var analytics = results[0];
+        var liveSnapshots = results[1];
+        if (!analytics && !liveSnapshots) {{
+          setRefreshStatus("Dados ao vivo indisponiveis (ainda nao publicados no GitHub Pages).", true);
+          refreshBtn.disabled = false;
+          return;
+        }}
+        if (analytics && analytics.total_views !== undefined) {{
+          var cards = document.querySelectorAll(".card-value");
+          // Atualiza o card de "Views totais" se presente.
+          for (var i = 0; i < cards.length; i++) {{
+            var label = cards[i].nextElementSibling;
+            if (label && label.textContent && label.textContent.indexOf("Views totais") !== -1) {{
+              cards[i].textContent = String(analytics.total_views).replace(/(\d)(?=(\d{{3}})+$)/g, "$1.");
+            }}
+          }}
+        }}
+        if (liveSnapshots && Array.isArray(liveSnapshots) && liveSnapshots.length) {{
+          var recent = liveSnapshots.slice(-20);
+          var viewers = recent.map(function (s) {{ return s.concurrent_viewers || 0; }});
+          var avg = viewers.reduce(function (a, b) {{ return a + b; }}, 0) / viewers.length;
+          setRefreshStatus("Dados ao vivo carregados. Espectadores recentes (media): " + Math.round(avg), false);
+        }} else {{
+          setRefreshStatus("Dados ao vivo carregados em " + new Date().toLocaleTimeString() + ".", false);
+        }}
+        refreshBtn.disabled = false;
+      }}).catch(function (err) {{
+        setRefreshStatus("Erro ao buscar dados: " + err, true);
+        refreshBtn.disabled = false;
+      }});
+    }}
+
+    if (refreshBtn) {{
+      refreshBtn.addEventListener("click", fetchLiveAnalytics);
+    }}
+    // Auto-refresh a cada 60s (opcional, silencioso se falhar).
+    setInterval(fetchLiveAnalytics, REFRESH_INTERVAL_MS);
   </script>
 </body>
 </html>

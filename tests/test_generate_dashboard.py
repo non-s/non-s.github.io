@@ -253,6 +253,44 @@ class TestChartsAndInteractivity:
         assert "makeSceneChart" in html
 
 
+class TestRefreshButtonAndLiveFetch:
+    """Item 17: botao "Atualizar dados" + funcao JS que faz fetch de
+    analytics.json e live_viewer_history.json hospedados no mesmo GitHub
+    Pages (se publicados) e atualiza os cards/graficos a cada 60s."""
+
+    def test_html_contains_refresh_button(self, tmp_path, monkeypatch):
+        _isolate(tmp_path, monkeypatch)
+        html = dashboard.build_dashboard_html()
+        assert 'id="refresh-btn"' in html
+        assert "Atualizar dados" in html
+
+    def test_html_contains_fetch_live_analytics_function(self, tmp_path, monkeypatch):
+        _isolate(tmp_path, monkeypatch)
+        html = dashboard.build_dashboard_html()
+        assert "fetchLiveAnalytics" in html
+        assert "fetch(" in html
+        assert "analytics.json" in html
+        assert "live_viewer_history.json" in html
+
+    def test_html_contains_refresh_interval_60s(self, tmp_path, monkeypatch):
+        _isolate(tmp_path, monkeypatch)
+        html = dashboard.build_dashboard_html()
+        assert "60000" in html
+        assert "setInterval" in html
+
+    def test_html_documents_weekly_update_limitation(self, tmp_path, monkeypatch):
+        _isolate(tmp_path, monkeypatch)
+        html = dashboard.build_dashboard_html()
+        assert "pata-jazz-analytics.yml" in html
+        assert "semanal" in html
+
+    def test_refresh_button_click_triggers_fetch(self, tmp_path, monkeypatch):
+        _isolate(tmp_path, monkeypatch)
+        html = dashboard.build_dashboard_html()
+        assert "refreshBtn.addEventListener" in html
+        assert "click" in html
+
+
 class TestMain:
     def test_writes_index_html_to_dashboard_dir(self, tmp_path, monkeypatch):
         _isolate(tmp_path, monkeypatch)

@@ -56,10 +56,6 @@ def _download_video(url: str, dest: Path) -> bool:
         return False
 
 
-# Backward-compat alias mantido para eventuais chamadas antigas.
-_download = _download_video
-
-
 def search_and_download(api_key: str, query: str, max_results: int = 5) -> int:
     headers = {"User-Agent": "PataJazz-Bot/1.0"}
     params: dict[str, str | int] = {

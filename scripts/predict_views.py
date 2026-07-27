@@ -122,6 +122,8 @@ def _collect_training_samples() -> list[dict]:
             "title_pattern": title_pattern,
             "hour_of_day": published.hour,
             "day_of_week": published.weekday(),
+            "day_of_month": published.day,
+            "month": published.month,
             "y": views_at_day7,
         })
     return samples
@@ -141,17 +143,47 @@ def _feature_names(scenes: list[str], title_patterns: list[str]) -> list[str]:
     (scene:cat + scene:dog = 1.0 sempre) e tornam o sistema singular.
 
     A cena/padrão omitidos têm peso implícito no bias; os pesos das demais
-    representam o desvio relativo à referência."""
+    representam o desvio relativo à referência.
+
+    Features calendário adicionais (backward compat: modelo antigo sem
+    essas features ainda carrega via fallback overall_avg em predict_views
+    quando len(vec) != len(weights)):
+    - day_of_month (1-31, normalizado /31)
+    - month (1-12, normalizado /12)
+    - scene_x_hour: interação one-hot scene × hour_bucket [manhã/tarde/noite]
+      (uma coluna por combinação cena × bucket vista nos dados, exceto as
+      de referência — primeira cena × primeiro bucket fica implícita no
+      bias para evitar colinearidade)."""
     names = ["bias"]
     names += [f"scene:{c}" for c in scenes[1:]]
     names += [f"title_pattern:{p}" for p in title_patterns[1:]]
-    names += ["hour_of_day", "day_of_week"]
+    names += ["hour_of_day", "day_of_week", "day_of_month", "month"]
+    # Interacoes scene x hour_bucket: primeira cena e primeiro bucket sao
+    # referencia (implicitos no bias).
+    for c in scenes[1:]:
+        for bucket in ("manha", "tarde", "noite")[1:]:
+            names.append(f"scene_x_hour:{c}:{bucket}")
     return names
+
+
+_HOUR_BUCKETS = ("manha", "tarde", "noite")
+
+
+def _hour_bucket(hour: int) -> str:
+    """Classifica hora em bucket: manha (6-12), tarde (12-18), noite (resto)."""
+    if 6 <= hour < 12:
+        return "manha"
+    if 12 <= hour < 18:
+        return "tarde"
+    return "noite"
 
 
 def _featurize(
     scene: str, title_pattern: str, hour: int, day_of_week: int,
     scenes: list[str], title_patterns: list[str],
+    *,
+    day_of_month: int = 1,
+    month: int = 1,
 ) -> list[float]:
     """Constrói o vetor de features para uma amostra/previsão. A primeira
     cena/padrão são a referência (não ganham coluna) — ver _feature_names.
@@ -162,7 +194,17 @@ def _featurize(
     distorcido tentando compensar — a regressao atribui peso negativo a
     hour mesmo quando nao ha correlacao real, e a previsao absoluta vira
     ruido dependente do horario consultado em vez da contribuicao da
-    cena/padrao."""
+    cena/padrao.
+
+    day_of_month (1-31) e month (1-12) sao normalizados da mesma forma
+    (/31 e /12). scene_x_hour e a interacao one-hot cena × hour_bucket
+    (manha/tarde/noite), com a primeira cena e primeiro bucket (manha)
+    como referencia implicita no bias.
+
+    Argumentos day_of_month/month sao opcionais (default=1) para backward
+    compat com chamadas antigas que nao passam esses valores; modelos
+    salvos antigos (sem essas features) ainda funcionam via fallback
+    overall_avg em predict_views quando len(vec) != len(weights)."""
     vec = [1.0]  # bias
     scene_l = scene.strip().lower()
     for c in scenes[1:]:  # primeira = referência, omitida
@@ -171,6 +213,12 @@ def _featurize(
         vec.append(1.0 if p == title_pattern else 0.0)
     vec.append(float(hour) / 23.0)
     vec.append(float(day_of_week) / 6.0)
+    vec.append(float(day_of_month) / 31.0)
+    vec.append(float(month) / 12.0)
+    bucket = _hour_bucket(hour)
+    for c in scenes[1:]:
+        for b in _HOUR_BUCKETS[1:]:  # manha = referencia, omitido
+            vec.append(1.0 if (c == scene_l and b == bucket) else 0.0)
     return vec
 
 
@@ -257,7 +305,12 @@ def train_model() -> dict:
 
     scenes, title_patterns = _build_vocab(samples)
     X = [
-        _featurize(s["scene"], s["title_pattern"], s["hour_of_day"], s["day_of_week"], scenes, title_patterns)
+        _featurize(
+            s["scene"], s["title_pattern"], s["hour_of_day"], s["day_of_week"],
+            scenes, title_patterns,
+            day_of_month=s.get("day_of_month", 1),
+            month=s.get("month", 1),
+        )
         for s in samples
     ]
     y = [float(s["y"]) for s in samples]
@@ -301,12 +354,21 @@ def load_model() -> dict:
     return _load_json(MODEL_FILE, {})
 
 
-def predict_views(scene: str, title_pattern: str, hour: int, day_of_week: int) -> float:
+def predict_views(
+    scene: str, title_pattern: str, hour: int, day_of_week: int,
+    *,
+    day_of_month: int | None = None,
+    month: int | None = None,
+) -> float:
     """Prevê views nos primeiros 7 dias após o upload de um short com a
     cena/padrão/horário dados, lendo o modelo salvo em MODEL_FILE.
 
     Sem modelo treinado (ou modelo vazio/n_samples==0) retorna a média
     geral (overall_avg), que é 0.0 quando nunca houve dados.
+
+    day_of_month/month sao opcionais (default = data atual UTC) para
+    backward compat com callers antigos. Modelo antigo sem essas features
+    ainda funciona: se len(vec) != len(weights), cai no fallback overall_avg.
     """
     model = load_model()
     if not model:
@@ -314,11 +376,19 @@ def predict_views(scene: str, title_pattern: str, hour: int, day_of_week: int) -
     weights = model.get("weights") or []
     if not weights:
         return float(model.get("overall_avg", 0.0))
+    if day_of_month is None or month is None:
+        now = datetime.now(UTC)
+        day_of_month = now.day if day_of_month is None else day_of_month
+        month = now.month if month is None else month
     scenes = model.get("scenes", [])
     title_patterns = model.get("title_patterns", [])
-    vec = _featurize(scene, title_pattern, hour, day_of_week, scenes, title_patterns)
+    vec = _featurize(
+        scene, title_pattern, hour, day_of_week, scenes, title_patterns,
+        day_of_month=day_of_month, month=month,
+    )
     if len(vec) != len(weights):
-        # Vocabulário mudou desde o treino — fallback seguro.
+        # Vocabulário mudou desde o treino (ou modelo antigo sem as novas
+        # features calendario) — fallback seguro.
         return float(model.get("overall_avg", 0.0))
     result = sum(w * v for w, v in zip(weights, vec, strict=True))
     return max(0.0, result)

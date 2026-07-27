@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import random
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
@@ -37,8 +38,10 @@ _HOURLY_MOOD: dict[int, str] = {
 
 
 def current_brt_hour() -> int:
-    """Retorna a hora atual em BRT (UTC-3)."""
-    return (datetime.now(UTC) - timedelta(hours=3)).hour
+    """Retorna a hora atual em BRT (UTC-3 por default, configuravel via
+    BRT_OFFSET_HOURS)."""
+    offset = float(os.environ.get("BRT_OFFSET_HOURS", "-3"))
+    return (datetime.now(UTC) + timedelta(hours=offset)).hour
 
 
 def mood_for_now() -> str:

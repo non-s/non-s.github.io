@@ -17,6 +17,11 @@ Arquivos produzidos (em _data/):
                             direito do FFmpeg; apagada apos 10s para fade out
 - live_next_scene.json    - cena forcada por !scene (one-shot, consumida pelo
                             loop de clipes em generate_pata_jazz_live.py)
+- live_scene_requests.json - pedidos de cena acumulados por !request (lista de
+                            {scene, requested_by, requested_at}) - o gerador
+                            pode ler e usar a cena mais pedida como peso
+- live_next_clip.json     - pre-visualizacao do proximo clipe, escrita pelo
+                            gerador ao escolher o proximo; lida por !next
 """
 
 from __future__ import annotations
@@ -42,10 +47,11 @@ LIVE_META_DIR = ROOT / "_data"
 POLL_INTERVAL_SECONDS = 10
 OVERLAY_TTL_SECONDS = 10
 _MAX_REPLY_HISTORY = 200
+_MAX_SCENE_REQUESTS = 500
 
 _HELP_TEXT = (
-    "Comandos: !scene <cena> | !uptime | !song | !help  "
-    "(cenas: cat, kitten, puppy, dog, sleepy cat, sleepy dog, "
+    "Comandos: !scene <cena> | !request <cena> | !uptime | !song | !stats | "
+    "!next | !help  (cenas: cat, kitten, puppy, dog, sleepy cat, sleepy dog, "
     "playful dog, cat playing, puppy playing, dog relaxing, cat relaxing)"
 )
 
@@ -76,6 +82,14 @@ def _format_uptime(seconds: float) -> str:
     hours, rem = divmod(total, 3600)
     minutes, secs = divmod(rem, 60)
     return f"{hours:02d}:{minutes:02d}:{secs:02d}"
+
+
+def _to_int_safe(value) -> int:
+    """Converte string/int/None para int de forma segura."""
+    try:
+        return int(value) if value is not None else 0
+    except (TypeError, ValueError):
+        return 0
 
 
 class LiveChatWatcher:
@@ -125,13 +139,20 @@ class LiveChatWatcher:
     def handle_command(self, command: str, argument: str, author: str = "") -> str | None:
         """Processa um comando e devolve o texto de resposta a exibir no
         overlay, ou None se o comando nao for reconhecido. Efeitos colaterais
-        (escrever live_next_scene.json) acontecem aqui."""
+        (escrever live_next_scene.json, live_scene_requests.json) acontecem
+        aqui."""
         if command == "scene":
             return self._handle_scene(argument)
+        if command == "request":
+            return self._handle_request(argument, author)
         if command == "uptime":
             return self._handle_uptime()
         if command == "song":
             return self._handle_song()
+        if command == "stats":
+            return self._handle_stats()
+        if command == "next":
+            return self._handle_next()
         if command == "help":
             return _HELP_TEXT
         return None
@@ -172,6 +193,71 @@ class LiveChatWatcher:
         if artist:
             return f"Tocando agora: {artist} - {title}"
         return f"Tocando agora: {title}"
+
+    def _handle_request(self, argument: str, author: str) -> str:
+        """!request <scene>: registra pedido de cena em
+        live_scene_requests.json (lista de {scene, requested_by,
+        requested_at}). O gerador pode ler e usar a cena mais pedida como
+        peso ao escolher o proximo clipe (nao obrigatorio implementar a
+        leitura no gerador — so o comando + persistencia)."""
+        scene = argument.lower().strip()
+        if not scene:
+            return "Uso: !request <cena> (ex: !request sleepy cat)"
+        from utils.animal_branding import ALL_SCENES
+
+        if scene not in ALL_SCENES:
+            return f"Cena desconhecida: {scene}. Validas: {', '.join(ALL_SCENES)}"
+        self._meta_dir.mkdir(parents=True, exist_ok=True)
+        path = self._meta_dir / "live_scene_requests.json"
+        try:
+            requests = json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
+        except Exception:
+            requests = []
+        requests.append({
+            "scene": scene,
+            "requested_by": author,
+            "requested_at": datetime.now(UTC).isoformat(),
+        })
+        requests = requests[-_MAX_SCENE_REQUESTS:]
+        try:
+            path.write_text(json.dumps(requests, ensure_ascii=False, indent=2), encoding="utf-8")
+        except Exception as exc:
+            log.warning("Falha ao salvar live_scene_requests.json: %s", exc)
+            return "Nao consegui registrar o pedido :("
+        return f"Pedido registrado: {scene} (obrigado!)"
+
+    def _handle_stats(self) -> str:
+        """!stats: mostra views totais do canal lendo _data/analytics.json."""
+        path = self._meta_dir / "analytics.json"
+        if not path.exists():
+            return "Channel views: indisponivel (analytics ainda nao coletado)"
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except Exception as exc:
+            log.warning("analytics.json corrompido: %s", exc)
+            return "Channel views: indisponivel :("
+        total_views = _to_int_safe(data.get("total_views"))
+        return f"Channel views: {total_views}"
+
+    def _handle_next(self) -> str:
+        """!next: pre-visualiza o proximo clipe lendo
+        _data/live_next_clip.json (escrito pelo gerador ao escolher o
+        proximo clipe). Se o gerador nao escrever, mostra "Unknown"."""
+        path = self._meta_dir / "live_next_clip.json"
+        if not path.exists():
+            return "Next clip: Unknown"
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except Exception as exc:
+            log.warning("live_next_clip.json corrompido: %s", exc)
+            return "Next clip: Unknown"
+        scene = data.get("scene") or ""
+        hook = data.get("hook") or ""
+        if scene and hook:
+            return f"Next clip: {hook} ({scene})"
+        if scene:
+            return f"Next clip: {scene}"
+        return "Next clip: Unknown"
 
     # ---- overlay / historico -----------------------------------------
 
