@@ -39,7 +39,13 @@ from generate_pata_jazz_live import (
     _terminate_ffmpeg_stream,
     _wait_ffmpeg_stream,
 )
-from upload_youtube import create_live_stream, delete_broadcast, transition_broadcast, wait_for_stream_active
+from upload_youtube import (
+    create_live_stream,
+    delete_broadcast,
+    record_live_viewer_snapshot,
+    transition_broadcast,
+    wait_for_stream_active,
+)
 from utils.log_config import configure_logging
 
 log = logging.getLogger(__name__)
@@ -211,6 +217,11 @@ def main() -> int:
             )
             code = _wait_ffmpeg_stream(proc, max_seconds=segment_max_seconds)
             segment_seconds = time.time() - segment_start
+            # Ponto natural para uma amostra de concurrentViewers - uma vez
+            # por segmento (poucos minutos, ver _wait_ffmpeg_stream), sem
+            # acoplar chamada de API ao loop de espera do FFmpeg em si.
+            if stream_confirmed_active:
+                record_live_viewer_snapshot(broadcast_id)
 
             # 0 = -t atingido (segmento completo), -15 = SIGTERM (cancelamento
             # do GHA ou fim da duracao total) - nao reconectar nesses casos.

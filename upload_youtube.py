@@ -233,6 +233,55 @@ def upload_video(language: str = "en", privacy: str = "public", prefix: str = "p
     return video_id
 
 
+LIVE_VIEWER_HISTORY_FILE = LIVE_META_DIR / "live_viewer_history.json"
+_MAX_VIEWER_SNAPSHOTS = 500
+
+
+def record_live_viewer_snapshot(video_id: str) -> None:
+    """Consulta liveStreamingDetails.concurrentViewers e acrescenta um
+    snapshot a LIVE_VIEWER_HISTORY_FILE.
+
+    Chamado por run_live.py uma vez por segmento de FFmpeg (a cada poucos
+    minutos, ja que segmentos costumam durar so alguns minutos antes de
+    reconectar - ver _SEGMENT_WATCHDOG_GRACE_SECONDS em run_live.py) em vez
+    de rodar dentro do proprio loop de espera do FFmpeg: assim nao acopla
+    uma chamada de API/rede ao watchdog que supervisiona o processo, que ja
+    teve historico de causar quedas quando sobrecarregado.
+
+    O id de um liveBroadcast tambem serve como id de video no endpoint
+    videos.list (mesma entidade), entao nao precisamos de nenhuma chamada
+    extra so para descobrir o video_id.
+    """
+    try:
+        service = get_youtube_service()
+        resp = _retry_youtube_call(
+            service.videos().list(part="liveStreamingDetails", id=video_id).execute
+        )
+        items = resp.get("items", [])
+        if not items:
+            return
+        viewers = items[0].get("liveStreamingDetails", {}).get("concurrentViewers")
+        if viewers is None:
+            return
+        viewers = int(viewers)
+    except Exception as exc:
+        log.warning("Falha ao consultar concurrentViewers da live %s: %s", video_id, exc)
+        return
+
+    snapshot = {"collected_at": datetime.now(UTC).isoformat(), "video_id": video_id, "concurrent_viewers": viewers}
+    try:
+        history = json.loads(LIVE_VIEWER_HISTORY_FILE.read_text(encoding="utf-8")) if LIVE_VIEWER_HISTORY_FILE.exists() else []
+    except Exception:
+        history = []
+    history.append(snapshot)
+    history = history[-_MAX_VIEWER_SNAPSHOTS:]
+    try:
+        LIVE_VIEWER_HISTORY_FILE.parent.mkdir(parents=True, exist_ok=True)
+        LIVE_VIEWER_HISTORY_FILE.write_text(json.dumps(history, ensure_ascii=False, indent=2), encoding="utf-8")
+    except Exception as exc:
+        log.warning("Falha ao salvar historico de viewers: %s", exc)
+
+
 def _generate_live_title() -> str:
     # Em ingles: o formato "ambient pet livestream 24/7" e um genero dominado
     # por busca em ingles (ex.: canais como Relax My Dog tem milhoes de

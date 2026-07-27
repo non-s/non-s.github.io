@@ -365,3 +365,85 @@ class TestRecordVideoTags:
         data = json.loads(tags_file.read_text(encoding="utf-8"))
         assert data["vid_e2e"]["scene"] == "cat"
         assert data["vid_e2e"]["mood"] == "relax"
+
+
+class TestRecordLiveViewerSnapshot:
+    """record_live_viewer_snapshot(): amostra concurrentViewers de uma live
+    em andamento, chamada uma vez por segmento de FFmpeg por run_live.py."""
+
+    def _isolate(self, tmp_path, monkeypatch):
+        history_file = tmp_path / "live_viewer_history.json"
+        monkeypatch.setattr(upload_youtube, "LIVE_VIEWER_HISTORY_FILE", history_file)
+        return history_file
+
+    def test_saves_viewer_count_snapshot(self, tmp_path, monkeypatch):
+        history_file = self._isolate(tmp_path, monkeypatch)
+        service = MagicMock()
+        service.videos().list().execute.return_value = {
+            "items": [{"liveStreamingDetails": {"concurrentViewers": "42"}}]
+        }
+
+        with patch("upload_youtube.get_youtube_service", return_value=service):
+            upload_youtube.record_live_viewer_snapshot("bcast123")
+
+        history = json.loads(history_file.read_text(encoding="utf-8"))
+        assert len(history) == 1
+        assert history[0]["video_id"] == "bcast123"
+        assert history[0]["concurrent_viewers"] == 42
+
+    def test_appends_to_existing_history(self, tmp_path, monkeypatch):
+        history_file = self._isolate(tmp_path, monkeypatch)
+        history_file.write_text(json.dumps([{"video_id": "old", "concurrent_viewers": 5}]), encoding="utf-8")
+        service = MagicMock()
+        service.videos().list().execute.return_value = {
+            "items": [{"liveStreamingDetails": {"concurrentViewers": "10"}}]
+        }
+
+        with patch("upload_youtube.get_youtube_service", return_value=service):
+            upload_youtube.record_live_viewer_snapshot("bcast123")
+
+        history = json.loads(history_file.read_text(encoding="utf-8"))
+        assert len(history) == 2
+
+    def test_caps_at_max_snapshots(self, tmp_path, monkeypatch):
+        history_file = self._isolate(tmp_path, monkeypatch)
+        monkeypatch.setattr(upload_youtube, "_MAX_VIEWER_SNAPSHOTS", 3)
+        history_file.write_text(
+            json.dumps([{"video_id": f"old{i}", "concurrent_viewers": i} for i in range(3)]), encoding="utf-8"
+        )
+        service = MagicMock()
+        service.videos().list().execute.return_value = {
+            "items": [{"liveStreamingDetails": {"concurrentViewers": "99"}}]
+        }
+
+        with patch("upload_youtube.get_youtube_service", return_value=service):
+            upload_youtube.record_live_viewer_snapshot("bcast_new")
+
+        history = json.loads(history_file.read_text(encoding="utf-8"))
+        assert len(history) == 3
+        assert history[-1]["video_id"] == "bcast_new"
+
+    def test_no_items_does_not_write(self, tmp_path, monkeypatch):
+        history_file = self._isolate(tmp_path, monkeypatch)
+        service = MagicMock()
+        service.videos().list().execute.return_value = {"items": []}
+
+        with patch("upload_youtube.get_youtube_service", return_value=service):
+            upload_youtube.record_live_viewer_snapshot("bcast123")
+
+        assert not history_file.exists()
+
+    def test_missing_concurrent_viewers_does_not_write(self, tmp_path, monkeypatch):
+        history_file = self._isolate(tmp_path, monkeypatch)
+        service = MagicMock()
+        service.videos().list().execute.return_value = {"items": [{"liveStreamingDetails": {}}]}
+
+        with patch("upload_youtube.get_youtube_service", return_value=service):
+            upload_youtube.record_live_viewer_snapshot("bcast123")
+
+        assert not history_file.exists()
+
+    def test_service_error_does_not_raise(self, tmp_path, monkeypatch):
+        self._isolate(tmp_path, monkeypatch)
+        with patch("upload_youtube.get_youtube_service", side_effect=RuntimeError("no creds")):
+            upload_youtube.record_live_viewer_snapshot("bcast123")  # nao deve levantar

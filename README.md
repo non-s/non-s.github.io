@@ -16,6 +16,7 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 - **Legendas automáticas**: SRT gerado via Gemini e enviado como caption track (mimetype correto por extensão)
 - **Playlists automáticas**: Videos adicionados a playlists por mood/formato (cache persistente em `_data/playlist_cache.json`)
 - **Analytics semanal com feedback loop real**: coleta views/likes/comentários, cruza com a cena que gerou cada vídeo (`_data/video_tags.json`, gravado no upload) e grava um peso por cena em `_data/scene_performance.json` — `scene_for_mood()` passa a preferir cenas com melhor performance real, sem nunca zerar as demais
+- **Contagem de espectadores da live**: uma amostra de `concurrentViewers` por segmento de FFmpeg, salva em `_data/live_viewer_history.json`
 - **Marca consistente**: Todos os títulos começam com "Pata Jazz |"
 - **Conteúdo em inglês**: título, descrição, hashtags e legendas são gerados em inglês (`utils/seo_keywords.py`, `utils/metadata_engine.py`, `utils/caption_engine.py`) - o formato pet+jazz não depende de idioma e o volume de busca em inglês é muito maior que o equivalente em português. O system prompt padrão do Gemini (`utils/ai_helper.py::_default_system_prompt`) também reforça isso - qualquer chamada de IA que precise de outro idioma tem que passar `system=` explicitamente.
 - **Robustez de APIs**: Circuit breaker no Gemini (429/502/503), retry exponencial no YouTube, fallback local em todas as chamadas de IA
