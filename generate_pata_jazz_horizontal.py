@@ -10,12 +10,14 @@ from __future__ import annotations
 import argparse
 import logging
 import sys
+import time
 from datetime import UTC, datetime
 from pathlib import Path
 
 from utils.channel_config import set_channel_from_env
 from utils.content_strategy import mood_for_now, scene_for_mood
 from utils.log_config import configure_logging, log_exception_to_file
+from utils.pipeline_metrics import record_pipeline_run
 from utils.slot_optimizer import optimized_scene_and_pattern
 from utils.video_builder import build_pata_jazz_video, horizontal_spec
 
@@ -66,13 +68,23 @@ def main() -> int:
 
     configure_logging()
 
+    start_time = time.time()
+    success = False
     try:
         _generate_horizontal(duration=args.duration, dry_run=args.dry_run)
+        success = True
         return 0
     except Exception as exc:
         log.exception("Falha ao gerar video horizontal: %s", exc)
         log_exception_to_file(exc, OUTPUT_DIR)
         return 1
+    finally:
+        record_pipeline_run(
+            stage="generate_horizontal",
+            success=success,
+            duration_seconds=time.time() - start_time,
+            kind="horizontal",
+        )
 
 
 if __name__ == "__main__":

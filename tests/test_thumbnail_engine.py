@@ -1,4 +1,5 @@
 """Testes para thumbnail_engine.py."""
+import json
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -349,3 +350,93 @@ class TestExtractFrame:
             mock_tmp.return_value = ntf
             img = thumbnail_engine.extract_frame_from_video(tmp_path / "v.mp4")
         assert img is None
+
+
+class TestWinningThumbnailVariant:
+    """winning_thumbnail_variant: le video_tags.json + analytics.json, calcula
+    media de views por variante (A/B/C) e retorna a de maior media.
+    Conservador: < _MIN_VARIANT_SAMPLES amostras ou arquivos ausentes -> "A"."""
+
+    def _setup(self, tmp_path, monkeypatch, video_tags, analytics):
+        monkeypatch.setattr(
+            thumbnail_engine, "data_dir",
+            lambda: tmp_path,
+        )
+        (tmp_path / "video_tags.json").write_text(json.dumps(video_tags), encoding="utf-8")
+        (tmp_path / "analytics.json").write_text(json.dumps(analytics), encoding="utf-8")
+
+    def test_missing_files_returns_a(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(thumbnail_engine, "data_dir", lambda: tmp_path)
+        assert thumbnail_engine.winning_thumbnail_variant() == "A"
+
+    def test_corrupted_files_returns_a(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(thumbnail_engine, "data_dir", lambda: tmp_path)
+        (tmp_path / "video_tags.json").write_text("not json", encoding="utf-8")
+        (tmp_path / "analytics.json").write_text("not json", encoding="utf-8")
+        assert thumbnail_engine.winning_thumbnail_variant() == "A"
+
+    def test_insufficient_samples_returns_a(self, tmp_path, monkeypatch):
+        # So 1 video por variante (< _MIN_VARIANT_SAMPLES=2).
+        video_tags = {"v1": {"thumbnail_variant": "A"}, "v2": {"thumbnail_variant": "B"}}
+        analytics = {"all_videos": [{"video_id": "v1", "views": 100}, {"video_id": "v2", "views": 500}]}
+        self._setup(tmp_path, monkeypatch, video_tags, analytics)
+
+        assert thumbnail_engine.winning_thumbnail_variant() == "A"
+
+    def test_variant_b_with_higher_avg_views_wins(self, tmp_path, monkeypatch):
+        # A: 100, 100 -> avg 100. B: 500, 600 -> avg 550.
+        video_tags = {
+            "a1": {"thumbnail_variant": "A"}, "a2": {"thumbnail_variant": "A"},
+            "b1": {"thumbnail_variant": "B"}, "b2": {"thumbnail_variant": "B"},
+        }
+        analytics = {"all_videos": [
+            {"video_id": "a1", "views": 100}, {"video_id": "a2", "views": 100},
+            {"video_id": "b1", "views": 500}, {"video_id": "b2", "views": 600},
+        ]}
+        self._setup(tmp_path, monkeypatch, video_tags, analytics)
+
+        assert thumbnail_engine.winning_thumbnail_variant() == "B"
+
+    def test_variant_c_can_win(self, tmp_path, monkeypatch):
+        video_tags = {
+            "a1": {"thumbnail_variant": "A"}, "a2": {"thumbnail_variant": "A"},
+            "c1": {"thumbnail_variant": "C"}, "c2": {"thumbnail_variant": "C"},
+        }
+        analytics = {"all_videos": [
+            {"video_id": "a1", "views": 50}, {"video_id": "a2", "views": 50},
+            {"video_id": "c1", "views": 999}, {"video_id": "c2", "views": 1000},
+        ]}
+        self._setup(tmp_path, monkeypatch, video_tags, analytics)
+
+        assert thumbnail_engine.winning_thumbnail_variant() == "C"
+
+    def test_missing_variant_field_defaults_to_a(self, tmp_path, monkeypatch):
+        # video_tags sem thumbnail_variant deve contar como A.
+        video_tags = {"v1": {}, "v2": {}, "b1": {"thumbnail_variant": "B"}, "b2": {"thumbnail_variant": "B"}}
+        analytics = {"all_videos": [
+            {"video_id": "v1", "views": 1000}, {"video_id": "v2", "views": 1000},
+            {"video_id": "b1", "views": 10}, {"video_id": "b2", "views": 10},
+        ]}
+        self._setup(tmp_path, monkeypatch, video_tags, analytics)
+
+        # A (default) tem avg 1000, B tem avg 10 -> A vence.
+        assert thumbnail_engine.winning_thumbnail_variant() == "A"
+
+    def test_videos_not_in_analytics_are_ignored(self, tmp_path, monkeypatch):
+        video_tags = {
+            "a1": {"thumbnail_variant": "A"}, "a2": {"thumbnail_variant": "A"},
+            "b1": {"thumbnail_variant": "B"}, "b2": {"thumbnail_variant": "B"},
+            # ghost nao esta em analytics -> ignorado.
+            "ghost": {"thumbnail_variant": "B"},
+        }
+        analytics = {"all_videos": [
+            {"video_id": "a1", "views": 10}, {"video_id": "a2", "views": 10},
+            {"video_id": "b1", "views": 500}, {"video_id": "b2", "views": 500},
+        ]}
+        self._setup(tmp_path, monkeypatch, video_tags, analytics)
+
+        assert thumbnail_engine.winning_thumbnail_variant() == "B"
+
+    def test_empty_all_videos_returns_a(self, tmp_path, monkeypatch):
+        self._setup(tmp_path, monkeypatch, {"v1": {"thumbnail_variant": "B"}}, {"all_videos": []})
+        assert thumbnail_engine.winning_thumbnail_variant() == "A"

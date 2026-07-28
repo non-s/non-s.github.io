@@ -28,6 +28,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from utils.log_config import configure_logging
+from utils.paths import data_dir
 from utils.state_lock import state_lock
 from utils.youtube_oauth import get_youtube_service
 from utils.youtube_retry import retry_youtube_call as _retry_youtube_call
@@ -48,6 +49,16 @@ TITLE_PATTERN_PERFORMANCE_FILE = DATA_DIR / "title_pattern_performance.json"
 _MIN_TITLE_PATTERN_SAMPLES = 3
 _MIN_TITLE_PATTERN_WEIGHT = 0.4
 _MAX_TITLE_PATTERN_WEIGHT = 2.5
+
+# Detecao de virais: um video e "viral" se suas views ultrapassam
+# _VIRAL_THRESHOLD x a mediana de views do conjunto coletado. Esses sinais
+# alimentam viral_signals.json, lido por content_strategy.viral_boosted_scenes
+# pra ponderar cenas que geraram virais recentes (ultimos 14 dias). O boost
+# e conservador: so aplica se a cena estiver na lista do mood (nao inventa
+# cena nova) e multiplica o peso ja existente (nao substitui).
+# Caminho isolado por canal via data_dir() (channel isolation).
+VIRAL_SIGNALS_FILE = data_dir() / "viral_signals.json"
+_VIRAL_THRESHOLD = 10.0
 
 # Thumbnail A/B testing: apos _THUMBNAIL_ROTATION_DAYS dias, se o video
 # performar abaixo de _THUMBNAIL_ROTATION_THRESHOLD x a mediana de views do
@@ -152,6 +163,28 @@ def _load_video_tags() -> dict:
         return json.loads(VIDEO_TAGS_FILE.read_text(encoding="utf-8")) if VIDEO_TAGS_FILE.exists() else {}
     except Exception:
         return {}
+
+
+def _record_thumbnail_variant_in_stats(stats: list[dict], video_tags: dict) -> list[dict]:
+    """Mescla `thumbnail_variant` (de video_tags.json) em cada stat dict.
+
+    Fechar o loop de feedback de variante de thumbnail: quando um video
+    depois tem views altas, queremos saber qual variante estava ativa no
+    momento da coleta (A/B/C). O valor vem de video_tags[video_id]
+    ["thumbnail_variant"] (gravado no upload e atualizado por
+    maybe_rotate_thumbnail); ausente = "A" (default de upload).
+
+    Retorna uma NOVA lista de stats (nao muta a original) para evitar
+    efeitos colaterais em callers que reutilizam `stats`.
+    """
+    enriched: list[dict] = []
+    for video in stats:
+        tag = video_tags.get(video["video_id"])
+        variant = "A"
+        if isinstance(tag, dict):
+            variant = str(tag.get("thumbnail_variant", "A") or "A")
+        enriched.append({**video, "thumbnail_variant": variant})
+    return enriched
 
 
 def _save_video_tags(tags: dict) -> None:
@@ -373,6 +406,64 @@ def _compute_title_pattern_performance(stats: list[dict], video_tags: dict) -> d
     )
 
 
+def detect_viral_videos(
+    stats: list[dict], video_tags: dict, *, threshold: float = _VIRAL_THRESHOLD,
+    now: datetime | None = None,
+) -> list[dict]:
+    """Detecta videos "virais": aqueles cujas views excedem `threshold` x a
+    mediana de views do conjunto coletado.
+
+    Cruza stats (views por video_id) com video_tags (scene/title_pattern que
+    gerou cada video) e devolve uma lista de sinais para viral_signals.json:
+
+        [{"video_id": ..., "scene": ..., "title_pattern": ..., "views": N,
+          "viral_factor": 12.5, "detected_at": "iso"}]
+
+    `viral_factor` e a razao views/mediana (quanto acima da mediana o video
+    esta). A mediana e calculada sobre todas as views em `stats` (mesmo as
+    sem tag), pra evitar que um conjunto so de virais eleve o baseline e
+    mascara a deteccao. Videos sem tag (fora do mapeamento video_tags) ainda
+    sao detectados como virais, mas com scene/title_pattern vazios - o boost
+    de cena so se aplica quando a tag existe.
+    """
+    median = _median_views(stats)
+    if median <= 0:
+        return []
+    now = now or datetime.now(UTC)
+    virals: list[dict] = []
+    for video in stats:
+        views = _to_int(video.get("views"))
+        if views <= 0:
+            continue
+        factor = views / median
+        if factor <= threshold:
+            continue
+        tag = video_tags.get(video["video_id"]) or {}
+        virals.append({
+            "video_id": video["video_id"],
+            "scene": tag.get("scene", "") if isinstance(tag, dict) else "",
+            "title_pattern": tag.get("title_pattern", "") if isinstance(tag, dict) else "",
+            "views": views,
+            "viral_factor": round(factor, 3),
+            "detected_at": now.isoformat(),
+        })
+    return virals
+
+
+def _save_viral_signals(virals: list[dict], path: Path | None = None) -> None:
+    """Grava a lista de sinais virais em viral_signals.json (atomico via
+    state_lock). Sobrescreve a cada run: o conjunto e recalculado a partir
+    das views atuais, entao virais antigos que perderam forca saem naturalmente."""
+    out_path = path if path is not None else VIRAL_SIGNALS_FILE
+    with state_lock(out_path):
+        try:
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            out_path.write_text(json.dumps(virals, ensure_ascii=False, indent=2), encoding="utf-8")
+            log.info("Sinais virais salvos: %s (%d virais)", out_path, len(virals))
+        except Exception as exc:
+            log.warning("Falha ao salvar sinais virais: %s", exc)
+
+
 def _ypp_eligibility(channel_stats: dict, video_stats: list[dict]) -> dict:
     """Calcula o progresso do canal em direcao a elegibilidade YPP.
 
@@ -410,9 +501,20 @@ def _ypp_eligibility(channel_stats: dict, video_stats: list[dict]) -> dict:
     }
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    import argparse
+
     configure_logging()
     DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+    parser = argparse.ArgumentParser(description="Coleta analytics do canal Pata Jazz")
+    parser.add_argument(
+        "--snapshot-only", action="store_true",
+        help="Modo leve diario: coleta so stats + channel stats e grava o "
+             "historico. Pula a computacao pesada de cena/title_pattern e a "
+             "rotacao de thumbnails (~2 min em vez de ~10).",
+    )
+    args = parser.parse_args(argv)
 
     try:
         service = get_youtube_service()
@@ -435,6 +537,12 @@ def main() -> int:
 
     # Ordena por views (desc)
     stats.sort(key=lambda v: v["views"], reverse=True)
+
+    # Fechar o loop de variante de thumbnail: registra qual variante (A/B/C)
+    # estava ativa no momento da coleta, lendo video_tags.json. Assim, quando
+    # um video depois tem views altas, vemos qual variante gerou a performance.
+    video_tags = _load_video_tags()
+    stats = _record_thumbnail_variant_in_stats(stats, video_tags)
 
     # Estatisticas agregadas
     total_views = sum(v["views"] for v in stats)
@@ -462,7 +570,14 @@ def main() -> int:
 
     _append_history(report)
 
-    video_tags = _load_video_tags()
+    # Modo snapshot-only: so coleta stats + historico. Pula a computacao
+    # pesada de cena/title_pattern, deteccao de virais e rotacao de
+    # thumbnails - rodando diariamente (06:00 UTC) alimenta um historico
+    # mais fino pro predict_views sem gastar quota nem tempo de CI.
+    if args.snapshot_only:
+        log.info("Modo snapshot-only: pulando computacao de cena/title_pattern, "
+                 "deteccao de virais e rotacao de thumbnails.")
+        return 0
 
     scene_weights = _compute_scene_performance(stats, video_tags)
     if scene_weights:
@@ -471,6 +586,13 @@ def main() -> int:
     title_pattern_weights = _compute_title_pattern_performance(stats, video_tags)
     if title_pattern_weights:
         _update_title_pattern_performance(title_pattern_weights)
+
+    # Detecao de virais: apos computar performance por cena/title_pattern,
+    # identifica videos cujas views excedem _VIRAL_THRESHOLD x a mediana e
+    # grava sinais em viral_signals.json. content_strategy.viral_boosted_scenes
+    # le isso pra ponderar cenas que geraram virais recentes.
+    virals = detect_viral_videos(stats, video_tags)
+    _save_viral_signals(virals)
 
     # Thumbnail A/B/C rotation: videos elegiveis (>=2 variantes, >=7 dias desde
     # o upload ou desde a ultima rotacao, abaixo da mediana) tem a thumbnail

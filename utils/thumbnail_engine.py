@@ -5,6 +5,7 @@ utils/thumbnail_engine.py — cria thumbnails profissionais para Shorts e vídeo
 from __future__ import annotations
 
 import io
+import json
 import logging
 import subprocess
 import tempfile
@@ -13,6 +14,8 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
+
+from utils.paths import data_dir
 
 log = logging.getLogger(__name__)
 
@@ -424,3 +427,76 @@ def make_short_thumbnail(
     )
     _render_thumbnail(width, height, hook, emoji, output, brand, video_path, cfg, variant=variant)
     log.info("Thumbnail de Short salva: %s (variante %s)", output, variant)
+
+
+# Numero minimo de videos por variante para considerar o resultado
+# estatisticamente confiavel. Abaixo disso, "A" e mantido como default
+# conservador (nao ha dados suficientes pra afirmar que B/C ganhou).
+_MIN_VARIANT_SAMPLES = 2
+
+
+def winning_thumbnail_variant() -> str:
+    """Retorna a variante de thumbnail (A/B/C) com maior media de views.
+
+    Le video_tags.json (que mapeia video_id -> thumbnail_variant) e cruza com
+    analytics.json (que tem as views atuais por video_id). Calcula a media de
+    views por variante e retorna a de maior media.
+
+    Conservador: se houver menos de _MIN_VARIANT_SAMPLES videos por variante,
+    ou se analytics/video_tags estiverem ausentes/corrompidos, retorna "A"
+    (default de upload) - nao promove B/C sem dados suficientes pra justificar.
+
+    Pode ser usado por geradores futuros para favorecer a variante vencedora
+    no proximo upload, fechando o loop de feedback de A/B testing.
+    """
+    try:
+        video_tags = json.loads((data_dir() / "video_tags.json").read_text(encoding="utf-8"))
+    except Exception as exc:
+        log.debug("video_tags.json ausente/corrompido: %s", exc)
+        return "A"
+    if not isinstance(video_tags, dict) or not video_tags:
+        return "A"
+
+    try:
+        analytics = json.loads((data_dir() / "analytics.json").read_text(encoding="utf-8"))
+    except Exception as exc:
+        log.debug("analytics.json ausente/corrompido: %s", exc)
+        return "A"
+    all_videos = analytics.get("all_videos") if isinstance(analytics, dict) else None
+    if not all_videos:
+        return "A"
+
+    views_by_id = {
+        v.get("video_id"): int(v.get("views", 0) or 0)
+        for v in all_videos
+        if isinstance(v, dict) and v.get("video_id")
+    }
+    if not views_by_id:
+        return "A"
+
+    views_per_variant: dict[str, list[int]] = {"A": [], "B": [], "C": []}
+    for vid, tag in video_tags.items():
+        if not isinstance(tag, dict):
+            continue
+        variant = str(tag.get("thumbnail_variant", "A") or "A").upper()
+        if variant not in views_per_variant:
+            views_per_variant[variant] = []
+        if vid in views_by_id:
+            views_per_variant[variant].append(views_by_id[vid])
+
+    avg_per_variant: dict[str, float] = {}
+    for variant, views_list in views_per_variant.items():
+        if len(views_list) < _MIN_VARIANT_SAMPLES:
+            continue
+        avg_per_variant[variant] = sum(views_list) / len(views_list)
+
+    if not avg_per_variant:
+        return "A"
+
+    winner = max(avg_per_variant, key=lambda k: avg_per_variant[k])
+    log.info(
+        "Variante vencedora: %s (medias: %s)",
+        winner,
+        {k: round(v, 1) for k, v in avg_per_variant.items()},
+    )
+    return winner

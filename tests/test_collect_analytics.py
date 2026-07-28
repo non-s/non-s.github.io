@@ -685,3 +685,211 @@ class TestMedianViews:
     def test_even_count_returns_average_of_middles(self):
         stats = [{"views": v} for v in [1, 2, 3, 4]]
         assert collect_analytics._median_views(stats) == 2.5
+
+
+class TestDetectViralVideos:
+    """detect_viral_videos: um video e viral se suas views excedem
+    _VIRAL_THRESHOLD (10x) a mediana do conjunto coletado. Devolve sinais
+    com video_id/scene/title_pattern/views/viral_factor/detected_at."""
+
+    def _stats(self, views_list):
+        return [{"video_id": f"vid{i}", "views": v} for i, v in enumerate(views_list)]
+
+    def _tags(self, mapping):
+        return {vid: {"scene": s, "title_pattern": p} for vid, s, p in mapping}
+
+    def test_no_virals_when_all_views_below_threshold(self):
+        stats = self._stats([10, 20, 30, 40, 50])  # mediana 30
+        tags = self._tags([("vid0", "cat", "p1")])
+
+        virals = collect_analytics.detect_viral_videos(stats, tags)
+
+        assert virals == []
+
+    def test_detects_video_above_10x_median(self):
+        # mediana = 30; 500 > 10*30 = 300 -> viral (factor ~16.67).
+        stats = self._stats([10, 20, 30, 40, 500])
+        tags = self._tags([("vid4", "cat", "p1")])
+
+        virals = collect_analytics.detect_viral_videos(stats, tags)
+
+        assert len(virals) == 1
+        v = virals[0]
+        assert v["video_id"] == "vid4"
+        assert v["scene"] == "cat"
+        assert v["title_pattern"] == "p1"
+        assert v["views"] == 500
+        assert v["viral_factor"] == round(500 / 30.0, 3)
+        assert "detected_at" in v
+
+    def test_untagged_viral_is_detected_with_empty_scene(self):
+        """Um viral sem entrada em video_tags ainda e detectado, mas com
+        scene/title_pattern vazios - o boost de cena so se aplica quando a
+        tag existe."""
+        stats = self._stats([10, 20, 30, 40, 500])
+        virals = collect_analytics.detect_viral_videos(stats, {})
+
+        assert len(virals) == 1
+        assert virals[0]["scene"] == ""
+        assert virals[0]["title_pattern"] == ""
+
+    def test_zero_median_returns_empty(self):
+        stats = self._stats([0, 0, 0])
+        assert collect_analytics.detect_viral_videos(stats, {}) == []
+
+    def test_custom_threshold_respected(self):
+        stats = self._stats([10, 20, 30, 40, 100])  # mediana 30; 100 = 3.33x
+        tags = self._tags([("vid4", "cat", "p1")])
+
+        # threshold 3x -> 100/30 = 3.33 > 3 -> viral.
+        virals = collect_analytics.detect_viral_videos(stats, tags, threshold=3.0)
+        assert len(virals) == 1
+
+        # threshold 5x -> 3.33 < 5 -> nao viral.
+        virals = collect_analytics.detect_viral_videos(stats, tags, threshold=5.0)
+        assert virals == []
+
+    def test_detected_at_is_iso_now(self):
+        stats = self._stats([10, 20, 30, 40, 500])
+        fixed = datetime(2026, 7, 27, 6, 0, 0, tzinfo=UTC)
+
+        virals = collect_analytics.detect_viral_videos(stats, {}, now=fixed)
+
+        assert virals[0]["detected_at"] == fixed.isoformat()
+
+
+class TestSaveViralSignals:
+    def test_writes_json_list_to_file(self, tmp_path, monkeypatch):
+        out = tmp_path / "viral_signals.json"
+        monkeypatch.setattr(collect_analytics, "VIRAL_SIGNALS_FILE", out)
+        virals = [{"video_id": "v1", "scene": "cat", "views": 500, "viral_factor": 16.5}]
+
+        collect_analytics._save_viral_signals(virals, path=out)
+
+        data = json.loads(out.read_text(encoding="utf-8"))
+        assert data == virals
+
+    def test_creates_parent_dir(self, tmp_path, monkeypatch):
+        out = tmp_path / "nested" / "viral_signals.json"
+        monkeypatch.setattr(collect_analytics, "VIRAL_SIGNALS_FILE", out)
+
+        collect_analytics._save_viral_signals([], path=out)
+
+        assert out.exists()
+        assert json.loads(out.read_text(encoding="utf-8")) == []
+
+    def test_overwrites_previous_content(self, tmp_path, monkeypatch):
+        out = tmp_path / "viral_signals.json"
+        monkeypatch.setattr(collect_analytics, "VIRAL_SIGNALS_FILE", out)
+        out.write_text(json.dumps([{"old": "stale"}]), encoding="utf-8")
+
+        collect_analytics._save_viral_signals([{"video_id": "v1"}], path=out)
+
+        data = json.loads(out.read_text(encoding="utf-8"))
+        assert data == [{"video_id": "v1"}]
+
+
+class TestRecordThumbnailVariantInStats:
+    """_record_thumbnail_variant_in_stats: mescla thumbnail_variant de
+    video_tags.json em cada stat dict, pra fechar o loop de feedback de
+    variante de thumbnail (qual variante estava ativa quando as views foram
+    coletadas)."""
+
+    def test_adds_variant_from_video_tags(self):
+        stats = [{"video_id": "v1", "views": 100}, {"video_id": "v2", "views": 200}]
+        tags = {"v1": {"thumbnail_variant": "B"}, "v2": {"thumbnail_variant": "C"}}
+
+        enriched = collect_analytics._record_thumbnail_variant_in_stats(stats, tags)
+
+        assert enriched[0]["thumbnail_variant"] == "B"
+        assert enriched[1]["thumbnail_variant"] == "C"
+
+    def test_defaults_to_a_when_tag_missing(self):
+        stats = [{"video_id": "v1", "views": 100}]
+        enriched = collect_analytics._record_thumbnail_variant_in_stats(stats, {})
+        assert enriched[0]["thumbnail_variant"] == "A"
+
+    def test_defaults_to_a_when_variant_field_absent(self):
+        stats = [{"video_id": "v1", "views": 100}]
+        tags = {"v1": {"scene": "cat"}}  # sem thumbnail_variant
+        enriched = collect_analytics._record_thumbnail_variant_in_stats(stats, tags)
+        assert enriched[0]["thumbnail_variant"] == "A"
+
+    def test_does_not_mutate_original_stats(self):
+        stats = [{"video_id": "v1", "views": 100}]
+        tags = {"v1": {"thumbnail_variant": "B"}}
+
+        collect_analytics._record_thumbnail_variant_in_stats(stats, tags)
+
+        assert "thumbnail_variant" not in stats[0]
+
+    def test_preserves_other_fields(self):
+        stats = [{"video_id": "v1", "views": 100, "likes": 5, "title": "T"}]
+        enriched = collect_analytics._record_thumbnail_variant_in_stats(stats, {"v1": {"thumbnail_variant": "C"}})
+        assert enriched[0]["likes"] == 5
+        assert enriched[0]["title"] == "T"
+
+
+class TestSnapshotOnlyFlag:
+    """--snapshot-only: modo leve diario que so coleta stats + historico,
+    pulando computacao pesada de cena/title_pattern, virais e rotacao."""
+
+    def _patch_run(self, monkeypatch, tmp_path):
+        """Patcha dependencias externas de main() pra um run em memoria."""
+        monkeypatch.setattr(collect_analytics, "DATA_DIR", tmp_path)
+        monkeypatch.setattr(collect_analytics, "HISTORY_FILE", tmp_path / "analytics_history.json")
+        monkeypatch.setattr(collect_analytics, "VIDEO_TAGS_FILE", tmp_path / "video_tags.json")
+        monkeypatch.setattr(collect_analytics, "SCENE_PERFORMANCE_FILE", tmp_path / "scene_perf.json")
+        monkeypatch.setattr(
+            collect_analytics, "TITLE_PATTERN_PERFORMANCE_FILE", tmp_path / "tp_perf.json"
+        )
+        monkeypatch.setattr(collect_analytics, "VIRAL_SIGNALS_FILE", tmp_path / "viral.json")
+        monkeypatch.setattr(collect_analytics, "get_youtube_service", lambda: MagicMock())
+        stats = [{"video_id": "v1", "views": 100, "likes": 1, "comments": 0,
+                  "title": "t", "published_at": "2026-01-01", "duration": "PT1M"}]
+        monkeypatch.setattr(collect_analytics, "collect_video_stats",
+                            lambda service: (stats, {"subscriber_count": 10}))
+        return stats
+
+    def test_snapshot_only_skips_scene_performance_file(self, tmp_path, monkeypatch):
+        self._patch_run(monkeypatch, tmp_path)
+        perf_file = tmp_path / "scene_perf.json"
+
+        collect_analytics.main(["--snapshot-only"])
+
+        assert not perf_file.exists()
+
+    def test_snapshot_only_skips_viral_signals_file(self, tmp_path, monkeypatch):
+        self._patch_run(monkeypatch, tmp_path)
+        viral_file = tmp_path / "viral.json"
+
+        collect_analytics.main(["--snapshot-only"])
+
+        assert not viral_file.exists()
+
+    def test_snapshot_only_still_writes_history(self, tmp_path, monkeypatch):
+        self._patch_run(monkeypatch, tmp_path)
+
+        collect_analytics.main(["--snapshot-only"])
+
+        history = json.loads((tmp_path / "analytics_history.json").read_text())
+        assert len(history) == 1
+        assert history[0]["total_views"] == 100
+
+    def test_full_run_writes_scene_performance(self, tmp_path, monkeypatch):
+        self._patch_run(monkeypatch, tmp_path)
+        # 3 videos tagueados com a mesma cena pra passar _MIN_SCENE_SAMPLES.
+        stats = [{"video_id": f"v{i}", "views": v, "likes": 0, "comments": 0,
+                  "title": "t", "published_at": "2026-01-01", "duration": "PT1M"}
+                 for i, v in enumerate([100, 100, 100])]
+        monkeypatch.setattr(collect_analytics, "collect_video_stats",
+                            lambda service: (stats, {"subscriber_count": 10}))
+        (tmp_path / "video_tags.json").write_text(
+            json.dumps({f"v{i}": {"scene": "cat", "title_pattern": "p"} for i in range(3)}),
+            encoding="utf-8",
+        )
+
+        collect_analytics.main([])
+
+        assert (tmp_path / "scene_perf.json").exists()
+        assert (tmp_path / "viral.json").exists()

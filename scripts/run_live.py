@@ -40,6 +40,7 @@ import logging
 import os
 import re
 import sys
+import threading
 import time
 from pathlib import Path
 
@@ -83,6 +84,14 @@ _RECONNECT_DELAY_SECONDS = 5
 # para sempre. Folga generosa (nao e um segmento CPU-bound, e so pra
 # cobrir flush do muxer + latencia de rede na saida normal).
 _SEGMENT_WATCHDOG_GRACE_SECONDS = 90
+# Heartbeat de stream (task 4.4): thread daemon que periodicamente confirma
+# com a API do YouTube que o stream vinculado continua 'active'. A live ja
+# reconecta em quedas do FFmpeg (Broken pipe), mas o YouTube pode invalidar
+# o stream do lado dele em sessoes longas sem que o FFmpeg perceba de
+# imediato - o heartbeat antecipa esse caso setando _reconnect_requested
+# para o proximo ciclo do loop principal forcar a reconexao.
+_HEARTBEAT_INTERVAL_SECONDS = 15 * 60
+_HEARTBEAT_STREAM_TIMEOUT = 30
 # 15 era baixo demais: uma run de teste de 20 min mediu FFmpeg quebrando
 # (Broken pipe, encode caindo para ~0.43x tempo real) a cada ~2.8 min em
 # media no runner gratuito de 2 vCPUs - ou seja, uma live de 350 min
@@ -137,6 +146,50 @@ def _cleanup_live_artifacts(output_stem: str) -> None:
                 f.unlink(missing_ok=True)
             except Exception:
                 pass
+
+
+def _start_stream_heartbeat(
+    stream_id: str,
+    reconnect_flag: threading.Event,
+    stop_event: threading.Event | None = None,
+    interval_seconds: float = _HEARTBEAT_INTERVAL_SECONDS,
+) -> threading.Thread:
+    """Inicia uma thread daemon que periodicamente (a cada
+    ``interval_seconds`` segundos) chama ``wait_for_stream_active`` para
+    confirmar que o stream continua ativo do lado do YouTube. Se a chamada
+    retornar False, seta ``reconnect_flag`` para que o loop principal force
+    uma reconexao no proximo ciclo em vez de esperar o FFmpeg cair por si so.
+
+    A thread e daemon: nao bloqueja o encerramento do processo. As
+    chamadas de API usam timeout curto (``_HEARTBEAT_STREAM_TIMEOUT``) e
+    sao englobadas por try/except para nunca propagar excecao - o
+    heartbeat e best-effort, nunca pode derrubar a live.
+
+    ``stop_event`` e opcional (usado em testes) - quando setado, a thread
+    encerra graciosamente em vez de rodar para sempre.
+    """
+    stop = stop_event or threading.Event()
+
+    def _loop() -> None:
+        while not stop.is_set():
+            if stop.wait(timeout=interval_seconds):
+                return
+            try:
+                active = wait_for_stream_active(stream_id, timeout=_HEARTBEAT_STREAM_TIMEOUT)
+            except Exception as exc:
+                log.warning("Heartbeat: erro ao checar stream %s: %s", stream_id, exc)
+                continue
+            if not active:
+                log.warning(
+                    "Heartbeat: stream %s nao esta mais ativo no YouTube; "
+                    "sinalizando reconexao no proximo ciclo.",
+                    stream_id,
+                )
+                reconnect_flag.set()
+
+    thread = threading.Thread(target=_loop, name="stream-heartbeat", daemon=True)
+    thread.start()
+    return thread
 
 
 def _try_start_chat_watcher(
@@ -232,6 +285,15 @@ def main() -> int:
     # reage visualmente no overlay - nao posta mensagens (ToS do YouTube).
     chat_watcher: LiveChatWatcher | None = None
 
+    # Heartbeat de stream (task 4.4): thread daemon que checa o streamStatus
+    # no YouTube a cada 15min; se voltar False, seta reconnect_flag para o
+    # loop principal forcar reconexao. Inicia depois que o stream for
+    # confirmado ativo pela primeira vez, mas como o loop abaixo ja faz
+    # wait_for_stream_active na primeira iteracao, iniciar o heartbeat aqui
+    # e seguro (ele so checa de fato apos _HEARTBEAT_INTERVAL_SECONDS).
+    reconnect_requested = threading.Event()
+    _start_stream_heartbeat(meta["stream_id"], reconnect_requested)
+
     # Nao chamamos transition('testing') nem transition('live') aqui: com
     # enableMonitorStream=False a fase de testing e sempre invalida (403
     # invalidTransition), nao importa a ordem das chamadas - so existe fase
@@ -301,6 +363,17 @@ def main() -> int:
                 # manual), nao uma falha da live em si - deixa pendurado.
                 should_finalize_broadcast = False
                 break
+
+            # Heartbeat de stream: se a thread daemon detectou que o stream
+            # caiu do lado do YouTube, forca a reconexao terminando o FFmpeg
+            # atual e caindo no caminho de reconnect abaixo (sem contar como
+            # fast failure, ja que e uma queda legitima do stream, nao do
+            # processo). O Event e limpo antes de reconectar para nao ficar
+            # disparando reconexoes repetidas.
+            if reconnect_requested.is_set():
+                reconnect_requested.clear()
+                log.warning("Heartbeat sinalizou reconexao; terminando FFmpeg atual e reconectando.")
+                _terminate_ffmpeg_stream(proc)
 
             reconnect_count += 1
             if reconnect_count > _MAX_RECONNECTS:

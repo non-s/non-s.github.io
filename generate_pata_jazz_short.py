@@ -11,12 +11,14 @@ import argparse
 import logging
 import random
 import sys
+import time
 from datetime import UTC, datetime
 from pathlib import Path
 
 from utils.channel_config import set_channel_from_env
 from utils.content_strategy import current_brt_hour, mood_for_now, scene_for_mood
 from utils.log_config import configure_logging, log_exception_to_file
+from utils.pipeline_metrics import record_pipeline_run
 from utils.slot_optimizer import optimized_scene_and_pattern
 from utils.video_builder import build_pata_jazz_video, short_spec
 
@@ -88,13 +90,23 @@ def main() -> int:
     configure_logging()
     duration = args.duration if args.duration is not None else _pick_duration()
 
+    start_time = time.time()
+    success = False
     try:
         _generate_short(duration=duration, dry_run=args.dry_run)
+        success = True
         return 0
     except Exception as exc:
         log.exception("Falha ao gerar Short: %s", exc)
         log_exception_to_file(exc, OUTPUT_DIR)
         return 1
+    finally:
+        record_pipeline_run(
+            stage="generate_short",
+            success=success,
+            duration_seconds=time.time() - start_time,
+            kind="vertical",
+        )
 
 
 if __name__ == "__main__":
