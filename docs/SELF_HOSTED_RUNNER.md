@@ -10,9 +10,34 @@ self-hosted elimina essa instabilidade: o processo roda em uma máquina que
 você controla, sem os limites de 360 min/job e sem as quedas arbitrárias do
 runner efêmero.
 
+### Por que 1080p live exige self-hosted
+
+O runner gratuito do GitHub Actions (2 vCPU) não consegue codificar 1080p em
+tempo real: medido em produção, o encode de `libx264 -preset ultrafast` a
+1080p30 cai para ~0.43x (menos de metade da velocidade necessária), os frames
+acumulam e a conexão RTMP quebra em menos de 1 minuto. Por isso o live
+workflow hoje força `1280x720` (720p) — ver o cap em `generate_pata_jazz_live.py`:
+
+```python
+if w >= 1920:
+    log.warning("Resolucao %sx%s nao e suportada no runner gratuito do GitHub Actions "
+                "(encode nao acompanha o tempo real). Usando 1280x720.", w, h)
+    w, h = 1280, 720
+```
+
+720p tem ~2.25x menos pixels por frame que 1080p, dando folga real de CPU.
+Um self-hosted com CPU dedicada (≥4 vCPU) codifica 1080p30 em tempo real sem
+queda, eliminando esse cap. O comentário sobre o cap de 720p deve ser
+atualizado no live workflow (`pata-jazz-youtube-live.yml`) ao migrar para
+self-hosted — ver "Remover o cap de 720p" abaixo.
+
 ## Setup (Ubuntu 22.04 ou 24.04)
 
 Usa um Droplet pequeno da DigitalOcean (ou equivalente) como referência.
+
+> Para 1080p live, prefira uma instância com ≥4 vCPU e ≥8 GB RAM (ex.:
+> DigitalOcean Premium AMD 4 vCPU / 8 GB, ~$48/mês). 2 vCPU/4 GB serve para
+> 720p estável mas não tem folga para 1080p em tempo real.
 
 ### 1. Instalar Docker (opcional, para isolamento)
 
@@ -24,13 +49,25 @@ sudo apt-get install -y docker.io
 sudo systemctl enable --now docker
 ```
 
-### 2. Registrar o runner
+### 2. Instalar FFmpeg (necessário para a live)
+
+A live usa FFmpeg (`libx264` + `aac`) para codificar o stream RTMP. O FFmpeg
+dos repositórios do Ubuntu é suficiente (não precisa de build custom):
+
+```bash
+sudo apt-get update
+sudo apt-get install -y ffmpeg
+# Confirma que o encoder libx264 está disponível:
+ffmpeg -encoders | grep libx264
+```
+
+### 3. Registrar o runner
 
 No repositório: **Settings → Actions → Runners → New self-hosted runner**.
 Siga as instruções exibidas para Linux x64 (baixar `actions-runner-linux-x64`,
 extrair, rodar `./config.sh` com o token exibido).
 
-### 3. Labels recomendadas
+### 4. Labels recomendadas
 
 Configure o runner com as labels:
 
@@ -41,7 +78,7 @@ self-hosted, linux, x64, live
 A label `live` garante que **só** o workflow da live use esse runner — os
 demais workflows continuam em `ubuntu-latest` e não disputam a máquina.
 
-### 4. Instalar como serviço
+### 5. Instalar como serviço
 
 ```bash
 sudo ./svc.sh install
@@ -90,12 +127,49 @@ finais (sync de assets, preparo do loop, limpeza). Com isso a live roda **uma
 sessão por dia** em vez de 4 sessões de 6h, eliminando os handoffs e as
 reconexões entre elas.
 
+### Remover o cap de 720p (1080p em self-hosted)
+
+Ao usar `runs-on: [self-hosted, live]`, o cap de 720p em
+`generate_pata_jazz_live.py` (e no input `resolution` do workflow) deixa de
+fazer sentido — o self-hosted tem CPU suficiente para 1080p em tempo real.
+No workflow, amplie a opção de resolução do `workflow_dispatch`:
+
+```yaml
+inputs:
+  resolution:
+    description: "Resolucao da live (self-hosted suporta 1080p)"
+    required: false
+    default: "1920x1080"
+    type: choice
+    options:
+      - "1920x1080"
+      - "1280x720"
+```
+
+E em `generate_pata_jazz_live.py`, adicione um comentário no cap de 720p
+indicando que ele só se aplica ao runner gratuito (não ao self-hosted):
+
+```python
+if w >= 1920:
+    # Cap de 720p: o runner gratuito do GitHub Actions (2 vCPU) nao codifica
+    # 1080p em tempo real. Em self-hosted (runs-on: [self-hosted, live]) com
+    # >=4 vCPU, remova este cap e use 1920x1080 (LIVE_RESOLUTION default).
+    log.warning("Resolucao %sx%s nao e suportada no runner gratuito do GitHub Actions "
+                "(encode nao acompanha o tempo real). Usando 1280x720.", w, h)
+    w, h = 1280, 720
+```
+
+> Não modifique o workflow nem o script automaticamente — faça a troca
+> manualmente após registrar o runner e validar que 1080p codifica estável
+> (speed >= 1.0x por alguns minutos em `_wait_ffmpeg_stream`).
+
 ## Custo
 
-| Opção | Custo | Confiabilidade |
-|-------|-------|----------------|
-| Runner gratuito do GHA | grátis | instável (~125 reconexões/sessão) |
-| Droplet 2 vCPU / 4 GB | ~$12/mês | estável (sem quedas arbitrárias) |
+| Opção | Custo | Confiabilidade | Resolução |
+|-------|-------|----------------|-----------|
+| Runner gratuito do GHA | grátis | instável (~125 reconexões/sessão) | 720p (cap) |
+| Droplet 2 vCPU / 4 GB | ~$12/mês | estável (sem quedas arbitrárias) | 720p |
+| Droplet 4 vCPU / 8 GB | ~$48/mês | estável | 1080p |
 
 ## Riscos e mitigações
 

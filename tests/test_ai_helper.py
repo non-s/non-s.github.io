@@ -1,9 +1,19 @@
 """Testes para ai_helper.py."""
+from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest
 
 import utils.ai_helper as ai_helper
+
+
+@pytest.fixture(autouse=True)
+def _isolate_ai_metrics_file(tmp_path: Path, monkeypatch):
+    """ai_text() agora registra metricas em _data/ai_metrics.json (path real
+    do repo) via finally - sem isolar, todo teste de ai_text escreveria no
+    disco de verdade e poluiria o repo/_data."""
+    metrics_file = tmp_path / "ai_metrics.json"
+    monkeypatch.setattr(ai_helper, "_ai_metrics_file", lambda: metrics_file)
 
 
 class TestAiHelper:
@@ -344,3 +354,195 @@ class TestAiHelperCalls:
         # Verifica se timeout foi passado
         call_args = mock_session.post.call_args
         assert call_args[1]["timeout"] == 60
+
+
+class TestRecordAiMetric:
+    """_record_ai_metric persiste chamadas/fallbacks/latencia em ai_metrics.json."""
+
+    def test_record_appends_entry(self, tmp_path: Path):
+        f = tmp_path / "ai_metrics.json"
+        ai_helper._record_ai_metric("short_metadata", 123.4, fell_back=False)
+        ai_helper._record_ai_metric("horizontal_metadata", 45.6, fell_back=True)
+
+        import json
+        data = json.loads(f.read_text(encoding="utf-8"))
+        assert len(data) == 2
+        assert data[0]["task"] == "short_metadata"
+        assert data[0]["fell_back"] is False
+        assert data[0]["latency_ms"] == 123.4
+        assert "at" in data[0]
+        assert data[1]["task"] == "horizontal_metadata"
+        assert data[1]["fell_back"] is True
+
+    def test_record_bounded_to_max_entries(self, tmp_path: Path):
+        f = tmp_path / "ai_metrics.json"
+        for i in range(ai_helper._AI_METRICS_MAX_ENTRIES + 50):
+            ai_helper._record_ai_metric("t", float(i), fell_back=False)
+
+        import json
+        data = json.loads(f.read_text(encoding="utf-8"))
+        assert len(data) == ai_helper._AI_METRICS_MAX_ENTRIES
+        # FIFO: primeiras entradas descartadas, mantem as mais recentes.
+        assert data[0]["latency_ms"] == 50.0
+        assert data[-1]["latency_ms"] == float(ai_helper._AI_METRICS_MAX_ENTRIES + 49)
+
+    def test_record_corrupt_file_starts_fresh(self, tmp_path: Path):
+        f = tmp_path / "ai_metrics.json"
+        f.write_text("not json", encoding="utf-8")
+        ai_helper._record_ai_metric("t", 1.0, fell_back=False)
+
+        import json
+        data = json.loads(f.read_text(encoding="utf-8"))
+        assert len(data) == 1
+        assert data[0]["task"] == "t"
+
+    @patch('utils.ai_helper._session')
+    @patch('utils.ai_helper.os.environ')
+    def test_ai_text_records_metric_on_success(self, mock_env, mock_session, tmp_path: Path):
+        mock_env.get.return_value = "fake_key"
+        mock_response = MagicMock()
+        mock_response.raise_for_status.return_value = None
+        mock_response.json.return_value = {
+            "candidates": [{"content": {"parts": [{"text": "ok"}]}}]
+        }
+        mock_session.post.return_value = mock_response
+
+        result = ai_helper.ai_text("prompt", task="short_metadata")
+
+        assert result == "ok"
+        import json
+        data = json.loads(ai_helper._ai_metrics_file().read_text(encoding="utf-8"))
+        assert len(data) == 1
+        assert data[0]["task"] == "short_metadata"
+        assert data[0]["fell_back"] is False
+        assert data[0]["latency_ms"] >= 0.0
+
+    @patch('utils.ai_helper._session')
+    @patch('utils.ai_helper.os.environ')
+    def test_ai_text_records_metric_on_fallback(self, mock_env, mock_session, tmp_path: Path):
+        mock_env.get.return_value = "fake_key"
+        mock_response = MagicMock()
+        mock_response.raise_for_status.return_value = None
+        mock_response.json.return_value = {"candidates": []}
+        mock_session.post.return_value = mock_response
+
+        result = ai_helper.ai_text("prompt", task="hook")
+
+        assert result == ""
+        import json
+        data = json.loads(ai_helper._ai_metrics_file().read_text(encoding="utf-8"))
+        assert len(data) == 1
+        assert data[0]["task"] == "hook"
+        assert data[0]["fell_back"] is True
+
+    @patch('utils.ai_helper.os.environ')
+    def test_ai_text_records_metric_on_no_api_key(self, mock_env, tmp_path: Path):
+        mock_env.get.return_value = ""
+
+        result = ai_helper.ai_text("prompt", task="caption")
+
+        assert result == ""
+        import json
+        data = json.loads(ai_helper._ai_metrics_file().read_text(encoding="utf-8"))
+        assert len(data) == 1
+        assert data[0]["task"] == "caption"
+        assert data[0]["fell_back"] is True
+
+
+class TestAiTextWithImage:
+    """ai_text_with_image: payload multimodal (texto + imagem base64) com
+    fallback None em qualquer falha (sem key, circuit breaker, erro HTTP)."""
+
+    def _img(self, tmp_path: Path) -> Path:
+        from PIL import Image
+        p = tmp_path / "frame.png"
+        Image.new("RGB", (16, 16), (1, 2, 3)).save(p)
+        return p
+
+    @patch('utils.ai_helper.os.environ')
+    def test_no_api_key_returns_none(self, mock_env, tmp_path: Path):
+        mock_env.get.return_value = ""
+        assert ai_helper.ai_text_with_image("p", self._img(tmp_path)) is None
+
+    @patch('utils.ai_helper.os.environ')
+    def test_missing_image_returns_none(self, mock_env, tmp_path: Path):
+        mock_env.get.return_value = "key"
+        assert ai_helper.ai_text_with_image("p", tmp_path / "nope.png") is None
+
+    @patch('utils.ai_helper._session')
+    @patch('utils.ai_helper.os.environ')
+    def test_success_returns_text(self, mock_env, mock_session, tmp_path: Path):
+        mock_env.get.return_value = "key"
+        mock_response = MagicMock()
+        mock_response.raise_for_status.return_value = None
+        mock_response.json.return_value = {
+            "candidates": [{"content": {"parts": [{"text": "Cute Cat Napping to Jazz"}]}}]
+        }
+        mock_session.post.return_value = mock_response
+
+        result = ai_helper.ai_text_with_image("prompt", self._img(tmp_path), task="thumbnail_vision")
+        assert result == "Cute Cat Napping to Jazz"
+        # Verifica que o body tem inline_data com base64.
+        body = mock_session.post.call_args[1]["json"]
+        parts = body["contents"][0]["parts"]
+        assert any("inline_data" in p for p in parts)
+        assert any("text" in p for p in parts)
+
+    @patch('utils.ai_helper._session')
+    @patch('utils.ai_helper.os.environ')
+    def test_empty_candidates_returns_none(self, mock_env, mock_session, tmp_path: Path):
+        mock_env.get.return_value = "key"
+        mock_response = MagicMock()
+        mock_response.raise_for_status.return_value = None
+        mock_response.json.return_value = {"candidates": []}
+        mock_session.post.return_value = mock_response
+        assert ai_helper.ai_text_with_image("p", self._img(tmp_path)) is None
+
+    @patch('utils.ai_helper.is_safe_ai_text', return_value=False)
+    @patch('utils.ai_helper._session')
+    @patch('utils.ai_helper.os.environ')
+    def test_unsafe_text_returns_none(self, mock_env, mock_session, _safe, tmp_path: Path):
+        mock_env.get.return_value = "key"
+        mock_response = MagicMock()
+        mock_response.raise_for_status.return_value = None
+        mock_response.json.return_value = {
+            "candidates": [{"content": {"parts": [{"text": "visit https://evil.example.com"}]}}]
+        }
+        mock_session.post.return_value = mock_response
+        assert ai_helper.ai_text_with_image("p", self._img(tmp_path)) is None
+
+    @patch('utils.ai_helper._session')
+    @patch('utils.ai_helper.os.environ')
+    def test_http_error_returns_none(self, mock_env, mock_session, tmp_path: Path):
+        mock_env.get.return_value = "key"
+        import requests
+        mock_response = MagicMock()
+        mock_response.status_code = 500
+        mock_response.raise_for_status.side_effect = requests.exceptions.HTTPError("500")
+        mock_session.post.return_value = mock_response
+        assert ai_helper.ai_text_with_image("p", self._img(tmp_path)) is None
+
+    @patch('utils.ai_helper._gemini_circuit_open', True)
+    @patch('utils.ai_helper._gemini_circuit_open_until', 9999999999.0)
+    @patch('utils.ai_helper.os.environ')
+    def test_circuit_breaker_returns_none(self, mock_env, tmp_path: Path):
+        mock_env.get.return_value = "key"
+        assert ai_helper.ai_text_with_image("p", self._img(tmp_path)) is None
+
+    @patch('utils.ai_helper._session')
+    @patch('utils.ai_helper.os.environ')
+    def test_records_metric_on_success(self, mock_env, mock_session, tmp_path: Path):
+        mock_env.get.return_value = "key"
+        mock_response = MagicMock()
+        mock_response.raise_for_status.return_value = None
+        mock_response.json.return_value = {
+            "candidates": [{"content": {"parts": [{"text": "ok title"}]}}]
+        }
+        mock_session.post.return_value = mock_response
+
+        ai_helper.ai_text_with_image("p", self._img(tmp_path), task="thumbnail_vision")
+        import json
+        data = json.loads(ai_helper._ai_metrics_file().read_text(encoding="utf-8"))
+        assert len(data) == 1
+        assert data[0]["task"] == "thumbnail_vision"
+        assert data[0]["fell_back"] is False

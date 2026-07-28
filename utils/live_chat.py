@@ -34,15 +34,13 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from utils.paths import data_dir
 from utils.youtube_retry import retry_youtube_call
 
 if TYPE_CHECKING:
     from googleapiclient.discovery import Resource
 
 log = logging.getLogger(__name__)
-
-ROOT = Path(__file__).resolve().parent.parent
-LIVE_META_DIR = ROOT / "_data"
 
 POLL_INTERVAL_SECONDS = 10
 OVERLAY_TTL_SECONDS = 10
@@ -105,18 +103,24 @@ class LiveChatWatcher:
         service: Resource,
         chat_id: str,
         start_time: float,
-        meta_dir: Path = LIVE_META_DIR,
+        meta_dir: Path | None = None,
         poll_interval: float = POLL_INTERVAL_SECONDS,
     ) -> None:
         self._service = service
         self._chat_id = chat_id
         self._start_time = start_time
-        self._meta_dir = meta_dir
+        # None = resolve no __init__ para data_dir() do canal ativo (nao
+        # pode ser default no signature: active_channel pode mudar entre
+        # runs e o default seria avaliado na importacao).
+        self._meta_dir = meta_dir if meta_dir is not None else data_dir()
         self._poll_interval = poll_interval
         self._page_token = ""
         self._thread: threading.Thread | None = None
         self._stop_event = threading.Event()
         self._overlay_clear_at: float = 0.0
+        # 4.2 - Set em memoria de user_id ja saudados como novos inscritos/
+        # membros, para nao duplicar o popup nos proximos pollings do chat.
+        self._welcomed_members: set[str] = set()
 
     # ---- comandos -----------------------------------------------------
 
@@ -307,9 +311,17 @@ class LiveChatWatcher:
             log.warning("Falha ao buscar mensagens do chat: %s", exc)
             return
         for item in items:
-            text = (item.get("snippet", {}) or {})
-            text = text.get("textMessageDetails", {}).get("messageText", "")
-            author = (item.get("authorDetails", {}) or {}).get("displayName", "")
+            snippet = item.get("snippet", {}) or {}
+            author_details = item.get("authorDetails", {}) or {}
+            text = snippet.get("textMessageDetails", {}).get("messageText", "")
+            author = author_details.get("displayName", "")
+
+            # 4.2 - Reacao visual a novos inscritos/membros da live. Eventos
+            # de membership chegam como itens de chat com authorDetails flags
+            # especificas (isChatSponsor, isNewMember). Exibe um popup
+            # "Welcome @user!" no overlay para aumentar senso de comunidade.
+            self._maybe_handle_membership(author_details, snippet)
+
             parsed = self.parse_command(text)
             if parsed is None:
                 continue
@@ -318,6 +330,31 @@ class LiveChatWatcher:
             reply = self.handle_command(command, argument, author=author)
             if reply:
                 self._write_overlay(reply)
+
+    def _maybe_handle_membership(self, author_details: dict, snippet: dict) -> None:
+        """Detecta novos inscritos/membros e exibe popup de boas-vindas.
+
+        YouTube envia eventos de membership como itens de chat com
+        snippet.type='membership' ou authorDetails.isChatSponsor=True.
+        Como nao queremos duplicar o popup para o mesmo usuario em pollings
+        consecutivos, usamos um set em memoria dos user_id ja saudados.
+        """
+        user_id = author_details.get("channelId", "")
+        if not user_id:
+            return
+        event_type = snippet.get("type", "")
+        is_sponsor = author_details.get("isChatSponsor", False)
+        is_new_member = author_details.get("isNewMember", False)
+        if event_type == "membership" or is_sponsor or is_new_member:
+            if user_id in self._welcomed_members:
+                return
+            self._welcomed_members.add(user_id)
+            # Limita o set para nao crescer indefinidamente em lives longas.
+            if len(self._welcomed_members) > 200:
+                self._welcomed_members = set(list(self._welcomed_members)[-200:])
+            display = author_details.get("displayName", "someone")
+            emoji = "\U0001f389" if is_new_member else "\U0001f496"
+            self._write_overlay(f"{emoji} Welcome {display}! Thanks for joining!")
 
     def _run(self) -> None:
         while not self._stop_event.is_set():
@@ -353,10 +390,12 @@ class LiveChatWatcher:
             pass
 
 
-def write_uptime(start_time: float, path: Path = LIVE_META_DIR / "live_uptime.txt") -> None:
+def write_uptime(start_time: float, path: Path | None = None) -> None:
     """Escreve o uptime formatado no arquivo lido pelo drawtext do FFmpeg
     (textfile=...:reload=1). Chamado a cada 1s por uma thread daemon em
     run_live.py."""
+    if path is None:
+        path = data_dir() / "live_uptime.txt"
     try:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(f"\U0001f534 LIVE {_format_uptime(time.time() - start_time)}", encoding="utf-8")
@@ -369,7 +408,7 @@ def start_uptime_writer(start_time: float) -> threading.Thread:
     stop_event = threading.Event()
 
     def _loop() -> None:
-        path = LIVE_META_DIR / "live_uptime.txt"
+        path = data_dir() / "live_uptime.txt"
         while not stop_event.is_set():
             write_uptime(start_time, path)
             stop_event.wait(1.0)

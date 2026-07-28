@@ -5,6 +5,7 @@ utils/thumbnail_engine.py — cria thumbnails profissionais para Shorts e vídeo
 from __future__ import annotations
 
 import io
+import json
 import logging
 import subprocess
 import tempfile
@@ -13,6 +14,8 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
+
+from utils.paths import data_dir
 
 log = logging.getLogger(__name__)
 
@@ -256,6 +259,43 @@ class _LayoutConfig:
     frame_timestamp: str
 
 
+_VISION_HOOK_MAX_LEN = 70
+_VISION_HOOK_MIN_LEN = 12
+
+
+def _vision_hook_for_frame(frame_img: Image.Image, fallback_hook: str) -> str:
+    """Tenta obter um hook 'scroll-stopping' via Gemini Vision a partir do
+    frame extraído do vídeo. Salva o frame em PNG temporário, chama
+    ai_text_with_image e valida o resultado (tamanho, segurança). Em qualquer
+    falha, retorna o fallback_hook legado (hook_for_scene)."""
+    try:
+        from utils.ai_helper import ai_text_with_image
+
+        tmp = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
+        tmp.close()
+        tmp_path = Path(tmp.name)
+        try:
+            frame_img.save(tmp_path, format="PNG")
+            prompt = (
+                "Look at this video thumbnail frame. Write ONE short, scroll-stopping "
+                "YouTube title (max 60 chars, English, cute tone, NO clickbait, NO quotes, "
+                "NO emojis) describing what the cat or dog is doing. Return only the title text."
+            )
+            text = ai_text_with_image(prompt, tmp_path, task="thumbnail_vision")
+        finally:
+            tmp_path.unlink(missing_ok=True)
+
+        if text:
+            cleaned = " ".join(text.split()).strip().strip('"').strip("'")
+            if _VISION_HOOK_MIN_LEN <= len(cleaned) <= _VISION_HOOK_MAX_LEN:
+                log.info("Hook via Vision: %r (fallback era %r)", cleaned, fallback_hook)
+                return cleaned
+            log.debug("Hook via Vision fora do tamanho (%d chars): %r", len(cleaned), cleaned)
+    except Exception as exc:
+        log.debug("Vision hook falhou (fallback text-only): %s", exc)
+    return fallback_hook
+
+
 def _render_thumbnail(
     width: int,
     height: int,
@@ -292,6 +332,12 @@ def _render_thumbnail(
     if video_path and video_path.exists():
         background = extract_frame_from_video(video_path, cfg.frame_timestamp)
         if background:
+            # Hook via Gemini Vision: tenta obter um titulo "scroll-stopping"
+            # baseado no que esta na imagem. So na variante A para nao chamar
+            # a API 3x (B e C reusam o mesmo hook). Fallback: hook_for_scene.
+            if variant == "A":
+                hook = _vision_hook_for_frame(background, hook)
+
             if cfg.crop_target_ratio is not None:
                 # Crop central para o formato alvo
                 bg_width, bg_height = background.size
@@ -424,3 +470,76 @@ def make_short_thumbnail(
     )
     _render_thumbnail(width, height, hook, emoji, output, brand, video_path, cfg, variant=variant)
     log.info("Thumbnail de Short salva: %s (variante %s)", output, variant)
+
+
+# Numero minimo de videos por variante para considerar o resultado
+# estatisticamente confiavel. Abaixo disso, "A" e mantido como default
+# conservador (nao ha dados suficientes pra afirmar que B/C ganhou).
+_MIN_VARIANT_SAMPLES = 2
+
+
+def winning_thumbnail_variant() -> str:
+    """Retorna a variante de thumbnail (A/B/C) com maior media de views.
+
+    Le video_tags.json (que mapeia video_id -> thumbnail_variant) e cruza com
+    analytics.json (que tem as views atuais por video_id). Calcula a media de
+    views por variante e retorna a de maior media.
+
+    Conservador: se houver menos de _MIN_VARIANT_SAMPLES videos por variante,
+    ou se analytics/video_tags estiverem ausentes/corrompidos, retorna "A"
+    (default de upload) - nao promove B/C sem dados suficientes pra justificar.
+
+    Pode ser usado por geradores futuros para favorecer a variante vencedora
+    no proximo upload, fechando o loop de feedback de A/B testing.
+    """
+    try:
+        video_tags = json.loads((data_dir() / "video_tags.json").read_text(encoding="utf-8"))
+    except Exception as exc:
+        log.debug("video_tags.json ausente/corrompido: %s", exc)
+        return "A"
+    if not isinstance(video_tags, dict) or not video_tags:
+        return "A"
+
+    try:
+        analytics = json.loads((data_dir() / "analytics.json").read_text(encoding="utf-8"))
+    except Exception as exc:
+        log.debug("analytics.json ausente/corrompido: %s", exc)
+        return "A"
+    all_videos = analytics.get("all_videos") if isinstance(analytics, dict) else None
+    if not all_videos:
+        return "A"
+
+    views_by_id = {
+        v.get("video_id"): int(v.get("views", 0) or 0)
+        for v in all_videos
+        if isinstance(v, dict) and v.get("video_id")
+    }
+    if not views_by_id:
+        return "A"
+
+    views_per_variant: dict[str, list[int]] = {"A": [], "B": [], "C": []}
+    for vid, tag in video_tags.items():
+        if not isinstance(tag, dict):
+            continue
+        variant = str(tag.get("thumbnail_variant", "A") or "A").upper()
+        if variant not in views_per_variant:
+            views_per_variant[variant] = []
+        if vid in views_by_id:
+            views_per_variant[variant].append(views_by_id[vid])
+
+    avg_per_variant: dict[str, float] = {}
+    for variant, views_list in views_per_variant.items():
+        if len(views_list) < _MIN_VARIANT_SAMPLES:
+            continue
+        avg_per_variant[variant] = sum(views_list) / len(views_list)
+
+    if not avg_per_variant:
+        return "A"
+
+    winner = max(avg_per_variant, key=lambda k: avg_per_variant[k])
+    log.info(
+        "Variante vencedora: %s (medias: %s)",
+        winner,
+        {k: round(v, 1) for k, v in avg_per_variant.items()},
+    )
+    return winner

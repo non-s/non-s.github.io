@@ -11,6 +11,7 @@ from collections.abc import Iterator
 from pathlib import Path
 
 from utils.animal_branding import is_allowed_animal_text
+from utils.paths import data_dir
 from utils.state_lock import state_lock
 
 log = logging.getLogger(__name__)
@@ -22,9 +23,13 @@ AUDIO_DIR = ROOT / "_assets" / "audio" / "animal_jazz"
 # Historico de itens usados recentemente, para nao repetir o mesmo clipe/faixa
 # em sequencia quando o pool e pequeno. Persistido em _data/ (gitignored) para
 # sobreviver entre runs do workflow (cache do GitHub Actions cobre esse path).
-_RECENT_FILE = ROOT / "_data" / "recent_media.json"
 _RECENT_VIDEO_WINDOW = 15
 _RECENT_AUDIO_WINDOW = 8
+
+
+def _recent_file() -> Path:
+    """Caminho de recent_media.json no diretorio de dados do canal ativo."""
+    return data_dir() / "recent_media.json"
 
 
 def video_pool() -> list[Path]:
@@ -115,20 +120,21 @@ def _cuteness_score(video: Path) -> int:
 
 def _load_recent() -> dict[str, list[str]]:
     try:
-        return json.loads(_RECENT_FILE.read_text(encoding="utf-8"))
+        return json.loads(_recent_file().read_text(encoding="utf-8"))
     except Exception as exc:
         log.debug("recent_media.json ausente/corrompido: %s", exc)
         return {"videos": [], "audio": []}
 
 
 def _remember_recent(kind: str, names: list[str], window: int) -> None:
-    with state_lock(_RECENT_FILE):
+    recent_file = _recent_file()
+    with state_lock(recent_file):
         data = _load_recent()
         updated = (data.get(kind, []) + names)[-window:]
         data[kind] = updated
         try:
-            _RECENT_FILE.parent.mkdir(parents=True, exist_ok=True)
-            _RECENT_FILE.write_text(json.dumps(data), encoding="utf-8")
+            recent_file.parent.mkdir(parents=True, exist_ok=True)
+            recent_file.write_text(json.dumps(data), encoding="utf-8")
         except Exception as exc:
             log.warning("Falha ao salvar historico de midia recente: %s", exc)
 

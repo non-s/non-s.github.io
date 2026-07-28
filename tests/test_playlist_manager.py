@@ -85,8 +85,9 @@ def test_add_video_to_playlist_no_pid():
 
 def test_load_cache_invalid_json():
     """Cache invalido e ignorado sem quebrar."""
-    with patch("utils.playlist_manager._CACHE_FILE") as mock_file:
-        mock_file.exists.return_value = True
-        mock_file.read_text.return_value = "not json"
+    fake_file = MagicMock()
+    fake_file.exists.return_value = True
+    fake_file.read_text.return_value = "not json"
+    with patch("utils.playlist_manager._cache_file", return_value=fake_file):
         playlist_manager._load_cache()
     assert playlist_manager._playlist_cache == {}

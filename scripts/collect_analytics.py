@@ -28,8 +28,9 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from utils.log_config import configure_logging
+from utils.paths import data_dir
 from utils.state_lock import state_lock
-from utils.youtube_oauth import get_youtube_service
+from utils.youtube_oauth import get_youtube_analytics_service, get_youtube_service
 from utils.youtube_retry import retry_youtube_call as _retry_youtube_call
 
 log = logging.getLogger(__name__)
@@ -49,6 +50,16 @@ _MIN_TITLE_PATTERN_SAMPLES = 3
 _MIN_TITLE_PATTERN_WEIGHT = 0.4
 _MAX_TITLE_PATTERN_WEIGHT = 2.5
 
+# Detecao de virais: um video e "viral" se suas views ultrapassam
+# _VIRAL_THRESHOLD x a mediana de views do conjunto coletado. Esses sinais
+# alimentam viral_signals.json, lido por content_strategy.viral_boosted_scenes
+# pra ponderar cenas que geraram virais recentes (ultimos 14 dias). O boost
+# e conservador: so aplica se a cena estiver na lista do mood (nao inventa
+# cena nova) e multiplica o peso ja existente (nao substitui).
+# Caminho isolado por canal via data_dir() (channel isolation).
+VIRAL_SIGNALS_FILE = data_dir() / "viral_signals.json"
+_VIRAL_THRESHOLD = 10.0
+
 # Thumbnail A/B testing: apos _THUMBNAIL_ROTATION_DAYS dias, se o video
 # performar abaixo de _THUMBNAIL_ROTATION_THRESHOLD x a mediana de views do
 # canal, troca a thumbnail ativa (variante A) pela variante B via
@@ -66,16 +77,30 @@ def _to_int(value) -> int:
         return 0
 
 
-def collect_video_stats(service) -> list[dict]:
-    """Busca estatisticas dos videos mais recentes do canal."""
+def collect_video_stats(service) -> tuple[list[dict], dict]:
+    """Busca estatisticas dos videos mais recentes do canal.
+
+    Retorna (videos, channel_stats) onde channel_stats contem
+    subscriberCount, viewCount e videoCount do canal (usado para
+    tracking de elegibilidade YPP no dashboard).
+    """
     # Primeiro: lista IDs dos videos recentes
     channels = _retry_youtube_call(service.channels().list(part="contentDetails,statistics", mine=True).execute)
     if not channels.get("items"):
         log.error("Nenhum canal encontrado.")
-        return []
+        return [], {}
 
     channel_id = channels["items"][0]["id"]
     uploads_playlist = channels["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
+
+    # 3.3 - Coleta estatisticas do canal para tracking de elegibilidade YPP
+    # (1k inscritos / 4k horas de watch time nos ultimos 12 meses).
+    channel_stats_raw = channels["items"][0].get("statistics", {})
+    channel_stats = {
+        "subscriber_count": _to_int(channel_stats_raw.get("subscriberCount")),
+        "total_views": _to_int(channel_stats_raw.get("viewCount")),
+        "video_count": _to_int(channel_stats_raw.get("videoCount")),
+    }
     _ = channel_id  # disponível para debug futuro
 
     # Lista videos da playlist de uploads (com guard contra loop infinito)
@@ -104,7 +129,7 @@ def collect_video_stats(service) -> list[dict]:
 
     if not video_ids:
         log.info("Nenhum video encontrado.")
-        return []
+        return [], channel_stats
 
     # Busca estatisticas detalhadas
     stats: list[dict] = []
@@ -130,7 +155,69 @@ def collect_video_stats(service) -> list[dict]:
                 "comments": _to_int(statistics.get("commentCount")),
             })
 
-    return stats
+    return stats, channel_stats
+
+
+def _collect_retention_metrics(service, video_ids: list[str]) -> dict:
+    """Consulta o YouTube Analytics API por retention/CTR dos video_ids.
+
+    Busca `averageViewDuration`, `averageViewPercentage` (retention) e `ctr`
+    via `youtubeAnalytics.reports().query(ids='channel==mine', ...)`. A API
+    so permite filtrar por um video por vez em `filters==video==<id>`, entao
+    faz uma chamada por video (MAX_VIDEOS no maximo - dentro do budget de
+    quota do Analytics API, separado da Data API v3).
+
+    Retorna um dict {video_id: {averageViewDuration, averageViewPercentage,
+    ctr}}. Em qualquer erro (403 por scope ausente, canal inelegivel, API
+    indisponivel), loga warning e retorna {} - a Analytics API pode nao
+    estar disponivel para todos os canais (ex.: canal novo sem dados
+    suficientes), e isso nao deve derrubar o resto da coleta.
+
+    `service` e o Resource do youtubeAnalytics v2 (ver
+    get_youtube_analytics_service); passamos como argumento para permitir
+    injecao em testes sem construir credenciais reais.
+    """
+    if not video_ids:
+        return {}
+    # Janela de 90 dias ate hoje: a Analytics API exige startDate/endDate e
+    # nao aceita intervalo aberto. 90 dias cobre a janela dos videos recentes
+    # (MAX_VIDEOS=50) sem inflar demais o numero de chamadas.
+    end = datetime.now(UTC).date()
+    start = end - timedelta(days=90)
+    result: dict[str, dict] = {}
+    for vid in video_ids:
+        try:
+            resp = _retry_youtube_call(
+                service.reports().query(
+                    ids="channel==mine",
+                    startDate=start.isoformat(),
+                    endDate=end.isoformat(),
+                    metrics="averageViewDuration,averageViewPercentage,ctr",
+                    filters=f"video=={vid}",
+                ).execute
+            )
+        except Exception as exc:
+            # 403 (scope ausente / canal inelegivel) ou outro erro da API -
+            # Analytics nao esta disponivel para todos os canais; nao e fatal.
+            log.warning(
+                "_collect_retention_metrics: Analytics indisponivel para %s: %s",
+                vid, exc,
+            )
+            continue
+        rows = resp.get("rows", []) if isinstance(resp, dict) else []
+        if not rows:
+            continue
+        # rows e lista de listas; a ordem dos valores segue a ordem de metrics.
+        row = rows[0]
+        if len(row) >= 3:
+            result[vid] = {
+                "averageViewDuration": float(row[0]),
+                "averageViewPercentage": float(row[1]),
+                "ctr": float(row[2]),
+            }
+    if result:
+        log.info("Retencion/CTR coletados para %d videos.", len(result))
+    return result
 
 
 def _load_video_tags() -> dict:
@@ -138,6 +225,28 @@ def _load_video_tags() -> dict:
         return json.loads(VIDEO_TAGS_FILE.read_text(encoding="utf-8")) if VIDEO_TAGS_FILE.exists() else {}
     except Exception:
         return {}
+
+
+def _record_thumbnail_variant_in_stats(stats: list[dict], video_tags: dict) -> list[dict]:
+    """Mescla `thumbnail_variant` (de video_tags.json) em cada stat dict.
+
+    Fechar o loop de feedback de variante de thumbnail: quando um video
+    depois tem views altas, queremos saber qual variante estava ativa no
+    momento da coleta (A/B/C). O valor vem de video_tags[video_id]
+    ["thumbnail_variant"] (gravado no upload e atualizado por
+    maybe_rotate_thumbnail); ausente = "A" (default de upload).
+
+    Retorna uma NOVA lista de stats (nao muta a original) para evitar
+    efeitos colaterais em callers que reutilizam `stats`.
+    """
+    enriched: list[dict] = []
+    for video in stats:
+        tag = video_tags.get(video["video_id"])
+        variant = "A"
+        if isinstance(tag, dict):
+            variant = str(tag.get("thumbnail_variant", "A") or "A")
+        enriched.append({**video, "thumbnail_variant": variant})
+    return enriched
 
 
 def _save_video_tags(tags: dict) -> None:
@@ -359,9 +468,115 @@ def _compute_title_pattern_performance(stats: list[dict], video_tags: dict) -> d
     )
 
 
-def main() -> int:
+def detect_viral_videos(
+    stats: list[dict], video_tags: dict, *, threshold: float = _VIRAL_THRESHOLD,
+    now: datetime | None = None,
+) -> list[dict]:
+    """Detecta videos "virais": aqueles cujas views excedem `threshold` x a
+    mediana de views do conjunto coletado.
+
+    Cruza stats (views por video_id) com video_tags (scene/title_pattern que
+    gerou cada video) e devolve uma lista de sinais para viral_signals.json:
+
+        [{"video_id": ..., "scene": ..., "title_pattern": ..., "views": N,
+          "viral_factor": 12.5, "detected_at": "iso"}]
+
+    `viral_factor` e a razao views/mediana (quanto acima da mediana o video
+    esta). A mediana e calculada sobre todas as views em `stats` (mesmo as
+    sem tag), pra evitar que um conjunto so de virais eleve o baseline e
+    mascara a deteccao. Videos sem tag (fora do mapeamento video_tags) ainda
+    sao detectados como virais, mas com scene/title_pattern vazios - o boost
+    de cena so se aplica quando a tag existe.
+    """
+    median = _median_views(stats)
+    if median <= 0:
+        return []
+    now = now or datetime.now(UTC)
+    virals: list[dict] = []
+    for video in stats:
+        views = _to_int(video.get("views"))
+        if views <= 0:
+            continue
+        factor = views / median
+        if factor <= threshold:
+            continue
+        tag = video_tags.get(video["video_id"]) or {}
+        virals.append({
+            "video_id": video["video_id"],
+            "scene": tag.get("scene", "") if isinstance(tag, dict) else "",
+            "title_pattern": tag.get("title_pattern", "") if isinstance(tag, dict) else "",
+            "views": views,
+            "viral_factor": round(factor, 3),
+            "detected_at": now.isoformat(),
+        })
+    return virals
+
+
+def _save_viral_signals(virals: list[dict], path: Path | None = None) -> None:
+    """Grava a lista de sinais virais em viral_signals.json (atomico via
+    state_lock). Sobrescreve a cada run: o conjunto e recalculado a partir
+    das views atuais, entao virais antigos que perderam forca saem naturalmente."""
+    out_path = path if path is not None else VIRAL_SIGNALS_FILE
+    with state_lock(out_path):
+        try:
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            out_path.write_text(json.dumps(virals, ensure_ascii=False, indent=2), encoding="utf-8")
+            log.info("Sinais virais salvos: %s (%d virais)", out_path, len(virals))
+        except Exception as exc:
+            log.warning("Falha ao salvar sinais virais: %s", exc)
+
+
+def _ypp_eligibility(channel_stats: dict, video_stats: list[dict]) -> dict:
+    """Calcula o progresso do canal em direcao a elegibilidade YPP.
+
+    Requisitos YPP (YouTube Partner Program):
+    - 1.000 inscritos
+    - 4.000 horas de watch time nos ultimos 12 meses
+    (ou 10M views de Shorts em 90 dias - alternativa nao calculavel aqui).
+
+    Retorna {subscribers, subscriber_progress, watch_hours_estimate,
+    watch_hours_progress, eligible, missing}.
+    """
+    subs = channel_stats.get("subscriber_count", 0)
+    total_views = channel_stats.get("total_views", 0)
+    # Estimativa grossa de watch time: total_views * duracao_media.
+    # Sem YouTube Analytics API (que daria o valor exato), usamos a media
+    # de duracao dos videos coletados como proxy.
+    avg_duration_seconds = 0.0
+    if video_stats:
+        durations = []
+        for _v in video_stats:
+            # duration vem em ISO 8601 (PT#M#S); estimativa simples via views
+            # Como nao temos a duracao parseada aqui, usa 30s para Shorts
+            # (media do canal) como fallback conservador.
+            durations.append(30.0)
+        avg_duration_seconds = sum(durations) / len(durations)
+    watch_hours_estimate = (total_views * avg_duration_seconds) / 3600.0
+    return {
+        "subscribers": subs,
+        "subscriber_progress": min(1.0, subs / 1000.0),
+        "watch_hours_estimate": int(watch_hours_estimate),
+        "watch_hours_progress": min(1.0, watch_hours_estimate / 4000.0),
+        "eligible": subs >= 1000 and watch_hours_estimate >= 4000,
+        "subscriber_target": 1000,
+        "watch_hours_target": 4000,
+    }
+
+
+def main(argv: list[str] | None = None) -> int:
+    import argparse
+
     configure_logging()
     DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+    parser = argparse.ArgumentParser(description="Coleta analytics do canal Pata Jazz")
+    parser.add_argument(
+        "--snapshot-only", action="store_true",
+        help="Modo leve diario: coleta so stats + channel stats e grava o "
+             "historico. Pula a computacao pesada de cena/title_pattern e a "
+             "rotacao de thumbnails (~2 min em vez de ~10).",
+    )
+    args = parser.parse_args(argv)
 
     try:
         service = get_youtube_service()
@@ -370,7 +585,7 @@ def main() -> int:
         return 1
 
     try:
-        stats = collect_video_stats(service)
+        stats, channel_stats = collect_video_stats(service)
     except Exception as exc:
         # collect_video_stats ja usa _retry_youtube_call (retry+backoff) em
         # cada chamada - chegar aqui significa que esgotou as tentativas
@@ -384,6 +599,12 @@ def main() -> int:
 
     # Ordena por views (desc)
     stats.sort(key=lambda v: v["views"], reverse=True)
+
+    # Fechar o loop de variante de thumbnail: registra qual variante (A/B/C)
+    # estava ativa no momento da coleta, lendo video_tags.json. Assim, quando
+    # um video depois tem views altas, vemos qual variante gerou a performance.
+    video_tags = _load_video_tags()
+    stats = _record_thumbnail_variant_in_stats(stats, video_tags)
 
     # Estatisticas agregadas
     total_views = sum(v["views"] for v in stats)
@@ -400,6 +621,9 @@ def main() -> int:
         "top_10": stats[:10],
         "bottom_10": stats[-10:] if len(stats) > 10 else [],
         "all_videos": stats,
+        # 3.3 - Tracking de elegibilidade YPP (1k inscritos / 4k horas).
+        "channel_stats": channel_stats,
+        "ypp_eligibility": _ypp_eligibility(channel_stats, stats),
     }
 
     out_path = DATA_DIR / "analytics.json"
@@ -408,7 +632,14 @@ def main() -> int:
 
     _append_history(report)
 
-    video_tags = _load_video_tags()
+    # Modo snapshot-only: so coleta stats + historico. Pula a computacao
+    # pesada de cena/title_pattern, deteccao de virais e rotacao de
+    # thumbnails - rodando diariamente (06:00 UTC) alimenta um historico
+    # mais fino pro predict_views sem gastar quota nem tempo de CI.
+    if args.snapshot_only:
+        log.info("Modo snapshot-only: pulando computacao de cena/title_pattern, "
+                 "deteccao de virais e rotacao de thumbnails.")
+        return 0
 
     scene_weights = _compute_scene_performance(stats, video_tags)
     if scene_weights:
@@ -417,6 +648,32 @@ def main() -> int:
     title_pattern_weights = _compute_title_pattern_performance(stats, video_tags)
     if title_pattern_weights:
         _update_title_pattern_performance(title_pattern_weights)
+
+    # YouTube Analytics API: retencao (averageViewDuration /
+    # averageViewPercentage) e CTR. So roda em modo full (nao snapshot-only)
+    # pois exige um service separado (youtubeAnalytics v2) e pode nao estar
+    # disponivel para todos os canais - em caso de erro, segue sem gravar o
+    # bloco retention_metrics (nao e fatal).
+    video_ids = [v["video_id"] for v in stats]
+    try:
+        analytics_service = get_youtube_analytics_service()
+    except Exception as exc:
+        log.warning("Analytics indisponivel (autenticacao): %s", exc)
+        analytics_service = None
+    if analytics_service is not None:
+        retention = _collect_retention_metrics(analytics_service, video_ids)
+        if retention:
+            report["retention_metrics"] = retention
+            out_path.write_text(
+                json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
+            )
+
+    # Detecao de virais: apos computar performance por cena/title_pattern,
+    # identifica videos cujas views excedem _VIRAL_THRESHOLD x a mediana e
+    # grava sinais em viral_signals.json. content_strategy.viral_boosted_scenes
+    # le isso pra ponderar cenas que geraram virais recentes.
+    virals = detect_viral_videos(stats, video_tags)
+    _save_viral_signals(virals)
 
     # Thumbnail A/B/C rotation: videos elegiveis (>=2 variantes, >=7 dias desde
     # o upload ou desde a ultima rotacao, abaixo da mediana) tem a thumbnail

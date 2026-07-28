@@ -10,11 +10,19 @@ from __future__ import annotations
 import argparse
 import logging
 import sys
+import time
+from datetime import UTC, datetime
 from pathlib import Path
 
+from utils.channel_config import set_channel_from_env
 from utils.content_strategy import mood_for_now, scene_for_mood
 from utils.log_config import configure_logging, log_exception_to_file
+from utils.pipeline_metrics import record_pipeline_run
+from utils.slot_optimizer import optimized_scene_and_pattern
 from utils.video_builder import build_pata_jazz_video, horizontal_spec
+
+# Ativa o canal via YOUTUBE_CHANNEL env var (multi-canal).
+set_channel_from_env()
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT_DIR = ROOT / "_videos"
@@ -28,13 +36,21 @@ DEFAULT_DURATION = 240
 def _generate_horizontal(duration: int = DEFAULT_DURATION, dry_run: bool = False) -> Path:
     """Gera um video horizontal com clipes de gatos/cachorros + musica de jazz.
 
-    Mood automatico pela hora atual (BRT).
+    Mood automatico pela hora atual (BRT). Cena/padrao escolhidos por
+    previsao de views (utils/slot_optimizer) quando modelo treinado.
     """
     mood = mood_for_now()
-    scene = scene_for_mood(mood)
-    log.info("Mood=%s, cena=%s", mood, scene)
+    fallback_scene = scene_for_mood(mood)
+    now = datetime.now(UTC)
+    scene, pattern_hint = optimized_scene_and_pattern(
+        mood=mood,
+        fallback_scene=fallback_scene,
+        hour=now.hour,
+        day_of_week=now.weekday(),
+    )
+    log.info("Mood=%s, cena=%s, padrao=%s", mood, scene, pattern_hint or "(sorteio)")
 
-    spec = horizontal_spec(duration=duration, scene=scene, mood=mood)
+    spec = horizontal_spec(duration=duration, scene=scene, mood=mood, title_pattern_hint=pattern_hint or "")
     return build_pata_jazz_video(
         spec=spec,
         output_dir=OUTPUT_DIR,
@@ -52,13 +68,23 @@ def main() -> int:
 
     configure_logging()
 
+    start_time = time.time()
+    success = False
     try:
         _generate_horizontal(duration=args.duration, dry_run=args.dry_run)
+        success = True
         return 0
     except Exception as exc:
         log.exception("Falha ao gerar video horizontal: %s", exc)
         log_exception_to_file(exc, OUTPUT_DIR)
         return 1
+    finally:
+        record_pipeline_run(
+            stage="generate_horizontal",
+            success=success,
+            duration_seconds=time.time() - start_time,
+            kind="horizontal",
+        )
 
 
 if __name__ == "__main__":

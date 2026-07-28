@@ -16,11 +16,14 @@ from pathlib import Path
 from typing import Literal
 
 from utils.channel_config import active_channel
+from utils.paths import data_dir
 
 log = logging.getLogger(__name__)
 
-ROOT = Path(__file__).resolve().parent.parent
-_TITLE_PATTERN_PERFORMANCE_FILE = ROOT / "_data" / "title_pattern_performance.json"
+
+def _title_pattern_performance_file() -> Path:
+    """Caminho de title_pattern_performance.json no diretorio do canal ativo."""
+    return data_dir() / "title_pattern_performance.json"
 
 # YouTube aceita ate 15 hashtags, mas descricoes com muitas leem como spam;
 # 8 cobre marca + animal + musica + formato sem exagerar.
@@ -108,7 +111,7 @@ def _title_pattern_weights() -> dict[str, float]:
     title_pattern ja era gravado em video_tags.json desde que
     generate_title_with_pattern existe, mas nunca era lido de volta."""
     try:
-        data = json.loads(_TITLE_PATTERN_PERFORMANCE_FILE.read_text(encoding="utf-8"))
+        data = json.loads(_title_pattern_performance_file().read_text(encoding="utf-8"))
         return data if isinstance(data, dict) else {}
     except Exception as exc:
         log.debug("title_pattern_performance.json ausente/corrompido: %s", exc)
@@ -139,14 +142,27 @@ def generate_title_with_pattern(
     kind: Literal["short", "horizontal", "live"],
     emoji: str,
     duracao: int | None = None,
+    pattern: str | None = None,
 ) -> tuple[str, str]:
     """Gera título otimizado e retorna tambem o padrao usado (para tracking).
 
     Guardar qual padrao gerou qual titulo e o que falta pra algum dia
     correlacionar performance (views/likes) com o padrao - hoje generate_title()
     descartava essa informacao, entao nao havia como saber depois.
+
+    ``pattern`` (quando fornecido por utils/slot_optimizer) obriga o uso do
+    padrao passado; caso contrario, sorteia/pondera como antes.
     """
-    pattern = pick_title_pattern(kind)
+    if pattern:
+        # Valida que o padrao pertence ao canal; se nao, ignora e sortea.
+        all_patterns = active_channel.title_patterns.get(kind, active_channel.title_patterns["short"])
+        if pattern in all_patterns:
+            chosen = pattern
+        else:
+            log.debug("Padrao %r nao existe para kind=%s; sorteando.", pattern, kind)
+            chosen = pick_title_pattern(kind)
+    else:
+        chosen = pick_title_pattern(kind)
 
     # Seleciona adjetivos relevantes
     kws = active_channel.seo_keywords
@@ -160,7 +176,7 @@ def generate_title_with_pattern(
 
     # Tenta preencher o padrão, caindo para versão simplificada se falhar
     try:
-        title = pattern.format(
+        title = chosen.format(
             emoji=emoji,
             animal=animal,
             acao=acao,
@@ -185,7 +201,7 @@ def generate_title_with_pattern(
         if not title or len(title) > 100:
             title = title[:97] + "..."
 
-    return title, pattern
+    return title, chosen
 
 
 def generate_title(
@@ -209,8 +225,12 @@ def generate_description(
     kind: Literal["short", "horizontal", "live"],
     hashtags: list[str],
     include_cta: bool = True,
-) -> str:
-    """Gera descrição otimizada com SEO e CTAs."""
+) -> tuple[str, str]:
+    """Gera descrição otimizada com SEO e CTAs.
+
+    Retorna (description, cta_text) para que o caller possa gravar qual CTA
+    foi usado (A/B testing de CTA vs. inscritos — ver collect_analytics).
+    """
     # Introdução com keywords
     intro_templates = [
         f"{hook} 🐾 Welcome to Pata Jazz, where cats and dogs meet the perfect jazz!",
@@ -243,6 +263,7 @@ def generate_description(
 
     # CTA (opcional)
     cta = ""
+    cta_text = ""
     if include_cta:
         cta_text = random.choice(CTAS)
         cta = "\n\n" + cta_text
@@ -250,7 +271,7 @@ def generate_description(
     # Hashtags
     hashtags_str = " ".join(hashtags[:_MAX_HASHTAGS])  # YouTube aceita ate 15, mas mais que ~8 comeca a ler como spam
 
-    return f"{intro}{corpo}{cta}\n\n{hashtags_str}"
+    return f"{intro}{corpo}{cta}\n\n{hashtags_str}", cta_text
 
 
 def generate_hashtags(

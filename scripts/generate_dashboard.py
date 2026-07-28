@@ -22,6 +22,8 @@ from datetime import UTC, datetime
 from html import escape
 from pathlib import Path
 
+from utils.channel_config import CHANNELS, active_channel
+
 log = logging.getLogger(__name__)
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -34,6 +36,7 @@ SCENE_PERFORMANCE_FILE = DATA_DIR / "scene_performance.json"
 TITLE_PATTERN_PERFORMANCE_FILE = DATA_DIR / "title_pattern_performance.json"
 LIVE_VIEWER_HISTORY_FILE = DATA_DIR / "live_viewer_history.json"
 VIEW_PREDICTOR_FILE = DATA_DIR / "view_predictor.json"
+VIDEO_TAGS_FILE = DATA_DIR / "video_tags.json"
 
 _MAX_HISTORY_ROWS = 12
 _MAX_LIVE_SNAPSHOTS = 20
@@ -136,6 +139,35 @@ def _render_top_videos(analytics: dict) -> str:
     )
 
 
+def _render_thumbnail_variants(video_tags: dict) -> str:
+    """Painel A/B/C de thumbnails.
+
+    Le _data/video_tags.json (gravado por collect_analytics.py/upload_youtube.py)
+    e mostra tabela por video: id (link youtu.be), variante ativa, views e data
+    de rotacao. Retorna aviso em vez de quebrar quando o arquivo esta ausente
+    ou vazio."""
+    if not video_tags:
+        return "<p class='empty'>Sem dados de variantes ainda.</p>"
+    rows = []
+    for vid, entry in video_tags.items():
+        if not isinstance(entry, dict):
+            continue
+        variant = escape(str(entry.get("thumbnail_variant", "A")))
+        views = entry.get("views", 0)
+        rotated_at = escape(str(entry.get("rotated_at", ""))[:10])
+        link = f"https://youtu.be/{vid}" if vid else "#"
+        rows.append(
+            f"<tr><td class='mono'><a href='{escape(link)}' target='_blank' rel='noopener'>{escape(str(vid))}</a></td>"
+            f"<td>{variant}</td><td>{views:,}</td><td>{rotated_at}</td></tr>".replace(",", ".")
+        )
+    if not rows:
+        return "<p class='empty'>Sem dados de variantes ainda.</p>"
+    return (
+        "<table><thead><tr><th>Vídeo</th><th>Variante ativa</th><th>Views</th>"
+        f"<th>Rotação</th></tr></thead><tbody>{''.join(rows)}</tbody></table>"
+    )
+
+
 def _render_live_audience(snapshots: list) -> str:
     if not snapshots:
         return "<p class='empty'>Sem amostras de audiência da live ainda.</p>"
@@ -185,6 +217,92 @@ def _render_predicted_views(predictor: dict) -> str:
     return (
         "<table><thead><tr><th>Próximo slot</th><th>Views previstos (7d)</th></tr></thead>"
         f"<tbody>{''.join(rows)}</tbody></table>"
+    )
+
+
+_HEATMAP_HOUR_BUCKETS = (
+    ("manhã", 9),
+    ("tarde", 15),
+    ("noite", 21),
+)
+
+
+def _build_scene_hour_matrix(predictor: dict) -> dict:
+    """Matriz de views previstos por (cena, hour_bucket) usando o modelo
+    view_predictor. Para cada bucket, usa uma hora representativa (9/15/21 UTC)
+    e um weekday neutro (quarta=2). Retorna {"scenes": [...], "buckets": [...],
+    "matrix": {scene: {bucket: value}}}.
+
+    Sem modelo (ou n_samples==0), retorna estrutura vazia — o render mostra aviso.
+    """
+    if not predictor or predictor.get("n_samples", 0) == 0:
+        return {"scenes": [], "buckets": [b for b, _ in _HEATMAP_HOUR_BUCKETS], "matrix": {}}
+    from scripts.predict_views import predict_views
+
+    scenes = predictor.get("scenes") or []
+    title_patterns = predictor.get("title_patterns") or []
+    # Padrão "neutro" para isolar o efeito cena × horário: media sobre todos
+    # os padrões (igual a expected_views_for_slot, mas fixando a cena).
+    matrix: dict[str, dict[str, float]] = {}
+    for scene in scenes:
+        row: dict[str, float] = {}
+        for bucket_label, hour in _HEATMAP_HOUR_BUCKETS:
+            if not title_patterns:
+                row[bucket_label] = predict_views(scene, "", hour, 2)
+            else:
+                total = 0.0
+                for pattern in title_patterns:
+                    total += predict_views(scene, pattern, hour, 2)
+                row[bucket_label] = total / len(title_patterns)
+        matrix[scene] = row
+    return {"scenes": scenes, "buckets": [b for b, _ in _HEATMAP_HOUR_BUCKETS], "matrix": matrix}
+
+
+def _heatmap_color(intensity: float) -> str:
+    """Retorna background-color CSS baseado na intensidade [0,1] — escala
+    laranja (accent Pata Jazz) sobre fundo escuro."""
+    if intensity <= 0:
+        return "#2a2a40"
+    # Interpola de #2a2a40 (fundo) ate #f4a261 (accent) por canal.
+    r_fondo, g_fondo, b_fondo = (42, 42, 64)
+    r_accent, g_accent, b_accent = (244, 162, 97)
+    r = int(r_fondo + (r_accent - r_fondo) * intensity)
+    g = int(g_fondo + (g_accent - g_fondo) * intensity)
+    b = int(b_fondo + (b_accent - b_fondo) * intensity)
+    return f"rgb({r},{g},{b})"
+
+
+def _render_scene_hour_heatmap(predictor: dict) -> str:
+    """Renderiza a matriz cena × horário como tabela HTML colorida (CSS
+    inline background-color baseado na intensidade do valor). Sem Chart.js."""
+    data = _build_scene_hour_matrix(predictor)
+    scenes = data["scenes"]
+    buckets = data["buckets"]
+    matrix = data["matrix"]
+    if not scenes or not matrix:
+        return (
+            "<p class='empty'>Sem modelo de previsão ainda para o heatmap "
+            "(rodar scripts/predict_views.py).</p>"
+        )
+    # Max para normalizar intensidade.
+    all_values = [matrix[s][b] for s in scenes for b in buckets if b in matrix[s]]
+    max_value = max(all_values) if all_values else 0.0
+
+    header = "".join(f"<th>{escape(b)}</th>" for b in buckets)
+    rows = []
+    for scene in scenes:
+        cells = [f'<td class="mono">{escape(scene)}</td>']
+        for b in buckets:
+            value = matrix[scene].get(b, 0.0)
+            intensity = (value / max_value) if max_value > 0 else 0.0
+            color = _heatmap_color(intensity)
+            cells.append(
+                f'<td style="background:{color};text-align:center">{max(0, int(round(value)))}</td>'
+            )
+        rows.append(f"<tr>{''.join(cells)}</tr>")
+    return (
+        "<table><thead><tr><th>Cena × Horário</th>" + header +
+        f"</tr></thead><tbody>{''.join(rows)}</tbody></table>"
     )
 
 
@@ -240,6 +358,19 @@ def _build_top_videos_dataset(analytics: dict) -> dict:
     }
 
 
+def _build_thumbnail_variant_dataset(video_tags: dict) -> dict:
+    """Conta quantos videos estao em cada variante (A/B/C) para o doughnut."""
+    counts = {"A": 0, "B": 0, "C": 0}
+    if video_tags:
+        for entry in video_tags.values():
+            if not isinstance(entry, dict):
+                continue
+            variant = str(entry.get("thumbnail_variant", "A")).upper()
+            if variant in counts:
+                counts[variant] += 1
+    return {"labels": ["A", "B", "C"], "counts": [counts["A"], counts["B"], counts["C"]]}
+
+
 def _ensure_chart_js_fallback(output_dir: Path) -> None:
     """Copia uma versao offline do Chart.js para _dashboard/.
 
@@ -277,6 +408,7 @@ def build_dashboard_html() -> str:
     title_pattern_weights = _load_json(TITLE_PATTERN_PERFORMANCE_FILE, {})
     live_snapshots = _load_json(LIVE_VIEWER_HISTORY_FILE, [])
     view_predictor = _load_json(VIEW_PREDICTOR_FILE, {})
+    video_tags = _load_json(VIDEO_TAGS_FILE, {})
 
     generated_at = datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC")
 
@@ -291,6 +423,7 @@ def build_dashboard_html() -> str:
     title_ds = _build_title_pattern_dataset(title_pattern_weights)
     live_ds = _build_live_dataset(live_snapshots)
     top_ds = _build_top_videos_dataset(analytics)
+    thumb_ds = _build_thumbnail_variant_dataset(video_tags)
 
     def _safe_json(obj) -> str:
         # Escapa "</" para evitar saida prematura de <script> e mantem JSON
@@ -303,13 +436,25 @@ def build_dashboard_html() -> str:
     title_json = _safe_json(title_ds)
     live_json = _safe_json(live_ds)
     top_json = _safe_json(top_ds)
+    thumb_json = _safe_json(thumb_ds)
+
+    # Item 6.3: seletor de canal no dashboard. Lista os nomes do registry
+    # CHANNELS (utils.channel_config); o canal ativo e o default. Hoje e
+    # cosmetico (analytics ainda nao e particionado por canal) - so troca o
+    # titulo/branding via JS.
+    channel_options = "".join(
+        f'<option value="{escape(cfg.name)}"'
+        f'{" selected" if cfg.name == active_channel.name else ""}>'
+        f"{escape(cfg.name)}</option>"
+        for cfg in CHANNELS.values()
+    )
 
     return rf"""<!doctype html>
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pata Jazz — Dashboard</title>
+<title>{escape(active_channel.name)} — Dashboard</title>
 <style>
   :root {{ color-scheme: light dark; }}
   body {{
@@ -363,11 +508,18 @@ def build_dashboard_html() -> str:
 </style>
 </head>
 <body>
-  <h1>🐾🎷 Pata Jazz — Dashboard</h1>
-  <p class="subtitle">Gerado automaticamente a partir dos dados coletados por collect_analytics.py</p>
+  <h1 id="dash-title">🐾🎷 {escape(active_channel.name)} — Dashboard</h1>
+  <p class="subtitle" id="dash-subtitle">Gerado automaticamente a partir dos
+  dados coletados por collect_analytics.py</p>
+
+  <div class="filters" style="margin-bottom: 16px;">
+    <label for="channel-select">Canal:</label>
+    <select id="channel-select" aria-label="Seletor de canal">{channel_options}</select>
+  </div>
 
   <div class="refresh-bar">
     <button id="refresh-btn" class="refresh-btn" type="button">Atualizar dados</button>
+    <button id="csv-btn" class="refresh-btn" type="button">Baixar CSV</button>
     <span id="refresh-status" class="refresh-status"></span>
   </div>
   <p class="note">
@@ -408,8 +560,15 @@ def build_dashboard_html() -> str:
   {_chart_canvas("topVideosChart", "320px")}
   {_render_top_videos(analytics)}
 
+  <h2>Variações de thumbnail (A/B/C)</h2>
+  {_chart_canvas("thumbnailVariantsChart", "240px")}
+  {_render_thumbnail_variants(video_tags)}
+
   <h2>Previsão de views (próximos 7 dias)</h2>
   {_render_predicted_views(view_predictor)}
+
+  <h2>Heatmap cena × horário</h2>
+  {_render_scene_hour_heatmap(view_predictor)}
 
   <footer>Gerado em {generated_at}</footer>
 
@@ -424,6 +583,8 @@ def build_dashboard_html() -> str:
     var TITLE_DS = {title_json};
     var LIVE_DS = {live_json};
     var TOP_DS = {top_json};
+    var THUMB_DS = {thumb_json};
+    var ACTIVE_CHANNEL = {json.dumps(active_channel.name, ensure_ascii=False)};
 
     // Paleta Pata Jazz.
     var ACCENT = "#f4a261";
@@ -586,12 +747,34 @@ def build_dashboard_html() -> str:
       }});
     }}
 
+    function makeThumbnailVariantsChart() {{
+      var ds = THUMB_DS;
+      var total = ds.counts.reduce(function (a, b) {{ return a + b; }}, 0);
+      if (!total) return;
+      new Chart(document.getElementById("thumbnailVariantsChart").getContext("2d"), {{
+        type: "doughnut",
+        data: {{
+          labels: ds.labels,
+          datasets: [{{
+            data: ds.counts,
+            backgroundColor: ["#f4a261", "#2a9d8f", "#e76f51"],
+            borderWidth: 0,
+          }}],
+        }},
+        options: {{
+          responsive: true, maintainAspectRatio: false,
+          plugins: {{ legend: {{ position: "right", labels: {{ color: TICK, boxWidth: 12, font: {{ size: 11 }} }} }} }},
+        }},
+      }});
+    }}
+
     if (window.Chart) {{
       makeViewsChart();
       makeSceneChart();
       makeTitlePatternChart();
       makeLiveChart();
       makeTopVideosChart();
+      makeThumbnailVariantsChart();
     }}
 
     // Item 17: endpoint client-side opcional que busca dados ao vivo do
@@ -656,6 +839,43 @@ def build_dashboard_html() -> str:
     if (refreshBtn) {{
       refreshBtn.addEventListener("click", fetchLiveAnalytics);
     }}
+
+    // Item 6.3: seletor de canal - troca o titulo/branding do dashboard.
+    // Cosmetico por enquanto (analytics ainda nao e particionado por canal).
+    var channelSelect = document.getElementById("channel-select");
+    var dashTitle = document.getElementById("dash-title");
+    if (channelSelect) {{
+      channelSelect.addEventListener("change", function (e) {{
+        var name = e.target.value;
+        if (dashTitle) {{
+          dashTitle.textContent = "🐾🎷 " + name + " — Dashboard";
+        }}
+        document.title = name + " — Dashboard";
+      }});
+    }}
+
+    // Item 6.5: exportacao CSV do historico de views (HISTORY_DS).
+    var csvBtn = document.getElementById("csv-btn");
+    function downloadHistoryCsv() {{
+      var ds = HISTORY_DS;
+      var rows = ["Semana,Views totais,Média de views/vídeo"];
+      for (var i = 0; i < ds.labels.length; i++) {{
+        rows.push(ds.labels[i] + "," + ds.total_views[i] + "," + ds.avg_views[i]);
+      }}
+      var blob = new Blob([rows.join("\n")], {{ type: "text/csv;charset=utf-8;" }});
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url;
+      a.download = "pata_jazz_analytics.csv";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }}
+    if (csvBtn) {{
+      csvBtn.addEventListener("click", downloadHistoryCsv);
+    }}
+
     // Auto-refresh a cada 60s (opcional, silencioso se falhar).
     setInterval(fetchLiveAnalytics, REFRESH_INTERVAL_MS);
   </script>

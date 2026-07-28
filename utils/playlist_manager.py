@@ -13,27 +13,17 @@ from pathlib import Path
 from typing import Any
 
 from utils.channel_config import active_channel
+from utils.paths import data_dir
 from utils.state_lock import state_lock
 from utils.youtube_retry import retry_youtube_call as _retry_youtube_call
 
 log = logging.getLogger(__name__)
 
-ROOT = Path(__file__).resolve().parent.parent
-_DATA_DIR = ROOT / "_data"
-_CACHE_FILE = _DATA_DIR / "playlist_cache.json"
 
-# Playlists por mood
-PLAYLISTS_BY_MOOD: dict[str, str] = {
-    "relax": "Pata Jazz | Relaxar e Dormir",
-    "fofura": "Pata Jazz | Fofura Diaria",
-    "diversao": "Pata Jazz | Pets Felizes",
-}
+def _cache_file() -> Path:
+    """Caminho de playlist_cache.json no diretorio de dados do canal ativo."""
+    return data_dir() / "playlist_cache.json"
 
-# Playlist por formato
-PLAYLISTS_BY_KIND: dict[str, str] = {
-    "short": "Pata Jazz | Shorts",
-    "horizontal": "Pata Jazz | Videos Completos",
-}
 
 # Cache de playlist IDs (criadas sob demanda). Persistido em _data/ para
 # sobreviver entre runs do workflow e evitar re-buscar/recriar playlists.
@@ -43,9 +33,10 @@ _playlist_cache: dict[str, str] = {}
 def _load_cache() -> None:
     """Carrega o cache de playlist IDs do disco, se existir."""
     global _playlist_cache
-    if _CACHE_FILE.exists():
+    cache_file = _cache_file()
+    if cache_file.exists():
         try:
-            _playlist_cache = json.loads(_CACHE_FILE.read_text(encoding="utf-8"))
+            _playlist_cache = json.loads(cache_file.read_text(encoding="utf-8"))
         except Exception as exc:
             log.debug("playlist_cache.json corrompido: %s", exc)
             _playlist_cache = {}
@@ -53,10 +44,11 @@ def _load_cache() -> None:
 
 def _save_cache() -> None:
     """Persiste o cache de playlist IDs no disco."""
-    with state_lock(_CACHE_FILE):
+    cache_file = _cache_file()
+    with state_lock(cache_file):
         try:
-            _DATA_DIR.mkdir(parents=True, exist_ok=True)
-            _CACHE_FILE.write_text(json.dumps(_playlist_cache, ensure_ascii=False, indent=2), encoding="utf-8")
+            cache_file.parent.mkdir(parents=True, exist_ok=True)
+            cache_file.write_text(json.dumps(_playlist_cache, ensure_ascii=False, indent=2), encoding="utf-8")
         except Exception as exc:
             log.warning("Falha ao salvar cache de playlists: %s", exc)
 

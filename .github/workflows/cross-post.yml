@@ -1,0 +1,58 @@
+name: "Pata Jazz - Cross-posting (TikTok/Reels)"
+
+on:
+  workflow_run:
+    workflows: ["Pata Jazz - Shorts"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Motivo do disparo manual"
+        required: false
+        default: "manual"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pata-jazz-cross-post
+  cancel-in-progress: false
+
+jobs:
+  cross-post:
+    name: "Cross-postar Shorts para TikTok e Instagram Reels"
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      TIKTOK_ACCESS_TOKEN: ${{ secrets.TIKTOK_ACCESS_TOKEN }}
+      INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+    steps:
+      - name: "Setup"
+        uses: ./.github/actions/setup-env
+        with:
+          ffmpeg: "false"
+      - name: "Restaurar cache de videos gerados"
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: _videos
+          key: cross-post-videos-${{ github.run_id }}
+          restore-keys: |
+            weekly-videos-
+            cross-post-videos-
+      - name: "Cross-postar para TikTok"
+        # No-op sem TIKTOK_ACCESS_TOKEN: upload_tiktok.py loga e retorna 0.
+        run: python upload_tiktok.py --all --prefix pata_jazz_short_
+      - name: "Cross-postar para Instagram Reels"
+        # No-op sem INSTAGRAM_ACCESS_TOKEN: upload_reels.py loga e retorna 0.
+        run: python upload_reels.py --all --prefix pata_jazz_short_
+      - name: "Upload artifacts"
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: cross-post-output-${{ github.run_id }}
+          path: |
+            _videos/*.json
+            _videos/last_error.txt
+          if-no-files-found: ignore
+          retention-days: 7

@@ -58,6 +58,13 @@ class VideoSpec:
     fallback_description: str
     scene: str = ""
     mood: str = ""
+    # Hint de padrao de titulo otimizado por previsao (utils/slot_optimizer).
+    # Vazio = generate_metadata usa o comportamento legado (sortear/IA).
+    title_pattern_hint: str = ""
+
+
+_LONGFORM_MIN_DURATION = 3600
+_LONGFORM_MAX_DURATION = 36000
 
 
 def _build_video_filter(spec: VideoSpec) -> str:
@@ -329,6 +336,7 @@ def build_pata_jazz_video(
         emoji=emoji,
         fallback_title=fallback_title,
         fallback_description=spec.fallback_description,
+        title_pattern_hint=spec.title_pattern_hint,
     )
     meta = {
         **metadata,
@@ -356,6 +364,32 @@ def build_pata_jazz_video(
             cap_content = generate_srt(hook, scene, spec.duration, spec.kind, emoji)
             cap_path = save_srt(cap_content, output)
         meta["caption"] = str(cap_path)
+
+        # 1.3 - Segunda caption track em PT-BR: multiplica alcance sem
+        # regravar o video. YouTube aceita multiplas caption tracks.
+        try:
+            from utils.caption_engine import generate_srt_pt, save_srt_pt
+            pt_content = generate_srt_pt(hook, scene, spec.duration, spec.kind, emoji)
+            pt_path = save_srt_pt(pt_content, output)
+            meta["caption_pt"] = str(pt_path)
+        except Exception as exc:
+            log.warning("Falha ao gerar legenda PT: %s", exc)
+
+        # 1.2 - Chapters automaticos na descricao para SEO do YouTube.
+        try:
+            from utils.caption_engine import generate_chapters
+            chapters = generate_chapters(spec.duration, spec.kind)
+            if chapters:
+                chapter_lines = [f"{ts} {title}" for ts, title in chapters]
+                meta["chapters"] = "\n".join(chapter_lines)
+                # Prepend chapters na descricao para o YouTube parsear.
+                if meta.get("description"):
+                    meta["description"] = (
+                        meta["chapters"] + "\n\n" + meta["description"]
+                    )
+        except Exception as exc:
+            log.warning("Falha ao gerar chapters: %s", exc)
+
         output.with_suffix(".json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
     except Exception as exc:
         log.warning("Falha ao gerar legenda: %s", exc)
@@ -374,7 +408,7 @@ def build_pata_jazz_video(
     return output
 
 
-def short_spec(duration: int = 35, scene: str = "", mood: str = "") -> VideoSpec:
+def short_spec(duration: int = 35, scene: str = "", mood: str = "", title_pattern_hint: str = "") -> VideoSpec:
     """Especificação padrão para Shorts verticais 1080x1920."""
     return VideoSpec(
         kind="short",
@@ -387,10 +421,11 @@ def short_spec(duration: int = 35, scene: str = "", mood: str = "") -> VideoSpec
         fallback_description=f"{hook_for_scene(scene or random_scene())[0]} with jazz playing. 🐾🎷 #PataJazz",
         scene=scene,
         mood=mood,
+        title_pattern_hint=title_pattern_hint,
     )
 
 
-def horizontal_spec(duration: int = 240, scene: str = "", mood: str = "") -> VideoSpec:
+def horizontal_spec(duration: int = 240, scene: str = "", mood: str = "", title_pattern_hint: str = "") -> VideoSpec:
     """Especificação padrão para vídeos horizontais 1920x1080."""
     return VideoSpec(
         kind="horizontal",
@@ -409,6 +444,37 @@ def horizontal_spec(duration: int = 240, scene: str = "", mood: str = "") -> Vid
         ),
         scene=scene,
         mood=mood,
+        title_pattern_hint=title_pattern_hint,
+    )
+
+
+def longform_spec(duration: int = 3600, scene: str = "", mood: str = "", title_pattern_hint: str = "") -> VideoSpec:
+    """Especificação para compilações temáticas longas (1-10h) horizontais 1920x1080.
+
+    Longform = horizontal mas muito mais longo: duração 3600-36000s, muitos
+    clipes em loop (sem overlay de hook, como o horizontal), chapters de 1h.
+    Reutiliza o caminho de 1 clipe em loop do horizontal (FFmpeg
+    -stream_loop -1 + playlist de audio) por simplicidade e estabilidade.
+    """
+    clamped = max(_LONGFORM_MIN_DURATION, min(_LONGFORM_MAX_DURATION, duration))
+    return VideoSpec(
+        kind="horizontal",
+        width=1920,
+        height=1080,
+        duration=clamped,
+        default_duration=_LONGFORM_MIN_DURATION,
+        crop_filter=(
+            "crop='min(iw,ih*16/9):min(ih,iw*9/16):"
+            "(iw-min(iw,ih*16/9))/2:(ih-min(ih,iw*9/16))/2'"
+        ),
+        thumbnail_maker=make_horizontal_thumbnail,
+        fallback_description=(
+            "1 hour of cute cats and dogs with relaxing jazz music in the background. "
+            "Sit back, relax and enjoy the cozy pets. 🐾🎷 #PataJazz #LongForm"
+        ),
+        scene=scene,
+        mood=mood,
+        title_pattern_hint=title_pattern_hint,
     )
 
 

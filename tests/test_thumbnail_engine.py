@@ -1,4 +1,5 @@
 """Testes para thumbnail_engine.py."""
+import json
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -349,3 +350,182 @@ class TestExtractFrame:
             mock_tmp.return_value = ntf
             img = thumbnail_engine.extract_frame_from_video(tmp_path / "v.mp4")
         assert img is None
+
+
+class TestWinningThumbnailVariant:
+    """winning_thumbnail_variant: le video_tags.json + analytics.json, calcula
+    media de views por variante (A/B/C) e retorna a de maior media.
+    Conservador: < _MIN_VARIANT_SAMPLES amostras ou arquivos ausentes -> "A"."""
+
+    def _setup(self, tmp_path, monkeypatch, video_tags, analytics):
+        monkeypatch.setattr(
+            thumbnail_engine, "data_dir",
+            lambda: tmp_path,
+        )
+        (tmp_path / "video_tags.json").write_text(json.dumps(video_tags), encoding="utf-8")
+        (tmp_path / "analytics.json").write_text(json.dumps(analytics), encoding="utf-8")
+
+    def test_missing_files_returns_a(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(thumbnail_engine, "data_dir", lambda: tmp_path)
+        assert thumbnail_engine.winning_thumbnail_variant() == "A"
+
+    def test_corrupted_files_returns_a(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(thumbnail_engine, "data_dir", lambda: tmp_path)
+        (tmp_path / "video_tags.json").write_text("not json", encoding="utf-8")
+        (tmp_path / "analytics.json").write_text("not json", encoding="utf-8")
+        assert thumbnail_engine.winning_thumbnail_variant() == "A"
+
+    def test_insufficient_samples_returns_a(self, tmp_path, monkeypatch):
+        # So 1 video por variante (< _MIN_VARIANT_SAMPLES=2).
+        video_tags = {"v1": {"thumbnail_variant": "A"}, "v2": {"thumbnail_variant": "B"}}
+        analytics = {"all_videos": [{"video_id": "v1", "views": 100}, {"video_id": "v2", "views": 500}]}
+        self._setup(tmp_path, monkeypatch, video_tags, analytics)
+
+        assert thumbnail_engine.winning_thumbnail_variant() == "A"
+
+    def test_variant_b_with_higher_avg_views_wins(self, tmp_path, monkeypatch):
+        # A: 100, 100 -> avg 100. B: 500, 600 -> avg 550.
+        video_tags = {
+            "a1": {"thumbnail_variant": "A"}, "a2": {"thumbnail_variant": "A"},
+            "b1": {"thumbnail_variant": "B"}, "b2": {"thumbnail_variant": "B"},
+        }
+        analytics = {"all_videos": [
+            {"video_id": "a1", "views": 100}, {"video_id": "a2", "views": 100},
+            {"video_id": "b1", "views": 500}, {"video_id": "b2", "views": 600},
+        ]}
+        self._setup(tmp_path, monkeypatch, video_tags, analytics)
+
+        assert thumbnail_engine.winning_thumbnail_variant() == "B"
+
+    def test_variant_c_can_win(self, tmp_path, monkeypatch):
+        video_tags = {
+            "a1": {"thumbnail_variant": "A"}, "a2": {"thumbnail_variant": "A"},
+            "c1": {"thumbnail_variant": "C"}, "c2": {"thumbnail_variant": "C"},
+        }
+        analytics = {"all_videos": [
+            {"video_id": "a1", "views": 50}, {"video_id": "a2", "views": 50},
+            {"video_id": "c1", "views": 999}, {"video_id": "c2", "views": 1000},
+        ]}
+        self._setup(tmp_path, monkeypatch, video_tags, analytics)
+
+        assert thumbnail_engine.winning_thumbnail_variant() == "C"
+
+    def test_missing_variant_field_defaults_to_a(self, tmp_path, monkeypatch):
+        # video_tags sem thumbnail_variant deve contar como A.
+        video_tags = {"v1": {}, "v2": {}, "b1": {"thumbnail_variant": "B"}, "b2": {"thumbnail_variant": "B"}}
+        analytics = {"all_videos": [
+            {"video_id": "v1", "views": 1000}, {"video_id": "v2", "views": 1000},
+            {"video_id": "b1", "views": 10}, {"video_id": "b2", "views": 10},
+        ]}
+        self._setup(tmp_path, monkeypatch, video_tags, analytics)
+
+        # A (default) tem avg 1000, B tem avg 10 -> A vence.
+        assert thumbnail_engine.winning_thumbnail_variant() == "A"
+
+    def test_videos_not_in_analytics_are_ignored(self, tmp_path, monkeypatch):
+        video_tags = {
+            "a1": {"thumbnail_variant": "A"}, "a2": {"thumbnail_variant": "A"},
+            "b1": {"thumbnail_variant": "B"}, "b2": {"thumbnail_variant": "B"},
+            # ghost nao esta em analytics -> ignorado.
+            "ghost": {"thumbnail_variant": "B"},
+        }
+        analytics = {"all_videos": [
+            {"video_id": "a1", "views": 10}, {"video_id": "a2", "views": 10},
+            {"video_id": "b1", "views": 500}, {"video_id": "b2", "views": 500},
+        ]}
+        self._setup(tmp_path, monkeypatch, video_tags, analytics)
+
+        assert thumbnail_engine.winning_thumbnail_variant() == "B"
+
+    def test_empty_all_videos_returns_a(self, tmp_path, monkeypatch):
+        self._setup(tmp_path, monkeypatch, {"v1": {"thumbnail_variant": "B"}}, {"all_videos": []})
+        assert thumbnail_engine.winning_thumbnail_variant() == "A"
+
+
+class TestVisionHook:
+    """Hooks de thumbnail via Gemini Vision: antes de desenhar o hook, tenta
+    ai_text_with_image com o frame extraido para um titulo scroll-stopping.
+    Fallback: hook_for_scene legado."""
+
+    def _cfg(self, width=1280, height=720):
+        return _LayoutConfig(
+            border_margin=40, border_radius=40, border_width=4,
+            emoji_y=100, emoji_shadow_offset=(4, 4),
+            hook_y_start=280, hook_wrap_width=22, hook_line_height=70,
+            brand_y=height - 120, crop_target_ratio=None,
+            overlay_alpha=128, frame_timestamp="00:00:02",
+        )
+
+    @patch("utils.ai_helper.ai_text_with_image", return_value="short")
+    def test_vision_hook_too_short_returns_fallback(self, _vision, tmp_path):
+        frame = Image.new("RGB", (64, 64), (10, 20, 30))
+        result = thumbnail_engine._vision_hook_for_frame(frame, "Fallback Hook Title")
+        assert result == "Fallback Hook Title"
+
+    @patch("utils.ai_helper.ai_text_with_image", return_value=None)
+    def test_vision_returns_none_falls_back(self, _vision, tmp_path):
+        frame = Image.new("RGB", (64, 64), (10, 20, 30))
+        result = thumbnail_engine._vision_hook_for_frame(frame, "Fallback Hook Title")
+        assert result == "Fallback Hook Title"
+
+    @patch("utils.ai_helper.ai_text_with_image", return_value="A Cute Cat Napping Peacefully Today")
+    def test_vision_returns_valid_hook(self, _vision, tmp_path):
+        frame = Image.new("RGB", (64, 64), (10, 20, 30))
+        result = thumbnail_engine._vision_hook_for_frame(frame, "Fallback Hook Title")
+        assert result == "A Cute Cat Napping Peacefully Today"
+
+    @patch("utils.ai_helper.ai_text_with_image", return_value="short")
+    def test_vision_too_short_falls_back(self, _vision, tmp_path):
+        frame = Image.new("RGB", (64, 64), (10, 20, 30))
+        result = thumbnail_engine._vision_hook_for_frame(frame, "Fallback Hook Title")
+        assert result == "Fallback Hook Title"
+
+    @patch("utils.ai_helper.ai_text_with_image", return_value="x" * 100)
+    def test_vision_too_long_falls_back(self, _vision, tmp_path):
+        frame = Image.new("RGB", (64, 64), (10, 20, 30))
+        result = thumbnail_engine._vision_hook_for_frame(frame, "Fallback Hook Title")
+        assert result == "Fallback Hook Title"
+
+    @patch("utils.ai_helper.ai_text_with_image", return_value='"A Cute Cat Napping Peacefully"')
+    def test_vision_strips_quotes(self, _vision, tmp_path):
+        frame = Image.new("RGB", (64, 64), (10, 20, 30))
+        result = thumbnail_engine._vision_hook_for_frame(frame, "Fallback Hook Title")
+        assert result == "A Cute Cat Napping Peacefully"
+
+    @patch("utils.ai_helper.ai_text_with_image", side_effect=RuntimeError("boom"))
+    def test_vision_exception_falls_back(self, _vision, tmp_path):
+        frame = Image.new("RGB", (64, 64), (10, 20, 30))
+        result = thumbnail_engine._vision_hook_for_frame(frame, "Fallback Hook Title")
+        assert result == "Fallback Hook Title"
+
+    @patch("utils.thumbnail_engine._vision_hook_for_frame", return_value="Vision Override Hook Title")
+    @patch("utils.thumbnail_engine.ImageDraw")
+    @patch("utils.thumbnail_engine._save_under_2mb")
+    @patch("utils.thumbnail_engine._fonts_for_variant", return_value=(MagicMock(), MagicMock()))
+    @patch("utils.thumbnail_engine.extract_frame_from_video")
+    def test_render_uses_vision_hook_on_variant_a(
+        self, mock_extract, mock_fonts, mock_save, mock_draw, mock_vision, tmp_path
+    ):
+        frame = Image.new("RGB", (640, 480), (10, 20, 30))
+        mock_extract.return_value = frame
+        vid = tmp_path / "vid.mp4"
+        vid.write_bytes(b"fake")
+        out = tmp_path / "thumb.png"
+        _render_thumbnail(1280, 720, "Original Hook", "🐱", out, "brand", vid, self._cfg(), variant="A")
+        mock_vision.assert_called_once()
+
+    @patch("utils.thumbnail_engine._vision_hook_for_frame", return_value="Vision Override Hook Title")
+    @patch("utils.thumbnail_engine.ImageDraw")
+    @patch("utils.thumbnail_engine._save_under_2mb")
+    @patch("utils.thumbnail_engine._fonts_for_variant", return_value=(MagicMock(), MagicMock()))
+    @patch("utils.thumbnail_engine.extract_frame_from_video")
+    def test_render_skips_vision_on_variant_b(
+        self, mock_extract, mock_fonts, mock_save, mock_draw, mock_vision, tmp_path
+    ):
+        frame = Image.new("RGB", (640, 480), (10, 20, 30))
+        mock_extract.return_value = frame
+        vid = tmp_path / "vid.mp4"
+        vid.write_bytes(b"fake")
+        out = tmp_path / "thumb.png"
+        _render_thumbnail(1280, 720, "Original Hook", "🐱", out, "brand", vid, self._cfg(), variant="B")
+        mock_vision.assert_not_called()

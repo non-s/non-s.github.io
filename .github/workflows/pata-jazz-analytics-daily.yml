@@ -1,0 +1,70 @@
+name: "Pata Jazz - Analytics Diario (Snapshot)"
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Todo dia 06:00 UTC (03:00 BRT) - snapshot leve diario pra alimentar
+    # um historico fino de analytics (pontos por dia em vez de por semana).
+    # O snapshot so coleta stats de videos + canal e grava analytics_history;
+    # pula a computacao pesada de cena/title_pattern, deteccao de virais e
+    # rotacao de thumbnails (essa fica no run semanal). ~2 min em vez de ~10.
+    - cron: "0 6 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pata-jazz-analytics-daily
+  cancel-in-progress: true
+
+jobs:
+  analytics-daily:
+    name: "Snapshot diario de analytics"
+    if: ${{ vars.PATA_JAZZ_ENABLED == '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: "Python 3.11"
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: "Instalar dependencias"
+        run: |
+          pip install --no-cache-dir --upgrade pip
+          pip install --no-cache-dir -r requirements.txt
+      - name: "Restaurar token e caches"
+        uses: ./.github/actions/restore-token-and-cache
+        with:
+          youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
+      - name: "Restaurar/persistir analytics"
+        # analytics_history.json e a serie historica que este snapshot
+        # diario alimenta - precisa sobreviver entre runs. Sem cache, o
+        # runner efemero descartaria o historico a cada run.
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: |
+            _data/analytics.json
+            _data/analytics_history.json
+          key: analytics-${{ github.run_id }}
+          restore-keys: analytics-
+      - name: "Coletar snapshot diario"
+        # --snapshot-only: pula computacao pesada, so coleta stats + historico.
+        run: python scripts/collect_analytics.py --snapshot-only
+      - name: "Upload analytics como artifact"
+        # Snapshot diario nao publica Pages (so o semanal faz isso); so
+        # persiste o historico via cache + artifact pra inspecao manual.
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: analytics-daily-snapshot
+          path: |
+            _data/analytics.json
+            _data/analytics_history.json
+          retention-days: 30
+      - name: "Apagar token"
+        if: always()
+        run: rm -f youtube_token.json

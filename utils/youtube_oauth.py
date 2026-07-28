@@ -35,7 +35,17 @@ from googleapiclient.discovery import Resource, build
 
 log = logging.getLogger(__name__)
 
-SCOPES = ["https://www.googleapis.com/auth/youtube.upload", "https://www.googleapis.com/auth/youtube.force-ssl"]
+# yt-analytics.readonly: necessario para o YouTube Analytics API
+# (retention/CTR). Adicionar este scope exige RE-AUTORIZAR o token OAuth:
+# o refresh_token salvo em youtube_token.json nao cobre o novo scope e o
+# google-auth ignora o mismatch silenciosamente (a chamada a Analytics
+# retorna 403). Rode `python utils/youtube_oauth.py` localmente para gerar
+# um token novo com o scope atualizado e atualize o secret YOUTUBE_TOKEN.
+SCOPES = [
+    "https://www.googleapis.com/auth/youtube.upload",
+    "https://www.googleapis.com/auth/youtube.force-ssl",
+    "https://www.googleapis.com/auth/yt-analytics.readonly",
+]
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -44,11 +54,32 @@ ROOT = Path(__file__).resolve().parent.parent
 _REFRESH_MARGIN = timedelta(minutes=5)
 
 
+def _active_channel_suffix() -> str:
+    """Retorna o sufixo de canal ativo para multi-conta OAuth.
+
+    Quando a env var YOUTUBE_CHANNEL e definida (ex: 'pata_lofi'), os
+    secrets YOUTUBE_TOKEN_LOFI e YOUTUBE_CLIENT_SECRET_LOFI sao usados em
+    vez dos defaults. Retorna '' (vazio) para o canal default (Pata Jazz)
+    para manter backward compat com YOUTUBE_TOKEN / YOUTUBE_CLIENT_SECRET.
+    """
+    channel = os.environ.get("YOUTUBE_CHANNEL", "").strip().lower()
+    if not channel or channel == "pata_jazz":
+        return ""
+    # Converte pata_lofi -> _LOFI, pata_classical -> _CLASSICAL.
+    return "_" + channel.split("_", 1)[1].upper() if "_" in channel else ""
+
+
 def _token_path() -> str:
-    """Caminho do token OAuth. Resolvido relativo ao ROOT do projeto."""
+    """Caminho do token OAuth. Resolvido relativo ao ROOT do projeto.
+
+    Multi-conta: se YOUTUBE_CHANNEL=pata_lofi, busca youtube_token_lofi.json.
+    """
     env_path = os.environ.get("YOUTUBE_TOKEN_PATH")
     if env_path:
         return env_path
+    suffix = _active_channel_suffix()
+    if suffix:
+        return str(ROOT / f"youtube_token{suffix.lower()}.json")
     return str(ROOT / "youtube_token.json")
 
 
@@ -79,7 +110,9 @@ def _save_token(creds: Credentials, token_path: str | None = None) -> None:
 
 
 def _client_secrets_path() -> str | None:
-    client_secret = os.environ.get("YOUTUBE_CLIENT_SECRET")
+    # Multi-conta: YOUTUBE_CHANNEL=pata_lofi -> busca YOUTUBE_CLIENT_SECRET_LOFI.
+    suffix = _active_channel_suffix()
+    client_secret = os.environ.get(f"YOUTUBE_CLIENT_SECRET{suffix}")
     if client_secret:
         # Cria o arquivo temporario com permissoes restritas desde o inicio.
         old_umask = os.umask(0o077)
@@ -168,10 +201,9 @@ def refresh_token_if_needed(token_path: Path) -> bool:
     return True
 
 
-def get_youtube_service() -> Resource:
-    # Renova proativamente o access_token se proximo da expiracao, antes de
-    # buildar o service. Isso garante que em CI (sem fluxo manual) o token
-    # esteja valido quando ``build`` for chamado.
+def _acquire_credentials() -> Credentials:
+    """Carrega/renova/obtem credenciais OAuth validas (logica compartilhada
+    por get_youtube_service e get_youtube_analytics_service)."""
     refresh_token_if_needed(Path(_token_path()))
 
     creds = _load_token()
@@ -193,4 +225,24 @@ def get_youtube_service() -> Resource:
             if secrets_path.startswith(tempfile.gettempdir()):
                 Path(secrets_path).unlink(missing_ok=True)
         _save_token(creds)
+    return creds
+
+
+def get_youtube_service() -> Resource:
+    # Renova proativamente o access_token se proximo da expiracao, antes de
+    # buildar o service. Isso garante que em CI (sem fluxo manual) o token
+    # esteja valido quando ``build`` for chamado.
+    creds = _acquire_credentials()
     return build("youtube", "v3", credentials=creds, cache_discovery=False)
+
+
+def get_youtube_analytics_service() -> Resource:
+    """Builda o service do YouTube Analytics API (retention/CTR).
+
+    Reusa as mesmas credenciais do Data API v3, mas exige o scope
+    yt-analytics.readonly em SCOPES (ver comentario no topo de SCOPES) - se o
+    token salvo nao cobrir esse scope, a chamada a reports().query() retorna
+    403 e o caller deve tratar (o _collect_retention_metrics em
+    collect_analytics.py envolve a chamada em try/except)."""
+    creds = _acquire_credentials()
+    return build("youtubeAnalytics", "v2", credentials=creds, cache_discovery=False)

@@ -7,9 +7,19 @@ coleta) e o caminho "com dados", garantindo que o HTML gerado e valido e
 contem a informacao esperada.
 """
 
+import hashlib
 import json
+import os
+from datetime import UTC, datetime
+from pathlib import Path
+from unittest.mock import patch
+
+import pytest
 
 import scripts.generate_dashboard as dashboard
+
+SNAPSHOT_DIR = Path(__file__).resolve().parent / "snapshots"
+FULL_HTML_HASH_FILE = SNAPSHOT_DIR / "dashboard_full_html_hash.txt"
 
 
 def _isolate(tmp_path, monkeypatch):
@@ -203,8 +213,9 @@ class TestChartsAndInteractivity:
 
         html = dashboard.build_dashboard_html()
 
-        # Um new Chart por grafico (5 graficos).
-        assert html.count("new Chart(") == 5
+        # Um new Chart por grafico (6 graficos: views, scene, title, live,
+        # top videos e thumbnail variants A/B/C).
+        assert html.count("new Chart(") == 6
 
     def test_analytics_history_data_embedded_as_json(self, tmp_path, monkeypatch):
         _isolate(tmp_path, monkeypatch)
@@ -302,3 +313,162 @@ class TestMain:
         output = tmp_path / "_dashboard" / "index.html"
         assert output.exists()
         assert output.read_text(encoding="utf-8").startswith("<!doctype html>")
+
+
+class TestSceneHourHeatmap:
+    """Item 6.4: heatmap cena × horário usando o view_predictor. Renderiza
+    tabela HTML colorida (CSS inline background-color) sem Chart.js."""
+
+    def _predictor(self, scenes, patterns):
+        return {
+            "scenes": scenes,
+            "title_patterns": patterns,
+            "n_samples": 10,
+            "weights": [0.1] * 20,
+            "overall_avg": 100.0,
+        }
+
+    def test_no_model_renders_empty_message(self, tmp_path, monkeypatch):
+        html = dashboard._render_scene_hour_heatmap({})
+        assert "Sem modelo de previsão" in html
+
+    def test_zero_samples_renders_empty_message(self, tmp_path, monkeypatch):
+        html = dashboard._render_scene_hour_heatmap({"n_samples": 0})
+        assert "Sem modelo de previsão" in html
+
+    def test_renders_table_with_scenes_and_buckets(self, tmp_path, monkeypatch):
+        predictor = self._predictor(["cat", "dog"], ["pat"])
+        monkeypatch.setattr("scripts.predict_views.predict_views", lambda s, p, h, d: 50.0)
+        html = dashboard._render_scene_hour_heatmap(predictor)
+        assert "Cena × Horário" in html
+        assert "manhã" in html
+        assert "tarde" in html
+        assert "noite" in html
+        assert "cat" in html
+        assert "dog" in html
+
+    def test_renders_colored_cells(self, tmp_path, monkeypatch):
+        predictor = self._predictor(["cat"], ["pat"])
+        monkeypatch.setattr("scripts.predict_views.predict_views", lambda s, p, h, d: 50.0)
+        html = dashboard._render_scene_hour_heatmap(predictor)
+        assert "background:rgb(" in html
+
+    def test_matrix_structure(self, tmp_path, monkeypatch):
+        predictor = self._predictor(["cat", "dog"], ["pat"])
+        monkeypatch.setattr("scripts.predict_views.predict_views", lambda s, p, h, d: float(h))
+        data = dashboard._build_scene_hour_matrix(predictor)
+        assert data["scenes"] == ["cat", "dog"]
+        assert data["buckets"] == ["manhã", "tarde", "noite"]
+        assert "cat" in data["matrix"]
+        # hora representativa manha=9, tarde=15, noite=21
+        assert data["matrix"]["cat"]["manhã"] == 9.0
+        assert data["matrix"]["cat"]["tarde"] == 15.0
+        assert data["matrix"]["cat"]["noite"] == 21.0
+
+    def test_heatmap_color_zero_returns_fondo(self):
+        assert dashboard._heatmap_color(0.0) == "#2a2a40"
+
+    def test_heatmap_color_one_near_accent(self):
+        color = dashboard._heatmap_color(1.0)
+        assert "244" in color or "rgb(" in color
+
+    def test_heatmap_color_negative_clamped(self):
+        assert dashboard._heatmap_color(-1.0) == "#2a2a40"
+
+    def test_heatmap_section_present_in_dashboard(self, tmp_path, monkeypatch):
+        _isolate(tmp_path, monkeypatch)
+        html = dashboard.build_dashboard_html()
+        assert "Heatmap cena × horário" in html
+
+    def test_no_patterns_uses_empty_pattern(self, tmp_path, monkeypatch):
+        predictor = self._predictor(["cat"], [])
+        monkeypatch.setattr("scripts.predict_views.predict_views", lambda s, p, h, d: 30.0)
+        data = dashboard._build_scene_hour_matrix(predictor)
+        assert data["matrix"]["cat"]["manhã"] == 30.0
+
+
+class TestFullHtmlSnapshot:
+    """Snapshot do HTML completo do dashboard com um conjunto de fixtures
+    diferente de tests/test_dashboard_snapshot.py (para regressao independente).
+
+    Compara o hash SHA-256 do HTML gerado (datetime.now fixado) contra um
+    baseline em tests/snapshots/dashboard_full_html_hash.txt. Para regenerar:
+
+        UPDATE_SNAPSHOTS=1 python -m pytest tests/test_generate_dashboard.py::TestFullHtmlSnapshot
+    """
+
+    def _seed_fixtures(self, tmp_path, monkeypatch):
+        _isolate(tmp_path, monkeypatch)
+        monkeypatch.setattr(dashboard, "VIEW_PREDICTOR_FILE", tmp_path / "view_predictor.json")
+        monkeypatch.setattr(dashboard, "VIDEO_TAGS_FILE", tmp_path / "video_tags.json")
+
+        dashboard.ANALYTICS_FILE.write_text(
+            json.dumps({
+                "total_videos": 7, "total_views": 42195, "total_likes": 882,
+                "total_comments": 77, "avg_views": 6028,
+                "top_10": [
+                    {"video_id": "snapA", "title": "Sleepy Kitten & Soft Jazz", "views": 12000, "likes": 300},
+                    {"video_id": "snapB", "title": "Playful Puppy Jazz Time", "views": 9000, "likes": 250},
+                ],
+            }),
+            encoding="utf-8",
+        )
+        dashboard.HISTORY_FILE.write_text(
+            json.dumps([
+                {
+                    "collected_at": "2026-03-01T00:00:00+00:00",
+                    "total_views": 5000, "total_likes": 50, "avg_views": 700,
+                },
+                {
+                    "collected_at": "2026-03-08T00:00:00+00:00",
+                    "total_views": 9000, "total_likes": 90, "avg_views": 1200,
+                },
+            ]),
+            encoding="utf-8",
+        )
+        dashboard.SCENE_PERFORMANCE_FILE.write_text(
+            json.dumps({"puppy": 1.7, "sleepy cat": 0.9, "dog": 1.2}), encoding="utf-8"
+        )
+        dashboard.TITLE_PATTERN_PERFORMANCE_FILE.write_text(
+            json.dumps({"{animal} vibes": 2.3, "{emoji} jazz": 1.1}), encoding="utf-8"
+        )
+        dashboard.LIVE_VIEWER_HISTORY_FILE.write_text(
+            json.dumps([{"collected_at": "t", "video_id": "v", "concurrent_viewers": v} for v in [5, 15, 25]]),
+            encoding="utf-8",
+        )
+        dashboard.VIDEO_TAGS_FILE.write_text(
+            json.dumps({"snapA": {"scene": "sleepy cat", "thumbnail_variant": "A", "views": 12000}}),
+            encoding="utf-8",
+        )
+
+    def test_full_html_snapshot(self, tmp_path, monkeypatch):
+        self._seed_fixtures(tmp_path, monkeypatch)
+        fixed = datetime(2026, 3, 15, 12, 0, 0, tzinfo=UTC)
+
+        class _FixedDatetime(datetime):
+            @classmethod
+            def now(cls, tz=None):
+                return fixed if tz is None else fixed.astimezone(tz)
+
+        SNAPSHOT_DIR.mkdir(parents=True, exist_ok=True)
+        with patch.object(dashboard, "datetime", _FixedDatetime):
+            html = dashboard.build_dashboard_html()
+
+        digest = hashlib.sha256(html.encode("utf-8")).hexdigest()
+
+        if os.environ.get("UPDATE_SNAPSHOTS") == "1":
+            FULL_HTML_HASH_FILE.write_text(digest + "\n", encoding="utf-8")
+            return
+
+        if not FULL_HTML_HASH_FILE.exists():
+            pytest.skip(
+                f"Nenhum baseline em {FULL_HTML_HASH_FILE}. Rode com UPDATE_SNAPSHOTS=1 "
+                f"para criar (hash atual: {digest})."
+            )
+
+        baseline = FULL_HTML_HASH_FILE.read_text(encoding="utf-8").strip()
+        assert baseline == digest, (
+            "Dashboard HTML (fixture alternativa) divergiu do snapshot. Rode "
+            "`UPDATE_SNAPSHOTS=1 python -m pytest "
+            "tests/test_generate_dashboard.py::TestFullHtmlSnapshot` para regenerar."
+        )

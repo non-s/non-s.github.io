@@ -46,8 +46,14 @@ def generate_metadata(
     emoji: str,
     fallback_title: str = "",
     fallback_description: str = "",
+    title_pattern_hint: str = "",
 ) -> dict[str, Any]:
-    """Gera metadados completos usando Gemini + SEO otimizado, com fallback local seguro."""
+    """Gera metadados completos usando Gemini + SEO otimizado, com fallback local seguro.
+
+    ``title_pattern_hint`` (quando fornecido por utils/slot_optimizer) obriga
+    o titulo a seguir o padrao previsto como otimo para o slot atual; quando
+    vazio, o padrao e decidido por generate_title_with_pattern/IA como antes.
+    """
     # Extrai informações da cena para SEO
     animal = detect_animal(scene)
     s = scene.lower()
@@ -59,7 +65,18 @@ def generate_metadata(
     # padroes em video_tags.json/title_pattern_performance.json. Agora usamos
     # um valor explicito para distinguir "fallback fornecido" de "sem padrao".
     title_pattern = "fallback_provided"
-    if fallback_title:
+    if title_pattern_hint:
+        # Slot optimizer determinou o padrao otimo; forca o titulo a segui-lo.
+        title, title_pattern = generate_title_with_pattern(
+            animal=animal,
+            acao=acao,
+            estilo_musical=estilo_musical,
+            kind=kind,
+            emoji=emoji,
+            duracao=round(duration / 60) if kind != "short" else None,
+            pattern=title_pattern_hint,
+        )
+    elif fallback_title:
         title = fallback_title
     else:
         title, title_pattern = generate_title_with_pattern(
@@ -84,12 +101,14 @@ def generate_metadata(
     prompt = _build_metadata_prompt(hook, scene, duration, kind, emoji)
     out = ai_text(prompt, json_mode=True, task=f"{kind}_metadata")
 
-    description = generate_description(
+    description, cta_used = generate_description(
         hook=hook,
         kind=kind,
         hashtags=hashtags,
         include_cta=True,
-    ) or fallback_description
+    )
+    if not description:
+        description = fallback_description
 
     if out:
         try:
@@ -149,6 +168,7 @@ def generate_metadata(
         "description": description,
         "hashtags": hashtags,
         "title_pattern": title_pattern,
+        "cta": cta_used,
     }
 
 

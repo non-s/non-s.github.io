@@ -15,6 +15,8 @@ automaticamente ao mesmo broadcast/stream em vez de encerrar a live.
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 import scripts.run_live as run_live
 
 
@@ -31,6 +33,14 @@ def _base_meta():
 
 
 class TestRunLiveMain:
+    # Heartbeat de stream (task 4.4) inicia uma thread daemon em main() que
+    # chamaria wait_for_stream_active assincronamente e quebraria as
+    # assertions assert_called_once_* destes testes. Desliga o heartbeat
+    # aqui - ele tem cobertura propria em test_live_heartbeat.py.
+    @pytest.fixture(autouse=True)
+    def _disable_heartbeat(self):
+        with patch("scripts.run_live._start_stream_heartbeat", return_value=MagicMock()):
+            yield
     @patch("scripts.run_live.record_live_viewer_snapshot")
     @patch("scripts.run_live._wait_ffmpeg_stream", return_value=0)
     @patch("scripts.run_live.wait_for_stream_active", return_value=True)

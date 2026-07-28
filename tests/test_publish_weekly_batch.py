@@ -210,7 +210,7 @@ class TestPublishVideoMediaBranches:
         caption.write_text("WEBVTT\n", encoding="utf-8")
 
         with patch("utils.playlist_manager.add_video_to_playlist"), \
-             patch("scripts.publish_weekly_batch._meta_path", return_value=caption):
+             patch("utils.youtube_post_upload._meta_path", return_value=caption):
             publish_weekly_batch._publish_video(service, video_path, {"title": "T"})
 
         service.captions().insert.assert_called_once()
@@ -225,7 +225,7 @@ class TestPublishVideoMediaBranches:
         caption.write_text("[Events]\n", encoding="utf-8")
 
         with patch("utils.playlist_manager.add_video_to_playlist"), \
-             patch("scripts.publish_weekly_batch._meta_path", return_value=caption):
+             patch("utils.youtube_post_upload._meta_path", return_value=caption):
             publish_weekly_batch._publish_video(service, video_path, {"title": "T"})
 
         service.captions().insert.assert_called_once()
@@ -241,7 +241,7 @@ class TestPublishVideoMediaBranches:
         caption.write_text("1\n", encoding="utf-8")
 
         with patch("utils.playlist_manager.add_video_to_playlist"), \
-             patch("scripts.publish_weekly_batch._meta_path", return_value=caption), \
+             patch("utils.youtube_post_upload._meta_path", return_value=caption), \
              caplog.at_level("WARNING"):
             result = publish_weekly_batch._publish_video(service, video_path, {"title": "T"})
 

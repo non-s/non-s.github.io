@@ -31,7 +31,7 @@ from upload_youtube import _build_tags, _meta_path, _record_video_tags
 from utils import ffmpeg_helpers
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.youtube_oauth import get_youtube_service
-from utils.youtube_post_upload import add_to_playlists, apply_caption, apply_thumbnail
+from utils.youtube_post_upload import add_to_playlists, apply_captions, apply_thumbnail
 from utils.youtube_retry import retry_youtube_call as _retry_youtube_call
 
 log = logging.getLogger(__name__)
@@ -147,7 +147,7 @@ def _publish_video(service, video_path: Path, meta: dict, language: str = "en") 
     _record_video_tags(video_id, meta)
 
     apply_thumbnail(service, video_id, _meta_path(meta, "thumbnail"), _retry_youtube_call)
-    apply_caption(service, video_id, _meta_path(meta, "caption"), _retry_youtube_call)
+    apply_captions(service, video_id, meta, _retry_youtube_call)
     add_to_playlists(service, video_id, meta)
 
     return video_id

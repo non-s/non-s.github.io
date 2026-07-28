@@ -130,3 +130,34 @@ class TestSaveAss:
         assert ass_path.suffix == ".ass"
         assert ass_path.exists()
         assert ass_path.read_text(encoding="utf-8") == ass_content
+
+
+class TestGenerateChapters:
+    def test_short_chapters_three_entries(self):
+        chapters = caption_engine.generate_chapters(35, "short")
+        assert len(chapters) == 3
+        assert chapters[0][0] == "00:00"
+
+    def test_horizontal_chapters_use_minute_format(self):
+        chapters = caption_engine.generate_chapters(240, "horizontal")
+        assert len(chapters) >= 5
+        assert chapters[0][1] == "Intro"
+        # 240s = 4min -> sem horas no timestamp.
+        assert "00:" in chapters[1][0] or ":" in chapters[1][0]
+
+    def test_longform_chapters_hourly(self):
+        chapters = caption_engine.generate_chapters(3600, "horizontal")
+        assert len(chapters) >= 2
+        # 1h -> timestamp com horas (HH:MM:SS).
+        assert chapters[-1][0].count(":") == 2
+        assert "Hour 1" in chapters[0][1]
+
+    def test_longform_multi_hour_chapters(self):
+        chapters = caption_engine.generate_chapters(7200, "horizontal")
+        labels = [title for _, title in chapters]
+        assert any("Hour 1" in t for t in labels)
+        assert any("Hour 2" in t for t in labels)
+
+    def test_longform_outro_at_end(self):
+        chapters = caption_engine.generate_chapters(3600, "horizontal")
+        assert chapters[-1][1] == "Outro"

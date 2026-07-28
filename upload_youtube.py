@@ -17,6 +17,7 @@ import json
 import logging
 import os
 import sys
+import time
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -24,12 +25,16 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
 from utils import ffmpeg_helpers
-from utils.channel_config import active_channel
+from utils.channel_config import active_channel, set_channel_from_env
 from utils.log_config import configure_logging, log_exception_to_file
+from utils.pipeline_metrics import record_pipeline_run
 from utils.state_lock import state_lock
 from utils.youtube_oauth import get_youtube_service
-from utils.youtube_post_upload import add_to_playlists, apply_caption, apply_thumbnail
+from utils.youtube_post_upload import add_to_playlists, apply_captions, apply_thumbnail
 from utils.youtube_retry import retry_youtube_call as _retry_youtube_call
+
+# Ativa o canal via YOUTUBE_CHANNEL env var (multi-canal: Pata Lofi, etc).
+set_channel_from_env()
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT_DIR = ROOT / "_videos"
@@ -122,6 +127,23 @@ def _record_video_tags(video_id: str, meta: dict) -> None:
 
 
 def upload_video(language: str = "en", privacy: str = "public", prefix: str = "pata_jazz_") -> str | None:
+    start_time = time.time()
+    success = False
+    try:
+        video_id = _upload_video_inner(language=language, privacy=privacy, prefix=prefix)
+        if video_id is not None:
+            success = True
+        return video_id
+    finally:
+        record_pipeline_run(
+            stage="upload",
+            success=success,
+            duration_seconds=time.time() - start_time,
+            kind=prefix.rstrip("_"),
+        )
+
+
+def _upload_video_inner(language: str = "en", privacy: str = "public", prefix: str = "pata_jazz_") -> str | None:
     found = _latest_video_meta(prefix=prefix)
     if not found:
         log.error("Nenhum video com metadata encontrado em %s", OUTPUT_DIR)
@@ -178,7 +200,7 @@ def upload_video(language: str = "en", privacy: str = "public", prefix: str = "p
     _record_video_tags(video_id, meta)
 
     apply_thumbnail(service, video_id, thumbnail, _retry_youtube_call)
-    apply_caption(service, video_id, _meta_path(meta, "caption"), _retry_youtube_call)
+    apply_captions(service, video_id, meta, _retry_youtube_call)
     add_to_playlists(service, video_id, meta)
 
     return video_id

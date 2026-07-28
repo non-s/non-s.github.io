@@ -23,11 +23,12 @@ from utils.media_pool import (
 
 @pytest.fixture(autouse=True)
 def _isolate_recent_media_file(tmp_path, monkeypatch):
-    """pick_videos()/pick_audio() persistem historico em _RECENT_FILE (path
+    """pick_videos()/pick_audio() persistem historico em _recent_file() (path
     real do repo) - sem isolar, testes escrevem no disco de verdade e o
     historico de uma run vaza pra proxima (nomes de mock se repetem entre
     testes deste arquivo)."""
-    monkeypatch.setattr(media_pool, "_RECENT_FILE", tmp_path / "recent_media.json")
+    recent_file = tmp_path / "recent_media.json"
+    monkeypatch.setattr(media_pool, "_recent_file", lambda: recent_file)
 
 
 class TestMediaPool:

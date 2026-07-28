@@ -5,6 +5,10 @@ inputs:
   youtube-token:
     description: "Secret YOUTUBE_TOKEN (JSON do token OAuth)"
     required: true
+  channel:
+    description: "Slug do canal (pata_jazz, pata_lofi, pata_classical). Define o nome do arquivo de token e o prefixo de cache."
+    required: false
+    default: "pata_jazz"
 
 runs:
   using: "composite"
@@ -13,11 +17,12 @@ runs:
       shell: bash
       env:
         YOUTUBE_TOKEN: ${{ inputs.youtube-token }}
+        TOKEN_FILENAME: ${{ inputs.channel == 'pata_jazz' && 'youtube_token.json' || format('youtube_token_{0}.json', inputs.channel) }}
       run: |
         umask 077
         if [ -n "$YOUTUBE_TOKEN" ]; then
-          printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
-          chmod 600 youtube_token.json
+          printf '%s' "$YOUTUBE_TOKEN" > "$TOKEN_FILENAME"
+          chmod 600 "$TOKEN_FILENAME"
         fi
     - name: "Cache b-roll"
       uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
@@ -32,25 +37,6 @@ runs:
         key: animal-jazz-${{ github.run_id }}
         restore-keys: animal-jazz-
     - name: "Cache estado persistente (_data)"
-      # Sem isso, cada workflow (shorts/horizontal/live/batch/weekly/analytics)
-      # comeca de um checkout limpo e esses arquivos nunca sobrevivem entre
-      # runs - o anti-repeat de b-roll/jazz (recent_media.json), o cache de
-      # playlists (playlist_cache.json), os feedback loops de performance por
-      # cena e por padrao de titulo (video_tags.json escrito no upload,
-      # scene_performance.json/title_pattern_performance.json escritos pelo
-      # collect_analytics.py e lidos de volta por content_strategy.
-      # scene_for_mood/seo_keywords.pick_title_pattern), o historico de
-      # audiencia da live (live_viewer_history.json, escrito por
-      # upload_youtube.record_live_viewer_snapshot a cada segmento de FFmpeg)
-      # e o broadcast/stream da live em si (live_state.json, que
-      # upload_youtube._try_resume_existing_broadcast le para reaproveitar o
-      # mesmo broadcast entre sessoes em vez de criar um link novo a cada
-      # ~6h) ficariam sempre vazios/zerados a cada run, sem nunca dar erro -
-      # so silenciosamente nunca funcionando. live_viewer_history.json e
-      # live_state.json em particular so fazem sentido dentro de uma unica
-      # sessao de live (~320min) sem esse cache; sem ele, cada novo ciclo do
-      # cron a cada 6h apagaria o historico de audiencia e forcaria criar um
-      # broadcast novo mesmo quando o anterior ainda estava reaproveitavel.
       uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
       with:
         path: |
@@ -61,5 +47,5 @@ runs:
           _data/title_pattern_performance.json
           _data/live_viewer_history.json
           _data/live_state.json
-        key: pata-jazz-data-${{ github.run_id }}
-        restore-keys: pata-jazz-data-
+        key: ${{ inputs.channel }}-data-${{ github.run_id }}
+        restore-keys: ${{ inputs.channel }}-data-
