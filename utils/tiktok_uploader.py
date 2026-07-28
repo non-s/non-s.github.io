@@ -130,14 +130,24 @@ def upload_to_tiktok(
     password: str | None = None,
     state_path: Path | None = None,
     headless: bool = True,
+    cdp_url: str | None = None,
 ) -> str | None:
     """Faz upload de um video para o TikTok via browser automation.
+
+    Modos de operacao:
+    1. CDP: se TIKTOK_CDP_URL ou cdp_url definido, conecta a um Chrome
+       ja aberto com --remote-debugging-port (sessao do usuario logado).
+       Este e o modo recomendado — o Chromium do Playwright e bloqueado
+       pelo WAF do TikTok.
+    2. storage_state: se tiktok_state.json existe, reusa a sessao salva.
+    3. Login: faz login com email/senha (pode ser bloqueado por rate limit).
 
     Retorna a URL do video publicado, ou None em falha.
     """
     email = email or os.environ.get("TIKTOK_EMAIL", "")
     password = password or os.environ.get("TIKTOK_PASSWORD", "")
     state_path = state_path or Path(os.environ.get("TIKTOK_STATE_PATH", str(DEFAULT_STATE_PATH)))
+    cdp_url = cdp_url or os.environ.get("TIKTOK_CDP_URL", "")
     headless = os.environ.get("TIKTOK_HEADLESS", "1") != "0" if headless else False
 
     if not email or not password:
@@ -160,51 +170,73 @@ def upload_to_tiktok(
     description = f"{title}\n\n{hashtag_text}".strip()[:2200]
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(
-            headless=headless,
-            args=[
-                "--disable-blink-features=AutomationControlled",
-                "--no-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-gpu",
-            ],
-        )
-
-        # Reusa sessao salva se existir
-        storage_state = str(state_path) if state_path.exists() else None
-        context = browser.new_context(
-            user_agent=_USER_AGENT,
-            viewport={"width": 1280, "height": 720},
-            locale="en-US",
-            timezone_id="America/Sao_Paulo",
-            storage_state=storage_state,
-        )
-        context.add_init_script(_STEALTH_SCRIPT)
-
-        page = context.new_page()
-        page.set_default_timeout(120000)
+        # Modo CDP: conecta ao Chrome do usuario (ja logado).
+        # O Chromium do Playwright e bloqueado pelo WAF do TikTok, entao
+        # este e o modo recomendado para upload real.
+        if cdp_url:
+            log.info("Conectando ao Chrome via CDP: %s", cdp_url)
+            browser = p.chromium.connect_over_cdp(cdp_url)
+            context = browser.contexts[0]
+            # Procura aba do TikTok ou cria nova
+            page = None
+            for pg in context.pages:
+                if "tiktok" in pg.url.lower() and "about:blank" not in pg.url:
+                    page = pg
+                    break
+            if not page:
+                page = context.new_page()
+            page.set_default_timeout(120000)
+            _connected_via_cdp = True
+        else:
+            # Modo launch: usa Chromium do Playwright com stealth + storage_state
+            browser = p.chromium.launch(
+                headless=headless,
+                args=[
+                    "--disable-blink-features=AutomationControlled",
+                    "--no-sandbox",
+                    "--disable-dev-shm-usage",
+                    "--disable-gpu",
+                ],
+            )
+            storage_state = str(state_path) if state_path.exists() else None
+            context = browser.new_context(
+                user_agent=_USER_AGENT,
+                viewport={"width": 1280, "height": 720},
+                locale="en-US",
+                timezone_id="America/Sao_Paulo",
+                storage_state=storage_state,
+            )
+            context.add_init_script(_STEALTH_SCRIPT)
+            page = context.new_page()
+            page.set_default_timeout(120000)
+            _connected_via_cdp = False
 
         try:
-            # Garante login
-            page.goto(_UPLOAD_URL, wait_until="domcontentloaded", timeout=30000)
-            time.sleep(5)
+            if not _connected_via_cdp:
+                # Modo launch: precisa garantir login
+                page.goto(_UPLOAD_URL, wait_until="domcontentloaded", timeout=30000)
+                time.sleep(5)
 
-            if not _ensure_login(page, context, email, password, state_path):
-                log.error("Nao foi possivel fazer login no TikTok.")
-                browser.close()
-                return None
+                if not _ensure_login(page, context, email, password, state_path):
+                    log.error("Nao foi possivel fazer login no TikTok.")
+                    browser.close()
+                    return None
+            else:
+                # Modo CDP: ja logado no Chrome do usuario
+                log.info("Modo CDP: usando sessao do Chrome do usuario.")
 
             # Navega para upload
             log.info("Navegando para pagina de upload...")
-            page.goto(_UPLOAD_URL, wait_until="domcontentloaded", timeout=30000)
-            time.sleep(5)
+            page.goto("https://www.tiktok.com/tiktokstudio/upload", wait_until="domcontentloaded", timeout=30000)
+            time.sleep(10)
 
             # Encontra o input de arquivo
             file_input = page.query_selector("input[type='file']")
             if not file_input:
                 log.error("Input de arquivo nao encontrado na pagina de upload.")
                 page.screenshot(path=str(ROOT / "_videos" / "tiktok_upload_fail.png"))
-                browser.close()
+                if not _connected_via_cdp:
+                    browser.close()
                 return None
 
             log.info("Enviando arquivo: %s", video_path.name)
@@ -212,17 +244,24 @@ def upload_to_tiktok(
 
             # Aguarda upload + processamento (pode demorar)
             log.info("Aguardando upload e processamento...")
+            post_btn = None
+            desc_el = None
             for i in range(120):
                 time.sleep(2)
-                # Procura pelo campo de descricao (contenteditable)
                 desc_el = page.query_selector("[contenteditable='true']")
-                post_btn = page.query_selector("button:has-text('Post')")
+                # Botao de post pode ser "Post" (EN) ou "Carregar" (PT)
+                post_btn = (
+                    page.query_selector("button:has-text('Post')")
+                    or page.query_selector("button:has-text('Carregar')")
+                    or page.query_selector("button:has-text('Publish')")
+                )
                 if desc_el and post_btn:
                     log.info("Upload concluido em %ds. Preenchendo descricao...", (i + 1) * 2)
                     break
             else:
                 log.error("Upload nao concluiu em 240s.")
-                browser.close()
+                if not _connected_via_cdp:
+                    browser.close()
                 return None
 
             # Preenche descricao
@@ -242,11 +281,13 @@ def upload_to_tiktok(
                 url = page.url
                 if "/upload" not in url and "tiktok.com" in url:
                     log.info("Video publicado! URL: %s", url)
-                    browser.close()
+                    if not _connected_via_cdp:
+                        browser.close()
                     return url
 
             log.info("Post clicado mas sem confirmacao de redirect.")
-            browser.close()
+            if not _connected_via_cdp:
+                browser.close()
             return None
 
         except Exception as exc:
@@ -255,5 +296,6 @@ def upload_to_tiktok(
                 page.screenshot(path=str(ROOT / "_videos" / "tiktok_error.png"))
             except Exception:
                 pass
-            browser.close()
+            if not _connected_via_cdp:
+                browser.close()
             return None
