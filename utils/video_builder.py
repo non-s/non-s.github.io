@@ -63,6 +63,10 @@ class VideoSpec:
     title_pattern_hint: str = ""
 
 
+_HOOK_ENABLE_SECONDS = 3.0
+_HOOK_FADE_SECONDS = 0.35
+
+
 def _build_video_filter(spec: VideoSpec) -> str:
     """Constrói a cadeia de filtros FFmpeg para o aspecto-alvo."""
     w, h = spec.width, spec.height
@@ -74,23 +78,42 @@ def _build_video_filter(spec: VideoSpec) -> str:
     )
 
 
-def _build_overlay_filter(hook: str, width: int, height: int) -> str:
-    """Constrói filtro drawtext para mostrar o hook nos primeiros 3 segundos.
+def _build_overlay_filter(hook: str, height: int) -> str:
+    """Constrói filtro drawtext para mostrar o hook nos primeiros segundos.
 
-    Texto branco com sombra preta na parte inferior do video.
-    Fade in/out suave para nao aparecer/desaparecer abruptamente.
+    Fonte bold, caixa semi-transparente atras do texto (legibilidade sobre
+    qualquer fundo - padrao comum em Shorts/Reels/TikTok) e fade in/out
+    real via alpha animado (a versao anterior so tinha um corte abrupto em
+    `enable`, apesar do docstring prometer fade).
     """
     # Escape em ordem correta: backslash primeiro, depois aspas e dois-pontos.
     safe_hook = hook.replace("\\", r"\\").replace("'", r"\'").replace(":", r"\:")
-    font_size = 48 if width > height else 56  # Shorts fonte maior
-    y_pos = height - 200 if width > height else height - 350
+    fade = _HOOK_FADE_SECONDS
+    hold_end = _HOOK_ENABLE_SECONDS - fade
+    # Virgulas aqui NAO precisam de escape: o valor inteiro ja esta entre
+    # aspas simples (protege da quebra de filtro do parser externo do
+    # FFmpeg); o eval interno de alpha/x/y espera virgula literal como
+    # separador de argumento de if()/lt(). Mesmo padrao do `enable=` abaixo.
+    alpha_expr = (
+        f"if(lt(t,{fade}),t/{fade},"
+        f"if(lt(t,{hold_end}),1,"
+        f"if(lt(t,{_HOOK_ENABLE_SECONDS}),({_HOOK_ENABLE_SECONDS}-t)/{fade},0)))"
+    )
+    # Pequena variacao de posicao entre videos (nao sempre o mesmo pixel),
+    # mantendo a faixa segura acima da UI do player de Shorts.
+    y_pos = height - 350 + random.randint(-40, 40)
     return (
         f"drawtext=text='{safe_hook}'"
-        f":fontsize={font_size}"
+        # Mesma familia (Arial, com substituicao via fontconfig) usada pelo
+        # estilo ASS em caption_engine.py - ja comprovada disponivel em CI.
+        f":font='Arial:style=Bold'"
+        f":fontsize=56"
         f":fontcolor=white"
         f":shadowcolor=black:shadowx=2:shadowy=2"
+        f":box=1:boxcolor=black@0.35:boxborderw=18"
         f":x=(w-text_w)/2:y={y_pos}"
-        f":enable='between(t,0,3)'"
+        f":alpha='{alpha_expr}'"
+        f":enable='between(t,0,{_HOOK_ENABLE_SECONDS})'"
     )
 
 
@@ -126,7 +149,7 @@ def _build_single_clip_video(
     inputs = ["-stream_loop", "-1", "-i", str(video)]
     vf = _build_video_filter(spec)
     if hook:
-        vf = f"{vf},{_build_overlay_filter(hook, spec.width, spec.height)}"
+        vf = f"{vf},{_build_overlay_filter(hook, spec.height)}"
     output_args: list[str] = [
         "-map", "0:v:0",
         "-vf", vf,
@@ -144,6 +167,12 @@ def _build_single_clip_video(
     run_ffmpeg(inputs + output_args + [str(output)])
 
 
+_XFADE_TRANSITIONS = [
+    "fade", "dissolve", "smoothleft", "smoothright", "smoothup", "smoothdown",
+    "circleopen", "circleclose", "radial", "diagtl", "diagbr",
+]
+
+
 def _build_multi_clip_short(
     spec: VideoSpec,
     videos: list[Path],
@@ -154,7 +183,10 @@ def _build_multi_clip_short(
     """Gera um Short com 2-3 clipes e transicoes crossfade.
 
     Cada clipe e normalizado para o aspecto-alvo e concatenado com xfade.
-    A musica de jazz toda por toda a duracao total.
+    Um estilo de transicao (`_XFADE_TRANSITIONS`) e sorteado por video e
+    aplicado a todos os cortes dele - consistente dentro do video, variado
+    entre videos, em vez de sempre "fade". A musica de jazz toca por toda a
+    duracao total.
     """
     n_clips = min(len(videos), random.randint(2, 3))
     selected = random.sample(videos, n_clips)
@@ -192,6 +224,7 @@ def _build_multi_clip_short(
             run_ffmpeg(["-i", str(processed[0]), "-c", "copy", str(output)])
             return
 
+        transition = random.choice(_XFADE_TRANSITIONS)
         filter_parts: list[str] = []
         offsets: list[float] = []
 
@@ -201,7 +234,7 @@ def _build_multi_clip_short(
             offsets.append(offset)
             out_label = f"v{i}"
             filter_parts.append(
-                f"[{prev_label}][{i}:v]xfade=transition=fade:duration={xfade_duration}:offset={offset}[{out_label}]"
+                f"[{prev_label}][{i}:v]xfade=transition={transition}:duration={xfade_duration}:offset={offset}[{out_label}]"
             )
             prev_label = out_label
 
@@ -209,7 +242,7 @@ def _build_multi_clip_short(
         if hook:
             overlay_label = "vtxt"
             filter_parts.append(
-                f"[{prev_label}]{_build_overlay_filter(hook, spec.width, spec.height)}[{overlay_label}]"
+                f"[{prev_label}]{_build_overlay_filter(hook, spec.height)}[{overlay_label}]"
             )
             prev_label = overlay_label
 
@@ -243,6 +276,7 @@ def _build_multi_clip_short(
         cmd_args += ["-t", str(spec.duration)]
 
         cmd_args += [str(output)]
+        log.info("Transicao xfade escolhida: %s (%d clipes)", transition, n_clips)
         run_ffmpeg(cmd_args)
     finally:
         # Limpa arquivos temporarios (sempre, mesmo em falha)

@@ -9,6 +9,36 @@ import utils.video_builder as video_builder
 from utils.video_validator import VideoValidation
 
 
+class TestBuildOverlayFilter:
+    """Testes para o overlay de texto (hook) via drawtext."""
+
+    def test_has_real_alpha_fade_not_just_hard_cutoff(self):
+        result = video_builder._build_overlay_filter("hello", 1920)
+        assert "alpha='if(lt(t," in result
+        assert "enable='between(t,0," in result
+
+    def test_uses_bold_font(self):
+        result = video_builder._build_overlay_filter("hello", 1920)
+        assert "font='Arial:style=Bold'" in result
+
+    def test_has_semi_transparent_box_for_legibility(self):
+        result = video_builder._build_overlay_filter("hello", 1920)
+        assert "box=1" in result
+        assert "boxcolor=black@0.35" in result
+
+    def test_escapes_special_characters_in_hook(self):
+        result = video_builder._build_overlay_filter("it's: cute", 1920)
+        assert r"\'" in result
+        assert r"\:" in result
+
+    def test_y_position_stays_within_jitter_range(self):
+        for _ in range(30):
+            result = video_builder._build_overlay_filter("hook", 1920)
+            y_str = result.split(":y=")[1].split(":alpha=")[0]
+            y = int(y_str)
+            assert 1920 - 350 - 40 <= y <= 1920 - 350 + 40
+
+
 class TestVideoBuilderUnits:
     """Testes unitários para video_builder."""
 
@@ -151,6 +181,32 @@ class TestVideoBuilderUnits:
         final_cmd = captured_cmds[-1]
         assert "-t" in final_cmd
         assert final_cmd[final_cmd.index("-t") + 1] == "35"
+
+    def test_multi_clip_short_picks_transition_from_curated_list(self, tmp_path):
+        """Cada video sorteia um estilo de transicao xfade (nao sempre
+        'fade') de video_builder._XFADE_TRANSITIONS, aplicado a todos os
+        cortes daquele video."""
+        spec = video_builder.short_spec(duration=35)
+        videos = [Path(f"video{i}.mp4") for i in range(3)]
+
+        captured_cmds = []
+
+        def fake_run_ffmpeg(args):
+            captured_cmds.append(args)
+
+        with patch("utils.video_builder.random.sample", return_value=videos), \
+             patch("utils.video_builder.random.randint", return_value=3), \
+             patch("utils.video_builder.random.choice", return_value="circleopen") as mock_choice, \
+             patch("utils.video_builder.run_ffmpeg", side_effect=fake_run_ffmpeg):
+            video_builder._build_multi_clip_short(
+                spec, videos, audio_path=None, output=tmp_path / "out.mp4", hook="hook",
+            )
+
+        mock_choice.assert_called_once_with(video_builder._XFADE_TRANSITIONS)
+        final_cmd = captured_cmds[-1]
+        filter_complex = final_cmd[final_cmd.index("-filter_complex") + 1]
+        assert "xfade=transition=circleopen" in filter_complex
+        assert "xfade=transition=fade" not in filter_complex
 
     def test_build_generates_both_thumbnail_variants_and_registers_list(self, tmp_path):
         """A/B/C testing: build_pata_jazz_video gera variante A, B e C da
