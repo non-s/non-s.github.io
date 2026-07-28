@@ -1,54 +1,56 @@
 # Pata Jazz — Amber Hours
 
-Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jazz real**. O projeto gera Shorts, vídeos horizontais e transmissões ao vivo para o YouTube usando assets licenciados e APIs públicas.
+Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jazz real**. O projeto gera Shorts verticais 9:16 e publica no YouTube e no TikTok usando assets licenciados e APIs públicas — 100% focado em conteúdo curto.
 
-## Formatos
+## Formato
 
 - **Shorts** (`generate_pata_jazz_short.py`) — vertical 1080×1920, ~35s, **2-3 clipes com crossfade + 1 música de jazz + text overlay do hook nos primeiros 3s**.
-- **Vídeos horizontais** (`generate_pata_jazz_horizontal.py`) — 1920×1080, ~5min (300s, passado explicitamente pelo workflow; o default do script é 240s/4min quando rodado sem `--duration`), **1 clipe + 1 música de jazz**.
-- **Live 24/7** (`generate_pata_jazz_live.py` + `scripts/run_live.py`) — transmissão horizontal 720p contínua com **vários clipes de gatos/cachorros** e **playlist de até 150 faixas de jazz** em loop infinito. Cada sessão do GitHub Actions dura ~350min (limite de job); ao final de uma sessão normal (duração atingida ou SIGTERM do GHA) o broadcast **não é finalizado** - fica "live" sem receber vídeo até a próxima sessão do cron reconectar no mesmo broadcast/stream (`upload_youtube._try_resume_existing_broadcast`), em vez de criar um link novo a cada ~6h. Só finaliza de fato quando o stream nunca ficou ativo ou as reconexões se esgotam (broadcast provavelmente morto do lado do YouTube). Reconecta sozinha (até 200x) se o FFmpeg cair no meio da sessão.
+
+## Plataformas
+
+- **YouTube** (`upload_youtube.py`) — upload direto via YouTube Data API v3 (OAuth), 4x/dia.
+- **TikTok** (`upload_tiktok.py`) — cross-posting via Playwright (browser automation, sem API oficial), disparado logo após cada upload do YouTube (`cross-post.yml`).
+- **Instagram Reels** (`upload_reels.py`) — cross-posting best-effort junto com o TikTok.
 
 ## Recursos inteligentes
 
-- **Mood por horário**: Shorts e horizontais selecionam cenas baseado na hora (manhã = diversão, tarde = fofura, noite = relax)
-- **Multi-clip com crossfade**: Shorts usam 2-3 clipes com transição suave em vez de 1 clipe repetido (validação automática garante que cada clipe é longo o suficiente para o xfade)
+- **Mood por horário**: Shorts selecionam cenas baseado na hora (manhã = diversão, tarde = fofura, noite = relax)
+- **Multi-clip com crossfade**: 2-3 clipes com transição suave em vez de 1 clipe repetido (validação automática garante que cada clipe é longo o suficiente para o xfade)
 - **Text overlay**: Hook aparece como texto no vídeo nos primeiros 3 segundos (drawtext FFmpeg)
-- **Legendas ASS estilizadas (Shorts)**: legendas animadas com posicionamento/estilo via ASS (FFmpeg `ass=` filter) — exclusivo de Shorts onde o texto é parte do hook visual; horizontais e live usam SRT simples como caption track do YouTube (mais acessível, sem overlay)
-- **Legendas SRT automáticas**: SRT gerado via Gemini e enviado como caption track (mimetype correto por extensão)
+- **Legendas ASS estilizadas**: legendas animadas palavra-a-palavra com posicionamento/estilo via ASS (FFmpeg `ass=` filter) — o texto é parte do hook visual
+- **Legenda PT-BR**: segunda caption track em português gerada via Gemini, sem regravar o vídeo
+- **Chapters automáticos**: timestamps `00:00 Título` na descrição para SEO/navegação no YouTube
 - **Multi-canal**: `utils/channel_config.py` abstrai marca/tags/playlists/prompts por canal — hoje só `Pata Jazz`, mas novos canais (`Pata Lofi`, `Pata Classical`...) podem ser registrados em `CHANNELS` sem duplicar o repo nem mudar os módulos consumidores
 - **Música por mood**: faixas de jazz selecionadas por mood (diversão/fofura/relax) em vez de aleatório puro
 - **AI hooks**: títulos/descrições/hashtags/legendas gerados via Gemini com circuit breaker (429/502/503) e fallback local — nunca quebra o pipeline por falha de IA
-- **Thumbnail A/B**: thumbnails geradas com shadow RGBA real (gradiente via `Image.linear_gradient`), redimensionadas automaticamente para <2MB
-- **Live chat commands**: `utils/live_chat.py` lê o chat ao vivo a cada 10s, parseia comandos `!` (ex.: `!scene <cena>`) e escreve respostas no overlay do FFmpeg — sem postar no chat (evita ToS)
-- **FFT visualizer**: overlay de áudio na live com visualizador FFT em tempo real
-- **Dashboard interativo**: `scripts/generate_dashboard.py` gera relatório HTML autocontido (sem deps novas) com analytics, performance por cena/padrão de título, audiência da live e projeção de views — publicado toda semana em **https://non-s.github.io/** via GitHub Pages
+- **Thumbnail A/B/C**: três variantes de thumbnail geradas por vídeo (paleta/wrap diferentes) para testar CTR, com shadow RGBA real (gradiente via `Image.linear_gradient`), redimensionadas automaticamente para <2MB
+- **Dashboard interativo**: `scripts/generate_dashboard.py` gera relatório HTML autocontido (sem deps novas) com analytics, performance por cena/padrão de título e projeção de views — publicado toda semana em **https://non-s.github.io/** via GitHub Pages
 - **Analytics preditivo**: `scripts/predict_views.py` treina regressão linear (Python puro, sem numpy/scikit-learn) sobre os dados históricos e prevê views nos primeiros 7 dias após o upload por cena/padrão/horário — modelo salvo em `_data/view_predictor.json`, consumido pelo dashboard
 - **Playlists automáticas**: Videos adicionados a playlists por mood/formato (cache persistente em `_data/playlist_cache.json`)
 - **Analytics semanal com feedback loop real**: coleta views/likes/comentários, cruza com a cena e o padrão de título que geraram cada vídeo (`_data/video_tags.json`, gravado no upload) e grava um peso por cena (`_data/scene_performance.json`) e por padrão de título (`_data/title_pattern_performance.json`) — `scene_for_mood()` e `pick_title_pattern()` passam a preferir o que performa melhor de verdade, sem nunca zerar as demais opções
-- **Contagem de espectadores da live**: uma amostra de `concurrentViewers` por segmento de FFmpeg, salva em `_data/live_viewer_history.json`
 - **Rastreio de quota YouTube**: `utils/quota_tracker.py` loga unidades de quota gastas em `_data/quota_usage.json` (com lock e thread-safe), com alerta em 8000/dia (limite 10000); `retry_youtube_call` registra automaticamente o custo por endpoint após sucesso
-- **Checagem de saúde da live**: `scripts/check_live_health.py` consulta a cada 2h se há um broadcast `active` de verdade no canal — se não houver, abre uma Issue automática no GitHub com link do run falho, último status conhecido e comando para reexecutar (fecha sozinha quando a live volta)
 - **Marca consistente**: Todos os títulos começam com "Pata Jazz |"
 - **Conteúdo em inglês**: título, descrição, hashtags e legendas são gerados em inglês (`utils/seo_keywords.py`, `utils/metadata_engine.py`, `utils/caption_engine.py`) - o formato pet+jazz não depende de idioma e o volume de busca em inglês é muito maior que o equivalente em português. O system prompt padrão do Gemini (`utils/ai_helper.py::_default_system_prompt`) também reforça isso - qualquer chamada de IA que precise de outro idioma tem que passar `system=` explicitamente.
 - **Robustez de APIs**: Circuit breaker no Gemini (429/502/503), retry exponencial no YouTube, fallback local em todas as chamadas de IA
 - **Thumbnails com shadow RGBA**: Gradiente via `Image.linear_gradient` (Pillow ≥9.1), shadows com alpha real
-- **Live sem deadlock**: stderr do FFmpeg redirecionado para arquivo (evita congelamento em lives longas)
 
 ## APIs reais utilizadas
 
 | Provedor | Uso |
 |----------|-----|
-| **Gemini** | Títulos, descrições, hashtags e legendas SRT |
+| **Gemini** | Títulos, descrições, hashtags e legendas |
 | **Jamendo** | Músicas jazz com licença segura |
 | **Pixabay** | Clips reais de gatos e cachorros |
-| **YouTube Data API v3** | Upload de vídeos, live streams, playlists, captions e analytics |
+| **YouTube Data API v3** | Upload de vídeos, playlists, captions e analytics |
+| **TikTok** (via Playwright) | Cross-posting de Shorts sem API oficial |
 
 ## Stack
 
 - **Python 3.11+** (CI roda 3.11; local testado com 3.12/3.14)
 - **FFmpeg** — codificação, concatenação, xfade, drawtext e ffprobe (com timeout)
 - **Pillow ≥10.3** — thumbnails (gradiente, shadows RGBA, fontes TrueType)
-- **pytest** — testes unitários (333 testes, cobertura ≥70% de `utils/`)
+- **Playwright** — upload no TikTok via browser automation
+- **pytest** — testes unitários (cobertura ≥85% de `utils/`+`scripts/`)
 - **ruff** — lint (regras E, F, W, I, UP, B)
 - **GitHub Actions** — CI/CD e agendamento
 
@@ -64,32 +66,29 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 │   ├── audio/animal_jazz/                # Faixas jazz (Jamendo)
 │   ├── video/animal_broll/               # B-roll de gatos/cachorros (Pixabay)
 │   └── thumbnails/                       # Thumbnails geradas
-├── _data/                                # Estado local (analytics, live_state, quota)
+├── _data/                                # Estado local (analytics, quota, etc.)
 ├── _videos/                              # Vídeos gerados e logs de erro
 ├── docs/
 │   ├── ARCHITECTURE.md                   # Fluxo de dados, design, componentes
-│   ├── CONTRIBUTING.md                   # Setup, testes, convenções, novos canais/workflows
-│   └── SELF_HOSTED_RUNNER.md             # Runner self-hosted (live longa)
+│   └── CONTRIBUTING.md                   # Setup, testes, convenções, novos canais/workflows
 ├── scripts/
-│   ├── batch_generate.py                 # Geração em lote
-│   ├── check_live_health.py              # Checagem de broadcast "active" (abre issue com contexto)
+│   ├── batch_generate.py                 # Geração em lote de shorts
+│   ├── cleanup_youtube.py                # Remove vídeos legados (horizontal/live) do canal
 │   ├── collect_analytics.py              # Coleta de métricas YouTube + feedback loop
 │   ├── generate_dashboard.py             # Dashboard HTML a partir de _data/
 │   ├── healthcheck.py                    # Verifica dependências e tokens
 │   ├── predict_views.py                  # Analytics preditivo (regressão linear)
 │   ├── publish_weekly_batch.py           # Publica próximos N do lote semanal
-│   ├── run_live.py                       # Inicia live com supervisão (reconecta até 200x)
 │   ├── sync_animal_broll.py              # Sync Pixabay (gatos/cachorros)
 │   └── sync_jazz_music.py                # Sync Jamendo (jazz)
 ├── tests/                                # Testes pytest
 ├── utils/
 │   ├── ai_helper.py                      # Chamadas Gemini (circuit breaker + fallback)
 │   ├── animal_branding.py                # Identidade Pata Jazz
-│   ├── caption_engine.py                 # Legendas SRT (YouTube) + ASS (Shorts overlay)
+│   ├── caption_engine.py                 # Legendas ASS animadas + PT-BR + chapters
 │   ├── channel_config.py                 # Abstração multi-canal (ChannelConfig + CHANNELS)
 │   ├── content_strategy.py               # Mood por horário + cena ponderada por performance
 │   ├── ffmpeg_helpers.py                 # FFmpeg e ffprobe (com timeout)
-│   ├── live_chat.py                      # Le chat ao vivo + comandos ! + overlay FFmpeg
 │   ├── log_config.py                     # Logging centralizado
 │   ├── media_pool.py                     # Pool de mídia local (anti-repeat)
 │   ├── metadata_engine.py                # Títulos/descrições/hashtags
@@ -97,14 +96,16 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 │   ├── quota_tracker.py                  # Rastreio de quota YouTube (_data/quota_usage.json)
 │   ├── seo_keywords.py                   # SEO + pick_title_pattern ponderado por performance
 │   ├── state_lock.py                     # filelock para estado JSON compartilhado
-│   ├── thumbnail_engine.py               # Geração de thumbnails (<2MB, shadow RGBA)
-│   ├── video_builder.py                  # Pipeline comum (multi-clip + overlay + ASS)
+│   ├── thumbnail_engine.py               # Geração de thumbnails A/B/C (<2MB, shadow RGBA)
+│   ├── tiktok_uploader.py                # Upload no TikTok via Playwright
+│   ├── video_builder.py                  # Pipeline de geração (multi-clip + overlay + ASS)
 │   ├── video_validator.py                # Validação técnica dos vídeos
 │   ├── youtube_oauth.py                  # OAuth YouTube
 │   └── youtube_retry.py                  # Retry exponencial + registro automático de quota
-├── generate_pata_jazz_*.py               # Geradores (short/horizontal/live)
-├── upload_youtube.py                     # Upload de vídeo (insert + caption + playlist)
-├── live_broadcast.py                     # Live 24/7 (liveBroadcast/liveStream + bind) — separado de upload_youtube
+├── generate_pata_jazz_short.py           # Gerador do Short
+├── upload_youtube.py                     # Upload de vídeo no YouTube (insert + caption + playlist)
+├── upload_tiktok.py                      # Cross-posting no TikTok (Playwright)
+├── upload_reels.py                       # Cross-posting no Instagram Reels
 ├── Makefile                              # Atalhos: test, test-cov, lint, format, typecheck, security, sync, clean, all
 ├── .pre-commit-config.yaml               # ruff + mypy + higiene (check-yaml, EOF, trailing-whitespace)
 ├── pyproject.toml                        # ruff/pytest/coverage/mypy config
@@ -124,6 +125,7 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 
 ```bash
 pip install -r requirements-dev.txt  # inclui ruff, pytest, pytest-cov
+playwright install chromium          # browser usado pelo upload no TikTok
 ```
 
 Instale também o FFmpeg e certifique-se de que `ffmpeg` e `ffprobe` estão no PATH.
@@ -138,11 +140,13 @@ PIXABAY_API_KEY=xxx
 JAMENDO_CLIENT_ID=xxx  # opcional (recomendado)
 GEMINI_MODEL=gemini-2.0-flash-001  # opcional (default)
 YOUTUBE_PRIVACY=public
+TIKTOK_EMAIL=xxx     # opcional (cross-posting no TikTok)
+TIKTOK_PASSWORD=xxx  # opcional (cross-posting no TikTok)
 ```
 
 ### 3. Credenciais do YouTube
 
-Para upload e live, é necessário um token OAuth do YouTube. Execute uma vez:
+Para upload, é necessário um token OAuth do YouTube. Execute uma vez:
 
 ```bash
 python utils/youtube_oauth.py
@@ -158,30 +162,27 @@ Salve o JSON resultante como `youtube_token.json` na raiz do projeto (ou use o s
 - `PIXABAY_API_KEY`
 - `JAMENDO_CLIENT_ID`
 - `YOUTUBE_TOKEN` — JSON do token OAuth do YouTube
+- `TIKTOK_EMAIL` / `TIKTOK_PASSWORD` — login usado pelo cross-posting no TikTok
 
 ### Variables
 
 - `PATA_JAZZ_ENABLED` — `1` para ligar todos os workflows.
 - `PATA_JAZZ_SHORTS_ENABLED` — `1` para Shorts.
-- `PATA_JAZZ_HORIZONTAL_ENABLED` — `1` para vídeos horizontais.
-- `PATA_JAZZ_LIVE_ENABLED` — `1` para live.
 - `YOUTUBE_PRIVACY` — `public`, `unlisted` ou `private`.
 
 ## Grade de publicação (GitHub Actions)
 
 | Conteúdo | Frequência | Horário BRT | Workflow |
 |---|---|---|---|
-| **Shorts** | 4 por dia | 07:00, 13:00, 18:00, 22:00 | `pata-jazz-shorts.yml` |
-| **Vídeo horizontal** | 1 por dia | 10:00 | `pata-jazz-horizontal.yml` |
-| **Live** | 24/7, sessões de ~320min encadeadas | a cada 6h (`0 */6 * * *` UTC) | `pata-jazz-youtube-live.yml` |
+| **Shorts (YouTube)** | 4 por dia | 07:00, 13:00, 18:00, 22:00 | `pata-jazz-shorts.yml` |
+| **Cross-post (TikTok/Reels)** | Após cada Short publicado | — | `cross-post.yml` |
 | **Sync de assets** | 2x por semana | Ter e Sex 03:00 | `pata-jazz-sync.yml` |
 | **Analytics** | 1x por semana | Segunda 03:00 | `pata-jazz-analytics.yml` |
-| **Checagem de saúde da live** | A cada 2h | `0 */2 * * *` UTC | `pata-jazz-live-healthcheck.yml` |
-| **Lote semanal** (manual/eventual) | Gera 28 shorts + 7 horizontais de uma vez, publica 6/dia até esgotar | só disparo manual (`action: all`/`generate`/`publish`) | `pata-jazz-weekly.yml` |
+| **Lote semanal** (manual/eventual) | Gera 35 shorts de uma vez, publica 6/dia até esgotar | só disparo manual (`action: all`/`generate`/`publish`) | `pata-jazz-weekly.yml` |
 
-**Total semanal (crons diários):** 4 Shorts/dia + 1 Horizontal/dia = **35 vídeos/semana**, mais a live contínua. O lote semanal (`pata-jazz-weekly.yml`) é um mecanismo separado e não roda por padrão — só produz vídeos extras quando disparado manualmente com `action: all`/`generate`/`publish`.
+**Total semanal (crons diários):** 4 Shorts/dia × 7 = **28 vídeos/semana** no YouTube, cada um cross-postado para TikTok e Reels. O lote semanal (`pata-jazz-weekly.yml`) é um mecanismo separado e não roda por padrão — só produz vídeos extras quando disparado manualmente com `action: all`/`generate`/`publish`.
 
-> **Nota sobre quota (histórico):** o lote semanal já teve um cron diário próprio de "publicar próximos 6" rodando em paralelo aos crons de Shorts/Horizontal - isso empilhava ~11 uploads/dia, passando da quota de ~10.000 unidades/dia da API (cada upload custa ~1.600 unidades) e causando falhas em produção (24-25/07). O cron foi removido; hoje só os crons de Shorts (4/dia) + Horizontal (1/dia) publicam automaticamente. Se for rodar `pata-jazz-weekly.yml` manualmente, ainda vale conferir a soma de uploads do dia antes de disparar.
+> **Nota sobre quota (histórico):** o lote semanal já teve um cron diário próprio de "publicar próximos 6" rodando em paralelo ao cron de Shorts - isso empilhava uploads/dia, passando da quota de ~10.000 unidades/dia da API (cada upload custa ~1.600 unidades) e causando falhas em produção (24-25/07). O cron foi removido; hoje só o cron de Shorts (4/dia) publica automaticamente. Se for rodar `pata-jazz-weekly.yml` manualmente, ainda vale conferir a soma de uploads do dia antes de disparar.
 
 ## Execução local
 
@@ -216,12 +217,7 @@ O upload usa o vídeo mais recente gerado (metadados em `_videos/*.json`):
 
 ```bash
 python upload_youtube.py --mode upload --language=en --prefix pata_jazz_short_
-```
-
-### Iniciar uma live
-
-```bash
-python generate_pata_jazz_live.py --stream-url rtmp://a.rtmp.youtube.com/live2/xxxx --duration 30 --resolution 1280x720
+python upload_tiktok.py --all --prefix pata_jazz_short_
 ```
 
 ### Coletar analytics
@@ -286,7 +282,7 @@ make all          # lint test typecheck
 | `Pool de jazz vazio` | Nenhuma música baixada ainda | Rode `scripts/sync_jazz_music.py` |
 | `Validation failed: resolução` | FFmpeg gerou arquivo fora do formato | Verifique logs em `_videos/last_error.txt` (histórico com timestamp) |
 | Upload retorna 401 | Token OAuth expirado | Renove em `utils/youtube_oauth.py` |
-| Live cai após alguns minutos | Deadlock de pipe (corrigido) | stderr agora vai para `_videos/live_ffmpeg.log` |
+| TikTok pede login novamente | `tiktok_state.json` expirado/ausente | Rode `upload_tiktok.py` localmente uma vez com `TIKTOK_HEADLESS=0` para recriar a sessão |
 | Thumbnail > 2MB | Imagem muito grande | Já tratado por `_save_under_2mb()` (redimensiona se necessário) |
 | `Nenhuma fonte TrueType encontrada` | Fontes não instaladas | Instale DejaVu/arial ou defina `PIL_IMAGE_FONT_PATH` |
 | Gemini retorna vazio | Circuit breaker aberto ou modelo inválido | Verifique `GEMINI_MODEL` (default: `gemini-2.0-flash-001`) |

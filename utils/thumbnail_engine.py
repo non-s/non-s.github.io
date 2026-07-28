@@ -416,34 +416,6 @@ def _render_thumbnail(
     _save_under_2mb(img.convert("RGB"), output)
 
 
-def make_horizontal_thumbnail(
-    hook: str,
-    emoji: str,
-    output: Path,
-    brand: str = "Pata Jazz",
-    video_path: Path | None = None,
-    variant: str = "A",
-) -> None:
-    """Thumbnail 1280x720 para vídeos longos horizontais."""
-    width, height = 1280, 720
-    cfg = _LayoutConfig(
-        border_margin=40,
-        border_radius=40,
-        border_width=4,
-        emoji_y=100,
-        emoji_shadow_offset=(4, 4),
-        hook_y_start=280,
-        hook_wrap_width=22,
-        hook_line_height=70,
-        brand_y=height - 120,
-        crop_target_ratio=None,
-        overlay_alpha=128,
-        frame_timestamp="00:00:02",
-    )
-    _render_thumbnail(width, height, hook, emoji, output, brand, video_path, cfg, variant=variant)
-    log.info("Thumbnail horizontal salva: %s (variante %s)", output, variant)
-
-
 def make_short_thumbnail(
     hook: str,
     emoji: str,

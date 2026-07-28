@@ -60,16 +60,6 @@ class TestPataJazzConfig:
 
     def test_playlists_by_kind(self):
         assert PATA_JAZZ.playlists_by_kind["short"] == "Pata Jazz | Shorts"
-        assert "horizontal" in PATA_JAZZ.playlists_by_kind
-
-    def test_live_tags(self):
-        assert isinstance(PATA_JAZZ.live_tags, list)
-        assert len(PATA_JAZZ.live_tags) > 0
-        assert "Pata Jazz" in PATA_JAZZ.live_tags
-
-    def test_live_title_prompt(self):
-        assert isinstance(PATA_JAZZ.live_title_prompt, str)
-        assert "live stream" in PATA_JAZZ.live_title_prompt.lower()
 
     def test_seo_keywords(self):
         assert "cuteness" in PATA_JAZZ.seo_keywords
@@ -79,9 +69,8 @@ class TestPataJazzConfig:
         assert "jazz" in PATA_JAZZ.seo_keywords["music"]
 
     def test_title_patterns(self):
-        for kind in ("short", "horizontal", "live"):
-            assert kind in PATA_JAZZ.title_patterns
-            assert len(PATA_JAZZ.title_patterns[kind]) > 0
+        assert "short" in PATA_JAZZ.title_patterns
+        assert len(PATA_JAZZ.title_patterns["short"]) > 0
 
     def test_emojis(self):
         assert "brand" in PATA_JAZZ.emojis
@@ -132,8 +121,6 @@ class TestRegistryAndSetActive:
             base_tags=["Pata Test", "lofi"],
             playlists_by_mood={"relax": "Pata Test | Relax"},
             playlists_by_kind={"short": "Pata Test | Shorts"},
-            live_tags=["lofi for pets"],
-            live_title_prompt="prompt",
             seo_keywords={"cuteness": ["cute"]},
             title_patterns={"short": ["{animal}"]},
             emojis={"brand": "🐾"},
@@ -164,8 +151,6 @@ class TestRegistryAndSetActive:
             base_tags=["Pata Other", "classical"],
             playlists_by_mood={},
             playlists_by_kind={},
-            live_tags=[],
-            live_title_prompt="p",
             seo_keywords={},
             title_patterns={},
             emojis={"brand": "🐾"},

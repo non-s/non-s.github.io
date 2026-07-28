@@ -42,7 +42,7 @@ def generate_metadata(
     hook: str,
     scene: str,
     duration: int,
-    kind: Literal["short", "horizontal", "live"],
+    kind: Literal["short"],
     emoji: str,
     fallback_title: str = "",
     fallback_description: str = "",

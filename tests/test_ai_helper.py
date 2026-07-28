@@ -362,7 +362,7 @@ class TestRecordAiMetric:
     def test_record_appends_entry(self, tmp_path: Path):
         f = tmp_path / "ai_metrics.json"
         ai_helper._record_ai_metric("short_metadata", 123.4, fell_back=False)
-        ai_helper._record_ai_metric("horizontal_metadata", 45.6, fell_back=True)
+        ai_helper._record_ai_metric("short_caption", 45.6, fell_back=True)
 
         import json
         data = json.loads(f.read_text(encoding="utf-8"))
@@ -371,7 +371,7 @@ class TestRecordAiMetric:
         assert data[0]["fell_back"] is False
         assert data[0]["latency_ms"] == 123.4
         assert "at" in data[0]
-        assert data[1]["task"] == "horizontal_metadata"
+        assert data[1]["task"] == "short_caption"
         assert data[1]["fell_back"] is True
 
     def test_record_bounded_to_max_entries(self, tmp_path: Path):

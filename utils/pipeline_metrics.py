@@ -1,7 +1,7 @@
 """utils/pipeline_metrics.py — metricas de execucao do pipeline de conteudo.
 
-Registra cada execucao de um estagio (geracao de Short, horizontal, upload)
-em _data/pipeline_metrics.json com status (sucesso/falha), duracao, tipo
+Registra cada execucao de um estagio (geracao de Short, upload) em
+_data/pipeline_metrics.json com status (sucesso/falha), duracao, tipo
 (kind) e timestamp. Mantem no maximo as ultimas 500 entradas para nao crescer
 indefinidamente. pipeline_summary() agrega por estagio: taxa de sucesso,
 numero de runs, duracao media, etc.
@@ -35,7 +35,7 @@ def record_pipeline_run(
         stage: nome do estagio (ex: "generate_short", "upload").
         success: True se a execucao foi bem-sucedida.
         duration_seconds: tempo gasto em segundos (default 0).
-        kind: tipo/subcategoria livre (ex: "vertical", "horizontal").
+        kind: tipo/subcategoria livre (ex: "short").
     """
     entry = {
         "stage": stage,

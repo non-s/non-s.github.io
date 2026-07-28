@@ -3,15 +3,6 @@ name: "Pata Jazz - Batch Manual"
 on:
   workflow_dispatch:
     inputs:
-      kind:
-        description: "Tipo de conteudo a gerar"
-        required: true
-        default: "short"
-        type: choice
-        options:
-          - short
-          - horizontal
-          - live
       count:
         description: "Quantidade (1 a 10)"
         required: true
@@ -38,12 +29,12 @@ permissions:
   contents: read
 
 concurrency:
-  group: pata-jazz-batch-${{ github.event.inputs.kind }}
+  group: pata-jazz-batch
   cancel-in-progress: false
 
 jobs:
   batch:
-    name: "Gerar e publicar conteudo Pata Jazz"
+    name: "Gerar e publicar shorts Pata Jazz"
     if: ${{ vars.PATA_JAZZ_ENABLED == '1' }}
     runs-on: ubuntu-latest
     timeout-minutes: 180
@@ -52,7 +43,6 @@ jobs:
     environment: production
     env:
       YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
-      BATCH_KIND: ${{ github.event.inputs.kind }}
       BATCH_COUNT: ${{ github.event.inputs.count }}
       BATCH_UPLOAD: ${{ github.event.inputs.upload }}
     steps:
@@ -71,7 +61,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
           JAMENDO_CLIENT_ID: ${{ secrets.JAMENDO_CLIENT_ID }}
-        run: python scripts/healthcheck.py --mode live
+        run: python scripts/healthcheck.py --mode fast
       - name: "Sincronizar b-roll"
         env:
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}

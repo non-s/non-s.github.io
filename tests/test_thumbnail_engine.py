@@ -43,14 +43,6 @@ class TestThumbnailEngineRealRender:
     que os testes mockados abaixo não conseguem detectar, ex.: cores mal
     formadas passadas para ImageDraw."""
 
-    def test_make_horizontal_thumbnail_real_render(self, tmp_path):
-        output = tmp_path / "horizontal.png"
-        thumbnail_engine.make_horizontal_thumbnail(
-            hook="Gatinhos Fofos", emoji="🐱", output=output, brand="Pata Jazz"
-        )
-        assert output.exists()
-        assert output.stat().st_size > 0
-
     def test_make_short_thumbnail_real_render(self, tmp_path):
         output = tmp_path / "short.png"
         thumbnail_engine.make_short_thumbnail(
@@ -157,29 +149,6 @@ class TestThumbnailVariantC:
 
 class TestThumbnailEngine:
     """Testes para thumbnail_engine."""
-
-    @patch('PIL.Image.new')
-    @patch('utils.thumbnail_engine.ImageDraw')
-    @patch('utils.thumbnail_engine.ImageFont')
-    def test_make_horizontal_thumbnail(self, mock_font, mock_draw, mock_image, tmp_path):
-        """Testa criação de thumbnail horizontal."""
-        mock_img = MagicMock()
-        mock_image.return_value = mock_img
-        mock_draw_instance = MagicMock()
-        mock_draw.Draw.return_value = mock_draw_instance
-        mock_font.truetype.return_value = MagicMock()
-
-        output = tmp_path / "test_thumb.png"
-
-        # Não deve levantar exceção
-        thumbnail_engine.make_horizontal_thumbnail(
-            hook="Gatinhos Fofos",
-            emoji="🐱",
-            output=output,
-            brand="Pata Jazz"
-        )
-
-        mock_image.assert_called()
 
     @patch('PIL.Image.new')
     @patch('utils.thumbnail_engine.ImageDraw')

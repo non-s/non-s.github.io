@@ -6,7 +6,7 @@ on:
     # = 10:00, 16:00, 21:00, 01:00 UTC
     # (desde jun/2026 videos.insert tem cota propria de ~100/dia, separada
     # do pool de 10k unidades/dia compartilhado pelos outros endpoints - 4
-    # shorts + 1 horizontal = 5 uploads/dia fica bem abaixo dos dois limites)
+    # shorts/dia fica bem abaixo dos dois limites)
     - cron: "0 10,16,21,1 * * *"
   workflow_dispatch:
     inputs:
@@ -45,7 +45,7 @@ jobs:
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
       - name: "Healthcheck (pre-flight)"
-        run: python scripts/healthcheck.py --mode live
+        run: python scripts/healthcheck.py --mode fast
       - name: "Sincronizar b-roll (gatos/cachorros)"
         run: python scripts/sync_animal_broll.py || echo "::warning::B-roll sync falhou"
       - name: "Sincronizar jazz"

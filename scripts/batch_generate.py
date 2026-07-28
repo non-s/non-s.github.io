@@ -1,9 +1,8 @@
 """
-scripts/batch_generate.py — gera múltiplos conteúdos em sequência (short/horizontal/live).
+scripts/batch_generate.py — gera múltiplos shorts em sequência.
 
 Argumentos de linha de comando (com fallback para env vars, para compat
 com workflows existentes que injetam via environment):
-    --kind=short|horizontal|live   (BATCH_KIND)
     --count=1..10                   (BATCH_COUNT)
     --upload=true|false             (BATCH_UPLOAD)
 """
@@ -34,17 +33,15 @@ def _run(cmd: list[str], env: dict | None = None) -> int:
     return result.returncode
 
 
-def _parse_args(argv: list[str] | None = None) -> tuple[str, int, bool]:
-    """Resolve kind/count/upload: argparse se presente, com fallback para
-    env vars (BATCH_KIND/BATCH_COUNT/BATCH_UPLOAD). Mantem compatibilidade
+def _parse_args(argv: list[str] | None = None) -> tuple[int, bool]:
+    """Resolve count/upload: argparse se presente, com fallback para
+    env vars (BATCH_COUNT/BATCH_UPLOAD). Mantem compatibilidade
     com workflows que injetam via environment."""
-    parser = argparse.ArgumentParser(description="Batch generator Pata Jazz")
-    parser.add_argument("--kind", default=None, help="short|horizontal|live")
+    parser = argparse.ArgumentParser(description="Batch generator Pata Jazz (shorts)")
     parser.add_argument("--count", default=None, help="1..10")
     parser.add_argument("--upload", default=None, help="true|false")
     args, _ = parser.parse_known_args(argv)
 
-    kind = args.kind or os.environ.get("BATCH_KIND", "short")
     raw_count = args.count if args.count is not None else os.environ.get("BATCH_COUNT", "1")
     raw_upload = args.upload if args.upload is not None else os.environ.get("BATCH_UPLOAD", "true")
     upload = str(raw_upload).lower() in ("1", "true", "yes")
@@ -52,48 +49,35 @@ def _parse_args(argv: list[str] | None = None) -> tuple[str, int, bool]:
         count = int(raw_count)
     except (TypeError, ValueError):
         count = -1
-    return kind, count, upload
+    return count, upload
 
 
 def main(argv: list[str] | None = None) -> int:
     configure_logging()
 
-    kind, count, upload = _parse_args(argv)
+    count, upload = _parse_args(argv)
 
-    if kind not in ("short", "horizontal", "live"):
-        log.error("BATCH_KIND invalido: %s", kind)
-        return 1
     if not 1 <= count <= 10:
         log.error("BATCH_COUNT deve ser entre 1 e 10")
         return 1
 
     for i in range(count):
-        log.info("=== Batch %d/%d (%s) ===", i + 1, count, kind)
-        if kind == "short":
-            rc = _run([sys.executable, "generate_pata_jazz_short.py"])
-        elif kind == "horizontal":
-            rc = _run([sys.executable, "generate_pata_jazz_horizontal.py"])
-        else:
-            # Propaga envs de live para o run_live.py usar os mesmos valores
-            # definidos no workflow (duracao, resolucao, privacy).
-            live_env = {
-                k: os.environ[k]
-                for k in ("YOUTUBE_PRIVACY", "LIVE_RESOLUTION", "LIVE_DURATION_MINUTES")
-                if k in os.environ
-            }
-            rc = _run([sys.executable, "scripts/run_live.py"], env=live_env)
+        log.info("=== Batch %d/%d (short) ===", i + 1, count)
+        rc = _run([sys.executable, "generate_pata_jazz_short.py"])
         if rc != 0:
-            log.error("Falha ao gerar %s %d", kind, i + 1)
+            log.error("Falha ao gerar short %d", i + 1)
             return rc
 
-        if upload and kind != "live":
-            prefix = f"pata_jazz_{kind}_"
-            rc = _run([sys.executable, "upload_youtube.py", "--mode", "upload", "--language", "en", "--prefix", prefix])
+        if upload:
+            rc = _run([
+                sys.executable, "upload_youtube.py",
+                "--mode", "upload", "--language", "en", "--prefix", "pata_jazz_short_",
+            ])
             if rc != 0:
-                log.error("Falha no upload %s %d", kind, i + 1)
+                log.error("Falha no upload %d", i + 1)
                 return rc
 
-    log.info("Batch concluido: %d x %s", count, kind)
+    log.info("Batch concluido: %d shorts", count)
     return 0
 
 
