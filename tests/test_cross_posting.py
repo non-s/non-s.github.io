@@ -78,13 +78,62 @@ class TestUploadReelsNotConfigured:
         assert any("scaffolding" in rec.message.lower() for rec in caplog.records)
 
 
+class TestFindPendingTiktokVideos:
+    """_find_pending_tiktok_videos: usa criterio proprio (tiktok_url), nao
+    o filtro published/video_id do YouTube (bug real corrigido - ver
+    docstring da funcao)."""
+
+    def test_video_without_tiktok_url_is_pending(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(upload_tiktok, "OUTPUT_DIR", tmp_path)
+        _write_video(tmp_path, "pata_jazz_short_1", {"title": "A"})
+
+        result = upload_tiktok._find_pending_tiktok_videos()
+
+        assert len(result) == 1
+        assert result[0][1]["title"] == "A"
+
+    def test_video_with_tiktok_url_is_excluded(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(upload_tiktok, "OUTPUT_DIR", tmp_path)
+        _write_video(tmp_path, "pata_jazz_short_1", {"title": "A", "tiktok_url": "https://tiktok.com/x"})
+
+        assert upload_tiktok._find_pending_tiktok_videos() == []
+
+    def test_video_published_on_youtube_but_not_tiktok_is_still_pending(self, tmp_path, monkeypatch):
+        """O bug corrigido: um video ja publicado no YouTube (video_id/
+        published setados pelo lote semanal) NAO deve ser pulado pelo
+        cross-posting do TikTok so por causa disso - sao publicacoes
+        independentes em plataformas diferentes."""
+        monkeypatch.setattr(upload_tiktok, "OUTPUT_DIR", tmp_path)
+        _write_video(tmp_path, "pata_jazz_short_1", {
+            "title": "A", "published": True, "video_id": "yt123",
+        })
+
+        result = upload_tiktok._find_pending_tiktok_videos()
+
+        assert len(result) == 1
+        assert result[0][1]["video_id"] == "yt123"
+
+    def test_skips_video_missing_mp4_file(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(upload_tiktok, "OUTPUT_DIR", tmp_path)
+        (tmp_path / "pata_jazz_short_1.json").write_text(json.dumps({"title": "A"}), encoding="utf-8")
+
+        assert upload_tiktok._find_pending_tiktok_videos() == []
+
+    def test_skips_corrupted_json(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(upload_tiktok, "OUTPUT_DIR", tmp_path)
+        (tmp_path / "pata_jazz_short_1.mp4").write_bytes(b"x")
+        (tmp_path / "pata_jazz_short_1.json").write_text("not json{{{", encoding="utf-8")
+
+        assert upload_tiktok._find_pending_tiktok_videos() == []
+
+
 class TestCrossPostAllUnpublished:
     def test_tiktok_no_unpublished_returns_empty(self, tmp_path, monkeypatch):
-        monkeypatch.setattr("scripts.publish_weekly_batch.OUTPUT_DIR", tmp_path)
+        monkeypatch.setattr("upload_tiktok.OUTPUT_DIR", tmp_path)
         assert upload_tiktok.cross_post_all_unpublished() == []
 
     def test_tiktok_unpublished_without_credentials_returns_empty(self, tmp_path, monkeypatch):
-        monkeypatch.setattr("scripts.publish_weekly_batch.OUTPUT_DIR", tmp_path)
+        monkeypatch.setattr("upload_tiktok.OUTPUT_DIR", tmp_path)
         _write_video(tmp_path, "pata_jazz_short_1", {"title": "A"})
         with patch.dict("os.environ", {}, clear=False), \
              patch("os.environ.get", _no_env("TIKTOK_EMAIL", "TIKTOK_PASSWORD")):
@@ -95,7 +144,7 @@ class TestCrossPostAllUnpublished:
         jeito - continuar tentando so aumenta o risco de a conta ser
         bloqueada por excesso de tentativas. Aborta apos N falhas seguidas
         em vez de percorrer o lote inteiro."""
-        monkeypatch.setattr("scripts.publish_weekly_batch.OUTPUT_DIR", tmp_path)
+        monkeypatch.setattr("upload_tiktok.OUTPUT_DIR", tmp_path)
         for i in range(5):
             _write_video(tmp_path, f"pata_jazz_short_{i}", {"title": f"V{i}"})
 
@@ -107,7 +156,7 @@ class TestCrossPostAllUnpublished:
         assert mock_upload.call_count == upload_tiktok._MAX_CONSECUTIVE_FAILURES
 
     def test_tiktok_failure_counter_resets_on_success(self, tmp_path, monkeypatch):
-        monkeypatch.setattr("scripts.publish_weekly_batch.OUTPUT_DIR", tmp_path)
+        monkeypatch.setattr("upload_tiktok.OUTPUT_DIR", tmp_path)
         for i in range(3):
             _write_video(tmp_path, f"pata_jazz_short_{i}", {"title": f"V{i}"})
 
@@ -123,7 +172,7 @@ class TestCrossPostAllUnpublished:
         assert result == ["https://tiktok.com/@x/video/1"]
 
     def test_tiktok_marks_metadata_with_url_on_success(self, tmp_path, monkeypatch):
-        monkeypatch.setattr("scripts.publish_weekly_batch.OUTPUT_DIR", tmp_path)
+        monkeypatch.setattr("upload_tiktok.OUTPUT_DIR", tmp_path)
         video_path = _write_video(tmp_path, "pata_jazz_short_1", {"title": "A"})
 
         with patch("upload_tiktok.upload_to_tiktok", return_value="https://tiktok.com/@x/video/1"), \

@@ -35,17 +35,40 @@ OUTPUT_DIR = ROOT / "_videos"
 _MAX_CONSECUTIVE_FAILURES = 2
 
 
+def _find_pending_tiktok_videos(prefix: str = "pata_jazz_") -> list[tuple[Path, dict]]:
+    """Encontra videos gerados que ainda nao foram cross-postados pro TikTok.
+
+    Criterio proprio (presenca de 'tiktok_url' no metadata), NAO o mesmo de
+    scripts.publish_weekly_batch._find_unpublished_videos (que rastreia
+    publicacao no YOUTUBE via 'published'/'video_id'). Reusar aquele filtro
+    aqui era um bug real: um video publicado no YouTube pelo lote semanal
+    (que grava 'video_id' no proprio .json) seria pulado pelo cross-posting
+    do TikTok mesmo nunca tendo sido postado la - os dois filtros
+    respondem perguntas diferentes.
+    """
+    candidates = sorted(OUTPUT_DIR.glob(f"{prefix}*.json"), key=lambda p: p.stat().st_mtime)
+    pending: list[tuple[Path, dict]] = []
+    for meta_path in candidates:
+        try:
+            data = json.loads(meta_path.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        if data.get("tiktok_url"):
+            continue
+        video_path = meta_path.with_suffix(".mp4")
+        if video_path.exists():
+            pending.append((video_path, data))
+    return pending
+
+
 def cross_post_all_unpublished(prefix: str = "pata_jazz_") -> list[str]:
     """Encontra videos ainda nao cross-postados para o TikTok e envia.
 
-    Reaproveita a logica de publish_weekly_batch._find_unpublished_videos.
     Marca tiktok_url no metadata quando o upload tem sucesso. Aborta cedo
     se houver `_MAX_CONSECUTIVE_FAILURES` falhas seguidas (provavel
     problema de conta/sessao, nao do video individual).
     """
-    from scripts.publish_weekly_batch import _find_unpublished_videos
-
-    unpublished = _find_unpublished_videos(prefix=prefix)
+    unpublished = _find_pending_tiktok_videos(prefix=prefix)
     if not unpublished:
         log.info("Nenhum video aguardando cross-posting para o TikTok.")
         return []

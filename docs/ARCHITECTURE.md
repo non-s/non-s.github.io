@@ -68,7 +68,15 @@ sync (Pixabay/Jamendo) ─┐
 - **Cross-posting via browser automation**: o TikTok não tem uma API pública de
   upload equivalente à do YouTube; `utils/tiktok_uploader.py` usa Playwright
   para logar e publicar como um usuário real faria, com sessão persistida em
-  `tiktok_state.json` para não precisar logar a cada upload.
+  `tiktok_state.json` (cacheada entre runs do `cross-post.yml` via
+  `actions/cache`) para não precisar logar a cada upload.
+- **Rastreio de cross-posting independente por plataforma**: `upload_tiktok.py`
+  decide o que já foi postado no TikTok pela presença de `tiktok_url` no
+  `.json` do vídeo - não pelos campos `published`/`video_id` que
+  `scripts/publish_weekly_batch.py` usa para rastrear publicação no
+  YouTube. São publicações independentes; reusar o filtro do YouTube fazia
+  o cross-posting pular vídeos já publicados lá mesmo sem nunca terem ido
+  pro TikTok.
 - **Multi-canal**: `utils/channel_config.py` abstrai a marca/tags/playlists/prompts
   por canal. Hoje só `PATA_JAZZ` existe, mas novos canais (`Pata Lofi`,
   `Pata Classical`...) podem ser adicionados ao registry `CHANNELS` sem mudar os
