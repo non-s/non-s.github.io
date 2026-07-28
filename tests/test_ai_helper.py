@@ -12,7 +12,8 @@ def _isolate_ai_metrics_file(tmp_path: Path, monkeypatch):
     """ai_text() agora registra metricas em _data/ai_metrics.json (path real
     do repo) via finally - sem isolar, todo teste de ai_text escreveria no
     disco de verdade e poluiria o repo/_data."""
-    monkeypatch.setattr(ai_helper, "AI_METRICS_FILE", tmp_path / "ai_metrics.json")
+    metrics_file = tmp_path / "ai_metrics.json"
+    monkeypatch.setattr(ai_helper, "_ai_metrics_file", lambda: metrics_file)
 
 
 class TestAiHelper:
@@ -410,7 +411,7 @@ class TestRecordAiMetric:
 
         assert result == "ok"
         import json
-        data = json.loads(ai_helper.AI_METRICS_FILE.read_text(encoding="utf-8"))
+        data = json.loads(ai_helper._ai_metrics_file().read_text(encoding="utf-8"))
         assert len(data) == 1
         assert data[0]["task"] == "short_metadata"
         assert data[0]["fell_back"] is False
@@ -429,7 +430,7 @@ class TestRecordAiMetric:
 
         assert result == ""
         import json
-        data = json.loads(ai_helper.AI_METRICS_FILE.read_text(encoding="utf-8"))
+        data = json.loads(ai_helper._ai_metrics_file().read_text(encoding="utf-8"))
         assert len(data) == 1
         assert data[0]["task"] == "hook"
         assert data[0]["fell_back"] is True
@@ -442,7 +443,7 @@ class TestRecordAiMetric:
 
         assert result == ""
         import json
-        data = json.loads(ai_helper.AI_METRICS_FILE.read_text(encoding="utf-8"))
+        data = json.loads(ai_helper._ai_metrics_file().read_text(encoding="utf-8"))
         assert len(data) == 1
         assert data[0]["task"] == "caption"
         assert data[0]["fell_back"] is True

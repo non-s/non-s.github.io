@@ -34,15 +34,13 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from utils.paths import data_dir
 from utils.youtube_retry import retry_youtube_call
 
 if TYPE_CHECKING:
     from googleapiclient.discovery import Resource
 
 log = logging.getLogger(__name__)
-
-ROOT = Path(__file__).resolve().parent.parent
-LIVE_META_DIR = ROOT / "_data"
 
 POLL_INTERVAL_SECONDS = 10
 OVERLAY_TTL_SECONDS = 10
@@ -105,13 +103,16 @@ class LiveChatWatcher:
         service: Resource,
         chat_id: str,
         start_time: float,
-        meta_dir: Path = LIVE_META_DIR,
+        meta_dir: Path | None = None,
         poll_interval: float = POLL_INTERVAL_SECONDS,
     ) -> None:
         self._service = service
         self._chat_id = chat_id
         self._start_time = start_time
-        self._meta_dir = meta_dir
+        # None = resolve no __init__ para data_dir() do canal ativo (nao
+        # pode ser default no signature: active_channel pode mudar entre
+        # runs e o default seria avaliado na importacao).
+        self._meta_dir = meta_dir if meta_dir is not None else data_dir()
         self._poll_interval = poll_interval
         self._page_token = ""
         self._thread: threading.Thread | None = None
@@ -389,10 +390,12 @@ class LiveChatWatcher:
             pass
 
 
-def write_uptime(start_time: float, path: Path = LIVE_META_DIR / "live_uptime.txt") -> None:
+def write_uptime(start_time: float, path: Path | None = None) -> None:
     """Escreve o uptime formatado no arquivo lido pelo drawtext do FFmpeg
     (textfile=...:reload=1). Chamado a cada 1s por uma thread daemon em
     run_live.py."""
+    if path is None:
+        path = data_dir() / "live_uptime.txt"
     try:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(f"\U0001f534 LIVE {_format_uptime(time.time() - start_time)}", encoding="utf-8")
@@ -405,7 +408,7 @@ def start_uptime_writer(start_time: float) -> threading.Thread:
     stop_event = threading.Event()
 
     def _loop() -> None:
-        path = LIVE_META_DIR / "live_uptime.txt"
+        path = data_dir() / "live_uptime.txt"
         while not stop_event.is_set():
             write_uptime(start_time, path)
             stop_event.wait(1.0)

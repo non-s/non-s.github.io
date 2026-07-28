@@ -494,7 +494,7 @@ class TestUptimeWriter:
         assert text.count(":") == 2
 
     def test_start_stop_uptime_writer(self, tmp_path, monkeypatch):
-        monkeypatch.setattr(live_chat, "LIVE_META_DIR", tmp_path)
+        monkeypatch.setattr(live_chat, "data_dir", lambda: tmp_path)
         thread = start_uptime_writer(time.time())
         assert thread.is_alive()
         # Espera o loop escrever pelo menos uma vez.

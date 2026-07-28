@@ -70,7 +70,9 @@ class TestSceneWeights:
 
     def _isolate(self, tmp_path, monkeypatch):
         perf_file = tmp_path / "scene_performance.json"
-        monkeypatch.setattr(content_strategy, "_SCENE_PERFORMANCE_FILE", perf_file)
+        monkeypatch.setattr(
+            content_strategy, "_scene_performance_file", lambda: perf_file
+        )
         return perf_file
 
     def test_no_performance_file_falls_back_to_uniform(self, tmp_path, monkeypatch):

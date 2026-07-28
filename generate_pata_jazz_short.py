@@ -14,10 +14,14 @@ import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
+from utils.channel_config import set_channel_from_env
 from utils.content_strategy import current_brt_hour, mood_for_now, scene_for_mood
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.slot_optimizer import optimized_scene_and_pattern
 from utils.video_builder import build_pata_jazz_video, short_spec
+
+# Ativa o canal via YOUTUBE_CHANNEL env var (multi-canal).
+set_channel_from_env()
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT_DIR = ROOT / "_videos"

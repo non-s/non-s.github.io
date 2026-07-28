@@ -18,12 +18,17 @@ from time import sleep
 
 import requests
 
+from utils.paths import data_dir
 from utils.state_lock import state_lock
 
 log = logging.getLogger(__name__)
 
-ROOT = Path(__file__).resolve().parent.parent
-AI_METRICS_FILE = ROOT / "_data" / "ai_metrics.json"
+
+def _ai_metrics_file() -> Path:
+    """Caminho de ai_metrics.json no diretorio de dados do canal ativo."""
+    return data_dir() / "ai_metrics.json"
+
+
 _AI_METRICS_MAX_ENTRIES = 1000
 
 # Padroes que nunca deveriam aparecer num titulo/descricao/legenda gerados.
@@ -93,10 +98,11 @@ def _record_ai_metric(task: str, latency_ms: float, fell_back: bool) -> None:
         "at": datetime.now(UTC).isoformat(),
     }
     try:
-        AI_METRICS_FILE.parent.mkdir(parents=True, exist_ok=True)
-        with state_lock(AI_METRICS_FILE):
+        ai_metrics_file = _ai_metrics_file()
+        ai_metrics_file.parent.mkdir(parents=True, exist_ok=True)
+        with state_lock(ai_metrics_file):
             try:
-                data = json.loads(AI_METRICS_FILE.read_text(encoding="utf-8"))
+                data = json.loads(ai_metrics_file.read_text(encoding="utf-8"))
                 if not isinstance(data, list):
                     data = []
             except (OSError, json.JSONDecodeError):
@@ -105,7 +111,7 @@ def _record_ai_metric(task: str, latency_ms: float, fell_back: bool) -> None:
             if len(data) > _AI_METRICS_MAX_ENTRIES:
                 data = data[-_AI_METRICS_MAX_ENTRIES:]
             try:
-                AI_METRICS_FILE.write_text(
+                ai_metrics_file.write_text(
                     json.dumps(data, ensure_ascii=False, indent=2),
                     encoding="utf-8",
                 )

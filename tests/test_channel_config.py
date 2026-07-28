@@ -126,6 +126,7 @@ class TestRegistryAndSetActive:
         # mas precisamos de um segundo para validar a troca).
         fake = ChannelConfig(
             name="Pata Test",
+            slug="pata_test",
             brand_prefix="Pata Test |",
             hashtag_brand=["#PataTest"],
             base_tags=["Pata Test", "lofi"],
@@ -157,6 +158,7 @@ class TestRegistryAndSetActive:
         # trocar canal muda active_channel.base_tags.
         fake = ChannelConfig(
             name="Pata Other",
+            slug="pata_other",
             brand_prefix="Pata Other |",
             hashtag_brand=["#PataOther"],
             base_tags=["Pata Other", "classical"],

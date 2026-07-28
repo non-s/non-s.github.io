@@ -37,13 +37,45 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from utils import notifier
+from utils.paths import data_dir
 from utils.state_lock import state_lock
 
 log = logging.getLogger(__name__)
 
-ROOT = Path(__file__).resolve().parent.parent
-DATA_DIR = ROOT / "_data"
-QUOTA_FILE = DATA_DIR / "quota_usage.json"
+
+def _quota_file() -> Path:
+    """Caminho de quota_usage.json no diretorio de dados do canal ativo."""
+    return data_dir() / "quota_usage.json"
+
+
+# Alias mantido por compatibilidade de testes/callers que referenciam
+# QUOTA_FILE diretamente. Proxy leve: delega atributos/operacoes a
+# _quota_file() (path do canal ativo) a cada acesso, exceto quando
+# substituido por monkeypatch nos testes.
+class _QuotaFileProxy:
+    def __truediv__(self, other):
+        return _quota_file() / other
+
+    def __fspath__(self):
+        return str(_quota_file())
+
+    def __getattr__(self, name):
+        return getattr(_quota_file(), name)
+
+    def __repr__(self) -> str:
+        return repr(_quota_file())
+
+    def __str__(self) -> str:
+        return str(_quota_file())
+
+    def __eq__(self, other):
+        return _quota_file() == other
+
+    def __hash__(self):
+        return hash(_quota_file())
+
+
+QUOTA_FILE: Path = _QuotaFileProxy()  # type: ignore[assignment]
 
 _LOCK = threading.Lock()
 

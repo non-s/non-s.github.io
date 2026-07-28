@@ -24,12 +24,15 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
 from utils import ffmpeg_helpers
-from utils.channel_config import active_channel
+from utils.channel_config import active_channel, set_channel_from_env
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.state_lock import state_lock
 from utils.youtube_oauth import get_youtube_service
 from utils.youtube_post_upload import add_to_playlists, apply_captions, apply_thumbnail
 from utils.youtube_retry import retry_youtube_call as _retry_youtube_call
+
+# Ativa o canal via YOUTUBE_CHANNEL env var (multi-canal: Pata Lofi, etc).
+set_channel_from_env()
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT_DIR = ROOT / "_videos"

@@ -17,10 +17,14 @@ import random
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
+from utils.paths import data_dir
+
 log = logging.getLogger(__name__)
 
-ROOT = Path(__file__).resolve().parent.parent
-_SCENE_PERFORMANCE_FILE = ROOT / "_data" / "scene_performance.json"
+
+def _scene_performance_file() -> Path:
+    """Caminho de scene_performance.json no diretorio de dados do canal ativo."""
+    return data_dir() / "scene_performance.json"
 
 # Categorias de cenas
 SCENE_CATEGORIES: dict[str, list[str]] = {
@@ -90,7 +94,7 @@ def _scene_weights() -> dict[str, float]:
     """Le _data/scene_performance.json (gerado por collect_analytics.py a
     partir de views reais por cena). Ausente/corrompido = sem preferencia."""
     try:
-        data = json.loads(_SCENE_PERFORMANCE_FILE.read_text(encoding="utf-8"))
+        data = json.loads(_scene_performance_file().read_text(encoding="utf-8"))
         return data if isinstance(data, dict) else {}
     except Exception as exc:
         log.debug("scene_performance.json ausente/corrompido: %s", exc)

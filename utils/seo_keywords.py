@@ -16,11 +16,14 @@ from pathlib import Path
 from typing import Literal
 
 from utils.channel_config import active_channel
+from utils.paths import data_dir
 
 log = logging.getLogger(__name__)
 
-ROOT = Path(__file__).resolve().parent.parent
-_TITLE_PATTERN_PERFORMANCE_FILE = ROOT / "_data" / "title_pattern_performance.json"
+
+def _title_pattern_performance_file() -> Path:
+    """Caminho de title_pattern_performance.json no diretorio do canal ativo."""
+    return data_dir() / "title_pattern_performance.json"
 
 # YouTube aceita ate 15 hashtags, mas descricoes com muitas leem como spam;
 # 8 cobre marca + animal + musica + formato sem exagerar.
@@ -108,7 +111,7 @@ def _title_pattern_weights() -> dict[str, float]:
     title_pattern ja era gravado em video_tags.json desde que
     generate_title_with_pattern existe, mas nunca era lido de volta."""
     try:
-        data = json.loads(_TITLE_PATTERN_PERFORMANCE_FILE.read_text(encoding="utf-8"))
+        data = json.loads(_title_pattern_performance_file().read_text(encoding="utf-8"))
         return data if isinstance(data, dict) else {}
     except Exception as exc:
         log.debug("title_pattern_performance.json ausente/corrompido: %s", exc)

@@ -29,6 +29,7 @@ class ChannelConfig:
     """
 
     name: str  # "Pata Jazz"
+    slug: str  # "pata_jazz" (chave de CHANNELS, usado para _data/<slug>/)
     brand_prefix: str  # "Pata Jazz |"
     hashtag_brand: list[str]  # ["#PataJazz", "#CatJazz", ...]
     base_tags: list[str]  # ["Pata Jazz", "cat", "dog", "jazz", ...]
@@ -46,6 +47,7 @@ class ChannelConfig:
 
 PATA_JAZZ: ChannelConfig = ChannelConfig(
     name="Pata Jazz",
+    slug="pata_jazz",
     brand_prefix="Pata Jazz |",
     hashtag_brand=["#PataJazz", "#CatJazz", "#DogJazz", "#PetJazz"],
     base_tags=["Pata Jazz", "cat", "dog", "jazz", "cute", "relaxing"],
@@ -136,6 +138,7 @@ PATA_JAZZ: ChannelConfig = ChannelConfig(
 
 PATA_LOFI: ChannelConfig = ChannelConfig(
     name="Pata Lofi",
+    slug="pata_lofi",
     brand_prefix="Pata Lofi |",
     hashtag_brand=["#PataLofi", "#LofiPets", "#LofiCats", "#LofiDogs"],
     base_tags=["Pata Lofi", "cat", "dog", "lofi", "study", "chill", "beats"],
@@ -227,6 +230,7 @@ PATA_LOFI: ChannelConfig = ChannelConfig(
 
 PATA_CLASSICAL: ChannelConfig = ChannelConfig(
     name="Pata Classical",
+    slug="pata_classical",
     brand_prefix="Pata Classical |",
     hashtag_brand=["#PataClassical", "#ClassicalPets", "#PianoCats", "#OrchestraDogs"],
     base_tags=["Pata Classical", "cat", "dog", "classical", "piano", "orchestra"],
@@ -334,3 +338,15 @@ def set_channel(name: str) -> None:
     if name not in CHANNELS:
         raise KeyError(f"Canal nao registrado: {name!r}. Disponiveis: {sorted(CHANNELS)}")
     active_channel = CHANNELS[name]
+
+
+def set_channel_from_env() -> None:
+    """Le YOUTUBE_CHANNEL env var e ativa o canal correspondente.
+
+    Nao faz nada se a env var nao estiver definida (mantem Pata Jazz default).
+    Usado no startup dos scripts para suporte multi-canal via workflow.
+    """
+    import os
+    channel = os.environ.get("YOUTUBE_CHANNEL", "").strip().lower()
+    if channel:
+        set_channel(channel)

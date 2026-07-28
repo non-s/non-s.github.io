@@ -49,7 +49,9 @@ class TestTitlePatternWeights:
 
     def _isolate(self, tmp_path, monkeypatch):
         perf_file = tmp_path / "title_pattern_performance.json"
-        monkeypatch.setattr(seo_keywords, "_TITLE_PATTERN_PERFORMANCE_FILE", perf_file)
+        monkeypatch.setattr(
+            seo_keywords, "_title_pattern_performance_file", lambda: perf_file
+        )
         return perf_file
 
     def test_no_performance_file_falls_back_to_uniform(self, tmp_path, monkeypatch):
