@@ -22,11 +22,13 @@ from datetime import UTC, datetime
 from html import escape
 from pathlib import Path
 
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+
 from utils.channel_config import CHANNELS, active_channel
 
 log = logging.getLogger(__name__)
 
-ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "_data"
 DASHBOARD_DIR = ROOT / "_dashboard"
 
