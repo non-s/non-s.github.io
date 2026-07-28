@@ -1,9 +1,8 @@
-"""Testes para o scaffolding de cross-posting (upload_tiktok.py / upload_reels.py).
+"""Testes para cross-posting TikTok (browser automation) e Reels (scaffolding).
 
-Cobre os caminhos de "credenciais ausentes" (no-op) e parsing de argumentos.
-Os uploads reais sao stubs (NotImplementedError capturado internamente), entao
-estes testes garantem que o workflow de cross-posting roda em CI sem credenciais
-sem falhar e sem tentar nenhuma chamada HTTP real.
+TikTok: testa o caminho de credenciais ausentes (no-op) e arg parsing.
+Os testes nao abrem browser nem fazem login real — mockam Playwright.
+Reels: scaffolding com env vars, mesma estrutura.
 """
 from __future__ import annotations
 
@@ -15,10 +14,10 @@ import upload_reels
 import upload_tiktok
 
 
-def _no_env(key: str):
-    """Factory para patch de os.environ.get que retorna None para `key`."""
+def _no_env(*keys: str):
+    """Factory para patch de os.environ.get que retorna None para as keys."""
     def _get(k, default=None):
-        return None if k == key else default
+        return None if k in keys else default
     return _get
 
 
@@ -30,25 +29,31 @@ def _write_video(output_dir: Path, stem: str, meta: dict) -> Path:
 
 
 class TestUploadTiktokNotConfigured:
-    def test_returns_none_without_access_token(self, caplog):
+    def test_returns_none_without_credentials(self, caplog):
         with patch.dict("os.environ", {}, clear=False), \
-             patch("os.environ.get", _no_env("TIKTOK_ACCESS_TOKEN")):
+             patch("os.environ.get", _no_env("TIKTOK_EMAIL", "TIKTOK_PASSWORD")):
             with caplog.at_level("INFO"):
                 result = upload_tiktok.upload_to_tiktok(Path("v.mp4"), {"title": "T"})
         assert result is None
-        assert any("TIKTOK_ACCESS_TOKEN" in rec.message for rec in caplog.records)
+        assert any("TIKTOK_EMAIL" in rec.message or "TIKTOK_PASSWORD" in rec.message for rec in caplog.records)
 
-    def test_returns_none_when_credentials_dict_empty(self):
-        result = upload_tiktok.upload_to_tiktok(Path("v.mp4"), {"title": "T"}, credentials={})
+    def test_returns_none_with_empty_email(self, caplog):
+        with patch.dict("os.environ", {"TIKTOK_EMAIL": "", "TIKTOK_PASSWORD": "x"}, clear=False):
+            with caplog.at_level("INFO"):
+                result = upload_tiktok.upload_to_tiktok(Path("v.mp4"), {"title": "T"})
         assert result is None
 
-    def test_scaffolding_message_when_token_present(self, caplog, monkeypatch):
-        monkeypatch.setenv("TIKTOK_ACCESS_TOKEN", "fake-token")
-        meta = {"title": "T", "description": "d", "hashtags": ["cat"]}
-        with caplog.at_level("INFO"):
-            result = upload_tiktok.upload_to_tiktok(Path("v.mp4"), meta)
+    def test_returns_none_with_empty_password(self, caplog):
+        with patch.dict("os.environ", {"TIKTOK_EMAIL": "x@x.com", "TIKTOK_PASSWORD": ""}, clear=False):
+            with caplog.at_level("INFO"):
+                result = upload_tiktok.upload_to_tiktok(Path("v.mp4"), {"title": "T"})
         assert result is None
-        assert any("scaffolding" in rec.message.lower() for rec in caplog.records)
+
+    def test_returns_none_when_video_not_found(self, caplog):
+        with patch.dict("os.environ", {"TIKTOK_EMAIL": "x@x.com", "TIKTOK_PASSWORD": "x"}, clear=False):
+            with caplog.at_level("ERROR"):
+                result = upload_tiktok.upload_to_tiktok(Path("nonexistent.mp4"), {"title": "T"})
+        assert result is None
 
 
 class TestUploadReelsNotConfigured:
@@ -78,11 +83,11 @@ class TestCrossPostAllUnpublished:
         monkeypatch.setattr("scripts.publish_weekly_batch.OUTPUT_DIR", tmp_path)
         assert upload_tiktok.cross_post_all_unpublished() == []
 
-    def test_tiktok_unpublished_without_token_returns_empty(self, tmp_path, monkeypatch):
+    def test_tiktok_unpublished_without_credentials_returns_empty(self, tmp_path, monkeypatch):
         monkeypatch.setattr("scripts.publish_weekly_batch.OUTPUT_DIR", tmp_path)
         _write_video(tmp_path, "pata_jazz_short_1", {"title": "A"})
         with patch.dict("os.environ", {}, clear=False), \
-             patch("os.environ.get", _no_env("TIKTOK_ACCESS_TOKEN")):
+             patch("os.environ.get", _no_env("TIKTOK_EMAIL", "TIKTOK_PASSWORD")):
             assert upload_tiktok.cross_post_all_unpublished() == []
 
     def test_reels_no_unpublished_returns_empty(self, tmp_path, monkeypatch):
@@ -128,7 +133,7 @@ class TestTiktokArgParsing:
         with patch("upload_tiktok.configure_logging"):
             assert upload_tiktok.main() == 1
 
-    def test_valid_args_without_token_returns_0(self, tmp_path, monkeypatch):
+    def test_valid_args_without_credentials_returns_0(self, tmp_path, monkeypatch):
         video_path = tmp_path / "v.mp4"
         video_path.write_bytes(b"x")
         meta_path = tmp_path / "meta.json"
@@ -137,7 +142,7 @@ class TestTiktokArgParsing:
         monkeypatch.setattr("sys.argv", argv)
         with patch("upload_tiktok.configure_logging"), \
              patch.dict("os.environ", {}, clear=False), \
-             patch("os.environ.get", _no_env("TIKTOK_ACCESS_TOKEN")):
+             patch("os.environ.get", _no_env("TIKTOK_EMAIL", "TIKTOK_PASSWORD")):
             assert upload_tiktok.main() == 0
 
 
