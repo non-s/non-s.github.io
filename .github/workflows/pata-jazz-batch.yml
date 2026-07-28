@@ -56,6 +56,10 @@ jobs:
       BATCH_COUNT: ${{ github.event.inputs.count }}
       BATCH_UPLOAD: ${{ github.event.inputs.upload }}
     steps:
+      - name: "Checkout"
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
       - name: "Setup"
         uses: ./.github/actions/setup-env
       - name: "Restaurar token e caches"
