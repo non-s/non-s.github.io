@@ -220,6 +220,92 @@ def _render_predicted_views(predictor: dict) -> str:
     )
 
 
+_HEATMAP_HOUR_BUCKETS = (
+    ("manhã", 9),
+    ("tarde", 15),
+    ("noite", 21),
+)
+
+
+def _build_scene_hour_matrix(predictor: dict) -> dict:
+    """Matriz de views previstos por (cena, hour_bucket) usando o modelo
+    view_predictor. Para cada bucket, usa uma hora representativa (9/15/21 UTC)
+    e um weekday neutro (quarta=2). Retorna {"scenes": [...], "buckets": [...],
+    "matrix": {scene: {bucket: value}}}.
+
+    Sem modelo (ou n_samples==0), retorna estrutura vazia — o render mostra aviso.
+    """
+    if not predictor or predictor.get("n_samples", 0) == 0:
+        return {"scenes": [], "buckets": [b for b, _ in _HEATMAP_HOUR_BUCKETS], "matrix": {}}
+    from scripts.predict_views import predict_views
+
+    scenes = predictor.get("scenes") or []
+    title_patterns = predictor.get("title_patterns") or []
+    # Padrão "neutro" para isolar o efeito cena × horário: media sobre todos
+    # os padrões (igual a expected_views_for_slot, mas fixando a cena).
+    matrix: dict[str, dict[str, float]] = {}
+    for scene in scenes:
+        row: dict[str, float] = {}
+        for bucket_label, hour in _HEATMAP_HOUR_BUCKETS:
+            if not title_patterns:
+                row[bucket_label] = predict_views(scene, "", hour, 2)
+            else:
+                total = 0.0
+                for pattern in title_patterns:
+                    total += predict_views(scene, pattern, hour, 2)
+                row[bucket_label] = total / len(title_patterns)
+        matrix[scene] = row
+    return {"scenes": scenes, "buckets": [b for b, _ in _HEATMAP_HOUR_BUCKETS], "matrix": matrix}
+
+
+def _heatmap_color(intensity: float) -> str:
+    """Retorna background-color CSS baseado na intensidade [0,1] — escala
+    laranja (accent Pata Jazz) sobre fundo escuro."""
+    if intensity <= 0:
+        return "#2a2a40"
+    # Interpola de #2a2a40 (fundo) ate #f4a261 (accent) por canal.
+    r_fondo, g_fondo, b_fondo = (42, 42, 64)
+    r_accent, g_accent, b_accent = (244, 162, 97)
+    r = int(r_fondo + (r_accent - r_fondo) * intensity)
+    g = int(g_fondo + (g_accent - g_fondo) * intensity)
+    b = int(b_fondo + (b_accent - b_fondo) * intensity)
+    return f"rgb({r},{g},{b})"
+
+
+def _render_scene_hour_heatmap(predictor: dict) -> str:
+    """Renderiza a matriz cena × horário como tabela HTML colorida (CSS
+    inline background-color baseado na intensidade do valor). Sem Chart.js."""
+    data = _build_scene_hour_matrix(predictor)
+    scenes = data["scenes"]
+    buckets = data["buckets"]
+    matrix = data["matrix"]
+    if not scenes or not matrix:
+        return (
+            "<p class='empty'>Sem modelo de previsão ainda para o heatmap "
+            "(rodar scripts/predict_views.py).</p>"
+        )
+    # Max para normalizar intensidade.
+    all_values = [matrix[s][b] for s in scenes for b in buckets if b in matrix[s]]
+    max_value = max(all_values) if all_values else 0.0
+
+    header = "".join(f"<th>{escape(b)}</th>" for b in buckets)
+    rows = []
+    for scene in scenes:
+        cells = [f'<td class="mono">{escape(scene)}</td>']
+        for b in buckets:
+            value = matrix[scene].get(b, 0.0)
+            intensity = (value / max_value) if max_value > 0 else 0.0
+            color = _heatmap_color(intensity)
+            cells.append(
+                f'<td style="background:{color};text-align:center">{max(0, int(round(value)))}</td>'
+            )
+        rows.append(f"<tr>{''.join(cells)}</tr>")
+    return (
+        "<table><thead><tr><th>Cena × Horário</th>" + header +
+        f"</tr></thead><tbody>{''.join(rows)}</tbody></table>"
+    )
+
+
 def _chart_canvas(canvas_id: str, height: str = "300px") -> str:
     """Container responsivo com canvas para um grafico Chart.js."""
     return (
@@ -480,6 +566,9 @@ def build_dashboard_html() -> str:
 
   <h2>Previsão de views (próximos 7 dias)</h2>
   {_render_predicted_views(view_predictor)}
+
+  <h2>Heatmap cena × horário</h2>
+  {_render_scene_hour_heatmap(view_predictor)}
 
   <footer>Gerado em {generated_at}</footer>
 

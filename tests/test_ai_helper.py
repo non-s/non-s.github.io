@@ -447,3 +447,102 @@ class TestRecordAiMetric:
         assert len(data) == 1
         assert data[0]["task"] == "caption"
         assert data[0]["fell_back"] is True
+
+
+class TestAiTextWithImage:
+    """ai_text_with_image: payload multimodal (texto + imagem base64) com
+    fallback None em qualquer falha (sem key, circuit breaker, erro HTTP)."""
+
+    def _img(self, tmp_path: Path) -> Path:
+        from PIL import Image
+        p = tmp_path / "frame.png"
+        Image.new("RGB", (16, 16), (1, 2, 3)).save(p)
+        return p
+
+    @patch('utils.ai_helper.os.environ')
+    def test_no_api_key_returns_none(self, mock_env, tmp_path: Path):
+        mock_env.get.return_value = ""
+        assert ai_helper.ai_text_with_image("p", self._img(tmp_path)) is None
+
+    @patch('utils.ai_helper.os.environ')
+    def test_missing_image_returns_none(self, mock_env, tmp_path: Path):
+        mock_env.get.return_value = "key"
+        assert ai_helper.ai_text_with_image("p", tmp_path / "nope.png") is None
+
+    @patch('utils.ai_helper._session')
+    @patch('utils.ai_helper.os.environ')
+    def test_success_returns_text(self, mock_env, mock_session, tmp_path: Path):
+        mock_env.get.return_value = "key"
+        mock_response = MagicMock()
+        mock_response.raise_for_status.return_value = None
+        mock_response.json.return_value = {
+            "candidates": [{"content": {"parts": [{"text": "Cute Cat Napping to Jazz"}]}}]
+        }
+        mock_session.post.return_value = mock_response
+
+        result = ai_helper.ai_text_with_image("prompt", self._img(tmp_path), task="thumbnail_vision")
+        assert result == "Cute Cat Napping to Jazz"
+        # Verifica que o body tem inline_data com base64.
+        body = mock_session.post.call_args[1]["json"]
+        parts = body["contents"][0]["parts"]
+        assert any("inline_data" in p for p in parts)
+        assert any("text" in p for p in parts)
+
+    @patch('utils.ai_helper._session')
+    @patch('utils.ai_helper.os.environ')
+    def test_empty_candidates_returns_none(self, mock_env, mock_session, tmp_path: Path):
+        mock_env.get.return_value = "key"
+        mock_response = MagicMock()
+        mock_response.raise_for_status.return_value = None
+        mock_response.json.return_value = {"candidates": []}
+        mock_session.post.return_value = mock_response
+        assert ai_helper.ai_text_with_image("p", self._img(tmp_path)) is None
+
+    @patch('utils.ai_helper.is_safe_ai_text', return_value=False)
+    @patch('utils.ai_helper._session')
+    @patch('utils.ai_helper.os.environ')
+    def test_unsafe_text_returns_none(self, mock_env, mock_session, _safe, tmp_path: Path):
+        mock_env.get.return_value = "key"
+        mock_response = MagicMock()
+        mock_response.raise_for_status.return_value = None
+        mock_response.json.return_value = {
+            "candidates": [{"content": {"parts": [{"text": "visit https://evil.example.com"}]}}]
+        }
+        mock_session.post.return_value = mock_response
+        assert ai_helper.ai_text_with_image("p", self._img(tmp_path)) is None
+
+    @patch('utils.ai_helper._session')
+    @patch('utils.ai_helper.os.environ')
+    def test_http_error_returns_none(self, mock_env, mock_session, tmp_path: Path):
+        mock_env.get.return_value = "key"
+        import requests
+        mock_response = MagicMock()
+        mock_response.status_code = 500
+        mock_response.raise_for_status.side_effect = requests.exceptions.HTTPError("500")
+        mock_session.post.return_value = mock_response
+        assert ai_helper.ai_text_with_image("p", self._img(tmp_path)) is None
+
+    @patch('utils.ai_helper._gemini_circuit_open', True)
+    @patch('utils.ai_helper._gemini_circuit_open_until', 9999999999.0)
+    @patch('utils.ai_helper.os.environ')
+    def test_circuit_breaker_returns_none(self, mock_env, tmp_path: Path):
+        mock_env.get.return_value = "key"
+        assert ai_helper.ai_text_with_image("p", self._img(tmp_path)) is None
+
+    @patch('utils.ai_helper._session')
+    @patch('utils.ai_helper.os.environ')
+    def test_records_metric_on_success(self, mock_env, mock_session, tmp_path: Path):
+        mock_env.get.return_value = "key"
+        mock_response = MagicMock()
+        mock_response.raise_for_status.return_value = None
+        mock_response.json.return_value = {
+            "candidates": [{"content": {"parts": [{"text": "ok title"}]}}]
+        }
+        mock_session.post.return_value = mock_response
+
+        ai_helper.ai_text_with_image("p", self._img(tmp_path), task="thumbnail_vision")
+        import json
+        data = json.loads(ai_helper._ai_metrics_file().read_text(encoding="utf-8"))
+        assert len(data) == 1
+        assert data[0]["task"] == "thumbnail_vision"
+        assert data[0]["fell_back"] is False

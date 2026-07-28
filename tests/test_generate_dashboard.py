@@ -303,3 +303,75 @@ class TestMain:
         output = tmp_path / "_dashboard" / "index.html"
         assert output.exists()
         assert output.read_text(encoding="utf-8").startswith("<!doctype html>")
+
+
+class TestSceneHourHeatmap:
+    """Item 6.4: heatmap cena × horário usando o view_predictor. Renderiza
+    tabela HTML colorida (CSS inline background-color) sem Chart.js."""
+
+    def _predictor(self, scenes, patterns):
+        return {
+            "scenes": scenes,
+            "title_patterns": patterns,
+            "n_samples": 10,
+            "weights": [0.1] * 20,
+            "overall_avg": 100.0,
+        }
+
+    def test_no_model_renders_empty_message(self, tmp_path, monkeypatch):
+        html = dashboard._render_scene_hour_heatmap({})
+        assert "Sem modelo de previsão" in html
+
+    def test_zero_samples_renders_empty_message(self, tmp_path, monkeypatch):
+        html = dashboard._render_scene_hour_heatmap({"n_samples": 0})
+        assert "Sem modelo de previsão" in html
+
+    def test_renders_table_with_scenes_and_buckets(self, tmp_path, monkeypatch):
+        predictor = self._predictor(["cat", "dog"], ["pat"])
+        monkeypatch.setattr("scripts.predict_views.predict_views", lambda s, p, h, d: 50.0)
+        html = dashboard._render_scene_hour_heatmap(predictor)
+        assert "Cena × Horário" in html
+        assert "manhã" in html
+        assert "tarde" in html
+        assert "noite" in html
+        assert "cat" in html
+        assert "dog" in html
+
+    def test_renders_colored_cells(self, tmp_path, monkeypatch):
+        predictor = self._predictor(["cat"], ["pat"])
+        monkeypatch.setattr("scripts.predict_views.predict_views", lambda s, p, h, d: 50.0)
+        html = dashboard._render_scene_hour_heatmap(predictor)
+        assert "background:rgb(" in html
+
+    def test_matrix_structure(self, tmp_path, monkeypatch):
+        predictor = self._predictor(["cat", "dog"], ["pat"])
+        monkeypatch.setattr("scripts.predict_views.predict_views", lambda s, p, h, d: float(h))
+        data = dashboard._build_scene_hour_matrix(predictor)
+        assert data["scenes"] == ["cat", "dog"]
+        assert data["buckets"] == ["manhã", "tarde", "noite"]
+        assert "cat" in data["matrix"]
+        # hora representativa manha=9, tarde=15, noite=21
+        assert data["matrix"]["cat"]["manhã"] == 9.0
+        assert data["matrix"]["cat"]["tarde"] == 15.0
+        assert data["matrix"]["cat"]["noite"] == 21.0
+
+    def test_heatmap_color_zero_returns_fondo(self):
+        assert dashboard._heatmap_color(0.0) == "#2a2a40"
+
+    def test_heatmap_color_one_near_accent(self):
+        color = dashboard._heatmap_color(1.0)
+        assert "244" in color or "rgb(" in color
+
+    def test_heatmap_color_negative_clamped(self):
+        assert dashboard._heatmap_color(-1.0) == "#2a2a40"
+
+    def test_heatmap_section_present_in_dashboard(self, tmp_path, monkeypatch):
+        _isolate(tmp_path, monkeypatch)
+        html = dashboard.build_dashboard_html()
+        assert "Heatmap cena × horário" in html
+
+    def test_no_patterns_uses_empty_pattern(self, tmp_path, monkeypatch):
+        predictor = self._predictor(["cat"], [])
+        monkeypatch.setattr("scripts.predict_views.predict_views", lambda s, p, h, d: 30.0)
+        data = dashboard._build_scene_hour_matrix(predictor)
+        assert data["matrix"]["cat"]["manhã"] == 30.0

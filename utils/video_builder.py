@@ -63,6 +63,10 @@ class VideoSpec:
     title_pattern_hint: str = ""
 
 
+_LONGFORM_MIN_DURATION = 3600
+_LONGFORM_MAX_DURATION = 36000
+
+
 def _build_video_filter(spec: VideoSpec) -> str:
     """Constrói a cadeia de filtros FFmpeg para o aspecto-alvo."""
     w, h = spec.width, spec.height
@@ -437,6 +441,36 @@ def horizontal_spec(duration: int = 240, scene: str = "", mood: str = "", title_
         fallback_description=(
             "Cute cats and dogs with soft jazz playing in the background. "
             "Enjoy, relax and watch the pets. 🐾🎷 #PataJazz"
+        ),
+        scene=scene,
+        mood=mood,
+        title_pattern_hint=title_pattern_hint,
+    )
+
+
+def longform_spec(duration: int = 3600, scene: str = "", mood: str = "", title_pattern_hint: str = "") -> VideoSpec:
+    """Especificação para compilações temáticas longas (1-10h) horizontais 1920x1080.
+
+    Longform = horizontal mas muito mais longo: duração 3600-36000s, muitos
+    clipes em loop (sem overlay de hook, como o horizontal), chapters de 1h.
+    Reutiliza o caminho de 1 clipe em loop do horizontal (FFmpeg
+    -stream_loop -1 + playlist de audio) por simplicidade e estabilidade.
+    """
+    clamped = max(_LONGFORM_MIN_DURATION, min(_LONGFORM_MAX_DURATION, duration))
+    return VideoSpec(
+        kind="horizontal",
+        width=1920,
+        height=1080,
+        duration=clamped,
+        default_duration=_LONGFORM_MIN_DURATION,
+        crop_filter=(
+            "crop='min(iw,ih*16/9):min(ih,iw*9/16):"
+            "(iw-min(iw,ih*16/9))/2:(ih-min(ih,iw*9/16))/2'"
+        ),
+        thumbnail_maker=make_horizontal_thumbnail,
+        fallback_description=(
+            "1 hour of cute cats and dogs with relaxing jazz music in the background. "
+            "Sit back, relax and enjoy the cozy pets. 🐾🎷 #PataJazz #LongForm"
         ),
         scene=scene,
         mood=mood,

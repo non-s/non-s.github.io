@@ -234,3 +234,125 @@ def ai_text(
         return ""
     finally:
         _record_ai_metric(task, (time.time() - start_ts) * 1000.0, fell_back)
+
+
+def ai_text_with_image(
+    prompt: str,
+    image_path: Path,
+    task: str = "thumbnail_vision",
+    timeout: int = 30,
+) -> str | None:
+    """Envia uma imagem + prompt de texto ao Gemini (multimodal) e retorna o
+    texto gerado, ou None em falha (fallback para hook text-only).
+
+    Reusa a infraestrutura de ai_text (throttle, circuit breaker, retries,
+    metricas), mas monta um payload multimodal: inline_data com a imagem em
+    base64 + o prompt de texto. Se a API nao suportar multimodal ou falhar
+    (key ausente, circuit breaker, erro HTTP), retorna None — o chamador
+    (thumbnail_engine) cai no hook_for_scene legado.
+    """
+    global _gemini_429_streak, _gemini_circuit_open, _gemini_circuit_open_until
+
+    import base64
+    import mimetypes
+
+    start_ts = time.time()
+    fell_back = True
+    try:
+        key = os.environ.get("GEMINI_API_KEY", "")
+        if not key:
+            log.error("GEMINI_API_KEY nao configurada para thumbnail_vision.")
+            return None
+
+        if not image_path.exists():
+            log.warning("Imagem ausente para thumbnail_vision: %s", image_path)
+            return None
+
+        mime = mimetypes.guess_type(str(image_path))[0] or "image/png"
+        try:
+            image_b64 = base64.b64encode(image_path.read_bytes()).decode("ascii")
+        except OSError as exc:
+            log.warning("Falha ao ler imagem %s: %s", image_path, exc)
+            return None
+
+        with _gemini_lock:
+            if _gemini_circuit_open:
+                if time.time() < _gemini_circuit_open_until:
+                    log.warning("Circuit breaker aberto; pulando thumbnail_vision.")
+                    return None
+                log.info("Circuit breaker half-open; tentando thumbnail_vision.")
+                _gemini_circuit_open = False
+                _gemini_429_streak = 0
+
+        sys_msg = _default_system_prompt()
+        _throttle()
+        url = _GEMINI_API_URL.format(model=_GEMINI_MODEL)
+        body: dict = {
+            "contents": [{
+                "role": "user",
+                "parts": [
+                    {"text": prompt},
+                    {"inline_data": {"mime_type": mime, "data": image_b64}},
+                ],
+            }],
+            "systemInstruction": {"parts": [{"text": sys_msg}]},
+            "generationConfig": {"temperature": 0.6, "maxOutputTokens": 300},
+        }
+
+        for attempt in range(_MAX_RETRIES):
+            try:
+                log.info("Gemini thumbnail_vision tentativa %d/%d", attempt + 1, _MAX_RETRIES)
+                r = _session.post(
+                    url,
+                    json=body,
+                    timeout=timeout,
+                    headers={"Content-Type": "application/json", "x-goog-api-key": key},
+                )
+                r.raise_for_status()
+                data = r.json()
+                candidates = data.get("candidates") or []
+                if not candidates:
+                    block_reason = (data.get("promptFeedback") or {}).get("blockReason")
+                    log.warning("thumbnail_vision sem candidates (blockReason=%s).", block_reason)
+                    return None
+                parts = (candidates[0].get("content") or {}).get("parts") or []
+                if not parts or "text" not in parts[0]:
+                    finish_reason = candidates[0].get("finishReason")
+                    log.warning("thumbnail_vision sem texto (finishReason=%s).", finish_reason)
+                    return None
+                text = parts[0]["text"].strip()
+                with _gemini_lock:
+                    _gemini_429_streak = 0
+                if not is_safe_ai_text(text):
+                    log.warning("thumbnail_vision rejeitado por is_safe_ai_text.")
+                    return None
+                fell_back = False
+                return text
+            except requests.exceptions.HTTPError as e:
+                status = e.response.status_code if e.response is not None else 0
+                if status in (429, 502, 503):
+                    with _gemini_lock:
+                        _gemini_429_streak += 1
+                        if _gemini_429_streak >= _GEMINI_429_CIRCUIT_THRESHOLD:
+                            _gemini_circuit_open = True
+                            _gemini_circuit_open_until = time.time() + _GEMINI_CIRCUIT_RESET_SECONDS
+                    wait = min(_BASE_BACKOFF * (2 ** attempt) + random.uniform(0, 1), 8)
+                    log.warning("thumbnail_vision %s - aguardando %ss", status, wait)
+                    sleep(wait)
+                    continue
+                log.warning("thumbnail_vision HTTP %s - desistindo", status)
+                return None
+            except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as exc:
+                wait = _BASE_BACKOFF * (2 ** attempt) + random.uniform(0, 1)
+                log.warning("thumbnail_vision timeout/conn (tentativa %d): %s", attempt + 1, exc)
+                sleep(wait)
+                continue
+            except Exception as exc:
+                log.warning("thumbnail_vision erro inesperado (tentativa %d): %s", attempt + 1, exc)
+                if attempt < _MAX_RETRIES - 1:
+                    sleep(_BASE_BACKOFF * (2 ** attempt))
+                    continue
+                return None
+        return None
+    finally:
+        _record_ai_metric(task, (time.time() - start_ts) * 1000.0, fell_back)

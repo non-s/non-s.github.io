@@ -292,6 +292,14 @@ def generate_chapters(duration: int, kind: str) -> list[tuple[str, str]]:
             (_fmt(third), "Cute moment"),
             (_fmt(third * 2), "Relax & enjoy"),
         ]
+    # Longform (>=1h): chapters de 1h para facilitar navegacao em compilacoes longas.
+    if duration >= 3600:
+        n_hours = max(1, duration // 3600)
+        chapters = [(_fmt(0), "Hour 1 — Cute pets & jazz")]
+        for i in range(1, n_hours):
+            chapters.append((_fmt(3600 * i), f"Hour {i + 1} — Cozy moment & jazz"))
+        chapters.append((_fmt(duration), "Outro"))
+        return chapters
     # Horizontais/live: chapters a cada ~25% do video.
     n = 5
     step = max(1, duration // n)

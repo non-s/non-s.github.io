@@ -440,3 +440,92 @@ class TestWinningThumbnailVariant:
     def test_empty_all_videos_returns_a(self, tmp_path, monkeypatch):
         self._setup(tmp_path, monkeypatch, {"v1": {"thumbnail_variant": "B"}}, {"all_videos": []})
         assert thumbnail_engine.winning_thumbnail_variant() == "A"
+
+
+class TestVisionHook:
+    """Hooks de thumbnail via Gemini Vision: antes de desenhar o hook, tenta
+    ai_text_with_image com o frame extraido para um titulo scroll-stopping.
+    Fallback: hook_for_scene legado."""
+
+    def _cfg(self, width=1280, height=720):
+        return _LayoutConfig(
+            border_margin=40, border_radius=40, border_width=4,
+            emoji_y=100, emoji_shadow_offset=(4, 4),
+            hook_y_start=280, hook_wrap_width=22, hook_line_height=70,
+            brand_y=height - 120, crop_target_ratio=None,
+            overlay_alpha=128, frame_timestamp="00:00:02",
+        )
+
+    @patch("utils.ai_helper.ai_text_with_image", return_value="short")
+    def test_vision_hook_too_short_returns_fallback(self, _vision, tmp_path):
+        frame = Image.new("RGB", (64, 64), (10, 20, 30))
+        result = thumbnail_engine._vision_hook_for_frame(frame, "Fallback Hook Title")
+        assert result == "Fallback Hook Title"
+
+    @patch("utils.ai_helper.ai_text_with_image", return_value=None)
+    def test_vision_returns_none_falls_back(self, _vision, tmp_path):
+        frame = Image.new("RGB", (64, 64), (10, 20, 30))
+        result = thumbnail_engine._vision_hook_for_frame(frame, "Fallback Hook Title")
+        assert result == "Fallback Hook Title"
+
+    @patch("utils.ai_helper.ai_text_with_image", return_value="A Cute Cat Napping Peacefully Today")
+    def test_vision_returns_valid_hook(self, _vision, tmp_path):
+        frame = Image.new("RGB", (64, 64), (10, 20, 30))
+        result = thumbnail_engine._vision_hook_for_frame(frame, "Fallback Hook Title")
+        assert result == "A Cute Cat Napping Peacefully Today"
+
+    @patch("utils.ai_helper.ai_text_with_image", return_value="short")
+    def test_vision_too_short_falls_back(self, _vision, tmp_path):
+        frame = Image.new("RGB", (64, 64), (10, 20, 30))
+        result = thumbnail_engine._vision_hook_for_frame(frame, "Fallback Hook Title")
+        assert result == "Fallback Hook Title"
+
+    @patch("utils.ai_helper.ai_text_with_image", return_value="x" * 100)
+    def test_vision_too_long_falls_back(self, _vision, tmp_path):
+        frame = Image.new("RGB", (64, 64), (10, 20, 30))
+        result = thumbnail_engine._vision_hook_for_frame(frame, "Fallback Hook Title")
+        assert result == "Fallback Hook Title"
+
+    @patch("utils.ai_helper.ai_text_with_image", return_value='"A Cute Cat Napping Peacefully"')
+    def test_vision_strips_quotes(self, _vision, tmp_path):
+        frame = Image.new("RGB", (64, 64), (10, 20, 30))
+        result = thumbnail_engine._vision_hook_for_frame(frame, "Fallback Hook Title")
+        assert result == "A Cute Cat Napping Peacefully"
+
+    @patch("utils.ai_helper.ai_text_with_image", side_effect=RuntimeError("boom"))
+    def test_vision_exception_falls_back(self, _vision, tmp_path):
+        frame = Image.new("RGB", (64, 64), (10, 20, 30))
+        result = thumbnail_engine._vision_hook_for_frame(frame, "Fallback Hook Title")
+        assert result == "Fallback Hook Title"
+
+    @patch("utils.thumbnail_engine._vision_hook_for_frame", return_value="Vision Override Hook Title")
+    @patch("utils.thumbnail_engine.ImageDraw")
+    @patch("utils.thumbnail_engine._save_under_2mb")
+    @patch("utils.thumbnail_engine._fonts_for_variant", return_value=(MagicMock(), MagicMock()))
+    @patch("utils.thumbnail_engine.extract_frame_from_video")
+    def test_render_uses_vision_hook_on_variant_a(
+        self, mock_extract, mock_fonts, mock_save, mock_draw, mock_vision, tmp_path
+    ):
+        frame = Image.new("RGB", (640, 480), (10, 20, 30))
+        mock_extract.return_value = frame
+        vid = tmp_path / "vid.mp4"
+        vid.write_bytes(b"fake")
+        out = tmp_path / "thumb.png"
+        _render_thumbnail(1280, 720, "Original Hook", "🐱", out, "brand", vid, self._cfg(), variant="A")
+        mock_vision.assert_called_once()
+
+    @patch("utils.thumbnail_engine._vision_hook_for_frame", return_value="Vision Override Hook Title")
+    @patch("utils.thumbnail_engine.ImageDraw")
+    @patch("utils.thumbnail_engine._save_under_2mb")
+    @patch("utils.thumbnail_engine._fonts_for_variant", return_value=(MagicMock(), MagicMock()))
+    @patch("utils.thumbnail_engine.extract_frame_from_video")
+    def test_render_skips_vision_on_variant_b(
+        self, mock_extract, mock_fonts, mock_save, mock_draw, mock_vision, tmp_path
+    ):
+        frame = Image.new("RGB", (640, 480), (10, 20, 30))
+        mock_extract.return_value = frame
+        vid = tmp_path / "vid.mp4"
+        vid.write_bytes(b"fake")
+        out = tmp_path / "thumb.png"
+        _render_thumbnail(1280, 720, "Original Hook", "🐱", out, "brand", vid, self._cfg(), variant="B")
+        mock_vision.assert_not_called()

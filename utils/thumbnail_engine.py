@@ -259,6 +259,43 @@ class _LayoutConfig:
     frame_timestamp: str
 
 
+_VISION_HOOK_MAX_LEN = 70
+_VISION_HOOK_MIN_LEN = 12
+
+
+def _vision_hook_for_frame(frame_img: Image.Image, fallback_hook: str) -> str:
+    """Tenta obter um hook 'scroll-stopping' via Gemini Vision a partir do
+    frame extraído do vídeo. Salva o frame em PNG temporário, chama
+    ai_text_with_image e valida o resultado (tamanho, segurança). Em qualquer
+    falha, retorna o fallback_hook legado (hook_for_scene)."""
+    try:
+        from utils.ai_helper import ai_text_with_image
+
+        tmp = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
+        tmp.close()
+        tmp_path = Path(tmp.name)
+        try:
+            frame_img.save(tmp_path, format="PNG")
+            prompt = (
+                "Look at this video thumbnail frame. Write ONE short, scroll-stopping "
+                "YouTube title (max 60 chars, English, cute tone, NO clickbait, NO quotes, "
+                "NO emojis) describing what the cat or dog is doing. Return only the title text."
+            )
+            text = ai_text_with_image(prompt, tmp_path, task="thumbnail_vision")
+        finally:
+            tmp_path.unlink(missing_ok=True)
+
+        if text:
+            cleaned = " ".join(text.split()).strip().strip('"').strip("'")
+            if _VISION_HOOK_MIN_LEN <= len(cleaned) <= _VISION_HOOK_MAX_LEN:
+                log.info("Hook via Vision: %r (fallback era %r)", cleaned, fallback_hook)
+                return cleaned
+            log.debug("Hook via Vision fora do tamanho (%d chars): %r", len(cleaned), cleaned)
+    except Exception as exc:
+        log.debug("Vision hook falhou (fallback text-only): %s", exc)
+    return fallback_hook
+
+
 def _render_thumbnail(
     width: int,
     height: int,
@@ -295,6 +332,12 @@ def _render_thumbnail(
     if video_path and video_path.exists():
         background = extract_frame_from_video(video_path, cfg.frame_timestamp)
         if background:
+            # Hook via Gemini Vision: tenta obter um titulo "scroll-stopping"
+            # baseado no que esta na imagem. So na variante A para nao chamar
+            # a API 3x (B e C reusam o mesmo hook). Fallback: hook_for_scene.
+            if variant == "A":
+                hook = _vision_hook_for_frame(background, hook)
+
             if cfg.crop_target_ratio is not None:
                 # Crop central para o formato alvo
                 bg_width, bg_height = background.size
