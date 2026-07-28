@@ -18,10 +18,6 @@ cffi==2.1.0
     # via cryptography
 charset-normalizer==3.4.9
     # via requests
-colorama==0.4.6
-    # via
-    #   bandit
-    #   pytest
 coverage==7.15.2
     # via pytest-cov
 cryptography==49.0.0
@@ -59,6 +55,8 @@ google-auth-oauthlib==1.4.0
     #   pata-jazz (pyproject.toml)
 googleapis-common-protos==1.75.0
     # via google-api-core
+greenlet==3.5.4
+    # via playwright
 httplib2==0.32.0
     # via
     #   google-api-python-client
@@ -104,6 +102,10 @@ pip-requirements-parser==32.0.1
     # via pip-audit
 platformdirs==4.11.0
     # via pip-audit
+playwright==1.61.0
+    # via
+    #   -r requirements.txt
+    #   pata-jazz (pyproject.toml)
 pluggy==1.6.0
     # via pytest
 proto-plus==1.28.2
@@ -121,6 +123,8 @@ pyasn1-modules==0.4.2
     # via google-auth
 pycparser==3.0
     # via cffi
+pyee==13.0.1
+    # via playwright
 pygments==2.20.0
     # via
     #   pytest
@@ -170,6 +174,7 @@ typing-extensions==4.16.0
     # via
     #   cyclonedx-python-lib
     #   mypy
+    #   pyee
 uritemplate==4.2.0
     # via google-api-python-client
 urllib3==2.7.0

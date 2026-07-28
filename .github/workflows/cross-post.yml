@@ -25,7 +25,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      TIKTOK_ACCESS_TOKEN: ${{ secrets.TIKTOK_ACCESS_TOKEN }}
+      TIKTOK_EMAIL: ${{ secrets.TIKTOK_EMAIL }}
+      TIKTOK_PASSWORD: ${{ secrets.TIKTOK_PASSWORD }}
       INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
     steps:
       - name: "Checkout"
@@ -36,16 +37,24 @@ jobs:
         uses: ./.github/actions/setup-env
         with:
           ffmpeg: "false"
+      - name: "Instalar navegador do Playwright (TikTok)"
+        run: python -m playwright install --with-deps chromium
+      - name: "Restaurar sessao do TikTok"
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: tiktok_state.json
+          key: tiktok-state-${{ github.run_id }}
+          restore-keys: tiktok-state-
       - name: "Restaurar cache de videos gerados"
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: _videos
           key: cross-post-videos-${{ github.run_id }}
           restore-keys: |
-            weekly-videos-
             cross-post-videos-
+            weekly-videos-
       - name: "Cross-postar para TikTok"
-        # No-op sem TIKTOK_ACCESS_TOKEN: upload_tiktok.py loga e retorna 0.
+        # No-op sem TIKTOK_EMAIL/TIKTOK_PASSWORD: upload_tiktok.py loga e retorna 0.
         run: python upload_tiktok.py --all --prefix pata_jazz_short_
       - name: "Cross-postar para Instagram Reels"
         # No-op sem INSTAGRAM_ACCESS_TOKEN: upload_reels.py loga e retorna 0.

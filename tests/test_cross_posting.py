@@ -90,6 +90,50 @@ class TestCrossPostAllUnpublished:
              patch("os.environ.get", _no_env("TIKTOK_EMAIL", "TIKTOK_PASSWORD")):
             assert upload_tiktok.cross_post_all_unpublished() == []
 
+    def test_tiktok_stops_after_max_consecutive_failures(self, tmp_path, monkeypatch):
+        """Se o login/sessao esta quebrado, cada video falharia do mesmo
+        jeito - continuar tentando so aumenta o risco de a conta ser
+        bloqueada por excesso de tentativas. Aborta apos N falhas seguidas
+        em vez de percorrer o lote inteiro."""
+        monkeypatch.setattr("scripts.publish_weekly_batch.OUTPUT_DIR", tmp_path)
+        for i in range(5):
+            _write_video(tmp_path, f"pata_jazz_short_{i}", {"title": f"V{i}"})
+
+        with patch("upload_tiktok.upload_to_tiktok", return_value=None) as mock_upload, \
+             patch("upload_tiktok.time.sleep"):
+            result = upload_tiktok.cross_post_all_unpublished()
+
+        assert result == []
+        assert mock_upload.call_count == upload_tiktok._MAX_CONSECUTIVE_FAILURES
+
+    def test_tiktok_failure_counter_resets_on_success(self, tmp_path, monkeypatch):
+        monkeypatch.setattr("scripts.publish_weekly_batch.OUTPUT_DIR", tmp_path)
+        for i in range(3):
+            _write_video(tmp_path, f"pata_jazz_short_{i}", {"title": f"V{i}"})
+
+        with patch(
+            "upload_tiktok.upload_to_tiktok",
+            side_effect=[None, "https://tiktok.com/@x/video/1", None],
+        ) as mock_upload, patch("upload_tiktok.time.sleep"):
+            result = upload_tiktok.cross_post_all_unpublished()
+
+        # 1 falha, depois sucesso reseta o contador, depois +1 falha -
+        # nunca atinge _MAX_CONSECUTIVE_FAILURES (2) seguidas, entao os 3 rodam.
+        assert mock_upload.call_count == 3
+        assert result == ["https://tiktok.com/@x/video/1"]
+
+    def test_tiktok_marks_metadata_with_url_on_success(self, tmp_path, monkeypatch):
+        monkeypatch.setattr("scripts.publish_weekly_batch.OUTPUT_DIR", tmp_path)
+        video_path = _write_video(tmp_path, "pata_jazz_short_1", {"title": "A"})
+
+        with patch("upload_tiktok.upload_to_tiktok", return_value="https://tiktok.com/@x/video/1"), \
+             patch("upload_tiktok.time.sleep"):
+            result = upload_tiktok.cross_post_all_unpublished()
+
+        assert result == ["https://tiktok.com/@x/video/1"]
+        meta = json.loads(video_path.with_suffix(".json").read_text(encoding="utf-8"))
+        assert meta["tiktok_url"] == "https://tiktok.com/@x/video/1"
+
     def test_reels_no_unpublished_returns_empty(self, tmp_path, monkeypatch):
         monkeypatch.setattr("scripts.publish_weekly_batch.OUTPUT_DIR", tmp_path)
         assert upload_reels.cross_post_all_unpublished() == []
@@ -133,7 +177,11 @@ class TestTiktokArgParsing:
         with patch("upload_tiktok.configure_logging"):
             assert upload_tiktok.main() == 1
 
-    def test_valid_args_without_credentials_returns_0(self, tmp_path, monkeypatch):
+    def test_valid_args_without_credentials_returns_1(self, tmp_path, monkeypatch):
+        """Regressao: main() sempre retornava 0 mesmo quando upload_to_tiktok
+        falhava (ex.: sem credenciais) - um workflow de CI nunca saberia que
+        o cross-post nao aconteceu. Sem credenciais, upload_to_tiktok
+        retorna None e main() precisa propagar isso como falha (exit 1)."""
         video_path = tmp_path / "v.mp4"
         video_path.write_bytes(b"x")
         meta_path = tmp_path / "meta.json"
@@ -143,6 +191,17 @@ class TestTiktokArgParsing:
         with patch("upload_tiktok.configure_logging"), \
              patch.dict("os.environ", {}, clear=False), \
              patch("os.environ.get", _no_env("TIKTOK_EMAIL", "TIKTOK_PASSWORD")):
+            assert upload_tiktok.main() == 1
+
+    def test_valid_args_with_successful_upload_returns_0(self, tmp_path, monkeypatch):
+        video_path = tmp_path / "v.mp4"
+        video_path.write_bytes(b"x")
+        meta_path = tmp_path / "meta.json"
+        meta_path.write_text(json.dumps({"title": "T"}), encoding="utf-8")
+        argv = ["upload_tiktok.py", "--video", str(video_path), "--meta", str(meta_path)]
+        monkeypatch.setattr("sys.argv", argv)
+        with patch("upload_tiktok.configure_logging"), \
+             patch("upload_tiktok.upload_to_tiktok", return_value="https://tiktok.com/@x/video/1"):
             assert upload_tiktok.main() == 0
 
 
