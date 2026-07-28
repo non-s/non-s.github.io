@@ -30,7 +30,7 @@ sys.path.insert(0, str(ROOT))
 from utils.log_config import configure_logging
 from utils.paths import data_dir
 from utils.state_lock import state_lock
-from utils.youtube_oauth import get_youtube_service
+from utils.youtube_oauth import get_youtube_analytics_service, get_youtube_service
 from utils.youtube_retry import retry_youtube_call as _retry_youtube_call
 
 log = logging.getLogger(__name__)
@@ -156,6 +156,68 @@ def collect_video_stats(service) -> tuple[list[dict], dict]:
             })
 
     return stats, channel_stats
+
+
+def _collect_retention_metrics(service, video_ids: list[str]) -> dict:
+    """Consulta o YouTube Analytics API por retention/CTR dos video_ids.
+
+    Busca `averageViewDuration`, `averageViewPercentage` (retention) e `ctr`
+    via `youtubeAnalytics.reports().query(ids='channel==mine', ...)`. A API
+    so permite filtrar por um video por vez em `filters==video==<id>`, entao
+    faz uma chamada por video (MAX_VIDEOS no maximo - dentro do budget de
+    quota do Analytics API, separado da Data API v3).
+
+    Retorna um dict {video_id: {averageViewDuration, averageViewPercentage,
+    ctr}}. Em qualquer erro (403 por scope ausente, canal inelegivel, API
+    indisponivel), loga warning e retorna {} - a Analytics API pode nao
+    estar disponivel para todos os canais (ex.: canal novo sem dados
+    suficientes), e isso nao deve derrubar o resto da coleta.
+
+    `service` e o Resource do youtubeAnalytics v2 (ver
+    get_youtube_analytics_service); passamos como argumento para permitir
+    injecao em testes sem construir credenciais reais.
+    """
+    if not video_ids:
+        return {}
+    # Janela de 90 dias ate hoje: a Analytics API exige startDate/endDate e
+    # nao aceita intervalo aberto. 90 dias cobre a janela dos videos recentes
+    # (MAX_VIDEOS=50) sem inflar demais o numero de chamadas.
+    end = datetime.now(UTC).date()
+    start = end - timedelta(days=90)
+    result: dict[str, dict] = {}
+    for vid in video_ids:
+        try:
+            resp = _retry_youtube_call(
+                service.reports().query(
+                    ids="channel==mine",
+                    startDate=start.isoformat(),
+                    endDate=end.isoformat(),
+                    metrics="averageViewDuration,averageViewPercentage,ctr",
+                    filters=f"video=={vid}",
+                ).execute
+            )
+        except Exception as exc:
+            # 403 (scope ausente / canal inelegivel) ou outro erro da API -
+            # Analytics nao esta disponivel para todos os canais; nao e fatal.
+            log.warning(
+                "_collect_retention_metrics: Analytics indisponivel para %s: %s",
+                vid, exc,
+            )
+            continue
+        rows = resp.get("rows", []) if isinstance(resp, dict) else []
+        if not rows:
+            continue
+        # rows e lista de listas; a ordem dos valores segue a ordem de metrics.
+        row = rows[0]
+        if len(row) >= 3:
+            result[vid] = {
+                "averageViewDuration": float(row[0]),
+                "averageViewPercentage": float(row[1]),
+                "ctr": float(row[2]),
+            }
+    if result:
+        log.info("Retencion/CTR coletados para %d videos.", len(result))
+    return result
 
 
 def _load_video_tags() -> dict:
@@ -586,6 +648,25 @@ def main(argv: list[str] | None = None) -> int:
     title_pattern_weights = _compute_title_pattern_performance(stats, video_tags)
     if title_pattern_weights:
         _update_title_pattern_performance(title_pattern_weights)
+
+    # YouTube Analytics API: retencao (averageViewDuration /
+    # averageViewPercentage) e CTR. So roda em modo full (nao snapshot-only)
+    # pois exige um service separado (youtubeAnalytics v2) e pode nao estar
+    # disponivel para todos os canais - em caso de erro, segue sem gravar o
+    # bloco retention_metrics (nao e fatal).
+    video_ids = [v["video_id"] for v in stats]
+    try:
+        analytics_service = get_youtube_analytics_service()
+    except Exception as exc:
+        log.warning("Analytics indisponivel (autenticacao): %s", exc)
+        analytics_service = None
+    if analytics_service is not None:
+        retention = _collect_retention_metrics(analytics_service, video_ids)
+        if retention:
+            report["retention_metrics"] = retention
+            out_path.write_text(
+                json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
+            )
 
     # Detecao de virais: apos computar performance por cena/title_pattern,
     # identifica videos cujas views excedem _VIRAL_THRESHOLD x a mediana e
