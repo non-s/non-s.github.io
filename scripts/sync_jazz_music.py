@@ -28,17 +28,48 @@ log = logging.getLogger(__name__)
 JAMENDO_API_URL = "https://api.jamendo.com/v3.0/tracks"
 MAX_PER_TERM = 30
 MAX_POOL_SIZE = 200
+# Fracao do pool evictada (as faixas mais antigas por mtime) quando o pool
+# esta cheio, pra abrir espaco pra faixas novas a cada sync. Sem isso, uma
+# vez que o pool atingia MAX_POOL_SIZE ele congelava para sempre - as
+# mesmas 200 faixas eram reusadas indefinidamente, nunca "fresco" de fato.
+_POOL_ROTATION_FRACTION = 0.1
+
+
+def _evict_oldest(directory: Path, glob_pattern: str, count: int) -> int:
+    """Remove os `count` arquivos mais antigos (por mtime) que casam com
+    `glob_pattern`, junto com o .json de metadata correspondente, se houver.
+    Retorna quantos foram removidos."""
+    if count <= 0:
+        return 0
+    files = sorted(directory.glob(glob_pattern), key=lambda p: p.stat().st_mtime)
+    evicted = 0
+    for f in files[:count]:
+        try:
+            f.unlink(missing_ok=True)
+            f.with_suffix(".json").unlink(missing_ok=True)
+            evicted += 1
+        except OSError as exc:
+            log.warning("Falha ao remover %s do pool: %s", f.name, exc)
+    return evicted
 
 
 def _client_id() -> str:
     return os.environ.get("JAMENDO_CLIENT_ID", "")
 
 
+# Descritores jazz-adjacentes aceitos: "jazz" cobre a maioria dos hits,
+# mas termos animados (bebop/swing/fusion) e lofi jazz muitas vezes so
+# aparecem nas tags/nome sem repetir a palavra "jazz" literalmente - sem
+# isso, ampliar JAMENDO_SEARCH_TERMS pra variedade de energia nao adiantava
+# nada porque _is_jazz() rejeitava os hits antes de baixar.
+_JAZZ_DESCRIPTORS = ("jazz", "bossa", "smooth", "bebop", "swing", "fusion", "lofi")
+
+
 def _is_jazz(hit: dict) -> bool:
     text = " ".join(
         str(hit.get(k, "")) for k in ["name", "artist_name", "album_name", "tags", "musicinfo"]
     ).lower()
-    return "jazz" in text or "bossa" in text or "smooth" in text
+    return any(descriptor in text for descriptor in _JAZZ_DESCRIPTORS)
 
 
 def _download(url: str, dest: Path) -> bool:
@@ -117,8 +148,10 @@ def main() -> int:
     ensure_dirs()
     existing = len(list(AUDIO_DIR.glob("*.mp3")))
     if existing >= MAX_POOL_SIZE:
-        log.info("Pool de audio ja esta cheio (%d faixas).", existing)
-        return 0
+        rotate_count = max(1, int(MAX_POOL_SIZE * _POOL_ROTATION_FRACTION))
+        evicted = _evict_oldest(AUDIO_DIR, "*.mp3", rotate_count)
+        log.info("Pool de audio cheio (%d faixas) - rotacionadas %d mais antigas para abrir espaco.",
+                  existing, evicted)
 
     total = 0
     current_count = len(list(AUDIO_DIR.glob("*.mp3")))

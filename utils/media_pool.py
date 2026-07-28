@@ -58,8 +58,8 @@ def _load_video_metadata(video: Path) -> dict:
 
 
 MOOD_GENRES: dict[str, list[str]] = {
-    "fofura": ["bossa nova", "lounge", "chill", "easy listening"],
-    "relax": ["smooth jazz", "ambient", "calm", "meditation"],
+    "fofura": ["bossa nova", "lounge", "chill", "easy listening", "lofi", "jazzhop"],
+    "relax": ["smooth jazz", "ambient", "calm", "meditation", "lofi"],
     "diversao": ["swing", "bebop", "fusion", "upbeat"],
 }
 

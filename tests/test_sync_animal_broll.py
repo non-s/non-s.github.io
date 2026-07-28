@@ -241,14 +241,19 @@ class TestMain:
         monkeypatch.setattr(sync_animal_broll, "configure_logging", lambda: None)
         assert sync_animal_broll.main() == 1
 
-    def test_pool_full_returns_0(self, monkeypatch):
+    def test_pool_full_evicts_oldest_and_continues(self, monkeypatch):
+        """Pool cheio nao e mais um no-op permanente: rotaciona os clips
+        mais antigos pra abrir espaco, depois segue pro sync normal - sem
+        isso o pool congelava pra sempre nos mesmos 300 clips."""
         monkeypatch.setenv("PIXABAY_API_KEY", "key")
         monkeypatch.setattr(sync_animal_broll, "configure_logging", lambda: None)
         monkeypatch.setattr(sync_animal_broll, "ensure_dirs", lambda: None)
         mp4s = [MagicMock() for _ in range(sync_animal_broll.MAX_POOL_SIZE)]
         monkeypatch.setattr(sync_animal_broll, "VIDEO_DIR", MagicMock())
         sync_animal_broll.VIDEO_DIR.glob = lambda *a, **k: iter(mp4s)
-        assert sync_animal_broll.main() == 0
+        with patch.object(sync_animal_broll, "_evict_oldest", return_value=30) as mock_evict:
+            assert sync_animal_broll.main() == 0
+        mock_evict.assert_called_once_with(sync_animal_broll.VIDEO_DIR, "*.mp4", 30)
 
     def test_normal_path(self, monkeypatch):
         monkeypatch.setenv("PIXABAY_API_KEY", "key")

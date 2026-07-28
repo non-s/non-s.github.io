@@ -43,6 +43,16 @@ sync (Pixabay/Jamendo) ─┐
 
 ## Decisões de design
 
+- **Pool de assets sempre fresco**: `sync_animal_broll.py`/`sync_jazz_music.py`
+  paravam de baixar qualquer coisa assim que o pool atingia `MAX_POOL_SIZE`
+  (300 clips / 200 faixas) - depois disso, os mesmos assets eram reusados pra
+  sempre. Agora, pool cheio dispara `_evict_oldest()` (remove os ~10% mais
+  antigos por mtime) antes de continuar o sync, então o pool rotaciona aos
+  poucos em vez de congelar. `JAMENDO_SEARCH_TERMS` também ganhou termos de
+  jazz animado (swing/bebop/fusion) e lofi jazz - antes só tinha termos
+  relaxantes, então `MOOD_GENRES["diversao"]` (swing/bebop/upbeat) nunca
+  encontrava nada no pool pra combinar com cenas animadas (playful dog, cat
+  playing).
 - **ASS animado no Short**: legendas estilizadas (ASS com animação
   palavra-a-palavra) fazem sentido em conteúdo vertical de ~35s onde o texto é
   parte do hook visual — o overlay carrega o gancho de retenção nos primeiros
