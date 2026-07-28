@@ -53,6 +53,15 @@ jobs:
           restore-keys: |
             cross-post-videos-
             weekly-videos-
+      - name: "Restaurar historico de posts do TikTok"
+        # tiktok_posts.json alimenta a secao "Cross-posting TikTok" do
+        # dashboard (scripts/generate_dashboard.py) - sem cache aqui, cada
+        # run comecaria do zero e o dashboard nunca acumularia historico.
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: _data/tiktok_posts.json
+          key: tiktok-posts-${{ github.run_id }}
+          restore-keys: tiktok-posts-
       - name: "Cross-postar para TikTok"
         # No-op sem TIKTOK_EMAIL/TIKTOK_PASSWORD: upload_tiktok.py loga e retorna 0.
         run: python upload_tiktok.py --all --prefix pata_jazz_short_

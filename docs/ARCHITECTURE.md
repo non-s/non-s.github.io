@@ -166,6 +166,7 @@ sync (Pixabay/Jamendo) ─┐
 | `analytics_history.json` | `scripts/collect_analytics.py` (snapshots semanais) | `scripts/generate_dashboard.py` | sim |
 | `view_predictor.json` | `scripts/predict_views.py` (modelo treinado) | `scripts/generate_dashboard.py`, `predict_views()` | sim |
 | `quota_usage.json` | `utils/quota_tracker.py` (via `youtube_retry`) | `utils/quota_tracker.log_final_total()` | sim |
+| `tiktok_posts.json` | `utils/tiktok_uploader._record_tiktok_post()` (a cada post publicado) | `scripts/generate_dashboard.py` (seção "Cross-posting TikTok") | sim |
 
 > **Nota sobre persistência entre runs:** os arquivos com lock (JSON de estado)
   são restaurados/persistidos entre runs do GitHub Actions via `actions/cache`

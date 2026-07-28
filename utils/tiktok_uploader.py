@@ -27,6 +27,42 @@ log = logging.getLogger(__name__)
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_STATE_PATH = ROOT / "tiktok_state.json"
 _UPLOAD_STATE_FILE = ROOT / "_videos" / "tiktok_upload_state.json"
+_MAX_TIKTOK_POSTS = 500
+
+
+def _record_tiktok_post(video: str, title: str, url: str) -> None:
+    """Acrescenta um post publicado com sucesso a _data/tiktok_posts.json.
+
+    Historico durable (cacheado entre runs de cross-post.yml via
+    actions/cache) consumido por scripts/generate_dashboard.py pra dar
+    visibilidade ao cross-posting - sem isso o dashboard so mostrava dados
+    do YouTube, nunca do TikTok. Best-effort: uma falha aqui nao deve
+    derrubar o upload, que ja terminou com sucesso nesse ponto.
+    """
+    try:
+        from utils.paths import data_dir
+        from utils.state_lock import state_lock
+
+        posts_file = data_dir() / "tiktok_posts.json"
+        with state_lock(posts_file):
+            try:
+                posts = json.loads(posts_file.read_text(encoding="utf-8")) if posts_file.exists() else []
+                if not isinstance(posts, list):
+                    posts = []
+            except Exception:
+                posts = []
+            posts.append({
+                "video": video,
+                "title": title,
+                "url": url,
+                "posted_at": datetime.now(UTC).isoformat(),
+            })
+            if len(posts) > _MAX_TIKTOK_POSTS:
+                posts = posts[-_MAX_TIKTOK_POSTS:]
+            posts_file.parent.mkdir(parents=True, exist_ok=True)
+            posts_file.write_text(json.dumps(posts, ensure_ascii=False, indent=2), encoding="utf-8")
+    except Exception as exc:
+        log.warning("Falha ao registrar post do TikTok em tiktok_posts.json (nao critico): %s", exc)
 
 # Marcadores de texto usados pelo TikTok em desafios de verificacao
 # (captcha/slider). Headless nao consegue resolver isso - detectar cedo
@@ -363,6 +399,7 @@ def upload_to_tiktok(
                 url = page.url
                 if "/upload" not in url and "tiktok.com" in url:
                     _write_upload_state(video_name, "published", url)
+                    _record_tiktok_post(video_name, title, url)
                     log.info("Video publicado! URL: %s", url)
                     return url
                 error_hit = _page_mentions_any(page, _POST_ERROR_MARKERS)

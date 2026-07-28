@@ -59,6 +59,15 @@ jobs:
             _data/analytics_history.json
           key: analytics-${{ github.run_id }}
           restore-keys: analytics-
+      - name: "Restaurar historico de posts do TikTok"
+        # Escrito por cross-post.yml (utils.tiktok_uploader._record_tiktok_post);
+        # so restaura aqui pra generate_dashboard.py enxergar o historico -
+        # este workflow nunca escreve nesse arquivo.
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: _data/tiktok_posts.json
+          key: tiktok-posts-readonly-${{ github.run_id }}
+          restore-keys: tiktok-posts-
       - name: "Coletar analytics"
         run: python scripts/collect_analytics.py
       - name: "Gerar dashboard HTML"

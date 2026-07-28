@@ -38,6 +38,67 @@ class TestHashtagsForTiktok:
         assert len(hashtags) > 0
 
 
+class TestRecordTiktokPost:
+    def test_appends_record_with_expected_fields(self, tmp_path, monkeypatch):
+        import utils.paths as paths
+        monkeypatch.setattr(paths, "data_dir", lambda: tmp_path)
+
+        tiktok_uploader._record_tiktok_post("v.mp4", "Cute Cat", "https://tiktok.com/@x/video/1")
+
+        posts = json.loads((tmp_path / "tiktok_posts.json").read_text(encoding="utf-8"))
+        assert len(posts) == 1
+        assert posts[0]["video"] == "v.mp4"
+        assert posts[0]["title"] == "Cute Cat"
+        assert posts[0]["url"] == "https://tiktok.com/@x/video/1"
+        assert "posted_at" in posts[0]
+
+    def test_appends_to_existing_list(self, tmp_path, monkeypatch):
+        import utils.paths as paths
+        monkeypatch.setattr(paths, "data_dir", lambda: tmp_path)
+        (tmp_path / "tiktok_posts.json").write_text(
+            json.dumps([{"video": "old.mp4", "title": "Old", "url": "u", "posted_at": "t"}]),
+            encoding="utf-8",
+        )
+
+        tiktok_uploader._record_tiktok_post("new.mp4", "New", "https://tiktok.com/@x/video/2")
+
+        posts = json.loads((tmp_path / "tiktok_posts.json").read_text(encoding="utf-8"))
+        assert len(posts) == 2
+        assert posts[-1]["video"] == "new.mp4"
+
+    def test_caps_at_max_entries(self, tmp_path, monkeypatch):
+        import utils.paths as paths
+        monkeypatch.setattr(paths, "data_dir", lambda: tmp_path)
+        old_posts = [{"video": f"v{i}.mp4", "title": "T", "url": "u", "posted_at": "t"}
+                     for i in range(tiktok_uploader._MAX_TIKTOK_POSTS)]
+        (tmp_path / "tiktok_posts.json").write_text(json.dumps(old_posts), encoding="utf-8")
+
+        tiktok_uploader._record_tiktok_post("newest.mp4", "Newest", "u2")
+
+        posts = json.loads((tmp_path / "tiktok_posts.json").read_text(encoding="utf-8"))
+        assert len(posts) == tiktok_uploader._MAX_TIKTOK_POSTS
+        assert posts[-1]["video"] == "newest.mp4"
+        assert posts[0]["video"] == "v1.mp4"  # v0 foi descartado
+
+    def test_recovers_from_corrupted_existing_file(self, tmp_path, monkeypatch):
+        import utils.paths as paths
+        monkeypatch.setattr(paths, "data_dir", lambda: tmp_path)
+        (tmp_path / "tiktok_posts.json").write_text("not json", encoding="utf-8")
+
+        tiktok_uploader._record_tiktok_post("v.mp4", "T", "u")  # nao deve levantar
+
+        posts = json.loads((tmp_path / "tiktok_posts.json").read_text(encoding="utf-8"))
+        assert len(posts) == 1
+
+    def test_does_not_raise_on_write_failure(self, tmp_path, monkeypatch):
+        import utils.paths as paths
+        blocker = tmp_path / "blocker"
+        blocker.write_text("x")
+        monkeypatch.setattr(paths, "data_dir", lambda: blocker / "sub")
+
+        tiktok_uploader._record_tiktok_post("v.mp4", "T", "u")  # nao deve levantar
+
+
 class TestPageMentionsAny:
     def test_finds_marker_case_insensitive(self):
         page = MagicMock()

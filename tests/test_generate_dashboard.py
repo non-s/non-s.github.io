@@ -27,7 +27,7 @@ def _isolate(tmp_path, monkeypatch):
     monkeypatch.setattr(dashboard, "HISTORY_FILE", tmp_path / "analytics_history.json")
     monkeypatch.setattr(dashboard, "SCENE_PERFORMANCE_FILE", tmp_path / "scene_performance.json")
     monkeypatch.setattr(dashboard, "TITLE_PATTERN_PERFORMANCE_FILE", tmp_path / "title_pattern_performance.json")
-    monkeypatch.setattr(dashboard, "LIVE_VIEWER_HISTORY_FILE", tmp_path / "live_viewer_history.json")
+    monkeypatch.setattr(dashboard, "TIKTOK_POSTS_FILE", tmp_path / "tiktok_posts.json")
 
 
 class TestBuildDashboardHtmlEmpty:
@@ -45,7 +45,7 @@ class TestBuildDashboardHtmlEmpty:
         assert "Nenhum dado de analytics coletado ainda." in html
         assert "Sem histórico semanal ainda" in html
         assert "Sem dados suficientes ainda" in html
-        assert "Sem amostras de audiência da live ainda." in html
+        assert "Nenhum cross-post para o TikTok registrado ainda." in html
 
     def test_corrupted_files_do_not_crash(self, tmp_path, monkeypatch):
         _isolate(tmp_path, monkeypatch)
@@ -65,7 +65,7 @@ class TestBuildDashboardHtmlEmpty:
 
         assert "cdn.jsdelivr.net/npm/chart.js" in html
         # Cada grafico tem seu canvas.
-        for cid in ("viewsChart", "sceneChart", "titlePatternChart", "liveChart", "topVideosChart"):
+        for cid in ("viewsChart", "sceneChart", "titlePatternChart", "topVideosChart"):
             assert f'id="{cid}"' in html
 
 
@@ -168,15 +168,20 @@ class TestBuildDashboardHtmlWithData:
         assert "{emoji} {animal}" in html
         assert "1.80×" in html
 
-    def test_live_audience_summary(self, tmp_path, monkeypatch):
+    def test_tiktok_crossposting_summary(self, tmp_path, monkeypatch):
         _isolate(tmp_path, monkeypatch)
-        snapshots = [{"collected_at": "t", "video_id": "v", "concurrent_viewers": v} for v in [10, 20, 30]]
-        dashboard.LIVE_VIEWER_HISTORY_FILE.write_text(json.dumps(snapshots), encoding="utf-8")
+        posts = [
+            {"video": f"v{i}.mp4", "title": f"Video {i}", "url": f"https://tiktok.com/@x/video/{i}",
+             "posted_at": datetime.now(UTC).isoformat()}
+            for i in range(3)
+        ]
+        dashboard.TIKTOK_POSTS_FILE.write_text(json.dumps(posts), encoding="utf-8")
 
         html = dashboard.build_dashboard_html()
 
-        assert "30" in html  # pico
-        assert "20" in html  # media
+        assert "Posts no TikTok (total)" in html
+        assert "Video 2" in html
+        assert "https://tiktok.com/@x/video/2" in html
 
 
 class TestChartsAndInteractivity:
@@ -207,15 +212,12 @@ class TestChartsAndInteractivity:
         )
         dashboard.SCENE_PERFORMANCE_FILE.write_text(json.dumps({"cat": 1.0}), encoding="utf-8")
         dashboard.TITLE_PATTERN_PERFORMANCE_FILE.write_text(json.dumps({"pat": 1.0}), encoding="utf-8")
-        dashboard.LIVE_VIEWER_HISTORY_FILE.write_text(
-            json.dumps([{"collected_at": "t", "video_id": "v", "concurrent_viewers": 5}]), encoding="utf-8"
-        )
 
         html = dashboard.build_dashboard_html()
 
-        # Um new Chart por grafico (6 graficos: views, scene, title, live,
+        # Um new Chart por grafico (5 graficos: views, scene, title,
         # top videos e thumbnail variants A/B/C).
-        assert html.count("new Chart(") == 6
+        assert html.count("new Chart(") == 5
 
     def test_analytics_history_data_embedded_as_json(self, tmp_path, monkeypatch):
         _isolate(tmp_path, monkeypatch)
@@ -266,8 +268,8 @@ class TestChartsAndInteractivity:
 
 class TestRefreshButtonAndLiveFetch:
     """Item 17: botao "Atualizar dados" + funcao JS que faz fetch de
-    analytics.json e live_viewer_history.json hospedados no mesmo GitHub
-    Pages (se publicados) e atualiza os cards/graficos a cada 60s."""
+    analytics.json hospedado no mesmo GitHub Pages (se publicado) e
+    atualiza os cards/graficos a cada 60s."""
 
     def test_html_contains_refresh_button(self, tmp_path, monkeypatch):
         _isolate(tmp_path, monkeypatch)
@@ -281,7 +283,6 @@ class TestRefreshButtonAndLiveFetch:
         assert "fetchLiveAnalytics" in html
         assert "fetch(" in html
         assert "analytics.json" in html
-        assert "live_viewer_history.json" in html
 
     def test_html_contains_refresh_interval_60s(self, tmp_path, monkeypatch):
         _isolate(tmp_path, monkeypatch)
@@ -432,8 +433,11 @@ class TestFullHtmlSnapshot:
         dashboard.TITLE_PATTERN_PERFORMANCE_FILE.write_text(
             json.dumps({"{animal} vibes": 2.3, "{emoji} jazz": 1.1}), encoding="utf-8"
         )
-        dashboard.LIVE_VIEWER_HISTORY_FILE.write_text(
-            json.dumps([{"collected_at": "t", "video_id": "v", "concurrent_viewers": v} for v in [5, 15, 25]]),
+        dashboard.TIKTOK_POSTS_FILE.write_text(
+            json.dumps([
+                {"video": "v.mp4", "title": "Sleepy Kitten & Soft Jazz",
+                 "url": "https://tiktok.com/@x/video/1", "posted_at": "2026-03-01T00:00:00+00:00"},
+            ]),
             encoding="utf-8",
         )
         dashboard.VIDEO_TAGS_FILE.write_text(

@@ -1,7 +1,7 @@
 """
 scripts/generate_dashboard.py — gera um dashboard HTML estatico a partir dos
 dados ja coletados em _data/ (analytics, scene/title_pattern performance,
-audiencia da live).
+cross-posting no TikTok).
 
 Nenhum dado novo e coletado aqui - so consome o que collect_analytics.py e
 upload_youtube.py ja gravam toda semana. Sem dependencias externas (so
@@ -36,12 +36,12 @@ ANALYTICS_FILE = DATA_DIR / "analytics.json"
 HISTORY_FILE = DATA_DIR / "analytics_history.json"
 SCENE_PERFORMANCE_FILE = DATA_DIR / "scene_performance.json"
 TITLE_PATTERN_PERFORMANCE_FILE = DATA_DIR / "title_pattern_performance.json"
-LIVE_VIEWER_HISTORY_FILE = DATA_DIR / "live_viewer_history.json"
+TIKTOK_POSTS_FILE = DATA_DIR / "tiktok_posts.json"
 VIEW_PREDICTOR_FILE = DATA_DIR / "view_predictor.json"
 VIDEO_TAGS_FILE = DATA_DIR / "video_tags.json"
 
 _MAX_HISTORY_ROWS = 12
-_MAX_LIVE_SNAPSHOTS = 20
+_MAX_TIKTOK_POSTS_SHOWN = 10
 
 # Chart.js 4.x via jsdelivr (CDN estavel, sem build). SRI calculado a partir
 # do arquivo oficial da versao; fallback offline copiado para _dashboard/.
@@ -170,19 +170,39 @@ def _render_thumbnail_variants(video_tags: dict) -> str:
     )
 
 
-def _render_live_audience(snapshots: list) -> str:
-    if not snapshots:
-        return "<p class='empty'>Sem amostras de audiência da live ainda.</p>"
-    recent = snapshots[-_MAX_LIVE_SNAPSHOTS:]
-    viewers = [s.get("concurrent_viewers", 0) for s in recent]
-    avg = sum(viewers) / len(viewers) if viewers else 0
-    peak = max(viewers, default=0)
+def _render_tiktok_crossposting(posts: list) -> str:
+    """Seção "Cross-posting TikTok" — visibilidade de uma segunda
+    plataforma além do YouTube (utils.tiktok_uploader grava um registro em
+    _data/tiktok_posts.json a cada post publicado com sucesso)."""
+    if not posts:
+        return "<p class='empty'>Nenhum cross-post para o TikTok registrado ainda.</p>"
+
+    now = datetime.now(UTC)
+    last_7d = 0
+    for post in posts:
+        try:
+            posted_at = datetime.fromisoformat(str(post.get("posted_at", "")))
+        except ValueError:
+            continue
+        if (now - posted_at).days < 7:
+            last_7d += 1
+
     cards = [
-        _card("Espectadores (média recente)", f"{avg:.0f}"),
-        _card("Pico recente", str(peak)),
-        _card("Amostras", str(len(snapshots))),
+        _card("Posts no TikTok (total)", str(len(posts))),
+        _card("Últimos 7 dias", str(last_7d)),
     ]
-    return f'<div class="cards">{"".join(cards)}</div>'
+    rows = []
+    for post in posts[-_MAX_TIKTOK_POSTS_SHOWN:][::-1]:
+        title = escape(str(post.get("title", ""))[:60])
+        url = escape(str(post.get("url", "")))
+        posted_at_label = escape(str(post.get("posted_at", ""))[:16])
+        link = f"<a href='{url}' target='_blank' rel='noopener'>abrir</a>" if url else "—"
+        rows.append(f"<tr><td class='mono'>{posted_at_label}</td><td>{title}</td><td>{link}</td></tr>")
+    table = (
+        "<table><thead><tr><th>Publicado em</th><th>Título</th><th>Link</th></tr></thead>"
+        f"<tbody>{''.join(rows)}</tbody></table>"
+    )
+    return f'<div class="cards">{"".join(cards)}</div>{table}'
 
 
 _DAY_OF_WEEK_NAMES = [
@@ -342,14 +362,6 @@ def _build_title_pattern_dataset(title_pattern_weights: dict) -> dict:
     }
 
 
-def _build_live_dataset(live_snapshots: list) -> dict:
-    recent = live_snapshots[-_MAX_LIVE_SNAPSHOTS:] if live_snapshots else []
-    return {
-        "labels": [str(s.get("collected_at", ""))[:16] for s in recent],
-        "viewers": [s.get("concurrent_viewers", 0) for s in recent],
-    }
-
-
 def _build_top_videos_dataset(analytics: dict) -> dict:
     top = analytics.get("top_10") if analytics else None
     if not top:
@@ -408,7 +420,7 @@ def build_dashboard_html() -> str:
     history = _load_json(HISTORY_FILE, [])
     scene_weights = _load_json(SCENE_PERFORMANCE_FILE, {})
     title_pattern_weights = _load_json(TITLE_PATTERN_PERFORMANCE_FILE, {})
-    live_snapshots = _load_json(LIVE_VIEWER_HISTORY_FILE, [])
+    tiktok_posts = _load_json(TIKTOK_POSTS_FILE, [])
     view_predictor = _load_json(VIEW_PREDICTOR_FILE, {})
     video_tags = _load_json(VIDEO_TAGS_FILE, {})
 
@@ -423,7 +435,6 @@ def build_dashboard_html() -> str:
     history_ds = _build_chart_datasets(history)
     scene_ds = _build_scene_dataset(scene_weights)
     title_ds = _build_title_pattern_dataset(title_pattern_weights)
-    live_ds = _build_live_dataset(live_snapshots)
     top_ds = _build_top_videos_dataset(analytics)
     thumb_ds = _build_thumbnail_variant_dataset(video_tags)
 
@@ -436,7 +447,6 @@ def build_dashboard_html() -> str:
     history_json = _safe_json(history_ds)
     scene_json = _safe_json(scene_ds)
     title_json = _safe_json(title_ds)
-    live_json = _safe_json(live_ds)
     top_json = _safe_json(top_ds)
     thumb_json = _safe_json(thumb_ds)
 
@@ -526,9 +536,9 @@ def build_dashboard_html() -> str:
   </div>
   <p class="note">
     Os dados em _data/ só atualizam quando o workflow pata-jazz-analytics.yml roda (semanal).
-    O botão "Atualizar dados" refaz o fetch de analytics.json e live_viewer_history.json
-    hospedados no mesmo GitHub Pages — se já publicados, os gráficos refletem o último snapshot;
-    caso contrário, mantém os dados embutidos na geração estática.
+    O botão "Atualizar dados" refaz o fetch de analytics.json hospedado no mesmo GitHub Pages —
+    se já publicado, os gráficos refletem o último snapshot; caso contrário, mantém os dados
+    embutidos na geração estática.
   </p>
 
   <h2>Resumo geral</h2>
@@ -554,9 +564,8 @@ def build_dashboard_html() -> str:
   {_chart_canvas("titlePatternChart", "360px")}
   {_render_weighted_table(title_pattern_weights, "Padrão")}
 
-  <h2>Audiência da live</h2>
-  {_render_live_audience(live_snapshots)}
-  {_chart_canvas("liveChart")}
+  <h2>Cross-posting TikTok</h2>
+  {_render_tiktok_crossposting(tiktok_posts)}
 
   <h2>Top 10 vídeos</h2>
   {_chart_canvas("topVideosChart", "320px")}
@@ -583,7 +592,6 @@ def build_dashboard_html() -> str:
     var HISTORY_DS = {history_json};
     var SCENE_DS = {scene_json};
     var TITLE_DS = {title_json};
-    var LIVE_DS = {live_json};
     var TOP_DS = {top_json};
     var THUMB_DS = {thumb_json};
     var ACTIVE_CHANNEL = {json.dumps(active_channel.name, ensure_ascii=False)};
@@ -702,30 +710,6 @@ def build_dashboard_html() -> str:
       }});
     }}
 
-    function makeLiveChart() {{
-      var ds = LIVE_DS;
-      if (!ds.labels.length) return;
-      new Chart(document.getElementById("liveChart").getContext("2d"), {{
-        type: "line",
-        data: {{
-          labels: ds.labels,
-            datasets: [{{
-              label: "Espectadores simultâneos", data: ds.viewers,
-              borderColor: ACCENT, backgroundColor: "rgba(244, 162, 97, 0.15)",
-              fill: true, tension: 0.25, pointRadius: 2,
-            }}],
-        }},
-        options: {{
-          responsive: true, maintainAspectRatio: false,
-          plugins: {{ legend: {{ display: false }} }},
-          scales: {{
-            x: {{ ticks: {{ color: TICK }}, grid: {{ color: GRID }} }},
-            y: {{ ticks: {{ color: TICK }}, grid: {{ color: GRID }}, beginAtZero: true }},
-          }},
-        }},
-      }});
-    }}
-
     function makeTopVideosChart() {{
       var ds = TOP_DS;
       if (!ds.labels.length) return;
@@ -774,16 +758,15 @@ def build_dashboard_html() -> str:
       makeViewsChart();
       makeSceneChart();
       makeTitlePatternChart();
-      makeLiveChart();
       makeTopVideosChart();
       makeThumbnailVariantsChart();
     }}
 
     // Item 17: endpoint client-side opcional que busca dados ao vivo do
-    // GitHub Pages (analytics.json + live_viewer_history.json hospedados no
-    // mesmo site). Como o GitHub Pages e estatico, os dados so atualizam quando
-    // o workflow pata-jazz-analytics.yml roda (semanal) - por isso o botao e
-    // opcional e os graficos ja vem populados com o snapshot da geracao.
+    // GitHub Pages (analytics.json hospedado no mesmo site). Como o GitHub
+    // Pages e estatico, os dados so atualizam quando o workflow
+    // pata-jazz-analytics.yml roda (semanal) - por isso o botao e opcional
+    // e os graficos ja vem populados com o snapshot da geracao.
     var REFRESH_INTERVAL_MS = 60000;
     var DATA_BASE = "./";
     var refreshBtn = document.getElementById("refresh-btn");
@@ -800,20 +783,15 @@ def build_dashboard_html() -> str:
       refreshBtn.disabled = true;
       setRefreshStatus("Buscando dados...", false);
       var ts = Date.now();
-      Promise.all([
-        fetch(DATA_BASE + "analytics.json?t=" + ts, {{ cache: "no-store" }})
-          .then(function (r) {{ return r.ok ? r.json() : null; }}).catch(function () {{ return null; }}),
-        fetch(DATA_BASE + "live_viewer_history.json?t=" + ts, {{ cache: "no-store" }})
-          .then(function (r) {{ return r.ok ? r.json() : null; }}).catch(function () {{ return null; }}),
-      ]).then(function (results) {{
-        var analytics = results[0];
-        var liveSnapshots = results[1];
-        if (!analytics && !liveSnapshots) {{
+      fetch(DATA_BASE + "analytics.json?t=" + ts, {{ cache: "no-store" }})
+        .then(function (r) {{ return r.ok ? r.json() : null; }}).catch(function () {{ return null; }})
+        .then(function (analytics) {{
+        if (!analytics) {{
           setRefreshStatus("Dados ao vivo indisponiveis (ainda nao publicados no GitHub Pages).", true);
           refreshBtn.disabled = false;
           return;
         }}
-        if (analytics && analytics.total_views !== undefined) {{
+        if (analytics.total_views !== undefined) {{
           var cards = document.querySelectorAll(".card-value");
           // Atualiza o card de "Views totais" se presente.
           for (var i = 0; i < cards.length; i++) {{
@@ -823,14 +801,7 @@ def build_dashboard_html() -> str:
             }}
           }}
         }}
-        if (liveSnapshots && Array.isArray(liveSnapshots) && liveSnapshots.length) {{
-          var recent = liveSnapshots.slice(-20);
-          var viewers = recent.map(function (s) {{ return s.concurrent_viewers || 0; }});
-          var avg = viewers.reduce(function (a, b) {{ return a + b; }}, 0) / viewers.length;
-          setRefreshStatus("Dados ao vivo carregados. Espectadores recentes (media): " + Math.round(avg), false);
-        }} else {{
-          setRefreshStatus("Dados ao vivo carregados em " + new Date().toLocaleTimeString() + ".", false);
-        }}
+        setRefreshStatus("Dados ao vivo carregados em " + new Date().toLocaleTimeString() + ".", false);
         refreshBtn.disabled = false;
       }}).catch(function (err) {{
         setRefreshStatus("Erro ao buscar dados: " + err, true);

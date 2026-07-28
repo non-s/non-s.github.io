@@ -42,13 +42,18 @@ MAX_HISTORY_ENTRIES = 104  # ~2 anos de snapshots semanais
 VIDEO_TAGS_FILE = DATA_DIR / "video_tags.json"
 SCENE_PERFORMANCE_FILE = DATA_DIR / "scene_performance.json"
 _MIN_SCENE_SAMPLES = 3  # cena com poucos videos ainda: peso fica neutro (nao ha o suficiente pra confiar)
-_MIN_SCENE_WEIGHT = 0.4
-_MAX_SCENE_WEIGHT = 2.5
+# Faixa alargada (era 0.4-2.5): com o piso do Wilson score ja protegendo
+# contra amostras pequenas/virais isolados, a faixa anterior deixava o
+# feedback loop timido demais - uma cena vencedora ficava so ~6x mais
+# provavel que uma perdedora. 0.3-3.0 reage mais rapido ao que realmente
+# performa melhor, sem nunca zerar nenhuma opcao.
+_MIN_SCENE_WEIGHT = 0.3
+_MAX_SCENE_WEIGHT = 3.0
 
 TITLE_PATTERN_PERFORMANCE_FILE = DATA_DIR / "title_pattern_performance.json"
 _MIN_TITLE_PATTERN_SAMPLES = 3
-_MIN_TITLE_PATTERN_WEIGHT = 0.4
-_MAX_TITLE_PATTERN_WEIGHT = 2.5
+_MIN_TITLE_PATTERN_WEIGHT = 0.3
+_MAX_TITLE_PATTERN_WEIGHT = 3.0
 
 # Detecao de virais: um video e "viral" se suas views ultrapassam
 # _VIRAL_THRESHOLD x a mediana de views do conjunto coletado. Esses sinais
