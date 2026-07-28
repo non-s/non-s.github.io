@@ -82,6 +82,27 @@ class TestGenerateHookWithAi:
         generate_hook_with_ai("cat")
         assert calls["n"] == 1
 
+    def test_prompt_varies_retention_angle_across_calls(self, monkeypatch):
+        """O prompt sorteia um angulo de retencao (_HOOK_ANGLES) por
+        chamada, nao sempre a mesma instrucao "cute e jazzy" - varia o
+        *tipo* de hook, nao so o texto final."""
+        prompts: list[str] = []
+
+        def fake_ai_text(prompt, *a, **k):
+            prompts.append(prompt)
+            return "Some Valid Hook Text Here"
+
+        monkeypatch.setattr(ab, "ai_text", fake_ai_text)
+        monkeypatch.setattr(ab.random, "choice", lambda seq: ab._HOOK_ANGLES[2])
+        generate_hook_with_ai("cat")
+        assert ab._HOOK_ANGLES[2] in prompts[0]
+
+    def test_prompt_mentions_first_seconds_retention(self, monkeypatch):
+        prompts: list[str] = []
+        monkeypatch.setattr(ab, "ai_text", lambda prompt, *a, **k: (prompts.append(prompt), "Valid Hook Text Here")[1])
+        generate_hook_with_ai("cat")
+        assert "1-2 seconds" in prompts[0]
+
 
 class TestHookForSceneWithAi:
     def setup_method(self):
