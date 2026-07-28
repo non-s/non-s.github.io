@@ -218,3 +218,86 @@ def save_ass(content: str, video_path: Path) -> Path:
     ass_path.write_text(content, encoding="utf-8")
     log.info("ASS salvo: %s", ass_path)
     return ass_path
+
+
+# ---------------------------------------------------------------------------
+# Legendas em PT-BR (segunda caption track para multiplo idioma).
+# Reaproveita o mesmo gerador da IA com prompt em portugues; fallback local
+# traduz as frases fixas. YouTube aceita multiplas caption tracks por video.
+# ---------------------------------------------------------------------------
+
+_PT_FALLBACK_LINES = [
+    ("Welcome to Pata Jazz", "Bem-vindo ao Pata Jazz"),
+    ("Cats and dogs + jazz", "Gatos e cachorros + jazz"),
+    ("Relax and enjoy", "Relaxe e aproveite"),
+    ("Subscribe for more", "Inscreva-se para mais"),
+]
+
+
+def generate_srt_pt(hook: str, scene: str, duration: int, kind: str, emoji: str) -> str:
+    """Gera legenda SRT em portugues (PT-BR) via Gemini + fallback local."""
+    prompt = (
+        f"Crie legendas em PORTUGUES (PT-BR) para um {'Short' if kind == 'short' else 'video'} "
+        f"de {duration} segundos sobre {hook} {emoji}. "
+        f"O canal e Pata Jazz (gatos e cachorros fofos + jazz relaxante). "
+        f"Crie 4-6 linhas curtas de legenda (max 40 chars cada), distribuidas pela duracao. "
+        f"Retorne APENAS o formato SRT (numerado, com timestamps HH:MM:SS,mmm --> HH:MM:SS,mmm)."
+    )
+    out = ai_text(prompt, task="caption_pt")
+    if out and " --> " in out and is_safe_ai_text(out):
+        return out.strip()
+    return _fallback_srt_pt(hook, duration)
+
+
+def _fallback_srt_pt(hook: str, duration: int) -> str:
+    """Gera SRT simples em PT-BR (mesma estrutura do _fallback_srt)."""
+    lines = [
+        (_fmt_ts(0.0), _fmt_ts(min(3.0, duration)), hook[:40]),
+        (_fmt_ts(min(3.0, duration)), _fmt_ts(min(8.0, duration)), _PT_FALLBACK_LINES[0][1]),
+        (_fmt_ts(min(8.0, duration)), _fmt_ts(float(duration)), _PT_FALLBACK_LINES[1][1]),
+    ]
+    srt_lines: list[str] = []
+    for i, (start, end, text) in enumerate(lines, 1):
+        srt_lines.append(str(i))
+        srt_lines.append(f"{start} --> {end}")
+        srt_lines.append(text)
+        srt_lines.append("")
+    return "\n".join(srt_lines)
+
+
+def save_srt_pt(content: str, video_path: Path) -> Path:
+    """Salva o SRT em PT ao lado do video com sufixo _pt."""
+    srt_path = video_path.with_suffix(".pt.srt")
+    srt_path.write_text(content, encoding="utf-8")
+    log.info("SRT PT salvo: %s", srt_path)
+    return srt_path
+
+
+def generate_chapters(duration: int, kind: str) -> list[tuple[str, str]]:
+    """Gera chapters (timestamp, titulo) para a descricao do YouTube.
+
+    YouTube usa chapters quando a descricao contem linhas no formato
+    '00:00 Titulo'. Para Shorts (curtos), 2-3 chapters bastam; para
+    horizontais/live, 4-6. Retorna lista de (timestamp_str, titulo).
+    """
+    def _fmt(seconds: int) -> str:
+        h, rem = divmod(seconds, 3600)
+        m, s = divmod(rem, 60)
+        return f"{h:02d}:{m:02d}:{s:02d}" if h else f"{m:02d}:{s:02d}"
+
+    if kind == "short":
+        third = max(1, duration // 3)
+        return [
+            (_fmt(0), "Intro"),
+            (_fmt(third), "Cute moment"),
+            (_fmt(third * 2), "Relax & enjoy"),
+        ]
+    # Horizontais/live: chapters a cada ~25% do video.
+    n = 5
+    step = max(1, duration // n)
+    chapters = [(_fmt(0), "Intro")]
+    labels = ["Cute pets", "Relaxing jazz", "Cozy moment", "Calm & peace", "Outro"]
+    for i in range(1, n):
+        chapters.append((_fmt(step * i), labels[min(i, len(labels) - 1)]))
+    chapters.append((_fmt(duration), "Outro"))
+    return chapters

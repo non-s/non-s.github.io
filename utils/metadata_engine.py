@@ -101,12 +101,14 @@ def generate_metadata(
     prompt = _build_metadata_prompt(hook, scene, duration, kind, emoji)
     out = ai_text(prompt, json_mode=True, task=f"{kind}_metadata")
 
-    description = generate_description(
+    description, cta_used = generate_description(
         hook=hook,
         kind=kind,
         hashtags=hashtags,
         include_cta=True,
-    ) or fallback_description
+    )
+    if not description:
+        description = fallback_description
 
     if out:
         try:
@@ -166,6 +168,7 @@ def generate_metadata(
         "description": description,
         "hashtags": hashtags,
         "title_pattern": title_pattern,
+        "cta": cta_used,
     }
 
 

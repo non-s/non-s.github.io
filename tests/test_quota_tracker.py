@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from unittest.mock import patch
 
 from utils import quota_tracker
 
@@ -80,6 +81,36 @@ def test_no_alert_below_threshold(tmp_path: Path, monkeypatch):
         quota_tracker.record_usage("videos", "insert", file=f)
     # 4 x 1600 = 6400 < 8000
     assert quota_tracker.should_alert(file=f) is False
+
+
+def test_alert_triggers_webhook_at_threshold(tmp_path: Path, monkeypatch):
+    f = tmp_path / "quota_usage.json"
+    monkeypatch.setattr(quota_tracker, "QUOTA_FILE", f)
+    monkeypatch.setattr(quota_tracker, "_today", lambda: "2026-01-01")
+    monkeypatch.delenv("PATA_JAZZ_ALERT_WEBHOOK", raising=False)
+
+    with patch("utils.quota_tracker.notifier.send_alert", return_value=False) as mock_send:
+        for _ in range(5):
+            quota_tracker.record_usage("videos", "insert", file=f)
+
+    # Alerta dispara exatamente ao cruzar 8000 (nao a cada chamada seguinte).
+    assert mock_send.call_count == 1
+    args, kwargs = mock_send.call_args
+    assert "8000" in args[0]
+    assert "threshold 8000" in args[0]
+    assert kwargs.get("level") == "warning"
+
+
+def test_alert_does_not_trigger_webhook_below_threshold(tmp_path: Path, monkeypatch):
+    f = tmp_path / "quota_usage.json"
+    monkeypatch.setattr(quota_tracker, "QUOTA_FILE", f)
+    monkeypatch.setattr(quota_tracker, "_today", lambda: "2026-01-01")
+
+    with patch("utils.quota_tracker.notifier.send_alert", return_value=False) as mock_send:
+        for _ in range(4):
+            quota_tracker.record_usage("videos", "insert", file=f)
+
+    mock_send.assert_not_called()
 
 
 def test_log_final_total_writes_github_output(tmp_path: Path, monkeypatch):

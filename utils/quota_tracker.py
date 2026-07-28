@@ -36,6 +36,7 @@ import threading
 from datetime import UTC, datetime
 from pathlib import Path
 
+from utils import notifier
 from utils.state_lock import state_lock
 
 log = logging.getLogger(__name__)
@@ -140,6 +141,10 @@ def record_usage(resource: str, method: str, units: int | None = None, *, file: 
             log.warning(
                 "ALERTA de quota: %d unidades usadas hoje (limite diario=%d, alerta em %d).",
                 total, DAILY_LIMIT, ALERT_THRESHOLD,
+            )
+            notifier.send_alert(
+                f"YouTube API quota at {total} units (threshold {ALERT_THRESHOLD})",
+                level="warning",
             )
         return total
 

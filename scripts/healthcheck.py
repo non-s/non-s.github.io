@@ -35,6 +35,12 @@ REQUIRED_ENVS = [
     "JAMENDO_CLIENT_ID",
 ]
 
+# Limites minimos do pool para nao gerar conteudo repetitivo/degradado.
+# Abaixo disso o healthcheck emite aviso (nao falha) - o pipeline ainda
+# funciona, mas a variedade de b-roll/trilha cai e o canal perde qualidade.
+POOL_DRIFT_VIDEO_MIN = 50
+POOL_DRIFT_AUDIO_MIN = 30
+
 
 def _check_python() -> dict[str, Any]:
     ok = sys.version_info >= (3, 11)
@@ -103,6 +109,30 @@ def _check_asset_pool() -> dict[str, Any]:
     }
 
 
+def check_pool_drift() -> dict[str, Any]:
+    """Aviso de drift do pool: quantidade de b-roll/audio abaixo dos limites
+    saudaveis (videos < 50 ou audio < 30). Retorna ``ok=True`` quando o pool
+    esta acima dos limites; caso contrario ``ok=False`` com detalhe dos
+    limites - integra no resumo do healthcheck igual aos outros checks."""
+    stats = media_pool.pool_stats()
+    videos = stats.get("videos", 0)
+    audio = stats.get("audio", 0)
+    low_video = videos < POOL_DRIFT_VIDEO_MIN
+    low_audio = audio < POOL_DRIFT_AUDIO_MIN
+    ok = not (low_video or low_audio)
+    parts: list[str] = []
+    if low_video:
+        parts.append(f"videos={videos}<{POOL_DRIFT_VIDEO_MIN}")
+    if low_audio:
+        parts.append(f"audio={audio}<{POOL_DRIFT_AUDIO_MIN}")
+    info = "OK" if ok else f"drift: {', '.join(parts)}"
+    return {
+        "name": "Drift do pool de assets",
+        "ok": ok,
+        "info": info,
+    }
+
+
 def _check_live_prerequisites() -> dict[str, Any]:
     """Verifica se o ambiente está pronto para lives.
 
@@ -143,6 +173,7 @@ def run_healthcheck(mode: str = "all") -> int:
             _check_envs(),
             _check_live_prerequisites(),
             _check_asset_pool(),
+            check_pool_drift(),
         ]
     else:
         checks = [
@@ -152,6 +183,7 @@ def run_healthcheck(mode: str = "all") -> int:
             _check_youtube_token(),
             _check_client_secret(),
             _check_asset_pool(),
+            check_pool_drift(),
         ]
 
     log.info("=" * 60)

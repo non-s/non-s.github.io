@@ -28,7 +28,7 @@ from utils.channel_config import active_channel
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.state_lock import state_lock
 from utils.youtube_oauth import get_youtube_service
-from utils.youtube_post_upload import add_to_playlists, apply_caption, apply_thumbnail
+from utils.youtube_post_upload import add_to_playlists, apply_captions, apply_thumbnail
 from utils.youtube_retry import retry_youtube_call as _retry_youtube_call
 
 ROOT = Path(__file__).resolve().parent
@@ -178,7 +178,7 @@ def upload_video(language: str = "en", privacy: str = "public", prefix: str = "p
     _record_video_tags(video_id, meta)
 
     apply_thumbnail(service, video_id, thumbnail, _retry_youtube_call)
-    apply_caption(service, video_id, _meta_path(meta, "caption"), _retry_youtube_call)
+    apply_captions(service, video_id, meta, _retry_youtube_call)
     add_to_playlists(service, video_id, meta)
 
     return video_id

@@ -63,6 +63,9 @@ def apply_caption(
     video_id: str,
     caption_path: Path | None,
     retry_call,
+    *,
+    language: str = "en",
+    name: str = "English",
 ) -> None:
     """Faz upload de legenda (.srt, .vtt ou .ass), se existir."""
     if not caption_path or not caption_path.exists():
@@ -71,8 +74,8 @@ def apply_caption(
         caption_body = {
             "snippet": {
                 "videoId": video_id,
-                "language": "en",
-                "name": "English",
+                "language": language,
+                "name": name,
                 "isDraft": False,
             }
         }
@@ -83,10 +86,42 @@ def apply_caption(
                 media_body=MediaFileUpload(str(caption_path), mimetype=_caption_mimetype(caption_path)),
             ).execute
         )
-        log.info("Legenda aplicada.")
+        log.info("Legenda %s aplicada.", language)
     except Exception as exc:
         # Ver comentario equivalente no bloco de thumbnail acima.
-        log.warning("Falha ao aplicar legenda: %s", exc)
+        log.warning("Falha ao aplicar legenda %s: %s", language, exc)
+
+
+def _meta_path(meta: dict, key: str) -> Path | None:
+    """Path(meta.get(key, '')) para uma chave ausente/vazia vira Path('')
+    == Path('.') - e .exists() no diretorio atual e sempre True, entao
+    codigo tentaria abrir um diretorio. So constroi o Path se o valor for
+    uma string nao-vazia."""
+    value = meta.get(key)
+    return Path(value) if value else None
+
+
+def apply_captions(
+    service,
+    video_id: str,
+    meta: dict,
+    retry_call,
+) -> None:
+    """Aplica todas as caption tracks disponiveis (EN + PT).
+
+    1.3 - Suporte a multiplas caption tracks: EN (default) + PT-BR (se
+    meta['caption_pt'] existir, gerada por utils/caption_engine).
+    """
+    apply_caption(
+        service, video_id, _meta_path(meta, "caption"), retry_call,
+        language="en", name="English",
+    )
+    caption_pt = meta.get("caption_pt")
+    if caption_pt:
+        apply_caption(
+            service, video_id, Path(caption_pt), retry_call,
+            language="pt", name="Português",
+        )
 
 
 def add_to_playlists(service, video_id: str, meta: dict) -> None:

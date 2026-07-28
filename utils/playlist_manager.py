@@ -22,19 +22,6 @@ ROOT = Path(__file__).resolve().parent.parent
 _DATA_DIR = ROOT / "_data"
 _CACHE_FILE = _DATA_DIR / "playlist_cache.json"
 
-# Playlists por mood
-PLAYLISTS_BY_MOOD: dict[str, str] = {
-    "relax": "Pata Jazz | Relaxar e Dormir",
-    "fofura": "Pata Jazz | Fofura Diaria",
-    "diversao": "Pata Jazz | Pets Felizes",
-}
-
-# Playlist por formato
-PLAYLISTS_BY_KIND: dict[str, str] = {
-    "short": "Pata Jazz | Shorts",
-    "horizontal": "Pata Jazz | Videos Completos",
-}
-
 # Cache de playlist IDs (criadas sob demanda). Persistido em _data/ para
 # sobreviver entre runs do workflow e evitar re-buscar/recriar playlists.
 _playlist_cache: dict[str, str] = {}

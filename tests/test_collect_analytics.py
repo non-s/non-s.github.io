@@ -1,4 +1,4 @@
-"""Testes para collect_analytics.py."""
+﻿"""Testes para collect_analytics.py."""
 import json
 from datetime import UTC, datetime, timedelta
 from unittest.mock import MagicMock, patch
@@ -104,21 +104,22 @@ class TestCollectVideoStats:
 
     def test_collect_stats_returns_list(self):
         service = self._make_service()
-        stats = collect_analytics.collect_video_stats(service)
+        stats, _channel = collect_analytics.collect_video_stats(service)
         assert len(stats) == 2
         assert stats[0]["video_id"] == "vid1"
         assert stats[0]["views"] == 100
 
     def test_collect_stats_handles_null_values(self):
         service = self._make_service()
-        stats = collect_analytics.collect_video_stats(service)
+        stats, _channel = collect_analytics.collect_video_stats(service)
         assert stats[1]["comments"] == 0
 
     def test_collect_stats_empty_channel(self):
         service = MagicMock()
         service.channels().list.return_value.execute.return_value = {"items": []}
-        stats = collect_analytics.collect_video_stats(service)
+        stats, _channel = collect_analytics.collect_video_stats(service)
         assert stats == []
+        assert _channel == {}
 
     def test_pagination_follows_next_page_token_across_pages(self):
         """video_ids deve acumular de VARIAS paginas ate nextPageToken vazio,
@@ -151,7 +152,7 @@ class TestCollectVideoStats:
             ]
         }
 
-        stats = collect_analytics.collect_video_stats(service)
+        stats, _channel = collect_analytics.collect_video_stats(service)
 
         assert {s["video_id"] for s in stats} == {"vid1", "vid2"}
         assert service.playlistItems().list.return_value.execute.call_count == 2
@@ -195,7 +196,7 @@ class TestCollectVideoStats:
         ]
         service.videos().list.return_value.execute.return_value = {"items": []}
 
-        stats = collect_analytics.collect_video_stats(service)
+        stats, _channel = collect_analytics.collect_video_stats(service)
 
         assert stats == []
         assert service.playlistItems().list.return_value.execute.call_count == 1
@@ -517,7 +518,7 @@ class TestMaybeRotateThumbnail:
         desde a ULTIMA rotacao (rotated_at), nao desde uploaded_at."""
         a, b, c = self._thumb_paths(tmp_path)
         now = datetime.now(UTC)
-        # Upload ha 20 dias; rotacao A->B ha 3 dias (ainda dentro do prazo) —
+        # Upload ha 20 dias; rotacao A->B ha 3 dias (ainda dentro do prazo) â€”
         # nao deve rotacionar.
         uploaded = (now - timedelta(days=20)).isoformat()
         rotated_recent = (now - timedelta(days=3)).isoformat()
@@ -532,7 +533,7 @@ class TestMaybeRotateThumbnail:
         assert rotated is False
         service.thumbnails().set.assert_not_called()
 
-        # Agora rotated_at ha 10 dias (fora do prazo) — deve rotacionar B->C.
+        # Agora rotated_at ha 10 dias (fora do prazo) â€” deve rotacionar B->C.
         rotated_old = (now - timedelta(days=10)).isoformat()
         entry = self._entry(
             uploaded_at=uploaded, views=1, thumbnails=[a, b, c],

@@ -360,6 +360,32 @@ def build_pata_jazz_video(
             cap_content = generate_srt(hook, scene, spec.duration, spec.kind, emoji)
             cap_path = save_srt(cap_content, output)
         meta["caption"] = str(cap_path)
+
+        # 1.3 - Segunda caption track em PT-BR: multiplica alcance sem
+        # regravar o video. YouTube aceita multiplas caption tracks.
+        try:
+            from utils.caption_engine import generate_srt_pt, save_srt_pt
+            pt_content = generate_srt_pt(hook, scene, spec.duration, spec.kind, emoji)
+            pt_path = save_srt_pt(pt_content, output)
+            meta["caption_pt"] = str(pt_path)
+        except Exception as exc:
+            log.warning("Falha ao gerar legenda PT: %s", exc)
+
+        # 1.2 - Chapters automaticos na descricao para SEO do YouTube.
+        try:
+            from utils.caption_engine import generate_chapters
+            chapters = generate_chapters(spec.duration, spec.kind)
+            if chapters:
+                chapter_lines = [f"{ts} {title}" for ts, title in chapters]
+                meta["chapters"] = "\n".join(chapter_lines)
+                # Prepend chapters na descricao para o YouTube parsear.
+                if meta.get("description"):
+                    meta["description"] = (
+                        meta["chapters"] + "\n\n" + meta["description"]
+                    )
+        except Exception as exc:
+            log.warning("Falha ao gerar chapters: %s", exc)
+
         output.with_suffix(".json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
     except Exception as exc:
         log.warning("Falha ao gerar legenda: %s", exc)

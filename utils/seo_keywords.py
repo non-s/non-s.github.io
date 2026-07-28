@@ -222,8 +222,12 @@ def generate_description(
     kind: Literal["short", "horizontal", "live"],
     hashtags: list[str],
     include_cta: bool = True,
-) -> str:
-    """Gera descrição otimizada com SEO e CTAs."""
+) -> tuple[str, str]:
+    """Gera descrição otimizada com SEO e CTAs.
+
+    Retorna (description, cta_text) para que o caller possa gravar qual CTA
+    foi usado (A/B testing de CTA vs. inscritos — ver collect_analytics).
+    """
     # Introdução com keywords
     intro_templates = [
         f"{hook} 🐾 Welcome to Pata Jazz, where cats and dogs meet the perfect jazz!",
@@ -256,6 +260,7 @@ def generate_description(
 
     # CTA (opcional)
     cta = ""
+    cta_text = ""
     if include_cta:
         cta_text = random.choice(CTAS)
         cta = "\n\n" + cta_text
@@ -263,7 +268,7 @@ def generate_description(
     # Hashtags
     hashtags_str = " ".join(hashtags[:_MAX_HASHTAGS])  # YouTube aceita ate 15, mas mais que ~8 comeca a ler como spam
 
-    return f"{intro}{corpo}{cta}\n\n{hashtags_str}"
+    return f"{intro}{corpo}{cta}\n\n{hashtags_str}", cta_text
 
 
 def generate_hashtags(

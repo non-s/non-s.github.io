@@ -164,7 +164,7 @@ class TestGenerateDescription:
     def test_generate_description_short(self):
         """Gera descrição para Short."""
         hashtags = ["#PataJazz", "#Cats", "#Jazz"]
-        desc = generate_description(
+        desc, _ = generate_description(
             hook="Cute kitten sleeping",
             kind="short",
             hashtags=hashtags,
@@ -177,7 +177,7 @@ class TestGenerateDescription:
     def test_generate_description_horizontal(self):
         """Gera descrição para vídeo horizontal."""
         hashtags = ["#PataJazz", "#Jazz"]
-        desc = generate_description(
+        desc, _ = generate_description(
             hook="Relax with cats and jazz",
             kind="horizontal",
             hashtags=hashtags,
@@ -189,7 +189,7 @@ class TestGenerateDescription:
     def test_generate_description_live(self):
         """Gera descrição para live."""
         hashtags = ["#PataJazz", "#Live"]
-        desc = generate_description(
+        desc, _ = generate_description(
             hook="Jazz 24/7 with cats",
             kind="live",
             hashtags=hashtags,
@@ -200,13 +200,13 @@ class TestGenerateDescription:
     def test_generate_description_without_cta(self):
         """Gera descrição sem CTA."""
         hashtags = ["#PataJazz"]
-        desc_with_cta = generate_description(
+        desc_with_cta, _ = generate_description(
             hook="Test",
             kind="short",
             hashtags=hashtags,
             include_cta=True
         )
-        desc_without_cta = generate_description(
+        desc_without_cta, _ = generate_description(
             hook="Test",
             kind="short",
             hashtags=hashtags,
@@ -222,13 +222,36 @@ class TestGenerateDescription:
     def test_generate_description_includes_hashtags(self):
         """Descrição inclui hashtags."""
         hashtags = ["#PataJazz", "#Cats", "#Jazz", "#Shorts"]
-        desc = generate_description(
+        desc, _ = generate_description(
             hook="Test",
             kind="short",
             hashtags=hashtags,
             include_cta=True
         )
         assert "#PataJazz" in desc
+
+    def test_generate_description_returns_cta(self):
+        """generate_description retorna tambem o CTA usado (A/B tracking)."""
+        hashtags = ["#PataJazz"]
+        desc, cta = generate_description(
+            hook="Test",
+            kind="short",
+            hashtags=hashtags,
+            include_cta=True
+        )
+        assert cta in CTAS
+        assert cta in desc
+
+    def test_generate_description_no_cta_returns_empty(self):
+        """Sem CTA, o segundo elemento do retorno e vazio."""
+        hashtags = ["#PataJazz"]
+        desc, cta = generate_description(
+            hook="Test",
+            kind="short",
+            hashtags=hashtags,
+            include_cta=False
+        )
+        assert cta == ""
 
 
 class TestGenerateHashtags:
@@ -329,7 +352,7 @@ class TestIntegration:
         assert len(hashtags) <= 15
 
         # Gera descrição
-        description = generate_description(title, kind, hashtags)
+        description, _ = generate_description(title, kind, hashtags)
         assert len(description) > 0
 
         # Otimiza para busca

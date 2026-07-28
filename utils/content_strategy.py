@@ -45,8 +45,45 @@ def current_brt_hour() -> int:
 
 
 def mood_for_now() -> str:
-    """Retorna o mood apropriado para a hora atual (BRT)."""
+    """Retorna o mood apropriado para a hora atual (BRT).
+
+    Mood sazonal tem prioridade: se a data atual cai num periodo sazonal
+    definido (ex: Natal, Ano Novo, Black Friday), o mood correspondente e
+    retornado em vez do horario fixo - datas geram picos de busca por
+    "relaxing pet music" e o conteudo deve refletir a sazonalidade.
+    """
+    seasonal = _seasonal_mood()
+    if seasonal:
+        return seasonal
     return _HOURLY_MOOD.get(current_brt_hour(), "fofura")
+
+
+# Datas sazonais (mes, dia) -> mood. Janela de alguns dias antes para capturar
+# a busca antecipada. None = sem sazonalidade ativa hoje.
+_SEASONAL_MOODS: list[tuple[int, int, int, int, str]] = [
+    # (mes_inicio, dia_inicio, mes_fim, dia_fim, mood)
+    (12, 20, 12, 31, "relax"),      # Natal / festas de fim de ano
+    (1, 1, 1, 6, "relax"),          # Ano novo
+    (11, 20, 11, 30, "fofura"),     # Black Friday / Thanksgiving (fofura/volta as aulas EUA)
+    (2, 10, 2, 16, "diversao"),     # Valentines Day (energia/diversao)
+    (10, 28, 11, 3, "fofura"),      # Halloween
+]
+
+
+def _seasonal_mood() -> str | None:
+    """Retorna o mood sazonal para a data atual (BRT), se houver."""
+    offset = float(os.environ.get("BRT_OFFSET_HOURS", "-3"))
+    now = datetime.now(UTC) + timedelta(hours=offset)
+    for m1, d1, m2, d2, mood in _SEASONAL_MOODS:
+        start = now.replace(month=m1, day=d1, hour=0, minute=0, second=0, microsecond=0)
+        try:
+            end = now.replace(month=m2, day=d2, hour=23, minute=59, second=59, microsecond=0)
+        except ValueError:
+            continue
+        if start <= now <= end:
+            log.info("Mood sazonal ativo: %s (%02d/%02d-%02d/%02d)", mood, m1, d1, m2, d2)
+            return mood
+    return None
 
 
 def _scene_weights() -> dict[str, float]:
