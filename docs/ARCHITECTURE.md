@@ -47,6 +47,14 @@ sync (Pixabay/Jamendo) ─┐
   palavra-a-palavra) fazem sentido em conteúdo vertical de ~35s onde o texto é
   parte do hook visual — o overlay carrega o gancho de retenção nos primeiros
   segundos.
+- **Thumbnail A/B/C com dois loops de feedback**: `utils.thumbnail_engine.winning_thumbnail_variant()`
+  calcula qual variante (A/B/C) teve mais views em média e é usada como
+  thumbnail *primária* já no próximo upload (loop rápido, fecha a cada
+  geração); `scripts.collect_analytics.maybe_rotate_thumbnail()` complementa
+  com rotação reativa por vídeo (A→B→C após `_THUMBNAIL_ROTATION_DAYS` dias
+  se o vídeo específico estiver abaixo da mediana). Os dois são compatíveis:
+  a rotação reativa sempre anda para frente na sequência a partir de
+  `thumbnail_variant` gravado no upload, seja qual for o ponto de partida.
 - **Wilson score para ranking de performance**: `collect_analytics.py` usa Wilson
   score interval em vez de média pura porque é conservador com amostras pequenas.
   Um vídeo com 100 views e 80% de retenção num vídeo com 10 views e 90% de

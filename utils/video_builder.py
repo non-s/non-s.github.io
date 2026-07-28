@@ -26,7 +26,7 @@ from utils.caption_engine import generate_ass, save_ass
 from utils.ffmpeg_helpers import get_video_duration, run_ffmpeg
 from utils.media_pool import ensure_dirs, pick_audio, pick_videos, pool_stats
 from utils.metadata_engine import clean_title, generate_metadata
-from utils.thumbnail_engine import make_short_thumbnail
+from utils.thumbnail_engine import make_short_thumbnail, winning_thumbnail_variant
 from utils.video_validator import validate_generated_video
 
 log = logging.getLogger(__name__)
@@ -334,20 +334,34 @@ def build_pata_jazz_video(
 
     # A/B/C testing: gera tres variantes de thumbnail. thumb e o caminho base
     # ({stem}.png); as variantes sao {stem}_thumb_a.png, {stem}_thumb_b.png e
-    # {stem}_thumb_c.png. O caminho "thumbnail" (legado) aponta pra variante A
-    # pra backward compat.
+    # {stem}_thumb_c.png.
     thumb_a = thumb.with_name(f"{thumb.stem}_thumb_a.png")
     thumb_b = thumb.with_name(f"{thumb.stem}_thumb_b.png")
     thumb_c = thumb.with_name(f"{thumb.stem}_thumb_c.png")
+    rendered: dict[str, Path] = {}
     spec.thumbnail_maker(hook, emoji, thumb_a, video_path=output, variant="A")
-    generated = [str(thumb_a)]
+    rendered["A"] = thumb_a
     for variant, thumb_path in (("B", thumb_b), ("C", thumb_c)):
         try:
             spec.thumbnail_maker(hook, emoji, thumb_path, video_path=output, variant=variant)
-            generated.append(str(thumb_path))
+            rendered[variant] = thumb_path
         except Exception as exc:
             # Variantes B e C sao opcionais - se falhar, A ainda e suficiente.
             log.warning("Falha ao gerar variante %s de thumbnail: %s", variant, exc)
+    generated = [str(p) for p in rendered.values()]
+
+    # Feedback loop: comeca a variante PRIMARIA (a efetivamente enviada ao
+    # YouTube) a partir da que historicamente teve mais views
+    # (winning_thumbnail_variant, calculado por scripts/collect_analytics.py
+    # a partir de video_tags.json + analytics.json), em vez de sempre "A".
+    # Fecha o loop entre o sinal de performance e o proximo upload, sem
+    # esperar os _THUMBNAIL_ROTATION_DAYS da rotacao reativa
+    # (collect_analytics.maybe_rotate_thumbnail). B e C continuam sendo
+    # geradas do mesmo jeito - so a que vai pro ar primeiro muda.
+    primary_variant = winning_thumbnail_variant()
+    if primary_variant not in rendered:
+        primary_variant = "A"
+    thumb_primary = rendered[primary_variant]
 
     fallback_title = clean_title(f"{hook} | Pata Jazz")
     metadata = generate_metadata(
@@ -369,7 +383,8 @@ def build_pata_jazz_video(
         "duration": spec.duration,
         "resolution": f"{spec.width}x{spec.height}",
         "video": str(output),
-        "thumbnail": str(thumb_a),
+        "thumbnail": str(thumb_primary),
+        "thumbnail_variant": primary_variant,
         "thumbnails": generated,
         "audio": str(audio_path) if audio_path else None,
     }

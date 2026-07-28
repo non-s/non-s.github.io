@@ -227,8 +227,9 @@ class TestRecordVideoTags:
 
     def test_persists_thumbnails_and_default_variant(self, tmp_path, monkeypatch):
         """_record_video_tags grava a lista de variantes de thumbnail (pra
-        maybe_rotate_thumbnail saber que o video tem B disponivel) e marca
-        thumbnail_variant='A' no upload (A e a publicada inicialmente)."""
+        maybe_rotate_thumbnail saber que o video tem B disponivel) e cai em
+        thumbnail_variant='A' quando o meta nao informa qual foi a
+        primaria."""
         tags_file = tmp_path / "video_tags.json"
         monkeypatch.setattr(upload_youtube, "_VIDEO_TAGS_FILE", tags_file)
 
@@ -240,6 +241,22 @@ class TestRecordVideoTags:
         data = json.loads(tags_file.read_text(encoding="utf-8"))
         assert data["vid1"]["thumbnails"] == ["/tmp/a.png", "/tmp/b.png"]
         assert data["vid1"]["thumbnail_variant"] == "A"
+
+    def test_records_thumbnail_variant_chosen_by_feedback_loop(self, tmp_path, monkeypatch):
+        """Quando video_builder decidiu comecar com a variante vencedora
+        (ex.: "B", por ter mais views historicamente), _record_video_tags
+        grava essa variante - nao trava sempre em "A"."""
+        tags_file = tmp_path / "video_tags.json"
+        monkeypatch.setattr(upload_youtube, "_VIDEO_TAGS_FILE", tags_file)
+
+        upload_youtube._record_video_tags("vid1", {
+            "scene": "cat",
+            "thumbnails": ["/tmp/a.png", "/tmp/b.png", "/tmp/c.png"],
+            "thumbnail_variant": "B",
+        })
+
+        data = json.loads(tags_file.read_text(encoding="utf-8"))
+        assert data["vid1"]["thumbnail_variant"] == "B"
 
     def test_thumbnail_fields_default_when_meta_has_no_thumbnails(self, tmp_path, monkeypatch):
         tags_file = tmp_path / "video_tags.json"
