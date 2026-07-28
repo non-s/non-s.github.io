@@ -42,6 +42,38 @@ _POST_ERROR_MARKERS = (
 )
 
 
+# Mood (utils/channel_config, usado na geracao) -> categoria (vocabulario
+# de utils/seo_keywords.generate_tiktok_hashtags/generate_hashtags).
+_MOOD_TO_CATEGORIA = {
+    "relax": "relaxation",
+    "fofura": "cuteness",
+    "diversao": "fun",
+}
+
+
+def _hashtags_for_tiktok(meta: dict) -> list[str]:
+    """Hashtags pro TikTok, geradas com o vocabulario nativo da plataforma
+    (ver utils.seo_keywords.generate_tiktok_hashtags) em vez de reusar
+    meta['hashtags'] do YouTube (#Shorts/#YouTubeShorts nao existem la).
+
+    Deriva animal/categoria do proprio meta do video (scene/mood); em caso
+    de meta incompleto ou falha na geracao, cai para meta['hashtags'] (o
+    conjunto do YouTube) em vez de nao ter nenhuma hashtag.
+    """
+    try:
+        from utils.animal_branding import detect_animal
+        from utils.seo_keywords import generate_tiktok_hashtags
+
+        animal = detect_animal(str(meta.get("scene", "")))
+        categoria = _MOOD_TO_CATEGORIA.get(str(meta.get("mood", "")), "cuteness")
+        hashtags = generate_tiktok_hashtags(animal=animal, categoria=categoria)
+        if hashtags:
+            return hashtags
+    except Exception as exc:
+        log.debug("Falha ao gerar hashtags nativas do TikTok (usando fallback): %s", exc)
+    return list(meta.get("hashtags") or [])
+
+
 def _write_upload_state(video: str, stage: str, detail: str = "") -> None:
     """Grava o ultimo estagio conhecido do upload em disco (debug em CI).
 
@@ -219,7 +251,7 @@ def upload_to_tiktok(
         return None
 
     title = str(meta.get("title", "Pata Jazz"))[:150]
-    hashtags = meta.get("hashtags") or []
+    hashtags = _hashtags_for_tiktok(meta)
     hashtag_text = " ".join(f"#{h.lstrip('#')}" for h in hashtags)
     description = f"{title}\n\n{hashtag_text}".strip()[:2200]
     video_name = video_path.name

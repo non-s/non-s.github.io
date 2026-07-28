@@ -289,6 +289,51 @@ def generate_hashtags(
     return hashtags
 
 
+# Hashtags nativas do TikTok - cultura diferente do YouTube, entao reusar
+# HASHTAGS_POR_CATEGORIA (que tem #Shorts/#YouTubeShorts, sem sentido la)
+# faz o cross-posting perder alcance. Pesquisa de estrategia pra nicho pet
+# no TikTok (2026): a tag de ESPECIE (#catsoftiktok/#dogsoftiktok) vem
+# antes de qualquer tag generica de pet - tem audiencia mais engajada e
+# especifica; #fyp/#foryoupage ajudam descoberta; tags de audio (#jazzmusic,
+# #lofivibes, #chillhop) tem volume de busca bem maior que termos genericos
+# de "relaxing music".
+_TIKTOK_HASHTAGS_POR_ESPECIE = {
+    "cat": ["#catsoftiktok", "#CatTok"],
+    "dog": ["#dogsoftiktok", "#DogTok"],
+}
+_TIKTOK_HASHTAGS_PET_GENERICO = ["#petsoftiktok", "#cuteanimals", "#petlife"]
+_TIKTOK_HASHTAGS_POR_EMOCAO = {
+    "cuteness": ["#animalsoftiktok", "#cuteanimals"],
+    "relaxation": ["#calmingmusic", "#petanxiety"],
+    "fun": ["#funnypets", "#petattitude"],
+}
+_TIKTOK_HASHTAGS_MUSICA = ["#jazzmusic", "#relaxingmusic", "#lofivibes", "#chillhop"]
+_TIKTOK_HASHTAGS_DESCOBERTA = ["#fyp", "#foryoupage"]
+_MAX_TIKTOK_HASHTAGS = 8
+
+
+def generate_tiktok_hashtags(animal: str, categoria: str = "cuteness") -> list[str]:
+    """Gera hashtags otimizadas para a cultura do TikTok (ver comentario
+    acima - diferente das hashtags do YouTube geradas por generate_hashtags).
+
+    Camadas, em ordem: especie (maior engajamento que tag generica de pet)
+    > marca > pet generico > tom emocional > audio/musica > descoberta
+    (#fyp/#foryoupage).
+    """
+    especie = _TIKTOK_HASHTAGS_POR_ESPECIE.get(animal, _TIKTOK_HASHTAGS_POR_ESPECIE["cat"])
+    emocao = _TIKTOK_HASHTAGS_POR_EMOCAO.get(categoria, _TIKTOK_HASHTAGS_POR_EMOCAO["cuteness"])
+
+    hashtags = [
+        especie[0],
+        active_channel.hashtag_brand[0],
+        _TIKTOK_HASHTAGS_PET_GENERICO[0],
+        emocao[0],
+        *_TIKTOK_HASHTAGS_MUSICA[:2],
+        *_TIKTOK_HASHTAGS_DESCOBERTA,
+    ]
+    return list(dict.fromkeys(hashtags))[:_MAX_TIKTOK_HASHTAGS]
+
+
 def optimize_for_search(title: str, description: str) -> tuple[str, str]:
     """Otimiza título e descrição para busca do YouTube."""
     # Palavras-chave primárias para o nicho

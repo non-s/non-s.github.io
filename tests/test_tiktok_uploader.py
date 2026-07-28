@@ -11,6 +11,33 @@ from unittest.mock import MagicMock, patch
 import utils.tiktok_uploader as tiktok_uploader
 
 
+class TestHashtagsForTiktok:
+    def test_uses_native_tiktok_hashtags_for_cat_scene(self):
+        hashtags = tiktok_uploader._hashtags_for_tiktok({"scene": "sleepy cat", "mood": "relax"})
+        assert "#catsoftiktok" in hashtags
+        assert "#fyp" in hashtags
+
+    def test_uses_native_tiktok_hashtags_for_dog_scene(self):
+        hashtags = tiktok_uploader._hashtags_for_tiktok({"scene": "playful dog", "mood": "diversao"})
+        assert "#dogsoftiktok" in hashtags
+
+    def test_falls_back_to_meta_hashtags_on_generation_failure(self, monkeypatch):
+        import utils.seo_keywords as seo_keywords
+
+        def _boom(**k):
+            raise RuntimeError("x")
+
+        monkeypatch.setattr(seo_keywords, "generate_tiktok_hashtags", _boom)
+
+        hashtags = tiktok_uploader._hashtags_for_tiktok({"scene": "cat", "hashtags": ["#PataJazz", "#Cats"]})
+
+        assert hashtags == ["#PataJazz", "#Cats"]
+
+    def test_missing_scene_and_mood_still_returns_hashtags(self):
+        hashtags = tiktok_uploader._hashtags_for_tiktok({})
+        assert len(hashtags) > 0
+
+
 class TestPageMentionsAny:
     def test_finds_marker_case_insensitive(self):
         page = MagicMock()

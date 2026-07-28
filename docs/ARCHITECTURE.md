@@ -106,7 +106,7 @@ sync (Pixabay/Jamendo) ─┐
 | `metadata_engine.py` | Títulos/descrições/hashtags em inglês |
 | `playlist_manager.py` | Playlists automáticas por mood/formato (cache em `_data/playlist_cache.json`) |
 | `quota_tracker.py` | Rastreio de unidades de quota YouTube em `_data/quota_usage.json` |
-| `seo_keywords.py` | SEO otimizado + `pick_title_pattern` ponderado por performance |
+| `seo_keywords.py` | SEO do YouTube + `pick_title_pattern` ponderado por performance + hashtags nativas do TikTok (`generate_tiktok_hashtags`) |
 | `state_lock.py` | `state_lock()` — lock de arquivo para estado JSON compartilhado |
 | `thumbnail_engine.py` | Geração de thumbnails A/B/C <2MB com shadow RGBA |
 | `tiktok_uploader.py` | Upload no TikTok via Playwright (login + storage_state persistido) |
