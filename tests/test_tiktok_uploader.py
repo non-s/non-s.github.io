@@ -144,16 +144,30 @@ class TestIsLoggedIn:
         page.query_selector.return_value = MagicMock()
         assert tiktok_uploader._is_logged_in(page) is True
 
-    def test_false_when_on_login_url(self):
+    def test_false_when_on_login_url_and_no_avatar(self):
         page = MagicMock()
         page.url = "https://www.tiktok.com/login/phone-or-email/email"
+        page.query_selector.return_value = None
         assert tiktok_uploader._is_logged_in(page) is False
 
-    def test_false_when_no_avatar(self):
+    def test_true_even_without_avatar_when_url_is_not_login(self):
+        """Regressao de bug real de producao (confirmado via screenshot):
+        uma sessao valida (usuario visivelmente logado no feed, com nav de
+        Upload/Post video) fazia essa funcao retornar False so porque
+        exigia tambem [data-e2e='profile-icon'] presente - atributo
+        interno do TikTok que parou de bater mesmo com sessao valida.
+        Sem avatar, mas fora de qualquer URL de login, deve confiar na URL
+        e considerar logado."""
         page = MagicMock()
         page.url = "https://www.tiktok.com/upload"
         page.query_selector.return_value = None
-        assert tiktok_uploader._is_logged_in(page) is False
+        assert tiktok_uploader._is_logged_in(page) is True
+
+    def test_avatar_fallback_used_only_when_on_login_url(self):
+        page = MagicMock()
+        page.url = "https://www.tiktok.com/login/phone-or-email/email"
+        page.query_selector.return_value = MagicMock()
+        assert tiktok_uploader._is_logged_in(page) is True
 
 
 class TestDoLogin:
@@ -324,8 +338,11 @@ class TestUploadToTiktok:
 
         page = MagicMock()
         page.url = "https://www.tiktok.com/upload"
-        avatar, file_input, desc_el, post_btn = MagicMock(), MagicMock(), MagicMock(), MagicMock()
-        page.query_selector.side_effect = [avatar, file_input, desc_el, post_btn]
+        # _is_logged_in nao chama query_selector quando a URL ja nao
+        # menciona "login" (confia na URL sozinha - ver _is_logged_in),
+        # entao so file_input/desc_el/post_btn sao consumidos daqui.
+        file_input, desc_el, post_btn = MagicMock(), MagicMock(), MagicMock()
+        page.query_selector.side_effect = [file_input, desc_el, post_btn]
         page.inner_text.return_value = ""
 
         def advance_after_post(*a, **k):
@@ -361,8 +378,11 @@ class TestUploadToTiktok:
 
         page = MagicMock()
         page.url = "https://www.tiktok.com/upload"
-        avatar, file_input, desc_el, post_btn = MagicMock(), MagicMock(), MagicMock(), MagicMock()
-        page.query_selector.side_effect = [avatar, file_input, desc_el, post_btn]
+        # _is_logged_in nao chama query_selector quando a URL ja nao
+        # menciona "login" (confia na URL sozinha - ver _is_logged_in),
+        # entao so file_input/desc_el/post_btn sao consumidos daqui.
+        file_input, desc_el, post_btn = MagicMock(), MagicMock(), MagicMock()
+        page.query_selector.side_effect = [file_input, desc_el, post_btn]
         page.inner_text.return_value = ""
 
         def advance_after_post(*a, **k):
