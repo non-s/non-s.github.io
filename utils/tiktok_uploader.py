@@ -273,6 +273,24 @@ def _ensure_login(page, context, email: str, password: str, state_path: Path) ->
         log.info("Sessao reaproveitada de %s (cookies validos).", state_path)
         return True
 
+    # Diagnostico: a evidencia de qual URL/cookies a sessao tinha nesse
+    # instante seria perdida assim que _do_login navegar pra _LOGIN_URL
+    # logo abaixo (visto em producao: apos esse goto, a pagina podia mostrar
+    # o feed normal - sessao valida no geral - mesmo com _is_logged_in tendo
+    # retornado False um passo antes em /upload). Nomes de cookies (nao os
+    # valores) sao seguros de logar e ajudam a distinguir sessao realmente
+    # vazia de uma sessao parcial (faltando cookies especificos exigidos so
+    # pelo fluxo de upload).
+    try:
+        cookie_names = sorted(c.get("name", "") for c in context.cookies())
+        log.warning(
+            "Sessao em %s nao reconhecida como logada. URL atual: %s. Cookies presentes: %s",
+            state_path, page.url, cookie_names,
+        )
+        page.screenshot(path=str(ROOT / "_videos" / "tiktok_session_check_fail.png"))
+    except Exception:
+        log.debug("Falha ao coletar diagnostico de sessao (nao critico).")
+
     if not email or not password:
         log.error(
             "Sessao ausente/expirada em %s e sem TIKTOK_EMAIL/TIKTOK_PASSWORD "

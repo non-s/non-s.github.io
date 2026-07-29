@@ -294,6 +294,36 @@ class TestEnsureLogin:
         assert result is False
         mock_login.assert_not_called()
 
+    def test_captures_diagnostics_before_do_login_navigates_away(self, tmp_path):
+        """A evidencia de qual URL/cookies causaram _is_logged_in==False
+        precisa ser capturada ANTES de _do_login navegar pra _LOGIN_URL -
+        visto em producao que essa navegacao pode redirecionar de volta pro
+        feed normal (sessao valida em geral), mascarando o que realmente
+        apareceu no ponto em que a checagem falhou (ex.: /upload)."""
+        page = MagicMock()
+        page.url = "https://www.tiktok.com/login/phone-or-email/email?redirect=%2Fupload"
+        context = MagicMock()
+        context.cookies.return_value = [{"name": "sessionid", "value": "x"}, {"name": "tt_csrf_token", "value": "y"}]
+        with patch("utils.tiktok_uploader._is_logged_in", return_value=False), \
+             patch("utils.tiktok_uploader._do_login", return_value=True):
+            result = tiktok_uploader._ensure_login(page, context, "a@b.com", "pw", tmp_path / "s.json")
+        assert result is True
+        page.screenshot.assert_called_once()
+        assert "tiktok_session_check_fail.png" in page.screenshot.call_args.kwargs["path"]
+
+    def test_diagnostic_collection_failure_does_not_break_flow(self, tmp_path):
+        """Coleta de diagnostico e best-effort - uma falha nela (ex.:
+        context.cookies() levantando) nao pode impedir o fallback pra login
+        de acontecer."""
+        page = MagicMock()
+        page.url = "https://www.tiktok.com/login"
+        context = MagicMock()
+        context.cookies.side_effect = Exception("boom")
+        with patch("utils.tiktok_uploader._is_logged_in", return_value=False), \
+             patch("utils.tiktok_uploader._do_login", return_value=True):
+            result = tiktok_uploader._ensure_login(page, context, "a@b.com", "pw", tmp_path / "s.json")
+        assert result is True
+
 
 class _FakePlaywrightCM:
     """Contexto `with sync_playwright() as p:` mockado: p.chromium.launch()
