@@ -43,8 +43,9 @@ def _load_json(path: Path, default):
 def _build_video_entries(video_tags: dict, analytics: dict) -> list[dict]:
     """Cruza video_tags.json (cena/description) com analytics.json (views/
     published_at) numa lista de entradas prontas para renderização."""
-    all_videos = analytics.get("all_videos") if analytics else []
-    by_id = {v.get("video_id"): v for v in all_videos if isinstance(v, dict) and v.get("video_id")}
+    all_videos_raw = analytics.get("all_videos") if analytics else []
+    all_videos = all_videos_raw if isinstance(all_videos_raw, list) else []
+    by_id = {str(v.get("video_id")): v for v in all_videos if isinstance(v, dict) and v.get("video_id")}
 
     entries: list[dict] = []
     seen: set[str] = set()

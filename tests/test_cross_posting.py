@@ -16,8 +16,13 @@ import upload_tiktok
 
 def _no_env(*keys: str):
     """Factory para patch de os.environ.get que retorna None para as keys."""
+    import os
     def _get(k, default=None):
-        return None if k in keys else default
+        if k in keys:
+            return None
+        if k in os.environ:
+            return os.environ[k]
+        return default
     return _get
 
 
@@ -30,7 +35,7 @@ def _write_video(output_dir: Path, stem: str, meta: dict) -> Path:
 
 class TestUploadTiktokNotConfigured:
     def test_returns_none_without_credentials(self, caplog):
-        with patch.dict("os.environ", {}, clear=False), \
+        with patch.dict("os.environ", {"TIKTOK_STATE_PATH": "non_existent_state.json"}, clear=False), \
              patch("os.environ.get", _no_env("TIKTOK_EMAIL", "TIKTOK_PASSWORD")):
             with caplog.at_level("INFO"):
                 result = upload_tiktok.upload_to_tiktok(Path("v.mp4"), {"title": "T"})
@@ -38,15 +43,25 @@ class TestUploadTiktokNotConfigured:
         assert any("TIKTOK_EMAIL" in rec.message or "TIKTOK_PASSWORD" in rec.message for rec in caplog.records)
 
     def test_returns_none_with_empty_email(self, caplog):
-        with patch.dict("os.environ", {"TIKTOK_EMAIL": "", "TIKTOK_PASSWORD": "x"}, clear=False):
+        with patch.dict(
+            "os.environ",
+            {"TIKTOK_STATE_PATH": "non_existent_state.json", "TIKTOK_EMAIL": "", "TIKTOK_PASSWORD": "x"},
+            clear=False,
+        ):
             with caplog.at_level("INFO"):
                 result = upload_tiktok.upload_to_tiktok(Path("v.mp4"), {"title": "T"})
         assert result is None
 
     def test_returns_none_with_empty_password(self, caplog):
-        with patch.dict("os.environ", {"TIKTOK_EMAIL": "x@x.com", "TIKTOK_PASSWORD": ""}, clear=False):
+        with patch.dict(
+            "os.environ",
+            {"TIKTOK_STATE_PATH": "non_existent_state.json", "TIKTOK_EMAIL": "x@x.com", "TIKTOK_PASSWORD": ""},
+            clear=False,
+        ):
             with caplog.at_level("INFO"):
-                result = upload_tiktok.upload_to_tiktok(Path("v.mp4"), {"title": "T"})
+                result = upload_tiktok.upload_to_tiktok(
+                    Path("v.mp4"), {"title": "T"}
+                )
         assert result is None
 
     def test_returns_none_when_video_not_found(self, caplog):

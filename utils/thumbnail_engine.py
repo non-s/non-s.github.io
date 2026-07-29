@@ -7,6 +7,7 @@ from __future__ import annotations
 import io
 import json
 import logging
+import random
 import subprocess
 import tempfile
 import textwrap
@@ -438,7 +439,7 @@ def make_short_thumbnail(
         brand_y=height - 220,
         crop_target_ratio=width / height,
         overlay_alpha=100,
-        frame_timestamp="00:00:01",
+        frame_timestamp=f"00:00:{random.randint(2, 15):02d}",
     )
     _render_thumbnail(width, height, hook, emoji, output, brand, video_path, cfg, variant=variant)
     log.info("Thumbnail de Short salva: %s (variante %s)", output, variant)

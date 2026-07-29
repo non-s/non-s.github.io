@@ -446,6 +446,26 @@ def upload_to_tiktok(
                 _write_upload_state(video_name, "failed", "upload nao concluiu em 240s")
                 return None
 
+            # Opcional: Aproveitar o editor do TikTok para adicionar som/musica nativa da plataforma
+            try:
+                _write_upload_state(video_name, "adding_sound", "selecionando musica nativa do TikTok")
+                sound_btn = page.query_selector(
+                    "button:has-text('Add sound'), button:has-text('Som'), "
+                    "button:has-text('Music'), [class*='sound']"
+                )
+                if sound_btn:
+                    sound_btn.click()
+                    time.sleep(2)
+                    first_track = page.query_selector(
+                        "[class*='sound-item'], [class*='music-item'], "
+                        "button:has-text('Use'), div[role='button']:has-text('Use')"
+                    )
+                    if first_track:
+                        first_track.click()
+                        time.sleep(2)
+            except Exception as exc:
+                log.debug("Nao foi possivel selecionar som nativo do TikTok (seguindo com audio original): %s", exc)
+
             # Preenche descricao
             desc_el.click()
             desc_el.fill("")
