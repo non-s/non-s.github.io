@@ -8,11 +8,13 @@ import utils.seo_keywords as seo_keywords
 from utils.seo_keywords import (
     CTAS,
     HIGH_PERFORMANCE_KEYWORDS,
+    MUSIC_STYLE_BY_MOOD,
     TITLE_PATTERNS,
     generate_description,
     generate_hashtags,
     generate_tiktok_hashtags,
     generate_title,
+    music_style_for_mood,
     optimize_for_search,
     pick_title_pattern,
 )
@@ -124,6 +126,40 @@ class TestGenerateTitle:
             assert len(title) <= 100
 
 
+class TestMusicStyleForMood:
+    """music_style_for_mood alinha a frase de estilo musical do title/
+    description ao audio REAL da cena (mood -> generos tocados de verdade,
+    ver JAMENDO_SEARCH_TERMS em utils/animal_branding.py)."""
+
+    def test_relax_mood_never_says_relaxing_jazz(self):
+        """Regressao do bug real: acao='relaxing' + estilo_musical='relaxing
+        jazz' produzia titulos redundantes ('cat relaxing to relaxing
+        jazz'). Nenhuma opcao do mood 'relax' pode repetir a palavra
+        'relaxing'."""
+        for _ in range(30):
+            style = music_style_for_mood("relax")
+            assert "relaxing" not in style.lower()
+            assert "jazz" in style.lower()
+
+    def test_all_mapped_moods_contain_jazz_keyword(self):
+        """Todo estilo precisa conter 'jazz' - garante que o titulo sempre
+        bate com HIGH_PERFORMANCE_KEYWORDS['music'] (ver
+        test_generate_title_uses_keywords: todos os TITLE_PATTERNS incluem
+        {estilo_musical})."""
+        for mood, options in MUSIC_STYLE_BY_MOOD.items():
+            for style in options:
+                assert "jazz" in style.lower(), f"mood={mood!r} style={style!r} sem 'jazz'"
+
+    def test_unknown_mood_falls_back_to_relaxing_jazz(self):
+        assert music_style_for_mood("") == "relaxing jazz"
+        assert music_style_for_mood("nao-existe") == "relaxing jazz"
+
+    def test_diversao_mood_uses_energetic_styles(self):
+        for _ in range(30):
+            style = music_style_for_mood("diversao")
+            assert style in MUSIC_STYLE_BY_MOOD["diversao"]
+
+
 class TestGenerateDescription:
     """Testa geração de descrições otimizadas."""
 
@@ -141,14 +177,26 @@ class TestGenerateDescription:
         assert "🐾" in desc or "✨" in desc  # Tem emojis
 
     def test_generate_description_without_cta(self):
-        """Gera descrição sem CTA."""
+        """Gera descrição sem CTA.
+
+        intro/corpo agora variam por sorteio (mais humano) - sem fixar a
+        seed, as duas chamadas podiam sortear textos de tamanhos diferentes
+        e o teste comparava coisas nao comparaveis. Seed identica antes de
+        cada chamada faz random.choice(intro)/random.choice(corpo) (as duas
+        primeiras chamadas de random dentro de generate_description) saírem
+        iguais nas duas vezes, isolando a diferença apenas no CTA.
+        """
+        import random as _random
+
         hashtags = ["#PataJazz"]
+        _random.seed(42)
         desc_with_cta, _ = generate_description(
             hook="Test",
             kind="short",
             hashtags=hashtags,
             include_cta=True
         )
+        _random.seed(42)
         desc_without_cta, _ = generate_description(
             hook="Test",
             kind="short",

@@ -362,9 +362,20 @@ class TestPredictViewsWithRealisticData:
     NaN/inf."""
 
     def _realistic_dataset(self, now):
-        """Monta ~40 amostras misturando 4 cenas e todos os padroes de
-        titulo short, publicadas em horas/dias variados ao longo de ~90
-        dias, com views entre 100 e 15000."""
+        """Monta amostras misturando 4 cenas e todos os padroes de titulo
+        short, publicadas em horas/dias variados ao longo de ~90 dias, com
+        views entre 100 e 15000.
+
+        samples_per_scene escala com o numero de padroes (2x, sempre pelo
+        menos 10): com poucas amostras por (cena, padrao) - ex.: so 1 - o
+        modelo (23+ colunas one-hot/interacao com so ~2 * len(patterns) *
+        len(scenes) amostras) fica proximo de subdeterminado e superajusta,
+        produzindo pesos com sinal invertido pra combinacoes hora/padrao
+        pouco vistas no treino, que sao cortadas em 0.0 por max(0.0, ...) em
+        predict_views - previsoes zeradas mesmo pra cenas historicamente
+        fortes. Manter 2 ocorrencias por (cena, padrao), como no design
+        original com 5 padroes, evita esse superajuste independente de
+        quantos padroes existirem."""
         scenes = ["cat", "dog", "sleepy cat", "puppy"]
         patterns = list(TITLE_PATTERNS["short"])
         # Mapeia cena -> faixa de views (cat e puppy performam melhor).
@@ -374,16 +385,17 @@ class TestPredictViewsWithRealisticData:
             "dog": (500, 2000),
             "sleepy cat": (100, 600),
         }
+        samples_per_scene = max(10, 2 * len(patterns))
         vids = []
         # i variando para diversificar published_at (hora/dia/views).
         i = 0
         for scene in scenes:
             low, high = scene_views[scene]
-            for _ in range(10):
+            for j in range(samples_per_scene):
                 pub = (now - timedelta(days=90 - i, hours=i % 24)).isoformat()
-                pat = patterns[i % len(patterns)]
+                pat = patterns[j % len(patterns)]
                 # Distribui views dentro da faixa da cena.
-                views = low + (high - low) * (i % 10) // 9
+                views = low + (high - low) * (j % 10) // 9
                 vids.append((f"vid{i}", scene, pat, pub, views))
                 i += 1
         return vids

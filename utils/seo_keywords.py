@@ -49,7 +49,12 @@ HIGH_PERFORMANCE_KEYWORDS = {
     ]
 }
 
-# Padrões de títulos que performam bem (testados A/B)
+# Padrões de títulos que performam bem (testados A/B). Metade "SEO classico"
+# (keyword na frente, formato claro pra busca) e metade em tom casual/meme -
+# o jeito que conteudo pet de verdade viraliza em 2026 soa como alguem
+# comentando o video, nao como um anuncio ("Adorable Cat + Relaxing Jazz").
+# Todos incluem {estilo_musical} (ver test_generate_title_uses_keywords -
+# garante cobertura de keyword de musica em QUALQUER padrao sorteado).
 TITLE_PATTERNS: dict[str, list[str]] = {
     "short": [
         "{emoji} {adjetivo} {animal} + {estilo_musical}",
@@ -57,8 +62,36 @@ TITLE_PATTERNS: dict[str, list[str]] = {
         "{adjetivo} {animal} enjoying {estilo_musical} {emoji}",
         "POV: a {animal} {acao} to your daily {estilo_musical}",
         "The {adjetivo} {animal} you needed today {emoji}",
+        "not my {animal} vibing to {estilo_musical} {emoji}",
+        "this {animal} really said more {estilo_musical} please {emoji}",
+        "me and my {animal} listening to {estilo_musical} {emoji}",
+        "{animal} + {estilo_musical} = perfect combo {emoji}",
+        "okay but this {animal} and {estilo_musical} combo {emoji}",
     ],
 }
+
+# Frase de estilo musical usada em titulo/descricao, alinhada ao audio REAL
+# da cena (ver JAMENDO_SEARCH_TERMS em utils/animal_branding.py). Antes
+# title/description sempre diziam "relaxing jazz" mesmo em cenas com swing/
+# bebop tocando (mood "diversao") - alem de desalinhar SEO (quem busca
+# "upbeat jazz" nunca batia com esse video), criava uma repeticao artificial
+# tipo "cat relaxing to relaxing jazz" sempre que a cena tambem era de
+# relaxamento. Varias opcoes por mood evitam repetir a mesma frase toda vez.
+MUSIC_STYLE_BY_MOOD: dict[str, list[str]] = {
+    "relax": ["smooth jazz", "chill jazz", "soft jazz", "calming jazz"],
+    "fofura": ["lofi jazz", "cozy lofi jazz", "mellow lofi jazz"],
+    "diversao": ["upbeat jazz", "swing jazz", "playful jazz", "bouncy jazz"],
+}
+
+
+def music_style_for_mood(mood: str) -> str:
+    """Frase de estilo musical pro title/description, alinhada ao audio real
+    da cena (ver MUSIC_STYLE_BY_MOOD). Mood desconhecido/vazio cai no termo
+    generico "relaxing jazz" (comportamento legado, ainda um termo de alto
+    volume de busca em HIGH_PERFORMANCE_KEYWORDS)."""
+    options = MUSIC_STYLE_BY_MOOD.get(mood)
+    return random.choice(options) if options else "relaxing jazz"
+
 
 # Emoções e benefícios que geram engajamento
 EMOCAO_BENEFICIOS = {
@@ -69,7 +102,9 @@ EMOCAO_BENEFICIOS = {
     "focus": ["concentration", "focus", "productivity", "clarity"],
 }
 
-# CTAs (Call-to-Action) para descrições
+# CTAs (Call-to-Action) para descrições. Metade formato "canal" tradicional,
+# metade tom de conversa direta com quem esta assistindo agora - CTA
+# generico de "se inscreva" cansa depois de algumas dezenas de videos.
 CTAS = [
     "🐾 Subscribe for more cuteness every day!",
     "🎷 Hit the bell so you never miss a video!",
@@ -77,6 +112,10 @@ CTAS = [
     "👍 Leave a like if this brought some peace to your day!",
     "🔗 Share with someone who needs a zen moment!",
     "📱 Follow @PataJazz for exclusive content!",
+    "🐾 New one drops every hour, stick around!",
+    "💛 If this made your day a little better, you know what to do!",
+    "🎵 Tell us in the comments: cats or dogs?",
+    "🔁 Save this one for the next time you need a break!",
 ]
 
 # Hashtags estratégicas por categoria
@@ -218,18 +257,28 @@ def generate_description(
     Retorna (description, cta_text) para que o caller possa gravar qual CTA
     foi usado (A/B testing de CTA vs. inscritos — ver collect_analytics).
     """
-    # Introdução com keywords
+    # Introdução com keywords. Metade tom "canal" (marca em destaque, mais
+    # formal), metade tom direto/conversa - texto generico repetido em todo
+    # video (mesma frase-molde sempre) e o que mais denuncia "gerado em
+    # massa" pra quem le a descricao; mais variedade + registros diferentes
+    # (algumas curtas e diretas, sem pontuacao excessiva) soam mais humano.
     intro_templates = [
         f"{hook} 🐾 Welcome to Pata Jazz, where cats and dogs meet the perfect jazz!",
         f"{hook} 🎷 Relax, enjoy, and fall in love with this unique blend of cuteness and music!",
         f"{hook} 💫 Your daily moment of peace with adorable pets and soft jazz!",
+        f"{hook}. Just a little pet + jazz moment for your feed 🐾",
+        f"{hook} — filmed this and had to share it with the jazz on top 🎷",
+        f"{hook} Sometimes you just need 30 seconds of this. 💫",
     ]
     intro = random.choice(intro_templates)
 
-    corpo = (
+    corpo_templates = [
         "\n\n✨ This Short was made to bring a moment of joy to your day! "
-        "Cute cats and dogs + relaxing jazz = guaranteed happiness! 🐱🐶"
-    )
+        "Cute cats and dogs + relaxing jazz = guaranteed happiness! 🐱🐶",
+        "\n\n🐾 Real cats, real dogs, real jazz - no filters needed for cuteness this good.",
+        "\n\n✨ If you needed a small reason to smile today, this is it.",
+    ]
+    corpo = random.choice(corpo_templates)
 
     # CTA (opcional)
     cta = ""
@@ -348,10 +397,13 @@ def optimize_for_search(title: str, description: str) -> tuple[str, str]:
     has_keyword = any(kw in title_lower for kw in primary_keywords)
 
     if not has_keyword:
-        # Adiciona keyword ao final do título se couber
+        # Adiciona keyword ao final do título se couber. " - " em vez de
+        # ", keyword" - o formato com virgula lia como keyword-stuffing
+        # ("Title, relaxing music for cats"); " - " e o mesmo padrao que
+        # criadores reais usam pra encaixar um subtitulo/contexto de busca.
         keyword = random.choice(primary_keywords)
-        if len(title) + len(keyword) + 2 <= 90:
-            title = f"{title}, {keyword}"
+        if len(title) + len(keyword) + 3 <= 90:
+            title = f"{title} - {keyword}"
 
     # Adiciona keywords semanticamente relacionadas à descrição
     related_terms = [

@@ -241,7 +241,10 @@ def generate_hook_with_ai(scene: str, mood: str = "") -> str:
         f"Write a single hook (max 60 characters) for the first 1-2 seconds of a "
         f"vertical YouTube Short about a {scene} - viewers decide whether to keep "
         f"watching almost instantly, so it needs to earn attention immediately. "
-        f"{angle} Cute and jazzy tone, no clickbait, no emojis, no quotes, in "
+        f"{angle} Write it like a real person captioning their own pet's video, "
+        f"not like an ad - plain, casual wording (contractions are fine), no "
+        f"stock phrases like 'Get ready' or 'You won't believe', no adjective "
+        f"pile-ups. Cute and jazzy tone, no clickbait, no emojis, no quotes, in "
         f"English.{mood_hint} Return only the hook text."
     )
 
