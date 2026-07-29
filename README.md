@@ -173,6 +173,24 @@ escreve esse secret em `tiktok_state.json` antes de cada execução e reusa
 a sessão até ela expirar - quando expirar, rode o script de novo e
 atualize o secret.
 
+Se você usa `--use-chrome-profile` (login com o SEU Chrome de verdade) e
+escolhe "Continuar com o Google" como método, o próprio Google **bloqueia
+o login** ("Esse navegador ou app pode não ser seguro") - ele detecta que
+o navegador está sob automação (é assim que o Playwright funciona, não
+tem como esconder) e recusa OAuth de qualquer ferramenta de automação,
+não tem contorno confiável. Nesse caso, use o caminho alternativo que não
+automatiza login nenhum - captura os cookies de uma sessão já logada no
+seu Chrome normal:
+
+```bash
+python scripts/tiktok_cookies_to_state.py tiktok_cookies_export.json
+```
+
+Exporte os cookies com a extensão [Cookie-Editor](https://cookie-editor.com/)
+(Chrome Web Store) estando logado em tiktok.com no seu Chrome normal
+("Export" → "Export as JSON"), cole o conteúdo copiado num arquivo, e
+rode o comando acima. Gera o mesmo `tiktok_state.json` de sempre.
+
 ## Variáveis do GitHub Actions
 
 ### Secrets

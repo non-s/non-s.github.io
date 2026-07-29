@@ -32,6 +32,14 @@ antes de abrir o navegador - o Chrome recusa automacao apontando direto
 pro perfil "Default" de verdade (protecao contra sequestro de sessao),
 entao a copia e necessaria; seus cookies continuam validos nela.
 
+Se voce faz login escolhendo "Continuar com o Google", o proprio Google
+pode BLOQUEAR o login ("Esse navegador ou app pode nao ser seguro") -
+ele detecta que o navegador esta sob automacao (e assim que o Playwright
+funciona, nao tem como esconder) e recusa OAuth de qualquer ferramenta de
+automacao, sem contorno confiavel via flag/stealth script. Nesse caso use
+scripts/tiktok_cookies_to_state.py, que nao automatiza login nenhum - so
+captura os cookies de uma sessao ja logada no seu Chrome normal.
+
 Depois de detectar a sessão ativa, salva tiktok_state.json na raiz do
 repo e imprime instruções para colar o conteúdo no secret
 TIKTOK_STATE_JSON (Settings > Secrets and variables > Actions, no
