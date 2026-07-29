@@ -104,7 +104,98 @@ class TestExistingSkip:
         mock_download.assert_not_called()
 
 
+class TestOrientation:
+    """Canal e 100% Shorts verticais - crop_filter em video_builder so e
+    no-op pra clipe ja vertical; clipe horizontal perde ~68% da largura no
+    crop central. search_and_download deve buscar vertical por padrao."""
+
+    @patch("scripts.sync_animal_broll._download_video", return_value=True)
+    @patch("scripts.sync_animal_broll.VIDEO_DIR")
+    @patch("scripts.sync_animal_broll.requests.get")
+    def test_default_orientation_is_vertical(self, mock_get, mock_video_dir, mock_download):
+        mock_video_dir.__truediv__ = _fake_video_dir_truediv
+        mock_response = MagicMock()
+        mock_response.json.return_value = {"hits": [_hit()]}
+        mock_response.raise_for_status.return_value = None
+        mock_get.return_value = mock_response
+
+        sync_animal_broll.search_and_download("fake-key", "cute cat real", max_results=5)
+
+        assert mock_get.call_args.kwargs["params"]["orientation"] == "vertical"
+
+    @patch("scripts.sync_animal_broll._download_video", return_value=True)
+    @patch("scripts.sync_animal_broll.VIDEO_DIR")
+    @patch("scripts.sync_animal_broll.requests.get")
+    def test_orientation_param_is_forwarded(self, mock_get, mock_video_dir, mock_download):
+        mock_video_dir.__truediv__ = _fake_video_dir_truediv
+        mock_response = MagicMock()
+        mock_response.json.return_value = {"hits": [_hit()]}
+        mock_response.raise_for_status.return_value = None
+        mock_get.return_value = mock_response
+
+        sync_animal_broll.search_and_download("fake-key", "cute cat real", max_results=5, orientation="horizontal")
+
+        assert mock_get.call_args.kwargs["params"]["orientation"] == "horizontal"
+
+    def test_main_mixes_vertical_and_horizontal_orientations(self, monkeypatch):
+        """1 a cada 3 queries busca horizontal (fallback de oferta), o
+        resto busca vertical - garante que main() nao fique 100% preso a
+        uma unica orientacao (nem some com a horizontal como fallback)."""
+        monkeypatch.setenv("PIXABAY_API_KEY", "key")
+        monkeypatch.setattr(sync_animal_broll, "configure_logging", lambda: None)
+        monkeypatch.setattr(sync_animal_broll, "ensure_dirs", lambda: None)
+        monkeypatch.setattr(sync_animal_broll, "VIDEO_DIR", MagicMock())
+        sync_animal_broll.VIDEO_DIR.glob = lambda *a, **k: iter([])
+
+        seen_orientations = []
+
+        def _fake_search(api_key, query, max_results, orientation="vertical"):
+            seen_orientations.append(orientation)
+            return 0
+
+        monkeypatch.setattr(sync_animal_broll, "search_and_download", _fake_search)
+        assert sync_animal_broll.main() == 0
+
+        assert "vertical" in seen_orientations
+        assert "horizontal" in seen_orientations
+
+
 class TestResolutionFilter:
+    @patch("scripts.sync_animal_broll._download_video", return_value=True)
+    @patch("scripts.sync_animal_broll.VIDEO_DIR")
+    @patch("scripts.sync_animal_broll.requests.get")
+    def test_accepts_genuinely_vertical_hit(self, mock_get, mock_video_dir, mock_download):
+        """Um clipe vertical legitimo (480x854) tem width < MIN_WIDTH mas e
+        boa resolucao - so orientado diferente. O filtro compara por lado
+        maior/menor, nao w/h direto, entao nao deve rejeitar."""
+        mock_video_dir.__truediv__ = _fake_video_dir_truediv
+        mock_response = MagicMock()
+        mock_response.json.return_value = {"hits": [_hit(width=480, height=854)]}
+        mock_response.raise_for_status.return_value = None
+        mock_get.return_value = mock_response
+
+        downloaded = sync_animal_broll.search_and_download("fake-key", "cute cat real", max_results=5)
+
+        assert downloaded == 1
+        mock_download.assert_called_once()
+
+    @patch("scripts.sync_animal_broll._download_video", return_value=True)
+    @patch("scripts.sync_animal_broll.VIDEO_DIR")
+    @patch("scripts.sync_animal_broll.requests.get")
+    def test_rejects_low_resolution_vertical_hit(self, mock_get, mock_video_dir, mock_download):
+        """Vertical mas realmente baixa resolucao (180x320) ainda deve ser
+        rejeitado - o lado maior (320) fica abaixo de MIN_WIDTH (640)."""
+        mock_video_dir.__truediv__ = _fake_video_dir_truediv
+        mock_response = MagicMock()
+        mock_response.json.return_value = {"hits": [_hit(width=180, height=320)]}
+        mock_response.raise_for_status.return_value = None
+        mock_get.return_value = mock_response
+
+        downloaded = sync_animal_broll.search_and_download("fake-key", "cute cat real", max_results=5)
+
+        assert downloaded == 0
+        mock_download.assert_not_called()
+
     @patch("scripts.sync_animal_broll._download_video", return_value=True)
     @patch("scripts.sync_animal_broll.VIDEO_DIR")
     @patch("scripts.sync_animal_broll.requests.get")

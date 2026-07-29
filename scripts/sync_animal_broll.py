@@ -79,14 +79,14 @@ def _download_video(url: str, dest: Path) -> bool:
         return False
 
 
-def search_and_download(api_key: str, query: str, max_results: int = 5) -> int:
+def search_and_download(api_key: str, query: str, max_results: int = 5, orientation: str = "vertical") -> int:
     headers = {"User-Agent": "PataJazz-Bot/1.0"}
     params: dict[str, str | int] = {
         "key": api_key,
         "q": query,
         "per_page": max(6, max_results * 3),
         "safesearch": "true",
-        "orientation": "horizontal",
+        "orientation": orientation,
         "video_type": "film",  # exclui animacao/cartoon — so video real
         "order": "popular",  # prioriza os clips mais apreciados (geralmente mais fofos)
     }
@@ -119,13 +119,18 @@ def search_and_download(api_key: str, query: str, max_results: int = 5) -> int:
         if not video:
             continue
         # Rejeita clips abaixo da resolucao minima - qualidade baixa demais pra
-        # thumbnail/frame extraction e pra encher a tela em video horizontal.
-        # Campos ausentes (API mudou ou hit incompleto) nao bloqueiam o clip -
-        # so pula a checagem em vez de descartar por falta de dado.
+        # thumbnail/frame extraction e pra encher a tela no Short vertical.
+        # Compara por lado maior/menor (nao w/h direto): um clipe vertical
+        # legitimo (ex.: 480x854) tem width < MIN_WIDTH mas e uma resolucao
+        # perfeitamente boa - so esta orientado diferente. Campos ausentes
+        # (API mudou ou hit incompleto) nao bloqueiam o clip - so pula a
+        # checagem em vez de descartar por falta de dado.
         w, h = video.get("width"), video.get("height")
-        if w and h and (int(w) < MIN_WIDTH or int(h) < MIN_HEIGHT):
-            log.info("Ignorando hit de baixa resolucao (%sx%s): %s", w, h, tags)
-            continue
+        if w and h:
+            long_side, short_side = max(int(w), int(h)), min(int(w), int(h))
+            if long_side < MIN_WIDTH or short_side < MIN_HEIGHT:
+                log.info("Ignorando hit de baixa resolucao (%sx%s): %s", w, h, tags)
+                continue
         # Rejeita explicitamente videos marcados como animacao
         video_type = str(hit.get("type", "")).lower()
         if video_type and "animat" in video_type:
@@ -176,10 +181,19 @@ def main() -> int:
         BROLL_QUERIES,
         key=lambda q: (0 if any(kw in q for kw in ("kitten", "puppy", "adorable", "cute")) else 1, q),
     )
-    for query in prioritized_queries:
+    for i, query in enumerate(prioritized_queries):
         if current_count >= MAX_POOL_SIZE:
             break
-        downloaded = search_and_download(api_key, query, MAX_PER_QUERY)
+        # Canal e 100% Shorts verticais - crop_filter em video_builder.short_spec
+        # ("crop='ih*9/16:ih:...'") e essencialmente um no-op num clipe ja
+        # vertical, mas descarta ~68% da largura de um clipe horizontal 16:9
+        # (corta pra so ih*9/16 de largura) - risco real de cortar o
+        # bichinho fora do quadro. Pixabay tem menos oferta vertical de pets
+        # que horizontal, entao 2 a cada 3 queries buscam vertical e 1 busca
+        # horizontal, mantendo o pool crescendo mesmo quando um termo
+        # especifico nao tem vertical suficiente.
+        orientation = "horizontal" if i % 3 == 2 else "vertical"
+        downloaded = search_and_download(api_key, query, MAX_PER_QUERY, orientation=orientation)
         total += downloaded
         current_count += downloaded
 

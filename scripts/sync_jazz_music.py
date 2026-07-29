@@ -104,6 +104,10 @@ def search_and_download(term: str, max_results: int = 5, client_id: str = "") ->
         # uso comercial (para o canal poder monetizar sem risco legal).
         "license_cc": "yes",
         "commercialuse": "yes",
+        # Mesmo raciocinio do Pixabay (order=popular em sync_animal_broll.py):
+        # sem ordenar, o Jamendo devolve em ordem essencialmente arbitraria -
+        # faixas mais populares tendem a ter producao/mixagem melhor.
+        "order": "popularity_total",
     }
     try:
         r = requests.get(JAMENDO_API_URL, params=params, timeout=30)
