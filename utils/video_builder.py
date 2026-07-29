@@ -383,6 +383,7 @@ def build_pata_jazz_video(
         fallback_title=fallback_title,
         fallback_description=spec.fallback_description,
         title_pattern_hint=spec.title_pattern_hint,
+        mood=spec.mood,
     )
     meta = {
         **metadata,

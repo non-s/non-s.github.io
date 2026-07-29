@@ -265,6 +265,17 @@ class TestEnsureLogin:
             result = tiktok_uploader._ensure_login(page, MagicMock(), "a@b.com", "pw", tmp_path / "s.json")
         assert result is False
 
+    def test_returns_false_without_credentials_and_expired_session(self, tmp_path):
+        """Contas que so logam via QR code/Google nao tem senha - sessao
+        expirada sem credenciais de fallback e uma falha definitiva, e
+        _do_login nao deve nem ser chamado (nao ha email/senha pra usar)."""
+        page = MagicMock()
+        with patch("utils.tiktok_uploader._is_logged_in", return_value=False), \
+             patch("utils.tiktok_uploader._do_login") as mock_login:
+            result = tiktok_uploader._ensure_login(page, MagicMock(), "", "", tmp_path / "s.json")
+        assert result is False
+        mock_login.assert_not_called()
+
 
 class _FakePlaywrightCM:
     """Contexto `with sync_playwright() as p:` mockado: p.chromium.launch()
@@ -287,12 +298,52 @@ class TestUploadToTiktok:
         monkeypatch.setenv("TIKTOK_EMAIL", "a@b.com")
         monkeypatch.setenv("TIKTOK_PASSWORD", "secret")
 
-    def test_returns_none_without_credentials(self, monkeypatch, tmp_path):
+    def test_returns_none_without_credentials_or_session(self, monkeypatch, tmp_path):
         monkeypatch.delenv("TIKTOK_EMAIL", raising=False)
         monkeypatch.delenv("TIKTOK_PASSWORD", raising=False)
         video = tmp_path / "v.mp4"
         video.write_bytes(b"x")
-        assert tiktok_uploader.upload_to_tiktok(video, {}) is None
+        result = tiktok_uploader.upload_to_tiktok(video, {}, state_path=tmp_path / "no_session.json")
+        assert result is None
+
+    def test_proceeds_with_existing_session_and_no_credentials(self, monkeypatch, tmp_path):
+        """Contas que so logam via QR code/Google (sem senha) dependem
+        exclusivamente de uma sessao salva (tiktok_state.json) - sem
+        TIKTOK_EMAIL/TIKTOK_PASSWORD configurados, o upload ainda deve
+        seguir em frente se ja existir uma sessao valida em disco."""
+        monkeypatch.delenv("TIKTOK_EMAIL", raising=False)
+        monkeypatch.delenv("TIKTOK_PASSWORD", raising=False)
+        video = tmp_path / "v.mp4"
+        video.write_bytes(b"x")
+        state_path = tmp_path / "state.json"
+        state_path.write_text("{}")
+
+        page = MagicMock()
+        page.url = "https://www.tiktok.com/upload"
+        avatar, file_input, desc_el, post_btn = MagicMock(), MagicMock(), MagicMock(), MagicMock()
+        page.query_selector.side_effect = [avatar, file_input, desc_el, post_btn]
+        page.inner_text.return_value = ""
+
+        def advance_after_post(*a, **k):
+            page.url = "https://www.tiktok.com/@user/video/123"
+
+        post_btn.click.side_effect = advance_after_post
+
+        context = MagicMock()
+        context.new_page.return_value = page
+        browser = MagicMock()
+        browser.new_context.return_value = context
+
+        monkeypatch.setattr(tiktok_uploader.time, "sleep", lambda *_: None)
+        monkeypatch.setattr(tiktok_uploader, "_write_upload_state", lambda *a, **k: None)
+
+        with patch("playwright.sync_api.sync_playwright", return_value=_FakePlaywrightCM(browser)):
+            url = tiktok_uploader.upload_to_tiktok(
+                video, {"title": "Cute cat", "hashtags": ["#Cats"]},
+                state_path=state_path, headless=True,
+            )
+
+        assert url == "https://www.tiktok.com/@user/video/123"
 
     def test_returns_none_when_video_missing(self, monkeypatch, tmp_path):
         self._base_env(monkeypatch)

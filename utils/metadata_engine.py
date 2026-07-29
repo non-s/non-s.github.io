@@ -16,6 +16,7 @@ from utils.seo_keywords import (
     generate_description,
     generate_hashtags,
     generate_title_with_pattern,
+    music_style_for_mood,
     optimize_for_search,
 )
 
@@ -32,6 +33,9 @@ def _build_metadata_prompt(hook: str, scene: str, duration: int, kind: str, emoj
         f"Duration: ~{duration}s. "
         f"Rules:\n"
         f"- Warm, cute title, NO clickbait, NO sensationalist words, max {target_len} characters.\n"
+        f"- Sound like a real person posting a video they like, not an ad - "
+        f"skip stock phrases like 'Discover' or 'Get ready', skip generic "
+        f"'welcome to my channel' openers, no dramatic em-dashes.\n"
         f"- {desc_lines}-line description, light and cute tone, with a cat/dog and jazz emoji.\n"
         f"- 5 to 8 relevant hashtags separated by spaces.\n"
         f"Return ONLY JSON with keys: title, description, hashtags."
@@ -47,18 +51,24 @@ def generate_metadata(
     fallback_title: str = "",
     fallback_description: str = "",
     title_pattern_hint: str = "",
+    mood: str = "",
 ) -> dict[str, Any]:
     """Gera metadados completos usando Gemini + SEO otimizado, com fallback local seguro.
 
     ``title_pattern_hint`` (quando fornecido por utils/slot_optimizer) obriga
     o titulo a seguir o padrao previsto como otimo para o slot atual; quando
     vazio, o padrao e decidido por generate_title_with_pattern/IA como antes.
+
+    ``mood`` decide a frase de estilo musical (music_style_for_mood) alinhada
+    ao audio REAL da cena - sem isso, title/description sempre diziam
+    "relaxing jazz" mesmo em cenas com swing/bebop tocando (mood "diversao"),
+    e podiam ficar redundantes tipo "cat relaxing to relaxing jazz".
     """
     # Extrai informações da cena para SEO
     animal = detect_animal(scene)
     s = scene.lower()
     acao = "relaxing" if ("sleep" in s or "relax" in s) else "playing"
-    estilo_musical = "relaxing jazz"
+    estilo_musical = music_style_for_mood(mood)
 
     # Gera título otimizado com SEO, usando fallback_title como base se fornecido.
     # Antes, "fallback_title" era uma magic string que poluia o tracking de

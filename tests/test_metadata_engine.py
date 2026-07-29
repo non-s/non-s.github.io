@@ -62,6 +62,28 @@ class TestMetadataEngine:
             )
 
     @patch('utils.metadata_engine.ai_text')
+    def test_generate_metadata_relax_mood_title_never_repeats_relaxing(self, mock_ai_text):
+        """Regressao do bug real: scene com 'relax' (acao='relaxing') +
+        mood='relax' antes sempre resultava em estilo_musical='relaxing
+        jazz' fixo, produzindo titulos redundantes tipo 'cat relaxing to
+        relaxing jazz'. mood_musical_style agora varia o estilo por mood
+        e nenhuma opcao do mood 'relax' repete a palavra 'relaxing'."""
+        mock_ai_text.return_value = ""  # forca fallback local (sem IA)
+
+        for _ in range(15):
+            metadata = metadata_engine.generate_metadata(
+                hook="Cat relaxing",
+                scene="cat relaxing",
+                duration=30,
+                kind="short",
+                emoji="🐱",
+                mood="relax",
+            )
+            title_lower = metadata["title"].lower()
+            assert "relaxing to relaxing" not in title_lower
+            assert "relaxing jazz" not in title_lower
+
+    @patch('utils.metadata_engine.ai_text')
     def test_generate_metadata_ai_failure(self, mock_ai_text):
         """Testa fallback quando AI falha (retorna string vazia)."""
         mock_ai_text.return_value = ""

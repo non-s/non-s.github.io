@@ -140,8 +140,8 @@ PIXABAY_API_KEY=xxx
 JAMENDO_CLIENT_ID=xxx  # opcional (recomendado)
 GEMINI_MODEL=gemini-2.0-flash-001  # opcional (default)
 YOUTUBE_PRIVACY=public
-TIKTOK_EMAIL=xxx     # opcional (cross-posting no TikTok)
-TIKTOK_PASSWORD=xxx  # opcional (cross-posting no TikTok)
+TIKTOK_EMAIL=xxx     # opcional - so funciona pra contas que logam com senha
+TIKTOK_PASSWORD=xxx  # opcional - idem; ver secao 4 pra contas QR code/Google
 ```
 
 ### 3. Credenciais do YouTube
@@ -154,6 +154,25 @@ python utils/youtube_oauth.py
 
 Salve o JSON resultante como `youtube_token.json` na raiz do projeto (ou use o secret `YOUTUBE_TOKEN` no GitHub Actions).
 
+### 4. Sessão do TikTok (contas que logam via QR code/Google)
+
+Contas que só logam com QR code (celular) ou "Continuar com o Google" não
+têm senha pra automatizar - `TIKTOK_EMAIL`/`TIKTOK_PASSWORD` não servem
+nesse caso. A automação então reusa uma sessão (cookies) gerada por você
+manualmente:
+
+```bash
+python scripts/tiktok_login_qr.py
+```
+
+Isso abre um Chromium visível na página de login do TikTok. Faça login do
+jeito que você já usa; o script detecta a sessão ativa, salva
+`tiktok_state.json` na raiz do projeto e imprime o conteúdo pra você colar
+no secret `TIKTOK_STATE_JSON` do GitHub. O workflow `cross-post.yml`
+escreve esse secret em `tiktok_state.json` antes de cada execução e reusa
+a sessão até ela expirar - quando expirar, rode o script de novo e
+atualize o secret.
+
 ## Variáveis do GitHub Actions
 
 ### Secrets
@@ -162,7 +181,8 @@ Salve o JSON resultante como `youtube_token.json` na raiz do projeto (ou use o s
 - `PIXABAY_API_KEY`
 - `JAMENDO_CLIENT_ID`
 - `YOUTUBE_TOKEN` — JSON do token OAuth do YouTube
-- `TIKTOK_EMAIL` / `TIKTOK_PASSWORD` — login usado pelo cross-posting no TikTok
+- `TIKTOK_STATE_JSON` — sessão (storage_state) do TikTok; gere com `python scripts/tiktok_login_qr.py` (necessário para contas que logam via QR code/Google, sem senha)
+- `TIKTOK_EMAIL` / `TIKTOK_PASSWORD` — opcional, só usado como fallback quando a sessão acima expira e a conta tem senha
 
 ### Variables
 

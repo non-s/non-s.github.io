@@ -1,14 +1,20 @@
 """utils/tiktok_uploader.py — upload de videos para o TikTok via browser automation.
 
 Usa Playwright (Chromium headless) com stealth scripts para passar pelo WAF
-do TikTok. Login por email/senha com persistencia de sessao via
-storage_state (cookies + localStorage). O upload e feito navegando para
-tiktok.com/upload, preenchendo o input de arquivo e a descricao.
+do TikTok. Autenticacao via sessao (storage_state: cookies + localStorage),
+com login por email/senha como fallback OPCIONAL quando a sessao expira. O
+storage_state e a UNICA forma de auth para contas que so logam via QR
+code/Google (sem senha) — nesse caso, gere o arquivo localmente com
+`python scripts/tiktok_login_qr.py` (login manual, headed) e cole o
+conteudo no secret TIKTOK_STATE_JSON do repositorio; o workflow escreve
+esse secret em tiktok_state.json antes de rodar (ver cross-post.yml). O
+upload e feito navegando para tiktok.com/upload, preenchendo o input de
+arquivo e a descricao.
 
 Dependencies: playwright (pip install playwright && playwright install chromium)
 Env vars:
-  TIKTOK_EMAIL — email da conta
-  TIKTOK_PASSWORD — senha da conta
+  TIKTOK_EMAIL — email da conta (opcional, so usado se a sessao expirar)
+  TIKTOK_PASSWORD — senha da conta (opcional, idem)
   TIKTOK_STATE_PATH — path do storage_state (default: tiktok_state.json)
   TIKTOK_HEADLESS — "0" para headed (default: headless)
 """
@@ -236,10 +242,24 @@ def _ensure_login(page, context, email: str, password: str, state_path: Path) ->
     reflete a sessao REAL apos navegar (nao so a presenca do arquivo de
     storage_state), entao cookies vencidos caem automaticamente no fluxo
     de login por email/senha abaixo, sem tratamento especial.
+
+    Email/senha sao OPCIONAIS: contas que so logam via QR code/Google nao
+    tem senha pra automatizar. Sem credenciais, uma sessao expirada e uma
+    falha definitiva (nao ha fallback possivel) - precisa gerar uma sessao
+    nova com scripts/tiktok_login_qr.py e atualizar o secret/cache.
     """
     if _is_logged_in(page):
         log.info("Sessao reaproveitada de %s (cookies validos).", state_path)
         return True
+
+    if not email or not password:
+        log.error(
+            "Sessao ausente/expirada em %s e sem TIKTOK_EMAIL/TIKTOK_PASSWORD "
+            "para fallback. Gere uma sessao nova com "
+            "'python scripts/tiktok_login_qr.py' e atualize o secret TIKTOK_STATE_JSON.",
+            state_path,
+        )
+        return False
 
     log.info("Sessao ausente/expirada em %s. Tentando login com credenciais...", state_path)
     if not _do_login(page, email, password):
@@ -272,8 +292,16 @@ def upload_to_tiktok(
     state_path = state_path or Path(os.environ.get("TIKTOK_STATE_PATH", str(DEFAULT_STATE_PATH)))
     headless = os.environ.get("TIKTOK_HEADLESS", "1") != "0" if headless else False
 
-    if not email or not password:
-        log.info("TikTok: TIKTOK_EMAIL/TIKTOK_PASSWORD nao configurados.")
+    # Sessao (storage_state) e suficiente sozinha - contas que so logam via
+    # QR code/Google nunca vao ter TIKTOK_EMAIL/TIKTOK_PASSWORD configurados,
+    # e isso e esperado (nao um erro). So e no-op de verdade quando NAO ha
+    # nem sessao salva nem credenciais - nesse caso nao ha como autenticar.
+    if not state_path.exists() and not (email and password):
+        log.info(
+            "TikTok: sem sessao em %s e sem TIKTOK_EMAIL/TIKTOK_PASSWORD. "
+            "Gere uma sessao com 'python scripts/tiktok_login_qr.py'.",
+            state_path,
+        )
         return None
 
     if not video_path.exists():

@@ -45,6 +45,21 @@ jobs:
           path: tiktok_state.json
           key: tiktok-state-${{ github.run_id }}
           restore-keys: tiktok-state-
+      - name: "Semear sessao do TikTok a partir do secret (1a execucao ou cache expirado)"
+        # A conta so loga via QR code/Google (sem senha) - TIKTOK_EMAIL/
+        # TIKTOK_PASSWORD nunca vao existir pra essa automacao, entao
+        # tiktok_state.json (gerado localmente com
+        # scripts/tiktok_login_qr.py e colado no secret TIKTOK_STATE_JSON)
+        # e a UNICA forma de autenticar. So escreve se o cache acima nao
+        # restaurou nada, pra nunca sobrescrever uma sessao mais recente/
+        # renovada por uma run anterior com a copia estatica do secret.
+        env:
+          TIKTOK_STATE_JSON: ${{ secrets.TIKTOK_STATE_JSON }}
+        run: |
+          if [ ! -s tiktok_state.json ] && [ -n "$TIKTOK_STATE_JSON" ]; then
+            umask 077
+            printf '%s' "$TIKTOK_STATE_JSON" > tiktok_state.json
+          fi
       - name: "Restaurar cache de videos gerados"
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
@@ -63,7 +78,8 @@ jobs:
           key: tiktok-posts-${{ github.run_id }}
           restore-keys: tiktok-posts-
       - name: "Cross-postar para TikTok"
-        # No-op sem TIKTOK_EMAIL/TIKTOK_PASSWORD: upload_tiktok.py loga e retorna 0.
+        # No-op sem tiktok_state.json (sessao) nem TIKTOK_EMAIL/TIKTOK_PASSWORD:
+        # upload_tiktok.py loga e retorna 0.
         run: python upload_tiktok.py --all --prefix pata_jazz_short_
       - name: "Cross-postar para Instagram Reels"
         # No-op sem INSTAGRAM_ACCESS_TOKEN: upload_reels.py loga e retorna 0.
