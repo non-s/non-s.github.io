@@ -116,7 +116,16 @@ def _build_overlay_filter(hook: str, height: int) -> str:
         f"drawtext=text='{safe_hook}'"
         # Mesma familia (Arial, com substituicao via fontconfig) usada pelo
         # estilo ASS em caption_engine.py - ja comprovada disponivel em CI.
-        f":font='Arial:style=Bold'"
+        # O ':' de "style=Bold" precisa de escape com barra invertida MESMO
+        # dentro das aspas simples - aspas simples NAO protegem ':' no
+        # parser de opcoes do FFmpeg (e o separador key:value e splitado
+        # antes das aspas serem consideradas). Sem o escape, o FFmpeg lia
+        # "style=Bold" como se fosse uma opcao separada do filtro drawtext
+        # (que nao existe) e falhava com "Option not found" - bug real que
+        # quebrou 100% das geracoes de Short em producao apos essa feature
+        # entrar (nao pego pelos testes, que nunca chamam o FFmpeg de
+        # verdade).
+        f":font='Arial\\:style=Bold'"
         f":fontsize=56"
         f":fontcolor=white"
         f":shadowcolor=black:shadowx=2:shadowy=2"

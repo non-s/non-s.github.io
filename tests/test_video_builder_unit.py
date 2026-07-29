@@ -18,8 +18,13 @@ class TestBuildOverlayFilter:
         assert "enable='between(t,0," in result
 
     def test_uses_bold_font(self):
+        """O ':' de "style=Bold" precisa vir escapado com barra invertida -
+        aspas simples nao protegem ':' no parser de opcoes do FFmpeg (bug
+        real de producao: sem o escape, TODA geracao de Short falhava com
+        "Error applying option 'style' to filter 'drawtext': Option not
+        found" - reproduzido e confirmado com FFmpeg de verdade)."""
         result = video_builder._build_overlay_filter("hello", 1920)
-        assert "font='Arial:style=Bold'" in result
+        assert "font='Arial\\:style=Bold'" in result
 
     def test_has_semi_transparent_box_for_legibility(self):
         result = video_builder._build_overlay_filter("hello", 1920)
