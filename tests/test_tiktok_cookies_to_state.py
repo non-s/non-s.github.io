@@ -70,6 +70,18 @@ class TestConvertCookie:
         del raw["path"]
         assert tiktok_cookies_to_state._convert_cookie(raw)["path"] == "/"
 
+    def test_cleans_markdown_linkified_domain(self):
+        """Alguns apps de chat/clipboard linkificam dominios nus ao copiar/
+        colar, corrompendo o campo domain do export pra algo tipo
+        ".[www.tiktok.com](https://www.tiktok.com)" - deve virar de volta
+        ".www.tiktok.com" (bug real visto num export de producao)."""
+        raw = _raw_cookie(domain=".[www.tiktok.com](https://www.tiktok.com)")
+        assert tiktok_cookies_to_state._convert_cookie(raw)["domain"] == ".www.tiktok.com"
+
+    def test_plain_domain_is_unaffected_by_cleanup(self):
+        raw = _raw_cookie(domain=".tiktok.com")
+        assert tiktok_cookies_to_state._convert_cookie(raw)["domain"] == ".tiktok.com"
+
 
 class TestMain:
     def test_missing_argument_returns_1(self, monkeypatch):
