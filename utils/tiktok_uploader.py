@@ -157,12 +157,27 @@ _UPLOAD_URL = "https://www.tiktok.com/upload"
 
 
 def _is_logged_in(page) -> bool:
-    """Verifica se a pagina atual indica sessao ativa."""
-    url = page.url
-    if "login" in url.lower():
-        return False
-    avatar = page.query_selector("[data-e2e='profile-icon']")
-    return avatar is not None
+    """Verifica se a pagina atual indica sessao ativa.
+
+    Bug real de producao confirmado via screenshot: uma sessao valida
+    (usuario aparecia logado normalmente no feed, com nav de Upload/Post
+    video) fazia essa funcao retornar False mesmo assim, porque exigia
+    tambem [data-e2e='profile-icon'] presente - atributo interno de teste
+    do TikTok que parou de bater (o TikTok pode renomear isso a qualquer
+    momento sem aviso). Isso fazia o codigo tentar login de novo
+    desnecessariamente numa sessao que ja funcionava, e falhar la (essa
+    conta nao tem senha pra usar no fallback).
+
+    Agora confia primeiro na URL: se ela nao menciona "login", a sessao
+    esta ativa o suficiente (TikTok redireciona rotas autenticadas, como
+    /upload, pra uma URL de login quando NAO ha sessao valida - a ausencia
+    desse redirect ja e um sinal forte e resiliente por si so). So cai no
+    seletor de avatar (best-effort, pode falhar silenciosamente) quando a
+    URL ainda menciona login, como fallback bem mais raro.
+    """
+    if "login" not in page.url.lower():
+        return True
+    return page.query_selector("[data-e2e='profile-icon']") is not None
 
 
 def _page_mentions_any(page, markers: tuple[str, ...]) -> str | None:
