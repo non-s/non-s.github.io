@@ -153,7 +153,7 @@ sync (Pixabay/Jamendo) ─┐
 | Workflow | Trigger | O que faz |
 |----------|---------|-----------|
 | `ci.yml` | `push`/`pull_request` em `main` | ruff, compile, pytest+cov, pip-audit, mypy (advisory), bandit |
-| `pata-jazz-shorts.yml` | cron 4x/dia (10:00,16:00,21:00,01:00 UTC) / manual | Gera e publica 1 Short no YouTube |
+| `pata-jazz-shorts.yml` | cron horário (minuto 7, `7 * * * *` UTC) / manual | Gera e publica 1 Short no YouTube |
 | `cross-post.yml` | `workflow_run` (após `pata-jazz-shorts.yml`) / manual | Cross-posta o Short mais recente para TikTok e Reels |
 | `pata-jazz-sync.yml` | cron 2x/semana (Ter e Sex 06:00 UTC) / manual | Sync b-roll + jazz + evict caches antigos |
 | `pata-jazz-analytics.yml` | cron semanal Seg 06:00 UTC / manual | Coleta analytics, gera dashboard, publica no GitHub Pages |

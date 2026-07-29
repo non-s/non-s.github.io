@@ -2,12 +2,16 @@ name: "Pata Jazz - Shorts"
 
 on:
   schedule:
-    # 4 shorts por dia: 07:00, 13:00, 18:00, 22:00 BRT (UTC-3)
-    # = 10:00, 16:00, 21:00, 01:00 UTC
+    # 1 short por hora (24/dia) - publica no YouTube aqui e dispara o
+    # cross-post.yml (workflow_run) logo em seguida, que posta o mesmo
+    # video no TikTok. Minuto 7 (nao :00) para nao competir com o pico de
+    # cron jobs de outros repos no mesmo minuto (recomendacao do GitHub).
     # (desde jun/2026 videos.insert tem cota propria de ~100/dia, separada
-    # do pool de 10k unidades/dia compartilhado pelos outros endpoints - 4
-    # shorts/dia fica bem abaixo dos dois limites)
-    - cron: "0 10,16,21,1 * * *"
+    # do pool de 10k unidades/dia compartilhado pelos outros endpoints - 24
+    # uploads/dia usa ~200 unidades/upload do pool compartilhado
+    # (thumbnail+captions+playlists) = ~4800/dia, ainda abaixo do limite de
+    # 10000 e do alerta em 8000; videos.insert fica bem abaixo dos ~100/dia).
+    - cron: "7 * * * *"
   workflow_dispatch:
     inputs:
       reason:

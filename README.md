@@ -8,7 +8,7 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 
 ## Plataformas
 
-- **YouTube** (`upload_youtube.py`) — upload direto via YouTube Data API v3 (OAuth), 4x/dia.
+- **YouTube** (`upload_youtube.py`) — upload direto via YouTube Data API v3 (OAuth), 1 short/hora (24/dia).
 - **TikTok** (`upload_tiktok.py`) — cross-posting via Playwright (browser automation, sem API oficial), disparado logo após cada upload do YouTube (`cross-post.yml`).
 - **Instagram Reels** (`upload_reels.py`) — cross-posting best-effort junto com o TikTok.
 
@@ -172,17 +172,17 @@ Salve o JSON resultante como `youtube_token.json` na raiz do projeto (ou use o s
 
 ## Grade de publicação (GitHub Actions)
 
-| Conteúdo | Frequência | Horário BRT | Workflow |
+| Conteúdo | Frequência | Horário | Workflow |
 |---|---|---|---|
-| **Shorts (YouTube)** | 4 por dia | 07:00, 13:00, 18:00, 22:00 | `pata-jazz-shorts.yml` |
-| **Cross-post (TikTok/Reels)** | Após cada Short publicado | — | `cross-post.yml` |
+| **Shorts (YouTube)** | 1 por hora (24/dia) | minuto 7 de cada hora UTC | `pata-jazz-shorts.yml` |
+| **Cross-post (TikTok/Reels)** | Após cada Short publicado (1/hora, 24/dia) | — | `cross-post.yml` |
 | **Sync de assets** | 2x por semana | Ter e Sex 03:00 | `pata-jazz-sync.yml` |
 | **Analytics** | 1x por semana | Segunda 03:00 | `pata-jazz-analytics.yml` |
 | **Lote semanal** (manual/eventual) | Gera 35 shorts de uma vez, publica 6/dia até esgotar | só disparo manual (`action: all`/`generate`/`publish`) | `pata-jazz-weekly.yml` |
 
-**Total semanal (crons diários):** 4 Shorts/dia × 7 = **28 vídeos/semana** no YouTube, cada um cross-postado para TikTok e Reels. O lote semanal (`pata-jazz-weekly.yml`) é um mecanismo separado e não roda por padrão — só produz vídeos extras quando disparado manualmente com `action: all`/`generate`/`publish`.
+**Total (crons horários):** 24 Shorts/dia × 7 = **168 vídeos/semana** no YouTube, cada um cross-postado para TikTok (e Reels, quando configurado). O lote semanal (`pata-jazz-weekly.yml`) é um mecanismo separado e não roda por padrão — só produz vídeos extras quando disparado manualmente com `action: all`/`generate`/`publish`.
 
-> **Nota sobre quota (histórico):** o lote semanal já teve um cron diário próprio de "publicar próximos 6" rodando em paralelo ao cron de Shorts - isso empilhava uploads/dia, passando da quota de ~10.000 unidades/dia da API (cada upload custa ~1.600 unidades) e causando falhas em produção (24-25/07). O cron foi removido; hoje só o cron de Shorts (4/dia) publica automaticamente. Se for rodar `pata-jazz-weekly.yml` manualmente, ainda vale conferir a soma de uploads do dia antes de disparar.
+> **Nota sobre quota:** `videos.insert` tem cota própria de ~100/dia (24 uploads/dia fica bem abaixo). Os outros endpoints usados por upload (thumbnail, captions, playlists) somam ~200 unidades/upload do pool compartilhado de 10.000/dia — 24 uploads/dia usa ~4.800, abaixo do alerta em 8.000 (`utils/quota_tracker.py`). O lote semanal já teve um cron diário próprio de "publicar próximos 6" rodando em paralelo ao cron de Shorts, o que estourava a quota e causava falhas em produção (24-25/07) - esse cron foi removido, hoje só o cron horário de Shorts publica automaticamente. Se for rodar `pata-jazz-weekly.yml` manualmente, ainda vale conferir `_data/quota_usage.json` antes de disparar, já que o cron horário já usa boa parte da margem diária.
 
 ## Execução local
 

@@ -47,8 +47,9 @@ MODEL_FILE = DATA_DIR / "view_predictor.json"
 
 # Slots de cron dos shorts (UTC) — usado pelo dashboard para enumerar os
 # próximos agendamentos. Definido aqui (e não no workflow) para que o
-# dashboard não dependa de parsing de YAML do workflow.
-SHORTS_CRON_HOURS_UTC: tuple[int, ...] = (1, 10, 16, 21)
+# dashboard não dependa de parsing de YAML do workflow. pata-jazz-shorts.yml
+# roda 1x por hora (minuto 7 de cada hora), entao todas as 24 horas contam.
+SHORTS_CRON_HOURS_UTC: tuple[int, ...] = tuple(range(24))
 
 
 def _load_json(path: Path, default):

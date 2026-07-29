@@ -12,14 +12,18 @@ on:
           - all
           - generate
           - publish
-  # Sem "schedule": pata-jazz-shorts.yml (4x/dia) ja cobre a cadencia diaria
-  # pretendida por utils/content_strategy.py. O cron diario que existia aqui
-  # ("publish proximos 6") rodava por cima dela, quase triplicando o volume
-  # de upload/dia e estourando a quota da API (~1600 unidades/upload x 11
-  # uploads/dia > 10000/dia) - visto em producao como uma sequencia de runs
-  # com failure em 24-25/07. Lote semanal agora e uma ferramenta manual
-  # (workflow_dispatch) para gerar um lote extra pontualmente, nao um
-  # publicador automatico concorrente.
+  # Sem "schedule": pata-jazz-shorts.yml (1 short/hora, 24/dia) ja cobre a
+  # cadencia diaria pretendida por utils/content_strategy.py. O cron diario
+  # que existia aqui ("publish proximos 6") rodava por cima dela, quase
+  # triplicando o volume de upload/dia e estourando a quota da API (~1600
+  # unidades/upload x 11 uploads/dia > 10000/dia) - visto em producao como
+  # uma sequencia de runs com failure em 24-25/07. Com o cron horario ja
+  # usando boa parte da quota do pool compartilhado (~4800/10000 unidades/dia,
+  # ver comentario em pata-jazz-shorts.yml), rodar o lote semanal no mesmo
+  # dia do cron horario deixa pouca margem - confira scripts/collect_analytics
+  # /quota_usage.json antes de disparar manualmente. Lote semanal agora e
+  # uma ferramenta manual (workflow_dispatch) para gerar um lote extra
+  # pontualmente, nao um publicador automatico concorrente.
 
 permissions:
   contents: read

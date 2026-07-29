@@ -212,7 +212,8 @@ _DAY_OF_WEEK_NAMES = [
 
 def _render_predicted_views(predictor: dict) -> str:
     """Seção "Predicted views (next 7 days)" — previsões para os próximos
-    4 slots de cron de shorts (10:00, 16:00, 21:00, 01:00 UTC).
+    4 slots de cron de shorts (cron horário, ver SHORTS_CRON_HOURS_UTC em
+    scripts/predict_views.py).
 
     Consome apenas o modelo já salvo em _data/view_predictor.json por
     scripts/predict_views.py (que treina a partir de analytics + video_tags).
