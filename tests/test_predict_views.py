@@ -6,6 +6,7 @@ a construção das features one-hot e a leitura do modelo salvo em disco.
 import json
 import math
 from datetime import UTC, datetime, timedelta
+from unittest.mock import patch
 
 import scripts.predict_views as pv
 from utils.seo_keywords import TITLE_PATTERNS
@@ -337,18 +338,17 @@ class TestNextCronSlots:
         now = datetime(2026, 7, 27, 9, 0, tzinfo=UTC)  # 09:00 UTC, seg
         slots = pv.next_cron_slots(now=now, n=4)
         assert len(slots) == 4
-        # Próximo slot: 10:00 (hora 10), segunda (weekday 0).
+        # Cron horario: proximos slots sao 10:00, 11:00, 12:00, 13:00 (mesmo dia).
         assert slots[0] == (10, 0)
-        assert slots[1] == (16, 0)
-        assert slots[2] == (21, 0)
-        # 01:00 do dia seguinte: 1, ter (weekday 1)
-        assert slots[3] == (1, 1)
+        assert slots[1] == (11, 0)
+        assert slots[2] == (12, 0)
+        assert slots[3] == (13, 0)
 
     def test_late_night_wraps_to_next_day(self):
-        now = datetime(2026, 7, 27, 23, 30, tzinfo=UTC)  # depois do 21:00
+        now = datetime(2026, 7, 27, 23, 30, tzinfo=UTC)  # depois das 23:00
         slots = pv.next_cron_slots(now=now, n=2)
-        assert slots[0] == (1, 1)  # 01:00 ter
-        assert slots[1] == (10, 1)  # 10:00 ter
+        assert slots[0] == (0, 1)  # 00:00 ter (weekday 1)
+        assert slots[1] == (1, 1)  # 01:00 ter
 
 
 class TestPredictViewsWithRealisticData:
@@ -361,11 +361,10 @@ class TestPredictViewsWithRealisticData:
     ficam acima das de baixo, dentro de um intervalo sao (0-50000) e sem
     NaN/inf."""
 
-    def _realistic_dataset(self):
+    def _realistic_dataset(self, now):
         """Monta ~40 amostras misturando 4 cenas e todos os padroes de
         titulo short, publicadas em horas/dias variados ao longo de ~90
         dias, com views entre 100 e 15000."""
-        now = datetime.now(UTC)
         scenes = ["cat", "dog", "sleepy cat", "puppy"]
         patterns = list(TITLE_PATTERNS["short"])
         # Mapeia cena -> faixa de views (cat e puppy performam melhor).
@@ -390,17 +389,31 @@ class TestPredictViewsWithRealisticData:
         return vids
 
     def test_predictions_rank_scenes_by_performance(self, tmp_path, monkeypatch):
+        """Congela o relogio (pv.datetime) durante todo o teste: o dataset
+        sintetico usa published_at relativo a "now", e tanto train_model()
+        (idade da amostra) quanto predict_views() (day_of_month/month default)
+        tambem leem datetime.now(UTC) - sem congelar, o resultado (e o
+        ranking das cenas) mudava sozinho conforme o dia real passava,
+        tornando o teste flaky."""
         _isolate(tmp_path, monkeypatch)
-        vids = self._realistic_dataset()
-        _write_analytics_with_tags(tmp_path, videos=vids)
+        fixed_now = datetime(2026, 6, 1, 12, 0, 0, tzinfo=UTC)
 
-        pv.save_model(pv.train_model())
+        class _FixedDatetime(datetime):
+            @classmethod
+            def now(cls, tz=None):
+                return fixed_now if tz is None else fixed_now.astimezone(tz)
 
-        first_pattern = TITLE_PATTERNS["short"][0]
-        cat_pred = pv.predict_views("cat", first_pattern, hour=10, day_of_week=0)
-        puppy_pred = pv.predict_views("puppy", first_pattern, hour=10, day_of_week=0)
-        dog_pred = pv.predict_views("dog", first_pattern, hour=10, day_of_week=0)
-        sleepy_pred = pv.predict_views("sleepy cat", first_pattern, hour=10, day_of_week=0)
+        with patch.object(pv, "datetime", _FixedDatetime):
+            vids = self._realistic_dataset(fixed_now)
+            _write_analytics_with_tags(tmp_path, videos=vids)
+
+            pv.save_model(pv.train_model())
+
+            first_pattern = TITLE_PATTERNS["short"][0]
+            cat_pred = pv.predict_views("cat", first_pattern, hour=10, day_of_week=0)
+            puppy_pred = pv.predict_views("puppy", first_pattern, hour=10, day_of_week=0)
+            dog_pred = pv.predict_views("dog", first_pattern, hour=10, day_of_week=0)
+            sleepy_pred = pv.predict_views("sleepy cat", first_pattern, hour=10, day_of_week=0)
         # Cenas de alto desempenho devem prever mais que as de baixo.
         assert cat_pred > dog_pred
         assert puppy_pred > sleepy_pred
@@ -408,7 +421,7 @@ class TestPredictViewsWithRealisticData:
 
     def test_predictions_within_sane_range(self, tmp_path, monkeypatch):
         _isolate(tmp_path, monkeypatch)
-        vids = self._realistic_dataset()
+        vids = self._realistic_dataset(datetime.now(UTC))
         _write_analytics_with_tags(tmp_path, videos=vids)
         pv.save_model(pv.train_model())
 
@@ -422,7 +435,7 @@ class TestPredictViewsWithRealisticData:
 
     def test_predictions_have_no_nan_or_inf(self, tmp_path, monkeypatch):
         _isolate(tmp_path, monkeypatch)
-        vids = self._realistic_dataset()
+        vids = self._realistic_dataset(datetime.now(UTC))
         _write_analytics_with_tags(tmp_path, videos=vids)
         pv.save_model(pv.train_model())
 
@@ -437,7 +450,7 @@ class TestPredictViewsWithRealisticData:
 
     def test_realistic_dataset_trains_nonempty_model(self, tmp_path, monkeypatch):
         _isolate(tmp_path, monkeypatch)
-        vids = self._realistic_dataset()
+        vids = self._realistic_dataset(datetime.now(UTC))
         _write_analytics_with_tags(tmp_path, videos=vids)
 
         model = pv.train_model()

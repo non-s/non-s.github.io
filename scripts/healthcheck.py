@@ -133,26 +133,27 @@ def check_pool_drift() -> dict[str, Any]:
     }
 
 
-def _check_live_prerequisites() -> dict[str, Any]:
-    """Verifica se o ambiente está pronto para lives.
+def _check_token_only() -> dict[str, Any]:
+    """Verifica so o token YouTube, sem exigir client secret.
 
     Client secret NAO e requisito aqui: em producao o refresh do token usa
     o client_id/secret ja embutidos no proprio youtube_token.json (gerado
-    uma vez, localmente, via fluxo interativo) - nenhum workflow deste repo
-    define YOUTUBE_CLIENT_SECRET nem existe client_secret.json commitado, e
-    mesmo assim a live funciona normalmente. Exigir isso aqui so faria esse
-    check falhar sempre, apesar do pipeline real estar saudavel.
+    uma vez, localmente, via fluxo interativo) - os workflows agendados
+    (shorts/batch/weekly) so tem o secret YOUTUBE_TOKEN, nao um
+    client_secret.json commitado, e mesmo assim o upload funciona
+    normalmente. Exigir isso aqui so faria esse check falhar sempre, apesar
+    do pipeline real estar saudavel.
     """
     token_ok = _check_youtube_token()
     if not token_ok["ok"]:
         return {
-            "name": "Pré-requisitos Live",
+            "name": "Token OAuth (fast)",
             "ok": False,
             "info": "Token YouTube inválido ou ausente",
         }
 
     return {
-        "name": "Pré-requisitos Live",
+        "name": "Token OAuth (fast)",
         "ok": True,
         "info": "OK - token válido",
     }
@@ -162,16 +163,17 @@ def run_healthcheck(mode: str = "all") -> int:
     """Executa healthcheck.
 
     Args:
-        mode: 'all' para todos os checks, 'live' apenas para pré-requisitos de live.
+        mode: 'all' para todos os checks, 'fast' pula o check de client secret
+            (usado nos workflows agendados, que so tem o token, nao o secret).
     """
     configure_logging()
 
-    if mode == "live":
+    if mode == "fast":
         checks = [
             _check_python(),
             _check_ffmpeg(),
             _check_envs(),
-            _check_live_prerequisites(),
+            _check_token_only(),
             _check_asset_pool(),
             check_pool_drift(),
         ]
@@ -204,6 +206,6 @@ def run_healthcheck(mode: str = "all") -> int:
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Healthcheck Pata Jazz")
-    parser.add_argument("--mode", choices=["all", "live"], default="all", help="Modo: 'all' ou 'live'")
+    parser.add_argument("--mode", choices=["all", "fast"], default="all", help="Modo: 'all' ou 'fast'")
     args = parser.parse_args()
     sys.exit(run_healthcheck(mode=args.mode))

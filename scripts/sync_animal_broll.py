@@ -32,6 +32,29 @@ MAX_PER_QUERY = 15
 MAX_POOL_SIZE = 300
 MIN_WIDTH = 640
 MIN_HEIGHT = 360
+# Fracao do pool evictada (os clips mais antigos por mtime) quando o pool
+# esta cheio, pra abrir espaco pra clips novos a cada sync. Sem isso, uma
+# vez que o pool atingia MAX_POOL_SIZE ele congelava para sempre - os
+# mesmos 300 clips eram reusados indefinidamente, nunca "fresco" de fato.
+_POOL_ROTATION_FRACTION = 0.1
+
+
+def _evict_oldest(directory: Path, glob_pattern: str, count: int) -> int:
+    """Remove os `count` arquivos mais antigos (por mtime) que casam com
+    `glob_pattern`, junto com o .json de metadata correspondente, se houver.
+    Retorna quantos foram removidos."""
+    if count <= 0:
+        return 0
+    files = sorted(directory.glob(glob_pattern), key=lambda p: p.stat().st_mtime)
+    evicted = 0
+    for f in files[:count]:
+        try:
+            f.unlink(missing_ok=True)
+            f.with_suffix(".json").unlink(missing_ok=True)
+            evicted += 1
+        except OSError as exc:
+            log.warning("Falha ao remover %s do pool: %s", f.name, exc)
+    return evicted
 
 
 def _safe_name(query: str, idx: int, url: str, ext: str) -> str:
@@ -142,8 +165,9 @@ def main() -> int:
     ensure_dirs()
     existing = len(list(VIDEO_DIR.glob("*.mp4")))
     if existing >= MAX_POOL_SIZE:
-        log.info("Pool ja esta cheio (%d clips).", existing)
-        return 0
+        rotate_count = max(1, int(MAX_POOL_SIZE * _POOL_ROTATION_FRACTION))
+        evicted = _evict_oldest(VIDEO_DIR, "*.mp4", rotate_count)
+        log.info("Pool cheio (%d clips) - rotacionados %d mais antigos para abrir espaco.", existing, evicted)
 
     total = 0
     current_count = len(list(VIDEO_DIR.glob("*.mp4")))

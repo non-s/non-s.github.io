@@ -9,6 +9,41 @@ import utils.video_builder as video_builder
 from utils.video_validator import VideoValidation
 
 
+class TestBuildOverlayFilter:
+    """Testes para o overlay de texto (hook) via drawtext."""
+
+    def test_has_real_alpha_fade_not_just_hard_cutoff(self):
+        result = video_builder._build_overlay_filter("hello", 1920)
+        assert "alpha='if(lt(t," in result
+        assert "enable='between(t,0," in result
+
+    def test_uses_bold_font(self):
+        result = video_builder._build_overlay_filter("hello", 1920)
+        assert "font='Arial:style=Bold'" in result
+
+    def test_has_semi_transparent_box_for_legibility(self):
+        result = video_builder._build_overlay_filter("hello", 1920)
+        assert "box=1" in result
+        assert "boxcolor=black@0.35" in result
+
+    def test_escapes_special_characters_in_hook(self):
+        result = video_builder._build_overlay_filter("it's: cute", 1920)
+        # Aspas simples viram a sequencia fecha-aspas/aspas-escapada/reabre-aspas
+        # ("'\''") - a unica forma valida do parser de filtergraph do FFmpeg.
+        # Um "\'" direto dentro das aspas (bug real de producao corrigido aqui)
+        # fecha a citacao no lugar errado e corrompe o resto do filter_complex.
+        assert "text='it'\\''s: cute'" in result
+        # Dois-pontos NAO precisam de escape: ja protegidos pelas aspas simples
+        # que envolvem o valor inteiro.
+
+    def test_y_position_stays_within_jitter_range(self):
+        for _ in range(30):
+            result = video_builder._build_overlay_filter("hook", 1920)
+            y_str = result.split(":y=")[1].split(":alpha=")[0]
+            y = int(y_str)
+            assert 1920 - 350 - 40 <= y <= 1920 - 350 + 40
+
+
 class TestVideoBuilderUnits:
     """Testes unitários para video_builder."""
 
@@ -152,10 +187,37 @@ class TestVideoBuilderUnits:
         assert "-t" in final_cmd
         assert final_cmd[final_cmd.index("-t") + 1] == "35"
 
+    def test_multi_clip_short_picks_transition_from_curated_list(self, tmp_path):
+        """Cada video sorteia um estilo de transicao xfade (nao sempre
+        'fade') de video_builder._XFADE_TRANSITIONS, aplicado a todos os
+        cortes daquele video."""
+        spec = video_builder.short_spec(duration=35)
+        videos = [Path(f"video{i}.mp4") for i in range(3)]
+
+        captured_cmds = []
+
+        def fake_run_ffmpeg(args):
+            captured_cmds.append(args)
+
+        with patch("utils.video_builder.random.sample", return_value=videos), \
+             patch("utils.video_builder.random.randint", return_value=3), \
+             patch("utils.video_builder.random.choice", return_value="circleopen") as mock_choice, \
+             patch("utils.video_builder.run_ffmpeg", side_effect=fake_run_ffmpeg):
+            video_builder._build_multi_clip_short(
+                spec, videos, audio_path=None, output=tmp_path / "out.mp4", hook="hook",
+            )
+
+        mock_choice.assert_called_once_with(video_builder._XFADE_TRANSITIONS)
+        final_cmd = captured_cmds[-1]
+        filter_complex = final_cmd[final_cmd.index("-filter_complex") + 1]
+        assert "xfade=transition=circleopen" in filter_complex
+        assert "xfade=transition=fade" not in filter_complex
+
     def test_build_generates_both_thumbnail_variants_and_registers_list(self, tmp_path):
         """A/B/C testing: build_pata_jazz_video gera variante A, B e C da
-        thumbnail e registra todas em meta['thumbnails'] (lista), mantendo
-        meta['thumbnail'] (legado) apontando para A pra backward compat."""
+        thumbnail e registra todas em meta['thumbnails'] (lista). Sem sinal
+        de performance (winning_thumbnail_variant -> "A" default), a
+        primaria enviada e a A."""
         spec = video_builder.VideoSpec(
             kind="test",
             width=100,
@@ -177,6 +239,7 @@ class TestVideoBuilderUnits:
              patch("utils.video_builder.pick_audio", return_value=Path("audio.mp3")), \
              patch("utils.video_builder.run_ffmpeg"), \
              patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}), \
+             patch("utils.video_builder.winning_thumbnail_variant", return_value="A"), \
              patch("utils.video_builder.validate_generated_video",
                     return_value=VideoValidation(ok=True, errors=[], info={})):
             video_builder.build_pata_jazz_video(
@@ -196,8 +259,87 @@ class TestVideoBuilderUnits:
         assert meta["thumbnails"][0].endswith("_thumb_a.png")
         assert meta["thumbnails"][1].endswith("_thumb_b.png")
         assert meta["thumbnails"][2].endswith("_thumb_c.png")
-        # Backward compat: thumbnail (legado) aponta pra variante A.
         assert meta["thumbnail"] == meta["thumbnails"][0]
+        assert meta["thumbnail_variant"] == "A"
+
+    def test_build_uploads_winning_variant_as_primary_thumbnail(self, tmp_path):
+        """Feedback loop: quando winning_thumbnail_variant() aponta pra "B"
+        (mais views historicamente), a thumbnail PRIMARIA enviada pro
+        YouTube e a B, nao sempre A - fecha o loop entre performance e o
+        proximo upload em vez de esperar a rotacao reativa de 7+ dias."""
+        spec = video_builder.VideoSpec(
+            kind="test",
+            width=100,
+            height=100,
+            duration=5,
+            default_duration=5,
+            crop_filter="crop=100:100",
+            thumbnail_maker=MagicMock(),
+            fallback_description="desc",
+        )
+        spec.thumbnail_maker.side_effect = lambda *a, **kw: None
+
+        with patch("utils.video_builder.ensure_dirs"), \
+             patch("utils.video_builder.pool_stats", return_value={"videos": 1, "audio": 1}), \
+             patch("utils.video_builder.random_scene", return_value="scene"), \
+             patch("utils.video_builder.hook_for_scene", return_value=("hook", "🐾")), \
+             patch("utils.video_builder.pick_videos", return_value=[Path("video.mp4")]), \
+             patch("utils.video_builder.pick_audio", return_value=Path("audio.mp3")), \
+             patch("utils.video_builder.run_ffmpeg"), \
+             patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}), \
+             patch("utils.video_builder.winning_thumbnail_variant", return_value="B"), \
+             patch("utils.video_builder.validate_generated_video",
+                    return_value=VideoValidation(ok=True, errors=[], info={})):
+            video_builder.build_pata_jazz_video(
+                spec=spec, output_dir=tmp_path, thumb_dir=tmp_path, stem_prefix="test"
+            )
+
+        json_files = list(tmp_path.glob("*.json"))
+        meta = json.loads(json_files[0].read_text(encoding="utf-8"))
+        assert meta["thumbnail_variant"] == "B"
+        assert meta["thumbnail"].endswith("_thumb_b.png")
+        assert meta["thumbnail"] == meta["thumbnails"][1]
+
+    def test_build_falls_back_to_a_when_winning_variant_failed_to_render(self, tmp_path):
+        """Se winning_thumbnail_variant() apontar pra uma variante que falhou
+        ao renderizar (nao esta em `rendered`), cai pra A em vez de quebrar
+        ou referenciar um arquivo inexistente."""
+        spec = video_builder.VideoSpec(
+            kind="test",
+            width=100,
+            height=100,
+            duration=5,
+            default_duration=5,
+            crop_filter="crop=100:100",
+            thumbnail_maker=MagicMock(),
+            fallback_description="desc",
+        )
+
+        def flaky_maker(*a, variant="A", **kw):
+            if variant == "C":
+                raise RuntimeError("falha simulada na variante C")
+
+        spec.thumbnail_maker.side_effect = flaky_maker
+
+        with patch("utils.video_builder.ensure_dirs"), \
+             patch("utils.video_builder.pool_stats", return_value={"videos": 1, "audio": 1}), \
+             patch("utils.video_builder.random_scene", return_value="scene"), \
+             patch("utils.video_builder.hook_for_scene", return_value=("hook", "🐾")), \
+             patch("utils.video_builder.pick_videos", return_value=[Path("video.mp4")]), \
+             patch("utils.video_builder.pick_audio", return_value=Path("audio.mp3")), \
+             patch("utils.video_builder.run_ffmpeg"), \
+             patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}), \
+             patch("utils.video_builder.winning_thumbnail_variant", return_value="C"), \
+             patch("utils.video_builder.validate_generated_video",
+                    return_value=VideoValidation(ok=True, errors=[], info={})):
+            video_builder.build_pata_jazz_video(
+                spec=spec, output_dir=tmp_path, thumb_dir=tmp_path, stem_prefix="test"
+            )
+
+        json_files = list(tmp_path.glob("*.json"))
+        meta = json.loads(json_files[0].read_text(encoding="utf-8"))
+        assert meta["thumbnail_variant"] == "A"
+        assert meta["thumbnail"].endswith("_thumb_a.png")
 
     def test_build_falls_back_to_single_thumbnail_when_variant_b_fails(self, tmp_path):
         """Se a variante B (ou C) falhar (fonte/paleta indisponivel, etc), build

@@ -37,7 +37,7 @@ YOUTUBE_PRIVACY=public
 
 ### 4. Credenciais do YouTube
 
-Para upload/live é necessário um token OAuth. Rode uma vez:
+Para upload é necessário um token OAuth. Rode uma vez:
 
 ```bash
 python utils/youtube_oauth.py
@@ -95,7 +95,7 @@ Exemplos:
 
 ```
 feat: adicionar wrapper de quota em retry_youtube_call
-fix: corrigir deadlock de pipe na live longa
+fix: corrigir corrida no lock de estado do cross-post
 security: atualizar Pillow para 12.3 (CVE-2024-XXXX)
 docs: documentar fluxo de dados em ARCHITECTURE.md
 chore: pin actions/cache por SHA
@@ -118,8 +118,8 @@ um canal (ex.: `Pata Lofi`):
    `active_channel.name == "Pata Lofi"`.
 4. Adicione um teste em `tests/test_channel_config.py` cobrindo o novo canal.
 5. Os módulos consumidores (`animal_branding`, `playlist_manager`, `seo_keywords`,
-   `upload_youtube`, `live_broadcast`) leem de `active_channel` automaticamente —
-   não precisam de mudança.
+   `upload_youtube`) leem de `active_channel` automaticamente — não precisam de
+   mudança.
 
 ## Como adicionar um workflow novo
 

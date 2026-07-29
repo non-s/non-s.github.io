@@ -14,8 +14,6 @@ def test_infer_cost_known_endpoints():
     assert quota_tracker.infer_cost("list", "videos") == 1
     assert quota_tracker.infer_cost("list", "playlists") == 1
     assert quota_tracker.infer_cost("insert", "playlists") == 50
-    assert quota_tracker.infer_cost("list", "liveBroadcasts") == 1
-    assert quota_tracker.infer_cost("list", "liveChatMessages") == 1
     assert quota_tracker.infer_cost("list", "search") == 100
 
 

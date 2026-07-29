@@ -6,7 +6,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from utils.media_pool import audio_pool, pick_audio, pick_videos, pool_stats, video_pool
-from utils.video_builder import VideoSpec, horizontal_spec, inspect_video, short_spec
+from utils.video_builder import VideoSpec, inspect_video, short_spec
 
 
 def test_video_pool_returns_list():
@@ -53,18 +53,6 @@ def test_short_spec_crop_is_horizontally_centered():
     spec = short_spec()
     assert ":0:0'" not in spec.crop_filter
     assert "(iw-ih*9/16)/2" in spec.crop_filter
-
-
-def test_horizontal_spec_is_horizontal():
-    spec = horizontal_spec()
-    assert spec.width == 1920
-    assert spec.height == 1080
-    assert "crop" in spec.crop_filter
-
-
-def test_horizontal_spec_crop_is_centered():
-    spec = horizontal_spec()
-    assert ":0:0'" not in spec.crop_filter
 
 
 def test_video_spec_has_required_fields():

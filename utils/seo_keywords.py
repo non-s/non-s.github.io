@@ -58,19 +58,6 @@ TITLE_PATTERNS: dict[str, list[str]] = {
         "POV: a {animal} {acao} to your daily {estilo_musical}",
         "The {adjetivo} {animal} you needed today {emoji}",
     ],
-    "horizontal": [
-        "{adjetivo} {animal} + {estilo_musical} for {duracao} minutes",
-        "Relax with a {adjetivo} {animal} and {estilo_musical}",
-        "{estilo_musical} + {adjetivo} {animal} to relax",
-        "A {adjetivo} {animal} ambience with {estilo_musical}",
-        "{adjetivo} session: {animal} + {estilo_musical} {emoji}",
-    ],
-    "live": [
-        "🔴 LIVE: {adjetivo} {animal} + {estilo_musical} 24/7",
-        "{estilo_musical} Radio with a {adjetivo} {animal} - LIVE",
-        "LIVE: Relax with a {animal} and {estilo_musical} all day",
-        "🔴 LIVE: Non-Stop {estilo_musical} + {adjetivo} {animal}",
-    ]
 }
 
 # Emoções e benefícios que geram engajamento
@@ -118,7 +105,7 @@ def _title_pattern_weights() -> dict[str, float]:
         return {}
 
 
-def pick_title_pattern(kind: Literal["short", "horizontal", "live"]) -> str:
+def pick_title_pattern(kind: Literal["short"]) -> str:
     """Seleciona um padrão de título otimizado para o formato.
 
     Quando ha dados reais de performance (title_pattern_performance.json),
@@ -139,7 +126,7 @@ def generate_title_with_pattern(
     animal: str,
     acao: str,
     estilo_musical: str,
-    kind: Literal["short", "horizontal", "live"],
+    kind: Literal["short"],
     emoji: str,
     duracao: int | None = None,
     pattern: str | None = None,
@@ -208,7 +195,7 @@ def generate_title(
     animal: str,
     acao: str,
     estilo_musical: str,
-    kind: Literal["short", "horizontal", "live"],
+    kind: Literal["short"],
     emoji: str,
     duracao: int | None = None,
 ) -> str:
@@ -222,7 +209,7 @@ def generate_title(
 
 def generate_description(
     hook: str,
-    kind: Literal["short", "horizontal", "live"],
+    kind: Literal["short"],
     hashtags: list[str],
     include_cta: bool = True,
 ) -> tuple[str, str]:
@@ -239,27 +226,10 @@ def generate_description(
     ]
     intro = random.choice(intro_templates)
 
-    # Corpo da descrição (varia por formato)
-    if kind == "short":
-        corpo = (
-            "\n\n✨ This Short was made to bring a moment of joy to your day! "
-            "Cute cats and dogs + relaxing jazz = guaranteed happiness! 🐱🐶"
-        )
-    elif kind == "horizontal":
-        corpo = (
-            "\n\n✨ Enjoy this relaxing video with adorable pets and a carefully picked jazz soundtrack. "
-            "Perfect for:\n"
-            "  • Unwinding after a tiring day\n"
-            "  • Focusing while you study or work\n"
-            "  • Falling asleep peacefully\n"
-            "  • Just enjoying the cuteness!"
-        )
-    else:  # live
-        corpo = (
-            "\n\n🔴 LIVE 24/7 STREAM!\n"
-            "Leave this live running while you work, study or relax. "
-            "There's always a cute pet and quality jazz waiting for you! 🎵"
-        )
+    corpo = (
+        "\n\n✨ This Short was made to bring a moment of joy to your day! "
+        "Cute cats and dogs + relaxing jazz = guaranteed happiness! 🐱🐶"
+    )
 
     # CTA (opcional)
     cta = ""
@@ -277,7 +247,7 @@ def generate_description(
 def generate_hashtags(
     animal: str,
     categoria: str = "cuteness",
-    kind: Literal["short", "horizontal", "live"] = "short",
+    kind: Literal["short"] = "short",
 ) -> list[str]:
     """Gera conjunto estratégico de hashtags em camadas.
 
@@ -311,15 +281,57 @@ def generate_hashtags(
         hashtags.extend(["#Fun"])
 
     # Camada 5: Formato
-    if kind == "short":
-        hashtags.extend(["#Shorts", "#YouTubeShorts"])
-    elif kind == "live":
-        hashtags.extend(["#Live", "#LiveStream"])
+    hashtags.extend(["#Shorts", "#YouTubeShorts"])
 
     # Remove duplicatas e aplica o teto final (camadas ja somam _MAX_HASHTAGS)
     hashtags = list(dict.fromkeys(hashtags))[:_MAX_HASHTAGS]
 
     return hashtags
+
+
+# Hashtags nativas do TikTok - cultura diferente do YouTube, entao reusar
+# HASHTAGS_POR_CATEGORIA (que tem #Shorts/#YouTubeShorts, sem sentido la)
+# faz o cross-posting perder alcance. Pesquisa de estrategia pra nicho pet
+# no TikTok (2026): a tag de ESPECIE (#catsoftiktok/#dogsoftiktok) vem
+# antes de qualquer tag generica de pet - tem audiencia mais engajada e
+# especifica; #fyp/#foryoupage ajudam descoberta; tags de audio (#jazzmusic,
+# #lofivibes, #chillhop) tem volume de busca bem maior que termos genericos
+# de "relaxing music".
+_TIKTOK_HASHTAGS_POR_ESPECIE = {
+    "cat": ["#catsoftiktok", "#CatTok"],
+    "dog": ["#dogsoftiktok", "#DogTok"],
+}
+_TIKTOK_HASHTAGS_PET_GENERICO = ["#petsoftiktok", "#cuteanimals", "#petlife"]
+_TIKTOK_HASHTAGS_POR_EMOCAO = {
+    "cuteness": ["#animalsoftiktok", "#cuteanimals"],
+    "relaxation": ["#calmingmusic", "#petanxiety"],
+    "fun": ["#funnypets", "#petattitude"],
+}
+_TIKTOK_HASHTAGS_MUSICA = ["#jazzmusic", "#relaxingmusic", "#lofivibes", "#chillhop"]
+_TIKTOK_HASHTAGS_DESCOBERTA = ["#fyp", "#foryoupage"]
+_MAX_TIKTOK_HASHTAGS = 8
+
+
+def generate_tiktok_hashtags(animal: str, categoria: str = "cuteness") -> list[str]:
+    """Gera hashtags otimizadas para a cultura do TikTok (ver comentario
+    acima - diferente das hashtags do YouTube geradas por generate_hashtags).
+
+    Camadas, em ordem: especie (maior engajamento que tag generica de pet)
+    > marca > pet generico > tom emocional > audio/musica > descoberta
+    (#fyp/#foryoupage).
+    """
+    especie = _TIKTOK_HASHTAGS_POR_ESPECIE.get(animal, _TIKTOK_HASHTAGS_POR_ESPECIE["cat"])
+    emocao = _TIKTOK_HASHTAGS_POR_EMOCAO.get(categoria, _TIKTOK_HASHTAGS_POR_EMOCAO["cuteness"])
+
+    hashtags = [
+        especie[0],
+        active_channel.hashtag_brand[0],
+        _TIKTOK_HASHTAGS_PET_GENERICO[0],
+        emocao[0],
+        *_TIKTOK_HASHTAGS_MUSICA[:2],
+        *_TIKTOK_HASHTAGS_DESCOBERTA,
+    ]
+    return list(dict.fromkeys(hashtags))[:_MAX_TIKTOK_HASHTAGS]
 
 
 def optimize_for_search(title: str, description: str) -> tuple[str, str]:

@@ -98,8 +98,15 @@ HOOK_BY_SCENE: dict[str, list[tuple[str, str]]] = {
 ALL_SCENES: list[str] = list(HOOK_BY_SCENE.keys())
 
 
-# Tags Jamendo: apenas jazz.
+# Tags Jamendo: apenas jazz, mas com variedade de energia - antes so tinha
+# termos "relax" (smooth/soft/coffee/relaxing), entao cenas de mood
+# "diversao" (playful dog, cat playing) nunca tinham musica animada de
+# verdade pra combinar - MOOD_GENRES["diversao"] (utils/media_pool.py) exigia
+# swing/bebop/fusion/upbeat, generos que o pool nunca continha porque nunca
+# eram buscados. jazz lento (relax/fofura) + jazz animado (diversao) +
+# lofi jazz (fofura/relax, tom mais contemporaneo) agora tem representacao.
 JAMENDO_SEARCH_TERMS: list[str] = [
+    # Lento / relaxante
     "jazz",
     "smooth jazz",
     "bossa nova",
@@ -107,6 +114,14 @@ JAMENDO_SEARCH_TERMS: list[str] = [
     "relaxing jazz",
     "soft jazz",
     "jazz instrumental",
+    # Animado / energetico (mood "diversao")
+    "swing jazz",
+    "bebop jazz",
+    "upbeat jazz",
+    "jazz fusion",
+    # Lofi jazz (mood "fofura"/"relax", tom contemporaneo)
+    "lofi jazz",
+    "jazzhop",
 ]
 
 # Palavras-chave Pixabay restritas a gatos e cachorros REAIS.
@@ -187,6 +202,21 @@ def random_scene(channel: ChannelConfig | None = None) -> str:
     return random.choice(scenes if scenes else ALL_SCENES)
 
 
+
+# Angulos de retencao pra variar o *tipo* de hook entre videos, nao so o
+# texto - um unico estilo sempre "cute e jazzy" fica previsivel depois de
+# algumas dezenas de Shorts. Cada entrada e uma instrucao curta que muda
+# COMO o gancho e construido (curiosidade, POV, pergunta, etc), mantendo
+# as mesmas regras de tamanho/tom/seguranca do prompt base.
+_HOOK_ANGLES = [
+    "Use a curiosity-gap angle - imply something surprising happens without spoiling it.",
+    "Use a POV angle - phrase it like 'POV:' from the pet's perspective.",
+    "Use a relatable-moment angle - describe a small, instantly recognizable pet moment.",
+    "Use a direct-cute angle - a warm, simple statement about how cute this moment is.",
+    "Use a playful-question angle - end with an implied question that makes viewers want the answer.",
+]
+
+
 def generate_hook_with_ai(scene: str, mood: str = "") -> str:
     """Gera hook curto via Gemini. Retorna "" se indisponivel ou inseguro.
 
@@ -205,11 +235,14 @@ def generate_hook_with_ai(scene: str, mood: str = "") -> str:
     if cached and now - cached[1] < _AI_HOOK_TTL:
         return cached[0]
 
-    mood_hint = f" mood: {mood}." if mood else ""
+    mood_hint = f" Mood: {mood}." if mood else ""
+    angle = random.choice(_HOOK_ANGLES)
     prompt = (
-        f"Write a single short YouTube video hook (max 60 characters) for a "
-        f"video about a {scene}. Cute and jazzy tone, no clickbait, no emojis, "
-        f"no quotes, in English.{mood_hint} Return only the hook text."
+        f"Write a single hook (max 60 characters) for the first 1-2 seconds of a "
+        f"vertical YouTube Short about a {scene} - viewers decide whether to keep "
+        f"watching almost instantly, so it needs to earn attention immediately. "
+        f"{angle} Cute and jazzy tone, no clickbait, no emojis, no quotes, in "
+        f"English.{mood_hint} Return only the hook text."
     )
 
     hook = ""

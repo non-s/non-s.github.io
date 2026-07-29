@@ -17,11 +17,6 @@ https://developers.google.com/youtube/v3/determine_quota_cost):
     playlists.list       = 1
     playlistItems.insert = 50
     playlistItems.list   = 1
-    liveBroadcasts.insert= 1600
-    liveBroadcasts.list  = 1
-    liveBroadcasts.bind  = 50
-    liveStreams.list     = 1
-    liveChatMessages.list= 1
     search.list          = 100
     captions.insert      = 50
     captions.list        = 50
@@ -88,11 +83,6 @@ QUOTA_COSTS: dict[str, int] = {
     "playlists.list": 1,
     "playlistItems.insert": 50,
     "playlistItems.list": 1,
-    "liveBroadcasts.insert": 1600,
-    "liveBroadcasts.list": 1,
-    "liveBroadcasts.bind": 50,
-    "liveStreams.list": 1,
-    "liveChatMessages.list": 1,
     "search.list": 100,
     "captions.insert": 50,
     "captions.list": 50,

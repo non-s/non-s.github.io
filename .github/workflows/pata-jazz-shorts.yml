@@ -2,12 +2,16 @@ name: "Pata Jazz - Shorts"
 
 on:
   schedule:
-    # 4 shorts por dia: 07:00, 13:00, 18:00, 22:00 BRT (UTC-3)
-    # = 10:00, 16:00, 21:00, 01:00 UTC
+    # 1 short por hora (24/dia) - publica no YouTube aqui e dispara o
+    # cross-post.yml (workflow_run) logo em seguida, que posta o mesmo
+    # video no TikTok. Minuto 7 (nao :00) para nao competir com o pico de
+    # cron jobs de outros repos no mesmo minuto (recomendacao do GitHub).
     # (desde jun/2026 videos.insert tem cota propria de ~100/dia, separada
-    # do pool de 10k unidades/dia compartilhado pelos outros endpoints - 4
-    # shorts + 1 horizontal = 5 uploads/dia fica bem abaixo dos dois limites)
-    - cron: "0 10,16,21,1 * * *"
+    # do pool de 10k unidades/dia compartilhado pelos outros endpoints - 24
+    # uploads/dia usa ~200 unidades/upload do pool compartilhado
+    # (thumbnail+captions+playlists) = ~4800/dia, ainda abaixo do limite de
+    # 10000 e do alerta em 8000; videos.insert fica bem abaixo dos ~100/dia).
+    - cron: "7 * * * *"
   workflow_dispatch:
     inputs:
       reason:
@@ -45,7 +49,7 @@ jobs:
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
       - name: "Healthcheck (pre-flight)"
-        run: python scripts/healthcheck.py --mode live
+        run: python scripts/healthcheck.py --mode fast
       - name: "Sincronizar b-roll (gatos/cachorros)"
         run: python scripts/sync_animal_broll.py || echo "::warning::B-roll sync falhou"
       - name: "Sincronizar jazz"
@@ -55,6 +59,16 @@ jobs:
       - name: "Upload para YouTube"
         if: hashFiles('youtube_token.json') != ''
         run: python upload_youtube.py --mode upload --language=en --prefix pata_jazz_short_
+      - name: "Salvar video para cross-posting (TikTok/Reels)"
+        # cross-post.yml (workflow_run apos este) restaura essa chave por
+        # prefixo - sem salvar aqui, cross-post.yml nao tinha nenhum video
+        # fresco pra postar e so encontrava (as vezes) sobra de um run do
+        # lote semanal, nunca o Short que acabou de ser publicado.
+        if: always()
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: _videos
+          key: cross-post-videos-${{ github.run_id }}
       - name: "Upload artifacts"
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

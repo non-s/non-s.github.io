@@ -1,12 +1,12 @@
 """
-utils/video_builder.py — lógica comum para construção de vídeos Pata Jazz.
+utils/video_builder.py — lógica de construção dos Shorts Pata Jazz.
 
-Reúne pipeline compartilhado entre Shorts e vídeos horizontais:
+Reúne o pipeline completo:
 - seleção de assets
-- montagem FFmpeg
+- montagem FFmpeg (multi-clipe com crossfade)
 - validação do arquivo de saída
 - escrita de metadados
-- geração de thumbnail
+- geração de thumbnail (A/B/C)
 """
 
 from __future__ import annotations
@@ -22,21 +22,21 @@ from pathlib import Path
 from typing import Literal, Protocol
 
 from utils.animal_branding import detect_animal, hook_for_scene, random_scene
-from utils.caption_engine import generate_ass, generate_srt, save_ass, save_srt
+from utils.caption_engine import generate_ass, save_ass
 from utils.ffmpeg_helpers import get_video_duration, run_ffmpeg
 from utils.media_pool import ensure_dirs, pick_audio, pick_videos, pool_stats
 from utils.metadata_engine import clean_title, generate_metadata
-from utils.thumbnail_engine import make_horizontal_thumbnail, make_short_thumbnail
+from utils.thumbnail_engine import make_short_thumbnail, winning_thumbnail_variant
 from utils.video_validator import validate_generated_video
 
 log = logging.getLogger(__name__)
 
 
 class _ThumbnailMaker(Protocol):
-    """Assinatura real de make_short_thumbnail/make_horizontal_thumbnail -
-    um Callable[[str, str, Path], None] simples nao cobria o kwarg
-    video_path usado em _build_video (linha ~286), nem o kwarg variant
-    usado na geracao das duas variantes para A/B testing."""
+    """Assinatura real de make_short_thumbnail - um Callable[[str, str,
+    Path], None] simples nao cobria o kwarg video_path usado em
+    _build_video (linha ~286), nem o kwarg variant usado na geracao das
+    tres variantes para A/B/C testing."""
 
     def __call__(
         self, hook: str, emoji: str, output: Path, *,
@@ -48,7 +48,7 @@ class _ThumbnailMaker(Protocol):
 class VideoSpec:
     """Especificação de um vídeo a ser gerado."""
 
-    kind: Literal["short", "horizontal", "live"]
+    kind: Literal["short"]
     width: int
     height: int
     duration: int
@@ -63,8 +63,8 @@ class VideoSpec:
     title_pattern_hint: str = ""
 
 
-_LONGFORM_MIN_DURATION = 3600
-_LONGFORM_MAX_DURATION = 36000
+_HOOK_ENABLE_SECONDS = 3.0
+_HOOK_FADE_SECONDS = 0.35
 
 
 def _build_video_filter(spec: VideoSpec) -> str:
@@ -78,23 +78,52 @@ def _build_video_filter(spec: VideoSpec) -> str:
     )
 
 
-def _build_overlay_filter(hook: str, width: int, height: int) -> str:
-    """Constrói filtro drawtext para mostrar o hook nos primeiros 3 segundos.
+def _build_overlay_filter(hook: str, height: int) -> str:
+    """Constrói filtro drawtext para mostrar o hook nos primeiros segundos.
 
-    Texto branco com sombra preta na parte inferior do video.
-    Fade in/out suave para nao aparecer/desaparecer abruptamente.
+    Fonte bold, caixa semi-transparente atras do texto (legibilidade sobre
+    qualquer fundo - padrao comum em Shorts/Reels/TikTok) e fade in/out
+    real via alpha animado (a versao anterior so tinha um corte abrupto em
+    `enable`, apesar do docstring prometer fade).
     """
-    # Escape em ordem correta: backslash primeiro, depois aspas e dois-pontos.
-    safe_hook = hook.replace("\\", r"\\").replace("'", r"\'").replace(":", r"\:")
-    font_size = 48 if width > height else 56  # Shorts fonte maior
-    y_pos = height - 200 if width > height else height - 350
+    # O valor inteiro fica entre aspas simples (protege : , [ ] ; do parser
+    # de filtergraph do FFmpeg), entao dentro delas tudo e literal - inclusive
+    # barra invertida. A UNICA excecao e a propria aspas simples, que nao
+    # pode aparecer dentro de aspas simples: precisa fechar a citacao,
+    # inserir uma aspas escapada fora dela e reabrir a citacao (`'\''`).
+    # Um `\'` direto dentro das aspas (versao anterior) NAO e valido: o
+    # FFmpeg fecha a citacao no primeiro `'` (o backslash e tomado como
+    # texto literal), corrompendo o resto do filter_complex. Bug real
+    # observado em producao: hooks com apostrofo (ex.: "Cat's Cozy Relax
+    # Moment") faziam ~40-45% dos runs agendados falharem com "No such
+    # filter: '0'" / "Filter not found".
+    safe_hook = hook.replace("'", "'\\''")
+    fade = _HOOK_FADE_SECONDS
+    hold_end = _HOOK_ENABLE_SECONDS - fade
+    # Virgulas aqui NAO precisam de escape: o valor inteiro ja esta entre
+    # aspas simples (protege da quebra de filtro do parser externo do
+    # FFmpeg); o eval interno de alpha/x/y espera virgula literal como
+    # separador de argumento de if()/lt(). Mesmo padrao do `enable=` abaixo.
+    alpha_expr = (
+        f"if(lt(t,{fade}),t/{fade},"
+        f"if(lt(t,{hold_end}),1,"
+        f"if(lt(t,{_HOOK_ENABLE_SECONDS}),({_HOOK_ENABLE_SECONDS}-t)/{fade},0)))"
+    )
+    # Pequena variacao de posicao entre videos (nao sempre o mesmo pixel),
+    # mantendo a faixa segura acima da UI do player de Shorts.
+    y_pos = height - 350 + random.randint(-40, 40)
     return (
         f"drawtext=text='{safe_hook}'"
-        f":fontsize={font_size}"
+        # Mesma familia (Arial, com substituicao via fontconfig) usada pelo
+        # estilo ASS em caption_engine.py - ja comprovada disponivel em CI.
+        f":font='Arial:style=Bold'"
+        f":fontsize=56"
         f":fontcolor=white"
         f":shadowcolor=black:shadowx=2:shadowy=2"
+        f":box=1:boxcolor=black@0.35:boxborderw=18"
         f":x=(w-text_w)/2:y={y_pos}"
-        f":enable='between(t,0,3)'"
+        f":alpha='{alpha_expr}'"
+        f":enable='between(t,0,{_HOOK_ENABLE_SECONDS})'"
     )
 
 
@@ -130,7 +159,7 @@ def _build_single_clip_video(
     inputs = ["-stream_loop", "-1", "-i", str(video)]
     vf = _build_video_filter(spec)
     if hook:
-        vf = f"{vf},{_build_overlay_filter(hook, spec.width, spec.height)}"
+        vf = f"{vf},{_build_overlay_filter(hook, spec.height)}"
     output_args: list[str] = [
         "-map", "0:v:0",
         "-vf", vf,
@@ -148,6 +177,12 @@ def _build_single_clip_video(
     run_ffmpeg(inputs + output_args + [str(output)])
 
 
+_XFADE_TRANSITIONS = [
+    "fade", "dissolve", "smoothleft", "smoothright", "smoothup", "smoothdown",
+    "circleopen", "circleclose", "radial", "diagtl", "diagbr",
+]
+
+
 def _build_multi_clip_short(
     spec: VideoSpec,
     videos: list[Path],
@@ -158,7 +193,10 @@ def _build_multi_clip_short(
     """Gera um Short com 2-3 clipes e transicoes crossfade.
 
     Cada clipe e normalizado para o aspecto-alvo e concatenado com xfade.
-    A musica de jazz toda por toda a duracao total.
+    Um estilo de transicao (`_XFADE_TRANSITIONS`) e sorteado por video e
+    aplicado a todos os cortes dele - consistente dentro do video, variado
+    entre videos, em vez de sempre "fade". A musica de jazz toca por toda a
+    duracao total.
     """
     n_clips = min(len(videos), random.randint(2, 3))
     selected = random.sample(videos, n_clips)
@@ -196,6 +234,7 @@ def _build_multi_clip_short(
             run_ffmpeg(["-i", str(processed[0]), "-c", "copy", str(output)])
             return
 
+        transition = random.choice(_XFADE_TRANSITIONS)
         filter_parts: list[str] = []
         offsets: list[float] = []
 
@@ -205,7 +244,7 @@ def _build_multi_clip_short(
             offsets.append(offset)
             out_label = f"v{i}"
             filter_parts.append(
-                f"[{prev_label}][{i}:v]xfade=transition=fade:duration={xfade_duration}:offset={offset}[{out_label}]"
+                f"[{prev_label}][{i}:v]xfade=transition={transition}:duration={xfade_duration}:offset={offset}[{out_label}]"
             )
             prev_label = out_label
 
@@ -213,7 +252,7 @@ def _build_multi_clip_short(
         if hook:
             overlay_label = "vtxt"
             filter_parts.append(
-                f"[{prev_label}]{_build_overlay_filter(hook, spec.width, spec.height)}[{overlay_label}]"
+                f"[{prev_label}]{_build_overlay_filter(hook, spec.height)}[{overlay_label}]"
             )
             prev_label = overlay_label
 
@@ -247,6 +286,7 @@ def _build_multi_clip_short(
         cmd_args += ["-t", str(spec.duration)]
 
         cmd_args += [str(output)]
+        log.info("Transicao xfade escolhida: %s (%d clipes)", transition, n_clips)
         run_ffmpeg(cmd_args)
     finally:
         # Limpa arquivos temporarios (sempre, mesmo em falha)
@@ -290,42 +330,48 @@ def build_pata_jazz_video(
         log.info("[DRY-RUN] resolução=%dx%d duração=%ds", spec.width, spec.height, spec.duration)
         return output
 
-    if spec.kind == "short":
-        # Multi-clip com crossfade para Shorts
-        videos = pick_videos(min_count=2, max_count=3, cuteness_sort=True, animal=animal)
-        if len(videos) >= 2:
-            _build_multi_clip_short(spec, videos, audio_path, output, hook=hook)
-        else:
-            # Fallback: 1 clipe em loop
-            single = pick_videos(min_count=1, max_count=1, animal=animal)
-            if not single:
-                raise RuntimeError("Pool de b-roll insuficiente para gerar o video.")
-            video = random.choice(single)
-            _build_single_clip_video(spec, video, audio_path, output, hook=hook)
+    # Multi-clip com crossfade para Shorts
+    videos = pick_videos(min_count=2, max_count=3, cuteness_sort=True, animal=animal)
+    if len(videos) >= 2:
+        _build_multi_clip_short(spec, videos, audio_path, output, hook=hook)
     else:
-        # Horizontais: 1 clipe em loop (sem overlay de hook, e mais longo)
+        # Fallback: 1 clipe em loop
         single = pick_videos(min_count=1, max_count=1, animal=animal)
         if not single:
             raise RuntimeError("Pool de b-roll insuficiente para gerar o video.")
         video = random.choice(single)
-        _build_single_clip_video(spec, video, audio_path, output)
+        _build_single_clip_video(spec, video, audio_path, output, hook=hook)
 
     # A/B/C testing: gera tres variantes de thumbnail. thumb e o caminho base
     # ({stem}.png); as variantes sao {stem}_thumb_a.png, {stem}_thumb_b.png e
-    # {stem}_thumb_c.png. O caminho "thumbnail" (legado) aponta pra variante A
-    # pra backward compat.
+    # {stem}_thumb_c.png.
     thumb_a = thumb.with_name(f"{thumb.stem}_thumb_a.png")
     thumb_b = thumb.with_name(f"{thumb.stem}_thumb_b.png")
     thumb_c = thumb.with_name(f"{thumb.stem}_thumb_c.png")
+    rendered: dict[str, Path] = {}
     spec.thumbnail_maker(hook, emoji, thumb_a, video_path=output, variant="A")
-    generated = [str(thumb_a)]
+    rendered["A"] = thumb_a
     for variant, thumb_path in (("B", thumb_b), ("C", thumb_c)):
         try:
             spec.thumbnail_maker(hook, emoji, thumb_path, video_path=output, variant=variant)
-            generated.append(str(thumb_path))
+            rendered[variant] = thumb_path
         except Exception as exc:
             # Variantes B e C sao opcionais - se falhar, A ainda e suficiente.
             log.warning("Falha ao gerar variante %s de thumbnail: %s", variant, exc)
+    generated = [str(p) for p in rendered.values()]
+
+    # Feedback loop: comeca a variante PRIMARIA (a efetivamente enviada ao
+    # YouTube) a partir da que historicamente teve mais views
+    # (winning_thumbnail_variant, calculado por scripts/collect_analytics.py
+    # a partir de video_tags.json + analytics.json), em vez de sempre "A".
+    # Fecha o loop entre o sinal de performance e o proximo upload, sem
+    # esperar os _THUMBNAIL_ROTATION_DAYS da rotacao reativa
+    # (collect_analytics.maybe_rotate_thumbnail). B e C continuam sendo
+    # geradas do mesmo jeito - so a que vai pro ar primeiro muda.
+    primary_variant = winning_thumbnail_variant()
+    if primary_variant not in rendered:
+        primary_variant = "A"
+    thumb_primary = rendered[primary_variant]
 
     fallback_title = clean_title(f"{hook} | Pata Jazz")
     metadata = generate_metadata(
@@ -347,29 +393,24 @@ def build_pata_jazz_video(
         "duration": spec.duration,
         "resolution": f"{spec.width}x{spec.height}",
         "video": str(output),
-        "thumbnail": str(thumb_a),
+        "thumbnail": str(thumb_primary),
+        "thumbnail_variant": primary_variant,
         "thumbnails": generated,
         "audio": str(audio_path) if audio_path else None,
     }
     output.with_suffix(".json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    # Gera legenda automatica: Shorts usam ASS estilizado (animado
-    # palavra-a-palavra); horizontais/live continuam com SRT (ASS animado
-    # e overkill para video longo).
+    # Gera legenda automatica ASS estilizada (animada palavra-a-palavra).
     try:
-        if spec.kind == "short":
-            cap_content = generate_ass(hook, scene, spec.duration, spec.kind, emoji)
-            cap_path = save_ass(cap_content, output)
-        else:
-            cap_content = generate_srt(hook, scene, spec.duration, spec.kind, emoji)
-            cap_path = save_srt(cap_content, output)
+        cap_content = generate_ass(hook, scene, spec.duration, emoji)
+        cap_path = save_ass(cap_content, output)
         meta["caption"] = str(cap_path)
 
         # 1.3 - Segunda caption track em PT-BR: multiplica alcance sem
         # regravar o video. YouTube aceita multiplas caption tracks.
         try:
             from utils.caption_engine import generate_srt_pt, save_srt_pt
-            pt_content = generate_srt_pt(hook, scene, spec.duration, spec.kind, emoji)
+            pt_content = generate_srt_pt(hook, scene, spec.duration, emoji)
             pt_path = save_srt_pt(pt_content, output)
             meta["caption_pt"] = str(pt_path)
         except Exception as exc:
@@ -378,7 +419,7 @@ def build_pata_jazz_video(
         # 1.2 - Chapters automaticos na descricao para SEO do YouTube.
         try:
             from utils.caption_engine import generate_chapters
-            chapters = generate_chapters(spec.duration, spec.kind)
+            chapters = generate_chapters(spec.duration)
             if chapters:
                 chapter_lines = [f"{ts} {title}" for ts, title in chapters]
                 meta["chapters"] = "\n".join(chapter_lines)
@@ -419,59 +460,6 @@ def short_spec(duration: int = 35, scene: str = "", mood: str = "", title_patter
         crop_filter="crop='ih*9/16:ih:(iw-ih*9/16)/2:0'",
         thumbnail_maker=make_short_thumbnail,
         fallback_description=f"{hook_for_scene(scene or random_scene())[0]} with jazz playing. 🐾🎷 #PataJazz",
-        scene=scene,
-        mood=mood,
-        title_pattern_hint=title_pattern_hint,
-    )
-
-
-def horizontal_spec(duration: int = 240, scene: str = "", mood: str = "", title_pattern_hint: str = "") -> VideoSpec:
-    """Especificação padrão para vídeos horizontais 1920x1080."""
-    return VideoSpec(
-        kind="horizontal",
-        width=1920,
-        height=1080,
-        duration=duration,
-        default_duration=240,
-        crop_filter=(
-            "crop='min(iw,ih*16/9):min(ih,iw*9/16):"
-            "(iw-min(iw,ih*16/9))/2:(ih-min(ih,iw*9/16))/2'"
-        ),
-        thumbnail_maker=make_horizontal_thumbnail,
-        fallback_description=(
-            "Cute cats and dogs with soft jazz playing in the background. "
-            "Enjoy, relax and watch the pets. 🐾🎷 #PataJazz"
-        ),
-        scene=scene,
-        mood=mood,
-        title_pattern_hint=title_pattern_hint,
-    )
-
-
-def longform_spec(duration: int = 3600, scene: str = "", mood: str = "", title_pattern_hint: str = "") -> VideoSpec:
-    """Especificação para compilações temáticas longas (1-10h) horizontais 1920x1080.
-
-    Longform = horizontal mas muito mais longo: duração 3600-36000s, muitos
-    clipes em loop (sem overlay de hook, como o horizontal), chapters de 1h.
-    Reutiliza o caminho de 1 clipe em loop do horizontal (FFmpeg
-    -stream_loop -1 + playlist de audio) por simplicidade e estabilidade.
-    """
-    clamped = max(_LONGFORM_MIN_DURATION, min(_LONGFORM_MAX_DURATION, duration))
-    return VideoSpec(
-        kind="horizontal",
-        width=1920,
-        height=1080,
-        duration=clamped,
-        default_duration=_LONGFORM_MIN_DURATION,
-        crop_filter=(
-            "crop='min(iw,ih*16/9):min(ih,iw*9/16):"
-            "(iw-min(iw,ih*16/9))/2:(ih-min(ih,iw*9/16))/2'"
-        ),
-        thumbnail_maker=make_horizontal_thumbnail,
-        fallback_description=(
-            "1 hour of cute cats and dogs with relaxing jazz music in the background. "
-            "Sit back, relax and enjoy the cozy pets. 🐾🎷 #PataJazz #LongForm"
-        ),
         scene=scene,
         mood=mood,
         title_pattern_hint=title_pattern_hint,

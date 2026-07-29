@@ -51,6 +51,17 @@ def test_jazz_terms_only():
         assert "jazz" in term.lower() or "bossa" in term.lower()
 
 
+def test_jazz_terms_cover_slow_upbeat_and_lofi_variety():
+    """Sem isso, o pool de audio so tinha jazz lento/relaxante - cenas de
+    mood 'diversao' (playful dog, cat playing) nunca tinham musica animada
+    de verdade pra combinar, e o pedido de variar entre jazz lento/animado/
+    lofi nunca era atendido na sincronizacao real."""
+    terms_lower = [t.lower() for t in JAMENDO_SEARCH_TERMS]
+    assert any("swing" in t or "bebop" in t or "upbeat" in t or "fusion" in t for t in terms_lower)
+    assert any("lofi" in t for t in terms_lower)
+    assert any("smooth" in t or "relaxing" in t or "soft" in t for t in terms_lower)
+
+
 class TestGenerateHookWithAi:
     def setup_method(self):
         ab._AI_HOOK_CACHE.clear()
@@ -81,6 +92,27 @@ class TestGenerateHookWithAi:
         generate_hook_with_ai("cat")
         generate_hook_with_ai("cat")
         assert calls["n"] == 1
+
+    def test_prompt_varies_retention_angle_across_calls(self, monkeypatch):
+        """O prompt sorteia um angulo de retencao (_HOOK_ANGLES) por
+        chamada, nao sempre a mesma instrucao "cute e jazzy" - varia o
+        *tipo* de hook, nao so o texto final."""
+        prompts: list[str] = []
+
+        def fake_ai_text(prompt, *a, **k):
+            prompts.append(prompt)
+            return "Some Valid Hook Text Here"
+
+        monkeypatch.setattr(ab, "ai_text", fake_ai_text)
+        monkeypatch.setattr(ab.random, "choice", lambda seq: ab._HOOK_ANGLES[2])
+        generate_hook_with_ai("cat")
+        assert ab._HOOK_ANGLES[2] in prompts[0]
+
+    def test_prompt_mentions_first_seconds_retention(self, monkeypatch):
+        prompts: list[str] = []
+        monkeypatch.setattr(ab, "ai_text", lambda prompt, *a, **k: (prompts.append(prompt), "Valid Hook Text Here")[1])
+        generate_hook_with_ai("cat")
+        assert "1-2 seconds" in prompts[0]
 
 
 class TestHookForSceneWithAi:

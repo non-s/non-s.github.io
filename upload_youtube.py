@@ -1,12 +1,6 @@
 """
 upload_youtube.py — faz upload de videos gravados no YouTube.
 
-Antes tratava tambem da criacao de transmissao ao vivo (liveBroadcast /
-liveStream); essa responsabilidade foi movida para live_broadcast.py. O
-modo `--mode live` ainda funciona chamando live_broadcast.create_live_stream(),
-e os simbolos de live continuam re-exportados aqui (ver final do arquivo)
-para nao quebrar imports existentes (scripts/run_live.py e testes).
-
 Depende do token OAuth em youtube_token.json ou das variaveis YOUTUBE_TOKEN / YOUTUBE_CLIENT_SECRET.
 """
 
@@ -38,7 +32,7 @@ set_channel_from_env()
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT_DIR = ROOT / "_videos"
-LIVE_META_DIR = ROOT / "_data"
+_DATA_DIR = ROOT / "_data"
 
 log = logging.getLogger(__name__)
 
@@ -84,7 +78,7 @@ def _build_tags(scene: str, hashtags: list[str] | None = None) -> list[str]:
     return list(dict.fromkeys(base))[:15]
 
 
-_VIDEO_TAGS_FILE = LIVE_META_DIR / "video_tags.json"
+_VIDEO_TAGS_FILE = _DATA_DIR / "video_tags.json"
 _MAX_VIDEO_TAGS = 500
 
 
@@ -113,7 +107,7 @@ def _record_video_tags(video_id: str, meta: dict) -> None:
             "title_pattern": meta.get("title_pattern", ""),
             "uploaded_at": datetime.now(UTC).isoformat(),
             "thumbnails": meta.get("thumbnails", []),
-            "thumbnail_variant": "A",
+            "thumbnail_variant": meta.get("thumbnail_variant", "A"),
         }
         # Mantem so as N mais recentes (por ordem de insercao) pra nao crescer pra sempre.
         if len(existing) > _MAX_VIDEO_TAGS:
@@ -208,54 +202,21 @@ def _upload_video_inner(language: str = "en", privacy: str = "public", prefix: s
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Upload Pata Jazz para YouTube")
-    parser.add_argument("--mode", choices=["upload", "live"], default="upload")
+    parser.add_argument("--mode", choices=["upload"], default="upload")
     parser.add_argument("--language", default="en")
     parser.add_argument("--privacy", default=os.environ.get("YOUTUBE_PRIVACY", "public"),
                         choices=["public", "unlisted", "private"])
-    parser.add_argument("--title", default="")
-    parser.add_argument("--description", default="")
-    parser.add_argument("--resolution", default="1080p", choices=["1080p", "720p", "480p"])
-    parser.add_argument("--broadcast-id", default="")
-    parser.add_argument("--transition", choices=["live", "complete"], default="")
     parser.add_argument("--prefix", default="pata_jazz_", help="Prefixo dos arquivos de video a enviar")
     args = parser.parse_args()
 
     configure_logging()
 
     try:
-        if args.transition:
-            if not args.broadcast_id:
-                log.error("--broadcast-id obrigatorio com --transition")
-                return 1
-            # transition_broadcast/delete_broadcast foram movidos para
-            # live_broadcast.py mas continuam acessiveis aqui via re-export.
-            transition_broadcast(args.broadcast_id, args.transition)
-            return 0
-
-        if args.mode == "upload":
-            video_id = upload_video(language=args.language, privacy=args.privacy, prefix=args.prefix)
-            if not video_id:
-                return 1
-            # video_id e publico (esta na URL publica do YouTube), seguro de imprimir.
-            print(video_id)
-        else:
-            meta = create_live_stream(
-                title=args.title,
-                description=args.description,
-                privacy=args.privacy,
-                resolution=args.resolution,
-            )
-            if not meta:
-                return 1
-            # stream_name e a credencial efetiva do RTMP - quem tem ela pode
-            # iniciar uma transmissao no canal. So repassa para scripts/run_live.py
-            # via arquivo de estado (_data/live_state.json), nunca para o log
-            # publico do GitHub Actions. log.info usa o logger (que vai para
-            # stderr em CI), mas o print abaixo ia para o stdout do job, que e
-            # visivel em Actions > logs sem mascara de segredo. Imprime so o
-            # broadcast_id (publico) e a URL publica de watch.
-            broadcast_id = meta.get("broadcast_id", "")
-            log.info("Live criada: broadcast=%s url=https://youtu.be/%s", broadcast_id, broadcast_id)
+        video_id = upload_video(language=args.language, privacy=args.privacy, prefix=args.prefix)
+        if not video_id:
+            return 1
+        # video_id e publico (esta na URL publica do YouTube), seguro de imprimir.
+        print(video_id)
         return 0
     except HttpError as exc:
         log.exception("Erro da YouTube API: %s", exc)
@@ -266,33 +227,6 @@ def main() -> int:
         log_exception_to_file(exc, OUTPUT_DIR)
         return 1
 
-
-# ---------------------------------------------------------------------------
-# Backward-compat: re-export dos simbolos de live movidos para live_broadcast.py.
-#
-# Scripts e testes que antes importavam de upload_youtube (scripts/run_live.py,
-# tests/test_live_stream_activation.py, tests/test_upload_youtube.py) continuam
-# funcionando sem mudanca. Nao use estes nomes em codigo novo - importe direto
-# de live_broadcast.
-# ---------------------------------------------------------------------------
-from live_broadcast import (  # noqa: E402,F401
-    _LIVE_STATE_FILE,
-    _MAX_ACTIVE_AGE_MINUTES,
-    _MAX_READY_AGE_MINUTES,
-    _MAX_VIEWER_SNAPSHOTS,
-    _RESUMABLE_LIFECYCLE_STATUSES,
-    LIVE_TAGS,
-    LIVE_VIEWER_HISTORY_FILE,
-    _broadcast_age_minutes,
-    _generate_live_title,
-    _try_resume_existing_broadcast,
-    cleanup_orphan_broadcasts,
-    create_live_stream,
-    delete_broadcast,
-    record_live_viewer_snapshot,
-    transition_broadcast,
-    wait_for_stream_active,
-)
 
 if __name__ == "__main__":
     sys.exit(main())

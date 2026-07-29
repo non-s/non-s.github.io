@@ -9,6 +9,40 @@ import pytest
 import scripts.sync_jazz_music as sync_jazz_music
 
 
+class TestEvictOldest:
+    def test_removes_oldest_files_and_their_metadata(self, tmp_path):
+        import os
+        import time
+
+        paths = []
+        for i in range(5):
+            p = tmp_path / f"track{i}.mp3"
+            p.write_bytes(b"x")
+            (tmp_path / f"track{i}.json").write_text("{}", encoding="utf-8")
+            paths.append(p)
+            # Garante mtimes distintos e crescentes (track0 = mais antigo).
+            t = time.time() + i
+            os.utime(p, (t, t))
+
+        evicted = sync_jazz_music._evict_oldest(tmp_path, "*.mp3", 2)
+
+        assert evicted == 2
+        assert not (tmp_path / "track0.mp3").exists()
+        assert not (tmp_path / "track0.json").exists()
+        assert not (tmp_path / "track1.mp3").exists()
+        assert (tmp_path / "track2.mp3").exists()
+        assert (tmp_path / "track4.mp3").exists()
+
+    def test_zero_count_removes_nothing(self, tmp_path):
+        (tmp_path / "track0.mp3").write_bytes(b"x")
+        assert sync_jazz_music._evict_oldest(tmp_path, "*.mp3", 0) == 0
+        assert (tmp_path / "track0.mp3").exists()
+
+    def test_missing_metadata_does_not_raise(self, tmp_path):
+        (tmp_path / "track0.mp3").write_bytes(b"x")  # sem .json correspondente
+        assert sync_jazz_music._evict_oldest(tmp_path, "*.mp3", 1) == 1
+
+
 class TestIsJazz:
     @pytest.mark.parametrize(
         "hit,expected",
@@ -17,6 +51,12 @@ class TestIsJazz:
             ({"artist_name": "Jazz Quartet"}, True),
             ({"tags": "bossa nova"}, True),
             ({"musicinfo": {"tags": {"genres": ["jazz"]}}}, True),
+            # Jazz animado (mood "diversao") - tags/nome nem sempre repetem "jazz".
+            ({"name": "Bebop Nights"}, True),
+            ({"tags": "swing upbeat"}, True),
+            ({"artist_name": "Fusion Trio"}, True),
+            # Lofi jazz (mood "fofura"/"relax").
+            ({"tags": "lofi chill beats"}, True),
             ({"name": "Rock Anthem"}, False),
             ({"name": "EDM Dance Hit"}, False),
             ({"name": ""}, False),
@@ -147,7 +187,10 @@ class TestMain:
         monkeypatch.setattr(sync_jazz_music, "configure_logging", lambda: None)
         assert sync_jazz_music.main() == 1
 
-    def test_pool_full_returns_0(self, monkeypatch, tmp_path):
+    def test_pool_full_evicts_oldest_and_continues(self, monkeypatch, tmp_path):
+        """Pool cheio nao e mais um no-op permanente: rotaciona as faixas
+        mais antigas pra abrir espaco, depois segue pro sync normal - sem
+        isso o pool congelava pra sempre nas mesmas 200 faixas."""
         monkeypatch.setenv("JAMENDO_CLIENT_ID", "id")
         monkeypatch.setattr(sync_jazz_music, "configure_logging", lambda: None)
         monkeypatch.setattr(sync_jazz_music, "ensure_dirs", lambda: None)
@@ -155,7 +198,9 @@ class TestMain:
         mp3s = [MagicMock() for _ in range(sync_jazz_music.MAX_POOL_SIZE)]
         monkeypatch.setattr(sync_jazz_music, "AUDIO_DIR", MagicMock())
         sync_jazz_music.AUDIO_DIR.glob = lambda *a, **k: iter(mp3s)
-        assert sync_jazz_music.main() == 0
+        with patch.object(sync_jazz_music, "_evict_oldest", return_value=20) as mock_evict:
+            assert sync_jazz_music.main() == 0
+        mock_evict.assert_called_once_with(sync_jazz_music.AUDIO_DIR, "*.mp3", 20)
 
     def test_normal_search_path(self, monkeypatch):
         monkeypatch.setenv("JAMENDO_CLIENT_ID", "id")

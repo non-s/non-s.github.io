@@ -15,13 +15,13 @@ from utils.ai_helper import ai_text, is_safe_ai_text
 log = logging.getLogger(__name__)
 
 
-def generate_srt(hook: str, scene: str, duration: int, kind: str, emoji: str) -> str:
+def generate_srt(hook: str, scene: str, duration: int, emoji: str) -> str:
     """Gera conteudo SRT via Gemini, com fallback local.
 
     Retorna o texto completo do arquivo .srt.
     """
     prompt = (
-        f"Create English captions for a {duration}-second {'Short' if kind == 'short' else 'video'} "
+        f"Create English captions for a {duration}-second Short "
         f"about {hook} {emoji}. "
         f"The channel is Pata Jazz (cute cats and dogs + relaxing jazz). "
         f"Create 4-6 short caption lines (max 40 chars each), spread across the duration. "
@@ -167,11 +167,9 @@ def _ass_line_words(
     return dialogues
 
 
-def _fallback_ass(hook: str, duration: int, kind: str) -> str:
+def _fallback_ass(hook: str, duration: int) -> str:
     """Gera ASS localmente (mesma estrutura do _fallback_srt, animado)."""
-    fontsize = 48 if kind == "short" else 36
-    res_x, res_y = (1080, 1920) if kind == "short" else (1920, 1080)
-    header = _ass_header(fontsize, res_x, res_y)
+    header = _ass_header(fontsize=48, play_res_x=1080, play_res_y=1920)
 
     hook_end = min(6.0, duration * 0.5)
     welcome_end = min(hook_end + 4.0, float(duration))
@@ -187,14 +185,14 @@ def _fallback_ass(hook: str, duration: int, kind: str) -> str:
     return header + "".join(events)
 
 
-def generate_ass(hook: str, scene: str, duration: int, kind: str, emoji: str) -> str:
+def generate_ass(hook: str, scene: str, duration: int, emoji: str) -> str:
     """Gera conteudo ASS estilizado (animado palavra-a-palavra) via Gemini.
 
     Retorna o texto completo do arquivo .ass. Em falha da IA, usa fallback
     local em ASS.
     """
     prompt = (
-        f"Create English captions for a {duration}-second {'Short' if kind == 'short' else 'video'} "
+        f"Create English captions for a {duration}-second Short "
         f"about {hook} {emoji}. "
         f"The channel is Pata Jazz (cute cats and dogs + relaxing jazz). "
         f"Create 4-6 short caption lines (max 40 chars each), spread across the duration. "
@@ -209,7 +207,7 @@ def generate_ass(hook: str, scene: str, duration: int, kind: str, emoji: str) ->
             return out.strip() + ("\n" if not out.endswith("\n") else "")
         log.warning("Legenda ASS da IA rejeitada (padrao suspeito); usando fallback local.")
 
-    return _fallback_ass(hook, duration, kind)
+    return _fallback_ass(hook, duration)
 
 
 def save_ass(content: str, video_path: Path) -> Path:
@@ -234,10 +232,10 @@ _PT_FALLBACK_LINES = [
 ]
 
 
-def generate_srt_pt(hook: str, scene: str, duration: int, kind: str, emoji: str) -> str:
+def generate_srt_pt(hook: str, scene: str, duration: int, emoji: str) -> str:
     """Gera legenda SRT em portugues (PT-BR) via Gemini + fallback local."""
     prompt = (
-        f"Crie legendas em PORTUGUES (PT-BR) para um {'Short' if kind == 'short' else 'video'} "
+        f"Crie legendas em PORTUGUES (PT-BR) para um Short "
         f"de {duration} segundos sobre {hook} {emoji}. "
         f"O canal e Pata Jazz (gatos e cachorros fofos + jazz relaxante). "
         f"Crie 4-6 linhas curtas de legenda (max 40 chars cada), distribuidas pela duracao. "
@@ -273,39 +271,21 @@ def save_srt_pt(content: str, video_path: Path) -> Path:
     return srt_path
 
 
-def generate_chapters(duration: int, kind: str) -> list[tuple[str, str]]:
+def generate_chapters(duration: int) -> list[tuple[str, str]]:
     """Gera chapters (timestamp, titulo) para a descricao do YouTube.
 
     YouTube usa chapters quando a descricao contem linhas no formato
-    '00:00 Titulo'. Para Shorts (curtos), 2-3 chapters bastam; para
-    horizontais/live, 4-6. Retorna lista de (timestamp_str, titulo).
+    '00:00 Titulo'. Shorts sao curtos, entao 3 chapters bastam. Retorna
+    lista de (timestamp_str, titulo).
     """
     def _fmt(seconds: int) -> str:
         h, rem = divmod(seconds, 3600)
         m, s = divmod(rem, 60)
         return f"{h:02d}:{m:02d}:{s:02d}" if h else f"{m:02d}:{s:02d}"
 
-    if kind == "short":
-        third = max(1, duration // 3)
-        return [
-            (_fmt(0), "Intro"),
-            (_fmt(third), "Cute moment"),
-            (_fmt(third * 2), "Relax & enjoy"),
-        ]
-    # Longform (>=1h): chapters de 1h para facilitar navegacao em compilacoes longas.
-    if duration >= 3600:
-        n_hours = max(1, duration // 3600)
-        chapters = [(_fmt(0), "Hour 1 — Cute pets & jazz")]
-        for i in range(1, n_hours):
-            chapters.append((_fmt(3600 * i), f"Hour {i + 1} — Cozy moment & jazz"))
-        chapters.append((_fmt(duration), "Outro"))
-        return chapters
-    # Horizontais/live: chapters a cada ~25% do video.
-    n = 5
-    step = max(1, duration // n)
-    chapters = [(_fmt(0), "Intro")]
-    labels = ["Cute pets", "Relaxing jazz", "Cozy moment", "Calm & peace", "Outro"]
-    for i in range(1, n):
-        chapters.append((_fmt(step * i), labels[min(i, len(labels) - 1)]))
-    chapters.append((_fmt(duration), "Outro"))
-    return chapters
+    third = max(1, duration // 3)
+    return [
+        (_fmt(0), "Intro"),
+        (_fmt(third), "Cute moment"),
+        (_fmt(third * 2), "Relax & enjoy"),
+    ]

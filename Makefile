@@ -1,4 +1,4 @@
-.PHONY: test test-cov lint format typecheck security healthcheck sync generate-short generate-horizontal dashboard clean lock all
+.PHONY: test test-cov lint format typecheck security healthcheck sync generate-short dashboard clean lock all
 
 test:
 	pytest -q
@@ -13,7 +13,7 @@ format:
 	ruff format . && ruff check --fix .
 
 typecheck:
-	mypy utils/ scripts/ upload_youtube.py generate_pata_jazz_short.py generate_pata_jazz_horizontal.py generate_pata_jazz_live.py
+	mypy utils/ scripts/ upload_youtube.py upload_tiktok.py generate_pata_jazz_short.py
 
 security:
 	bandit -r utils/ scripts/ *.py -ll -q && pip-audit -r requirements.txt
@@ -26,9 +26,6 @@ sync:
 
 generate-short:
 	python generate_pata_jazz_short.py
-
-generate-horizontal:
-	python generate_pata_jazz_horizontal.py
 
 dashboard:
 	python scripts/generate_dashboard.py

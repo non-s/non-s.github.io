@@ -4,8 +4,6 @@ tests/test_seo_keywords.py — testa geração de títulos e descrições otimiz
 
 import json
 
-import pytest
-
 import utils.seo_keywords as seo_keywords
 from utils.seo_keywords import (
     CTAS,
@@ -13,6 +11,7 @@ from utils.seo_keywords import (
     TITLE_PATTERNS,
     generate_description,
     generate_hashtags,
+    generate_tiktok_hashtags,
     generate_title,
     optimize_for_search,
     pick_title_pattern,
@@ -27,17 +26,6 @@ class TestPickTitlePattern:
         pattern = pick_title_pattern("short")
         assert pattern in TITLE_PATTERNS["short"]
         assert "{emoji}" in pattern or "{animal}" in pattern
-
-    def test_pick_pattern_horizontal(self):
-        """Seleciona padrão para vídeos horizontais."""
-        pattern = pick_title_pattern("horizontal")
-        assert pattern in TITLE_PATTERNS["horizontal"]
-
-    def test_pick_pattern_live(self):
-        """Seleciona padrão para lives."""
-        pattern = pick_title_pattern("live")
-        assert pattern in TITLE_PATTERNS["live"]
-        assert "LIVE" in pattern.upper()
 
 
 class TestTitlePatternWeights:
@@ -94,36 +82,12 @@ class TestTitlePatternWeights:
 class TestGenerateTitle:
     """Testa geração de títulos otimizados."""
 
-    @pytest.mark.parametrize(
-        "kind,extra,assertion",
-        [
-            (
-                "short",
-                {"animal": "cat", "acao": "sleeping", "estilo_musical": "relaxing jazz", "emoji": "🐱"},
-                lambda t: len(t) <= 100 and len(t) > 0 and ("🐱" in t or "cat" in t.lower()),
-            ),
-            (
-                "horizontal",
-                {
-                    "animal": "dog",
-                    "acao": "playing",
-                    "estilo_musical": "smooth jazz",
-                    "emoji": "🐶",
-                    "duracao": 4,
-                },
-                lambda t: len(t) <= 100 and ("dog" in t.lower() or "smooth jazz" in t.lower()),
-            ),
-            (
-                "live",
-                {"animal": "cat", "acao": "relaxing", "estilo_musical": "jazz", "emoji": "🔴"},
-                lambda t: "🔴" in t or "LIVE" in t.upper(),
-            ),
-        ],
-        ids=["short", "horizontal", "live"],
-    )
-    def test_generate_title_by_kind(self, kind, extra, assertion):
-        title = generate_title(kind=kind, **extra)
-        assert assertion(title)
+    def test_generate_title_by_kind(self):
+        title = generate_title(
+            animal="cat", acao="sleeping", estilo_musical="relaxing jazz", kind="short", emoji="🐱"
+        )
+        assert len(title) <= 100 and len(title) > 0
+        assert "🐱" in title or "cat" in title.lower()
 
     def test_generate_title_uses_keywords(self):
         """Título usa keywords de alta performance."""
@@ -154,7 +118,7 @@ class TestGenerateTitle:
                 animal="cat",
                 acao="sleeping",
                 estilo_musical="relaxing jazz",
-                kind="horizontal",
+                kind="short",
                 emoji="🐱"
             )
             assert len(title) <= 100
@@ -175,29 +139,6 @@ class TestGenerateDescription:
         assert len(desc) > 0
         assert "#PataJazz" in desc or "#Cats" in desc
         assert "🐾" in desc or "✨" in desc  # Tem emojis
-
-    def test_generate_description_horizontal(self):
-        """Gera descrição para vídeo horizontal."""
-        hashtags = ["#PataJazz", "#Jazz"]
-        desc, _ = generate_description(
-            hook="Relax with cats and jazz",
-            kind="horizontal",
-            hashtags=hashtags,
-            include_cta=True
-        )
-        assert "Relax" in desc or "enjoy" in desc.lower()
-        assert len(desc) > 50  # Descrições longas têm mais conteúdo
-
-    def test_generate_description_live(self):
-        """Gera descrição para live."""
-        hashtags = ["#PataJazz", "#Live"]
-        desc, _ = generate_description(
-            hook="Jazz 24/7 with cats",
-            kind="live",
-            hashtags=hashtags,
-            include_cta=True
-        )
-        assert "LIVE" in desc.upper() or "24/7" in desc
 
     def test_generate_description_without_cta(self):
         """Gera descrição sem CTA."""
@@ -268,13 +209,13 @@ class TestGenerateHashtags:
 
     def test_generate_hashtags_dog(self):
         """Gera hashtags para vídeo de cachorro."""
-        hashtags = generate_hashtags(animal="dog", categoria="fun", kind="horizontal")
+        hashtags = generate_hashtags(animal="dog", categoria="fun", kind="short")
         assert len(hashtags) <= 15
         assert "#Dogs" in hashtags or "#Puppies" in hashtags
 
     def test_generate_hashtags_relax(self):
         """Gera hashtags para categoria relaxamento."""
-        hashtags = generate_hashtags(animal="cat", categoria="relaxation", kind="live")
+        hashtags = generate_hashtags(animal="cat", categoria="relaxation", kind="short")
         assert "#Relaxation" in hashtags or "#Peaceful" in hashtags or "#Calm" in hashtags
 
     def test_generate_hashtags_short_format(self):
@@ -282,14 +223,55 @@ class TestGenerateHashtags:
         hashtags = generate_hashtags(animal="cat", categoria="cuteness", kind="short")
         assert "#Shorts" in hashtags or "#YouTubeShorts" in hashtags
 
-    def test_generate_hashtags_live_format(self):
-        """Inclui hashtags de formato para Live."""
-        hashtags = generate_hashtags(animal="dog", categoria="cuteness", kind="live")
-        assert "#Live" in hashtags or "#LiveStream" in hashtags or "#247" in hashtags
-
     def test_generate_hashtags_no_duplicates(self):
         """Não gera hashtags duplicadas."""
         hashtags = generate_hashtags(animal="cat", categoria="cuteness", kind="short")
+        assert len(hashtags) == len(set(hashtags))
+
+
+class TestGenerateTiktokHashtags:
+    """generate_tiktok_hashtags: vocabulario nativo do TikTok, diferente
+    das hashtags do YouTube (sem #Shorts/#YouTubeShorts, com tags de
+    especie/#fyp que tem mais alcance la)."""
+
+    def test_species_tag_comes_first_for_cat(self):
+        hashtags = generate_tiktok_hashtags(animal="cat", categoria="cuteness")
+        assert hashtags[0] == "#catsoftiktok"
+
+    def test_species_tag_comes_first_for_dog(self):
+        hashtags = generate_tiktok_hashtags(animal="dog", categoria="cuteness")
+        assert hashtags[0] == "#dogsoftiktok"
+
+    def test_unknown_animal_falls_back_to_cat(self):
+        hashtags = generate_tiktok_hashtags(animal="hamster", categoria="cuteness")
+        assert hashtags[0] == "#catsoftiktok"
+
+    def test_includes_discovery_tags(self):
+        hashtags = generate_tiktok_hashtags(animal="cat", categoria="cuteness")
+        assert "#fyp" in hashtags
+        assert "#foryoupage" in hashtags
+
+    def test_does_not_include_youtube_only_tags(self):
+        hashtags = generate_tiktok_hashtags(animal="cat", categoria="cuteness")
+        assert "#Shorts" not in hashtags
+        assert "#YouTubeShorts" not in hashtags
+
+    def test_includes_brand_tag(self):
+        hashtags = generate_tiktok_hashtags(animal="cat", categoria="cuteness")
+        assert "#PataJazz" in hashtags
+
+    def test_emotion_tag_varies_by_categoria(self):
+        relax = generate_tiktok_hashtags(animal="cat", categoria="relaxation")
+        fun = generate_tiktok_hashtags(animal="cat", categoria="fun")
+        assert relax != fun
+
+    def test_unknown_categoria_falls_back_to_cuteness(self):
+        hashtags = generate_tiktok_hashtags(animal="cat", categoria="bogus")
+        assert hashtags == generate_tiktok_hashtags(animal="cat", categoria="cuteness")
+
+    def test_within_max_hashtags_and_no_duplicates(self):
+        hashtags = generate_tiktok_hashtags(animal="dog", categoria="fun")
+        assert len(hashtags) <= seo_keywords._MAX_TIKTOK_HASHTAGS
         assert len(hashtags) == len(set(hashtags))
 
 
