@@ -192,6 +192,12 @@ def _do_login(page, email: str, password: str) -> bool:
     email_input = page.query_selector("input[name='username']")
     if not email_input:
         log.error("Campo de email nao encontrado na pagina de login.")
+        # Screenshot pra diagnostico remoto (CI nao tem tela pra olhar ao
+        # vivo) - sem isso, uma falha aqui (ex.: TikTok mostrando QR code
+        # em vez do form de email/senha, ou uma tela de verificacao nao
+        # coberta por _CAPTCHA_MARKERS) fica sem nenhuma pista do que
+        # realmente apareceu na pagina.
+        page.screenshot(path=str(ROOT / "_videos" / "tiktok_login_fail.png"))
         return False
 
     email_input.click()

@@ -195,6 +195,10 @@ class TestDoLogin:
         page = self._page(["https://www.tiktok.com/login/phone-or-email/email"], has_email_input=False)
         monkeypatch.setattr(tiktok_uploader.time, "sleep", lambda *_: None)
         assert tiktok_uploader._do_login(page, "a@b.com", "pw") is False
+        # Screenshot pra diagnostico remoto - sem ele, uma falha aqui (real
+        # em producao: TikTok mostrando UI diferente do esperado) nao deixa
+        # nenhuma pista do que apareceu na pagina.
+        page.screenshot.assert_called_once()
 
     def test_missing_password_field_fails(self, monkeypatch):
         page = self._page(["https://www.tiktok.com/login/phone-or-email/email"], has_pass_input=False)
