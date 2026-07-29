@@ -1,6 +1,6 @@
 """scripts/tiktok_login_qr.py — gera tiktok_state.json via login manual.
 
-Rode este script na SUA maquina (nunca em CI): ele abre um Chromium
+Rode este script na SUA maquina (nunca em CI): ele abre um navegador
 VISIVEL (headed) na pagina de login do TikTok. Faca login do jeito que
 voce ja usa no dia a dia (QR code escaneado pelo celular, "Continuar com
 o Google", etc.) - a automacao em produção (utils/tiktok_uploader.py) não
@@ -11,6 +11,21 @@ automatizar headless. O que a automação sabe fazer é REUSAR uma sessão
 
 Uso:
     python scripts/tiktok_login_qr.py
+
+Por padrao abre um Chromium com perfil NOVO (zerado) - o TikTok as vezes
+trata esse navegador "sem historico" como dispositivo desconhecido e
+bloqueia o login (QR/Google nao completam). Se isso acontecer, use
+--use-chrome-profile para abrir com o SEU Chrome de verdade (mesmos
+cookies/historico/fingerprint que o TikTok ja reconhece - se voce ja
+estiver logado no TikTok nesse Chrome, a sessao e detectada na hora, sem
+precisar logar de novo):
+
+    python scripts/tiktok_login_qr.py --use-chrome-profile
+
+Feche TODAS as janelas do Chrome antes de rodar com essa opcao (o perfil
+fica bloqueado enquanto o Chrome estiver aberto). Se voce usa mais de um
+perfil do Chrome, veja o nome certo em chrome://version (campo "Caminho
+do perfil", ultima pasta do caminho) e passe com --profile-directory.
 
 Depois de detectar a sessão ativa, salva tiktok_state.json na raiz do
 repo e imprime instruções para colar o conteúdo no secret
@@ -26,6 +41,8 @@ NUNCA faça commit de tiktok_state.json (contém sessionid) - já está no
 
 from __future__ import annotations
 
+import argparse
+import os
 import sys
 import time
 from pathlib import Path
@@ -45,7 +62,66 @@ _TIMEOUT_SECONDS = 300
 _POLL_SECONDS = 2
 
 
+def _default_chrome_profile_dir() -> Path | None:
+    """Pasta "User Data" padrao do Chrome por SO, ou None se desconhecido.
+
+    Essa e a pasta RAIZ que o Chrome usa pra guardar todos os perfis (o
+    perfil em si - "Default", "Profile 1" etc. - fica DENTRO dela e e
+    selecionado via --profile-directory)."""
+    home = Path.home()
+    if sys.platform == "win32":
+        local = Path(os.environ.get("LOCALAPPDATA", str(home / "AppData" / "Local")))
+        return local / "Google" / "Chrome" / "User Data"
+    if sys.platform == "darwin":
+        return home / "Library" / "Application Support" / "Google" / "Chrome"
+    return home / ".config" / "google-chrome"
+
+
+def _open_context(p, args):
+    """Abre o navegador no modo escolhido. Retorna (context, browser) -
+    browser e None no modo --use-chrome-profile (launch_persistent_context
+    nao tem um Browser separado pra fechar, so o context)."""
+    if not args.use_chrome_profile:
+        browser = p.chromium.launch(headless=False)
+        context = browser.new_context(user_agent=_USER_AGENT, viewport={"width": 1280, "height": 800})
+        context.add_init_script(_STEALTH_SCRIPT)
+        return context, browser
+
+    profile_dir = Path(args.chrome_profile_dir) if args.chrome_profile_dir else _default_chrome_profile_dir()
+    if not profile_dir or not profile_dir.exists():
+        print(f"Pasta de perfil do Chrome nao encontrada: {profile_dir}")
+        print('Feche o Chrome e passe o caminho certo com --chrome-profile-dir "CAMINHO".')
+        raise SystemExit(1)
+
+    print(f"Abrindo com o SEU Chrome (perfil: {profile_dir} / {args.profile_directory}).")
+    print("Se aparecer erro de perfil em uso, feche TODAS as janelas do Chrome e rode de novo.")
+    context = p.chromium.launch_persistent_context(
+        user_data_dir=str(profile_dir),
+        channel="chrome",
+        headless=False,
+        args=[f"--profile-directory={args.profile_directory}"],
+        viewport={"width": 1280, "height": 800},
+    )
+    return context, None
+
+
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument(
+        "--use-chrome-profile", action="store_true",
+        help="Abre com o SEU Chrome de verdade (cookies/historico existentes) em vez de um Chromium "
+             "zerado. Use se o login (QR/Google) nao completar no modo padrao. Feche o Chrome antes.",
+    )
+    parser.add_argument(
+        "--chrome-profile-dir", type=str, default=None,
+        help='Caminho da pasta "User Data" do Chrome (default: local padrao do SO detectado automaticamente).',
+    )
+    parser.add_argument(
+        "--profile-directory", type=str, default="Default",
+        help='Nome do perfil dentro de "User Data" (default: Default). Veja o seu em chrome://version.',
+    )
+    args = parser.parse_args()
+
     try:
         from playwright.sync_api import sync_playwright
     except ImportError:
@@ -53,10 +129,8 @@ def main() -> int:
         return 1
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
-        context = browser.new_context(user_agent=_USER_AGENT, viewport={"width": 1280, "height": 800})
-        context.add_init_script(_STEALTH_SCRIPT)
-        page = context.new_page()
+        context, browser = _open_context(p, args)
+        page = context.pages[0] if context.pages else context.new_page()
         page.goto(_LOGIN_URL, wait_until="domcontentloaded")
 
         print("Faca login na janela do navegador que abriu (QR code, Google, o que voce usar).")
@@ -72,11 +146,15 @@ def main() -> int:
 
         if not logged_in:
             print("Tempo esgotado sem detectar login. Rode de novo e tente completar o login mais rapido.")
-            browser.close()
+            context.close()
+            if browser:
+                browser.close()
             return 1
 
         context.storage_state(path=str(DEFAULT_STATE_PATH))
-        browser.close()
+        context.close()
+        if browser:
+            browser.close()
 
     print(f"\nSessao salva em {DEFAULT_STATE_PATH}")
     print("Copie TODO o conteudo desse arquivo e cole no secret TIKTOK_STATE_JSON")
