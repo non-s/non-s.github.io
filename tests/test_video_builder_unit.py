@@ -28,8 +28,13 @@ class TestBuildOverlayFilter:
 
     def test_escapes_special_characters_in_hook(self):
         result = video_builder._build_overlay_filter("it's: cute", 1920)
-        assert r"\'" in result
-        assert r"\:" in result
+        # Aspas simples viram a sequencia fecha-aspas/aspas-escapada/reabre-aspas
+        # ("'\''") - a unica forma valida do parser de filtergraph do FFmpeg.
+        # Um "\'" direto dentro das aspas (bug real de producao corrigido aqui)
+        # fecha a citacao no lugar errado e corrompe o resto do filter_complex.
+        assert "text='it'\\''s: cute'" in result
+        # Dois-pontos NAO precisam de escape: ja protegidos pelas aspas simples
+        # que envolvem o valor inteiro.
 
     def test_y_position_stays_within_jitter_range(self):
         for _ in range(30):

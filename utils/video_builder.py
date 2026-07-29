@@ -86,8 +86,18 @@ def _build_overlay_filter(hook: str, height: int) -> str:
     real via alpha animado (a versao anterior so tinha um corte abrupto em
     `enable`, apesar do docstring prometer fade).
     """
-    # Escape em ordem correta: backslash primeiro, depois aspas e dois-pontos.
-    safe_hook = hook.replace("\\", r"\\").replace("'", r"\'").replace(":", r"\:")
+    # O valor inteiro fica entre aspas simples (protege : , [ ] ; do parser
+    # de filtergraph do FFmpeg), entao dentro delas tudo e literal - inclusive
+    # barra invertida. A UNICA excecao e a propria aspas simples, que nao
+    # pode aparecer dentro de aspas simples: precisa fechar a citacao,
+    # inserir uma aspas escapada fora dela e reabrir a citacao (`'\''`).
+    # Um `\'` direto dentro das aspas (versao anterior) NAO e valido: o
+    # FFmpeg fecha a citacao no primeiro `'` (o backslash e tomado como
+    # texto literal), corrompendo o resto do filter_complex. Bug real
+    # observado em producao: hooks com apostrofo (ex.: "Cat's Cozy Relax
+    # Moment") faziam ~40-45% dos runs agendados falharem com "No such
+    # filter: '0'" / "Filter not found".
+    safe_hook = hook.replace("'", "'\\''")
     fade = _HOOK_FADE_SECONDS
     hold_end = _HOOK_ENABLE_SECONDS - fade
     # Virgulas aqui NAO precisam de escape: o valor inteiro ja esta entre
