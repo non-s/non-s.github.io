@@ -36,6 +36,7 @@ cookies (contêm sessionid) - tiktok_state.json já está no .gitignore.
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -55,10 +56,23 @@ _SAME_SITE_MAP = {
 }
 
 
+# Alguns apps de chat/clipboard "linkificam" automaticamente dominios nus
+# (www.tiktok.com) ao copiar/colar texto, corrompendo o campo domain do
+# JSON exportado pra algo tipo ".[www.tiktok.com](https://www.tiktok.com)"
+# em vez de ".www.tiktok.com". Isso quebraria o storage_state do
+# Playwright (domain invalido) - desfaz o link markdown antes de usar.
+_MARKDOWN_LINK_RE = re.compile(r"\[([^\]]+)\]\([^)]+\)")
+
+
+def _clean_domain(domain: str) -> str:
+    return _MARKDOWN_LINK_RE.sub(r"\1", domain)
+
+
 def _convert_cookie(raw: dict) -> dict | None:
     name, value, domain = raw.get("name"), raw.get("value"), raw.get("domain")
     if not name or value is None or not domain:
         return None
+    domain = _clean_domain(str(domain))
     same_site_raw = str(raw.get("sameSite", "") or "").strip().lower()
     expires = raw.get("expirationDate")
     return {
