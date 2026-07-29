@@ -27,6 +27,11 @@ fica bloqueado enquanto o Chrome estiver aberto). Se voce usa mais de um
 perfil do Chrome, veja o nome certo em chrome://version (campo "Caminho
 do perfil", ultima pasta do caminho) e passe com --profile-directory.
 
+Esse modo copia os cookies/sessao do seu perfil pra uma pasta temporaria
+antes de abrir o navegador - o Chrome recusa automacao apontando direto
+pro perfil "Default" de verdade (protecao contra sequestro de sessao),
+entao a copia e necessaria; seus cookies continuam validos nela.
+
 Depois de detectar a sessão ativa, salva tiktok_state.json na raiz do
 repo e imprime instruções para colar o conteúdo no secret
 TIKTOK_STATE_JSON (Settings > Secrets and variables > Actions, no
@@ -43,7 +48,9 @@ from __future__ import annotations
 
 import argparse
 import os
+import shutil
 import sys
+import tempfile
 import time
 from pathlib import Path
 
@@ -61,6 +68,15 @@ _LOGIN_URL = "https://www.tiktok.com/login"
 _TIMEOUT_SECONDS = 300
 _POLL_SECONDS = 2
 
+# Pastas pesadas/irrelevantes pra reusar login (cache, service workers,
+# extensoes) - copiar isso deixaria a copia gigante e lenta sem nenhum
+# ganho, ja que so precisamos dos cookies/sessao.
+_PROFILE_COPY_SKIP_DIRS = {
+    "Cache", "Code Cache", "GPUCache", "Service Worker", "blob_storage",
+    "IndexedDB", "Session Storage", "Extension State", "Extension Rules",
+    "Extensions", "component_crx_cache", "GrShaderCache", "ShaderCache",
+}
+
 
 def _default_chrome_profile_dir() -> Path | None:
     """Pasta "User Data" padrao do Chrome por SO, ou None se desconhecido.
@@ -75,6 +91,43 @@ def _default_chrome_profile_dir() -> Path | None:
     if sys.platform == "darwin":
         return home / "Library" / "Application Support" / "Google" / "Chrome"
     return home / ".config" / "google-chrome"
+
+
+def _copy_profile_for_automation(source_root: Path, profile_name: str) -> Path:
+    """Copia o essencial do perfil do Chrome pra uma pasta temporaria NAO-
+    default.
+
+    O Chrome recusa remote debugging (que o Playwright precisa pra
+    controlar o navegador) quando --user-data-dir aponta pro perfil
+    DEFAULT de verdade - erro "DevTools remote debugging requires a
+    non-default data directory". E um bloqueio de seguranca proposital do
+    proprio Chrome contra automacao sequestrando uma sessao real, nao
+    contorna via flag. Copiar "Local State" + a pasta do perfil (sem
+    cache/extensoes - ver _PROFILE_COPY_SKIP_DIRS) pra um diretorio novo
+    satisfaz a exigencia mantendo os cookies reais. Os cookies do Chrome
+    no Windows sao criptografados via DPAPI atrelado a conta do Windows
+    (nao ao caminho da pasta), entao continuam decodificando normalmente
+    na copia.
+    """
+    dest_root = Path(tempfile.gettempdir()) / "pata_jazz_chrome_profile_copy"
+    if dest_root.exists():
+        shutil.rmtree(dest_root, ignore_errors=True)
+    dest_root.mkdir(parents=True, exist_ok=True)
+
+    local_state = source_root / "Local State"
+    if local_state.exists():
+        shutil.copy2(local_state, dest_root / "Local State")
+
+    src_profile = source_root / profile_name
+    if not src_profile.exists():
+        print(f"Perfil {profile_name!r} nao encontrado em {source_root}.")
+        raise SystemExit(1)
+
+    def _skip(_dirpath: str, names: list[str]) -> list[str]:
+        return [n for n in names if n in _PROFILE_COPY_SKIP_DIRS]
+
+    shutil.copytree(src_profile, dest_root / profile_name, ignore=_skip, dirs_exist_ok=True)
+    return dest_root
 
 
 def _open_context(p, args):
@@ -93,10 +146,13 @@ def _open_context(p, args):
         print('Feche o Chrome e passe o caminho certo com --chrome-profile-dir "CAMINHO".')
         raise SystemExit(1)
 
-    print(f"Abrindo com o SEU Chrome (perfil: {profile_dir} / {args.profile_directory}).")
-    print("Se aparecer erro de perfil em uso, feche TODAS as janelas do Chrome e rode de novo.")
+    print("Feche TODAS as janelas do Chrome antes de continuar (alguns arquivos do perfil "
+          "ficam bloqueados com o Chrome aberto).")
+    print(f"Copiando sessao de {profile_dir / args.profile_directory} para uma pasta temporaria...")
+    copy_dir = _copy_profile_for_automation(profile_dir, args.profile_directory)
+    print(f"Abrindo Chrome com a copia em: {copy_dir}")
     context = p.chromium.launch_persistent_context(
-        user_data_dir=str(profile_dir),
+        user_data_dir=str(copy_dir),
         channel="chrome",
         headless=False,
         args=[f"--profile-directory={args.profile_directory}"],
