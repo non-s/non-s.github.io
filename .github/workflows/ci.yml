@@ -28,6 +28,15 @@ jobs:
         with:
           python-version: "3.11"
           cache: "pip"
+      - name: "Instalar FFmpeg"
+        # Necessario para tests/test_ffmpeg_integration.py - testes que
+        # rodam o FFmpeg de verdade (nao mockado) contra os filtros de
+        # utils/video_builder.py. Sem isso, um bug real de escaping que so
+        # se manifesta na execucao real do FFmpeg (ex.: font='Arial:style=
+        # Bold' sem escape do ':', que quebrou 100% das geracoes de Short
+        # em producao) passa pelos testes unitarios (mockados) sem ser
+        # pego.
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
       - name: "Instalar dependencias"
         run: |
           pip install --no-cache-dir --upgrade pip
