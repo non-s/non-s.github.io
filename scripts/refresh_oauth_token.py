@@ -6,7 +6,8 @@ YOUTUBE_TOKEN por .github/actions/restore-token-and-cache), tenta renovar
 o access_token via Credentials.refresh(Request()), e se o refresh
 funcionar escreve o novo token de volta no secret YOUTUBE_TOKEN usando
 `gh secret set` (requer um Personal Access Token com scope `repo` no
-secret GH_PAT).
+secret GH_PAT; um PAT fine-grained com permissao de escrita em secrets e
+issues do repositorio tambem funciona e tem menor superficie).
 
 Se o refresh falhar (refresh_token expirado — 90 dias sem uso, padrao do
 Google), abre uma issue no repositorio pedindo para rodar
@@ -62,7 +63,11 @@ def refresh_and_persist(token_path: Path) -> int:
     gh_pat = os.environ.get("GH_PAT")
     if not gh_pat:
         print("::error::GH_PAT ausente: nao e possivel atualizar o secret YOUTUBE_TOKEN.")
-        print("::error::Configure um Personal Access Token com scope 'repo' como secret GH_PAT.")
+        print(
+            "::error::Configure um Personal Access Token como secret GH_PAT: "
+            "classico com scope 'repo', ou fine-grained com escrita em "
+            "secrets e issues do repositorio."
+        )
         _open_issue_token_expired("GH_PAT ausente — configure o secret GH_PAT.")
         return 1
 
@@ -104,9 +109,11 @@ def _open_issue_token_expired(reason: str) -> None:
         "2. Atualize o secret `YOUTUBE_TOKEN` no GitHub com o conteudo do "
         "`youtube_token.json` gerado.\n\n"
         "Aviso: o workflow `oauth-token-refresh.yml` requer um Personal Access "
-        "Token (PAT) com scope `repo` armazenado como secret `GH_PAT` para "
-        "atualizar o secret `YOUTUBE_TOKEN` automaticamente. Sem o `GH_PAT`, "
-        "a renovacao do token e sempre manual."
+        "Token armazenado como secret `GH_PAT` para atualizar o secret "
+        "`YOUTUBE_TOKEN` automaticamente. O minimo necessario: classico com "
+        "scope `repo`, ou fine-grained com permissao de escrita em secrets e "
+        "issues do repositorio (menor superficie). Sem o `GH_PAT`, a renovacao "
+        "do token e sempre manual."
     )
     cmd = ["gh", "issue", "create", "--title", title, "--body", body]
     env = {**os.environ, "GH_TOKEN": gh_pat}

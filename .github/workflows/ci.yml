@@ -23,6 +23,8 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
+          # Gitleaks varre o historico completo (nao so o ultimo commit).
+          fetch-depth: 0
       - name: "Python 3.11"
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
@@ -61,6 +63,11 @@ jobs:
         # declaradas. Mantido limpo em main: qualquer nova CVE exige bump ou
         # --ignore-vuln explicito no proprio PR que a introduz.
         run: pip-audit -r requirements.txt
+      - name: "Vulnerability audit (lockfile)"
+        # O lockfile (requirements.lock) e o que o CI e o ambiente de dev
+        # realmente instalam - auditar so o requirements.txt pode deixar
+        # passar uma versao antiga e vulneravel ja congelada no lock.
+        run: pip-audit -r requirements.lock
       - name: "Type check (advisory)"
         # Advisory: mypy em codebase sem stubs para googleapiclient/Pillow tem
         # ruído esperado; nao vale travar PRs por isso enquanto os stubs nao
@@ -74,3 +81,11 @@ jobs:
         # LOW). Falsos-positivos conhecidos levam # nosec no codigo com
         # comentario explicativo, nao supressao global.
         run: bandit -r utils/ scripts/ *.py -ll -q
+      - name: "Gitleaks"
+        # Varredura de segredos: falha se algum commit incluir chave/token
+        # (API keys, passwords, private keys). Camada extra alem do secret
+        # scanning do GitHub (que so cobre secrets JÁ commitados e conhecidos);
+        # este gate impede que segredos entrem no historico.
+        uses: gitleaks/gitleaks-action@fcebd0e38979dbb129bf4bdb13c9c9b1a497d38b # v2.3.8
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
