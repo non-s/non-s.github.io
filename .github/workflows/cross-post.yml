@@ -30,7 +30,7 @@ jobs:
       INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
     steps:
       - name: "Checkout"
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: "Setup"
@@ -40,7 +40,7 @@ jobs:
       - name: "Instalar navegador do Playwright (TikTok)"
         run: python -m playwright install --with-deps chromium
       - name: "Restaurar sessao do TikTok"
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: tiktok_state.json
           key: tiktok-state-${{ github.run_id }}
@@ -61,7 +61,7 @@ jobs:
             printf '%s' "$TIKTOK_STATE_JSON" > tiktok_state.json
           fi
       - name: "Restaurar cache de videos gerados"
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: _videos
           key: cross-post-videos-${{ github.run_id }}
@@ -72,7 +72,7 @@ jobs:
         # tiktok_posts.json alimenta a secao "Cross-posting TikTok" do
         # dashboard (scripts/generate_dashboard.py) - sem cache aqui, cada
         # run comecaria do zero e o dashboard nunca acumularia historico.
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: _data/tiktok_posts.json
           key: tiktok-posts-${{ github.run_id }}
@@ -86,7 +86,7 @@ jobs:
         run: python upload_reels.py --all --prefix pata_jazz_short_
       - name: "Upload artifacts"
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: cross-post-output-${{ github.run_id }}
           path: |
