@@ -20,6 +20,7 @@ import json
 import logging
 import os
 import sys
+import time
 from pathlib import Path
 
 from utils.log_config import configure_logging
@@ -30,6 +31,11 @@ ROOT = Path(__file__).resolve().parent
 OUTPUT_DIR = ROOT / "_videos"
 
 _INSTAGRAM_API_URL = "https://graph.facebook.com/v19.0/"
+
+# Pausa minima entre uploads em cross-postings em lote: a Instagram Graph API
+# limita o numero de containers criados por janela (rata limits por usuario);
+# espacar os posts evita o 429 e a queda do lote inteiro.
+_BETWEEN_UPLOADS_SECONDS = 20.0
 
 
 def upload_to_reels(
@@ -73,7 +79,12 @@ def upload_to_reels(
         raise NotImplementedError("Instagram Reels upload not yet implemented (scaffolding)")
     except NotImplementedError as exc:
         log.info(str(exc))
-        log.debug("post_body=%s", post_body)
+        # Nunca logar access_token em claro - os logs vao para artefatos do
+        # GitHub Actions que podem ficar publicos. Mascara antes de imprimir.
+        log.debug(
+            "post_body=%s",
+            {k: ("***" if k == "access_token" else v) for k, v in post_body.items()},
+        )
         return None
 
 
@@ -94,7 +105,7 @@ def cross_post_all_unpublished(prefix: str = "pata_jazz_") -> list[str]:
         return []
 
     posted: list[str] = []
-    for video_path, meta in unpublished:
+    for index, (video_path, meta) in enumerate(unpublished):
         reel_id = upload_to_reels(video_path, meta)
         if reel_id:
             meta["instagram_id"] = reel_id
@@ -102,6 +113,10 @@ def cross_post_all_unpublished(prefix: str = "pata_jazz_") -> list[str]:
                 json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8"
             )
             posted.append(reel_id)
+            # Throttle entre posts para respeitar os rata limits da API.
+            if index < len(unpublished) - 1:
+                log.info("Aguardando %.0fs para respeitar rata limit do Instagram...", _BETWEEN_UPLOADS_SECONDS)
+                time.sleep(_BETWEEN_UPLOADS_SECONDS)
     return posted
 
 
