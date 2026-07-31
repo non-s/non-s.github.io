@@ -1,44 +1,24 @@
 version: 2
 updates:
-  - package-ecosystem: "pip"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 5
-    groups:
-      # Agrupa updates de runtime (requirements.txt) num unico PR por semana
-      # em vez de N PRs soltos (um por dependencia transitive).
-      pip-runtime:
-        patterns:
-          - "google-api-python-client"
-          - "google-auth"
-          - "google-auth-oauthlib"
-          - "requests"
-          - "Pillow"
-          - "filelock"
-      # Dependencias de dev/test (requirements-dev.txt) num PR separado do
-      # runtime - atualizar pytest/ruff/mypy nao deve misturar com mudancas
-      # que afetam requirements.txt em producao.
-      pip-dev:
-        patterns:
-          - "pytest"
-          - "pytest-cov"
-          - "pytest-xdist"
-          - "ruff"
-          - "pip-audit"
-          - "mypy"
-          - "types-requests"
-          - "bandit"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+    # Actions do projeto sao pinned por SHA de commit (supply-chain);
+    # dependabot propoe o bump do SHA nos PRs agrupados.
     open-pull-requests-limit: 5
     groups:
-      # Todas as actions (checkout, setup-python, cache, etc) num so PR -
-      # sao tipicamente minor versions de actions mantidas pelo GitHub e
-      # raramente quebram compatibilidade entre si.
       actions:
         patterns:
-          - "actions/*"
-          - "softprops/*"
+          - "*"
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 10
+    groups:
+      pip-deps:
+        patterns:
+          - "*"
