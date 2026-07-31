@@ -1,7 +1,7 @@
 """Testes unitários para video_builder.py."""
 import json
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, call, patch
 
 import pytest
 
@@ -193,9 +193,8 @@ class TestVideoBuilderUnits:
         assert final_cmd[final_cmd.index("-t") + 1] == "35"
 
     def test_multi_clip_short_picks_transition_from_curated_list(self, tmp_path):
-        """Cada video sorteia um estilo de transicao xfade (nao sempre
-        'fade') de video_builder._XFADE_TRANSITIONS, aplicado a todos os
-        cortes daquele video."""
+        """Cada corte (xfade) sorteia o proprio estilo de transicao de
+        video_builder._XFADE_TRANSITIONS (nao sempre 'fade')."""
         spec = video_builder.short_spec(duration=35)
         videos = [Path(f"video{i}.mp4") for i in range(3)]
 
@@ -212,10 +211,15 @@ class TestVideoBuilderUnits:
                 spec, videos, audio_path=None, output=tmp_path / "out.mp4", hook="hook",
             )
 
-        mock_choice.assert_called_once_with(video_builder._XFADE_TRANSITIONS)
+        # 3 clipes -> 2 cortes xfade, cada um sorteando a propria transicao.
+        assert mock_choice.call_count == 2
+        assert mock_choice.call_args_list == [
+            call(video_builder._XFADE_TRANSITIONS),
+            call(video_builder._XFADE_TRANSITIONS),
+        ]
         final_cmd = captured_cmds[-1]
         filter_complex = final_cmd[final_cmd.index("-filter_complex") + 1]
-        assert "xfade=transition=circleopen" in filter_complex
+        assert filter_complex.count("xfade=transition=circleopen") == 2
         assert "xfade=transition=fade" not in filter_complex
 
     def test_build_generates_both_thumbnail_variants_and_registers_list(self, tmp_path):

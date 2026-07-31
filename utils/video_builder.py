@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import random
 import subprocess
 import uuid
@@ -65,6 +66,31 @@ class VideoSpec:
 
 _HOOK_ENABLE_SECONDS = 3.0
 _HOOK_FADE_SECONDS = 0.35
+# Tamanho maximo do hook renderizado no video (drawtext quebra linhas acima
+# disso e passa por cima do box/cai da tela). Corta em 80 chars mantendo a
+# legibilidade; o hook CHEIO continua usado em titulo/descricao/legenda.
+_MAX_HOOK_CHARS = 80
+# Fade de audio em segundos no inicio/fim do video (evita estalo no corte
+# abrupto ao trocar de playlist, pratica padrao em Shorts).
+_AUDIO_FADE_SECONDS = 0.5
+
+# Raiz do projeto: base para tornar caminhos relativos nos metadados, para
+# o dashboard/artifacts do CI nao vazarem o layout local da maquina.
+ROOT = Path(__file__).resolve().parent.parent
+
+
+def _rel(path: Path) -> str:
+    """Caminho relativo ao ROOT (para os metadados publicados)."""
+    return os.path.relpath(path, ROOT)
+
+
+def _audio_fade_filter(duration: int) -> str:
+    """afade in/out no audio para evitar estalo nos cortes."""
+    fade_out_start = max(duration - _AUDIO_FADE_SECONDS, 0.1)
+    return (
+        f"afade=t=in:st=0:d={_AUDIO_FADE_SECONDS},"
+        f"afade=t=out:st={fade_out_start}:d={_AUDIO_FADE_SECONDS}"
+    )
 
 
 def _build_video_filter(spec: VideoSpec) -> str:
@@ -98,6 +124,14 @@ def _build_overlay_filter(hook: str, height: int) -> str:
     # Moment") faziam ~40-45% dos runs agendados falharem com "No such
     # filter: '0'" / "Filter not found".
     safe_hook = hook.replace("'", "'\\''")
+    # Alem das aspas simples, o drawtext expande %{...} (ex.: %{pts}) - um
+    # hook com '%' literal seria interpretado como expansao. Escapa como \%,
+    # que o parser do drawtext trata como porcento literal.
+    safe_hook = safe_hook.replace("%", r"\%")
+    # Corta hooks longos para o que cabe em ~1 linha no drawtext (o texto
+    # CHEIO vai em titulo/descricao/legenda, entao nada de conteudo se perde).
+    if len(safe_hook) > _MAX_HOOK_CHARS:
+        safe_hook = safe_hook[: _MAX_HOOK_CHARS - 1] + "…"
     fade = _HOOK_FADE_SECONDS
     hold_end = _HOOK_ENABLE_SECONDS - fade
     # Virgulas aqui NAO precisam de escape: o valor inteiro ja esta entre
@@ -182,7 +216,7 @@ def _build_single_clip_video(
     ]
     if audio_path:
         inputs += ["-stream_loop", "-1", "-i", str(audio_path)]
-        output_args += ["-map", "1:a:0", "-c:a", "aac", "-b:a", "192k"]
+        output_args += ["-map", "1:a:0", "-c:a", "aac", "-b:a", "192k", "-af", _audio_fade_filter(spec.duration)]
     run_ffmpeg(inputs + output_args + [str(output)])
 
 
@@ -202,9 +236,8 @@ def _build_multi_clip_short(
     """Gera um Short com 2-3 clipes e transicoes crossfade.
 
     Cada clipe e normalizado para o aspecto-alvo e concatenado com xfade.
-    Um estilo de transicao (`_XFADE_TRANSITIONS`) e sorteado por video e
-    aplicado a todos os cortes dele - consistente dentro do video, variado
-    entre videos, em vez de sempre "fade". A musica de jazz toca por toda a
+    Cada corte sorteia a propria transicao de `_XFADE_TRANSITIONS` (em vez
+    de um estilo fixo por video inteiro). A musica de jazz toca por toda a
     duracao total.
     """
     n_clips = min(len(videos), random.randint(2, 3))
@@ -243,15 +276,20 @@ def _build_multi_clip_short(
             run_ffmpeg(["-i", str(processed[0]), "-c", "copy", str(output)])
             return
 
-        transition = random.choice(_XFADE_TRANSITIONS)
+        # Cada corte sorteia a propria transicao xfade (em vez de um estilo
+        # fixo por video inteiro): mais variedade entre Shorts e o uso do
+        # FFmpeg "paga" visualmente em cada transicao.
         filter_parts: list[str] = []
         offsets: list[float] = []
+        chosen: list[str] = []
 
         prev_label = "0:v"
         for i in range(1, n_clips):
             offset = per_clip * i - xfade_duration * i
             offsets.append(offset)
             out_label = f"v{i}"
+            transition = random.choice(_XFADE_TRANSITIONS)
+            chosen.append(transition)
             filter_parts.append(
                 f"[{prev_label}][{i}:v]xfade=transition={transition}:duration={xfade_duration}:offset={offset}[{out_label}]"
             )
@@ -287,6 +325,7 @@ def _build_multi_clip_short(
         if audio_path:
             # Indice do audio = numero de clipes processados (videos 0..n-1, audio n).
             cmd_args += ["-map", f"{n_clips}:a:0", "-c:a", "aac", "-b:a", "192k"]
+            cmd_args += ["-af", _audio_fade_filter(spec.duration)]
 
         # -t sempre aplicado (nao so quando ha audio): sem ele, a duracao do
         # xfade final e sum(per_clip) - (n_clips-1)*xfade_duration, que fica
@@ -295,7 +334,7 @@ def _build_multi_clip_short(
         cmd_args += ["-t", str(spec.duration)]
 
         cmd_args += [str(output)]
-        log.info("Transicao xfade escolhida: %s (%d clipes)", transition, n_clips)
+        log.info("Transicoes xfade sorteadas: %s", chosen)
         run_ffmpeg(cmd_args)
     finally:
         # Limpa arquivos temporarios (sempre, mesmo em falha)
@@ -402,11 +441,14 @@ def build_pata_jazz_video(
         "mood": spec.mood,
         "duration": spec.duration,
         "resolution": f"{spec.width}x{spec.height}",
-        "video": str(output),
-        "thumbnail": str(thumb_primary),
+        # Caminhos relativos ao ROOT do projeto: os metadados vao parar no
+        # dashboard (git) e nos artifacts do CI, entao nao devem vazar o
+        # layout local da maquina de geracao.
+        "video": _rel(output),
+        "thumbnail": _rel(thumb_primary),
         "thumbnail_variant": primary_variant,
-        "thumbnails": generated,
-        "audio": str(audio_path) if audio_path else None,
+        "thumbnails": [_rel(Path(p)) for p in generated],
+        "audio": _rel(audio_path) if audio_path else None,
     }
     output.with_suffix(".json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
 
@@ -414,7 +456,7 @@ def build_pata_jazz_video(
     try:
         cap_content = generate_ass(hook, scene, spec.duration, emoji)
         cap_path = save_ass(cap_content, output)
-        meta["caption"] = str(cap_path)
+        meta["caption"] = _rel(cap_path)
 
         # 1.3 - Segunda caption track em PT-BR: multiplica alcance sem
         # regravar o video. YouTube aceita multiplas caption tracks.
@@ -422,7 +464,7 @@ def build_pata_jazz_video(
             from utils.caption_engine import generate_srt_pt, save_srt_pt
             pt_content = generate_srt_pt(hook, scene, spec.duration, emoji)
             pt_path = save_srt_pt(pt_content, output)
-            meta["caption_pt"] = str(pt_path)
+            meta["caption_pt"] = _rel(pt_path)
         except Exception as exc:
             log.warning("Falha ao gerar legenda PT: %s", exc)
 
