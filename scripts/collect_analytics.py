@@ -55,6 +55,12 @@ _MIN_TITLE_PATTERN_SAMPLES = 3
 _MIN_TITLE_PATTERN_WEIGHT = 0.3
 _MAX_TITLE_PATTERN_WEIGHT = 3.0
 
+# Metricas que alimentam os feedback loops de cena/title_pattern. Em vez de
+# views puras, usa "watch_time" (views x averageViewDuration): retencao e o
+# sinal #1 do algoritmo - um video que clica mas ninguem assiste nao deveria
+# ter o mesmo peso que um que retem. Sem dado de retencao, cai pra views.
+_RETENTION_SCORE_FIELD = "watch_time"
+
 # Detecao de virais: um video e "viral" se suas views ultrapassam
 # _VIRAL_THRESHOLD x a mediana de views do conjunto coletado. Esses sinais
 # alimentam viral_signals.json, lido por content_strategy.viral_boosted_scenes
@@ -265,6 +271,40 @@ def _save_video_tags(tags: dict) -> None:
             log.warning("Falha ao salvar video_tags: %s", exc)
 
 
+def _enrich_stats_with_retention(stats: list[dict], retention: dict[str, dict]) -> list[dict]:
+    """Mescla retencao/CTR (AVD/AVP/CTR do YouTube Analytics API) por
+    video_id em cada stat dict.
+
+    Retorna uma NOVA lista (nao muta a original), mesmo padrao de
+    _record_thumbnail_variant_in_stats. Videos sem dados de retention ficam
+    sem as chaves - os consumidores usam fallback (views puras), entao o
+    comportamento e identico ao legado quando a Analytics API nao esta
+    disponivel.
+    """
+    enriched: list[dict] = []
+    for video in stats:
+        metrics = retention.get(video["video_id"]) or {}
+        enriched.append({**video, **metrics})
+    return enriched
+
+
+def _performance_score(video: dict, score_field: str) -> float:
+    """Score de performance de um video para os feedback loops.
+
+    score_field="views": views puras (comportamento legado).
+    score_field="watch_time": views x averageViewDuration - o watch time
+    total, que e o que o algoritmo (e a elegibilidade YPP) medem de verdade.
+    Sem dado de retencao (averageViewDuration ausente), cai para views puras
+    - identico ao legado, sem penalizar videos de canal sem Analytics API.
+    """
+    views = _to_int(video.get("views"))
+    if score_field == "watch_time":
+        avd = video.get("averageViewDuration")
+        if isinstance(avd, (int, float)) and avd > 0:
+            return views * float(avd)
+    return float(views)
+
+
 def _median_views(stats: list[dict]) -> float:
     """Mediana de views do conjunto de videos coletados. Usada como baseline
     para decidir se um video esta 'abaixo da mediana' e merece rotacao de
@@ -284,6 +324,7 @@ def maybe_rotate_thumbnail(
     video_tags_entry: dict,
     *,
     median_views: float = 0.0,
+    median_ctr: float = 0.0,
     now: datetime | None = None,
 ) -> bool:
     """Rotaciona a thumbnail de um video pela sequencia A -> B -> C se o
@@ -298,8 +339,15 @@ def maybe_rotate_thumbnail(
     underperforming apos mais _THUMBNAIL_ROTATION_DAYS dias, troca para C
     (emoji gigante, hook truncado) e marca `thumbnail_variant: "C"`.
 
+    Dois sinais disparam a rotacao (basta um):
+    - views abaixo de _THUMBNAIL_ROTATION_THRESHOLD x a mediana de views;
+    - CTR abaixo do mesmo threshold x a mediana de CTR do canal (playbook
+      classico "high impressions, low CTR -> testar outra thumbnail"). O
+      sinal de CTR so conta com dado real (ctr > 0) e baseline (median_ctr
+      > 0), evitando rotacionar video alto so por falta de dados.
+
     Retorna True se trocou, False caso contrario (ja e C/ultima variante,
-    nao tem proxima variante, < N dias, ou views ainda acima do threshold).
+    nao tem proxima variante, < N dias, ou ainda acima dos thresholds).
     """
     current_variant = video_tags_entry.get("thumbnail_variant", "A")
     # Sequencia de rotacao A -> B -> C. Se ja estamos na ultima, nao rotaciona.
@@ -334,10 +382,13 @@ def maybe_rotate_thumbnail(
             if age < timedelta(days=_THUMBNAIL_ROTATION_DAYS):
                 return False
 
-    if median_views <= 0:
+    if median_views <= 0 and median_ctr <= 0:
         return False
     views = _to_int(video_tags_entry.get("views"))
-    if views >= median_views * _THUMBNAIL_ROTATION_THRESHOLD:
+    ctr = float(video_tags_entry.get("ctr") or 0)
+    below_median_views = median_views > 0 and views < median_views * _THUMBNAIL_ROTATION_THRESHOLD
+    below_median_ctr = median_ctr > 0 and ctr > 0 and ctr < median_ctr * _THUMBNAIL_ROTATION_THRESHOLD
+    if not (below_median_views or below_median_ctr):
         return False
 
     # A proxima thumbnail e a variante seguinte (index next_index).
@@ -360,9 +411,8 @@ def maybe_rotate_thumbnail(
         return False
 
     log.info(
-        "Thumbnail de %s rotacionada %s->%s (views=%d < %.1f%% da mediana %.0f).",
-        video_id, current_variant, next_variant, views,
-        _THUMBNAIL_ROTATION_THRESHOLD * 100, median_views,
+        "Thumbnail de %s rotacionada %s->%s (views=%d, ctr=%.2f - abaixo dos thresholds).",
+        video_id, current_variant, next_variant, views, ctr,
     )
     video_tags_entry["thumbnail_variant"] = next_variant
     video_tags_entry["rotated_at"] = now.isoformat()
@@ -389,16 +439,24 @@ def _load_title_pattern_performance() -> dict[str, float]:
 def _compute_weighted_performance(
     stats: list[dict], video_tags: dict, tag_key: str,
     min_samples: int, min_weight: float, max_weight: float,
+    score_field: str = "views",
 ) -> dict[str, float]:
     """Calcula um peso relativo por valor de tag_key (ex: 'scene' ou
-    'title_pattern' em video_tags.json) a partir das views reais coletadas.
+    'title_pattern' em video_tags.json) a partir do score real coletado.
 
     upload_youtube.py::_record_video_tags grava, por video_id, qual valor
-    gerou o video; aqui cruzamos isso com as views desse video_id pra saber
+    gerou o video; aqui cruzamos isso com o score desse video_id pra saber
     o que performa melhor que a media. video_tags so tem os uploads mais
     recentes (_MAX_VIDEO_TAGS), entao videos antigos sem tag no mapeamento
     sao ignorados no calculo - nao ha problema, o peso e so uma tendencia
     recente, nao um historico completo.
+
+    `score_field` escolhe qual metrica alimenta o loop:
+    - "views" (legado): views puras por video.
+    - "watch_time" (_RETENTION_SCORE_FIELD): views x averageViewDuration,
+      que premia retencao alem do alcance. Videos sem dado de retencao
+      entram com views puras (via _performance_score), entao canais sem
+      YouTube Analytics API continuam com o comportamento legado.
 
     Peso 1.0 = na media. >1.0 = performa acima da media (mais provavel de
     ser escolhido de volta). Limitado a [min_weight, max_weight] pra nunca
@@ -410,33 +468,33 @@ def _compute_weighted_performance(
     media simples com amostras pequenas - um viral isolado nao infla o
     peso de uma cena inconsistente.
     """
-    views_by_key: dict[str, list[int]] = {}
+    scores_by_key: dict[str, list[float]] = {}
     for video in stats:
         tag = video_tags.get(video["video_id"])
         key = tag.get(tag_key) if tag else ""
         if not key:
             continue
-        views_by_key.setdefault(key, []).append(video["views"])
+        scores_by_key.setdefault(key, []).append(_performance_score(video, score_field))
 
-    all_views = [v for views in views_by_key.values() for v in views]
-    if not all_views:
+    all_scores = [s for scores in scores_by_key.values() for s in scores]
+    if not all_scores:
         return {}
-    if sum(all_views) <= 0:
+    if sum(all_scores) <= 0:
         return {}
-    all_views_sorted = sorted(all_views)
-    mid = len(all_views_sorted) // 2
-    if len(all_views_sorted) % 2 == 1:
-        median: float = float(all_views_sorted[mid])
+    all_scores_sorted = sorted(all_scores)
+    mid = len(all_scores_sorted) // 2
+    if len(all_scores_sorted) % 2 == 1:
+        median: float = float(all_scores_sorted[mid])
     else:
-        median = (all_views_sorted[mid - 1] + all_views_sorted[mid]) / 2
+        median = (all_scores_sorted[mid - 1] + all_scores_sorted[mid]) / 2
 
     z = 1.96
     raw_lower_bounds: dict[str, float] = {}
-    for key, views in views_by_key.items():
-        n = len(views)
+    for key, scores in scores_by_key.items():
+        n = len(scores)
         if n < min_samples:
             continue
-        successes = sum(1 for v in views if v > median)
+        successes = sum(1 for s in scores if s > median)
         p = successes / n
         denom = 1 + z * z / n
         lower = (p + z * z / (2 * n) - z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n))) / denom
@@ -455,21 +513,30 @@ def _compute_weighted_performance(
 
 
 def _compute_scene_performance(stats: list[dict], video_tags: dict) -> dict[str, float]:
-    """Calcula um peso relativo por cena a partir das views reais coletadas
+    """Calcula um peso relativo por cena a partir do score real coletado
     (ver content_strategy.scene_for_mood). Generalizacao em
-    _compute_weighted_performance."""
+    _compute_weighted_performance.
+
+    Usa watch_time (views x retencao) em vez de views puras: a retencao e o
+    sinal #1 do algoritmo e o que separa alcance acidental de cena que o
+    publico realmente assiste."""
     return _compute_weighted_performance(
-        stats, video_tags, "scene", _MIN_SCENE_SAMPLES, _MIN_SCENE_WEIGHT, _MAX_SCENE_WEIGHT
+        stats, video_tags, "scene", _MIN_SCENE_SAMPLES, _MIN_SCENE_WEIGHT, _MAX_SCENE_WEIGHT,
+        score_field=_RETENTION_SCORE_FIELD,
     )
 
 
 def _compute_title_pattern_performance(stats: list[dict], video_tags: dict) -> dict[str, float]:
-    """Calcula um peso relativo por padrao de titulo a partir das views
-    reais coletadas (ver seo_keywords.pick_title_pattern). Generalizacao em
-    _compute_weighted_performance."""
+    """Calcula um peso relativo por padrao de titulo a partir do score real
+    coletado (ver seo_keywords.pick_title_pattern). Generalizacao em
+    _compute_weighted_performance.
+
+    Tambem usa watch_time: um padrao que clica mas nao retem deve ser
+    penalizado em favor do que o publico assiste ate o fim."""
     return _compute_weighted_performance(
         stats, video_tags, "title_pattern",
         _MIN_TITLE_PATTERN_SAMPLES, _MIN_TITLE_PATTERN_WEIGHT, _MAX_TITLE_PATTERN_WEIGHT,
+        score_field=_RETENTION_SCORE_FIELD,
     )
 
 
@@ -646,19 +713,16 @@ def main(argv: list[str] | None = None) -> int:
                  "deteccao de virais e rotacao de thumbnails.")
         return 0
 
-    scene_weights = _compute_scene_performance(stats, video_tags)
-    if scene_weights:
-        _update_scene_performance(scene_weights)
-
-    title_pattern_weights = _compute_title_pattern_performance(stats, video_tags)
-    if title_pattern_weights:
-        _update_title_pattern_performance(title_pattern_weights)
-
     # YouTube Analytics API: retencao (averageViewDuration /
-    # averageViewPercentage) e CTR. So roda em modo full (nao snapshot-only)
+    # averageViewPercentage) e CTR. Coletado ANTES de computar cena/title_pattern:
+    # em 2026 a retencao e o sinal #1 do algoritmo, e os dados precisam
+    # alimentar os feedback loops (score watch_time em _compute_scene_performance
+    # / _compute_title_pattern_performance) - antes eram coletados, gravados no
+    # relatorio e nunca lidos de volta. So roda em modo full (nao snapshot-only)
     # pois exige um service separado (youtubeAnalytics v2) e pode nao estar
-    # disponivel para todos os canais - em caso de erro, segue sem gravar o
-    # bloco retention_metrics (nao e fatal).
+    # disponivel para todos os canais - em caso de erro, segue sem o bloco
+    # retention_metrics (nao e fatal).
+    retention_by_id: dict[str, dict] = {}
     video_ids = [v["video_id"] for v in stats]
     try:
         analytics_service = get_youtube_analytics_service()
@@ -666,12 +730,22 @@ def main(argv: list[str] | None = None) -> int:
         log.warning("Analytics indisponivel (autenticacao): %s", exc)
         analytics_service = None
     if analytics_service is not None:
-        retention = _collect_retention_metrics(analytics_service, video_ids)
-        if retention:
-            report["retention_metrics"] = retention
+        retention_by_id = _collect_retention_metrics(analytics_service, video_ids)
+        if retention_by_id:
+            stats = _enrich_stats_with_retention(stats, retention_by_id)
+            report["all_videos"] = stats
+            report["retention_metrics"] = retention_by_id
             out_path.write_text(
                 json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
             )
+
+    scene_weights = _compute_scene_performance(stats, video_tags)
+    if scene_weights:
+        _update_scene_performance(scene_weights)
+
+    title_pattern_weights = _compute_title_pattern_performance(stats, video_tags)
+    if title_pattern_weights:
+        _update_title_pattern_performance(title_pattern_weights)
 
     # Detecao de virais: apos computar performance por cena/title_pattern,
     # identifica videos cujas views excedem _VIRAL_THRESHOLD x a mediana e
@@ -681,11 +755,14 @@ def main(argv: list[str] | None = None) -> int:
     _save_viral_signals(virals)
 
     # Thumbnail A/B/C rotation: videos elegiveis (>=2 variantes, >=7 dias desde
-    # o upload ou desde a ultima rotacao, abaixo da mediana) tem a thumbnail
-    # trocada para a proxima variante da sequencia A->B->C. So roda se houver
-    # videos com variantes registradas no video_tags; caso contrario e no-op.
+    # o upload ou desde a ultima rotacao, abaixo da mediana de views OU de CTR)
+    # tem a thumbnail trocada para a proxima variante da sequencia A->B->C. So
+    # roda se houver videos com variantes registradas no video_tags; caso
+    # contrario e no-op.
     views_by_id = {v["video_id"]: v["views"] for v in stats}
     median = _median_views(stats)
+    ctrs = [float(v.get("ctr") or 0) for v in stats if v.get("ctr")]
+    median_ctr = float(sorted(ctrs)[len(ctrs) // 2]) if ctrs else 0.0
     rotated_any = False
     for vid, entry in video_tags.items():
         if not isinstance(entry, dict):
@@ -693,7 +770,9 @@ def main(argv: list[str] | None = None) -> int:
         if len(entry.get("thumbnails") or []) < 2:
             continue
         entry_with_views = {**entry, "views": views_by_id.get(vid, 0)}
-        if maybe_rotate_thumbnail(service, vid, entry_with_views, median_views=median):
+        if vid in retention_by_id:
+            entry_with_views["ctr"] = retention_by_id[vid].get("ctr", 0)
+        if maybe_rotate_thumbnail(service, vid, entry_with_views, median_views=median, median_ctr=median_ctr):
             # entry_with_views e uma copia; atualiza a entrada real e persiste.
             entry["thumbnail_variant"] = entry_with_views.get("thumbnail_variant", "B")
             if "rotated_at" in entry_with_views:
