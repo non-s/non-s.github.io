@@ -40,6 +40,12 @@ sync (Pixabay/Jamendo) ─┐
 7. **Predict** (`scripts/predict_views.py`) treina um modelo de regressão linear
    sobre os dados históricos e grava `_data/view_predictor.json`, consumido pelo
    dashboard para projeção de views nos próximos slots de cron.
+8. **Engagement** (`scripts/respond_comments.py`) responde comentários do canal
+   com IA (canal vivo) e grava `_data/comments_responded.json` para anti-repeat.
+9. **Identidade** (`scripts/update_channel_identity.py`) rotaciona about/keywords
+   do canal por semana ISO (IA + fallback local) e grava `_data/identity.json`.
+10. **Long-form** (`scripts/generate_pata_jazz_long.py`) monta 1 vídeo
+    horizontal de 10-45min por semana (Loop & Relax) para watch time longo.
 
 ## Decisões de design
 
@@ -98,6 +104,24 @@ sync (Pixabay/Jamendo) ─┐
   `utils/youtube_retry.retry_youtube_call` registra automaticamente o custo por
   endpoint após sucesso — falhas de rede não gastam quota do lado do YouTube,
   então só conta após retry bem-sucedido.
+- **Humanização — canal "vivo"**: publicação sozinha não é um canal, é um feed.
+  Quatro unidades fazem a página e o canal reagirem como um criador real:
+  (1) **respostas a comentários** (`utils/comment_responder.py`) — IA com o
+  system prompt "pessoa real", no idioma do comentário, sem links, com rate-limit
+  por usuário/run; comentários são sinal de satisfação pro algoritmo; (2)
+  **end-card CTA de sessão** (`utils/video_builder._build_endcard_filter`) —
+  call-to-action ASCII rotativa nos últimos ~2s de cada vídeo pra encadear a
+  próxima sessão; (3) **identidade do canal viva** (`utils/channel_identity.py`)
+  — about/keywords rotacionados por semana ISO com IA + fallback local e trava
+  de 1x/semana via `_data/identity.json`; (4) **anti-repeat de títulos**
+  (`utils/seo_keywords.py` + `utils/metadata_engine.py`) — os últimos 60 títulos
+  ficam em `_data/used_titles.json` e o novo título é re-sorteado até 3x se
+  similar (Jaccard) demais ao histórico.
+- **Long-form Loop & Relax**: 24 Shorts/dia dão frequência mas sessão curta. O
+  gerador `scripts/generate_pata_jazz_long.py` monta 1 vídeo horizontal
+  (1920×1080) de 10-45min com clipes em `-stream_loop` até cobrir a duração,
+  crossfade lento 2.0s e jazz em loop — poucos uploads que rendem semanas de
+  watch time e buscam o público de relaxamento/sono (mood sempre `relax`).
 
 ## Componentes
 
@@ -109,6 +133,8 @@ sync (Pixabay/Jamendo) ─┐
 | `animal_branding.py` | Identidade Pata Jazz: detecção de animal, hook por cena, cena aleatória |
 | `caption_engine.py` | Legendas ASS animadas (overlay), legenda PT-BR e chapters via Gemini |
 | `channel_config.py` | Abstração multi-canal: `ChannelConfig`, registry `CHANNELS`, `active_channel` |
+| `channel_identity.py` | Identidade do canal viva: about/keywords rotacionados por semana ISO (IA + fallback) via `channels.update` |
+| `comment_responder.py` | Resposta automática a comentários: seleção anti-spam, IA "pessoa real", state + lock |
 | `content_strategy.py` | Mood por horário (BRT) + cena ponderada por performance real |
 | `ffmpeg_helpers.py` | Wrappers FFmpeg/ffprobe com timeout |
 | `log_config.py` | Logging centralizado + log de erros em `_videos/last_error.txt` |
@@ -133,11 +159,14 @@ sync (Pixabay/Jamendo) ─┐
 | `cleanup_youtube.py` | Remove do canal os vídeos legados de horizontal/live (uso pontual) |
 | `collect_analytics.py` | Coleta views/likes semanal; alimenta feedback loop (scene/title_pattern) |
 | `generate_dashboard.py` | Dashboard HTML autocontido a partir de `_data/` |
+| `generate_pata_jazz_long.py` | Long-form Loop & Relax (1920×1080, 10-45min, mood relax) |
 | `healthcheck.py` | Verifica dependências e tokens do ambiente |
 | `predict_views.py` | Treina regressão linear para prever views nos primeiros 7 dias |
 | `publish_weekly_batch.py` | Publica próximos N vídeos do lote semanal gerado |
+| `respond_comments.py` | Responde a comentários do canal (engajamento humano) |
 | `sync_animal_broll.py` | Sync Pixabay (clipes de gatos/cachorros) |
 | `sync_jazz_music.py` | Sync Jamendo (faixas jazz) |
+| `update_channel_identity.py` | Atualiza about/keywords do canal (identidade viva) |
 
 ### Geradores e upload (raiz)
 
@@ -155,8 +184,11 @@ sync (Pixabay/Jamendo) ─┐
 | `ci.yml` | `push`/`pull_request` em `main` | ruff, compile, pytest+cov, pip-audit, mypy (advisory), bandit |
 | `pata-jazz-shorts.yml` | cron horário (minuto 7, `7 * * * *` UTC) / manual | Gera e publica 1 Short no YouTube |
 | `cross-post.yml` | `workflow_run` (após `pata-jazz-shorts.yml`) / manual | Cross-posta o Short mais recente para TikTok e Reels |
+| `pata-jazz-engagement.yml` | cron horário (minuto 37, `37 * * * *` UTC) / manual | Responde a comentários do canal (canal vivo) |
 | `pata-jazz-sync.yml` | cron 2x/semana (Ter e Sex 06:00 UTC) / manual | Sync b-roll + jazz + evict caches antigos |
 | `pata-jazz-analytics.yml` | cron semanal Seg 06:00 UTC / manual | Coleta analytics, gera dashboard, publica no GitHub Pages |
+| `pata-jazz-long.yml` | cron semanal Dom 01:13 UTC / manual | Gera e publica 1 long-form Loop & Relax (10-45min) |
+| `pata-jazz-identity.yml` | cron semanal Seg 02:23 UTC / manual | Atualiza about/keywords do canal (identidade viva) |
 | `pata-jazz-batch.yml` | só manual (`workflow_dispatch`) | Gera N shorts em lote |
 | `pata-jazz-weekly.yml` | só manual (`all`/`generate`/`publish`) | Lote semanal: 35 shorts, publica 6/dia |
 | `cleanup-youtube.yml` | só manual (`workflow_dispatch`, `dry_run`) | Remove vídeos legados de horizontal/live do canal |
@@ -176,6 +208,9 @@ sync (Pixabay/Jamendo) ─┐
 | `analytics_history.json` | `scripts/collect_analytics.py` (snapshots semanais) | `scripts/generate_dashboard.py` | sim |
 | `view_predictor.json` | `scripts/predict_views.py` (modelo treinado) | `scripts/generate_dashboard.py`, `predict_views()` | sim |
 | `quota_usage.json` | `utils/quota_tracker.py` (via `youtube_retry`) | `utils/quota_tracker.log_final_total()` | sim |
+| `comments_responded.json` | `utils/comment_responder.py` (a cada resposta) | `utils/comment_responder.select_comments_to_reply()` (anti-repeat/rate-limit) | sim |
+| `used_titles.json` | `utils/seo_keywords.record_used_title()` (no upload) | `utils/seo_keywords.title_is_too_repetitive()` (anti-repeat de títulos) | sim |
+| `identity.json` | `utils/channel_identity.py` (a cada atualização) | `utils/channel_identity.run_identity_update()` (trava de 1x/semana) | sim |
 | `tiktok_posts.json` | `utils/tiktok_uploader._record_tiktok_post()` (a cada post publicado) | `scripts/generate_dashboard.py` (seção "Cross-posting TikTok") | sim |
 
 > **Nota sobre persistência entre runs:** os arquivos com lock (JSON de estado)

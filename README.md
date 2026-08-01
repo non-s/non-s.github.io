@@ -5,6 +5,7 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 ## Formato
 
 - **Shorts** (`generate_pata_jazz_short.py`) — vertical 1080×1920, ~35s, **2-3 clipes com crossfade + 1 música de jazz + text overlay do hook nos primeiros 3s**.
+- **Long-form Loop & Relax** (`scripts/generate_pata_jazz_long.py`) — horizontal 1920×1080, 10-45min, clipes em loop até cobrir a duração com crossfade lento 2.0s + jazz em loop — watch time longo que compensa a alta frequência de Shorts (1/semana).
 
 ## Plataformas
 
@@ -14,6 +15,10 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 
 ## Recursos inteligentes
 
+- **End-card CTA de sessão**: últimos ~2s de cada vídeo trazem uma call-to-action ASCII rotativa ("Keep the vibe going", "More calm here", etc.) com fade-in, incentivando a próxima sessão/short — engajamento encadeado em vez de vídeo morto
+- **Anti-repeat de títulos**: os últimos 60 títulos usados são guardados em `_data/used_titles.json`; antes de publicar, o título é checado por similaridade (Jaccard, ignorando palavras vazias da marca) e re-sorteado até 3x se estiver repetindo (`utils/seo_keywords.py` + `utils/metadata_engine.py`)
+- **Respostas automáticas a comentários**: `scripts/respond_comments.py` responde comentários do canal com IA (mesmo system prompt "pessoa real"), no idioma do comentário, sem links e com rate-limits por usuário/run — canal que responde gera mais engajamento real (`utils/comment_responder.py`, a cada hora)
+- **Identidade do canal viva**: `scripts/update_channel_identity.py` rotaciona o about (descrição) e as keywords do canal por semana ISO com IA + fallback local e trava de 1x/semana — a página do canal respira e não parece feed de bot (`utils/channel_identity.py`, semanal)
 - **Mood por horário**: Shorts selecionam cenas baseado na hora (manhã = diversão, tarde = fofura, noite = relax)
 - **Multi-clip com crossfade**: 2-3 clipes com transição suave em vez de 1 clipe repetido (validação automática garante que cada clipe é longo o suficiente para o xfade)
 - **Text overlay**: Hook aparece como texto no vídeo nos primeiros 3 segundos (drawtext FFmpeg)
@@ -76,17 +81,22 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 │   ├── cleanup_youtube.py                # Remove vídeos legados (horizontal/live) do canal
 │   ├── collect_analytics.py              # Coleta de métricas YouTube + feedback loop
 │   ├── generate_dashboard.py             # Dashboard HTML a partir de _data/
+│   ├── generate_pata_jazz_long.py        # Gerador do long-form Loop & Relax (10-45min)
 │   ├── healthcheck.py                    # Verifica dependências e tokens
 │   ├── predict_views.py                  # Analytics preditivo (regressão linear)
 │   ├── publish_weekly_batch.py           # Publica próximos N do lote semanal
+│   ├── respond_comments.py               # Respostas automáticas a comentários (canal vivo)
 │   ├── sync_animal_broll.py              # Sync Pixabay (gatos/cachorros)
-│   └── sync_jazz_music.py                # Sync Jamendo (jazz)
+│   ├── sync_jazz_music.py                # Sync Jamendo (jazz)
+│   └── update_channel_identity.py        # Atualizador de identidade do canal (about/keywords)
 ├── tests/                                # Testes pytest
 ├── utils/
 │   ├── ai_helper.py                      # Chamadas Gemini (circuit breaker + fallback)
 │   ├── animal_branding.py                # Identidade Pata Jazz
 │   ├── caption_engine.py                 # Legendas ASS animadas + PT-BR + chapters
 │   ├── channel_config.py                 # Abstração multi-canal (ChannelConfig + CHANNELS)
+│   ├── channel_identity.py               # Atualizador de identidade do canal (about/keywords semanais)
+│   ├── comment_responder.py              # Resposta automática a comentários (IA + fallback + lock)
 │   ├── content_strategy.py               # Mood por horário + cena ponderada por performance
 │   ├── ffmpeg_helpers.py                 # FFmpeg e ffprobe (com timeout)
 │   ├── log_config.py                     # Logging centralizado
@@ -206,6 +216,9 @@ rode o comando acima. Gera o mesmo `tiktok_state.json` de sempre.
 
 - `PATA_JAZZ_ENABLED` — `1` para ligar todos os workflows.
 - `PATA_JAZZ_SHORTS_ENABLED` — `1` para Shorts.
+- `PATA_JAZZ_COMMENTS_ENABLED` — `1` para respostas automáticas a comentários.
+- `PATA_JAZZ_LONG_ENABLED` — `1` para o long-form Loop & Relax semanal.
+- `PATA_JAZZ_IDENTITY_ENABLED` — `1` para o atualizador semanal de identidade do canal.
 - `YOUTUBE_PRIVACY` — `public`, `unlisted` ou `private`.
 
 ## Grade de publicação (GitHub Actions)
@@ -214,8 +227,11 @@ rode o comando acima. Gera o mesmo `tiktok_state.json` de sempre.
 |---|---|---|---|
 | **Shorts (YouTube)** | 1 por hora (24/dia) | minuto 7 de cada hora UTC | `pata-jazz-shorts.yml` |
 | **Cross-post (TikTok/Reels)** | Após cada Short publicado (1/hora, 24/dia) | — | `cross-post.yml` |
+| **Comentários (canal vivo)** | 1x por hora | minuto 37 de cada hora UTC | `pata-jazz-engagement.yml` |
 | **Sync de assets** | 2x por semana | Ter e Sex 03:00 | `pata-jazz-sync.yml` |
 | **Analytics** | 1x por semana | Segunda 03:00 | `pata-jazz-analytics.yml` |
+| **Long-form Loop & Relax** | 1x por semana | Domingo 01:13 | `pata-jazz-long.yml` |
+| **Identidade do canal** | 1x por semana | Segunda 02:23 | `pata-jazz-identity.yml` |
 | **Lote semanal** (manual/eventual) | Gera 35 shorts de uma vez, publica 6/dia até esgotar | só disparo manual (`action: all`/`generate`/`publish`) | `pata-jazz-weekly.yml` |
 
 **Total (crons horários):** 24 Shorts/dia × 7 = **168 vídeos/semana** no YouTube, cada um cross-postado para TikTok (e Reels, quando configurado). O lote semanal (`pata-jazz-weekly.yml`) é um mecanismo separado e não roda por padrão — só produz vídeos extras quando disparado manualmente com `action: all`/`generate`/`publish`.
