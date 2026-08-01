@@ -1197,3 +1197,254 @@ class TestSnapshotOnlyFlag:
         assert collect_analytics.main([]) == 0
         analytics = json.loads((tmp_path / "analytics.json").read_text())
         assert "retention_metrics" not in analytics
+
+
+class TestEnrichStatsWithRetention:
+    """_enrich_stats_with_retention: mescla os dados de retencao/CTR da
+    Analytics API de volta nos stats por video_id, sem mutar a lista original
+    (mesmo contrato de _record_thumbnail_variant_in_stats)."""
+
+    def _stat(self, video_id="v1", views=100):
+        return {"video_id": video_id, "views": views, "likes": 1, "comments": 0,
+                "title": "t", "published_at": "2026-01-01", "duration": "PT1M"}
+
+    def test_merges_retention_metrics_by_video_id(self):
+        stats = [self._stat("v1"), self._stat("v2")]
+        retention = {"v1": {"averageViewDuration": 60.0, "averageViewPercentage": 50.0, "ctr": 2.0}}
+
+        enriched = collect_analytics._enrich_stats_with_retention(stats, retention)
+
+        assert enriched[0]["averageViewDuration"] == 60.0
+        assert enriched[0]["ctr"] == 2.0
+        assert "averageViewDuration" not in enriched[1]
+
+    def test_does_not_mutate_original_list(self):
+        stats = [self._stat("v1")]
+        retention = {"v1": {"ctr": 3.0}}
+
+        enriched = collect_analytics._enrich_stats_with_retention(stats, retention)
+
+        assert enriched is not stats
+        assert "ctr" not in stats[0]
+        assert enriched[0]["views"] == 100
+
+    def test_empty_retention_returns_equivalent_videos(self):
+        stats = [self._stat("v1")]
+        enriched = collect_analytics._enrich_stats_with_retention(stats, {})
+
+        assert enriched == stats
+
+
+class TestPerformanceScore:
+    """_performance_score: score que alimenta os pesos de cena/title_pattern.
+    "views" e o legado; "watch_time" (views x averageViewDuration) premia
+    retencao e cai para views quando nao ha dado de retencao."""
+
+    def test_views_score_uses_pure_views(self):
+        video = {"video_id": "v1", "views": 500}
+        assert collect_analytics._performance_score(video, "views") == 500
+
+    def test_watch_time_multiplies_views_by_avg_duration(self):
+        video = {"video_id": "v1", "views": 500, "averageViewDuration": 60.0}
+        assert collect_analytics._performance_score(video, "watch_time") == 30000.0
+
+    def test_watch_time_falls_back_to_views_without_retention(self):
+        """Sem averageViewDuration (canal sem Analytics API), o score cai para
+        views puras - identico ao legado, nao penaliza canal sem dados."""
+        video = {"video_id": "v1", "views": 500}
+        assert collect_analytics._performance_score(video, "watch_time") == 500
+
+    def test_watch_time_ignores_zero_or_negative_avd(self):
+        for avd in (0, -1):
+            video = {"video_id": "v1", "views": 500, "averageViewDuration": avd}
+            assert collect_analytics._performance_score(video, "watch_time") == 500
+
+
+class TestScenePerformanceUsesRetention:
+    """Os feedback loops de cena/title_pattern agora pontuam por watch_time
+    (views x retencao), nao views puras - um video que clica mas nao retem
+    nao deve ter o mesmo peso que um que o publico assiste ate o fim."""
+
+    def _patch_run(self, monkeypatch, tmp_path):
+        """Patcha dependencias externas de main() pra um run em memoria."""
+        monkeypatch.setattr(collect_analytics, "DATA_DIR", tmp_path)
+        monkeypatch.setattr(collect_analytics, "HISTORY_FILE", tmp_path / "analytics_history.json")
+        monkeypatch.setattr(collect_analytics, "VIDEO_TAGS_FILE", tmp_path / "video_tags.json")
+        monkeypatch.setattr(collect_analytics, "SCENE_PERFORMANCE_FILE", tmp_path / "scene_perf.json")
+        monkeypatch.setattr(
+            collect_analytics, "TITLE_PATTERN_PERFORMANCE_FILE", tmp_path / "tp_perf.json"
+        )
+        monkeypatch.setattr(collect_analytics, "VIRAL_SIGNALS_FILE", tmp_path / "viral.json")
+        monkeypatch.setattr(collect_analytics, "get_youtube_service", lambda: MagicMock())
+        monkeypatch.setattr(collect_analytics, "get_youtube_analytics_service", lambda: MagicMock())
+
+    def _stats(self, views, avd_by_id):
+        stats = []
+        for vid, views_n in views.items():
+            video = {"video_id": vid, "views": views_n, "likes": 0, "comments": 0,
+                     "title": "t", "published_at": "2026-01-01", "duration": "PT1M"}
+            if vid in avd_by_id:
+                video["averageViewDuration"] = avd_by_id[vid]
+            stats.append(video)
+        return stats
+
+    def test_scene_weights_prefer_high_retention_over_high_views(self):
+        """Cena A: 3 videos com views altas mas retencao baixa (AVD 5s).
+        Cena B: 3 videos com views baixas mas retencao alta (AVD 120s).
+        Em views puras, A ganharia; em watch_time, B domina o score."""
+        video_tags = {f"v{i}": {"scene": "a"} for i in range(1, 4)}
+        video_tags.update({f"v{i}": {"scene": "b"} for i in range(4, 7)})
+        stats = self._stats(
+            {"v1": 1000, "v2": 1000, "v3": 1000, "v4": 100, "v5": 100, "v6": 100},
+            {"v1": 5, "v2": 5, "v3": 5, "v4": 120, "v5": 120, "v6": 120},
+        )
+
+        weights = collect_analytics._compute_scene_performance(stats, video_tags)
+
+        assert weights["a"] < weights["b"]
+
+    def test_scene_weights_fall_back_to_views_when_no_retention_data(self):
+        """Sem averageViewDuration, o comportamento e identico ao legado
+        (score por views puras)."""
+        video_tags = {f"v{i}": {"scene": "a"} for i in range(1, 4)}
+        video_tags.update({f"v{i}": {"scene": "b"} for i in range(4, 7)})
+        stats = self._stats(
+            {"v1": 1000, "v2": 1000, "v3": 1000, "v4": 100, "v5": 100, "v6": 100},
+            {},
+        )
+
+        weights = collect_analytics._compute_scene_performance(stats, video_tags)
+
+        assert weights["a"] > weights["b"]
+
+    def test_full_run_enriches_stats_before_computing_weights(self, tmp_path, monkeypatch):
+        """No main(), a retencao e coletada ANTES dos pesos: os stats que
+        alimentam _compute_scene_performance ja carregam averageViewDuration
+        mesclado (era coletado depois e nunca lido de volta)."""
+        self._patch_run(monkeypatch, tmp_path)
+        stats = [{"video_id": f"v{i}", "views": 100, "likes": 0, "comments": 0,
+                  "title": "t", "published_at": "2026-01-01", "duration": "PT1M"}
+                 for i in range(3)]
+        monkeypatch.setattr(collect_analytics, "collect_video_stats",
+                            lambda service: (stats, {"subscriber_count": 10}))
+        (tmp_path / "video_tags.json").write_text(
+            json.dumps({f"v{i}": {"scene": "cat", "title_pattern": "p"} for i in range(3)}),
+            encoding="utf-8",
+        )
+        monkeypatch.setattr(collect_analytics, "get_youtube_analytics_service", lambda: MagicMock())
+        monkeypatch.setattr(
+            collect_analytics, "_collect_retention_metrics",
+            lambda service, ids: {f"v{i}": {"averageViewDuration": 90.0,
+                                            "averageViewPercentage": 50.0, "ctr": 2.0}
+                                  for i in range(3)},
+        )
+        seen = {}
+
+        def _spy(stats_seen, video_tags_seen):
+            seen["stats"] = stats_seen
+            return {}
+
+        monkeypatch.setattr(collect_analytics, "_compute_scene_performance", _spy)
+
+        collect_analytics.main([])
+
+        assert seen["stats"][0]["averageViewDuration"] == 90.0
+
+
+class TestThumbnailRotationByCtr:
+    """maybe_rotate_thumbnail agora rotaciona tambem quando o CTR esta abaixo
+    da mediana (playbook "high impressions, low CTR -> testar outra
+    thumbnail"), mesmo com views medianas. O sinal so conta com dado real
+    (ctr > 0) e baseline (median_ctr > 0)."""
+
+    def _entry(self, *, uploaded_at, views, thumbnails, variant="A", ctr=0.0):
+        return {
+            "scene": "cat",
+            "thumbnails": thumbnails,
+            "thumbnail_variant": variant,
+            "uploaded_at": uploaded_at,
+            "views": views,
+            "ctr": ctr,
+        }
+
+    def _thumb_paths(self, tmp_path, *, count=2):
+        paths = []
+        for label in ("a", "b")[:count]:
+            p = tmp_path / f"thumb_{label}.png"
+            p.write_bytes(f"png-{label}".encode())
+            paths.append(str(p))
+        return paths
+
+    def test_rotates_when_ctr_below_median_even_with_median_views(self, tmp_path):
+        a, b = self._thumb_paths(tmp_path)
+        now = datetime.now(UTC)
+        uploaded = (now - timedelta(days=30)).isoformat()
+        entry = self._entry(uploaded_at=uploaded, views=1000, thumbnails=[a, b], ctr=0.5)
+        service = MagicMock()
+
+        with patch("scripts.collect_analytics._retry_youtube_call", side_effect=lambda f: f()):
+            rotated = collect_analytics.maybe_rotate_thumbnail(
+                service, "vid1", entry, median_views=1000, median_ctr=3.0, now=now
+            )
+
+        assert rotated is True
+        assert entry["thumbnail_variant"] == "B"
+
+    def test_no_rotation_when_ctr_at_median(self, tmp_path):
+        a, b = self._thumb_paths(tmp_path)
+        now = datetime.now(UTC)
+        uploaded = (now - timedelta(days=30)).isoformat()
+        entry = self._entry(uploaded_at=uploaded, views=1000, thumbnails=[a, b], ctr=3.5)
+        service = MagicMock()
+
+        rotated = collect_analytics.maybe_rotate_thumbnail(
+            service, "vid1", entry, median_views=1000, median_ctr=3.0, now=now
+        )
+
+        assert rotated is False
+        service.thumbnails().set.assert_not_called()
+
+    def test_no_rotation_when_ctr_missing_or_zero(self, tmp_path):
+        """Sem CTR real, o sinal nao conta: um video com views medianas nao
+        rotaciona por causa de falta de dados."""
+        a, b = self._thumb_paths(tmp_path)
+        now = datetime.now(UTC)
+        uploaded = (now - timedelta(days=30)).isoformat()
+        entry = self._entry(uploaded_at=uploaded, views=1000, thumbnails=[a, b], ctr=0.0)
+        service = MagicMock()
+
+        rotated = collect_analytics.maybe_rotate_thumbnail(
+            service, "vid1", entry, median_views=1000, median_ctr=3.0, now=now
+        )
+
+        assert rotated is False
+        service.thumbnails().set.assert_not_called()
+
+    def test_no_rotation_when_median_ctr_unavailable(self, tmp_path):
+        a, b = self._thumb_paths(tmp_path)
+        now = datetime.now(UTC)
+        uploaded = (now - timedelta(days=30)).isoformat()
+        entry = self._entry(uploaded_at=uploaded, views=1000, thumbnails=[a, b], ctr=0.5)
+        service = MagicMock()
+
+        rotated = collect_analytics.maybe_rotate_thumbnail(
+            service, "vid1", entry, median_views=1000, median_ctr=0.0, now=now
+        )
+
+        assert rotated is False
+        service.thumbnails().set.assert_not_called()
+
+    def test_rotates_when_both_signals_below_median(self, tmp_path):
+        a, b = self._thumb_paths(tmp_path)
+        now = datetime.now(UTC)
+        uploaded = (now - timedelta(days=30)).isoformat()
+        entry = self._entry(uploaded_at=uploaded, views=1, thumbnails=[a, b], ctr=0.2)
+        service = MagicMock()
+
+        with patch("scripts.collect_analytics._retry_youtube_call", side_effect=lambda f: f()):
+            rotated = collect_analytics.maybe_rotate_thumbnail(
+                service, "vid1", entry, median_views=1000, median_ctr=3.0, now=now
+            )
+
+        assert rotated is True
+        assert entry["thumbnail_variant"] == "B"
