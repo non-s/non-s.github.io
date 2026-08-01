@@ -1,0 +1,48 @@
+name: "Pata Jazz - Identidade do canal"
+
+on:
+  schedule:
+    # 1x por semana (segunda 02:23). Mantém o about/keywords do canal vivos:
+    # descrição rotacionada por semana ISO e keywords frescas, para a página
+    # não parecer um feed de bot. Custo de quota mínimo (1 list + 1 update).
+    - cron: "23 2 * * 1"
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Motivo do disparo manual"
+        required: false
+        default: "manual"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pata-jazz-identity
+  cancel-in-progress: false
+
+jobs:
+  update-identity:
+    name: "Atualizar about/keywords do canal"
+    if: ${{ vars.PATA_JAZZ_ENABLED == '1' && vars.PATA_JAZZ_IDENTITY_ENABLED == '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: "Setup"
+        uses: ./.github/actions/setup-env
+      - name: "Restaurar token e caches"
+        uses: ./.github/actions/restore-token-and-cache
+        with:
+          youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
+      - name: "Healthcheck (pre-flight)"
+        run: python scripts/healthcheck.py --mode fast
+      - name: "Atualizar identidade do canal"
+        run: python scripts/update_channel_identity.py
+      - name: "Apagar token"
+        if: always()
+        run: rm -f youtube_token.json
