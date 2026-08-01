@@ -49,6 +49,43 @@ class TestBuildOverlayFilter:
             assert 1920 - 350 - 40 <= y <= 1920 - 350 + 40
 
 
+class TestBuildEndcardFilter:
+    """Testes para o end-card CTA (session/loop) via drawtext."""
+
+    def test_uses_drawtext(self):
+        result = video_builder._build_endcard_filter(1920, 30)
+        assert result.startswith("drawtext=")
+
+    def test_text_from_cta_rotation(self):
+        result = video_builder._build_endcard_filter(1920, 30)
+        assert any(f"text='{cta}'" in result for cta in video_builder._ENDCARD_CTAS)
+
+    def test_enable_window_uses_last_seconds(self):
+        result = video_builder._build_endcard_filter(1080, 60)
+        # CTA aparece nos ultimos ~2.2s: enable gte(t, 57.8)
+        assert "enable='gte(t,57.8" in result
+
+    def test_bold_font_escaped(self):
+        result = video_builder._build_endcard_filter(1920, 30)
+        assert "font='Arial\\:style=Bold'" in result
+
+    def test_has_background_box_for_legibility(self):
+        result = video_builder._build_endcard_filter(1920, 30)
+        assert "box=1" in result
+        assert "boxcolor=black@0.35" in result
+
+    def test_rejects_duration_shorter_than_cta(self):
+        with pytest.raises(ValueError, match="End-card exige duração"):
+            video_builder._build_endcard_filter(1920, 1)
+
+    def test_any_cta_escaped_properly(self):
+        for _ in range(50):
+            result = video_builder._build_endcard_filter(1920, 30)
+            # text='<cta>' fechado corretamente (sem caracteres que quebrem as aspas)
+            assert "'\">" not in result
+            assert "text='" in result
+
+
 class TestVideoBuilderUnits:
     """Testes unitários para video_builder."""
 
@@ -212,7 +249,12 @@ class TestVideoBuilderUnits:
                 spec, videos, audio_path=None, output=tmp_path / "out.mp4", hook="hook",
             )
 
-        mock_choice.assert_called_once_with(video_builder._XFADE_TRANSITIONS)
+        # O end-card CTA tambem sorteia via random.choice (a partir desta
+        # feature) - o importante e que a transicao xfade tenha sido
+        # sorteada da lista curada pelo menos uma vez.
+        assert video_builder._XFADE_TRANSITIONS in [
+            call.args[0] for call in mock_choice.call_args_list
+        ]
         final_cmd = captured_cmds[-1]
         filter_complex = final_cmd[final_cmd.index("-filter_complex") + 1]
         assert "xfade=transition=circleopen" in filter_complex

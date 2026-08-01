@@ -23,7 +23,7 @@ from pathlib import Path
 
 import pytest
 
-from utils.video_builder import _build_overlay_filter
+from utils.video_builder import _build_endcard_filter, _build_overlay_filter
 
 pytestmark = pytest.mark.skipif(shutil.which("ffmpeg") is None, reason="ffmpeg nao instalado")
 
@@ -70,5 +70,24 @@ class TestBuildOverlayFilterAgainstRealFfmpeg:
         estar escapado como '\\:' mesmo dentro das aspas simples."""
         vf = _build_overlay_filter("hello", 1920)
         assert "font='Arial\\:style=Bold'" in vf
+        result = _render_with_filter(vf)
+        assert result.returncode == 0, result.stderr
+
+
+class TestBuildEndcardFilterAgainstRealFfmpeg:
+    def test_endcard_renders_without_error(self):
+        vf = _build_endcard_filter(1080, 60)
+        result = _render_with_filter(vf)
+        assert result.returncode == 0, result.stderr
+
+    def test_endcard_escaped_font_renders_without_error(self):
+        vf = _build_endcard_filter(1080, 60)
+        assert "font='Arial\\:style=Bold'" in vf
+        result = _render_with_filter(vf)
+        assert result.returncode == 0, result.stderr
+
+    def test_endcard_enable_window_is_valid(self):
+        vf = _build_endcard_filter(1080, 60)
+        assert "enable='gte(t," in vf
         result = _render_with_filter(vf)
         assert result.returncode == 0, result.stderr

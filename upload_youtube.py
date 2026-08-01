@@ -104,6 +104,7 @@ def _record_video_tags(video_id: str, meta: dict) -> None:
             "hook": meta.get("hook", ""),
             "mood": meta.get("mood", ""),
             "kind": meta.get("kind", ""),
+            "title": meta.get("title", ""),
             "title_pattern": meta.get("title_pattern", ""),
             "uploaded_at": datetime.now(UTC).isoformat(),
             "thumbnails": meta.get("thumbnails", []),

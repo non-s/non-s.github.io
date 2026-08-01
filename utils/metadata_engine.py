@@ -18,6 +18,7 @@ from utils.seo_keywords import (
     generate_title_with_pattern,
     music_style_for_mood,
     optimize_for_search,
+    title_is_too_repetitive,
 )
 
 log = logging.getLogger(__name__)
@@ -153,6 +154,33 @@ def generate_metadata(
                 hashtags = list(dict.fromkeys(ai_hashtags + hashtags))[:_MAX_HASHTAGS]
         except Exception:
             log.warning("Falha ao parsear metadata JSON; usando fallback otimizado.")
+
+    # Anti-repeat: títulos quase-duplicados dos recentes denunciam conteudo
+    # em massa ("mesmo video de novo") e afastam o publico. Checado no titulo
+    # "core" ANTES da otimizacao de busca: o sufixo SEO ("- relaxing jazz for
+    # cats") e identico em muitos videos e nao e repeticao de verdade. Se o
+    # core colidir com um recente (used_titles.json), re-sorteia o padrao ate
+    # 3x sem gastar outra chamada de IA (os padroes ja tem variedade).
+    if title_is_too_repetitive(title):
+        for _attempt in range(3):
+            title2, pat2 = generate_title_with_pattern(
+                animal=animal,
+                acao=acao,
+                estilo_musical=estilo_musical,
+                kind=kind,
+                emoji=emoji,
+                duracao=round(duration / 60) if kind != "short" else None,
+            )
+            if not title_is_too_repetitive(title2):
+                title = title2
+                title_pattern = pat2
+                break
+        else:
+            log.warning(
+                "Anti-repeat: 3 re-sorteios ainda colidem com titulos recentes; "
+                "mantendo %r (best-effort).",
+                title,
+            )
 
     # Otimização final para busca
     title, description = optimize_for_search(title, description)

@@ -147,4 +147,48 @@ class TestMetadataEngine:
             fallback_description="Cute cat video with jazz. #PataJazz",
         )
 
+
+class TestTitleAntiRepeatMetadata:
+    """Anti-repeat dentro do gerador: se o titulo final colidir com um recente
+    (used_titles.json), generate_metadata re-sorteia o padrao ate 3x."""
+
+    def test_repetitive_title_is_rerolled(self, tmp_path, monkeypatch):
+        import random
+
+        import utils.seo_keywords as seo_keywords
+
+        used_file = tmp_path / "used_titles.json"
+        monkeypatch.setattr(seo_keywords, "_title_used_file", lambda: used_file)
+
+        # Forca a IA a devolver SEMPRE o mesmo titulo -> sem o anti-repeat,
+        # tudo colidiria com o historico.
+        monkeypatch.setattr(
+            metadata_engine,
+            "ai_text",
+            lambda *a, **kw: json.dumps({
+                "title": "Pata Jazz | Cat Sleeping With Jazz",
+                "description": "Relaxing video. #PataJazz",
+                "hashtags": [],
+            }),
+        )
+        # Fixa o random do padrao para ter variacao deterministica.
+        monkeypatch.setattr(random, "choice", lambda seq: seq[0])
+        monkeypatch.setattr(random, "choices", lambda *a, **kw: [kw.get("choices", a[0])[0]])
+
+        used_file.write_text(
+            json.dumps(["Pata Jazz | Cat Sleeping With Jazz"]), encoding="utf-8"
+        )
+
+        metadata = metadata_engine.generate_metadata(
+            hook="Cat sleeping",
+            scene="cat",
+            duration=25,
+            kind="short",
+            emoji="🐱",
+        )
+
+        # O anti-repeat trocou o padrao para nao repetir o titulo do historico.
+        assert metadata["title"] != "Pata Jazz | Cat Sleeping With Jazz"
+        assert metadata["title"].startswith("Pata Jazz |")
+
         assert "system prompt" not in metadata["description"].lower()

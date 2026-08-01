@@ -17,8 +17,83 @@ from typing import Literal
 
 from utils.channel_config import active_channel
 from utils.paths import data_dir
+from utils.state_lock import state_lock
 
 log = logging.getLogger(__name__)
+
+
+def _title_used_file() -> Path:
+    """Caminho de used_titles.json no diretorio do canal ativo."""
+    return data_dir() / "used_titles.json"
+
+
+# Tamanho do historico de titulos usado para o anti-repeat.
+_USED_TITLES_MAX = 60
+
+
+def record_used_title(title: str) -> None:
+    """Persiste um titulo ja usado (list, mais recente primeiro).
+
+    Escrito pelos geradores logo apos gravar o metadata e pelos uploads
+    quando um video e publicado. Com lock, como os outros JSON de _data.
+    Best-effort: falha de I/O loga e nao derruba o gerador.
+    """
+    if not title:
+        return
+    used_file = _title_used_file()
+    with state_lock(used_file):
+        try:
+            data = json.loads(used_file.read_text(encoding="utf-8"))
+            if not isinstance(data, list):
+                data = []
+        except Exception:
+            data = []
+        data = [title, *(t for t in data if t != title)][:_USED_TITLES_MAX]
+        try:
+            used_file.parent.mkdir(parents=True, exist_ok=True)
+            used_file.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+        except Exception as exc:
+            log.warning("Falha ao salvar used_titles.json: %s", exc)
+
+
+def recent_titles() -> list[str]:
+    """Titulos recentes ja usados (mais recente primeiro). Ausente/corrompido = []."""
+    try:
+        data = json.loads(_title_used_file().read_text(encoding="utf-8"))
+        return [t for t in data if isinstance(t, str)] if isinstance(data, list) else []
+    except Exception as exc:
+        log.debug("used_titles.json ausente/corrompido: %s", exc)
+        return []
+
+
+# Palavras de marca/constantes que todo titulo carrega ("Pata Jazz"). Como
+# aparecem em 100% dos titulos, nao discriminam nada e so inflariam a
+# similaridade; sao ignoradas no anti-repeat.
+_TITLE_STOP_WORDS = frozenset({"pata", "jazz"})
+
+
+def title_similarity(a: str, b: str) -> float:
+    """Similaridade de Jaccard das palavras (alfanumericas) de dois titulos.
+
+    1.0 = mesmas palavras; 0.0 = nenhuma palavra em comum. As mesmas palavras
+    em outra ordem contam como repeticao (o que, no feed, parece "mesmo video
+    de novo"). Ignora as palavras de marca (Pata/Jazz), constantes em todos.
+    """
+    words_a = {w for w in a.lower().split() if w.isalnum() and w not in _TITLE_STOP_WORDS}
+    words_b = {w for w in b.lower().split() if w.isalnum() and w not in _TITLE_STOP_WORDS}
+    if not words_a or not words_b:
+        return 0.0
+    return len(words_a & words_b) / max(len(words_a), len(words_b))
+
+
+def title_is_too_repetitive(title: str, threshold: float = 0.78) -> bool:
+    """True se o titulo e quase-duplicado de algum recente (anti-repeat).
+
+    Titulos identicos/near-duplicados sao um dos sinais de conteudo em
+    massa que o YouTube penaliza e faz o publico sentir "mesma coisa de
+    sempre". O gerador usa isso para trocar de padrao antes de gravar.
+    """
+    return any(title_similarity(title, t) > threshold for t in recent_titles())
 
 
 def _title_pattern_performance_file() -> Path:

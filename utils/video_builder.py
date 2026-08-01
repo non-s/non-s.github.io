@@ -136,6 +136,46 @@ def _build_overlay_filter(hook: str, height: int) -> str:
     )
 
 
+_ENDCARD_SECONDS = 2.2
+_ENDCARD_CTAS = [
+    "subscribe for more cuteness",
+    "more pets + jazz coming up",
+    "follow for your daily pet fix",
+    "catch the next one soon",
+]
+
+
+def _build_endcard_filter(height: int, duration: int) -> str:
+    """Constrói filtro drawtext de end-card: um CTA curto no fim do vídeo.
+
+    Session/loop: um chamado à ação no fim incentiva quem ficou até aqui a
+    se inscrever ou procurar o próximo vídeo - aumenta sessao e inscritos
+    (o CTA funciona porque já houve retenção). Texto ASCII (sem emoji, que
+    depende de fonte) rotativo entre vídeos para nao parecer template.
+    """
+    if duration <= _ENDCARD_SECONDS:
+        raise ValueError("End-card exige duração maior que o próprio CTA.")
+    safe = random.choice(_ENDCARD_CTAS).replace("'", "'\\''")
+    start = float(duration) - _ENDCARD_SECONDS
+    fade = 0.25
+    # Fade-in curto ao entrar; sem fade-out (o vídeo acaba logo depois).
+    alpha_expr = (
+        f"if(lt(t,{start + fade}),(t-{start})/{fade},1)"
+    )
+    y_pos = height - 300
+    return (
+        f"drawtext=text='{safe}'"
+        f":font='Arial\\:style=Bold'"
+        f":fontsize=42"
+        f":fontcolor=white"
+        f":shadowcolor=black:shadowx=2:shadowy=2"
+        f":box=1:boxcolor=black@0.35:boxborderw=14"
+        f":x=(w-text_w)/2:y={y_pos}"
+        f":alpha='{alpha_expr}'"
+        f":enable='gte(t,{start})'"
+    )
+
+
 def _prepare_output_paths(stem_prefix: str, output_dir: Path, thumb_dir: Path) -> tuple[Path, Path, str]:
     """Cria diretórios e retorna (video_path, thumb_path, stem).
 
@@ -169,6 +209,8 @@ def _build_single_clip_video(
     vf = _build_video_filter(spec)
     if hook:
         vf = f"{vf},{_build_overlay_filter(hook, spec.height)}"
+    if spec.duration > _ENDCARD_SECONDS:
+        vf = f"{vf},{_build_endcard_filter(spec.height, spec.duration)}"
     output_args: list[str] = [
         "-map", "0:v:0",
         "-vf", vf,
@@ -264,6 +306,14 @@ def _build_multi_clip_short(
                 f"[{prev_label}]{_build_overlay_filter(hook, spec.height)}[{overlay_label}]"
             )
             prev_label = overlay_label
+
+        # End-card CTA no fim do vídeo (session/loop)
+        if spec.duration > _ENDCARD_SECONDS:
+            endcard_label = "vend"
+            filter_parts.append(
+                f"[{prev_label}]{_build_endcard_filter(spec.height, spec.duration)}[{endcard_label}]"
+            )
+            prev_label = endcard_label
 
         inputs: list[str] = []
         for p in processed:
@@ -444,6 +494,16 @@ def build_pata_jazz_video(
         output.with_suffix(".json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
     except Exception as exc:
         log.warning("Falha ao gerar legenda: %s", exc)
+
+    # Anti-repeat: registra o titulo no historico assim que o metadata e
+    # gravado - impede colisoes dentro do mesmo batch e em geracoes futuras.
+    # Tambem serve de fonte para o gerador de longform nao repetir shorts.
+    try:
+        from utils.seo_keywords import record_used_title
+
+        record_used_title(meta["title"])
+    except Exception as exc:
+        log.warning("Falha ao registrar titulo usado: %s", exc)
 
     # expect_audio=False quando o pool de jazz estava vazio (audio_path is
     # None): sem isso a validacao sempre exige audio e derruba a geracao

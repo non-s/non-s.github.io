@@ -391,3 +391,66 @@ class TestIntegration:
         final_title, final_desc = optimize_for_search(title, description)
         assert len(final_title) <= 100
         assert "#PataJazz" in final_desc or "Pata Jazz" in final_desc
+
+
+class TestTitleAntiRepeat:
+    """Anti-repeat de titulos: near-duplicados dos recentes denunciam
+    conteudo em massa ("mesmo video de novo") e afastam o publico. O gerador
+    usa used_titles.json para trocar de padrao antes de gravar."""
+
+    def _isolate(self, tmp_path, monkeypatch):
+        used_file = tmp_path / "used_titles.json"
+        monkeypatch.setattr(seo_keywords, "_title_used_file", lambda: used_file)
+        return used_file
+
+    def test_similarity_same_words_reordered_is_one(self):
+        assert seo_keywords.title_similarity(
+            "Gato Dormindo Com Jazz",
+            "Com Jazz Gato Dormindo",
+        ) == 1.0
+
+    def test_similarity_shared_words(self):
+        sim = seo_keywords.title_similarity(
+            "Gato Dormindo Com Jazz",
+            "Gato Brincando Com Jazz",
+        )
+        assert 0.5 < sim < 1.0
+
+    def test_similarity_disjoint_is_zero(self):
+        assert seo_keywords.title_similarity("Gato Jazz", "Cachorro Forro") == 0.0
+
+    def test_no_history_never_repetitive(self, tmp_path, monkeypatch):
+        self._isolate(tmp_path, monkeypatch)
+        assert not seo_keywords.title_is_too_repetitive("Gato Dormindo Com Jazz")
+
+    def test_repetitive_when_near_duplicate_in_history(self, tmp_path, monkeypatch):
+        used_file = self._isolate(tmp_path, monkeypatch)
+        used_file.write_text(json.dumps(["Gato Dormindo Com Jazz"]), encoding="utf-8")
+        assert seo_keywords.title_is_too_repetitive("Com Jazz Gato Dormindo")
+
+    def test_distinct_title_not_repetitive(self, tmp_path, monkeypatch):
+        used_file = self._isolate(tmp_path, monkeypatch)
+        used_file.write_text(json.dumps(["Gato Dormindo Com Jazz"]), encoding="utf-8")
+        assert not seo_keywords.title_is_too_repetitive("Cachorro Dançando Rock")
+
+    def test_record_used_title_persists_and_dedupes(self, tmp_path, monkeypatch):
+        used_file = self._isolate(tmp_path, monkeypatch)
+        seo_keywords.record_used_title("Título Um")
+        seo_keywords.record_used_title("Título Dois")
+        seo_keywords.record_used_title("Título Um")
+        data = json.loads(used_file.read_text(encoding="utf-8"))
+        assert data == ["Título Um", "Título Dois"]
+
+    def test_record_caps_history_size(self, tmp_path, monkeypatch):
+        used_file = self._isolate(tmp_path, monkeypatch)
+        for i in range(80):
+            seo_keywords.record_used_title(f"Título {i}")
+        data = json.loads(used_file.read_text(encoding="utf-8"))
+        assert len(data) == 60
+        assert "Título 0" not in data
+
+    def test_corrupted_history_is_empty(self, tmp_path, monkeypatch):
+        used_file = self._isolate(tmp_path, monkeypatch)
+        used_file.write_text("not json", encoding="utf-8")
+        assert seo_keywords.recent_titles() == []
+        assert not seo_keywords.title_is_too_repetitive("Qualquer Título")
