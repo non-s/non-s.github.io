@@ -205,6 +205,32 @@ class TestVideoBuilderUnits:
 
         assert captured["kwargs"].get("expect_audio") is False
 
+    def test_build_long_routes_to_loop_relax_builder(self, tmp_path):
+        """Long-form (kind='long') usa o montador de loop com crossfade lento
+        em vez do montador de Shorts."""
+        spec = video_builder.long_spec(duration=600)
+        with patch("utils.video_builder.ensure_dirs"), \
+             patch("utils.video_builder._validate_source_pools"), \
+             patch("utils.video_builder.random_scene", return_value="scene"), \
+             patch("utils.video_builder.hook_for_scene", return_value=("hook", "🐾")), \
+             patch("utils.video_builder.pick_audio", return_value=None), \
+             patch("utils.video_builder.pick_videos",
+                   return_value=[Path("v1.mp4"), Path("v2.mp4")]), \
+             patch("utils.video_builder._build_loop_relax_video") as mock_loop, \
+             patch("utils.video_builder._build_multi_clip_short") as mock_short, \
+             patch("utils.video_builder.run_ffmpeg"), \
+             patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}), \
+             patch("utils.video_builder.make_long_thumbnail"), \
+             patch("utils.video_builder.winning_thumbnail_variant", return_value="A"), \
+             patch("utils.video_builder.validate_generated_video",
+                   return_value=VideoValidation(ok=True, errors=[], info={})):
+            video_builder.build_pata_jazz_video(
+                spec=spec, output_dir=tmp_path, thumb_dir=tmp_path, stem_prefix="test"
+            )
+
+        mock_loop.assert_called_once()
+        mock_short.assert_not_called()
+
     def test_multi_clip_short_caps_duration_without_audio(self, tmp_path):
         """Sem audio (pool de jazz vazio), o xfade final ainda precisa de -t:
         sum(per_clip) - (n_clips-1)*xfade_duration fica abaixo de spec.duration

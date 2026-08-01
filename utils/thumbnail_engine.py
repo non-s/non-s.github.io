@@ -445,6 +445,34 @@ def make_short_thumbnail(
     log.info("Thumbnail de Short salva: %s (variante %s)", output, variant)
 
 
+def make_long_thumbnail(
+    hook: str,
+    emoji: str,
+    output: Path,
+    brand: str = "Pata Jazz",
+    video_path: Path | None = None,
+    variant: str = "A",
+) -> None:
+    """Thumbnail 1920x1080 (16:9) para long-form horizontal Loop & Relax."""
+    width, height = 1920, 1080
+    cfg = _LayoutConfig(
+        border_margin=80,
+        border_radius=40,
+        border_width=8,
+        emoji_y=150,
+        emoji_shadow_offset=(8, 8),
+        hook_y_start=430,
+        hook_wrap_width=42,
+        hook_line_height=95,
+        brand_y=height - 190,
+        crop_target_ratio=width / height,
+        overlay_alpha=110,
+        frame_timestamp=f"00:{random.randint(1, 9):02d}:{random.randint(2, 59):02d}",
+    )
+    _render_thumbnail(width, height, hook, emoji, output, brand, video_path, cfg, variant=variant)
+    log.info("Thumbnail de long-form salva: %s (variante %s)", output, variant)
+
+
 # Numero minimo de videos por variante para considerar o resultado
 # estatisticamente confiavel. Abaixo disso, "A" e mantido como default
 # conservador (nao ha dados suficientes pra afirmar que B/C ganhou).

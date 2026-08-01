@@ -26,7 +26,7 @@ from utils.caption_engine import generate_ass, save_ass
 from utils.ffmpeg_helpers import get_video_duration, run_ffmpeg
 from utils.media_pool import ensure_dirs, pick_audio, pick_videos, pool_stats
 from utils.metadata_engine import clean_title, generate_metadata
-from utils.thumbnail_engine import make_short_thumbnail, winning_thumbnail_variant
+from utils.thumbnail_engine import make_long_thumbnail, make_short_thumbnail, winning_thumbnail_variant
 from utils.video_validator import validate_generated_video
 
 log = logging.getLogger(__name__)
@@ -48,7 +48,7 @@ class _ThumbnailMaker(Protocol):
 class VideoSpec:
     """Especificação de um vídeo a ser gerado."""
 
-    kind: Literal["short"]
+    kind: Literal["short", "long"]
     width: int
     height: int
     duration: int
@@ -353,6 +353,99 @@ def _build_multi_clip_short(
             p.unlink(missing_ok=True)
 
 
+def _build_loop_relax_video(
+    spec: VideoSpec,
+    videos: list[Path],
+    audio_path: Path | None,
+    output: Path,
+    hook: str = "",
+) -> None:
+    """Gera long-form horizontal "Loop & Relax": 2-3 clipes em loop com
+    crossfade lento + jazz + hook no inicio + end-card no fim.
+
+    Cada clipe e repetido (stream_loop) ate cobrir o segmento dele da duracao
+    total - necessario porque, ao contrario dos Shorts (segmentos ~12s), um
+    long-form divide a duracao (ex.: 10min / 3 clipes = ~200s por clipe) e o
+    b-roll bruto tem so alguns segundos. O crossfade lento (2s) faz a troca
+    de cena quase imperceptivel, mantendo o video "vivo" (visual muda) sem
+    quebrar o relaxamento - o formato classico de video para dormir/estudar.
+    """
+    n_clips = min(len(videos), random.randint(2, 3))
+    selected = random.sample(videos, n_clips)
+    xfade_duration = 2.0
+    per_clip = spec.duration // n_clips
+    while n_clips > 1 and per_clip <= xfade_duration * (n_clips - 1):
+        n_clips -= 1
+        selected = selected[:n_clips]
+        per_clip = spec.duration // n_clips
+
+    processed: list[Path] = []
+    try:
+        for i, v in enumerate(selected):
+            proc = output.parent / f"{output.stem}_clip_{i}.mp4"
+            run_ffmpeg([
+                "-stream_loop", "-1", "-i", str(v),
+                "-vf", _build_video_filter(spec),
+                "-c:v", "libx264", "-preset", "fast", "-crf", "23",
+                "-t", str(per_clip), "-r", "30",
+                "-pix_fmt", "yuv420p", "-an",
+                str(proc),
+            ])
+            processed.append(proc)
+
+        if n_clips == 1:
+            run_ffmpeg(["-i", str(processed[0]), "-c", "copy", str(output)])
+            return
+
+        transition = random.choice(_XFADE_TRANSITIONS)
+        filter_parts: list[str] = []
+        prev_label = "0:v"
+        for i in range(1, n_clips):
+            offset = per_clip * i - xfade_duration * i
+            out_label = f"v{i}"
+            filter_parts.append(
+                f"[{prev_label}][{i}:v]xfade=transition={transition}:duration={xfade_duration}:offset={offset}[{out_label}]"
+            )
+            prev_label = out_label
+
+        if hook:
+            overlay_label = "vtxt"
+            filter_parts.append(
+                f"[{prev_label}]{_build_overlay_filter(hook, spec.height)}[{overlay_label}]"
+            )
+            prev_label = overlay_label
+
+        if spec.duration > _ENDCARD_SECONDS:
+            endcard_label = "vend"
+            filter_parts.append(
+                f"[{prev_label}]{_build_endcard_filter(spec.height, spec.duration)}[{endcard_label}]"
+            )
+            prev_label = endcard_label
+
+        inputs: list[str] = []
+        for p in processed:
+            inputs += ["-i", str(p)]
+        if audio_path:
+            inputs += ["-stream_loop", "-1", "-i", str(audio_path)]
+
+        cmd_args = inputs + [
+            "-filter_complex", ";".join(filter_parts),
+            "-map", f"[{prev_label}]",
+            "-c:v", "libx264", "-preset", "fast", "-crf", "23",
+            "-pix_fmt", "yuv420p", "-r", "30",
+            "-movflags", "+faststart",
+        ]
+        if audio_path:
+            cmd_args += ["-map", f"{n_clips}:a:0", "-c:a", "aac", "-b:a", "192k"]
+        cmd_args += ["-t", str(spec.duration)]
+        cmd_args += [str(output)]
+        log.info("Long-form: transicao %s, %d clipes em loop", transition, n_clips)
+        run_ffmpeg(cmd_args)
+    finally:
+        for p in processed:
+            p.unlink(missing_ok=True)
+
+
 def build_pata_jazz_video(
     spec: VideoSpec,
     output_dir: Path,
@@ -362,7 +455,8 @@ def build_pata_jazz_video(
 ) -> Path:
     """Pipeline comum de geração de vídeo Pata Jazz.
 
-    Shorts usam 2-3 clipes com crossfade; horizontais usam 1 clipe em loop.
+    Shorts usam 2-3 clipes com crossfade; long-form (Loop & Relax) usa os
+    mesmos clipes em loop cobrindo segmentos longos com crossfade lento.
     Retorna o caminho do vídeo gerado.
 
     Em modo ``dry_run`` não executa FFmpeg nem gera arquivos: apenas seleciona
@@ -389,10 +483,13 @@ def build_pata_jazz_video(
         log.info("[DRY-RUN] resolução=%dx%d duração=%ds", spec.width, spec.height, spec.duration)
         return output
 
-    # Multi-clip com crossfade para Shorts
+    # Multi-clip com crossfade para Shorts / long-form Loop & Relax
     videos = pick_videos(min_count=2, max_count=3, cuteness_sort=True, animal=animal)
     if len(videos) >= 2:
-        _build_multi_clip_short(spec, videos, audio_path, output, hook=hook)
+        if spec.kind == "long":
+            _build_loop_relax_video(spec, videos, audio_path, output, hook=hook)
+        else:
+            _build_multi_clip_short(spec, videos, audio_path, output, hook=hook)
     else:
         # Fallback: 1 clipe em loop
         single = pick_videos(min_count=1, max_count=1, animal=animal)
@@ -530,6 +627,29 @@ def short_spec(duration: int = 35, scene: str = "", mood: str = "", title_patter
         crop_filter="crop='ih*9/16:ih:(iw-ih*9/16)/2:0'",
         thumbnail_maker=make_short_thumbnail,
         fallback_description=f"{hook_for_scene(scene or random_scene())[0]} with jazz playing. 🐾🎷 #PataJazz",
+        scene=scene,
+        mood=mood,
+        title_pattern_hint=title_pattern_hint,
+    )
+
+
+def long_spec(duration: int = 600, scene: str = "", mood: str = "", title_pattern_hint: str = "") -> VideoSpec:
+    """Especificação padrão para long-form horizontal 16:9 (Loop & Relax).
+
+    Default de 10 minutos (600s) - longos demais encarecem o render do
+    FFmpeg em CI; o intervalo aceito vai de 600s a 2700s (45min).
+    """
+    if not 600 <= duration <= 2700:
+        raise ValueError("Duracao de long-form deve estar entre 600s (10min) e 2700s (45min).")
+    return VideoSpec(
+        kind="long",
+        width=1920,
+        height=1080,
+        duration=duration,
+        default_duration=600,
+        crop_filter="crop='ih*16/9:ih:(iw-ih*16/9)/2:0'",
+        thumbnail_maker=make_long_thumbnail,
+        fallback_description=f"{hook_for_scene(scene or random_scene())[0]} relaxing with jazz. 🐾🎷 #PataJazz",
         scene=scene,
         mood=mood,
         title_pattern_hint=title_pattern_hint,
