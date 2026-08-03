@@ -21,6 +21,7 @@ from googleapiclient.http import MediaFileUpload
 from utils import ffmpeg_helpers
 from utils.channel_config import active_channel, set_channel_from_env
 from utils.log_config import configure_logging, log_exception_to_file
+from utils.paths import data_dir
 from utils.pipeline_metrics import record_pipeline_run
 from utils.state_lock import state_lock
 from utils.youtube_oauth import get_youtube_service
@@ -32,13 +33,19 @@ set_channel_from_env()
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT_DIR = ROOT / "_videos"
-_DATA_DIR = ROOT / "_data"
 
 log = logging.getLogger(__name__)
 
 
-def _latest_video_meta(prefix: str = "pata_jazz_") -> tuple[Path, dict] | None:
-    candidates = sorted(OUTPUT_DIR.glob(f"{prefix}*.mp4"), key=lambda p: p.stat().st_mtime, reverse=True)
+def _latest_video_meta(prefix: str = "") -> tuple[Path, dict] | None:
+    pattern = f"{prefix}*.mp4" if prefix else "*.mp4"
+    candidates = sorted(OUTPUT_DIR.glob(pattern), key=lambda p: p.stat().st_mtime, reverse=True)
+    # Restringe ao slug do canal ativo quando nenhum prefixo e explicitado,
+    # evitando que Pata Lofi suba um video do Pata Jazz se ambos geraram
+    # arquivos no mesmo diretorio _videos.
+    active_slug = active_channel.slug
+    if not prefix:
+        candidates = [p for p in candidates if p.name.startswith(f"{active_slug}_")]
     skipped = 0
     for video in candidates:
         meta_path = video.with_suffix(".json")
@@ -78,8 +85,19 @@ def _build_tags(scene: str, hashtags: list[str] | None = None) -> list[str]:
     return list(dict.fromkeys(base))[:15]
 
 
-_VIDEO_TAGS_FILE = _DATA_DIR / "video_tags.json"
 _MAX_VIDEO_TAGS = 500
+
+
+def _video_tags_file() -> Path:
+    """Retorna o path do video_tags.json isolado por canal.
+
+    Expoe como atributo de modulo (`_VIDEO_TAGS_FILE`) para testes poderem
+    monkeypatchar o path sem reimportar o modulo.
+    """
+    return _VIDEO_TAGS_FILE
+
+
+_VIDEO_TAGS_FILE: Path = data_dir() / "video_tags.json"
 
 
 def _record_video_tags(video_id: str, meta: dict) -> None:
@@ -94,9 +112,10 @@ def _record_video_tags(video_id: str, meta: dict) -> None:
     scene = meta.get("scene", "")
     if not scene:
         return
-    with state_lock(_VIDEO_TAGS_FILE):
+    tags_file = _video_tags_file()
+    with state_lock(tags_file):
         try:
-            existing = json.loads(_VIDEO_TAGS_FILE.read_text(encoding="utf-8")) if _VIDEO_TAGS_FILE.exists() else {}
+            existing = json.loads(tags_file.read_text(encoding="utf-8")) if tags_file.exists() else {}
         except Exception:
             existing = {}
         existing[video_id] = {
@@ -115,13 +134,13 @@ def _record_video_tags(video_id: str, meta: dict) -> None:
             for old_key in list(existing.keys())[: len(existing) - _MAX_VIDEO_TAGS]:
                 del existing[old_key]
         try:
-            _VIDEO_TAGS_FILE.parent.mkdir(parents=True, exist_ok=True)
-            _VIDEO_TAGS_FILE.write_text(json.dumps(existing, ensure_ascii=False, indent=2), encoding="utf-8")
+            tags_file.parent.mkdir(parents=True, exist_ok=True)
+            tags_file.write_text(json.dumps(existing, ensure_ascii=False, indent=2), encoding="utf-8")
         except Exception as exc:
             log.warning("Falha ao salvar video_tags: %s", exc)
 
 
-def upload_video(language: str = "en", privacy: str = "public", prefix: str = "pata_jazz_") -> str | None:
+def upload_video(language: str = "en", privacy: str = "public", prefix: str = "") -> str | None:
     start_time = time.time()
     success = False
     try:
@@ -130,15 +149,16 @@ def upload_video(language: str = "en", privacy: str = "public", prefix: str = "p
             success = True
         return video_id
     finally:
+        kind = prefix.rstrip("_") or active_channel.slug
         record_pipeline_run(
             stage="upload",
             success=success,
             duration_seconds=time.time() - start_time,
-            kind=prefix.rstrip("_"),
+            kind=kind,
         )
 
 
-def _upload_video_inner(language: str = "en", privacy: str = "public", prefix: str = "pata_jazz_") -> str | None:
+def _upload_video_inner(language: str = "en", privacy: str = "public", prefix: str = "") -> str | None:
     found = _latest_video_meta(prefix=prefix)
     if not found:
         log.error("Nenhum video com metadata encontrado em %s", OUTPUT_DIR)
@@ -153,7 +173,7 @@ def _upload_video_inner(language: str = "en", privacy: str = "public", prefix: s
         log.error("Video %s com duracao invalida (%.1fs) - upload abortado.", video_path.name, duration)
         return None
 
-    title = str(meta.get("title", "Pata Jazz"))[:100]
+    title = str(meta.get("title", active_channel.name))[:100]
     description = str(meta.get("description", ""))[:5000]
     tags = _build_tags(meta.get("scene", ""), meta.get("hashtags"))
     thumbnail = _meta_path(meta, "thumbnail")
@@ -202,12 +222,13 @@ def _upload_video_inner(language: str = "en", privacy: str = "public", prefix: s
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Upload Pata Jazz para YouTube")
+    default_prefix = f"{active_channel.slug}_"
+    parser = argparse.ArgumentParser(description=f"Upload {active_channel.name} para YouTube")
     parser.add_argument("--mode", choices=["upload"], default="upload")
     parser.add_argument("--language", default="en")
     parser.add_argument("--privacy", default=os.environ.get("YOUTUBE_PRIVACY", "public"),
                         choices=["public", "unlisted", "private"])
-    parser.add_argument("--prefix", default="pata_jazz_", help="Prefixo dos arquivos de video a enviar")
+    parser.add_argument("--prefix", default=default_prefix, help="Prefixo dos arquivos de video a enviar")
     args = parser.parse_args()
 
     configure_logging()

@@ -45,6 +45,7 @@ jobs:
         uses: ./.github/actions/restore-token-and-cache
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN_CLASSICAL }}
+          channel: pata_classical
       - name: "Restaurar/persistir analytics"
         # Sem isso, _data/analytics*.json e escrito e perdido junto com o
         # runner efemero a cada semana - nada mais no repo le esse arquivo

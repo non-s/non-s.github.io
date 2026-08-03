@@ -11,6 +11,7 @@ from typing import Any, Literal
 
 from utils.ai_helper import ai_text, is_safe_ai_text
 from utils.animal_branding import detect_animal
+from utils.channel_config import active_channel
 from utils.seo_keywords import (
     _MAX_HASHTAGS,
     generate_description,
@@ -27,9 +28,11 @@ log = logging.getLogger(__name__)
 def _build_metadata_prompt(hook: str, scene: str, duration: int, kind: str, emoji: str) -> str:
     target_len = 80 if kind == "short" else 100
     desc_lines = 3 if kind == "short" else 4
+    channel_name = active_channel.name
+    default_desc = active_channel.default_description
     return (
         f"Create English YouTube metadata for a {'Short' if kind == 'short' else 'video'} "
-        f"about {hook} {emoji}. The channel is Pata Jazz (cute cats and dogs + relaxing jazz), "
+        f"about {hook} {emoji}. The channel is {channel_name} ({default_desc}), "
         f"targeting searches like 'relaxing music for cats/dogs' and 'pet anxiety music'. "
         f"Duration: ~{duration}s. "
         f"Rules:\n"
@@ -37,7 +40,7 @@ def _build_metadata_prompt(hook: str, scene: str, duration: int, kind: str, emoj
         f"- Sound like a real person posting a video they like, not an ad - "
         f"skip stock phrases like 'Discover' or 'Get ready', skip generic "
         f"'welcome to my channel' openers, no dramatic em-dashes.\n"
-        f"- {desc_lines}-line description, light and cute tone, with a cat/dog and jazz emoji.\n"
+        f"- {desc_lines}-line description, light and cute tone, with a cat/dog and music emoji.\n"
         f"- 5 to 8 relevant hashtags separated by spaces.\n"
         f"Return ONLY JSON with keys: title, description, hashtags."
     )
@@ -185,9 +188,10 @@ def generate_metadata(
     # Otimização final para busca
     title, description = optimize_for_search(title, description)
 
-    # Garante prefixo de marca "Pata Jazz |" para consistencia
-    if not title.startswith("Pata Jazz"):
-        title = f"Pata Jazz | {title}"
+    # Garante prefixo de marca para consistencia (ex: "Pata Jazz |")
+    brand_prefix = active_channel.brand_prefix
+    if not title.startswith(brand_prefix.removesuffix(" |")):
+        title = f"{brand_prefix} {title}"
     # Limita a 100 chars (limite do YouTube)
     if len(title) > 100:
         title = title[:97] + "..."

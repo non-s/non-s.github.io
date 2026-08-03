@@ -1,7 +1,9 @@
 """
-scripts/sync_jazz_music.py — baixa faixas jazz do Jamendo.
+scripts/sync_jazz_music.py — baixa faixas do gênero do canal ativo do Jamendo.
 
-Filtra por termos de busca permitidos em utils.animal_branding.JAMENDO_SEARCH_TERMS.
+Para Pata Jazz baixa jazz; para Pata Lofi baixa lofi/chill beats; para
+Pata Classical baixa classical/piano/orchestra. Filtra por termos de busca
+permitidos em utils.animal_branding.JAMENDO_SEARCH_TERMS (agora por canal).
 Baixa apenas musicas com licenca CC que permitam uso comercial (jamendo/no_client).
 """
 
@@ -19,9 +21,16 @@ import requests
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from utils.animal_branding import JAMENDO_SEARCH_TERMS
+from utils.channel_config import set_channel_from_env
 from utils.log_config import configure_logging
 from utils.media_pool import AUDIO_DIR, ensure_dirs
+
+# Ativa o canal via YOUTUBE_CHANNEL env var (multi-canal).
+set_channel_from_env()
+
+# Importa depois de ativar o canal para que os termos de busca reflitam
+# o canal correto.
+from utils.animal_branding import JAMENDO_SEARCH_TERMS
 
 log = logging.getLogger(__name__)
 
@@ -57,19 +66,26 @@ def _client_id() -> str:
     return os.environ.get("JAMENDO_CLIENT_ID", "")
 
 
-# Descritores jazz-adjacentes aceitos: "jazz" cobre a maioria dos hits,
-# mas termos animados (bebop/swing/fusion) e lofi jazz muitas vezes so
-# aparecem nas tags/nome sem repetir a palavra "jazz" literalmente - sem
-# isso, ampliar JAMENDO_SEARCH_TERMS pra variedade de energia nao adiantava
-# nada porque _is_jazz() rejeitava os hits antes de baixar.
-_JAZZ_DESCRIPTORS = ("jazz", "bossa", "smooth", "bebop", "swing", "fusion", "lofi")
+def _music_descriptors() -> tuple[str, ...]:
+    """Descritores permitidos para filtrar hits do Jamendo pelo gênero do canal.
+
+    Para Pata Classical precisamos termos clássicos (classical, piano,
+    orchestra, sonata, quartet, etc.) porque "classical music" por si só
+    pode retornar faixas com tags genéricas.
+    """
+    slug = os.environ.get("YOUTUBE_CHANNEL", "pata_jazz").lower()
+    if slug == "pata_classical":
+        return ("classical", "piano", "orchestra", "sonata", "quartet", "symphony", "chamber")
+    if slug == "pata_lofi":
+        return ("lofi", "chill", "chillhop", "lo-fi", "hip hop instrumental", "study beats")
+    return ("jazz", "bossa", "smooth", "bebop", "swing", "fusion", "lofi")
 
 
 def _is_jazz(hit: dict) -> bool:
     text = " ".join(
         str(hit.get(k, "")) for k in ["name", "artist_name", "album_name", "tags", "musicinfo"]
     ).lower()
-    return any(descriptor in text for descriptor in _JAZZ_DESCRIPTORS)
+    return any(descriptor in text for descriptor in _music_descriptors())
 
 
 def _download(url: str, dest: Path) -> bool:
@@ -159,7 +175,10 @@ def main() -> int:
 
     total = 0
     current_count = len(list(AUDIO_DIR.glob("*.mp3")))
-    for term in JAMENDO_SEARCH_TERMS:
+    search_terms = JAMENDO_SEARCH_TERMS
+    log.info("Sync de audio para canal=%s com %d termos de busca.",
+             os.environ.get("YOUTUBE_CHANNEL", "pata_jazz"), len(search_terms))
+    for term in search_terms:
         if current_count >= MAX_POOL_SIZE:
             break
         downloaded = search_and_download(term, MAX_PER_TERM, client_id=client_id)

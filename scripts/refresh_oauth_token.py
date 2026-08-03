@@ -29,18 +29,33 @@ from google.auth.transport.requests import Request
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
+from utils.channel_config import CHANNELS, set_channel_from_env
 from utils.youtube_oauth import _load_token, _save_token
 
 
-def refresh_and_persist(token_path: Path) -> int:
-    """Tenta renovar o token; se conseguir, atualiza o secret YOUTUBE_TOKEN.
+def _secret_name(channel_slug: str) -> str:
+    """Retorna o nome do secret de token para o canal (ex: YOUTUBE_TOKEN_LOFI)."""
+    if channel_slug == "pata_jazz":
+        return "YOUTUBE_TOKEN"
+    return f"YOUTUBE_TOKEN_{channel_slug.split('_', 1)[1].upper()}"
+
+
+def _token_filename(channel_slug: str) -> str:
+    """Retorna o nome do arquivo de token no runner para o canal."""
+    if channel_slug == "pata_jazz":
+        return "youtube_token.json"
+    return f"youtube_token_{channel_slug.split('_', 1)[1].lower()}.json"
+
+
+def refresh_and_persist(token_path: Path, secret_name: str, channel_slug: str) -> int:
+    """Tenta renovar o token; se conseguir, atualiza o secret correspondente.
 
     Retorna 0 se renovou e atualizou o secret; 1 se o refresh falhou (e
     abriu issue); 2 se nao ha token para renovar.
     """
     creds = _load_token()
     if creds is None:
-        print("::error::Nenhum token OAuth encontrado (YOUTUBE_TOKEN nao setado?).")
+        print(f"::error::Nenhum token OAuth encontrado ({secret_name} nao setado?).")
         return 2
     if not creds.refresh_token:
         print("::error::Token sem refresh_token — nao e possivel renovar automaticamente.")
@@ -50,7 +65,7 @@ def refresh_and_persist(token_path: Path) -> int:
         creds.refresh(Request())
     except Exception as exc:
         print(f"::error::Refresh do token falhou (refresh_token expirado?): {exc}")
-        _open_issue_token_expired(str(exc))
+        _open_issue_token_expired(str(exc), channel_slug)
         return 1
 
     try:
@@ -61,17 +76,17 @@ def refresh_and_persist(token_path: Path) -> int:
     new_token_json = creds.to_json()
     gh_pat = os.environ.get("GH_PAT")
     if not gh_pat:
-        print("::error::GH_PAT ausente: nao e possivel atualizar o secret YOUTUBE_TOKEN.")
+        print("::error::GH_PAT ausente: nao e possivel atualizar o secret automaticamente.")
         print("::error::Configure um Personal Access Token com scope 'repo' como secret GH_PAT.")
-        _open_issue_token_expired("GH_PAT ausente — configure o secret GH_PAT.")
+        _open_issue_token_expired("GH_PAT ausente — configure o secret GH_PAT.", channel_slug)
         return 1
 
-    rc = _gh_secret_set("YOUTUBE_TOKEN", new_token_json, gh_pat)
+    rc = _gh_secret_set(secret_name, new_token_json, gh_pat)
     if rc != 0:
-        print(f"::error::gh secret set falhou (rc={rc}).")
+        print(f"::error::gh secret set {secret_name} falhou (rc={rc}).")
         return 1
 
-    print("::notice::Token OAuth renovado e secret YOUTUBE_TOKEN atualizado.")
+    print(f"::notice::Token OAuth ({channel_slug}) renovado e secret {secret_name} atualizado.")
     return 0
 
 
@@ -85,7 +100,7 @@ def _gh_secret_set(name: str, value: str, gh_pat: str) -> int:
     return proc.returncode
 
 
-def _open_issue_token_expired(reason: str) -> None:
+def _open_issue_token_expired(reason: str, channel_slug: str) -> None:
     """Abre uma issue pedindo renovacao manual do token OAuth."""
     gh_pat = os.environ.get("GH_PAT")
     if not gh_pat:
@@ -93,19 +108,20 @@ def _open_issue_token_expired(reason: str) -> None:
         print("::warning::Abra manualmente uma issue: 'Token OAuth expirado'.")
         return
 
-    title = "Token OAuth expirado — rodar `python utils/youtube_oauth.py` localmente"
+    channel_name = CHANNELS[channel_slug].name if channel_slug in CHANNELS else channel_slug
+    title = f"Token OAuth expirado — {channel_name}"
     body = (
-        "O refresh do token OAuth do YouTube falhou no workflow "
-        "`oauth-token-refresh.yml`:\n\n```\n"
+        f"O refresh do token OAuth do {channel_name} falhou no workflow "
+        f"`oauth-token-refresh.yml`:\n\n```\n"
         f"{reason}\n```\n\n"
         "Para renovar:\n"
         "1. Rode `python utils/youtube_oauth.py` localmente "
         "(com `YOUTUBE_CLIENT_SECRET` apontando para o `client_secret.json`).\n"
-        "2. Atualize o secret `YOUTUBE_TOKEN` no GitHub com o conteudo do "
+        f"2. Atualize o secret `{_secret_name(channel_slug)}` no GitHub com o conteudo do "
         "`youtube_token.json` gerado.\n\n"
         "Aviso: o workflow `oauth-token-refresh.yml` requer um Personal Access "
         "Token (PAT) com scope `repo` armazenado como secret `GH_PAT` para "
-        "atualizar o secret `YOUTUBE_TOKEN` automaticamente. Sem o `GH_PAT`, "
+        "atualizar os secrets automaticamente. Sem o `GH_PAT`, "
         "a renovacao do token e sempre manual."
     )
     cmd = ["gh", "issue", "create", "--title", title, "--body", body]
@@ -118,11 +134,13 @@ def _open_issue_token_expired(reason: str) -> None:
 
 
 def main() -> int:
-    token_path = Path(os.environ.get("YOUTUBE_TOKEN_PATH", str(ROOT / "youtube_token.json")))
+    set_channel_from_env()
+    channel_slug = os.environ.get("YOUTUBE_CHANNEL", "pata_jazz").lower()
+    token_path = Path(os.environ.get("YOUTUBE_TOKEN_PATH", str(ROOT / _token_filename(channel_slug))))
     if not token_path.exists():
-        print(f"::error::{token_path} nao encontrado (secret YOUTUBE_TOKEN ausente?).")
+        print(f"::error::{token_path} nao encontrado (secret {_secret_name(channel_slug)} ausente?).")
         return 2
-    return refresh_and_persist(token_path)
+    return refresh_and_persist(token_path, _secret_name(channel_slug), channel_slug)
 
 
 if __name__ == "__main__":

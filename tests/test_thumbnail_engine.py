@@ -33,8 +33,10 @@ def test_enhance_thumbnail_image():
 
 
 def test_load_fonts_failure():
-    with patch("utils.thumbnail_engine.ImageFont.truetype", side_effect=OSError("no font")):
-        with pytest.raises(RuntimeError, match="fonte|TrueType"):
+    """Se a fonte empacotada nao puder ser carregada, _load_fonts levanta
+    RuntimeError (imagem ilegivel sem fonte TrueType)."""
+    with patch("utils.thumbnail_engine.pil_font_path", return_value="/tmp/no-such-font.ttf"):
+        with pytest.raises(RuntimeError, match="fonte|TrueType|Roboto"):
             thumbnail_engine._load_fonts()
 
 

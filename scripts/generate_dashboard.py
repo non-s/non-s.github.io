@@ -827,7 +827,7 @@ def build_dashboard_html() -> str:
       var url = URL.createObjectURL(blob);
       var a = document.createElement("a");
       a.href = url;
-      a.download = "pata_jazz_analytics.csv";
+      a.download = "{active_channel.slug}_analytics.csv";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);

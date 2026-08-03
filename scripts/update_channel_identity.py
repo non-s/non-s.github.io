@@ -28,11 +28,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from utils.channel_config import set_channel_from_env
+from utils.channel_config import active_channel, set_channel_from_env
 from utils.channel_identity import run_identity_update
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.pipeline_metrics import record_pipeline_run
 from utils.youtube_oauth import get_youtube_service
+
+# Ativa o canal via YOUTUBE_CHANNEL env var (multi-canal).
+set_channel_from_env()
 
 log = logging.getLogger(__name__)
 
@@ -49,7 +52,7 @@ def _own_channel_id(service) -> str:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Atualiza a identidade do canal (about/keywords)")
+    parser = argparse.ArgumentParser(description=f"Atualiza a identidade do {active_channel.name} (about/keywords)")
     parser.add_argument("--dry-run", action="store_true",
                         help="Mostra a identidade-alvo sem publicar")
     parser.add_argument("--force", action="store_true",
@@ -60,16 +63,18 @@ def main() -> int:
 
     configure_logging()
 
-    # Ativa o canal via YOUTUBE_CHANNEL env var (multi-canal).
-    set_channel_from_env()
+    slug_upper = active_channel.slug.upper()
+    enabled_var = f"PATA_{slug_upper}_ENABLED" if slug_upper != "PATA_JAZZ" else "PATA_JAZZ_ENABLED"
+    identity_var = f"PATA_{slug_upper}_IDENTITY_ENABLED" if slug_upper != "PATA_JAZZ" else "PATA_JAZZ_IDENTITY_ENABLED"
 
     # Guards de feature flag: 1 para ligar. Em local/CI de teste, use
     # --no-guard ou configure as env vars.
-    enabled = os.environ.get("PATA_JAZZ_ENABLED", "") == "1"
-    identity_enabled = os.environ.get("PATA_JAZZ_IDENTITY_ENABLED", "") == "1"
+    enabled = os.environ.get(enabled_var, "") == "1"
+    identity_enabled = os.environ.get(identity_var, "") == "1"
     if not args.no_guard and not (enabled and identity_enabled):
-        log.info("Guards desligados (PATA_JAZZ_ENABLED=%r, PATA_JAZZ_IDENTITY_ENABLED=%r). Nada a fazer.",
-                 os.environ.get("PATA_JAZZ_ENABLED"), os.environ.get("PATA_JAZZ_IDENTITY_ENABLED"))
+        log.info("Guards desligados (%s=%r, %s=%r). Nada a fazer.",
+                 enabled_var, os.environ.get(enabled_var),
+                 identity_var, os.environ.get(identity_var))
         return 0
 
     start_time = time.time()

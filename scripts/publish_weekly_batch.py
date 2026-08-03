@@ -29,10 +29,14 @@ from googleapiclient.http import MediaFileUpload
 
 from upload_youtube import _build_tags, _meta_path, _record_video_tags
 from utils import ffmpeg_helpers
+from utils.channel_config import active_channel, set_channel_from_env
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.youtube_oauth import get_youtube_service
 from utils.youtube_post_upload import add_to_playlists, apply_captions, apply_thumbnail
 from utils.youtube_retry import retry_youtube_call as _retry_youtube_call
+
+# Ativa o canal via YOUTUBE_CHANNEL env var (multi-canal).
+set_channel_from_env()
 
 log = logging.getLogger(__name__)
 
@@ -45,7 +49,7 @@ UPLOAD_DELAY_SECONDS = 5  # pausa entre uploads para nao saturar a API
 _MAX_PUBLISH_ATTEMPTS = 3
 
 
-def _find_unpublished_videos(prefix: str = "pata_jazz_") -> list[tuple[Path, dict]]:
+def _find_unpublished_videos(prefix: str = "") -> list[tuple[Path, dict]]:
     """Encontra videos gerados que ainda nao foram publicados.
 
     Um video e considerado 'nao publicado' se seu .json de metadados
@@ -57,7 +61,8 @@ def _find_unpublished_videos(prefix: str = "pata_jazz_") -> list[tuple[Path, dic
     erros repetidos. Apos atingir o limite, o video e considerado
     "permanentemente falhado" e skipado.
     """
-    candidates = sorted(OUTPUT_DIR.glob(f"{prefix}*.json"), key=lambda p: p.stat().st_mtime)
+    pattern = f"{prefix}*.json" if prefix else f"{active_channel.slug}_*.json"
+    candidates = sorted(OUTPUT_DIR.glob(pattern), key=lambda p: p.stat().st_mtime)
     unpublished: list[tuple[Path, dict]] = []
     for meta_path in candidates:
         try:
@@ -85,7 +90,7 @@ def _publish_video(service, video_path: Path, meta: dict, language: str = "en") 
     apenas atualiza o privacyStatus para public (custa ~50 unidades).
     """
     privacy = os.environ.get("YOUTUBE_PRIVACY", "public")
-    title = str(meta.get("title", "Pata Jazz"))[:100]
+    title = str(meta.get("title", active_channel.name))[:100]
     description = str(meta.get("description", ""))[:5000]
     tags = _build_tags(meta.get("scene", ""), meta.get("hashtags"))
 
@@ -160,7 +165,7 @@ def main() -> int:
     try:
         service = get_youtube_service()
     except Exception as exc:
-        log.error("Erro ao autenticar YouTube: %s", exc)
+        log.error("Erro ao autenticar YouTube (%s): %s", active_channel.slug, exc)
         return 1
 
     unpublished = _find_unpublished_videos()

@@ -1,5 +1,5 @@
 """
-utils/video_builder.py — lógica de construção dos Shorts Pata Jazz.
+utils/video_builder.py — lógica de construção dos vídeos do canal ativo.
 
 Reúne o pipeline completo:
 - seleção de assets
@@ -23,6 +23,7 @@ from typing import Literal, Protocol
 
 from utils.animal_branding import detect_animal, hook_for_scene, random_scene
 from utils.caption_engine import generate_ass, save_ass
+from utils.channel_config import active_channel
 from utils.ffmpeg_helpers import get_video_duration, run_ffmpeg
 from utils.font_config import font_path
 from utils.media_pool import ensure_dirs, pick_audio, pick_videos, pool_stats
@@ -508,12 +509,12 @@ def build_pata_jazz_video(
         primary_variant = "A"
     thumb_primary = rendered[primary_variant]
 
-    fallback_title = clean_title(f"{hook} | Pata Jazz")
+    fallback_title = clean_title(f"{hook} | {active_channel.name}")
     metadata = generate_metadata(
         hook=hook,
         scene=scene,
         duration=spec.duration,
-        kind=spec.kind,
+        kind=spec.kind,  # type: ignore[arg-type]
         emoji=emoji,
         fallback_title=fallback_title,
         fallback_description=spec.fallback_description,

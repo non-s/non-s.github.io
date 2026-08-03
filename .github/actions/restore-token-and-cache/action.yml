@@ -1,5 +1,5 @@
 name: "Restaurar token YouTube e caches"
-description: "Restaura o token OAuth do YouTube e os caches de b-roll/jazz usados pelos workflows Pata Jazz."
+description: "Restaura o token OAuth do YouTube e os caches de b-roll/musica usados pelos workflows Pata Jazz, Pata Lofi e Pata Classical."
 
 inputs:
   youtube-token:
@@ -30,7 +30,7 @@ runs:
         path: _assets/video/animal_broll
         key: animal-broll-${{ github.run_id }}
         restore-keys: animal-broll-
-    - name: "Cache jazz"
+    - name: "Cache musicas"
       uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
       with:
         path: _assets/audio/animal_jazz
@@ -45,15 +45,18 @@ runs:
           _data/video_tags.json
           _data/scene_performance.json
           _data/title_pattern_performance.json
+          _data/quota_usage.json
           _data/pata_lofi/recent_media.json
           _data/pata_lofi/playlist_cache.json
           _data/pata_lofi/video_tags.json
           _data/pata_lofi/scene_performance.json
           _data/pata_lofi/title_pattern_performance.json
+          _data/pata_lofi/quota_usage.json
           _data/pata_classical/recent_media.json
           _data/pata_classical/playlist_cache.json
           _data/pata_classical/video_tags.json
           _data/pata_classical/scene_performance.json
           _data/pata_classical/title_pattern_performance.json
+          _data/pata_classical/quota_usage.json
         key: ${{ inputs.channel }}-data-${{ github.run_id }}
         restore-keys: ${{ inputs.channel }}-data-

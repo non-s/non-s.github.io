@@ -16,6 +16,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 
+from utils.font_config import pil_font_path
 from utils.paths import data_dir
 
 log = logging.getLogger(__name__)
@@ -119,44 +120,27 @@ def _hex_to_rgb(hex_color: str) -> tuple[int, int, int]:
 
 
 def _load_fonts() -> tuple[ImageFont.FreeTypeFont, ImageFont.FreeTypeFont]:
-    """Tenta carregar fontes comuns; falha com erro claro se nenhuma disponivel.
+    """Carrega fontes TrueType grandes e pequenas.
 
-    Usa ImageFont.truetype com fallback em varias plataformas (Linux CI,
-    Windows local). Se nenhuma fonte TrueType estiver disponivel, levanta
-    RuntimeError em vez de silenciosamente usar a fonte bitmap default
-    (que torna a thumbnail ilegivel).
+    Usa a fonte empacotada no repo (Roboto-Bold.ttf) via utils.font_config,
+    garantindo o mesmo resultado em qualquer runner sem depender de fontes do
+    sistema.
     """
-    candidates = [
-        ("arial.ttf", 120, 48),
-        ("DejaVuSans.ttf", 120, 48),
-        ("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 120, 48),
-        ("C:/Windows/Fonts/arial.ttf", 120, 48),
-    ]
-    for font_path, large, small in candidates:
-        try:
-            return ImageFont.truetype(font_path, large), ImageFont.truetype(font_path, small)
-        except Exception:
-            continue
-    raise RuntimeError(
-        "Nenhuma fonte TrueType encontrada. Instale DejaVu/arial ou configure PIL_IMAGE_FONT_PATH."
-    )
+    font_path = pil_font_path()
+    try:
+        return ImageFont.truetype(font_path, 120), ImageFont.truetype(font_path, 48)
+    except Exception as exc:
+        raise RuntimeError(
+            "Nenhuma fonte TrueType encontrada. Verifique _assets/fonts/Roboto-Bold.ttf."
+        ) from exc
 
 
 def _load_font_path() -> str | None:
-    """Retorna o caminho da primeira fonte TrueType disponivel, ou None."""
-    candidates = [
-        "arial.ttf",
-        "DejaVuSans.ttf",
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-        "C:/Windows/Fonts/arial.ttf",
-    ]
-    for font_path in candidates:
-        try:
-            ImageFont.truetype(font_path, 16)
-            return font_path
-        except Exception:
-            continue
-    return None
+    """Retorna o caminho da fonte empacotada no repo."""
+    try:
+        return pil_font_path()
+    except Exception:
+        return None
 
 
 def _fonts_for_variant(variant: str) -> tuple[ImageFont.FreeTypeFont, ImageFont.FreeTypeFont]:
@@ -168,7 +152,7 @@ def _fonts_for_variant(variant: str) -> tuple[ImageFont.FreeTypeFont, ImageFont.
     font_path = _load_font_path()
     if font_path is None:
         raise RuntimeError(
-            "Nenhuma fonte TrueType encontrada. Instale DejaVu/arial ou configure PIL_IMAGE_FONT_PATH."
+            "Nenhuma fonte TrueType encontrada. Verifique _assets/fonts/Roboto-Bold.ttf."
         )
     if variant == "C":
         # Emoji 2x maior, hook menor.

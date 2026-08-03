@@ -21,7 +21,7 @@ import sys
 import time
 from pathlib import Path
 
-from utils.channel_config import set_channel_from_env
+from utils.channel_config import active_channel, set_channel_from_env
 from utils.content_strategy import scene_for_mood
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.pipeline_metrics import record_pipeline_run
@@ -66,7 +66,7 @@ def _generate_long(duration: int = DEFAULT_DURATION, dry_run: bool = False) -> P
         spec=spec,
         output_dir=OUTPUT_DIR,
         thumb_dir=THUMB_DIR,
-        stem_prefix="pata_jazz_long",
+        stem_prefix=f"{active_channel.slug}_long",
         dry_run=dry_run,
     )
 

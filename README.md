@@ -32,7 +32,7 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 - **Playlists automáticas**: Videos adicionados a playlists por mood/formato (cache persistente em `_data/playlist_cache.json`)
 - **Analytics semanal com feedback loop real**: coleta views/likes/comentários e, via **YouTube Analytics API v2**, também `averageViewDuration`, `averageViewPercentage`, `ctr`, `impressions` e `subscribersGained`. Cruza tudo com a cena e o padrão de título que geraram cada vídeo (`_data/video_tags.json`, gravado no upload) e grava um peso por cena (`_data/scene_performance.json`) e por padrão de título (`_data/title_pattern_performance.json`) — `scene_for_mood()` e `pick_title_pattern()` passam a preferir o que performa melhor de verdade, sem nunca zerar as demais opções
 - **Rastreio de quota YouTube**: `utils/quota_tracker.py` loga unidades de quota gastas em `_data/quota_usage.json` (com lock e thread-safe), com alerta em 8000/dia (limite 10000); `retry_youtube_call` registra automaticamente o custo por endpoint após sucesso
-- **Marca consistente**: Todos os títulos começam com "Pata Jazz |"
+- **Marca consistente**: Todos os títulos começam com o prefixo da marca do canal (ex: `Pata Jazz |`, `Pata Lofi |`, `Pata Classical |`)
 - **Conteúdo em inglês**: título, descrição, hashtags e legendas são gerados em inglês (`utils/seo_keywords.py`, `utils/metadata_engine.py`, `utils/caption_engine.py`) - o formato pet+jazz não depende de idioma e o volume de busca em inglês é muito maior que o equivalente em português. O system prompt padrão do Gemini (`utils/ai_helper.py::_default_system_prompt`) também reforça isso - qualquer chamada de IA que precise de outro idioma tem que passar `system=` explicitamente.
 - **Robustez de APIs**: Circuit breaker no Gemini (429/502/503), retry exponencial no YouTube, fallback local em todas as chamadas de IA
 - **Thumbnails com shadow RGBA**: Gradiente via `Image.linear_gradient` (Pillow ≥9.1), shadows com alpha real
@@ -45,7 +45,6 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 | **Jamendo** | Músicas com licença segura (jazz/lofi/classical) |
 | **Pixabay** | Clips reais de gatos e cachorros |
 | **YouTube Data API v3** | Upload de vídeos, playlists, captions e analytics |
-| **YouTube Analytics API v2** | Retenção, CTR, impressions e inscritos ganhos por vídeo |
 | **YouTube Analytics API v2** | Retenção, CTR, impressions e inscritos ganhos por vídeo |
 
 ## Stack
@@ -180,8 +179,6 @@ Salve o JSON resultante como `youtube_token.json` na raiz do projeto (ou use o s
 
 ## Grade de publicação (GitHub Actions)
 
-| Conteúdo | Frequência | Horário | Workflow |
-|---|---|---|---|
 | Canal | Conteúdo | Frequência | Horário | Workflow |
 |---|---|---|---|---|
 | **Pata Jazz** | Shorts (YouTube) | 1 por hora (24/dia) | minuto 7 de cada hora UTC | `pata-jazz-shorts.yml` |
@@ -231,7 +228,7 @@ O upload usa o vídeo mais recente gerado (metadados em `_videos/*.json`). Para 
 
 ```bash
 export YOUTUBE_CHANNEL=pata_jazz  # pata_lofi ou pata_classical
-python upload_youtube.py --mode upload --language=en --prefix pata_jazz_short_
+python upload_youtube.py --mode upload --language=en
 ```
 
 > Cada canal armazena seu próprio estado isolado em `_data/<slug>/` (por exemplo `_data/pata_lofi/`). O canal Pata Jazz mantém `_data/` na raiz por compatibilidade histórica.
