@@ -70,9 +70,7 @@ class TestSceneWeights:
 
     def _isolate(self, tmp_path, monkeypatch):
         perf_file = tmp_path / "scene_performance.json"
-        monkeypatch.setattr(
-            content_strategy, "_scene_performance_file", lambda: perf_file
-        )
+        monkeypatch.setattr(content_strategy, "_scene_performance_file", lambda: perf_file)
         return perf_file
 
     def test_no_performance_file_falls_back_to_uniform(self, tmp_path, monkeypatch):
@@ -100,6 +98,7 @@ class TestSceneWeights:
 
     def test_heavily_weighted_scene_is_picked_far_more_often(self, tmp_path, monkeypatch):
         import random
+
         random.seed(42)
         perf_file = self._isolate(tmp_path, monkeypatch)
         perf_file.write_text(json.dumps({"sleepy cat": 2.5, "sleepy dog": 0.4}), encoding="utf-8")
@@ -115,9 +114,7 @@ class TestViralBoostedScenes:
 
     def _isolate(self, tmp_path, monkeypatch):
         viral_file = tmp_path / "viral_signals.json"
-        monkeypatch.setattr(
-            content_strategy, "_viral_signals_file", lambda: viral_file
-        )
+        monkeypatch.setattr(content_strategy, "_viral_signals_file", lambda: viral_file)
         return viral_file
 
     def _now_iso(self):
@@ -134,10 +131,20 @@ class TestViralBoostedScenes:
 
     def test_recent_viral_scene_gets_boost(self, tmp_path, monkeypatch):
         viral_file = self._isolate(tmp_path, monkeypatch)
-        viral_file.write_text(json.dumps([
-            {"scene": "sleepy cat", "title_pattern": "p", "views": 5000,
-             "viral_factor": 50.0, "detected_at": self._now_iso()},
-        ]), encoding="utf-8")
+        viral_file.write_text(
+            json.dumps(
+                [
+                    {
+                        "scene": "sleepy cat",
+                        "title_pattern": "p",
+                        "views": 5000,
+                        "viral_factor": 50.0,
+                        "detected_at": self._now_iso(),
+                    },
+                ]
+            ),
+            encoding="utf-8",
+        )
 
         boosted = content_strategy.viral_boosted_scenes()
         assert boosted == {"sleepy cat": content_strategy._VIRAL_BOOST}
@@ -145,38 +152,56 @@ class TestViralBoostedScenes:
     def test_old_viral_outside_window_is_ignored(self, tmp_path, monkeypatch):
         viral_file = self._isolate(tmp_path, monkeypatch)
         old = (datetime.now(UTC) - timedelta(days=20)).isoformat()
-        viral_file.write_text(json.dumps([
-            {"scene": "sleepy cat", "detected_at": old},
-        ]), encoding="utf-8")
+        viral_file.write_text(
+            json.dumps(
+                [
+                    {"scene": "sleepy cat", "detected_at": old},
+                ]
+            ),
+            encoding="utf-8",
+        )
 
         assert content_strategy.viral_boosted_scenes() == {}
 
     def test_viral_without_scene_is_ignored(self, tmp_path, monkeypatch):
         viral_file = self._isolate(tmp_path, monkeypatch)
-        viral_file.write_text(json.dumps([
-            {"scene": "", "detected_at": self._now_iso()},
-        ]), encoding="utf-8")
+        viral_file.write_text(
+            json.dumps(
+                [
+                    {"scene": "", "detected_at": self._now_iso()},
+                ]
+            ),
+            encoding="utf-8",
+        )
 
         assert content_strategy.viral_boosted_scenes() == {}
 
     def test_viral_without_detected_at_is_ignored(self, tmp_path, monkeypatch):
         viral_file = self._isolate(tmp_path, monkeypatch)
-        viral_file.write_text(json.dumps([
-            {"scene": "sleepy cat"},  # sem detected_at
-        ]), encoding="utf-8")
+        viral_file.write_text(
+            json.dumps(
+                [
+                    {"scene": "sleepy cat"},  # sem detected_at
+                ]
+            ),
+            encoding="utf-8",
+        )
 
         assert content_strategy.viral_boosted_scenes() == {}
 
-    def test_multiple_recent_virals_same_scene_collapse_to_single_boost(
-        self, tmp_path, monkeypatch
-    ):
+    def test_multiple_recent_virals_same_scene_collapse_to_single_boost(self, tmp_path, monkeypatch):
         viral_file = self._isolate(tmp_path, monkeypatch)
         now = self._now_iso()
-        viral_file.write_text(json.dumps([
-            {"scene": "cat", "detected_at": now},
-            {"scene": "cat", "detected_at": now},
-            {"scene": "dog", "detected_at": now},
-        ]), encoding="utf-8")
+        viral_file.write_text(
+            json.dumps(
+                [
+                    {"scene": "cat", "detected_at": now},
+                    {"scene": "cat", "detected_at": now},
+                    {"scene": "dog", "detected_at": now},
+                ]
+            ),
+            encoding="utf-8",
+        )
 
         boosted = content_strategy.viral_boosted_scenes()
         assert boosted == {"cat": content_strategy._VIRAL_BOOST, "dog": content_strategy._VIRAL_BOOST}
@@ -189,6 +214,7 @@ class TestSceneForMoodViralBoostIntegration:
 
     def test_viral_boost_increases_pick_probability(self, tmp_path, monkeypatch):
         import random
+
         random.seed(42)
         perf_file = tmp_path / "scene_performance.json"
         monkeypatch.setattr(content_strategy, "_scene_performance_file", lambda: perf_file)
@@ -196,46 +222,55 @@ class TestSceneForMoodViralBoostIntegration:
         monkeypatch.setattr(content_strategy, "_viral_signals_file", lambda: viral_file)
         # Pesos iguais pra ambas as cenas; so o boost diferencia.
         perf_file.write_text(json.dumps({"sleepy cat": 1.0, "sleepy dog": 1.0}), encoding="utf-8")
-        viral_file.write_text(json.dumps([
-            {"scene": "sleepy cat", "detected_at": datetime.now(UTC).isoformat()},
-        ]), encoding="utf-8")
+        viral_file.write_text(
+            json.dumps(
+                [
+                    {"scene": "sleepy cat", "detected_at": datetime.now(UTC).isoformat()},
+                ]
+            ),
+            encoding="utf-8",
+        )
 
         results = [content_strategy.scene_for_mood("relax") for _ in range(200)]
         # sleepy cat tem peso 1.0 * boost(2.0) = 2.0 vs 1.0 -> escolhido ~2x mais.
         assert results.count("sleepy cat") > results.count("sleepy dog")
 
-    def test_viral_boost_does_not_introduce_scene_outside_mood_list(
-        self, tmp_path, monkeypatch
-    ):
+    def test_viral_boost_does_not_introduce_scene_outside_mood_list(self, tmp_path, monkeypatch):
         """Boost em cena fora da categoria do mood nao injeta ela na escolha."""
         perf_file = tmp_path / "scene_performance.json"
         monkeypatch.setattr(content_strategy, "_scene_performance_file", lambda: perf_file)
         viral_file = tmp_path / "viral_signals.json"
         monkeypatch.setattr(content_strategy, "_viral_signals_file", lambda: viral_file)
-        viral_file.write_text(json.dumps([
-            # "playful dog" esta na categoria diversao, nao em relax.
-            {"scene": "playful dog", "detected_at": datetime.now(UTC).isoformat()},
-        ]), encoding="utf-8")
+        viral_file.write_text(
+            json.dumps(
+                [
+                    # "playful dog" esta na categoria diversao, nao em relax.
+                    {"scene": "playful dog", "detected_at": datetime.now(UTC).isoformat()},
+                ]
+            ),
+            encoding="utf-8",
+        )
 
         for _ in range(50):
             assert content_strategy.scene_for_mood("relax") in content_strategy.SCENE_CATEGORIES["relax"]
 
-    def test_viral_boost_with_no_performance_weights_still_picks_from_mood(
-        self, tmp_path, monkeypatch
-    ):
+    def test_viral_boost_with_no_performance_weights_still_picks_from_mood(self, tmp_path, monkeypatch):
         """Sem scene_performance.json mas com virais, o boost ainda aplica
         (peso base 1.0 * boost) - a cena viralizada fica mais provavel."""
         import random
+
         random.seed(7)
-        monkeypatch.setattr(
-            content_strategy, "_scene_performance_file",
-            lambda: tmp_path / "missing_perf.json"
-        )
+        monkeypatch.setattr(content_strategy, "_scene_performance_file", lambda: tmp_path / "missing_perf.json")
         viral_file = tmp_path / "viral_signals.json"
         monkeypatch.setattr(content_strategy, "_viral_signals_file", lambda: viral_file)
-        viral_file.write_text(json.dumps([
-            {"scene": "sleepy cat", "detected_at": datetime.now(UTC).isoformat()},
-        ]), encoding="utf-8")
+        viral_file.write_text(
+            json.dumps(
+                [
+                    {"scene": "sleepy cat", "detected_at": datetime.now(UTC).isoformat()},
+                ]
+            ),
+            encoding="utf-8",
+        )
 
         results = [content_strategy.scene_for_mood("relax") for _ in range(200)]
         assert results.count("sleepy cat") > results.count("sleepy dog")

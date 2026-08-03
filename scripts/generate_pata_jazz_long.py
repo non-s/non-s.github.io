@@ -73,9 +73,15 @@ def _generate_long(duration: int = DEFAULT_DURATION, dry_run: bool = False) -> P
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Gerar long-form Loop & Relax Pata Jazz")
-    parser.add_argument("--duration", type=int, default=None,
-                        help=("Duracao em segundos (default: aleatorio entre "
-                              f"{DURATION_RANGE[0]}-{DURATION_RANGE[1]}, max {MAX_DURATION})"))
+    parser.add_argument(
+        "--duration",
+        type=int,
+        default=None,
+        help=(
+            "Duracao em segundos (default: aleatorio entre "
+            f"{DURATION_RANGE[0]}-{DURATION_RANGE[1]}, max {MAX_DURATION})"
+        ),
+    )
     parser.add_argument("--dry-run", action="store_true", help="Simula sem executar FFmpeg nem gerar arquivos")
     args = parser.parse_args()
 

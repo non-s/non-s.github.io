@@ -131,9 +131,7 @@ class TestSearchAndDownload:
     def test_skips_non_jazz_hits(self, mock_get, mock_download, monkeypatch):
         mock_response = MagicMock()
         mock_response.raise_for_status.return_value = None
-        mock_response.json.return_value = {
-            "results": [self._hit(name="rock", tags="rock", artist="Rock Band")]
-        }
+        mock_response.json.return_value = {"results": [self._hit(name="rock", tags="rock", artist="Rock Band")]}
         mock_get.return_value = mock_response
         monkeypatch.setattr(sync_jazz_music, "AUDIO_DIR", MagicMock())
         sync_jazz_music.AUDIO_DIR.__truediv__ = lambda self, other: MagicMock(
@@ -165,8 +163,7 @@ class TestDownload:
 
     def test_failure_3x(self, tmp_path, monkeypatch):
         dest = tmp_path / "out.mp3"
-        monkeypatch.setattr(sync_jazz_music.requests, "get",
-                            MagicMock(side_effect=ConnectionError("boom")))
+        monkeypatch.setattr(sync_jazz_music.requests, "get", MagicMock(side_effect=ConnectionError("boom")))
         # Acelera os sleeps entre retries
         monkeypatch.setattr("time.sleep", lambda s: None)
         assert sync_jazz_music._download("https://x/y.mp3", dest) is False
@@ -174,9 +171,9 @@ class TestDownload:
 
     def test_timeout(self, tmp_path, monkeypatch):
         import requests
+
         dest = tmp_path / "out.mp3"
-        monkeypatch.setattr(sync_jazz_music.requests, "get",
-                            MagicMock(side_effect=requests.exceptions.Timeout("slow")))
+        monkeypatch.setattr(sync_jazz_music.requests, "get", MagicMock(side_effect=requests.exceptions.Timeout("slow")))
         monkeypatch.setattr("time.sleep", lambda s: None)
         assert sync_jazz_music._download("https://x/y.mp3", dest) is False
 

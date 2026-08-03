@@ -35,10 +35,23 @@ def _render_with_filter(vf: str) -> subprocess.CompletedProcess:
         out = Path(tmp) / "out.png"
         return subprocess.run(
             [
-                "ffmpeg", "-f", "lavfi", "-i", "color=c=blue:s=320x240:d=1",
-                "-vf", vf, "-frames:v", "1", "-update", "1", "-y", str(out),
+                "ffmpeg",
+                "-f",
+                "lavfi",
+                "-i",
+                "color=c=blue:s=320x240:d=1",
+                "-vf",
+                vf,
+                "-frames:v",
+                "1",
+                "-update",
+                "1",
+                "-y",
+                str(out),
             ],
-            capture_output=True, text=True, timeout=30,
+            capture_output=True,
+            text=True,
+            timeout=30,
         )
 
 

@@ -51,6 +51,7 @@ def is_safe_ai_text(text: str) -> bool:
     """Confere se um texto gerado por IA parece seguro pra publicar."""
     return bool(text) and not _SUSPICIOUS_RE.search(text)
 
+
 _GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash-001")
 _GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 _MIN_INTERVAL = 2.0  # segundos entre chamadas
@@ -218,7 +219,7 @@ def ai_text(
                             _gemini_circuit_open_until = time.time() + _GEMINI_CIRCUIT_RESET_SECONDS
                             log.warning("Circuit breaker aberto por %ss", _GEMINI_CIRCUIT_RESET_SECONDS)
                     # Backoff exponencial com jitter para 429/503
-                    wait = min(_BASE_BACKOFF * (2 ** attempt) + random.uniform(0, 1), 8)
+                    wait = min(_BASE_BACKOFF * (2**attempt) + random.uniform(0, 1), 8)
                     log.warning("Gemini %s - aguardando %ss (tentativa %d/%d)", status, wait, attempt + 1, _MAX_RETRIES)
                     sleep(wait)
                     continue
@@ -227,17 +228,20 @@ def ai_text(
                 break
             except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as exc:
                 # Timeout ou connection error: retry com backoff exponencial
-                wait = _BASE_BACKOFF * (2 ** attempt) + random.uniform(0, 1)
+                wait = _BASE_BACKOFF * (2**attempt) + random.uniform(0, 1)
                 log.warning(
                     "Gemini timeout/connection error (tentativa %d/%d): %s - aguardando %ss",
-                    attempt + 1, _MAX_RETRIES, exc, wait,
+                    attempt + 1,
+                    _MAX_RETRIES,
+                    exc,
+                    wait,
                 )
                 sleep(wait)
                 continue
             except Exception as exc:
                 log.warning("Gemini erro inesperado (tentativa %d/%d): %s", attempt + 1, _MAX_RETRIES, exc)
                 if attempt < _MAX_RETRIES - 1:
-                    wait = _BASE_BACKOFF * (2 ** attempt)
+                    wait = _BASE_BACKOFF * (2**attempt)
                     sleep(wait)
                     continue
                 break
@@ -298,13 +302,15 @@ def ai_text_with_image(
         _throttle()
         url = _GEMINI_API_URL.format(model=_GEMINI_MODEL)
         body: dict = {
-            "contents": [{
-                "role": "user",
-                "parts": [
-                    {"text": prompt},
-                    {"inline_data": {"mime_type": mime, "data": image_b64}},
-                ],
-            }],
+            "contents": [
+                {
+                    "role": "user",
+                    "parts": [
+                        {"text": prompt},
+                        {"inline_data": {"mime_type": mime, "data": image_b64}},
+                    ],
+                }
+            ],
             "systemInstruction": {"parts": [{"text": sys_msg}]},
             "generationConfig": {"temperature": 0.6, "maxOutputTokens": 300},
         }
@@ -346,21 +352,21 @@ def ai_text_with_image(
                         if _gemini_429_streak >= _GEMINI_429_CIRCUIT_THRESHOLD:
                             _gemini_circuit_open = True
                             _gemini_circuit_open_until = time.time() + _GEMINI_CIRCUIT_RESET_SECONDS
-                    wait = min(_BASE_BACKOFF * (2 ** attempt) + random.uniform(0, 1), 8)
+                    wait = min(_BASE_BACKOFF * (2**attempt) + random.uniform(0, 1), 8)
                     log.warning("thumbnail_vision %s - aguardando %ss", status, wait)
                     sleep(wait)
                     continue
                 log.warning("thumbnail_vision HTTP %s - desistindo", status)
                 return None
             except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as exc:
-                wait = _BASE_BACKOFF * (2 ** attempt) + random.uniform(0, 1)
+                wait = _BASE_BACKOFF * (2**attempt) + random.uniform(0, 1)
                 log.warning("thumbnail_vision timeout/conn (tentativa %d): %s", attempt + 1, exc)
                 sleep(wait)
                 continue
             except Exception as exc:
                 log.warning("thumbnail_vision erro inesperado (tentativa %d): %s", attempt + 1, exc)
                 if attempt < _MAX_RETRIES - 1:
-                    sleep(_BASE_BACKOFF * (2 ** attempt))
+                    sleep(_BASE_BACKOFF * (2**attempt))
                     continue
                 return None
         return None

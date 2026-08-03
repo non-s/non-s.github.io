@@ -72,7 +72,9 @@ def _find_unpublished_videos(prefix: str = "") -> list[tuple[Path, dict]]:
             if data.get("publish_attempts", 0) >= _MAX_PUBLISH_ATTEMPTS:
                 log.warning(
                     "Video %s descartado: %d tentativas de publicacao sem sucesso (limite %d).",
-                    meta_path.name, data.get("publish_attempts", 0), _MAX_PUBLISH_ATTEMPTS,
+                    meta_path.name,
+                    data.get("publish_attempts", 0),
+                    _MAX_PUBLISH_ATTEMPTS,
                 )
                 continue
             video_path = meta_path.with_suffix(".mp4")
@@ -104,9 +106,7 @@ def _publish_video(service, video_path: Path, meta: dict, language: str = "en") 
                 "id": existing_id,
                 "status": {"privacyStatus": privacy},
             }
-            _retry_youtube_call(
-                service.videos().update(part="status", body=body).execute
-            )
+            _retry_youtube_call(service.videos().update(part="status", body=body).execute)
             log.info("Video %s atualizado para publico.", existing_id)
             return existing_id
         except Exception as exc:
@@ -146,7 +146,9 @@ def _publish_video(service, video_path: Path, meta: dict, language: str = "en") 
     if actual_privacy != privacy:
         log.error(
             "Video %s saiu com privacyStatus=%r, esperado %r - confira manualmente.",
-            video_id, actual_privacy, privacy,
+            video_id,
+            actual_privacy,
+            privacy,
         )
 
     _record_video_tags(video_id, meta)
@@ -202,7 +204,9 @@ def main() -> int:
                 )
                 log.warning(
                     "Video %s falhou (tentativa %d/%d).",
-                    video_path.name, attempts, _MAX_PUBLISH_ATTEMPTS,
+                    video_path.name,
+                    attempts,
+                    _MAX_PUBLISH_ATTEMPTS,
                 )
         except Exception as exc:
             log.error("Falha ao publicar %s: %s", video_path.name, exc)

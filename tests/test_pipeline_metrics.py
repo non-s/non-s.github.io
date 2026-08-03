@@ -1,5 +1,6 @@
 """Testes para utils/pipeline_metrics.py — metricas de pipeline
 (record_pipeline_run + pipeline_summary)."""
+
 import json
 
 import pytest
@@ -27,9 +28,20 @@ class TestRecordPipelineRun:
 
     def test_appends_to_existing(self, tmp_path):
         path = tmp_path / "pipeline_metrics.json"
-        path.write_text(json.dumps([
-            {"stage": "upload", "success": True, "duration_seconds": 10, "kind": "", "at": "2026-01-01T00:00:00+00:00"}
-        ]), encoding="utf-8")
+        path.write_text(
+            json.dumps(
+                [
+                    {
+                        "stage": "upload",
+                        "success": True,
+                        "duration_seconds": 10,
+                        "kind": "",
+                        "at": "2026-01-01T00:00:00+00:00",
+                    }
+                ]
+            ),
+            encoding="utf-8",
+        )
         pm.record_pipeline_run("generate_short", success=False, duration_seconds=2.0)
         data = json.loads(path.read_text(encoding="utf-8"))
         assert len(data) == 2
@@ -83,12 +95,35 @@ class TestPipelineSummary:
 
     def test_aggregates_per_stage(self, tmp_path):
         path = tmp_path / "pipeline_metrics.json"
-        path.write_text(json.dumps([
-            {"stage": "generate_short", "success": True, "duration_seconds": 10, "kind": "vertical", "at": "t1"},
-            {"stage": "generate_short", "success": False, "duration_seconds": 20, "kind": "vertical", "at": "t2"},
-            {"stage": "generate_short", "success": True, "duration_seconds": 30, "kind": "vertical", "at": "t3"},
-            {"stage": "upload", "success": True, "duration_seconds": 5, "kind": "pata_jazz", "at": "t4"},
-        ]), encoding="utf-8")
+        path.write_text(
+            json.dumps(
+                [
+                    {
+                        "stage": "generate_short",
+                        "success": True,
+                        "duration_seconds": 10,
+                        "kind": "vertical",
+                        "at": "t1",
+                    },
+                    {
+                        "stage": "generate_short",
+                        "success": False,
+                        "duration_seconds": 20,
+                        "kind": "vertical",
+                        "at": "t2",
+                    },
+                    {
+                        "stage": "generate_short",
+                        "success": True,
+                        "duration_seconds": 30,
+                        "kind": "vertical",
+                        "at": "t3",
+                    },
+                    {"stage": "upload", "success": True, "duration_seconds": 5, "kind": "pata_jazz", "at": "t4"},
+                ]
+            ),
+            encoding="utf-8",
+        )
         summary = pm.pipeline_summary()
         assert summary["total_runs"] == 4
         short = summary["stages"]["generate_short"]
@@ -104,11 +139,16 @@ class TestPipelineSummary:
 
     def test_skips_entries_without_stage(self, tmp_path):
         path = tmp_path / "pipeline_metrics.json"
-        path.write_text(json.dumps([
-            {"stage": "upload", "success": True, "duration_seconds": 1, "kind": "", "at": "t"},
-            {"success": True, "duration_seconds": 1, "at": "t"},
-            {"stage": "", "success": True, "at": "t"},
-        ]), encoding="utf-8")
+        path.write_text(
+            json.dumps(
+                [
+                    {"stage": "upload", "success": True, "duration_seconds": 1, "kind": "", "at": "t"},
+                    {"success": True, "duration_seconds": 1, "at": "t"},
+                    {"stage": "", "success": True, "at": "t"},
+                ]
+            ),
+            encoding="utf-8",
+        )
         summary = pm.pipeline_summary()
         assert summary["total_runs"] == 3
         assert list(summary["stages"].keys()) == ["upload"]
@@ -123,8 +163,9 @@ class TestPipelineSummary:
 
     def test_does_not_leak_total_duration_field(self, tmp_path):
         path = tmp_path / "pipeline_metrics.json"
-        path.write_text(json.dumps([
-            {"stage": "upload", "success": True, "duration_seconds": 5, "kind": "", "at": "t"}
-        ]), encoding="utf-8")
+        path.write_text(
+            json.dumps([{"stage": "upload", "success": True, "duration_seconds": 5, "kind": "", "at": "t"}]),
+            encoding="utf-8",
+        )
         summary = pm.pipeline_summary()
         assert "total_duration" not in summary["stages"]["upload"]

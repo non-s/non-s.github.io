@@ -67,7 +67,10 @@ def _generate_short(duration: int = DEFAULT_DURATION, dry_run: bool = False) -> 
     )
     log.info(
         "Mood=%s, cena=%s, padrao=%s, horario BRT=%dh",
-        mood, scene, pattern_hint or "(sorteio)", current_brt_hour(),
+        mood,
+        scene,
+        pattern_hint or "(sorteio)",
+        current_brt_hour(),
     )
 
     spec = short_spec(duration=duration, scene=scene, mood=mood, title_pattern_hint=pattern_hint or "")
@@ -82,8 +85,12 @@ def _generate_short(duration: int = DEFAULT_DURATION, dry_run: bool = False) -> 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Gerar Short Pata Jazz")
-    parser.add_argument("--duration", type=int, default=None,
-                         help=f"Duracao em segundos (default: aleatorio entre {DURATION_RANGE[0]}-{DURATION_RANGE[1]})")
+    parser.add_argument(
+        "--duration",
+        type=int,
+        default=None,
+        help=f"Duracao em segundos (default: aleatorio entre {DURATION_RANGE[0]}-{DURATION_RANGE[1]})",
+    )
     parser.add_argument("--dry-run", action="store_true", help="Simula sem executar FFmpeg nem gerar arquivos")
     args = parser.parse_args()
 

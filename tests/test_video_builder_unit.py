@@ -1,4 +1,5 @@
 """Testes unitários para video_builder.py."""
+
 import json
 from pathlib import Path
 from unittest.mock import MagicMock, patch
@@ -88,8 +89,8 @@ class TestBuildEndcardFilter:
 class TestVideoBuilderUnits:
     """Testes unitários para video_builder."""
 
-    @patch('utils.media_pool.video_pool')
-    @patch('utils.media_pool.audio_pool')
+    @patch("utils.media_pool.video_pool")
+    @patch("utils.media_pool.audio_pool")
     def test_validate_source_pools_success(self, mock_audio, mock_video):
         """Testa validação de pools com sucesso."""
         mock_video.return_value = [Path("video1.mp4")]
@@ -98,7 +99,7 @@ class TestVideoBuilderUnits:
         # Não deve levantar exceção
         video_builder._validate_source_pools()
 
-    @patch('utils.media_pool.video_pool')
+    @patch("utils.media_pool.video_pool")
     def test_validate_source_pools_empty_video(self, mock_video):
         """Testa validação com pool de vídeo vazio."""
         mock_video.return_value = []
@@ -106,8 +107,8 @@ class TestVideoBuilderUnits:
         with pytest.raises(RuntimeError, match="Pool de b-roll vazio"):
             video_builder._validate_source_pools()
 
-    @patch('utils.media_pool.audio_pool')
-    @patch('utils.media_pool.video_pool')
+    @patch("utils.media_pool.audio_pool")
+    @patch("utils.media_pool.video_pool")
     def test_validate_source_pools_empty_audio(self, mock_video, mock_audio):
         """Testa validação com pool de áudio vazio."""
         mock_video.return_value = [Path("video1.mp4")]
@@ -122,10 +123,7 @@ class TestVideoBuilderUnits:
 
         with pytest.raises(RuntimeError):
             video_builder.build_pata_jazz_video(
-                spec=spec_invalid,
-                output_dir=Path("test"),
-                thumb_dir=Path("test"),
-                stem_prefix="test"
+                spec=spec_invalid, output_dir=Path("test"), thumb_dir=Path("test"), stem_prefix="test"
             )
 
     def test_build_pata_jazz_video_maps_music_explicitly(self, tmp_path):
@@ -148,19 +146,21 @@ class TestVideoBuilderUnits:
         def fake_run_ffmpeg(args):
             captured["args"] = args
 
-        with patch("utils.video_builder.ensure_dirs"), \
-             patch("utils.video_builder.pool_stats", return_value={"videos": 1, "audio": 1}), \
-             patch("utils.video_builder.random_scene", return_value="scene"), \
-             patch("utils.video_builder.hook_for_scene", return_value=("hook", "🐾")), \
-             patch("utils.video_builder.pick_videos", return_value=[Path("video.mp4")]), \
-             patch("utils.video_builder.pick_audio", return_value=Path("audio.mp3")), \
-             patch("utils.video_builder.run_ffmpeg", side_effect=fake_run_ffmpeg), \
-             patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}), \
-             patch("utils.video_builder.validate_generated_video",
-                   return_value=VideoValidation(ok=True, errors=[], info={})):
-            video_builder.build_pata_jazz_video(
-                spec=spec, output_dir=tmp_path, thumb_dir=tmp_path, stem_prefix="test"
-            )
+        with (
+            patch("utils.video_builder.ensure_dirs"),
+            patch("utils.video_builder.pool_stats", return_value={"videos": 1, "audio": 1}),
+            patch("utils.video_builder.random_scene", return_value="scene"),
+            patch("utils.video_builder.hook_for_scene", return_value=("hook", "🐾")),
+            patch("utils.video_builder.pick_videos", return_value=[Path("video.mp4")]),
+            patch("utils.video_builder.pick_audio", return_value=Path("audio.mp3")),
+            patch("utils.video_builder.run_ffmpeg", side_effect=fake_run_ffmpeg),
+            patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}),
+            patch(
+                "utils.video_builder.validate_generated_video",
+                return_value=VideoValidation(ok=True, errors=[], info={}),
+            ),
+        ):
+            video_builder.build_pata_jazz_video(spec=spec, output_dir=tmp_path, thumb_dir=tmp_path, stem_prefix="test")
 
         cmd = captured["args"]
         map_values = [cmd[i + 1] for i, v in enumerate(cmd) if v == "-map"]
@@ -189,18 +189,18 @@ class TestVideoBuilderUnits:
             captured["args"] = args
             return VideoValidation(ok=True, errors=[], info={})
 
-        with patch("utils.video_builder.ensure_dirs"), \
-             patch("utils.video_builder.pool_stats", return_value={"videos": 1, "audio": 0}), \
-             patch("utils.video_builder.random_scene", return_value="scene"), \
-             patch("utils.video_builder.hook_for_scene", return_value=("hook", "🐾")), \
-             patch("utils.video_builder.pick_videos", return_value=[Path("video.mp4")]), \
-             patch("utils.video_builder.pick_audio", return_value=None), \
-             patch("utils.video_builder.run_ffmpeg"), \
-             patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}), \
-             patch("utils.video_builder.validate_generated_video", side_effect=fake_validate):
-            video_builder.build_pata_jazz_video(
-                spec=spec, output_dir=tmp_path, thumb_dir=tmp_path, stem_prefix="test"
-            )
+        with (
+            patch("utils.video_builder.ensure_dirs"),
+            patch("utils.video_builder.pool_stats", return_value={"videos": 1, "audio": 0}),
+            patch("utils.video_builder.random_scene", return_value="scene"),
+            patch("utils.video_builder.hook_for_scene", return_value=("hook", "🐾")),
+            patch("utils.video_builder.pick_videos", return_value=[Path("video.mp4")]),
+            patch("utils.video_builder.pick_audio", return_value=None),
+            patch("utils.video_builder.run_ffmpeg"),
+            patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}),
+            patch("utils.video_builder.validate_generated_video", side_effect=fake_validate),
+        ):
+            video_builder.build_pata_jazz_video(spec=spec, output_dir=tmp_path, thumb_dir=tmp_path, stem_prefix="test")
 
         assert captured["kwargs"].get("expect_audio") is False
 
@@ -208,24 +208,25 @@ class TestVideoBuilderUnits:
         """Long-form (kind='long') usa o montador de loop com crossfade lento
         em vez do montador de Shorts."""
         spec = video_builder.long_spec(duration=600)
-        with patch("utils.video_builder.ensure_dirs"), \
-             patch("utils.video_builder._validate_source_pools"), \
-             patch("utils.video_builder.random_scene", return_value="scene"), \
-             patch("utils.video_builder.hook_for_scene", return_value=("hook", "🐾")), \
-             patch("utils.video_builder.pick_audio", return_value=None), \
-             patch("utils.video_builder.pick_videos",
-                   return_value=[Path("v1.mp4"), Path("v2.mp4")]), \
-             patch("utils.video_builder._build_loop_relax_video") as mock_loop, \
-             patch("utils.video_builder._build_multi_clip_short") as mock_short, \
-             patch("utils.video_builder.run_ffmpeg"), \
-             patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}), \
-             patch("utils.video_builder.make_long_thumbnail"), \
-             patch("utils.video_builder.winning_thumbnail_variant", return_value="A"), \
-             patch("utils.video_builder.validate_generated_video",
-                   return_value=VideoValidation(ok=True, errors=[], info={})):
-            video_builder.build_pata_jazz_video(
-                spec=spec, output_dir=tmp_path, thumb_dir=tmp_path, stem_prefix="test"
-            )
+        with (
+            patch("utils.video_builder.ensure_dirs"),
+            patch("utils.video_builder._validate_source_pools"),
+            patch("utils.video_builder.random_scene", return_value="scene"),
+            patch("utils.video_builder.hook_for_scene", return_value=("hook", "🐾")),
+            patch("utils.video_builder.pick_audio", return_value=None),
+            patch("utils.video_builder.pick_videos", return_value=[Path("v1.mp4"), Path("v2.mp4")]),
+            patch("utils.video_builder._build_loop_relax_video") as mock_loop,
+            patch("utils.video_builder._build_multi_clip_short") as mock_short,
+            patch("utils.video_builder.run_ffmpeg"),
+            patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}),
+            patch("utils.video_builder.make_long_thumbnail"),
+            patch("utils.video_builder.winning_thumbnail_variant", return_value="A"),
+            patch(
+                "utils.video_builder.validate_generated_video",
+                return_value=VideoValidation(ok=True, errors=[], info={}),
+            ),
+        ):
+            video_builder.build_pata_jazz_video(spec=spec, output_dir=tmp_path, thumb_dir=tmp_path, stem_prefix="test")
 
         mock_loop.assert_called_once()
         mock_short.assert_not_called()
@@ -244,10 +245,16 @@ class TestVideoBuilderUnits:
         def fake_run_ffmpeg(args):
             captured_cmds.append(args)
 
-        with patch("utils.video_builder.random", **{"sample.return_value": videos, "randint.return_value": 3}), \
-             patch("utils.video_builder.run_ffmpeg", side_effect=fake_run_ffmpeg):
+        with (
+            patch("utils.video_builder.random", **{"sample.return_value": videos, "randint.return_value": 3}),
+            patch("utils.video_builder.run_ffmpeg", side_effect=fake_run_ffmpeg),
+        ):
             video_builder._build_multi_clip_short(
-                spec, videos, audio_path=None, output=tmp_path / "out.mp4", hook="hook",
+                spec,
+                videos,
+                audio_path=None,
+                output=tmp_path / "out.mp4",
+                hook="hook",
             )
 
         final_cmd = captured_cmds[-1]
@@ -266,20 +273,24 @@ class TestVideoBuilderUnits:
         def fake_run_ffmpeg(args):
             captured_cmds.append(args)
 
-        with patch("utils.video_builder.random.sample", return_value=videos), \
-             patch("utils.video_builder.random.randint", return_value=3), \
-             patch("utils.video_builder.random.choice", return_value="circleopen") as mock_choice, \
-             patch("utils.video_builder.run_ffmpeg", side_effect=fake_run_ffmpeg):
+        with (
+            patch("utils.video_builder.random.sample", return_value=videos),
+            patch("utils.video_builder.random.randint", return_value=3),
+            patch("utils.video_builder.random.choice", return_value="circleopen") as mock_choice,
+            patch("utils.video_builder.run_ffmpeg", side_effect=fake_run_ffmpeg),
+        ):
             video_builder._build_multi_clip_short(
-                spec, videos, audio_path=None, output=tmp_path / "out.mp4", hook="hook",
+                spec,
+                videos,
+                audio_path=None,
+                output=tmp_path / "out.mp4",
+                hook="hook",
             )
 
         # O end-card CTA tambem sorteia via random.choice (a partir desta
         # feature) - o importante e que a transicao xfade tenha sido
         # sorteada da lista curada pelo menos uma vez.
-        assert video_builder._XFADE_TRANSITIONS in [
-            call.args[0] for call in mock_choice.call_args_list
-        ]
+        assert video_builder._XFADE_TRANSITIONS in [call.args[0] for call in mock_choice.call_args_list]
         final_cmd = captured_cmds[-1]
         filter_complex = final_cmd[final_cmd.index("-filter_complex") + 1]
         assert "xfade=transition=circleopen" in filter_complex
@@ -303,20 +314,22 @@ class TestVideoBuilderUnits:
         calls: list = []
         spec.thumbnail_maker.side_effect = lambda *a, **kw: calls.append((a, kw))
 
-        with patch("utils.video_builder.ensure_dirs"), \
-             patch("utils.video_builder.pool_stats", return_value={"videos": 1, "audio": 1}), \
-             patch("utils.video_builder.random_scene", return_value="scene"), \
-             patch("utils.video_builder.hook_for_scene", return_value=("hook", "🐾")), \
-             patch("utils.video_builder.pick_videos", return_value=[Path("video.mp4")]), \
-             patch("utils.video_builder.pick_audio", return_value=Path("audio.mp3")), \
-             patch("utils.video_builder.run_ffmpeg"), \
-             patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}), \
-             patch("utils.video_builder.winning_thumbnail_variant", return_value="A"), \
-             patch("utils.video_builder.validate_generated_video",
-                    return_value=VideoValidation(ok=True, errors=[], info={})):
-            video_builder.build_pata_jazz_video(
-                spec=spec, output_dir=tmp_path, thumb_dir=tmp_path, stem_prefix="test"
-            )
+        with (
+            patch("utils.video_builder.ensure_dirs"),
+            patch("utils.video_builder.pool_stats", return_value={"videos": 1, "audio": 1}),
+            patch("utils.video_builder.random_scene", return_value="scene"),
+            patch("utils.video_builder.hook_for_scene", return_value=("hook", "🐾")),
+            patch("utils.video_builder.pick_videos", return_value=[Path("video.mp4")]),
+            patch("utils.video_builder.pick_audio", return_value=Path("audio.mp3")),
+            patch("utils.video_builder.run_ffmpeg"),
+            patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}),
+            patch("utils.video_builder.winning_thumbnail_variant", return_value="A"),
+            patch(
+                "utils.video_builder.validate_generated_video",
+                return_value=VideoValidation(ok=True, errors=[], info={}),
+            ),
+        ):
+            video_builder.build_pata_jazz_video(spec=spec, output_dir=tmp_path, thumb_dir=tmp_path, stem_prefix="test")
 
         # thumbnail_maker chamado 3x: A, B e C.
         variants = [kw.get("variant", "A") for _, kw in calls]
@@ -351,20 +364,22 @@ class TestVideoBuilderUnits:
         )
         spec.thumbnail_maker.side_effect = lambda *a, **kw: None
 
-        with patch("utils.video_builder.ensure_dirs"), \
-             patch("utils.video_builder.pool_stats", return_value={"videos": 1, "audio": 1}), \
-             patch("utils.video_builder.random_scene", return_value="scene"), \
-             patch("utils.video_builder.hook_for_scene", return_value=("hook", "🐾")), \
-             patch("utils.video_builder.pick_videos", return_value=[Path("video.mp4")]), \
-             patch("utils.video_builder.pick_audio", return_value=Path("audio.mp3")), \
-             patch("utils.video_builder.run_ffmpeg"), \
-             patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}), \
-             patch("utils.video_builder.winning_thumbnail_variant", return_value="B"), \
-             patch("utils.video_builder.validate_generated_video",
-                    return_value=VideoValidation(ok=True, errors=[], info={})):
-            video_builder.build_pata_jazz_video(
-                spec=spec, output_dir=tmp_path, thumb_dir=tmp_path, stem_prefix="test"
-            )
+        with (
+            patch("utils.video_builder.ensure_dirs"),
+            patch("utils.video_builder.pool_stats", return_value={"videos": 1, "audio": 1}),
+            patch("utils.video_builder.random_scene", return_value="scene"),
+            patch("utils.video_builder.hook_for_scene", return_value=("hook", "🐾")),
+            patch("utils.video_builder.pick_videos", return_value=[Path("video.mp4")]),
+            patch("utils.video_builder.pick_audio", return_value=Path("audio.mp3")),
+            patch("utils.video_builder.run_ffmpeg"),
+            patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}),
+            patch("utils.video_builder.winning_thumbnail_variant", return_value="B"),
+            patch(
+                "utils.video_builder.validate_generated_video",
+                return_value=VideoValidation(ok=True, errors=[], info={}),
+            ),
+        ):
+            video_builder.build_pata_jazz_video(spec=spec, output_dir=tmp_path, thumb_dir=tmp_path, stem_prefix="test")
 
         json_files = list(tmp_path.glob("*.json"))
         meta = json.loads(json_files[0].read_text(encoding="utf-8"))
@@ -393,20 +408,22 @@ class TestVideoBuilderUnits:
 
         spec.thumbnail_maker.side_effect = flaky_maker
 
-        with patch("utils.video_builder.ensure_dirs"), \
-             patch("utils.video_builder.pool_stats", return_value={"videos": 1, "audio": 1}), \
-             patch("utils.video_builder.random_scene", return_value="scene"), \
-             patch("utils.video_builder.hook_for_scene", return_value=("hook", "🐾")), \
-             patch("utils.video_builder.pick_videos", return_value=[Path("video.mp4")]), \
-             patch("utils.video_builder.pick_audio", return_value=Path("audio.mp3")), \
-             patch("utils.video_builder.run_ffmpeg"), \
-             patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}), \
-             patch("utils.video_builder.winning_thumbnail_variant", return_value="C"), \
-             patch("utils.video_builder.validate_generated_video",
-                    return_value=VideoValidation(ok=True, errors=[], info={})):
-            video_builder.build_pata_jazz_video(
-                spec=spec, output_dir=tmp_path, thumb_dir=tmp_path, stem_prefix="test"
-            )
+        with (
+            patch("utils.video_builder.ensure_dirs"),
+            patch("utils.video_builder.pool_stats", return_value={"videos": 1, "audio": 1}),
+            patch("utils.video_builder.random_scene", return_value="scene"),
+            patch("utils.video_builder.hook_for_scene", return_value=("hook", "🐾")),
+            patch("utils.video_builder.pick_videos", return_value=[Path("video.mp4")]),
+            patch("utils.video_builder.pick_audio", return_value=Path("audio.mp3")),
+            patch("utils.video_builder.run_ffmpeg"),
+            patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}),
+            patch("utils.video_builder.winning_thumbnail_variant", return_value="C"),
+            patch(
+                "utils.video_builder.validate_generated_video",
+                return_value=VideoValidation(ok=True, errors=[], info={}),
+            ),
+        ):
+            video_builder.build_pata_jazz_video(spec=spec, output_dir=tmp_path, thumb_dir=tmp_path, stem_prefix="test")
 
         json_files = list(tmp_path.glob("*.json"))
         meta = json.loads(json_files[0].read_text(encoding="utf-8"))
@@ -434,19 +451,21 @@ class TestVideoBuilderUnits:
 
         spec.thumbnail_maker.side_effect = maker_side_effect
 
-        with patch("utils.video_builder.ensure_dirs"), \
-             patch("utils.video_builder.pool_stats", return_value={"videos": 1, "audio": 1}), \
-             patch("utils.video_builder.random_scene", return_value="scene"), \
-             patch("utils.video_builder.hook_for_scene", return_value=("hook", "🐾")), \
-             patch("utils.video_builder.pick_videos", return_value=[Path("video.mp4")]), \
-             patch("utils.video_builder.pick_audio", return_value=Path("audio.mp3")), \
-             patch("utils.video_builder.run_ffmpeg"), \
-             patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}), \
-             patch("utils.video_builder.validate_generated_video",
-                    return_value=VideoValidation(ok=True, errors=[], info={})):
-            video_builder.build_pata_jazz_video(
-                spec=spec, output_dir=tmp_path, thumb_dir=tmp_path, stem_prefix="test"
-            )
+        with (
+            patch("utils.video_builder.ensure_dirs"),
+            patch("utils.video_builder.pool_stats", return_value={"videos": 1, "audio": 1}),
+            patch("utils.video_builder.random_scene", return_value="scene"),
+            patch("utils.video_builder.hook_for_scene", return_value=("hook", "🐾")),
+            patch("utils.video_builder.pick_videos", return_value=[Path("video.mp4")]),
+            patch("utils.video_builder.pick_audio", return_value=Path("audio.mp3")),
+            patch("utils.video_builder.run_ffmpeg"),
+            patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}),
+            patch(
+                "utils.video_builder.validate_generated_video",
+                return_value=VideoValidation(ok=True, errors=[], info={}),
+            ),
+        ):
+            video_builder.build_pata_jazz_video(spec=spec, output_dir=tmp_path, thumb_dir=tmp_path, stem_prefix="test")
 
         json_files = list(tmp_path.glob("*.json"))
         meta = json.loads(json_files[0].read_text(encoding="utf-8"))

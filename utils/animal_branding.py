@@ -187,8 +187,18 @@ BROLL_QUERIES: list[str] = [
 
 # Categorias Pixabay permitidas no filtro local.
 ALLOWED_ANIMAL_KEYWORDS: set[str] = {
-    "cat", "cats", "kitten", "kitty", "dog", "dogs", "puppy", "puppies",
-    "animal", "pet", "feline", "canine",
+    "cat",
+    "cats",
+    "kitten",
+    "kitty",
+    "dog",
+    "dogs",
+    "puppy",
+    "puppies",
+    "animal",
+    "pet",
+    "feline",
+    "canine",
 }
 
 # Palavras que indicam cartoon, animacao, ilustracao ou conteudo nao-real.
@@ -237,7 +247,6 @@ def random_scene(channel: ChannelConfig | None = None) -> str:
     ch = channel or active_channel
     scenes = [s for group in ch.scene_categories.values() for s in group]
     return random.choice(scenes if scenes else ALL_SCENES)
-
 
 
 # Angulos de retencao pra variar o *tipo* de hook entre videos, nao so o

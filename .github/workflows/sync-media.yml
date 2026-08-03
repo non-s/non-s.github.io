@@ -1,0 +1,82 @@
+name: "Sync de Conteudo (Multi-canal)"
+
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: "Canal para sincronizar (pata_jazz, pata_lofi, pata_classical)"
+        required: true
+        default: "pata_jazz"
+        type: choice
+        options:
+          - "pata_jazz"
+          - "pata_lofi"
+          - "pata_classical"
+  schedule:
+    # Renova o pool de conteudo 2x por semana (terca e sexta, 06:00 UTC = 03:00 BRT)
+    - cron: "0 6 * * 2,5"
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: sync-media-${{ github.event.inputs.channel || 'all' }}
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    strategy:
+      matrix:
+        channel: [pata_jazz, pata_lofi, pata_classical]
+      fail-fast: false
+    name: "Sincronizar b-roll e musicas - ${{ matrix.channel }}"
+    if: ${{ vars[format('{0}_ENABLED', matrix.channel | upper)] == '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      YOUTUBE_CHANNEL: ${{ matrix.channel }}
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: "Setup"
+        uses: ./.github/actions/setup-env
+        with:
+          ffmpeg: "false"
+      - name: "Evict caches antigos (mantem 5 mais recentes por prefixo)"
+        if: github.event.inputs.channel == matrix.channel || github.event.inputs.channel == ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for prefix in animal-broll- animal-jazz- ${{ matrix.channel }}-data- analytics-; do
+            echo "Evictando caches antigos do prefixo '$prefix' (mantem 5 mais recentes)..."
+            mapfile -t ids < <(gh cache list --repo "${{ github.repository }}" --key "$prefix*" --order desc --sort created-at --json id --jq '.[].id')
+            echo "  Encontrados ${#ids[@]} caches para o prefixo '$prefix'."
+            for id in "${ids[@]:5}"; do
+              echo "  Deletando cache $id..."
+              gh cache delete "$id" --repo "${{ github.repository }}" --yes || true
+            done
+          done
+      - name: "Cache b-roll"
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: _assets/video/animal_broll
+          key: animal-broll-${{ github.run_id }}
+          restore-keys: animal-broll-
+      - name: "Cache musicas"
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: _assets/audio/animal_jazz
+          key: animal-jazz-${{ github.run_id }}
+          restore-keys: animal-jazz-
+      - name: "Sincronizar b-roll (gatos/cachorros)"
+        env:
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+        run: python scripts/sync_animal_broll.py
+      - name: "Sincronizar musicas"
+        env:
+          JAMENDO_CLIENT_ID: ${{ secrets.JAMENDO_CLIENT_ID }}
+        run: python scripts/sync_jazz_music.py

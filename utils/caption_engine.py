@@ -136,23 +136,14 @@ def _ass_header(fontsize: int, play_res_x: int, play_res_y: int) -> str:
     )
 
 
-def _ass_word_dialogue(
-    start: float, end: float, word: str
-) -> str:
+def _ass_word_dialogue(start: float, end: float, word: str) -> str:
     """Uma linha Dialogue para uma palavra com fade-in + escala 1.2x -> 1.0x."""
     safe = _escape_ass_text(word)
-    text = (
-        r"{\an5\fad(300,0)\fscx120\fscy120\t(0,300,\fscx100\fscy100)}" + safe
-    )
-    return (
-        f"Dialogue: 0,{_fmt_ass_ts(start)},{_fmt_ass_ts(end)},"
-        f"Default,,0,0,0,,{text}\n"
-    )
+    text = r"{\an5\fad(300,0)\fscx120\fscy120\t(0,300,\fscx100\fscy100)}" + safe
+    return f"Dialogue: 0,{_fmt_ass_ts(start)},{_fmt_ass_ts(end)},Default,,0,0,0,,{text}\n"
 
 
-def _ass_line_words(
-    start: float, end: float, line: str
-) -> list[str]:
+def _ass_line_words(start: float, end: float, line: str) -> list[str]:
     """Gera um Dialogue por palavra da linha, escalonadas a cada ~0.3s."""
     words = line.split()
     if not words:
@@ -278,6 +269,7 @@ def generate_chapters(duration: int) -> list[tuple[str, str]]:
     '00:00 Titulo'. Shorts sao curtos, entao 3 chapters bastam. Retorna
     lista de (timestamp_str, titulo).
     """
+
     def _fmt(seconds: int) -> str:
         h, rem = divmod(seconds, 3600)
         m, s = divmod(rem, 60)

@@ -32,8 +32,10 @@ def test_pick_audio_returns_none_without_pool():
 
 
 def test_pool_stats_keys():
-    with patch("utils.media_pool.video_pool", return_value=[Path("a.mp4")]), \
-         patch("utils.media_pool.audio_pool", return_value=[Path("a.mp3")]):
+    with (
+        patch("utils.media_pool.video_pool", return_value=[Path("a.mp4")]),
+        patch("utils.media_pool.audio_pool", return_value=[Path("a.mp3")]),
+    ):
         stats = pool_stats()
         assert stats["videos"] == 1
         assert stats["audio"] == 1

@@ -225,11 +225,8 @@ def generate_reply(comment_text: str, author: str = "", video_title: str = "") -
     Cai no fallback local (frases rotativas) se a IA falhar ou o texto sair
     inseguro. A resposta nunca passa de _MAX_REPLY_LEN.
     """
-    context = f" on the video \"{video_title}\"" if video_title else ""
-    prompt = (
-        f"Viewer {author or 'someone'} commented{context}: \"{comment_text}\". "
-        "Write the channel's reply now."
-    )
+    context = f' on the video "{video_title}"' if video_title else ""
+    prompt = f'Viewer {author or "someone"} commented{context}: "{comment_text}". Write the channel\'s reply now.'
     out = ai_text(prompt, system=_REPLY_SYSTEM_PROMPT, task="comment_reply")
 
     if out:
@@ -255,9 +252,7 @@ def post_reply(service, parent_comment_id: str, reply_text: str, retry_call) -> 
                 "textOriginal": reply_text,
             }
         }
-        response = retry_call(
-            service.comments().insert(part="snippet", body=body).execute
-        )
+        response = retry_call(service.comments().insert(part="snippet", body=body).execute)
         comment_id = str(response.get("id", ""))
         if comment_id:
             log.info("Resposta publicada: https://www.youtube.com/watch?v=comments?parent_id=%s", comment_id)
@@ -324,8 +319,11 @@ def run_comment_engagement(
     with state_lock(state_file):
         state = _load_state()
         selected = select_comments_to_reply(
-            comments, state, channel_id=channel_id,
-            max_replies=max_replies, now=now,
+            comments,
+            state,
+            channel_id=channel_id,
+            max_replies=max_replies,
+            now=now,
         )
         report["candidates"] = len(selected)
 
@@ -359,7 +357,9 @@ def run_comment_engagement(
     if report["replied"]:
         log.info(
             "Engajamento: %d/%d comentarios respondidos (%d falhas).",
-            report["replied"], report["candidates"], report["failed"],
+            report["replied"],
+            report["candidates"],
+            report["failed"],
         )
     else:
         log.info("Engajamento: nenhum comentario novo para responder (buscados %d).", report["fetched"])

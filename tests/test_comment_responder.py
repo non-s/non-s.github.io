@@ -155,9 +155,11 @@ class TestRunCommentEngagement:
             _comment("1", "so cute!", author="Bob", published_at="2026-08-01T09:00:00Z"),
             _comment("2", "love it", author="Ana", published_at="2026-08-01T10:00:00Z"),
         ]
-        with patch("utils.comment_responder.fetch_top_level_comments", return_value=comments), \
-             patch("utils.comment_responder.generate_reply", return_value="thank you!"), \
-             patch("utils.comment_responder.post_reply", side_effect=["r1", "r2"]):
+        with (
+            patch("utils.comment_responder.fetch_top_level_comments", return_value=comments),
+            patch("utils.comment_responder.generate_reply", return_value="thank you!"),
+            patch("utils.comment_responder.post_reply", side_effect=["r1", "r2"]),
+        ):
             report = cr.run_comment_engagement(service, "UC123")
 
         assert report["fetched"] == 2
@@ -170,8 +172,10 @@ class TestRunCommentEngagement:
     def test_dry_run_does_not_post(self):
         service = MagicMock()
         comments = [_comment("1", "so cute!", author="Bob")]
-        with patch("utils.comment_responder.fetch_top_level_comments", return_value=comments), \
-             patch("utils.comment_responder.generate_reply") as mock_reply:
+        with (
+            patch("utils.comment_responder.fetch_top_level_comments", return_value=comments),
+            patch("utils.comment_responder.generate_reply") as mock_reply,
+        ):
             report = cr.run_comment_engagement(service, "UC123", dry_run=True)
 
         assert report["candidates"] == 1
@@ -186,9 +190,11 @@ class TestRunCommentEngagement:
         def failing_reply(*_a, **_k):
             return None
 
-        with patch("utils.comment_responder.fetch_top_level_comments", return_value=comments), \
-             patch("utils.comment_responder.generate_reply", return_value="hi"), \
-             patch("utils.comment_responder.post_reply", side_effect=failing_reply):
+        with (
+            patch("utils.comment_responder.fetch_top_level_comments", return_value=comments),
+            patch("utils.comment_responder.generate_reply", return_value="hi"),
+            patch("utils.comment_responder.post_reply", side_effect=failing_reply),
+        ):
             report = cr.run_comment_engagement(service, "UC123")
 
         assert report["failed"] == 1

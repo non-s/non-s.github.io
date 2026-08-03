@@ -30,7 +30,7 @@ from utils.paths import data_dir
 log = logging.getLogger(__name__)
 
 DATA_DIR = data_dir()
-DASHBOARD_DIR = ROOT / "_dashboard"
+DASHBOARD_DIR = ROOT / "_dashboard" / active_channel.slug
 
 ANALYTICS_FILE = DATA_DIR / "analytics.json"
 HISTORY_FILE = DATA_DIR / "analytics_history.json"
@@ -58,10 +58,7 @@ def _load_json(path: Path, default):
 def _bar(value: float, max_value: float, color: str = "#f4a261") -> str:
     """Barra de progresso simples via CSS (sem SVG/JS)."""
     pct = 0.0 if max_value <= 0 else max(0.0, min(100.0, (value / max_value) * 100))
-    return (
-        f'<div class="bar-track"><div class="bar-fill" '
-        f'style="width:{pct:.1f}%;background:{color}"></div></div>'
-    )
+    return f'<div class="bar-track"><div class="bar-fill" style="width:{pct:.1f}%;background:{color}"></div></div>'
 
 
 def _card(label: str, value: str) -> str:
@@ -90,8 +87,7 @@ def _render_summary(analytics: dict) -> str:
         _card("Inscritos ganhos", f"{avg_subs:+.1f}" if avg_subs else "—"),
         _card(
             "Progresso YPP",
-            f"{int(ypp.get('subscriber_progress', 0) * 100)}% / "
-            f"{int(ypp.get('watch_hours_progress', 0) * 100)}%",
+            f"{int(ypp.get('subscriber_progress', 0) * 100)}% / {int(ypp.get('watch_hours_progress', 0) * 100)}%",
         ),
     ]
     return f'<div class="cards">{"".join(cards)}</div>'
@@ -197,7 +193,13 @@ def _render_thumbnail_variants(video_tags: dict) -> str:
 
 
 _DAY_OF_WEEK_NAMES = [
-    "seg", "ter", "qua", "qui", "sex", "sáb", "dom",
+    "seg",
+    "ter",
+    "qua",
+    "qui",
+    "sex",
+    "sáb",
+    "dom",
 ]
 
 
@@ -211,8 +213,7 @@ def _render_predicted_views(predictor: dict) -> str:
     Nunca quebra o dashboard: modelo ausente/vazio mostra aviso em vez de erro."""
     if not predictor or predictor.get("n_samples", 0) == 0:
         return (
-            "<p class='empty'>Sem modelo de previsão ainda "
-            "(rodar scripts/predict_views.py após coletar analytics).</p>"
+            "<p class='empty'>Sem modelo de previsão ainda (rodar scripts/predict_views.py após coletar analytics).</p>"
         )
     from scripts.predict_views import expected_views_for_slot, next_cron_slots
 
@@ -224,10 +225,7 @@ def _render_predicted_views(predictor: dict) -> str:
     for hour, dow in slots:
         predicted = expected_views_for_slot(hour, dow)
         label = f"{hour:02d}:00 UTC ({_DAY_OF_WEEK_NAMES[dow]})"
-        rows.append(
-            f"<tr><td class='mono'>{escape(label)}</td>"
-            f"<td>{max(0, int(round(predicted)))}</td></tr>"
-        )
+        rows.append(f"<tr><td class='mono'>{escape(label)}</td><td>{max(0, int(round(predicted)))}</td></tr>")
     return (
         "<table><thead><tr><th>Próximo slot</th><th>Views previstos (7d)</th></tr></thead>"
         f"<tbody>{''.join(rows)}</tbody></table>"
@@ -294,10 +292,7 @@ def _render_scene_hour_heatmap(predictor: dict) -> str:
     buckets = data["buckets"]
     matrix = data["matrix"]
     if not scenes or not matrix:
-        return (
-            "<p class='empty'>Sem modelo de previsão ainda para o heatmap "
-            "(rodar scripts/predict_views.py).</p>"
-        )
+        return "<p class='empty'>Sem modelo de previsão ainda para o heatmap (rodar scripts/predict_views.py).</p>"
     # Max para normalizar intensidade.
     all_values = [matrix[s][b] for s in scenes for b in buckets if b in matrix[s]]
     max_value = max(all_values) if all_values else 0.0
@@ -310,22 +305,14 @@ def _render_scene_hour_heatmap(predictor: dict) -> str:
             value = matrix[scene].get(b, 0.0)
             intensity = (value / max_value) if max_value > 0 else 0.0
             color = _heatmap_color(intensity)
-            cells.append(
-                f'<td style="background:{color};text-align:center">{max(0, int(round(value)))}</td>'
-            )
+            cells.append(f'<td style="background:{color};text-align:center">{max(0, int(round(value)))}</td>')
         rows.append(f"<tr>{''.join(cells)}</tr>")
-    return (
-        "<table><thead><tr><th>Cena × Horário</th>" + header +
-        f"</tr></thead><tbody>{''.join(rows)}</tbody></table>"
-    )
+    return "<table><thead><tr><th>Cena × Horário</th>" + header + f"</tr></thead><tbody>{''.join(rows)}</tbody></table>"
 
 
 def _chart_canvas(canvas_id: str, height: str = "300px") -> str:
     """Container responsivo com canvas para um grafico Chart.js."""
-    return (
-        f'<div class="chart-wrap" style="height:{height}">'
-        f'<canvas id="{canvas_id}"></canvas></div>'
-    )
+    return f'<div class="chart-wrap" style="height:{height}"><canvas id="{canvas_id}"></canvas></div>'
 
 
 def _build_chart_datasets(history: list) -> dict:
@@ -447,7 +434,7 @@ def build_dashboard_html() -> str:
     # titulo/branding via JS.
     channel_options = "".join(
         f'<option value="{escape(cfg.name)}"'
-        f'{" selected" if cfg.name == active_channel.name else ""}>'
+        f"{' selected' if cfg.name == active_channel.name else ''}>"
         f"{escape(cfg.name)}</option>"
         for cfg in CHANNELS.values()
     )
@@ -847,7 +834,9 @@ def build_dashboard_html() -> str:
 
 def main() -> int:
     # Usa ROOT dinamicamente para respeitar monkeypatches em testes.
-    output_dir = ROOT / "_dashboard"
+    # Isola por canal para evitar que workflows multi-canal sobrescrevam o
+    # mesmo _dashboard/index.html (P0 do audit de dashboards).
+    output_dir = ROOT / "_dashboard" / active_channel.slug
     output_dir.mkdir(parents=True, exist_ok=True)
     _ensure_chart_js_fallback(output_dir)
     output_path = output_dir / "index.html"

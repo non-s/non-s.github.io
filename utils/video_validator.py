@@ -40,12 +40,17 @@ def _run_ffprobe(path: Path) -> dict:
         result = subprocess.run(
             [
                 "ffprobe",
-                "-v", "error",
-                "-show_entries", "stream=codec_type,codec_name,width,height,bit_rate,duration",
-                "-of", "json",
+                "-v",
+                "error",
+                "-show_entries",
+                "stream=codec_type,codec_name,width,height,bit_rate,duration",
+                "-of",
+                "json",
                 str(path),
             ],
-            capture_output=True, text=True, check=True,
+            capture_output=True,
+            text=True,
+            check=True,
         )
         return json.loads(result.stdout)
     except Exception as exc:

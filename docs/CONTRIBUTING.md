@@ -99,7 +99,7 @@ Exemplos:
 ```
 feat: adicionar wrapper de quota em retry_youtube_call
 fix: corrigir corrida no lock de estado do analytics
-security: atualizar Pillow para 12.3 (CVE-2024-XXXX)
+security: atualizar Pillow para 12.3
 docs: documentar fluxo de dados em ARCHITECTURE.md
 chore: pin actions/cache por SHA
 ```

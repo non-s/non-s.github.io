@@ -210,6 +210,7 @@ def run_healthcheck(mode: str = "all") -> int:
 
 if __name__ == "__main__":
     import argparse
+
     parser = argparse.ArgumentParser(description=f"Healthcheck {active_channel.name}")
     parser.add_argument("--mode", choices=["all", "fast"], default="all", help="Modo: 'all' ou 'fast'")
     args = parser.parse_args()

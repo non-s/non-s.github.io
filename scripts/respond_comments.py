@@ -55,12 +55,11 @@ def _own_channel_id(service) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=f"Responde aos comentarios do {active_channel.name}")
-    parser.add_argument("--dry-run", action="store_true",
-                        help="Seleciona e mostra as respostas sem publicar")
-    parser.add_argument("--max-replies", type=int, default=_MAX_REPLIES_PER_RUN,
-                        help="Maximo de respostas por execucao")
-    parser.add_argument("--no-guard", action="store_true",
-                        help="Ignora os guards de env (PATA_JAZZ_ENABLED/COMMENTS)")
+    parser.add_argument("--dry-run", action="store_true", help="Seleciona e mostra as respostas sem publicar")
+    parser.add_argument(
+        "--max-replies", type=int, default=_MAX_REPLIES_PER_RUN, help="Maximo de respostas por execucao"
+    )
+    parser.add_argument("--no-guard", action="store_true", help="Ignora os guards de env (PATA_JAZZ_ENABLED/COMMENTS)")
     args = parser.parse_args()
 
     configure_logging()
@@ -74,9 +73,13 @@ def main() -> int:
     enabled = os.environ.get(enabled_var, "") == "1"
     comments_enabled = os.environ.get(comments_var, "") == "1"
     if not args.no_guard and not (enabled and comments_enabled):
-        log.info("Guards desligados (%s=%r, %s=%r). Nada a fazer.",
-                 enabled_var, os.environ.get(enabled_var),
-                 comments_var, os.environ.get(comments_var))
+        log.info(
+            "Guards desligados (%s=%r, %s=%r). Nada a fazer.",
+            enabled_var,
+            os.environ.get(enabled_var),
+            comments_var,
+            os.environ.get(comments_var),
+        )
         return 0
 
     start_time = time.time()
@@ -85,14 +88,18 @@ def main() -> int:
         service = get_youtube_service()
         channel_id = _own_channel_id(service)
         report = run_comment_engagement(
-            service, channel_id,
+            service,
+            channel_id,
             max_replies=args.max_replies,
             dry_run=args.dry_run,
         )
         success = True
         log.info(
             "Engajamento concluido: buscados=%d candidatos=%d respondidos=%d falhas=%d",
-            report["fetched"], report["candidates"], report["replied"], report["failed"],
+            report["fetched"],
+            report["candidates"],
+            report["replied"],
+            report["failed"],
         )
         return 0
     except Exception as exc:

@@ -209,7 +209,9 @@ def _upload_video_inner(language: str = "en", privacy: str = "public", prefix: s
     if actual_privacy != privacy:
         log.error(
             "Video %s saiu com privacyStatus=%r, esperado %r - confira manualmente.",
-            video_id, actual_privacy, privacy,
+            video_id,
+            actual_privacy,
+            privacy,
         )
 
     _record_video_tags(video_id, meta)
@@ -226,8 +228,9 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=f"Upload {active_channel.name} para YouTube")
     parser.add_argument("--mode", choices=["upload"], default="upload")
     parser.add_argument("--language", default="en")
-    parser.add_argument("--privacy", default=os.environ.get("YOUTUBE_PRIVACY", "public"),
-                        choices=["public", "unlisted", "private"])
+    parser.add_argument(
+        "--privacy", default=os.environ.get("YOUTUBE_PRIVACY", "public"), choices=["public", "unlisted", "private"]
+    )
     parser.add_argument("--prefix", default=default_prefix, help="Prefixo dos arquivos de video a enviar")
     args = parser.parse_args()
 

@@ -70,15 +70,39 @@ jobs:
         # So le os JSONs que os steps acima ja escreveram/restauraram - sem
         # rede, sem dependencia nova.
         run: python scripts/generate_dashboard.py
+      - name: "Gerar site estatico SEO"
+        env:
+          YOUTUBE_CHANNEL: pata_lofi
+        run: python scripts/generate_site.py
       - name: "Configurar GitHub Pages"
         # Habilita o Pages no repo (build type "workflow") automaticamente
         # na primeira vez, usando a permissao pages:write acima - nao exige
         # configuracao manual previa em Settings > Pages.
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
+      - name: "Criar raiz do Pages com links por canal"
+        run: |
+          mkdir -p _site
+          cp -r _dashboard/* _site/
+          cp -r _site/pata_lofi _site/pata_jazz || true
+          cp -r _site/pata_lofi _site/pata_classical || true
+          cat > _site/index.html <<'EOF'
+          <!doctype html>
+          <html lang="pt-BR">
+          <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Pata Jazz Dashboards</title></head>
+          <body style="font-family:sans-serif; max-width: 600px; margin: 40px auto;">
+            <h1>Pata Jazz — Dashboards</h1>
+            <ul>
+              <li><a href="pata_jazz/index.html">Pata Jazz</a></li>
+              <li><a href="pata_lofi/index.html">Pata Lofi</a></li>
+              <li><a href="pata_classical/index.html">Pata Classical</a></li>
+            </ul>
+          </body>
+          </html>
+          EOF
       - name: "Upload do dashboard como Pages artifact"
         uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
         with:
-          path: _dashboard
+          path: _site
       - name: "Publicar no GitHub Pages"
         # Repo se chama non-s.github.io, entao isso publica na raiz do
         # dominio (https://non-s.github.io/), nao num subcaminho - so os
@@ -98,7 +122,8 @@ jobs:
           path: |
             _data/pata_lofi/analytics.json
             _data/pata_lofi/analytics_history.json
-            _dashboard/index.html
+            _dashboard/pata_lofi/index.html
+            _site/index.html
           retention-days: 90
       - name: "Apagar token"
         if: always()

@@ -65,7 +65,6 @@ def main(argv: list[str] | None = None) -> int:
         log.error("BATCH_COUNT deve ser entre 1 e 10")
         return 1
 
-    prefix = f"{active_channel.slug}_short_"
     for i in range(count):
         log.info("=== Batch %d/%d (short %s) ===", i + 1, count, active_channel.slug)
         rc = _run([sys.executable, "generate_pata_jazz_short.py"])
@@ -74,10 +73,16 @@ def main(argv: list[str] | None = None) -> int:
             return rc
 
         if upload:
-            rc = _run([
-                sys.executable, "upload_youtube.py",
-                "--mode", "upload", "--language", "en", "--prefix", prefix,
-            ])
+            rc = _run(
+                [
+                    sys.executable,
+                    "upload_youtube.py",
+                    "--mode",
+                    "upload",
+                    "--language",
+                    "en",
+                ]
+            )
             if rc != 0:
                 log.error("Falha no upload %d", i + 1)
                 return rc

@@ -1,5 +1,6 @@
 """Testes para o long-form Loop & Relax (utils/video_builder.long_spec +
 _build_loop_relax_video)."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -36,14 +37,23 @@ class TestLongSpec:
 class TestBuildLoopRelaxVideo:
     def _run(self, tmp_path, spec, videos, audio_path=None):
         captured = []
-        with patch("utils.video_builder.random",
-                   **{"sample.return_value": videos,
-                      "randint.return_value": len(videos),
-                      "choice.return_value": video_builder._ENDCARD_CTAS[0]}), \
-             patch("utils.video_builder.run_ffmpeg",
-                   side_effect=lambda args: captured.append(args)):
+        with (
+            patch(
+                "utils.video_builder.random",
+                **{
+                    "sample.return_value": videos,
+                    "randint.return_value": len(videos),
+                    "choice.return_value": video_builder._ENDCARD_CTAS[0],
+                },
+            ),
+            patch("utils.video_builder.run_ffmpeg", side_effect=lambda args: captured.append(args)),
+        ):
             video_builder._build_loop_relax_video(
-                spec, videos, audio_path, tmp_path / "out.mp4", hook="hook",
+                spec,
+                videos,
+                audio_path,
+                tmp_path / "out.mp4",
+                hook="hook",
             )
         return captured
 
@@ -93,12 +103,17 @@ class TestBuildLoopRelaxVideo:
             if "-filter_complex" in args:
                 raise RuntimeError("xfade boom")
 
-        with patch("utils.video_builder.random",
-                   **{"sample.return_value": videos, "randint.return_value": 3}), \
-             patch("utils.video_builder.run_ffmpeg", side_effect=fail_on_xfade), \
-             pytest.raises(RuntimeError, match="xfade boom"):
+        with (
+            patch("utils.video_builder.random", **{"sample.return_value": videos, "randint.return_value": 3}),
+            patch("utils.video_builder.run_ffmpeg", side_effect=fail_on_xfade),
+            pytest.raises(RuntimeError, match="xfade boom"),
+        ):
             video_builder._build_loop_relax_video(
-                spec, videos, None, tmp_path / "out.mp4", hook="hook",
+                spec,
+                videos,
+                None,
+                tmp_path / "out.mp4",
+                hook="hook",
             )
 
         leftovers = list(tmp_path.glob("out_*_clip_*.mp4"))

@@ -23,11 +23,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
+from utils.channel_config import active_channel, set_channel_from_env
 from utils.paths import data_dir
 
 log = logging.getLogger(__name__)
-
-SITE_DIR = ROOT / "_site"
 
 _THUMB_URL = "https://img.youtube.com/vi/{vid}/hqdefault.jpg"
 _WATCH_URL = "https://youtu.be/{vid}"
@@ -54,10 +53,10 @@ def _build_video_entries(video_tags: dict, analytics: dict) -> list[dict]:
             continue
         seen.add(vid)
         stat = by_id.get(vid, {})
-        description = str(tag.get("description") or stat.get("title") or "Cute cats and dogs with relaxing jazz music.")
+        description = str(tag.get("description") or stat.get("title") or active_channel.default_description)
         entry = {
             "video_id": vid,
-            "title": str(stat.get("title") or tag.get("title") or f"Pata Jazz video {vid}"),
+            "title": str(stat.get("title") or tag.get("title") or f"{active_channel.name} video {vid}"),
             "description": description,
             "published_at": str(stat.get("published_at") or tag.get("uploaded_at") or ""),
             "views": int(stat.get("views", 0) or 0),
@@ -72,17 +71,19 @@ def _build_video_entries(video_tags: dict, analytics: dict) -> list[dict]:
         if vid in seen:
             continue
         seen.add(vid)
-        entries.append({
-            "video_id": vid,
-            "title": str(stat.get("title") or f"Pata Jazz video {vid}"),
-            "description": "Cute cats and dogs with relaxing jazz music.",
-            "published_at": str(stat.get("published_at") or ""),
-            "views": int(stat.get("views", 0) or 0),
-            "likes": int(stat.get("likes", 0) or 0),
-            "thumbnail": _THUMB_URL.format(vid=vid),
-            "watch_url": _WATCH_URL.format(vid=vid),
-            "scene": "",
-        })
+        entries.append(
+            {
+                "video_id": vid,
+                "title": str(stat.get("title") or f"{active_channel.name} video {vid}"),
+                "description": active_channel.default_description,
+                "published_at": str(stat.get("published_at") or ""),
+                "views": int(stat.get("views", 0) or 0),
+                "likes": int(stat.get("likes", 0) or 0),
+                "thumbnail": _THUMB_URL.format(vid=vid),
+                "watch_url": _WATCH_URL.format(vid=vid),
+                "scene": "",
+            }
+        )
     entries.sort(key=lambda e: e["views"], reverse=True)
     return entries
 
@@ -115,7 +116,7 @@ def _render_video_page(entry: dict) -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{escape(entry["title"])} — Pata Jazz</title>
+<title>{escape(entry["title"])} — {escape(active_channel.name)}</title>
 <meta name="description" content="{escape(entry["description"][:160])}">
 <script type="application/ld+json">
 {ld_json}
@@ -153,7 +154,7 @@ def _render_index(entries: list[dict]) -> str:
         cards.append(
             f'<a class="card" href="video_{escape(e["video_id"])}.html">'
             f'<img src="{escape(e["thumbnail"])}" alt="{escape(e["title"])}" loading="lazy">'
-            f'<h3>{escape(e["title"])}</h3>'
+            f"<h3>{escape(e['title'])}</h3>"
             f'<span class="views">{e["views"]:,} views</span>'
             f"</a>"
         )
@@ -161,22 +162,21 @@ def _render_index(entries: list[dict]) -> str:
     item_list = {
         "@context": "https://schema.org",
         "@type": "ItemList",
-        "name": "Pata Jazz videos",
+        "name": f"{active_channel.name} videos",
         "itemListElement": [
             {"@type": "ListItem", "position": i + 1, "url": e["watch_url"], "name": e["title"]}
             for i, e in enumerate(entries)
         ],
     }
-    ld_json = escape(json.dumps(item_list, ensure_ascii=False, indent=2), quote=False).replace(
-        "</", "<\\/"
-    )
+    ld_json = escape(json.dumps(item_list, ensure_ascii=False, indent=2), quote=False).replace("</", "<\\/")
+    desc = escape(active_channel.default_description[:90])
     return f"""<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pata Jazz — Cute cats & dogs with relaxing jazz</title>
-<meta name="description" content="All Pata Jazz videos: cute cats and dogs with relaxing jazz music.">
+<title>{escape(active_channel.name)} — Cute cats & dogs with relaxing music</title>
+<meta name="description" content="All {escape(active_channel.name)} videos: {desc}">
 <script type="application/ld+json">
 {ld_json}
 </script>
@@ -199,8 +199,8 @@ def _render_index(entries: list[dict]) -> str:
 </style>
 </head>
 <body>
-  <h1>🐾🎷 Pata Jazz</h1>
-  <p>Cute cats and dogs with relaxing jazz music.</p>
+  <h1>{active_channel.emojis.get("brand", "")} {escape(active_channel.name)}</h1>
+  <p>{escape(active_channel.default_description)}</p>
   <div class="grid">
 {cards_html}
   </div>
@@ -209,10 +209,15 @@ def _render_index(entries: list[dict]) -> str:
 """
 
 
+def _site_dir() -> Path:
+    """Diretorio de saida do site para o canal ativo."""
+    return ROOT / "_site" / active_channel.slug
+
+
 def generate_site(output_dir: Path | None = None) -> Path:
-    """Gera o site estático em output_dir (default _site/). Retorna o caminho
-    do index.html."""
-    out = output_dir or SITE_DIR
+    """Gera o site estático em output_dir (default _site/<slug>/). Retorna o
+    caminho do index.html."""
+    out = output_dir or _site_dir()
     out.mkdir(parents=True, exist_ok=True)
 
     video_tags = _load_json(data_dir() / "video_tags.json", {})
@@ -231,6 +236,7 @@ def generate_site(output_dir: Path | None = None) -> Path:
 
 
 def main() -> int:
+    set_channel_from_env()
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     generate_site()
     return 0

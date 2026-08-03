@@ -1,4 +1,5 @@
 """Testes para thumbnail_engine.py."""
+
 import json
 from unittest.mock import MagicMock, patch
 
@@ -47,9 +48,7 @@ class TestThumbnailEngineRealRender:
 
     def test_make_short_thumbnail_real_render(self, tmp_path):
         output = tmp_path / "short.png"
-        thumbnail_engine.make_short_thumbnail(
-            hook="Meow Monday", emoji="🎷", output=output, brand="Pata Jazz"
-        )
+        thumbnail_engine.make_short_thumbnail(hook="Meow Monday", emoji="🎷", output=output, brand="Pata Jazz")
         assert output.exists()
         assert output.stat().st_size > 0
 
@@ -61,12 +60,8 @@ class TestThumbnailVariantB:
     def test_variant_b_renders_real(self, tmp_path):
         out_a = tmp_path / "thumb_a.png"
         out_b = tmp_path / "thumb_b.png"
-        thumbnail_engine.make_short_thumbnail(
-            hook="Meow Monday", emoji="🎷", output=out_a, variant="A"
-        )
-        thumbnail_engine.make_short_thumbnail(
-            hook="Meow Monday", emoji="🎷", output=out_b, variant="B"
-        )
+        thumbnail_engine.make_short_thumbnail(hook="Meow Monday", emoji="🎷", output=out_a, variant="A")
+        thumbnail_engine.make_short_thumbnail(hook="Meow Monday", emoji="🎷", output=out_b, variant="B")
         assert out_a.exists() and out_a.stat().st_size > 0
         assert out_b.exists() and out_b.stat().st_size > 0
 
@@ -96,11 +91,18 @@ class TestThumbnailVariantB:
         draw_instance.text.side_effect = lambda *a, **kw: captured_fills.append(kw.get("fill"))
         out_path = tmp_path / "b.png"
         cfg = _LayoutConfig(
-            border_margin=60, border_radius=60, border_width=6,
-            emoji_y=520, emoji_shadow_offset=(6, 6),
-            hook_y_start=760, hook_wrap_width=18, hook_line_height=90,
-            brand_y=1700, crop_target_ratio=1080 / 1920,
-            overlay_alpha=100, frame_timestamp="00:00:01",
+            border_margin=60,
+            border_radius=60,
+            border_width=6,
+            emoji_y=520,
+            emoji_shadow_offset=(6, 6),
+            hook_y_start=760,
+            hook_wrap_width=18,
+            hook_line_height=90,
+            brand_y=1700,
+            crop_target_ratio=1080 / 1920,
+            overlay_alpha=100,
+            frame_timestamp="00:00:01",
         )
         _render_thumbnail(1080, 1920, "hook", "🐱", out_path, "brand", None, cfg, variant="B")
         # O fill do emoji principal (nao a shadow) e PALETTE_B["accent"].
@@ -115,12 +117,8 @@ class TestThumbnailVariantC:
     def test_variant_c_renders_real(self, tmp_path):
         out_a = tmp_path / "thumb_a.png"
         out_c = tmp_path / "thumb_c.png"
-        thumbnail_engine.make_short_thumbnail(
-            hook="Meow Monday", emoji="🎷", output=out_a, variant="A"
-        )
-        thumbnail_engine.make_short_thumbnail(
-            hook="Meow Monday", emoji="🎷", output=out_c, variant="C"
-        )
+        thumbnail_engine.make_short_thumbnail(hook="Meow Monday", emoji="🎷", output=out_a, variant="A")
+        thumbnail_engine.make_short_thumbnail(hook="Meow Monday", emoji="🎷", output=out_c, variant="C")
         assert out_a.exists() and out_a.stat().st_size > 0
         assert out_c.exists() and out_c.stat().st_size > 0
 
@@ -131,8 +129,10 @@ class TestThumbnailVariantC:
 
     def test_variant_c_uses_larger_emoji_font(self, tmp_path):
         """Variante C usa emoji 2x maior (240 vs 120) - verifica via mock."""
-        with patch("utils.thumbnail_engine._load_font_path", return_value="arial.ttf"), \
-             patch("utils.thumbnail_engine.ImageFont.truetype") as mock_truetype:
+        with (
+            patch("utils.thumbnail_engine._load_font_path", return_value="arial.ttf"),
+            patch("utils.thumbnail_engine.ImageFont.truetype") as mock_truetype,
+        ):
             mock_truetype.side_effect = lambda path, size: MagicMock(size=size)
             font_large, font_small = thumbnail_engine._fonts_for_variant("C")
             # font_large deve ser 240 (2x do default 120).
@@ -141,8 +141,10 @@ class TestThumbnailVariantC:
             assert font_small.size < 48
 
     def test_variant_a_uses_default_font_sizes(self, tmp_path):
-        with patch("utils.thumbnail_engine._load_font_path", return_value="arial.ttf"), \
-             patch("utils.thumbnail_engine.ImageFont.truetype") as mock_truetype:
+        with (
+            patch("utils.thumbnail_engine._load_font_path", return_value="arial.ttf"),
+            patch("utils.thumbnail_engine.ImageFont.truetype") as mock_truetype,
+        ):
             mock_truetype.side_effect = lambda path, size: MagicMock(size=size)
             font_large, font_small = thumbnail_engine._fonts_for_variant("A")
             assert font_large.size == 120
@@ -152,9 +154,9 @@ class TestThumbnailVariantC:
 class TestThumbnailEngine:
     """Testes para thumbnail_engine."""
 
-    @patch('PIL.Image.new')
-    @patch('utils.thumbnail_engine.ImageDraw')
-    @patch('utils.thumbnail_engine.ImageFont')
+    @patch("PIL.Image.new")
+    @patch("utils.thumbnail_engine.ImageDraw")
+    @patch("utils.thumbnail_engine.ImageFont")
     def test_make_short_thumbnail(self, mock_font, mock_draw, mock_image, tmp_path):
         """Testa criação de thumbnail vertical (Short)."""
         mock_img = MagicMock()
@@ -166,12 +168,7 @@ class TestThumbnailEngine:
         output = tmp_path / "test_short_thumb.png"
 
         # Não deve levantar exceção
-        thumbnail_engine.make_short_thumbnail(
-            hook="Meow Monday",
-            emoji="🎷",
-            output=output,
-            brand="Pata Jazz"
-        )
+        thumbnail_engine.make_short_thumbnail(hook="Meow Monday", emoji="🎷", output=output, brand="Pata Jazz")
 
         mock_image.assert_called()
 
@@ -179,11 +176,18 @@ class TestThumbnailEngine:
 class TestRenderThumbnailWithVideo:
     def _cfg(self, width=1280, height=720):
         return _LayoutConfig(
-            border_margin=40, border_radius=40, border_width=4,
-            emoji_y=100, emoji_shadow_offset=(4, 4),
-            hook_y_start=280, hook_wrap_width=22, hook_line_height=70,
-            brand_y=height - 120, crop_target_ratio=None,
-            overlay_alpha=128, frame_timestamp="00:00:02",
+            border_margin=40,
+            border_radius=40,
+            border_width=4,
+            emoji_y=100,
+            emoji_shadow_offset=(4, 4),
+            hook_y_start=280,
+            hook_wrap_width=22,
+            hook_line_height=70,
+            brand_y=height - 120,
+            crop_target_ratio=None,
+            overlay_alpha=128,
+            frame_timestamp="00:00:02",
         )
 
     @patch("utils.thumbnail_engine.ImageDraw")
@@ -235,11 +239,18 @@ class TestRenderThumbnailWithVideo:
         vid = tmp_path / "vid.mp4"
         vid.write_bytes(b"fake")
         cfg_dict = {
-            "border_margin": 60, "border_radius": 60, "border_width": 6,
-            "emoji_y": 520, "emoji_shadow_offset": (6, 6),
-            "hook_y_start": 760, "hook_wrap_width": 18, "hook_line_height": 90,
-            "brand_y": 1700, "crop_target_ratio": 1080 / 1920,
-            "overlay_alpha": 100, "frame_timestamp": "00:00:01",
+            "border_margin": 60,
+            "border_radius": 60,
+            "border_width": 6,
+            "emoji_y": 520,
+            "emoji_shadow_offset": (6, 6),
+            "hook_y_start": 760,
+            "hook_wrap_width": 18,
+            "hook_line_height": 90,
+            "brand_y": 1700,
+            "crop_target_ratio": 1080 / 1920,
+            "overlay_alpha": 100,
+            "frame_timestamp": "00:00:01",
         }
         cfg = _LayoutConfig(**cfg_dict)
         out = tmp_path / "thumb.png"
@@ -266,6 +277,7 @@ class TestSaveUnder2mb:
         img = Image.new("RGB", (3000, 3000), (200, 200, 200))
         # Adiciona ruido para o JPEG nao comprimir demais
         import random as _r
+
         px = img.load()
         for x in range(0, 3000, 7):
             for y in range(0, 3000, 7):
@@ -282,9 +294,11 @@ class TestExtractFrame:
         png = tmp_path / "frame.png"
         Image.new("RGB", (16, 16), (1, 2, 3)).save(png)
         # Patch tempfile + subprocess + Image.open via patches no modulo
-        with patch("utils.thumbnail_engine.tempfile.NamedTemporaryFile") as mock_tmp, \
-             patch("subprocess.run", return_value=MagicMock(returncode=0)) as mock_run, \
-             patch("utils.thumbnail_engine.Image.open", return_value=Image.open(png)):
+        with (
+            patch("utils.thumbnail_engine.tempfile.NamedTemporaryFile") as mock_tmp,
+            patch("subprocess.run", return_value=MagicMock(returncode=0)) as mock_run,
+            patch("utils.thumbnail_engine.Image.open", return_value=Image.open(png)),
+        ):
             mock_tmp.return_value.__enter__.return_value.name = str(tmp_path / "tmp.png")
             # Como delete=False, precisa que o nome seja valido
             ntf = MagicMock()
@@ -295,8 +309,10 @@ class TestExtractFrame:
         mock_run.assert_called_once()
 
     def test_ffmpeg_failure_returns_none(self, tmp_path):
-        with patch("utils.thumbnail_engine.tempfile.NamedTemporaryFile") as mock_tmp, \
-             patch("subprocess.run", return_value=MagicMock(returncode=1, stderr="err")):
+        with (
+            patch("utils.thumbnail_engine.tempfile.NamedTemporaryFile") as mock_tmp,
+            patch("subprocess.run", return_value=MagicMock(returncode=1, stderr="err")),
+        ):
             ntf = MagicMock()
             ntf.name = str(tmp_path / "tmp_frame.png")
             mock_tmp.return_value = ntf
@@ -305,8 +321,11 @@ class TestExtractFrame:
 
     def test_ffmpeg_timeout_returns_none(self, tmp_path):
         import subprocess
-        with patch("utils.thumbnail_engine.tempfile.NamedTemporaryFile") as mock_tmp, \
-             patch("subprocess.run", side_effect=subprocess.TimeoutExpired(cmd="ffmpeg", timeout=1)):
+
+        with (
+            patch("utils.thumbnail_engine.tempfile.NamedTemporaryFile") as mock_tmp,
+            patch("subprocess.run", side_effect=subprocess.TimeoutExpired(cmd="ffmpeg", timeout=1)),
+        ):
             ntf = MagicMock()
             ntf.name = str(tmp_path / "tmp_frame.png")
             mock_tmp.return_value = ntf
@@ -314,8 +333,10 @@ class TestExtractFrame:
         assert img is None
 
     def test_ffmpeg_generic_exception_returns_none(self, tmp_path):
-        with patch("utils.thumbnail_engine.tempfile.NamedTemporaryFile") as mock_tmp, \
-             patch("subprocess.run", side_effect=ValueError("boom")):
+        with (
+            patch("utils.thumbnail_engine.tempfile.NamedTemporaryFile") as mock_tmp,
+            patch("subprocess.run", side_effect=ValueError("boom")),
+        ):
             ntf = MagicMock()
             ntf.name = str(tmp_path / "tmp_frame.png")
             mock_tmp.return_value = ntf
@@ -330,7 +351,8 @@ class TestWinningThumbnailVariant:
 
     def _setup(self, tmp_path, monkeypatch, video_tags, analytics):
         monkeypatch.setattr(
-            thumbnail_engine, "data_dir",
+            thumbnail_engine,
+            "data_dir",
             lambda: tmp_path,
         )
         (tmp_path / "video_tags.json").write_text(json.dumps(video_tags), encoding="utf-8")
@@ -357,26 +379,38 @@ class TestWinningThumbnailVariant:
     def test_variant_b_with_higher_avg_views_wins(self, tmp_path, monkeypatch):
         # A: 100, 100 -> avg 100. B: 500, 600 -> avg 550.
         video_tags = {
-            "a1": {"thumbnail_variant": "A"}, "a2": {"thumbnail_variant": "A"},
-            "b1": {"thumbnail_variant": "B"}, "b2": {"thumbnail_variant": "B"},
+            "a1": {"thumbnail_variant": "A"},
+            "a2": {"thumbnail_variant": "A"},
+            "b1": {"thumbnail_variant": "B"},
+            "b2": {"thumbnail_variant": "B"},
         }
-        analytics = {"all_videos": [
-            {"video_id": "a1", "views": 100}, {"video_id": "a2", "views": 100},
-            {"video_id": "b1", "views": 500}, {"video_id": "b2", "views": 600},
-        ]}
+        analytics = {
+            "all_videos": [
+                {"video_id": "a1", "views": 100},
+                {"video_id": "a2", "views": 100},
+                {"video_id": "b1", "views": 500},
+                {"video_id": "b2", "views": 600},
+            ]
+        }
         self._setup(tmp_path, monkeypatch, video_tags, analytics)
 
         assert thumbnail_engine.winning_thumbnail_variant() == "B"
 
     def test_variant_c_can_win(self, tmp_path, monkeypatch):
         video_tags = {
-            "a1": {"thumbnail_variant": "A"}, "a2": {"thumbnail_variant": "A"},
-            "c1": {"thumbnail_variant": "C"}, "c2": {"thumbnail_variant": "C"},
+            "a1": {"thumbnail_variant": "A"},
+            "a2": {"thumbnail_variant": "A"},
+            "c1": {"thumbnail_variant": "C"},
+            "c2": {"thumbnail_variant": "C"},
         }
-        analytics = {"all_videos": [
-            {"video_id": "a1", "views": 50}, {"video_id": "a2", "views": 50},
-            {"video_id": "c1", "views": 999}, {"video_id": "c2", "views": 1000},
-        ]}
+        analytics = {
+            "all_videos": [
+                {"video_id": "a1", "views": 50},
+                {"video_id": "a2", "views": 50},
+                {"video_id": "c1", "views": 999},
+                {"video_id": "c2", "views": 1000},
+            ]
+        }
         self._setup(tmp_path, monkeypatch, video_tags, analytics)
 
         assert thumbnail_engine.winning_thumbnail_variant() == "C"
@@ -384,10 +418,14 @@ class TestWinningThumbnailVariant:
     def test_missing_variant_field_defaults_to_a(self, tmp_path, monkeypatch):
         # video_tags sem thumbnail_variant deve contar como A.
         video_tags = {"v1": {}, "v2": {}, "b1": {"thumbnail_variant": "B"}, "b2": {"thumbnail_variant": "B"}}
-        analytics = {"all_videos": [
-            {"video_id": "v1", "views": 1000}, {"video_id": "v2", "views": 1000},
-            {"video_id": "b1", "views": 10}, {"video_id": "b2", "views": 10},
-        ]}
+        analytics = {
+            "all_videos": [
+                {"video_id": "v1", "views": 1000},
+                {"video_id": "v2", "views": 1000},
+                {"video_id": "b1", "views": 10},
+                {"video_id": "b2", "views": 10},
+            ]
+        }
         self._setup(tmp_path, monkeypatch, video_tags, analytics)
 
         # A (default) tem avg 1000, B tem avg 10 -> A vence.
@@ -395,15 +433,21 @@ class TestWinningThumbnailVariant:
 
     def test_videos_not_in_analytics_are_ignored(self, tmp_path, monkeypatch):
         video_tags = {
-            "a1": {"thumbnail_variant": "A"}, "a2": {"thumbnail_variant": "A"},
-            "b1": {"thumbnail_variant": "B"}, "b2": {"thumbnail_variant": "B"},
+            "a1": {"thumbnail_variant": "A"},
+            "a2": {"thumbnail_variant": "A"},
+            "b1": {"thumbnail_variant": "B"},
+            "b2": {"thumbnail_variant": "B"},
             # ghost nao esta em analytics -> ignorado.
             "ghost": {"thumbnail_variant": "B"},
         }
-        analytics = {"all_videos": [
-            {"video_id": "a1", "views": 10}, {"video_id": "a2", "views": 10},
-            {"video_id": "b1", "views": 500}, {"video_id": "b2", "views": 500},
-        ]}
+        analytics = {
+            "all_videos": [
+                {"video_id": "a1", "views": 10},
+                {"video_id": "a2", "views": 10},
+                {"video_id": "b1", "views": 500},
+                {"video_id": "b2", "views": 500},
+            ]
+        }
         self._setup(tmp_path, monkeypatch, video_tags, analytics)
 
         assert thumbnail_engine.winning_thumbnail_variant() == "B"
@@ -420,11 +464,18 @@ class TestVisionHook:
 
     def _cfg(self, width=1280, height=720):
         return _LayoutConfig(
-            border_margin=40, border_radius=40, border_width=4,
-            emoji_y=100, emoji_shadow_offset=(4, 4),
-            hook_y_start=280, hook_wrap_width=22, hook_line_height=70,
-            brand_y=height - 120, crop_target_ratio=None,
-            overlay_alpha=128, frame_timestamp="00:00:02",
+            border_margin=40,
+            border_radius=40,
+            border_width=4,
+            emoji_y=100,
+            emoji_shadow_offset=(4, 4),
+            hook_y_start=280,
+            hook_wrap_width=22,
+            hook_line_height=70,
+            brand_y=height - 120,
+            crop_target_ratio=None,
+            overlay_alpha=128,
+            frame_timestamp="00:00:02",
         )
 
     @patch("utils.ai_helper.ai_text_with_image", return_value="short")

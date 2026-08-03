@@ -73,10 +73,16 @@ class TestBuildDashboardHtmlWithData:
     def test_includes_summary_cards(self, tmp_path, monkeypatch):
         _isolate(tmp_path, monkeypatch)
         dashboard.ANALYTICS_FILE.write_text(
-            json.dumps({
-                "total_videos": 42, "total_views": 158340, "total_likes": 3021,
-                "total_comments": 412, "avg_views": 3770, "top_10": [],
-            }),
+            json.dumps(
+                {
+                    "total_videos": 42,
+                    "total_views": 158340,
+                    "total_likes": 3021,
+                    "total_comments": 412,
+                    "avg_views": 3770,
+                    "top_10": [],
+                }
+            ),
             encoding="utf-8",
         )
 
@@ -88,11 +94,16 @@ class TestBuildDashboardHtmlWithData:
     def test_includes_top_videos_with_youtube_link(self, tmp_path, monkeypatch):
         _isolate(tmp_path, monkeypatch)
         dashboard.ANALYTICS_FILE.write_text(
-            json.dumps({
-                "total_videos": 1, "total_views": 100, "total_likes": 1,
-                "total_comments": 0, "avg_views": 100,
-                "top_10": [{"video_id": "abc123", "title": "Cute Cat & Jazz", "views": 100, "likes": 1}],
-            }),
+            json.dumps(
+                {
+                    "total_videos": 1,
+                    "total_views": 100,
+                    "total_likes": 1,
+                    "total_comments": 0,
+                    "avg_views": 100,
+                    "top_10": [{"video_id": "abc123", "title": "Cute Cat & Jazz", "views": 100, "likes": 1}],
+                }
+            ),
             encoding="utf-8",
         )
 
@@ -106,10 +117,16 @@ class TestBuildDashboardHtmlWithData:
         padrao, mesmo sendo o proprio conteudo do canal."""
         _isolate(tmp_path, monkeypatch)
         dashboard.ANALYTICS_FILE.write_text(
-            json.dumps({
-                "total_videos": 1, "total_views": 1, "total_likes": 0, "total_comments": 0, "avg_views": 1,
-                "top_10": [{"video_id": "x", "title": "<script>alert(1)</script>", "views": 1, "likes": 0}],
-            }),
+            json.dumps(
+                {
+                    "total_videos": 1,
+                    "total_views": 1,
+                    "total_likes": 0,
+                    "total_comments": 0,
+                    "avg_views": 1,
+                    "top_10": [{"video_id": "x", "title": "<script>alert(1)</script>", "views": 1, "likes": 0}],
+                }
+            ),
             encoding="utf-8",
         )
 
@@ -159,9 +176,7 @@ class TestBuildDashboardHtmlWithData:
 
     def test_title_pattern_performance_rendered(self, tmp_path, monkeypatch):
         _isolate(tmp_path, monkeypatch)
-        dashboard.TITLE_PATTERN_PERFORMANCE_FILE.write_text(
-            json.dumps({"{emoji} {animal}": 1.8}), encoding="utf-8"
-        )
+        dashboard.TITLE_PATTERN_PERFORMANCE_FILE.write_text(json.dumps({"{emoji} {animal}": 1.8}), encoding="utf-8")
 
         html = dashboard.build_dashboard_html()
 
@@ -176,23 +191,35 @@ class TestChartsAndInteractivity:
     def test_includes_chartjs_cdn(self, tmp_path, monkeypatch):
         _isolate(tmp_path, monkeypatch)
         html = dashboard.build_dashboard_html()
-        assert "<script src=\"https://cdn.jsdelivr.net/npm/chart.js" in html
+        assert '<script src="https://cdn.jsdelivr.net/npm/chart.js' in html
         assert "chart.umd.min.js" in html
 
     def test_instantiate_chart_for_each_graph(self, tmp_path, monkeypatch):
         _isolate(tmp_path, monkeypatch)
         dashboard.ANALYTICS_FILE.write_text(
-            json.dumps({
-                "total_videos": 1, "total_views": 100, "total_likes": 1,
-                "total_comments": 0, "avg_views": 100,
-                "top_10": [{"video_id": "x", "title": "T", "views": 100, "likes": 1}],
-            }),
+            json.dumps(
+                {
+                    "total_videos": 1,
+                    "total_views": 100,
+                    "total_likes": 1,
+                    "total_comments": 0,
+                    "avg_views": 100,
+                    "top_10": [{"video_id": "x", "title": "T", "views": 100, "likes": 1}],
+                }
+            ),
             encoding="utf-8",
         )
         dashboard.HISTORY_FILE.write_text(
-            json.dumps([
-                {"collected_at": "2026-07-01T00:00:00+00:00", "total_views": 100, "total_likes": 1, "avg_views": 100},
-            ]),
+            json.dumps(
+                [
+                    {
+                        "collected_at": "2026-07-01T00:00:00+00:00",
+                        "total_views": 100,
+                        "total_likes": 1,
+                        "avg_views": 100,
+                    },
+                ]
+            ),
             encoding="utf-8",
         )
         dashboard.SCENE_PERFORMANCE_FILE.write_text(json.dumps({"cat": 1.0}), encoding="utf-8")
@@ -231,9 +258,7 @@ class TestChartsAndInteractivity:
         escapados (pelo menos a sequencia </script> nao pode aparecer)."""
         _isolate(tmp_path, monkeypatch)
         malicious = "</script><script>alert('xss')</script>"
-        dashboard.SCENE_PERFORMANCE_FILE.write_text(
-            json.dumps({malicious: 1.0}), encoding="utf-8"
-        )
+        dashboard.SCENE_PERFORMANCE_FILE.write_text(json.dumps({malicious: 1.0}), encoding="utf-8")
 
         html = dashboard.build_dashboard_html()
 
@@ -296,7 +321,7 @@ class TestMain:
         code = dashboard.main()
 
         assert code == 0
-        output = tmp_path / "_dashboard" / "index.html"
+        output = tmp_path / "_dashboard" / "pata_jazz" / "index.html"
         assert output.exists()
         assert output.read_text(encoding="utf-8").startswith("<!doctype html>")
 
@@ -387,27 +412,38 @@ class TestFullHtmlSnapshot:
         _isolate(tmp_path, monkeypatch)
 
         dashboard.ANALYTICS_FILE.write_text(
-            json.dumps({
-                "total_videos": 7, "total_views": 42195, "total_likes": 882,
-                "total_comments": 77, "avg_views": 6028,
-                "top_10": [
-                    {"video_id": "snapA", "title": "Sleepy Kitten & Soft Jazz", "views": 12000, "likes": 300},
-                    {"video_id": "snapB", "title": "Playful Puppy Jazz Time", "views": 9000, "likes": 250},
-                ],
-            }),
+            json.dumps(
+                {
+                    "total_videos": 7,
+                    "total_views": 42195,
+                    "total_likes": 882,
+                    "total_comments": 77,
+                    "avg_views": 6028,
+                    "top_10": [
+                        {"video_id": "snapA", "title": "Sleepy Kitten & Soft Jazz", "views": 12000, "likes": 300},
+                        {"video_id": "snapB", "title": "Playful Puppy Jazz Time", "views": 9000, "likes": 250},
+                    ],
+                }
+            ),
             encoding="utf-8",
         )
         dashboard.HISTORY_FILE.write_text(
-            json.dumps([
-                {
-                    "collected_at": "2026-03-01T00:00:00+00:00",
-                    "total_views": 5000, "total_likes": 50, "avg_views": 700,
-                },
-                {
-                    "collected_at": "2026-03-08T00:00:00+00:00",
-                    "total_views": 9000, "total_likes": 90, "avg_views": 1200,
-                },
-            ]),
+            json.dumps(
+                [
+                    {
+                        "collected_at": "2026-03-01T00:00:00+00:00",
+                        "total_views": 5000,
+                        "total_likes": 50,
+                        "avg_views": 700,
+                    },
+                    {
+                        "collected_at": "2026-03-08T00:00:00+00:00",
+                        "total_views": 9000,
+                        "total_likes": 90,
+                        "avg_views": 1200,
+                    },
+                ]
+            ),
             encoding="utf-8",
         )
         dashboard.SCENE_PERFORMANCE_FILE.write_text(
@@ -427,6 +463,10 @@ class TestFullHtmlSnapshot:
 
     def test_full_html_snapshot(self, tmp_path, monkeypatch):
         self._seed_fixtures(tmp_path, monkeypatch)
+        # Garante canal deterministico para o snapshot; outros testes podem
+        # ter trocado active_channel (pata_lofi/classical) no mesmo worker.
+        from utils.channel_config import set_channel
+        set_channel("pata_jazz")
         fixed = datetime(2026, 3, 15, 12, 0, 0, tzinfo=UTC)
 
         class _FixedDatetime(datetime):

@@ -1,4 +1,3 @@
-
 import utils.animal_branding as ab
 from utils.animal_branding import (
     ALL_SCENES,
@@ -77,6 +76,7 @@ class TestGenerateHookWithAi:
 
     def test_falls_back_to_empty_when_no_api_key(self, monkeypatch):
         import utils.ai_helper as ai_helper
+
         monkeypatch.delenv("GEMINI_API_KEY", raising=False)
         monkeypatch.setattr(ai_helper, "_session", type("S", (), {})())
         assert generate_hook_with_ai("cat") == ""

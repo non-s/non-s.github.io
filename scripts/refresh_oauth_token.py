@@ -17,6 +17,7 @@ utils/youtube_oauth.get_youtube_service). Ele e feito para rodar dentro
 do workflow .github/workflows/oauth-token-refresh.yml, que precisa do
 secret GH_PAT configurado.
 """
+
 from __future__ import annotations
 
 import os

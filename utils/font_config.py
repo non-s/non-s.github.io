@@ -43,9 +43,7 @@ def _resolve_font() -> Path:
         expanded = Path(candidate).expanduser()
         if expanded.exists():
             return expanded.resolve()
-    raise RuntimeError(
-        f"Nenhuma fonte TrueType encontrada. Verifique se {BUNDLED_FONT} existe."
-    )
+    raise RuntimeError(f"Nenhuma fonte TrueType encontrada. Verifique se {BUNDLED_FONT} existe.")
 
 
 def _ffmpeg_escape_drive_colon(path: str) -> str:

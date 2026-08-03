@@ -1,4 +1,5 @@
-﻿"""Testes para collect_analytics.py."""
+"""Testes para collect_analytics.py."""
+
 import json
 from datetime import UTC, datetime, timedelta
 from unittest.mock import MagicMock, patch
@@ -69,10 +70,12 @@ class TestCollectVideoStats:
     def _make_service(self, videos_stats=None):
         service = MagicMock()
         channels_resp = {
-            "items": [{
-                "id": "channel123",
-                "contentDetails": {"relatedPlaylists": {"uploads": "uploads_playlist"}},
-            }]
+            "items": [
+                {
+                    "id": "channel123",
+                    "contentDetails": {"relatedPlaylists": {"uploads": "uploads_playlist"}},
+                }
+            ]
         }
         playlist_resp = {
             "items": [
@@ -127,10 +130,12 @@ class TestCollectVideoStats:
         de uma unica pagina) funciona de verdade."""
         service = MagicMock()
         service.channels().list.return_value.execute.return_value = {
-            "items": [{
-                "id": "channel123",
-                "contentDetails": {"relatedPlaylists": {"uploads": "uploads_playlist"}},
-            }]
+            "items": [
+                {
+                    "id": "channel123",
+                    "contentDetails": {"relatedPlaylists": {"uploads": "uploads_playlist"}},
+                }
+            ]
         }
         page1 = {
             "items": [{"snippet": {"resourceId": {"videoId": "vid1"}}}],
@@ -143,12 +148,18 @@ class TestCollectVideoStats:
         service.playlistItems().list.return_value.execute.side_effect = [page1, page2]
         service.videos().list.return_value.execute.return_value = {
             "items": [
-                {"id": "vid1", "snippet": {"title": "V1", "publishedAt": "2026-01-01"},
-                 "contentDetails": {"duration": "PT1M"},
-                 "statistics": {"viewCount": "1", "likeCount": "0", "commentCount": "0"}},
-                {"id": "vid2", "snippet": {"title": "V2", "publishedAt": "2026-01-02"},
-                 "contentDetails": {"duration": "PT1M"},
-                 "statistics": {"viewCount": "2", "likeCount": "0", "commentCount": "0"}},
+                {
+                    "id": "vid1",
+                    "snippet": {"title": "V1", "publishedAt": "2026-01-01"},
+                    "contentDetails": {"duration": "PT1M"},
+                    "statistics": {"viewCount": "1", "likeCount": "0", "commentCount": "0"},
+                },
+                {
+                    "id": "vid2",
+                    "snippet": {"title": "V2", "publishedAt": "2026-01-02"},
+                    "contentDetails": {"duration": "PT1M"},
+                    "statistics": {"viewCount": "2", "likeCount": "0", "commentCount": "0"},
+                },
             ]
         }
 
@@ -163,16 +174,17 @@ class TestCollectVideoStats:
         infinito."""
         service = MagicMock()
         service.channels().list.return_value.execute.return_value = {
-            "items": [{
-                "id": "channel123",
-                "contentDetails": {"relatedPlaylists": {"uploads": "uploads_playlist"}},
-            }]
+            "items": [
+                {
+                    "id": "channel123",
+                    "contentDetails": {"relatedPlaylists": {"uploads": "uploads_playlist"}},
+                }
+            ]
         }
         # Sempre retorna um item novo E sempre um nextPageToken nao-vazio -
         # so o guard de paginas (nao o token vazio) pode parar o loop.
         service.playlistItems().list.return_value.execute.side_effect = [
-            {"items": [{"snippet": {"resourceId": {"videoId": f"vid{i}"}}}], "nextPageToken": "more"}
-            for i in range(30)
+            {"items": [{"snippet": {"resourceId": {"videoId": f"vid{i}"}}}], "nextPageToken": "more"} for i in range(30)
         ]
         service.videos().list.return_value.execute.return_value = {"items": []}
 
@@ -185,10 +197,12 @@ class TestCollectVideoStats:
         quebrar imediatamente - nao continuar paginando."""
         service = MagicMock()
         service.channels().list.return_value.execute.return_value = {
-            "items": [{
-                "id": "channel123",
-                "contentDetails": {"relatedPlaylists": {"uploads": "uploads_playlist"}},
-            }]
+            "items": [
+                {
+                    "id": "channel123",
+                    "contentDetails": {"relatedPlaylists": {"uploads": "uploads_playlist"}},
+                }
+            ]
         }
         service.playlistItems().list.return_value.execute.side_effect = [
             {"items": [], "nextPageToken": "page2"},
@@ -299,10 +313,12 @@ class TestComputeWeightedPerformanceWilson:
     def test_consistent_above_median_beats_inconsistent(self):
         # Cena A: 3 videos todos acima da mediana (p=1.0).
         # Cena B: 3 videos 1 acima 2 abaixo (p=0.33).
-        stats, tags = self._stats_tags({
-            "a": [2000, 2000, 2000],
-            "b": [1000, 100, 50],
-        })
+        stats, tags = self._stats_tags(
+            {
+                "a": [2000, 2000, 2000],
+                "b": [1000, 100, 50],
+            }
+        )
 
         weights = collect_analytics._compute_scene_performance(stats, tags)
 
@@ -313,20 +329,24 @@ class TestComputeWeightedPerformanceWilson:
     def test_viral_inconsistent_penalized_vs_consistent(self):
         # Cena viral: 1 viral + 2 baixos (p=0.33 mas views altas).
         # Cena consistente: 2 acima 1 abaixo (p=0.66, views medias).
-        stats, tags = self._stats_tags({
-            "viral": [100000, 100, 100],
-            "consistent": [1000, 1000, 100],
-        })
+        stats, tags = self._stats_tags(
+            {
+                "viral": [100000, 100, 100],
+                "consistent": [1000, 1000, 100],
+            }
+        )
 
         weights = collect_analytics._compute_scene_performance(stats, tags)
 
         assert weights["consistent"] > weights["viral"]
 
     def test_below_min_samples_is_neutral(self):
-        stats, tags = self._stats_tags({
-            "small": [1000, 1000],
-            "ok": [1000, 1000, 1000],
-        })
+        stats, tags = self._stats_tags(
+            {
+                "small": [1000, 1000],
+                "ok": [1000, 1000, 1000],
+            }
+        )
 
         weights = collect_analytics._compute_scene_performance(stats, tags)
 
@@ -504,9 +524,7 @@ class TestMaybeRotateThumbnail:
         service = MagicMock()
 
         with patch("scripts.collect_analytics._retry_youtube_call", side_effect=lambda f: f()):
-            rotated = collect_analytics.maybe_rotate_thumbnail(
-                service, "vid1", entry, median_views=1000, now=now
-            )
+            rotated = collect_analytics.maybe_rotate_thumbnail(service, "vid1", entry, median_views=1000, now=now)
 
         assert rotated is True
         assert entry["thumbnail_variant"] == "B"
@@ -523,26 +541,28 @@ class TestMaybeRotateThumbnail:
         uploaded = (now - timedelta(days=20)).isoformat()
         rotated_recent = (now - timedelta(days=3)).isoformat()
         entry = self._entry(
-            uploaded_at=uploaded, views=1, thumbnails=[a, b, c],
-            variant="B", rotated_at=rotated_recent,
+            uploaded_at=uploaded,
+            views=1,
+            thumbnails=[a, b, c],
+            variant="B",
+            rotated_at=rotated_recent,
         )
         service = MagicMock()
-        rotated = collect_analytics.maybe_rotate_thumbnail(
-            service, "vid1", entry, median_views=1000, now=now
-        )
+        rotated = collect_analytics.maybe_rotate_thumbnail(service, "vid1", entry, median_views=1000, now=now)
         assert rotated is False
         service.thumbnails().set.assert_not_called()
 
         # Agora rotated_at ha 10 dias (fora do prazo) â€” deve rotacionar B->C.
         rotated_old = (now - timedelta(days=10)).isoformat()
         entry = self._entry(
-            uploaded_at=uploaded, views=1, thumbnails=[a, b, c],
-            variant="B", rotated_at=rotated_old,
+            uploaded_at=uploaded,
+            views=1,
+            thumbnails=[a, b, c],
+            variant="B",
+            rotated_at=rotated_old,
         )
         with patch("scripts.collect_analytics._retry_youtube_call", side_effect=lambda f: f()):
-            rotated = collect_analytics.maybe_rotate_thumbnail(
-                service, "vid1", entry, median_views=1000, now=now
-            )
+            rotated = collect_analytics.maybe_rotate_thumbnail(service, "vid1", entry, median_views=1000, now=now)
         assert rotated is True
         assert entry["thumbnail_variant"] == "C"
 
@@ -550,14 +570,10 @@ class TestMaybeRotateThumbnail:
         a, b, c = self._thumb_paths(tmp_path)
         now = datetime.now(UTC)
         uploaded = (now - timedelta(days=30)).isoformat()
-        entry = self._entry(
-            uploaded_at=uploaded, views=1, thumbnails=[a, b, c], variant="C"
-        )
+        entry = self._entry(uploaded_at=uploaded, views=1, thumbnails=[a, b, c], variant="C")
         service = MagicMock()
 
-        rotated = collect_analytics.maybe_rotate_thumbnail(
-            service, "vid1", entry, median_views=1000, now=now
-        )
+        rotated = collect_analytics.maybe_rotate_thumbnail(service, "vid1", entry, median_views=1000, now=now)
 
         assert rotated is False
         service.thumbnails().set.assert_not_called()
@@ -569,9 +585,7 @@ class TestMaybeRotateThumbnail:
         entry = self._entry(uploaded_at=uploaded, views=1, thumbnails=[a])
         service = MagicMock()
 
-        rotated = collect_analytics.maybe_rotate_thumbnail(
-            service, "vid1", entry, median_views=1000, now=now
-        )
+        rotated = collect_analytics.maybe_rotate_thumbnail(service, "vid1", entry, median_views=1000, now=now)
 
         assert rotated is False
         service.thumbnails().set.assert_not_called()
@@ -583,14 +597,15 @@ class TestMaybeRotateThumbnail:
         uploaded = (now - timedelta(days=30)).isoformat()
         rotated_old = (now - timedelta(days=30)).isoformat()
         entry = self._entry(
-            uploaded_at=uploaded, views=1, thumbnails=[a, b],
-            variant="B", rotated_at=rotated_old,
+            uploaded_at=uploaded,
+            views=1,
+            thumbnails=[a, b],
+            variant="B",
+            rotated_at=rotated_old,
         )
         service = MagicMock()
 
-        rotated = collect_analytics.maybe_rotate_thumbnail(
-            service, "vid1", entry, median_views=1000, now=now
-        )
+        rotated = collect_analytics.maybe_rotate_thumbnail(service, "vid1", entry, median_views=1000, now=now)
 
         assert rotated is False
         service.thumbnails().set.assert_not_called()
@@ -602,9 +617,7 @@ class TestMaybeRotateThumbnail:
         entry = self._entry(uploaded_at=uploaded, views=1, thumbnails=[a, b, c])
         service = MagicMock()
 
-        rotated = collect_analytics.maybe_rotate_thumbnail(
-            service, "vid1", entry, median_views=1000, now=now
-        )
+        rotated = collect_analytics.maybe_rotate_thumbnail(service, "vid1", entry, median_views=1000, now=now)
 
         assert rotated is False
         service.thumbnails().set.assert_not_called()
@@ -617,9 +630,7 @@ class TestMaybeRotateThumbnail:
         entry = self._entry(uploaded_at=uploaded, views=600, thumbnails=[a, b, c])
         service = MagicMock()
 
-        rotated = collect_analytics.maybe_rotate_thumbnail(
-            service, "vid1", entry, median_views=1000, now=now
-        )
+        rotated = collect_analytics.maybe_rotate_thumbnail(service, "vid1", entry, median_views=1000, now=now)
 
         assert rotated is False
         service.thumbnails().set.assert_not_called()
@@ -631,9 +642,7 @@ class TestMaybeRotateThumbnail:
         entry = self._entry(uploaded_at=uploaded, views=10, thumbnails=[a, b, c])
         service = MagicMock()
 
-        rotated = collect_analytics.maybe_rotate_thumbnail(
-            service, "vid1", entry, median_views=0, now=now
-        )
+        rotated = collect_analytics.maybe_rotate_thumbnail(service, "vid1", entry, median_views=0, now=now)
 
         assert rotated is False
         service.thumbnails().set.assert_not_called()
@@ -646,9 +655,7 @@ class TestMaybeRotateThumbnail:
         service = MagicMock()
 
         with patch("scripts.collect_analytics._retry_youtube_call", side_effect=RuntimeError("api down")):
-            rotated = collect_analytics.maybe_rotate_thumbnail(
-                service, "vid1", entry, median_views=1000, now=now
-            )
+            rotated = collect_analytics.maybe_rotate_thumbnail(service, "vid1", entry, median_views=1000, now=now)
 
         assert rotated is False
         assert entry["thumbnail_variant"] == "A"
@@ -661,14 +668,10 @@ class TestMaybeRotateThumbnail:
         missing_c = str(tmp_path / "missing_c.png")
         now = datetime.now(UTC)
         uploaded = (now - timedelta(days=30)).isoformat()
-        entry = self._entry(
-            uploaded_at=uploaded, views=1, thumbnails=[str(a), missing_b, missing_c]
-        )
+        entry = self._entry(uploaded_at=uploaded, views=1, thumbnails=[str(a), missing_b, missing_c])
         service = MagicMock()
 
-        rotated = collect_analytics.maybe_rotate_thumbnail(
-            service, "vid1", entry, median_views=1000, now=now
-        )
+        rotated = collect_analytics.maybe_rotate_thumbnail(service, "vid1", entry, median_views=1000, now=now)
 
         assert rotated is False
         service.thumbnails().set.assert_not_called()
@@ -707,9 +710,7 @@ class TestThumbnailRotationSequence:
         service = MagicMock()
 
         with patch("scripts.collect_analytics._retry_youtube_call", side_effect=lambda f: f()):
-            rotated = collect_analytics.maybe_rotate_thumbnail(
-                service, "vid1", entry, median_views=1000, now=now
-            )
+            rotated = collect_analytics.maybe_rotate_thumbnail(service, "vid1", entry, median_views=1000, now=now)
 
         assert rotated is True
         assert entry["thumbnail_variant"] == "B"
@@ -722,15 +723,16 @@ class TestThumbnailRotationSequence:
         uploaded = (now - timedelta(days=20)).isoformat()
         rotated_old = (now - timedelta(days=7)).isoformat()
         entry = self._entry(
-            uploaded_at=uploaded, views=1, thumbnails=[a, b, c],
-            variant="B", rotated_at=rotated_old,
+            uploaded_at=uploaded,
+            views=1,
+            thumbnails=[a, b, c],
+            variant="B",
+            rotated_at=rotated_old,
         )
         service = MagicMock()
 
         with patch("scripts.collect_analytics._retry_youtube_call", side_effect=lambda f: f()):
-            rotated = collect_analytics.maybe_rotate_thumbnail(
-                service, "vid1", entry, median_views=1000, now=now
-            )
+            rotated = collect_analytics.maybe_rotate_thumbnail(service, "vid1", entry, median_views=1000, now=now)
 
         assert rotated is True
         assert entry["thumbnail_variant"] == "C"
@@ -741,14 +743,15 @@ class TestThumbnailRotationSequence:
         uploaded = (now - timedelta(days=30)).isoformat()
         rotated_old = (now - timedelta(days=30)).isoformat()
         entry = self._entry(
-            uploaded_at=uploaded, views=1, thumbnails=[a, b, c],
-            variant="C", rotated_at=rotated_old,
+            uploaded_at=uploaded,
+            views=1,
+            thumbnails=[a, b, c],
+            variant="C",
+            rotated_at=rotated_old,
         )
         service = MagicMock()
 
-        rotated = collect_analytics.maybe_rotate_thumbnail(
-            service, "vid1", entry, median_views=1000, now=now
-        )
+        rotated = collect_analytics.maybe_rotate_thumbnail(service, "vid1", entry, median_views=1000, now=now)
 
         assert rotated is False
         assert entry["thumbnail_variant"] == "C"
@@ -761,9 +764,7 @@ class TestThumbnailRotationSequence:
         entry = self._entry(uploaded_at=uploaded, views=600, thumbnails=[a, b, c])
         service = MagicMock()
 
-        rotated = collect_analytics.maybe_rotate_thumbnail(
-            service, "vid1", entry, median_views=1000, now=now
-        )
+        rotated = collect_analytics.maybe_rotate_thumbnail(service, "vid1", entry, median_views=1000, now=now)
 
         assert rotated is False
         assert entry["thumbnail_variant"] == "A"
@@ -776,9 +777,7 @@ class TestThumbnailRotationSequence:
         entry = self._entry(uploaded_at=uploaded, views=1, thumbnails=a)
         service = MagicMock()
 
-        rotated = collect_analytics.maybe_rotate_thumbnail(
-            service, "vid1", entry, median_views=1000, now=now
-        )
+        rotated = collect_analytics.maybe_rotate_thumbnail(service, "vid1", entry, median_views=1000, now=now)
 
         assert rotated is False
         service.thumbnails().set.assert_not_called()
@@ -793,9 +792,7 @@ class TestThumbnailRotationSequence:
         service = MagicMock()
 
         with patch("scripts.collect_analytics._retry_youtube_call", side_effect=lambda f: f()):
-            rotated = collect_analytics.maybe_rotate_thumbnail(
-                service, "vid1", entry, median_views=1000, now=now
-            )
+            rotated = collect_analytics.maybe_rotate_thumbnail(service, "vid1", entry, median_views=1000, now=now)
 
         assert rotated is True
         assert entry["thumbnail_variant"] == "B"
@@ -809,9 +806,7 @@ class TestThumbnailRotationSequence:
         entry = self._entry(uploaded_at=uploaded, views=1, thumbnails=[a, b, c])
         service = MagicMock()
 
-        rotated = collect_analytics.maybe_rotate_thumbnail(
-            service, "vid1", entry, median_views=1000, now=now
-        )
+        rotated = collect_analytics.maybe_rotate_thumbnail(service, "vid1", entry, median_views=1000, now=now)
 
         assert rotated is False
         service.thumbnails().set.assert_not_called()
@@ -982,8 +977,9 @@ class TestCollectRetentionMetrics:
     canal novo sem dados, scope ausente) - qualquer erro e tratado como
     nao-fatal: loga warning e segue (retorna {} ou o subset que deu)."""
 
-    def _analytics_service(self, rows_by_video: dict[str, list[list]] | None = None,
-                           raise_on_query: Exception | None = None):
+    def _analytics_service(
+        self, rows_by_video: dict[str, list[list]] | None = None, raise_on_query: Exception | None = None
+    ):
         service = MagicMock()
         reports_mock = MagicMock()
         query_mock = MagicMock()
@@ -992,12 +988,14 @@ class TestCollectRetentionMetrics:
         if raise_on_query is not None:
             query_mock.execute.side_effect = raise_on_query
         else:
+
             def _execute():
                 call_args = reports_mock.query.call_args
                 filters = call_args.kwargs.get("filters", "") if call_args else ""
                 vid = filters.split("==", 1)[1] if "==" in filters else ""
                 rows = (rows_by_video or {}).get(vid, [])
                 return {"rows": rows}
+
             query_mock.execute.side_effect = _execute
         return service
 
@@ -1072,10 +1070,7 @@ class TestCollectRetentionMetrics:
 
         kwargs = service.reports.return_value.query.call_args.kwargs
         assert kwargs["ids"] == "channel==mine"
-        assert kwargs["metrics"] == (
-            "averageViewDuration,averageViewPercentage,ctr,"
-            "impressions,subscribersGained"
-        )
+        assert kwargs["metrics"] == ("averageViewDuration,averageViewPercentage,ctr,impressions,subscribersGained")
         assert kwargs["filters"] == "video==vid1"
         assert "startDate" in kwargs and "endDate" in kwargs
 
@@ -1090,16 +1085,22 @@ class TestSnapshotOnlyFlag:
         monkeypatch.setattr(collect_analytics, "HISTORY_FILE", tmp_path / "analytics_history.json")
         monkeypatch.setattr(collect_analytics, "VIDEO_TAGS_FILE", tmp_path / "video_tags.json")
         monkeypatch.setattr(collect_analytics, "SCENE_PERFORMANCE_FILE", tmp_path / "scene_perf.json")
-        monkeypatch.setattr(
-            collect_analytics, "TITLE_PATTERN_PERFORMANCE_FILE", tmp_path / "tp_perf.json"
-        )
+        monkeypatch.setattr(collect_analytics, "TITLE_PATTERN_PERFORMANCE_FILE", tmp_path / "tp_perf.json")
         monkeypatch.setattr(collect_analytics, "VIRAL_SIGNALS_FILE", tmp_path / "viral.json")
         monkeypatch.setattr(collect_analytics, "get_youtube_service", lambda: MagicMock())
         monkeypatch.setattr(collect_analytics, "get_youtube_analytics_service", lambda: MagicMock())
-        stats = [{"video_id": "v1", "views": 100, "likes": 1, "comments": 0,
-                  "title": "t", "published_at": "2026-01-01", "duration": "PT1M"}]
-        monkeypatch.setattr(collect_analytics, "collect_video_stats",
-                            lambda service: (stats, {"subscriber_count": 10}))
+        stats = [
+            {
+                "video_id": "v1",
+                "views": 100,
+                "likes": 1,
+                "comments": 0,
+                "title": "t",
+                "published_at": "2026-01-01",
+                "duration": "PT1M",
+            }
+        ]
+        monkeypatch.setattr(collect_analytics, "collect_video_stats", lambda service: (stats, {"subscriber_count": 10}))
         return stats
 
     def test_snapshot_only_skips_scene_performance_file(self, tmp_path, monkeypatch):
@@ -1130,11 +1131,19 @@ class TestSnapshotOnlyFlag:
     def test_full_run_writes_scene_performance(self, tmp_path, monkeypatch):
         self._patch_run(monkeypatch, tmp_path)
         # 3 videos tagueados com a mesma cena pra passar _MIN_SCENE_SAMPLES.
-        stats = [{"video_id": f"v{i}", "views": v, "likes": 0, "comments": 0,
-                  "title": "t", "published_at": "2026-01-01", "duration": "PT1M"}
-                 for i, v in enumerate([100, 100, 100])]
-        monkeypatch.setattr(collect_analytics, "collect_video_stats",
-                            lambda service: (stats, {"subscriber_count": 10}))
+        stats = [
+            {
+                "video_id": f"v{i}",
+                "views": v,
+                "likes": 0,
+                "comments": 0,
+                "title": "t",
+                "published_at": "2026-01-01",
+                "duration": "PT1M",
+            }
+            for i, v in enumerate([100, 100, 100])
+        ]
+        monkeypatch.setattr(collect_analytics, "collect_video_stats", lambda service: (stats, {"subscriber_count": 10}))
         (tmp_path / "video_tags.json").write_text(
             json.dumps({f"v{i}": {"scene": "cat", "title_pattern": "p"} for i in range(3)}),
             encoding="utf-8",
@@ -1148,8 +1157,11 @@ class TestSnapshotOnlyFlag:
     def test_snapshot_only_skips_retention_metrics(self, tmp_path, monkeypatch):
         self._patch_run(monkeypatch, tmp_path)
         called = {"n": 0}
-        monkeypatch.setattr(collect_analytics, "get_youtube_analytics_service",
-                            lambda: called.__setitem__("n", called["n"] + 1) or MagicMock())
+        monkeypatch.setattr(
+            collect_analytics,
+            "get_youtube_analytics_service",
+            lambda: called.__setitem__("n", called["n"] + 1) or MagicMock(),
+        )
 
         collect_analytics.main(["--snapshot-only"])
 
@@ -1160,11 +1172,19 @@ class TestSnapshotOnlyFlag:
 
     def test_full_run_collects_retention_metrics(self, tmp_path, monkeypatch):
         self._patch_run(monkeypatch, tmp_path)
-        stats = [{"video_id": f"v{i}", "views": 100, "likes": 0, "comments": 0,
-                  "title": "t", "published_at": "2026-01-01", "duration": "PT1M"}
-                 for i in range(3)]
-        monkeypatch.setattr(collect_analytics, "collect_video_stats",
-                            lambda service: (stats, {"subscriber_count": 10}))
+        stats = [
+            {
+                "video_id": f"v{i}",
+                "views": 100,
+                "likes": 0,
+                "comments": 0,
+                "title": "t",
+                "published_at": "2026-01-01",
+                "duration": "PT1M",
+            }
+            for i in range(3)
+        ]
+        monkeypatch.setattr(collect_analytics, "collect_video_stats", lambda service: (stats, {"subscriber_count": 10}))
         (tmp_path / "video_tags.json").write_text(
             json.dumps({f"v{i}": {"scene": "cat", "title_pattern": "p"} for i in range(3)}),
             encoding="utf-8",
@@ -1187,17 +1207,27 @@ class TestSnapshotOnlyFlag:
 
     def test_full_run_without_analytics_service_still_succeeds(self, tmp_path, monkeypatch):
         self._patch_run(monkeypatch, tmp_path)
-        stats = [{"video_id": f"v{i}", "views": 100, "likes": 0, "comments": 0,
-                  "title": "t", "published_at": "2026-01-01", "duration": "PT1M"}
-                 for i in range(3)]
-        monkeypatch.setattr(collect_analytics, "collect_video_stats",
-                            lambda service: (stats, {"subscriber_count": 10}))
+        stats = [
+            {
+                "video_id": f"v{i}",
+                "views": 100,
+                "likes": 0,
+                "comments": 0,
+                "title": "t",
+                "published_at": "2026-01-01",
+                "duration": "PT1M",
+            }
+            for i in range(3)
+        ]
+        monkeypatch.setattr(collect_analytics, "collect_video_stats", lambda service: (stats, {"subscriber_count": 10}))
         (tmp_path / "video_tags.json").write_text(
             json.dumps({f"v{i}": {"scene": "cat", "title_pattern": "p"} for i in range(3)}),
             encoding="utf-8",
         )
+
         def _raise():
             raise RuntimeError("analytics unavailable")
+
         monkeypatch.setattr(collect_analytics, "get_youtube_analytics_service", _raise)
 
         assert collect_analytics.main([]) == 0

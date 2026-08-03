@@ -81,12 +81,15 @@ def retry_youtube_call(func, *args, **kwargs):
             _record_quota(func)
             return result
         except HttpError as e:
-            status = e.resp.status if hasattr(e, 'resp') else 0
+            status = e.resp.status if hasattr(e, "resp") else 0
             if status in (409, 429, 500, 502, 503, 504):
-                wait = _YOUTUBE_BASE_BACKOFF * (2 ** attempt) + random.uniform(0, 1)
+                wait = _YOUTUBE_BASE_BACKOFF * (2**attempt) + random.uniform(0, 1)
                 log.warning(
                     "YouTube API %s - retry em %ss (tentativa %d/%d)",
-                    status, wait, attempt + 1, _YOUTUBE_MAX_RETRIES,
+                    status,
+                    wait,
+                    attempt + 1,
+                    _YOUTUBE_MAX_RETRIES,
                 )
                 time.sleep(wait)
                 continue
@@ -95,10 +98,12 @@ def retry_youtube_call(func, *args, **kwargs):
         except (OSError, ConnectionError, TimeoutError) as e:
             log.warning(
                 "YouTube API erro de rede (tentativa %d/%d): %s",
-                attempt + 1, _YOUTUBE_MAX_RETRIES, e,
+                attempt + 1,
+                _YOUTUBE_MAX_RETRIES,
+                e,
             )
             if attempt < _YOUTUBE_MAX_RETRIES - 1:
-                wait = _YOUTUBE_BASE_BACKOFF * (2 ** attempt)
+                wait = _YOUTUBE_BASE_BACKOFF * (2**attempt)
                 time.sleep(wait)
                 continue
             raise

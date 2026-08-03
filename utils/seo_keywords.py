@@ -100,28 +100,37 @@ def _title_pattern_performance_file() -> Path:
     """Caminho de title_pattern_performance.json no diretorio do canal ativo."""
     return data_dir() / "title_pattern_performance.json"
 
+
 # YouTube aceita ate 15 hashtags, mas descricoes com muitas leem como spam;
 # 8 cobre marca + animal + musica + formato sem exagerar.
 _MAX_HASHTAGS = 8
 
 # Keywords de alta performance para o nicho pet + jazz
 HIGH_PERFORMANCE_KEYWORDS = {
-    "cuteness": [
-        "cute", "adorable", "charming", "sweet",
-        "precious", "lovable", "gentle", "tender"
-    ],
+    "cuteness": ["cute", "adorable", "charming", "sweet", "precious", "lovable", "gentle", "tender"],
     "relaxation": [
-        "relaxing", "calm", "calming", "soothing", "peaceful",
-        "gentle", "cozy", "tranquil", "mellow", "zen"
+        "relaxing",
+        "calm",
+        "calming",
+        "soothing",
+        "peaceful",
+        "gentle",
+        "cozy",
+        "tranquil",
+        "mellow",
+        "zen",
     ],
-    "fun": [
-        "funny", "playful", "silly", "energetic",
-        "curious", "spontaneous", "lively", "cheerful"
-    ],
+    "fun": ["funny", "playful", "silly", "energetic", "curious", "spontaneous", "lively", "cheerful"],
     "music": [
-        "jazz", "smooth jazz", "relaxing jazz", "ambient music",
-        "jazz instrumental", "coffee shop jazz", "lounge jazz", "soft jazz"
-    ]
+        "jazz",
+        "smooth jazz",
+        "relaxing jazz",
+        "ambient music",
+        "jazz instrumental",
+        "coffee shop jazz",
+        "lounge jazz",
+        "soft jazz",
+    ],
 }
 
 # Padrões de títulos que performam bem (testados A/B). Metade "SEO classico"
@@ -315,8 +324,12 @@ def generate_title(
 ) -> str:
     """Gera título otimizado usando padrões de alta performance."""
     title, _pattern = generate_title_with_pattern(
-        animal=animal, acao=acao, estilo_musical=estilo_musical,
-        kind=kind, emoji=emoji, duracao=duracao,
+        animal=animal,
+        acao=acao,
+        estilo_musical=estilo_musical,
+        kind=kind,
+        emoji=emoji,
+        duracao=duracao,
     )
     return title
 
@@ -417,9 +430,14 @@ def optimize_for_search(title: str, description: str) -> tuple[str, str]:
     """Otimiza título e descrição para busca do YouTube."""
     # Palavras-chave primárias para o nicho
     primary_keywords = [
-        "cat jazz", "dog jazz", "relaxing pet music",
-        "music for pets", "cute kitten", "cute puppy",
-        "calming music for dogs", "relaxing music for cats",
+        "cat jazz",
+        "dog jazz",
+        "relaxing pet music",
+        "music for pets",
+        "cute kitten",
+        "cute puppy",
+        "calming music for dogs",
+        "relaxing music for cats",
     ]
 
     # Verifica se pelo menos uma keyword primária está presente
@@ -437,8 +455,13 @@ def optimize_for_search(title: str, description: str) -> tuple[str, str]:
 
     # Adiciona keywords semanticamente relacionadas à descrição
     related_terms = [
-        "relaxation", "meditation", "studying", "working",
-        "focus", "inner peace", "well-being",
+        "relaxation",
+        "meditation",
+        "studying",
+        "working",
+        "focus",
+        "inner peace",
+        "well-being",
     ]
 
     if not any(term in description.lower() for term in related_terms):

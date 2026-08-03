@@ -76,9 +76,7 @@ def _find_or_create_playlist(service: Any, title: str) -> str:
         while pages < 20:
             pages += 1
             resp = _retry_youtube_call(
-                service.playlists().list(
-                    part="id,snippet", mine=True, maxResults=50, pageToken=page_token
-                ).execute
+                service.playlists().list(part="id,snippet", mine=True, maxResults=50, pageToken=page_token).execute
             )
             for item in resp.get("items", []):
                 if item.get("snippet", {}).get("title", "") == title:

@@ -1,4 +1,5 @@
 """Testes unitarios para utils/playlist_manager.py."""
+
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -91,3 +92,36 @@ def test_load_cache_invalid_json():
     with patch("utils.playlist_manager._cache_file", return_value=fake_file):
         playlist_manager._load_cache()
     assert playlist_manager._playlist_cache == {}
+
+
+def test_add_video_to_playlist_api_error_logs(tmp_path, monkeypatch):
+    """Erro ao inserir item e logado; nao propaga excecao."""
+    playlist_manager._playlist_cache = {"Pata Jazz | Shorts": "PL1"}
+    service = MagicMock()
+    called_with: list[dict] = []
+
+    class _FakeInsert:
+        def __init__(self, **kw):
+            called_with.append(kw)
+
+        def execute(self):
+            raise Exception("quota")
+
+    service.playlistItems.return_value.insert = _FakeInsert
+    with patch("utils.playlist_manager._save_cache"):
+        playlist_manager.add_video_to_playlist(service, "vid1", kind="short")
+    assert len(called_with) == 1
+    assert called_with[0]["part"] == "snippet"
+
+
+def test_find_or_create_playlist_pagination(monkeypatch):
+    """Busca percorre multiplas paginas ate achar a playlist."""
+    service = MagicMock()
+    service.playlists().list().execute.side_effect = [
+        {"items": [{"id": "PL1", "snippet": {"title": "Outra"}}], "nextPageToken": "TOKEN1"},
+        {"items": [{"id": "PL2", "snippet": {"title": "Pata Jazz | Shorts"}}], "nextPageToken": ""},
+    ]
+    with patch("utils.playlist_manager._save_cache") as mock_save:
+        pid = playlist_manager._find_or_create_playlist(service, "Pata Jazz | Shorts")
+    assert pid == "PL2"
+    assert mock_save.called

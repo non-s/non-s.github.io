@@ -40,9 +40,7 @@ _SHORT_MAX_SECONDS = 90
 _MAX_VIDEOS = 5000  # guard contra loop infinito de paginacao
 _DELETE_PAUSE_SECONDS = 1.0  # espaco entre deletes (videos.delete custa 50 unidades/chamada)
 
-_ISO8601_DURATION_RE = re.compile(
-    r"^PT(?:(?P<hours>\d+)H)?(?:(?P<minutes>\d+)M)?(?:(?P<seconds>\d+)S)?$"
-)
+_ISO8601_DURATION_RE = re.compile(r"^PT(?:(?P<hours>\d+)H)?(?:(?P<minutes>\d+)M)?(?:(?P<seconds>\d+)S)?$")
 
 
 def _parse_iso8601_duration(value: str) -> float:
@@ -80,12 +78,14 @@ def _list_all_video_ids(service, uploads_playlist: str) -> list[str]:
     page_token = ""
     while len(video_ids) < _MAX_VIDEOS:
         resp = _retry_youtube_call(
-            service.playlistItems().list(
+            service.playlistItems()
+            .list(
                 part="snippet",
                 playlistId=uploads_playlist,
                 maxResults=50,
                 pageToken=page_token,
-            ).execute
+            )
+            .execute
         )
         for item in resp.get("items", []):
             vid = item.get("snippet", {}).get("resourceId", {}).get("videoId")
@@ -102,10 +102,12 @@ def _fetch_video_details(service, video_ids: list[str]) -> list[dict]:
     for i in range(0, len(video_ids), 50):
         batch = video_ids[i : i + 50]
         resp = _retry_youtube_call(
-            service.videos().list(
+            service.videos()
+            .list(
                 part="snippet,contentDetails,liveStreamingDetails",
                 id=",".join(batch),
-            ).execute
+            )
+            .execute
         )
         details.extend(resp.get("items", []))
     return details

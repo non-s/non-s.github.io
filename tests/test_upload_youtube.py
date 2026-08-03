@@ -5,6 +5,7 @@ Cobre principalmente o padrao de duas chamadas a add_video_to_playlist (kind
 e mood) - o fix da auditoria desta sessao (playlists por mood nunca eram
 populadas porque so kind era passado).
 """
+
 import json
 from pathlib import Path
 from unittest.mock import MagicMock, patch
@@ -74,9 +75,13 @@ class TestUploadVideoSurvivesOptionalStepFailures:
         caption_path = tmp_path / "cap.srt"
         caption_path.write_text("1\n00:00:00,000 --> 00:00:01,000\nhi\n")
         meta = {
-            "title": "Gatinho Fofo", "description": "desc", "scene": "cat",
-            "kind": "short", "mood": "relax",
-            "thumbnail": str(thumb_path), "caption": str(caption_path),
+            "title": "Gatinho Fofo",
+            "description": "desc",
+            "scene": "cat",
+            "kind": "short",
+            "mood": "relax",
+            "thumbnail": str(thumb_path),
+            "caption": str(caption_path),
         }
         meta.update(extra_meta)
         _write_video_with_meta(tmp_path, meta)
@@ -95,9 +100,11 @@ class TestUploadVideoSurvivesOptionalStepFailures:
                 raise RuntimeError("YouTube API: maximo de tentativas excedido sem resposta.")
             return func(*a, **kw)
 
-        with patch("upload_youtube.get_youtube_service", return_value=service), \
-             patch("upload_youtube._retry_youtube_call", side_effect=fake_retry), \
-             patch("utils.youtube_post_upload.add_video_to_playlist") as mock_add:
+        with (
+            patch("upload_youtube.get_youtube_service", return_value=service),
+            patch("upload_youtube._retry_youtube_call", side_effect=fake_retry),
+            patch("utils.youtube_post_upload.add_video_to_playlist") as mock_add,
+        ):
             video_id = upload_youtube.upload_video(prefix="pata_jazz_")
 
         assert video_id == "vid-ok"
@@ -112,9 +119,11 @@ class TestUploadVideoSurvivesOptionalStepFailures:
                 raise RuntimeError("YouTube API: maximo de tentativas excedido sem resposta.")
             return func(*a, **kw)
 
-        with patch("upload_youtube.get_youtube_service", return_value=service), \
-             patch("upload_youtube._retry_youtube_call", side_effect=fake_retry), \
-             patch("utils.youtube_post_upload.add_video_to_playlist") as mock_add:
+        with (
+            patch("upload_youtube.get_youtube_service", return_value=service),
+            patch("upload_youtube._retry_youtube_call", side_effect=fake_retry),
+            patch("utils.youtube_post_upload.add_video_to_playlist") as mock_add,
+        ):
             video_id = upload_youtube.upload_video(prefix="pata_jazz_")
 
         assert video_id == "vid-ok"
@@ -125,19 +134,24 @@ class TestUploadVideoPlaylists:
     def test_adds_to_both_kind_and_mood_playlists(self, tmp_path, monkeypatch):
         monkeypatch.setattr(upload_youtube, "OUTPUT_DIR", tmp_path)
         monkeypatch.setattr(upload_youtube.ffmpeg_helpers, "get_video_duration", lambda path: 30.0)
-        _write_video_with_meta(tmp_path, {
-            "title": "Gatinho Fofo",
-            "description": "desc",
-            "scene": "cat",
-            "kind": "short",
-            "mood": "relax",
-        })
+        _write_video_with_meta(
+            tmp_path,
+            {
+                "title": "Gatinho Fofo",
+                "description": "desc",
+                "scene": "cat",
+                "kind": "short",
+                "mood": "relax",
+            },
+        )
 
         service = MagicMock()
         service.videos().insert().execute.return_value = {"id": "vid123"}
 
-        with patch("upload_youtube.get_youtube_service", return_value=service), \
-             patch("utils.youtube_post_upload.add_video_to_playlist") as mock_add:
+        with (
+            patch("upload_youtube.get_youtube_service", return_value=service),
+            patch("utils.youtube_post_upload.add_video_to_playlist") as mock_add,
+        ):
             video_id = upload_youtube.upload_video(prefix="pata_jazz_")
 
         assert video_id == "vid123"
@@ -151,18 +165,23 @@ class TestUploadVideoPlaylists:
         mood='' para add_video_to_playlist, que trataria como sem alvo)."""
         monkeypatch.setattr(upload_youtube, "OUTPUT_DIR", tmp_path)
         monkeypatch.setattr(upload_youtube.ffmpeg_helpers, "get_video_duration", lambda path: 30.0)
-        _write_video_with_meta(tmp_path, {
-            "title": "Gatinho Fofo",
-            "description": "desc",
-            "scene": "cat",
-            "kind": "short",
-        })
+        _write_video_with_meta(
+            tmp_path,
+            {
+                "title": "Gatinho Fofo",
+                "description": "desc",
+                "scene": "cat",
+                "kind": "short",
+            },
+        )
 
         service = MagicMock()
         service.videos().insert().execute.return_value = {"id": "vid456"}
 
-        with patch("upload_youtube.get_youtube_service", return_value=service), \
-             patch("utils.youtube_post_upload.add_video_to_playlist") as mock_add:
+        with (
+            patch("upload_youtube.get_youtube_service", return_value=service),
+            patch("utils.youtube_post_upload.add_video_to_playlist") as mock_add,
+        ):
             upload_youtube.upload_video(prefix="pata_jazz_")
 
         assert mock_add.call_count == 1
@@ -173,15 +192,24 @@ class TestUploadVideoPlaylists:
         retorna o video_id normalmente."""
         monkeypatch.setattr(upload_youtube, "OUTPUT_DIR", tmp_path)
         monkeypatch.setattr(upload_youtube.ffmpeg_helpers, "get_video_duration", lambda path: 30.0)
-        _write_video_with_meta(tmp_path, {
-            "title": "Gatinho Fofo", "description": "desc", "scene": "cat", "kind": "short", "mood": "relax",
-        })
+        _write_video_with_meta(
+            tmp_path,
+            {
+                "title": "Gatinho Fofo",
+                "description": "desc",
+                "scene": "cat",
+                "kind": "short",
+                "mood": "relax",
+            },
+        )
 
         service = MagicMock()
         service.videos().insert().execute.return_value = {"id": "vid789"}
 
-        with patch("upload_youtube.get_youtube_service", return_value=service), \
-             patch("utils.youtube_post_upload.add_video_to_playlist", side_effect=RuntimeError("api down")):
+        with (
+            patch("upload_youtube.get_youtube_service", return_value=service),
+            patch("utils.youtube_post_upload.add_video_to_playlist", side_effect=RuntimeError("api down")),
+        ):
             video_id = upload_youtube.upload_video(prefix="pata_jazz_")
 
         assert video_id == "vid789"
@@ -203,7 +231,10 @@ class TestRecordVideoTags:
         upload_youtube._record_video_tags(
             "vid1",
             {
-                "scene": "cat", "hook": "Cute Cat", "mood": "fofura", "kind": "short",
+                "scene": "cat",
+                "hook": "Cute Cat",
+                "mood": "fofura",
+                "kind": "short",
                 "title_pattern": "{emoji} {adjetivo} {animal}",
             },
         )
@@ -233,10 +264,13 @@ class TestRecordVideoTags:
         tags_file = tmp_path / "video_tags.json"
         monkeypatch.setattr(upload_youtube, "_VIDEO_TAGS_FILE", tags_file)
 
-        upload_youtube._record_video_tags("vid1", {
-            "scene": "cat",
-            "thumbnails": ["/tmp/a.png", "/tmp/b.png"],
-        })
+        upload_youtube._record_video_tags(
+            "vid1",
+            {
+                "scene": "cat",
+                "thumbnails": ["/tmp/a.png", "/tmp/b.png"],
+            },
+        )
 
         data = json.loads(tags_file.read_text(encoding="utf-8"))
         assert data["vid1"]["thumbnails"] == ["/tmp/a.png", "/tmp/b.png"]
@@ -249,11 +283,14 @@ class TestRecordVideoTags:
         tags_file = tmp_path / "video_tags.json"
         monkeypatch.setattr(upload_youtube, "_VIDEO_TAGS_FILE", tags_file)
 
-        upload_youtube._record_video_tags("vid1", {
-            "scene": "cat",
-            "thumbnails": ["/tmp/a.png", "/tmp/b.png", "/tmp/c.png"],
-            "thumbnail_variant": "B",
-        })
+        upload_youtube._record_video_tags(
+            "vid1",
+            {
+                "scene": "cat",
+                "thumbnails": ["/tmp/a.png", "/tmp/b.png", "/tmp/c.png"],
+                "thumbnail_variant": "B",
+            },
+        )
 
         data = json.loads(tags_file.read_text(encoding="utf-8"))
         assert data["vid1"]["thumbnail_variant"] == "B"
@@ -305,15 +342,24 @@ class TestRecordVideoTags:
         monkeypatch.setattr(upload_youtube, "_VIDEO_TAGS_FILE", tags_file)
         monkeypatch.setattr(upload_youtube, "OUTPUT_DIR", tmp_path)
         monkeypatch.setattr(upload_youtube.ffmpeg_helpers, "get_video_duration", lambda path: 30.0)
-        _write_video_with_meta(tmp_path, {
-            "title": "Gatinho Fofo", "description": "desc", "scene": "cat", "kind": "short", "mood": "relax",
-        })
+        _write_video_with_meta(
+            tmp_path,
+            {
+                "title": "Gatinho Fofo",
+                "description": "desc",
+                "scene": "cat",
+                "kind": "short",
+                "mood": "relax",
+            },
+        )
 
         service = MagicMock()
         service.videos().insert().execute.return_value = {"id": "vid_e2e", "status": {"privacyStatus": "public"}}
 
-        with patch("upload_youtube.get_youtube_service", return_value=service), \
-             patch("utils.youtube_post_upload.add_video_to_playlist"):
+        with (
+            patch("upload_youtube.get_youtube_service", return_value=service),
+            patch("utils.youtube_post_upload.add_video_to_playlist"),
+        ):
             video_id = upload_youtube.upload_video(prefix="pata_jazz_")
 
         assert video_id == "vid_e2e"

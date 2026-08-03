@@ -45,6 +45,7 @@ jobs:
         uses: ./.github/actions/restore-token-and-cache
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN_CLASSICAL }}
+          channel: pata_classical
       - name: "Healthcheck (pre-flight)"
         run: python scripts/healthcheck.py --mode fast
       - name: "Sincronizar b-roll (gatos/cachorros)"
@@ -55,7 +56,7 @@ jobs:
         run: python scripts/generate_pata_jazz_long.py
       - name: "Upload para YouTube"
         if: hashFiles('youtube_token_classical.json') != ''
-        run: python upload_youtube.py --mode upload --language=en --prefix pata_classical_long_
+        run: python upload_youtube.py --mode upload --language=en
       - name: "Upload artifacts"
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

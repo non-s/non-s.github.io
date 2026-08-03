@@ -10,7 +10,7 @@ on:
     # uploads/dia usa ~200 unidades/upload do pool compartilhado
     # (thumbnail+captions+playlists) = ~4800/dia, ainda abaixo do limite de
     # 10000 e do alerta em 8000; videos.insert fica bem abaixo dos ~100/dia).
-    - cron: "7 * * * *"
+    - cron: "17 * * * *"
   workflow_dispatch:
     inputs:
       reason:
@@ -59,7 +59,7 @@ jobs:
         run: python generate_pata_jazz_short.py
       - name: "Upload para YouTube"
         if: hashFiles('youtube_token_lofi.json') != ''
-        run: python upload_youtube.py --mode upload --language=en --prefix pata_lofi_short_
+        run: python upload_youtube.py --mode upload --language=en
       - name: "Upload artifacts"
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

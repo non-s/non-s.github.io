@@ -15,8 +15,7 @@ def _fake_video_dir_truediv(self, other):
     )
 
 
-def _hit(width=1280, height=720, tags="cute cat real", video_type="film",
-         url="https://cdn.example/cat.mp4"):
+def _hit(width=1280, height=720, tags="cute cat real", video_type="film", url="https://cdn.example/cat.mp4"):
     return {
         "tags": tags,
         "user": "someone",
@@ -320,8 +319,7 @@ class TestDownloadVideo:
 
     def test_failure_returns_false(self, tmp_path, monkeypatch):
         dest = tmp_path / "v.mp4"
-        monkeypatch.setattr(sync_animal_broll.requests, "get",
-                            MagicMock(side_effect=ConnectionError("boom")))
+        monkeypatch.setattr(sync_animal_broll.requests, "get", MagicMock(side_effect=ConnectionError("boom")))
         assert sync_animal_broll._download_video("https://x", dest) is False
         assert not dest.exists()
 

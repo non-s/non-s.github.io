@@ -42,6 +42,7 @@ jobs:
         uses: ./.github/actions/restore-token-and-cache
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN_LOFI }}
+          channel: pata_lofi
       - name: "Restaurar estado de respostas"
         # Sem cache, cada run comecaria do zero e responderia de novo o que
         # ja respondeu (spam de respostas). O estado persiste entre runs.

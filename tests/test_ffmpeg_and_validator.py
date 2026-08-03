@@ -92,10 +92,8 @@ def _make_video_file(tmp_path: Path) -> Path:
     return p
 
 
-def _probe(width=1920, height=1080, vcodec="h264", acodec="aac",
-           vbr="2000000", abr="192000", has_audio=True) -> dict:
-    streams = [{"codec_type": "video", "codec_name": vcodec,
-                "width": width, "height": height, "bit_rate": vbr}]
+def _probe(width=1920, height=1080, vcodec="h264", acodec="aac", vbr="2000000", abr="192000", has_audio=True) -> dict:
+    streams = [{"codec_type": "video", "codec_name": vcodec, "width": width, "height": height, "bit_rate": vbr}]
     if has_audio:
         streams.append({"codec_type": "audio", "codec_name": acodec, "bit_rate": abr})
     return {"streams": streams}
@@ -104,8 +102,10 @@ def _probe(width=1920, height=1080, vcodec="h264", acodec="aac",
 class TestValidateGeneratedVideo:
     def test_happy_path(self, tmp_path):
         p = _make_video_file(tmp_path)
-        with patch("utils.video_validator._run_ffprobe", return_value=_probe()), \
-             patch("utils.video_validator.get_video_duration", return_value=30.0):
+        with (
+            patch("utils.video_validator._run_ffprobe", return_value=_probe()),
+            patch("utils.video_validator.get_video_duration", return_value=30.0),
+        ):
             r = validate_generated_video(p, "1920x1080", 30, expect_audio=True)
         assert r.ok, r.errors
         assert r.info["video_codec"] == "h264"
@@ -117,40 +117,50 @@ class TestValidateGeneratedVideo:
 
     def test_bad_resolution(self, tmp_path):
         p = _make_video_file(tmp_path)
-        with patch("utils.video_validator._run_ffprobe", return_value=_probe(width=1280, height=720)), \
-             patch("utils.video_validator.get_video_duration", return_value=30.0):
+        with (
+            patch("utils.video_validator._run_ffprobe", return_value=_probe(width=1280, height=720)),
+            patch("utils.video_validator.get_video_duration", return_value=30.0),
+        ):
             r = validate_generated_video(p, "1920x1080", 30)
         assert not r.ok
         assert any("Resolução" in e for e in r.errors)
 
     def test_bad_duration(self, tmp_path):
         p = _make_video_file(tmp_path)
-        with patch("utils.video_validator._run_ffprobe", return_value=_probe()), \
-             patch("utils.video_validator.get_video_duration", return_value=50.0):
+        with (
+            patch("utils.video_validator._run_ffprobe", return_value=_probe()),
+            patch("utils.video_validator.get_video_duration", return_value=50.0),
+        ):
             r = validate_generated_video(p, "1920x1080", 30)
         assert not r.ok
         assert any("Duração" in e for e in r.errors)
 
     def test_bad_codec(self, tmp_path):
         p = _make_video_file(tmp_path)
-        with patch("utils.video_validator._run_ffprobe", return_value=_probe(vcodec="hevc")), \
-             patch("utils.video_validator.get_video_duration", return_value=30.0):
+        with (
+            patch("utils.video_validator._run_ffprobe", return_value=_probe(vcodec="hevc")),
+            patch("utils.video_validator.get_video_duration", return_value=30.0),
+        ):
             r = validate_generated_video(p, "1920x1080", 30)
         assert not r.ok
         assert any("Codec de vídeo" in e for e in r.errors)
 
     def test_audio_missing_when_expected(self, tmp_path):
         p = _make_video_file(tmp_path)
-        with patch("utils.video_validator._run_ffprobe", return_value=_probe(has_audio=False)), \
-             patch("utils.video_validator.get_video_duration", return_value=30.0):
+        with (
+            patch("utils.video_validator._run_ffprobe", return_value=_probe(has_audio=False)),
+            patch("utils.video_validator.get_video_duration", return_value=30.0),
+        ):
             r = validate_generated_video(p, "1920x1080", 30, expect_audio=True)
         assert not r.ok
         assert any("áudio" in e.lower() for e in r.errors)
 
     def test_audio_missing_when_not_expected(self, tmp_path):
         p = _make_video_file(tmp_path)
-        with patch("utils.video_validator._run_ffprobe", return_value=_probe(has_audio=False)), \
-             patch("utils.video_validator.get_video_duration", return_value=30.0):
+        with (
+            patch("utils.video_validator._run_ffprobe", return_value=_probe(has_audio=False)),
+            patch("utils.video_validator.get_video_duration", return_value=30.0),
+        ):
             r = validate_generated_video(p, "1920x1080", 30, expect_audio=False)
         assert r.ok, r.errors
 
@@ -163,8 +173,10 @@ class TestValidateGeneratedVideo:
 
     def test_duration_zero(self, tmp_path):
         p = _make_video_file(tmp_path)
-        with patch("utils.video_validator._run_ffprobe", return_value=_probe()), \
-             patch("utils.video_validator.get_video_duration", return_value=0.0):
+        with (
+            patch("utils.video_validator._run_ffprobe", return_value=_probe()),
+            patch("utils.video_validator.get_video_duration", return_value=0.0),
+        ):
             r = validate_generated_video(p, "1920x1080", 30)
         assert not r.ok
         assert any("duração" in e.lower() for e in r.errors)
@@ -173,8 +185,10 @@ class TestValidateGeneratedVideo:
         p = _make_video_file(tmp_path)  # 8192 bits / 30s = ~273 bps
         probe = _probe()
         probe["streams"][0]["bit_rate"] = None  # força estimativa por filesize
-        with patch("utils.video_validator._run_ffprobe", return_value=probe), \
-             patch("utils.video_validator.get_video_duration", return_value=30.0):
+        with (
+            patch("utils.video_validator._run_ffprobe", return_value=probe),
+            patch("utils.video_validator.get_video_duration", return_value=30.0),
+        ):
             r = validate_generated_video(p, "1920x1080", 30)
         assert not r.ok
         assert any("Bitrate" in e for e in r.errors)
@@ -187,8 +201,10 @@ class TestValidateGeneratedVideo:
 
     def test_no_video_stream(self, tmp_path):
         p = _make_video_file(tmp_path)
-        with patch("utils.video_validator._run_ffprobe", return_value={"streams": []}), \
-             patch("utils.video_validator.get_video_duration", return_value=30.0):
+        with (
+            patch("utils.video_validator._run_ffprobe", return_value={"streams": []}),
+            patch("utils.video_validator.get_video_duration", return_value=30.0),
+        ):
             r = validate_generated_video(p, "1920x1080", 30)
         assert not r.ok
         assert any("vídeo" in e.lower() for e in r.errors)
@@ -205,6 +221,7 @@ class TestFfmpegHelpers:
 
     def test_run_ffmpeg_timeout(self):
         import subprocess
+
         with patch("subprocess.run", side_effect=subprocess.TimeoutExpired(cmd="ffmpeg", timeout=5)):
             with pytest.raises(subprocess.TimeoutExpired):
                 ffmpeg_helpers.run_ffmpeg(["-i", "x"], timeout=5)
@@ -235,6 +252,7 @@ class TestFfmpegHelpers:
     def test_run_ffmpeg_nonzero_returncode_raises(self):
         """returncode != 0 deve levantar subprocess.CalledProcessError."""
         import subprocess
+
         with patch("subprocess.run", return_value=MagicMock(returncode=2, stderr="boom", stdout="")):
             with pytest.raises(subprocess.CalledProcessError):
                 ffmpeg_helpers.run_ffmpeg(["-i", "x", "out.mp4"])
@@ -242,6 +260,7 @@ class TestFfmpegHelpers:
     def test_get_video_duration_timeout_returns_zero(self):
         """TimeoutExpired no ffprobe -> retorna 0.0 (nao propaga)."""
         import subprocess
+
         with patch("subprocess.run", side_effect=subprocess.TimeoutExpired(cmd="ffprobe", timeout=15)):
             assert ffmpeg_helpers.get_video_duration("x.mp4") == 0.0
 
@@ -283,8 +302,10 @@ class TestVideoValidatorBranches:
                 {"codec_type": "video", "codec_name": "h264", "width": 1920, "height": 1080, "bit_rate": "2000000"},
             ]
         }
-        with patch("utils.video_validator._run_ffprobe", return_value=probe), \
-             patch("utils.video_validator.get_video_duration", return_value=30.0):
+        with (
+            patch("utils.video_validator._run_ffprobe", return_value=probe),
+            patch("utils.video_validator.get_video_duration", return_value=30.0),
+        ):
             r = validate_video(p, 1920, 1080, 30, expect_audio=True)
         assert not r.ok
         assert any("áudio" in e.lower() for e in r.errors)
@@ -299,8 +320,10 @@ class TestVideoValidatorBranches:
                 {"codec_type": "audio", "codec_name": "aac"},
             ]
         }
-        with patch("utils.video_validator._run_ffprobe", return_value=probe), \
-             patch("utils.video_validator.get_video_duration", return_value=30.0):
+        with (
+            patch("utils.video_validator._run_ffprobe", return_value=probe),
+            patch("utils.video_validator.get_video_duration", return_value=30.0),
+        ):
             r = validate_video(p, 1920, 1080, 30, expect_audio=True, min_video_bitrate_kbps=100)
         assert not r.ok
         assert any("Bitrate" in e for e in r.errors)

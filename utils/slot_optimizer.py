@@ -53,7 +53,10 @@ def best_title_pattern_for_scene(scene: str, hour: int, day_of_week: int) -> str
     if best_pattern and best_score > 0:
         log.info(
             "Padrao otimo para cena=%s slot=%02dh: %s (views previstos=%.0f)",
-            scene, hour, best_pattern, best_score,
+            scene,
+            hour,
+            best_pattern,
+            best_score,
         )
         return best_pattern
     return None
@@ -81,6 +84,7 @@ def best_scene_for_mood(mood: str, hour: int, day_of_week: int) -> str | None:
 
     # Intersecao: cenas do mood atual que tambem existem no modelo.
     from utils.content_strategy import SCENE_CATEGORIES
+
     mood_scenes = SCENE_CATEGORIES.get(mood, SCENE_CATEGORIES["fofura"])
     candidates = [s for s in mood_scenes if s in scenes_model]
     if not candidates:
@@ -106,14 +110,20 @@ def best_scene_for_mood(mood: str, hour: int, day_of_week: int) -> str | None:
     if best_scene and best_score > 0:
         log.info(
             "Cena otima para mood=%s slot=%02dh: %s (views previstos media=%.0f)",
-            mood, hour, best_scene, best_score,
+            mood,
+            hour,
+            best_scene,
+            best_score,
         )
         return best_scene
     return None
 
 
 def optimized_scene_and_pattern(
-    mood: str, fallback_scene: str, hour: int, day_of_week: int,
+    mood: str,
+    fallback_scene: str,
+    hour: int,
+    day_of_week: int,
 ) -> tuple[str, str | None]:
     """Retorna (scene, title_pattern) otimizados por previsao.
 

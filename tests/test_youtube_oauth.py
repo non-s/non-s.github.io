@@ -130,9 +130,7 @@ class TestYoutubeOauth:
     @patch("utils.youtube_oauth._client_secrets_path")
     @patch("utils.youtube_oauth.InstalledAppFlow")
     @patch("utils.youtube_oauth.build")
-    def test_get_youtube_service_with_expired_token(
-        self, mock_build, mock_flow, mock_secrets, mock_save, mock_load
-    ):
+    def test_get_youtube_service_with_expired_token(self, mock_build, mock_flow, mock_secrets, mock_save, mock_load):
         """Testa obtenção do serviço com token expirado que pode ser refresh."""
         mock_creds = MagicMock()
         mock_creds.valid = False
@@ -154,9 +152,7 @@ class TestYoutubeOauth:
     @patch("utils.youtube_oauth._client_secrets_path")
     @patch("utils.youtube_oauth.InstalledAppFlow")
     @patch("utils.youtube_oauth.build")
-    def test_get_youtube_service_with_new_flow(
-        self, mock_build, mock_flow, mock_secrets, mock_save, mock_load
-    ):
+    def test_get_youtube_service_with_new_flow(self, mock_build, mock_flow, mock_secrets, mock_save, mock_load):
         """Testa obtenção do serviço com novo fluxo OAuth."""
         mock_load.return_value = None
         mock_secrets.return_value = "/path/to/secret.json"
@@ -212,9 +208,7 @@ class TestYoutubeOauth:
     @patch("utils.youtube_oauth.refresh_token_if_needed", return_value=False)
     @patch("utils.youtube_oauth._load_token")
     @patch("utils.youtube_oauth.build")
-    def test_get_youtube_service_calls_refresh_token_if_needed(
-        self, mock_build, mock_load, mock_refresh
-    ):
+    def test_get_youtube_service_calls_refresh_token_if_needed(self, mock_build, mock_load, mock_refresh):
         """get_youtube_service deve chamar refresh_token_if_needed antes de buildar o service."""
         mock_creds = MagicMock()
         mock_creds.valid = True

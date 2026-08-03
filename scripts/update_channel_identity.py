@@ -53,12 +53,9 @@ def _own_channel_id(service) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=f"Atualiza a identidade do {active_channel.name} (about/keywords)")
-    parser.add_argument("--dry-run", action="store_true",
-                        help="Mostra a identidade-alvo sem publicar")
-    parser.add_argument("--force", action="store_true",
-                        help="Ignora a trava de 1x por semana")
-    parser.add_argument("--no-guard", action="store_true",
-                        help="Ignora os guards de env (PATA_JAZZ_ENABLED/IDENTITY)")
+    parser.add_argument("--dry-run", action="store_true", help="Mostra a identidade-alvo sem publicar")
+    parser.add_argument("--force", action="store_true", help="Ignora a trava de 1x por semana")
+    parser.add_argument("--no-guard", action="store_true", help="Ignora os guards de env (PATA_JAZZ_ENABLED/IDENTITY)")
     args = parser.parse_args()
 
     configure_logging()
@@ -72,9 +69,13 @@ def main() -> int:
     enabled = os.environ.get(enabled_var, "") == "1"
     identity_enabled = os.environ.get(identity_var, "") == "1"
     if not args.no_guard and not (enabled and identity_enabled):
-        log.info("Guards desligados (%s=%r, %s=%r). Nada a fazer.",
-                 enabled_var, os.environ.get(enabled_var),
-                 identity_var, os.environ.get(identity_var))
+        log.info(
+            "Guards desligados (%s=%r, %s=%r). Nada a fazer.",
+            enabled_var,
+            os.environ.get(enabled_var),
+            identity_var,
+            os.environ.get(identity_var),
+        )
         return 0
 
     start_time = time.time()
@@ -83,14 +84,18 @@ def main() -> int:
         service = get_youtube_service()
         channel_id = _own_channel_id(service)
         report = run_identity_update(
-            service, channel_id,
+            service,
+            channel_id,
             dry_run=args.dry_run,
             force=args.force,
         )
         success = True
         log.info(
             "Identidade concluida: semana=%d changed=%s updated=%s dry_run=%s",
-            report["iso_week"], report["changed"], report["updated"], report["dry_run"],
+            report["iso_week"],
+            report["changed"],
+            report["updated"],
+            report["dry_run"],
         )
         return 0
     except Exception as exc:

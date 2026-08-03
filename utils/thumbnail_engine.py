@@ -67,6 +67,7 @@ def _save_under_2mb(img: Image.Image, output: Path) -> None:
     output.write_bytes(buf.getvalue())
     log.warning("Thumbnail nao coube em 2 MB mesmo apos redimensionar; salvando %.0f KB", buf.tell() / 1024)
 
+
 # Paleta Pata Jazz (dark, acolhedora, jazz)
 PALETTE = {
     "bg": "#0f0f23",
@@ -115,7 +116,7 @@ def _palette_for(variant: str) -> dict:
 def _hex_to_rgb(hex_color: str) -> tuple[int, int, int]:
     """Converte uma cor hex '#rrggbb' em uma tupla (r, g, b)."""
     hex_color = hex_color.lstrip("#")
-    r, g, b = (int(hex_color[i:i + 2], 16) for i in (0, 2, 4))
+    r, g, b = (int(hex_color[i : i + 2], 16) for i in (0, 2, 4))
     return r, g, b
 
 
@@ -130,9 +131,7 @@ def _load_fonts() -> tuple[ImageFont.FreeTypeFont, ImageFont.FreeTypeFont]:
     try:
         return ImageFont.truetype(font_path, 120), ImageFont.truetype(font_path, 48)
     except Exception as exc:
-        raise RuntimeError(
-            "Nenhuma fonte TrueType encontrada. Verifique _assets/fonts/Roboto-Bold.ttf."
-        ) from exc
+        raise RuntimeError("Nenhuma fonte TrueType encontrada. Verifique _assets/fonts/Roboto-Bold.ttf.") from exc
 
 
 def _load_font_path() -> str | None:
@@ -151,9 +150,7 @@ def _fonts_for_variant(variant: str) -> tuple[ImageFont.FreeTypeFont, ImageFont.
     """
     font_path = _load_font_path()
     if font_path is None:
-        raise RuntimeError(
-            "Nenhuma fonte TrueType encontrada. Verifique _assets/fonts/Roboto-Bold.ttf."
-        )
+        raise RuntimeError("Nenhuma fonte TrueType encontrada. Verifique _assets/fonts/Roboto-Bold.ttf.")
     if variant == "C":
         # Emoji 2x maior, hook menor.
         return ImageFont.truetype(font_path, 240), ImageFont.truetype(font_path, 40)
@@ -167,15 +164,7 @@ def extract_frame_from_video(video_path: Path, timestamp: str = "00:00:01") -> I
         with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
             tmp_path = tmp.name
 
-        cmd = [
-            "ffmpeg",
-            "-ss", timestamp,
-            "-i", str(video_path),
-            "-vframes", "1",
-            "-q:v", "2",
-            "-y",
-            tmp_path
-        ]
+        cmd = ["ffmpeg", "-ss", timestamp, "-i", str(video_path), "-vframes", "1", "-q:v", "2", "-y", tmp_path]
 
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
 
@@ -355,17 +344,22 @@ def _render_thumbnail(
     # Borda com glow effect
     for i in range(3, 0, -1):
         draw.rounded_rectangle(
-            [cfg.border_margin - i*2, cfg.border_margin - i*2,
-             width - cfg.border_margin + i*2, height - cfg.border_margin + i*2],
+            [
+                cfg.border_margin - i * 2,
+                cfg.border_margin - i * 2,
+                width - cfg.border_margin + i * 2,
+                height - cfg.border_margin + i * 2,
+            ],
             radius=cfg.border_radius,
             outline=(*_hex_to_rgb(pal["accent"]), int(50 * i / 3)),
-            width=2
+            width=2,
         )
 
     draw.rounded_rectangle(
-        [cfg.border_margin, cfg.border_margin,
-         width - cfg.border_margin, height - cfg.border_margin],
-        radius=cfg.border_radius, outline=pal["subtle"], width=cfg.border_width
+        [cfg.border_margin, cfg.border_margin, width - cfg.border_margin, height - cfg.border_margin],
+        radius=cfg.border_radius,
+        outline=pal["subtle"],
+        width=cfg.border_width,
     )
 
     # Emoji com shadow
@@ -495,9 +489,7 @@ def winning_thumbnail_variant() -> str:
         return "A"
 
     views_by_id = {
-        v.get("video_id"): int(v.get("views", 0) or 0)
-        for v in all_videos
-        if isinstance(v, dict) and v.get("video_id")
+        v.get("video_id"): int(v.get("views", 0) or 0) for v in all_videos if isinstance(v, dict) and v.get("video_id")
     }
     if not views_by_id:
         return "A"

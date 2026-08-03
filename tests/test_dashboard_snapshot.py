@@ -9,6 +9,7 @@ tests/snapshots/dashboard_hash.txt. Para regenerar o baseline rode:
 Implementacao manual (sem pytest-snapshot): um hash e suficiente para
 detectar regressao e nao adiciona dependencia nova.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -34,32 +35,35 @@ def _seed_fixtures(tmp_path, monkeypatch):
     monkeypatch.setattr(dashboard, "VIEW_PREDICTOR_FILE", tmp_path / "view_predictor.json")
 
     dashboard.ANALYTICS_FILE.write_text(
-        json.dumps({
-            "total_videos": 42, "total_views": 158340, "total_likes": 3021,
-            "total_comments": 412, "avg_views": 3770,
-            "top_10": [
-                {"video_id": "abc123", "title": "Cute Cat & Jazz", "views": 100, "likes": 1},
-                {"video_id": "def456", "title": "Sleepy Puppy Jazz", "views": 90, "likes": 2},
-            ],
-        }),
+        json.dumps(
+            {
+                "total_videos": 42,
+                "total_views": 158340,
+                "total_likes": 3021,
+                "total_comments": 412,
+                "avg_views": 3770,
+                "top_10": [
+                    {"video_id": "abc123", "title": "Cute Cat & Jazz", "views": 100, "likes": 1},
+                    {"video_id": "def456", "title": "Sleepy Puppy Jazz", "views": 90, "likes": 2},
+                ],
+            }
+        ),
         encoding="utf-8",
     )
     dashboard.HISTORY_FILE.write_text(
-        json.dumps([
-            {"collected_at": "2026-01-01T00:00:00+00:00", "total_views": 1000, "total_likes": 10, "avg_views": 100},
-            {"collected_at": "2026-01-08T00:00:00+00:00", "total_views": 2000, "total_likes": 20, "avg_views": 150},
-        ]),
+        json.dumps(
+            [
+                {"collected_at": "2026-01-01T00:00:00+00:00", "total_views": 1000, "total_likes": 10, "avg_views": 100},
+                {"collected_at": "2026-01-08T00:00:00+00:00", "total_views": 2000, "total_likes": 20, "avg_views": 150},
+            ]
+        ),
         encoding="utf-8",
     )
     dashboard.SCENE_PERFORMANCE_FILE.write_text(
         json.dumps({"cat": 0.5, "sleepy dog": 2.1, "puppy": 1.0}), encoding="utf-8"
     )
-    dashboard.TITLE_PATTERN_PERFORMANCE_FILE.write_text(
-        json.dumps({"{emoji} {animal}": 1.8}), encoding="utf-8"
-    )
-    dashboard.VIEW_PREDICTOR_FILE.write_text(
-        json.dumps({"n_samples": 0}), encoding="utf-8"
-    )
+    dashboard.TITLE_PATTERN_PERFORMANCE_FILE.write_text(json.dumps({"{emoji} {animal}": 1.8}), encoding="utf-8")
+    dashboard.VIEW_PREDICTOR_FILE.write_text(json.dumps({"n_samples": 0}), encoding="utf-8")
 
 
 def _generate_html(tmp_path, monkeypatch):
@@ -85,10 +89,7 @@ def test_dashboard_html_matches_snapshot(tmp_path, monkeypatch):
         return
 
     if not HASH_FILE.exists():
-        pytest.skip(
-            f"Nenhum baseline em {HASH_FILE}. Rode com UPDATE_SNAPSHOTS=1 para criar "
-            f"(hash atual: {digest})."
-        )
+        pytest.skip(f"Nenhum baseline em {HASH_FILE}. Rode com UPDATE_SNAPSHOTS=1 para criar (hash atual: {digest}).")
         return
 
     baseline = HASH_FILE.read_text(encoding="utf-8").strip()

@@ -13,7 +13,7 @@ format:
 	ruff format . && ruff check --fix .
 
 typecheck:
-	mypy utils/ scripts/ upload_youtube.py generate_pata_jazz_short.py
+	mypy utils/ scripts/ upload_youtube.py generate_pata_jazz_short.py generate_site.py
 
 security:
 	bandit -r utils/ scripts/ *.py -ll -q && pip-audit -r requirements.txt
@@ -31,7 +31,7 @@ dashboard:
 	python scripts/generate_dashboard.py
 
 lock:
-	pip-compile --strip-extras --output-file=requirements.lock pyproject.toml requirements-dev.txt
+	pip-compile --strip-extras --output-file=requirements.lock pyproject.toml
 
 clean:
 	rm -rf __pycache__ .pytest_cache .ruff_cache .mypy_cache .coverage htmlcov

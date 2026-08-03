@@ -9,6 +9,7 @@ repos:
     rev: v2.3.0
     hooks:
       - id: mypy
+        args: [--exclude, "scripts/generate_site.py"]
         additional_dependencies:
           - types-requests
           - Pillow

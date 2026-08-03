@@ -100,10 +100,7 @@ def _filter_by_mood(pool: list[Path], mood: str, min_needed: int) -> list[Path]:
     wanted = [g.lower() for g in MOOD_GENRES.get(mood, [])]
     if not wanted:
         return pool
-    filtered = [
-        p for p in pool
-        if any(g in wanted for g in _audio_genres(_load_audio_metadata(p)))
-    ]
+    filtered = [p for p in pool if any(g in wanted for g in _audio_genres(_load_audio_metadata(p)))]
     return filtered if len(filtered) >= min_needed else pool
 
 

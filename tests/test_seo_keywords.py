@@ -38,9 +38,7 @@ class TestTitlePatternWeights:
 
     def _isolate(self, tmp_path, monkeypatch):
         perf_file = tmp_path / "title_pattern_performance.json"
-        monkeypatch.setattr(
-            seo_keywords, "_title_pattern_performance_file", lambda: perf_file
-        )
+        monkeypatch.setattr(seo_keywords, "_title_pattern_performance_file", lambda: perf_file)
         return perf_file
 
     def test_no_performance_file_falls_back_to_uniform(self, tmp_path, monkeypatch):
@@ -69,12 +67,11 @@ class TestTitlePatternWeights:
 
     def test_heavily_weighted_pattern_is_picked_far_more_often(self, tmp_path, monkeypatch):
         import random
+
         random.seed(42)
         perf_file = self._isolate(tmp_path, monkeypatch)
         patterns = TITLE_PATTERNS["short"]
-        perf_file.write_text(
-            json.dumps({patterns[0]: 2.5, patterns[1]: 0.4}), encoding="utf-8"
-        )
+        perf_file.write_text(json.dumps({patterns[0]: 2.5, patterns[1]: 0.4}), encoding="utf-8")
 
         results = [pick_title_pattern("short") for _ in range(200)]
         assert results.count(patterns[0]) > results.count(patterns[1])
@@ -84,21 +81,13 @@ class TestGenerateTitle:
     """Testa geração de títulos otimizados."""
 
     def test_generate_title_by_kind(self):
-        title = generate_title(
-            animal="cat", acao="sleeping", estilo_musical="relaxing jazz", kind="short", emoji="🐱"
-        )
+        title = generate_title(animal="cat", acao="sleeping", estilo_musical="relaxing jazz", kind="short", emoji="🐱")
         assert len(title) <= 100 and len(title) > 0
         assert "🐱" in title or "cat" in title.lower()
 
     def test_generate_title_uses_keywords(self):
         """Título usa keywords de alta performance."""
-        title = generate_title(
-            animal="cat",
-            acao="sleeping",
-            estilo_musical="jazz",
-            kind="short",
-            emoji="🐱"
-        )
+        title = generate_title(animal="cat", acao="sleeping", estilo_musical="jazz", kind="short", emoji="🐱")
         # Verifica se usa pelo menos uma keyword
         all_keywords = []
         for category in HIGH_PERFORMANCE_KEYWORDS.values():
@@ -116,11 +105,7 @@ class TestGenerateTitle:
         """Título respeita limite de 100 caracteres."""
         for _ in range(10):  # Testa múltiplas vezes
             title = generate_title(
-                animal="cat",
-                acao="sleeping",
-                estilo_musical="relaxing jazz",
-                kind="short",
-                emoji="🐱"
+                animal="cat", acao="sleeping", estilo_musical="relaxing jazz", kind="short", emoji="🐱"
             )
             assert len(title) <= 100
 
@@ -165,12 +150,7 @@ class TestGenerateDescription:
     def test_generate_description_short(self):
         """Gera descrição para Short."""
         hashtags = ["#PataJazz", "#Cats", "#Jazz"]
-        desc, _ = generate_description(
-            hook="Cute kitten sleeping",
-            kind="short",
-            hashtags=hashtags,
-            include_cta=True
-        )
+        desc, _ = generate_description(hook="Cute kitten sleeping", kind="short", hashtags=hashtags, include_cta=True)
         assert len(desc) > 0
         assert "#PataJazz" in desc or "#Cats" in desc
         assert "🐾" in desc or "✨" in desc  # Tem emojis
@@ -189,19 +169,9 @@ class TestGenerateDescription:
 
         hashtags = ["#PataJazz"]
         _random.seed(42)
-        desc_with_cta, _ = generate_description(
-            hook="Test",
-            kind="short",
-            hashtags=hashtags,
-            include_cta=True
-        )
+        desc_with_cta, _ = generate_description(hook="Test", kind="short", hashtags=hashtags, include_cta=True)
         _random.seed(42)
-        desc_without_cta, _ = generate_description(
-            hook="Test",
-            kind="short",
-            hashtags=hashtags,
-            include_cta=False
-        )
+        desc_without_cta, _ = generate_description(hook="Test", kind="short", hashtags=hashtags, include_cta=False)
         # Descrição sem CTA deve ser menor
         assert len(desc_without_cta) < len(desc_with_cta)
         # Verifica que não tem CTAs comuns quando include_cta=False
@@ -212,35 +182,20 @@ class TestGenerateDescription:
     def test_generate_description_includes_hashtags(self):
         """Descrição inclui hashtags."""
         hashtags = ["#PataJazz", "#Cats", "#Jazz", "#Shorts"]
-        desc, _ = generate_description(
-            hook="Test",
-            kind="short",
-            hashtags=hashtags,
-            include_cta=True
-        )
+        desc, _ = generate_description(hook="Test", kind="short", hashtags=hashtags, include_cta=True)
         assert "#PataJazz" in desc
 
     def test_generate_description_returns_cta(self):
         """generate_description retorna tambem o CTA usado (A/B tracking)."""
         hashtags = ["#PataJazz"]
-        desc, cta = generate_description(
-            hook="Test",
-            kind="short",
-            hashtags=hashtags,
-            include_cta=True
-        )
+        desc, cta = generate_description(hook="Test", kind="short", hashtags=hashtags, include_cta=True)
         assert cta in CTAS
         assert cta in desc
 
     def test_generate_description_no_cta_returns_empty(self):
         """Sem CTA, o segundo elemento do retorno e vazio."""
         hashtags = ["#PataJazz"]
-        desc, cta = generate_description(
-            hook="Test",
-            kind="short",
-            hashtags=hashtags,
-            include_cta=False
-        )
+        desc, cta = generate_description(hook="Test", kind="short", hashtags=hashtags, include_cta=False)
         assert cta == ""
 
 
@@ -274,8 +229,6 @@ class TestGenerateHashtags:
         """Não gera hashtags duplicadas."""
         hashtags = generate_hashtags(animal="cat", categoria="cuteness", kind="short")
         assert len(hashtags) == len(set(hashtags))
-
-
 
     def test_optimize_title_with_keyword(self):
         """Otimiza título adicionando keyword se necessário."""
@@ -355,10 +308,13 @@ class TestTitleAntiRepeat:
         return used_file
 
     def test_similarity_same_words_reordered_is_one(self):
-        assert seo_keywords.title_similarity(
-            "Gato Dormindo Com Jazz",
-            "Com Jazz Gato Dormindo",
-        ) == 1.0
+        assert (
+            seo_keywords.title_similarity(
+                "Gato Dormindo Com Jazz",
+                "Com Jazz Gato Dormindo",
+            )
+            == 1.0
+        )
 
     def test_similarity_shared_words(self):
         sim = seo_keywords.title_similarity(

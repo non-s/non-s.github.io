@@ -20,10 +20,7 @@ log = logging.getLogger(__name__)
 
 def _thumbnail_hint(exc: Exception) -> str:
     if "403" in str(exc):
-        return (
-            " (canal sem verificacao por telefone bloqueia thumbnail customizada "
-            "- confira em youtube.com/verify)"
-        )
+        return " (canal sem verificacao por telefone bloqueia thumbnail customizada - confira em youtube.com/verify)"
     return ""
 
 
@@ -80,11 +77,13 @@ def apply_caption(
             }
         }
         retry_call(
-            service.captions().insert(
+            service.captions()
+            .insert(
                 part="snippet",
                 body=caption_body,
                 media_body=MediaFileUpload(str(caption_path), mimetype=_caption_mimetype(caption_path)),
-            ).execute
+            )
+            .execute
         )
         log.info("Legenda %s aplicada.", language)
     except Exception as exc:
@@ -113,14 +112,22 @@ def apply_captions(
     meta['caption_pt'] existir, gerada por utils/caption_engine).
     """
     apply_caption(
-        service, video_id, _meta_path(meta, "caption"), retry_call,
-        language="en", name="English",
+        service,
+        video_id,
+        _meta_path(meta, "caption"),
+        retry_call,
+        language="en",
+        name="English",
     )
     caption_pt = meta.get("caption_pt")
     if caption_pt:
         apply_caption(
-            service, video_id, Path(caption_pt), retry_call,
-            language="pt", name="Português",
+            service,
+            video_id,
+            Path(caption_pt),
+            retry_call,
+            language="pt",
+            name="Português",
         )
 
 

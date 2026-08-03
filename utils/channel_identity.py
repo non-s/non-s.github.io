@@ -106,9 +106,7 @@ def _load_state() -> dict:
 def _save_state(state: dict) -> None:
     try:
         _state_file().parent.mkdir(parents=True, exist_ok=True)
-        _state_file().write_text(
-            json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8"
-        )
+        _state_file().write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
     except Exception as exc:
         log.warning("Falha ao salvar identity.json: %s", exc)
 
@@ -257,17 +255,21 @@ def run_identity_update(
         if not (changed and (force or not same_week)):
             log.info(
                 "Identidade ja em dia (semana ISO %d, changed=%s, mesma_semana=%s).",
-                iso_week, changed, same_week,
+                iso_week,
+                changed,
+                same_week,
             )
             return report
 
         apply_update(service, channel_id, channel, target, retry_call=retry_call)
         report["updated"] = True
-        _save_state({
-            "variant_week": iso_week,
-            "updated_at": now.isoformat(),
-            "description": target["description"],
-            "keywords": target["keywords"],
-        })
+        _save_state(
+            {
+                "variant_week": iso_week,
+                "updated_at": now.isoformat(),
+                "description": target["description"],
+                "keywords": target["keywords"],
+            }
+        )
         log.info("Identidade do canal atualizada (semana ISO %d).", iso_week)
         return report

@@ -59,20 +59,46 @@ PATA_JAZZ: ChannelConfig = ChannelConfig(
     },
     seo_keywords={
         "cuteness": [
-            "cute", "adorable", "charming", "sweet",
-            "precious", "lovable", "gentle", "tender",
+            "cute",
+            "adorable",
+            "charming",
+            "sweet",
+            "precious",
+            "lovable",
+            "gentle",
+            "tender",
         ],
         "relaxation": [
-            "relaxing", "calm", "calming", "soothing", "peaceful",
-            "gentle", "cozy", "tranquil", "mellow", "zen",
+            "relaxing",
+            "calm",
+            "calming",
+            "soothing",
+            "peaceful",
+            "gentle",
+            "cozy",
+            "tranquil",
+            "mellow",
+            "zen",
         ],
         "fun": [
-            "funny", "playful", "silly", "energetic",
-            "curious", "spontaneous", "lively", "cheerful",
+            "funny",
+            "playful",
+            "silly",
+            "energetic",
+            "curious",
+            "spontaneous",
+            "lively",
+            "cheerful",
         ],
         "music": [
-            "jazz", "smooth jazz", "relaxing jazz", "ambient music",
-            "jazz instrumental", "coffee shop jazz", "lounge jazz", "soft jazz",
+            "jazz",
+            "smooth jazz",
+            "relaxing jazz",
+            "ambient music",
+            "jazz instrumental",
+            "coffee shop jazz",
+            "lounge jazz",
+            "soft jazz",
         ],
     },
     title_patterns={
@@ -90,10 +116,7 @@ PATA_JAZZ: ChannelConfig = ChannelConfig(
         "diversao": ["playful dog", "cat playing", "puppy playing", "dog relaxing"],
         "relax": ["sleepy cat", "sleepy dog", "cat relaxing", "dog relaxing"],
     },
-    hourly_mood={
-        h: ("diversao" if 6 <= h < 12 else "fofura" if 12 <= h < 18 else "relax")
-        for h in range(24)
-    },
+    hourly_mood={h: ("diversao" if 6 <= h < 12 else "fofura" if 12 <= h < 18 else "relax") for h in range(24)},
     default_description=(
         "Cute cats and dogs with relaxing jazz music - great "
         "background sound for calming an anxious pet, studying, working or sleeping."
@@ -117,21 +140,47 @@ PATA_LOFI: ChannelConfig = ChannelConfig(
     },
     seo_keywords={
         "cuteness": [
-            "cute", "adorable", "charming", "sweet",
-            "precious", "lovable", "gentle", "tender",
+            "cute",
+            "adorable",
+            "charming",
+            "sweet",
+            "precious",
+            "lovable",
+            "gentle",
+            "tender",
         ],
         "relaxation": [
-            "relaxing", "calm", "calming", "soothing", "peaceful",
-            "gentle", "cozy", "tranquil", "mellow", "zen",
+            "relaxing",
+            "calm",
+            "calming",
+            "soothing",
+            "peaceful",
+            "gentle",
+            "cozy",
+            "tranquil",
+            "mellow",
+            "zen",
         ],
         "fun": [
-            "funny", "playful", "silly", "energetic",
-            "curious", "spontaneous", "lively", "cheerful",
+            "funny",
+            "playful",
+            "silly",
+            "energetic",
+            "curious",
+            "spontaneous",
+            "lively",
+            "cheerful",
         ],
         "music": [
-            "lofi", "lofi hip hop", "lofi beats", "chill beats",
-            "study beats", "lofi instrumental", "lofi background music",
-            "chill lofi", "lofi chill",
+            "lofi",
+            "lofi hip hop",
+            "lofi beats",
+            "chill beats",
+            "study beats",
+            "lofi instrumental",
+            "lofi background music",
+            "chill lofi",
+            "lofi chill",
         ],
     },
     title_patterns={
@@ -149,10 +198,7 @@ PATA_LOFI: ChannelConfig = ChannelConfig(
         "diversao": ["playful dog", "cat playing", "puppy playing", "dog relaxing"],
         "relax": ["sleepy cat", "sleepy dog", "cat relaxing", "dog relaxing"],
     },
-    hourly_mood={
-        h: ("diversao" if 6 <= h < 12 else "fofura" if 12 <= h < 18 else "relax")
-        for h in range(24)
-    },
+    hourly_mood={h: ("diversao" if 6 <= h < 12 else "fofura" if 12 <= h < 18 else "relax") for h in range(24)},
     default_description=(
         "Cute cats and dogs with relaxing lofi hip hop beats - great "
         "background sound for studying, working, relaxing or sleeping."
@@ -176,21 +222,47 @@ PATA_CLASSICAL: ChannelConfig = ChannelConfig(
     },
     seo_keywords={
         "cuteness": [
-            "cute", "adorable", "charming", "sweet",
-            "precious", "lovable", "gentle", "tender",
+            "cute",
+            "adorable",
+            "charming",
+            "sweet",
+            "precious",
+            "lovable",
+            "gentle",
+            "tender",
         ],
         "relaxation": [
-            "relaxing", "calm", "calming", "soothing", "peaceful",
-            "gentle", "cozy", "tranquil", "mellow", "zen",
+            "relaxing",
+            "calm",
+            "calming",
+            "soothing",
+            "peaceful",
+            "gentle",
+            "cozy",
+            "tranquil",
+            "mellow",
+            "zen",
         ],
         "fun": [
-            "funny", "playful", "silly", "energetic",
-            "curious", "spontaneous", "lively", "cheerful",
+            "funny",
+            "playful",
+            "silly",
+            "energetic",
+            "curious",
+            "spontaneous",
+            "lively",
+            "cheerful",
         ],
         "music": [
-            "classical", "piano", "orchestra", "classical music",
-            "classical instrumental", "calm piano", "classical relaxation",
-            "soft classical", "piano background",
+            "classical",
+            "piano",
+            "orchestra",
+            "classical music",
+            "classical instrumental",
+            "calm piano",
+            "classical relaxation",
+            "soft classical",
+            "piano background",
         ],
     },
     title_patterns={
@@ -208,10 +280,7 @@ PATA_CLASSICAL: ChannelConfig = ChannelConfig(
         "diversao": ["playful dog", "cat playing", "puppy playing", "dog relaxing"],
         "relax": ["sleepy cat", "sleepy dog", "cat relaxing", "dog relaxing"],
     },
-    hourly_mood={
-        h: ("diversao" if 6 <= h < 12 else "fofura" if 12 <= h < 18 else "relax")
-        for h in range(24)
-    },
+    hourly_mood={h: ("diversao" if 6 <= h < 12 else "fofura" if 12 <= h < 18 else "relax") for h in range(24)},
     default_description=(
         "Cute cats and dogs with relaxing classical music - great "
         "background sound for calming an anxious pet, studying, working or sleeping."
@@ -247,6 +316,7 @@ def set_channel_from_env() -> None:
     Usado no startup dos scripts para suporte multi-canal via workflow.
     """
     import os
+
     channel = os.environ.get("YOUTUBE_CHANNEL", "").strip().lower()
     if channel:
         set_channel(channel)

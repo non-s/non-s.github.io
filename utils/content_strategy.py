@@ -50,8 +50,7 @@ SCENE_CATEGORIES: dict[str, list[str]] = {
 # Mapeamento de faixa horaria (BRT) -> mood
 # Manha = energia/diversao, Tarde = fofura, Noite/Madrugada = relax
 _HOURLY_MOOD: dict[int, str] = {
-    h: ("diversao" if 6 <= h < 12 else "fofura" if 12 <= h < 18 else "relax")
-    for h in range(24)
+    h: ("diversao" if 6 <= h < 12 else "fofura" if 12 <= h < 18 else "relax") for h in range(24)
 }
 
 
@@ -80,11 +79,11 @@ def mood_for_now() -> str:
 # a busca antecipada. None = sem sazonalidade ativa hoje.
 _SEASONAL_MOODS: list[tuple[int, int, int, int, str]] = [
     # (mes_inicio, dia_inicio, mes_fim, dia_fim, mood)
-    (12, 20, 12, 31, "relax"),      # Natal / festas de fim de ano
-    (1, 1, 1, 6, "relax"),          # Ano novo
-    (11, 20, 11, 30, "fofura"),     # Black Friday / Thanksgiving (fofura/volta as aulas EUA)
-    (2, 10, 2, 16, "diversao"),     # Valentines Day (energia/diversao)
-    (10, 28, 11, 3, "fofura"),      # Halloween
+    (12, 20, 12, 31, "relax"),  # Natal / festas de fim de ano
+    (1, 1, 1, 6, "relax"),  # Ano novo
+    (11, 20, 11, 30, "fofura"),  # Black Friday / Thanksgiving (fofura/volta as aulas EUA)
+    (2, 10, 2, 16, "diversao"),  # Valentines Day (energia/diversao)
+    (10, 28, 11, 3, "fofura"),  # Halloween
 ]
 
 

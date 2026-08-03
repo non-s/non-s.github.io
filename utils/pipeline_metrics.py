@@ -26,9 +26,7 @@ def _metrics_file() -> Path:
     return data_dir() / "pipeline_metrics.json"
 
 
-def record_pipeline_run(
-    stage: str, success: bool, duration_seconds: float = 0, kind: str = ""
-) -> None:
+def record_pipeline_run(stage: str, success: bool, duration_seconds: float = 0, kind: str = "") -> None:
     """Acrescenta uma entrada de metrica ao arquivo de metricas de pipeline.
 
     Args:
@@ -47,10 +45,7 @@ def record_pipeline_run(
     path = _metrics_file()
     with state_lock(path):
         try:
-            existing = (
-                json.loads(path.read_text(encoding="utf-8"))
-                if path.exists() else []
-            )
+            existing = json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
         except Exception:
             existing = []
         if not isinstance(existing, list):
@@ -89,10 +84,15 @@ def pipeline_summary() -> dict:
         stage = entry.get("stage", "")
         if not stage:
             continue
-        agg = stages.setdefault(stage, {
-            "runs": 0, "successes": 0, "failures": 0,
-            "total_duration": 0.0,
-        })
+        agg = stages.setdefault(
+            stage,
+            {
+                "runs": 0,
+                "successes": 0,
+                "failures": 0,
+                "total_duration": 0.0,
+            },
+        )
         agg["runs"] += 1
         if entry.get("success"):
             agg["successes"] += 1

@@ -3,6 +3,7 @@
 Cobre o treino com dados sintéticos, o fallback de média geral sem dados,
 a construção das features one-hot e a leitura do modelo salvo em disco.
 """
+
 import json
 import math
 from datetime import UTC, datetime, timedelta
@@ -28,13 +29,13 @@ def _write_analytics_with_tags(tmp_path, *, videos):
         for (vid, _scene, _pat, pub, views) in videos
     ]
     (tmp_path / "analytics.json").write_text(
-        json.dumps({"total_videos": len(all_videos), "total_views": sum(v[4] for v in videos),
-                    "all_videos": all_videos}),
+        json.dumps(
+            {"total_videos": len(all_videos), "total_views": sum(v[4] for v in videos), "all_videos": all_videos}
+        ),
         encoding="utf-8",
     )
     tags = {
-        vid: {"scene": scene, "title_pattern": pat, "uploaded_at": pub}
-        for (vid, scene, pat, pub, _views) in videos
+        vid: {"scene": scene, "title_pattern": pat, "uploaded_at": pub} for (vid, scene, pat, pub, _views) in videos
     }
     (tmp_path / "video_tags.json").write_text(json.dumps(tags), encoding="utf-8")
 
@@ -43,8 +44,7 @@ class TestFeaturizeOneHot:
     def test_one_hot_scene_and_title_pattern(self):
         scenes = ["cat", "dog"]
         patterns = ["pat-a", "pat-b"]
-        vec = pv._featurize("cat", "pat-a", hour=10, day_of_week=0,
-                            scenes=scenes, title_patterns=patterns)
+        vec = pv._featurize("cat", "pat-a", hour=10, day_of_week=0, scenes=scenes, title_patterns=patterns)
         # bias + (scenes-1) + (patterns-1) + hour + dow + dom + month +
         # scene_x_hour (scenes-1 * 2 buckets) = 1+1+1+1+1+1+1+1+2 = 9.
         # Primeira cena (cat) e primeiro padrão (pat-a) são a referência
@@ -69,8 +69,7 @@ class TestFeaturizeOneHot:
         assert vec[2] == 0.0  # pattern:pat-b (pat-a é referência)
 
     def test_hour_and_day_are_scalar(self):
-        vec = pv._featurize("cat", "pat", hour=23, day_of_week=6,
-                            scenes=["cat"], title_patterns=["pat"])
+        vec = pv._featurize("cat", "pat", hour=23, day_of_week=6, scenes=["cat"], title_patterns=["pat"])
         # bias + 0 scene + 0 pattern + hour + dow + dom + month + 0 scene_x_hour
         # = 1 + 4 escalares + 0 interacoes (1 cena = referencia).
         # Normalizados para [0,1]: hour=23 -> 1.0, dow=6 -> 1.0.
@@ -83,14 +82,12 @@ class TestFeaturizeOneHot:
         assert vec[1] == 1.0  # scene:dog
 
     def test_day_of_month_normalized(self):
-        vec = pv._featurize("cat", "pat", 0, 0, scenes=["cat"], title_patterns=["pat"],
-                            day_of_month=15, month=6)
+        vec = pv._featurize("cat", "pat", 0, 0, scenes=["cat"], title_patterns=["pat"], day_of_month=15, month=6)
         assert vec[-2] == 15.0 / 31.0
         assert vec[-1] == 6.0 / 12.0
 
     def test_month_normalized(self):
-        vec = pv._featurize("cat", "pat", 0, 0, scenes=["cat"], title_patterns=["pat"],
-                            day_of_month=1, month=12)
+        vec = pv._featurize("cat", "pat", 0, 0, scenes=["cat"], title_patterns=["pat"], day_of_month=1, month=12)
         assert vec[-1] == 12.0 / 12.0
 
     def test_scene_x_hour_interaction(self):
@@ -216,10 +213,16 @@ class TestTrainModelSynthetic:
     def test_predict_returns_overall_avg_when_model_empty(self, tmp_path, monkeypatch):
         _isolate(tmp_path, monkeypatch)
         # Modelo "vazio" salvo manualmente: n_samples=0, weights=[].
-        pv.save_model({
-            "features": [], "weights": [], "scenes": [], "title_patterns": [],
-            "overall_avg": 42.0, "n_samples": 0,
-        })
+        pv.save_model(
+            {
+                "features": [],
+                "weights": [],
+                "scenes": [],
+                "title_patterns": [],
+                "overall_avg": 42.0,
+                "n_samples": 0,
+            }
+        )
         assert pv.predict_views("cat", "pat", 10, 0) == 42.0
 
     def test_predict_returns_zero_when_no_model_file(self, tmp_path, monkeypatch):
@@ -266,14 +269,16 @@ class TestNewFeaturesAndBackwardCompat:
         # Modelo "antigo" com features legacy (bias + scene + pattern + hour + dow).
         old_features = ["bias", "scene:dog", "title_pattern:pat-b", "hour_of_day", "day_of_week"]
         old_weights = [10.0, 2.0, 1.0, 0.5, 0.1]
-        pv.save_model({
-            "features": old_features,
-            "weights": old_weights,
-            "scenes": ["cat", "dog"],
-            "title_patterns": ["pat-a", "pat-b"],
-            "overall_avg": 99.0,
-            "n_samples": 10,
-        })
+        pv.save_model(
+            {
+                "features": old_features,
+                "weights": old_weights,
+                "scenes": ["cat", "dog"],
+                "title_patterns": ["pat-a", "pat-b"],
+                "overall_avg": 99.0,
+                "n_samples": 10,
+            }
+        )
 
         # len(vec) novo > len(weights) antigo -> fallback overall_avg.
         pred = pv.predict_views("cat", "pat-a", 10, 0)
@@ -300,8 +305,7 @@ class TestNewFeaturesAndBackwardCompat:
 class TestNoDataFallback:
     def test_no_samples_returns_empty_model_with_zero_avg(self, tmp_path, monkeypatch):
         _isolate(tmp_path, monkeypatch)
-        (tmp_path / "analytics.json").write_text(
-            json.dumps({"total_videos": 0, "all_videos": []}), encoding="utf-8")
+        (tmp_path / "analytics.json").write_text(json.dumps({"total_videos": 0, "all_videos": []}), encoding="utf-8")
         (tmp_path / "video_tags.json").write_text("{}", encoding="utf-8")
 
         model = pv.train_model()
@@ -314,9 +318,11 @@ class TestNoDataFallback:
     def test_no_video_tags_returns_empty_model(self, tmp_path, monkeypatch):
         _isolate(tmp_path, monkeypatch)
         (tmp_path / "analytics.json").write_text(
-            json.dumps({"total_videos": 5, "all_videos": [
-                {"video_id": "v1", "views": 100, "published_at": "2025-01-01"}
-            ]}), encoding="utf-8")
+            json.dumps(
+                {"total_videos": 5, "all_videos": [{"video_id": "v1", "views": 100, "published_at": "2025-01-01"}]}
+            ),
+            encoding="utf-8",
+        )
         # video_tags.json ausente.
 
         model = pv.train_model()
@@ -455,8 +461,7 @@ class TestPredictViewsWithRealisticData:
         patterns = list(TITLE_PATTERNS["short"])
         for scene in scenes:
             for pat in patterns:
-                pred = pv.predict_views(scene, pat, hour=10, day_of_week=3,
-                                         day_of_month=15, month=6)
+                pred = pv.predict_views(scene, pat, hour=10, day_of_week=3, day_of_month=15, month=6)
                 assert math.isfinite(pred)
                 assert pred >= 0.0
 
@@ -480,10 +485,7 @@ class TestMain:
         _isolate(tmp_path, monkeypatch)
         monkeypatch.setattr(pv, "configure_logging", lambda: None)
         now = datetime.now(UTC)
-        vids = [
-            (f"vid{i}", "cat", "pat-a", (now - timedelta(days=100)).isoformat(), 100 + i)
-            for i in range(3)
-        ]
+        vids = [(f"vid{i}", "cat", "pat-a", (now - timedelta(days=100)).isoformat(), 100 + i) for i in range(3)]
         _write_analytics_with_tags(tmp_path, videos=vids)
 
         assert pv.main() == 0

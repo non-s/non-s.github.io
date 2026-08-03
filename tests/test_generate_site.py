@@ -9,7 +9,7 @@ import scripts.generate_site as site
 
 def _seed(tmp_path, monkeypatch, video_tags, analytics):
     monkeypatch.setattr(site, "data_dir", lambda: tmp_path)
-    monkeypatch.setattr(site, "SITE_DIR", tmp_path / "_site")
+    monkeypatch.setattr(site, "_site_dir", lambda: tmp_path / "_site" / "pata_jazz")
     (tmp_path / "video_tags.json").write_text(json.dumps(video_tags), encoding="utf-8")
     (tmp_path / "analytics.json").write_text(json.dumps(analytics), encoding="utf-8")
 
@@ -22,9 +22,14 @@ def _load_both(tmp_path):
 
 def _entry(**overrides):
     base = {
-        "video_id": "v1", "title": "T", "description": "D",
-        "published_at": "2026-07-01", "views": 10, "likes": 1,
-        "thumbnail": "https://t", "watch_url": "https://w",
+        "video_id": "v1",
+        "title": "T",
+        "description": "D",
+        "published_at": "2026-07-01",
+        "views": 10,
+        "likes": 1,
+        "thumbnail": "https://t",
+        "watch_url": "https://w",
     }
     base.update(overrides)
     return base
@@ -34,10 +39,15 @@ class TestBuildVideoEntries:
     def test_merges_tags_and_analytics(self, tmp_path, monkeypatch):
         video_tags = {"v1": {"scene": "cat", "description": "Cute cat napping."}}
         analytics = {
-            "all_videos": [{
-                "video_id": "v1", "title": "Cute Cat & Jazz", "views": 100,
-                "likes": 5, "published_at": "2026-07-01T00:00:00Z",
-            }]
+            "all_videos": [
+                {
+                    "video_id": "v1",
+                    "title": "Cute Cat & Jazz",
+                    "views": 100,
+                    "likes": 5,
+                    "published_at": "2026-07-01T00:00:00Z",
+                }
+            ]
         }
         _seed(tmp_path, monkeypatch, video_tags, analytics)
 
@@ -139,10 +149,15 @@ class TestGenerateSite:
     def test_generates_index_and_video_pages(self, tmp_path, monkeypatch):
         video_tags = {"v1": {"scene": "cat", "description": "Cute cat."}}
         analytics = {
-            "all_videos": [{
-                "video_id": "v1", "title": "Cat Jazz", "views": 10,
-                "likes": 1, "published_at": "2026-07-01T00:00:00Z",
-            }]
+            "all_videos": [
+                {
+                    "video_id": "v1",
+                    "title": "Cat Jazz",
+                    "views": 10,
+                    "likes": 1,
+                    "published_at": "2026-07-01T00:00:00Z",
+                }
+            ]
         }
         _seed(tmp_path, monkeypatch, video_tags, analytics)
 
@@ -150,7 +165,8 @@ class TestGenerateSite:
         assert index_path.exists()
         index_html = index_path.read_text(encoding="utf-8")
         assert "Cat Jazz" in index_html
-        video_page = (tmp_path / "_site" / "video_v1.html")
+
+        video_page = index_path.parent / "video_v1.html"
         assert video_page.exists()
         page_html = video_page.read_text(encoding="utf-8")
         assert "VideoObject" in page_html
@@ -165,7 +181,7 @@ class TestGenerateSite:
 
     def test_missing_files_generates_minimal_site(self, tmp_path, monkeypatch):
         monkeypatch.setattr(site, "data_dir", lambda: tmp_path)
-        monkeypatch.setattr(site, "SITE_DIR", tmp_path / "_site")
+        monkeypatch.setattr(site, "_site_dir", lambda: tmp_path / "_site" / "pata_jazz")
         index_path = site.generate_site()
         assert index_path.exists()
 
@@ -173,9 +189,10 @@ class TestGenerateSite:
 class TestMain:
     def test_main_writes_site(self, tmp_path, monkeypatch):
         _seed(
-            tmp_path, monkeypatch,
+            tmp_path,
+            monkeypatch,
             {"v1": {"scene": "cat"}},
             {"all_videos": [{"video_id": "v1", "title": "t", "views": 1}]},
         )
         assert site.main() == 0
-        assert (tmp_path / "_site" / "index.html").exists()
+        assert (tmp_path / "_site" / "pata_jazz" / "index.html").exists()

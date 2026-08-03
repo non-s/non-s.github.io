@@ -122,3 +122,33 @@ def test_retry_youtube_call_httperror_without_resp():
     with pytest.raises(HttpError):
         _retry_youtube_call(mock_func)
     assert mock_func.call_count == 1
+
+
+def test_infer_resource_method_inserts():
+    """Infer metodo insert a partir de POST /youtube/v3/videos."""
+    req = MagicMock()
+    req.uri = "https://www.googleapis.com/youtube/v3/videos?part=snippet"
+    req.method = "POST"
+    from utils.youtube_retry import _infer_resource_method
+
+    assert _infer_resource_method(req) == ("videos", "insert")
+
+
+def test_infer_resource_method_list():
+    """Infer metodo list a partir de GET /youtube/v3/playlists."""
+    req = MagicMock()
+    req.uri = "https://www.googleapis.com/youtube/v3/playlists?mine=true"
+    req.method = "GET"
+    from utils.youtube_retry import _infer_resource_method
+
+    assert _infer_resource_method(req) == ("playlists", "list")
+
+
+def test_infer_resource_method_unknown_uri():
+    """URIs fora do padrao YouTube retornam (None, None)."""
+    req = MagicMock()
+    req.uri = "https://example.com/foo"
+    req.method = "GET"
+    from utils.youtube_retry import _infer_resource_method
+
+    assert _infer_resource_method(req) == (None, None)

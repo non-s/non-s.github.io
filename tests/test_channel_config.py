@@ -5,6 +5,7 @@ troca o canal ativo (e rejeita nomes inexistentes), e que a backward
 compat com os modulos que leem active_channel esta mantida (random_scene
 sem arg continua funcionando).
 """
+
 from __future__ import annotations
 
 import pytest

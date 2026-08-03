@@ -116,12 +116,14 @@ def collect_video_stats(service) -> tuple[list[dict], dict]:
     while len(video_ids) < MAX_VIDEOS and pages < 20:
         pages += 1
         resp = _retry_youtube_call(
-            service.playlistItems().list(
+            service.playlistItems()
+            .list(
                 part="snippet",
                 playlistId=uploads_playlist,
                 maxResults=50,
                 pageToken=page_token,
-            ).execute
+            )
+            .execute
         )
         if not resp.get("items"):
             break
@@ -142,24 +144,28 @@ def collect_video_stats(service) -> tuple[list[dict], dict]:
     for i in range(0, len(video_ids), 50):
         batch = video_ids[i : i + 50]
         resp = _retry_youtube_call(
-            service.videos().list(
+            service.videos()
+            .list(
                 part="statistics,snippet,contentDetails",
                 id=",".join(batch),
-            ).execute
+            )
+            .execute
         )
         for item in resp.get("items", []):
             snippet = item.get("snippet", {})
             statistics = item.get("statistics", {})
             content = item.get("contentDetails", {})
-            stats.append({
-                "video_id": item["id"],
-                "title": snippet.get("title", ""),
-                "published_at": snippet.get("publishedAt", ""),
-                "duration": content.get("duration", ""),
-                "views": _to_int(statistics.get("viewCount")),
-                "likes": _to_int(statistics.get("likeCount")),
-                "comments": _to_int(statistics.get("commentCount")),
-            })
+            stats.append(
+                {
+                    "video_id": item["id"],
+                    "title": snippet.get("title", ""),
+                    "published_at": snippet.get("publishedAt", ""),
+                    "duration": content.get("duration", ""),
+                    "views": _to_int(statistics.get("viewCount")),
+                    "likes": _to_int(statistics.get("likeCount")),
+                    "comments": _to_int(statistics.get("commentCount")),
+                }
+            )
 
     return stats, channel_stats
 
@@ -192,10 +198,7 @@ def _collect_retention_metrics(service, video_ids: list[str]) -> dict:
     # (MAX_VIDEOS=50) sem inflar demais o numero de chamadas.
     end = datetime.now(UTC).date()
     start = end - timedelta(days=90)
-    _METRICS = (
-        "averageViewDuration,averageViewPercentage,ctr,"
-        "impressions,subscribersGained"
-    )
+    _METRICS = "averageViewDuration,averageViewPercentage,ctr,impressions,subscribersGained"
     _METRIC_KEYS = [
         "averageViewDuration",
         "averageViewPercentage",
@@ -207,20 +210,23 @@ def _collect_retention_metrics(service, video_ids: list[str]) -> dict:
     for vid in video_ids:
         try:
             resp = _retry_youtube_call(
-                service.reports().query(
+                service.reports()
+                .query(
                     ids="channel==mine",
                     startDate=start.isoformat(),
                     endDate=end.isoformat(),
                     metrics=_METRICS,
                     filters=f"video=={vid}",
-                ).execute
+                )
+                .execute
             )
         except Exception as exc:
             # 403 (scope ausente / canal inelegivel) ou outro erro da API -
             # Analytics nao esta disponivel para todos os canais; nao e fatal.
             log.warning(
                 "_collect_retention_metrics: Analytics indisponivel para %s: %s",
-                vid, exc,
+                vid,
+                exc,
             )
             continue
         rows = resp.get("rows", []) if isinstance(resp, dict) else []
@@ -356,15 +362,15 @@ def maybe_rotate_thumbnail(
     if not thumb_next.exists():
         log.warning(
             "maybe_rotate_thumbnail: variante %s ausente (%s) para %s",
-            next_variant, thumb_next, video_id,
+            next_variant,
+            thumb_next,
+            video_id,
         )
         return False
 
     try:
         _retry_youtube_call(
-            service.thumbnails().set(
-                videoId=video_id, media_body=MediaFileUpload(str(thumb_next))
-            ).execute
+            service.thumbnails().set(videoId=video_id, media_body=MediaFileUpload(str(thumb_next))).execute
         )
     except Exception as exc:
         log.warning("maybe_rotate_thumbnail: falha ao trocar thumbnail de %s: %s", video_id, exc)
@@ -372,8 +378,12 @@ def maybe_rotate_thumbnail(
 
     log.info(
         "Thumbnail de %s rotacionada %s->%s (views=%d < %.1f%% da mediana %.0f).",
-        video_id, current_variant, next_variant, views,
-        _THUMBNAIL_ROTATION_THRESHOLD * 100, median_views,
+        video_id,
+        current_variant,
+        next_variant,
+        views,
+        _THUMBNAIL_ROTATION_THRESHOLD * 100,
+        median_views,
     )
     video_tags_entry["thumbnail_variant"] = next_variant
     video_tags_entry["rotated_at"] = now.isoformat()
@@ -391,15 +401,20 @@ def _load_title_pattern_performance() -> dict[str, float]:
     try:
         return (
             json.loads(TITLE_PATTERN_PERFORMANCE_FILE.read_text(encoding="utf-8"))
-            if TITLE_PATTERN_PERFORMANCE_FILE.exists() else {}
+            if TITLE_PATTERN_PERFORMANCE_FILE.exists()
+            else {}
         )
     except Exception:
         return {}
 
 
 def _compute_weighted_performance(
-    stats: list[dict], video_tags: dict, tag_key: str,
-    min_samples: int, min_weight: float, max_weight: float,
+    stats: list[dict],
+    video_tags: dict,
+    tag_key: str,
+    min_samples: int,
+    min_weight: float,
+    max_weight: float,
 ) -> dict[str, float]:
     """Calcula um peso relativo por valor de tag_key (ex: 'scene' ou
     'title_pattern' em video_tags.json) a partir das views reais coletadas.
@@ -479,13 +494,20 @@ def _compute_title_pattern_performance(stats: list[dict], video_tags: dict) -> d
     reais coletadas (ver seo_keywords.pick_title_pattern). Generalizacao em
     _compute_weighted_performance."""
     return _compute_weighted_performance(
-        stats, video_tags, "title_pattern",
-        _MIN_TITLE_PATTERN_SAMPLES, _MIN_TITLE_PATTERN_WEIGHT, _MAX_TITLE_PATTERN_WEIGHT,
+        stats,
+        video_tags,
+        "title_pattern",
+        _MIN_TITLE_PATTERN_SAMPLES,
+        _MIN_TITLE_PATTERN_WEIGHT,
+        _MAX_TITLE_PATTERN_WEIGHT,
     )
 
 
 def detect_viral_videos(
-    stats: list[dict], video_tags: dict, *, threshold: float = _VIRAL_THRESHOLD,
+    stats: list[dict],
+    video_tags: dict,
+    *,
+    threshold: float = _VIRAL_THRESHOLD,
     now: datetime | None = None,
 ) -> list[dict]:
     """Detecta videos "virais": aqueles cujas views excedem `threshold` x a
@@ -517,14 +539,16 @@ def detect_viral_videos(
         if factor <= threshold:
             continue
         tag = video_tags.get(video["video_id"]) or {}
-        virals.append({
-            "video_id": video["video_id"],
-            "scene": tag.get("scene", "") if isinstance(tag, dict) else "",
-            "title_pattern": tag.get("title_pattern", "") if isinstance(tag, dict) else "",
-            "views": views,
-            "viral_factor": round(factor, 3),
-            "detected_at": now.isoformat(),
-        })
+        virals.append(
+            {
+                "video_id": video["video_id"],
+                "scene": tag.get("scene", "") if isinstance(tag, dict) else "",
+                "title_pattern": tag.get("title_pattern", "") if isinstance(tag, dict) else "",
+                "views": views,
+                "viral_factor": round(factor, 3),
+                "detected_at": now.isoformat(),
+            }
+        )
     return virals
 
 
@@ -587,10 +611,11 @@ def main(argv: list[str] | None = None) -> int:
 
     parser = argparse.ArgumentParser(description="Coleta analytics do canal Pata Jazz")
     parser.add_argument(
-        "--snapshot-only", action="store_true",
+        "--snapshot-only",
+        action="store_true",
         help="Modo leve diario: coleta so stats + channel stats e grava o "
-             "historico. Pula a computacao pesada de cena/title_pattern e a "
-             "rotacao de thumbnails (~2 min em vez de ~10).",
+        "historico. Pula a computacao pesada de cena/title_pattern e a "
+        "rotacao de thumbnails (~2 min em vez de ~10).",
     )
     args = parser.parse_args(argv)
 
@@ -653,8 +678,9 @@ def main(argv: list[str] | None = None) -> int:
     # thumbnails - rodando diariamente (06:00 UTC) alimenta um historico
     # mais fino pro predict_views sem gastar quota nem tempo de CI.
     if args.snapshot_only:
-        log.info("Modo snapshot-only: pulando computacao de cena/title_pattern, "
-                 "deteccao de virais e rotacao de thumbnails.")
+        log.info(
+            "Modo snapshot-only: pulando computacao de cena/title_pattern, deteccao de virais e rotacao de thumbnails."
+        )
         return 0
 
     scene_weights = _compute_scene_performance(stats, video_tags)
@@ -693,9 +719,7 @@ def main(argv: list[str] | None = None) -> int:
             report["all_videos"] = stats
             report["top_10"] = stats[:10]
             report["bottom_10"] = stats[-10:] if len(stats) > 10 else []
-            out_path.write_text(
-                json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
-            )
+            out_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
 
     # Detecao de virais: apos computar performance por cena/title_pattern,
     # identifica videos cujas views excedem _VIRAL_THRESHOLD x a mediana e
@@ -789,7 +813,8 @@ def _update_title_pattern_performance(title_pattern_weights: dict[str, float]) -
             )
             log.info(
                 "Performance por padrao de titulo atualizada: %s (%d padroes)",
-                TITLE_PATTERN_PERFORMANCE_FILE, len(merged),
+                TITLE_PATTERN_PERFORMANCE_FILE,
+                len(merged),
             )
         except Exception as exc:
             log.warning("Falha ao salvar performance por padrao de titulo: %s", exc)

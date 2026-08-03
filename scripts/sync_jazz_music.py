@@ -82,9 +82,7 @@ def _music_descriptors() -> tuple[str, ...]:
 
 
 def _is_jazz(hit: dict) -> bool:
-    text = " ".join(
-        str(hit.get(k, "")) for k in ["name", "artist_name", "album_name", "tags", "musicinfo"]
-    ).lower()
+    text = " ".join(str(hit.get(k, "")) for k in ["name", "artist_name", "album_name", "tags", "musicinfo"]).lower()
     return any(descriptor in text for descriptor in _music_descriptors())
 
 
@@ -104,7 +102,7 @@ def _download(url: str, dest: Path) -> bool:
             if attempt < 2:
                 import time
 
-                time.sleep(2 ** attempt)
+                time.sleep(2**attempt)
     return False
 
 
@@ -170,14 +168,16 @@ def main() -> int:
     if existing >= MAX_POOL_SIZE:
         rotate_count = max(1, int(MAX_POOL_SIZE * _POOL_ROTATION_FRACTION))
         evicted = _evict_oldest(AUDIO_DIR, "*.mp3", rotate_count)
-        log.info("Pool de audio cheio (%d faixas) - rotacionadas %d mais antigas para abrir espaco.",
-                  existing, evicted)
+        log.info("Pool de audio cheio (%d faixas) - rotacionadas %d mais antigas para abrir espaco.", existing, evicted)
 
     total = 0
     current_count = len(list(AUDIO_DIR.glob("*.mp3")))
     search_terms = JAMENDO_SEARCH_TERMS
-    log.info("Sync de audio para canal=%s com %d termos de busca.",
-             os.environ.get("YOUTUBE_CHANNEL", "pata_jazz"), len(search_terms))
+    log.info(
+        "Sync de audio para canal=%s com %d termos de busca.",
+        os.environ.get("YOUTUBE_CHANNEL", "pata_jazz"),
+        len(search_terms),
+    )
     for term in search_terms:
         if current_count >= MAX_POOL_SIZE:
             break

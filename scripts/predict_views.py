@@ -120,15 +120,17 @@ def _collect_training_samples() -> list[dict]:
         if views_at_day7 <= 0:
             continue
 
-        samples.append({
-            "scene": scene,
-            "title_pattern": title_pattern,
-            "hour_of_day": published.hour,
-            "day_of_week": published.weekday(),
-            "day_of_month": published.day,
-            "month": published.month,
-            "y": views_at_day7,
-        })
+        samples.append(
+            {
+                "scene": scene,
+                "title_pattern": title_pattern,
+                "hour_of_day": published.hour,
+                "day_of_week": published.weekday(),
+                "day_of_month": published.day,
+                "month": published.month,
+                "y": views_at_day7,
+            }
+        )
     return samples
 
 
@@ -182,8 +184,12 @@ def _hour_bucket(hour: int) -> str:
 
 
 def _featurize(
-    scene: str, title_pattern: str, hour: int, day_of_week: int,
-    scenes: list[str], title_patterns: list[str],
+    scene: str,
+    title_pattern: str,
+    hour: int,
+    day_of_week: int,
+    scenes: list[str],
+    title_patterns: list[str],
     *,
     day_of_month: int = 1,
     month: int = 1,
@@ -309,8 +315,12 @@ def train_model() -> dict:
     scenes, title_patterns = _build_vocab(samples)
     X = [
         _featurize(
-            s["scene"], s["title_pattern"], s["hour_of_day"], s["day_of_week"],
-            scenes, title_patterns,
+            s["scene"],
+            s["title_pattern"],
+            s["hour_of_day"],
+            s["day_of_week"],
+            scenes,
+            title_patterns,
             day_of_month=s.get("day_of_month", 1),
             month=s.get("month", 1),
         )
@@ -358,7 +368,10 @@ def load_model() -> dict:
 
 
 def predict_views(
-    scene: str, title_pattern: str, hour: int, day_of_week: int,
+    scene: str,
+    title_pattern: str,
+    hour: int,
+    day_of_week: int,
     *,
     day_of_month: int | None = None,
     month: int | None = None,
@@ -386,8 +399,14 @@ def predict_views(
     scenes = model.get("scenes", [])
     title_patterns = model.get("title_patterns", [])
     vec = _featurize(
-        scene, title_pattern, hour, day_of_week, scenes, title_patterns,
-        day_of_month=day_of_month, month=month,
+        scene,
+        title_pattern,
+        hour,
+        day_of_week,
+        scenes,
+        title_patterns,
+        day_of_month=day_of_month,
+        month=month,
     )
     if len(vec) != len(weights):
         # Vocabulário mudou desde o treino (ou modelo antigo sem as novas
@@ -434,8 +453,9 @@ def next_cron_slots(now: datetime | None = None, n: int = 4) -> list[tuple[int, 
     result: list[tuple[int, int]] = []
     day_offset = 0
     while len(result) < n and day_offset < 14:
-        base = (now.replace(hour=0, minute=0, second=0, microsecond=0))
+        base = now.replace(hour=0, minute=0, second=0, microsecond=0)
         from datetime import timedelta
+
         base = base + timedelta(days=day_offset)
         for h in SHORTS_CRON_HOURS_UTC:
             slot_dt = base.replace(hour=h)

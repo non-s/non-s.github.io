@@ -130,11 +130,13 @@ class TestDeleteVideos:
     def test_continues_after_single_failure(self):
         service = MagicMock()
         videos = [{"id": "v1", "snippet": {}}, {"id": "v2", "snippet": {}}]
-        with patch("scripts.cleanup_youtube.time.sleep"), \
-             patch(
-                 "scripts.cleanup_youtube._retry_youtube_call",
-                 side_effect=[RuntimeError("api down"), {"id": "v2"}],
-             ):
+        with (
+            patch("scripts.cleanup_youtube.time.sleep"),
+            patch(
+                "scripts.cleanup_youtube._retry_youtube_call",
+                side_effect=[RuntimeError("api down"), {"id": "v2"}],
+            ),
+        ):
             deleted = cleanup_youtube.delete_videos(service, videos, dry_run=False)
         assert deleted == 1
 
@@ -169,8 +171,10 @@ class TestMain:
             "items": [{"id": "horiz1", "snippet": {"title": "Old"}, "contentDetails": {"duration": "PT5M0S"}}]
         }
 
-        with patch("scripts.cleanup_youtube.get_youtube_service", return_value=service), \
-             patch("scripts.cleanup_youtube.time.sleep"):
+        with (
+            patch("scripts.cleanup_youtube.get_youtube_service", return_value=service),
+            patch("scripts.cleanup_youtube.time.sleep"),
+        ):
             code = cleanup_youtube.main(["--dry-run", "false"])
 
         assert code == 0

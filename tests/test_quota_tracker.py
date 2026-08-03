@@ -196,3 +196,22 @@ def test_reset_today_clears_count(tmp_path: Path, monkeypatch):
     assert quota_tracker.daily_total(file=f) == 1600
     quota_tracker.reset_today(file=f)
     assert quota_tracker.daily_total(file=f) == 0
+
+
+def test_load_corrupted_file(tmp_path: Path, monkeypatch):
+    """Arquivo corrompido retorna dict vazio."""
+    f = tmp_path / "quota_usage.json"
+    f.write_text("not json", encoding="utf-8")
+    monkeypatch.setattr(quota_tracker, "QUOTA_FILE", f)
+    data = quota_tracker._load(file=f)
+    assert data == {}
+
+
+def test_quota_file_proxy(monkeypatch):
+    """Proxy QUOTA_FILE delega para _quota_file() e se comporta como Path."""
+    from utils.paths import data_dir
+
+    assert str(quota_tracker.QUOTA_FILE).endswith("quota_usage.json")
+    assert quota_tracker.QUOTA_FILE.name == "quota_usage.json"
+    assert "quota_usage.json" in repr(quota_tracker.QUOTA_FILE)
+    assert (quota_tracker.QUOTA_FILE.parent / "x").parent == data_dir()

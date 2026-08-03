@@ -142,12 +142,14 @@ def record_usage(resource: str, method: str, units: int | None = None, *, file: 
         today = _today()
         day_entry = data.setdefault(today, {"total": 0, "calls": []})
         day_entry["total"] = day_entry.get("total", 0) + units
-        day_entry.setdefault("calls", []).append({
-            "resource": resource,
-            "method": method,
-            "units": units,
-            "at": datetime.now(UTC).isoformat(),
-        })
+        day_entry.setdefault("calls", []).append(
+            {
+                "resource": resource,
+                "method": method,
+                "units": units,
+                "at": datetime.now(UTC).isoformat(),
+            }
+        )
         # Mantem so os ultimos 14 dias (evita crescimento ilimitado do arquivo).
         keys = sorted(data.keys())
         for old in keys[:-14]:
@@ -162,7 +164,9 @@ def record_usage(resource: str, method: str, units: int | None = None, *, file: 
         if total >= ALERT_THRESHOLD and total - units < ALERT_THRESHOLD:
             log.warning(
                 "ALERTA de quota: %d unidades usadas hoje (limite diario=%d, alerta em %d).",
-                total, DAILY_LIMIT, ALERT_THRESHOLD,
+                total,
+                DAILY_LIMIT,
+                ALERT_THRESHOLD,
             )
             notifier.send_alert(
                 f"YouTube API quota at {total} units (threshold {ALERT_THRESHOLD})",

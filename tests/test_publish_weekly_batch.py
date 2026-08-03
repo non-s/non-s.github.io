@@ -176,8 +176,10 @@ class TestPublishVideoMediaBranches:
         thumb.write_bytes(b"png")
         meta = {"title": "T", "_meta_dir": str(tmp_path), "thumbnail": "thumb.png"}
 
-        with patch("utils.playlist_manager.add_video_to_playlist"), \
-             patch("scripts.publish_weekly_batch._meta_path", return_value=thumb):
+        with (
+            patch("utils.playlist_manager.add_video_to_playlist"),
+            patch("scripts.publish_weekly_batch._meta_path", return_value=thumb),
+        ):
             publish_weekly_batch._publish_video(service, video_path, meta)
 
         service.thumbnails().set.assert_called_once()
@@ -192,9 +194,11 @@ class TestPublishVideoMediaBranches:
         thumb = tmp_path / "thumb.png"
         thumb.write_bytes(b"png")
 
-        with patch("utils.playlist_manager.add_video_to_playlist"), \
-             patch("scripts.publish_weekly_batch._meta_path", return_value=thumb), \
-             caplog.at_level("WARNING"):
+        with (
+            patch("utils.playlist_manager.add_video_to_playlist"),
+            patch("scripts.publish_weekly_batch._meta_path", return_value=thumb),
+            caplog.at_level("WARNING"),
+        ):
             result = publish_weekly_batch._publish_video(service, video_path, {"title": "T"})
 
         assert result == "vid1"
@@ -209,8 +213,10 @@ class TestPublishVideoMediaBranches:
         caption = tmp_path / "cap.vtt"
         caption.write_text("WEBVTT\n", encoding="utf-8")
 
-        with patch("utils.playlist_manager.add_video_to_playlist"), \
-             patch("utils.youtube_post_upload._meta_path", return_value=caption):
+        with (
+            patch("utils.playlist_manager.add_video_to_playlist"),
+            patch("utils.youtube_post_upload._meta_path", return_value=caption),
+        ):
             publish_weekly_batch._publish_video(service, video_path, {"title": "T"})
 
         service.captions().insert.assert_called_once()
@@ -224,8 +230,10 @@ class TestPublishVideoMediaBranches:
         caption = tmp_path / "cap.ass"
         caption.write_text("[Events]\n", encoding="utf-8")
 
-        with patch("utils.playlist_manager.add_video_to_playlist"), \
-             patch("utils.youtube_post_upload._meta_path", return_value=caption):
+        with (
+            patch("utils.playlist_manager.add_video_to_playlist"),
+            patch("utils.youtube_post_upload._meta_path", return_value=caption),
+        ):
             publish_weekly_batch._publish_video(service, video_path, {"title": "T"})
 
         service.captions().insert.assert_called_once()
@@ -240,9 +248,11 @@ class TestPublishVideoMediaBranches:
         caption = tmp_path / "cap.srt"
         caption.write_text("1\n", encoding="utf-8")
 
-        with patch("utils.playlist_manager.add_video_to_playlist"), \
-             patch("utils.youtube_post_upload._meta_path", return_value=caption), \
-             caplog.at_level("WARNING"):
+        with (
+            patch("utils.playlist_manager.add_video_to_playlist"),
+            patch("utils.youtube_post_upload._meta_path", return_value=caption),
+            caplog.at_level("WARNING"),
+        ):
             result = publish_weekly_batch._publish_video(service, video_path, {"title": "T"})
 
         assert result == "vid1"
@@ -255,8 +265,10 @@ class TestPublishVideoMediaBranches:
         video_path = tmp_path / "v.mp4"
         video_path.write_bytes(b"x")
 
-        with patch("utils.youtube_post_upload.add_video_to_playlist", side_effect=Exception("pl boom")), \
-             caplog.at_level("WARNING"):
+        with (
+            patch("utils.youtube_post_upload.add_video_to_playlist", side_effect=Exception("pl boom")),
+            caplog.at_level("WARNING"),
+        ):
             result = publish_weekly_batch._publish_video(service, video_path, {"title": "T", "mood": "relax"})
 
         assert result == "vid1"
@@ -266,8 +278,7 @@ class TestPublishVideoMediaBranches:
 class TestMain:
     def test_no_service_returns_1(self, monkeypatch):
         monkeypatch.setattr(publish_weekly_batch, "configure_logging", lambda: None)
-        monkeypatch.setattr(publish_weekly_batch, "get_youtube_service",
-                            MagicMock(side_effect=Exception("auth boom")))
+        monkeypatch.setattr(publish_weekly_batch, "get_youtube_service", MagicMock(side_effect=Exception("auth boom")))
         assert publish_weekly_batch.main() == 1
 
     def test_no_unpublished_returns_0(self, tmp_path, monkeypatch):
@@ -308,8 +319,7 @@ class TestMain:
         monkeypatch.setattr(publish_weekly_batch, "OUTPUT_DIR", tmp_path)
         monkeypatch.setattr(publish_weekly_batch.time, "sleep", lambda s: None)
         vp = _write_video(tmp_path, "pata_jazz_short_1", {"title": "A"})
-        monkeypatch.setattr(publish_weekly_batch, "_publish_video",
-                            MagicMock(side_effect=RuntimeError("boom")))
+        monkeypatch.setattr(publish_weekly_batch, "_publish_video", MagicMock(side_effect=RuntimeError("boom")))
         monkeypatch.setattr(publish_weekly_batch, "log_exception_to_file", lambda *a, **k: None)
         assert publish_weekly_batch.main() == 0
         saved = json.loads(vp.with_suffix(".json").read_text(encoding="utf-8"))
@@ -317,6 +327,9 @@ class TestMain:
 
     def test_skips_videos_at_max_attempts(self, tmp_path, monkeypatch):
         monkeypatch.setattr(publish_weekly_batch, "OUTPUT_DIR", tmp_path)
-        _write_video(tmp_path, "pata_jazz_short_1",
-                     {"title": "A", "publish_attempts": publish_weekly_batch._MAX_PUBLISH_ATTEMPTS})
+        _write_video(
+            tmp_path,
+            "pata_jazz_short_1",
+            {"title": "A", "publish_attempts": publish_weekly_batch._MAX_PUBLISH_ATTEMPTS},
+        )
         assert publish_weekly_batch._find_unpublished_videos() == []

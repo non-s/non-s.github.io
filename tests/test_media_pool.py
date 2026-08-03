@@ -270,6 +270,7 @@ class TestAvoidRecent:
 
     def test_pick_audio_avoids_last_used_track(self):
         import random as _random
+
         _random.seed(42)
         pool = [Path(f"/fake/audio{i}.mp3") for i in range(3)]
         with patch("utils.media_pool.audio_pool", return_value=pool):

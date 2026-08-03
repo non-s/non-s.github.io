@@ -6,6 +6,7 @@ canal de producao). O video e criado com FFmpeg (1s, frame preto + silencio),
 subido como private (prefix="test_" para nao colidir com o prefixo de
 producao "pata_jazz_"), e apagado logo apos para nao deixar sujo no canal.
 """
+
 from __future__ import annotations
 
 import json
@@ -24,11 +25,25 @@ def _make_test_video(out_dir: Path) -> tuple[Path, dict]:
     """Gera um MP4 de 1s (frame preto + silencio) e a metadata minima."""
     video = out_dir / "test_integration_upload.mp4"
     cmd = [
-        "ffmpeg", "-y",
-        "-f", "lavfi", "-i", "color=c=black:s=320x240:d=1",
-        "-f", "lavfi", "-i", "anullsrc=channel_layout=stereo:sample_rate=44100",
-        "-c:v", "libx264", "-pix_fmt", "yuv420p", "-t", "1",
-        "-c:a", "aac", "-shortest",
+        "ffmpeg",
+        "-y",
+        "-f",
+        "lavfi",
+        "-i",
+        "color=c=black:s=320x240:d=1",
+        "-f",
+        "lavfi",
+        "-i",
+        "anullsrc=channel_layout=stereo:sample_rate=44100",
+        "-c:v",
+        "libx264",
+        "-pix_fmt",
+        "yuv420p",
+        "-t",
+        "1",
+        "-c:a",
+        "aac",
+        "-shortest",
         str(video),
     ]
     subprocess.run(cmd, check=True, capture_output=True)
@@ -66,6 +81,7 @@ def test_upload_and_delete_real_video(monkeypatch, tmp_path):
 
     try:
         from utils.youtube_oauth import get_youtube_service
+
         service = get_youtube_service()
         service.videos().delete(id=video_id).execute()
     except Exception:
@@ -96,13 +112,18 @@ def _fake_subprocess_run(cmd, *args, **kwargs):
         if "stream=" in entries:
             streams = [
                 {
-                    "codec_type": "video", "codec_name": "h264",
-                    "width": 1080, "height": 1920, "bit_rate": 500000,
+                    "codec_type": "video",
+                    "codec_name": "h264",
+                    "width": 1080,
+                    "height": 1920,
+                    "bit_rate": 500000,
                     "duration": "35.0",
                 },
                 {
-                    "codec_type": "audio", "codec_name": "aac",
-                    "bit_rate": 192000, "duration": "35.0",
+                    "codec_type": "audio",
+                    "codec_name": "aac",
+                    "bit_rate": 192000,
+                    "duration": "35.0",
                 },
             ]
             stdout = json.dumps({"streams": streams})
@@ -131,27 +152,29 @@ class TestFullPipelineShort:
 
         service = MagicMock()
         service.videos().insert().execute.return_value = {
-            "id": "vid-pipeline", "status": {"privacyStatus": "public"},
+            "id": "vid-pipeline",
+            "status": {"privacyStatus": "public"},
         }
 
-        with patch("generate_pata_jazz_short.mood_for_now", return_value="relax"), \
-             patch("generate_pata_jazz_short.scene_for_mood", return_value="sleepy cat"), \
-             patch("generate_pata_jazz_short.optimized_scene_and_pattern",
-                   return_value=("sleepy cat", "")), \
-             patch("generate_pata_jazz_short.build_pata_jazz_video") as mock_build_dry:
+        with (
+            patch("generate_pata_jazz_short.mood_for_now", return_value="relax"),
+            patch("generate_pata_jazz_short.scene_for_mood", return_value="sleepy cat"),
+            patch("generate_pata_jazz_short.optimized_scene_and_pattern", return_value=("sleepy cat", "")),
+            patch("generate_pata_jazz_short.build_pata_jazz_video") as mock_build_dry,
+        ):
             mock_build_dry.return_value = Path("fake-dry.mp4")
             dry_path = gen_short._generate_short(duration=35, dry_run=True)
             assert dry_path == Path("fake-dry.mp4")
 
-        with patch("utils.ffmpeg_helpers.subprocess.run", side_effect=_fake_subprocess_run), \
-             patch("utils.video_validator.subprocess.run", side_effect=_fake_subprocess_run), \
-             patch("utils.thumbnail_engine.subprocess.run", side_effect=_fake_subprocess_run), \
-             patch("utils.video_builder.ensure_dirs"), \
-             patch("utils.video_builder.pool_stats",
-                   return_value={"videos": 3, "audio": 2}), \
-             patch("utils.video_builder.pick_videos",
-                   return_value=[Path("v0.mp4"), Path("v1.mp4"), Path("v2.mp4")]), \
-             patch("utils.video_builder.pick_audio", return_value=Path("audio.mp3")):
+        with (
+            patch("utils.ffmpeg_helpers.subprocess.run", side_effect=_fake_subprocess_run),
+            patch("utils.video_validator.subprocess.run", side_effect=_fake_subprocess_run),
+            patch("utils.thumbnail_engine.subprocess.run", side_effect=_fake_subprocess_run),
+            patch("utils.video_builder.ensure_dirs"),
+            patch("utils.video_builder.pool_stats", return_value={"videos": 3, "audio": 2}),
+            patch("utils.video_builder.pick_videos", return_value=[Path("v0.mp4"), Path("v1.mp4"), Path("v2.mp4")]),
+            patch("utils.video_builder.pick_audio", return_value=Path("audio.mp3")),
+        ):
             spec = short_spec(duration=35, scene="sleepy cat", mood="relax")
             output = build_pata_jazz_video(
                 spec=spec,
@@ -166,9 +189,19 @@ class TestFullPipelineShort:
         assert meta_path.exists()
         meta = json.loads(meta_path.read_text(encoding="utf-8"))
 
-        for field in ("title", "description", "hashtags", "scene", "hook",
-                      "kind", "thumbnail", "caption", "caption_pt",
-                      "chapters", "cta"):
+        for field in (
+            "title",
+            "description",
+            "hashtags",
+            "scene",
+            "hook",
+            "kind",
+            "thumbnail",
+            "caption",
+            "caption_pt",
+            "chapters",
+            "cta",
+        ):
             assert field in meta, f"campo '{field}' ausente da metadata"
         assert meta["scene"] == "sleepy cat"
         assert meta["kind"] == "short"
@@ -180,10 +213,16 @@ class TestFullPipelineShort:
         assert "Intro" in meta["chapters"]
         assert meta["cta"]
 
-        with patch("utils.ffmpeg_helpers.subprocess.run", side_effect=_fake_subprocess_run), \
-             patch("utils.video_validator.subprocess.run", side_effect=_fake_subprocess_run):
+        with (
+            patch("utils.ffmpeg_helpers.subprocess.run", side_effect=_fake_subprocess_run),
+            patch("utils.video_validator.subprocess.run", side_effect=_fake_subprocess_run),
+        ):
             from utils.video_validator import validate_generated_video
+
             validation = validate_generated_video(
-                output, meta["resolution"], spec.duration, expect_audio=True,
+                output,
+                meta["resolution"],
+                spec.duration,
+                expect_audio=True,
             )
         assert validation.ok, f"validacao falhou: {validation.errors}"

@@ -41,8 +41,13 @@ class _ThumbnailMaker(Protocol):
     tres variantes para A/B/C testing."""
 
     def __call__(
-        self, hook: str, emoji: str, output: Path, *,
-        video_path: Path | None = None, variant: str = "A",
+        self,
+        hook: str,
+        emoji: str,
+        output: Path,
+        *,
+        video_path: Path | None = None,
+        variant: str = "A",
     ) -> None: ...
 
 
@@ -139,9 +144,7 @@ def _build_endcard_filter(height: int, duration: int) -> str:
     start = float(duration) - _ENDCARD_SECONDS
     fade = 0.25
     # Fade-in curto ao entrar; sem fade-out (o vídeo acaba logo depois).
-    alpha_expr = (
-        f"if(lt(t,{start + fade}),(t-{start})/{fade},1)"
-    )
+    alpha_expr = f"if(lt(t,{start + fade}),(t-{start})/{fade},1)"
     y_pos = height - 300
     return (
         f"drawtext=text='{safe}'"
@@ -192,15 +195,24 @@ def _build_single_clip_video(
     if spec.duration > _ENDCARD_SECONDS:
         vf = f"{vf},{_build_endcard_filter(spec.height, spec.duration)}"
     output_args: list[str] = [
-        "-map", "0:v:0",
-        "-vf", vf,
-        "-c:v", "libx264",
-        "-preset", "fast",
-        "-crf", "23",
-        "-t", str(spec.duration),
-        "-r", "30",
-        "-pix_fmt", "yuv420p",
-        "-movflags", "+faststart",
+        "-map",
+        "0:v:0",
+        "-vf",
+        vf,
+        "-c:v",
+        "libx264",
+        "-preset",
+        "fast",
+        "-crf",
+        "23",
+        "-t",
+        str(spec.duration),
+        "-r",
+        "30",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
     ]
     if audio_path:
         inputs += ["-stream_loop", "-1", "-i", str(audio_path)]
@@ -209,8 +221,17 @@ def _build_single_clip_video(
 
 
 _XFADE_TRANSITIONS = [
-    "fade", "dissolve", "smoothleft", "smoothright", "smoothup", "smoothdown",
-    "circleopen", "circleclose", "radial", "diagtl", "diagbr",
+    "fade",
+    "dissolve",
+    "smoothleft",
+    "smoothright",
+    "smoothup",
+    "smoothdown",
+    "circleopen",
+    "circleclose",
+    "radial",
+    "diagtl",
+    "diagbr",
 ]
 
 
@@ -250,14 +271,28 @@ def _build_multi_clip_short(
     try:
         for i, v in enumerate(selected):
             proc = output.parent / f"{output.stem}_clip_{i}.mp4"
-            run_ffmpeg([
-                "-i", str(v),
-                "-vf", _build_video_filter(spec),
-                "-c:v", "libx264", "-preset", "fast", "-crf", "23",
-                "-t", str(per_clip), "-r", "30",
-                "-pix_fmt", "yuv420p", "-an",
-                str(proc),
-            ])
+            run_ffmpeg(
+                [
+                    "-i",
+                    str(v),
+                    "-vf",
+                    _build_video_filter(spec),
+                    "-c:v",
+                    "libx264",
+                    "-preset",
+                    "fast",
+                    "-crf",
+                    "23",
+                    "-t",
+                    str(per_clip),
+                    "-r",
+                    "30",
+                    "-pix_fmt",
+                    "yuv420p",
+                    "-an",
+                    str(proc),
+                ]
+            )
             processed.append(proc)
 
         # Monta filter complex com xfade
@@ -282,17 +317,13 @@ def _build_multi_clip_short(
         # Adiciona overlay de texto (hook) no resultado do xfade
         if hook:
             overlay_label = "vtxt"
-            filter_parts.append(
-                f"[{prev_label}]{_build_overlay_filter(hook, spec.height)}[{overlay_label}]"
-            )
+            filter_parts.append(f"[{prev_label}]{_build_overlay_filter(hook, spec.height)}[{overlay_label}]")
             prev_label = overlay_label
 
         # End-card CTA no fim do vídeo (session/loop)
         if spec.duration > _ENDCARD_SECONDS:
             endcard_label = "vend"
-            filter_parts.append(
-                f"[{prev_label}]{_build_endcard_filter(spec.height, spec.duration)}[{endcard_label}]"
-            )
+            filter_parts.append(f"[{prev_label}]{_build_endcard_filter(spec.height, spec.duration)}[{endcard_label}]")
             prev_label = endcard_label
 
         inputs: list[str] = []
@@ -307,11 +338,22 @@ def _build_multi_clip_short(
 
         final_label = prev_label
         cmd_args = inputs + [
-            "-filter_complex", ";".join(filter_parts),
-            "-map", f"[{final_label}]",
-            "-c:v", "libx264", "-preset", "fast", "-crf", "23",
-            "-pix_fmt", "yuv420p", "-r", "30",
-            "-movflags", "+faststart",
+            "-filter_complex",
+            ";".join(filter_parts),
+            "-map",
+            f"[{final_label}]",
+            "-c:v",
+            "libx264",
+            "-preset",
+            "fast",
+            "-crf",
+            "23",
+            "-pix_fmt",
+            "yuv420p",
+            "-r",
+            "30",
+            "-movflags",
+            "+faststart",
         ]
 
         if audio_path:
@@ -363,14 +405,30 @@ def _build_loop_relax_video(
     try:
         for i, v in enumerate(selected):
             proc = output.parent / f"{output.stem}_clip_{i}.mp4"
-            run_ffmpeg([
-                "-stream_loop", "-1", "-i", str(v),
-                "-vf", _build_video_filter(spec),
-                "-c:v", "libx264", "-preset", "fast", "-crf", "23",
-                "-t", str(per_clip), "-r", "30",
-                "-pix_fmt", "yuv420p", "-an",
-                str(proc),
-            ])
+            run_ffmpeg(
+                [
+                    "-stream_loop",
+                    "-1",
+                    "-i",
+                    str(v),
+                    "-vf",
+                    _build_video_filter(spec),
+                    "-c:v",
+                    "libx264",
+                    "-preset",
+                    "fast",
+                    "-crf",
+                    "23",
+                    "-t",
+                    str(per_clip),
+                    "-r",
+                    "30",
+                    "-pix_fmt",
+                    "yuv420p",
+                    "-an",
+                    str(proc),
+                ]
+            )
             processed.append(proc)
 
         if n_clips == 1:
@@ -390,16 +448,12 @@ def _build_loop_relax_video(
 
         if hook:
             overlay_label = "vtxt"
-            filter_parts.append(
-                f"[{prev_label}]{_build_overlay_filter(hook, spec.height)}[{overlay_label}]"
-            )
+            filter_parts.append(f"[{prev_label}]{_build_overlay_filter(hook, spec.height)}[{overlay_label}]")
             prev_label = overlay_label
 
         if spec.duration > _ENDCARD_SECONDS:
             endcard_label = "vend"
-            filter_parts.append(
-                f"[{prev_label}]{_build_endcard_filter(spec.height, spec.duration)}[{endcard_label}]"
-            )
+            filter_parts.append(f"[{prev_label}]{_build_endcard_filter(spec.height, spec.duration)}[{endcard_label}]")
             prev_label = endcard_label
 
         inputs: list[str] = []
@@ -409,11 +463,22 @@ def _build_loop_relax_video(
             inputs += ["-stream_loop", "-1", "-i", str(audio_path)]
 
         cmd_args = inputs + [
-            "-filter_complex", ";".join(filter_parts),
-            "-map", f"[{prev_label}]",
-            "-c:v", "libx264", "-preset", "fast", "-crf", "23",
-            "-pix_fmt", "yuv420p", "-r", "30",
-            "-movflags", "+faststart",
+            "-filter_complex",
+            ";".join(filter_parts),
+            "-map",
+            f"[{prev_label}]",
+            "-c:v",
+            "libx264",
+            "-preset",
+            "fast",
+            "-crf",
+            "23",
+            "-pix_fmt",
+            "yuv420p",
+            "-r",
+            "30",
+            "-movflags",
+            "+faststart",
         ]
         if audio_path:
             cmd_args += ["-map", f"{n_clips}:a:0", "-c:a", "aac", "-b:a", "192k"]
@@ -457,8 +522,7 @@ def build_pata_jazz_video(
     output, thumb, _ = _prepare_output_paths(stem_prefix, output_dir, thumb_dir)
 
     if dry_run:
-        log.info("[DRY-RUN] kind=%s scene=%s hook=%s emoji=%s audio=%s",
-                 spec.kind, scene, hook, emoji, audio_path)
+        log.info("[DRY-RUN] kind=%s scene=%s hook=%s emoji=%s audio=%s", spec.kind, scene, hook, emoji, audio_path)
         log.info("[DRY-RUN] seria gravado em %s (thumbnail %s)", output, thumb)
         log.info("[DRY-RUN] resolução=%dx%d duração=%ds", spec.width, spec.height, spec.duration)
         return output
@@ -547,6 +611,7 @@ def build_pata_jazz_video(
         # regravar o video. YouTube aceita multiplas caption tracks.
         try:
             from utils.caption_engine import generate_srt_pt, save_srt_pt
+
             pt_content = generate_srt_pt(hook, scene, spec.duration, emoji)
             pt_path = save_srt_pt(pt_content, output)
             meta["caption_pt"] = str(pt_path)
@@ -556,15 +621,14 @@ def build_pata_jazz_video(
         # 1.2 - Chapters automaticos na descricao para SEO do YouTube.
         try:
             from utils.caption_engine import generate_chapters
+
             chapters = generate_chapters(spec.duration)
             if chapters:
                 chapter_lines = [f"{ts} {title}" for ts, title in chapters]
                 meta["chapters"] = "\n".join(chapter_lines)
                 # Prepend chapters na descricao para o YouTube parsear.
                 if meta.get("description"):
-                    meta["description"] = (
-                        meta["chapters"] + "\n\n" + meta["description"]
-                    )
+                    meta["description"] = meta["chapters"] + "\n\n" + meta["description"]
         except Exception as exc:
             log.warning("Falha ao gerar chapters: %s", exc)
 
@@ -646,12 +710,17 @@ def inspect_video(path: Path) -> dict:
         result = subprocess.run(
             [
                 "ffprobe",
-                "-v", "error",
-                "-show_entries", "stream=codec_name,codec_type,width,height,bit_rate",
-                "-of", "json",
+                "-v",
+                "error",
+                "-show_entries",
+                "stream=codec_name,codec_type,width,height,bit_rate",
+                "-of",
+                "json",
                 str(path),
             ],
-            capture_output=True, text=True, check=True,
+            capture_output=True,
+            text=True,
+            check=True,
         )
         data = json.loads(result.stdout)
         for stream in data.get("streams", []):

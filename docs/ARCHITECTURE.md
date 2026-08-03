@@ -146,7 +146,8 @@ sync (Pixabay/Jamendo) ─┐
 | `batch_generate.py` | Geração em lote (N shorts de uma vez) |
 | `cleanup_youtube.py` | Remove do canal os vídeos legados de horizontal/live (uso pontual) |
 | `collect_analytics.py` | Coleta views/likes/semana + métricas YouTube Analytics API v2 (retention/CTR/impressions/inscritos); alimenta feedback loop (scene/title_pattern) |
-| `generate_dashboard.py` | Dashboard HTML autocontido a partir de `_data/`; exibe métricas de retention, CTR, impressions e inscritos ganhos |
+| `generate_dashboard.py` | Dashboard HTML autocontido a partir de `_data/`; exibe métricas de retention, CTR, impressions e inscritos ganhos. Saída isolada por canal em `_dashboard/<slug>/` e publicada no Pages via `_site/` |
+| `generate_site.py` | Site estático SEO (schema.org) por canal em `_site/<slug>/` a partir de `video_tags.json` + `analytics.json` |
 | `generate_pata_jazz_long.py` | Long-form Loop & Relax (1920×1080, 10-45min, mood relax) |
 | `healthcheck.py` | Verifica dependências e tokens do ambiente |
 | `predict_views.py` | Treina regressão linear para prever views nos primeiros 7 dias |
@@ -172,23 +173,25 @@ sync (Pixabay/Jamendo) ─┐
 | `pata-jazz-shorts.yml` | cron horário (minuto 7, `7 * * * *` UTC) / manual | Gera e publica 1 Short no YouTube (Pata Jazz) |
 | `pata-jazz-engagement.yml` | cron horário (minuto 37, `37 * * * *` UTC) / manual | Responde a comentários do canal (Pata Jazz) |
 | `pata-jazz-sync.yml` | cron 2x/semana (Ter e Sex 06:00 UTC) / manual | Sync b-roll + jazz + evict caches antigos (Pata Jazz) |
-| `pata-jazz-analytics.yml` | cron semanal Seg 06:00 UTC / manual | Coleta analytics, gera dashboard, publica no GitHub Pages (Pata Jazz) |
+| `pata-jazz-analytics.yml` | cron semanal Seg 06:00 UTC / manual | Coleta analytics, gera dashboard + site, publica no GitHub Pages (Pata Jazz) |
 | `pata-jazz-long.yml` | cron semanal Dom 01:13 UTC / manual | Gera e publica 1 long-form Loop & Relax (10-45min) (Pata Jazz) |
 | `pata-jazz-identity.yml` | cron semanal Seg 02:23 UTC / manual | Atualiza about/keywords do canal (Pata Jazz) |
 | `pata-jazz-batch.yml` | só manual (`workflow_dispatch`) | Gera N shorts em lote (Pata Jazz) |
 | `pata-jazz-weekly.yml` | só manual (`all`/`generate`/`publish`) | Lote semanal: 35 shorts, publica 6/dia (Pata Jazz) |
-| `pata-lofi-shorts.yml` | cron horário / manual | Gera e publica 1 Short no YouTube (Pata Lofi) |
+| `pata-lofi-shorts.yml` | cron horário (minuto 17, `17 * * * *` UTC) / manual | Gera e publica 1 Short no YouTube (Pata Lofi) |
 | `pata-lofi-engagement.yml` | cron horário / manual | Responde a comentários do canal (Pata Lofi) |
-| `pata-lofi-analytics.yml` | cron semanal / manual | Coleta analytics + dashboard (Pata Lofi) |
+| `pata-lofi-analytics.yml` | cron semanal / manual | Coleta analytics + dashboard + site (Pata Lofi) |
 | `pata-lofi-long.yml` | cron semanal / manual | Gera e publica 1 long-form (Pata Lofi) |
 | `pata-lofi-identity.yml` | cron semanal / manual | Atualiza about/keywords do canal (Pata Lofi) |
-| `pata-classical-shorts.yml` | cron horário / manual | Gera e publica 1 Short no YouTube (Pata Classical) |
+| `pata-classical-shorts.yml` | cron horário (minuto 27, `27 * * * *` UTC) / manual | Gera e publica 1 Short no YouTube (Pata Classical) |
 | `pata-classical-engagement.yml` | cron horário / manual | Responde a comentários do canal (Pata Classical) |
-| `pata-classical-analytics.yml` | cron semanal / manual | Coleta analytics + dashboard (Pata Classical) |
+| `pata-classical-analytics.yml` | cron semanal / manual | Coleta analytics + dashboard + site (Pata Classical) |
 | `pata-classical-long.yml` | cron semanal / manual | Gera e publica 1 long-form (Pata Classical) |
 | `pata-classical-identity.yml` | cron semanal / manual | Atualiza about/keywords do canal (Pata Classical) |
+| `sync-media.yml` | cron 2x/semana / manual | Sincroniza b-roll + músicas para todos os canais habilitados |
+| `site-seo.yml` | cron semanal / manual | Gera site estático SEO para todos os canais habilitados |
 | `cleanup-youtube.yml` | só manual (`workflow_dispatch`, `dry_run`) | Remove vídeos legados de horizontal/live do canal |
-| `oauth-token-refresh.yml` | cron domingo 02:00 UTC / manual | Renova o `access_token` e atualiza o secret do canal ativo via `gh secret set` (requer secret `GH_PAT`) |
+| `oauth-token-refresh.yml` | cron domingo 02:00 UTC / manual | Renova o `access_token` e atualiza os secrets de todos os canais via `gh secret set` (requer secret `GH_PAT`) |
 | `release.yml` | cron domingo 00:00 UTC / manual | Gera tag `vYYYY-MM-DD` + release notes a partir de commits `feat:`/`fix:`/`security:` |
 
 ## Estado persistente (`_data/`)

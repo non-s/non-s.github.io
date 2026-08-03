@@ -14,8 +14,10 @@ def test_check_python_ok():
 
 
 def test_check_ffmpeg_missing():
-    with patch("utils.ffmpeg_helpers.has_ffmpeg", return_value=False), \
-         patch("utils.ffmpeg_helpers.has_ffprobe", return_value=False):
+    with (
+        patch("utils.ffmpeg_helpers.has_ffmpeg", return_value=False),
+        patch("utils.ffmpeg_helpers.has_ffprobe", return_value=False),
+    ):
         result = healthcheck._check_ffmpeg()
         assert result["ok"] is False
         assert "ffprobe" in result["info"]
@@ -29,11 +31,14 @@ def test_check_envs_missing():
 
 
 def test_check_envs_ok():
-    with patch.dict("os.environ", {
-        "GEMINI_API_KEY": "x",
-        "PIXABAY_API_KEY": "y",
-        "JAMENDO_CLIENT_ID": "z",
-    }):
+    with patch.dict(
+        "os.environ",
+        {
+            "GEMINI_API_KEY": "x",
+            "PIXABAY_API_KEY": "y",
+            "JAMENDO_CLIENT_ID": "z",
+        },
+    ):
         result = healthcheck._check_envs()
         assert result["ok"] is True
 
@@ -93,22 +98,26 @@ def test_check_pool_drift_warns_both_low():
 
 
 def test_run_healthcheck_returns_0_when_all_ok():
-    with patch.object(healthcheck, "_check_python", return_value={"name": "py", "ok": True, "info": ""}), \
-         patch.object(healthcheck, "_check_ffmpeg", return_value={"name": "ff", "ok": True, "info": ""}), \
-         patch.object(healthcheck, "_check_envs", return_value={"name": "env", "ok": True, "info": ""}), \
-         patch.object(healthcheck, "_check_youtube_token", return_value={"name": "yt", "ok": True, "info": ""}), \
-         patch.object(healthcheck, "_check_client_secret", return_value={"name": "cs", "ok": True, "info": ""}), \
-         patch.object(healthcheck, "_check_asset_pool", return_value={"name": "pool", "ok": True, "info": ""}), \
-         patch.object(healthcheck, "check_pool_drift", return_value={"name": "drift", "ok": True, "info": ""}):
+    with (
+        patch.object(healthcheck, "_check_python", return_value={"name": "py", "ok": True, "info": ""}),
+        patch.object(healthcheck, "_check_ffmpeg", return_value={"name": "ff", "ok": True, "info": ""}),
+        patch.object(healthcheck, "_check_envs", return_value={"name": "env", "ok": True, "info": ""}),
+        patch.object(healthcheck, "_check_youtube_token", return_value={"name": "yt", "ok": True, "info": ""}),
+        patch.object(healthcheck, "_check_client_secret", return_value={"name": "cs", "ok": True, "info": ""}),
+        patch.object(healthcheck, "_check_asset_pool", return_value={"name": "pool", "ok": True, "info": ""}),
+        patch.object(healthcheck, "check_pool_drift", return_value={"name": "drift", "ok": True, "info": ""}),
+    ):
         assert healthcheck.run_healthcheck() == 0
 
 
 def test_run_healthcheck_returns_1_when_any_fails():
-    with patch.object(healthcheck, "_check_python", return_value={"name": "py", "ok": True, "info": ""}), \
-         patch.object(healthcheck, "_check_ffmpeg", return_value={"name": "ff", "ok": False, "info": ""}), \
-         patch.object(healthcheck, "_check_envs", return_value={"name": "env", "ok": True, "info": ""}), \
-         patch.object(healthcheck, "_check_youtube_token", return_value={"name": "yt", "ok": True, "info": ""}), \
-         patch.object(healthcheck, "_check_client_secret", return_value={"name": "cs", "ok": True, "info": ""}), \
-         patch.object(healthcheck, "_check_asset_pool", return_value={"name": "pool", "ok": True, "info": ""}), \
-         patch.object(healthcheck, "check_pool_drift", return_value={"name": "drift", "ok": True, "info": ""}):
+    with (
+        patch.object(healthcheck, "_check_python", return_value={"name": "py", "ok": True, "info": ""}),
+        patch.object(healthcheck, "_check_ffmpeg", return_value={"name": "ff", "ok": False, "info": ""}),
+        patch.object(healthcheck, "_check_envs", return_value={"name": "env", "ok": True, "info": ""}),
+        patch.object(healthcheck, "_check_youtube_token", return_value={"name": "yt", "ok": True, "info": ""}),
+        patch.object(healthcheck, "_check_client_secret", return_value={"name": "cs", "ok": True, "info": ""}),
+        patch.object(healthcheck, "_check_asset_pool", return_value={"name": "pool", "ok": True, "info": ""}),
+        patch.object(healthcheck, "check_pool_drift", return_value={"name": "drift", "ok": True, "info": ""}),
+    ):
         assert healthcheck.run_healthcheck() == 1

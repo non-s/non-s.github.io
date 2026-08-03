@@ -147,8 +147,7 @@ def generate_metadata(
             raw_hashtags = data.get("hashtags", [])
             if isinstance(raw_hashtags, str):
                 raw_hashtags = raw_hashtags.split()
-            ai_hashtags = [str(h).strip() for h in raw_hashtags
-                           if isinstance(h, str) and h.strip()][:_MAX_HASHTAGS]
+            ai_hashtags = [str(h).strip() for h in raw_hashtags if isinstance(h, str) and h.strip()][:_MAX_HASHTAGS]
             if ai_hashtags:
                 # AI hashtags primeiro: generate_hashtags() ja preenche o
                 # orcamento de _MAX_HASHTAGS sozinho (brand+animal+musica+
@@ -180,8 +179,7 @@ def generate_metadata(
                 break
         else:
             log.warning(
-                "Anti-repeat: 3 re-sorteios ainda colidem com titulos recentes; "
-                "mantendo %r (best-effort).",
+                "Anti-repeat: 3 re-sorteios ainda colidem com titulos recentes; mantendo %r (best-effort).",
                 title,
             )
 
