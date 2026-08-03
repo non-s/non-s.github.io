@@ -10,7 +10,6 @@ dependencies = [
     "requests>=2.32.0,<3.0.0",
     "Pillow>=12.3.0,<13.0.0",
     "filelock>=3.13.0,<4.0.0",
-    "playwright>=1.40.0,<2.0.0",
 ]
 
 [tool.ruff]
@@ -36,7 +35,7 @@ markers = [
 [tool.coverage.run]
 # Cobertura inclui utils, scripts e os geradores/upload (thin wrappers que
 # delegam para utils mas sao exercitados em CI via dry-run/integracao).
-source = ["utils", "scripts", "upload_youtube", "upload_tiktok"]
+source = ["utils", "scripts", "upload_youtube"]
 
 [tool.coverage.report]
 fail_under = 85

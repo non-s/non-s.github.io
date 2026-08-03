@@ -33,17 +33,20 @@ PIXABAY_API_KEY=xxx
 JAMENDO_CLIENT_ID=xxx        # opcional (recomendado)
 GEMINI_MODEL=gemini-2.0-flash-001  # opcional (default)
 YOUTUBE_PRIVACY=public
+YOUTUBE_CHANNEL=pata_jazz    # pata_jazz, pata_lofi ou pata_classical
 ```
 
 ### 4. Credenciais do YouTube
 
-Para upload é necessário um token OAuth. Rode uma vez:
+Para upload é necessário um token OAuth por canal. Rode uma vez para cada canal:
 
 ```bash
+export YOUTUBE_CHANNEL=pata_jazz
 python utils/youtube_oauth.py
+# Salve o JSON resultante como o secret YOUTUBE_TOKEN (ou YOUTUBE_TOKEN_LOFI / YOUTUBE_TOKEN_CLASSICAL)
 ```
 
-Salve o JSON resultante como `youtube_token.json` na raiz do projeto.
+Localmente, `utils/youtube_oauth.py` ainda salva `youtube_token.json` na raiz. Em CI, cada workflow multi-canal lê o secret correto (`YOUTUBE_TOKEN`, `YOUTUBE_TOKEN_LOFI`, `YOUTUBE_TOKEN_CLASSICAL`).
 
 ## Rodar testes e lint
 
@@ -95,7 +98,7 @@ Exemplos:
 
 ```
 feat: adicionar wrapper de quota em retry_youtube_call
-fix: corrigir corrida no lock de estado do cross-post
+fix: corrigir corrida no lock de estado do analytics
 security: atualizar Pillow para 12.3 (CVE-2024-XXXX)
 docs: documentar fluxo de dados em ARCHITECTURE.md
 chore: pin actions/cache por SHA
@@ -107,17 +110,23 @@ chore: pin actions/cache por SHA
 
 ## Como adicionar um canal novo
 
-O projeto suporta múltiplos canais via `utils/channel_config.py`. Para adicionar
-um canal (ex.: `Pata Lofi`):
+O projeto suporta múltiplos canais via `utils/channel_config.py`. `Pata Jazz`,
+`Pata Lofi` e `Pata Classical` já estão registrados e têm workflows próprios.
+Para adicionar um canal novo (ex.: `Pata Bossa`):
 
 1. Crie um `ChannelConfig` em `utils/channel_config.py` com todos os campos
    (marca, tags, playlists, keywords, prompts de IA, mapeamentos de cena/mood).
    Use `PATA_JAZZ` como template.
-2. Registre no dict `CHANNELS` com uma chave única (ex.: `"pata_lofi"`).
-3. Teste chamando `set_channel("pata_lofi")` e verificando que
-   `active_channel.name == "Pata Lofi"`.
+2. Registre no dict `CHANNELS` com uma chave única (ex.: `"pata_bossa"`).
+3. Teste chamando `set_channel("pata_bossa")` e verificando que
+   `active_channel.name == "Pata Bossa"`.
 4. Adicione um teste em `tests/test_channel_config.py` cobrindo o novo canal.
-5. Os módulos consumidores (`animal_branding`, `playlist_manager`, `seo_keywords`,
+5. Adicione workflows baseados nos existentes (`pata-lofi-*.yml`), ajustando
+   `YOUTUBE_CHANNEL`, variáveis de habilitação (`PATA_BOSSA_*_ENABLED`) e o
+   secret do token (`YOUTUBE_TOKEN_BOSSA`).
+6. Inclua o novo `_data/<slug>/` no cache da composite action
+   `.github/actions/restore-token-and-cache/action.yml`.
+7. Os módulos consumidores (`animal_branding`, `playlist_manager`, `seo_keywords`,
    `upload_youtube`) leem de `active_channel` automaticamente — não precisam de
    mudança.
 
@@ -139,7 +148,10 @@ Checklist para criar `.github/workflows/<novo>.yml`:
       adicione um step final `if: always()` com `rm -f youtube_token.json`.
 - [ ] **Cron em UTC** — comente no YAML o equivalente em BRT (UTC-3).
 - [ ] **Restaurar caches** via `.github/actions/restore-token-and-cache` se o
-      workflow lê/escreve estado em `_data/`.
+      workflow lê/escreve estado em `_data/` (ou `_data/<slug>/` para canais).
+- [ ] **Multi-canal:** workflows de canais novos devem passar `YOUTUBE_CHANNEL`
+      e usar o secret de token correto (`YOUTUBE_TOKEN` para `pata_jazz`,
+      `YOUTUBE_TOKEN_LOFI` para `pata_lofi`, etc.).
 
 ## Onde adicionar testes
 

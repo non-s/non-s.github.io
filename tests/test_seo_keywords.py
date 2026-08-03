@@ -12,7 +12,6 @@ from utils.seo_keywords import (
     TITLE_PATTERNS,
     generate_description,
     generate_hashtags,
-    generate_tiktok_hashtags,
     generate_title,
     music_style_for_mood,
     optimize_for_search,
@@ -277,54 +276,6 @@ class TestGenerateHashtags:
         assert len(hashtags) == len(set(hashtags))
 
 
-class TestGenerateTiktokHashtags:
-    """generate_tiktok_hashtags: vocabulario nativo do TikTok, diferente
-    das hashtags do YouTube (sem #Shorts/#YouTubeShorts, com tags de
-    especie/#fyp que tem mais alcance la)."""
-
-    def test_species_tag_comes_first_for_cat(self):
-        hashtags = generate_tiktok_hashtags(animal="cat", categoria="cuteness")
-        assert hashtags[0] == "#catsoftiktok"
-
-    def test_species_tag_comes_first_for_dog(self):
-        hashtags = generate_tiktok_hashtags(animal="dog", categoria="cuteness")
-        assert hashtags[0] == "#dogsoftiktok"
-
-    def test_unknown_animal_falls_back_to_cat(self):
-        hashtags = generate_tiktok_hashtags(animal="hamster", categoria="cuteness")
-        assert hashtags[0] == "#catsoftiktok"
-
-    def test_includes_discovery_tags(self):
-        hashtags = generate_tiktok_hashtags(animal="cat", categoria="cuteness")
-        assert "#fyp" in hashtags
-        assert "#foryoupage" in hashtags
-
-    def test_does_not_include_youtube_only_tags(self):
-        hashtags = generate_tiktok_hashtags(animal="cat", categoria="cuteness")
-        assert "#Shorts" not in hashtags
-        assert "#YouTubeShorts" not in hashtags
-
-    def test_includes_brand_tag(self):
-        hashtags = generate_tiktok_hashtags(animal="cat", categoria="cuteness")
-        assert "#PataJazz" in hashtags
-
-    def test_emotion_tag_varies_by_categoria(self):
-        relax = generate_tiktok_hashtags(animal="cat", categoria="relaxation")
-        fun = generate_tiktok_hashtags(animal="cat", categoria="fun")
-        assert relax != fun
-
-    def test_unknown_categoria_falls_back_to_cuteness(self):
-        hashtags = generate_tiktok_hashtags(animal="cat", categoria="bogus")
-        assert hashtags == generate_tiktok_hashtags(animal="cat", categoria="cuteness")
-
-    def test_within_max_hashtags_and_no_duplicates(self):
-        hashtags = generate_tiktok_hashtags(animal="dog", categoria="fun")
-        assert len(hashtags) <= seo_keywords._MAX_TIKTOK_HASHTAGS
-        assert len(hashtags) == len(set(hashtags))
-
-
-class TestOptimizeForSearch:
-    """Testa otimização para busca do YouTube."""
 
     def test_optimize_title_with_keyword(self):
         """Otimiza título adicionando keyword se necessário."""

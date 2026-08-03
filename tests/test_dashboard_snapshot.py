@@ -31,7 +31,6 @@ def _seed_fixtures(tmp_path, monkeypatch):
     monkeypatch.setattr(dashboard, "HISTORY_FILE", tmp_path / "analytics_history.json")
     monkeypatch.setattr(dashboard, "SCENE_PERFORMANCE_FILE", tmp_path / "scene_performance.json")
     monkeypatch.setattr(dashboard, "TITLE_PATTERN_PERFORMANCE_FILE", tmp_path / "title_pattern_performance.json")
-    monkeypatch.setattr(dashboard, "TIKTOK_POSTS_FILE", tmp_path / "tiktok_posts.json")
     monkeypatch.setattr(dashboard, "VIEW_PREDICTOR_FILE", tmp_path / "view_predictor.json")
 
     dashboard.ANALYTICS_FILE.write_text(
@@ -58,12 +57,8 @@ def _seed_fixtures(tmp_path, monkeypatch):
     dashboard.TITLE_PATTERN_PERFORMANCE_FILE.write_text(
         json.dumps({"{emoji} {animal}": 1.8}), encoding="utf-8"
     )
-    dashboard.TIKTOK_POSTS_FILE.write_text(
-        json.dumps([
-            {"video": "v.mp4", "title": "Cute Cat & Jazz",
-             "url": "https://tiktok.com/@x/video/1", "posted_at": "2026-01-01T00:00:00+00:00"},
-        ]),
-        encoding="utf-8",
+    dashboard.VIEW_PREDICTOR_FILE.write_text(
+        json.dumps({"n_samples": 0}), encoding="utf-8"
     )
 
 

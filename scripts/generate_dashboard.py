@@ -1,7 +1,6 @@
 """
 scripts/generate_dashboard.py — gera um dashboard HTML estatico a partir dos
-dados ja coletados em _data/ (analytics, scene/title_pattern performance,
-cross-posting no TikTok).
+dados ja coletados em _data/ (analytics, scene/title_pattern performance).
 
 Nenhum dado novo e coletado aqui - so consome o que collect_analytics.py e
 upload_youtube.py ja gravam toda semana. Sem dependencias externas (so
@@ -26,22 +25,21 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from utils.channel_config import CHANNELS, active_channel
+from utils.paths import data_dir
 
 log = logging.getLogger(__name__)
 
-DATA_DIR = ROOT / "_data"
+DATA_DIR = data_dir()
 DASHBOARD_DIR = ROOT / "_dashboard"
 
 ANALYTICS_FILE = DATA_DIR / "analytics.json"
 HISTORY_FILE = DATA_DIR / "analytics_history.json"
 SCENE_PERFORMANCE_FILE = DATA_DIR / "scene_performance.json"
 TITLE_PATTERN_PERFORMANCE_FILE = DATA_DIR / "title_pattern_performance.json"
-TIKTOK_POSTS_FILE = DATA_DIR / "tiktok_posts.json"
 VIEW_PREDICTOR_FILE = DATA_DIR / "view_predictor.json"
 VIDEO_TAGS_FILE = DATA_DIR / "video_tags.json"
 
 _MAX_HISTORY_ROWS = 12
-_MAX_TIKTOK_POSTS_SHOWN = 10
 
 # Chart.js 4.x via jsdelivr (CDN estavel, sem build). SRI calculado a partir
 # do arquivo oficial da versao; fallback offline copiado para _dashboard/.
@@ -76,14 +74,36 @@ def _card(label: str, value: str) -> str:
 def _render_summary(analytics: dict) -> str:
     if not analytics:
         return "<p class='empty'>Nenhum dado de analytics coletado ainda.</p>"
+    retention = analytics.get("retention_metrics") or {}
+    avg_ctr = _avg_metric(retention, "ctr")
+    avg_avp = _avg_metric(retention, "averageViewPercentage")
+    avg_subs = _avg_metric(retention, "subscribersGained")
+    ypp = analytics.get("ypp_eligibility") or {}
     cards = [
         _card("Vídeos", str(analytics.get("total_videos", 0))),
         _card("Views totais", f"{analytics.get('total_views', 0):,}".replace(",", ".")),
         _card("Likes totais", f"{analytics.get('total_likes', 0):,}".replace(",", ".")),
         _card("Comentários", f"{analytics.get('total_comments', 0):,}".replace(",", ".")),
         _card("Média de views/vídeo", f"{analytics.get('avg_views', 0):,}".replace(",", ".")),
+        _card("CTR médio", f"{avg_ctr:.2%}" if avg_ctr else "—"),
+        _card("Retenção média", f"{avg_avp:.1f}%" if avg_avp else "—"),
+        _card("Inscritos ganhos", f"{avg_subs:+.1f}" if avg_subs else "—"),
+        _card(
+            "Progresso YPP",
+            f"{int(ypp.get('subscriber_progress', 0) * 100)}% / "
+            f"{int(ypp.get('watch_hours_progress', 0) * 100)}%",
+        ),
     ]
     return f'<div class="cards">{"".join(cards)}</div>'
+
+
+def _avg_metric(retention: dict, key: str) -> float | None:
+    """Calcula a média simples de uma métrica presente no dict retention_metrics."""
+    values = [v.get(key, 0) for v in retention.values() if isinstance(v, dict)]
+    if not values:
+        return None
+    total = sum(float(x) for x in values if x is not None)
+    return total / len(values) if total else None
 
 
 def _render_history(history: list) -> str:
@@ -131,13 +151,19 @@ def _render_top_videos(analytics: dict) -> str:
         title = escape(str(v.get("title", ""))[:80])
         vid = v.get("video_id", "")
         link = f"https://youtu.be/{vid}" if vid else "#"
+        ctr = v.get("ctr")
+        avp = v.get("averageViewPercentage")
         rows.append(
             f"<tr><td><a href='{escape(link)}' target='_blank' rel='noopener'>{title}</a></td>"
-            f"<td>{v.get('views', 0):,}</td><td>{v.get('likes', 0):,}</td></tr>".replace(",", ".")
+            f"<td>{v.get('views', 0):,}</td><td>{v.get('likes', 0):,}</td>"
+            f"<td>{v.get('comments', 0):,}</td>"
+            f"<td>{f'{ctr:.2%}' if ctr is not None else '—'}</td>"
+            f"<td>{f'{avp:.1f}%' if avp is not None else '—'}</td></tr>".replace(",", ".")
         )
     return (
-        "<table><thead><tr><th>Título</th><th>Views</th><th>Likes</th></tr></thead>"
-        f"<tbody>{''.join(rows)}</tbody></table>"
+        "<table><thead><tr><th>Título</th><th>Views</th>"
+        "<th>Likes</th><th>Comentários</th><th>CTR</th>"
+        f"<th>Retenção</th></tr></thead><tbody>{''.join(rows)}</tbody></table>"
     )
 
 
@@ -168,41 +194,6 @@ def _render_thumbnail_variants(video_tags: dict) -> str:
         "<table><thead><tr><th>Vídeo</th><th>Variante ativa</th><th>Views</th>"
         f"<th>Rotação</th></tr></thead><tbody>{''.join(rows)}</tbody></table>"
     )
-
-
-def _render_tiktok_crossposting(posts: list) -> str:
-    """Seção "Cross-posting TikTok" — visibilidade de uma segunda
-    plataforma além do YouTube (utils.tiktok_uploader grava um registro em
-    _data/tiktok_posts.json a cada post publicado com sucesso)."""
-    if not posts:
-        return "<p class='empty'>Nenhum cross-post para o TikTok registrado ainda.</p>"
-
-    now = datetime.now(UTC)
-    last_7d = 0
-    for post in posts:
-        try:
-            posted_at = datetime.fromisoformat(str(post.get("posted_at", "")))
-        except ValueError:
-            continue
-        if (now - posted_at).days < 7:
-            last_7d += 1
-
-    cards = [
-        _card("Posts no TikTok (total)", str(len(posts))),
-        _card("Últimos 7 dias", str(last_7d)),
-    ]
-    rows = []
-    for post in posts[-_MAX_TIKTOK_POSTS_SHOWN:][::-1]:
-        title = escape(str(post.get("title", ""))[:60])
-        url = escape(str(post.get("url", "")))
-        posted_at_label = escape(str(post.get("posted_at", ""))[:16])
-        link = f"<a href='{url}' target='_blank' rel='noopener'>abrir</a>" if url else "—"
-        rows.append(f"<tr><td class='mono'>{posted_at_label}</td><td>{title}</td><td>{link}</td></tr>")
-    table = (
-        "<table><thead><tr><th>Publicado em</th><th>Título</th><th>Link</th></tr></thead>"
-        f"<tbody>{''.join(rows)}</tbody></table>"
-    )
-    return f'<div class="cards">{"".join(cards)}</div>{table}'
 
 
 _DAY_OF_WEEK_NAMES = [
@@ -421,7 +412,6 @@ def build_dashboard_html() -> str:
     history = _load_json(HISTORY_FILE, [])
     scene_weights = _load_json(SCENE_PERFORMANCE_FILE, {})
     title_pattern_weights = _load_json(TITLE_PATTERN_PERFORMANCE_FILE, {})
-    tiktok_posts = _load_json(TIKTOK_POSTS_FILE, [])
     view_predictor = _load_json(VIEW_PREDICTOR_FILE, {})
     video_tags = _load_json(VIDEO_TAGS_FILE, {})
 
@@ -564,9 +554,6 @@ def build_dashboard_html() -> str:
   <h2>Views por padrão de título</h2>
   {_chart_canvas("titlePatternChart", "360px")}
   {_render_weighted_table(title_pattern_weights, "Padrão")}
-
-  <h2>Cross-posting TikTok</h2>
-  {_render_tiktok_crossposting(tiktok_posts)}
 
   <h2>Top 10 vídeos</h2>
   {_chart_canvas("topVideosChart", "320px")}

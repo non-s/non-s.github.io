@@ -28,14 +28,15 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from utils.log_config import configure_logging
-from utils.paths import data_dir
+from utils.paths import data_dir, ensure_data_dir
 from utils.state_lock import state_lock
 from utils.youtube_oauth import get_youtube_analytics_service, get_youtube_service
 from utils.youtube_retry import retry_youtube_call as _retry_youtube_call
 
 log = logging.getLogger(__name__)
 
-DATA_DIR = ROOT / "_data"
+DATA_DIR = data_dir()
+ensure_data_dir()
 MAX_VIDEOS = 50
 HISTORY_FILE = DATA_DIR / "analytics_history.json"
 MAX_HISTORY_ENTRIES = 104  # ~2 anos de snapshots semanais
@@ -164,19 +165,21 @@ def collect_video_stats(service) -> tuple[list[dict], dict]:
 
 
 def _collect_retention_metrics(service, video_ids: list[str]) -> dict:
-    """Consulta o YouTube Analytics API por retention/CTR dos video_ids.
+    """Consulta o YouTube Analytics API por retention/CTR/impressions dos video_ids.
 
-    Busca `averageViewDuration`, `averageViewPercentage` (retention) e `ctr`
-    via `youtubeAnalytics.reports().query(ids='channel==mine', ...)`. A API
-    so permite filtrar por um video por vez em `filters==video==<id>`, entao
-    faz uma chamada por video (MAX_VIDEOS no maximo - dentro do budget de
-    quota do Analytics API, separado da Data API v3).
+    Busca `averageViewDuration`, `averageViewPercentage` (retention), `ctr`,
+    `impressions` e `subscribersGained` via
+    `youtubeAnalytics.reports().query(ids='channel==mine', ...)`. A API so
+    permite filtrar por um video por vez em `filters==video==<id>`, entao faz
+    uma chamada por video (MAX_VIDEOS no maximo - dentro do budget do Analytics
+    API, separado da Data API v3).
 
     Retorna um dict {video_id: {averageViewDuration, averageViewPercentage,
-    ctr}}. Em qualquer erro (403 por scope ausente, canal inelegivel, API
-    indisponivel), loga warning e retorna {} - a Analytics API pode nao
-    estar disponivel para todos os canais (ex.: canal novo sem dados
-    suficientes), e isso nao deve derrubar o resto da coleta.
+    ctr, impressions, subscribersGained}}. Em qualquer erro (403 por scope
+    ausente, canal inelegivel, API indisponivel), loga warning e retorna {} -
+    a Analytics API pode nao estar disponivel para todos os canais (ex.:
+    canal novo sem dados suficientes), e isso nao deve derrubar o resto da
+    coleta.
 
     `service` e o Resource do youtubeAnalytics v2 (ver
     get_youtube_analytics_service); passamos como argumento para permitir
@@ -189,6 +192,17 @@ def _collect_retention_metrics(service, video_ids: list[str]) -> dict:
     # (MAX_VIDEOS=50) sem inflar demais o numero de chamadas.
     end = datetime.now(UTC).date()
     start = end - timedelta(days=90)
+    _METRICS = (
+        "averageViewDuration,averageViewPercentage,ctr,"
+        "impressions,subscribersGained"
+    )
+    _METRIC_KEYS = [
+        "averageViewDuration",
+        "averageViewPercentage",
+        "ctr",
+        "impressions",
+        "subscribersGained",
+    ]
     result: dict[str, dict] = {}
     for vid in video_ids:
         try:
@@ -197,7 +211,7 @@ def _collect_retention_metrics(service, video_ids: list[str]) -> dict:
                     ids="channel==mine",
                     startDate=start.isoformat(),
                     endDate=end.isoformat(),
-                    metrics="averageViewDuration,averageViewPercentage,ctr",
+                    metrics=_METRICS,
                     filters=f"video=={vid}",
                 ).execute
             )
@@ -214,14 +228,11 @@ def _collect_retention_metrics(service, video_ids: list[str]) -> dict:
             continue
         # rows e lista de listas; a ordem dos valores segue a ordem de metrics.
         row = rows[0]
-        if len(row) >= 3:
-            result[vid] = {
-                "averageViewDuration": float(row[0]),
-                "averageViewPercentage": float(row[1]),
-                "ctr": float(row[2]),
-            }
+        if len(row) >= len(_METRIC_KEYS):
+            metrics = {key: float(row[i]) for i, key in enumerate(_METRIC_KEYS)}
+            result[vid] = metrics
     if result:
-        log.info("Retencion/CTR coletados para %d videos.", len(result))
+        log.info("Retencion/CTR/impressions coletados para %d videos.", len(result))
     return result
 
 
@@ -669,6 +680,19 @@ def main(argv: list[str] | None = None) -> int:
         retention = _collect_retention_metrics(analytics_service, video_ids)
         if retention:
             report["retention_metrics"] = retention
+            # Enriquece all_videos/top_10/bottom_10 com as metricas de
+            # retention, CTR, impressions e subscribersGained para o dashboard
+            # e para o feedback loop de thumbnail/titulo/cena.
+            enriched_stats = []
+            for video in stats:
+                enriched = dict(video)
+                metrics = retention.get(video["video_id"], {})
+                enriched.update(metrics)
+                enriched_stats.append(enriched)
+            stats = enriched_stats
+            report["all_videos"] = stats
+            report["top_10"] = stats[:10]
+            report["bottom_10"] = stats[-10:] if len(stats) > 10 else []
             out_path.write_text(
                 json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
             )

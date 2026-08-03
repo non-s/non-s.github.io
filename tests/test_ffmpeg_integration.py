@@ -49,27 +49,29 @@ class TestBuildOverlayFilterAgainstRealFfmpeg:
         assert result.returncode == 0, result.stderr
 
     def test_hook_with_apostrophe_renders_without_error(self):
-        """Regressao do bug de producao anterior: '\\'' direto dentro das
-        aspas simples (em vez da sequencia fecha/escapa/reabre) corrompia
-        o filter_complex inteiro quando o hook tinha apostrofo."""
+        """Apostrofos ASCII sao normalizados para apostrofo tipografico (’)
+        para evitar a sequencia de escape `\'` que e instavel em algumas
+        builds do FFmpeg (crash com fontconfig no Windows)."""
         vf = _build_overlay_filter("Cat's Cozy Relax Moment", 1920)
         result = _render_with_filter(vf)
         assert result.returncode == 0, result.stderr
+        assert "’" in vf or "Cat" in vf
 
     def test_hook_with_colon_renders_without_error(self):
-        """Diferente de font=, o valor de text= protege ':' corretamente
-        dentro de aspas simples (confirmado empiricamente) - sem regressao
-        aqui, mas guarda contra o FFmpeg mudar esse comportamento."""
+        """Dois-pontos no texto precisam de escape com backslash+dois-pontos
+        porque o parser de opcoes do FFmpeg os splita mesmo dentro de aspas
+        simples."""
         vf = _build_overlay_filter("Playtime: with a silly cat", 1920)
         result = _render_with_filter(vf)
         assert result.returncode == 0, result.stderr
 
-    def test_font_style_colon_is_escaped(self):
-        """Regressao direta do bug real: font='Arial:style=Bold' sem
-        escape do ':' quebrava com "Option not found" - o ':' precisa
-        estar escapado como '\\:' mesmo dentro das aspas simples."""
+    def test_uses_bundled_fontfile(self):
+        """Regressao direta do bug real: font='Arial:style=Bold' dependia
+        de fontconfig e do ':' escapado. Agora usamos fontfile=<caminho>
+        com a fonte empacotada no repo, que funciona em qualquer runner."""
         vf = _build_overlay_filter("hello", 1920)
-        assert "font='Arial\\:style=Bold'" in vf
+        assert "fontfile='" in vf
+        assert "Roboto-Bold.ttf" in vf
         result = _render_with_filter(vf)
         assert result.returncode == 0, result.stderr
 
@@ -80,9 +82,10 @@ class TestBuildEndcardFilterAgainstRealFfmpeg:
         result = _render_with_filter(vf)
         assert result.returncode == 0, result.stderr
 
-    def test_endcard_escaped_font_renders_without_error(self):
+    def test_endcard_uses_bundled_fontfile(self):
         vf = _build_endcard_filter(1080, 60)
-        assert "font='Arial\\:style=Bold'" in vf
+        assert "fontfile='" in vf
+        assert "Roboto-Bold.ttf" in vf
         result = _render_with_filter(vf)
         assert result.returncode == 0, result.stderr
 

@@ -27,7 +27,8 @@ def _isolate(tmp_path, monkeypatch):
     monkeypatch.setattr(dashboard, "HISTORY_FILE", tmp_path / "analytics_history.json")
     monkeypatch.setattr(dashboard, "SCENE_PERFORMANCE_FILE", tmp_path / "scene_performance.json")
     monkeypatch.setattr(dashboard, "TITLE_PATTERN_PERFORMANCE_FILE", tmp_path / "title_pattern_performance.json")
-    monkeypatch.setattr(dashboard, "TIKTOK_POSTS_FILE", tmp_path / "tiktok_posts.json")
+    monkeypatch.setattr(dashboard, "VIEW_PREDICTOR_FILE", tmp_path / "view_predictor.json")
+    monkeypatch.setattr(dashboard, "VIDEO_TAGS_FILE", tmp_path / "video_tags.json")
 
 
 class TestBuildDashboardHtmlEmpty:
@@ -45,7 +46,6 @@ class TestBuildDashboardHtmlEmpty:
         assert "Nenhum dado de analytics coletado ainda." in html
         assert "Sem histórico semanal ainda" in html
         assert "Sem dados suficientes ainda" in html
-        assert "Nenhum cross-post para o TikTok registrado ainda." in html
 
     def test_corrupted_files_do_not_crash(self, tmp_path, monkeypatch):
         _isolate(tmp_path, monkeypatch)
@@ -167,21 +167,6 @@ class TestBuildDashboardHtmlWithData:
 
         assert "{emoji} {animal}" in html
         assert "1.80×" in html
-
-    def test_tiktok_crossposting_summary(self, tmp_path, monkeypatch):
-        _isolate(tmp_path, monkeypatch)
-        posts = [
-            {"video": f"v{i}.mp4", "title": f"Video {i}", "url": f"https://tiktok.com/@x/video/{i}",
-             "posted_at": datetime.now(UTC).isoformat()}
-            for i in range(3)
-        ]
-        dashboard.TIKTOK_POSTS_FILE.write_text(json.dumps(posts), encoding="utf-8")
-
-        html = dashboard.build_dashboard_html()
-
-        assert "Posts no TikTok (total)" in html
-        assert "Video 2" in html
-        assert "https://tiktok.com/@x/video/2" in html
 
 
 class TestChartsAndInteractivity:
@@ -400,8 +385,6 @@ class TestFullHtmlSnapshot:
 
     def _seed_fixtures(self, tmp_path, monkeypatch):
         _isolate(tmp_path, monkeypatch)
-        monkeypatch.setattr(dashboard, "VIEW_PREDICTOR_FILE", tmp_path / "view_predictor.json")
-        monkeypatch.setattr(dashboard, "VIDEO_TAGS_FILE", tmp_path / "video_tags.json")
 
         dashboard.ANALYTICS_FILE.write_text(
             json.dumps({
@@ -433,11 +416,8 @@ class TestFullHtmlSnapshot:
         dashboard.TITLE_PATTERN_PERFORMANCE_FILE.write_text(
             json.dumps({"{animal} vibes": 2.3, "{emoji} jazz": 1.1}), encoding="utf-8"
         )
-        dashboard.TIKTOK_POSTS_FILE.write_text(
-            json.dumps([
-                {"video": "v.mp4", "title": "Sleepy Kitten & Soft Jazz",
-                 "url": "https://tiktok.com/@x/video/1", "posted_at": "2026-03-01T00:00:00+00:00"},
-            ]),
+        dashboard.VIEW_PREDICTOR_FILE.write_text(
+            json.dumps({"n_samples": 10, "hour": [1.0], "dow": [0.5], "intercept": 100.0}),
             encoding="utf-8",
         )
         dashboard.VIDEO_TAGS_FILE.write_text(

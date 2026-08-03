@@ -1003,8 +1003,8 @@ class TestCollectRetentionMetrics:
 
     def test_returns_metrics_for_each_video(self):
         rows = {
-            "vid1": [[120.0, 55.5, 4.2]],
-            "vid2": [[200.0, 70.0, 3.1]],
+            "vid1": [[120.0, 55.5, 4.2, 1000.0, 12.0]],
+            "vid2": [[200.0, 70.0, 3.1, 2000.0, 5.0]],
         }
         service = self._analytics_service(rows_by_video=rows)
 
@@ -1014,9 +1014,12 @@ class TestCollectRetentionMetrics:
             "averageViewDuration": 120.0,
             "averageViewPercentage": 55.5,
             "ctr": 4.2,
+            "impressions": 1000.0,
+            "subscribersGained": 12.0,
         }
         assert result["vid2"]["averageViewDuration"] == 200.0
         assert result["vid2"]["ctr"] == 3.1
+        assert result["vid2"]["impressions"] == 2000.0
 
     def test_empty_video_ids_returns_empty(self):
         service = self._analytics_service()
@@ -1024,7 +1027,7 @@ class TestCollectRetentionMetrics:
         service.reports().query.assert_not_called()
 
     def test_video_without_rows_is_skipped(self):
-        rows = {"vid1": [[100.0, 50.0, 2.0]]}  # vid2 sem rows
+        rows = {"vid1": [[100.0, 50.0, 2.0, 500.0, 3.0]]}  # vid2 sem rows
         service = self._analytics_service(rows_by_video=rows)
 
         result = collect_analytics._collect_retention_metrics(service, ["vid1", "vid2"])
@@ -1052,7 +1055,7 @@ class TestCollectRetentionMetrics:
         def _execute():
             call_count["n"] += 1
             if call_count["n"] == 1:
-                return {"rows": [[100.0, 50.0, 2.0]]}
+                return {"rows": [[100.0, 50.0, 2.0, 300.0, 1.0]]}
             raise RuntimeError("403 Forbidden")
 
         query_mock.execute.side_effect = _execute
@@ -1063,13 +1066,16 @@ class TestCollectRetentionMetrics:
         assert "vid2" not in result
 
     def test_query_uses_channel_mine_and_metrics(self):
-        service = self._analytics_service(rows_by_video={"vid1": [[1.0, 1.0, 1.0]]})
+        service = self._analytics_service(rows_by_video={"vid1": [[1.0, 1.0, 1.0, 1.0, 1.0]]})
 
         collect_analytics._collect_retention_metrics(service, ["vid1"])
 
         kwargs = service.reports.return_value.query.call_args.kwargs
         assert kwargs["ids"] == "channel==mine"
-        assert kwargs["metrics"] == "averageViewDuration,averageViewPercentage,ctr"
+        assert kwargs["metrics"] == (
+            "averageViewDuration,averageViewPercentage,ctr,"
+            "impressions,subscribersGained"
+        )
         assert kwargs["filters"] == "video==vid1"
         assert "startDate" in kwargs and "endDate" in kwargs
 

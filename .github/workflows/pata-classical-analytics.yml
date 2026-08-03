@@ -1,4 +1,4 @@
-name: "Pata Jazz - Analytics Semanal"
+name: "Pata Classical - Analytics Semanal"
 
 on:
   workflow_dispatch:
@@ -12,13 +12,13 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pata-jazz-analytics
+  group: pata-classical-analytics
   cancel-in-progress: true
 
 jobs:
   analytics:
-    name: "Coletar metricas do canal"
-    if: ${{ vars.PATA_JAZZ_ENABLED == '1' }}
+    name: "Coletar metricas do canal Pata Classical"
+    if: ${{ vars.PATA_CLASSICAL_ENABLED == '1' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment:
@@ -44,8 +44,7 @@ jobs:
       - name: "Restaurar token e caches"
         uses: ./.github/actions/restore-token-and-cache
         with:
-          youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
-          channel: pata_jazz
+          youtube-token: ${{ secrets.YOUTUBE_TOKEN_CLASSICAL }}
       - name: "Restaurar/persistir analytics"
         # Sem isso, _data/analytics*.json e escrito e perdido junto com o
         # runner efemero a cada semana - nada mais no repo le esse arquivo
@@ -56,17 +55,17 @@ jobs:
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: |
-            _data/analytics.json
-            _data/analytics_history.json
-          key: pata_jazz-analytics-${{ github.run_id }}
-          restore-keys: pata_jazz-analytics-
+            _data/pata_classical/analytics.json
+            _data/pata_classical/analytics_history.json
+          key: pata_classical-analytics-${{ github.run_id }}
+          restore-keys: pata_classical-analytics-
       - name: "Coletar analytics"
         env:
-          YOUTUBE_CHANNEL: pata_jazz
+          YOUTUBE_CHANNEL: pata_classical
         run: python scripts/collect_analytics.py
       - name: "Gerar dashboard HTML"
         env:
-          YOUTUBE_CHANNEL: pata_jazz
+          YOUTUBE_CHANNEL: pata_classical
         # So le os JSONs que os steps acima ja escreveram/restauraram - sem
         # rede, sem dependencia nova.
         run: python scripts/generate_dashboard.py
@@ -94,12 +93,12 @@ jobs:
         # servirem de algo em vez de morrer no runner efemero.
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: analytics-report
+          name: pata-classical-analytics-report
           path: |
-            _data/analytics.json
-            _data/analytics_history.json
+            _data/pata_classical/analytics.json
+            _data/pata_classical/analytics_history.json
             _dashboard/index.html
           retention-days: 90
       - name: "Apagar token"
         if: always()
-        run: rm -f youtube_token.json
+        run: rm -f youtube_token_classical.json

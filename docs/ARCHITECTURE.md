@@ -8,7 +8,7 @@ veja [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ```
 sync (Pixabay/Jamendo) ─┐
-                        ├─→ generate (Short) ──→ upload (YouTube) ──→ cross-post (TikTok/Reels)
+                        ├─→ generate (Short) ──→ upload (YouTube)
                         │                              │
                         │                              └─→ analytics (views/likes)
                         │                                    │
@@ -28,12 +28,11 @@ sync (Pixabay/Jamendo) ─┐
 3. **Upload** (`upload_youtube.py`) publica no YouTube, anexa caption track,
    adiciona a playlists e grava `_data/video_tags.json` (cena/padrão de título
    que geraram cada vídeo).
-4. **Cross-post** (`upload_tiktok.py`, `upload_reels.py`) publica o mesmo Short
-   no TikTok (via Playwright) e no Instagram Reels logo após o upload no
-   YouTube, disparado pelo workflow `cross-post.yml`.
-5. **Analytics** (`scripts/collect_analytics.py`) coleta views/likes semanalmente,
-   cruza com `video_tags.json` e grava pesos em `_data/scene_performance.json` e
-   `_data/title_pattern_performance.json`.
+5. **Analytics** (`scripts/collect_analytics.py`) coleta views/likes/semana
+   via YouTube Data API v3 e, via **YouTube Analytics API v2**, também
+   `averageViewDuration`, `averageViewPercentage`, `ctr`, `impressions` e
+   `subscribersGained`. Cruza com `video_tags.json` e grava pesos em
+   `_data/scene_performance.json` e `_data/title_pattern_performance.json`.
 6. **Feedback loop**: `utils.content_strategy.scene_for_mood()` e
    `utils.seo_keywords.pick_title_pattern()` leem esses pesos e passam a preferir
    o que performa melhor na geração futura, sem nunca zerar as demais opções.
@@ -78,27 +77,17 @@ sync (Pixabay/Jamendo) ─┐
   intervalo de confiança que penaliza amostras pequenas sem zerá-las.
 - **filelock para estado JSON**: os arquivos em `_data/` sofrem
   read-modify-write de múltiplos scripts e múltiplos jobs do GitHub Actions que
-  rodam sobrepostos (shorts + analytics + cross-post). Sem lock, o último
+  rodam sobrepostos (shorts + analytics). Sem lock, o último
   a salvar vence e mudanças são perdidas silenciosamente. `filelock` é portável
   (Linux/Windows) e leve — não precisa de `fcntl`/`msvcrt`.
-- **Cross-posting via browser automation**: o TikTok não tem uma API pública de
-  upload equivalente à do YouTube; `utils/tiktok_uploader.py` usa Playwright
-  para logar e publicar como um usuário real faria, com sessão persistida em
-  `tiktok_state.json` (cacheada entre runs do `cross-post.yml` via
-  `actions/cache`) para não precisar logar a cada upload.
-- **Rastreio de cross-posting independente por plataforma**: `upload_tiktok.py`
-  decide o que já foi postado no TikTok pela presença de `tiktok_url` no
-  `.json` do vídeo - não pelos campos `published`/`video_id` que
-  `scripts/publish_weekly_batch.py` usa para rastrear publicação no
-  YouTube. São publicações independentes; reusar o filtro do YouTube fazia
-  o cross-posting pular vídeos já publicados lá mesmo sem nunca terem ido
-  pro TikTok.
 - **Multi-canal**: `utils/channel_config.py` abstrai a marca/tags/playlists/prompts
-  por canal. Hoje só `PATA_JAZZ` existe, mas novos canais (`Pata Lofi`,
-  `Pata Classical`...) podem ser adicionados ao registry `CHANNELS` sem mudar os
-  módulos consumidores (`animal_branding`, `playlist_manager`, `seo_keywords`,
-  `upload_youtube`) — eles leem de `active_channel`. Evita duplicar o repo
-  inteiro por canal.
+  por canal. `Pata Jazz`, `Pata Lofi` e `Pata Classical` já estão registrados
+  em `CHANNELS` e cada um tem seus próprios workflows (`pata-{jazz,lofi,classical}-*.yml`).
+  Os módulos consumidores (`animal_branding`, `playlist_manager`, `seo_keywords`,
+  `upload_youtube`) leem de `active_channel`, que pode ser trocado via env var
+  `YOUTUBE_CHANNEL` (default `pata_jazz`) ou via `set_channel()`. Cada canal
+  armazena estado isolado em `_data/<slug>/`; `PATA_JAZZ` mantém `_data/` na raiz
+  por compatibilidade histórica. Evita duplicar o repo inteiro por canal.
 - **Quota tracker**: `utils/quota_tracker.py` rastreia unidades de quota da
   YouTube API em `_data/quota_usage.json` com alerta em 8000/dia (limite 10000).
   `utils/youtube_retry.retry_youtube_call` registra automaticamente o custo por
@@ -142,10 +131,9 @@ sync (Pixabay/Jamendo) ─┐
 | `metadata_engine.py` | Títulos/descrições/hashtags em inglês |
 | `playlist_manager.py` | Playlists automáticas por mood/formato (cache em `_data/playlist_cache.json`) |
 | `quota_tracker.py` | Rastreio de unidades de quota YouTube em `_data/quota_usage.json` |
-| `seo_keywords.py` | SEO do YouTube + `pick_title_pattern` ponderado por performance + hashtags nativas do TikTok (`generate_tiktok_hashtags`) |
+| `seo_keywords.py` | SEO do YouTube + `pick_title_pattern` ponderado por performance |
 | `state_lock.py` | `state_lock()` — lock de arquivo para estado JSON compartilhado |
 | `thumbnail_engine.py` | Geração de thumbnails A/B/C <2MB com shadow RGBA |
-| `tiktok_uploader.py` | Upload no TikTok via Playwright (login + storage_state persistido) |
 | `video_builder.py` | Pipeline: assets → FFmpeg (multi-clip + xfade) → validação → thumbnail |
 | `video_validator.py` | Validação técnica (resolução, duração, codecs) via ffprobe |
 | `youtube_oauth.py` | OAuth YouTube (`youtube_token.json` ou `YOUTUBE_TOKEN`) |
@@ -157,8 +145,8 @@ sync (Pixabay/Jamendo) ─┐
 |--------|------------------|
 | `batch_generate.py` | Geração em lote (N shorts de uma vez) |
 | `cleanup_youtube.py` | Remove do canal os vídeos legados de horizontal/live (uso pontual) |
-| `collect_analytics.py` | Coleta views/likes semanal; alimenta feedback loop (scene/title_pattern) |
-| `generate_dashboard.py` | Dashboard HTML autocontido a partir de `_data/` |
+| `collect_analytics.py` | Coleta views/likes/semana + métricas YouTube Analytics API v2 (retention/CTR/impressions/inscritos); alimenta feedback loop (scene/title_pattern) |
+| `generate_dashboard.py` | Dashboard HTML autocontido a partir de `_data/`; exibe métricas de retention, CTR, impressions e inscritos ganhos |
 | `generate_pata_jazz_long.py` | Long-form Loop & Relax (1920×1080, 10-45min, mood relax) |
 | `healthcheck.py` | Verifica dependências e tokens do ambiente |
 | `predict_views.py` | Treina regressão linear para prever views nos primeiros 7 dias |
@@ -174,25 +162,33 @@ sync (Pixabay/Jamendo) ─┐
 |---------|------------------|
 | `generate_pata_jazz_short.py` | Shorts verticais 1080×1920, ~35s, multi-clip + xfade + ASS overlay |
 | `upload_youtube.py` | Upload de vídeo gravado (insert + caption + playlist) |
-| `upload_tiktok.py` | Cross-posting no TikTok via Playwright |
-| `upload_reels.py` | Cross-posting no Instagram Reels |
 
 ## Workflows
 
 | Workflow | Trigger | O que faz |
 |----------|---------|-----------|
 | `ci.yml` | `push`/`pull_request` em `main` | ruff, compile, pytest+cov, pip-audit, mypy (advisory), bandit |
-| `pata-jazz-shorts.yml` | cron horário (minuto 7, `7 * * * *` UTC) / manual | Gera e publica 1 Short no YouTube |
-| `cross-post.yml` | `workflow_run` (após `pata-jazz-shorts.yml`) / manual | Cross-posta o Short mais recente para TikTok e Reels |
-| `pata-jazz-engagement.yml` | cron horário (minuto 37, `37 * * * *` UTC) / manual | Responde a comentários do canal (canal vivo) |
-| `pata-jazz-sync.yml` | cron 2x/semana (Ter e Sex 06:00 UTC) / manual | Sync b-roll + jazz + evict caches antigos |
-| `pata-jazz-analytics.yml` | cron semanal Seg 06:00 UTC / manual | Coleta analytics, gera dashboard, publica no GitHub Pages |
-| `pata-jazz-long.yml` | cron semanal Dom 01:13 UTC / manual | Gera e publica 1 long-form Loop & Relax (10-45min) |
-| `pata-jazz-identity.yml` | cron semanal Seg 02:23 UTC / manual | Atualiza about/keywords do canal (identidade viva) |
-| `pata-jazz-batch.yml` | só manual (`workflow_dispatch`) | Gera N shorts em lote |
-| `pata-jazz-weekly.yml` | só manual (`all`/`generate`/`publish`) | Lote semanal: 35 shorts, publica 6/dia |
+| `ci.yml` | `push`/`pull_request` em `main` | ruff, compile, pytest+cov, pip-audit, mypy (advisory), bandit |
+| `pata-jazz-shorts.yml` | cron horário (minuto 7, `7 * * * *` UTC) / manual | Gera e publica 1 Short no YouTube (Pata Jazz) |
+| `pata-jazz-engagement.yml` | cron horário (minuto 37, `37 * * * *` UTC) / manual | Responde a comentários do canal (Pata Jazz) |
+| `pata-jazz-sync.yml` | cron 2x/semana (Ter e Sex 06:00 UTC) / manual | Sync b-roll + jazz + evict caches antigos (Pata Jazz) |
+| `pata-jazz-analytics.yml` | cron semanal Seg 06:00 UTC / manual | Coleta analytics, gera dashboard, publica no GitHub Pages (Pata Jazz) |
+| `pata-jazz-long.yml` | cron semanal Dom 01:13 UTC / manual | Gera e publica 1 long-form Loop & Relax (10-45min) (Pata Jazz) |
+| `pata-jazz-identity.yml` | cron semanal Seg 02:23 UTC / manual | Atualiza about/keywords do canal (Pata Jazz) |
+| `pata-jazz-batch.yml` | só manual (`workflow_dispatch`) | Gera N shorts em lote (Pata Jazz) |
+| `pata-jazz-weekly.yml` | só manual (`all`/`generate`/`publish`) | Lote semanal: 35 shorts, publica 6/dia (Pata Jazz) |
+| `pata-lofi-shorts.yml` | cron horário / manual | Gera e publica 1 Short no YouTube (Pata Lofi) |
+| `pata-lofi-engagement.yml` | cron horário / manual | Responde a comentários do canal (Pata Lofi) |
+| `pata-lofi-analytics.yml` | cron semanal / manual | Coleta analytics + dashboard (Pata Lofi) |
+| `pata-lofi-long.yml` | cron semanal / manual | Gera e publica 1 long-form (Pata Lofi) |
+| `pata-lofi-identity.yml` | cron semanal / manual | Atualiza about/keywords do canal (Pata Lofi) |
+| `pata-classical-shorts.yml` | cron horário / manual | Gera e publica 1 Short no YouTube (Pata Classical) |
+| `pata-classical-engagement.yml` | cron horário / manual | Responde a comentários do canal (Pata Classical) |
+| `pata-classical-analytics.yml` | cron semanal / manual | Coleta analytics + dashboard (Pata Classical) |
+| `pata-classical-long.yml` | cron semanal / manual | Gera e publica 1 long-form (Pata Classical) |
+| `pata-classical-identity.yml` | cron semanal / manual | Atualiza about/keywords do canal (Pata Classical) |
 | `cleanup-youtube.yml` | só manual (`workflow_dispatch`, `dry_run`) | Remove vídeos legados de horizontal/live do canal |
-| `oauth-token-refresh.yml` | cron domingo 02:00 UTC / manual | Renova o `access_token` e atualiza o secret `YOUTUBE_TOKEN` via `gh secret set` (requer secret `GH_PAT`) |
+| `oauth-token-refresh.yml` | cron domingo 02:00 UTC / manual | Renova o `access_token` e atualiza o secret do canal ativo via `gh secret set` (requer secret `GH_PAT`) |
 | `release.yml` | cron domingo 00:00 UTC / manual | Gera tag `vYYYY-MM-DD` + release notes a partir de commits `feat:`/`fix:`/`security:` |
 
 ## Estado persistente (`_data/`)
@@ -211,7 +207,7 @@ sync (Pixabay/Jamendo) ─┐
 | `comments_responded.json` | `utils/comment_responder.py` (a cada resposta) | `utils/comment_responder.select_comments_to_reply()` (anti-repeat/rate-limit) | sim |
 | `used_titles.json` | `utils/seo_keywords.record_used_title()` (no upload) | `utils/seo_keywords.title_is_too_repetitive()` (anti-repeat de títulos) | sim |
 | `identity.json` | `utils/channel_identity.py` (a cada atualização) | `utils/channel_identity.run_identity_update()` (trava de 1x/semana) | sim |
-| `tiktok_posts.json` | `utils/tiktok_uploader._record_tiktok_post()` (a cada post publicado) | `scripts/generate_dashboard.py` (seção "Cross-posting TikTok") | sim |
+| `_data/<slug>/*.json` | mesmos scripts acima | mesmos scripts acima, quando `YOUTUBE_CHANNEL=<slug>` | sim |
 
 > **Nota sobre persistência entre runs:** os arquivos com lock (JSON de estado)
   são restaurados/persistidos entre runs do GitHub Actions via `actions/cache`

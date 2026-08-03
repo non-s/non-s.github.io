@@ -1,4 +1,4 @@
-name: "Pata Jazz - Engajamento (Comentarios)"
+name: "Pata Classical - Engajamento (Comentarios)"
 
 on:
   schedule:
@@ -18,13 +18,13 @@ permissions:
   contents: read
 
 concurrency:
-  group: pata-jazz-engagement
+  group: pata-classical-engagement
   cancel-in-progress: false
 
 jobs:
   respond-comments:
-    name: "Responder comentarios dos videos"
-    if: ${{ vars.PATA_JAZZ_ENABLED == '1' && vars.PATA_JAZZ_COMMENTS_ENABLED == '1' }}
+    name: "Responder comentarios dos videos Pata Classical"
+    if: ${{ vars.PATA_CLASSICAL_ENABLED == '1' && vars.PATA_CLASSICAL_COMMENTS_ENABLED == '1' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
@@ -41,30 +41,29 @@ jobs:
       - name: "Restaurar token e caches"
         uses: ./.github/actions/restore-token-and-cache
         with:
-          youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
-          channel: pata_jazz
+          youtube-token: ${{ secrets.YOUTUBE_TOKEN_CLASSICAL }}
       - name: "Restaurar estado de respostas"
         # Sem cache, cada run comecaria do zero e responderia de novo o que
         # ja respondeu (spam de respostas). O estado persiste entre runs.
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
-          path: _data/comments_responded.json
+          path: _data/pata_classical/comments_responded.json
           key: engagement-comments-${{ github.run_id }}
           restore-keys: engagement-comments-
       - name: "Responder comentarios"
         env:
-          YOUTUBE_CHANNEL: pata_jazz
+          YOUTUBE_CHANNEL: pata_classical
         run: python scripts/respond_comments.py
       - name: "Upload artifacts (log de erros)"
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: engagement-output-${{ github.run_id }}
+          name: pata-classical-engagement-output-${{ github.run_id }}
           path: |
             _videos/last_error.txt
-            _data/comments_responded.json
+            _data/pata_classical/comments_responded.json
           if-no-files-found: ignore
           retention-days: 7
       - name: "Apagar token"
         if: always()
-        run: rm -f youtube_token.json
+        run: rm -f youtube_token_classical.json

@@ -17,29 +17,27 @@ class TestBuildOverlayFilter:
         assert "alpha='if(lt(t," in result
         assert "enable='between(t,0," in result
 
-    def test_uses_bold_font(self):
-        """O ':' de "style=Bold" precisa vir escapado com barra invertida -
-        aspas simples nao protegem ':' no parser de opcoes do FFmpeg (bug
-        real de producao: sem o escape, TODA geracao de Short falhava com
-        "Error applying option 'style' to filter 'drawtext': Option not
-        found" - reproduzido e confirmado com FFmpeg de verdade)."""
+    def test_uses_bundled_fontfile(self):
+        """Agora usamos fontfile apontando para a fonte empacotada no repo,
+        evitando depender de fontconfig ou do nome 'Arial:style=Bold' no
+        runner."""
         result = video_builder._build_overlay_filter("hello", 1920)
-        assert "font='Arial\\:style=Bold'" in result
+        assert "fontfile=" in result
+        assert "Roboto-Bold.ttf" in result
 
     def test_has_semi_transparent_box_for_legibility(self):
         result = video_builder._build_overlay_filter("hello", 1920)
         assert "box=1" in result
         assert "boxcolor=black@0.35" in result
 
-    def test_escapes_special_characters_in_hook(self):
+    def test_sanitizes_special_characters_in_hook(self):
         result = video_builder._build_overlay_filter("it's: cute", 1920)
-        # Aspas simples viram a sequencia fecha-aspas/aspas-escapada/reabre-aspas
-        # ("'\''") - a unica forma valida do parser de filtergraph do FFmpeg.
-        # Um "\'" direto dentro das aspas (bug real de producao corrigido aqui)
-        # fecha a citacao no lugar errado e corrompe o resto do filter_complex.
-        assert "text='it'\\''s: cute'" in result
-        # Dois-pontos NAO precisam de escape: ja protegidos pelas aspas simples
-        # que envolvem o valor inteiro.
+        # FFmpeg drawtext nao aceita aspas simples dentro do valor. A sanitizacao
+        # troca apostrofo por caractere tipografico e ':' por '\\:'.
+        assert "it’s" in result
+        assert "\\:" in result
+        # Caracteres perigosos nao devem aparecer soltos.
+        assert "'" not in result.split("text=")[1]
 
     def test_y_position_stays_within_jitter_range(self):
         for _ in range(30):
@@ -65,9 +63,10 @@ class TestBuildEndcardFilter:
         # CTA aparece nos ultimos ~2.2s: enable gte(t, 57.8)
         assert "enable='gte(t,57.8" in result
 
-    def test_bold_font_escaped(self):
+    def test_uses_bundled_fontfile(self):
         result = video_builder._build_endcard_filter(1920, 30)
-        assert "font='Arial\\:style=Bold'" in result
+        assert "fontfile=" in result
+        assert "Roboto-Bold.ttf" in result
 
     def test_has_background_box_for_legibility(self):
         result = video_builder._build_endcard_filter(1920, 30)

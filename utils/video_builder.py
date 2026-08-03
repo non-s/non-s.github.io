@@ -24,6 +24,7 @@ from typing import Literal, Protocol
 from utils.animal_branding import detect_animal, hook_for_scene, random_scene
 from utils.caption_engine import generate_ass, save_ass
 from utils.ffmpeg_helpers import get_video_duration, run_ffmpeg
+from utils.font_config import font_path
 from utils.media_pool import ensure_dirs, pick_audio, pick_videos, pool_stats
 from utils.metadata_engine import clean_title, generate_metadata
 from utils.thumbnail_engine import make_long_thumbnail, make_short_thumbnail, winning_thumbnail_variant
@@ -81,29 +82,18 @@ def _build_video_filter(spec: VideoSpec) -> str:
 def _build_overlay_filter(hook: str, height: int) -> str:
     """Constrói filtro drawtext para mostrar o hook nos primeiros segundos.
 
-    Fonte bold, caixa semi-transparente atras do texto (legibilidade sobre
-    qualquer fundo - padrao comum em Shorts/Reels/TikTok) e fade in/out
-    real via alpha animado (a versao anterior so tinha um corte abrupto em
-    `enable`, apesar do docstring prometer fade).
+    Fonte bold empacotada, caixa semi-transparente atras do texto
+    (legibilidade sobre qualquer fundo) e fade in/out real via alpha animado.
     """
-    # O valor inteiro fica entre aspas simples (protege : , [ ] ; do parser
-    # de filtergraph do FFmpeg), entao dentro delas tudo e literal - inclusive
-    # barra invertida. A UNICA excecao e a propria aspas simples, que nao
-    # pode aparecer dentro de aspas simples: precisa fechar a citacao,
-    # inserir uma aspas escapada fora dela e reabrir a citacao (`'\''`).
-    # Um `\'` direto dentro das aspas (versao anterior) NAO e valido: o
-    # FFmpeg fecha a citacao no primeiro `'` (o backslash e tomado como
-    # texto literal), corrompendo o resto do filter_complex. Bug real
-    # observado em producao: hooks com apostrofo (ex.: "Cat's Cozy Relax
-    # Moment") faziam ~40-45% dos runs agendados falharem com "No such
-    # filter: '0'" / "Filter not found".
-    safe_hook = hook.replace("'", "'\\''")
+    # O valor do texto fica entre aspas simples. Dois caracteres problematicos
+    # sao normalizados ANTES de envolver em aspas:
+    # - apostofo ASCII (') vira apostrofo tipografico (’), evitando a
+    #   sequencia de escape `\'` que e instavel em algumas builds do FFmpeg;
+    # - dois-pontos (:) e escapado como `\:` porque o parser de opcoes do
+    #   FFmpeg o splita mesmo dentro de aspas simples quando fontfile= e usado.
+    safe_hook = hook.replace("'", "’").replace(":", "\\:")
     fade = _HOOK_FADE_SECONDS
     hold_end = _HOOK_ENABLE_SECONDS - fade
-    # Virgulas aqui NAO precisam de escape: o valor inteiro ja esta entre
-    # aspas simples (protege da quebra de filtro do parser externo do
-    # FFmpeg); o eval interno de alpha/x/y espera virgula literal como
-    # separador de argumento de if()/lt(). Mesmo padrao do `enable=` abaixo.
     alpha_expr = (
         f"if(lt(t,{fade}),t/{fade},"
         f"if(lt(t,{hold_end}),1,"
@@ -114,18 +104,7 @@ def _build_overlay_filter(hook: str, height: int) -> str:
     y_pos = height - 350 + random.randint(-40, 40)
     return (
         f"drawtext=text='{safe_hook}'"
-        # Mesma familia (Arial, com substituicao via fontconfig) usada pelo
-        # estilo ASS em caption_engine.py - ja comprovada disponivel em CI.
-        # O ':' de "style=Bold" precisa de escape com barra invertida MESMO
-        # dentro das aspas simples - aspas simples NAO protegem ':' no
-        # parser de opcoes do FFmpeg (e o separador key:value e splitado
-        # antes das aspas serem consideradas). Sem o escape, o FFmpeg lia
-        # "style=Bold" como se fosse uma opcao separada do filtro drawtext
-        # (que nao existe) e falhava com "Option not found" - bug real que
-        # quebrou 100% das geracoes de Short em producao apos essa feature
-        # entrar (nao pego pelos testes, que nunca chamam o FFmpeg de
-        # verdade).
-        f":font='Arial\\:style=Bold'"
+        f":fontfile='{font_path()}'"
         f":fontsize=56"
         f":fontcolor=white"
         f":shadowcolor=black:shadowx=2:shadowy=2"
@@ -155,7 +134,7 @@ def _build_endcard_filter(height: int, duration: int) -> str:
     """
     if duration <= _ENDCARD_SECONDS:
         raise ValueError("End-card exige duração maior que o próprio CTA.")
-    safe = random.choice(_ENDCARD_CTAS).replace("'", "'\\''")
+    safe = random.choice(_ENDCARD_CTAS).replace("'", "’").replace(":", "\\:")
     start = float(duration) - _ENDCARD_SECONDS
     fade = 0.25
     # Fade-in curto ao entrar; sem fade-out (o vídeo acaba logo depois).
@@ -165,7 +144,7 @@ def _build_endcard_filter(height: int, duration: int) -> str:
     y_pos = height - 300
     return (
         f"drawtext=text='{safe}'"
-        f":font='Arial\\:style=Bold'"
+        f":fontfile='{font_path()}'"
         f":fontsize=42"
         f":fontcolor=white"
         f":shadowcolor=black:shadowx=2:shadowy=2"

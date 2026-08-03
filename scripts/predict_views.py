@@ -36,11 +36,13 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from utils.log_config import configure_logging
+from utils.paths import data_dir, ensure_data_dir
 from utils.state_lock import state_lock
 
 log = logging.getLogger(__name__)
 
-DATA_DIR = ROOT / "_data"
+DATA_DIR = data_dir()
+ensure_data_dir()
 ANALYTICS_FILE = DATA_DIR / "analytics.json"
 VIDEO_TAGS_FILE = DATA_DIR / "video_tags.json"
 MODEL_FILE = DATA_DIR / "view_predictor.json"

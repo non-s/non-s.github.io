@@ -7,7 +7,6 @@ def test_import_generators():
     for name in [
         "generate_pata_jazz_short",
         "upload_youtube",
-        "upload_tiktok",
     ]:
         mod = importlib.import_module(name)
         assert mod is not None

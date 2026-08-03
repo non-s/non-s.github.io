@@ -319,7 +319,7 @@ def run_comment_engagement(
     report = {"fetched": len(comments), "candidates": 0, "replied": 0, "failed": 0}
 
     # Estado com lock: lemos e gravamos o mesmo arquivo, protegendo contra
-    # runs sobrepostas (cross-post + analytics + comentarios podem rodar juntos).
+    # runs sobrepostas (analytics + comentarios podem rodar juntos).
     state_file = _state_file()
     with state_lock(state_file):
         state = _load_state()
