@@ -46,7 +46,7 @@ class TestFeaturizeOneHot:
         patterns = ["pat-a", "pat-b"]
         vec = pv._featurize("cat", "pat-a", hour=10, day_of_week=0, scenes=scenes, title_patterns=patterns)
         # bias + (scenes-1) + (patterns-1) + hour + dow + dom + month +
-        # scene_x_hour (scenes-1 * 2 buckets) = 1+1+1+1+1+1+1+1+2 = 9.
+        # ctr + avp + scene_x_hour (scenes-1 * 2 buckets) = 1+1+1+1+1+1+1+1+1+1+2 = 11.
         # Primeira cena (cat) e primeiro padrão (pat-a) são a referência
         # (dummy variable trap) — não ganham coluna; suas contribuições
         # ficam implícitas no bias.
@@ -57,9 +57,11 @@ class TestFeaturizeOneHot:
         assert vec[4] == 0.0  # day_of_week=0
         assert vec[5] == 1.0 / 31.0  # day_of_month default=1
         assert vec[6] == 1.0 / 12.0  # month default=1
+        assert vec[7] == 0.0  # ctr default=0
+        assert vec[8] == 0.0  # avp default=0
         # scene_x_hour: 1 (scenes-1) * 2 (buckets-1) = 2 colunas (dog x tarde/noite)
         # hour=10 -> bucket=manha (referencia, omitido) -> ambas 0.
-        assert vec[7:9] == [0.0, 0.0]
+        assert vec[9:11] == [0.0, 0.0]
 
     def test_unknown_scene_yields_zero_one_hot(self):
         # "cat" é a referência (omitida); "alien" não está no vocabulário
@@ -70,11 +72,11 @@ class TestFeaturizeOneHot:
 
     def test_hour_and_day_are_scalar(self):
         vec = pv._featurize("cat", "pat", hour=23, day_of_week=6, scenes=["cat"], title_patterns=["pat"])
-        # bias + 0 scene + 0 pattern + hour + dow + dom + month + 0 scene_x_hour
-        # = 1 + 4 escalares + 0 interacoes (1 cena = referencia).
+        # bias + 0 scene + 0 pattern + hour + dow + dom + month + ctr + avp + 0 scene_x_hour
+        # = 1 + 6 escalares + 0 interacoes (1 cena = referencia).
         # Normalizados para [0,1]: hour=23 -> 1.0, dow=6 -> 1.0.
-        assert vec[-4] == 1.0  # hour
-        assert vec[-3] == 1.0  # day_of_week
+        assert vec[-6] == 1.0  # hour
+        assert vec[-5] == 1.0  # day_of_week
 
     def test_case_insensitive_scene(self):
         # 2 cenas; cat é referência. dog (segunda) ganha coluna 1.
@@ -83,18 +85,23 @@ class TestFeaturizeOneHot:
 
     def test_day_of_month_normalized(self):
         vec = pv._featurize("cat", "pat", 0, 0, scenes=["cat"], title_patterns=["pat"], day_of_month=15, month=6)
-        assert vec[-2] == 15.0 / 31.0
-        assert vec[-1] == 6.0 / 12.0
+        assert vec[-4] == 15.0 / 31.0
+        assert vec[-3] == 6.0 / 12.0
 
     def test_month_normalized(self):
         vec = pv._featurize("cat", "pat", 0, 0, scenes=["cat"], title_patterns=["pat"], day_of_month=1, month=12)
-        assert vec[-1] == 12.0 / 12.0
+        assert vec[-3] == 12.0 / 12.0
+
+    def test_ctr_avp_normalized(self):
+        vec = pv._featurize("cat", "pat", 0, 0, scenes=["cat"], title_patterns=["pat"], ctr=0.25, avp=0.8)
+        assert vec[-2] == 0.5  # ctr 0.25 / 0.5
+        assert vec[-1] == 0.8  # avp 0.8 / 1.0
 
     def test_scene_x_hour_interaction(self):
         """scene_x_hour one-hot: dog (segunda cena) x tarde (segundo bucket)
         ativa quando cena=dog e hour=14 (tarde)."""
         vec = pv._featurize("dog", "pat", 14, 0, scenes=["cat", "dog"], title_patterns=["pat"])
-        # Ultimas 2 colunas: scene_x_hour:dog:tarde, scene_x_hour:dog:noite.
+        # scene_x_hour:dog:tarde ativa (últimas colunas após ctr/avp).
         assert vec[-2] == 1.0  # dog x tarde
         assert vec[-1] == 0.0  # dog x noite
 
@@ -280,7 +287,7 @@ class TestNewFeaturesAndBackwardCompat:
             }
         )
 
-        # len(vec) novo > len(weights) antigo -> fallback overall_avg.
+        # len(vec) novo (inclui ctr/avp) > len(weights) antigo -> fallback overall_avg.
         pred = pv.predict_views("cat", "pat-a", 10, 0)
         assert pred == 99.0
 

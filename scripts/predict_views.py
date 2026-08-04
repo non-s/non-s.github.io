@@ -28,6 +28,7 @@ from __future__ import annotations
 
 import json
 import logging
+import math
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
@@ -117,8 +118,32 @@ def _collect_training_samples() -> list[dict]:
 
         views_now = int(video.get("views", 0) or 0)
         views_at_day7 = views_now / days_since * 7.0
-        if views_at_day7 <= 0:
+        if views_at_day7 <= 0 or not math.isfinite(views_at_day7):
             continue
+
+        # Métricas de retenção/CTR do YouTube Analytics API, quando disponíveis.
+        retention = video.get("retention_metrics") if isinstance(video, dict) else None
+        if retention is None:
+            retention = tag.get("retention_metrics") if isinstance(tag, dict) else None
+        ctr = 0.0
+        avp = 0.0
+        if isinstance(retention, dict):
+            ctr_raw = retention.get("ctr") or retention.get("CTR") or 0
+            try:
+                ctr = float(ctr_raw) if ctr_raw is not None else 0.0
+            except Exception:
+                ctr = 0.0
+            avp_raw = retention.get("averageViewPercentage") or retention.get("average_view_percentage") or 0
+            try:
+                avp = float(avp_raw) if avp_raw is not None else 0.0
+            except Exception:
+                avp = 0.0
+
+        # Target enriquecido: views projetadas ponderadas por CTR e retenção.
+        # Intuição: vídeos com CTR/retention maiores tendem a continuar
+        # recebendo distribuição além da primeira semana.
+        engagement_multiplier = 1.0 + (ctr * 2.0) + (avp * 0.01)
+        weighted_y = views_at_day7 * engagement_multiplier
 
         samples.append(
             {
@@ -128,7 +153,9 @@ def _collect_training_samples() -> list[dict]:
                 "day_of_week": published.weekday(),
                 "day_of_month": published.day,
                 "month": published.month,
-                "y": views_at_day7,
+                "ctr": ctr,
+                "avp": avp,
+                "y": weighted_y,
             }
         )
     return samples
@@ -150,19 +177,16 @@ def _feature_names(scenes: list[str], title_patterns: list[str]) -> list[str]:
     A cena/padrão omitidos têm peso implícito no bias; os pesos das demais
     representam o desvio relativo à referência.
 
-    Features calendário adicionais (backward compat: modelo antigo sem
-    essas features ainda carrega via fallback overall_avg em predict_views
-    quando len(vec) != len(weights)):
-    - day_of_month (1-31, normalizado /31)
-    - month (1-12, normalizado /12)
+    Features adicionais:
+    - hour_of_day, day_of_week, day_of_month, month (normalizados)
+    - ctr (click-through rate, bonus de engajamento)
+    - avp (average view percentage, bonus de retenção)
     - scene_x_hour: interação one-hot scene × hour_bucket [manhã/tarde/noite]
-      (uma coluna por combinação cena × bucket vista nos dados, exceto as
-      de referência — primeira cena × primeiro bucket fica implícita no
-      bias para evitar colinearidade)."""
+      (referência implícita no bias para evitar colinearidade)."""
     names = ["bias"]
     names += [f"scene:{c}" for c in scenes[1:]]
     names += [f"title_pattern:{p}" for p in title_patterns[1:]]
-    names += ["hour_of_day", "day_of_week", "day_of_month", "month"]
+    names += ["hour_of_day", "day_of_week", "day_of_month", "month", "ctr", "avp"]
     # Interacoes scene x hour_bucket: primeira cena e primeiro bucket sao
     # referencia (implicitos no bias).
     for c in scenes[1:]:
@@ -193,27 +217,19 @@ def _featurize(
     *,
     day_of_month: int = 1,
     month: int = 1,
+    ctr: float = 0.0,
+    avp: float = 0.0,
 ) -> list[float]:
     """Constrói o vetor de features para uma amostra/previsão. A primeira
     cena/padrão são a referência (não ganham coluna) — ver _feature_names.
 
     hour_of_day e day_of_week sao normalizados para [0, 1] para que nao
-    dominem os pesos dos one-hot (0/1) por pura escala: sem normalizacao,
-    hour=23 tem magnitude 23x maior que qualquer one-hot, e o bias fica
-    distorcido tentando compensar — a regressao atribui peso negativo a
-    hour mesmo quando nao ha correlacao real, e a previsao absoluta vira
-    ruido dependente do horario consultado em vez da contribuicao da
-    cena/padrao.
+    dominem os pesos dos one-hot (0/1) por pura escala. ctr e avp também
+    são normalizados para aproximadamente [0, 1] (assume ctr<=0.5, avp<=1.0).
 
-    day_of_month (1-31) e month (1-12) sao normalizados da mesma forma
-    (/31 e /12). scene_x_hour e a interacao one-hot cena × hour_bucket
-    (manha/tarde/noite), com a primeira cena e primeiro bucket (manha)
-    como referencia implicita no bias.
-
-    Argumentos day_of_month/month sao opcionais (default=1) para backward
-    compat com chamadas antigas que nao passam esses valores; modelos
-    salvos antigos (sem essas features) ainda funcionam via fallback
-    overall_avg em predict_views quando len(vec) != len(weights)."""
+    Argumentos opcionais (default=1/0) para backward compat com chamadas
+    antigas; modelos salvos antigos ainda funcionam via fallback overall_avg
+    quando len(vec) != len(weights)."""
     vec = [1.0]  # bias
     scene_l = scene.strip().lower()
     for c in scenes[1:]:  # primeira = referência, omitida
@@ -224,6 +240,8 @@ def _featurize(
     vec.append(float(day_of_week) / 6.0)
     vec.append(float(day_of_month) / 31.0)
     vec.append(float(month) / 12.0)
+    vec.append(min(float(ctr), 0.5) / 0.5)
+    vec.append(min(float(avp), 1.0) / 1.0)
     bucket = _hour_bucket(hour)
     for c in scenes[1:]:
         for b in _HOUR_BUCKETS[1:]:  # manha = referencia, omitido
@@ -323,6 +341,8 @@ def train_model() -> dict:
             title_patterns,
             day_of_month=s.get("day_of_month", 1),
             month=s.get("month", 1),
+            ctr=s.get("ctr", 0.0),
+            avp=s.get("avp", 0.0),
         )
         for s in samples
     ]
@@ -375,6 +395,8 @@ def predict_views(
     *,
     day_of_month: int | None = None,
     month: int | None = None,
+    ctr: float = 0.0,
+    avp: float = 0.0,
 ) -> float:
     """Prevê views nos primeiros 7 dias após o upload de um short com a
     cena/padrão/horário dados, lendo o modelo salvo em MODEL_FILE.
@@ -382,8 +404,8 @@ def predict_views(
     Sem modelo treinado (ou modelo vazio/n_samples==0) retorna a média
     geral (overall_avg), que é 0.0 quando nunca houve dados.
 
-    day_of_month/month sao opcionais (default = data atual UTC) para
-    backward compat com callers antigos. Modelo antigo sem essas features
+    day_of_month/month/ctr/avp sao opcionais (default = data atual ou 0)
+    para backward compat com callers antigos. Modelo antigo sem essas features
     ainda funciona: se len(vec) != len(weights), cai no fallback overall_avg.
     """
     model = load_model()
@@ -407,6 +429,8 @@ def predict_views(
         title_patterns,
         day_of_month=day_of_month,
         month=month,
+        ctr=ctr,
+        avp=avp,
     )
     if len(vec) != len(weights):
         # Vocabulário mudou desde o treino (ou modelo antigo sem as novas

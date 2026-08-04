@@ -184,7 +184,7 @@ def _upload_video_inner(
     tags = _build_tags(meta.get("scene", ""), meta.get("hashtags"))
     thumbnail = _meta_path(meta, "thumbnail")
 
-    status = {"privacyStatus": privacy, "selfDeclaredMadeForKids": False}
+    status: dict = {"privacyStatus": privacy, "selfDeclaredMadeForKids": False}
     if publish_at:
         status["publishAt"] = publish_at
         privacy = "private"  # agendado exige privacy private no upload
