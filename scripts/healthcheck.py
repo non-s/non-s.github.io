@@ -197,14 +197,14 @@ def run_healthcheck(mode: str = "all") -> int:
     log.info("Healthcheck Pata Jazz")
     log.info("=" * 60)
     for check in checks:
-        status = "✅" if check["ok"] else "❌"
+        status = "[OK]" if check["ok"] else "[FAIL]"
         log.info("%s %s: %s", status, check["name"], check["info"])
 
     all_ok = all(c["ok"] for c in checks)
     if all_ok:
-        log.info("Ambiente pronto para geração e upload (Pata Jazz).")
+        log.info("Ambiente pronto para geracao e upload (Pata Jazz).")
         return 0
-    log.warning("Corrija os itens ❌ antes de executar os geradores (Pata Jazz).")
+    log.warning("Corrija os itens [FAIL] antes de executar os geradores (Pata Jazz).")
     return 1
 
 
