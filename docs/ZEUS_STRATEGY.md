@@ -125,6 +125,7 @@
 | Publicação preditiva | `utils/publish_optimizer.py`, `.github/workflows/pata-jazz-shorts.yml`, `upload_youtube.py` | ✅ |
 | A/B test + analytics | `scripts/collect_analytics.py`, `utils/thumbnail_engine.winning_thumbnail_variant()` | ✅ |
 | Funil de retenção | `utils/video_builder.py`, `utils/caption_engine.py`, `utils/youtube_post_upload.py`, `utils/channel_config.py` | ✅ |
+| Sinais virais enriquecidos | `scripts/collect_analytics.py`, `utils/content_strategy.py` | ✅ |
 
 ---
 

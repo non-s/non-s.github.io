@@ -845,7 +845,7 @@ class TestDetectViralVideos:
         assert virals == []
 
     def test_detects_video_above_10x_median(self):
-        # mediana = 30; 500 > 10*30 = 300 -> viral (factor ~16.67).
+        # mediana = 30; 500 > 8*30 = 240 -> viral (factor ~16.67).
         stats = self._stats([10, 20, 30, 40, 500])
         tags = self._tags([("vid4", "cat", "p1")])
 
@@ -859,6 +859,17 @@ class TestDetectViralVideos:
         assert v["views"] == 500
         assert v["viral_factor"] == round(500 / 30.0, 3)
         assert "detected_at" in v
+
+    def test_detected_signal_includes_ctr_and_avp(self):
+        stats = self._stats([10, 20, 30, 40, 500])
+        stats[-1]["ctr"] = 0.12
+        stats[-1]["averageViewPercentage"] = 0.78
+        tags = self._tags([("vid4", "cat", "p1")])
+
+        virals = collect_analytics.detect_viral_videos(stats, tags)
+
+        assert virals[0]["ctr"] == 0.12
+        assert virals[0]["avp"] == 0.78
 
     def test_untagged_viral_is_detected_with_empty_scene(self):
         """Um viral sem entrada em video_tags ainda e detectado, mas com

@@ -64,7 +64,7 @@ _MAX_TITLE_PATTERN_WEIGHT = 3.0
 # cena nova) e multiplica o peso ja existente (nao substitui).
 # Caminho isolado por canal via data_dir() (channel isolation).
 VIRAL_SIGNALS_FILE = data_dir() / "viral_signals.json"
-_VIRAL_THRESHOLD = 10.0
+_VIRAL_THRESHOLD = 8.0
 
 # Thumbnail A/B testing: apos _THUMBNAIL_ROTATION_DAYS dias, se o video
 # performar abaixo de _THUMBNAIL_ROTATION_THRESHOLD x a mediana de views do
@@ -517,7 +517,7 @@ def detect_viral_videos(
     gerou cada video) e devolve uma lista de sinais para viral_signals.json:
 
         [{"video_id": ..., "scene": ..., "title_pattern": ..., "views": N,
-          "viral_factor": 12.5, "detected_at": "iso"}]
+          "viral_factor": 12.5, "detected_at": "iso", "ctr": 0.05, "avp": 0.55}]
 
     `viral_factor` e a razao views/mediana (quanto acima da mediana o video
     esta). A mediana e calculada sobre todas as views em `stats` (mesmo as
@@ -525,6 +525,10 @@ def detect_viral_videos(
     mascara a deteccao. Videos sem tag (fora do mapeamento video_tags) ainda
     sao detectados como virais, mas com scene/title_pattern vazios - o boost
     de cena so se aplica quando a tag existe.
+
+    Retencao/CTR do video (quando presentes em stats, enriquecidos por
+    _collect_retention_metrics) sao copiados para o sinal viral, permitindo
+    comparar nao so "quem bombou" mas "quem reteve/converteu melhor".
     """
     median = _median_views(stats)
     if median <= 0:
@@ -539,16 +543,19 @@ def detect_viral_videos(
         if factor <= threshold:
             continue
         tag = video_tags.get(video["video_id"]) or {}
-        virals.append(
-            {
-                "video_id": video["video_id"],
-                "scene": tag.get("scene", "") if isinstance(tag, dict) else "",
-                "title_pattern": tag.get("title_pattern", "") if isinstance(tag, dict) else "",
-                "views": views,
-                "viral_factor": round(factor, 3),
-                "detected_at": now.isoformat(),
-            }
-        )
+        signal: dict = {
+            "video_id": video["video_id"],
+            "scene": tag.get("scene", "") if isinstance(tag, dict) else "",
+            "title_pattern": tag.get("title_pattern", "") if isinstance(tag, dict) else "",
+            "views": views,
+            "viral_factor": round(factor, 3),
+            "detected_at": now.isoformat(),
+        }
+        if "ctr" in video:
+            signal["ctr"] = video["ctr"]
+        if "averageViewPercentage" in video:
+            signal["avp"] = video["averageViewPercentage"]
+        virals.append(signal)
     return virals
 
 

@@ -115,14 +115,19 @@ def _scene_weights() -> dict[str, float]:
 
 
 def viral_boosted_scenes() -> dict[str, float]:
-    """Le viral_signals.json e retorna um dict scene -> boost weight (ex:
-    2.0) para cenas que apareceram em virais recentes (ultimos
+    """Le viral_signals.json e retorna um dict scene -> boost weight para
+    cenas que apareceram em virais recentes (ultimos
     _VIRAL_BOOST_WINDOW_DAYS dias).
+
+    O boost base continua sendo _VIRAL_BOOST (2.0), mas agora e modulado
+    por engajamento: um viral com CTR alto e/ou AVP alto recebe um peso
+    extra (ate +0.5 cada), refletindo que nao e so volume bruto de views
+    que importa, mas tambem retencao/conversao.
 
     Conservador: so cenas com nome nao-vazio entram. Se o arquivo estiver
     ausente/corrompido, retorna {} (nenhum boost). A janela e medida a
     partir do campo `detected_at` de cada sinal; sinais sem detected_at ou
-    com data invalida sao ignorados (nao entram nem quebram).
+    com data invalida sao ignorados.
     """
     try:
         data = json.loads(_viral_signals_file().read_text(encoding="utf-8"))
@@ -155,7 +160,19 @@ def viral_boosted_scenes() -> dict[str, float]:
             continue
         if dt.astimezone(UTC) < cutoff:
             continue
-        boosted[scene] = _VIRAL_BOOST
+
+        # Boost modulado por engajamento: CTR/AVP altos aumentam o peso.
+        boost = _VIRAL_BOOST
+        try:
+            ctr = float(signal.get("ctr", 0) or 0)
+            avp = float(signal.get("avp", 0) or 0)
+        except Exception:
+            ctr, avp = 0.0, 0.0
+        if ctr > 0.05:
+            boost += 0.3
+        if avp > 0.5:
+            boost += 0.2
+        boosted[scene] = boost
     return boosted
 
 
