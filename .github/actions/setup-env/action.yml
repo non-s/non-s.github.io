@@ -30,3 +30,6 @@ runs:
         pip install --no-cache-dir --upgrade pip
         pip install --no-cache-dir -r ${{ inputs.dev == 'true' && 'requirements-dev.txt' || 'requirements.txt' }}
       shell: bash
+    - name: "Garantir PYTHONPATH na raiz do repo"
+      run: echo "PYTHONPATH=${{ github.workspace }}" >> "$GITHUB_ENV"
+      shell: bash
