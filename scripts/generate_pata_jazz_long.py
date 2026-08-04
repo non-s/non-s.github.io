@@ -36,7 +36,7 @@ DEFAULT_DURATION = 600
 # Faixa usada quando --duration nao e passado: 10-20min. Acima disso o
 # render no CI fica pesado demais para rodar com frequencia; o limite de
 # 45min e aceito via CLI para geracoes manuais.
-DURATION_RANGE = (600, 1200)
+DURATION_RANGE = (900, 1800)
 MIN_DURATION = 600
 MAX_DURATION = 2700
 
@@ -45,19 +45,24 @@ def _pick_duration() -> int:
     return random.randint(*DURATION_RANGE)
 
 
-def _generate_long(duration: int = DEFAULT_DURATION, dry_run: bool = False) -> Path:
+def _generate_long(
+    duration: int = DEFAULT_DURATION,
+    scene: str | None = None,
+    dry_run: bool = False,
+) -> Path:
     """Gera um long-form "Loop & Relax" horizontal (16:9).
 
     Mood sempre 'relax': o formato inteiro e de relaxamento (dormir,
-    estudar, ler). A cena vem do mood via content_strategy.
+    estudar, ler). A cena vem do mood via content_strategy, a menos que
+    seja passada explicitamente.
     """
     if not MIN_DURATION <= duration <= MAX_DURATION:
         raise ValueError(f"Duracao deve estar entre {MIN_DURATION}s e {MAX_DURATION}s.")
     mood = "relax"
-    scene = scene_for_mood(mood)
-    log.info("Long-form: mood=%s, cena=%s, duracao=%ds", mood, scene, duration)
+    chosen_scene = scene if scene else scene_for_mood(mood)
+    log.info("Long-form: mood=%s, cena=%s, duracao=%ds", mood, chosen_scene, duration)
 
-    spec = long_spec(duration=duration, scene=scene, mood=mood)
+    spec = long_spec(duration=duration, scene=chosen_scene, mood=mood)
     return build_pata_jazz_video(
         spec=spec,
         output_dir=OUTPUT_DIR,
@@ -78,6 +83,11 @@ def main() -> int:
             f"{DURATION_RANGE[0]}-{DURATION_RANGE[1]}, max {MAX_DURATION})"
         ),
     )
+    parser.add_argument(
+        "--scene",
+        default=None,
+        help="Cena fixa (ex: sleepy cat). Se omitido, sorteia dentro do mood relax.",
+    )
     parser.add_argument("--dry-run", action="store_true", help="Simula sem executar FFmpeg nem gerar arquivos")
     args = parser.parse_args()
 
@@ -87,7 +97,7 @@ def main() -> int:
     start_time = time.time()
     success = False
     try:
-        _generate_long(duration=duration, dry_run=args.dry_run)
+        _generate_long(duration=duration, scene=args.scene, dry_run=args.dry_run)
         success = True
         return 0
     except Exception as exc:

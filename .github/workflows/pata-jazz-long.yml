@@ -51,10 +51,21 @@ jobs:
       - name: "Sincronizar jazz"
         run: python scripts/sync_jazz_music.py || echo "::warning::Jazz sync falhou"
       - name: "Gerar long-form"
-        run: python scripts/generate_pata_jazz_long.py
+        run: python scripts/generate_pata_jazz_long.py --duration 1200
+      - name: "Escolher slot de publicação otimizado"
+        if: hashFiles('youtube_token.json') != ''
+        run: |
+          slot=$(python -c "from utils.publish_optimizer import pick_publish_time, iso_datetime_from_slot; import json; s=pick_publish_time(min_delay_hours=6); print(json.dumps(s))")
+          echo "SLOT=$slot" >> "$GITHUB_ENV"
+          echo "Slot escolhido: $slot"
       - name: "Upload para YouTube"
         if: hashFiles('youtube_token.json') != ''
-        run: python upload_youtube.py --mode upload --language=en
+        run: |
+          if [ -n "$SLOT" ]; then
+            python upload_youtube.py --mode upload --language=en --publish-at "$SLOT"
+          else
+            python upload_youtube.py --mode upload --language=en
+          fi
       - name: "Upload artifacts"
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
