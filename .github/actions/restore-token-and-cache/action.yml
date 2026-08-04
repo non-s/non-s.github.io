@@ -1,14 +1,10 @@
 name: "Restaurar token YouTube e caches"
-description: "Restaura o token OAuth do YouTube e os caches de b-roll/musica usados pelos workflows Pata Jazz, Pata Lofi e Pata Classical."
+description: "Restaura o token OAuth do YouTube e os caches de b-roll/musica usados pelos workflows Pata Jazz."
 
 inputs:
   youtube-token:
     description: "Secret YOUTUBE_TOKEN (JSON do token OAuth)"
     required: true
-  channel:
-    description: "Slug do canal (pata_jazz, pata_lofi, pata_classical). Define o nome do arquivo de token e o prefixo de cache."
-    required: false
-    default: "pata_jazz"
 
 runs:
   using: "composite"
@@ -17,12 +13,11 @@ runs:
       shell: bash
       env:
         YOUTUBE_TOKEN: ${{ inputs.youtube-token }}
-        TOKEN_FILENAME: ${{ inputs.channel == 'pata_jazz' && 'youtube_token.json' || format('youtube_token_{0}.json', inputs.channel) }}
       run: |
         umask 077
         if [ -n "$YOUTUBE_TOKEN" ]; then
-          printf '%s' "$YOUTUBE_TOKEN" > "$TOKEN_FILENAME"
-          chmod 600 "$TOKEN_FILENAME"
+          printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
+          chmod 600 youtube_token.json
         fi
     - name: "Cache b-roll"
       uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
@@ -47,19 +42,15 @@ runs:
           _data/title_pattern_performance.json
           _data/quota_usage.json
           _data/view_predictor.json
-          _data/pata_lofi/recent_media.json
-          _data/pata_lofi/playlist_cache.json
-          _data/pata_lofi/video_tags.json
-          _data/pata_lofi/scene_performance.json
-          _data/pata_lofi/title_pattern_performance.json
-          _data/pata_lofi/quota_usage.json
-          _data/pata_lofi/view_predictor.json
-          _data/pata_classical/recent_media.json
-          _data/pata_classical/playlist_cache.json
-          _data/pata_classical/video_tags.json
-          _data/pata_classical/scene_performance.json
-          _data/pata_classical/title_pattern_performance.json
-          _data/pata_classical/quota_usage.json
-          _data/pata_classical/view_predictor.json
-        key: ${{ inputs.channel }}-data-${{ github.run_id }}
-        restore-keys: ${{ inputs.channel }}-data-
+        key: pata-jazz-data-${{ github.run_id }}
+        restore-keys: pata-jazz-data-
+    - name: "Cache analytics/dash"
+      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+      with:
+        path: |
+          _data/analytics.json
+          _data/analytics_history.json
+          _dashboard/index.html
+          _site/index.html
+        key: pata-jazz-analytics-${{ github.run_id }}
+        restore-keys: pata-jazz-analytics-

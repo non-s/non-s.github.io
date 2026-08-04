@@ -1,16 +1,8 @@
 """
-utils/channel_config.py — abstracao de multi-canal.
+utils/channel_config.py — configuração do canal Pata Jazz.
 
-Permite rodar multiplos canais (Pata Jazz, e futuros Pata Lofi, Pata
-Classical...) no mesmo repo. Hoje so PATA_JAZZ existe; novos canais podem
-ser adicionados ao registry CHANNELS sem mudar os modulos consumidores
-(animal_branding, playlist_manager, seo_keywords, upload_youtube), que leem
-de `active_channel`.
-
-Backward compat: `active_channel` nasce como PATA_JAZZ com os mesmos
-valores que antes eram hardcoded em cada modulo. Scripts e testes
-existentes continuam funcionando sem mudanca - so chame set_channel()
-se quiser trocar explicitamente.
+Mantém a abstração ChannelConfig para facilitar futuras mudanças, mas hoje
+o projeto opera com um único canal: Pata Jazz.
 """
 
 from __future__ import annotations
@@ -20,16 +12,15 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class ChannelConfig:
-    """Configuracao autocontida de um canal.
+    """Configuração autocontida do canal.
 
-    Cada canal define sua marca, tags, playlists, keywords, prompts de IA
-    e mapeamentos de cena/mood. Tudo que antes era hardcoded "Pata Jazz"
-    em utils.animal_branding, utils.playlist_manager, utils.seo_keywords e
-    upload_youtube vive aqui agora.
+    Define marca, tags, playlists, keywords, prompts de IA e mapeamentos
+    de cena/mood. Tudo que antes era hardcoded "Pata Jazz" em outros módulos
+    vive aqui agora.
     """
 
     name: str  # "Pata Jazz"
-    slug: str  # "pata_jazz" (chave de CHANNELS, usado para _data/<slug>/)
+    slug: str  # "pata_jazz"
     brand_prefix: str  # "Pata Jazz |"
     hashtag_brand: list[str]  # ["#PataJazz", "#CatJazz", ...]
     base_tags: list[str]  # ["Pata Jazz", "cat", "dog", "jazz", ...]
@@ -59,46 +50,20 @@ PATA_JAZZ: ChannelConfig = ChannelConfig(
     },
     seo_keywords={
         "cuteness": [
-            "cute",
-            "adorable",
-            "charming",
-            "sweet",
-            "precious",
-            "lovable",
-            "gentle",
-            "tender",
+            "cute", "adorable", "charming", "sweet",
+            "precious", "lovable", "gentle", "tender",
         ],
         "relaxation": [
-            "relaxing",
-            "calm",
-            "calming",
-            "soothing",
-            "peaceful",
-            "gentle",
-            "cozy",
-            "tranquil",
-            "mellow",
-            "zen",
+            "relaxing", "calm", "calming", "soothing", "peaceful",
+            "gentle", "cozy", "tranquil", "mellow", "zen",
         ],
         "fun": [
-            "funny",
-            "playful",
-            "silly",
-            "energetic",
-            "curious",
-            "spontaneous",
-            "lively",
-            "cheerful",
+            "funny", "playful", "silly", "energetic",
+            "curious", "spontaneous", "lively", "cheerful",
         ],
         "music": [
-            "jazz",
-            "smooth jazz",
-            "relaxing jazz",
-            "ambient music",
-            "jazz instrumental",
-            "coffee shop jazz",
-            "lounge jazz",
-            "soft jazz",
+            "jazz", "smooth jazz", "relaxing jazz", "ambient music",
+            "jazz instrumental", "coffee shop jazz", "lounge jazz", "soft jazz",
         ],
     },
     title_patterns={
@@ -116,7 +81,10 @@ PATA_JAZZ: ChannelConfig = ChannelConfig(
         "diversao": ["playful dog", "cat playing", "puppy playing", "dog relaxing"],
         "relax": ["sleepy cat", "sleepy dog", "cat relaxing", "dog relaxing"],
     },
-    hourly_mood={h: ("diversao" if 6 <= h < 12 else "fofura" if 12 <= h < 18 else "relax") for h in range(24)},
+    hourly_mood={
+        h: ("diversao" if 6 <= h < 12 else "fofura" if 12 <= h < 18 else "relax")
+        for h in range(24)
+    },
     default_description=(
         "Cute cats and dogs with relaxing jazz music - great "
         "background sound for calming an anxious pet, studying, working or sleeping."
@@ -124,174 +92,8 @@ PATA_JAZZ: ChannelConfig = ChannelConfig(
 )
 
 
-PATA_LOFI: ChannelConfig = ChannelConfig(
-    name="Pata Lofi",
-    slug="pata_lofi",
-    brand_prefix="Pata Lofi |",
-    hashtag_brand=["#PataLofi", "#LofiPets", "#LofiCats", "#LofiDogs"],
-    base_tags=["Pata Lofi", "cat", "dog", "lofi", "study", "chill", "beats"],
-    playlists_by_mood={
-        "relax": "Pata Lofi | Relaxar e Dormir",
-        "fofura": "Pata Lofi | Fofura Diaria",
-        "diversao": "Pata Lofi | Pets Felizes",
-    },
-    playlists_by_kind={
-        "short": "Pata Lofi | Shorts",
-    },
-    seo_keywords={
-        "cuteness": [
-            "cute",
-            "adorable",
-            "charming",
-            "sweet",
-            "precious",
-            "lovable",
-            "gentle",
-            "tender",
-        ],
-        "relaxation": [
-            "relaxing",
-            "calm",
-            "calming",
-            "soothing",
-            "peaceful",
-            "gentle",
-            "cozy",
-            "tranquil",
-            "mellow",
-            "zen",
-        ],
-        "fun": [
-            "funny",
-            "playful",
-            "silly",
-            "energetic",
-            "curious",
-            "spontaneous",
-            "lively",
-            "cheerful",
-        ],
-        "music": [
-            "lofi",
-            "lofi hip hop",
-            "lofi beats",
-            "chill beats",
-            "study beats",
-            "lofi instrumental",
-            "lofi background music",
-            "chill lofi",
-            "lofi chill",
-        ],
-    },
-    title_patterns={
-        "short": [
-            "{emoji} {adjetivo} {animal} + {estilo_musical}",
-            "When a {animal} {acao} to {estilo_musical} 🎵",
-            "{adjetivo} {animal} enjoying {estilo_musical} {emoji}",
-            "POV: a {animal} {acao} to your daily {estilo_musical}",
-            "The {adjetivo} {animal} you needed today {emoji}",
-        ],
-    },
-    emojis={"brand": "🐾🎧"},
-    scene_categories={
-        "fofura": ["cat", "kitten", "puppy", "dog", "sleepy cat"],
-        "diversao": ["playful dog", "cat playing", "puppy playing", "dog relaxing"],
-        "relax": ["sleepy cat", "sleepy dog", "cat relaxing", "dog relaxing"],
-    },
-    hourly_mood={h: ("diversao" if 6 <= h < 12 else "fofura" if 12 <= h < 18 else "relax") for h in range(24)},
-    default_description=(
-        "Cute cats and dogs with relaxing lofi hip hop beats - great "
-        "background sound for studying, working, relaxing or sleeping."
-    ),
-)
-
-
-PATA_CLASSICAL: ChannelConfig = ChannelConfig(
-    name="Pata Classical",
-    slug="pata_classical",
-    brand_prefix="Pata Classical |",
-    hashtag_brand=["#PataClassical", "#ClassicalPets", "#PianoCats", "#OrchestraDogs"],
-    base_tags=["Pata Classical", "cat", "dog", "classical", "piano", "orchestra"],
-    playlists_by_mood={
-        "relax": "Pata Classical | Relaxar e Dormir",
-        "fofura": "Pata Classical | Fofura Diaria",
-        "diversao": "Pata Classical | Pets Felizes",
-    },
-    playlists_by_kind={
-        "short": "Pata Classical | Shorts",
-    },
-    seo_keywords={
-        "cuteness": [
-            "cute",
-            "adorable",
-            "charming",
-            "sweet",
-            "precious",
-            "lovable",
-            "gentle",
-            "tender",
-        ],
-        "relaxation": [
-            "relaxing",
-            "calm",
-            "calming",
-            "soothing",
-            "peaceful",
-            "gentle",
-            "cozy",
-            "tranquil",
-            "mellow",
-            "zen",
-        ],
-        "fun": [
-            "funny",
-            "playful",
-            "silly",
-            "energetic",
-            "curious",
-            "spontaneous",
-            "lively",
-            "cheerful",
-        ],
-        "music": [
-            "classical",
-            "piano",
-            "orchestra",
-            "classical music",
-            "classical instrumental",
-            "calm piano",
-            "classical relaxation",
-            "soft classical",
-            "piano background",
-        ],
-    },
-    title_patterns={
-        "short": [
-            "{emoji} {adjetivo} {animal} + {estilo_musical}",
-            "When a {animal} {acao} to {estilo_musical} 🎵",
-            "{adjetivo} {animal} enjoying {estilo_musical} {emoji}",
-            "POV: a {animal} {acao} to your daily {estilo_musical}",
-            "The {adjetivo} {animal} you needed today {emoji}",
-        ],
-    },
-    emojis={"brand": "🐾🎻"},
-    scene_categories={
-        "fofura": ["cat", "kitten", "puppy", "dog", "sleepy cat"],
-        "diversao": ["playful dog", "cat playing", "puppy playing", "dog relaxing"],
-        "relax": ["sleepy cat", "sleepy dog", "cat relaxing", "dog relaxing"],
-    },
-    hourly_mood={h: ("diversao" if 6 <= h < 12 else "fofura" if 12 <= h < 18 else "relax") for h in range(24)},
-    default_description=(
-        "Cute cats and dogs with relaxing classical music - great "
-        "background sound for calming an anxious pet, studying, working or sleeping."
-    ),
-)
-
-
 CHANNELS: dict[str, ChannelConfig] = {
     "pata_jazz": PATA_JAZZ,
-    "pata_lofi": PATA_LOFI,
-    "pata_classical": PATA_CLASSICAL,
 }
 
 active_channel: ChannelConfig = PATA_JAZZ
@@ -300,20 +102,18 @@ active_channel: ChannelConfig = PATA_JAZZ
 def set_channel(name: str) -> None:
     """Troca o canal ativo pelo nome (chave de CHANNELS).
 
-    Levanta KeyError se o canal nao estiver registrado. Use
-    set_channel("pata_jazz") para restaurar o default.
+    Levanta KeyError se o canal não estiver registrado.
     """
     global active_channel
     if name not in CHANNELS:
-        raise KeyError(f"Canal nao registrado: {name!r}. Disponiveis: {sorted(CHANNELS)}")
+        raise KeyError(f"Canal não registrado: {name!r}. Disponíveis: {sorted(CHANNELS)}")
     active_channel = CHANNELS[name]
 
 
 def set_channel_from_env() -> None:
-    """Le YOUTUBE_CHANNEL env var e ativa o canal correspondente.
+    """Lê YOUTUBE_CHANNEL env var e ativa o canal correspondente.
 
-    Nao faz nada se a env var nao estiver definida (mantem Pata Jazz default).
-    Usado no startup dos scripts para suporte multi-canal via workflow.
+    Não faz nada se a env var não estiver definida (mantém Pata Jazz default).
     """
     import os
 

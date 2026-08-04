@@ -107,34 +107,11 @@ ALL_SCENES: list[str] = list(HOOK_BY_SCENE.keys())
 # eram buscados. jazz lento (relax/fofura) + jazz animado (diversao) +
 # lofi jazz (fofura/relax, tom mais contemporaneo) agora tem representacao.
 def _default_music_search_terms() -> list[str]:
-    """Termos de busca Jamendo default para o canal ativo.
+    """Termos de busca Jamendo para o canal Pata Jazz.
 
-    Pata Jazz: jazz clássico e animado. Pata Lofi: lofi / chill beats.
-    Pata Classical: música clássica / piano / orchestra.
+    Mistura jazz clássico (lento e animado) com lofi jazz para cobrir os
+    moods diversao / fofura / relax.
     """
-    slug = active_channel.slug
-    if slug == "pata_classical":
-        return [
-            "classical music",
-            "piano classical",
-            "orchestra",
-            "string quartet",
-            "relaxing classical",
-            "classical instrumental",
-            "baroque",
-            "chamber music",
-        ]
-    if slug == "pata_lofi":
-        return [
-            "lofi",
-            "lofi hip hop",
-            "chill beats",
-            "study beats",
-            "lofi instrumental",
-            "chillhop",
-            "lofi jazz",
-        ]
-    # pata_jazz (default)
     return [
         # Lento / relaxante
         "jazz",
@@ -156,9 +133,7 @@ def _default_music_search_terms() -> list[str]:
 
 
 # Backward compat: JAMENDO_SEARCH_TERMS continua como variavel, avaliada
-# no import conforme o canal ativo (default pata_jazz). Workflows e scripts
-# multi-canal devem ativar o canal ANTES de importar este modulo quando
-# quiserem termos especificos.
+# no import do canal Pata Jazz.
 JAMENDO_SEARCH_TERMS: list[str] = _default_music_search_terms()
 
 # Palavras-chave Pixabay restritas a gatos e cachorros REAIS.

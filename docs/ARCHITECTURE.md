@@ -80,14 +80,10 @@ sync (Pixabay/Jamendo) ─┐
   rodam sobrepostos (shorts + analytics). Sem lock, o último
   a salvar vence e mudanças são perdidas silenciosamente. `filelock` é portável
   (Linux/Windows) e leve — não precisa de `fcntl`/`msvcrt`.
-- **Multi-canal**: `utils/channel_config.py` abstrai a marca/tags/playlists/prompts
-  por canal. `Pata Jazz`, `Pata Lofi` e `Pata Classical` já estão registrados
-  em `CHANNELS` e cada um tem seus próprios workflows (`pata-{jazz,lofi,classical}-*.yml`).
-  Os módulos consumidores (`animal_branding`, `playlist_manager`, `seo_keywords`,
-  `upload_youtube`) leem de `active_channel`, que pode ser trocado via env var
-  `YOUTUBE_CHANNEL` (default `pata_jazz`) ou via `set_channel()`. Cada canal
-  armazena estado isolado em `_data/<slug>/`; `PATA_JAZZ` mantém `_data/` na raiz
-  por compatibilidade histórica. Evita duplicar o repo inteiro por canal.
+- **Configuração do canal**: `utils/channel_config.py` centraliza a marca,
+  tags, playlists e prompts do canal **Pata Jazz**. Todos os módulos consumidores
+  (`animal_branding`, `playlist_manager`, `seo_keywords`, `upload_youtube`) leem de
+  `active_channel`. O estado do canal é mantido em `_data/` na raiz do projeto.
 - **Quota tracker**: `utils/quota_tracker.py` rastreia unidades de quota da
   YouTube API em `_data/quota_usage.json` com alerta em 8000/dia (limite 10000).
   `utils/youtube_retry.retry_youtube_call` registra automaticamente o custo por
@@ -121,7 +117,7 @@ sync (Pixabay/Jamendo) ─┐
 | `ai_helper.py` | Chamadas Gemini com circuit breaker (429/502/503) e fallback local |
 | `animal_branding.py` | Identidade Pata Jazz: detecção de animal, hook por cena, cena aleatória |
 | `caption_engine.py` | Legendas ASS animadas (overlay), legenda PT-BR e chapters via Gemini |
-| `channel_config.py` | Abstração multi-canal: `ChannelConfig`, registry `CHANNELS`, `active_channel` |
+| `channel_config.py` | Configuração do canal Pata Jazz: `ChannelConfig`, `CHANNELS`, `active_channel` |
 | `channel_identity.py` | Identidade do canal viva: about/keywords rotacionados por semana ISO (IA + fallback) via `channels.update` |
 | `comment_responder.py` | Resposta automática a comentários: seleção anti-spam, IA "pessoa real", state + lock |
 | `content_strategy.py` | Mood por horário (BRT) + cena ponderada por performance real |
@@ -178,20 +174,7 @@ sync (Pixabay/Jamendo) ─┐
 | `pata-jazz-identity.yml` | cron semanal Seg 02:23 UTC / manual | Atualiza about/keywords do canal (Pata Jazz) |
 | `pata-jazz-batch.yml` | só manual (`workflow_dispatch`) | Gera N shorts em lote (Pata Jazz) |
 | `pata-jazz-weekly.yml` | só manual (`all`/`generate`/`publish`) | Lote semanal: 35 shorts, publica 6/dia (Pata Jazz) |
-| `pata-lofi-shorts.yml` | cron horário (minuto 17, `17 * * * *` UTC) / manual | Gera e publica 1 Short no YouTube (Pata Lofi) |
-| `pata-lofi-engagement.yml` | cron horário / manual | Responde a comentários do canal (Pata Lofi) |
-| `pata-lofi-analytics.yml` | cron semanal / manual | Coleta analytics + dashboard + site (Pata Lofi) |
-| `pata-lofi-long.yml` | cron semanal / manual | Gera e publica 1 long-form (Pata Lofi) |
-| `pata-lofi-identity.yml` | cron semanal / manual | Atualiza about/keywords do canal (Pata Lofi) |
-| `pata-classical-shorts.yml` | cron horário (minuto 27, `27 * * * *` UTC) / manual | Gera e publica 1 Short no YouTube (Pata Classical) |
-| `pata-classical-engagement.yml` | cron horário / manual | Responde a comentários do canal (Pata Classical) |
-| `pata-classical-analytics.yml` | cron semanal / manual | Coleta analytics + dashboard + site (Pata Classical) |
-| `pata-classical-long.yml` | cron semanal / manual | Gera e publica 1 long-form (Pata Classical) |
-| `pata-classical-identity.yml` | cron semanal / manual | Atualiza about/keywords do canal (Pata Classical) |
-| `sync-media.yml` | cron 2x/semana / manual | Sincroniza b-roll + músicas para todos os canais habilitados |
-| `site-seo.yml` | cron semanal / manual | Gera site estático SEO para todos os canais habilitados |
-| `cleanup-youtube.yml` | só manual (`workflow_dispatch`, `dry_run`) | Remove vídeos legados de horizontal/live do canal |
-| `oauth-token-refresh.yml` | cron domingo 02:00 UTC / manual | Renova o `access_token` e atualiza os secrets de todos os canais via `gh secret set` (requer secret `GH_PAT`) |
+| `oauth-token-refresh.yml` | cron domingo 02:00 UTC / manual | Renova o `access_token` e atualiza o secret `YOUTUBE_TOKEN` via `gh secret set` (requer secret `GH_PAT`) |
 | `release.yml` | cron domingo 00:00 UTC / manual | Gera tag `vYYYY-MM-DD` + release notes a partir de commits `feat:`/`fix:`/`security:` |
 
 ## Estado persistente (`_data/`)
@@ -210,7 +193,8 @@ sync (Pixabay/Jamendo) ─┐
 | `comments_responded.json` | `utils/comment_responder.py` (a cada resposta) | `utils/comment_responder.select_comments_to_reply()` (anti-repeat/rate-limit) | sim |
 | `used_titles.json` | `utils/seo_keywords.record_used_title()` (no upload) | `utils/seo_keywords.title_is_too_repetitive()` (anti-repeat de títulos) | sim |
 | `identity.json` | `utils/channel_identity.py` (a cada atualização) | `utils/channel_identity.run_identity_update()` (trava de 1x/semana) | sim |
-| `_data/<slug>/*.json` | mesmos scripts acima | mesmos scripts acima, quando `YOUTUBE_CHANNEL=<slug>` | sim |
+| `_dashboard/index.html` | `scripts/generate_dashboard.py` | GitHub Pages | não |
+| `_site/*.html` | `scripts/generate_site.py` | GitHub Pages | não |
 
 > **Nota sobre persistência entre runs:** os arquivos com lock (JSON de estado)
   são restaurados/persistidos entre runs do GitHub Actions via `actions/cache`

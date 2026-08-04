@@ -54,32 +54,11 @@ ROOT = Path(__file__).resolve().parent.parent
 _REFRESH_MARGIN = timedelta(minutes=5)
 
 
-def _active_channel_suffix() -> str:
-    """Retorna o sufixo de canal ativo para multi-conta OAuth.
-
-    Quando a env var YOUTUBE_CHANNEL e definida (ex: 'pata_lofi'), os
-    secrets YOUTUBE_TOKEN_LOFI e YOUTUBE_CLIENT_SECRET_LOFI sao usados em
-    vez dos defaults. Retorna '' (vazio) para o canal default (Pata Jazz)
-    para manter backward compat com YOUTUBE_TOKEN / YOUTUBE_CLIENT_SECRET.
-    """
-    channel = os.environ.get("YOUTUBE_CHANNEL", "").strip().lower()
-    if not channel or channel == "pata_jazz":
-        return ""
-    # Converte pata_lofi -> _LOFI, pata_classical -> _CLASSICAL.
-    return "_" + channel.split("_", 1)[1].upper() if "_" in channel else ""
-
-
 def _token_path() -> str:
-    """Caminho do token OAuth. Resolvido relativo ao ROOT do projeto.
-
-    Multi-conta: se YOUTUBE_CHANNEL=pata_lofi, busca youtube_token_lofi.json.
-    """
+    """Caminho do token OAuth. Resolvido relativo ao ROOT do projeto."""
     env_path = os.environ.get("YOUTUBE_TOKEN_PATH")
     if env_path:
         return env_path
-    suffix = _active_channel_suffix()
-    if suffix:
-        return str(ROOT / f"youtube_token{suffix.lower()}.json")
     return str(ROOT / "youtube_token.json")
 
 
@@ -110,9 +89,7 @@ def _save_token(creds: Credentials, token_path: str | None = None) -> None:
 
 
 def _client_secrets_path() -> str | None:
-    # Multi-conta: YOUTUBE_CHANNEL=pata_lofi -> busca YOUTUBE_CLIENT_SECRET_LOFI.
-    suffix = _active_channel_suffix()
-    client_secret = os.environ.get(f"YOUTUBE_CLIENT_SECRET{suffix}")
+    client_secret = os.environ.get("YOUTUBE_CLIENT_SECRET")
     if client_secret:
         # Cria o arquivo temporario com permissoes restritas desde o inicio.
         old_umask = os.umask(0o077)

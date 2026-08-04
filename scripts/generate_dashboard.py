@@ -24,13 +24,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from utils.channel_config import CHANNELS, active_channel
 from utils.paths import data_dir
 
 log = logging.getLogger(__name__)
 
 DATA_DIR = data_dir()
-DASHBOARD_DIR = ROOT / "_dashboard" / active_channel.slug
+DASHBOARD_DIR = ROOT / "_dashboard"
 
 ANALYTICS_FILE = DATA_DIR / "analytics.json"
 HISTORY_FILE = DATA_DIR / "analytics_history.json"
@@ -428,23 +427,12 @@ def build_dashboard_html() -> str:
     top_json = _safe_json(top_ds)
     thumb_json = _safe_json(thumb_ds)
 
-    # Item 6.3: seletor de canal no dashboard. Lista os nomes do registry
-    # CHANNELS (utils.channel_config); o canal ativo e o default. Hoje e
-    # cosmetico (analytics ainda nao e particionado por canal) - so troca o
-    # titulo/branding via JS.
-    channel_options = "".join(
-        f'<option value="{escape(cfg.name)}"'
-        f"{' selected' if cfg.name == active_channel.name else ''}>"
-        f"{escape(cfg.name)}</option>"
-        for cfg in CHANNELS.values()
-    )
-
     return rf"""<!doctype html>
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{escape(active_channel.name)} — Dashboard</title>
+<title>Pata Jazz — Dashboard</title>
 <style>
   :root {{ color-scheme: light dark; }}
   body {{
@@ -498,14 +486,9 @@ def build_dashboard_html() -> str:
 </style>
 </head>
 <body>
-  <h1 id="dash-title">🐾🎷 {escape(active_channel.name)} — Dashboard</h1>
+  <h1 id="dash-title">🐾🎷 Pata Jazz — Dashboard</h1>
   <p class="subtitle" id="dash-subtitle">Gerado automaticamente a partir dos
   dados coletados por collect_analytics.py</p>
-
-  <div class="filters" style="margin-bottom: 16px;">
-    <label for="channel-select">Canal:</label>
-    <select id="channel-select" aria-label="Seletor de canal">{channel_options}</select>
-  </div>
 
   <div class="refresh-bar">
     <button id="refresh-btn" class="refresh-btn" type="button">Atualizar dados</button>
@@ -569,7 +552,7 @@ def build_dashboard_html() -> str:
     var TITLE_DS = {title_json};
     var TOP_DS = {top_json};
     var THUMB_DS = {thumb_json};
-    var ACTIVE_CHANNEL = {json.dumps(active_channel.name, ensure_ascii=False)};
+    var ACTIVE_CHANNEL = "Pata Jazz";
 
     // Paleta Pata Jazz.
     var ACCENT = "#f4a261";
@@ -788,20 +771,6 @@ def build_dashboard_html() -> str:
       refreshBtn.addEventListener("click", fetchLiveAnalytics);
     }}
 
-    // Item 6.3: seletor de canal - troca o titulo/branding do dashboard.
-    // Cosmetico por enquanto (analytics ainda nao e particionado por canal).
-    var channelSelect = document.getElementById("channel-select");
-    var dashTitle = document.getElementById("dash-title");
-    if (channelSelect) {{
-      channelSelect.addEventListener("change", function (e) {{
-        var name = e.target.value;
-        if (dashTitle) {{
-          dashTitle.textContent = "🐾🎷 " + name + " — Dashboard";
-        }}
-        document.title = name + " — Dashboard";
-      }});
-    }}
-
     // Item 6.5: exportacao CSV do historico de views (HISTORY_DS).
     var csvBtn = document.getElementById("csv-btn");
     function downloadHistoryCsv() {{
@@ -814,7 +783,7 @@ def build_dashboard_html() -> str:
       var url = URL.createObjectURL(blob);
       var a = document.createElement("a");
       a.href = url;
-      a.download = "{active_channel.slug}_analytics.csv";
+      a.download = "pata_jazz_analytics.csv";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -834,9 +803,7 @@ def build_dashboard_html() -> str:
 
 def main() -> int:
     # Usa ROOT dinamicamente para respeitar monkeypatches em testes.
-    # Isola por canal para evitar que workflows multi-canal sobrescrevam o
-    # mesmo _dashboard/index.html (P0 do audit de dashboards).
-    output_dir = ROOT / "_dashboard" / active_channel.slug
+    output_dir = ROOT / "_dashboard"
     output_dir.mkdir(parents=True, exist_ok=True)
     _ensure_chart_js_fallback(output_dir)
     output_path = output_dir / "index.html"

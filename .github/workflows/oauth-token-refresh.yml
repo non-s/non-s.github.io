@@ -46,53 +46,16 @@ jobs:
           if ! command -v gh >/dev/null 2>&1; then
             echo "gh nao encontrado no runner"; exit 1
           fi
-    strategy:
-      matrix:
-        channel: [pata_jazz, pata_lofi, pata_classical]
-      fail-fast: false
-    env:
-      YOUTUBE_CHANNEL: ${{ matrix.channel }}
-    steps:
-      - name: "Checkout"
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-        with:
-          persist-credentials: false
-      - name: "Python 3.11"
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
-        with:
-          python-version: "3.11"
-          cache: "pip"
-      - name: "Instalar dependencias"
-        run: |
-          pip install --no-cache-dir --upgrade pip
-          pip install --no-cache-dir -r requirements.txt
-      - name: "Instalar GitHub CLI"
-        run: |
-          if ! command -v gh >/dev/null 2>&1; then
-            echo "gh nao encontrado no runner"; exit 1
-          fi
       - name: "Restaurar token YouTube"
         env:
           YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
-          YOUTUBE_TOKEN_LOFI: ${{ secrets.YOUTUBE_TOKEN_LOFI }}
-          YOUTUBE_TOKEN_CLASSICAL: ${{ secrets.YOUTUBE_TOKEN_CLASSICAL }}
         run: |
           umask 077
-          token_var="YOUTUBE_TOKEN"
-          token_file="youtube_token.json"
-          if [ "${{ matrix.channel }}" = "pata_lofi" ]; then
-            token_var="YOUTUBE_TOKEN_LOFI"
-            token_file="youtube_token_lofi.json"
-          elif [ "${{ matrix.channel }}" = "pata_classical" ]; then
-            token_var="YOUTUBE_TOKEN_CLASSICAL"
-            token_file="youtube_token_classical.json"
-          fi
-          token_value=$(printenv "$token_var")
-          if [ -n "$token_value" ]; then
-            printf '%s' "$token_value" > "$token_file"
-            chmod 600 "$token_file"
+          if [ -n "$YOUTUBE_TOKEN" ]; then
+            printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
+            chmod 600 youtube_token.json
           else
-            echo "::error::Secret $token_var ausente."
+            echo "::error::Secret YOUTUBE_TOKEN ausente."
             exit 1
           fi
       - name: "Renovar token e atualizar secret"
@@ -101,4 +64,4 @@ jobs:
         run: python scripts/refresh_oauth_token.py
       - name: "Apagar token local"
         if: always()
-        run: rm -f youtube_token.json youtube_token_lofi.json youtube_token_classical.json
+        run: rm -f youtube_token.json

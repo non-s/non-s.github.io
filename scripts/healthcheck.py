@@ -23,12 +23,8 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from utils import ffmpeg_helpers, media_pool
-from utils.channel_config import active_channel, set_channel_from_env
 from utils.log_config import configure_logging
 from utils.youtube_oauth import _client_secrets_path, _token_path
-
-# Ativa o canal via YOUTUBE_CHANNEL env var (multi-canal).
-set_channel_from_env()
 
 log = logging.getLogger(__name__)
 
@@ -74,7 +70,7 @@ def _check_youtube_token() -> dict[str, Any]:
     token_path = Path(_token_path())
     if not token_path.exists():
         return {
-            "name": f"Token YouTube ({active_channel.slug})",
+            "name": "Token YouTube (pata_jazz)",
             "ok": False,
             "info": f"{token_path} não encontrado; gere via utils/youtube_oauth.py",
         }
@@ -82,12 +78,12 @@ def _check_youtube_token() -> dict[str, Any]:
         data = json.loads(token_path.read_text(encoding="utf-8"))
         has_token = bool(data.get("token"))
         return {
-            "name": f"Token YouTube ({active_channel.slug})",
+            "name": "Token YouTube (pata_jazz)",
             "ok": has_token,
             "info": "token presente" if has_token else "JSON não contém 'token'",
         }
     except Exception as exc:
-        return {"name": f"Token YouTube ({active_channel.slug})", "ok": False, "info": f"JSON inválido: {exc}"}
+        return {"name": "Token YouTube (pata_jazz)", "ok": False, "info": f"JSON inválido: {exc}"}
 
 
 def _check_client_secret() -> dict[str, Any]:
@@ -192,9 +188,8 @@ def run_healthcheck(mode: str = "all") -> int:
             check_pool_drift(),
         ]
 
-    channel_label = active_channel.name
     log.info("=" * 60)
-    log.info("Healthcheck %s", channel_label)
+    log.info("Healthcheck Pata Jazz")
     log.info("=" * 60)
     for check in checks:
         status = "✅" if check["ok"] else "❌"
@@ -202,16 +197,16 @@ def run_healthcheck(mode: str = "all") -> int:
 
     all_ok = all(c["ok"] for c in checks)
     if all_ok:
-        log.info("Ambiente pronto para geração e upload (%s).", channel_label)
+        log.info("Ambiente pronto para geração e upload (Pata Jazz).")
         return 0
-    log.warning("Corrija os itens ❌ antes de executar os geradores (%s).", channel_label)
+    log.warning("Corrija os itens ❌ antes de executar os geradores (Pata Jazz).")
     return 1
 
 
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description=f"Healthcheck {active_channel.name}")
+    parser = argparse.ArgumentParser(description="Healthcheck Pata Jazz")
     parser.add_argument("--mode", choices=["all", "fast"], default="all", help="Modo: 'all' ou 'fast'")
     args = parser.parse_args()
     sys.exit(run_healthcheck(mode=args.mode))

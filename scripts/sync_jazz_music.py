@@ -1,9 +1,7 @@
 """
-scripts/sync_jazz_music.py — baixa faixas do gênero do canal ativo do Jamendo.
+scripts/sync_jazz_music.py — baixa faixas de jazz do Jamendo.
 
-Para Pata Jazz baixa jazz; para Pata Lofi baixa lofi/chill beats; para
-Pata Classical baixa classical/piano/orchestra. Filtra por termos de busca
-permitidos em utils.animal_branding.JAMENDO_SEARCH_TERMS (agora por canal).
+Filtra por termos de busca permitidos em utils.animal_branding.JAMENDO_SEARCH_TERMS.
 Baixa apenas musicas com licenca CC que permitam uso comercial (jamendo/no_client).
 """
 
@@ -21,16 +19,9 @@ import requests
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from utils.channel_config import set_channel_from_env
+from utils.animal_branding import JAMENDO_SEARCH_TERMS
 from utils.log_config import configure_logging
 from utils.media_pool import AUDIO_DIR, ensure_dirs
-
-# Ativa o canal via YOUTUBE_CHANNEL env var (multi-canal).
-set_channel_from_env()
-
-# Importa depois de ativar o canal para que os termos de busca reflitam
-# o canal correto.
-from utils.animal_branding import JAMENDO_SEARCH_TERMS
 
 log = logging.getLogger(__name__)
 
@@ -67,17 +58,7 @@ def _client_id() -> str:
 
 
 def _music_descriptors() -> tuple[str, ...]:
-    """Descritores permitidos para filtrar hits do Jamendo pelo gênero do canal.
-
-    Para Pata Classical precisamos termos clássicos (classical, piano,
-    orchestra, sonata, quartet, etc.) porque "classical music" por si só
-    pode retornar faixas com tags genéricas.
-    """
-    slug = os.environ.get("YOUTUBE_CHANNEL", "pata_jazz").lower()
-    if slug == "pata_classical":
-        return ("classical", "piano", "orchestra", "sonata", "quartet", "symphony", "chamber")
-    if slug == "pata_lofi":
-        return ("lofi", "chill", "chillhop", "lo-fi", "hip hop instrumental", "study beats")
+    """Descritores permitidos para filtrar hits do Jamendo pelo gênero jazz."""
     return ("jazz", "bossa", "smooth", "bebop", "swing", "fusion", "lofi")
 
 
@@ -174,8 +155,7 @@ def main() -> int:
     current_count = len(list(AUDIO_DIR.glob("*.mp3")))
     search_terms = JAMENDO_SEARCH_TERMS
     log.info(
-        "Sync de audio para canal=%s com %d termos de busca.",
-        os.environ.get("YOUTUBE_CHANNEL", "pata_jazz"),
+        "Sync de audio para Pata Jazz com %d termos de busca.",
         len(search_terms),
     )
     for term in search_terms:

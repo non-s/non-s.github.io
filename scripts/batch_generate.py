@@ -19,11 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from utils.channel_config import active_channel, set_channel_from_env
 from utils.log_config import configure_logging
-
-# Ativa o canal via YOUTUBE_CHANNEL env var (multi-canal).
-set_channel_from_env()
 
 log = logging.getLogger(__name__)
 
@@ -41,7 +37,7 @@ def _parse_args(argv: list[str] | None = None) -> tuple[int, bool]:
     """Resolve count/upload: argparse se presente, com fallback para
     env vars (BATCH_COUNT/BATCH_UPLOAD). Mantem compatibilidade
     com workflows que injetam via environment."""
-    parser = argparse.ArgumentParser(description=f"Batch generator {active_channel.name} (shorts)")
+    parser = argparse.ArgumentParser(description="Batch generator Pata Jazz (shorts)")
     parser.add_argument("--count", default=None, help="1..10")
     parser.add_argument("--upload", default=None, help="true|false")
     args, _ = parser.parse_known_args(argv)
@@ -66,7 +62,7 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     for i in range(count):
-        log.info("=== Batch %d/%d (short %s) ===", i + 1, count, active_channel.slug)
+        log.info("=== Batch %d/%d (short pata_jazz) ===", i + 1, count)
         rc = _run([sys.executable, "generate_pata_jazz_short.py"])
         if rc != 0:
             log.error("Falha ao gerar short %d", i + 1)
@@ -87,7 +83,7 @@ def main(argv: list[str] | None = None) -> int:
                 log.error("Falha no upload %d", i + 1)
                 return rc
 
-    log.info("Batch concluido: %d shorts (%s)", count, active_channel.slug)
+    log.info("Batch concluido: %d shorts (pata_jazz)", count)
     return 0
 
 

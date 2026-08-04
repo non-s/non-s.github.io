@@ -30,22 +30,8 @@ from google.auth.transport.requests import Request
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from utils.channel_config import CHANNELS, set_channel_from_env
+from utils.channel_config import CHANNELS
 from utils.youtube_oauth import _load_token, _save_token
-
-
-def _secret_name(channel_slug: str) -> str:
-    """Retorna o nome do secret de token para o canal (ex: YOUTUBE_TOKEN_LOFI)."""
-    if channel_slug == "pata_jazz":
-        return "YOUTUBE_TOKEN"
-    return f"YOUTUBE_TOKEN_{channel_slug.split('_', 1)[1].upper()}"
-
-
-def _token_filename(channel_slug: str) -> str:
-    """Retorna o nome do arquivo de token no runner para o canal."""
-    if channel_slug == "pata_jazz":
-        return "youtube_token.json"
-    return f"youtube_token_{channel_slug.split('_', 1)[1].lower()}.json"
 
 
 def refresh_and_persist(token_path: Path, secret_name: str, channel_slug: str) -> int:
@@ -118,7 +104,7 @@ def _open_issue_token_expired(reason: str, channel_slug: str) -> None:
         "Para renovar:\n"
         "1. Rode `python utils/youtube_oauth.py` localmente "
         "(com `YOUTUBE_CLIENT_SECRET` apontando para o `client_secret.json`).\n"
-        f"2. Atualize o secret `{_secret_name(channel_slug)}` no GitHub com o conteudo do "
+        "2. Atualize o secret `YOUTUBE_TOKEN` no GitHub com o conteudo do "
         "`youtube_token.json` gerado.\n\n"
         "Aviso: o workflow `oauth-token-refresh.yml` requer um Personal Access "
         "Token (PAT) com scope `repo` armazenado como secret `GH_PAT` para "
@@ -135,13 +121,11 @@ def _open_issue_token_expired(reason: str, channel_slug: str) -> None:
 
 
 def main() -> int:
-    set_channel_from_env()
-    channel_slug = os.environ.get("YOUTUBE_CHANNEL", "pata_jazz").lower()
-    token_path = Path(os.environ.get("YOUTUBE_TOKEN_PATH", str(ROOT / _token_filename(channel_slug))))
+    token_path = Path(os.environ.get("YOUTUBE_TOKEN_PATH", str(ROOT / "youtube_token.json")))
     if not token_path.exists():
-        print(f"::error::{token_path} nao encontrado (secret {_secret_name(channel_slug)} ausente?).")
+        print("::error::youtube_token.json nao encontrado (secret YOUTUBE_TOKEN ausente?).")
         return 2
-    return refresh_and_persist(token_path, _secret_name(channel_slug), channel_slug)
+    return refresh_and_persist(token_path, "YOUTUBE_TOKEN", "pata_jazz")
 
 
 if __name__ == "__main__":

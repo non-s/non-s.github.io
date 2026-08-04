@@ -23,16 +23,15 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 - **Legendas ASS estilizadas**: legendas animadas palavra-a-palavra com posicionamento/estilo via ASS (FFmpeg `ass=` filter) — o texto é parte do hook visual
 - **Legenda PT-BR**: segunda caption track em português gerada via Gemini, sem regravar o vídeo
 - **Chapters automáticos**: timestamps `00:00 Título` na descrição para SEO/navegação no YouTube
-- **Multi-canal**: `utils/channel_config.py` abstrai marca/tags/playlists/prompts por canal — além de `Pata Jazz`, os canais `Pata Lofi` e `Pata Classical` já estão registrados em `CHANNELS` e têm workflows próprios (`pata-lofi-*.yml`, `pata-classical-*.yml`). Todos os módulos consumidores leem de `active_channel`/`YOUTUBE_CHANNEL`, então adicionar mais canais não exige duplicar código.
 - **Música por mood**: faixas de jazz selecionadas por mood (diversão/fofura/relax) em vez de aleatório puro
 - **AI hooks**: títulos/descrições/hashtags/legendas gerados via Gemini com circuit breaker (429/502/503) e fallback local — nunca quebra o pipeline por falha de IA
 - **Thumbnail A/B/C**: três variantes de thumbnail geradas por vídeo (paleta/wrap diferentes) para testar CTR, com shadow RGBA real (gradiente via `Image.linear_gradient`), redimensionadas automaticamente para <2MB
-- **Dashboard interativo**: `scripts/generate_dashboard.py` gera relatório HTML autocontido (sem deps novas) com analytics, performance por cena/padrão de título e projeção de views — publicado toda semana em **https://non-s.github.io/** via GitHub Pages, com páginas separadas por canal (`/pata_jazz/`, `/pata_lofi/`, `/pata_classical/`)
+- **Dashboard interativo**: `scripts/generate_dashboard.py` gera relatório HTML autocontido (sem deps novas) com analytics, performance por cena/padrão de título e projeção de views — publicado toda semana em **https://non-s.github.io/** via GitHub Pages
 - **Analytics preditivo**: `scripts/predict_views.py` treina regressão linear (Python puro, sem numpy/scikit-learn) sobre os dados históricos e prevê views nos primeiros 7 dias após o upload por cena/padrão/horário — modelo salvo em `_data/view_predictor.json`, consumido pelo dashboard
 - **Playlists automáticas**: Videos adicionados a playlists por mood/formato (cache persistente em `_data/playlist_cache.json`)
 - **Analytics semanal com feedback loop real**: coleta views/likes/comentários e, via **YouTube Analytics API v2**, também `averageViewDuration`, `averageViewPercentage`, `ctr`, `impressions` e `subscribersGained`. Cruza tudo com a cena e o padrão de título que geraram cada vídeo (`_data/video_tags.json`, gravado no upload) e grava um peso por cena (`_data/scene_performance.json`) e por padrão de título (`_data/title_pattern_performance.json`) — `scene_for_mood()` e `pick_title_pattern()` passam a preferir o que performa melhor de verdade, sem nunca zerar as demais opções
 - **Rastreio de quota YouTube**: `utils/quota_tracker.py` loga unidades de quota gastas em `_data/quota_usage.json` (com lock e thread-safe), com alerta em 8000/dia (limite 10000); `retry_youtube_call` registra automaticamente o custo por endpoint após sucesso
-- **Marca consistente**: Todos os títulos começam com o prefixo da marca do canal (ex: `Pata Jazz |`, `Pata Lofi |`, `Pata Classical |`)
+- **Marca consistente**: Todos os títulos começam com o prefixo da marca do canal (`Pata Jazz |`)
 - **Conteúdo em inglês**: título, descrição, hashtags e legendas são gerados em inglês (`utils/seo_keywords.py`, `utils/metadata_engine.py`, `utils/caption_engine.py`) - o formato pet+jazz não depende de idioma e o volume de busca em inglês é muito maior que o equivalente em português. O system prompt padrão do Gemini (`utils/ai_helper.py::_default_system_prompt`) também reforça isso - qualquer chamada de IA que precise de outro idioma tem que passar `system=` explicitamente.
 - **Robustez de APIs**: Circuit breaker no Gemini (429/502/503), retry exponencial no YouTube, fallback local em todas as chamadas de IA
 - **Thumbnails com shadow RGBA**: Gradiente via `Image.linear_gradient` (Pillow ≥9.1), shadows com alpha real
@@ -91,7 +90,7 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 │   ├── ai_helper.py                      # Chamadas Gemini (circuit breaker + fallback)
 │   ├── animal_branding.py                # Identidade Pata Jazz
 │   ├── caption_engine.py                 # Legendas ASS animadas + PT-BR + chapters
-│   ├── channel_config.py                 # Abstração multi-canal (ChannelConfig + CHANNELS)
+│   ├── channel_config.py                 # Configuração do canal Pata Jazz
 │   ├── channel_identity.py               # Atualizador de identidade do canal (about/keywords semanais)
 │   ├── comment_responder.py              # Resposta automática a comentários (IA + fallback + lock)
 │   ├── content_strategy.py               # Mood por horário + cena ponderada por performance
@@ -163,8 +162,6 @@ Salve o JSON resultante como `youtube_token.json` na raiz do projeto (ou use o s
 - `PIXABAY_API_KEY`
 - `JAMENDO_CLIENT_ID`
 - `YOUTUBE_TOKEN` — JSON do token OAuth do YouTube (Pata Jazz)
-- `YOUTUBE_TOKEN_LOFI` — JSON do token OAuth do YouTube (Pata Lofi)
-- `YOUTUBE_TOKEN_CLASSICAL` — JSON do token OAuth do YouTube (Pata Classical)
 
 ### Variables
 
@@ -173,8 +170,6 @@ Salve o JSON resultante como `youtube_token.json` na raiz do projeto (ou use o s
 - `PATA_JAZZ_COMMENTS_ENABLED` — `1` para respostas automáticas a comentários do Pata Jazz.
 - `PATA_JAZZ_LONG_ENABLED` — `1` para o long-form Loop & Relax semanal do Pata Jazz.
 - `PATA_JAZZ_IDENTITY_ENABLED` — `1` para o atualizador semanal de identidade do Pata Jazz.
-- `PATA_LOFI_ENABLED`, `PATA_LOFI_SHORTS_ENABLED`, `PATA_LOFI_LONG_ENABLED`, `PATA_LOFI_IDENTITY_ENABLED`, `PATA_LOFI_COMMENTS_ENABLED` — habilitam os workflows do Pata Lofi.
-- `PATA_CLASSICAL_ENABLED`, `PATA_CLASSICAL_SHORTS_ENABLED`, `PATA_CLASSICAL_LONG_ENABLED`, `PATA_CLASSICAL_IDENTITY_ENABLED`, `PATA_CLASSICAL_COMMENTS_ENABLED` — habilitam os workflows do Pata Classical.
 - `YOUTUBE_PRIVACY` — `public`, `unlisted` ou `private`.
 
 ## Grade de publicação (GitHub Actions)
@@ -188,8 +183,6 @@ Salve o JSON resultante como `youtube_token.json` na raiz do projeto (ou use o s
 | **Pata Jazz** | Long-form Loop & Relax | 1x por semana | Domingo 01:13 | `pata-jazz-long.yml` |
 | **Pata Jazz** | Identidade do canal | 1x por semana | Segunda 02:23 | `pata-jazz-identity.yml` |
 | **Pata Jazz** | Lote semanal (manual/eventual) | Gera 35 shorts de uma vez, publica 6/dia até esgotar | só disparo manual (`action: all`/`generate`/`publish`) | `pata-jazz-weekly.yml` |
-| **Pata Lofi** | Shorts / Long-form / Analytics / Comentários / Identidade | Mesmos intervalos por canal | variado | `pata-lofi-*.yml` |
-| **Pata Classical** | Shorts / Long-form / Analytics / Comentários / Identidade | Mesmos intervalos por canal | variado | `pata-classical-*.yml` |
 
 **Total (crons horários):** 24 Shorts/dia × 7 = **168 vídeos/semana** no YouTube. O lote semanal (`pata-jazz-weekly.yml`) é um mecanismo separado e não roda por padrão — só produz vídeos extras quando disparado manualmente com `action: all`/`generate`/`publish`.
 
@@ -224,14 +217,13 @@ python generate_pata_jazz_short.py --dry-run
 
 ### Fazer upload
 
-O upload usa o vídeo mais recente gerado (metadados em `_videos/*.json`). Para selecionar outro canal, exporte `YOUTUBE_CHANNEL` (`pata_jazz`, `pata_lofi`, `pata_classical`) — o default é `pata_jazz`:
+O upload usa o vídeo mais recente gerado (metadados em `_videos/*.json`):
 
 ```bash
-export YOUTUBE_CHANNEL=pata_jazz  # pata_lofi ou pata_classical
 python upload_youtube.py --mode upload --language=en
 ```
 
-> Cada canal armazena seu próprio estado isolado em `_data/<slug>/` (por exemplo `_data/pata_lofi/`). O canal Pata Jazz mantém `_data/` na raiz por compatibilidade histórica.
+> Todo o estado do canal é mantido em `_data/` na raiz do projeto.
 
 ### Coletar analytics
 

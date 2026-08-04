@@ -321,7 +321,7 @@ class TestMain:
         code = dashboard.main()
 
         assert code == 0
-        output = tmp_path / "_dashboard" / "pata_jazz" / "index.html"
+        output = tmp_path / "_dashboard" / "index.html"
         assert output.exists()
         assert output.read_text(encoding="utf-8").startswith("<!doctype html>")
 
@@ -463,10 +463,6 @@ class TestFullHtmlSnapshot:
 
     def test_full_html_snapshot(self, tmp_path, monkeypatch):
         self._seed_fixtures(tmp_path, monkeypatch)
-        # Garante canal deterministico para o snapshot; outros testes podem
-        # ter trocado active_channel (pata_lofi/classical) no mesmo worker.
-        from utils.channel_config import set_channel
-        set_channel("pata_jazz")
         fixed = datetime(2026, 3, 15, 12, 0, 0, tzinfo=UTC)
 
         class _FixedDatetime(datetime):

@@ -9,7 +9,6 @@ import scripts.generate_site as site
 
 def _seed(tmp_path, monkeypatch, video_tags, analytics):
     monkeypatch.setattr(site, "data_dir", lambda: tmp_path)
-    monkeypatch.setattr(site, "_site_dir", lambda: tmp_path / "_site" / "pata_jazz")
     (tmp_path / "video_tags.json").write_text(json.dumps(video_tags), encoding="utf-8")
     (tmp_path / "analytics.json").write_text(json.dumps(analytics), encoding="utf-8")
 
@@ -181,8 +180,7 @@ class TestGenerateSite:
 
     def test_missing_files_generates_minimal_site(self, tmp_path, monkeypatch):
         monkeypatch.setattr(site, "data_dir", lambda: tmp_path)
-        monkeypatch.setattr(site, "_site_dir", lambda: tmp_path / "_site" / "pata_jazz")
-        index_path = site.generate_site()
+        index_path = site.generate_site(tmp_path / "_site")
         assert index_path.exists()
 
 
@@ -194,5 +192,6 @@ class TestMain:
             {"v1": {"scene": "cat"}},
             {"all_videos": [{"video_id": "v1", "title": "t", "views": 1}]},
         )
+        monkeypatch.setattr(site, "ROOT", tmp_path)
         assert site.main() == 0
-        assert (tmp_path / "_site" / "pata_jazz" / "index.html").exists()
+        assert (tmp_path / "_site" / "index.html").exists()

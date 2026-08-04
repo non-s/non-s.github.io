@@ -56,7 +56,6 @@ jobs:
         uses: ./.github/actions/restore-token-and-cache
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
-          channel: pata_jazz
       - name: "Healthcheck (pre-flight)"
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}

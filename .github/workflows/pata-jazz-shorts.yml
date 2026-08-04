@@ -32,7 +32,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     env:
-      YOUTUBE_CHANNEL: pata_jazz
       YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
@@ -48,7 +47,6 @@ jobs:
         uses: ./.github/actions/restore-token-and-cache
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
-          channel: pata_jazz
       - name: "Healthcheck (pre-flight)"
         run: python scripts/healthcheck.py --mode fast
       - name: "Sincronizar b-roll (gatos/cachorros)"

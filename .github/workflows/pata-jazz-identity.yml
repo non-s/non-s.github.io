@@ -39,12 +39,9 @@ jobs:
         uses: ./.github/actions/restore-token-and-cache
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
-          channel: pata_jazz
       - name: "Healthcheck (pre-flight)"
         run: python scripts/healthcheck.py --mode fast
       - name: "Atualizar identidade do canal"
-        env:
-          YOUTUBE_CHANNEL: pata_jazz
         run: python scripts/update_channel_identity.py
       - name: "Apagar token"
         if: always()

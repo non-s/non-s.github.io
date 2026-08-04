@@ -42,7 +42,6 @@ jobs:
         uses: ./.github/actions/restore-token-and-cache
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
-          channel: pata_jazz
       - name: "Restaurar estado de respostas"
         # Sem cache, cada run comecaria do zero e responderia de novo o que
         # ja respondeu (spam de respostas). O estado persiste entre runs.
@@ -52,8 +51,6 @@ jobs:
           key: engagement-comments-${{ github.run_id }}
           restore-keys: engagement-comments-
       - name: "Responder comentarios"
-        env:
-          YOUTUBE_CHANNEL: pata_jazz
         run: python scripts/respond_comments.py
       - name: "Upload artifacts (log de erros)"
         if: always()

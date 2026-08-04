@@ -15,15 +15,11 @@ import time
 from datetime import UTC, datetime
 from pathlib import Path
 
-from utils.channel_config import active_channel, set_channel_from_env
 from utils.content_strategy import current_brt_hour, mood_for_now, scene_for_mood
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.pipeline_metrics import record_pipeline_run
 from utils.slot_optimizer import optimized_scene_and_pattern
 from utils.video_builder import build_pata_jazz_video, short_spec
-
-# Ativa o canal via YOUTUBE_CHANNEL env var (multi-canal).
-set_channel_from_env()
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT_DIR = ROOT / "_videos"
@@ -78,7 +74,7 @@ def _generate_short(duration: int = DEFAULT_DURATION, dry_run: bool = False) -> 
         spec=spec,
         output_dir=OUTPUT_DIR,
         thumb_dir=THUMB_DIR,
-        stem_prefix=f"{active_channel.slug}_short",
+        stem_prefix="pata_jazz_short",
         dry_run=dry_run,
     )
 

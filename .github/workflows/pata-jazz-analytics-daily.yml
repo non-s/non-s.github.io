@@ -41,7 +41,6 @@ jobs:
         uses: ./.github/actions/restore-token-and-cache
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
-          channel: pata_jazz
       - name: "Restaurar/persistir analytics"
         # analytics_history.json e a serie historica que este snapshot
         # diario alimenta - precisa sobreviver entre runs. Sem cache, o
