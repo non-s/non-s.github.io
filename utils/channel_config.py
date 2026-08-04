@@ -41,12 +41,17 @@ PATA_JAZZ: ChannelConfig = ChannelConfig(
     hashtag_brand=["#PataJazz", "#CatJazz", "#DogJazz", "#PetJazz"],
     base_tags=["Pata Jazz", "cat", "dog", "jazz", "cute", "relaxing"],
     playlists_by_mood={
-        "relax": "Pata Jazz | Relaxar e Dormir",
-        "fofura": "Pata Jazz | Fofura Diaria",
-        "diversao": "Pata Jazz | Pets Felizes",
+        "relax": "Pata Jazz | Sleep & Calm",
+        "sleep": "Pata Jazz | Deep Sleep",
+        "anxiety": "Pata Jazz | Anxiety Relief",
+        "fofura": "Pata Jazz | Cute & Cozy",
+        "diversao": "Pata Jazz | Happy Pets",
+        "home_alone": "Pata Jazz | Home Alone",
+        "thunder": "Pata Jazz | Thunder & Fireworks",
     },
     playlists_by_kind={
         "short": "Pata Jazz | Shorts",
+        "long": "Pata Jazz | Long-Form",
     },
     seo_keywords={
         "cuteness": [
@@ -57,6 +62,14 @@ PATA_JAZZ: ChannelConfig = ChannelConfig(
             "relaxing", "calm", "calming", "soothing", "peaceful",
             "gentle", "cozy", "tranquil", "mellow", "zen",
         ],
+        "anxiety": [
+            "anxiety relief", "stress relief", "calm down", "nervous",
+            "scared", "home alone", "separation anxiety", "comfort",
+        ],
+        "sleep": [
+            "sleep music", "deep sleep", "bedtime", "naptime",
+            "dreamy", "night music", "sleepy",
+        ],
         "fun": [
             "funny", "playful", "silly", "energetic",
             "curious", "spontaneous", "lively", "cheerful",
@@ -64,30 +77,46 @@ PATA_JAZZ: ChannelConfig = ChannelConfig(
         "music": [
             "jazz", "smooth jazz", "relaxing jazz", "ambient music",
             "jazz instrumental", "coffee shop jazz", "lounge jazz", "soft jazz",
+            "lofi jazz", "jazz for pets", "music for pets",
         ],
     },
     title_patterns={
         "short": [
-            "{emoji} {adjetivo} {animal} + {estilo_musical}",
-            "When a {animal} {acao} to {estilo_musical} 🎵",
-            "{adjetivo} {animal} enjoying {estilo_musical} {emoji}",
-            "POV: a {animal} {acao} to your daily {estilo_musical}",
-            "The {adjetivo} {animal} you needed today {emoji}",
+            "{keyword_primary} 🐾 {emoji}",
+            "{keyword_long_tail} | {animal} + jazz",
+            "{animal} {keyword_animal} {emoji} soft jazz",
+            "{keyword_primary} in {seconds} seconds {emoji}",
+            "{trigger} {emoji}",
+            "{animal} owners: play this when {scenario} {emoji}",
+            "If your {animal} is {problem}, try this {emoji}",
+            "This {keyword_style} calms my {animal} instantly {emoji}",
+            "{scenario}? This music helps {animal}s relax {emoji}",
+            "Watch my {animal} fall asleep to {keyword_style} {emoji}",
         ],
     },
-    emojis={"brand": "🐾🎷"},
+    emojis={"brand": "🐾🎷", "sleep": "💤", "calm": "😴", "love": "💛"},
     scene_categories={
         "fofura": ["cat", "kitten", "puppy", "dog", "sleepy cat"],
         "diversao": ["playful dog", "cat playing", "puppy playing", "dog relaxing"],
         "relax": ["sleepy cat", "sleepy dog", "cat relaxing", "dog relaxing"],
+        "anxiety": ["nervous dog", "hiding cat", "scared puppy", "anxious cat", "scared puppy"],
+        "sleep": ["sleepy cat", "sleepy dog", "cat napping", "dog napping"],
     },
     hourly_mood={
-        h: ("diversao" if 6 <= h < 12 else "fofura" if 12 <= h < 18 else "relax")
+        h: (
+            "sleep" if 0 <= h < 6 else
+            "anxiety" if 6 <= h < 9 else  # sair de casa
+            "diversao" if 9 <= h < 12 else
+            "fofura" if 12 <= h < 15 else
+            "anxiety" if 15 <= h < 19 else  # chegar em casa / ansiedade
+            "sleep" if 19 <= h < 24 else "relax"
+        )
         for h in range(24)
     },
     default_description=(
-        "Cute cats and dogs with relaxing jazz music - great "
-        "background sound for calming an anxious pet, studying, working or sleeping."
+        "Pata Jazz — the world's calmest channel for cats, dogs and anxious pets. "
+        "Real pets + smooth jazz designed to reduce anxiety, promote deep sleep, "
+        "and create a peaceful home for pets and their humans."
     ),
 )
 

@@ -53,12 +53,15 @@ class TestPataJazzConfig:
         assert "jazz" in PATA_JAZZ.base_tags
 
     def test_playlists_by_mood(self):
-        assert PATA_JAZZ.playlists_by_mood["relax"] == "Pata Jazz | Relaxar e Dormir"
+        assert PATA_JAZZ.playlists_by_mood["relax"] == "Pata Jazz | Sleep & Calm"
         assert "fofura" in PATA_JAZZ.playlists_by_mood
         assert "diversao" in PATA_JAZZ.playlists_by_mood
+        assert "anxiety" in PATA_JAZZ.playlists_by_mood
+        assert "sleep" in PATA_JAZZ.playlists_by_mood
 
     def test_playlists_by_kind(self):
         assert PATA_JAZZ.playlists_by_kind["short"] == "Pata Jazz | Shorts"
+        assert "long" in PATA_JAZZ.playlists_by_kind
 
     def test_seo_keywords(self):
         assert "cuteness" in PATA_JAZZ.seo_keywords
@@ -75,15 +78,17 @@ class TestPataJazzConfig:
         assert "brand" in PATA_JAZZ.emojis
 
     def test_scene_categories(self):
-        for mood in ("fofura", "diversao", "relax"):
+        for mood in ("fofura", "diversao", "relax", "anxiety", "sleep"):
             assert mood in PATA_JAZZ.scene_categories
             assert isinstance(PATA_JAZZ.scene_categories[mood], list)
 
     def test_hourly_mood(self):
         assert len(PATA_JAZZ.hourly_mood) == 24
-        assert PATA_JAZZ.hourly_mood[0] == "relax"
-        assert PATA_JAZZ.hourly_mood[9] == "diversao"
-        assert PATA_JAZZ.hourly_mood[14] == "fofura"
+        assert PATA_JAZZ.hourly_mood[0] == "sleep"
+        assert PATA_JAZZ.hourly_mood[8] == "anxiety"
+        assert PATA_JAZZ.hourly_mood[10] == "diversao"
+        assert PATA_JAZZ.hourly_mood[16] == "anxiety"
+        assert PATA_JAZZ.hourly_mood[21] == "sleep"
 
     def test_default_description(self):
         assert isinstance(PATA_JAZZ.default_description, str)
@@ -174,11 +179,16 @@ class TestBackwardCompat:
     """Backward compat: modulos existentes continuam funcionando sem arg."""
 
     def test_random_scene_without_arg_works(self):
+        from utils.animal_branding import ZEUS_SCENES
+
         scene = random_scene()
         assert isinstance(scene, str)
-        assert scene in ALL_SCENES
+        assert scene in ALL_SCENES + ZEUS_SCENES
 
     def test_random_scene_returns_valid_for_pata_jazz(self):
+        from utils.animal_branding import ZEUS_SCENES
+
         set_channel("pata_jazz")
         for _ in range(20):
-            assert random_scene() in ALL_SCENES
+            scene = random_scene()
+            assert scene in ALL_SCENES + ZEUS_SCENES, f"cena invalida: {scene!r}"

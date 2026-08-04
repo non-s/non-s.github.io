@@ -7,7 +7,7 @@ import json
 import utils.seo_keywords as seo_keywords
 from utils.seo_keywords import (
     CTAS,
-    HIGH_PERFORMANCE_KEYWORDS,
+    HIGH_VOLUME_KEYWORDS,
     MUSIC_STYLE_BY_MOOD,
     TITLE_PATTERNS,
     generate_description,
@@ -90,15 +90,15 @@ class TestGenerateTitle:
         title = generate_title(animal="cat", acao="sleeping", estilo_musical="jazz", kind="short", emoji="🐱")
         # Verifica se usa pelo menos uma keyword
         all_keywords = []
-        for category in HIGH_PERFORMANCE_KEYWORDS.values():
-            all_keywords.extend(category)
+        for category in HIGH_VOLUME_KEYWORDS.values():
+            if isinstance(category, list):
+                all_keywords.extend(category)
+            elif isinstance(category, dict):
+                for sublist in category.values():
+                    all_keywords.extend(sublist)
 
         title_lower = title.lower()
         uses_keyword = any(kw.lower() in title_lower for kw in all_keywords)
-        # "jazz" (estilo_musical) esta em HIGH_PERFORMANCE_KEYWORDS["music"] e
-        # aparece literalmente em todos os patterns de "short" (todos incluem
-        # {estilo_musical}), entao isso sempre deve ser verdadeiro - "or True"
-        # tornava essa asserção incapaz de falhar independente do resultado.
         assert uses_keyword
 
     def test_generate_title_within_limit(self):
@@ -153,7 +153,7 @@ class TestGenerateDescription:
         desc, _ = generate_description(hook="Cute kitten sleeping", kind="short", hashtags=hashtags, include_cta=True)
         assert len(desc) > 0
         assert "#PataJazz" in desc or "#Cats" in desc
-        assert "🐾" in desc or "✨" in desc  # Tem emojis
+        assert "🐾" in desc or "💫" in desc or "🎷" in desc  # Tem emojis da marca/SEO
 
     def test_generate_description_without_cta(self):
         """Gera descrição sem CTA.
@@ -205,20 +205,20 @@ class TestGenerateHashtags:
     def test_generate_hashtags_cat(self):
         """Gera hashtags para vídeo de gato."""
         hashtags = generate_hashtags(animal="cat", categoria="cuteness", kind="short")
-        assert len(hashtags) <= 15
-        assert "#Cats" in hashtags or "#Kittens" in hashtags
+        assert len(hashtags) <= 10
+        assert "#Cats" in hashtags
         assert "#PataJazz" in hashtags  # Brand sempre presente
 
     def test_generate_hashtags_dog(self):
         """Gera hashtags para vídeo de cachorro."""
         hashtags = generate_hashtags(animal="dog", categoria="fun", kind="short")
-        assert len(hashtags) <= 15
-        assert "#Dogs" in hashtags or "#Puppies" in hashtags
+        assert len(hashtags) <= 10
+        assert "#Dogs" in hashtags
 
     def test_generate_hashtags_relax(self):
         """Gera hashtags para categoria relaxamento."""
         hashtags = generate_hashtags(animal="cat", categoria="relaxation", kind="short")
-        assert "#Relaxation" in hashtags or "#Peaceful" in hashtags or "#Calm" in hashtags
+        assert "#PetAnxiety" in hashtags or "#SleepMusic" in hashtags
 
     def test_generate_hashtags_short_format(self):
         """Inclui hashtags de formato para Shorts."""
@@ -285,7 +285,7 @@ class TestIntegration:
 
         # Gera hashtags
         hashtags = generate_hashtags(animal, "relaxation", kind)
-        assert len(hashtags) <= 15
+        assert len(hashtags) <= 10
 
         # Gera descrição
         description, _ = generate_description(title, kind, hashtags)
@@ -350,10 +350,10 @@ class TestTitleAntiRepeat:
 
     def test_record_caps_history_size(self, tmp_path, monkeypatch):
         used_file = self._isolate(tmp_path, monkeypatch)
-        for i in range(80):
+        for i in range(130):
             seo_keywords.record_used_title(f"Título {i}")
         data = json.loads(used_file.read_text(encoding="utf-8"))
-        assert len(data) == 60
+        assert len(data) == 120
         assert "Título 0" not in data
 
     def test_corrupted_history_is_empty(self, tmp_path, monkeypatch):

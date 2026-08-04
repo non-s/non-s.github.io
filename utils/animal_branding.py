@@ -98,6 +98,30 @@ HOOK_BY_SCENE: dict[str, list[tuple[str, str]]] = {
 
 ALL_SCENES: list[str] = list(HOOK_BY_SCENE.keys())
 
+# Cenas estendidas da Operação Zeus (anxiety, sleep, home alone).
+# Mantidas separadas para não quebrar compatibilidade com testes que esperam
+# apenas as cenas clássicas em ALL_SCENES.
+ZEUS_SCENES: list[str] = [
+    "nervous cat",
+    "anxious cat",
+    "hiding cat",
+    "scared cat",
+    "cat with anxiety",
+    "nervous dog",
+    "anxious dog",
+    "scared dog",
+    "dog with anxiety",
+    "scared puppy",
+    "anxious puppy",
+    "nervous puppy",
+    "dog home alone",
+    "cat home alone",
+    "sleepy puppy",
+    "sleepy kitten",
+    "dog napping",
+    "cat napping",
+]
+
 
 # Tags Jamendo: apenas jazz, mas com variedade de energia - antes so tinha
 # termos "relax" (smooth/soft/coffee/relaxing), entao cenas de mood
@@ -221,6 +245,7 @@ BLOCKED_BROLL_KEYWORDS: set[str] = {
 def random_scene(channel: ChannelConfig | None = None) -> str:
     ch = channel or active_channel
     scenes = [s for group in ch.scene_categories.values() for s in group]
+    scenes = list(dict.fromkeys(scenes))  # deduplica mantendo ordem
     return random.choice(scenes if scenes else ALL_SCENES)
 
 

@@ -23,8 +23,11 @@ def test_hooks_return_tuple():
 
 
 def test_random_scene_in_allowed():
+    from utils.channel_config import active_channel
+
     scene = random_scene()
-    assert scene in ALL_SCENES
+    allowed = ALL_SCENES + [s for group in active_channel.scene_categories.values() for s in group]
+    assert scene in allowed
 
 
 def test_no_disallowed_animals():

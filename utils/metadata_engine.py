@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import json
 import logging
+import random
 import re
 from typing import Any, Literal
 
@@ -57,30 +58,30 @@ def generate_metadata(
     title_pattern_hint: str = "",
     mood: str = "",
 ) -> dict[str, Any]:
-    """Gera metadados completos usando Gemini + SEO otimizado, com fallback local seguro.
+    """Gera metadados completos com SEO agressivo (Operação Zeus).
 
-    ``title_pattern_hint`` (quando fornecido por utils/slot_optimizer) obriga
-    o titulo a seguir o padrao previsto como otimo para o slot atual; quando
-    vazio, o padrao e decidido por generate_title_with_pattern/IA como antes.
-
-    ``mood`` decide a frase de estilo musical (music_style_for_mood) alinhada
-    ao audio REAL da cena - sem isso, title/description sempre diziam
-    "relaxing jazz" mesmo em cenas com swing/bebop tocando (mood "diversao"),
-    e podiam ficar redundantes tipo "cat relaxing to relaxing jazz".
+    Títulos espelham palavras-chave de alto volume real, descrições são longas
+    e semanticamente otimizadas, hashtags atacam problema + animal + música.
     """
-    # Extrai informações da cena para SEO
     animal = detect_animal(scene)
     s = scene.lower()
-    acao = "relaxing" if ("sleep" in s or "relax" in s) else "playing"
-    estilo_musical = music_style_for_mood(mood)
 
-    # Gera título otimizado com SEO, usando fallback_title como base se fornecido.
-    # Antes, "fallback_title" era uma magic string que poluia o tracking de
-    # padroes em video_tags.json/title_pattern_performance.json. Agora usamos
-    # um valor explicito para distinguir "fallback fornecido" de "sem padrao".
+    # Mapeia cena para mood SEO
+    if "sleep" in s or "nap" in s:
+        acao = "sleep"
+    elif "anxious" in s or "nervous" in s or "scared" in s or "hiding" in s:
+        acao = "anxiety"
+    elif "play" in s or "fun" in s:
+        acao = "diversao"
+    elif "relax" in s:
+        acao = "relax"
+    else:
+        acao = mood or "relax"
+
+    estilo_musical = music_style_for_mood(acao)
+
     title_pattern = "fallback_provided"
     if title_pattern_hint:
-        # Slot optimizer determinou o padrao otimo; forca o titulo a segui-lo.
         title, title_pattern = generate_title_with_pattern(
             animal=animal,
             acao=acao,
@@ -102,69 +103,61 @@ def generate_metadata(
             duracao=round(duration / 60) if kind != "short" else None,
         )
 
-    # Gera hashtags estratégicas em camadas
-    categoria = "cuteness"
-    if "sleep" in s or "relax" in s:
-        categoria = "relaxation"
+    categoria = "relaxation"
+    if "sleep" in s or "nap" in s:
+        categoria = "sleep"
+    elif "anxious" in s or "nervous" in s or "scared" in s:
+        categoria = "anxiety"
     elif "play" in s or "fun" in s:
         categoria = "fun"
 
     hashtags = generate_hashtags(animal=animal, categoria=categoria, kind=kind)
-
-    # Tenta melhorar com IA (opcional)
-    prompt = _build_metadata_prompt(hook, scene, duration, kind, emoji)
-    out = ai_text(prompt, json_mode=True, task=f"{kind}_metadata")
 
     description, cta_used = generate_description(
         hook=hook,
         kind=kind,
         hashtags=hashtags,
         include_cta=True,
+        animal=animal,
+        mood=acao,
+        title=title,
     )
     if not description:
         description = fallback_description
 
-    if out:
-        try:
-            data = json.loads(out)
-            # Usa título da IA se for valido, nao vazio e nao suspeito; senao
-            # mantém título SEO.
-            ai_title = str(data.get("title", "")).strip()[:100]
-            if ai_title and is_safe_ai_text(ai_title):
-                title = ai_title
-                title_pattern = "ai_generated"
-            elif ai_title:
-                log.warning("Titulo da IA rejeitado (padrao suspeito): %r", ai_title)
+    # IA opcional: tenta melhorar título/descricao, mas SEO Zeus tem prioridade.
+    # Em 80% dos casos usamos o título/descricao local (mais previsível e rápido);
+    # em 20% deixamos a IA sugerir alternativas, mantendo a marca e as keywords.
+    if random.random() < 0.20:  # noqa: S311 - nao e seguranca
+        prompt = _build_metadata_prompt(hook, scene, duration, kind, emoji)
+        out = ai_text(prompt, json_mode=True, task=f"{kind}_metadata")
+        if out:
+            try:
+                data = json.loads(out)
+                ai_title = str(data.get("title", "")).strip()[:100]
+                if ai_title and is_safe_ai_text(ai_title):
+                    # Mantém prefixo de marca e garante keyword
+                    if not ai_title.startswith(active_channel.brand_prefix.removesuffix(" |")):
+                        ai_title = f"{active_channel.brand_prefix} {ai_title}"
+                    title = ai_title
+                    title_pattern = "ai_generated"
 
-            # Usa descrição da IA se disponível e nao suspeita
-            ai_description = str(data.get("description", "")).strip()[:5000]
-            if ai_description and is_safe_ai_text(ai_description):
-                description = ai_description
-            elif ai_description:
-                log.warning("Descricao da IA rejeitada (padrao suspeito): %r", ai_description)
+                ai_description = str(data.get("description", "")).strip()[:5000]
+                if ai_description and is_safe_ai_text(ai_description):
+                    description = ai_description
 
-            # Merge de hashtags (filtra apenas strings, evita alucinacoes de dict/list)
-            raw_hashtags = data.get("hashtags", [])
-            if isinstance(raw_hashtags, str):
-                raw_hashtags = raw_hashtags.split()
-            ai_hashtags = [str(h).strip() for h in raw_hashtags if isinstance(h, str) and h.strip()][:_MAX_HASHTAGS]
-            if ai_hashtags:
-                # AI hashtags primeiro: generate_hashtags() ja preenche o
-                # orcamento de _MAX_HASHTAGS sozinho (brand+animal+musica+
-                # categoria+formato), entao "hashtags + ai_hashtags" nunca
-                # deixava as sugestoes da IA sobreviverem ao slice final.
-                hashtags = list(dict.fromkeys(ai_hashtags + hashtags))[:_MAX_HASHTAGS]
-        except Exception:
-            log.warning("Falha ao parsear metadata JSON; usando fallback otimizado.")
+                raw_hashtags = data.get("hashtags", [])
+                if isinstance(raw_hashtags, str):
+                    raw_hashtags = raw_hashtags.split()
+                ai_hashtags = [str(h).strip() for h in raw_hashtags if isinstance(h, str) and h.strip()][:_MAX_HASHTAGS]
+                if ai_hashtags:
+                    hashtags = list(dict.fromkeys(ai_hashtags + hashtags))[:_MAX_HASHTAGS]
+            except Exception:
+                log.warning("Falha ao parsear metadata JSON; usando SEO local.")
 
-    # Anti-repeat: títulos quase-duplicados dos recentes denunciam conteudo
-    # em massa ("mesmo video de novo") e afastam o publico. Checado no titulo
-    # "core" ANTES da otimizacao de busca: o sufixo SEO ("- relaxing jazz for
-    # cats") e identico em muitos videos e nao e repeticao de verdade. Se o
-    # core colidir com um recente (used_titles.json), re-sorteia o padrao ate
-    # 3x sem gastar outra chamada de IA (os padroes ja tem variedade).
+    # Anti-repeat: evita títulos quase-duplicados
     if title_is_too_repetitive(title):
-        for _attempt in range(3):
+        for _attempt in range(5):
             title2, pat2 = generate_title_with_pattern(
                 animal=animal,
                 acao=acao,
@@ -179,27 +172,21 @@ def generate_metadata(
                 break
         else:
             log.warning(
-                "Anti-repeat: 3 re-sorteios ainda colidem com titulos recentes; mantendo %r (best-effort).",
+                "Anti-repeat: 5 re-sorteios ainda colidem com titulos recentes; mantendo %r (best-effort).",
                 title,
             )
 
     # Otimização final para busca
     title, description = optimize_for_search(title, description)
 
-    # Garante prefixo de marca para consistencia (ex: "Pata Jazz |")
+    # Garante prefixo de marca
     brand_prefix = active_channel.brand_prefix
     if not title.startswith(brand_prefix.removesuffix(" |")):
         title = f"{brand_prefix} {title}"
-    # Limita a 100 chars (limite do YouTube)
     if len(title) > 100:
         title = title[:97] + "..."
 
-    # Garante que as hashtags apareçam na descrição (evita duplicar quando
-    # generate_description ja as incluiu). So boundary de palavra DEPOIS da
-    # hashtag (nao antes: "#" e o char antes dele - espaco/inicio - sao
-    # ambos nao-palavra, entao \b nunca bate ali, o que fazia essa checagem
-    # falhar sempre e duplicar as hashtags em toda descricao). O boundary
-    # final ainda evita falso-positivo tipo "#Gato" combinando com "#Gatos".
+    # Garante que as hashtags apareçam na descrição
     if hashtags and not any(re.search(rf"{re.escape(h)}\b", description) for h in hashtags):
         description = f"{description}\n\n{' '.join(hashtags)}"
 
