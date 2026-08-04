@@ -231,6 +231,71 @@ def _render_predicted_views(predictor: dict) -> str:
     )
 
 
+def _render_recommendations(
+    predictor: dict,
+    scene_weights: dict,
+    title_pattern_weights: dict,
+) -> str:
+    """Seção de recomendações ativas: melhor cena, melhor padrão e próximo
+    slot otimizado, de acordo com o modelo preditivo e pesos de performance.
+
+    Usa o mesmo modelo de predict_views; sem modelo, usa os pesos de
+    performance como fallback."""
+    if not predictor or predictor.get("n_samples", 0) == 0:
+        if scene_weights or title_pattern_weights:
+            best_scene = max(scene_weights.items(), key=lambda kv: kv[1])[0] if scene_weights else "—"
+            best_pattern = max(title_pattern_weights.items(), key=lambda kv: kv[1])[0] if title_pattern_weights else "—"
+            return (
+                f"<p class='empty'>Sem modelo preditivo ainda. Fallback por performance: "
+                f"cena <strong>{escape(str(best_scene))}</strong>, "
+                f"padrão <strong>{escape(str(best_pattern))}</strong>.</p>"
+            )
+        return "<p class='empty'>Sem dados suficientes para recomendações ainda.</p>"
+
+    from scripts.predict_views import expected_views_for_slot, next_cron_slots, predict_views
+
+    scenes = predictor.get("scenes") or []
+    title_patterns = predictor.get("title_patterns") or []
+    if not scenes or not title_patterns:
+        return "<p class='empty'>Modelo preditivo sem vocabulário de cenas/padrões.</p>"
+
+    # Próximo slot otimizado (próximas 24h)
+    best_slot = None
+    best_slot_score = -1.0
+    for hour, dow in next_cron_slots(n=24):
+        score = expected_views_for_slot(hour, dow)
+        if score > best_slot_score:
+            best_slot_score = score
+            best_slot = (hour, dow)
+
+    # Melhor (cena, padrão) para o melhor slot
+    best_combo = None
+    best_combo_score = -1.0
+    hour, dow = best_slot or (0, 0)
+    for scene in scenes:
+        for pattern in title_patterns:
+            score = predict_views(scene, pattern, hour, dow)
+            if score > best_combo_score:
+                best_combo_score = score
+                best_combo = (scene, pattern)
+
+    slot_label = f"{hour:02d}:00 UTC ({_DAY_OF_WEEK_NAMES[dow]})" if best_slot else "—"
+    scene_str, pattern_str = best_combo or ("—", "—")
+    predicted = max(0, int(round(best_combo_score)))
+    return (
+        "<div class='recommendations'>"
+        f"<div class='rec-card'><strong>Melhor slot</strong>"
+        f"<span>{escape(slot_label)}</span></div>"
+        f"<div class='rec-card'><strong>Melhor cena</strong>"
+        f"<span>{escape(str(scene_str))}</span></div>"
+        f"<div class='rec-card'><strong>Melhor padrão</strong>"
+        f"<span>{escape(str(pattern_str))}</span></div>"
+        f"<div class='rec-card'><strong>Previsão 7d</strong>"
+        f"<span>{predicted} views</span></div>"
+        "</div>"
+    )
+
+
 _HEATMAP_HOUR_BUCKETS = (
     ("manhã", 9),
     ("tarde", 15),
@@ -483,6 +548,14 @@ def build_dashboard_html() -> str:
   .refresh-btn:disabled {{ opacity: 0.5; cursor: wait; }}
   .refresh-status {{ color: #9a9ab8; font-size: 0.8rem; }}
   .note {{ color: #6a6a8a; font-size: 0.75rem; margin: 8px 0 0; }}
+  .recommendations {{ display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0 24px; }}
+  .rec-card {{
+    background: rgba(26, 26, 62, 0.55); border: 1px solid rgba(244, 162, 97, 0.12);
+    border-radius: 12px; padding: 14px 18px; min-width: 160px; flex: 1;
+    display: flex; flex-direction: column; gap: 4px;
+  }}
+  .rec-card strong {{ color: #f4a261; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }}
+  .rec-card span {{ font-size: 1.1rem; font-weight: 600; }}
 </style>
 </head>
 <body>
@@ -532,6 +605,9 @@ def build_dashboard_html() -> str:
   <h2>Variações de thumbnail (A/B/C)</h2>
   {_chart_canvas("thumbnailVariantsChart", "240px")}
   {_render_thumbnail_variants(video_tags)}
+
+  <h2>Recomendações para o próximo short</h2>
+  {_render_recommendations(view_predictor, scene_weights, title_pattern_weights)}
 
   <h2>Previsão de views (próximos 7 dias)</h2>
   {_render_predicted_views(view_predictor)}
