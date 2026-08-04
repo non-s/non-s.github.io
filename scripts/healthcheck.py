@@ -165,24 +165,28 @@ def run_healthcheck(mode: str = "all") -> int:
 
     Args:
         mode: 'all' para todos os checks, 'fast' pula o check de client secret
-            (usado nos workflows agendados, que so tem o token, nao o secret).
+            (usado nos workflows agendados, que so tem o token, nao o secret),
+            'pre-sync' pula tambem os checks de pool (videos=0/audio=0 sao
+            esperados antes do sync e nao devem bloquear o workflow).
     """
     configure_logging()
 
-    if mode == "fast":
-        checks = [
-            _check_python(),
-            _check_ffmpeg(),
-            _check_envs(),
+    common_checks = [
+        _check_python(),
+        _check_ffmpeg(),
+        _check_envs(),
+    ]
+
+    if mode == "pre-sync":
+        checks = common_checks + [_check_token_only()]
+    elif mode == "fast":
+        checks = common_checks + [
             _check_token_only(),
             _check_asset_pool(),
             check_pool_drift(),
         ]
     else:
-        checks = [
-            _check_python(),
-            _check_ffmpeg(),
-            _check_envs(),
+        checks = common_checks + [
             _check_youtube_token(),
             _check_client_secret(),
             _check_asset_pool(),
@@ -208,6 +212,6 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Healthcheck Pata Jazz")
-    parser.add_argument("--mode", choices=["all", "fast"], default="all", help="Modo: 'all' ou 'fast'")
+    parser.add_argument("--mode", choices=["all", "fast", "pre-sync"], default="all", help="Modo: 'all', 'fast' ou 'pre-sync'")
     args = parser.parse_args()
     sys.exit(run_healthcheck(mode=args.mode))

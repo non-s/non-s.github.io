@@ -61,7 +61,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
           JAMENDO_CLIENT_ID: ${{ secrets.JAMENDO_CLIENT_ID }}
-        run: python scripts/healthcheck.py --mode fast
+        run: python scripts/healthcheck.py --mode pre-sync
       - name: "Sincronizar b-roll"
         env:
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
