@@ -70,8 +70,8 @@ class VideoSpec:
     title_pattern_hint: str = ""
 
 
-_HOOK_ENABLE_SECONDS = 3.0
-_HOOK_FADE_SECONDS = 0.35
+_HOOK_ENABLE_SECONDS = 5.0
+_HOOK_FADE_SECONDS = 0.4
 
 
 def _build_video_filter(spec: VideoSpec) -> str:
@@ -121,12 +121,14 @@ def _build_overlay_filter(hook: str, height: int) -> str:
     )
 
 
-_ENDCARD_SECONDS = 2.2
+_ENDCARD_SECONDS = 3.0
 _ENDCARD_CTAS = [
     "subscribe for more cuteness",
     "more pets + jazz coming up",
     "follow for your daily pet fix",
     "catch the next one soon",
+    "watch another to keep relaxing",
+    "save this for bedtime",
 ]
 
 

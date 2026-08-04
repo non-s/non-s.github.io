@@ -108,8 +108,8 @@ class TestUploadVideoSurvivesOptionalStepFailures:
             video_id = upload_youtube.upload_video(prefix="pata_jazz_")
 
         assert video_id == "vid-ok"
-        # Execucao continuou apos a falha do thumbnail: playlist ainda foi chamada.
-        assert mock_add.call_count == 2
+        # Execucao continuou apos a falha do thumbnail: playlist ainda foi chamada (animal+mood+kind).
+        assert mock_add.call_count == 3
 
     def test_runtime_error_from_caption_retry_exhaustion_does_not_crash(self, tmp_path, monkeypatch):
         service = self._setup(tmp_path, monkeypatch)
@@ -127,7 +127,7 @@ class TestUploadVideoSurvivesOptionalStepFailures:
             video_id = upload_youtube.upload_video(prefix="pata_jazz_")
 
         assert video_id == "vid-ok"
-        assert mock_add.call_count == 2
+        assert mock_add.call_count == 3
 
 
 class TestUploadVideoPlaylists:
@@ -155,14 +155,14 @@ class TestUploadVideoPlaylists:
             video_id = upload_youtube.upload_video(prefix="pata_jazz_")
 
         assert video_id == "vid123"
-        assert mock_add.call_count == 2
+        assert mock_add.call_count == 3
         calls = mock_add.call_args_list
-        assert calls[0].kwargs.get("kind") == "short"
+        assert calls[0].kwargs.get("mood") == "cat_playlist"
         assert calls[1].kwargs.get("mood") == "relax"
+        assert calls[2].kwargs.get("kind") == "short"
 
     def test_skips_mood_playlist_when_mood_missing(self, tmp_path, monkeypatch):
-        """Sem meta['mood'], so a chamada por kind deve acontecer (nao passar
-        mood='' para add_video_to_playlist, que trataria como sem alvo)."""
+        """Sem meta['mood'], ainda adiciona a playlist por animal e por kind."""
         monkeypatch.setattr(upload_youtube, "OUTPUT_DIR", tmp_path)
         monkeypatch.setattr(upload_youtube.ffmpeg_helpers, "get_video_duration", lambda path: 30.0)
         _write_video_with_meta(
@@ -184,8 +184,10 @@ class TestUploadVideoPlaylists:
         ):
             upload_youtube.upload_video(prefix="pata_jazz_")
 
-        assert mock_add.call_count == 1
-        assert mock_add.call_args.kwargs.get("kind") == "short"
+        assert mock_add.call_count == 2
+        calls = mock_add.call_args_list
+        assert calls[0].kwargs.get("mood") == "cat_playlist"
+        assert calls[1].kwargs.get("kind") == "short"
 
     def test_playlist_failure_does_not_fail_upload(self, tmp_path, monkeypatch):
         """Falha ao adicionar a playlist e so um warning - upload_video ainda

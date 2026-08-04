@@ -48,6 +48,8 @@ PATA_JAZZ: ChannelConfig = ChannelConfig(
         "diversao": "Pata Jazz | Happy Pets",
         "home_alone": "Pata Jazz | Home Alone",
         "thunder": "Pata Jazz | Thunder & Fireworks",
+        "cat_playlist": "Pata Jazz | For Cats",
+        "dog_playlist": "Pata Jazz | For Dogs",
     },
     playlists_by_kind={
         "short": "Pata Jazz | Shorts",

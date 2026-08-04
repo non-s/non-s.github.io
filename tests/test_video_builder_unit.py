@@ -61,8 +61,8 @@ class TestBuildEndcardFilter:
 
     def test_enable_window_uses_last_seconds(self):
         result = video_builder._build_endcard_filter(1080, 60)
-        # CTA aparece nos ultimos ~2.2s: enable gte(t, 57.8)
-        assert "enable='gte(t,57.8" in result
+        # CTA aparece nos ultimos ~3.0s: enable gte(t, 57.0)
+        assert "enable='gte(t,57.0" in result
 
     def test_uses_bundled_fontfile(self):
         result = video_builder._build_endcard_filter(1920, 30)

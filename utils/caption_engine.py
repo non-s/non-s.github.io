@@ -158,11 +158,14 @@ def _ass_line_words(start: float, end: float, line: str) -> list[str]:
     return dialogues
 
 
+_HOOK_RETENTION_SECONDS = 6.0
+
+
 def _fallback_ass(hook: str, duration: int) -> str:
     """Gera ASS localmente (mesma estrutura do _fallback_srt, animado)."""
     header = _ass_header(fontsize=48, play_res_x=1080, play_res_y=1920)
 
-    hook_end = min(6.0, duration * 0.5)
+    hook_end = min(_HOOK_RETENTION_SECONDS, duration * 0.5)
     welcome_end = min(hook_end + 4.0, float(duration))
     cats_end = float(duration)
 
