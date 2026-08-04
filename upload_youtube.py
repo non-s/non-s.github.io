@@ -132,11 +132,19 @@ def _record_video_tags(video_id: str, meta: dict) -> None:
             log.warning("Falha ao salvar video_tags: %s", exc)
 
 
-def upload_video(language: str = "en", privacy: str = "public", prefix: str = "") -> str | None:
+
+def upload_video(
+    language: str = "en",
+    privacy: str = "public",
+    prefix: str = "",
+    publish_at: str | None = None,
+) -> str | None:
     start_time = time.time()
     success = False
     try:
-        video_id = _upload_video_inner(language=language, privacy=privacy, prefix=prefix)
+        video_id = _upload_video_inner(
+            language=language, privacy=privacy, prefix=prefix, publish_at=publish_at
+        )
         if video_id is not None:
             success = True
         return video_id
@@ -150,7 +158,13 @@ def upload_video(language: str = "en", privacy: str = "public", prefix: str = ""
         )
 
 
-def _upload_video_inner(language: str = "en", privacy: str = "public", prefix: str = "") -> str | None:
+
+def _upload_video_inner(
+    language: str = "en",
+    privacy: str = "public",
+    prefix: str = "",
+    publish_at: str | None = None,
+) -> str | None:
     found = _latest_video_meta(prefix=prefix)
     if not found:
         log.error("Nenhum video com metadata encontrado em %s", OUTPUT_DIR)
@@ -170,6 +184,12 @@ def _upload_video_inner(language: str = "en", privacy: str = "public", prefix: s
     tags = _build_tags(meta.get("scene", ""), meta.get("hashtags"))
     thumbnail = _meta_path(meta, "thumbnail")
 
+    status = {"privacyStatus": privacy, "selfDeclaredMadeForKids": False}
+    if publish_at:
+        status["publishAt"] = publish_at
+        privacy = "private"  # agendado exige privacy private no upload
+        status["privacyStatus"] = privacy
+
     body = {
         "snippet": {
             "title": title,
@@ -179,7 +199,7 @@ def _upload_video_inner(language: str = "en", privacy: str = "public", prefix: s
             "defaultLanguage": language,
             "defaultAudioLanguage": language,
         },
-        "status": {"privacyStatus": privacy, "selfDeclaredMadeForKids": False},
+        "status": status,
     }
 
     service = get_youtube_service()
@@ -215,6 +235,7 @@ def _upload_video_inner(language: str = "en", privacy: str = "public", prefix: s
     return video_id
 
 
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Upload Pata Jazz para YouTube")
     parser.add_argument("--mode", choices=["upload"], default="upload")
@@ -223,12 +244,22 @@ def main() -> int:
         "--privacy", default=os.environ.get("YOUTUBE_PRIVACY", "public"), choices=["public", "unlisted", "private"]
     )
     parser.add_argument("--prefix", default="pata_jazz_", help="Prefixo dos arquivos de video a enviar")
+    parser.add_argument(
+        "--publish-at",
+        default=None,
+        help="ISO 8601 UTC para agendamento do vídeo no YouTube (opcional).",
+    )
     args = parser.parse_args()
 
     configure_logging()
 
     try:
-        video_id = upload_video(language=args.language, privacy=args.privacy, prefix=args.prefix)
+        video_id = upload_video(
+            language=args.language,
+            privacy=args.privacy,
+            prefix=args.prefix,
+            publish_at=args.publish_at,
+        )
         if not video_id:
             return 1
         # video_id e publico (esta na URL publica do YouTube), seguro de imprimir.
