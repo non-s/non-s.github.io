@@ -197,7 +197,8 @@ class TestMain:
         sync_jazz_music.AUDIO_DIR.glob = lambda *a, **k: iter(mp3s)
         with patch.object(sync_jazz_music, "_evict_oldest", return_value=20) as mock_evict:
             assert sync_jazz_music.main() == 0
-        mock_evict.assert_called_once_with(sync_jazz_music.AUDIO_DIR, "*.mp3", 20)
+        expected_evict = max(1, int(sync_jazz_music.MAX_POOL_SIZE * sync_jazz_music._POOL_ROTATION_FRACTION))
+        mock_evict.assert_called_once_with(sync_jazz_music.AUDIO_DIR, "*.mp3", expected_evict)
 
     def test_normal_search_path(self, monkeypatch):
         monkeypatch.setenv("JAMENDO_CLIENT_ID", "id")

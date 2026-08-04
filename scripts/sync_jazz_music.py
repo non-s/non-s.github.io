@@ -26,8 +26,8 @@ from utils.media_pool import AUDIO_DIR, ensure_dirs
 log = logging.getLogger(__name__)
 
 JAMENDO_API_URL = "https://api.jamendo.com/v3.0/tracks"
-MAX_PER_TERM = 30
-MAX_POOL_SIZE = 200
+MAX_PER_TERM = 5
+MAX_POOL_SIZE = 80
 # Fracao do pool evictada (as faixas mais antigas por mtime) quando o pool
 # esta cheio, pra abrir espaco pra faixas novas a cada sync. Sem isso, uma
 # vez que o pool atingia MAX_POOL_SIZE ele congelava para sempre - as
@@ -69,9 +69,10 @@ def _is_jazz(hit: dict) -> bool:
 
 def _download(url: str, dest: Path) -> bool:
     # Faz download em streaming com retries. Isso evita IncompleteRead em arquivos grandes.
-    for attempt in range(3):
+    # Timeout reduzido (45s) pois as previews Jamendo sao pequenas (mp32).
+    for attempt in range(2):
         try:
-            with requests.get(url, timeout=120, stream=True) as r:
+            with requests.get(url, timeout=45, stream=True) as r:
                 r.raise_for_status()
                 with open(dest, "wb") as f:
                     for chunk in r.iter_content(chunk_size=64 * 1024):
@@ -79,8 +80,8 @@ def _download(url: str, dest: Path) -> bool:
                             f.write(chunk)
             return True
         except Exception as exc:
-            log.warning("Falha ao baixar audio %s (tentativa %d/3): %s", url, attempt + 1, exc)
-            if attempt < 2:
+            log.warning("Falha ao baixar audio %s (tentativa %d/2): %s", url, attempt + 1, exc)
+            if attempt < 1:
                 import time
 
                 time.sleep(2**attempt)
@@ -160,8 +161,12 @@ def main() -> int:
     )
     for term in search_terms:
         if current_count >= MAX_POOL_SIZE:
+            log.info("Pool de audio atingiu o tamanho alvo (%d); parando sync.", MAX_POOL_SIZE)
             break
-        downloaded = search_and_download(term, MAX_PER_TERM, client_id=client_id)
+        # Nao baixamos mais do que o espaco disponivel no pool.
+        remaining = MAX_POOL_SIZE - current_count
+        to_download = min(MAX_PER_TERM, remaining)
+        downloaded = search_and_download(term, to_download, client_id=client_id)
         total += downloaded
         current_count += downloaded
 
