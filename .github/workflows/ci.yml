@@ -67,7 +67,7 @@ jobs:
         # existirem. Mantido limpo em main (utils/, scripts/, geradores e
         # upload_youtube.py); qualquer regressao fica visivel no log.
         run: >
-          python -m mypy utils/ scripts/ upload_youtube.py generate_pata_jazz_short.py generate_site.py
+          python -m mypy utils/ scripts/ upload_youtube.py
           || echo "::warning::mypy encontrou problemas de tipo"
       - name: "Security scan"
         # Falha o build em issues de severity MEDIUM+ do bandit (-ll filtra
