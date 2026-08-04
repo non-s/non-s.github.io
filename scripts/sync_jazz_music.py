@@ -26,8 +26,8 @@ from utils.media_pool import AUDIO_DIR, ensure_dirs
 log = logging.getLogger(__name__)
 
 JAMENDO_API_URL = "https://api.jamendo.com/v3.0/tracks"
-MAX_PER_TERM = 5
-MAX_POOL_SIZE = 80
+MAX_PER_TERM = 2
+MAX_POOL_SIZE = 40
 # Fracao do pool evictada (as faixas mais antigas por mtime) quando o pool
 # esta cheio, pra abrir espaco pra faixas novas a cada sync. Sem isso, uma
 # vez que o pool atingia MAX_POOL_SIZE ele congelava para sempre - as

@@ -53,7 +53,7 @@ jobs:
       - name: "Gerar long-form"
         run: |
           cd ${{ github.workspace }}
-          python scripts/generate_pata_jazz_long.py --duration 1200
+          python scripts/generate_pata_jazz_long.py --duration 900
       - name: "Escolher slot de publicação otimizado"
         if: hashFiles('youtube_token.json') != ''
         run: |

@@ -32,11 +32,11 @@ THUMB_DIR = ROOT / "_assets" / "thumbnails"
 
 log = logging.getLogger(__name__)
 
-DEFAULT_DURATION = 600
+DEFAULT_DURATION = 900
 # Faixa usada quando --duration nao e passado: 10-20min. Acima disso o
 # render no CI fica pesado demais para rodar com frequencia; o limite de
 # 45min e aceito via CLI para geracoes manuais.
-DURATION_RANGE = (900, 1800)
+DURATION_RANGE = (900, 1200)
 MIN_DURATION = 600
 MAX_DURATION = 2700
 
@@ -63,13 +63,17 @@ def _generate_long(
     log.info("Long-form: mood=%s, cena=%s, duracao=%ds", mood, chosen_scene, duration)
 
     spec = long_spec(duration=duration, scene=chosen_scene, mood=mood)
-    return build_pata_jazz_video(
+    start_render = time.time()
+    result = build_pata_jazz_video(
         spec=spec,
         output_dir=OUTPUT_DIR,
         thumb_dir=THUMB_DIR,
         stem_prefix="pata_jazz_long",
         dry_run=dry_run,
     )
+    if not dry_run:
+        log.info("Render do long-form concluido em %.1fs", time.time() - start_render)
+    return result
 
 
 def main() -> int:
