@@ -471,7 +471,12 @@ class TestFullHtmlSnapshot:
                 return fixed if tz is None else fixed.astimezone(tz)
 
         SNAPSHOT_DIR.mkdir(parents=True, exist_ok=True)
-        with patch.object(dashboard, "datetime", _FixedDatetime):
+        import scripts.predict_views as predict_views
+
+        with (
+            patch.object(dashboard, "datetime", _FixedDatetime),
+            patch.object(predict_views, "datetime", _FixedDatetime),
+        ):
             html = dashboard.build_dashboard_html()
 
         digest = hashlib.sha256(html.encode("utf-8")).hexdigest()
