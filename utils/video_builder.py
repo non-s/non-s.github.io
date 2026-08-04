@@ -384,15 +384,12 @@ def _build_loop_relax_video(
     output: Path,
     hook: str = "",
 ) -> None:
-    """Gera long-form horizontal "Loop & Relax": 2-3 clipes em loop com
-    crossfade lento + jazz + hook no inicio + end-card no fim.
+    """Gera long-form horizontal "Loop & Relax" em um unico passo FFmpeg.
 
-    Cada clipe e repetido (stream_loop) ate cobrir o segmento dele da duracao
-    total - necessario porque, ao contrario dos Shorts (segmentos ~12s), um
-    long-form divide a duracao (ex.: 10min / 3 clipes = ~200s por clipe) e o
-    b-roll bruto tem so alguns segundos. O crossfade lento (2s) faz a troca
-    de cena quase imperceptivel, mantendo o video "vivo" (visual muda) sem
-    quebrar o relaxamento - o formato classico de video para dormir/estudar.
+    Usa os clipes originais em loop infinito (-stream_loop -1) e aplica
+    filtro de video, xfade, hook e end-card diretamente no filter_complex,
+    sem re-encodar clipes intermediarios. Isso reduz drasticamente o tempo
+    de render no GitHub Actions (de 30+ min para 3-6 min para 15-20 min).
     """
     n_clips = min(len(videos), random.randint(2, 3))
     selected = random.sample(videos, n_clips)
@@ -403,94 +400,63 @@ def _build_loop_relax_video(
         selected = selected[:n_clips]
         per_clip = spec.duration // n_clips
 
-    processed: list[Path] = []
-    try:
-        for i, v in enumerate(selected):
-            proc = output.parent / f"{output.stem}_clip_{i}.mp4"
-            run_ffmpeg(
-                [
-                    "-stream_loop",
-                    "-1",
-                    "-i",
-                    str(v),
-                    "-vf",
-                    _build_video_filter(spec),
-                    "-c:v",
-                    "libx264",
-                    "-preset",
-                    "fast",
-                    "-crf",
-                    "23",
-                    "-t",
-                    str(per_clip),
-                    "-r",
-                    "30",
-                    "-pix_fmt",
-                    "yuv420p",
-                    "-an",
-                    str(proc),
-                ]
-            )
-            processed.append(proc)
+    transition = random.choice(_XFADE_TRANSITIONS)
+    base_vf = _build_video_filter(spec)
 
-        if n_clips == 1:
-            run_ffmpeg(["-i", str(processed[0]), "-c", "copy", str(output)])
-            return
+    filter_parts: list[str] = []
+    for i, v in enumerate(selected):
+        label = f"c{i}v"
+        filter_parts.append(f"[{i}:v]{base_vf}[{label}]")
 
-        transition = random.choice(_XFADE_TRANSITIONS)
-        filter_parts: list[str] = []
-        prev_label = "0:v"
-        for i in range(1, n_clips):
-            offset = per_clip * i - xfade_duration * i
-            out_label = f"v{i}"
-            filter_parts.append(
-                f"[{prev_label}][{i}:v]xfade=transition={transition}:duration={xfade_duration}:offset={offset}[{out_label}]"
-            )
-            prev_label = out_label
+    prev_label = "c0v"
+    for i in range(1, n_clips):
+        offset = per_clip * i - xfade_duration * i
+        out_label = f"v{i}"
+        filter_parts.append(
+            f"[{prev_label}][c{i}v]xfade=transition={transition}:duration={xfade_duration}:offset={offset}[{out_label}]"
+        )
+        prev_label = out_label
 
-        if hook:
-            overlay_label = "vtxt"
-            filter_parts.append(f"[{prev_label}]{_build_overlay_filter(hook, spec.height)}[{overlay_label}]")
-            prev_label = overlay_label
+    if hook:
+        overlay_label = "vtxt"
+        filter_parts.append(f"[{prev_label}]{_build_overlay_filter(hook, spec.height)}[{overlay_label}]")
+        prev_label = overlay_label
 
-        if spec.duration > _ENDCARD_SECONDS:
-            endcard_label = "vend"
-            filter_parts.append(f"[{prev_label}]{_build_endcard_filter(spec.height, spec.duration)}[{endcard_label}]")
-            prev_label = endcard_label
+    if spec.duration > _ENDCARD_SECONDS:
+        endcard_label = "vend"
+        filter_parts.append(f"[{prev_label}]{_build_endcard_filter(spec.height, spec.duration)}[{endcard_label}]")
+        prev_label = endcard_label
 
-        inputs: list[str] = []
-        for p in processed:
-            inputs += ["-i", str(p)]
-        if audio_path:
-            inputs += ["-stream_loop", "-1", "-i", str(audio_path)]
+    inputs: list[str] = []
+    for v in selected:
+        inputs += ["-stream_loop", "-1", "-i", str(v)]
+    if audio_path:
+        inputs += ["-stream_loop", "-1", "-i", str(audio_path)]
 
-        cmd_args = inputs + [
-            "-filter_complex",
-            ";".join(filter_parts),
-            "-map",
-            f"[{prev_label}]",
-            "-c:v",
-            "libx264",
-            "-preset",
-            "fast",
-            "-crf",
-            "23",
-            "-pix_fmt",
-            "yuv420p",
-            "-r",
-            "30",
-            "-movflags",
-            "+faststart",
-        ]
-        if audio_path:
-            cmd_args += ["-map", f"{n_clips}:a:0", "-c:a", "aac", "-b:a", "192k"]
-        cmd_args += ["-t", str(spec.duration)]
-        cmd_args += [str(output)]
-        log.info("Long-form: transicao %s, %d clipes em loop", transition, n_clips)
-        run_ffmpeg(cmd_args)
-    finally:
-        for p in processed:
-            p.unlink(missing_ok=True)
+    cmd_args = inputs + [
+        "-filter_complex",
+        ";".join(filter_parts),
+        "-map",
+        f"[{prev_label}]",
+        "-c:v",
+        "libx264",
+        "-preset",
+        "veryfast",
+        "-crf",
+        "28",
+        "-pix_fmt",
+        "yuv420p",
+        "-r",
+        "30",
+        "-movflags",
+        "+faststart",
+    ]
+    if audio_path:
+        cmd_args += ["-map", f"{n_clips}:a:0", "-c:a", "aac", "-b:a", "192k"]
+    cmd_args += ["-t", str(spec.duration), str(output)]
+
+    log.info("Long-form: transicao=%s, clips=%d, per_clip=%ds, duracao=%ds", transition, n_clips, per_clip, spec.duration)
+    run_ffmpeg(cmd_args)
 
 
 def build_pata_jazz_video(
