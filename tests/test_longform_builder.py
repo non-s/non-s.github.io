@@ -57,20 +57,19 @@ class TestBuildLoopRelaxVideo:
             )
         return captured
 
-    def test_single_command_with_stream_loops(self, tmp_path):
+    def test_pre_renders_segments_with_stream_loops(self, tmp_path):
         spec = video_builder.long_spec(duration=600)
         videos = [Path(f"video{i}.mp4") for i in range(3)]
         captured = self._run(tmp_path, spec, videos)
 
-        assert len(captured) == 1
-        cmd = captured[0]
-        # Cada clipe entra com -stream_loop -1
-        assert cmd.count("-stream_loop") >= len(videos)
-        assert "-1" in cmd
-        # Duracao total do output
-        assert cmd[cmd.index("-t") + 1] == "600"
-        # Per-segmento implicito no xfade
-        assert "duration=2.0" in cmd[cmd.index("-filter_complex") + 1]
+        # 3 clipes intermediarios + 1 comando final de xfade
+        assert len(captured) == 4
+        for cmd in captured[:3]:
+            assert "-stream_loop" in cmd
+            assert cmd[cmd.index("-t") + 1] == "200"  # 600 / 3
+        final = captured[-1]
+        assert final[final.index("-t") + 1] == "600"
+        assert "duration=2.0" in final[final.index("-filter_complex") + 1]
 
     def test_final_output_uses_total_duration_and_slow_xfade(self, tmp_path):
         spec = video_builder.long_spec(duration=600)
@@ -83,6 +82,8 @@ class TestBuildLoopRelaxVideo:
         assert "duration=2.0" in final_cmd[final_cmd.index("-filter_complex") + 1]
         # offset do primeiro xfade = per_clip - xfade = 200 - 2 = 198
         assert "offset=198" in final_cmd[final_cmd.index("-filter_complex") + 1]
+        # Inputs do final sao os clipes processados, nao os originais
+        assert any(str(tmp_path) in arg and "_clip_" in arg for arg in final_cmd)
 
     def test_adds_hook_and_endcard(self, tmp_path):
         spec = video_builder.long_spec(duration=600)
@@ -93,32 +94,33 @@ class TestBuildLoopRelaxVideo:
         assert "drawtext=text='hook'" in filter_complex
         assert any(f"text='{cta}'" in filter_complex for cta in video_builder._ENDCARD_CTAS)
 
-    def test_single_clip_still_builds_one_pass(self, tmp_path):
+    def test_single_clip_renders_segment_and_copy(self, tmp_path):
         spec = video_builder.long_spec(duration=600)
         videos = [Path("video0.mp4")]
         captured = self._run(tmp_path, spec, videos)
 
-        assert len(captured) == 1
-        cmd = captured[0]
-        assert "-stream_loop" in cmd
-        assert cmd[cmd.index("-t") + 1] == "600"
-        assert "xfade" not in " ".join(cmd)
+        # 1 segmento + 1 copy
+        assert len(captured) == 2
+        assert captured[-1][-3:-1] == ["-c", "copy"]
 
-    def test_ffmpeg_error_bubbles_without_temp_clips(self, tmp_path):
+    def test_ffmpeg_error_bubbles_and_cleans_temp_clips(self, tmp_path):
         spec = video_builder.long_spec(duration=600)
         videos = [Path(f"video{i}.mp4") for i in range(3)]
 
-        def fail_on_filter(args):
-            if "-filter_complex" in args:
-                raise RuntimeError("filter boom")
+        call_count = 0
+        def fail_on_second(args):
+            nonlocal call_count
+            call_count += 1
+            if call_count == 2:
+                raise RuntimeError("segment boom")
 
         with (
             patch(
                 "utils.video_builder.random",
                 **{"sample.return_value": videos, "randint.return_value": 3},
             ),
-            patch("utils.video_builder.run_ffmpeg", side_effect=fail_on_filter),
-            pytest.raises(RuntimeError, match="filter boom"),
+            patch("utils.video_builder.run_ffmpeg", side_effect=fail_on_second),
+            pytest.raises(RuntimeError, match="segment boom"),
         ):
             video_builder._build_loop_relax_video(
                 spec,
@@ -128,7 +130,8 @@ class TestBuildLoopRelaxVideo:
                 hook="hook",
             )
 
-        # Sem arquivos temporarios *_clip_*.mp4 com a nova arquitetura.
+        # run_ffmpeg e mockado, entao nao cria arquivos; a logica de cleanup
+        # do finally continua funcionando.
         leftovers = list(tmp_path.glob("out_*_clip_*.mp4"))
         assert leftovers == []
 
