@@ -42,7 +42,11 @@ jobs:
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
       - name: "Healthcheck (pre-flight)"
-        run: python scripts/healthcheck.py --mode fast
+        run: python scripts/healthcheck.py --mode pre-sync
+      - name: "Sincronizar b-roll"
+        run: python scripts/sync_animal_broll.py || echo "::warning::B-roll sync falhou"
+      - name: "Sincronizar jazz"
+        run: python scripts/sync_jazz_music.py || echo "::warning::Jazz sync falhou"
       - name: "Atualizar identidade do canal"
         run: python scripts/update_channel_identity.py
       - name: "Apagar token"

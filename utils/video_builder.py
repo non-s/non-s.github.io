@@ -406,7 +406,10 @@ def _build_loop_relax_video(
     filter_parts: list[str] = []
     for i, _v in enumerate(selected):
         label = f"c{i}v"
-        filter_parts.append(f"[{i}:v]{base_vf}[{label}]")
+        # setpts normaliza timestamps apos o loop infinito; sem isso o xfade
+        # pode falhar com "Invalid argument" quando os clipes originais sao
+        # curtos e o offset do crossfade passa do primeiro loop.
+        filter_parts.append(f"[{i}:v]{base_vf},setpts=PTS-STARTPTS[{label}]")
 
     prev_label = "c0v"
     for i in range(1, n_clips):
