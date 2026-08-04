@@ -4,8 +4,8 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 
 ## Formato
 
-- **Shorts** (`generate_pata_jazz_short.py`) — vertical 1080×1920, ~35s, **2-3 clipes com crossfade + 1 música de jazz + text overlay do hook nos primeiros 3s**.
-- **Long-form Loop & Relax** (`scripts/generate_pata_jazz_long.py`) — horizontal 1920×1080, 10-45min, clipes em loop até cobrir a duração com crossfade lento 2.0s + jazz em loop — watch time longo que compensa a alta frequência de Shorts (1/semana).
+- **Shorts** (`generate_pata_jazz_short.py`) — vertical 1080×1920, ~28-42s, **2-3 clipes com crossfade + 1 música de jazz + text overlay do hook nos primeiros 5s**.
+- **Long-form Loop & Relax** (`scripts/generate_pata_jazz_long.py`) — horizontal 1920×1080, 15-30min, clipes em loop até cobrir a duração com crossfade lento 2.0s + jazz em loop — watch time longo que compensa a alta frequência de Shorts (1/semana).
 
 ## Plataforma
 
@@ -18,8 +18,9 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 - **Respostas automáticas a comentários**: `scripts/respond_comments.py` responde comentários do canal com IA (mesmo system prompt "pessoa real"), no idioma do comentário, sem links e com rate-limits por usuário/run — canal que responde gera mais engajamento real (`utils/comment_responder.py`, a cada hora)
 - **Identidade do canal viva**: `scripts/update_channel_identity.py` rotaciona o about (descrição) e as keywords do canal por semana ISO com IA + fallback local e trava de 1x/semana — a página do canal respira e não parece feed de bot (`utils/channel_identity.py`, semanal)
 - **Mood por horário**: Shorts selecionam cenas baseado na hora (manhã = diversão, tarde = fofura, noite = relax)
+- **Publicação preditiva**: o horário de upload de cada short é escolhido por `utils/publish_optimizer.py`, cruzando dados reais (`_data/publish_slots.json`) com slots de alto CTR (fins de tarde/noite) e passado para o YouTube via `--publish-at`
 - **Multi-clip com crossfade**: 2-3 clipes com transição suave em vez de 1 clipe repetido (validação automática garante que cada clipe é longo o suficiente para o xfade)
-- **Text overlay**: Hook aparece como texto no vídeo nos primeiros 3 segundos (drawtext FFmpeg)
+- **Text overlay**: Hook aparece como texto no vídeo nos primeiros 5 segundos (drawtext FFmpeg)
 - **Legendas ASS estilizadas**: legendas animadas palavra-a-palavra com posicionamento/estilo via ASS (FFmpeg `ass=` filter) — o texto é parte do hook visual
 - **Legenda PT-BR**: segunda caption track em português gerada via Gemini, sem regravar o vídeo
 - **Chapters automáticos**: timestamps `00:00 Título` na descrição para SEO/navegação no YouTube
@@ -28,8 +29,9 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 - **Thumbnail A/B/C**: três variantes de thumbnail geradas por vídeo (paleta/wrap diferentes) para testar CTR, com shadow RGBA real (gradiente via `Image.linear_gradient`), redimensionadas automaticamente para <2MB
 - **Dashboard interativo**: `scripts/generate_dashboard.py` gera relatório HTML autocontido (sem deps novas) com analytics, performance por cena/padrão de título e projeção de views — publicado toda semana em **https://non-s.github.io/** via GitHub Pages
 - **Analytics preditivo**: `scripts/predict_views.py` treina regressão linear (Python puro, sem numpy/scikit-learn) sobre os dados históricos e prevê views nos primeiros 7 dias após o upload por cena/padrão/horário — modelo salvo em `_data/view_predictor.json`, consumido pelo dashboard
-- **Playlists automáticas**: Videos adicionados a playlists por mood/formato (cache persistente em `_data/playlist_cache.json`)
+- **Playlists automáticas**: Vídeos adicionados a playlists por mood/formato **e por animal** (gatos/cachorros), cache persistente em `_data/playlist_cache.json`
 - **Analytics semanal com feedback loop real**: coleta views/likes/comentários e, via **YouTube Analytics API v2**, também `averageViewDuration`, `averageViewPercentage`, `ctr`, `impressions` e `subscribersGained`. Cruza tudo com a cena e o padrão de título que geraram cada vídeo (`_data/video_tags.json`, gravado no upload) e grava um peso por cena (`_data/scene_performance.json`) e por padrão de título (`_data/title_pattern_performance.json`) — `scene_for_mood()` e `pick_title_pattern()` passam a preferir o que performa melhor de verdade, sem nunca zerar as demais opções
+- **Detecção de virais**: `scripts/collect_analytics.py` detecta vídeos acima de 8× a mediana de views e armazena `_data/viral_signals.json`; cenas de virais recentes recebem boost de escolha futuro, ponderado também por CTR/retenção
 - **Rastreio de quota YouTube**: `utils/quota_tracker.py` loga unidades de quota gastas em `_data/quota_usage.json` (com lock e thread-safe), com alerta em 8000/dia (limite 10000); `retry_youtube_call` registra automaticamente o custo por endpoint após sucesso
 - **Marca consistente**: Todos os títulos começam com o prefixo da marca do canal (`Pata Jazz |`)
 - **Conteúdo em inglês**: título, descrição, hashtags e legendas são gerados em inglês (`utils/seo_keywords.py`, `utils/metadata_engine.py`, `utils/caption_engine.py`) - o formato pet+jazz não depende de idioma e o volume de busca em inglês é muito maior que o equivalente em português. O system prompt padrão do Gemini (`utils/ai_helper.py::_default_system_prompt`) também reforça isso - qualquer chamada de IA que precise de outro idioma tem que passar `system=` explicitamente.
@@ -180,8 +182,10 @@ Salve o JSON resultante como `youtube_token.json` na raiz do projeto (ou use o s
 | **Pata Jazz** | Comentários (canal vivo) | 1x por hora | minuto 37 de cada hora UTC | `pata-jazz-engagement.yml` |
 | **Pata Jazz** | Sync de assets | 2x por semana | Ter e Sex 03:00 | `pata-jazz-sync.yml` |
 | **Pata Jazz** | Analytics | 1x por semana | Segunda 03:00 | `pata-jazz-analytics.yml` |
+| **Pata Jazz** | Snapshot analytics | 1x por dia | 03:00 | `pata-jazz-analytics-daily.yml` |
 | **Pata Jazz** | Long-form Loop & Relax | 1x por semana | Domingo 01:13 | `pata-jazz-long.yml` |
 | **Pata Jazz** | Identidade do canal | 1x por semana | Segunda 02:23 | `pata-jazz-identity.yml` |
+| **Pata Jazz** | Batch manual otimizado | Sob demanda | workflow_dispatch | `pata-jazz-batch.yml` |
 | **Pata Jazz** | Lote semanal (manual/eventual) | Gera 35 shorts de uma vez, publica 6/dia até esgotar | só disparo manual (`action: all`/`generate`/`publish`) | `pata-jazz-weekly.yml` |
 
 **Total (crons horários):** 24 Shorts/dia × 7 = **168 vídeos/semana** no YouTube. O lote semanal (`pata-jazz-weekly.yml`) é um mecanismo separado e não roda por padrão — só produz vídeos extras quando disparado manualmente com `action: all`/`generate`/`publish`.
