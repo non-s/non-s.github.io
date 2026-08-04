@@ -66,7 +66,7 @@ jobs:
         run: |
           for i in $(seq 1 35); do
             echo "=== Gerando short $i/35 ==="
-            python scripts/generate_pata_jazz_short.py || echo "::warning::Short $i falhou, continuando"
+            python generate_pata_jazz_short.py || echo "::warning::Short $i falhou, continuando"
           done
       - name: "Salvar cache de videos gerados"
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4

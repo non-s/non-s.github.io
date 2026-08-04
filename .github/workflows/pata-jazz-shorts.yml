@@ -54,7 +54,7 @@ jobs:
       - name: "Sincronizar jazz"
         run: python scripts/sync_jazz_music.py || echo "::warning::Jazz sync falhou"
       - name: "Gerar Short"
-        run: python scripts/generate_pata_jazz_short.py
+        run: python generate_pata_jazz_short.py
       - name: "Escolher slot de publicação otimizado"
         if: hashFiles('youtube_token.json') != ''
         run: |
