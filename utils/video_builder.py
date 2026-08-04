@@ -404,7 +404,7 @@ def _build_loop_relax_video(
     base_vf = _build_video_filter(spec)
 
     filter_parts: list[str] = []
-    for i, v in enumerate(selected):
+    for i, _v in enumerate(selected):
         label = f"c{i}v"
         filter_parts.append(f"[{i}:v]{base_vf}[{label}]")
 
@@ -455,7 +455,13 @@ def _build_loop_relax_video(
         cmd_args += ["-map", f"{n_clips}:a:0", "-c:a", "aac", "-b:a", "192k"]
     cmd_args += ["-t", str(spec.duration), str(output)]
 
-    log.info("Long-form: transicao=%s, clips=%d, per_clip=%ds, duracao=%ds", transition, n_clips, per_clip, spec.duration)
+    log.info(
+        "Long-form: transicao=%s, clips=%d, per_clip=%ds, duracao=%ds",
+        transition,
+        n_clips,
+        per_clip,
+        spec.duration,
+    )
     run_ffmpeg(cmd_args)
 
 

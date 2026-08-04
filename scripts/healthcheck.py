@@ -212,6 +212,11 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Healthcheck Pata Jazz")
-    parser.add_argument("--mode", choices=["all", "fast", "pre-sync"], default="all", help="Modo: 'all', 'fast' ou 'pre-sync'")
+    parser.add_argument(
+        "--mode",
+        choices=["all", "fast", "pre-sync"],
+        default="all",
+        help="Modo: 'all', 'fast' ou 'pre-sync'",
+    )
     args = parser.parse_args()
     sys.exit(run_healthcheck(mode=args.mode))
