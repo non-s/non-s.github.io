@@ -79,22 +79,22 @@ def test_check_pool_drift_warns_low_videos():
     with patch("utils.media_pool.pool_stats", return_value={"videos": 10, "audio": 40}):
         result = healthcheck.check_pool_drift()
         assert result["ok"] is False
-        assert "videos=10<50" in result["info"]
+        assert "videos=10<20" in result["info"]
 
 
 def test_check_pool_drift_warns_low_audio():
     with patch("utils.media_pool.pool_stats", return_value={"videos": 60, "audio": 5}):
         result = healthcheck.check_pool_drift()
         assert result["ok"] is False
-        assert "audio=5<30" in result["info"]
+        assert "audio=5<10" in result["info"]
 
 
 def test_check_pool_drift_warns_both_low():
     with patch("utils.media_pool.pool_stats", return_value={"videos": 0, "audio": 0}):
         result = healthcheck.check_pool_drift()
         assert result["ok"] is False
-        assert "videos=0<50" in result["info"]
-        assert "audio=0<30" in result["info"]
+        assert "videos=0<20" in result["info"]
+        assert "audio=0<10" in result["info"]
 
 
 def test_run_healthcheck_returns_0_when_all_ok():

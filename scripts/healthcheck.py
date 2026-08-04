@@ -38,8 +38,9 @@ REQUIRED_ENVS = [
 # Limites minimos do pool para nao gerar conteudo repetitivo/degradado.
 # Abaixo disso o healthcheck emite aviso (nao falha) - o pipeline ainda
 # funciona, mas a variedade de b-roll/trilha cai e o canal perde qualidade.
-POOL_DRIFT_VIDEO_MIN = 50
-POOL_DRIFT_AUDIO_MIN = 30
+# Valores alinhados com MAX_POOL_SIZE dos syncs (80 b-roll / 40 audio).
+POOL_DRIFT_VIDEO_MIN = 20
+POOL_DRIFT_AUDIO_MIN = 10
 
 
 def _check_python() -> dict[str, Any]:
