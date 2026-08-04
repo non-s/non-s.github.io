@@ -13,6 +13,7 @@ import logging
 import os
 import re
 import sys
+import time
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -28,8 +29,8 @@ from utils.media_pool import VIDEO_DIR, ensure_dirs
 log = logging.getLogger(__name__)
 
 PIXABAY_API_URL = "https://pixabay.com/api/videos/"
-MAX_PER_QUERY = 15
-MAX_POOL_SIZE = 300
+MAX_PER_QUERY = 3
+MAX_POOL_SIZE = 80
 MIN_WIDTH = 640
 MIN_HEIGHT = 360
 # Fracao do pool evictada (os clips mais antigos por mtime) quando o pool
@@ -181,8 +182,11 @@ def main() -> int:
         BROLL_QUERIES,
         key=lambda q: (0 if any(kw in q for kw in ("kitten", "puppy", "adorable", "cute")) else 1, q),
     )
+    start_time = time.time()
+    max_sync_seconds = 300  # 5 minutos: sync nao pode dominar o CI
     for i, query in enumerate(prioritized_queries):
         if current_count >= MAX_POOL_SIZE:
+            log.info("Pool atingiu %d clips; parando sync.", MAX_POOL_SIZE)
             break
         # Canal e 100% Shorts verticais - crop_filter em video_builder.short_spec
         # ("crop='ih*9/16:ih:...'") e essencialmente um no-op num clipe ja
@@ -193,9 +197,14 @@ def main() -> int:
         # horizontal, mantendo o pool crescendo mesmo quando um termo
         # especifico nao tem vertical suficiente.
         orientation = "horizontal" if i % 3 == 2 else "vertical"
-        downloaded = search_and_download(api_key, query, MAX_PER_QUERY, orientation=orientation)
+        remaining = MAX_POOL_SIZE - current_count
+        to_download = min(MAX_PER_QUERY, remaining)
+        downloaded = search_and_download(api_key, query, to_download, orientation=orientation)
         total += downloaded
         current_count += downloaded
+        if time.time() - start_time > max_sync_seconds:
+            log.info("Timeout de sync b-roll atingido (%ds); parando.", max_sync_seconds)
+            break
 
     log.info("Sync finalizado. Total de novos clips: %d", total)
     return 0 if total >= 0 else 1

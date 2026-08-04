@@ -342,7 +342,8 @@ class TestMain:
         sync_animal_broll.VIDEO_DIR.glob = lambda *a, **k: iter(mp4s)
         with patch.object(sync_animal_broll, "_evict_oldest", return_value=30) as mock_evict:
             assert sync_animal_broll.main() == 0
-        mock_evict.assert_called_once_with(sync_animal_broll.VIDEO_DIR, "*.mp4", 30)
+        expected_evict = max(1, int(sync_animal_broll.MAX_POOL_SIZE * sync_animal_broll._POOL_ROTATION_FRACTION))
+        mock_evict.assert_called_once_with(sync_animal_broll.VIDEO_DIR, "*.mp4", expected_evict)
 
     def test_normal_path(self, monkeypatch):
         monkeypatch.setenv("PIXABAY_API_KEY", "key")
