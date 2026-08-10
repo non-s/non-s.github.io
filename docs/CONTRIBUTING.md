@@ -153,3 +153,65 @@ python scripts/collect_analytics.py            # coleta métricas
 python scripts/generate_dashboard.py           # gera dashboard HTML
 python scripts/predict_views.py                # treina modelo de previsão
 ```
+
+## Setup de novo canal (novo YouTube)
+
+### 1. Criar projeto no Google Cloud Console
+
+1. Acesse <https://console.cloud.google.com/> e crie um projeto (ex: `pata-jazz`).
+2. Ative as APIs: **YouTube Data API v3** e **YouTube Analytics API v2**.
+3. Configure a **OAuth consent screen** (External, app name = Pata Jazz).
+4. Adicione os scopes:
+   - `https://www.googleapis.com/auth/youtube.upload`
+   - `https://www.googleapis.com/auth/youtube.force-ssl`
+   - `https://www.googleapis.com/auth/yt-analytics.readonly`
+5. Crie uma credencial **OAuth client ID** (tipo: Desktop app).
+6. Baixe o `client_secret.json`.
+
+### 2. Gerar token OAuth
+
+```bash
+# Localmente, com client_secret.json na raiz do projeto:
+export YOUTUBE_CLIENT_SECRET_PATH=./client_secret.json
+python utils/youtube_oauth.py
+# Abre browser, autorize com a conta do novo canal, copia o JSON salvo.
+```
+
+### 3. Configurar secrets no GitHub
+
+```bash
+gh secret set YOUTUBE_TOKEN < youtube_token.json
+gh secret set GEMINI_API_KEY --body "sua-key"
+gh secret set PIXABAY_API_KEY --body "sua-key"
+gh secret set JAMENDO_CLIENT_ID --body "sua-key"
+gh secret set GH_PAT --body "seu-pat-com-scope-repo"  # para renovar token automaticamente
+```
+
+### 4. Configurar variables no GitHub
+
+```bash
+gh variable set PATA_JAZZ_ENABLED --body "1"
+gh variable set PATA_JAZZ_SHORTS_ENABLED --body "1"
+gh variable set PATA_JAZZ_LONG_ENABLED --body "1"
+gh variable set PATA_JAZZ_COMMENTS_ENABLED --body "1"
+gh variable set PATA_JAZZ_IDENTITY_ENABLED --body "1"
+gh variable set YOUTUBE_PRIVACY --body "public"
+```
+
+### 5. Limpar caches antigos (se reusando o repo)
+
+```bash
+# Deleta todos os caches do GitHub Actions (dados do canal antigo)
+gh cache list --limit 100 | tail -n +2 | awk '{print $1}' | xargs -I{} gh cache delete {}
+```
+
+### 6. Disparar primeiro upload
+
+```bash
+gh workflow run "Pata Jazz - Shorts" --ref main
+```
+
+O canal novo publica imediatamente (sem agendamento) até acumular ≥10
+amostras em `publish_slots.json`. Os primeiros 10 uploads priorizam cenas
+universalmente fofas (kitten, puppy, sleepy cat) para causar boa primeira
+impressão no algoritmo do YouTube.

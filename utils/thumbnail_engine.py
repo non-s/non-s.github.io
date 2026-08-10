@@ -130,11 +130,12 @@ def _fonts_for_variant(variant: str) -> tuple[ImageFont.FreeTypeFont, ImageFont.
     font_path = _load_font_path()
     if font_path is None:
         raise RuntimeError("Nenhuma fonte TrueType encontrada. Verifique _assets/fonts/Roboto-Bold.ttf.")
+    # #5: fontes maiores para texto mais ousado e legivel em mobile.
     if variant == "C":
-        return ImageFont.truetype(font_path, 240), ImageFont.truetype(font_path, 40)
+        return ImageFont.truetype(font_path, 280), ImageFont.truetype(font_path, 56)
     if variant == "B":
-        return ImageFont.truetype(font_path, 130), ImageFont.truetype(font_path, 52)
-    return ImageFont.truetype(font_path, 120), ImageFont.truetype(font_path, 48)
+        return ImageFont.truetype(font_path, 180), ImageFont.truetype(font_path, 72)
+    return ImageFont.truetype(font_path, 160), ImageFont.truetype(font_path, 64)
 
 
 def extract_frame_from_video(video_path: Path, timestamp: str = "00:00:01") -> Image.Image | None:
@@ -334,10 +335,11 @@ def _render_thumbnail(
     draw.text((x_center + sx, cfg.emoji_y + sy), emoji, font=font_large, fill=(0, 0, 0, 128))
     draw.text((x_center, cfg.emoji_y), emoji, font=font_large, fill=pal["accent"])
 
-    # Hook curto e impactante: trunca para no máximo ~40 chars
+    # #5: Hook curto e impactante - truncado para max 30 chars (era 40)
+    # para caber em 2 linhas grandes que cobrem ~40% da tela.
     display_hook = hook
-    if len(display_hook) > 40:
-        display_hook = display_hook[:37].rstrip() + "..."
+    if len(display_hook) > 30:
+        display_hook = display_hook[:27].rstrip() + "..."
     lines = textwrap.wrap(display_hook, width=wrap_width)
     y = cfg.hook_y_start
     for line in lines[:3]:
@@ -365,20 +367,26 @@ def make_short_thumbnail(
     video_path: Path | None = None,
     variant: str = "A",
 ) -> None:
-    """Thumbnail 1080x1920 para Shorts verticais."""
+    """Thumbnail 1080x1920 para Shorts verticais.
+
+    #5: texto maior e mais ousado - fontes aumentadas (era 120/48, agora
+    160/64) e hook truncado para max 30 chars (era 40) para caber em 2
+    linhas grandes que cobrem ~40% da tela. CTR de thumbnail e o #1
+    fator de alcance em canal novo.
+    """
     width, height = 1080, 1920
     cfg = _LayoutConfig(
-        border_margin=60,
-        border_radius=60,
-        border_width=6,
-        emoji_y=520,
-        emoji_shadow_offset=(6, 6),
-        hook_y_start=760,
-        hook_wrap_width=16,
-        hook_line_height=95,
-        brand_y=height - 220,
+        border_margin=50,
+        border_radius=50,
+        border_width=8,
+        emoji_y=380,
+        emoji_shadow_offset=(8, 8),
+        hook_y_start=680,
+        hook_wrap_width=12,
+        hook_line_height=110,
+        brand_y=height - 180,
         crop_target_ratio=width / height,
-        overlay_alpha=100,
+        overlay_alpha=120,
         frame_timestamp=f"00:00:{random.randint(2, 15):02d}",
     )
     _render_thumbnail(width, height, hook, emoji, output, brand, video_path, cfg, variant=variant)

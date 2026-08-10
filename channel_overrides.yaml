@@ -1,0 +1,29 @@
+# channel_overrides.yaml — presets ajustaveis sem mudar codigo.
+# Sobrepoem valores de utils/channel_config.py quando presente.
+# Carregado por utils/channel_config.py::load_overrides() no startup.
+#
+# Comente/descomente linhas conforme necessario. Valores ausentes
+# mantem o default do codigo.
+
+# Taxa de uploads por dia (afeta apenas documentacao/monitoramento -
+# a frequencia real e controlada pelo cron do workflow).
+# uploads_per_day: 8
+
+# Cenas priorizadas nos primeiros N uploads do canal novo.
+# first_uploads_priority_scenes:
+#   - kitten
+#   - puppy
+#   - sleepy cat
+
+# Threshold de uploads antes de comecar a usar publish_optimizer
+# para agendar slots otimizados (em vez de publicar imediatamente).
+# publish_optimizer_min_samples: 10
+
+# Probabilidade de usar IA para gerar metadata em EN (PT/ES sempre usam).
+# ai_probability_en: 0.20
+
+# Dias antes de rotacionar thumbnail de video underperforming.
+# thumbnail_rotation_days: 7
+
+# Dias antes de rotacionar titulo de video underperforming.
+# title_rotation_days: 5

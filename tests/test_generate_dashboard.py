@@ -227,9 +227,9 @@ class TestChartsAndInteractivity:
 
         html = dashboard.build_dashboard_html()
 
-        # Um new Chart por grafico (5 graficos: views, scene, title,
-        # top videos e thumbnail variants A/B/C).
-        assert html.count("new Chart(") == 5
+        # Um new Chart por grafico (6 graficos: views, viewsByDay, scene,
+        # title, top videos e thumbnail variants A/B/C).
+        assert html.count("new Chart(") == 6
 
     def test_analytics_history_data_embedded_as_json(self, tmp_path, monkeypatch):
         _isolate(tmp_path, monkeypatch)

@@ -214,12 +214,17 @@ def _upload_video_inner(
         privacy = "private"  # agendado exige privacy private no upload
         status["privacyStatus"] = privacy
 
+    # #7: categoryId dinamico - Pets (15) como default, mas alguns videos
+    # podem testar Entertainment (24) ou Travel (19) para alcancar audiencias
+    # diferentes na Home. Definido no metadata pelo gerador; default 15.
+    category_id = str(meta.get("category_id", "15"))
+
     body = {
         "snippet": {
             "title": title,
             "description": description,
             "tags": tags,
-            "categoryId": "15",  # Pets & Animals
+            "categoryId": category_id,
             "defaultLanguage": effective_language,
             "defaultAudioLanguage": effective_language,
         },

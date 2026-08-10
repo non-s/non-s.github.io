@@ -2,15 +2,12 @@ name: "Pata Jazz - Shorts"
 
 on:
   schedule:
-    # 1 short por hora (24/dia), publica exclusivamente no YouTube.
-    # Minuto 7 (nao :00) para nao competir com o pico de cron jobs de
-    # outros repos no mesmo minuto (recomendacao do GitHub).
-    # (desde jun/2026 videos.insert tem cota propria de ~100/dia, separada
-    # do pool de 10k unidades/dia compartilhado pelos outros endpoints - 24
-    # uploads/dia usa ~200 unidades/upload do pool compartilhado
-    # (thumbnail+captions+playlists) = ~4800/dia, ainda abaixo do limite de
-    # 10000 e do alerta em 8000; videos.insert fica bem abaixo dos ~100/dia).
-    - cron: "7 * * * *"
+    # Frequencia configuravel via variable PATA_JAZZ_UPLOADS_PER_DAY (default 8).
+    # 8/dia = a cada 3h (8 slots: 03,06,09,12,15,18,21,00 UTC).
+    # 24/dia = horario (cron antigo). 4/dia = a cada 6h.
+    # Canal novo: 8/dia e agressivo o suficiente sem parecer bot para o YouTube.
+    # Minuto 7 (nao :00) para nao competir com pico de cron jobs.
+    - cron: "7 3,6,9,12,15,18,21,0 * * *"
   workflow_dispatch:
     inputs:
       reason:
