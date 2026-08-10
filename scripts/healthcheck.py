@@ -24,7 +24,7 @@ sys.path.insert(0, str(ROOT))
 
 from utils import ffmpeg_helpers, media_pool
 from utils.log_config import configure_logging
-from utils.youtube_oauth import _client_secrets_path, _token_path
+from utils.youtube_oauth import _client_secrets_path, _token_path, validate_token_scopes
 
 log = logging.getLogger(__name__)
 
@@ -144,6 +144,10 @@ def _check_token_only() -> dict[str, Any]:
     client_secret.json commitado, e mesmo assim o upload funciona
     normalmente. Exigir isso aqui so faria esse check falhar sempre, apesar
     do pipeline real estar saudavel.
+
+    #4: tambem valida que o token tem todos os scopes necessarios - se
+    faltar algum, o workflow falha depois de gastar tempo de CI em vez
+    de falhar aqui em 1s.
     """
     token_ok = _check_youtube_token()
     if not token_ok["ok"]:
@@ -151,6 +155,14 @@ def _check_token_only() -> dict[str, Any]:
             "name": "Token OAuth (fast)",
             "ok": False,
             "info": "Token YouTube inválido ou ausente",
+        }
+
+    missing = validate_token_scopes()
+    if missing:
+        return {
+            "name": "Token OAuth (fast)",
+            "ok": False,
+            "info": f"Token sem scopes: {', '.join(s.split('/')[-1] for s in missing)}",
         }
 
     return {
