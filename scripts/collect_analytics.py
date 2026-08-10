@@ -210,26 +210,36 @@ def _collect_retention_metrics(service, video_ids: list[str]) -> dict:
     # (MAX_VIDEOS=50) sem inflar demais o numero de chamadas.
     end = datetime.now(UTC).date()
     start = end - timedelta(days=90)
-    # Nomes de metricas validos na YouTube Analytics API v2 (ver
-    # https://developers.google.com/youtube/reporting/v1/reports/metrics):
-    # - averageViewDuration: duracao media de visualizacao (segundos)
-    # - averageViewPercentage: porcentagem media assistida
-    # - videoThumbnailImpressions: impressoes de thumbnail (antes era "impressions")
-    # - videoThumbnailImpressionsCtr: CTR de thumbnail (antes era "ctr")
-    # - subscribersGained: inscritos ganhos
-    # Antes usavamos "ctr" e "impressions" que nao existem na API e
-    # retornavam 400 "Unknown identifier" para todos os videos.
+    # Metricas validas na YouTube Analytics API v2 (targeted queries).
+    # Ver: https://developers.google.com/youtube/analytics/metrics
+    #
+    # IMPORTANTE: a Analytics API v2 (targeted queries / reports.query) usa
+    # nomes DIFERENTES da Reporting API (bulk reports). Tentativas anteriores
+    # usaram "ctr", "impressions", "videoThumbnailImpressions" e
+    # "videoThumbnailImpressionsCtr" — nenhum desses existe na Analytics API
+    # v2 (sao da Reporting API) e todos retornavam 400 "Unknown identifier".
+    #
+    # Metricas disponiveis na Analytics API v2 para filtragem por video:
+    # - averageViewDuration: duracao media (segundos) - core
+    # - averageViewPercentage: % media assistida - core
+    # - subscribersGained: inscritos ganhos - core
+    # - likes: likes - core
+    # - comments: comentarios - core
+    # - estimatedMinutesWatched: minutos assistidos - core
+    #
+    # CTR de thumbnail e impressoes NAO estao disponiveis na Analytics API
+    # v2 (só na Reporting API bulk, que usa um endpoint diferente).
     _METRICS = (
         "averageViewDuration,averageViewPercentage,"
-        "videoThumbnailImpressions,videoThumbnailImpressionsCtr,"
-        "subscribersGained"
+        "subscribersGained,likes,comments,estimatedMinutesWatched"
     )
     _METRIC_KEYS = [
         "averageViewDuration",
         "averageViewPercentage",
-        "impressions",
-        "ctr",
         "subscribersGained",
+        "likes",
+        "comments",
+        "estimatedMinutesWatched",
     ]
     result: dict[str, dict] = {}
     for vid in video_ids:
