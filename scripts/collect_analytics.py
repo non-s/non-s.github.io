@@ -210,12 +210,25 @@ def _collect_retention_metrics(service, video_ids: list[str]) -> dict:
     # (MAX_VIDEOS=50) sem inflar demais o numero de chamadas.
     end = datetime.now(UTC).date()
     start = end - timedelta(days=90)
-    _METRICS = "averageViewDuration,averageViewPercentage,ctr,impressions,subscribersGained"
+    # Nomes de metricas validos na YouTube Analytics API v2 (ver
+    # https://developers.google.com/youtube/reporting/v1/reports/metrics):
+    # - averageViewDuration: duracao media de visualizacao (segundos)
+    # - averageViewPercentage: porcentagem media assistida
+    # - videoThumbnailImpressions: impressoes de thumbnail (antes era "impressions")
+    # - videoThumbnailImpressionsCtr: CTR de thumbnail (antes era "ctr")
+    # - subscribersGained: inscritos ganhos
+    # Antes usavamos "ctr" e "impressions" que nao existem na API e
+    # retornavam 400 "Unknown identifier" para todos os videos.
+    _METRICS = (
+        "averageViewDuration,averageViewPercentage,"
+        "videoThumbnailImpressions,videoThumbnailImpressionsCtr,"
+        "subscribersGained"
+    )
     _METRIC_KEYS = [
         "averageViewDuration",
         "averageViewPercentage",
-        "ctr",
         "impressions",
+        "ctr",
         "subscribersGained",
     ]
     result: dict[str, dict] = {}
