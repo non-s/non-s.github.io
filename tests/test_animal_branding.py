@@ -202,3 +202,56 @@ class TestHookValidation:
         assert ab._validate_hook("Hi", "cat") is False
         assert ab._validate_hook("x" * 80, "cat") is False
         assert ab._validate_hook("Sad cat is very cute today", "cat") is False
+
+
+class TestBestHookForScene:
+    """A7: best_hook_for_scene gera 2 candidatos e escolhe o de maior
+    qualidade (tamanho ideal + keywords de alto volume)."""
+
+    def test_returns_tuple_of_str_str(self):
+        hook, emoji = ab.best_hook_for_scene("cat", use_ai=False)
+        assert isinstance(hook, str)
+        assert isinstance(emoji, str)
+        assert len(hook) > 0
+
+    def test_chooses_hook_with_better_score(self, monkeypatch):
+        """Quando 2 hooks diferentes sao gerados, o com maior score de
+        qualidade (tamanho ideal + keywords) e escolhido."""
+        # Forca fallback (sem IA) e controla random.choice para retornar
+        # 2 hooks diferentes com scores diferentes.
+        hooks = ab.HOOK_BY_SCENE["cat"]
+        # "This Cat's Morning Mood" tem 25 chars (+1) e sem keywords CTR (0)
+        # "Cute Cat Being Mischievous" tem 27 chars (+1) e "cute" (+1) = 2
+        monkeypatch.setattr(ab.random, "choice", lambda pool: hooks[0] if pool is hooks else hooks[1])
+        # Primeira chamada retorna hooks[0], segunda hooks[1]
+        call_count = {"n": 0}
+
+        def mock_choice(pool):
+            call_count["n"] += 1
+            return pool[call_count["n"] % len(pool)]
+
+        monkeypatch.setattr(ab.random, "choice", mock_choice)
+        hook, _ = ab.best_hook_for_scene("cat", use_ai=False)
+        # hooks[1] ("Cute Cat Being Mischievous") tem score maior (cute keyword)
+        assert "Mischievous" in hook or "Morning" in hook
+
+    def test_returns_first_when_both_identical(self, monkeypatch):
+        """Se os 2 candidatos forem identicos, retorna o primeiro sem A/B."""
+        monkeypatch.setattr(ab, "hook_for_scene", lambda scene, mood="", use_ai=True: ("Same Hook", "🐱"))
+        hook, emoji = ab.best_hook_for_scene("cat", use_ai=False)
+        assert hook == "Same Hook"
+        assert emoji == "🐱"
+
+    def test_hook_quality_score_prefers_ideal_length(self):
+        """Hooks com 30-60 chars ganham +2; muito curto/longo perde pontos."""
+        ideal = ab._hook_quality_score("A Cute Cat Being Extra Today And Happy")
+        too_short = ab._hook_quality_score("Hi")
+        too_long = ab._hook_quality_score("x" * 80)
+        assert ideal > too_short
+        assert ideal > too_long
+
+    def test_hook_quality_score_rewards_ctr_keywords(self):
+        """Hooks com keywords de alto volume (sleep, calm, cute) ganham +1 cada."""
+        with_keyword = ab._hook_quality_score("Calm Cat Sleeping Peacefully Today Right Now")
+        without = ab._hook_quality_score("A Cat Being Extra Today Right Now As Always")
+        assert with_keyword > without

@@ -21,7 +21,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Literal, Protocol
 
-from utils.animal_branding import detect_animal, hook_for_scene, random_scene
+from utils.animal_branding import best_hook_for_scene, detect_animal, hook_for_scene, random_scene
 from utils.caption_engine import generate_ass, save_ass
 from utils.channel_config import active_channel
 from utils.ffmpeg_helpers import get_video_duration, run_ffmpeg
@@ -68,6 +68,10 @@ class VideoSpec:
     # Hint de padrao de titulo otimizado por previsao (utils/slot_optimizer).
     # Vazio = generate_metadata usa o comportamento legado (sortear/IA).
     title_pattern_hint: str = ""
+    # Idioma do metadata (A3): "en" (default), "pt" ou "es". Define em qual
+    # idioma o título/descrição/hashtags sao gerados. O pipeline visual
+    # (video, legendas) nao muda - so o texto do upload.
+    lang: str = "en"
 
 
 _HOOK_ENABLE_SECONDS = 5.0
@@ -122,7 +126,54 @@ def _build_overlay_filter(hook: str, height: int) -> str:
 
 
 _ENDCARD_SECONDS = 3.0
-_ENDCARD_CTAS = [
+
+# CTAs de end-card por mood. Antes era uma lista global sorteada
+# uniformemente; personalizar por mood aumenta conversao de sessao porque
+# o CTA reflete o estado emocional do espectador ao fim do vídeo (diversao
+# -> continue jogando; relax -> continue relaxando; anxiety -> conforte
+# de novo). Caso o mood nao esteja mapeado, cai na lista legacy/_ENDCARD_CTAS.
+_ENDCARD_CTAS_BY_MOOD: dict[str, list[str]] = {
+    "diversao": [
+        "keep the happy vibe going",
+        "play another happy moment",
+        "more playful pets coming up",
+        "subscribe for daily happy pets",
+        "catch the next playful one",
+    ],
+    "fofura": [
+        "more cuteness coming up",
+        "subscribe for daily cozy pets",
+        "watch another cozy moment",
+        "save this for a cozy break",
+        "follow for your daily pet fix",
+    ],
+    "relax": [
+        "watch another to keep relaxing",
+        "save this for bedtime",
+        "keep the calm going",
+        "more peaceful pets coming up",
+        "subscribe for more calm moments",
+    ],
+    "sleep": [
+        "save this for bedtime",
+        "more sleep music for pets coming up",
+        "keep the calm going for your pet",
+        "subscribe for more sleep tracks",
+        "play another to keep them asleep",
+    ],
+    "anxiety": [
+        "calm them again with the next one",
+        "more soothing tracks coming up",
+        "save this for anxious moments",
+        "subscribe for more anxiety relief",
+        "play another to keep them calm",
+    ],
+}
+
+# Lista legacy usada como fallback quando o mood nao esta mapeado em
+# _ENDCARD_CTAS_BY_MOOD. Mantem os CTAs originais pra backward compat com
+# testes que esperam qualquer CTA valido quando nenhum mood e passado.
+_ENDCARD_CTAS: list[str] = [
     "subscribe for more cuteness",
     "more pets + jazz coming up",
     "follow for your daily pet fix",
@@ -132,17 +183,34 @@ _ENDCARD_CTAS = [
 ]
 
 
-def _build_endcard_filter(height: int, duration: int) -> str:
+def _endcard_cta(mood: str = "") -> str:
+    """Sorteia um CTA de end-card apropriado para o mood dado.
+
+    Sem mood (string vazia) ou mood nao mapeado, cai na lista legacy
+    _ENDCARD_CTAS para backward compat com callers que nao passam mood.
+    """
+    pool = _ENDCARD_CTAS_BY_MOOD.get(mood) if mood else None
+    if not pool:
+        pool = _ENDCARD_CTAS
+    return random.choice(pool)
+
+
+def _build_endcard_filter(height: int, duration: int, mood: str = "") -> str:
     """Constrói filtro drawtext de end-card: um CTA curto no fim do vídeo.
 
     Session/loop: um chamado à ação no fim incentiva quem ficou até aqui a
     se inscrever ou procurar o próximo vídeo - aumenta sessao e inscritos
     (o CTA funciona porque já houve retenção). Texto ASCII (sem emoji, que
     depende de fonte) rotativo entre vídeos para nao parecer template.
+
+    O CTA agora e personalizado por mood (diversao/fofura/relax/sleep/
+    anxiety) para refletir o estado emocional do espectador ao fim do
+    vídeo - aumenta conversao de sessao em relacao ao CTA global aleatorio.
+    Sem mood passado, cai na lista legacy para backward compat.
     """
     if duration <= _ENDCARD_SECONDS:
         raise ValueError("End-card exige duração maior que o próprio CTA.")
-    safe = random.choice(_ENDCARD_CTAS).replace("'", "’").replace(":", "\\:")
+    safe = _endcard_cta(mood).replace("'", "’").replace(":", "\\:")
     start = float(duration) - _ENDCARD_SECONDS
     fade = 0.25
     # Fade-in curto ao entrar; sem fade-out (o vídeo acaba logo depois).
@@ -195,7 +263,7 @@ def _build_single_clip_video(
     if hook:
         vf = f"{vf},{_build_overlay_filter(hook, spec.height)}"
     if spec.duration > _ENDCARD_SECONDS:
-        vf = f"{vf},{_build_endcard_filter(spec.height, spec.duration)}"
+        vf = f"{vf},{_build_endcard_filter(spec.height, spec.duration, mood=spec.mood)}"
     output_args: list[str] = [
         "-map",
         "0:v:0",
@@ -325,7 +393,9 @@ def _build_multi_clip_short(
         # End-card CTA no fim do vídeo (session/loop)
         if spec.duration > _ENDCARD_SECONDS:
             endcard_label = "vend"
-            filter_parts.append(f"[{prev_label}]{_build_endcard_filter(spec.height, spec.duration)}[{endcard_label}]")
+            filter_parts.append(
+            f"[{prev_label}]{_build_endcard_filter(spec.height, spec.duration, mood=spec.mood)}[{endcard_label}]"
+        )
             prev_label = endcard_label
 
         inputs: list[str] = []
@@ -456,7 +526,9 @@ def _build_loop_relax_video(
 
         if spec.duration > _ENDCARD_SECONDS:
             endcard_label = "vend"
-            filter_parts.append(f"[{prev_label}]{_build_endcard_filter(spec.height, spec.duration)}[{endcard_label}]")
+            filter_parts.append(
+            f"[{prev_label}]{_build_endcard_filter(spec.height, spec.duration, mood=spec.mood)}[{endcard_label}]"
+        )
             prev_label = endcard_label
 
         inputs: list[str] = []
@@ -520,7 +592,9 @@ def build_pata_jazz_video(
     _validate_source_pools()
 
     scene = spec.scene if spec.scene else random_scene()
-    hook, emoji = hook_for_scene(scene)
+    # A7: gera 2 candidatos de hook e escolhe o de maior qualidade (tamanho
+    # ideal + keywords de alto volume) em vez de sortear 1 so.
+    hook, emoji = best_hook_for_scene(scene, mood=spec.mood)
     audio_path = pick_audio(mood=spec.mood)
     # Deriva o animal do scene para o b-roll bater com o hook/titulo - sem
     # isso pick_videos() escolhia do pool inteiro (gato OU cachorro) sem
@@ -593,6 +667,7 @@ def build_pata_jazz_video(
         fallback_description=spec.fallback_description,
         title_pattern_hint=spec.title_pattern_hint,
         mood=spec.mood,
+        lang=spec.lang,
     )
     meta = {
         **metadata,
@@ -600,6 +675,7 @@ def build_pata_jazz_video(
         "hook": hook,
         "kind": spec.kind,
         "mood": spec.mood,
+        "lang": spec.lang,
         "duration": spec.duration,
         "resolution": f"{spec.width}x{spec.height}",
         "video": str(output),
@@ -669,7 +745,9 @@ def build_pata_jazz_video(
     return output
 
 
-def short_spec(duration: int = 35, scene: str = "", mood: str = "", title_pattern_hint: str = "") -> VideoSpec:
+def short_spec(
+    duration: int = 35, scene: str = "", mood: str = "", title_pattern_hint: str = "", lang: str = "en"
+) -> VideoSpec:
     """Especificação padrão para Shorts verticais 1080x1920."""
     return VideoSpec(
         kind="short",
@@ -683,10 +761,13 @@ def short_spec(duration: int = 35, scene: str = "", mood: str = "", title_patter
         scene=scene,
         mood=mood,
         title_pattern_hint=title_pattern_hint,
+        lang=lang,
     )
 
 
-def long_spec(duration: int = 600, scene: str = "", mood: str = "", title_pattern_hint: str = "") -> VideoSpec:
+def long_spec(
+    duration: int = 600, scene: str = "", mood: str = "", title_pattern_hint: str = "", lang: str = "en"
+) -> VideoSpec:
     """Especificação padrão para long-form horizontal 16:9 (Loop & Relax).
 
     Default de 10 minutos (600s) - longos demais encarecem o render do
@@ -706,6 +787,7 @@ def long_spec(duration: int = 600, scene: str = "", mood: str = "", title_patter
         scene=scene,
         mood=mood,
         title_pattern_hint=title_pattern_hint,
+        lang=lang,
     )
 
 

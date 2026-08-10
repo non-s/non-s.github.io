@@ -379,6 +379,56 @@ def hook_for_scene(scene: str, mood: str = "", use_ai: bool = True) -> tuple[str
     return random.choice(HOOK_BY_SCENE.get(scene, HOOK_BY_SCENE["cat"]))
 
 
+# A7: keywords de alto volume que, se presentes no hook, aumentam CTR em
+# busca. Usadas por best_hook_for_scene para ranquear 2 candidatos.
+_HOOK_CTR_KEYWORDS = {"sleep", "calm", "relax", "anxious", "cute", "cozy", "happy", "peaceful"}
+
+
+def _hook_quality_score(hook: str) -> int:
+    """Score heurístico de qualidade de um hook para A/B comparison.
+
+    Critérios:
+    - Tamanho ideal (30-60 chars): +2
+    - Tamanho aceitável (20-70 chars): +1
+    - Contem keyword de alto volume: +1 por keyword
+    - Muito curto (<20) ou muito longo (>70): -2
+    """
+    score = 0
+    n = len(hook)
+    if 30 <= n <= 60:
+        score += 2
+    elif 20 <= n <= 70:
+        score += 1
+    else:
+        score -= 2
+    lowered = hook.lower()
+    score += sum(1 for kw in _HOOK_CTR_KEYWORDS if kw in lowered)
+    return score
+
+
+def best_hook_for_scene(scene: str, mood: str = "", use_ai: bool = True) -> tuple[str, str]:
+    """A7: gera 2 candidatos de hook e escolhe o com maior qualidade.
+
+    Estratégia: chama hook_for_scene 2x (gerando 2 hooks diferentes via IA
+    ou fallback), pontua cada um por tamanho ideal + presenca de keywords
+    de alto volume, e retorna o de maior score. O segundo colocado e
+    descartado (o overlay e fixo no vídeo, nao da pra trocar depois).
+
+    Se ambos empatarem, retorna o primeiro. Se a IA falhar e o fallback
+    so tiver 1 hook para a cena, retorna esse.
+    """
+    hook1, emoji = hook_for_scene(scene, mood, use_ai=use_ai)
+    hook2, _ = hook_for_scene(scene, mood, use_ai=use_ai)
+    # Se os 2 hooks forem identicos, nao tem A/B - retorna o primeiro.
+    if hook1 == hook2:
+        return hook1, emoji
+    score1 = _hook_quality_score(hook1)
+    score2 = _hook_quality_score(hook2)
+    if score2 > score1:
+        return hook2, emoji
+    return hook1, emoji
+
+
 def is_allowed_animal_text(text: str) -> bool:
     lowered = text.lower()
     # Normaliza underscores para espacos para matching (ex: ai_art -> ai art)

@@ -1,0 +1,42 @@
+name: "Pata Jazz - Trending Keywords"
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 2x por semana (terca e sexta, 05:00 UTC = 02:00 BRT) - roda antes do
+    # sync de assets (06:00 UTC) para que as trending keywords estejam
+    # disponíveis para os próximos Shorts. Custo de quota: ~500 unidades
+    # por run (5 queries x 100 unidades), bem dentro do limite diario.
+    - cron: "0 5 * * 2,5"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pata-jazz-trending
+  cancel-in-progress: true
+
+jobs:
+  trending:
+    name: "Descobrir trending keywords do nicho"
+    if: ${{ vars.PATA_JAZZ_ENABLED == '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: "Setup"
+        uses: ./.github/actions/setup-env
+        with:
+          ffmpeg: "false"
+      - name: "Restaurar token e caches"
+        uses: ./.github/actions/restore-token-and-cache
+        with:
+          youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
+      - name: "Sync trending keywords"
+        run: python scripts/sync_trending.py
+      - name: "Apagar token"
+        if: always()
+        run: rm -f youtube_token.json

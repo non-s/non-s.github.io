@@ -94,6 +94,10 @@ PATA_JAZZ: ChannelConfig = ChannelConfig(
             "This {keyword_style} calms my {animal} instantly {emoji}",
             "{scenario}? This music helps {animal}s relax {emoji}",
             "Watch my {animal} fall asleep to {keyword_style} {emoji}",
+            # A5: padrões que promovem playlists temáticas explicitamente.
+            "For {animal}s scared of {scenario} — full playlist {emoji}",
+            "The {keyword_style} playlist for anxious {animal}s {emoji}",
+            "Calm your {animal} — {keyword_long_tail} playlist {emoji}",
         ],
     },
     emojis={"brand": "🐾🎷", "sleep": "💤", "calm": "😴", "love": "💛"},

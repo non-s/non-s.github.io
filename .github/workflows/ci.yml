@@ -60,14 +60,12 @@ jobs:
         # declaradas. Mantido limpo em main: qualquer nova CVE exige bump ou
         # --ignore-vuln explicito no proprio PR que a introduz.
         run: pip-audit -r requirements.txt
-      - name: "Type check (advisory)"
-        # Advisory: mypy em codebase sem stubs para googleapiclient/Pillow tem
-        # ruído esperado; nao vale travar PRs por isso enquanto os stubs nao
-        # existirem. Mantido limpo em main (utils/, scripts/, geradores e
-        # upload_youtube.py); qualquer regressao fica visivel no log.
-        run: >
-          python -m mypy utils/ scripts/ upload_youtube.py
-          || echo "::warning::mypy encontrou problemas de tipo"
+      - name: "Type check"
+        # C1: mypy agora passa limpo em todos os arquivos e e bloqueante.
+        # Antes era advisory (|| echo warning) porque faltavam stubs para
+        # googleapiclient/Pillow, mas o pyproject.toml ja tem ignore_missing_imports
+        # para esses modulos, e o codigo foi tipado completamente.
+        run: mypy utils/ scripts/ upload_youtube.py generate_pata_jazz_short.py
       - name: "Security scan"
         # Falha o build em issues de severity MEDIUM+ do bandit (-ll filtra
         # LOW). Falsos-positivos conhecidos levam # nosec no codigo com

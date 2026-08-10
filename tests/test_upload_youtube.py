@@ -368,3 +368,48 @@ class TestRecordVideoTags:
         data = json.loads(tags_file.read_text(encoding="utf-8"))
         assert data["vid_e2e"]["scene"] == "cat"
         assert data["vid_e2e"]["mood"] == "relax"
+
+
+class TestQuotaGuard:
+    """upload_video aborta antes de gastar quota quando o dia ja esta no
+    limiar de alerta - evita um insert que estoura a quota e deixa o video
+    preso em processing/private no canal."""
+
+    def _setup(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(upload_youtube, "OUTPUT_DIR", tmp_path)
+        monkeypatch.setattr(upload_youtube.ffmpeg_helpers, "get_video_duration", lambda path: 30.0)
+        _write_video_with_meta(
+            tmp_path,
+            {
+                "title": "Gatinho Fofo",
+                "description": "desc",
+                "scene": "cat",
+                "kind": "short",
+                "mood": "relax",
+            },
+        )
+
+    def test_aborts_when_quota_at_threshold(self, tmp_path, monkeypatch):
+        self._setup(tmp_path, monkeypatch)
+        service = MagicMock()
+        with (
+            patch("upload_youtube.get_youtube_service", return_value=service),
+            patch("upload_youtube.daily_total", return_value=upload_youtube.ALERT_THRESHOLD),
+        ):
+            video_id = upload_youtube.upload_video(prefix="pata_jazz_")
+
+        assert video_id is None
+        service.videos().insert.assert_not_called()
+
+    def test_proceeds_when_quota_below_threshold(self, tmp_path, monkeypatch):
+        self._setup(tmp_path, monkeypatch)
+        service = MagicMock()
+        service.videos().insert().execute.return_value = {"id": "vid-ok"}
+        with (
+            patch("upload_youtube.get_youtube_service", return_value=service),
+            patch("upload_youtube.daily_total", return_value=100),
+            patch("utils.youtube_post_upload.add_video_to_playlist"),
+        ):
+            video_id = upload_youtube.upload_video(prefix="pata_jazz_")
+
+        assert video_id == "vid-ok"
