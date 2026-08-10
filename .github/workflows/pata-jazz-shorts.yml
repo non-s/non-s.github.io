@@ -57,10 +57,19 @@ jobs:
         run: python generate_pata_jazz_short.py
       - name: "Escolher slot de publicação otimizado"
         if: hashFiles('youtube_token.json') != ''
+        # So agenda via --publish-at quando houver dados de performance
+        # suficientes (publish_slots.json com amostras). Canal novo sem
+        # dados: publica imediatamente para acumular views/inscritos.
         run: |
-          slot=$(python -c "from utils.publish_optimizer import pick_publish_time, iso_datetime_from_slot; print(iso_datetime_from_slot(pick_publish_time()))")
+          slot=""
+          if [ -f "_data/publish_slots.json" ]; then
+            samples=$(python -c "import json; d=json.load(open('_data/publish_slots.json')); print(sum(s.get('samples',0) for s in d.values() if isinstance(s, dict)))" 2>/dev/null || echo "0")
+            if [ "$samples" -ge 10 ]; then
+              slot=$(python -c "from utils.publish_optimizer import pick_publish_time, iso_datetime_from_slot; print(iso_datetime_from_slot(pick_publish_time()))" 2>/dev/null || echo "")
+            fi
+          fi
           echo "SLOT=$slot" >> "$GITHUB_ENV"
-          echo "Slot escolhido: $slot"
+          echo "Slot escolhido: ${slot:-publicacao-imediata}"
       - name: "Upload para YouTube"
         if: hashFiles('youtube_token.json') != ''
         run: |
