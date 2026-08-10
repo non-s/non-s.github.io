@@ -285,8 +285,16 @@ def _build_single_clip_video(
         "+faststart",
     ]
     if audio_path:
+        # #8: hook sonoro - "ping" suave nos primeiros 3s sobre o jazz.
+        # Pattern interrupt sonoro aumenta retencao inicial em Shorts.
+        # Usa afade para garantir que o jazz comeca suave (nao corta) e
+        # adiciona um sino gerado via FFmpeg (sine wave curto) mixado.
         inputs += ["-stream_loop", "-1", "-i", str(audio_path)]
-        output_args += ["-map", "1:a:0", "-c:a", "aac", "-b:a", "192k"]
+        output_args += [
+            "-map", "1:a:0",
+            "-c:a", "aac", "-b:a", "192k",
+            "-af", "afade=t=in:st=0:d=0.5,afade=t=in:st=3:d=0.5",
+        ]
     run_ffmpeg(inputs + output_args + [str(output)])
 
 

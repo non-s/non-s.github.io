@@ -2,9 +2,10 @@ name: "OAuth Token Refresh"
 
 on:
   schedule:
-    # Domingo as 02:00 UTC (renova o refresh_token semanalmente antes que
-    # expire por desuso apos 90 dias, padrao do Google).
-    - cron: "0 2 * * 0"
+    # #2: 2x por semana (dom e qua as 02:00 UTC) para reduzir risco de
+    # expiracao por desuso (90 dias do Google). Rodar 2x garante que mesmo
+    # se uma run falhar, a outra renova a tempo.
+    - cron: "0 2 * * 0,3"
   workflow_dispatch:
 
 permissions:

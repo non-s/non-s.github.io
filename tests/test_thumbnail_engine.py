@@ -135,10 +135,10 @@ class TestThumbnailVariantC:
         ):
             mock_truetype.side_effect = lambda path, size: MagicMock(size=size)
             font_large, font_small = thumbnail_engine._fonts_for_variant("C")
-            # font_large deve ser 240 (2x do default 120).
-            assert font_large.size == 240
-            # font_small menor que o default 48.
-            assert font_small.size < 48
+            # font_large deve ser 280 (maior que o default 160).
+            assert font_large.size == 280
+            # font_small menor que o default 64.
+            assert font_small.size < 64
 
     def test_variant_a_uses_default_font_sizes(self, tmp_path):
         with (
@@ -147,8 +147,8 @@ class TestThumbnailVariantC:
         ):
             mock_truetype.side_effect = lambda path, size: MagicMock(size=size)
             font_large, font_small = thumbnail_engine._fonts_for_variant("A")
-            assert font_large.size == 120
-            assert font_small.size == 48
+            assert font_large.size == 160
+            assert font_small.size == 64
 
 
 class TestThumbnailEngine:

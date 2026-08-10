@@ -47,6 +47,14 @@ SCENE_CATEGORIES: dict[str, list[str]] = {
     "relax": ["sleepy cat", "sleepy dog", "cat relaxing", "dog relaxing"],
 }
 
+
+# #6: cenas de alta qualidade para os primeiros uploads do canal novo.
+# Antes de o feedback loop ter dados, priorizar cenas universalmente fofas
+# (kitten sleeping, puppy playing) em vez de sortear uniformemente.
+# Contador em _data/upload_language_counter.json (ja existe para multilingue).
+_FIRST_UPLOADS_PRIORITY_SCENES = ["kitten", "puppy", "sleepy cat", "puppy playing", "cat playing"]
+_FIRST_UPLOADS_THRESHOLD = 10  # primeiros N uploads usam priorizacao
+
 # Mapeamento de faixa horaria (BRT) -> mood
 # Manha = energia/diversao, Tarde = fofura, Noite/Madrugada = relax
 _HOURLY_MOOD: dict[int, str] = {
@@ -189,16 +197,43 @@ def scene_for_mood(mood: str) -> str:
     cena precisa ja estar na lista do mood (nao inventa cena nova) e o boost
     so multiplica - nunca substitui nem cria peso do nada. Assim um viral
     isolado eleva a chance da cena sem distorcer o equilibrio geral.
+
+    #6: nos primeiros _FIRST_UPLOADS_THRESHOLD uploads do canal, prioriza
+    cenas universalmente fofas (kitten, puppy, sleepy cat) em vez de sortear
+    uniformemente - primeira impressao do algoritmo do YouTube e crucial.
     """
     scenes = SCENE_CATEGORIES.get(mood, SCENE_CATEGORIES["fofura"])
     weights_by_scene = _scene_weights()
     viral_boosts = viral_boosted_scenes()
-    if not weights_by_scene and not viral_boosts:
+
+    # #6: priorizar cenas fofas nos primeiros uploads
+    use_priority = False
+    priority_boost: dict[str, float] = {}
+    try:
+        from utils.paths import data_dir as _data_dir
+
+        counter_file = _data_dir() / "upload_language_counter.json"
+        if counter_file.exists():
+            import json
+
+            data = json.loads(counter_file.read_text(encoding="utf-8"))
+            count = int(data.get("count", 0)) if isinstance(data, dict) else 0
+            if count < _FIRST_UPLOADS_THRESHOLD:
+                use_priority = True
+                for s in _FIRST_UPLOADS_PRIORITY_SCENES:
+                    if s in scenes:
+                        priority_boost[s] = 2.5
+    except Exception:
+        pass
+
+    if not weights_by_scene and not viral_boosts and not use_priority:
         return random.choice(scenes)
     weights = []
     for scene in scenes:
         w = weights_by_scene.get(scene, 1.0)
         if scene in viral_boosts:
             w *= viral_boosts[scene]
+        if use_priority and scene in priority_boost:
+            w *= priority_boost[scene]
         weights.append(w)
     return random.choices(scenes, weights=weights, k=1)[0]

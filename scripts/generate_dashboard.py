@@ -389,6 +389,30 @@ def _build_chart_datasets(history: list) -> dict:
     return {"labels": labels, "total_views": total_views, "avg_views": avg_views}
 
 
+def _build_views_by_day_dataset(analytics: dict) -> dict:
+    """#11: Agrupa views por dia de publicacao (published_at) para um
+    grafico de serie temporal de views/dia - mostra se as features novas
+    estao funcionando ao longo do tempo."""
+    if not analytics:
+        return {"labels": [], "views": []}
+    all_videos = analytics.get("all_videos") or []
+    by_day: dict[str, int] = {}
+    for v in all_videos:
+        if not isinstance(v, dict):
+            continue
+        pub = str(v.get("published_at", ""))[:10]
+        if not pub:
+            continue
+        by_day[pub] = by_day.get(pub, 0) + int(v.get("views", 0) or 0)
+    if not by_day:
+        return {"labels": [], "views": []}
+    sorted_days = sorted(by_day.items())
+    return {
+        "labels": [d for d, _ in sorted_days],
+        "views": [v for _, v in sorted_days],
+    }
+
+
 def _build_scene_dataset(scene_weights: dict) -> dict:
     ordered = sorted(scene_weights.items(), key=lambda kv: kv[1], reverse=True)
     return {
@@ -475,6 +499,7 @@ def build_dashboard_html() -> str:
     # escapados nos datasets de barra/doughnut (labels) via escape() antes do
     # dumps.
     history_ds = _build_chart_datasets(history)
+    views_by_day_ds = _build_views_by_day_dataset(analytics)
     scene_ds = _build_scene_dataset(scene_weights)
     title_ds = _build_title_pattern_dataset(title_pattern_weights)
     top_ds = _build_top_videos_dataset(analytics)
@@ -487,6 +512,7 @@ def build_dashboard_html() -> str:
         return json.dumps(obj, ensure_ascii=False).replace("</", "<\\/")
 
     history_json = _safe_json(history_ds)
+    views_by_day_json = _safe_json(views_by_day_ds)
     scene_json = _safe_json(scene_ds)
     title_json = _safe_json(title_ds)
     top_json = _safe_json(top_ds)
@@ -590,6 +616,9 @@ def build_dashboard_html() -> str:
   {_chart_canvas("viewsChart")}
   {_render_history(history)}
 
+  <h2>Views por dia de publicação</h2>
+  {_chart_canvas("viewsByDayChart", "280px")}
+
   <h2>Views por cena</h2>
   {_chart_canvas("sceneChart")}
   {_render_weighted_table(scene_weights, "Cena")}
@@ -624,6 +653,7 @@ def build_dashboard_html() -> str:
   <script>
     // Dados embutidos (dashboard autocontido, sem backend).
     var HISTORY_DS = {history_json};
+    var VIEWS_BY_DAY_DS = {views_by_day_json};
     var SCENE_DS = {scene_json};
     var TITLE_DS = {title_json};
     var TOP_DS = {top_json};
@@ -788,8 +818,29 @@ def build_dashboard_html() -> str:
       }});
     }}
 
+    function makeViewsByDayChart() {{
+      var ds = VIEWS_BY_DAY_DS;
+      if (!ds.labels.length) return;
+      new Chart(document.getElementById("viewsByDayChart").getContext("2d"), {{
+        type: "bar",
+        data: {{
+          labels: ds.labels,
+          datasets: [{{ label: "Views", data: ds.views, backgroundColor: ACCENT, borderRadius: 4 }}],
+        }},
+        options: {{
+          responsive: true, maintainAspectRatio: false,
+          plugins: {{ legend: {{ display: false }} }},
+          scales: {{
+            x: {{ ticks: {{ color: TICK, maxRotation: 45 }}, grid: {{ display: false }} }},
+            y: {{ ticks: {{ color: TICK }}, grid: {{ color: GRID }}, beginAtZero: true }},
+          }},
+        }},
+      }});
+    }}
+
     if (window.Chart) {{
       makeViewsChart();
+      makeViewsByDayChart();
       makeSceneChart();
       makeTitlePatternChart();
       makeTopVideosChart();
