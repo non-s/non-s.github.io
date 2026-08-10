@@ -1060,11 +1060,11 @@ class TestCollectRetentionMetrics:
         return service
 
     def test_returns_metrics_for_each_video(self):
-        # Ordem das metricas agora: averageViewDuration, averageViewPercentage,
-        # videoThumbnailImpressions, videoThumbnailImpressionsCtr, subscribersGained
+        # Ordem das metricas: averageViewDuration, averageViewPercentage,
+        # subscribersGained, likes, comments, estimatedMinutesWatched
         rows = {
-            "vid1": [[120.0, 55.5, 1000.0, 4.2, 12.0]],
-            "vid2": [[200.0, 70.0, 2000.0, 3.1, 5.0]],
+            "vid1": [[120.0, 55.5, 2.0, 5.0, 1.0, 600.0]],
+            "vid2": [[200.0, 70.0, 3.0, 10.0, 2.0, 1000.0]],
         }
         service = self._analytics_service(rows_by_video=rows)
 
@@ -1073,13 +1073,14 @@ class TestCollectRetentionMetrics:
         assert result["vid1"] == {
             "averageViewDuration": 120.0,
             "averageViewPercentage": 55.5,
-            "impressions": 1000.0,
-            "ctr": 4.2,
-            "subscribersGained": 12.0,
+            "subscribersGained": 2.0,
+            "likes": 5.0,
+            "comments": 1.0,
+            "estimatedMinutesWatched": 600.0,
         }
         assert result["vid2"]["averageViewDuration"] == 200.0
-        assert result["vid2"]["ctr"] == 3.1
-        assert result["vid2"]["impressions"] == 2000.0
+        assert result["vid2"]["subscribersGained"] == 3.0
+        assert result["vid2"]["estimatedMinutesWatched"] == 1000.0
 
     def test_empty_video_ids_returns_empty(self):
         service = self._analytics_service()
@@ -1087,7 +1088,7 @@ class TestCollectRetentionMetrics:
         service.reports().query.assert_not_called()
 
     def test_video_without_rows_is_skipped(self):
-        rows = {"vid1": [[100.0, 50.0, 2.0, 500.0, 3.0]]}  # vid2 sem rows
+        rows = {"vid1": [[100.0, 50.0, 2.0, 5.0, 1.0, 500.0]]}  # vid2 sem rows
         service = self._analytics_service(rows_by_video=rows)
 
         result = collect_analytics._collect_retention_metrics(service, ["vid1", "vid2"])
@@ -1115,7 +1116,7 @@ class TestCollectRetentionMetrics:
         def _execute():
             call_count["n"] += 1
             if call_count["n"] == 1:
-                return {"rows": [[100.0, 50.0, 2.0, 300.0, 1.0]]}
+                return {"rows": [[100.0, 50.0, 2.0, 5.0, 1.0, 500.0]]}
             raise RuntimeError("403 Forbidden")
 
         query_mock.execute.side_effect = _execute
@@ -1126,7 +1127,7 @@ class TestCollectRetentionMetrics:
         assert "vid2" not in result
 
     def test_query_uses_channel_mine_and_metrics(self):
-        service = self._analytics_service(rows_by_video={"vid1": [[1.0, 1.0, 1.0, 1.0, 1.0]]})
+        service = self._analytics_service(rows_by_video={"vid1": [[1.0, 1.0, 1.0, 1.0, 1.0, 1.0]]})
 
         collect_analytics._collect_retention_metrics(service, ["vid1"])
 
@@ -1134,8 +1135,7 @@ class TestCollectRetentionMetrics:
         assert kwargs["ids"] == "channel==mine"
         assert kwargs["metrics"] == (
             "averageViewDuration,averageViewPercentage,"
-            "videoThumbnailImpressions,videoThumbnailImpressionsCtr,"
-            "subscribersGained"
+            "subscribersGained,likes,comments,estimatedMinutesWatched"
         )
         assert kwargs["filters"] == "video==vid1"
         assert "startDate" in kwargs and "endDate" in kwargs
@@ -1260,7 +1260,7 @@ class TestSnapshotOnlyFlag:
 
         def _spy(service, video_ids):
             captured["ids"] = video_ids
-            return {"v0": {"averageViewDuration": 60.0, "averageViewPercentage": 50.0, "ctr": 2.0}}
+            return {"v0": {"averageViewDuration": 60.0, "averageViewPercentage": 50.0, "subscribersGained": 2.0}}
 
         monkeypatch.setattr(collect_analytics, "_collect_retention_metrics", _spy)
 
