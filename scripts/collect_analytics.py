@@ -95,6 +95,32 @@ def _to_int(value) -> int:
         return 0
 
 
+# #10: Analytics diferencial - rastreia o ultimo video_id coletado para
+# parar de paginar quando nao ha novos videos, economizando quota.
+_LAST_COLLECTED_FILE = DATA_DIR / "last_analytics_video_id.json"
+
+
+def _load_last_collected_video_id() -> str:
+    """Le o ultimo video_id coletado (ou '' se nao houver)."""
+    try:
+        data = json.loads(_LAST_COLLECTED_FILE.read_text(encoding="utf-8"))
+        return str(data.get("video_id", "")) if isinstance(data, dict) else ""
+    except Exception:
+        return ""
+
+
+def _save_last_collected_video_id(video_id: str) -> None:
+    """Salva o ultimo video_id coletado para a proxima run."""
+    try:
+        _LAST_COLLECTED_FILE.parent.mkdir(parents=True, exist_ok=True)
+        _LAST_COLLECTED_FILE.write_text(
+            json.dumps({"video_id": video_id, "at": datetime.now(UTC).isoformat()}),
+            encoding="utf-8",
+        )
+    except Exception as exc:
+        log.debug("Falha ao salvar last_collected_video_id: %s", exc)
+
+
 def collect_video_stats(service) -> tuple[list[dict], dict]:
     """Busca estatisticas dos videos mais recentes do canal.
 
@@ -122,10 +148,16 @@ def collect_video_stats(service) -> tuple[list[dict], dict]:
     _ = channel_id  # disponível para debug futuro
 
     # Lista videos da playlist de uploads (com guard contra loop infinito)
+    # #10: Analytics diferencial - para de paginar quando encontra o ultimo
+    # video ja coletado (last_analytics_video_id.json), economizando quota.
+    # Sempre busca pelo menos 20 videos para manter a mediana estavel.
+    last_collected_id = _load_last_collected_video_id()
+    _MIN_VIDEOS_FOR_MEDIAN = 20
     video_ids: list[str] = []
     page_token = ""
     pages = 0
-    while len(video_ids) < MAX_VIDEOS and pages < 20:
+    stop = False
+    while len(video_ids) < MAX_VIDEOS and pages < 20 and not stop:
         pages += 1
         resp = _retry_youtube_call(
             service.playlistItems()
@@ -143,9 +175,19 @@ def collect_video_stats(service) -> tuple[list[dict], dict]:
             vid = item.get("snippet", {}).get("resourceId", {}).get("videoId")
             if vid:
                 video_ids.append(vid)
-        page_token = resp.get("nextPageToken") or ""
-        if not page_token:
-            break
+                # #10: para quando encontra o ultimo coletado E ja tem
+                # videos suficientes para a mediana (>=20).
+                if last_collected_id and vid == last_collected_id and len(video_ids) >= _MIN_VIDEOS_FOR_MEDIAN:
+                    stop = True
+                    break
+        if not stop:
+            page_token = resp.get("nextPageToken") or ""
+            if not page_token:
+                break
+
+    # #10: salva o video mais recente como o novo "ultimo coletado"
+    if video_ids:
+        _save_last_collected_video_id(video_ids[0])
 
     if not video_ids:
         log.info("Nenhum video encontrado.")

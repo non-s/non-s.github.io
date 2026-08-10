@@ -47,7 +47,7 @@ jobs:
       JAMENDO_CLIENT_ID: ${{ secrets.JAMENDO_CLIENT_ID }}
     steps:
       - name: "Checkout"
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           persist-credentials: false
       - name: "Setup"
@@ -69,7 +69,7 @@ jobs:
             python generate_pata_jazz_short.py || echo "::warning::Short $i falhou, continuando"
           done
       - name: "Salvar cache de videos gerados"
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: _videos
           key: weekly-videos-${{ github.run_id }}
@@ -110,7 +110,7 @@ jobs:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
     steps:
       - name: "Checkout"
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           persist-credentials: false
       - name: "Setup"
@@ -127,7 +127,7 @@ jobs:
         # execucao, ignorando os gerados depois. Com run_id restauramos via
         # restore-keys o cache mais recente que ainda nao foi "finalizado"
         # (cache hit na chave exata) e salvamos um novo a cada run.
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: _videos
           key: weekly-videos-publish-${{ github.run_id }}

@@ -43,9 +43,40 @@ log = logging.getLogger(__name__)
 # um token novo com o scope atualizado e atualize o secret YOUTUBE_TOKEN.
 SCOPES = [
     "https://www.googleapis.com/auth/youtube.upload",
+    # #4: force-ssl e estritamente necessario - cobre channels.update
+    # (identity), comments.insert (engagement), videos.update (A/B title
+    # rotation), playlists.insert, captions.insert. youtube.upload so
+    # cobre videos.insert + thumbnails.set. Remover force-ssl quebra 5
+    # workflows essenciais. Avaliado e mantido.
     "https://www.googleapis.com/auth/youtube.force-ssl",
     "https://www.googleapis.com/auth/yt-analytics.readonly",
 ]
+
+
+def validate_token_scopes(token_path: str | None = None) -> list[str]:
+    """#4: valida que o token OAuth tem todos os scopes necessarios.
+
+    Retorna lista de scopes FALTANTES (vazia se tudo OK). Usado pelo
+    healthcheck e pelo oauth-token-refresh.yml para detectar tokens
+    expirados/invalidos antes que os workflows falhem em producao.
+
+    Causa comum de scopes faltantes: token gerado com client_secret de
+    um projeto diferente do que tem as APIs habilitadas.
+    """
+    path = Path(token_path) if token_path else Path(_token_path())
+    if not path.exists():
+        return list(SCOPES)
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        # Credentials guarda scopes em "scopes" (lista) ou no campo
+        # "token_uri" adjacente. google-auth serializa como "scopes".
+        token_scopes = data.get("scopes") or []
+        if isinstance(token_scopes, str):
+            token_scopes = [token_scopes]
+        token_set = {str(s) for s in token_scopes}
+        return [s for s in SCOPES if s not in token_set]
+    except Exception:
+        return list(SCOPES)
 
 ROOT = Path(__file__).resolve().parent.parent
 
