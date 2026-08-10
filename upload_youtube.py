@@ -22,6 +22,7 @@ from utils import ffmpeg_helpers
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.paths import data_dir
 from utils.pipeline_metrics import record_pipeline_run
+from utils.quota_tracker import ALERT_THRESHOLD, daily_total
 from utils.state_lock import state_lock
 from utils.youtube_oauth import get_youtube_service
 from utils.youtube_post_upload import add_to_playlists, apply_captions, apply_thumbnail
@@ -116,7 +117,9 @@ def _record_video_tags(video_id: str, meta: dict) -> None:
             "mood": meta.get("mood", ""),
             "kind": meta.get("kind", ""),
             "title": meta.get("title", ""),
+            "title_alt": meta.get("title_alt", ""),
             "title_pattern": meta.get("title_pattern", ""),
+            "lang": meta.get("lang", "en"),
             "uploaded_at": datetime.now(UTC).isoformat(),
             "thumbnails": meta.get("thumbnails", []),
             "thumbnail_variant": meta.get("thumbnail_variant", "A"),
@@ -179,10 +182,31 @@ def _upload_video_inner(
         log.error("Video %s com duracao invalida (%.1fs) - upload abortado.", video_path.name, duration)
         return None
 
+    # Guarda de quota: videos.insert custa 1600 unidades do pool compartilhado
+    # de 10.000/dia. Se o dia ja estiver no limiar de alerta (8000), abortar
+    # antes de gastar mais - um upload que estoura a quota falha no meio do
+    # insert e deixa o video preso em "processing"/"private" no canal. Melhor
+    # nao subir do que subir pela metade. (daily_total() le _data/quota_usage.json,
+    # que so existe em CI via cache; localmente retorna 0 e nao bloqueia.)
+    if daily_total() >= ALERT_THRESHOLD:
+        log.error(
+            "Quota do dia ja em %d/%d unidades (alerta em %d) - upload abortado para nao estourar.",
+            daily_total(),
+            10000,
+            ALERT_THRESHOLD,
+        )
+        return None
+
     title = str(meta.get("title", "Pata Jazz"))[:100]
     description = str(meta.get("description", ""))[:5000]
     tags = _build_tags(meta.get("scene", ""), meta.get("hashtags"))
     thumbnail = _meta_path(meta, "thumbnail")
+
+    # A3: se o metadata tem "lang" (decidido no generate via
+    # pick_upload_language), usa como idioma do upload defaultAudioLanguage/
+    # defaultLanguage. O --language do CLI continua como override explicito.
+    meta_lang = str(meta.get("lang", "")).strip()
+    effective_language = meta_lang if meta_lang else language
 
     status: dict = {"privacyStatus": privacy, "selfDeclaredMadeForKids": False}
     if publish_at:
@@ -196,8 +220,8 @@ def _upload_video_inner(
             "description": description,
             "tags": tags,
             "categoryId": "15",  # Pets & Animals
-            "defaultLanguage": language,
-            "defaultAudioLanguage": language,
+            "defaultLanguage": effective_language,
+            "defaultAudioLanguage": effective_language,
         },
         "status": status,
     }

@@ -297,6 +297,34 @@ class TestIntegration:
         assert "#PataJazz" in final_desc or "Pata Jazz" in final_desc
 
 
+class TestPlaylistPromotionPatterns:
+    """A5: padrões de título que promovem playlists temáticas explicitamente.
+    Esses padrões referenciam cenarios/problemas especificos (thunder,
+    fireworks, anxiety) e direcionam para a playlist correspondente,
+    aumentando CTR em buscas long-tail e session duration via playlists."""
+
+    def test_playlist_promotion_patterns_exist(self):
+        patterns = TITLE_PATTERNS["short"]
+        playlist_patterns = [p for p in patterns if "playlist" in p.lower()]
+        assert len(playlist_patterns) >= 2, "deve haver pelo menos 2 padroes de playlist"
+
+    def test_playlist_promotion_pattern_uses_scenario(self):
+        patterns = TITLE_PATTERNS["short"]
+        scenario_pattern = [p for p in patterns if "{scenario}" in p and "playlist" in p.lower()]
+        assert len(scenario_pattern) >= 1
+
+    def test_playlist_promotion_pattern_generates_valid_title(self):
+        """Padrão de playlist gera título valido com prefixo de marca."""
+        from utils.seo_keywords import generate_title
+
+        for _ in range(10):
+            title = generate_title(
+                animal="dog", acao="anxiety", estilo_musical="calming jazz", kind="short", emoji="🐶"
+            )
+            assert len(title) <= 100
+            assert title.startswith("Pata Jazz |")
+
+
 class TestTitleAntiRepeat:
     """Anti-repeat de titulos: near-duplicados dos recentes denunciam
     conteudo em massa ("mesmo video de novo") e afastam o publico. O gerador

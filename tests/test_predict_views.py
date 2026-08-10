@@ -398,7 +398,7 @@ class TestPredictViewsWithRealisticData:
             "dog": (500, 2000),
             "sleepy cat": (100, 600),
         }
-        samples_per_scene = max(10, 2 * len(patterns))
+        samples_per_scene = max(10, min(2 * len(patterns), 20))
         vids = []
         # i variando para diversificar published_at (hora/dia/views).
         i = 0

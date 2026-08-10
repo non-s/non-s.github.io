@@ -85,6 +85,36 @@ class TestBuildEndcardFilter:
             assert "'\">" not in result
             assert "text='" in result
 
+    def test_mood_specific_cta_is_used_when_mood_passed(self):
+        """Passar mood='relax' seleciona um CTA da lista de relax em vez da
+        lista legacy global - personalizacao por mood aumenta conversao de
+        sessao."""
+        for _ in range(30):
+            result = video_builder._build_endcard_filter(1920, 30, mood="relax")
+            assert any(f"text='{cta}'" in result for cta in video_builder._ENDCARD_CTAS_BY_MOOD["relax"])
+
+    def test_diversao_mood_uses_diversao_ctas(self):
+        for _ in range(20):
+            result = video_builder._build_endcard_filter(1920, 30, mood="diversao")
+            assert any(f"text='{cta}'" in result for cta in video_builder._ENDCARD_CTAS_BY_MOOD["diversao"])
+
+    def test_anxiety_mood_uses_anxiety_ctas(self):
+        for _ in range(20):
+            result = video_builder._build_endcard_filter(1920, 30, mood="anxiety")
+            assert any(f"text='{cta}'" in result for cta in video_builder._ENDCARD_CTAS_BY_MOOD["anxiety"])
+
+    def test_unknown_mood_falls_back_to_legacy_list(self):
+        """Mood nao mapeado (ex: 'xyz') cai na lista legacy _ENDCARD_CTAS
+        para backward compat com callers que passam um mood nao catalogado."""
+        for _ in range(20):
+            result = video_builder._build_endcard_filter(1920, 30, mood="xyz")
+            assert any(f"text='{cta}'" in result for cta in video_builder._ENDCARD_CTAS)
+
+    def test_empty_mood_falls_back_to_legacy_list(self):
+        for _ in range(20):
+            result = video_builder._build_endcard_filter(1920, 30, mood="")
+            assert any(f"text='{cta}'" in result for cta in video_builder._ENDCARD_CTAS)
+
 
 class TestVideoBuilderUnits:
     """Testes unitários para video_builder."""

@@ -253,6 +253,12 @@ TITLE_PATTERNS: dict[str, list[str]] = {
         "This {keyword_style} calms my {animal} instantly {emoji}",
         "{scenario}? This music helps {animal}s relax {emoji}",
         "Watch my {animal} fall asleep to {keyword_style} {emoji}",
+        # A5: padrões que promovem playlists temáticas explicitamente -
+        # referenciar o problema/cenario especifico aumenta CTR em buscas
+        # long-tail e direciona para a playlist correspondente.
+        "For {animal}s scared of {scenario} — full playlist {emoji}",
+        "The {keyword_style} playlist for anxious {animal}s {emoji}",
+        "Calm your {animal} — {keyword_long_tail} playlist {emoji}",
     ],
 }
 
@@ -299,6 +305,37 @@ def music_style_for_mood(mood: str) -> str:
     if not options:
         options = ["relaxing jazz"]
     return random.choice(options)
+
+
+def trending_keywords() -> list[str]:
+    """Retorna keywords trending do nicho pet/jazz, mesclando o banco
+    estatico (HIGH_VOLUME_KEYWORDS["trending"]) com keywords dinamicas
+    coletadas por scripts/sync_trending.py em _data/trending_keywords.json.
+
+    Trending dinamicas tem prioridade (sao o que esta bombando AGORA), mas
+    as estaticas (thunderstorm/fireworks/etc sazonais) permanecem como
+    fallback quando o sync ainda nao rodou ou esta vazio.
+
+    Usado por _select_description_keywords e _format_pattern_with_seo para
+    injetar trending terms em títulos e descrições, aumentando CTR em
+    buscas que estao em alta no momento.
+    """
+    static_trending = HIGH_VOLUME_KEYWORDS.get("trending", [])
+    if not isinstance(static_trending, list):
+        static_trending = []
+    try:
+        trending_file = data_dir() / "trending_keywords.json"
+        data = json.loads(trending_file.read_text(encoding="utf-8"))
+        dynamic = data.get("keywords", []) if isinstance(data, dict) else []
+        if isinstance(dynamic, list):
+            dynamic = [str(k) for k in dynamic if isinstance(k, str)]
+        else:
+            dynamic = []
+    except Exception:
+        dynamic = []
+    # Dinamicas primeiro (sem duplicar), depois estaticas.
+    merged = list(dict.fromkeys([*dynamic, *static_trending]))
+    return merged
 
 
 def _title_pattern_weights() -> dict[str, float]:
@@ -358,7 +395,14 @@ def _format_pattern_with_seo(
     assert isinstance(primary_keywords, list)
     assert isinstance(long_tail_keywords, list)
     primary = random.choice(primary_keywords)
-    long_tail = random.choice(long_tail_keywords)
+    # 25% de chance: usar uma trending keyword dinamica (do sync_trending)
+    # em vez de long_tail estatica - reflete o que esta bombando em busca
+    # real do YouTube no momento, aumentando CTR em buscas em alta.
+    trending = trending_keywords()
+    if trending and random.random() < 0.25:  # noqa: S311 - nao e seguranca
+        long_tail = random.choice(trending)
+    else:
+        long_tail = random.choice(long_tail_keywords)
     animal_specific = HIGH_VOLUME_KEYWORDS["animal_specific"]
     assert isinstance(animal_specific, dict)
     animal_keywords = animal_specific.get(kind, [])
@@ -523,6 +567,9 @@ def _select_description_keywords(animal: str, mood: str) -> list[str]:
     keywords: list[str] = []
     keywords.extend(primary_keywords)
     keywords.extend(long_tail_keywords)
+    # Trending keywords dinamicas (do sync_trending.py) - aumenta CTR em
+    # buscas que estao em alta no momento.
+    keywords.extend(trending_keywords())
     animal_specific_keywords = animal_specific.get(kind, [])
     assert isinstance(animal_specific_keywords, list)
     keywords.extend(animal_specific_keywords)
@@ -626,3 +673,123 @@ def optimize_for_search(title: str, description: str) -> tuple[str, str]:
         description += f"\n\nGreat for moments of {term}."
 
     return title, description
+
+
+# ---------------------------------------------------------------------------
+# SEO multilingue (A3): 1 a cada 6 uploads em PT-BR, 1 a cada 12 em ES,
+# resto em EN. YouTube nao suporta multiplos titulos por video, entao
+# rotacionamos o idioma do upload para capturar publico lusofono e
+# hispanofono sem custo adicional (mesmo pipeline visual, so muda texto).
+# ---------------------------------------------------------------------------
+
+# Keywords de alto volume em PT-BR para o nicho pet + relaxamento + jazz.
+# Espelham HIGH_VOLUME_KEYWORDS mas em portugues, para que títulos PT-BR
+# tambem espelhem o que as pessoas digitam (volume de busca em PT e
+# significativo no YouTube, especialmente Brasil/Portugal).
+HIGH_VOLUME_KEYWORDS_PT: dict[str, list[str]] = {
+    "primary": [
+        "musica para gatos",
+        "musica para cachorros",
+        "musica relaxante para gatos",
+        "musica relaxante para cachorros",
+        "musica calmante para cachorros",
+        "musica calmante para gatos",
+        "musica para ansiedade de pets",
+        "musica para pets",
+        "jazz para gatos",
+        "jazz para cachorros",
+    ],
+    "long_tail": [
+        "musica para gatos dormirem",
+        "musica para cachorro dormir",
+        "musica calmante para cachorros ansiosos",
+        "musica para cachorro sozinho em casa",
+        "musica para acalmar gatos",
+        "jazz relaxante para pets",
+        "musica para ansiedade em cachorros",
+        "musica para acalmar gato assustado",
+    ],
+}
+
+# Keywords de alto volume em ES para o nicho pet + relaxamento + jazz.
+# Mercado hispanofono e ~2x o lusofono em volume de busca no YouTube.
+HIGH_VOLUME_KEYWORDS_ES: dict[str, list[str]] = {
+    "primary": [
+        "musica para gatos",
+        "musica para perros",
+        "musica relajante para gatos",
+        "musica relajante para perros",
+        "musica calmante para perros",
+        "musica calmante para gatos",
+        "musica para ansiedad de mascotas",
+        "musica para mascotas",
+        "jazz para gatos",
+        "jazz para perros",
+    ],
+    "long_tail": [
+        "musica para gatos dormir",
+        "musica para perros dormir",
+        "musica calmante para perros ansiosos",
+        "musica para perros solos en casa",
+        "musica para calmar gatos",
+        "jazz relajante para mascotas",
+        "musica para ansiedad en perros",
+        "musica para calmar gato asustado",
+    ],
+}
+
+
+def _upload_language_counter_file() -> Path:
+    return data_dir() / "upload_language_counter.json"
+
+
+def pick_upload_language() -> str:
+    """Decide o idioma do próximo upload baseado num contador persistente.
+
+    Estratégia: a cada 6 uploads, o 7o e PT-BR; a cada 12, o 13o e ES;
+    os demais sao EN. Isso da ~83% EN, ~14% PT-BR, ~3% ES - o volume de
+    busca em EN e dominante, mas PT-BR e ES capturam publicos que EN nunca
+    alcancaria, sem custo adicional (mesmo pipeline, so muda texto).
+
+    Retorna "en", "pt" ou "es". Em erro de leitura, cai em "en".
+    """
+    try:
+        counter_file = _upload_language_counter_file()
+        with state_lock(counter_file):
+            try:
+                data = json.loads(counter_file.read_text(encoding="utf-8"))
+            except Exception:
+                data = {"count": 0}
+            count = int(data.get("count", 0)) + 1
+            try:
+                counter_file.parent.mkdir(parents=True, exist_ok=True)
+                counter_file.write_text(json.dumps({"count": count}), encoding="utf-8")
+            except Exception:
+                pass
+    except Exception:
+        count = 1
+    # ES primeiro (a cada 12) para que 12/24/36 virem ES e nao PT.
+    # PT depois (a cada 6 exceto multiplos de 12, que ja viraram ES).
+    if count % 12 == 0:
+        return "es"
+    if count % 6 == 0:
+        return "pt"
+    return "en"
+
+
+def keywords_for_language(lang: str) -> dict[str, object]:
+    """Retorna o banco de keywords de alto volume para o idioma dado.
+
+    "en" usa HIGH_VOLUME_KEYWORDS (estatico + trending dinamico), "pt"
+    usa HIGH_VOLUME_KEYWORDS_PT, "es" usa HIGH_VOLUME_KEYWORDS_ES. Idioma
+    desconhecido cai em EN.
+    """
+    if lang == "pt":
+        return HIGH_VOLUME_KEYWORDS_PT  # type: ignore[return-value]
+    if lang == "es":
+        return HIGH_VOLUME_KEYWORDS_ES  # type: ignore[return-value]
+    # EN: mescla estatico com trending dinamico
+    result: dict[str, object] = {}
+    for key, val in HIGH_VOLUME_KEYWORDS.items():
+        result[key] = val
+    return result

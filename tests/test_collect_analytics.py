@@ -4,6 +4,8 @@ import json
 from datetime import UTC, datetime, timedelta
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 import scripts.collect_analytics as collect_analytics
 
 
@@ -977,6 +979,53 @@ class TestRecordThumbnailVariantInStats:
         enriched = collect_analytics._record_thumbnail_variant_in_stats(stats, {"v1": {"thumbnail_variant": "C"}})
         assert enriched[0]["likes"] == 5
         assert enriched[0]["title"] == "T"
+
+
+class TestParseIso8601Duration:
+    """_parse_iso8601_duration: converte duracao ISO 8601 do YouTube em segundos."""
+
+    @pytest.mark.parametrize(
+        "raw,expected",
+        [
+            ("PT1M", 60.0),
+            ("PT2M", 120.0),
+            ("PT1M30S", 90.0),
+            ("PT30S", 30.0),
+            ("PT2H", 7200.0),
+            ("PT1H2M3S", 3723.0),
+            ("", 0.0),
+            ("garbage", 0.0),
+            (None, 0.0),
+        ],
+    )
+    def test_parse(self, raw, expected):
+        assert collect_analytics._parse_iso8601_duration(raw) == expected
+
+
+class TestYppEligibility:
+    """_ypp_eligibility: estima watch time real a partir da duracao dos videos."""
+
+    def test_uses_real_duration_not_hardcoded_30s(self):
+        # 2 videos de 60s, 100 views total -> 100 * 60s = 6000s = ~1.6h
+        stats = [
+            {"duration": "PT1M", "views": 50},
+            {"duration": "PT1M", "views": 50},
+        ]
+        result = collect_analytics._ypp_eligibility({"subscriber_count": 0, "total_views": 100}, stats)
+        assert result["watch_hours_estimate"] == 1  # 6000s / 3600 = 1.66 -> int 1
+
+    def test_empty_stats_gives_zero_watch_hours(self):
+        result = collect_analytics._ypp_eligibility({"subscriber_count": 0, "total_views": 100}, [])
+        assert result["watch_hours_estimate"] == 0
+
+    def test_eligible_when_subs_and_watch_hours_met(self):
+        # 1000 subs + 4000h: 1000 views * 14400s (4h) = 4M s = 1111h... use
+        # 4000h via 4000 views de 3600s cada.
+        stats = [{"duration": "PT1H", "views": 4000}]
+        result = collect_analytics._ypp_eligibility(
+            {"subscriber_count": 1000, "total_views": 4000}, stats
+        )
+        assert result["eligible"] is True
 
 
 class TestCollectRetentionMetrics:

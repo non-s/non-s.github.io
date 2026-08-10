@@ -372,3 +372,38 @@ def ai_text_with_image(
         return None
     finally:
         _record_ai_metric(task, (time.time() - start_ts) * 1000.0, fell_back)
+
+
+def ai_batch_metadata(
+    prompt: str,
+    *,
+    timeout: int = 45,
+    task: str = "batch_metadata",
+) -> dict | None:
+    """B1: chamada Gemini unica que gera todos os textos do vídeo de uma vez.
+
+    Reduz de 4-5 chamadas Gemini por vídeo (hook + metadata + caption ASS +
+    caption PT-BR) para 1 chamada que retorna tudo em JSON. Economia de
+    ~75% de quota/latencia Gemini.
+
+    Args:
+        prompt: prompt completo pedindo JSON com todas as chaves.
+        timeout: timeout em segundos (default 45 - maior que ai_text porque
+            gera mais texto de uma vez).
+
+    Returns:
+        dict parseado do JSON retornado, ou None em falha (circuit breaker,
+            key ausente, JSON invalido, etc). O caller trata cada chave
+            ausente como fallback individual.
+    """
+    result = ai_text(prompt, json_mode=True, timeout=timeout, task=task)
+    if not result:
+        return None
+    try:
+        data = json.loads(result)
+        if not isinstance(data, dict):
+            return None
+        return data
+    except (json.JSONDecodeError, TypeError) as exc:
+        log.warning("ai_batch_metadata: JSON invalido: %s", exc)
+        return None

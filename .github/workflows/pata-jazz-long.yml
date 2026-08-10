@@ -2,12 +2,12 @@ name: "Pata Jazz - Long-form (Loop & Relax)"
 
 on:
   schedule:
-    # 1 long-form por semana (domingo 01:13 BRT/UTC, quando a casa ta
-    # quieta e o render longo do FFmpeg nao compete com os Shorts de cada
-    # hora). Loop & Relax (10min+) compensa a alta frequencia de Shorts com
-    # watch time longo e busca de relaxamento - sao poucos mas rendem
-    # semanas de session time.
+    # 2 long-forms por semana (A6): domingo 01:13 UTC (sleep/deep) e
+    # terca 01:13 UTC (relax/cozy). Dobrar a frequencia dobra o watch
+    # time potencial sem custo (mesmo assets, so muda o mood/cena).
+    # Minuto 13 evita competir com pico de cron jobs no :00.
     - cron: "13 1 * * 0"
+    - cron: "13 1 * * 2"
   workflow_dispatch:
     inputs:
       reason:
@@ -53,7 +53,15 @@ jobs:
       - name: "Gerar long-form"
         run: |
           cd ${{ github.workspace }}
-          python scripts/generate_pata_jazz_long.py --duration 900
+          # A6: domingo = sleep/deep (15-20min), terca = relax/cozy (10-15min).
+          # Moods diferentes capturam publicos diferentes (sono vs relaxamento
+          # diurno) sem custo adicional - mesmos assets, so muda a cena.
+          DOW=$(date -u +%w)
+          if [ "$DOW" = "0" ]; then
+            python scripts/generate_pata_jazz_long.py --duration 1200 --scene "sleepy cat"
+          else
+            python scripts/generate_pata_jazz_long.py --duration 900 --scene "cat relaxing"
+          fi
       - name: "Escolher slot de publicação otimizado"
         if: hashFiles('youtube_token.json') != ''
         run: |

@@ -74,6 +74,18 @@ _VIRAL_THRESHOLD = 8.0
 _THUMBNAIL_ROTATION_DAYS = 7
 _THUMBNAIL_ROTATION_THRESHOLD = 0.5
 
+# A/B testing de TÍTULO: apos _TITLE_ROTATION_DAYS dias, se o video
+# performar abaixo de _TITLE_ROTATION_THRESHOLD x a mediana de views e
+# ainda estiver com o título original (title_rotated=False), troca o
+# título via videos.update para title_alt (gerado no upload e guardado em
+# video_tags.json). Diferente de thumbnail (que so tem 3 variantes
+# fixas), o título so tem 1 alternativo - depois da rotacao, nao rotaciona
+# mais. videos.update custa ~50 unidades de quota (vs 0 de nao fazer
+# nada), mas so roda em modo full (semanal) e so para videos abaixo da
+# mediana - raramente mais que alguns por run.
+_TITLE_ROTATION_DAYS = 5
+_TITLE_ROTATION_THRESHOLD = 0.5
+
 
 def _to_int(value) -> int:
     """Converte string/int/None para int de forma segura."""
@@ -390,6 +402,90 @@ def maybe_rotate_thumbnail(
     return True
 
 
+def maybe_rotate_title(
+    service,
+    video_id: str,
+    video_tags_entry: dict,
+    *,
+    median_views: float = 0.0,
+    now: datetime | None = None,
+) -> bool:
+    """Rotaciona o título de um vídeo para title_alt (A/B testing) se o
+    vídeo performar abaixo de _TITLE_ROTATION_THRESHOLD x a mediana apos
+    _TITLE_ROTATION_DAYS dias desde o upload.
+
+    Diferente da rotação de thumbnail (que tem 3 variantes e pode
+    rotacionar A->B->C), o título tem apenas 1 alternativo: depois da
+    rotacao, title_rotated=True e a funcao nao rotaciona mais.
+
+    Pré-requisitos para rotacionar:
+    - title_alt nao vazio (gerado no upload; alguns vídeos podem nao ter).
+    - title_rotated != True (ainda nao rotacionado).
+    - idade >= _TITLE_ROTATION_DAYS desde uploaded_at.
+    - views < median_views * _TITLE_ROTATION_THRESHOLD.
+
+    Usa videos.update (part=snippet) para trocar o título - custa ~50
+    unidades de quota do pool compartilhado, bem abaixo do limite.
+
+    Retorna True se trocou, False caso contrario.
+    """
+    if video_tags_entry.get("title_rotated"):
+        return False
+    title_alt = video_tags_entry.get("title_alt")
+    if not title_alt or not isinstance(title_alt, str) or not title_alt.strip():
+        return False
+
+    now = now or datetime.now(UTC)
+    anchor = video_tags_entry.get("uploaded_at")
+    if anchor:
+        try:
+            anchor_dt = datetime.fromisoformat(anchor)
+        except Exception:
+            anchor_dt = None
+        if anchor_dt is not None:
+            age = now - anchor_dt
+            if age < timedelta(days=_TITLE_ROTATION_DAYS):
+                return False
+
+    if median_views <= 0:
+        return False
+    views = _to_int(video_tags_entry.get("views"))
+    if views >= median_views * _TITLE_ROTATION_THRESHOLD:
+        return False
+
+    # Pega o snippet atual para preservar categoryId/tags/description e so
+    # trocar o title - videos.update exige o snippet completo (senao
+    # apaga campos nao enviados).
+    try:
+        resp = _retry_youtube_call(
+            service.videos().list(part="snippet", id=video_id).execute
+        )
+        items = resp.get("items", []) if isinstance(resp, dict) else []
+        if not items:
+            log.warning("maybe_rotate_title: vídeo %s não encontrado.", video_id)
+            return False
+        snippet = items[0].get("snippet", {})
+        snippet["title"] = title_alt[:100]
+        _retry_youtube_call(
+            service.videos().update(part="snippet", body={"id": video_id, "snippet": snippet}).execute
+        )
+    except Exception as exc:
+        log.warning("maybe_rotate_title: falha ao trocar título de %s: %s", video_id, exc)
+        return False
+
+    log.info(
+        "Título de %s rotacionado para alt (%d views < %.1f%% da mediana %.0f).",
+        video_id,
+        views,
+        _TITLE_ROTATION_THRESHOLD * 100,
+        median_views,
+    )
+    video_tags_entry["title_rotated"] = True
+    video_tags_entry["title_rotated_at"] = now.isoformat()
+    video_tags_entry["title"] = title_alt
+    return True
+
+
 def _load_scene_performance() -> dict[str, float]:
     try:
         return json.loads(SCENE_PERFORMANCE_FILE.read_text(encoding="utf-8")) if SCENE_PERFORMANCE_FILE.exists() else {}
@@ -573,6 +669,23 @@ def _save_viral_signals(virals: list[dict], path: Path | None = None) -> None:
             log.warning("Falha ao salvar sinais virais: %s", exc)
 
 
+def _parse_iso8601_duration(duration: str) -> float:
+    """Converte duracao ISO 8601 do YouTube (ex: 'PT1M30S', 'PT2H') em segundos.
+
+    Retorna 0.0 para valores vazios/invalidos. Usada para estimar watch time
+    real no tracking de elegibilidade YPP em vez de assumir 30s para tudo.
+    """
+    if not duration:
+        return 0.0
+    import re
+
+    m = re.fullmatch(r"PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?", duration.strip())
+    if not m:
+        return 0.0
+    hours, minutes, seconds = (int(g) if g else 0 for g in m.groups())
+    return float(hours * 3600 + minutes * 60 + seconds)
+
+
 def _ypp_eligibility(channel_stats: dict, video_stats: list[dict]) -> dict:
     """Calcula o progresso do canal em direcao a elegibilidade YPP.
 
@@ -586,18 +699,15 @@ def _ypp_eligibility(channel_stats: dict, video_stats: list[dict]) -> dict:
     """
     subs = channel_stats.get("subscriber_count", 0)
     total_views = channel_stats.get("total_views", 0)
-    # Estimativa grossa de watch time: total_views * duracao_media.
-    # Sem YouTube Analytics API (que daria o valor exato), usamos a media
-    # de duracao dos videos coletados como proxy.
+    # Estimativa de watch time: total_views * duracao_media real dos videos
+    # coletados (parseada do ISO 8601 do YouTube). Sem a Analytics API (que
+    # daria o valor exato), a media de duracao dos videos e o melhor proxy.
     avg_duration_seconds = 0.0
     if video_stats:
-        durations = []
-        for _v in video_stats:
-            # duration vem em ISO 8601 (PT#M#S); estimativa simples via views
-            # Como nao temos a duracao parseada aqui, usa 30s para Shorts
-            # (media do canal) como fallback conservador.
-            durations.append(30.0)
-        avg_duration_seconds = sum(durations) / len(durations)
+        durations = [_parse_iso8601_duration(v.get("duration", "")) for v in video_stats]
+        durations = [d for d in durations if d > 0]
+        if durations:
+            avg_duration_seconds = sum(durations) / len(durations)
     watch_hours_estimate = (total_views * avg_duration_seconds) / 3600.0
     return {
         "subscribers": subs,
@@ -754,7 +864,23 @@ def main(argv: list[str] | None = None) -> int:
             if "rotated_at" in entry_with_views:
                 entry["rotated_at"] = entry_with_views["rotated_at"]
             rotated_any = True
-    if rotated_any:
+
+    # A/B testing de TÍTULO: videos com title_alt e views < mediana apos
+    # _TITLE_ROTATION_DAYS dias tem o título trocado por title_alt via
+    # videos.update. So roda uma vez por vídeo (title_rotated=True apos).
+    title_rotated_any = False
+    for vid, entry in video_tags.items():
+        if not isinstance(entry, dict):
+            continue
+        entry_with_views = {**entry, "views": views_by_id.get(vid, 0)}
+        if maybe_rotate_title(service, vid, entry_with_views, median_views=median):
+            entry["title_rotated"] = entry_with_views.get("title_rotated", True)
+            if "title_rotated_at" in entry_with_views:
+                entry["title_rotated_at"] = entry_with_views["title_rotated_at"]
+            if "title" in entry_with_views:
+                entry["title"] = entry_with_views["title"]
+            title_rotated_any = True
+    if rotated_any or title_rotated_any:
         _save_video_tags(video_tags)
 
     return 0

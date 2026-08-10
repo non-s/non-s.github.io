@@ -18,6 +18,7 @@ from pathlib import Path
 from utils.content_strategy import current_brt_hour, mood_for_now, scene_for_mood
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.pipeline_metrics import record_pipeline_run
+from utils.seo_keywords import pick_upload_language
 from utils.slot_optimizer import optimized_scene_and_pattern
 from utils.video_builder import build_pata_jazz_video, short_spec
 
@@ -69,7 +70,15 @@ def _generate_short(duration: int = DEFAULT_DURATION, dry_run: bool = False) -> 
         current_brt_hour(),
     )
 
-    spec = short_spec(duration=duration, scene=scene, mood=mood, title_pattern_hint=pattern_hint or "")
+    # A3: decide o idioma do upload (EN/PT-BR/ES) baseado num contador
+    # persistente. 1 a cada 6 uploads vira PT-BR, 1 a cada 12 vira ES,
+    # resto EN - captura publico lusofono/hispanofono sem custo adicional.
+    lang = pick_upload_language()
+    log.info("Idioma do upload: %s", lang)
+
+    spec = short_spec(
+        duration=duration, scene=scene, mood=mood, title_pattern_hint=pattern_hint or "", lang=lang
+    )
     return build_pata_jazz_video(
         spec=spec,
         output_dir=OUTPUT_DIR,
