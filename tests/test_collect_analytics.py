@@ -1060,9 +1060,11 @@ class TestCollectRetentionMetrics:
         return service
 
     def test_returns_metrics_for_each_video(self):
+        # Ordem das metricas agora: averageViewDuration, averageViewPercentage,
+        # videoThumbnailImpressions, videoThumbnailImpressionsCtr, subscribersGained
         rows = {
-            "vid1": [[120.0, 55.5, 4.2, 1000.0, 12.0]],
-            "vid2": [[200.0, 70.0, 3.1, 2000.0, 5.0]],
+            "vid1": [[120.0, 55.5, 1000.0, 4.2, 12.0]],
+            "vid2": [[200.0, 70.0, 2000.0, 3.1, 5.0]],
         }
         service = self._analytics_service(rows_by_video=rows)
 
@@ -1071,8 +1073,8 @@ class TestCollectRetentionMetrics:
         assert result["vid1"] == {
             "averageViewDuration": 120.0,
             "averageViewPercentage": 55.5,
-            "ctr": 4.2,
             "impressions": 1000.0,
+            "ctr": 4.2,
             "subscribersGained": 12.0,
         }
         assert result["vid2"]["averageViewDuration"] == 200.0
@@ -1130,7 +1132,11 @@ class TestCollectRetentionMetrics:
 
         kwargs = service.reports.return_value.query.call_args.kwargs
         assert kwargs["ids"] == "channel==mine"
-        assert kwargs["metrics"] == ("averageViewDuration,averageViewPercentage,ctr,impressions,subscribersGained")
+        assert kwargs["metrics"] == (
+            "averageViewDuration,averageViewPercentage,"
+            "videoThumbnailImpressions,videoThumbnailImpressionsCtr,"
+            "subscribersGained"
+        )
         assert kwargs["filters"] == "video==vid1"
         assert "startDate" in kwargs and "endDate" in kwargs
 
