@@ -147,7 +147,7 @@ class TestMetadataEngine:
             # Pelo menos uma keyword primária ou long-tail deve aparecer
             has_keyword = any(
                 kw in title_lower
-                for                 kw in [
+                for kw in [
                     "music for cats",
                     "music for dogs",
                     "music for",
@@ -164,6 +164,17 @@ class TestMetadataEngine:
                     "soft jazz",
                     "jazz music to relax",
                     "cat + jazz",
+                    # A5: padroes de playlist promotion podem gerar
+                    # titulos com essas keywords adicionais
+                    "playlist",
+                    "calm",
+                    "thunder",
+                    "scared",
+                    "home alone",
+                    "deep sleep music",
+                    "dog calming",
+                    "cat calming",
+                    "pet calming",
                 ]
             )
             assert has_keyword, f"titulo sem keyword de alto volume: {metadata['title']!r}"
