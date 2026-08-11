@@ -142,6 +142,8 @@ class TestRenderIndex:
         html = site._render_index([])
         assert html.startswith("<!doctype html>")
         assert "</html>" in html
+        assert "https://www.youtube.com/@PataJazz-n5n" in html
+        assert "Fresh Pata Jazz videos are being indexed" in html
 
 
 class TestGenerateSite:

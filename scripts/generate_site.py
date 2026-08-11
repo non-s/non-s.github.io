@@ -29,6 +29,7 @@ log = logging.getLogger(__name__)
 
 _THUMB_URL = "https://img.youtube.com/vi/{vid}/hqdefault.jpg"
 _WATCH_URL = "https://youtu.be/{vid}"
+_CHANNEL_URL = "https://www.youtube.com/@PataJazz-n5n"
 
 
 def _load_json(path: Path, default):
@@ -158,6 +159,12 @@ def _render_index(entries: list[dict]) -> str:
             f"</a>"
         )
     cards_html = "\n".join(cards)
+    empty_state = (
+        '<p class="empty">Fresh Pata Jazz videos are being indexed. '
+        f'<a href="{_CHANNEL_URL}" target="_blank" rel="noopener">Watch the channel on YouTube</a>.</p>'
+        if not entries
+        else ""
+    )
     item_list = {
         "@context": "https://schema.org",
         "@type": "ItemList",
@@ -195,11 +202,16 @@ def _render_index(entries: list[dict]) -> str:
   .card img {{ width: 100%; aspect-ratio: 16/9; object-fit: cover; }}
   .card h3 {{ font-size: 0.9rem; margin: 8px 12px; }}
   .card .views {{ color: #9a9ab8; font-size: 0.8rem; margin: 0 12px 12px; display: block; }}
+  .channel-cta {{ display: inline-block; margin: 8px 0 24px; padding: 10px 16px; border-radius: 999px; background: #f4a261; color: #17172d; font-weight: 700; text-decoration: none; }}
+  .empty {{ padding: 24px; border: 1px solid rgba(244,162,97,0.2); border-radius: 12px; color: #d6d6ec; }}
+  .empty a {{ color: #f4a261; }}
 </style>
 </head>
 <body>
   <h1>🐾🎷 Pata Jazz</h1>
-  <p>Cute cats and dogs with relaxing jazz music.</p>
+  <p>Soft jazz and gentle pet moments for quieter homes.</p>
+  <a class="channel-cta" href="{_CHANNEL_URL}" target="_blank" rel="noopener">Watch Pata Jazz on YouTube</a>
+  {empty_state}
   <div class="grid">
 {cards_html}
   </div>
