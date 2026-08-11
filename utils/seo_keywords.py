@@ -206,15 +206,14 @@ CTAS = [
 # Gatilhos mentais para títulos de alto CTR
 TRIGGERS = {
     "promise": [
-        "Your {animal} will relax in {seconds}s",
-        "Calm your {animal} in under {seconds} seconds",
-        "This helps {animal}s sleep fast",
-        "Instant calm for anxious {animal}s",
+        "A calm {seconds}-second pause for your {animal}",
+        "A gentle moment for your {animal}",
+        "Soft music for {animal}s at rest",
+        "A quiet reset for anxious {animal}s",
     ],
     "curiosity": [
-        "This sound calms 9 out of 10 {animal}s",
         "Why do {animal}s love this music?",
-        "The music {animal}s secretly love",
+        "A little jazz moment for your {animal}",
     ],
     "empathy": [
         "For the {animal} that misses you",
@@ -222,9 +221,9 @@ TRIGGERS = {
         "For {animal}s who get scared home alone",
     ],
     "result": [
-        "From anxious to asleep in seconds",
-        "Watch your {animal} melt into calm",
-        "From stressed to sleepy — fast",
+        "A softer moment for your {animal}",
+        "A peaceful pause with your {animal}",
+        "A gentle wind-down for pets",
     ],
 }
 
@@ -243,22 +242,22 @@ TITLE_PATTERNS: dict[str, list[str]] = {
     "short": [
         # SEO-first: palavra-chave de alto volume na frente
         "{keyword_primary} 🐾 {emoji}",
-        "{keyword_long_tail} | {animal} + jazz",
-        "{animal} {keyword_animal} {emoji} soft jazz",
+        "{keyword_long_tail} | a cozy {animal} moment {emoji}",
+        "{keyword_animal} | gentle {animal} + jazz {emoji}",
         "{keyword_primary} in {seconds} seconds {emoji}",
         # Gatilhos mentais
         "{trigger} {emoji}",
-        "{animal} owners: play this when {scenario} {emoji}",
+        "{scenario}? A gentle reset for your {animal} {emoji}",
         "If your {animal} is {problem}, try this {emoji}",
-        "This {keyword_style} calms my {animal} instantly {emoji}",
+        "A little {keyword_style} for your {animal} {emoji}",
         "{scenario}? This music helps {animal}s relax {emoji}",
         "Watch my {animal} fall asleep to {keyword_style} {emoji}",
         # A5: padrões que promovem playlists temáticas explicitamente -
         # referenciar o problema/cenario especifico aumenta CTR em buscas
         # long-tail e direciona para a playlist correspondente.
-        "For {animal}s scared of {scenario} — full playlist {emoji}",
+        "{scenario}? Calm music for {animal}s — full playlist {emoji}",
         "The {keyword_style} playlist for anxious {animal}s {emoji}",
-        "Calm your {animal} — {keyword_long_tail} playlist {emoji}",
+        "A calm playlist for your {animal} | {keyword_long_tail} {emoji}",
     ],
 }
 

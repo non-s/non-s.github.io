@@ -332,6 +332,19 @@ class TestPlaylistPromotionPatterns:
             assert title.startswith("Pata Jazz |")
 
 
+class TestTitleTemplateQuality:
+    """Fallbacks editoriais precisam soar naturais, mesmo sem Gemini."""
+
+    def test_templates_avoid_automation_artifacts(self):
+        forbidden = ("dog dog", "cat cat", "instantly", "9 out of 10", "scared of anxious")
+        for animal, emoji in (("cat", "*"), ("dog", "*")):
+            for _ in range(100):
+                title = generate_title(
+                    animal=animal, acao="anxiety", estilo_musical="calming jazz", kind="short", emoji=emoji
+                )
+                assert not any(fragment in title.lower() for fragment in forbidden), title
+
+
 class TestTitleAntiRepeat:
     """Anti-repeat de titulos: near-duplicados dos recentes denunciam
     conteudo em massa ("mesmo video de novo") e afastam o publico. O gerador
