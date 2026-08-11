@@ -14,13 +14,14 @@ from defusedxml import ElementTree as ET
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from utils.metadata_audit import audit_title
+from utils.metadata_audit import audit_description, audit_title
 from utils.paths import data_dir
 
 CHANNEL_ID = "UCYAxnaW6H8g3XJMntkDXZjg"
 FEED_URL = f"https://www.youtube.com/feeds/videos.xml?channel_id={CHANNEL_ID}"
 ATOM_NS = "{http://www.w3.org/2005/Atom}"
 YT_NS = "{http://www.youtube.com/xml/schemas/2015}"
+MRSS_NS = "{http://search.yahoo.com/mrss/}"
 
 log = logging.getLogger(__name__)
 
@@ -34,9 +35,10 @@ def fetch_title_audit() -> list[dict[str, object]]:
     for entry in root.findall(f"{ATOM_NS}entry"):
         video_id = (entry.findtext(f"{YT_NS}videoId") or "").strip()
         title = (entry.findtext(f"{ATOM_NS}title") or "").strip()
-        issues = audit_title(title)
+        description = (entry.findtext(f"{MRSS_NS}group/{MRSS_NS}description") or "").strip()
+        issues = [*audit_title(title), *audit_description(title, description)]
         if issues:
-            report.append({"video_id": video_id, "title": title, "issues": issues})
+            report.append({"video_id": video_id, "title": title, "description": description, "issues": issues})
     return report
 
 

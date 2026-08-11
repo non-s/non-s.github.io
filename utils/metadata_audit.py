@@ -22,3 +22,17 @@ def audit_title(title: str) -> list[str]:
     if normalized.lower().count("pata jazz") > 1:
         issues.append("repeated_brand")
     return issues
+
+
+def audit_description(title: str, description: str) -> list[str]:
+    """Return species conflicts between a public title and description."""
+    title_has_cat = bool(_CAT_RE.search(title))
+    title_has_dog = bool(_DOG_RE.search(title))
+    description_has_cat = bool(_CAT_RE.search(description))
+    description_has_dog = bool(_DOG_RE.search(description))
+
+    if title_has_cat and not title_has_dog and description_has_dog:
+        return ["description_conflicts_with_cat_title"]
+    if title_has_dog and not title_has_cat and description_has_cat:
+        return ["description_conflicts_with_dog_title"]
+    return []
