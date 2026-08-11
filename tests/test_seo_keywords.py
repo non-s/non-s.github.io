@@ -204,6 +204,16 @@ class TestGenerateDescription:
         assert "reduce anxiety" not in lowered
         assert "anxiety relief" not in lowered
         assert "stress relief" not in lowered
+        assert "deep sleep" not in lowered
+        assert "anxious pets" not in lowered
+
+    def test_outcome_hashtags_are_never_emitted(self):
+        for category in ("relaxation", "sleep", "anxiety", "stress", "fun"):
+            hashtags = generate_hashtags(animal="dog", categoria=category, kind="short")
+            lowered = " ".join(hashtags).lower()
+            assert "anxiety" not in lowered
+            assert "stress" not in lowered
+            assert "calmmy" not in lowered
 
     def test_generate_description_no_cta_returns_empty(self):
         """Sem CTA, o segundo elemento do retorno e vazio."""
@@ -231,7 +241,7 @@ class TestGenerateHashtags:
     def test_generate_hashtags_relax(self):
         """Gera hashtags para categoria relaxamento."""
         hashtags = generate_hashtags(animal="cat", categoria="relaxation", kind="short")
-        assert "#PetAnxiety" in hashtags or "#SleepMusic" in hashtags
+        assert "#QuietMoments" in hashtags or "#SoftMusic" in hashtags
 
     def test_generate_hashtags_short_format(self):
         """Inclui hashtags de formato para Shorts."""

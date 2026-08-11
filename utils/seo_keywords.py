@@ -117,7 +117,16 @@ _MAX_HASHTAGS = 10
 # SEO can describe the music and the moment, but must not imply a medical or
 # behavioral outcome for an animal. These phrases are excluded from generated
 # description keyword blocks as well as the surrounding copy below.
-_UNSUPPORTED_OUTCOME_TERMS = ("anxiety relief", "stress relief", "calm down")
+_UNSUPPORTED_OUTCOME_TERMS = (
+    "anxiety relief",
+    "stress relief",
+    "calm down",
+    "deep sleep",
+    "to sleep",
+    "anxious pets",
+    "anxious dogs",
+    "anxious cats",
+)
 
 # Keywords de alto volume real para o nicho pet + relaxation + jazz.
 # Fonte: buscas reais do YouTube/Google (volume aproximado, em ingles).
@@ -129,39 +138,31 @@ HIGH_VOLUME_KEYWORDS: dict[str, object] = {
         "relaxing music for dogs",
         "calming music for dogs",
         "calming music for cats",
-        "pet anxiety music",
         "music for pets",
         "jazz for cats",
         "jazz for dogs",
     ],
     "long_tail": [
-        "music for cats to sleep",
-        "music for dogs to sleep",
-        "calming music for anxious dogs",
-        "calming music for anxious cats",
-        "music to calm dogs during fireworks",
-        "music for dogs home alone",
-        "sleep music for cats and kittens",
-        "relaxing music for hyperactive dogs",
-        "music for rescue dogs",
-        "music for cats with anxiety",
+        "soft jazz for cats",
+        "soft jazz for dogs",
+        "instrumental music for cats",
+        "instrumental music for dogs",
+        "jazz music for pet parents",
+        "cozy cat video with jazz",
+        "cozy dog video with jazz",
         "jazz music to relax my cat",
         "soft jazz for pets",
         "soothing music for pets",
         "music for pets while owners are away",
-        "deep sleep music for dogs",
     ],
     "trending": [
         "thunderstorm music for dogs",
-        "fireworks anxiety music for pets",
-        "new years eve pet calming music",
-        "4th of july dog calming music",
-        "halloween music for anxious dogs",
+        "fireworks pet music",
+        "new years eve pet jazz",
+        "4th of july dog jazz",
+        "halloween pet jazz",
     ],
     "emotion": [
-        "stress relief",
-        "anxiety relief",
-        "deep sleep",
         "relaxation",
         "peaceful",
         "tranquil",
@@ -173,15 +174,13 @@ HIGH_VOLUME_KEYWORDS: dict[str, object] = {
             "cat sleep music",
             "music for kittens",
             "cat calming music",
-            "music for cats to relax",
-            "cat anxiety relief",
+            "gentle jazz for cats",
         ],
         "dog": [
             "dog sleep music",
             "music for puppies",
             "dog calming music",
-            "music for dogs to relax",
-            "dog anxiety relief",
+            "gentle jazz for dogs",
         ],
     },
 }
@@ -192,8 +191,8 @@ EMOCAO_BENEFICIOS = {
     "calm": ["peace", "tranquility", "serenity", "relaxation"],
     "comfort": ["coziness", "comfort", "warmth", "love"],
     "focus": ["concentration", "focus", "productivity", "clarity"],
-    "sleep": ["deep sleep", "rest", "sweet dreams", "unwinding"],
-    "relief": ["stress relief", "anxiety relief", "calm down", "soothing"],
+    "sleep": ["rest", "sweet dreams", "unwinding", "quiet time"],
+    "relief": ["quiet", "cozy", "gentle", "soothing"],
 }
 
 # CTAs otimizados para conversão (inscrição, like, comentário, sessão)
@@ -236,7 +235,7 @@ TRIGGERS = {
 HASHTAGS_POR_CATEGORIA = {
     "brand": ["#PataJazz", "#PetJazz", "#JazzForPets"],
     "animal": ["#Cats", "#Dogs", "#Kittens", "#Puppies", "#Pets"],
-    "problem": ["#PetAnxiety", "#CalmMyPet", "#SleepMusic", "#StressRelief"],
+    "problem": ["#QuietMoments", "#CozyPets", "#SoftMusic", "#PetTime"],
     "musica": ["#Jazz", "#RelaxingMusic", "#SmoothJazz", "#MusicForPets"],
     "formato": ["#Shorts", "#YouTubeShorts"],
 }
@@ -291,8 +290,8 @@ MUSIC_STYLE_BY_MOOD: dict[str, list[str]] = {
     "relax": ["smooth jazz", "chill jazz", "soft jazz", "calming jazz"],
     "fofura": ["lofi jazz", "cozy lofi jazz", "mellow lofi jazz"],
     "diversao": ["upbeat jazz", "swing jazz", "playful jazz"],
-    "sleep": ["sleep jazz", "deep sleep jazz", "night jazz"],
-    "anxiety": ["anxiety relief jazz", "calming jazz", "peaceful jazz"],
+    "sleep": ["sleep jazz", "night jazz", "soft jazz"],
+    "anxiety": ["gentle jazz", "calming jazz", "peaceful jazz"],
 }
 
 
@@ -555,9 +554,9 @@ def generate_hashtags(
 
     # Problema/Cenário
     if categoria in ("relaxation", "sleep"):
-        hashtags.extend(["#PetAnxiety", "#SleepMusic"])
+        hashtags.extend(["#QuietMoments", "#SoftMusic"])
     elif categoria in ("anxiety", "stress"):
-        hashtags.extend(["#AnxietyRelief", "#CalmMyPet"])
+        hashtags.extend(["#GentleJazz", "#CozyPets"])
     elif categoria in ("fun", "diversao"):
         hashtags.extend(["#HappyPets", "#FunPets"])
     else:
@@ -591,9 +590,9 @@ def _select_description_keywords(animal: str, mood: str) -> list[str]:
     assert isinstance(animal_specific_keywords, list)
     keywords.extend(animal_specific_keywords)
     if mood in ("sleep", "relax"):
-        keywords.extend(["deep sleep music", "sleep music for pets", "relaxing bedtime music"])
+        keywords.extend(["soft night jazz", "quiet pet music", "relaxing bedtime jazz"])
     if mood in ("anxiety", "stress"):
-        keywords.extend(["anxiety relief music", "stress relief for pets", "calming music for anxious pets"])
+        keywords.extend(["gentle pet music", "soft jazz at home", "quiet instrumental music"])
     keywords = [
         keyword for keyword in keywords if not any(term in keyword.lower() for term in _UNSUPPORTED_OUTCOME_TERMS)
     ]
@@ -690,7 +689,7 @@ def optimize_for_search(title: str, description: str, animal: str | None = None)
     # Garante termos semânticos na descrição
     related_terms = [
         "relaxation", "meditation", "studying", "working", "focus",
-        "inner peace", "well-being", "deep sleep", "anxiety relief", "stress relief",
+        "quiet time", "well-being", "cozy listening", "a gentle break", "background music",
     ]
     if not any(term in description.lower() for term in related_terms):
         term = random.choice(related_terms)
