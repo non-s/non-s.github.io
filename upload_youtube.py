@@ -19,7 +19,7 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
 from utils import ffmpeg_helpers
-from utils.content_funnel import record_funnel_candidate
+from utils.content_funnel import append_related_video_cta, record_funnel_candidate
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.paths import data_dir
 from utils.pipeline_metrics import record_pipeline_run
@@ -199,7 +199,11 @@ def _upload_video_inner(
         return None
 
     title = str(meta.get("title", "Pata Jazz"))[:100]
-    description = str(meta.get("description", ""))[:5000]
+    description, related_long_id = append_related_video_cta(str(meta.get("description", "")), meta)
+    description = description[:5000]
+    if related_long_id:
+        meta["related_long_video_id"] = related_long_id
+        meta["description"] = description
     tags = _build_tags(meta.get("scene", ""), meta.get("hashtags"))
     thumbnail = _meta_path(meta, "thumbnail")
 

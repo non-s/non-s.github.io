@@ -48,3 +48,42 @@ def record_funnel_candidate(video_id: str, meta: dict) -> None:
         data[bucket] = entries[:_MAX_ENTRIES]
         queue_file.parent.mkdir(parents=True, exist_ok=True)
         queue_file.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def recommended_long_form_id(meta: dict) -> str | None:
+    """Choose the newest compatible long-form target, if one is available."""
+    try:
+        data = json.loads(_queue_file().read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    targets = data.get("long_form_targets", []) if isinstance(data, dict) else []
+    if not isinstance(targets, list):
+        return None
+    mood = str(meta.get("mood", "")).lower()
+    scene = str(meta.get("scene", "")).lower()
+    for target in targets:
+        if not isinstance(target, dict):
+            continue
+        target_mood = str(target.get("mood", "")).lower()
+        target_scene = str(target.get("scene", "")).lower()
+        if mood and mood == target_mood or scene and scene == target_scene:
+            video_id = target.get("video_id")
+            return str(video_id) if video_id else None
+    for target in targets:
+        if isinstance(target, dict) and target.get("video_id"):
+            return str(target["video_id"])
+    return None
+
+
+def append_related_video_cta(description: str, meta: dict) -> tuple[str, str | None]:
+    """Append one clear Short-to-long CTA when a verified target exists."""
+    if str(meta.get("kind", "")).lower() != "short":
+        return description, None
+    target_id = recommended_long_form_id(meta)
+    if not target_id:
+        return description, None
+    url = f"https://www.youtube.com/watch?v={target_id}"
+    if url in description:
+        return description, target_id
+    cta = f"Watch the matching full Pata Jazz session: {url}"
+    return f"{description.rstrip()}\n\n{cta}", target_id
