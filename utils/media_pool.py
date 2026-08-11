@@ -76,6 +76,34 @@ def _load_audio_metadata(audio: Path) -> dict:
         return {}
 
 
+def music_attribution(audio: Path) -> str:
+    """Monta um crédito público e legível para a faixa licenciada do Jamendo."""
+    meta = _load_audio_metadata(audio)
+    if not meta:
+        return ""
+
+    def clean(value: object) -> str:
+        return " ".join(str(value or "").split())
+
+    track = clean(meta.get("name"))
+    artist = clean(meta.get("artist_name"))
+    if not track and not artist:
+        return ""
+
+    credit = f"Music: {track or 'Untitled'}"
+    if artist:
+        credit += f" — {artist}"
+    credit += " (via Jamendo)"
+
+    license_url = clean(meta.get("license_ccurl") or meta.get("license_url"))
+    source_url = clean(meta.get("shorturl") or meta.get("shareurl") or meta.get("url"))
+    if license_url:
+        return f"{credit}\nLicense: {license_url}"
+    if source_url:
+        return f"{credit}\nSource: {source_url}"
+    return credit
+
+
 def _audio_genres(meta: dict) -> list[str]:
     """Extrai generos da metadata do Jamendo (musicinfo.tags.genres + tags top-level)."""
     genres: list[str] = []

@@ -404,3 +404,36 @@ class TestPickAudioByMood:
         with patch("utils.media_pool._load_audio_metadata", return_value={}):
             result = _filter_by_mood(pool, "fofura", min_needed=1)
         assert result == pool
+
+
+class TestMusicAttribution:
+    def test_includes_track_artist_and_license(self, tmp_path):
+        audio = tmp_path / "track.mp3"
+        audio.write_bytes(b"")
+        audio.with_suffix(".json").write_text(
+            json.dumps(
+                {
+                    "name": "Midnight Jazz",
+                    "artist_name": "The Quartet",
+                    "license_ccurl": "https://creativecommons.org/licenses/by/4.0/",
+                }
+            ),
+            encoding="utf-8",
+        )
+
+        credit = media_pool.music_attribution(audio)
+
+        assert credit == (
+            "Music: Midnight Jazz — The Quartet (via Jamendo)\n"
+            "License: https://creativecommons.org/licenses/by/4.0/"
+        )
+
+    def test_uses_source_when_license_url_is_unavailable(self, tmp_path):
+        audio = tmp_path / "track.mp3"
+        audio.write_bytes(b"")
+        audio.with_suffix(".json").write_text(
+            json.dumps({"name": "Quiet Walk", "artist_name": "Artist", "shorturl": "https://jamen.do/t/1"}),
+            encoding="utf-8",
+        )
+
+        assert "Source: https://jamen.do/t/1" in media_pool.music_attribution(audio)

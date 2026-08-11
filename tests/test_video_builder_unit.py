@@ -184,6 +184,7 @@ class TestVideoBuilderUnits:
             patch("utils.video_builder.hook_for_scene", return_value=("hook", "🐾")),
             patch("utils.video_builder.pick_videos", return_value=[Path("video.mp4")]),
             patch("utils.video_builder.pick_audio", return_value=Path("audio.mp3")),
+            patch("utils.video_builder.music_attribution", return_value="Music: Track — Artist (via Jamendo)"),
             patch("utils.video_builder.run_ffmpeg", side_effect=fake_run_ffmpeg),
             patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}),
             patch(
@@ -356,6 +357,7 @@ class TestVideoBuilderUnits:
             patch("utils.video_builder.pick_audio", return_value=Path("audio.mp3")),
             patch("utils.video_builder.run_ffmpeg"),
             patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}),
+            patch("utils.video_builder.music_attribution", return_value="Music: Track - Artist (via Jamendo)"),
             patch("utils.video_builder.winning_thumbnail_variant", return_value="A"),
             patch(
                 "utils.video_builder.validate_generated_video",
@@ -379,6 +381,8 @@ class TestVideoBuilderUnits:
         assert meta["thumbnails"][2].endswith("_thumb_c.png")
         assert meta["thumbnail"] == meta["thumbnails"][0]
         assert meta["thumbnail_variant"] == "A"
+        assert meta["music_attribution"] == "Music: Track - Artist (via Jamendo)"
+        assert meta["description"].endswith("Music: Track - Artist (via Jamendo)")
 
     def test_build_uploads_winning_variant_as_primary_thumbnail(self, tmp_path):
         """Feedback loop: quando winning_thumbnail_variant() aponta pra "B"

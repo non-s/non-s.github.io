@@ -26,7 +26,7 @@ from utils.caption_engine import generate_ass, save_ass
 from utils.channel_config import active_channel
 from utils.ffmpeg_helpers import get_video_duration, run_ffmpeg
 from utils.font_config import font_path
-from utils.media_pool import ensure_dirs, pick_audio, pick_videos, pool_stats
+from utils.media_pool import ensure_dirs, music_attribution, pick_audio, pick_videos, pool_stats
 from utils.metadata_engine import clean_title, generate_metadata
 from utils.thumbnail_engine import make_long_thumbnail, make_short_thumbnail, winning_thumbnail_variant
 from utils.video_validator import validate_generated_video
@@ -743,6 +743,11 @@ def build_pata_jazz_video(
         mood=spec.mood,
         lang=spec.lang,
     )
+    attribution = music_attribution(audio_path)
+    if attribution:
+        description = str(metadata.get("description", "")).rstrip()
+        metadata["description"] = f"{description}\n\n{attribution}" if description else attribution
+        metadata["music_attribution"] = attribution
     meta = {
         **metadata,
         "scene": scene,
