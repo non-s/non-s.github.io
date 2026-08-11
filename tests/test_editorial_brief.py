@@ -8,6 +8,7 @@ def test_short_brief_is_a_discovery_asset():
     assert brief["pillar"] == "atmospheric-pet-jazz"
     assert brief["format_role"] == "discovery and funnel entry"
     assert brief["primary_metric"] == "stayed to watch"
+    assert brief["orientation"] == "vertical 9:16"
 
 
 def test_long_brief_is_a_retention_asset():
@@ -17,3 +18,4 @@ def test_long_brief_is_a_retention_asset():
     assert brief["pillar"] == "gentle-dog-jazz"
     assert brief["format_role"] == "retention session"
     assert brief["primary_metric"] == "average view duration"
+    assert brief["orientation"] == "horizontal 16:9"

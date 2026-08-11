@@ -27,6 +27,7 @@ from utils.channel_config import active_channel
 from utils.editorial_brief import build_editorial_brief
 from utils.ffmpeg_helpers import get_video_duration, run_ffmpeg
 from utils.font_config import font_path
+from utils.format_strategy import format_strategy
 from utils.media_pool import ensure_dirs, music_attribution, pick_audio, pick_videos, pool_stats
 from utils.metadata_engine import clean_title, generate_metadata
 from utils.story_engine import choose_story_card, record_story_card
@@ -777,6 +778,7 @@ def build_pata_jazz_video(
             duration=spec.duration,
             hook=hook,
         ),
+        "format_strategy": format_strategy(kind=spec.kind, duration=spec.duration, mood=spec.mood, scene=scene),
         "story_card": story_card,
     }
     thumbnail_signals = analyze_image(thumb_primary)
