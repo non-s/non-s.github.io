@@ -120,9 +120,9 @@ PATA_JAZZ: ChannelConfig = ChannelConfig(
         for h in range(24)
     },
     default_description=(
-        "Pata Jazz — the world's calmest channel for cats, dogs and anxious pets. "
-        "Real pets + smooth jazz designed to reduce anxiety, promote deep sleep, "
-        "and create a peaceful home for pets and their humans."
+        "Soft jazz and gentle pet moments for quieter homes. Pata Jazz pairs "
+        "calm instrumental music with real cats and dogs — a cozy pause for "
+        "pet parents, study sessions, and winding down."
     ),
 )
 

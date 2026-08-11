@@ -92,7 +92,10 @@ class TestPataJazzConfig:
 
     def test_default_description(self):
         assert isinstance(PATA_JAZZ.default_description, str)
-        assert len(PATA_JAZZ.default_description) > 0
+        assert len(PATA_JAZZ.default_description) >= 120
+        assert "cats" in PATA_JAZZ.default_description.lower()
+        assert "dogs" in PATA_JAZZ.default_description.lower()
+        assert "jazz" in PATA_JAZZ.default_description.lower()
 
 
 class TestRegistryAndSetActive:
