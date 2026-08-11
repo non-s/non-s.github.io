@@ -41,7 +41,7 @@ log = logging.getLogger(__name__)
 
 # Respostas por run: rate-limit natural + nao parecer spam. Cada insert
 # custa 50 unidades de quota do YouTube.
-_MAX_REPLIES_PER_RUN = 10
+_MAX_REPLIES_PER_RUN = 3
 
 # Comentario menor que isso e irrelevante; maior que isso provavelmente e
 # copia/cola e a resposta generica nao agrega.

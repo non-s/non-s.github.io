@@ -2,11 +2,9 @@ name: "Pata Jazz - Engajamento (Comentarios)"
 
 on:
   schedule:
-    # Responde a comentarios 1x/hora (minuto 37, deslocado do cron de Shorts
-    # no minuto 7 e do pico de jobs do GitHub no minuto :00). Respostas
-    # curtas nao precisam de realtime - a cada hora e o suficiente pra
-    # manter o canal "vivo" sem parecer um bot respondendo na mesma hora.
-    - cron: "37 * * * *"
+    # Um ciclo diário de respostas mantém presença humana sem esgotar quota
+    # nem parecer um bot. Minuto 37 evita o pico de jobs em :00.
+    - cron: "37 19 * * *"
   workflow_dispatch:
     inputs:
       reason:
