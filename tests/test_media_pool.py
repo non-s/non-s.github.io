@@ -383,13 +383,13 @@ class TestPickAudioByMood:
                 result = pick_audio(mood="relax")
         assert result == smooth
 
-    def test_no_mood_match_falls_back_to_full_pool(self, tmp_path):
+    def test_no_mood_match_rejects_incompatible_pool(self, tmp_path):
         swing = _write_audio_meta(tmp_path, "a1.mp3", ["swing"])
         rock = _write_audio_meta(tmp_path, "a2.mp3", ["rock"])
         with patch("utils.media_pool.audio_pool", return_value=[swing, rock]):
             with patch("utils.media_pool.random.choice", side_effect=lambda p: p[0]):
                 result = pick_audio(mood="fofura")
-        assert result == swing
+        assert result is None
 
     def test_empty_mood_keeps_old_behavior(self, tmp_path):
         a1 = _write_audio_meta(tmp_path, "a1.mp3", ["bossa nova"])
@@ -399,11 +399,11 @@ class TestPickAudioByMood:
                 result = pick_audio()
         assert result == a1
 
-    def test_filter_by_mood_helper_returns_pool_when_too_narrow(self):
+    def test_filter_by_mood_helper_rejects_pool_when_too_narrow(self):
         pool = [Path("/fake/x1.mp3"), Path("/fake/x2.mp3")]
         with patch("utils.media_pool._load_audio_metadata", return_value={}):
             result = _filter_by_mood(pool, "fofura", min_needed=1)
-        assert result == pool
+        assert result == []
 
 
 class TestMusicAttribution:

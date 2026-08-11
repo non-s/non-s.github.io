@@ -124,12 +124,13 @@ def _audio_genres(meta: dict) -> list[str]:
 
 def _filter_by_mood(pool: list[Path], mood: str, min_needed: int) -> list[Path]:
     """Restringe o pool de audio as faixas cuja metadata bate com o mood.
-    Sem match suficiente, cai para o pool inteiro (mesmo padrao de _filter_by_animal)."""
+    Sem match, retorna vazio: uma faixa incompatível quebra a promessa emocional
+    do vídeo mais do que pular uma execução até o próximo sync."""
     wanted = [g.lower() for g in MOOD_GENRES.get(mood, [])]
     if not wanted:
         return pool
     filtered = [p for p in pool if any(g in wanted for g in _audio_genres(_load_audio_metadata(p)))]
-    return filtered if len(filtered) >= min_needed else pool
+    return filtered
 
 
 def _cuteness_score(video: Path) -> int:
@@ -229,6 +230,8 @@ def pick_audio(mood: str = "") -> Path | None:
         return None
     if mood:
         pool = _filter_by_mood(pool, mood, min_needed=1)
+        if not pool:
+            return None
     pool = _avoid_recent(pool, "audio", min_needed=1)
     chosen = random.choice(pool)
     _remember_recent("audio", [chosen.name], _RECENT_AUDIO_WINDOW)
