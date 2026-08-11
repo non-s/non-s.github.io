@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import json
 import random
+from datetime import date
 from pathlib import Path
 
+from utils.community_rituals import ritual_for_date
 from utils.paths import data_dir
 from utils.state_lock import state_lock
 
@@ -60,11 +62,18 @@ def choose_story_card(scene: str, mood: str, hook: str) -> dict[str, str]:
     recent = set(_recent_series()[:4])
     candidates = [series for series in _SERIES if series["id"] not in recent] or list(_SERIES)
     series = random.choice(candidates)
+    ritual = ritual_for_date(date.today())
     return {
         **series,
         "scene": scene,
         "mood": mood or "cozy",
         "micro_story": f"{hook} becomes a small moment inside {series['name']}.",
+        "ritual_id": ritual["id"],
+        "ritual_name": ritual["name"],
+        "viewer_intent": ritual["viewer_intent"],
+        # A weekly ritual creates continuity while the series prompt keeps
+        # individual videos distinct; never ask viewers to engage compulsively.
+        "community_prompt": ritual["community_prompt"],
     }
 
 

@@ -11,6 +11,8 @@ def test_story_card_has_proprietary_series_and_community_prompt(tmp_path, monkey
     assert card["id"]
     assert card["community_prompt"]
     assert card["visual_direction"]
+    assert card["ritual_id"]
+    assert card["viewer_intent"]
 
 
 def test_story_rotation_avoids_recent_series(tmp_path, monkeypatch):
