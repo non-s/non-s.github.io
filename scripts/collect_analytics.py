@@ -569,6 +569,44 @@ def _load_title_pattern_performance() -> dict[str, float]:
         return {}
 
 
+def _performance_signal(video: dict, now: datetime | None = None) -> float:
+    """Retorna um sinal comparável entre vídeos de idades e retenções diferentes.
+
+    Views acumuladas favorecem automaticamente vídeos antigos. O feedback loop
+    precisa comparar velocidade de visualizações e dar uma vantagem moderada à
+    retenção, sem depender de CTR (que não existe para todas as superfícies de
+    Shorts). Registros legados sem data/retencao preservam o comportamento de
+    views brutas para não descartar o histórico já coletado.
+    """
+    views = float(_to_int(video.get("views")))
+    if views <= 0:
+        return 0.0
+
+    published_raw = str(video.get("published_at", "")).strip()
+    if published_raw:
+        try:
+            value = published_raw[:-1] + "+00:00" if published_raw.endswith("Z") else published_raw
+            published = datetime.fromisoformat(value)
+            if published.tzinfo is None:
+                published = published.replace(tzinfo=UTC)
+            age_days = max(1.0, ((now or datetime.now(UTC)) - published.astimezone(UTC)).total_seconds() / 86400)
+            views /= age_days
+        except (TypeError, ValueError):
+            pass
+
+    try:
+        retention = float(video.get("averageViewPercentage", 0) or 0)
+    except (TypeError, ValueError):
+        retention = 0.0
+    if retention > 0:
+        # A API retorna percentual (0-100); aceitar 0-1 deixa fixtures legadas
+        # e integrações que já normalizam a métrica funcionarem também.
+        retention_ratio = retention / 100 if retention > 1 else retention
+        retention_ratio = max(0.0, min(1.5, retention_ratio))
+        views *= 0.75 + 0.25 * retention_ratio
+    return views
+
+
 def _compute_weighted_performance(
     stats: list[dict],
     video_tags: dict,
@@ -578,7 +616,8 @@ def _compute_weighted_performance(
     max_weight: float,
 ) -> dict[str, float]:
     """Calcula um peso relativo por valor de tag_key (ex: 'scene' ou
-    'title_pattern' em video_tags.json) a partir das views reais coletadas.
+    'title_pattern' em video_tags.json) a partir de velocidade de views e
+    retenção quando disponíveis.
 
     upload_youtube.py::_record_video_tags grava, por video_id, qual valor
     gerou o video; aqui cruzamos isso com as views desse video_id pra saber
@@ -597,13 +636,13 @@ def _compute_weighted_performance(
     media simples com amostras pequenas - um viral isolado nao infla o
     peso de uma cena inconsistente.
     """
-    views_by_key: dict[str, list[int]] = {}
+    views_by_key: dict[str, list[float]] = {}
     for video in stats:
         tag = video_tags.get(video["video_id"])
         key = tag.get(tag_key) if tag else ""
         if not key:
             continue
-        views_by_key.setdefault(key, []).append(video["views"])
+        views_by_key.setdefault(key, []).append(_performance_signal(video))
 
     all_views = [v for views in views_by_key.values() for v in views]
     if not all_views:

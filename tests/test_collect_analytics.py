@@ -355,6 +355,39 @@ class TestComputeWeightedPerformanceWilson:
         assert "small" not in weights
         assert "ok" in weights
 
+    def test_newer_video_velocity_beats_older_accumulated_views(self):
+        now = datetime.now(UTC)
+        stats = []
+        tags = {}
+        for i in range(3):
+            cat_id = f"cat{i}"
+            dog_id = f"dog{i}"
+            stats.extend(
+                [
+                    {"video_id": cat_id, "views": 20, "published_at": (now - timedelta(days=1)).isoformat()},
+                    {"video_id": dog_id, "views": 100, "published_at": (now - timedelta(days=30)).isoformat()},
+                ]
+            )
+            tags[cat_id] = {"scene": "cat"}
+            tags[dog_id] = {"scene": "dog"}
+
+        weights = collect_analytics._compute_scene_performance(stats, tags)
+
+        assert weights["cat"] > weights["dog"]
+
+    def test_retention_improves_equally_timed_video_signal(self):
+        now = datetime.now(UTC)
+        high_retention = {
+            "views": 100,
+            "published_at": (now - timedelta(days=2)).isoformat(),
+            "averageViewPercentage": 90,
+        }
+        low_retention = {**high_retention, "averageViewPercentage": 20}
+
+        assert collect_analytics._performance_signal(high_retention, now) > collect_analytics._performance_signal(
+            low_retention, now
+        )
+
 
 class TestLoadScenePerformance:
     def test_missing_file_returns_empty_dict(self, tmp_path, monkeypatch):
