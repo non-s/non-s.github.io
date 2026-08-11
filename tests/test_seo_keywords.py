@@ -209,6 +209,13 @@ class TestGenerateDescription:
         assert "anxious pets" not in lowered
         assert "keywords:" not in lowered
 
+    def test_recent_titles_ignores_unsafe_legacy_history(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(seo_keywords, "data_dir", lambda: tmp_path)
+        (tmp_path / "used_titles.json").write_text(
+            json.dumps(["Pata Jazz | Deep Sleep", "Pata Jazz | Cozy Cat"]), encoding="utf-8"
+        )
+        assert seo_keywords.recent_titles() == ["Pata Jazz | Cozy Cat"]
+
     def test_outcome_hashtags_are_never_emitted(self):
         for category in ("relaxation", "sleep", "anxiety", "stress", "fun"):
             hashtags = generate_hashtags(animal="dog", categoria=category, kind="short")

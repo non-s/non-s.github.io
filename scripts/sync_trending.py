@@ -59,6 +59,18 @@ _STOP_WORDS = frozenset({
     "watch", "full", "hd", "4k", "ep", "feat", "ft",
 })
 
+# Search results describe other channels' editorial choices.  Never feed a
+# pet-health or behavioural promise back into our own title generator.
+_BLOCKED_TREND_TERMS = frozenset({
+    "anxiety", "stress", "relief", "anxious", "calm down", "sleep aid",
+    "therapy", "therapeutic", "separation",
+})
+
+
+def _is_safe_trending_keyword(keyword: str) -> bool:
+    lowered = keyword.lower()
+    return bool(lowered) and not any(term in lowered for term in _BLOCKED_TREND_TERMS)
+
 # Janela de busca: vídeos publicados nos ultimos 30 dias.
 _SEARCH_WINDOW_DAYS = 30
 # Max resultados por query.
@@ -89,7 +101,7 @@ def _extract_keywords_from_title(title: str) -> list[str]:
     for i in range(len(words) - 1):
         bigram = f"{words[i]} {words[i + 1]}"
         keywords.append(bigram)
-    return keywords
+    return [keyword for keyword in keywords if _is_safe_trending_keyword(keyword)]
 
 
 def _search_youtube(service, query: str, published_after: str, max_results: int) -> list[dict]:
@@ -133,7 +145,10 @@ def _compute_trending_keywords(videos: list[dict]) -> list[str]:
         for kw in _extract_keywords_from_title(title):
             counter[kw] += 1
     # Filtra por min frequency e pega top N
-    trending = [kw for kw, count in counter.most_common() if count >= _MIN_FREQUENCY]
+    trending = [
+        kw for kw, count in counter.most_common()
+        if count >= _MIN_FREQUENCY and _is_safe_trending_keyword(kw)
+    ]
     return trending[:_MAX_TRENDING_KEYWORDS]
 
 
@@ -159,7 +174,7 @@ def collect_trending_keywords(service) -> list[str]:
 def save_trending_keywords(keywords: list[str]) -> None:
     """Salva keywords trending em _data/trending_keywords.json com timestamp."""
     payload = {
-        "keywords": keywords,
+        "keywords": [keyword for keyword in keywords if _is_safe_trending_keyword(keyword)],
         "collected_at": datetime.now(UTC).isoformat(),
         "queries": _DISCOVERY_QUERIES,
     }
@@ -180,7 +195,9 @@ def load_trending_keywords() -> list[str]:
         data = json.loads(TRENDING_FILE.read_text(encoding="utf-8"))
         if isinstance(data, dict):
             kws = data.get("keywords", [])
-            return [str(k) for k in kws if isinstance(k, str)] if isinstance(kws, list) else []
+            if isinstance(kws, list):
+                return [str(k) for k in kws if isinstance(k, str) and _is_safe_trending_keyword(k)]
+            return []
         return []
     except Exception:
         return []

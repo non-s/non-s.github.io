@@ -14,11 +14,10 @@ class TestExtractKeywordsFromTitle:
         assert "cat" in kws
         assert "relaxing" in kws
 
-    def test_extracts_bigrams(self):
+    def test_excludes_outcome_claims(self):
         kws = sync_trending._extract_keywords_from_title("Pet Anxiety Relief Calm")
-        # Bigrams de palavras adjacentes que nao sao stop words
-        assert "pet anxiety" in kws
-        assert "anxiety relief" in kws
+        assert "anxiety" not in kws
+        assert "anxiety relief" not in kws
 
     def test_filters_stop_words(self):
         kws = sync_trending._extract_keywords_from_title("The Best Cat Video for You")
@@ -59,9 +58,9 @@ class TestComputeTrendingKeywords:
             {"title": "Dog Anxiety Music Calm"},
         ]
         trending = sync_trending._compute_trending_keywords(videos)
-        # "anxiety" aparece 3x, "pet" 2x, "calm" 2x
-        assert "anxiety" in trending
-        assert "pet anxiety" in trending
+        # Allegation terms from third-party titles must not enter our generator.
+        assert "anxiety" not in trending
+        assert "pet anxiety" not in trending
 
     def test_filters_low_frequency_keywords(self):
         videos = [{"title": "Unique Rare Keyword Once"}]
@@ -85,7 +84,7 @@ class TestSaveLoadTrendingKeywords:
     def test_save_and_load_roundtrip(self, tmp_path, monkeypatch):
         out = tmp_path / "trending_keywords.json"
         monkeypatch.setattr(sync_trending, "TRENDING_FILE", out)
-        keywords = ["pet anxiety", "calming music", "dog sleep"]
+        keywords = ["cozy music", "dog night jazz"]
         sync_trending.save_trending_keywords(keywords)
         assert out.exists()
         data = json.loads(out.read_text(encoding="utf-8"))
@@ -97,6 +96,12 @@ class TestSaveLoadTrendingKeywords:
         monkeypatch.setattr(sync_trending, "TRENDING_FILE", out)
         out.write_text(json.dumps({"keywords": ["k1", "k2"], "collected_at": "2026-01-01"}))
         assert sync_trending.load_trending_keywords() == ["k1", "k2"]
+
+    def test_load_filters_unsafe_cached_keywords(self, tmp_path, monkeypatch):
+        out = tmp_path / "trending_keywords.json"
+        monkeypatch.setattr(sync_trending, "TRENDING_FILE", out)
+        out.write_text(json.dumps({"keywords": ["anxiety relief", "cozy cat"]}))
+        assert sync_trending.load_trending_keywords() == ["cozy cat"]
 
     def test_load_missing_file_returns_empty(self, tmp_path, monkeypatch):
         monkeypatch.setattr(sync_trending, "TRENDING_FILE", tmp_path / "missing.json")

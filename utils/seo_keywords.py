@@ -35,6 +35,15 @@ def _title_used_file() -> Path:
 
 # Tamanho do historico de titulos usado para o anti-repeat.
 _USED_TITLES_MAX = 120
+_HISTORICAL_UNSAFE_TERMS = (
+    "anxiety relief", "stress relief", "calm down", "deep sleep",
+    "separation anxiety", "reduce anxiety", "reduce stress",
+)
+
+
+def _is_safe_title_history_entry(title: str) -> bool:
+    lowered = title.lower()
+    return not any(term in lowered for term in _HISTORICAL_UNSAFE_TERMS)
 
 
 def record_used_title(title: str) -> None:
@@ -44,7 +53,7 @@ def record_used_title(title: str) -> None:
     quando um video e publicado. Com lock, como os outros JSON de _data.
     Best-effort: falha de I/O loga e nao derruba o gerador.
     """
-    if not title:
+    if not title or not _is_safe_title_history_entry(title):
         return
     used_file = _title_used_file()
     with state_lock(used_file):
@@ -66,7 +75,9 @@ def recent_titles() -> list[str]:
     """Titulos recentes ja usados (mais recente primeiro). Ausente/corrompido = []."""
     try:
         data = json.loads(_title_used_file().read_text(encoding="utf-8"))
-        return [t for t in data if isinstance(t, str)] if isinstance(data, list) else []
+        if isinstance(data, list):
+            return [t for t in data if isinstance(t, str) and _is_safe_title_history_entry(t)]
+        return []
     except Exception as exc:
         log.debug("used_titles.json ausente/corrompido: %s", exc)
         return []
@@ -736,20 +747,20 @@ HIGH_VOLUME_KEYWORDS_PT: dict[str, list[str]] = {
         "musica relaxante para cachorros",
         "musica calmante para cachorros",
         "musica calmante para gatos",
-        "musica para ansiedade de pets",
+        "jazz suave para pets",
         "musica para pets",
         "jazz para gatos",
         "jazz para cachorros",
     ],
     "long_tail": [
-        "musica para gatos dormirem",
-        "musica para cachorro dormir",
-        "musica calmante para cachorros ansiosos",
-        "musica para cachorro sozinho em casa",
-        "musica para acalmar gatos",
+        "jazz noturno para gatos",
+        "jazz noturno para cachorros",
+        "jazz suave para cachorros",
+        "jazz para cachorro em casa",
+        "jazz suave para gatos",
         "jazz relaxante para pets",
-        "musica para ansiedade em cachorros",
-        "musica para acalmar gato assustado",
+        "jazz instrumental para cachorros",
+        "jazz instrumental para gatos",
     ],
 }
 
@@ -763,20 +774,20 @@ HIGH_VOLUME_KEYWORDS_ES: dict[str, list[str]] = {
         "musica relajante para perros",
         "musica calmante para perros",
         "musica calmante para gatos",
-        "musica para ansiedad de mascotas",
+        "jazz suave para mascotas",
         "musica para mascotas",
         "jazz para gatos",
         "jazz para perros",
     ],
     "long_tail": [
-        "musica para gatos dormir",
-        "musica para perros dormir",
-        "musica calmante para perros ansiosos",
-        "musica para perros solos en casa",
-        "musica para calmar gatos",
+        "jazz nocturno para gatos",
+        "jazz nocturno para perros",
+        "jazz suave para perros",
+        "jazz para perros en casa",
+        "jazz suave para gatos",
         "jazz relajante para mascotas",
-        "musica para ansiedad en perros",
-        "musica para calmar gato asustado",
+        "jazz instrumental para perros",
+        "jazz instrumental para gatos",
     ],
 }
 
