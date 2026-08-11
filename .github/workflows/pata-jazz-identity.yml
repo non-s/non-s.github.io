@@ -13,11 +13,6 @@ on:
         description: "Motivo do disparo manual"
         required: false
         default: "manual"
-  schedule:
-    # 1x por semana (segunda 02:23). Mantém o about/keywords do canal vivos:
-    # descrição rotacionada por semana ISO e keywords frescas, para a página
-    # não parecer um feed de bot. Custo de quota mínimo (1 list + 1 update).
-    - cron: "23 2 * * 1"
 
 permissions:
   contents: read
