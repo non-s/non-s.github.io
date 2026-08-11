@@ -45,7 +45,7 @@ TRENDING_FILE = DATA_DIR / "trending_keywords.json"
 _DISCOVERY_QUERIES = [
     "pet relaxation music",
     "cat sleeping music",
-    "dog anxiety music",
+    "cozy dog jazz",
     "calming jazz for pets",
     "cute cat shorts",
 ]

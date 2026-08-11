@@ -5,7 +5,7 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 ## Formato
 
 - **Shorts** (`generate_pata_jazz_short.py`) — vertical 1080×1920, ~28-42s, **2-3 clipes com crossfade + 1 música de jazz + text overlay do hook nos primeiros 5s**.
-- **Long-form Loop & Relax** (`scripts/generate_pata_jazz_long.py`) — horizontal 1920×1080, 15-30min, clipes em loop até cobrir a duração com crossfade lento 2.0s + jazz em loop — watch time longo que compensa a alta frequência de Shorts (1/semana).
+- **Long-form Loop & Relax** (`scripts/generate_pata_jazz_long.py`) — horizontal 1920×1080, 15-30min, clipes em loop até cobrir a duração com crossfade lento 2.0s + jazz em loop — sessões longas para retenção e construção de hábito (2/semana).
 
 ## Plataforma
 
@@ -170,7 +170,7 @@ Salve o JSON resultante como `youtube_token.json` na raiz do projeto (ou use o s
 - `PATA_JAZZ_ENABLED` — `1` para ligar todos os workflows do Pata Jazz.
 - `PATA_JAZZ_SHORTS_ENABLED` — `1` para Shorts do Pata Jazz.
 - `PATA_JAZZ_COMMENTS_ENABLED` — `1` para respostas automáticas a comentários do Pata Jazz.
-- `PATA_JAZZ_LONG_ENABLED` — `1` para o long-form Loop & Relax semanal do Pata Jazz.
+- `PATA_JAZZ_LONG_ENABLED` — `1` para os long-forms Loop & Relax do Pata Jazz.
 - `PATA_JAZZ_IDENTITY_ENABLED` — `1` para o atualizador semanal de identidade do Pata Jazz.
 - `YOUTUBE_PRIVACY` — `public`, `unlisted` ou `private`.
 
@@ -182,11 +182,11 @@ Salve o JSON resultante como `youtube_token.json` na raiz do projeto (ou use o s
 | **Pata Jazz** | Comentários (canal vivo) | 1x por dia, até 3 respostas | 19:37 UTC | `pata-jazz-engagement.yml` |
 | **Pata Jazz** | Sync de assets | 2x por semana | Ter e Sex 03:00 | `pata-jazz-sync.yml` |
 | **Pata Jazz** | Analytics | 1x por semana | Segunda 03:00 | `pata-jazz-analytics.yml` |
-| **Pata Jazz** | Snapshot analytics | 1x por dia | 03:00 | `pata-jazz-analytics-daily.yml` |
-| **Pata Jazz** | Long-form Loop & Relax | 1x por semana | Domingo 01:13 | `pata-jazz-long.yml` |
+| **Pata Jazz** | Snapshot analytics | 1x por dia | 03:25 | `pata-jazz-analytics-daily.yml` |
+| **Pata Jazz** | Long-form Loop & Relax | 2x por semana | Domingo e terça 01:13 | `pata-jazz-long.yml` |
 | **Pata Jazz** | Identidade do canal | Sob demanda, com aplicação explícita | manual | `pata-jazz-identity.yml` |
 | **Pata Jazz** | Batch manual otimizado | Sob demanda | workflow_dispatch | `pata-jazz-batch.yml` |
-| **Pata Jazz** | Lote semanal (manual/eventual) | Gera 35 shorts de uma vez, publica 6/dia até esgotar | só disparo manual (`action: all`/`generate`/`publish`) | `pata-jazz-weekly.yml` |
+| **Pata Jazz** | Lote manual de preparação | Gera até 6 rascunhos privados para revisão | só disparo manual (`action: all`/`generate`/`publish`) | `pata-jazz-weekly.yml` |
 
 **Cadência base:** 1 Short/dia, ou **7 vídeos/semana**. A cadência só deve aumentar depois que os dados de retenção e velocidade de visualização sustentarem a decisão. O lote semanal (`pata-jazz-weekly.yml`) permanece manual e não deve competir com o cron diário.
 

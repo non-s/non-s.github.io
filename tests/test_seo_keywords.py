@@ -5,6 +5,7 @@ tests/test_seo_keywords.py — testa geração de títulos e descrições otimiz
 import json
 
 import utils.seo_keywords as seo_keywords
+from utils.channel_config import active_channel
 from utils.seo_keywords import (
     CTAS,
     HIGH_VOLUME_KEYWORDS,
@@ -25,7 +26,7 @@ class TestPickTitlePattern:
     def test_pick_pattern_short(self):
         """Seleciona padrão para Shorts."""
         pattern = pick_title_pattern("short")
-        assert pattern in TITLE_PATTERNS["short"]
+        assert pattern in active_channel.title_patterns["short"]
         assert "{emoji}" in pattern or "{animal}" in pattern
 
 
@@ -63,7 +64,7 @@ class TestTitlePatternWeights:
         perf_file.write_text(json.dumps(weighted), encoding="utf-8")
 
         for _ in range(20):
-            assert pick_title_pattern("short") in TITLE_PATTERNS["short"]
+            assert pick_title_pattern("short") in active_channel.title_patterns["short"]
 
     def test_heavily_weighted_pattern_is_picked_far_more_often(self, tmp_path, monkeypatch):
         import random
@@ -206,6 +207,7 @@ class TestGenerateDescription:
         assert "stress relief" not in lowered
         assert "deep sleep" not in lowered
         assert "anxious pets" not in lowered
+        assert "keywords:" not in lowered
 
     def test_outcome_hashtags_are_never_emitted(self):
         for category in ("relaxation", "sleep", "anxiety", "stress", "fun"):

@@ -45,11 +45,16 @@ _SUSPICIOUS_PATTERNS = (
     r"you are (now |an? )?(ai|assistant|chatbot)",
 )
 _SUSPICIOUS_RE = re.compile("|".join(_SUSPICIOUS_PATTERNS), re.IGNORECASE)
+_OUTCOME_CLAIM_RE = re.compile(
+    r"\b(?:anxiety relief|stress relief|calm down|deep sleep|reduce (?:anxiety|stress)|"
+    r"(?:helps?|makes?) (?:pets?|cats?|dogs?) (?:sleep|calm)|separation anxiety)\b",
+    re.IGNORECASE,
+)
 
 
 def is_safe_ai_text(text: str) -> bool:
     """Confere se um texto gerado por IA parece seguro pra publicar."""
-    return bool(text) and not _SUSPICIOUS_RE.search(text)
+    return bool(text) and not _SUSPICIOUS_RE.search(text) and not _OUTCOME_CLAIM_RE.search(text)
 
 
 _GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash-001")

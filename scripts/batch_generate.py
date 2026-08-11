@@ -53,7 +53,7 @@ def _parse_args(argv: list[str] | None = None) -> tuple[int, bool, bool]:
     args, _ = parser.parse_known_args(argv)
 
     raw_count = args.count if args.count is not None else os.environ.get("BATCH_COUNT", "1")
-    raw_upload = args.upload if args.upload is not None else os.environ.get("BATCH_UPLOAD", "true")
+    raw_upload = args.upload if args.upload is not None else os.environ.get("BATCH_UPLOAD", "false")
     raw_schedule = args.schedule if args.schedule is not None else os.environ.get("BATCH_SCHEDULE", "false")
     upload = str(raw_upload).lower() in ("1", "true", "yes")
     schedule = str(raw_schedule).lower() in ("1", "true", "yes")
@@ -91,6 +91,13 @@ def main(argv: list[str] | None = None) -> int:
 
     if not 1 <= count <= 10:
         log.error("BATCH_COUNT deve ser entre 1 e 10")
+        return 1
+
+    # A manual batch may prepare several private drafts, but must never make
+    # more than one public release without an explicit operator override.
+    privacy = os.environ.get("YOUTUBE_PRIVACY", "private").lower()
+    if upload and privacy == "public" and count > 1 and os.environ.get("ALLOW_MULTI_PUBLIC_BATCH") != "1":
+        log.error("Lote publico bloqueado: use a rotina diaria ou ALLOW_MULTI_PUBLIC_BATCH=1 apos revisao editorial.")
         return 1
 
     slots: list[str] = []

@@ -53,7 +53,7 @@ class TestPataJazzConfig:
         assert "jazz" in PATA_JAZZ.base_tags
 
     def test_playlists_by_mood(self):
-        assert PATA_JAZZ.playlists_by_mood["relax"] == "Pata Jazz | Sleep & Calm"
+        assert PATA_JAZZ.playlists_by_mood["relax"] == "Pata Jazz | Quiet & Cozy"
         assert "fofura" in PATA_JAZZ.playlists_by_mood
         assert "diversao" in PATA_JAZZ.playlists_by_mood
         assert "anxiety" in PATA_JAZZ.playlists_by_mood
@@ -74,6 +74,13 @@ class TestPataJazzConfig:
         assert "short" in PATA_JAZZ.title_patterns
         assert len(PATA_JAZZ.title_patterns["short"]) > 0
 
+    def test_public_editorial_config_has_no_pet_outcome_claims(self):
+        public_text = " ".join(
+            [*PATA_JAZZ.playlists_by_mood.values(), *PATA_JAZZ.title_patterns["short"]]
+        ).lower()
+        for prohibited in ("anxiety relief", "stress relief", "deep sleep", "calm down"):
+            assert prohibited not in public_text
+
     def test_emojis(self):
         assert "brand" in PATA_JAZZ.emojis
 
@@ -85,9 +92,9 @@ class TestPataJazzConfig:
     def test_hourly_mood(self):
         assert len(PATA_JAZZ.hourly_mood) == 24
         assert PATA_JAZZ.hourly_mood[0] == "sleep"
-        assert PATA_JAZZ.hourly_mood[8] == "anxiety"
+        assert PATA_JAZZ.hourly_mood[8] == "relax"
         assert PATA_JAZZ.hourly_mood[10] == "diversao"
-        assert PATA_JAZZ.hourly_mood[16] == "anxiety"
+        assert PATA_JAZZ.hourly_mood[16] == "relax"
         assert PATA_JAZZ.hourly_mood[21] == "sleep"
 
     def test_default_description(self):

@@ -19,6 +19,7 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
 from utils import ffmpeg_helpers
+from utils.content_funnel import record_funnel_candidate
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.paths import data_dir
 from utils.pipeline_metrics import record_pipeline_run
@@ -256,6 +257,7 @@ def _upload_video_inner(
         )
 
     _record_video_tags(video_id, meta)
+    record_funnel_candidate(video_id, meta)
 
     apply_thumbnail(service, video_id, thumbnail, _retry_youtube_call)
     apply_captions(service, video_id, meta, _retry_youtube_call)

@@ -117,7 +117,7 @@ _MAX_HASHTAGS = 10
 # SEO can describe the music and the moment, but must not imply a medical or
 # behavioral outcome for an animal. These phrases are excluded from generated
 # description keyword blocks as well as the surrounding copy below.
-_UNSUPPORTED_OUTCOME_TERMS = (
+UNSUPPORTED_OUTCOME_TERMS = (
     "anxiety relief",
     "stress relief",
     "calm down",
@@ -126,7 +126,20 @@ _UNSUPPORTED_OUTCOME_TERMS = (
     "anxious pets",
     "anxious dogs",
     "anxious cats",
+    "reduce anxiety",
+    "reduce stress",
+    "helps pets sleep",
+    "helps dogs sleep",
+    "helps cats sleep",
+    "music for cats to sleep",
+    "music for dogs to sleep",
 )
+
+
+def has_unsupported_outcome_claim(text: str) -> bool:
+    """Return whether text makes a prohibited pet outcome claim."""
+    lowered = text.lower()
+    return any(term in lowered for term in UNSUPPORTED_OUTCOME_TERMS)
 
 # Keywords de alto volume real para o nicho pet + relaxation + jazz.
 # Fonte: buscas reais do YouTube/Google (volume aproximado, em ingles).
@@ -171,13 +184,13 @@ HIGH_VOLUME_KEYWORDS: dict[str, object] = {
     ],
     "animal_specific": {
         "cat": [
-            "cat sleep music",
+            "cat night jazz",
             "music for kittens",
             "cat calming music",
             "gentle jazz for cats",
         ],
         "dog": [
-            "dog sleep music",
+            "dog night jazz",
             "music for puppies",
             "dog calming music",
             "gentle jazz for dogs",
@@ -255,7 +268,7 @@ TITLE_PATTERNS: dict[str, list[str]] = {
         "A gentle {keyword_style} moment with your {animal} {emoji}",
         "A little {keyword_style} for your {animal} {emoji}",
         "{scenario}? A quiet {animal} + jazz moment {emoji}",
-        "Watch my {animal} fall asleep to {keyword_style} {emoji}",
+        "A quiet {animal} moment with {keyword_style} {emoji}",
         # A5: padrões que promovem playlists temáticas explicitamente -
         # referenciar o problema/cenario especifico aumenta CTR em buscas
         # long-tail e direciona para a playlist correspondente.
@@ -593,9 +606,7 @@ def _select_description_keywords(animal: str, mood: str) -> list[str]:
         keywords.extend(["soft night jazz", "quiet pet music", "relaxing bedtime jazz"])
     if mood in ("anxiety", "stress"):
         keywords.extend(["gentle pet music", "soft jazz at home", "quiet instrumental music"])
-    keywords = [
-        keyword for keyword in keywords if not any(term in keyword.lower() for term in _UNSUPPORTED_OUTCOME_TERMS)
-    ]
+    keywords = [keyword for keyword in keywords if not has_unsupported_outcome_claim(keyword)]
     random.shuffle(keywords)
     return keywords[:6]
 
@@ -613,8 +624,10 @@ def generate_description(
 
     Retorna (description, cta_text).
     """
-    keywords = _select_description_keywords(animal, mood)
-    keyword_block = ", ".join(keywords)
+    # Retained call keeps the keyword-selection path observable for analytics;
+    # keywords are no longer rendered as a spam-like literal list.
+    _select_description_keywords(animal, mood)
+    keyword_block = ""
 
     # Introdução com hook + promessa
     intro_templates = [
@@ -632,6 +645,12 @@ def generate_description(
     )
 
     # Bloco de uso/cenário
+    # Keep descriptions readable: the natural sentence below intentionally
+    # replaces the legacy literal keyword list above.
+    seo_block = (
+        f"\n\nThis video combines real {animal} footage with smooth instrumental jazz "
+        "for a cozy, quiet atmosphere at home."
+    )
     use_block_templates = [
         "\n\n✅ Enjoy this during a quiet break, while reading, or as soft background music at home.",
         f"\n\n✅ A simple pet-and-jazz moment for cozy time with your {animal}.",

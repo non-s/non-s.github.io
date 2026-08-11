@@ -41,9 +41,11 @@ PATA_JAZZ: ChannelConfig = ChannelConfig(
     hashtag_brand=["#PataJazz", "#CatJazz", "#DogJazz", "#PetJazz"],
     base_tags=["Pata Jazz", "cat", "dog", "jazz", "cute", "relaxing"],
     playlists_by_mood={
-        "relax": "Pata Jazz | Sleep & Calm",
-        "sleep": "Pata Jazz | Deep Sleep",
-        "anxiety": "Pata Jazz | Anxiety Relief",
+        "relax": "Pata Jazz | Quiet & Cozy",
+        # Legacy mood keys are kept for pipeline compatibility. Public labels
+        # must describe a scene, never an outcome for an animal.
+        "sleep": "Pata Jazz | Night & Cozy",
+        "anxiety": "Pata Jazz | Gentle Moments",
         "fofura": "Pata Jazz | Cute & Cozy",
         "diversao": "Pata Jazz | Happy Pets",
         "home_alone": "Pata Jazz | Home Alone",
@@ -64,13 +66,11 @@ PATA_JAZZ: ChannelConfig = ChannelConfig(
             "relaxing", "calm", "calming", "soothing", "peaceful",
             "gentle", "cozy", "tranquil", "mellow", "zen",
         ],
-        "anxiety": [
-            "anxiety relief", "stress relief", "calm down", "nervous",
-            "scared", "home alone", "separation anxiety", "comfort",
+        "gentle": [
+            "gentle", "quiet", "cozy", "soft", "unhurried", "at home",
         ],
         "sleep": [
-            "sleep music", "deep sleep", "bedtime", "naptime",
-            "dreamy", "night music", "sleepy",
+            "night jazz", "bedtime", "naptime", "dreamy", "night music", "sleepy",
         ],
         "fun": [
             "funny", "playful", "silly", "energetic",
@@ -89,15 +89,13 @@ PATA_JAZZ: ChannelConfig = ChannelConfig(
             "{keyword_animal} | gentle {animal} + jazz {emoji}",
             "{keyword_primary} in {seconds} seconds {emoji}",
             "{trigger} {emoji}",
-            "{scenario}? A gentle reset for your {animal} {emoji}",
             "A gentle {keyword_style} moment with your {animal} {emoji}",
             "A little {keyword_style} for your {animal} {emoji}",
             "{scenario}? A quiet {animal} + jazz moment {emoji}",
-            "Watch my {animal} fall asleep to {keyword_style} {emoji}",
             # A5: padrões que promovem playlists temáticas explicitamente.
             "{scenario}? Calm music for {animal}s — full playlist {emoji}",
             "The {keyword_style} playlist for cozy pet moments {emoji}",
-            "A calm playlist for your {animal} | {keyword_long_tail} {emoji}",
+            "A cozy playlist with a {animal} | {keyword_long_tail} {emoji}",
         ],
     },
     emojis={"brand": "🐾🎷", "sleep": "💤", "calm": "😴", "love": "💛"},
@@ -105,16 +103,16 @@ PATA_JAZZ: ChannelConfig = ChannelConfig(
         "fofura": ["cat", "kitten", "puppy", "dog", "sleepy cat"],
         "diversao": ["playful dog", "cat playing", "puppy playing", "dog relaxing"],
         "relax": ["sleepy cat", "sleepy dog", "cat relaxing", "dog relaxing"],
-        "anxiety": ["nervous dog", "hiding cat", "scared puppy", "anxious cat", "scared puppy"],
+        "anxiety": ["dog relaxing", "cat relaxing", "sleepy puppy", "sleepy cat"],
         "sleep": ["sleepy cat", "sleepy dog", "cat napping", "dog napping"],
     },
     hourly_mood={
         h: (
             "sleep" if 0 <= h < 6 else
-            "anxiety" if 6 <= h < 9 else  # sair de casa
+            "relax" if 6 <= h < 9 else
             "diversao" if 9 <= h < 12 else
             "fofura" if 12 <= h < 15 else
-            "anxiety" if 15 <= h < 19 else  # chegar em casa / ansiedade
+            "relax" if 15 <= h < 19 else
             "sleep" if 19 <= h < 24 else "relax"
         )
         for h in range(24)

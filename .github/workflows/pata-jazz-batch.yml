@@ -22,7 +22,7 @@ on:
       upload:
         description: "Fazer upload para o YouTube?"
         required: true
-        default: true
+        default: false
         type: boolean
 
 permissions:
@@ -42,7 +42,9 @@ jobs:
     # Requer ambiente protegido com reviewer obrigatorio.
     environment: production
     env:
-      YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
+      # Manual batches are a production-prep tool. Public release stays on
+      # the one-per-day workflow after its own quality and cadence checks.
+      YOUTUBE_PRIVACY: private
       BATCH_COUNT: ${{ github.event.inputs.count }}
       BATCH_UPLOAD: ${{ github.event.inputs.upload }}
     steps:

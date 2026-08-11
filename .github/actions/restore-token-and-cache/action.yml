@@ -36,12 +36,19 @@ runs:
       with:
         path: |
           _data/recent_media.json
+          _data/used_titles.json
+          _data/upload_language_counter.json
           _data/playlist_cache.json
           _data/video_tags.json
           _data/scene_performance.json
           _data/title_pattern_performance.json
           _data/quota_usage.json
           _data/view_predictor.json
+          _data/viral_signals.json
+          _data/publish_slots.json
+          _data/last_analytics_video_id.json
+          _data/ai_metrics.json
+          _data/content_funnel_queue.json
           _data/trending_keywords.json
         key: pata-jazz-data-${{ github.run_id }}
         restore-keys: pata-jazz-data-

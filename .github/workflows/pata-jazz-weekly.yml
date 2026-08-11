@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       action:
-        description: "Etapa: all (gerar+publicar), generate (so gerar), publish (so publicar proximos 6)"
+        description: "Etapa: all/generate/publish — todas mantem o lote como rascunho privado"
         required: true
         default: "all"
         type: choice
@@ -12,7 +12,7 @@ on:
           - all
           - generate
           - publish
-  # Sem "schedule": pata-jazz-shorts.yml (1 short/hora, 24/dia) ja cobre a
+  # Sem "schedule": pata-jazz-shorts.yml (1 short/dia) cobre a
   # cadencia diaria pretendida por utils/content_strategy.py. O cron diario
   # que existia aqui ("publish proximos 6") rodava por cima dela, quase
   # triplicando o volume de upload/dia e estourando a quota da API (~1600
@@ -34,7 +34,7 @@ concurrency:
 
 jobs:
   generate:
-    name: "Gerar 35 shorts"
+    name: "Gerar rascunhos privados"
     if: ${{ vars.PATA_JAZZ_ENABLED == '1' && (github.event.inputs.action == 'all' || github.event.inputs.action == 'generate') }}
     runs-on: ubuntu-latest
     timeout-minutes: 180
@@ -62,10 +62,10 @@ jobs:
         run: python scripts/sync_animal_broll.py || echo "::warning::B-roll sync falhou"
       - name: "Sincronizar jazz"
         run: python scripts/sync_jazz_music.py || echo "::warning::Jazz sync falhou"
-      - name: "Gerar 35 shorts"
+      - name: "Gerar rascunhos"
         run: |
-          for i in $(seq 1 35); do
-            echo "=== Gerando short $i/35 ==="
+          for i in $(seq 1 6); do
+            echo "=== Gerando short $i/6 ==="
             python generate_pata_jazz_short.py || echo "::warning::Short $i falhou, continuando"
           done
       - name: "Salvar cache de videos gerados"
@@ -81,7 +81,7 @@ jobs:
           echo "shorts=$shorts" >> $GITHUB_OUTPUT
           echo "total=$shorts" >> $GITHUB_OUTPUT
           echo "Total gerado: $shorts shorts"
-      - name: "Fazer upload dos primeiros 6 (private)"
+      - name: "Fazer upload dos rascunhos (private)"
         env:
           YOUTUBE_PRIVACY: private
         run: python scripts/publish_weekly_batch.py
@@ -90,7 +90,7 @@ jobs:
         run: rm -f youtube_token.json
 
   publish:
-    name: "Publicar proximos 6 videos (private -> public)"
+    name: "Preparar proximos rascunhos (mantem private)"
     needs: [generate]
     # needs.generate.result e 'skipped' quando o job generate nao roda (action=publish);
     # nesse caso o publish deve seguir normalmente. Quando action=all, aguarda
@@ -132,9 +132,9 @@ jobs:
           path: _videos
           key: weekly-videos-publish-${{ github.run_id }}
           restore-keys: weekly-videos-
-      - name: "Publicar proximos 6 videos"
+      - name: "Manter proximos videos como rascunhos privados"
         env:
-          YOUTUBE_PRIVACY: public
+          YOUTUBE_PRIVACY: private
         run: python scripts/publish_weekly_batch.py
       - name: "Apagar token"
         if: always()

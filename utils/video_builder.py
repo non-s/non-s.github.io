@@ -210,16 +210,16 @@ _ENDCARD_CTAS_BY_MOOD: dict[str, list[str]] = {
     ],
     "sleep": [
         "save this for bedtime",
-        "more sleep music for pets coming up",
+        "more cozy pet jazz coming up",
         "keep the calm going for your pet",
-        "subscribe for more sleep tracks",
-        "play another to keep them asleep",
+        "subscribe for more gentle jazz tracks",
+        "play another for a cozy pet-and-jazz moment",
     ],
     "anxiety": [
         "calm them again with the next one",
         "more soothing tracks coming up",
         "save this for anxious moments",
-        "subscribe for more anxiety relief",
+        "subscribe for more gentle pet jazz",
         "play another to keep them calm",
     ],
 }

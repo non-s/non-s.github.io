@@ -8,13 +8,15 @@ on:
     # O snapshot so coleta stats de videos + canal e grava analytics_history;
     # pula a computacao pesada de cena/title_pattern, deteccao de virais e
     # rotacao de thumbnails (essa fica no run semanal). ~2 min em vez de ~10.
-    - cron: "0 6 * * *"
+    - cron: "25 6 * * *"
 
 permissions:
   contents: read
 
 concurrency:
-  group: pata-jazz-analytics-daily
+  # One shared lock prevents the daily snapshot and weekly enrichment from
+  # restoring and saving the same analytics state concurrently.
+  group: pata-jazz-analytics
   cancel-in-progress: true
 
 jobs:
