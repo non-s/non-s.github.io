@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import logging
 import sys
@@ -42,7 +43,14 @@ def fetch_title_audit() -> list[dict[str, object]]:
     return report
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="Audita metadados publicos do canal Pata Jazz.")
+    parser.add_argument(
+        "--strict",
+        action="store_true",
+        help="retorna erro quando encontrar metadados inconsistentes",
+    )
+    args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     try:
         issues = fetch_title_audit()
@@ -61,6 +69,9 @@ def main() -> int:
         raw_issues = issue.get("issues", [])
         issue_text = ", ".join(raw_issues) if isinstance(raw_issues, list) else str(raw_issues)
         log.warning("%s: %s", str(issue.get("video_id", "")), issue_text)
+    if args.strict and issues:
+        log.error("Auditoria estrita falhou: corrija os metadados publicos antes da proxima publicacao.")
+        return 2
     return 0
 
 

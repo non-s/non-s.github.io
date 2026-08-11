@@ -57,7 +57,7 @@ jobs:
       - name: "Auditar metadados públicos"
         # Apenas leitura do feed oficial: registra títulos inconsistentes para
         # revisão antes de qualquer edição pública.
-        run: python scripts/audit_channel_metadata.py
+        run: python scripts/audit_channel_metadata.py --strict
       - name: "Upload analytics como artifact"
         # Snapshot diario nao publica Pages (so o semanal faz isso); so
         # persiste o historico via cache + artifact pra inspecao manual.
