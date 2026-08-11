@@ -29,6 +29,7 @@ from utils.ffmpeg_helpers import get_video_duration, run_ffmpeg
 from utils.font_config import font_path
 from utils.format_strategy import format_strategy
 from utils.media_pool import ensure_dirs, music_attribution, pick_audio, pick_videos, pool_stats
+from utils.media_usage import commit_reservation, release_reservation, reserve_media
 from utils.metadata_engine import clean_title, generate_metadata
 from utils.story_engine import choose_story_card, record_story_card
 from utils.thumbnail_engine import make_long_thumbnail, make_short_thumbnail, winning_thumbnail_variant
@@ -81,6 +82,17 @@ class VideoSpec:
 
 _HOOK_ENABLE_SECONDS = 5.0
 _HOOK_FADE_SECONDS = 0.4
+
+
+def _audio_master_filter(duration: int) -> str:
+    """Normaliza volume entre faixas e evita cortes secos no inicio/fim."""
+    fade_duration = min(0.8, max(0.2, duration / 10))
+    fade_out_start = max(0.0, duration - fade_duration)
+    return (
+        "loudnorm=I=-16:LRA=11:TP=-1.5,"
+        f"afade=t=in:st=0:d={fade_duration:.2f},"
+        f"afade=t=out:st={fade_out_start:.2f}:d={fade_duration:.2f}"
+    )
 
 
 def _build_video_filter(spec: VideoSpec) -> str:
@@ -344,15 +356,11 @@ def _build_single_clip_video(
         "+faststart",
     ]
     if audio_path:
-        # #8: hook sonoro - "ping" suave nos primeiros 3s sobre o jazz.
-        # Pattern interrupt sonoro aumenta retencao inicial em Shorts.
-        # Usa afade para garantir que o jazz comeca suave (nao corta) e
-        # adiciona um sino gerado via FFmpeg (sine wave curto) mixado.
         inputs += ["-stream_loop", "-1", "-i", str(audio_path)]
         output_args += [
             "-map", "1:a:0",
             "-c:a", "aac", "-b:a", "192k",
-            "-af", "afade=t=in:st=0:d=0.5,afade=t=in:st=3:d=0.5",
+            "-af", _audio_master_filter(spec.duration),
         ]
     run_ffmpeg(inputs + output_args + [str(output)])
 
@@ -387,8 +395,10 @@ def _build_multi_clip_short(
     entre videos, em vez de sempre "fade". A musica de jazz toca por toda a
     duracao total.
     """
-    n_clips = min(len(videos), random.randint(2, 3))
-    selected = random.sample(videos, n_clips)
+    # O conjunto recebido ja foi escolhido e reservado pelo ledger. Nao
+    # reamostrar aqui: isso reservaria clipes que nao entram na producao.
+    selected = list(videos)
+    n_clips = len(selected)
     per_clip = spec.duration // n_clips
 
     # Valida que cada clipe e longo o suficiente para o xfade cobrir sem
@@ -507,7 +517,10 @@ def _build_multi_clip_short(
 
         if audio_path:
             # Indice do audio = numero de clipes processados (videos 0..n-1, audio n).
-            cmd_args += ["-map", f"{n_clips}:a:0", "-c:a", "aac", "-b:a", "192k"]
+            cmd_args += [
+                "-map", f"{n_clips}:a:0", "-c:a", "aac", "-b:a", "192k",
+                "-af", _audio_master_filter(spec.duration),
+            ]
 
         # -t sempre aplicado (nao so quando ha audio): sem ele, a duracao do
         # xfade final e sum(per_clip) - (n_clips-1)*xfade_duration, que fica
@@ -540,8 +553,8 @@ def _build_loop_relax_video(
     tempo de re-encode; o encode final usa veryfast/CRF 28 para qualidade
     suficiente no YouTube.
     """
-    n_clips = min(len(videos), random.randint(2, 3))
-    selected = random.sample(videos, n_clips)
+    selected = list(videos)
+    n_clips = len(selected)
     xfade_duration = 2.0
     per_clip = spec.duration // n_clips
     while n_clips > 1 and per_clip <= xfade_duration * (n_clips - 1):
@@ -633,7 +646,10 @@ def _build_loop_relax_video(
             "+faststart",
         ]
         if audio_path:
-            cmd_args += ["-map", f"{n_clips}:a:0", "-c:a", "aac", "-b:a", "192k"]
+            cmd_args += [
+                "-map", f"{n_clips}:a:0", "-c:a", "aac", "-b:a", "192k",
+                "-af", _audio_master_filter(spec.duration),
+            ]
         cmd_args += ["-t", str(spec.duration), str(output)]
 
         log.info(
@@ -655,6 +671,15 @@ def build_pata_jazz_video(
     thumb_dir: Path,
     stem_prefix: str,
     dry_run: bool = False,
+    *,
+    _selected_audio: Path | None = None,
+    _selected_videos: list[Path] | None = None,
+    _fixed_scene: str = "",
+    _fixed_hook: str = "",
+    _fixed_emoji: str = "",
+    _fixed_output: Path | None = None,
+    _fixed_thumb: Path | None = None,
+    _reservation: dict | None = None,
 ) -> Path:
     """Pipeline comum de geração de vídeo Pata Jazz.
 
@@ -668,11 +693,13 @@ def build_pata_jazz_video(
     ensure_dirs()
     _validate_source_pools()
 
-    scene = spec.scene if spec.scene else random_scene()
+    scene = _fixed_scene or (spec.scene if spec.scene else random_scene())
     # A7: gera 2 candidatos de hook e escolhe o de maior qualidade (tamanho
     # ideal + keywords de alto volume) em vez de sortear 1 so.
-    hook, emoji = best_hook_for_scene(scene, mood=spec.mood)
-    audio_path = pick_audio(mood=spec.mood)
+    hook, emoji = (
+        (_fixed_hook, _fixed_emoji) if _fixed_hook else best_hook_for_scene(scene, mood=spec.mood)
+    )
+    audio_path = _selected_audio if _selected_audio is not None else pick_audio(mood=spec.mood)
     if audio_path is None:
         raise RuntimeError("Nenhuma faixa de jazz compatível foi encontrada para o mood selecionado.")
     # Deriva o animal do scene para o b-roll bater com o hook/titulo - sem
@@ -681,7 +708,10 @@ def build_pata_jazz_video(
     # clipes de cachorro no video.
     animal = detect_animal(scene)
 
-    output, thumb, _ = _prepare_output_paths(stem_prefix, output_dir, thumb_dir)
+    if _fixed_output is not None and _fixed_thumb is not None:
+        output, thumb = _fixed_output, _fixed_thumb
+    else:
+        output, thumb, _ = _prepare_output_paths(stem_prefix, output_dir, thumb_dir)
 
     if dry_run:
         log.info("[DRY-RUN] kind=%s scene=%s hook=%s emoji=%s audio=%s", spec.kind, scene, hook, emoji, audio_path)
@@ -689,19 +719,62 @@ def build_pata_jazz_video(
         log.info("[DRY-RUN] resolução=%dx%d duração=%ds", spec.width, spec.height, spec.duration)
         return output
 
+    # A chamada externa escolhe o conjunto exato e o reserva atomicamente.
+    # A chamada interna recebe esses assets fixados, executa todo o pipeline e
+    # so entao a externa confirma o ledger. Falhas liberam a reserva; falha ao
+    # confirmar mantem a reserva pendente e portanto falha de forma segura.
+    if _selected_videos is None:
+        selected = pick_videos(min_count=2, max_count=3, cuteness_sort=True, animal=animal)
+        if len(selected) < 2:
+            selected = pick_videos(min_count=1, max_count=1, cuteness_sort=True, animal=animal)
+        if not selected:
+            raise RuntimeError("Pool de b-roll inedito insuficiente para gerar o video.")
+        reservation_id, reservation = reserve_media(audio_path, selected)
+        try:
+            result = build_pata_jazz_video(
+                spec=spec,
+                output_dir=output_dir,
+                thumb_dir=thumb_dir,
+                stem_prefix=stem_prefix,
+                dry_run=False,
+                _selected_audio=audio_path,
+                _selected_videos=selected,
+                _fixed_scene=scene,
+                _fixed_hook=hook,
+                _fixed_emoji=emoji,
+                _fixed_output=output,
+                _fixed_thumb=thumb,
+                _reservation=reservation,
+            )
+        except Exception:
+            release_reservation(reservation_id)
+            raise
+        committed = commit_reservation(reservation_id, result)
+        try:
+            meta_path = result.with_suffix(".json")
+            meta = json.loads(meta_path.read_text(encoding="utf-8"))
+            meta["media_usage"] = {
+                "reservation_id": reservation_id,
+                "signature": committed["signature"],
+                "audio": committed["audio"],
+                "video": committed["video"],
+            }
+            meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+        except (OSError, ValueError, TypeError) as exc:
+            log.warning("Video validado, mas metadata do ledger nao foi anexada: %s", exc)
+        return result
+
+    videos = _selected_videos
     # Multi-clip com crossfade para Shorts / long-form Loop & Relax
-    videos = pick_videos(min_count=2, max_count=3, cuteness_sort=True, animal=animal)
     if len(videos) >= 2:
         if spec.kind == "long":
             _build_loop_relax_video(spec, videos, audio_path, output, hook=hook)
         else:
             _build_multi_clip_short(spec, videos, audio_path, output, hook=hook)
     else:
-        # Fallback: 1 clipe em loop
-        single = pick_videos(min_count=1, max_count=1, animal=animal)
-        if not single:
-            raise RuntimeError("Pool de b-roll insuficiente para gerar o video.")
-        video = random.choice(single)
+        # Um unico clipe inedito pode ser usado em loop, sem recorrer ao pool
+        # novamente (o conjunto exato ja esta coberto pela reserva).
+        video = videos[0]
         _build_single_clip_video(spec, video, audio_path, output, hook=hook)
 
     # A/B/C testing: gera tres variantes de thumbnail. thumb e o caminho base
@@ -771,6 +844,7 @@ def build_pata_jazz_video(
         "thumbnail_variant": primary_variant,
         "thumbnails": generated,
         "audio": str(audio_path) if audio_path else None,
+        "media_reservation": _reservation or {},
         "editorial_brief": build_editorial_brief(
             scene=scene,
             mood=spec.mood,

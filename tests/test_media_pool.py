@@ -6,8 +6,6 @@ import json
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
-
 import utils.media_pool as media_pool
 from utils.media_pool import (
     _cuteness_score,
@@ -19,16 +17,7 @@ from utils.media_pool import (
     pick_videos,
     video_pool,
 )
-
-
-@pytest.fixture(autouse=True)
-def _isolate_recent_media_file(tmp_path, monkeypatch):
-    """pick_videos()/pick_audio() persistem historico em _recent_file() (path
-    real do repo) - sem isolar, testes escrevem no disco de verdade e o
-    historico de uma run vaza pra proxima (nomes de mock se repetem entre
-    testes deste arquivo)."""
-    recent_file = tmp_path / "recent_media.json"
-    monkeypatch.setattr(media_pool, "_recent_file", lambda: recent_file)
+from utils.media_usage import commit_reservation, reserve_media
 
 
 class TestMediaPool:
@@ -265,49 +254,36 @@ class TestMediaPool:
         assert len(result) == 0
 
 
-class TestAvoidRecent:
-    """pick_videos()/pick_audio() evitam repetir os itens usados mais recentemente."""
+class TestPermanentUsage:
+    """Assets confirmados nunca voltam ao pool, mesmo quando ele e pequeno."""
 
-    def test_pick_audio_avoids_last_used_track(self):
-        import random as _random
+    @staticmethod
+    def _asset(tmp_path: Path, name: str, source_id: int) -> Path:
+        path = tmp_path / name
+        path.write_bytes(name.encode("utf-8"))
+        path.with_suffix(".json").write_text(json.dumps({"id": source_id}), encoding="utf-8")
+        return path
 
-        _random.seed(42)
-        pool = [Path(f"/fake/audio{i}.mp3") for i in range(3)]
-        with patch("utils.media_pool.audio_pool", return_value=pool):
-            first = pick_audio()
-            second = pick_audio()
+    def test_pick_audio_never_falls_back_to_committed_track(self, tmp_path):
+        audio = self._asset(tmp_path, "only.mp3", 10)
+        video = self._asset(tmp_path, "real_cat_00.mp4", 20)
+        reservation_id, _ = reserve_media(audio, [video])
+        commit_reservation(reservation_id, tmp_path / "out.mp4")
 
-        assert first is not None and second is not None
-        assert first != second
+        with patch("utils.media_pool.audio_pool", return_value=[audio]):
+            assert pick_audio() is None
 
-    def test_pick_audio_falls_back_when_pool_too_small(self):
-        """So 1 faixa no pool: precisa poder repetir em vez de travar."""
-        pool = [Path("/fake/only.mp3")]
-        with patch("utils.media_pool.audio_pool", return_value=pool):
-            first = pick_audio()
-            second = pick_audio()
+    def test_pick_videos_excludes_committed_clip_forever(self, tmp_path):
+        used_video = self._asset(tmp_path, "real_cat_used.mp4", 20)
+        fresh_video = self._asset(tmp_path, "real_cat_fresh.mp4", 21)
+        audio = self._asset(tmp_path, "track.mp3", 10)
+        reservation_id, _ = reserve_media(audio, [used_video])
+        commit_reservation(reservation_id, tmp_path / "out.mp4")
 
-        assert first == pool[0]
-        assert second == pool[0]
+        with patch("utils.media_pool.video_pool", return_value=[used_video, fresh_video]):
+            result = pick_videos(min_count=1, max_count=1, cuteness_sort=False, animal="cat")
 
-    @patch("utils.media_pool.random.sample")
-    @patch("utils.media_pool.random.randint")
-    @patch("utils.media_pool.video_pool")
-    def test_pick_videos_excludes_recently_used_names(self, mock_video_pool, mock_randint, mock_sample):
-        mock_videos = [Path(f"/fake/path/video{i}.mp4") for i in range(5)]
-        mock_video_pool.return_value = mock_videos
-        mock_randint.return_value = 2
-        mock_sample.return_value = mock_videos[:2]
-
-        pick_videos(min_count=2, max_count=2, cuteness_sort=False)
-        # Primeira chamada: nada no historico ainda, pool completo (5 videos).
-        assert len(mock_sample.call_args_list[0].args[0]) == 5
-
-        pick_videos(min_count=2, max_count=2, cuteness_sort=False)
-        # Segunda chamada: os 2 usados na primeira devem estar fora do pool.
-        second_pool = mock_sample.call_args_list[1].args[0]
-        assert len(second_pool) == 3
-        assert not (set(p.name for p in second_pool) & {"video0.mp4", "video1.mp4"})
+        assert result == [fresh_video]
 
 
 class TestFilterByAnimal:

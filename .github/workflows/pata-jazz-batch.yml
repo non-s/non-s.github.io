@@ -29,7 +29,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: pata-jazz-batch
+  group: pata-jazz-media-pipeline
   cancel-in-progress: false
 
 jobs:
@@ -58,6 +58,8 @@ jobs:
         uses: ./.github/actions/restore-token-and-cache
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
+      - name: "Restaurar ledger permanente de midia"
+        uses: ./.github/actions/restore-media-ledger
       - name: "Healthcheck (pre-flight)"
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -76,6 +78,12 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python scripts/batch_generate.py
+      - name: "Persistir ledger do batch"
+        if: always() && hashFiles('_data/media_usage.json') != ''
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: _data/media_usage.json
+          key: pata-jazz-media-ledger-${{ github.run_id }}
       - name: "Apagar token"
         if: always()
         run: rm -f youtube_token.json

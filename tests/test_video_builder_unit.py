@@ -31,6 +31,12 @@ class TestBuildOverlayFilter:
         assert "box=1" in result
         assert "boxcolor=black@0.35" in result
 
+    def test_audio_master_normalizes_and_fades_out(self):
+        result = video_builder._audio_master_filter(35)
+        assert "loudnorm=I=-16" in result
+        assert "afade=t=in" in result
+        assert "afade=t=out" in result
+
     def test_sanitizes_special_characters_in_hook(self):
         result = video_builder._build_overlay_filter("it's: cute", 1920)
         # FFmpeg drawtext nao aceita aspas simples dentro do valor. A sanitizacao

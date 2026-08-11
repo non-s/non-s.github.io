@@ -14,6 +14,7 @@ import os
 import re
 import sys
 import time
+import uuid
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -25,6 +26,14 @@ sys.path.insert(0, str(ROOT))
 from utils.animal_branding import BROLL_QUERIES, is_allowed_animal_text
 from utils.log_config import configure_logging
 from utils.media_pool import VIDEO_DIR, ensure_dirs
+from utils.media_usage import (
+    asset_descriptor,
+    filter_unused,
+    sha256_file,
+    source_identity,
+    used_hashes,
+    used_source_identities,
+)
 
 log = logging.getLogger(__name__)
 
@@ -100,15 +109,20 @@ def _safe_name(query: str, idx: int, url: str, ext: str) -> str:
 
 
 def _download_video(url: str, dest: Path) -> bool:
+    temp_dest = dest.with_name(f".{dest.name}.{uuid.uuid4().hex}.part")
     try:
         with requests.get(url, timeout=120, stream=True) as r:
             r.raise_for_status()
-            with open(dest, "wb") as f:
+            with open(temp_dest, "wb") as f:
                 for chunk in r.iter_content(chunk_size=64 * 1024):
                     if chunk:
                         f.write(chunk)
+        if temp_dest.stat().st_size <= 0:
+            raise OSError("download de video vazio")
+        os.replace(temp_dest, dest)
         return True
     except Exception as exc:
+        temp_dest.unlink(missing_ok=True)
         log.warning("Falha ao baixar %s: %s", url, exc)
         return False
 
@@ -118,7 +132,8 @@ def search_and_download(api_key: str, query: str, max_results: int = 5, orientat
     params: dict[str, str | int] = {
         "key": api_key,
         "q": query,
-        "per_page": max(6, max_results * 3),
+        # Janela ampla para pular permanentemente IDs populares ja usados.
+        "per_page": min(200, max(60, max_results * 10)),
         "safesearch": "true",
         "orientation": orientation,
         "video_type": "film",  # exclui animacao/cartoon — so video real
@@ -136,6 +151,11 @@ def search_and_download(api_key: str, query: str, max_results: int = 5, orientat
     # Ordena por "likes" (desc) para favorecer os clips mais fofos/populares.
     hits = sorted(hits, key=lambda h: int(h.get("likes", 0) or 0), reverse=True)
 
+    blocked_identities = used_source_identities("video")
+    blocked_hashes = used_hashes("video")
+    pool_descriptors = [asset_descriptor(p, "video", ensure_hash=True) for p in VIDEO_DIR.glob("*.mp4")]
+    pool_identities = {item["identity"] for item in pool_descriptors}
+    pool_hashes = {item["sha256"] for item in pool_descriptors if item["sha256"]}
     downloaded = 0
     for idx, hit in enumerate(hits):
         if downloaded >= max_results:
@@ -149,6 +169,9 @@ def search_and_download(api_key: str, query: str, max_results: int = 5, orientat
             continue
         if not _matches_query_animal(query, f"{page_url} {tags}"):
             log.info("Ignorando hit de animal ambiguo ou incorreto para '%s': %s", query, tags)
+            continue
+        canonical_identity = source_identity("video", hit)
+        if canonical_identity and canonical_identity in blocked_identities | pool_identities:
             continue
         # Filtro extra: verifica o campo type do video (film = real, animation = cartoon)
         videos = hit.get("videos", {})
@@ -189,11 +212,31 @@ def search_and_download(api_key: str, query: str, max_results: int = 5, orientat
             hit["source_url"] = page_url
             hit["license"] = "Pixabay Content License"
             try:
+                content_hash = (
+                    sha256_file(dest)
+                    if isinstance(dest, Path) and dest.is_file()
+                    else hashlib.sha256(str(dest).encode("utf-8")).hexdigest()
+                )
+                if content_hash in blocked_hashes | pool_hashes:
+                    dest.unlink(missing_ok=True)
+                    log.info("Ignorando video duplicado por SHA-256: %s", dest.name)
+                    continue
+                hit["content_sha256"] = content_hash
                 # Salva metadados Pixabay para futura triagem por popularidade.
                 meta_dest = dest.with_suffix(".json")
-                meta_dest.write_text(json.dumps(hit, ensure_ascii=False, indent=2), encoding="utf-8")
-            except Exception:
-                pass
+                if isinstance(meta_dest, Path):
+                    meta_tmp = meta_dest.with_name(f".{meta_dest.name}.{uuid.uuid4().hex}.tmp")
+                    meta_tmp.write_text(json.dumps(hit, ensure_ascii=False, indent=2), encoding="utf-8")
+                    os.replace(meta_tmp, meta_dest)
+                else:  # pragma: no cover - compatibilidade com doubles de teste
+                    meta_dest.write_text(json.dumps(hit, ensure_ascii=False, indent=2), encoding="utf-8")
+                pool_identities.add(canonical_identity)
+                pool_hashes.add(content_hash)
+            except Exception as exc:
+                dest.unlink(missing_ok=True)
+                dest.with_suffix(".json").unlink(missing_ok=True)
+                log.warning("Falha ao validar/persistir metadata de %s: %s", dest.name, exc)
+                continue
             downloaded += 1
             log.info("Baixado %s (likes=%s, cute=%s)", dest.name, hit.get("likes"), is_extra_cute)
     return downloaded
@@ -207,6 +250,12 @@ def main() -> int:
         return 1
 
     ensure_dirs()
+    current_assets = list(VIDEO_DIR.glob("*.mp4"))
+    eligible = set(filter_unused(current_assets, "video"))
+    for asset in current_assets:
+        if asset not in eligible:
+            asset.unlink(missing_ok=True)
+            asset.with_suffix(".json").unlink(missing_ok=True)
     existing = len(list(VIDEO_DIR.glob("*.mp4")))
     if existing >= MAX_POOL_SIZE:
         rotate_count = max(1, int(MAX_POOL_SIZE * _POOL_ROTATION_FRACTION))

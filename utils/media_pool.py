@@ -11,26 +11,13 @@ from collections.abc import Iterator
 from pathlib import Path
 
 from utils.animal_branding import is_allowed_animal_text
-from utils.paths import data_dir
-from utils.state_lock import state_lock
+from utils.media_usage import filter_unused
 
 log = logging.getLogger(__name__)
 
 ROOT = Path(__file__).resolve().parent.parent
 VIDEO_DIR = ROOT / "_assets" / "video" / "animal_broll"
 AUDIO_DIR = ROOT / "_assets" / "audio" / "animal_jazz"
-
-# Historico de itens usados recentemente, para nao repetir o mesmo clipe/faixa
-# em sequencia quando o pool e pequeno. Persistido em _data/ (gitignored) para
-# sobreviver entre runs do workflow (cache do GitHub Actions cobre esse path).
-_RECENT_VIDEO_WINDOW = 15
-_RECENT_AUDIO_WINDOW = 8
-
-
-def _recent_file() -> Path:
-    """Caminho de recent_media.json no diretorio de dados do canal ativo."""
-    return data_dir() / "recent_media.json"
-
 
 def video_pool() -> list[Path]:
     paths = sorted(VIDEO_DIR.glob("*.mp4"))
@@ -144,37 +131,6 @@ def _cuteness_score(video: Path) -> int:
     return cute_bonus + (likes // 20) + (views // 1000)
 
 
-def _load_recent() -> dict[str, list[str]]:
-    try:
-        return json.loads(_recent_file().read_text(encoding="utf-8"))
-    except Exception as exc:
-        log.debug("recent_media.json ausente/corrompido: %s", exc)
-        return {"videos": [], "audio": []}
-
-
-def _remember_recent(kind: str, names: list[str], window: int) -> None:
-    recent_file = _recent_file()
-    with state_lock(recent_file):
-        data = _load_recent()
-        updated = (data.get(kind, []) + names)[-window:]
-        data[kind] = updated
-        try:
-            recent_file.parent.mkdir(parents=True, exist_ok=True)
-            recent_file.write_text(json.dumps(data), encoding="utf-8")
-        except Exception as exc:
-            log.warning("Falha ao salvar historico de midia recente: %s", exc)
-
-
-def _avoid_recent(pool: list[Path], kind: str, min_needed: int) -> list[Path]:
-    """Remove itens usados recentemente do pool, a menos que isso deixe menos
-    candidatos do que o necessario - nesse caso repetir e melhor que travar."""
-    recent_names = set(_load_recent().get(kind, []))
-    if not recent_names:
-        return pool
-    filtered = [p for p in pool if p.name not in recent_names]
-    return filtered if len(filtered) >= min_needed else pool
-
-
 _CAT_KEYWORDS = ("cat", "kitten")
 _DOG_KEYWORDS = ("dog", "puppy")
 
@@ -199,14 +155,16 @@ def pick_videos(
     cuteness_sort: bool = True,
     animal: str = "",
 ) -> list[Path]:
-    pool = video_pool()
+    # Regra editorial estrita: assets confirmados ou reservados nunca voltam
+    # ao conjunto elegivel. Se o pool inedito acabar, o caller deve falhar e
+    # sincronizar material novo, jamais cair em repeticao silenciosa.
+    pool = filter_unused(video_pool(), "video")
     if not pool:
         return []
     if animal:
         pool = _filter_by_animal(pool, animal, min_count)
         if len(pool) < min_count:
             return []
-    pool = _avoid_recent(pool, "videos", min_count)
     # Garante limites validos para randint: min_count <= upper, e upper <= len(pool).
     upper = min(max_count, len(pool))
     lower = min(min_count, upper)
@@ -220,21 +178,18 @@ def pick_videos(
         chosen = random.sample(top, count)
     else:
         chosen = random.sample(pool, count)
-    _remember_recent("videos", [p.name for p in chosen], _RECENT_VIDEO_WINDOW)
     return chosen
 
 
 def pick_audio(mood: str = "") -> Path | None:
-    pool = audio_pool()
+    pool = filter_unused(audio_pool(), "audio")
     if not pool:
         return None
     if mood:
         pool = _filter_by_mood(pool, mood, min_needed=1)
         if not pool:
             return None
-    pool = _avoid_recent(pool, "audio", min_needed=1)
     chosen = random.choice(pool)
-    _remember_recent("audio", [chosen.name], _RECENT_AUDIO_WINDOW)
     return chosen
 
 

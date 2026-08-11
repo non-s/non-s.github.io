@@ -19,7 +19,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: pata-jazz-shorts
+  group: pata-jazz-media-pipeline
   cancel-in-progress: false
 
 jobs:
@@ -44,6 +44,8 @@ jobs:
         uses: ./.github/actions/restore-token-and-cache
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
+      - name: "Restaurar ledger permanente de midia"
+        uses: ./.github/actions/restore-media-ledger
       - name: "Healthcheck (pre-flight)"
         run: python scripts/healthcheck.py --mode pre-sync
       - name: "Sincronizar b-roll (gatos/cachorros)"
@@ -52,6 +54,11 @@ jobs:
         run: python scripts/sync_jazz_music.py || echo "::warning::Jazz sync falhou"
       - name: "Gerar Short"
         run: python generate_pata_jazz_short.py
+      - name: "Persistir ledger antes do upload"
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: _data/media_usage.json
+          key: pata-jazz-media-ledger-${{ github.run_id }}
       - name: "Escolher slot de publicação otimizado"
         if: hashFiles('youtube_token.json') != ''
         # So agenda via --publish-at quando houver dados de performance
