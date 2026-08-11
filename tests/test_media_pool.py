@@ -337,14 +337,13 @@ class TestFilterByAnimal:
 
         assert all("cat" not in p.name for p in result)
 
-    def test_falls_back_to_full_pool_when_animal_filter_too_narrow(self):
-        """So tem gato no pool, mas pediram cachorro: cair pro pool inteiro
-        em vez de falhar por falta de clipe."""
+    def test_rejects_pool_when_requested_animal_is_missing(self):
+        """Sem cachorro disponível, não pode usar gato como substituto."""
         pool = [Path("/fake/real_cat_00_aaa.mp4"), Path("/fake/real_cat_01_bbb.mp4")]
         with patch("utils.media_pool.video_pool", return_value=pool):
             result = pick_videos(min_count=2, max_count=2, cuteness_sort=False, animal="dog")
 
-        assert len(result) == 2
+        assert result == []
 
     def test_no_animal_filter_keeps_old_behavior(self):
         pool = [Path("/fake/real_cat_00_aaa.mp4"), Path("/fake/real_dog_00_ccc.mp4")]

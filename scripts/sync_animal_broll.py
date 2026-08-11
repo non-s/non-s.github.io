@@ -33,11 +33,34 @@ MAX_PER_QUERY = 3
 MAX_POOL_SIZE = 80
 MIN_WIDTH = 640
 MIN_HEIGHT = 360
+_CAT_TERMS = ("cat", "kitten", "kitty", "feline")
+_DOG_TERMS = ("dog", "puppy", "canine")
 # Fracao do pool evictada (os clips mais antigos por mtime) quando o pool
 # esta cheio, pra abrir espaco pra clips novos a cada sync. Sem isso, uma
 # vez que o pool atingia MAX_POOL_SIZE ele congelava para sempre - os
 # mesmos 300 clips eram reusados indefinidamente, nunca "fresco" de fato.
 _POOL_ROTATION_FRACTION = 0.1
+
+
+def _query_animal(query: str) -> str:
+    """Deriva o único animal esperado pela query editorial do Pixabay."""
+    lowered = query.lower()
+    if any(term in lowered for term in _CAT_TERMS):
+        return "cat"
+    if any(term in lowered for term in _DOG_TERMS):
+        return "dog"
+    return ""
+
+
+def _matches_query_animal(query: str, text: str) -> bool:
+    """Aceita somente resultados inequívocos do animal pedido pela query."""
+    expected = _query_animal(query)
+    if not expected:
+        return False
+    lowered = text.lower()
+    cat_match = any(term in lowered for term in _CAT_TERMS)
+    dog_match = any(term in lowered for term in _DOG_TERMS)
+    return (cat_match and not dog_match) if expected == "cat" else (dog_match and not cat_match)
 
 
 def _evict_oldest(directory: Path, glob_pattern: str, count: int) -> int:
@@ -113,6 +136,9 @@ def search_and_download(api_key: str, query: str, max_results: int = 5, orientat
         text_signal = f"{page_url} {tags} {user}"
         if not is_allowed_animal_text(text_signal):
             log.info("Ignorando hit nao permitido (filtro de texto): %s", tags)
+            continue
+        if not _matches_query_animal(query, f"{page_url} {tags}"):
+            log.info("Ignorando hit de animal ambiguo ou incorreto para '%s': %s", query, tags)
             continue
         # Filtro extra: verifica o campo type do video (film = real, animation = cartoon)
         videos = hit.get("videos", {})

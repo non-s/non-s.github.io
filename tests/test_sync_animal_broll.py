@@ -353,3 +353,17 @@ class TestMain:
         sync_animal_broll.VIDEO_DIR.glob = lambda *a, **k: iter([])  # pool vazio
         monkeypatch.setattr(sync_animal_broll, "search_and_download", lambda *a, **k: 3)
         assert sync_animal_broll.main() == 0
+
+
+class TestAnimalQueryMatching:
+    def test_cat_query_rejects_dog_result(self):
+        assert not sync_animal_broll._matches_query_animal("cute cat real", "happy dog, pet")
+
+    def test_dog_query_rejects_cat_result(self):
+        assert not sync_animal_broll._matches_query_animal("real puppy", "sleepy kitten, pet")
+
+    def test_query_rejects_mixed_animal_result(self):
+        assert not sync_animal_broll._matches_query_animal("real cat", "cat and dog playing")
+
+    def test_query_accepts_unambiguous_matching_animal(self):
+        assert sync_animal_broll._matches_query_animal("real puppy", "cute puppy running outdoors")

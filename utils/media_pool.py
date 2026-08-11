@@ -155,14 +155,13 @@ def _filter_by_animal(pool: list[Path], animal: str, min_needed: int) -> list[Pa
     pedido (nomes vem da query do Pixabay - ver scripts/sync_animal_broll.py
     _safe_name - entao "real_cat_00_xxxx.mp4" contem "cat", etc).
 
-    Sem isso, pick_videos() escolhia do pool inteiro sem olhar pra `scene`:
-    um video cujo hook/titulo diz "gatinho dormindo" podia mostrar cachorros
-    no b-roll, ja que a selecao de clipe e a selecao de cena eram
-    completamente desacopladas.
+    Nunca retorna o animal oposto como fallback: se não há mídia suficiente,
+    o gerador deve falhar e esperar a próxima sincronização, em vez de
+    publicar um vídeo cuja promessa editorial não bate com a imagem.
     """
     keywords = _CAT_KEYWORDS if animal in ("cat", "kitten") else _DOG_KEYWORDS
     filtered = [p for p in pool if any(kw in p.name.lower() for kw in keywords)]
-    return filtered if len(filtered) >= min_needed else pool
+    return filtered
 
 
 def pick_videos(
@@ -176,6 +175,8 @@ def pick_videos(
         return []
     if animal:
         pool = _filter_by_animal(pool, animal, min_count)
+        if len(pool) < min_count:
+            return []
     pool = _avoid_recent(pool, "videos", min_count)
     # Garante limites validos para randint: min_count <= upper, e upper <= len(pool).
     upper = min(max_count, len(pool))
