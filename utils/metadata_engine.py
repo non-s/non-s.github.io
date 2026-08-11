@@ -84,6 +84,7 @@ def _build_metadata_prompt(hook: str, scene: str, duration: int, kind: str, emoj
         f"Duration: ~{duration}s. "
         f"Rules:\n"
         f"- Warm, cute title, NO clickbait, NO sensationalist words, max {target_len} characters.\n"
+        f"- Describe the music and moment only; never claim to treat anxiety, induce sleep, or change pet behavior.\n"
         f"- Sound like a real person posting a video they like, not an ad - "
         f"skip stock phrases like 'Discover' or 'Get ready', skip generic "
         f"'welcome to my channel' openers, no dramatic em-dashes.\n"
