@@ -2,7 +2,7 @@ name: "Pata Jazz - Long-form (Loop & Relax)"
 
 on:
   schedule:
-    # 2 long-forms por semana (A6): domingo 01:13 UTC (sleep/deep) e
+    # 2 long-forms por semana: domingo 01:13 UTC (night/cozy) e
     # terca 01:13 UTC (relax/cozy). Dobrar a frequencia dobra o watch
     # time potencial sem custo (mesmo assets, so muda o mood/cena).
     # Minuto 13 evita competir com pico de cron jobs no :00.
@@ -53,7 +53,7 @@ jobs:
       - name: "Gerar long-form"
         run: |
           cd ${{ github.workspace }}
-          # A6: domingo = sleep/deep (15-20min), terca = relax/cozy (10-15min).
+          # Domingo = night/cozy (15-20min), terca = relax/cozy (10-15min).
           # Moods diferentes capturam publicos diferentes (sono vs relaxamento
           # diurno) sem custo adicional - mesmos assets, so muda a cena.
           DOW=$(date -u +%w)
