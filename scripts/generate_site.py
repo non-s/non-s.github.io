@@ -17,8 +17,10 @@ from __future__ import annotations
 import json
 import logging
 import sys
+import xml.etree.ElementTree as ET
 from html import escape
 from pathlib import Path
+from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
@@ -30,6 +32,11 @@ log = logging.getLogger(__name__)
 _THUMB_URL = "https://img.youtube.com/vi/{vid}/hqdefault.jpg"
 _WATCH_URL = "https://youtu.be/{vid}"
 _CHANNEL_URL = "https://www.youtube.com/@PataJazz-n5n"
+_CHANNEL_ID = "UCYAxnaW6H8g3XJMntkDXZjg"
+_FEED_URL = f"https://www.youtube.com/feeds/videos.xml?channel_id={_CHANNEL_ID}"
+_ATOM_NS = "{http://www.w3.org/2005/Atom}"
+_YT_NS = "{http://www.youtube.com/xml/schemas/2015}"
+_MEDIA_NS = "{http://search.yahoo.com/mrss/}"
 
 
 def _load_json(path: Path, default):
@@ -85,6 +92,48 @@ def _build_video_entries(video_tags: dict, analytics: dict) -> list[dict]:
             }
         )
     entries.sort(key=lambda e: e["views"], reverse=True)
+    return entries
+
+
+def _youtube_feed_entries(limit: int = 12) -> list[dict]:
+    """Lê o feed público oficial como fallback quando o cache ainda está vazio."""
+    try:
+        request = Request(_FEED_URL, headers={"User-Agent": "PataJazzSite/1.0"})
+        with urlopen(request, timeout=15) as response:  # nosec B310 - URL fixa do feed oficial do YouTube.
+            root = ET.fromstring(response.read())
+    except Exception as exc:
+        log.warning("Feed público do YouTube indisponível: %s", exc)
+        return []
+
+    entries: list[dict] = []
+    for item in root.findall(f"{_ATOM_NS}entry")[:limit]:
+        video_id = (item.findtext(f"{_YT_NS}videoId") or "").strip()
+        title = (item.findtext(f"{_ATOM_NS}title") or "").strip()
+        if not video_id or not title:
+            continue
+        link = next(
+            (
+                node.get("href", "")
+                for node in item.findall(f"{_ATOM_NS}link")
+                if node.get("rel") == "alternate"
+            ),
+            _WATCH_URL.format(vid=video_id),
+        )
+        thumbnail_node = item.find(f".//{_MEDIA_NS}thumbnail")
+        entries.append(
+            {
+                "video_id": video_id,
+                "title": title,
+                "description": "A gentle Pata Jazz pet moment with soft jazz music.",
+                "published_at": (item.findtext(f"{_ATOM_NS}published") or "").strip(),
+                "views": 0,
+                "likes": 0,
+                "thumbnail": (thumbnail_node.get("url", "") if thumbnail_node is not None else "")
+                or _THUMB_URL.format(vid=video_id),
+                "watch_url": link,
+                "scene": "",
+            }
+        )
     return entries
 
 
@@ -233,6 +282,8 @@ def generate_site(output_dir: Path | None = None) -> Path:
     video_tags = _load_json(data_dir() / "video_tags.json", {})
     analytics = _load_json(data_dir() / "analytics.json", {})
     entries = _build_video_entries(video_tags, analytics)
+    if not entries:
+        entries = _youtube_feed_entries()
 
     index_path = out / "index.html"
     index_path.write_text(_render_index(entries), encoding="utf-8")

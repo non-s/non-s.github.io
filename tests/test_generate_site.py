@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from unittest.mock import MagicMock, patch
 
 import scripts.generate_site as site
 
@@ -106,6 +107,46 @@ class TestVideoObjectLd:
     def test_without_views_omits_interaction_statistic(self):
         ld = site._video_object_ld(_entry(views=0, likes=0))
         assert "InteractionCounter" not in ld
+
+
+class TestYoutubeFeedFallback:
+    def test_parses_public_feed_entry(self):
+        xml = b'''<?xml version="1.0"?>
+        <feed xmlns="http://www.w3.org/2005/Atom"
+              xmlns:yt="http://www.youtube.com/xml/schemas/2015"
+              xmlns:media="http://search.yahoo.com/mrss/">
+          <entry>
+            <yt:videoId>abc123</yt:videoId><title>Cozy Cat Jazz</title>
+            <published>2026-08-11T00:00:00+00:00</published>
+            <link rel="alternate" href="https://www.youtube.com/shorts/abc123"/>
+            <media:group><media:thumbnail url="https://img.example/abc.jpg"/></media:group>
+          </entry>
+        </feed>'''
+        response = MagicMock()
+        response.read.return_value = xml
+        response.__enter__.return_value = response
+        response.__exit__.return_value = False
+
+        with patch("scripts.generate_site.urlopen", return_value=response):
+            entries = site._youtube_feed_entries()
+
+        assert entries == [
+            {
+                "video_id": "abc123",
+                "title": "Cozy Cat Jazz",
+                "description": "A gentle Pata Jazz pet moment with soft jazz music.",
+                "published_at": "2026-08-11T00:00:00+00:00",
+                "views": 0,
+                "likes": 0,
+                "thumbnail": "https://img.example/abc.jpg",
+                "watch_url": "https://www.youtube.com/shorts/abc123",
+                "scene": "",
+            }
+        ]
+
+    def test_feed_failure_returns_empty_list(self):
+        with patch("scripts.generate_site.urlopen", side_effect=OSError("offline")):
+            assert site._youtube_feed_entries() == []
 
 
 class TestRenderVideoPage:
