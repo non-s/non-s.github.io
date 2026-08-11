@@ -54,6 +54,10 @@ jobs:
       - name: "Coletar snapshot diario"
         # --snapshot-only: pula computacao pesada, so coleta stats + historico.
         run: python scripts/collect_analytics.py --snapshot-only
+      - name: "Auditar metadados públicos"
+        # Apenas leitura do feed oficial: registra títulos inconsistentes para
+        # revisão antes de qualquer edição pública.
+        run: python scripts/audit_channel_metadata.py
       - name: "Upload analytics como artifact"
         # Snapshot diario nao publica Pages (so o semanal faz isso); so
         # persiste o historico via cache + artifact pra inspecao manual.
@@ -63,6 +67,7 @@ jobs:
           path: |
             _data/analytics.json
             _data/analytics_history.json
+            _data/channel_metadata_audit.json
           retention-days: 30
       - name: "Apagar token"
         if: always()
