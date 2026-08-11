@@ -145,7 +145,8 @@ class TestVideoBuilderUnits:
         mock_audio.return_value = []
 
         # Não deve levantar exceção, apenas logar warning
-        video_builder._validate_source_pools()
+        with pytest.raises(RuntimeError, match="Pool de jazz vazio"):
+            video_builder._validate_source_pools()
 
     def test_build_pata_jazz_video_invalid_spec(self):
         """Testa build com spec inválida."""
@@ -196,11 +197,8 @@ class TestVideoBuilderUnits:
         map_values = [cmd[i + 1] for i, v in enumerate(cmd) if v == "-map"]
         assert map_values == ["0:v:0", "1:a:0"]
 
-    def test_build_pata_jazz_video_does_not_require_audio_when_pool_empty(self, tmp_path):
-        """Sem musica de jazz disponivel (pool vazio), pick_audio() retorna
-        None e o video e gerado sem trilha - a validacao nao pode continuar
-        exigindo audio nesse caso, senao toda geracao falha sempre que o
-        pool de jazz estiver vazio, mesmo o video em si estando correto."""
+    def test_build_pata_jazz_video_requires_audio(self, tmp_path):
+        """O vídeo só é aceito quando o pipeline fornece uma faixa de jazz."""
         spec = video_builder.VideoSpec(
             kind="test",
             width=100,
@@ -221,18 +219,23 @@ class TestVideoBuilderUnits:
 
         with (
             patch("utils.video_builder.ensure_dirs"),
-            patch("utils.video_builder.pool_stats", return_value={"videos": 1, "audio": 0}),
+            patch("utils.video_builder.pool_stats", return_value={"videos": 1, "audio": 1}),
             patch("utils.video_builder.random_scene", return_value="scene"),
             patch("utils.video_builder.hook_for_scene", return_value=("hook", "🐾")),
             patch("utils.video_builder.pick_videos", return_value=[Path("video.mp4")]),
-            patch("utils.video_builder.pick_audio", return_value=None),
+            patch("utils.video_builder.pick_audio", return_value=Path("jazz.mp3")),
             patch("utils.video_builder.run_ffmpeg"),
             patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}),
             patch("utils.video_builder.validate_generated_video", side_effect=fake_validate),
         ):
             video_builder.build_pata_jazz_video(spec=spec, output_dir=tmp_path, thumb_dir=tmp_path, stem_prefix="test")
 
-        assert captured["kwargs"].get("expect_audio") is False
+        assert captured["kwargs"].get("expect_audio") is True
+
+    def test_rejects_empty_jazz_pool(self):
+        with patch("utils.video_builder.pool_stats", return_value={"videos": 1, "audio": 0}):
+            with pytest.raises(RuntimeError, match="Pool de jazz vazio"):
+                video_builder._validate_source_pools()
 
     def test_build_long_routes_to_loop_relax_builder(self, tmp_path):
         """Long-form (kind='long') usa o montador de loop com crossfade lento
@@ -243,7 +246,7 @@ class TestVideoBuilderUnits:
             patch("utils.video_builder._validate_source_pools"),
             patch("utils.video_builder.random_scene", return_value="scene"),
             patch("utils.video_builder.hook_for_scene", return_value=("hook", "🐾")),
-            patch("utils.video_builder.pick_audio", return_value=None),
+            patch("utils.video_builder.pick_audio", return_value=Path("jazz.mp3")),
             patch("utils.video_builder.pick_videos", return_value=[Path("v1.mp4"), Path("v2.mp4")]),
             patch("utils.video_builder._build_loop_relax_video") as mock_loop,
             patch("utils.video_builder._build_multi_clip_short") as mock_short,

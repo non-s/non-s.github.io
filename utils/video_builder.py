@@ -296,12 +296,12 @@ def _prepare_output_paths(stem_prefix: str, output_dir: Path, thumb_dir: Path) -
 
 
 def _validate_source_pools() -> None:
-    """Garante que há b-roll disponível."""
+    """Garante que há b-roll e jazz licenciável disponíveis para o vídeo."""
     stats = pool_stats()
     if stats["videos"] == 0:
         raise RuntimeError("Pool de b-roll vazio. Execute scripts/sync_animal_broll.py primeiro.")
     if stats["audio"] == 0:
-        log.warning("Pool de jazz vazio. Vídeo será gerado sem áudio.")
+        raise RuntimeError("Pool de jazz vazio. Execute scripts/sync_jazz_music.py antes de gerar o vídeo.")
 
 
 def _build_single_clip_video(
@@ -668,6 +668,8 @@ def build_pata_jazz_video(
     # ideal + keywords de alto volume) em vez de sortear 1 so.
     hook, emoji = best_hook_for_scene(scene, mood=spec.mood)
     audio_path = pick_audio(mood=spec.mood)
+    if audio_path is None:
+        raise RuntimeError("Nenhuma faixa de jazz compatível foi encontrada para o mood selecionado.")
     # Deriva o animal do scene para o b-roll bater com o hook/titulo - sem
     # isso pick_videos() escolhia do pool inteiro (gato OU cachorro) sem
     # olhar pra cena, entao um titulo "gatinho dormindo" podia sair com
@@ -803,13 +805,8 @@ def build_pata_jazz_video(
     except Exception as exc:
         log.warning("Falha ao registrar titulo usado: %s", exc)
 
-    # expect_audio=False quando o pool de jazz estava vazio (audio_path is
-    # None): sem isso a validacao sempre exige audio e derruba a geracao
-    # inteira toda vez que sync_jazz_music.py falha ou o pool esta vazio,
-    # em vez de so publicar o video sem trilha como _validate_source_pools
-    # ja pretendia permitir (so avisa, nao levanta excecao).
     validation = validate_generated_video(
-        output, meta["resolution"], spec.duration, expect_audio=audio_path is not None
+        output, meta["resolution"], spec.duration, expect_audio=True
     )
     if not validation.ok:
         raise RuntimeError(f"Vídeo gerado não passou na validação: {'; '.join(validation.errors)}")
