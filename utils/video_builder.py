@@ -24,6 +24,7 @@ from typing import Literal, Protocol
 from utils.animal_branding import best_hook_for_scene, detect_animal, hook_for_scene, random_scene
 from utils.caption_engine import generate_ass, save_ass
 from utils.channel_config import active_channel
+from utils.editorial_brief import build_editorial_brief
 from utils.ffmpeg_helpers import get_video_duration, run_ffmpeg
 from utils.font_config import font_path
 from utils.media_pool import ensure_dirs, music_attribution, pick_audio, pick_videos, pool_stats
@@ -762,6 +763,13 @@ def build_pata_jazz_video(
         "thumbnail_variant": primary_variant,
         "thumbnails": generated,
         "audio": str(audio_path) if audio_path else None,
+        "editorial_brief": build_editorial_brief(
+            scene=scene,
+            mood=spec.mood,
+            kind=spec.kind,
+            duration=spec.duration,
+            hook=hook,
+        ),
     }
     output.with_suffix(".json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
 

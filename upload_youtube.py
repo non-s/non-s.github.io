@@ -124,6 +124,7 @@ def _record_video_tags(video_id: str, meta: dict) -> None:
             "uploaded_at": datetime.now(UTC).isoformat(),
             "thumbnails": meta.get("thumbnails", []),
             "thumbnail_variant": meta.get("thumbnail_variant", "A"),
+            "editorial_brief": meta.get("editorial_brief", {}),
         }
         # Mantem so as N mais recentes (por ordem de insercao) pra nao crescer pra sempre.
         if len(existing) > _MAX_VIDEO_TAGS:
