@@ -36,9 +36,8 @@ def _service(channel: dict):
 
 
 def _identity_run(**kwargs) -> dict:
-    """Roda run_identity_update com retry identidade e gerador local fixo."""
+    """Roda run_identity_update com retry local e identidade canônica."""
     kwargs.setdefault("retry_call", lambda f: f())
-    kwargs.setdefault("generate_description_fn", ci._about_template)
     kwargs.setdefault("now", _NOW)
     return ci.run_identity_update(*[], **kwargs)
 
@@ -47,15 +46,15 @@ class TestIdentityTargets:
     def test_deterministic_by_week(self):
         assert ci.identity_targets(31) == ci.identity_targets(31)
 
-    def test_differs_across_weeks(self):
-        assert ci.identity_targets(31)["description"] != ci.identity_targets(32)["description"]
+    def test_is_stable_across_weeks(self):
+        assert ci.identity_targets(31)["description"] == ci.identity_targets(32)["description"]
 
     def test_keywords_include_base_tags_and_extras(self):
         target = ci.identity_targets(4)
         keywords = target["keywords"]
         for tag in ("cat", "jazz"):
             assert tag in keywords
-        assert "cat jazz" in keywords
+        assert "pet relaxation music" in keywords
 
     def test_keywords_within_limit(self):
         for week in range(1, 54):
@@ -163,7 +162,7 @@ class TestRunIdentityUpdate:
         svc.channels.return_value.update.assert_not_called()
 
     def test_skips_when_not_changed(self):
-        target = ci.identity_targets(_WEEK, generate_description_fn=ci._about_template)
+        target = ci.identity_targets(_WEEK)
         svc = _service(_channel(description=target["description"], keywords=target["keywords"]))
         report = _identity_run(service=svc, channel_id="UC123")
         assert report["changed"] is False
@@ -190,4 +189,4 @@ class TestRunIdentityUpdate:
         _identity_run(service=svc, channel_id="UC123")
         state = ci._load_state()
         assert "variant_week" in state
-        assert state["description"] == ci._about_template(_WEEK)
+        assert state["description"] == ci.identity_targets(_WEEK)["description"]

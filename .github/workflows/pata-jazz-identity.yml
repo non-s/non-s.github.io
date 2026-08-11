@@ -1,17 +1,23 @@
 name: "Pata Jazz - Identidade do canal"
 
 on:
+  # A marca e estavel; a publicacao so acontece por despacho manual.
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: "false = apenas mostra a mudanca; true = publica a identidade canonica"
+        required: true
+        default: false
+        type: boolean
+      reason:
+        description: "Motivo do disparo manual"
+        required: false
+        default: "manual"
   schedule:
     # 1x por semana (segunda 02:23). Mantém o about/keywords do canal vivos:
     # descrição rotacionada por semana ISO e keywords frescas, para a página
     # não parecer um feed de bot. Custo de quota mínimo (1 list + 1 update).
     - cron: "23 2 * * 1"
-  workflow_dispatch:
-    inputs:
-      reason:
-        description: "Motivo do disparo manual"
-        required: false
-        default: "manual"
 
 permissions:
   contents: read
@@ -23,7 +29,7 @@ concurrency:
 jobs:
   update-identity:
     name: "Atualizar about/keywords do canal"
-    if: ${{ vars.PATA_JAZZ_ENABLED == '1' && vars.PATA_JAZZ_IDENTITY_ENABLED == '1' }}
+    if: ${{ github.event_name == 'workflow_dispatch' && vars.PATA_JAZZ_ENABLED == '1' && vars.PATA_JAZZ_IDENTITY_ENABLED == '1' }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
@@ -48,7 +54,7 @@ jobs:
       - name: "Sincronizar jazz"
         run: python scripts/sync_jazz_music.py || echo "::warning::Jazz sync falhou"
       - name: "Atualizar identidade do canal"
-        run: python scripts/update_channel_identity.py
+        run: python scripts/update_channel_identity.py ${{ inputs.apply == true && '--force' || '--dry-run' }}
       - name: "Apagar token"
         if: always()
         run: rm -f youtube_token.json

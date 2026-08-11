@@ -136,14 +136,14 @@ def _generate_description(iso_week: int) -> str:
 
 
 def identity_targets(iso_week: int, *, generate_description_fn=None) -> dict:
-    """Descricao + keywords alvo da semana (mesma semana = mesmo alvo).
+    """Descricao e keywords canônicas do canal.
 
-    ``generate_description_fn`` e injetavel para dry-run/testes deterministas;
-    o default usa IA com fallback local.
+    A identidade publica nao deve mudar com o calendario nem com uma resposta
+    estocastica da IA. ``generate_description_fn`` existe apenas para testes
+    e migrações explícitas; no fluxo normal a fonte é a configuração versionada.
     """
-    gen = generate_description_fn or _generate_description
-    description = gen(iso_week)
-    extras = _KEYWORD_EXTRAS_BY_WEEK[iso_week % len(_KEYWORD_EXTRAS_BY_WEEK)]
+    description = generate_description_fn(iso_week) if generate_description_fn else active_channel.default_description
+    extras = ["pet relaxation music", "calm jazz", "jazz for cats", "jazz for dogs"]
     keywords = list(dict.fromkeys([*active_channel.base_tags, *extras]))
     return {
         "description": str(description)[:_DESCRIPTION_LIMIT],
@@ -242,7 +242,7 @@ def run_identity_update(
     state_file = _state_file()
     with state_lock(state_file):
         state = _load_state()
-        same_week = state.get("variant_week") == iso_week
+        same_target = state.get("description") == target["description"] and state.get("keywords") == target["keywords"]
 
         if dry_run:
             log.info(
@@ -252,12 +252,12 @@ def run_identity_update(
             )
             return report
 
-        if not (changed and (force or not same_week)):
+        if not (changed and (force or not same_target)):
             log.info(
-                "Identidade ja em dia (semana ISO %d, changed=%s, mesma_semana=%s).",
+                "Identidade ja em dia (semana ISO %d, changed=%s, mesmo_alvo=%s).",
                 iso_week,
                 changed,
-                same_week,
+                same_target,
             )
             return report
 
