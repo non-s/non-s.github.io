@@ -368,6 +368,19 @@ def _animal_kind(animal: str) -> str:
     return "cat"  # fallback
 
 
+def _keywords_for_animal(keywords: list[str], animal: str) -> list[str]:
+    """Filtra termos que prometem musica para o animal errado.
+
+    Um titulo de gato com "music for dogs" parece automatizado e prejudica
+    satisfacao do espectador. Termos genericos ("for pets") continuam
+    elegiveis, mas referencias explicitas ao outro animal sao removidas.
+    """
+    kind = _animal_kind(animal)
+    forbidden = ("dog", "dogs", "puppy", "puppies") if kind == "cat" else ("cat", "cats", "kitten", "kittens")
+    filtered = [keyword for keyword in keywords if not any(word in keyword.lower() for word in forbidden)]
+    return filtered or keywords
+
+
 def _format_trigger(trigger: str, animal: str, seconds: int = 30) -> str:
     """Preenche variáveis do gatilho."""
     problem = random.choice(["anxious", "stressed", "hyper", "scared"])
@@ -394,15 +407,15 @@ def _format_pattern_with_seo(
     long_tail_keywords = HIGH_VOLUME_KEYWORDS["long_tail"]
     assert isinstance(primary_keywords, list)
     assert isinstance(long_tail_keywords, list)
-    primary = random.choice(primary_keywords)
+    primary = random.choice(_keywords_for_animal(primary_keywords, animal))
     # 25% de chance: usar uma trending keyword dinamica (do sync_trending)
     # em vez de long_tail estatica - reflete o que esta bombando em busca
     # real do YouTube no momento, aumentando CTR em buscas em alta.
     trending = trending_keywords()
     if trending and random.random() < 0.25:  # noqa: S311 - nao e seguranca
-        long_tail = random.choice(trending)
+        long_tail = random.choice(_keywords_for_animal(trending, animal))
     else:
-        long_tail = random.choice(long_tail_keywords)
+        long_tail = random.choice(_keywords_for_animal(long_tail_keywords, animal))
     animal_specific = HIGH_VOLUME_KEYWORDS["animal_specific"]
     assert isinstance(animal_specific, dict)
     animal_keywords = animal_specific.get(kind, [])
@@ -475,7 +488,7 @@ def generate_title_with_pattern(
     long_tail_keywords = HIGH_VOLUME_KEYWORDS["long_tail"]
     assert isinstance(primary_keywords, list)
     assert isinstance(long_tail_keywords, list)
-    all_keywords = primary_keywords + long_tail_keywords
+    all_keywords = _keywords_for_animal(primary_keywords + long_tail_keywords, animal)
     has_strong_keyword = any(kw in title_lower for kw in all_keywords)
     if not has_strong_keyword:
         keyword = random.choice(all_keywords)

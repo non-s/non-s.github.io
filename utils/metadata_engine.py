@@ -26,11 +26,30 @@ from utils.seo_keywords import (
 log = logging.getLogger(__name__)
 
 
+def _audience_for_scene(scene: str) -> str:
+    """Retorna o publico coerente com a cena, sem cruzar gato e cachorro."""
+    animal = detect_animal(scene)
+    return "cats" if animal == "cat" else "dogs"
+
+
+def _normalise_title_branding(title: str) -> str:
+    """Mantem a marca uma unica vez e remove separadores deixados pela limpeza."""
+    brand = active_channel.name
+    # O gerador local adiciona a marca no final; uma resposta da IA tambem
+    # pode inclui-la. Repetir a marca ocupa o pouco espaco util do titulo e
+    # deixa o canal com aparencia automatizada.
+    title = re.sub(rf"(?i)\s*\|?\s*{re.escape(brand)}\s*\|?", " | ", title)
+    title = re.sub(r"(?:\s*\|\s*){2,}", " | ", title)
+    title = re.sub(r"\s*\|\s*", " | ", title)
+    return title.strip(" | ")
+
+
 def _build_metadata_prompt(hook: str, scene: str, duration: int, kind: str, emoji: str, lang: str = "en") -> str:
     target_len = 80 if kind == "short" else 100
     desc_lines = 3 if kind == "short" else 4
     channel_name = active_channel.name
     default_desc = active_channel.default_description
+    audience = _audience_for_scene(scene)
     if lang == "pt":
         return (
             f"Crie metadados em PORTUGUES (PT-BR) para um {'Short' if kind == 'short' else 'video'} "
@@ -60,7 +79,8 @@ def _build_metadata_prompt(hook: str, scene: str, duration: int, kind: str, emoj
     return (
         f"Create English YouTube metadata for a {'Short' if kind == 'short' else 'video'} "
         f"about {hook} {emoji}. The channel is {channel_name} ({default_desc}), "
-        f"targeting searches like 'relaxing music for cats/dogs' and 'pet anxiety music'. "
+        f"made for {audience}. Never mention the other animal in the title. "
+        f"Target searches should match {audience}, never generic cats/dogs. "
         f"Duration: ~{duration}s. "
         f"Rules:\n"
         f"- Warm, cute title, NO clickbait, NO sensationalist words, max {target_len} characters.\n"
@@ -88,6 +108,7 @@ def _build_batch_metadata_prompt(
     """
     channel_name = active_channel.name
     default_desc = active_channel.default_description
+    audience = _audience_for_scene(scene)
     target_len = 80 if kind == "short" else 100
     lang_instruction = {
         "pt": "Write title, title_alt, description and caption_pt in PORTUGUESE (PT-BR); caption_en in English.",
@@ -100,7 +121,8 @@ def _build_batch_metadata_prompt(
     return (
         f"Create YouTube metadata for a {duration}-second {'Short' if kind == 'short' else 'video'} "
         f"about {hook} {emoji}. The channel is {channel_name} ({default_desc}), "
-        f"targeting searches like 'relaxing music for cats/dogs' and 'pet anxiety music'. "
+        f"made for {audience}. Never mention the other animal in the title. "
+        f"Target searches should match {audience}, never generic cats/dogs. "
         f"{lang_instruction} "
         f"Rules:\n"
         f"- Warm, cute tone, NO clickbait, NO sensationalist words.\n"
@@ -329,8 +351,10 @@ def generate_metadata(
         if ai_hashtags:
             hashtags = list(dict.fromkeys(ai_hashtags + hashtags))[:_MAX_HASHTAGS]
 
-    # Garante prefixo de marca
+    # Garante prefixo de marca. A IA e os fallbacks podem incluir a marca;
+    # normalizamos antes para que ela apareca apenas uma vez no titulo final.
     brand_prefix = active_channel.brand_prefix
+    title = _normalise_title_branding(title)
     if not title.startswith(brand_prefix.removesuffix(" |")):
         title = f"{brand_prefix} {title}"
     if len(title) > 100:

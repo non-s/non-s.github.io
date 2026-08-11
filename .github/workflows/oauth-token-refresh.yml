@@ -39,7 +39,7 @@ jobs:
       - name: "Instalar dependencias"
         run: |
           pip install --no-cache-dir --upgrade pip
-          pip install --no-cache-dir -r requirements.txt
+          pip install --no-cache-dir -r requirements.lock
       - name: "Instalar GitHub CLI"
         # gh ja vem pre-instalado no ubuntu-latest; garante versao estavel.
         run: |

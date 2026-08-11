@@ -1,5 +1,5 @@
 name: "Setup Python + FFmpeg + deps"
-description: "Setup-python 3.11 (cache pip), instala FFmpeg (opcional) e dependencias (requirements.txt ou requirements-dev.txt). Requer checkout previo do caller."
+description: "Setup-python 3.11 (cache pip), instala FFmpeg (opcional) e dependencias travadas. Requer checkout previo do caller."
 
 inputs:
   dev:
@@ -15,7 +15,7 @@ runs:
   using: "composite"
   steps:
     - name: "Python 3.11"
-      uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+      uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
       with:
         python-version: "3.11"
     - name: "Instalar FFmpeg"
@@ -27,7 +27,10 @@ runs:
     - name: "Instalar dependencias"
       run: |
         pip install --no-cache-dir --upgrade pip
-        pip install --no-cache-dir -r ${{ inputs.dev == 'true' && 'requirements-dev.txt' || 'requirements.txt' }}
+        # O lockfile inclui runtime e ferramentas de desenvolvimento. Usar
+        # sempre a mesma resolução evita que um cron instale versões
+        # diferentes daquelas validadas na CI.
+        pip install --no-cache-dir -r requirements.lock
       shell: bash
     - name: "Garantir PYTHONPATH na raiz do repo"
       run: echo "PYTHONPATH=${{ github.workspace }}" >> "$GITHUB_ENV"

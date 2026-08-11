@@ -203,3 +203,13 @@ class TestTitleAntiRepeatMetadata:
 
         assert metadata["title"] != "Pata Jazz | Cat Sleeping With Jazz"
         assert metadata["title"].startswith("Pata Jazz |")
+
+
+def test_metadata_title_has_one_brand_and_matching_animal():
+    """A embalagem deve parecer editorial, nunca um titulo automatizado."""
+    title = metadata_engine._normalise_title_branding("Pata Jazz | Cute Cat | Pata Jazz | relaxing music")
+    assert title == "Cute Cat | relaxing music"
+
+    prompt = metadata_engine._build_metadata_prompt("A sleepy cat", "sleepy cat", 30, "short", "🐱")
+    assert "made for cats" in prompt
+    assert "Never mention the other animal" in prompt

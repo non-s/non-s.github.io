@@ -42,3 +42,9 @@ updates:
         patterns:
           - "actions/*"
           - "softprops/*"
+  # A action composta tambem executa codigo no runner e precisa receber os
+  # mesmos updates de seguranca das actions declaradas nos workflows.
+  - package-ecosystem: "github-actions"
+    directory: "/.github/actions/setup-env"
+    schedule:
+      interval: "weekly"
