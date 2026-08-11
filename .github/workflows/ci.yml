@@ -27,6 +27,27 @@ jobs:
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.11"
+      - name: "Bloquear nova midia pesada no historico"
+        run: |
+          python - <<'PY'
+          import pathlib
+          import subprocess
+          import sys
+
+          tracked = subprocess.check_output(["git", "ls-files", "-z"]).decode().split("\0")
+          oversized = []
+          generated_media = []
+          for raw in filter(None, tracked):
+              path = pathlib.Path(raw)
+              if path.is_file() and path.stat().st_size > 10 * 1024 * 1024:
+                  oversized.append(raw)
+              if path.suffix.lower() in {".mp3", ".mp4", ".mov", ".m4v", ".webm"}:
+                  generated_media.append(raw)
+          if oversized or generated_media:
+              print("Arquivos grandes:", oversized)
+              print("Midia gerada versionada:", generated_media)
+              sys.exit(1)
+          PY
       - name: "Instalar FFmpeg"
         # Necessario para tests/test_ffmpeg_integration.py - testes que
         # rodam o FFmpeg de verdade (nao mockado) contra os filtros de
@@ -56,10 +77,10 @@ jobs:
       - name: "Pytest + coverage"
         run: pytest -q --cov=utils --cov-report=term-missing --cov-fail-under=85
       - name: "Vulnerability audit"
-        # Falha o build se pip-audit encontrar CVEs conhecidas nas dependencias
-        # declaradas. Mantido limpo em main: qualquer nova CVE exige bump ou
-        # --ignore-vuln explicito no proprio PR que a introduz.
-        run: pip-audit -r requirements.txt
+        # Audita o ambiente realmente instalado e travado. Auditar apenas
+        # requirements.txt deixava vulnerabilidades transitivas do lockfile
+        # passarem despercebidas.
+        run: pip-audit -r requirements.lock
       - name: "Type check"
         # C1: mypy agora passa limpo em todos os arquivos e e bloqueante.
         # Antes era advisory (|| echo warning) porque faltavam stubs para

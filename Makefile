@@ -16,7 +16,7 @@ typecheck:
 	mypy utils/ scripts/ upload_youtube.py generate_pata_jazz_short.py generate_site.py
 
 security:
-	bandit -r utils/ scripts/ *.py -ll -q && pip-audit -r requirements.txt
+	bandit -r utils/ scripts/ *.py -ll -q && pip-audit -r requirements.lock
 
 healthcheck:
 	python scripts/healthcheck.py
@@ -31,7 +31,7 @@ dashboard:
 	python scripts/generate_dashboard.py
 
 lock:
-	pip-compile --strip-extras --output-file=requirements.lock pyproject.toml
+	pip-compile --strip-extras --output-file=requirements.lock pyproject.toml requirements-dev.txt
 
 clean:
 	rm -rf __pycache__ .pytest_cache .ruff_cache .mypy_cache .coverage htmlcov

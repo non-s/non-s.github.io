@@ -20,8 +20,9 @@ sync (Pixabay/Jamendo) ─┐
 ```
 
 1. **Sync** (`scripts/sync_animal_broll.py`, `scripts/sync_jazz_music.py`) baixa
-   assets licenciados (Pixabay/Jamendo) para `_assets/` e grava
-   `_data/recent_media.json` para anti-repeat.
+   assets licenciados (Pixabay/Jamendo) para `_assets/`, deduplica por ID de
+   origem + SHA-256 e consulta `_data/media_usage.json` para nunca rebaixar
+   conteúdo já utilizado.
 2. **Generate** (`generate_pata_jazz_short.py`) monta o Short com FFmpeg usando
    o pool de assets local, escolhe cena/mood/título e gera thumbnail (A/B/C) +
    legendas.
@@ -68,6 +69,13 @@ sync (Pixabay/Jamendo) ─┐
   relaxantes, então `MOOD_GENRES["diversao"]` (swing/bebop/upbeat) nunca
   encontrava nada no pool pra combinar com cenas animadas (playful dog, cat
   playing).
+- **Unicidade permanente e fail-closed**: `utils/media_usage.py` mantém um
+  ledger versionado com IDs Jamendo/Pixabay, SHA-256 e assinatura ordenada da
+  produção. O builder reserva faixa + clipes sob `filelock`, renderiza, valida
+  e só então confirma o uso. Falha de render libera a reserva; falha de estado
+  mantém a reserva pendente e bloqueia reutilização. Todos os workflows que
+  sincronizam ou geram mídia compartilham `concurrency: pata-jazz-media-pipeline`
+  e um cache exclusivo do ledger.
 - **ASS animado no Short**: legendas estilizadas (ASS com animação
   palavra-a-palavra) fazem sentido em conteúdo vertical de ~35s onde o texto é
   parte do hook visual — o overlay carrega o gancho de retenção nos primeiros
@@ -135,7 +143,8 @@ sync (Pixabay/Jamendo) ─┐
 | `content_strategy.py` | Mood por horário (BRT) + cena ponderada por performance real |
 | `ffmpeg_helpers.py` | Wrappers FFmpeg/ffprobe com timeout |
 | `log_config.py` | Logging centralizado + log de erros em `_videos/last_error.txt` |
-| `media_pool.py` | Pool de mídia local com anti-repeat (`_data/recent_media.json`) |
+| `media_pool.py` | Seleção estrita de mídia inédita por mood e animal |
+| `media_usage.py` | Ledger permanente: IDs de origem, SHA-256, reservas e assinaturas de produção |
 | `metadata_engine.py` | Títulos/descrições/hashtags em inglês |
 | `playlist_manager.py` | Playlists automáticas por mood/formato e por animal (cats/dogs) |
 | `publish_optimizer.py` | Escolha de slots de publicação por desempenho real de horário |
@@ -187,7 +196,7 @@ sync (Pixabay/Jamendo) ─┐
 | `pata-jazz-long.yml` | cron semanal Dom 01:13 UTC / manual | Gera e publica 1 long-form Loop & Relax (15-30min) (Pata Jazz) |
 | `pata-jazz-identity.yml` | cron semanal Seg 02:23 UTC / manual | Atualiza about/keywords do canal (Pata Jazz) |
 | `pata-jazz-batch.yml` | só manual (`workflow_dispatch`) | Gera N shorts em lote, opcionalmente agendando slots otimizados (Pata Jazz) |
-| `pata-jazz-weekly.yml` | só manual (`all`/`generate`/`publish`) | Lote semanal: 35 shorts, publica 6/dia (Pata Jazz) |
+| `pata-jazz-weekly.yml` | só manual (`all`/`generate`/`publish`) | Prepara até 6 shorts privados para revisão (Pata Jazz) |
 | `oauth-token-refresh.yml` | cron domingo 02:00 UTC / manual | Renova o `access_token` e atualiza o secret `YOUTUBE_TOKEN` via `gh secret set` (requer secret `GH_PAT`) |
 | `release.yml` | cron domingo 00:00 UTC / manual | Gera tag `vYYYY-MM-DD` + release notes a partir de commits `feat:`/`fix:`/`security:` |
 
@@ -195,7 +204,8 @@ sync (Pixabay/Jamendo) ─┐
 
 | Arquivo | Quem escreve | Quem lê | Lock |
 |---------|--------------|---------|------|
-| `recent_media.json` | `utils/media_pool.py` (sync + generate) | `utils/media_pool.py` (anti-repeat) | sim |
+| `media_usage.json` | `utils/media_usage.py` (reserva/confirmação) | geradores e sincronizadores (unicidade permanente) | sim |
+| `recent_media.json` | legado; importado conservadoramente na primeira criação do ledger | `utils/media_usage.py` (migração) | sim |
 | `playlist_cache.json` | `utils/playlist_manager.py` | `utils/playlist_manager.py` | sim |
 | `video_tags.json` | `upload_youtube.py` (no upload) | `scripts/collect_analytics.py`, `scripts/predict_views.py` | sim |
 | `scene_performance.json` | `scripts/collect_analytics.py` | `utils/content_strategy.scene_for_mood()` | sim |
@@ -215,7 +225,10 @@ sync (Pixabay/Jamendo) ─┐
 > **Nota sobre persistência entre runs:** os arquivos com lock (JSON de estado)
   são restaurados/persistidos entre runs do GitHub Actions via `actions/cache`
   na composite action `.github/actions/restore-token-and-cache`. Sem isso, cada
-  run começa de um checkout limpo e o feedback loop nunca acumula dados.
+  run começa de um checkout limpo e o feedback loop nunca acumula dados. O
+  ledger `media_usage.json` usa a action exclusiva `restore-media-ledger` e só
+  participa dos workflows serializados pelo grupo `pata-jazz-media-pipeline`,
+  evitando que um job de analytics salve por cima de um estado de mídia novo.
 
 ### OAuth refresh persistente (CI)
 

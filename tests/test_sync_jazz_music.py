@@ -226,4 +226,5 @@ class TestMain:
 
         sync_jazz_music.AUDIO_DIR.glob = _glob
         monkeypatch.setattr(sync_jazz_music, "search_and_download", lambda *a, **k: 2)
-        assert sync_jazz_music.main() == 0
+        with patch.object(sync_jazz_music, "_evict_oldest", return_value=4):
+            assert sync_jazz_music.main() == 0

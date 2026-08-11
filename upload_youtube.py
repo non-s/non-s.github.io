@@ -46,8 +46,13 @@ def _latest_video_meta(prefix: str = "") -> tuple[Path, dict] | None:
         if meta_path.exists():
             try:
                 data = json.loads(meta_path.read_text(encoding="utf-8"))
+                if data.get("video_id") or data.get("published"):
+                    skipped += 1
+                    continue
                 if skipped:
-                    log.warning("Video mais recente (%d) sem metadata foi pulado; usando %s.", skipped, video.name)
+                    log.warning(
+                        "%d video(s) sem metadata ou ja enviados foram pulados; usando %s.", skipped, video.name
+                    )
                 return video, data
             except Exception:
                 continue
@@ -64,6 +69,25 @@ def _meta_path(meta: dict, key: str) -> Path | None:
     """
     value = meta.get(key)
     return Path(value) if value else None
+
+
+def _mark_video_uploaded(video_path: Path, meta: dict, video_id: str, privacy: str) -> None:
+    """Persiste o insert imediatamente para impedir upload duplicado em retry."""
+    marked = {
+        **meta,
+        "video_id": video_id,
+        "published": True,
+        "privacy_status": privacy,
+        "uploaded_at": datetime.now(UTC).isoformat(),
+    }
+    meta_path = video_path.with_suffix(".json")
+    tmp = meta_path.with_suffix(f".json.{os.getpid()}.tmp")
+    try:
+        tmp.write_text(json.dumps(marked, ensure_ascii=False, indent=2), encoding="utf-8")
+        os.replace(tmp, meta_path)
+        meta.update(marked)
+    finally:
+        tmp.unlink(missing_ok=True)
 
 
 def _build_tags(scene: str, hashtags: list[str] | None = None) -> list[str]:
@@ -128,6 +152,9 @@ def _record_video_tags(video_id: str, meta: dict) -> None:
             "visual_intelligence": meta.get("visual_intelligence", {}),
             "story_card": meta.get("story_card", {}),
             "viewer_experience": meta.get("viewer_experience", {}),
+            # Mantem a prova auditavel de quais assets canonicos e qual
+            # assinatura participaram do video publicado.
+            "media_usage": meta.get("media_usage", {}),
         }
         # Mantem so as N mais recentes (por ordem de insercao) pra nao crescer pra sempre.
         if len(existing) > _MAX_VIDEO_TAGS:
@@ -249,6 +276,10 @@ def _upload_video_inner(
     response = _retry_youtube_call(request.execute)
     video_id = response["id"]
     log.info("Video enviado: https://youtu.be/%s", video_id)
+
+    # O insert ja aconteceu. Registra antes de thumbnail/caption/playlist,
+    # que sao opcionais e podem falhar sem justificar um segundo upload.
+    _mark_video_uploaded(video_path, meta, video_id, privacy)
 
     # A resposta do insert() ja inclui "status" (pedido no part= acima) - da
     # pra conferir se o vídeo saiu mesmo com o privacyStatus pedido sem gastar

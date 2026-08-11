@@ -29,7 +29,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: pata-jazz-weekly
+  group: pata-jazz-media-pipeline
   cancel-in-progress: false
 
 jobs:
@@ -56,6 +56,8 @@ jobs:
         uses: ./.github/actions/restore-token-and-cache
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
+      - name: "Restaurar ledger permanente de midia"
+        uses: ./.github/actions/restore-media-ledger
       - name: "Healthcheck (pre-flight)"
         run: python scripts/healthcheck.py --mode pre-sync
       - name: "Sincronizar b-roll"
@@ -68,6 +70,11 @@ jobs:
             echo "=== Gerando short $i/6 ==="
             python generate_pata_jazz_short.py || echo "::warning::Short $i falhou, continuando"
           done
+      - name: "Persistir ledger antes dos uploads"
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: _data/media_usage.json
+          key: pata-jazz-media-ledger-${{ github.run_id }}
       - name: "Salvar cache de videos gerados"
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
@@ -121,6 +128,8 @@ jobs:
         uses: ./.github/actions/restore-token-and-cache
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
+      - name: "Restaurar ledger permanente de midia"
+        uses: ./.github/actions/restore-media-ledger
       - name: "Restaurar cache de videos gerados"
         # Chave com run_id (nao estatica): cache e imutavel - uma chave
         # estatica "weekly-videos" travaria para sempre nos videos da primeira

@@ -13,7 +13,7 @@ permissions:
   actions: write
 
 concurrency:
-  group: pata-jazz-sync
+  group: pata-jazz-media-pipeline
   cancel-in-progress: true
 
 jobs:
@@ -31,6 +31,8 @@ jobs:
         uses: ./.github/actions/setup-env
         with:
           ffmpeg: "false"
+      - name: "Restaurar ledger permanente de midia"
+        uses: ./.github/actions/restore-media-ledger
       - name: "Evict caches antigos (mantem 5 mais recentes por prefixo)"
         # Caches com key=animal-broll-${{ github.run_id }} acumulam a cada run
         # (run_id e unico por execucao). Sem eviction, em ~50 runs hitamos o
@@ -42,7 +44,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          for prefix in animal-broll- animal-jazz- pata-jazz-data- analytics-; do
+          for prefix in animal-broll- animal-jazz- pata-jazz-data- analytics- pata-jazz-media-ledger-; do
             echo "Evictando caches antigos do prefixo '$prefix' (mantem 5 mais recentes)..."
             # gh cache list ordena por createdAt desc por default; pegamos o
             # numero de cada cache e deletamos tudo apos o 5o.

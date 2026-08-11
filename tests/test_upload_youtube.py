@@ -52,6 +52,23 @@ class TestMetaPath:
         assert result == Path("/tmp/x.png")
 
 
+def test_latest_video_skips_already_uploaded_file(tmp_path, monkeypatch):
+    monkeypatch.setattr(upload_youtube, "OUTPUT_DIR", tmp_path)
+    _write_video_with_meta(tmp_path, {"scene": "cat"}, stem="pata_jazz_short_fresh")
+    _write_video_with_meta(
+        tmp_path,
+        {"scene": "cat", "video_id": "already-on-youtube", "published": True},
+        stem="pata_jazz_short_uploaded",
+    )
+    uploaded = tmp_path / "pata_jazz_short_uploaded.mp4"
+    uploaded.touch()
+
+    found = upload_youtube._latest_video_meta(prefix="pata_jazz_short_")
+
+    assert found is not None
+    assert found[0].name == "pata_jazz_short_fresh.mp4"
+
+
 class TestUploadVideoSurvivesOptionalStepFailures:
     """Thumbnail/legenda sao passos opcionais - se falharem (mesmo esgotando
     retries), upload_video() precisa continuar e retornar o video_id, ja

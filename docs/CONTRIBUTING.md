@@ -65,6 +65,13 @@ make all          # lint test typecheck
 
 Antes de abrir um PR, rode pelo menos `make lint test`.
 
+### Higiene de mídia e histórico
+
+Nunca versione MP3/MP4/MOV/WebM gerado ou baixado. `_assets/audio`,
+`_assets/video` e `_videos` existem apenas no workspace/cache. O CI também
+bloqueia qualquer arquivo rastreado acima de 10 MB para impedir que o histórico
+volte a crescer com artefatos que deveriam permanecer fora do Git.
+
 ## Pre-commit hooks
 
 Após `pre-commit install`, os hooks rodam automaticamente a cada commit:

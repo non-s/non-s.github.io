@@ -1,0 +1,11 @@
+name: "Restaurar ledger permanente de midia"
+description: "Restaura e salva exclusivamente o ledger anti-repeticao dos pipelines de midia."
+runs:
+  using: "composite"
+  steps:
+    - name: "Cache ledger permanente de audio/video"
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: _data/media_usage.json
+        key: pata-jazz-media-ledger-${{ github.run_id }}
+        restore-keys: pata-jazz-media-ledger-

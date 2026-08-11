@@ -7,11 +7,13 @@ Baixa apenas musicas com licenca CC que permitam uso comercial (jamendo/no_clien
 
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import os
 import re
 import sys
+import uuid
 from pathlib import Path
 
 import requests
@@ -22,6 +24,14 @@ sys.path.insert(0, str(ROOT))
 from utils.animal_branding import JAMENDO_SEARCH_TERMS
 from utils.log_config import configure_logging
 from utils.media_pool import AUDIO_DIR, ensure_dirs
+from utils.media_usage import (
+    asset_descriptor,
+    filter_unused,
+    sha256_file,
+    source_identity,
+    used_hashes,
+    used_source_identities,
+)
 
 log = logging.getLogger(__name__)
 
@@ -74,15 +84,20 @@ def _download(url: str, dest: Path) -> bool:
     # Faz download em streaming com retries. Isso evita IncompleteRead em arquivos grandes.
     # Timeout reduzido (45s) pois as previews Jamendo sao pequenas (mp32).
     for attempt in range(2):
+        temp_dest = dest.with_name(f".{dest.name}.{uuid.uuid4().hex}.part")
         try:
             with requests.get(url, timeout=45, stream=True) as r:
                 r.raise_for_status()
-                with open(dest, "wb") as f:
+                with open(temp_dest, "wb") as f:
                     for chunk in r.iter_content(chunk_size=64 * 1024):
                         if chunk:
                             f.write(chunk)
+            if temp_dest.stat().st_size <= 0:
+                raise OSError("download de audio vazio")
+            os.replace(temp_dest, dest)
             return True
         except Exception as exc:
+            temp_dest.unlink(missing_ok=True)
             log.warning("Falha ao baixar audio %s (tentativa %d/2): %s", url, attempt + 1, exc)
             if attempt < 1:
                 import time
@@ -95,7 +110,9 @@ def search_and_download(term: str, max_results: int = 5, client_id: str = "") ->
     params: dict[str, str | int] = {
         "client_id": client_id,
         "search": term,
-        "limit": max(10, max_results * 3),
+        # Busca uma janela larga porque os resultados populares ja podem ter
+        # sido usados em producoes anteriores e devem ser pulados para sempre.
+        "limit": min(200, max(50, max_results * 10)),
         "include": "musicinfo",
         "audioformat": "mp32",
         "ccmixter": "no",
@@ -117,11 +134,19 @@ def search_and_download(term: str, max_results: int = 5, client_id: str = "") ->
         return 0
 
     hits = data.get("results", [])
+    blocked_identities = used_source_identities("audio")
+    blocked_hashes = used_hashes("audio")
+    pool_descriptors = [asset_descriptor(p, "audio", ensure_hash=True) for p in AUDIO_DIR.glob("*.mp3")]
+    pool_identities = {item["identity"] for item in pool_descriptors}
+    pool_hashes = {item["sha256"] for item in pool_descriptors if item["sha256"]}
     downloaded = 0
     for idx, hit in enumerate(hits):
         if downloaded >= max_results:
             break
         if not _is_jazz(hit):
+            continue
+        canonical_identity = source_identity("audio", hit)
+        if canonical_identity and canonical_identity in blocked_identities | pool_identities:
             continue
         audio_url = hit.get("audio") or hit.get("audio_download")
         if not audio_url:
@@ -133,11 +158,31 @@ def search_and_download(term: str, max_results: int = 5, client_id: str = "") ->
             continue
         if _download(audio_url, dest):
             try:
+                content_hash = (
+                    sha256_file(dest)
+                    if isinstance(dest, Path) and dest.is_file()
+                    else hashlib.sha256(str(dest).encode("utf-8")).hexdigest()
+                )
+                if content_hash in blocked_hashes | pool_hashes:
+                    dest.unlink(missing_ok=True)
+                    log.info("Ignorando audio duplicado por SHA-256: %s", dest.name)
+                    continue
                 hit["license_verified_for_youtube"] = True
                 hit["license_url"] = hit.get("license_ccurl") or hit.get("license_url") or hit.get("shorturl")
-                meta_dest.write_text(json.dumps(hit, ensure_ascii=False, indent=2), encoding="utf-8")
-            except Exception:
-                pass
+                hit["content_sha256"] = content_hash
+                if isinstance(meta_dest, Path):
+                    meta_tmp = meta_dest.with_name(f".{meta_dest.name}.{uuid.uuid4().hex}.tmp")
+                    meta_tmp.write_text(json.dumps(hit, ensure_ascii=False, indent=2), encoding="utf-8")
+                    os.replace(meta_tmp, meta_dest)
+                else:  # pragma: no cover - compatibilidade com doubles de teste
+                    meta_dest.write_text(json.dumps(hit, ensure_ascii=False, indent=2), encoding="utf-8")
+                pool_identities.add(canonical_identity)
+                pool_hashes.add(content_hash)
+            except Exception as exc:
+                dest.unlink(missing_ok=True)
+                meta_dest.unlink(missing_ok=True)
+                log.warning("Falha ao validar/persistir metadata de %s: %s", dest.name, exc)
+                continue
             downloaded += 1
             log.info("Baixado %s", dest.name)
     return downloaded
@@ -151,6 +196,12 @@ def main() -> int:
         return 1
 
     ensure_dirs()
+    current_assets = list(AUDIO_DIR.glob("*.mp3"))
+    eligible = set(filter_unused(current_assets, "audio"))
+    for asset in current_assets:
+        if asset not in eligible:
+            asset.unlink(missing_ok=True)
+            asset.with_suffix(".json").unlink(missing_ok=True)
     existing = len(list(AUDIO_DIR.glob("*.mp3")))
     if existing >= MAX_POOL_SIZE:
         rotate_count = max(1, int(MAX_POOL_SIZE * _POOL_ROTATION_FRACTION))

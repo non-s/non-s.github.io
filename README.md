@@ -24,7 +24,8 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 - **Legendas ASS estilizadas**: legendas animadas palavra-a-palavra com posicionamento/estilo via ASS (FFmpeg `ass=` filter) — o texto é parte do hook visual
 - **Legenda PT-BR**: segunda caption track em português gerada via Gemini, sem regravar o vídeo
 - **Chapters automáticos**: timestamps `00:00 Título` na descrição para SEO/navegação no YouTube
-- **Música por mood**: faixas de jazz selecionadas por mood (diversão/fofura/relax) em vez de aleatório puro
+- **Música por mood e volume consistente**: faixas de jazz selecionadas por mood (diversão/fofura/relax), normalizadas em `-16 LUFS` com limite de pico e fades de entrada/saída
+- **Unicidade permanente de mídia**: cada produção reserva atomicamente 1 faixa e 1-3 clipes inéditos. IDs Jamendo/Pixabay, hashes SHA-256 e a assinatura da combinação ficam em `_data/media_usage.json`; assets confirmados nunca voltam ao pool. Se faltar mídia inédita, a geração para e exige novo sync — não existe fallback para repetição
 - **AI hooks**: títulos/descrições/hashtags/legendas gerados via Gemini com circuit breaker (429/502/503) e fallback local — nunca quebra o pipeline por falha de IA
 - **Thumbnail A/B/C**: três variantes de thumbnail geradas por vídeo (paleta/wrap diferentes) para testar CTR, com shadow RGBA real (gradiente via `Image.linear_gradient`), redimensionadas automaticamente para <2MB
 - **Dashboard interativo**: `scripts/generate_dashboard.py` gera relatório HTML autocontido (sem deps novas) com analytics, performance por cena/padrão de título e projeção de views — publicado toda semana em **https://non-s.github.io/** via GitHub Pages
@@ -98,7 +99,8 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 │   ├── content_strategy.py               # Mood por horário + cena ponderada por performance
 │   ├── ffmpeg_helpers.py                 # FFmpeg e ffprobe (com timeout)
 │   ├── log_config.py                     # Logging centralizado
-│   ├── media_pool.py                     # Pool de mídia local (anti-repeat)
+│   ├── media_pool.py                     # Seleção do pool inédito por mood/animal
+│   ├── media_usage.py                    # Ledger permanente, hashes e reservas atômicas
 │   ├── metadata_engine.py                # Títulos/descrições/hashtags
 │   ├── playlist_manager.py               # Playlists automáticas YouTube
 │   ├── quota_tracker.py                  # Rastreio de quota YouTube (_data/quota_usage.json)
