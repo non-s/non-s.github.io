@@ -48,7 +48,13 @@ def _load_recent_visual_signals() -> list[dict]:
             continue
         visual = entry.get("visual_intelligence")
         if isinstance(visual, dict):
-            signals.append({"video_id": video_id, "visual": visual})
+            signals.append(
+                {
+                    "video_id": video_id,
+                    "visual": visual,
+                    "viewer_experience": entry.get("viewer_experience", {}),
+                }
+            )
     return signals
 
 

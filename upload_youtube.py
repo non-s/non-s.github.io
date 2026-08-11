@@ -127,6 +127,7 @@ def _record_video_tags(video_id: str, meta: dict) -> None:
             "editorial_brief": meta.get("editorial_brief", {}),
             "visual_intelligence": meta.get("visual_intelligence", {}),
             "story_card": meta.get("story_card", {}),
+            "viewer_experience": meta.get("viewer_experience", {}),
         }
         # Mantem so as N mais recentes (por ordem de insercao) pra nao crescer pra sempre.
         if len(existing) > _MAX_VIDEO_TAGS:

@@ -32,6 +32,7 @@ from utils.metadata_engine import clean_title, generate_metadata
 from utils.story_engine import choose_story_card, record_story_card
 from utils.thumbnail_engine import make_long_thumbnail, make_short_thumbnail, winning_thumbnail_variant
 from utils.video_validator import validate_generated_video
+from utils.viewer_experience import assess_viewer_experience
 from utils.visual_intelligence import analyze_image, analyze_video, creative_quality_flags
 
 log = logging.getLogger(__name__)
@@ -785,6 +786,12 @@ def build_pata_jazz_video(
         "video": video_signals,
         "review_flags": creative_quality_flags(thumbnail_signals, video_signals),
     }
+    meta["viewer_experience"] = assess_viewer_experience(
+        title=str(meta.get("title", "")),
+        description=str(meta.get("description", "")),
+        story_card=story_card,
+        visual=meta["visual_intelligence"],
+    )
     output.with_suffix(".json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
 
     # Gera legenda automatica ASS estilizada (animada palavra-a-palavra).
