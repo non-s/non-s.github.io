@@ -12,9 +12,9 @@ from utils.state_lock import state_lock
 
 _ROLES = {
     "research": "Identify only verifiable audience and format signals; cite uncertainty.",
-    "strategist": "Turn signals into one differentiated Pata Jazz series hypothesis.",
-    "brand_guardian": "Reject repetitive, unsafe, unsupported, or off-brand ideas.",
-    "growth_lead": "Define a measured Short-to-long funnel experiment and success metric.",
+    "strategist": "Turn signals into one differentiated, original Pata Jazz series hypothesis.",
+    "brand_guardian": "Reject repetitive, copied, unsafe, unsupported, or off-brand ideas.",
+    "growth_lead": "Define a measured Short-to-long funnel experiment that favors return viewing.",
 }
 
 
@@ -52,6 +52,15 @@ def _load_recent_visual_signals() -> list[dict]:
     return signals
 
 
+def _load_competitive_patterns() -> list[dict]:
+    """Load public benchmark metadata collected by the separate research step."""
+    try:
+        data = json.loads((data_dir() / "competitive_intelligence.json").read_text(encoding="utf-8"))
+        return data.get("channels", [])[:8] if isinstance(data, dict) else []
+    except (OSError, json.JSONDecodeError):
+        return []
+
+
 def _json_object(text: str) -> dict:
     try:
         value = json.loads(text)
@@ -64,6 +73,7 @@ def run_daily_council() -> dict:
     """Run research, independent roles, and a moderated consensus brief."""
     keywords = _load_trending()
     visual_history = _load_recent_visual_signals()
+    competitive_patterns = _load_competitive_patterns()
     research = ai_grounded_research(
         "Research current YouTube audience interests around cozy cat or dog videos and instrumental jazz. "
         "Return concise factual signals, not medical claims and not claims about recommendation algorithms."
@@ -73,6 +83,7 @@ def run_daily_council() -> dict:
             "youtube_keywords": keywords,
             "web_research": research.get("text", "")[:5000],
             "recent_visual_signals": visual_history,
+            "competitive_patterns": competitive_patterns,
         }
     )
     opinions: dict[str, dict] = {}
@@ -92,7 +103,8 @@ def run_daily_council() -> dict:
         }
     synthesis = ai_text(
         "You are the managing editor. Produce a conservative JSON decision from this council. "
-        "Never make health/behavior promises and never authorize automatic publication. "
+        "Optimize for original, authentic viewer value and sustainable monetization eligibility; never copy, "
+        "make health/behavior promises, or authorize automatic publication. "
         f"Council: {json.dumps(opinions)}\n"
         "Keys: decision, proposed_series, short_hook_direction, long_form_direction, primary_metric, guardrails.",
         json_mode=True,
@@ -112,6 +124,7 @@ def run_daily_council() -> dict:
             "youtube_keywords": keywords,
             "web_sources": research.get("sources", []),
             "recent_visual_signals": visual_history,
+            "competitive_patterns": competitive_patterns,
         },
         "roles": opinions,
         "consensus": consensus,

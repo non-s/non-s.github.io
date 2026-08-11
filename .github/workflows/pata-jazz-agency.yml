@@ -32,6 +32,8 @@ jobs:
         uses: ./.github/actions/restore-token-and-cache
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
+      - name: "Collect public competitive signals"
+        run: python scripts/collect_competitive_intelligence.py
       - name: "Run daily agency council"
         run: python scripts/run_agency_council.py
       - name: "Publish reviewable brief"
@@ -41,6 +43,7 @@ jobs:
           path: |
             _data/agency_daily_brief.json
             _data/agency_memory.json
+            _data/competitive_intelligence.json
           retention-days: 90
       - name: "Remove token"
         if: always()

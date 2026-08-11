@@ -23,6 +23,7 @@ def test_council_records_independent_roles_and_consensus(tmp_path, monkeypatch):
     assert set(brief["roles"]) == {"research", "strategist", "brand_guardian", "growth_lead"}
     assert brief["research"]["web_sources"][0]["url"] == "https://example.test"
     assert brief["research"]["recent_visual_signals"] == []
+    assert brief["research"]["competitive_patterns"] == []
     assert brief["publication_authority"].startswith("none")
     assert (tmp_path / "agency_daily_brief.json").exists()
 
