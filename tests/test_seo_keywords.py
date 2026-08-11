@@ -245,6 +245,13 @@ class TestGenerateHashtags:
             or "dog" in optimized_title.lower()
         )
 
+    def test_optimize_title_keeps_animal_audience_coherent(self, monkeypatch):
+        """A keyword final nao pode redirecionar um video de gato para cachorros."""
+        monkeypatch.setattr(seo_keywords.random, "choice", lambda values: values[0])
+        optimized_title, _ = optimize_for_search("Cozy kitten nap", "A quiet moment", animal="cat")
+        assert "dog" not in optimized_title.lower()
+        assert "cat" in optimized_title.lower()
+
     def test_optimize_description_with_keywords(self):
         """Otimiza descrição com keywords relacionadas."""
         title = "Cat Jazz"

@@ -662,17 +662,25 @@ def generate_description(
     return description, cta_text
 
 
-def optimize_for_search(title: str, description: str) -> tuple[str, str]:
-    """Otimização final para busca do YouTube."""
+def optimize_for_search(title: str, description: str, animal: str | None = None) -> tuple[str, str]:
+    """Otimização final para busca do YouTube.
+
+    Quando o animal e conhecido, a keyword adicionada precisa se referir ao
+    mesmo publico do video. Isso preserva relevancia e evita prometer musica
+    para cachorros em um Short de gato (ou o inverso).
+    """
     title_lower = title.lower()
     primary_keywords = HIGH_VOLUME_KEYWORDS["primary"]
     long_tail_keywords = HIGH_VOLUME_KEYWORDS["long_tail"]
     assert isinstance(primary_keywords, list)
     assert isinstance(long_tail_keywords, list)
-    has_keyword = any(kw in title_lower for kw in primary_keywords + long_tail_keywords)
+    candidates = primary_keywords + long_tail_keywords
+    if animal:
+        candidates = _keywords_for_animal(candidates, animal)
+    has_keyword = any(kw in title_lower for kw in candidates)
 
     if not has_keyword:
-        keyword = random.choice(primary_keywords)
+        keyword = random.choice(_keywords_for_animal(primary_keywords, animal) if animal else primary_keywords)
         if len(title) + len(keyword) + 3 <= 90:
             title = f"{title} | {keyword}"
 

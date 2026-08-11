@@ -336,7 +336,7 @@ def generate_metadata(
             )
 
     # Otimização final para busca
-    title, description = optimize_for_search(title, description)
+    title, description = optimize_for_search(title, description, animal=animal)
 
     # B1: se o batch forneceu descrição/hashtags, usa-os (sobrescrevendo
     # o fallback local) - economiza as chamadas individuais de caption.
