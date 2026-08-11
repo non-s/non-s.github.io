@@ -8,6 +8,8 @@ on:
 
 permissions:
   contents: read
+  pages: write
+  id-token: write
 
 concurrency:
   group: pata-jazz-site
@@ -42,9 +44,20 @@ jobs:
           restore-keys: analytics-
       - name: "Gerar site"
         run: python scripts/generate_site.py
-      - name: "Upload site como artifact"
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      - name: "Configurar GitHub Pages"
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
+      - name: "Empacotar site para GitHub Pages"
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
         with:
-          name: pata-jazz-site
           path: _site/
-          retention-days: 30
+  deploy-site:
+    name: "Publicar site SEO"
+    needs: generate-site
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: "Publicar no GitHub Pages"
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
