@@ -18,6 +18,10 @@ cffi==2.1.0
     # via cryptography
 charset-normalizer==3.4.9
     # via requests
+colorama==0.4.6
+    # via
+    #   bandit
+    #   pytest
 coverage==7.15.2
     # via pytest-cov
 cryptography==49.0.0
@@ -27,6 +31,7 @@ cyclonedx-python-lib==11.11.0
 defusedxml==0.7.1
     # via
     #   -r requirements.txt
+    #   pata-jazz (pyproject.toml)
     #   py-serializable
 execnet==2.1.2
     # via pytest-xdist
@@ -79,8 +84,14 @@ mypy==1.20.2
     # via -r requirements-dev.txt
 mypy-extensions==1.1.0
     # via mypy
+numpy==2.4.6
+    # via opencv-python-headless
 oauthlib==3.3.1
     # via requests-oauthlib
+opencv-python-headless==4.14.0.94
+    # via
+    #   -r requirements.txt
+    #   pata-jazz (pyproject.toml)
 packageurl-python==0.17.6
     # via cyclonedx-python-lib
 packaging==26.2
@@ -162,13 +173,14 @@ tomli==2.4.1
     # via pip-audit
 tomli-w==1.2.0
     # via pip-audit
+types-defusedxml==0.7.0.20260504
+    # via -r requirements-dev.txt
 types-requests==2.33.0.20260712
     # via -r requirements-dev.txt
 typing-extensions==4.16.0
     # via
     #   cyclonedx-python-lib
     #   mypy
-    #   pyee
 uritemplate==4.2.0
     # via google-api-python-client
 urllib3==2.7.0
