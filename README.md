@@ -9,14 +9,14 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 
 ## Plataforma
 
-- **YouTube** (`upload_youtube.py`) — upload direto via YouTube Data API v3 (OAuth), 1 short/hora (24/dia).
+- **YouTube** (`upload_youtube.py`) — upload direto via YouTube Data API v3 (OAuth), com uma publicação diária programada.
 
 ## Recursos inteligentes
 
 - **End-card CTA de sessão**: últimos ~2s de cada vídeo trazem uma call-to-action ASCII rotativa ("Keep the vibe going", "More calm here", etc.) com fade-in, incentivando a próxima sessão/short — engajamento encadeado em vez de vídeo morto
 - **Anti-repeat de títulos**: os últimos 60 títulos usados são guardados em `_data/used_titles.json`; antes de publicar, o título é checado por similaridade (Jaccard, ignorando palavras vazias da marca) e re-sorteado até 3x se estiver repetindo (`utils/seo_keywords.py` + `utils/metadata_engine.py`)
-- **Respostas automáticas a comentários**: `scripts/respond_comments.py` responde comentários do canal com IA (mesmo system prompt "pessoa real"), no idioma do comentário, sem links e com rate-limits por usuário/run — canal que responde gera mais engajamento real (`utils/comment_responder.py`, a cada hora)
-- **Identidade do canal viva**: `scripts/update_channel_identity.py` rotaciona o about (descrição) e as keywords do canal por semana ISO com IA + fallback local e trava de 1x/semana — a página do canal respira e não parece feed de bot (`utils/channel_identity.py`, semanal)
+- **Respostas automáticas a comentários**: `scripts/respond_comments.py` responde até 3 comentários por dia, no idioma do comentário, sem links e com rate-limits por usuário — presença humana sem parecer automação (`utils/comment_responder.py`)
+- **Identidade estável do canal**: `scripts/update_channel_identity.py` compara a descrição e as keywords canônicas versionadas com o canal e só publica uma mudança mediante disparo manual explícito (`utils/channel_identity.py`)
 - **Mood por horário**: Shorts selecionam cenas baseado na hora (manhã = diversão, tarde = fofura, noite = relax)
 - **Publicação preditiva**: o horário de upload de cada short é escolhido por `utils/publish_optimizer.py`, cruzando dados reais (`_data/publish_slots.json`) com slots de alto CTR (fins de tarde/noite) e passado para o YouTube via `--publish-at`
 - **Multi-clip com crossfade**: 2-3 clipes com transição suave em vez de 1 clipe repetido (validação automática garante que cada clipe é longo o suficiente para o xfade)
@@ -178,19 +178,19 @@ Salve o JSON resultante como `youtube_token.json` na raiz do projeto (ou use o s
 
 | Canal | Conteúdo | Frequência | Horário | Workflow |
 |---|---|---|---|---|
-| **Pata Jazz** | Shorts (YouTube) | 1 por hora (24/dia) | minuto 7 de cada hora UTC | `pata-jazz-shorts.yml` |
-| **Pata Jazz** | Comentários (canal vivo) | 1x por hora | minuto 37 de cada hora UTC | `pata-jazz-engagement.yml` |
+| **Pata Jazz** | Shorts (YouTube) | 1 por dia | 18:07 UTC | `pata-jazz-shorts.yml` |
+| **Pata Jazz** | Comentários (canal vivo) | 1x por dia, até 3 respostas | 19:37 UTC | `pata-jazz-engagement.yml` |
 | **Pata Jazz** | Sync de assets | 2x por semana | Ter e Sex 03:00 | `pata-jazz-sync.yml` |
 | **Pata Jazz** | Analytics | 1x por semana | Segunda 03:00 | `pata-jazz-analytics.yml` |
 | **Pata Jazz** | Snapshot analytics | 1x por dia | 03:00 | `pata-jazz-analytics-daily.yml` |
 | **Pata Jazz** | Long-form Loop & Relax | 1x por semana | Domingo 01:13 | `pata-jazz-long.yml` |
-| **Pata Jazz** | Identidade do canal | 1x por semana | Segunda 02:23 | `pata-jazz-identity.yml` |
+| **Pata Jazz** | Identidade do canal | Sob demanda, com aplicação explícita | manual | `pata-jazz-identity.yml` |
 | **Pata Jazz** | Batch manual otimizado | Sob demanda | workflow_dispatch | `pata-jazz-batch.yml` |
 | **Pata Jazz** | Lote semanal (manual/eventual) | Gera 35 shorts de uma vez, publica 6/dia até esgotar | só disparo manual (`action: all`/`generate`/`publish`) | `pata-jazz-weekly.yml` |
 
-**Total (crons horários):** 24 Shorts/dia × 7 = **168 vídeos/semana** no YouTube. O lote semanal (`pata-jazz-weekly.yml`) é um mecanismo separado e não roda por padrão — só produz vídeos extras quando disparado manualmente com `action: all`/`generate`/`publish`.
+**Cadência base:** 1 Short/dia, ou **7 vídeos/semana**. A cadência só deve aumentar depois que os dados de retenção e velocidade de visualização sustentarem a decisão. O lote semanal (`pata-jazz-weekly.yml`) permanece manual e não deve competir com o cron diário.
 
-> **Nota sobre quota:** `videos.insert` tem cota própria de ~100/dia (24 uploads/dia fica bem abaixo). Os outros endpoints usados por upload (thumbnail, captions, playlists) somam ~200 unidades/upload do pool compartilhado de 10.000/dia — 24 uploads/dia usa ~4.800, abaixo do alerta em 8.000 (`utils/quota_tracker.py`). O lote semanal já teve um cron diário próprio de "publicar próximos 6" rodando em paralelo ao cron de Shorts, o que estourava a quota e causava falhas em produção (24-25/07) - esse cron foi removido, hoje só o cron horário de Shorts publica automaticamente. Se for rodar `pata-jazz-weekly.yml` manualmente, ainda vale conferir `_data/quota_usage.json` antes de disparar, já que o cron horário já usa boa parte da margem diária.
+> **Nota sobre quota:** o projeto registra o consumo em `_data/quota_usage.json` e alerta em 8.000 unidades/dia. A cadência diária deixa margem para uploads, thumbnails, legendas, playlists e ações manuais. Antes de executar um lote manual, confira o arquivo de quota e a agenda de publicações já pendentes.
 
 ## Execução local
 
