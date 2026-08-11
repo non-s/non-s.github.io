@@ -1,0 +1,69 @@
+name: "Pata Jazz - Live"
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish_live:
+        description: "false = somente valida; true = cria e transmite a live"
+        required: true
+        type: boolean
+        default: false
+      duration_minutes:
+        description: "Duracao da live (5-300 minutos)"
+        required: true
+        default: "60"
+      privacy:
+        description: "Visibilidade"
+        required: true
+        type: choice
+        options: [public, unlisted, private]
+        default: public
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pata-jazz-live
+  cancel-in-progress: false
+
+jobs:
+  live:
+    name: "Gerar e transmitir live Pata Jazz"
+    if: ${{ vars.PATA_JAZZ_ENABLED == '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    env:
+      PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+      JAMENDO_CLIENT_ID: ${{ secrets.JAMENDO_CLIENT_ID }}
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: "Setup"
+        uses: ./.github/actions/setup-env
+      - name: "Restaurar token e caches"
+        uses: ./.github/actions/restore-token-and-cache
+        with:
+          youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
+      - name: "Pre-flight da live"
+        run: python scripts/check_live_readiness.py
+      - name: "Sincronizar assets"
+        if: ${{ inputs.publish_live == true }}
+        run: |
+          python scripts/sync_animal_broll.py
+          python scripts/sync_jazz_music.py
+      - name: "Gerar loop para live"
+        if: ${{ inputs.publish_live == true }}
+        run: python scripts/generate_pata_jazz_long.py --duration 900 --scene "cat relaxing"
+      - name: "Transmitir ou validar"
+        run: |
+          video=$(find _videos -name 'pata_jazz_long*.mp4' -print -quit)
+          if [ "${{ inputs.publish_live }}" = "true" ]; then
+            python scripts/run_pata_jazz_live.py --video "$video" --duration-minutes "${{ inputs.duration_minutes }}" --privacy "${{ inputs.privacy }}"
+          else
+            python scripts/run_pata_jazz_live.py --video "${video:-_videos/live-placeholder.mp4}" --dry-run
+          fi
+      - name: "Apagar token"
+        if: always()
+        run: rm -f youtube_token.json
