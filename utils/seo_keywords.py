@@ -114,6 +114,11 @@ def _title_pattern_performance_file() -> Path:
 # 8-10 cobre marca + animal + problema + musica + formato sem exagerar.
 _MAX_HASHTAGS = 10
 
+# SEO can describe the music and the moment, but must not imply a medical or
+# behavioral outcome for an animal. These phrases are excluded from generated
+# description keyword blocks as well as the surrounding copy below.
+_UNSUPPORTED_OUTCOME_TERMS = ("anxiety relief", "stress relief", "calm down")
+
 # Keywords de alto volume real para o nicho pet + relaxation + jazz.
 # Fonte: buscas reais do YouTube/Google (volume aproximado, em ingles).
 HIGH_VOLUME_KEYWORDS: dict[str, object] = {
@@ -193,11 +198,11 @@ EMOCAO_BENEFICIOS = {
 
 # CTAs otimizados para conversão (inscrição, like, comentário, sessão)
 CTAS = [
-    "🐾 Subscribe if this helped your pet relax — new videos every day.",
+    "🐾 Subscribe for more gentle pet and jazz moments.",
     "🔔 Hit the bell so YouTube notifies you when the next calm track drops.",
-    "💬 Comment 'calm' if your pet is more relaxed right now.",
+    "💬 Tell us which moment made you smile.",
     "👍 Like this video — it tells YouTube to recommend it to more pet parents.",
-    "🔗 Share this with someone whose pet needs to calm down.",
+    "🔗 Share this with someone who enjoys calm pet videos.",
     "📺 Watch the next one — it picks up right where this calm moment ends.",
     "😴 Save this playlist for bedtime with your pet.",
     "🐾 Tell us in the comments: cat person or dog person?",
@@ -209,7 +214,7 @@ TRIGGERS = {
         "A calm {seconds}-second pause for your {animal}",
         "A gentle moment for your {animal}",
         "Soft music for {animal}s at rest",
-        "A quiet reset for anxious {animal}s",
+        "A quiet jazz moment for {animal}s",
     ],
     "curiosity": [
         "Why do {animal}s love this music?",
@@ -217,8 +222,8 @@ TRIGGERS = {
     ],
     "empathy": [
         "For the {animal} that misses you",
-        "When your {animal} is anxious, play this",
-        "For {animal}s who get scared home alone",
+        "A gentle pause with your {animal}",
+        "For a cozy moment at home with your {animal}",
     ],
     "result": [
         "A softer moment for your {animal}",
@@ -248,15 +253,15 @@ TITLE_PATTERNS: dict[str, list[str]] = {
         # Gatilhos mentais
         "{trigger} {emoji}",
         "{scenario}? A gentle reset for your {animal} {emoji}",
-        "If your {animal} is {problem}, try this {emoji}",
+        "A gentle {keyword_style} moment with your {animal} {emoji}",
         "A little {keyword_style} for your {animal} {emoji}",
-        "{scenario}? This music helps {animal}s relax {emoji}",
+        "{scenario}? A quiet {animal} + jazz moment {emoji}",
         "Watch my {animal} fall asleep to {keyword_style} {emoji}",
         # A5: padrões que promovem playlists temáticas explicitamente -
         # referenciar o problema/cenario especifico aumenta CTR em buscas
         # long-tail e direciona para a playlist correspondente.
         "{scenario}? Calm music for {animal}s — full playlist {emoji}",
-        "The {keyword_style} playlist for anxious {animal}s {emoji}",
+        "The {keyword_style} playlist for cozy pet moments {emoji}",
         "A calm playlist for your {animal} | {keyword_long_tail} {emoji}",
     ],
 }
@@ -589,6 +594,9 @@ def _select_description_keywords(animal: str, mood: str) -> list[str]:
         keywords.extend(["deep sleep music", "sleep music for pets", "relaxing bedtime music"])
     if mood in ("anxiety", "stress"):
         keywords.extend(["anxiety relief music", "stress relief for pets", "calming music for anxious pets"])
+    keywords = [
+        keyword for keyword in keywords if not any(term in keyword.lower() for term in _UNSUPPORTED_OUTCOME_TERMS)
+    ]
     random.shuffle(keywords)
     return keywords[:6]
 
@@ -611,27 +619,23 @@ def generate_description(
 
     # Introdução com hook + promessa
     intro_templates = [
-        f"{hook} 🐾 This Pata Jazz short was made to help {animal}s relax, sleep, and feel safe.",
+        f"{hook} 🐾 A Pata Jazz moment with real {animal} footage and instrumental jazz.",
         f"{hook} 🎷 A calm moment for {animal}s and the humans who love them.",
-        f"Need to calm your {animal}? {hook} 💫 Try this 30-second relaxation break.",
-        f"{hook} 🐾 Perfect for anxious {animal}s, bedtime, or anytime your pet needs to unwind.",
+        f"{hook} 💫 A 30-second pause with a {animal} and gentle jazz.",
+        f"{hook} 🐾 A cozy {animal} moment for a quiet break or background listening.",
     ]
     intro = random.choice(intro_templates)
 
     # Bloco SEO semântico
     seo_block = (
         f"\n\n🔍 Keywords: {keyword_block}. "
-        f"This video combines real {animal} footage with smooth, pet-friendly jazz designed to reduce anxiety, "
-        f"promote deep sleep, and create a peaceful environment for pets at home."
+        f"This video combines real {animal} footage with smooth instrumental jazz for a cozy, quiet atmosphere at home."
     )
 
     # Bloco de uso/cenário
     use_block_templates = [
-        f"\n\n✅ Best used when your {animal} is home alone, anxious, hyperactive, or struggling to sleep. "
-        f"Play it before leaving the house, during thunderstorms, fireworks, or anytime your pet needs comfort.",
-        f"\n\n✅ Play this during bedtime, naptime, or stressful moments. "
-        f"Many pet parents use our tracks to help rescue {animal}s, "
-        f"senior {animal}s, and pets with separation anxiety.",
+        "\n\n✅ Enjoy this during a quiet break, while reading, or as soft background music at home.",
+        f"\n\n✅ A simple pet-and-jazz moment for cozy time with your {animal}.",
     ]
     use_block = random.choice(use_block_templates)
 

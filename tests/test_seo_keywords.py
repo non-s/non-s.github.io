@@ -192,6 +192,19 @@ class TestGenerateDescription:
         assert cta in CTAS
         assert cta in desc
 
+    def test_generated_description_avoids_unsupported_pet_outcomes(self):
+        desc, _ = generate_description(
+            hook="Sleepy cat",
+            kind="short",
+            hashtags=["#PataJazz"],
+            animal="cat",
+            mood="anxiety",
+        )
+        lowered = desc.lower()
+        assert "reduce anxiety" not in lowered
+        assert "anxiety relief" not in lowered
+        assert "stress relief" not in lowered
+
     def test_generate_description_no_cta_returns_empty(self):
         """Sem CTA, o segundo elemento do retorno e vazio."""
         hashtags = ["#PataJazz"]
