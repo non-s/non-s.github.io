@@ -39,9 +39,15 @@ jobs:
         with:
           path: |
             _data/analytics.json
-            _data/video_tags.json
-          key: analytics-site-${{ github.run_id }}
-          restore-keys: analytics-
+            _data/analytics_history.json
+          key: pata-jazz-site-analytics-${{ github.run_id }}
+          restore-keys: pata-jazz-analytics-
+      - name: "Restaurar metadados de conteúdo"
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: _data/video_tags.json
+          key: pata-jazz-site-tags-${{ github.run_id }}
+          restore-keys: pata-jazz-data-
       - name: "Gerar site"
         run: python scripts/generate_site.py
       - name: "Configurar GitHub Pages"

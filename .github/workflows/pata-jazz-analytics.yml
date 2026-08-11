@@ -8,8 +8,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pata-jazz-analytics
@@ -21,12 +19,6 @@ jobs:
     if: ${{ vars.PATA_JAZZ_ENABLED == '1' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    environment:
-      # actions/deploy-pages so publica atraves do ambiente "github-pages" -
-      # e o proprio GitHub que cria esse ambiente automaticamente na primeira
-      # vez que um workflow com essa permissao roda.
-      name: github-pages
-      url: ${{ steps.deploy-pages.outputs.page_url }}
     steps:
       - name: "Checkout"
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -64,25 +56,6 @@ jobs:
         # So le os JSONs que os steps acima ja escreveram/restauraram - sem
         # rede, sem dependencia nova.
         run: python scripts/generate_dashboard.py
-      - name: "Gerar site estatico SEO"
-        run: python scripts/generate_site.py
-      - name: "Configurar GitHub Pages"
-        # Habilita o Pages no repo (build type "workflow") automaticamente
-        # na primeira vez, usando a permissao pages:write acima - nao exige
-        # configuracao manual previa em Settings > Pages.
-        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
-      - name: "Upload do dashboard como Pages artifact"
-        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
-        with:
-          path: _dashboard
-      - name: "Publicar no GitHub Pages"
-        # Repo se chama non-s.github.io, entao isso publica na raiz do
-        # dominio (https://non-s.github.io/), nao num subcaminho - so os
-        # dados ja publicos no proprio YouTube (views/likes/titulos) e os
-        # pesos de performance por cena/padrao de titulo ficam visiveis;
-        # nenhum token/segredo passa perto deste job.
-        id: deploy-pages
-        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0
       - name: "Upload analytics e dashboard como artifact"
         # O cache acima so serve pra passar o arquivo pro proximo run (nao
         # da pra inspecionar um cache de fora). Como artifact, o relatorio
