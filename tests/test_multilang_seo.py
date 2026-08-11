@@ -84,10 +84,10 @@ class TestKeywordsForLanguage:
         assert "music for cats" in kws["primary"]
 
     def test_pt_has_long_tail_keywords(self):
-        assert "musica para gatos dormirem" in HIGH_VOLUME_KEYWORDS_PT["long_tail"]
+        assert "jazz noturno para gatos" in HIGH_VOLUME_KEYWORDS_PT["long_tail"]
 
     def test_es_has_long_tail_keywords(self):
-        assert "musica para gatos dormir" in HIGH_VOLUME_KEYWORDS_ES["long_tail"]
+        assert "jazz nocturno para gatos" in HIGH_VOLUME_KEYWORDS_ES["long_tail"]
 
 
 class TestMetadataEngineMultilang:
