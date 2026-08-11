@@ -44,6 +44,42 @@ def _normalise_title_branding(title: str) -> str:
     return re.sub(r"^(?:\s*\|\s*)+|(?:\s*\|\s*)+$", "", title).strip()
 
 
+_ANIMAL_WORDS = {
+    "cat": ("cat", "cats", "kitten", "kittens", "gato", "gatos", "gatinho", "gatitos"),
+    "dog": ("dog", "dogs", "puppy", "puppies", "cachorro", "cachorros", "perro", "perros"),
+}
+_MUSIC_WORDS = ("jazz", "music", "musica", "música", "instrumental", "melody", "melodia", "melodía")
+
+
+def _has_any_word(text: str, words: tuple[str, ...]) -> bool:
+    return any(re.search(rf"\b{re.escape(word)}\b", text, re.IGNORECASE) for word in words)
+
+
+def _is_usable_ai_title(text: str, animal: str | None, target_len: int) -> bool:
+    """Accept Gemini titles only when they are safe, specific and searchable."""
+    clean = _normalise_title_branding(text)
+    if not clean or len(clean) > target_len or not is_safe_ai_text(clean):
+        return False
+    if animal not in _ANIMAL_WORDS or not _has_any_word(clean, _ANIMAL_WORDS[animal]):
+        return False
+    other = "dog" if animal == "cat" else "cat"
+    if _has_any_word(clean, _ANIMAL_WORDS[other]):
+        return False
+    return _has_any_word(clean, _MUSIC_WORDS) or any(
+        word in clean.lower() for word in ("cozy", "quiet", "playful", "sleepy", "sun", "window", "nap")
+    )
+
+
+def _is_usable_ai_description(text: str, animal: str | None) -> bool:
+    """Require an honest, scene-relevant description before using Gemini text."""
+    if len(text.strip()) < 60 or not is_safe_ai_text(text) or animal not in _ANIMAL_WORDS:
+        return False
+    if not _has_any_word(text, _ANIMAL_WORDS[animal]) or not _has_any_word(text, _MUSIC_WORDS):
+        return False
+    other = "dog" if animal == "cat" else "cat"
+    return not _has_any_word(text, _ANIMAL_WORDS[other])
+
+
 def _build_metadata_prompt(hook: str, scene: str, duration: int, kind: str, emoji: str, lang: str = "en") -> str:
     target_len = 80 if kind == "short" else 100
     desc_lines = 3 if kind == "short" else 4
@@ -57,9 +93,9 @@ def _build_metadata_prompt(hook: str, scene: str, duration: int, kind: str, emoj
             f"focando em buscas como 'musica para gatos', 'musica relaxante para cachorros' e "
             f"'jazz para pets'. Duracao: ~{duration}s. "
             f"Regras:\n"
-            f"- Titulo fofo e acolhedor, SEM clickbait, SEM palavras sensacionalistas, max {target_len} caracteres.\n"
+            f"- Titulo fofo e acolhedor, SEM clickbait, SEM palavras sensacionalistas, max {target_len} caracteres; cite o animal visivel e jazz/musica ou o momento real.\n"
             f"- Soe como uma pessoa real postando um video que gostou, nao como anuncio.\n"
-            f"- Descricao de {desc_lines} linhas, tom leve e fofo, com emoji de gato/cachorro e musica.\n"
+            f"- Descricao de {desc_lines} linhas, tom leve e fofo, com emoji de gato/cachorro e musica; nao prometa sono, calma, saude ou mudanca de comportamento.\n"
             f"- 5 a 8 hashtags relevantes separadas por espacos.\n"
             f"Retorne APENAS JSON com chaves: title, description, hashtags."
         )
@@ -70,9 +106,9 @@ def _build_metadata_prompt(hook: str, scene: str, duration: int, kind: str, emoj
             f"enfocado en buscas como 'musica para gatos', 'musica relajante para perros' y "
             f"'jazz para mascotas'. Duracion: ~{duration}s. "
             f"Reglas:\n"
-            f"- Titulo tierno y acogedor, SIN clickbait, SIN palabras sensacionalistas, max {target_len} caracteres.\n"
+            f"- Titulo tierno y acogedor, SIN clickbait, SIN palabras sensacionalistas, max {target_len} caracteres; nombra el animal visible y jazz/musica o el momento real.\n"
             f"- Suena como una persona real publicando un video que le gusto, no como anuncio.\n"
-            f"- Descripcion de {desc_lines} lineas, tono ligero y tierno, con emoji de gato/perro y musica.\n"
+            f"- Descripcion de {desc_lines} lineas, tono ligero y tierno, con emoji de gato/perro y musica; no prometas sueno, calma, salud ni cambios de comportamiento.\n"
             f"- 5 a 8 hashtags relevantes separados por espacios.\n"
             f"Retorna SOLO JSON con claves: title, description, hashtags."
         )
@@ -83,12 +119,12 @@ def _build_metadata_prompt(hook: str, scene: str, duration: int, kind: str, emoj
         f"Target searches should match {audience}, never generic cats/dogs. "
         f"Duration: ~{duration}s. "
         f"Rules:\n"
-        f"- Warm, cute title, NO clickbait, NO sensationalist words, max {target_len} characters.\n"
+        f"- Warm, cute title, NO clickbait, NO sensationalist words, max {target_len} characters. Name the visible species and jazz/music or the real moment.\n"
         f"- Describe the music and moment only; never claim to treat anxiety, induce sleep, or change pet behavior.\n"
         f"- Sound like a real person posting a video they like, not an ad - "
         f"skip stock phrases like 'Discover' or 'Get ready', skip generic "
         f"'welcome to my channel' openers, no dramatic em-dashes.\n"
-        f"- {desc_lines}-line description, light and cute tone, with a cat/dog and music emoji.\n"
+        f"- {desc_lines}-line description, light and cute tone, with the matching animal and music emoji. Never promise sleep, calm, health, or a behavior change.\n"
         f"- 5 to 8 relevant hashtags separated by spaces.\n"
         f"Return ONLY JSON with keys: title, description, hashtags."
     )
@@ -127,9 +163,9 @@ def _build_batch_metadata_prompt(
         f"{lang_instruction} "
         f"Rules:\n"
         f"- Warm, cute tone, NO clickbait, NO sensationalist words.\n"
-        f"- title: max {target_len} characters.\n"
-        f"- title_alt: a DIFFERENT title (different angle/keywords) for A/B testing, max {target_len} characters.\n"
-        f"- description: 3-4 lines, light and cute, with cat/dog and music emoji.\n"
+        f"- title: max {target_len} characters; name the visible species and jazz/music or the real moment.\n"
+        f"- title_alt: a DIFFERENT title (different angle/keywords) for A/B testing, max {target_len} characters, with the same species rule.\n"
+        f"- description: 3-4 lines, light and cute, with the matching animal and music emoji. Never promise sleep, calm, health, or behavior change.\n"
         f"- hashtags: 5-8 relevant hashtags (array of strings).\n"
         f"- caption_en: 4-6 short caption lines (max 40 chars each) in SRT format "
         f"(numbered, with timestamps HH:MM:SS,mmm --> HH:MM:SS,mmm).\n"
@@ -154,7 +190,7 @@ def try_batch_metadata(
         return None
     # Valida que pelo menos title esta presente e e seguro
     title = str(data.get("title", "")).strip()
-    if not title or not is_safe_ai_text(title):
+    if not _is_usable_ai_title(title, detect_animal(scene), 80 if kind == "short" else 100):
         return None
     return data
 
@@ -213,14 +249,14 @@ def generate_metadata(
     if batch_data and batch_data.get("title"):
         # Batch funcionou - usa os resultados diretamente
         ai_title = str(batch_data.get("title", "")).strip()[:100]
-        if ai_title and is_safe_ai_text(ai_title):
+        if _is_usable_ai_title(ai_title, animal, 80 if kind == "short" else 100):
             if not ai_title.startswith(active_channel.brand_prefix.removesuffix(" |")):
                 ai_title = f"{active_channel.brand_prefix} {ai_title}"
             title = ai_title
             title_pattern = "ai_generated"
             # title_alt do batch
             ai_title_alt = str(batch_data.get("title_alt", "")).strip()[:100]
-            if ai_title_alt and is_safe_ai_text(ai_title_alt):
+            if _is_usable_ai_title(ai_title_alt, animal, 80 if kind == "short" else 100):
                 if not ai_title_alt.startswith(active_channel.brand_prefix.removesuffix(" |")):
                     ai_title_alt = f"{active_channel.brand_prefix} {ai_title_alt}"
                 batch_title_alt = ai_title_alt
@@ -243,8 +279,6 @@ def generate_metadata(
                 duracao=round(duration / 60) if kind != "short" else None,
                 pattern=title_pattern_hint,
             )
-        elif fallback_title:
-            title = fallback_title
         else:
             title, title_pattern = generate_title_with_pattern(
                 animal=animal,
@@ -293,7 +327,7 @@ def generate_metadata(
                 try:
                     data = json.loads(out)
                     ai_title = str(data.get("title", "")).strip()[:100]
-                    if ai_title and is_safe_ai_text(ai_title):
+                    if _is_usable_ai_title(ai_title, animal, 80 if kind == "short" else 100):
                         # Mantém prefixo de marca e garante keyword
                         if not ai_title.startswith(active_channel.brand_prefix.removesuffix(" |")):
                             ai_title = f"{active_channel.brand_prefix} {ai_title}"
@@ -301,7 +335,7 @@ def generate_metadata(
                         title_pattern = "ai_generated"
 
                     ai_description = str(data.get("description", "")).strip()[:5000]
-                    if ai_description and is_safe_ai_text(ai_description):
+                    if _is_usable_ai_description(ai_description, animal):
                         description = ai_description
 
                     raw_hashtags = data.get("hashtags", [])
@@ -336,14 +370,11 @@ def generate_metadata(
                 title,
             )
 
-    # Otimização final para busca
-    title, description = optimize_for_search(title, description, animal=animal)
-
     # B1: se o batch forneceu descrição/hashtags, usa-os (sobrescrevendo
     # o fallback local) - economiza as chamadas individuais de caption.
     if batch_data:
         ai_description = str(batch_data.get("description", "")).strip()[:5000]
-        if ai_description and is_safe_ai_text(ai_description):
+        if _is_usable_ai_description(ai_description, animal):
             description = ai_description
         raw_hashtags = batch_data.get("hashtags", [])
         if isinstance(raw_hashtags, str):
@@ -351,6 +382,9 @@ def generate_metadata(
         ai_hashtags = [str(h).strip() for h in raw_hashtags if isinstance(h, str) and h.strip()][:_MAX_HASHTAGS]
         if ai_hashtags:
             hashtags = list(dict.fromkeys(ai_hashtags + hashtags))[:_MAX_HASHTAGS]
+
+    # Run the local quality pass after an accepted Gemini batch too.
+    title, description = optimize_for_search(title, description, animal=animal)
 
     # Garante prefixo de marca. A IA e os fallbacks podem incluir a marca;
     # normalizamos antes para que ela apareca apenas uma vez no titulo final.

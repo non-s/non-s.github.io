@@ -207,3 +207,20 @@ def test_metadata_title_has_one_brand_and_matching_animal():
     prompt = metadata_engine._build_metadata_prompt("A sleepy cat", "sleepy cat", 30, "short", "🐱")
     assert "made for cats" in prompt
     assert "Never mention the other animal" in prompt
+
+
+def test_gemini_title_contract_rejects_generic_or_wrong_species():
+    """A safe sentence is not enough: the title must match the actual scene."""
+    assert not metadata_engine._is_usable_ai_title("A Lovely Video", "cat", 80)
+    assert not metadata_engine._is_usable_ai_title("Happy Dog | Soft Jazz", "cat", 80)
+    assert metadata_engine._is_usable_ai_title("Sleepy Kitten | Soft Jazz", "cat", 80)
+
+
+def test_gemini_description_contract_requires_scene_and_music():
+    assert not metadata_engine._is_usable_ai_description("This is a very nice video with a lovely moment.", "cat")
+    assert not metadata_engine._is_usable_ai_description(
+        "A playful dog enjoys soft jazz in this cozy little moment by the window.", "cat"
+    )
+    assert metadata_engine._is_usable_ai_description(
+        "A sleepy cat by the window and a little soft jazz make this a cozy moment to share.", "cat"
+    )

@@ -58,14 +58,14 @@ class TestTryBatchMetadata:
     @patch("utils.metadata_engine.ai_batch_metadata")
     def test_returns_dict_when_title_present_and_safe(self, mock_batch):
         mock_batch.return_value = {
-            "title": "Cute Cat Sleeping",
-            "title_alt": "Kitten Nap Time",
+            "title": "Cute Cat Sleeping | Soft Jazz",
+            "title_alt": "Kitten Nap Time | Jazz Moment",
             "description": "A cute cat sleeping with jazz.",
             "hashtags": ["#cats", "#jazz"],
         }
         result = metadata_engine.try_batch_metadata("hook", "cat", 30, "short", "🐱")
         assert result is not None
-        assert result["title"] == "Cute Cat Sleeping"
+        assert result["title"] == "Cute Cat Sleeping | Soft Jazz"
 
     @patch("utils.metadata_engine.ai_batch_metadata")
     def test_returns_none_when_title_empty(self, mock_batch):
@@ -95,16 +95,16 @@ class TestBatchIntegrationInGenerateMetadata:
     def test_batch_success_uses_batch_title(self, mock_ai_text, mock_batch):
         """Quando o batch funciona, o título vem do batch (nao do fluxo individual)."""
         mock_batch.return_value = {
-            "title": "Batch Title",
-            "title_alt": "Batch Alt Title",
-            "description": "Batch description with jazz.",
+            "title": "Cozy Cat | Soft Jazz",
+            "title_alt": "Sleepy Kitten | Jazz Moment",
+            "description": "A cozy cat by the window with soft jazz for a quiet little moment.",
             "hashtags": ["#batch", "#cats"],
         }
         # ai_text individual nao deve ser chamado quando batch funciona
         metadata = metadata_engine.generate_metadata(
             hook="Cute cat", scene="cat", duration=30, kind="short", emoji="🐱", lang="pt"
         )
-        assert "Batch Title" in metadata["title"] or "Pata Jazz" in metadata["title"]
+        assert "Cozy Cat" in metadata["title"]
         assert mock_ai_text.called is False or mock_ai_text.call_count == 0
 
     @patch("utils.metadata_engine.ai_batch_metadata")
