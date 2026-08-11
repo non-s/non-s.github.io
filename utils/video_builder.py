@@ -29,6 +29,7 @@ from utils.ffmpeg_helpers import get_video_duration, run_ffmpeg
 from utils.font_config import font_path
 from utils.media_pool import ensure_dirs, music_attribution, pick_audio, pick_videos, pool_stats
 from utils.metadata_engine import clean_title, generate_metadata
+from utils.story_engine import choose_story_card, record_story_card
 from utils.thumbnail_engine import make_long_thumbnail, make_short_thumbnail, winning_thumbnail_variant
 from utils.video_validator import validate_generated_video
 from utils.visual_intelligence import analyze_image, analyze_video, creative_quality_flags
@@ -733,6 +734,7 @@ def build_pata_jazz_video(
     thumb_primary = rendered[primary_variant]
 
     fallback_title = clean_title(f"{hook} | {active_channel.name}")
+    story_card = choose_story_card(scene, spec.mood, hook)
     metadata = generate_metadata(
         hook=hook,
         scene=scene,
@@ -745,6 +747,9 @@ def build_pata_jazz_video(
         mood=spec.mood,
         lang=spec.lang,
     )
+    description = str(metadata.get("description", "")).rstrip()
+    community_prompt = story_card["community_prompt"]
+    metadata["description"] = f"{description}\n\n{community_prompt}" if description else community_prompt
     attribution = music_attribution(audio_path)
     if attribution:
         description = str(metadata.get("description", "")).rstrip()
@@ -771,6 +776,7 @@ def build_pata_jazz_video(
             duration=spec.duration,
             hook=hook,
         ),
+        "story_card": story_card,
     }
     thumbnail_signals = analyze_image(thumb_primary)
     video_signals = analyze_video(output)
@@ -825,12 +831,12 @@ def build_pata_jazz_video(
         record_used_title(meta["title"])
     except Exception as exc:
         log.warning("Falha ao registrar titulo usado: %s", exc)
-
     validation = validate_generated_video(
         output, meta["resolution"], spec.duration, expect_audio=True
     )
     if not validation.ok:
         raise RuntimeError(f"Vídeo gerado não passou na validação: {'; '.join(validation.errors)}")
+    record_story_card(story_card)
     log.info("%s gerado e validado: %s", spec.kind.capitalize(), output)
     return output
 
