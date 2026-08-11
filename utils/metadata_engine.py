@@ -41,7 +41,7 @@ def _normalise_title_branding(title: str) -> str:
     title = re.sub(rf"(?i)\s*\|?\s*{re.escape(brand)}\s*\|?", " | ", title)
     title = re.sub(r"(?:\s*\|\s*){2,}", " | ", title)
     title = re.sub(r"\s*\|\s*", " | ", title)
-    return title.strip(" | ")
+    return re.sub(r"^(?:\s*\|\s*)+|(?:\s*\|\s*)+$", "", title).strip()
 
 
 def _build_metadata_prompt(hook: str, scene: str, duration: int, kind: str, emoji: str, lang: str = "en") -> str:
