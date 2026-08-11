@@ -221,6 +221,14 @@ def collect_video_stats(service) -> tuple[list[dict], dict]:
                 }
             )
 
+    # Alguns canais novos retornam viewCount=0 no recurso do canal mesmo
+    # quando os videos individuais ja tem views. Nesse caso, a soma dos
+    # uploads e uma fonte mais fiel para o dashboard e a estimativa YPP.
+    observed_views = sum(_to_int(video.get("views")) for video in stats)
+    if observed_views > 0 and channel_stats["total_views"] <= 0:
+        log.warning("viewCount do canal indisponivel; usando %d views observadas nos uploads.", observed_views)
+        channel_stats["total_views"] = observed_views
+
     return stats, channel_stats
 
 

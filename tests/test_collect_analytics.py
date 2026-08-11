@@ -119,6 +119,11 @@ class TestCollectVideoStats:
         stats, _channel = collect_analytics.collect_video_stats(service)
         assert stats[1]["comments"] == 0
 
+    def test_collect_stats_uses_video_sum_when_channel_view_count_is_missing(self):
+        service = self._make_service()
+        _stats, channel = collect_analytics.collect_video_stats(service)
+        assert channel["total_views"] == 300
+
     def test_collect_stats_empty_channel(self):
         service = MagicMock()
         service.channels().list.return_value.execute.return_value = {"items": []}
