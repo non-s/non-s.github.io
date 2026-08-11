@@ -30,7 +30,8 @@ sys.path.insert(0, str(ROOT))
 from utils.log_config import configure_logging
 from utils.paths import data_dir, ensure_data_dir
 from utils.state_lock import state_lock
-from utils.youtube_oauth import get_youtube_analytics_service, get_youtube_service
+from utils.youtube_oauth import get_youtube_analytics_service, get_youtube_reporting_service, get_youtube_service
+from utils.youtube_reporting import reporting_inventory
 from utils.youtube_retry import retry_youtube_call as _retry_youtube_call
 
 log = logging.getLogger(__name__)
@@ -949,6 +950,15 @@ def main(argv: list[str] | None = None) -> int:
             report["top_10"] = stats[:10]
             report["bottom_10"] = stats[-10:] if len(stats) > 10 else []
             out_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    # Reporting API: inventory only. System-managed reports vary by channel
+    # and access level, so this records availability without creating a job or
+    # downloading bulk data. It is safe to run alongside normal analytics.
+    try:
+        report["reporting_inventory"] = reporting_inventory(get_youtube_reporting_service())
+        out_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    except Exception as exc:
+        log.warning("YouTube Reporting indisponivel (nao fatal): %s", exc)
 
     # Detecao de virais: apos computar performance por cena/title_pattern,
     # identifica videos cujas views excedem _VIRAL_THRESHOLD x a mediana e

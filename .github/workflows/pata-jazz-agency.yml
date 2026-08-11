@@ -19,6 +19,7 @@ jobs:
     timeout-minutes: 12
     env:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      OPENVERSE_ACCESS_TOKEN: ${{ secrets.OPENVERSE_ACCESS_TOKEN }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -34,6 +35,8 @@ jobs:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
       - name: "Collect public competitive signals"
         run: python scripts/collect_competitive_intelligence.py
+      - name: "Collect open research leads"
+        run: python scripts/collect_open_research.py
       - name: "Run daily agency council"
         run: python scripts/run_agency_council.py
       - name: "Publish reviewable brief"
@@ -44,6 +47,7 @@ jobs:
             _data/agency_daily_brief.json
             _data/agency_memory.json
             _data/competitive_intelligence.json
+            _data/open_research_catalog.json
           retention-days: 90
       - name: "Remove token"
         if: always()

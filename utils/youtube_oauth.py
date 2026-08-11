@@ -254,3 +254,9 @@ def get_youtube_analytics_service() -> Resource:
     collect_analytics.py envolve a chamada em try/except)."""
     creds = _acquire_credentials()
     return build("youtubeAnalytics", "v2", credentials=creds, cache_discovery=False)
+
+
+def get_youtube_reporting_service() -> Resource:
+    """Build the Reporting API client with the existing read-only OAuth grant."""
+    creds = _acquire_credentials()
+    return build("youtubereporting", "v1", credentials=creds, cache_discovery=False)
