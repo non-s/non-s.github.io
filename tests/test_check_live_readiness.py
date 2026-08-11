@@ -1,4 +1,4 @@
-from scripts.check_live_readiness import check_live_readiness
+from scripts.check_live_readiness import _failure_details, check_live_readiness
 
 
 def test_live_readiness_reads_broadcasts_and_streams() -> None:
@@ -24,3 +24,9 @@ def test_live_readiness_reads_broadcasts_and_streams() -> None:
     assert report["ready_for_live_setup"] is True
     assert report["existing_broadcasts"] == 1
     assert report["existing_streams"] == 1
+
+
+def test_live_readiness_explains_channel_activation_requirement() -> None:
+    details = _failure_details(Exception('reason "liveStreamingNotEnabled"'))
+    assert details["reason"] == "live_streaming_not_enabled"
+    assert "Enable live streaming" in details["next_step"]

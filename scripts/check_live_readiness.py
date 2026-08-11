@@ -23,6 +23,16 @@ from utils.youtube_retry import retry_youtube_call
 log = logging.getLogger(__name__)
 
 
+def _failure_details(exc: Exception) -> dict[str, str]:
+    message = str(exc)
+    if "liveStreamingNotEnabled" in message:
+        return {
+            "reason": "live_streaming_not_enabled",
+            "next_step": "Enable live streaming in YouTube Studio, then wait for YouTube activation before retrying.",
+        }
+    return {"reason": "live_api_error", "next_step": "Review the saved error and retry the read-only pre-flight."}
+
+
 def check_live_readiness(service) -> dict[str, object]:
     """Read the live endpoints and return an actionable readiness report."""
     broadcasts = retry_youtube_call(
@@ -43,11 +53,13 @@ def main() -> int:
     try:
         report = check_live_readiness(get_youtube_service())
     except Exception as exc:
+        details = _failure_details(exc)
         report = {
             "checked_at": datetime.now(UTC).isoformat(),
             "api_access": False,
             "ready_for_live_setup": False,
             "error": str(exc),
+            **details,
         }
         log.error("Live pre-flight falhou: %s", exc)
 
