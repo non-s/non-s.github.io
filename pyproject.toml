@@ -10,6 +10,7 @@ dependencies = [
     "requests>=2.32.0,<3.0.0",
     "defusedxml>=0.7.1,<0.8.0",
     "Pillow>=12.3.0,<13.0.0",
+    "opencv-python-headless>=4.10.0,<5.0.0",
     "filelock>=3.13.0,<4.0.0",
 ]
 
@@ -50,5 +51,6 @@ exclude_lines = [
 python_version = "3.11"
 
 [[tool.mypy.overrides]]
-module = ["googleapiclient.*", "google_auth_oauthlib.*", "PIL.*", "requests.*"]
+module = ["googleapiclient.*", "google_auth_oauthlib.*", "PIL.*", "requests.*", "cv2", "numpy"]
 ignore_missing_imports = true
+follow_imports = "skip"

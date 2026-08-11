@@ -31,6 +31,7 @@ from utils.media_pool import ensure_dirs, music_attribution, pick_audio, pick_vi
 from utils.metadata_engine import clean_title, generate_metadata
 from utils.thumbnail_engine import make_long_thumbnail, make_short_thumbnail, winning_thumbnail_variant
 from utils.video_validator import validate_generated_video
+from utils.visual_intelligence import analyze_image, analyze_video, creative_quality_flags
 
 log = logging.getLogger(__name__)
 
@@ -770,6 +771,13 @@ def build_pata_jazz_video(
             duration=spec.duration,
             hook=hook,
         ),
+    }
+    thumbnail_signals = analyze_image(thumb_primary)
+    video_signals = analyze_video(output)
+    meta["visual_intelligence"] = {
+        "thumbnail": thumbnail_signals,
+        "video": video_signals,
+        "review_flags": creative_quality_flags(thumbnail_signals, video_signals),
     }
     output.with_suffix(".json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
 

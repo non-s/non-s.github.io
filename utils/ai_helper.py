@@ -57,6 +57,46 @@ def is_safe_ai_text(text: str) -> bool:
     return bool(text) and not _SUSPICIOUS_RE.search(text) and not _OUTCOME_CLAIM_RE.search(text)
 
 
+def ai_grounded_research(prompt: str, *, task: str = "grounded_research", timeout: int = 45) -> dict:
+    """Run a Gemini research request grounded in Google Search when available.
+
+    Returns text plus the source URLs supplied by Gemini. Callers must treat
+    this as research input, never as permission to publish automatically.
+    """
+    key = os.environ.get("GEMINI_API_KEY", "")
+    if not key:
+        log.warning("Gemini grounded research skipped: GEMINI_API_KEY ausente.")
+        return {"text": "", "sources": []}
+    try:
+        _throttle()
+        body = {
+            "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+            "tools": [{"google_search": {}}],
+            "generationConfig": {"temperature": 0.2, "maxOutputTokens": 1800},
+        }
+        response = _session.post(
+            _GEMINI_API_URL.format(model=_GEMINI_MODEL),
+            json=body,
+            timeout=timeout,
+            headers={"Content-Type": "application/json", "x-goog-api-key": key},
+        )
+        response.raise_for_status()
+        data = response.json()
+        candidate = (data.get("candidates") or [{}])[0]
+        parts = (candidate.get("content") or {}).get("parts") or []
+        text = "".join(str(part.get("text", "")) for part in parts if isinstance(part, dict)).strip()
+        chunks = (candidate.get("groundingMetadata") or {}).get("groundingChunks") or []
+        sources = []
+        for chunk in chunks:
+            web = chunk.get("web") if isinstance(chunk, dict) else None
+            if isinstance(web, dict) and web.get("uri"):
+                sources.append({"title": str(web.get("title", "")), "url": str(web["uri"])})
+        return {"text": text, "sources": sources[:12]}
+    except (requests.RequestException, ValueError, TypeError) as exc:
+        log.warning("Gemini grounded research failed: %s", exc)
+        return {"text": "", "sources": []}
+
+
 _GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash-001")
 _GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 _MIN_INTERVAL = 2.0  # segundos entre chamadas
