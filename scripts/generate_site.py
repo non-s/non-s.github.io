@@ -17,10 +17,11 @@ from __future__ import annotations
 import json
 import logging
 import sys
-import xml.etree.ElementTree as ET
 from html import escape
 from pathlib import Path
 from urllib.request import Request, urlopen
+
+from defusedxml import ElementTree as ET
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
