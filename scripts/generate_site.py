@@ -33,6 +33,7 @@ log = logging.getLogger(__name__)
 _THUMB_URL = "https://img.youtube.com/vi/{vid}/hqdefault.jpg"
 _WATCH_URL = "https://youtu.be/{vid}"
 _CHANNEL_URL = "https://www.youtube.com/@PataJazz-n5n"
+_SITE_URL = "https://non-s.github.io"
 _CHANNEL_ID = "UCYAxnaW6H8g3XJMntkDXZjg"
 _FEED_URL = f"https://www.youtube.com/feeds/videos.xml?channel_id={_CHANNEL_ID}"
 _ATOM_NS = "{http://www.w3.org/2005/Atom}"
@@ -161,6 +162,7 @@ def _video_object_ld(entry: dict) -> str:
 
 def _render_video_page(entry: dict) -> str:
     ld_json = escape(_video_object_ld(entry), quote=False).replace("</", "<\\/")
+    page_url = f"{_SITE_URL}/video_{entry['video_id']}.html"
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -168,6 +170,13 @@ def _render_video_page(entry: dict) -> str:
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{escape(entry["title"])} — Pata Jazz</title>
 <meta name="description" content="{escape(entry["description"][:160])}">
+<link rel="canonical" href="{page_url}">
+<meta property="og:type" content="video.other">
+<meta property="og:title" content="{escape(entry["title"])}">
+<meta property="og:description" content="{escape(entry["description"][:160])}">
+<meta property="og:url" content="{page_url}">
+<meta property="og:image" content="{escape(entry["thumbnail"])}">
+<meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
 {ld_json}
 </script>
@@ -233,6 +242,12 @@ def _render_index(entries: list[dict]) -> str:
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pata Jazz — Cute cats & dogs with relaxing music</title>
 <meta name="description" content="All Pata Jazz videos: {desc}">
+<link rel="canonical" href="{_SITE_URL}/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Pata Jazz: Soft jazz and gentle pet moments">
+<meta property="og:description" content="Soft jazz and gentle pet moments for quieter homes.">
+<meta property="og:url" content="{_SITE_URL}/">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">
 {ld_json}
 </script>
@@ -274,6 +289,22 @@ def _render_index(entries: list[dict]) -> str:
 """
 
 
+def _render_sitemap(entries: list[dict]) -> str:
+    """Gera sitemap XML com a home e as paginas de videos indexaveis."""
+    urls = [_SITE_URL + "/", *(f"{_SITE_URL}/video_{entry['video_id']}.html" for entry in entries)]
+    items = "\n".join(f"  <url><loc>{escape(url)}</loc></url>" for url in urls)
+    return f"""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{items}
+</urlset>
+"""
+
+
+def _render_robots() -> str:
+    """Permite indexacao e aponta crawlers para o sitemap canonico."""
+    return f"User-agent: *\nAllow: /\nSitemap: {_SITE_URL}/sitemap.xml\n"
+
+
 def generate_site(output_dir: Path | None = None) -> Path:
     """Gera o site estático em output_dir (default _site/). Retorna o caminho
     do index.html."""
@@ -292,6 +323,9 @@ def generate_site(output_dir: Path | None = None) -> Path:
     for entry in entries:
         page_path = out / f"video_{entry['video_id']}.html"
         page_path.write_text(_render_video_page(entry), encoding="utf-8")
+
+    (out / "sitemap.xml").write_text(_render_sitemap(entries), encoding="utf-8")
+    (out / "robots.txt").write_text(_render_robots(), encoding="utf-8")
 
     log.info("Site gerado: %s (%d páginas)", index_path, len(entries))
     return index_path

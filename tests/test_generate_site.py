@@ -161,6 +161,12 @@ class TestRenderVideoPage:
         html = site._render_video_page(_entry(title="<script>alert(1)</script>", views=0, likes=0))
         assert "<script>alert(1)</script>" not in html.split("application/ld+json")[0]
 
+    def test_includes_canonical_and_social_metadata(self):
+        html = site._render_video_page(_entry(video_id="abc", title="Cute Cat"))
+        assert 'rel="canonical" href="https://non-s.github.io/video_abc.html"' in html
+        assert 'property="og:type" content="video.other"' in html
+        assert 'name="twitter:card" content="summary_large_image"' in html
+
 
 class TestRenderIndex:
     def test_includes_video_cards(self):
@@ -185,6 +191,11 @@ class TestRenderIndex:
         assert "</html>" in html
         assert "https://www.youtube.com/@PataJazz-n5n" in html
         assert "Fresh Pata Jazz videos are being indexed" in html
+
+    def test_includes_canonical_and_social_metadata(self):
+        html = site._render_index([])
+        assert 'rel="canonical" href="https://non-s.github.io/"' in html
+        assert 'property="og:type" content="website"' in html
 
 
 class TestGenerateSite:
@@ -213,6 +224,10 @@ class TestGenerateSite:
         page_html = video_page.read_text(encoding="utf-8")
         assert "VideoObject" in page_html
         assert "Cat Jazz" in page_html
+        assert (index_path.parent / "sitemap.xml").read_text(encoding="utf-8").count("<loc>") == 2
+        assert "Sitemap: https://non-s.github.io/sitemap.xml" in (index_path.parent / "robots.txt").read_text(
+            encoding="utf-8"
+        )
 
     def test_empty_data_generates_minimal_site(self, tmp_path, monkeypatch):
         _seed(tmp_path, monkeypatch, {}, {"all_videos": []})
