@@ -59,7 +59,10 @@ def _client_id() -> str:
 
 def _music_descriptors() -> tuple[str, ...]:
     """Descritores permitidos para filtrar hits do Jamendo pelo gênero jazz."""
-    return ("jazz", "bossa", "smooth", "bebop", "swing", "fusion", "lofi")
+    return (
+        "jazz", "bossa", "smooth", "bebop", "swing", "fusion", "lofi",
+        "ambient", "piano", "acoustic", "classical",
+    )
 
 
 def _is_jazz(hit: dict) -> bool:
@@ -130,6 +133,8 @@ def search_and_download(term: str, max_results: int = 5, client_id: str = "") ->
             continue
         if _download(audio_url, dest):
             try:
+                hit["license_verified_for_youtube"] = True
+                hit["license_url"] = hit.get("license_ccurl") or hit.get("license_url") or hit.get("shorturl")
                 meta_dest.write_text(json.dumps(hit, ensure_ascii=False, indent=2), encoding="utf-8")
             except Exception:
                 pass

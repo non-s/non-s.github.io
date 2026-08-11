@@ -33,8 +33,14 @@ MAX_PER_QUERY = 3
 MAX_POOL_SIZE = 80
 MIN_WIDTH = 640
 MIN_HEIGHT = 360
-_CAT_TERMS = ("cat", "kitten", "kitty", "feline")
-_DOG_TERMS = ("dog", "puppy", "canine")
+_ANIMAL_TERMS = {
+    "cat": ("cat", "kitten", "kitty", "feline"),
+    "dog": ("dog", "puppy", "canine"),
+    "rabbit": ("rabbit", "bunny", "hare"),
+    "bird": ("bird", "parrot"),
+    "horse": ("horse", "pony"),
+    "capybara": ("capybara",),
+}
 # Fracao do pool evictada (os clips mais antigos por mtime) quando o pool
 # esta cheio, pra abrir espaco pra clips novos a cada sync. Sem isso, uma
 # vez que o pool atingia MAX_POOL_SIZE ele congelava para sempre - os
@@ -45,10 +51,9 @@ _POOL_ROTATION_FRACTION = 0.1
 def _query_animal(query: str) -> str:
     """Deriva o único animal esperado pela query editorial do Pixabay."""
     lowered = query.lower()
-    if any(term in lowered for term in _CAT_TERMS):
-        return "cat"
-    if any(term in lowered for term in _DOG_TERMS):
-        return "dog"
+    for animal, terms in _ANIMAL_TERMS.items():
+        if any(term in lowered for term in terms):
+            return animal
     return ""
 
 
@@ -58,9 +63,14 @@ def _matches_query_animal(query: str, text: str) -> bool:
     if not expected:
         return False
     lowered = text.lower()
-    cat_match = any(term in lowered for term in _CAT_TERMS)
-    dog_match = any(term in lowered for term in _DOG_TERMS)
-    return (cat_match and not dog_match) if expected == "cat" else (dog_match and not cat_match)
+    expected_match = any(term in lowered for term in _ANIMAL_TERMS[expected])
+    other_match = any(
+        term in lowered
+        for animal, terms in _ANIMAL_TERMS.items()
+        if animal != expected
+        for term in terms
+    )
+    return expected_match and not other_match
 
 
 def _evict_oldest(directory: Path, glob_pattern: str, count: int) -> int:
@@ -176,6 +186,8 @@ def search_and_download(api_key: str, query: str, max_results: int = 5, orientat
         if dest.exists():
             continue
         if _download_video(url, dest):
+            hit["source_url"] = page_url
+            hit["license"] = "Pixabay Content License"
             try:
                 # Salva metadados Pixabay para futura triagem por popularidade.
                 meta_dest = dest.with_suffix(".json")

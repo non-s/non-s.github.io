@@ -153,6 +153,11 @@ def _default_music_search_terms() -> list[str]:
         # Lofi jazz (mood "fofura"/"relax", tom contemporaneo)
         "lofi jazz",
         "jazzhop",
+        "ambient instrumental",
+        "piano instrumental",
+        "acoustic instrumental",
+        "classical instrumental",
+        "lofi instrumental",
     ]
 
 
@@ -182,6 +187,10 @@ BROLL_QUERIES: list[str] = [
     "dog relaxing real",
     "kitten playing real",
     "puppy dog real",
+    "real rabbit",
+    "real bird",
+    "real horse",
+    "real capybara",
 ]
 
 # Categorias Pixabay permitidas no filtro local.
@@ -198,6 +207,14 @@ ALLOWED_ANIMAL_KEYWORDS: set[str] = {
     "pet",
     "feline",
     "canine",
+    "rabbit",
+    "bunny",
+    "hare",
+    "bird",
+    "parrot",
+    "horse",
+    "pony",
+    "capybara",
 }
 
 # Palavras que indicam cartoon, animacao, ilustracao ou conteudo nao-real.

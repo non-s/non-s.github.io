@@ -30,8 +30,8 @@ def test_random_scene_in_allowed():
     assert scene in allowed
 
 
-def test_no_disallowed_animals():
-    bad = ["bird", "rabbit", "bunny", "hamster", "storm", "rain", "thunder"]
+def test_rejects_non_animal_and_unapproved_animals():
+    bad = ["hamster", "storm", "rain", "thunder"]
     for word in bad:
         assert not is_allowed_animal_text(word)
 
@@ -48,9 +48,12 @@ def test_blocked_cartoon_content():
         assert not is_allowed_animal_text(word)
 
 
-def test_jazz_terms_only():
+def test_station_terms_are_instrumental_and_curated():
     for term in JAMENDO_SEARCH_TERMS:
-        assert "jazz" in term.lower() or "bossa" in term.lower()
+        assert any(
+            style in term.lower()
+            for style in ("jazz", "bossa", "ambient", "piano", "acoustic", "classical", "lofi")
+        )
 
 
 def test_jazz_terms_cover_slow_upbeat_and_lofi_variety():
