@@ -22,7 +22,7 @@ runs:
     - name: "Verificar Python (Windows self-hosted)"
       if: ${{ runner.os == 'Windows' }}
       run: python --version
-      shell: pwsh
+      shell: powershell
     - name: "Instalar FFmpeg (Linux)"
       if: ${{ inputs.ffmpeg == 'true' && runner.os == 'Linux' }}
       run: |
@@ -32,7 +32,7 @@ runs:
     - name: "Verificar FFmpeg (Windows self-hosted)"
       if: ${{ inputs.ffmpeg == 'true' && runner.os == 'Windows' }}
       run: ffmpeg -version
-      shell: pwsh
+      shell: powershell
     - name: "Instalar dependencias"
       run: |
         pip install --no-cache-dir --upgrade pip

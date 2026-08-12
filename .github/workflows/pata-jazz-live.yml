@@ -59,6 +59,7 @@ jobs:
         if: ${{ inputs.publish_live == true }}
         run: python scripts/generate_pata_jazz_long.py --duration 900 --scene "cat relaxing"
       - name: "Transmitir ou validar"
+        shell: bash
         run: |
           video=$(find _videos -name 'pata_jazz_long*.mp4' -print -quit)
           if [ "${{ inputs.publish_live }}" = "true" ]; then
@@ -68,4 +69,5 @@ jobs:
           fi
       - name: "Apagar token"
         if: always()
+        shell: bash
         run: rm -f youtube_token.json
