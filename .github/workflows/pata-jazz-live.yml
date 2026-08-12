@@ -54,15 +54,15 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: _videos
-          key: pata-jazz-live-video-${{ github.run_id }}
-          restore-keys: pata-jazz-live-video-
+          key: pata-jazz-live-video-v2-${{ github.run_id }}
+          restore-keys: pata-jazz-live-video-v2-
       - name: "Sincronizar assets"
         if: ${{ inputs.publish_live == true }}
         shell: bash
         run: |
           video_count=$(find _assets/video/animal_broll -type f 2>/dev/null | wc -l)
           audio_count=$(find _assets/audio/animal_jazz -name '*.mp3' -size +0c 2>/dev/null | wc -l)
-          if [ "$video_count" -lt 5 ]; then python scripts/sync_animal_broll.py; fi
+          if [ "$video_count" -lt 12 ]; then python scripts/sync_animal_broll.py; fi
           if [ "$audio_count" -lt 5 ]; then python scripts/sync_jazz_music.py; fi
       - name: "Gerar loop para live"
         if: ${{ inputs.publish_live == true }}

@@ -81,6 +81,8 @@ class VideoSpec:
 
 _HOOK_ENABLE_SECONDS = 5.0
 _HOOK_FADE_SECONDS = 0.4
+_LONG_MIN_CLIPS = 8
+_LONG_MAX_CLIPS = 12
 
 
 def _build_video_filter(spec: VideoSpec) -> str:
@@ -531,7 +533,7 @@ def _build_loop_relax_video(
     output: Path,
     hook: str = "",
 ) -> None:
-    """Gera long-form horizontal "Loop & Relax": 2-3 clipes em loop com
+    """Gera long-form horizontal "Loop & Relax": 8-12 clipes em loop com
     crossfade lento + jazz + hook no inicio + end-card no fim.
 
     Para evitar incompatibilidade entre -stream_loop e xfade no FFmpeg,
@@ -540,7 +542,7 @@ def _build_loop_relax_video(
     tempo de re-encode; o encode final usa veryfast/CRF 28 para qualidade
     suficiente no YouTube.
     """
-    n_clips = min(len(videos), random.randint(2, 3))
+    n_clips = min(len(videos), random.randint(_LONG_MIN_CLIPS, _LONG_MAX_CLIPS))
     selected = random.sample(videos, n_clips)
     xfade_duration = 2.0
     per_clip = spec.duration // n_clips
@@ -690,7 +692,15 @@ def build_pata_jazz_video(
         return output
 
     # Multi-clip com crossfade para Shorts / long-form Loop & Relax
-    videos = pick_videos(min_count=2, max_count=3, cuteness_sort=True, animal=animal)
+    if spec.kind == "long":
+        videos = pick_videos(
+            min_count=_LONG_MIN_CLIPS,
+            max_count=_LONG_MAX_CLIPS,
+            cuteness_sort=True,
+            animal=animal,
+        )
+    else:
+        videos = pick_videos(min_count=2, max_count=3, cuteness_sort=True, animal=animal)
     if len(videos) >= 2:
         if spec.kind == "long":
             _build_loop_relax_video(spec, videos, audio_path, output, hook=hook)

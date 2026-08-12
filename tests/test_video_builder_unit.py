@@ -265,6 +265,32 @@ class TestVideoBuilderUnits:
         mock_loop.assert_called_once()
         mock_short.assert_not_called()
 
+    def test_long_form_requests_a_varied_clip_pool(self, tmp_path):
+        spec = video_builder.long_spec(duration=900, scene="cat relaxing")
+        videos = [Path(f"cat_{index}.mp4") for index in range(12)]
+        with (
+            patch("utils.video_builder.ensure_dirs"),
+            patch("utils.video_builder._validate_source_pools"),
+            patch("utils.video_builder.best_hook_for_scene", return_value=("hook", "paw")),
+            patch("utils.video_builder.pick_audio", return_value=Path("jazz.mp3")),
+            patch("utils.video_builder.pick_videos", return_value=videos) as pick,
+            patch("utils.video_builder._build_loop_relax_video"),
+            patch("utils.video_builder.run_ffmpeg"),
+            patch("utils.video_builder.generate_metadata", return_value={"title": "t", "description": "d"}),
+            patch("utils.video_builder.make_long_thumbnail"),
+            patch("utils.video_builder.winning_thumbnail_variant", return_value="A"),
+            patch(
+                "utils.video_builder.validate_generated_video",
+                return_value=VideoValidation(ok=True, errors=[], info={}),
+            ),
+        ):
+            video_builder.build_pata_jazz_video(
+                spec=spec, output_dir=tmp_path, thumb_dir=tmp_path, stem_prefix="varied"
+            )
+
+        assert pick.call_args.kwargs["min_count"] == 8
+        assert pick.call_args.kwargs["max_count"] == 12
+
     def test_multi_clip_short_caps_duration_without_audio(self, tmp_path):
         """Sem audio (pool de jazz vazio), o xfade final ainda precisa de -t:
         sum(per_clip) - (n_clips-1)*xfade_duration fica abaixo de spec.duration
