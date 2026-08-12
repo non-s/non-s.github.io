@@ -27,6 +27,22 @@ supervised and configured to restart after host failure.
 The RTMP stream name remains provided by the YouTube API at runtime and must
 never be committed to the repository.
 
+If FFmpeg exits or loses the RTMP connection, continuous mode waits briefly and
+starts it again against the same stream. If the Python process or host restarts,
+the command searches for a matching active/upcoming broadcast and reuses its
+bound stream instead of creating a duplicate event. A host-level service manager
+should still restart the Python command after machine or process failure.
+
+### Host supervision
+
+`deploy/pata-jazz-live.service` is a production-oriented systemd unit. Install
+the repository and virtual environment under `/opt/pata-jazz`, keep the OAuth
+token outside the checkout at `/etc/pata-jazz/youtube_token.json`, and install
+the unit as `/etc/systemd/system/pata-jazz-live.service`. The service restarts
+after failure and starts at boot once enabled. Review the video path and begin
+with `--privacy unlisted` for the technical rehearsal before switching it to
+`public`.
+
 ## Community rhythm
 
 Use normal latency for the ambient station when reliability is most important. Schedule separate low-latency community sessions for polls, introductions and live chat; their outcomes should inform future session themes without pressuring people to remain watching.

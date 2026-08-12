@@ -10,6 +10,7 @@ import argparse
 import logging
 import subprocess
 import sys
+import time
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
@@ -70,7 +71,55 @@ def create_live(service, *, title: str, privacy: str, continuous: bool = False) 
     return broadcast_id, _ingestion_url(stream)
 
 
-def stream_video(video: Path, rtmp_url: str, duration_minutes: int) -> None:
+def find_reusable_live(service, *, title: str, privacy: str) -> tuple[str, str] | None:
+    """Return an existing matching broadcast and its RTMP URL, when available."""
+    for broadcast_status in ("active", "upcoming"):
+        response = retry_youtube_call(
+            service.liveBroadcasts()
+            .list(
+                part="id,snippet,status,contentDetails",
+                mine=True,
+                broadcastStatus=broadcast_status,
+                maxResults=50,
+            )
+            .execute
+        )
+        for broadcast in response.get("items") or []:
+            snippet = broadcast.get("snippet") or {}
+            status = broadcast.get("status") or {}
+            details = broadcast.get("contentDetails") or {}
+            if snippet.get("title") != title or status.get("privacyStatus") != privacy:
+                continue
+            broadcast_id = str(broadcast.get("id") or "")
+            stream_id = str(details.get("boundStreamId") or "")
+            if not broadcast_id or not stream_id:
+                continue
+            streams = retry_youtube_call(
+                service.liveStreams().list(part="id,cdn,status", id=stream_id, maxResults=1).execute
+            )
+            items = streams.get("items") or []
+            if items:
+                log.info("Reutilizando a live %s apos reinicio do processo.", broadcast_id)
+                return broadcast_id, _ingestion_url(items[0])
+    return None
+
+
+def get_or_create_live(service, *, title: str, privacy: str, continuous: bool) -> tuple[str, str]:
+    if continuous:
+        reusable = find_reusable_live(service, title=title, privacy=privacy)
+        if reusable:
+            return reusable
+    return create_live(service, title=title, privacy=privacy, continuous=continuous)
+
+
+def stream_video(
+    video: Path,
+    rtmp_url: str,
+    duration_minutes: int,
+    *,
+    restart_delay_seconds: int = 15,
+    max_restarts: int | None = None,
+) -> None:
     if not video.is_file():
         raise FileNotFoundError(f"Video de live nao encontrado: {video}")
     duration_seconds = duration_minutes * 60
@@ -101,7 +150,23 @@ def stream_video(video: Path, rtmp_url: str, duration_minutes: int) -> None:
     if duration_seconds:
         command[command.index("-c:v"):command.index("-c:v")] = ["-t", str(duration_seconds)]
         timeout = duration_seconds + 300
-    subprocess.run(command, check=True, timeout=timeout)
+    restarts = 0
+    while True:
+        try:
+            subprocess.run(command, check=True, timeout=timeout)
+        except subprocess.CalledProcessError as exc:
+            if duration_seconds:
+                raise
+            log.warning("FFmpeg caiu com codigo %s; reconectando em %ds.", exc.returncode, restart_delay_seconds)
+        else:
+            if duration_seconds:
+                return
+            log.warning("FFmpeg encerrou sem erro; reiniciando a transmissao em %ds.", restart_delay_seconds)
+
+        if max_restarts is not None and restarts >= max_restarts:
+            return
+        restarts += 1
+        time.sleep(restart_delay_seconds)
 
 
 def main() -> int:
@@ -126,16 +191,16 @@ def main() -> int:
 
     title = "Pata Jazz | Cozy Cat & Dog Jazz Live"
     continuous = args.duration_minutes == 0
-    broadcast_id, rtmp_url = create_live(
-        get_youtube_service(), title=title, privacy=args.privacy, continuous=continuous
+    service = get_youtube_service()
+    broadcast_id, rtmp_url = get_or_create_live(
+        service, title=title, privacy=args.privacy, continuous=continuous
     )
     try:
         stream_video(args.video, rtmp_url, args.duration_minutes)
     finally:
         try:
             retry_youtube_call(
-                get_youtube_service()
-                .liveBroadcasts()
+                service.liveBroadcasts()
                 .transition(broadcastStatus="complete", id=broadcast_id, part="status")
                 .execute
             )

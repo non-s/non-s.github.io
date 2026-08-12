@@ -1,0 +1,22 @@
+[Unit]
+Description=Pata Jazz continuous YouTube live
+Wants=network-online.target
+After=network-online.target
+StartLimitIntervalSec=300
+StartLimitBurst=10
+
+[Service]
+Type=simple
+User=pata-jazz
+Group=pata-jazz
+WorkingDirectory=/opt/pata-jazz
+Environment=PYTHONUNBUFFERED=1
+Environment=YOUTUBE_TOKEN_PATH=/etc/pata-jazz/youtube_token.json
+ExecStart=/opt/pata-jazz/.venv/bin/python scripts/run_pata_jazz_live.py --video /opt/pata-jazz/_videos/pata_jazz_live.mp4 --duration-minutes 0 --privacy public
+Restart=always
+RestartSec=15
+TimeoutStopSec=30
+KillSignal=SIGINT
+
+[Install]
+WantedBy=multi-user.target
