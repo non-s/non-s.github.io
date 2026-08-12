@@ -55,9 +55,28 @@ jobs:
         run: |
           python scripts/sync_animal_broll.py
           python scripts/sync_jazz_music.py
+      - name: "Restaurar loop persistente do runner"
+        if: ${{ inputs.publish_live == true && inputs.duration_minutes == '0' && runner.os == 'Windows' }}
+        shell: powershell
+        run: |
+          New-Item -ItemType Directory -Force _videos | Out-Null
+          $cached = Join-Path $env:RUNNER_WORKSPACE "..\_live_cache\pata_jazz_live.mp4"
+          if (Test-Path $cached) { Copy-Item $cached _videos/pata_jazz_long_cached.mp4 -Force }
       - name: "Gerar loop para live"
         if: ${{ inputs.publish_live == true }}
-        run: python scripts/generate_pata_jazz_long.py --duration 900 --scene "cat relaxing"
+        shell: bash
+        run: |
+          if ! find _videos -name 'pata_jazz_long*.mp4' -print -quit | grep -q .; then
+            python scripts/generate_pata_jazz_long.py --duration 900 --scene "cat relaxing"
+          fi
+      - name: "Persistir loop no runner"
+        if: ${{ inputs.publish_live == true && inputs.duration_minutes == '0' && runner.os == 'Windows' }}
+        shell: powershell
+        run: |
+          $cacheDir = Join-Path $env:RUNNER_WORKSPACE "..\_live_cache"
+          New-Item -ItemType Directory -Force $cacheDir | Out-Null
+          $video = Get-ChildItem _videos -Filter 'pata_jazz_long*.mp4' | Select-Object -First 1
+          Copy-Item $video.FullName (Join-Path $cacheDir 'pata_jazz_live.mp4') -Force
       - name: "Transmitir ou validar"
         shell: bash
         run: |

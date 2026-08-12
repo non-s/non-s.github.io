@@ -64,7 +64,7 @@ def test_finds_and_reuses_matching_live() -> None:
             {
                 "id": "broadcast",
                 "snippet": {"title": "Pata Jazz"},
-                "status": {"privacyStatus": "unlisted"},
+                "status": {"privacyStatus": "unlisted", "lifeCycleStatus": "live"},
                 "contentDetails": {"boundStreamId": "stream"},
             }
         ]
@@ -79,6 +79,9 @@ def test_finds_and_reuses_matching_live() -> None:
         "broadcast",
         "rtmp://a.example/live/key",
     )
+    list_args = service.liveBroadcasts.return_value.list.call_args.kwargs
+    assert list_args["mine"] is True
+    assert "broadcastStatus" not in list_args
 
 
 @patch("scripts.run_pata_jazz_live.create_live")

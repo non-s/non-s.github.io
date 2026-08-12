@@ -73,34 +73,31 @@ def create_live(service, *, title: str, privacy: str, continuous: bool = False) 
 
 def find_reusable_live(service, *, title: str, privacy: str) -> tuple[str, str] | None:
     """Return an existing matching broadcast and its RTMP URL, when available."""
-    for broadcast_status in ("active", "upcoming"):
-        response = retry_youtube_call(
-            service.liveBroadcasts()
-            .list(
-                part="id,snippet,status,contentDetails",
-                mine=True,
-                broadcastStatus=broadcast_status,
-                maxResults=50,
-            )
-            .execute
+    response = retry_youtube_call(
+        service.liveBroadcasts()
+        .list(part="id,snippet,status,contentDetails", mine=True, maxResults=50)
+        .execute
+    )
+    reusable_states = {"created", "ready", "testing", "testStarting", "live", "liveStarting"}
+    for broadcast in response.get("items") or []:
+        snippet = broadcast.get("snippet") or {}
+        status = broadcast.get("status") or {}
+        details = broadcast.get("contentDetails") or {}
+        if status.get("lifeCycleStatus") not in reusable_states:
+            continue
+        if snippet.get("title") != title or status.get("privacyStatus") != privacy:
+            continue
+        broadcast_id = str(broadcast.get("id") or "")
+        stream_id = str(details.get("boundStreamId") or "")
+        if not broadcast_id or not stream_id:
+            continue
+        streams = retry_youtube_call(
+            service.liveStreams().list(part="id,cdn,status", id=stream_id, maxResults=1).execute
         )
-        for broadcast in response.get("items") or []:
-            snippet = broadcast.get("snippet") or {}
-            status = broadcast.get("status") or {}
-            details = broadcast.get("contentDetails") or {}
-            if snippet.get("title") != title or status.get("privacyStatus") != privacy:
-                continue
-            broadcast_id = str(broadcast.get("id") or "")
-            stream_id = str(details.get("boundStreamId") or "")
-            if not broadcast_id or not stream_id:
-                continue
-            streams = retry_youtube_call(
-                service.liveStreams().list(part="id,cdn,status", id=stream_id, maxResults=1).execute
-            )
-            items = streams.get("items") or []
-            if items:
-                log.info("Reutilizando a live %s apos reinicio do processo.", broadcast_id)
-                return broadcast_id, _ingestion_url(items[0])
+        items = streams.get("items") or []
+        if items:
+            log.info("Reutilizando a live %s apos reinicio do processo.", broadcast_id)
+            return broadcast_id, _ingestion_url(items[0])
     return None
 
 
