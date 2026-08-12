@@ -173,13 +173,13 @@ def main() -> int:
         "--duration-minutes",
         type=int,
         default=60,
-        help="Duracao entre 5 e 300 minutos; use 0 para transmitir ate interrupcao.",
+        help="Duracao entre 5 e 330 minutos; use 0 para transmitir ate interrupcao.",
     )
     parser.add_argument("--privacy", choices=("public", "unlisted", "private"), default="public")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
-    if args.duration_minutes != 0 and not 5 <= args.duration_minutes <= 300:
-        parser.error("--duration-minutes deve ser 0 (continua) ou ficar entre 5 e 300.")
+    if args.duration_minutes != 0 and not 5 <= args.duration_minutes <= 330:
+        parser.error("--duration-minutes deve ser 0 (continua) ou ficar entre 5 e 330.")
     if args.dry_run:
         log.info("[DRY-RUN] live de %d min com %s (%s)", args.duration_minutes, args.video, args.privacy)
         return 0

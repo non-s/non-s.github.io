@@ -17,13 +17,12 @@ Only audio records with `license_verified_for_youtube: true` and a `license_url`
 
 ## Continuous mode
 
-Use `--duration-minutes 0` to keep FFmpeg streaming until the process receives
-an interruption. The manual GitHub workflow routes this mode to a Linux
-self-hosted runner because GitHub-hosted runners have a six-hour execution
-limit. GitHub also limits a self-hosted job to five days, so redispatch the
-workflow before that deadline or run the command under a host service manager
-for a station that must remain truly continuous. Keep that runner online,
-supervised and configured to restart after host failure.
+The Python command accepts `--duration-minutes 0` for an unbounded local
+process. In GitHub Actions, the same input selects rolling 330-minute segments:
+each hosted job closes cleanly before the six-hour limit and dispatches the next
+segment automatically. Assets and the rendered loop are restored from Actions
+cache, so later cycles normally start much faster than the first one. Manually
+cancelling the workflow stops the chain and does not schedule another segment.
 The RTMP stream name remains provided by the YouTube API at runtime and must
 never be committed to the repository.
 
@@ -43,12 +42,8 @@ after failure and starts at boot once enabled. Review the video path and begin
 with `--privacy unlisted` for the technical rehearsal before switching it to
 `public`.
 
-On Windows, register a self-hosted GitHub Actions runner with the custom label
-`pata-jazz-live`. The workflow uses that label only when `duration_minutes` is
-`0`; finite rehearsals continue on GitHub-hosted Linux. Start the runner at
-login (or install it as a Windows service from an elevated terminal) and disable
-sleep while broadcasting. The Python process handles FFmpeg reconnects, while
-the runner keeps the workflow attached to the host.
+The self-hosted service remains an alternative for a dedicated server, but the
+default continuous workflow does not depend on the operator's computer.
 
 ## Community rhythm
 
