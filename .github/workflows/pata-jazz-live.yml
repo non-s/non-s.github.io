@@ -30,7 +30,7 @@ jobs:
   live:
     name: "Gerar e transmitir live Pata Jazz"
     if: ${{ vars.PATA_JAZZ_ENABLED == '1' }}
-    runs-on: ${{ inputs.duration_minutes == '0' && fromJSON('["self-hosted","linux"]') || 'ubuntu-latest' }}
+    runs-on: ${{ inputs.duration_minutes == '0' && fromJSON('["self-hosted","pata-jazz-live"]') || 'ubuntu-latest' }}
     # GitHub limita jobs self-hosted a cinco dias. O processo e continuo,
     # mas o operador precisa redisparar o workflow antes desse limite.
     timeout-minutes: ${{ inputs.duration_minutes == '0' && 7200 || 330 }}

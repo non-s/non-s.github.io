@@ -18,12 +18,16 @@ runs:
       uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
       with:
         python-version: "3.11"
-    - name: "Instalar FFmpeg"
-      if: ${{ inputs.ffmpeg == 'true' }}
+    - name: "Instalar FFmpeg (Linux)"
+      if: ${{ inputs.ffmpeg == 'true' && runner.os == 'Linux' }}
       run: |
         sudo apt-get update -qq
         sudo apt-get install -y --no-install-recommends ffmpeg
       shell: bash
+    - name: "Verificar FFmpeg (Windows self-hosted)"
+      if: ${{ inputs.ffmpeg == 'true' && runner.os == 'Windows' }}
+      run: ffmpeg -version
+      shell: pwsh
     - name: "Instalar dependencias"
       run: |
         pip install --no-cache-dir --upgrade pip

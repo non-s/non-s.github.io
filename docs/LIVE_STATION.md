@@ -43,6 +43,13 @@ after failure and starts at boot once enabled. Review the video path and begin
 with `--privacy unlisted` for the technical rehearsal before switching it to
 `public`.
 
+On Windows, register a self-hosted GitHub Actions runner with the custom label
+`pata-jazz-live`. The workflow uses that label only when `duration_minutes` is
+`0`; finite rehearsals continue on GitHub-hosted Linux. Start the runner at
+login (or install it as a Windows service from an elevated terminal) and disable
+sleep while broadcasting. The Python process handles FFmpeg reconnects, while
+the runner keeps the workflow attached to the host.
+
 ## Community rhythm
 
 Use normal latency for the ambient station when reliability is most important. Schedule separate low-latency community sessions for polls, introductions and live chat; their outcomes should inform future session themes without pressuring people to remain watching.
