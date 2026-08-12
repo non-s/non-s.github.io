@@ -23,6 +23,9 @@ each hosted job closes cleanly before the six-hour limit and dispatches the next
 segment automatically. Assets and the rendered loop are restored from Actions
 cache, so later cycles normally start much faster than the first one. Manually
 cancelling the workflow stops the chain and does not schedule another segment.
+Each rendered station loop uses 8-12 distinct licensed clips, with roughly
+one-to-two minutes per scene and slow crossfades, instead of stretching only a
+few clips across the full programme.
 The RTMP stream name remains provided by the YouTube API at runtime and must
 never be committed to the repository.
 
