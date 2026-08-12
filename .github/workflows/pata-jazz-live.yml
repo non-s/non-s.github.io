@@ -9,7 +9,7 @@ on:
         type: boolean
         default: false
       duration_minutes:
-        description: "Duracao da live (5-300 minutos)"
+        description: "Duracao (5-300 min; 0 = ciclos automaticos continuos)"
         required: true
         default: "60"
       privacy:
@@ -21,6 +21,7 @@ on:
 
 permissions:
   contents: read
+  actions: write
 
 concurrency:
   group: pata-jazz-live
@@ -31,7 +32,7 @@ jobs:
     name: "Gerar e transmitir live Pata Jazz"
     if: ${{ vars.PATA_JAZZ_ENABLED == '1' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 330
+    timeout-minutes: 358
     env:
       PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
       JAMENDO_CLIENT_ID: ${{ secrets.JAMENDO_CLIENT_ID }}
@@ -48,22 +49,53 @@ jobs:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
       - name: "Pre-flight da live"
         run: python scripts/check_live_readiness.py
+      - name: "Restaurar loop da live"
+        if: ${{ inputs.publish_live == true && inputs.duration_minutes == '0' }}
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: _videos
+          key: pata-jazz-live-video-${{ github.run_id }}
+          restore-keys: pata-jazz-live-video-
       - name: "Sincronizar assets"
         if: ${{ inputs.publish_live == true }}
+        shell: bash
         run: |
-          python scripts/sync_animal_broll.py
-          python scripts/sync_jazz_music.py
+          video_count=$(find _assets/video/animal_broll -type f 2>/dev/null | wc -l)
+          audio_count=$(find _assets/audio/animal_jazz -name '*.mp3' -size +0c 2>/dev/null | wc -l)
+          if [ "$video_count" -lt 5 ]; then python scripts/sync_animal_broll.py; fi
+          if [ "$audio_count" -lt 5 ]; then python scripts/sync_jazz_music.py; fi
       - name: "Gerar loop para live"
         if: ${{ inputs.publish_live == true }}
-        run: python scripts/generate_pata_jazz_long.py --duration 900 --scene "cat relaxing"
+        shell: bash
+        run: |
+          if ! find _videos -name 'pata_jazz_long*.mp4' -print -quit | grep -q .; then
+            python scripts/generate_pata_jazz_long.py --duration 900 --scene "cat relaxing"
+          fi
       - name: "Transmitir ou validar"
+        shell: bash
         run: |
           video=$(find _videos -name 'pata_jazz_long*.mp4' -print -quit)
           if [ "${{ inputs.publish_live }}" = "true" ]; then
-            python scripts/run_pata_jazz_live.py --video "$video" --duration-minutes "${{ inputs.duration_minutes }}" --privacy "${{ inputs.privacy }}"
+            duration="${{ inputs.duration_minutes }}"
+            if [ "$duration" = "0" ]; then duration="330"; fi
+            python scripts/run_pata_jazz_live.py --video "$video" --duration-minutes "$duration" --privacy "${{ inputs.privacy }}"
           else
             python scripts/run_pata_jazz_live.py --video "${video:-_videos/live-placeholder.mp4}" --dry-run
           fi
       - name: "Apagar token"
         if: always()
+        shell: bash
         run: rm -f youtube_token.json
+      - name: "Agendar proximo ciclo continuo"
+        if: ${{ always() && !cancelled() && inputs.publish_live == true && inputs.duration_minutes == '0' }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          sleep 60
+          gh workflow run pata-jazz-live.yml \
+            --repo "${{ github.repository }}" \
+            --ref "${{ github.ref_name }}" \
+            -f publish_live=true \
+            -f duration_minutes=0 \
+            -f privacy="${{ inputs.privacy }}"
