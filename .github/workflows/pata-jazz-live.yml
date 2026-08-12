@@ -9,7 +9,7 @@ on:
         type: boolean
         default: false
       duration_minutes:
-        description: "Duracao da live (5-300 minutos)"
+        description: "Duracao (5-300 min; 0 = continua, exige runner proprio)"
         required: true
         default: "60"
       privacy:
@@ -30,8 +30,10 @@ jobs:
   live:
     name: "Gerar e transmitir live Pata Jazz"
     if: ${{ vars.PATA_JAZZ_ENABLED == '1' }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 330
+    runs-on: ${{ inputs.duration_minutes == '0' && fromJSON('["self-hosted","linux"]') || 'ubuntu-latest' }}
+    # GitHub limita jobs self-hosted a cinco dias. O processo e continuo,
+    # mas o operador precisa redisparar o workflow antes desse limite.
+    timeout-minutes: ${{ inputs.duration_minutes == '0' && 7200 || 330 }}
     env:
       PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
       JAMENDO_CLIENT_ID: ${{ secrets.JAMENDO_CLIENT_ID }}

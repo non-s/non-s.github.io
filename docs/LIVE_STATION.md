@@ -15,6 +15,18 @@ Only audio records with `license_verified_for_youtube: true` and a `license_url`
 3. Confirm the Live Control Room metadata, moderation approach and stream health.
 4. Start with an unlisted technical rehearsal. A public event requires an explicit publishing decision.
 
+## Continuous mode
+
+Use `--duration-minutes 0` to keep FFmpeg streaming until the process receives
+an interruption. The manual GitHub workflow routes this mode to a Linux
+self-hosted runner because GitHub-hosted runners have a six-hour execution
+limit. GitHub also limits a self-hosted job to five days, so redispatch the
+workflow before that deadline or run the command under a host service manager
+for a station that must remain truly continuous. Keep that runner online,
+supervised and configured to restart after host failure.
+The RTMP stream name remains provided by the YouTube API at runtime and must
+never be committed to the repository.
+
 ## Community rhythm
 
 Use normal latency for the ambient station when reliability is most important. Schedule separate low-latency community sessions for polls, introductions and live chat; their outcomes should inform future session themes without pressuring people to remain watching.

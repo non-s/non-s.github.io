@@ -9,8 +9,12 @@ from __future__ import annotations
 import argparse
 import logging
 import subprocess
+import sys
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
 
 from utils.youtube_retry import retry_youtube_call
 
@@ -26,7 +30,7 @@ def _ingestion_url(stream: dict) -> str:
     return f"{address}/{name}"
 
 
-def create_live(service, *, title: str, privacy: str) -> tuple[str, str]:
+def create_live(service, *, title: str, privacy: str, continuous: bool = False) -> tuple[str, str]:
     """Create, bind and return (broadcast_id, rtmp_url)."""
     start = (datetime.now(UTC) + timedelta(minutes=2)).replace(microsecond=0).isoformat().replace("+00:00", "Z")
     broadcast = retry_youtube_call(
@@ -36,7 +40,11 @@ def create_live(service, *, title: str, privacy: str) -> tuple[str, str]:
             body={
                 "snippet": {"title": title, "scheduledStartTime": start},
                 "status": {"privacyStatus": privacy},
-                "contentDetails": {"enableAutoStart": True, "enableAutoStop": True, "enableDvr": True},
+                "contentDetails": {
+                    "enableAutoStart": True,
+                    "enableAutoStop": not continuous,
+                    "enableDvr": True,
+                },
             },
         )
         .execute
@@ -75,8 +83,6 @@ def stream_video(video: Path, rtmp_url: str, duration_minutes: int) -> None:
         "-1",
         "-i",
         str(video),
-        "-t",
-        str(duration_seconds),
         "-c:v",
         "libx264",
         "-preset",
@@ -91,18 +97,27 @@ def stream_video(video: Path, rtmp_url: str, duration_minutes: int) -> None:
         "flv",
         rtmp_url,
     ]
-    subprocess.run(command, check=True, timeout=duration_seconds + 300)
+    timeout = None
+    if duration_seconds:
+        command[command.index("-c:v"):command.index("-c:v")] = ["-t", str(duration_seconds)]
+        timeout = duration_seconds + 300
+    subprocess.run(command, check=True, timeout=timeout)
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Transmitir live temporaria do Pata Jazz.")
     parser.add_argument("--video", required=True, type=Path)
-    parser.add_argument("--duration-minutes", type=int, default=60)
+    parser.add_argument(
+        "--duration-minutes",
+        type=int,
+        default=60,
+        help="Duracao entre 5 e 300 minutos; use 0 para transmitir ate interrupcao.",
+    )
     parser.add_argument("--privacy", choices=("public", "unlisted", "private"), default="public")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
-    if not 5 <= args.duration_minutes <= 300:
-        parser.error("--duration-minutes deve ficar entre 5 e 300.")
+    if args.duration_minutes != 0 and not 5 <= args.duration_minutes <= 300:
+        parser.error("--duration-minutes deve ser 0 (continua) ou ficar entre 5 e 300.")
     if args.dry_run:
         log.info("[DRY-RUN] live de %d min com %s (%s)", args.duration_minutes, args.video, args.privacy)
         return 0
@@ -110,7 +125,10 @@ def main() -> int:
     from utils.youtube_oauth import get_youtube_service
 
     title = "Pata Jazz | Cozy Cat & Dog Jazz Live"
-    broadcast_id, rtmp_url = create_live(get_youtube_service(), title=title, privacy=args.privacy)
+    continuous = args.duration_minutes == 0
+    broadcast_id, rtmp_url = create_live(
+        get_youtube_service(), title=title, privacy=args.privacy, continuous=continuous
+    )
     try:
         stream_video(args.video, rtmp_url, args.duration_minutes)
     finally:
