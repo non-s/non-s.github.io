@@ -70,7 +70,7 @@ jobs:
           scripts/healthcheck.py scripts/remaster_procedural_audio.py
           scripts/run_liquid_wire_live.py scripts/generate_site.py
           utils/channel_config.py utils/content_funnel.py utils/paths.py
-          utils/liquid_wire_quality.py utils/liquid_wire_timeline.py
+          utils/liquid_wire_composer.py utils/liquid_wire_quality.py utils/liquid_wire_timeline.py
           utils/playlist_manager.py utils/youtube_oauth.py
       - name: "Security scan"
         # Falha o build em issues de severity MEDIUM+ do bandit (-ll filtra
@@ -81,5 +81,5 @@ jobs:
           scripts/healthcheck.py scripts/remaster_procedural_audio.py
           scripts/run_liquid_wire_live.py scripts/generate_site.py
           utils/channel_config.py utils/content_funnel.py utils/paths.py
-          utils/liquid_wire_quality.py utils/liquid_wire_timeline.py
+          utils/liquid_wire_composer.py utils/liquid_wire_quality.py utils/liquid_wire_timeline.py
           utils/playlist_manager.py utils/youtube_oauth.py -ll -q

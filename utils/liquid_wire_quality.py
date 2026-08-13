@@ -29,6 +29,10 @@ class QualityReport:
     sync_signal: float
     audio_channels: int
     audio_sample_rate: int
+    audio_rms_db: float
+    audio_peak: float
+    stereo_width: float
+    silence_ratio: float
     sampled_frames: int
     issues: tuple[str, ...]
 
@@ -70,6 +74,47 @@ def _sample_frames(video: Path, count: int = 16) -> tuple[list[np.ndarray], list
             times.append(float(index) / fps)
     capture.release()
     return frames, times
+
+
+def _decode_audio(video: Path, limit_seconds: int = 60) -> np.ndarray:
+    result = subprocess.run(
+        [
+            "ffmpeg",
+            "-v",
+            "error",
+            "-i",
+            str(video),
+            "-t",
+            str(limit_seconds),
+            "-f",
+            "f32le",
+            "-ac",
+            "2",
+            "-ar",
+            "48000",
+            "pipe:1",
+        ],
+        check=True,
+        capture_output=True,
+    )
+    samples = np.frombuffer(result.stdout, dtype=np.float32)
+    return samples[: len(samples) - len(samples) % 2].reshape(-1, 2)
+
+
+def _audio_metrics(samples: np.ndarray) -> dict[str, float]:
+    if samples.size == 0:
+        return {"rms_db": -120.0, "peak": 0.0, "stereo_width": 0.0, "silence_ratio": 1.0}
+    rms = float(np.sqrt(np.mean(np.square(samples, dtype=np.float64))))
+    peak = float(np.max(np.abs(samples)))
+    mono_energy = np.mean(np.abs(np.mean(samples, axis=1))) + 1e-9
+    side_energy = np.mean(np.abs(samples[:, 0] - samples[:, 1]))
+    frame_energy = np.mean(np.abs(samples), axis=1)
+    return {
+        "rms_db": float(20 * np.log10(max(rms, 1e-6))),
+        "peak": peak,
+        "stereo_width": float(side_energy / mono_energy),
+        "silence_ratio": float(np.mean(frame_energy < 1e-4)),
+    }
 
 
 def _frame_metrics(frames: list[np.ndarray]) -> dict[str, Any]:
@@ -132,11 +177,24 @@ def assess_video(video: Path, expected_size: tuple[int, int], events: list[Creat
     sync = _sync_signal(times, list(metrics["motion"]), events)
     channels = int(audio.get("channels", 0) or 0)
     sample_rate = int(audio.get("sample_rate", 0) or 0)
+    audio_metrics = _audio_metrics(_decode_audio(video))
+    rms_db = audio_metrics["rms_db"]
+    peak = audio_metrics["peak"]
+    stereo_width = audio_metrics["stereo_width"]
+    silence_ratio = audio_metrics["silence_ratio"]
     issues: list[str] = []
     if (int(visual.get("width", 0)), int(visual.get("height", 0))) != expected_size:
         issues.append("wrong_dimensions")
     if channels < 2 or sample_rate != 48_000:
         issues.append("audio_not_stereo_48k")
+    if not -34.0 <= rms_db <= -8.0:
+        issues.append("audio_loudness_out_of_range")
+    if peak >= 0.999:
+        issues.append("audio_clipping")
+    if stereo_width < 0.01:
+        issues.append("stereo_image_too_narrow")
+    if silence_ratio > 0.20:
+        issues.append("excessive_audio_silence")
     if not 0.018 <= active <= 0.58:
         issues.append("object_occupancy_out_of_range")
     if border > 0.025:
@@ -164,6 +222,10 @@ def assess_video(video: Path, expected_size: tuple[int, int], events: list[Creat
         sync_signal=round(sync, 5),
         audio_channels=channels,
         audio_sample_rate=sample_rate,
+        audio_rms_db=round(rms_db, 4),
+        audio_peak=round(peak, 5),
+        stereo_width=round(stereo_width, 5),
+        silence_ratio=round(silence_ratio, 5),
         sampled_frames=len(frames),
         issues=tuple(issues),
     )

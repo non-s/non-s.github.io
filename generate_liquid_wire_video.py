@@ -23,6 +23,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 
 from utils.ai_helper import ai_text
+from utils.liquid_wire_composer import MODES, CompositionPlan, build_composition
 from utils.liquid_wire_quality import QualityGateError, assess_video
 from utils.liquid_wire_timeline import CreativeEvent, build_timeline, event_envelope, visual_state
 from utils.paths import data_dir
@@ -384,7 +385,12 @@ def _draw_frame(
 
 
 def _synth_audio(
-    path: Path, duration: float, seed: int, profile: dict, events: list[CreativeEvent] | None = None
+    path: Path,
+    duration: float,
+    seed: int,
+    profile: dict,
+    events: list[CreativeEvent] | None = None,
+    composition: CompositionPlan | None = None,
 ) -> None:
     rng = np.random.default_rng(seed)
     count = int(duration * SAMPLE_RATE)
@@ -394,8 +400,12 @@ def _synth_audio(
     # Seeded neo-soul progressions keep every piece original while preserving
     # the warm, suspended harmony associated with instrumental lo-fi.
     music = profile["music"]
-    roots = np.array([48, 43, 45, 41, 50, 46, 43, 48], dtype=int) + int(music["key_shift"])
-    roots = np.roll(roots, int(rng.integers(0, len(roots))))
+    events = events or build_timeline(seed, duration, music)
+    composition = composition or build_composition(seed, duration, music, events)
+    scale = MODES[composition.mode]
+    roots = np.array(
+        [composition.tonic + scale[degree % len(scale)] for degree in composition.progression], dtype=int
+    )
     chord_shapes = ([0, 3, 7, 10], [0, 4, 7, 11], [0, 3, 7, 10, 14], [0, 5, 7, 10])
     beat_seconds = float(music["beat_seconds"])
     meter = int(music["meter"])
@@ -421,6 +431,9 @@ def _synth_audio(
         )
         hammer = 0.08 * rng.normal(0, 1, len(local_t)) * np.exp(-local_t * 24.0)
         signal[start_i:end_i] += gain * attack * decay * (body + hammer)
+
+    for note in composition.notes:
+        add_piano(note.note, note.start, note.duration, note.velocity)
 
     chord_index = 0
     for chord_start in np.arange(0.0, duration + chord_seconds, chord_seconds):
@@ -454,13 +467,8 @@ def _synth_audio(
 
     # The dramatic score is shared with the geometry: every visual event gets
     # a restrained musical gesture and a matching dynamic envelope.
-    events = events or build_timeline(seed, duration, music)
     dynamics = np.ones(count, dtype=np.float64)
     for event in events:
-        gesture_at = event.start + event.duration * 0.5
-        root = int(roots[int(gesture_at // chord_seconds) % len(roots)])
-        if event.kind != "stillness":
-            add_piano(root + 24 + event.pitch_offset, gesture_at, beat_seconds * 1.8, 0.035 * event.intensity)
         envelope = np.asarray(event_envelope(t, event), dtype=np.float64)
         if event.kind == "stillness":
             dynamics *= 1.0 - envelope * 0.48 * event.intensity
@@ -544,6 +552,7 @@ def _metadata(output: Path, thumbnail: Path, duration: float, preset: str, profi
         "two string fields: title and description. The visual is one soft, living multicolor "
         f"wireframe object in a pure black void. Object family: {profile['family']}. Format: {preset}. "
         f"Its dramatic arc is: {', '.join(event['kind'] for event in timeline)}. "
+        f"The score uses {profile.get('composition', {}).get('mode', 'a modal')} harmony in four sections. "
         "The soundtrack is original procedural lo-fi piano made in Python. Title: evocative, human, "
         "specific, maximum 70 characters; no dates, episode numbers, technical jargon, clickbait or emoji. "
         "For a short, end the title with #Shorts. Description: 2 brief paragraphs, natural English, "
@@ -606,8 +615,10 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     frame_count = max(1, int(duration * FPS))
     profile = _reserve_profile(preset, seed)
     events = build_timeline(int(profile["seed"]), duration, profile["music"])
-    profile["engine_version"] = "2.0"
+    composition = build_composition(int(profile["seed"]), duration, profile["music"], events)
+    profile["engine_version"] = "2.1"
     profile["timeline"] = [event.to_dict() for event in events]
+    profile["composition"] = composition.to_dict()
     thumb_frame = None
     for i in range(frame_count):
         frame = _draw_frame(i, frame_count, profile, events, FRAME_DIR)
@@ -615,7 +626,7 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
             thumb_frame = frame
     audio_path = OUTPUT_DIR / f"{stem}.wav"
     output = OUTPUT_DIR / f"{stem}.mp4"
-    _synth_audio(audio_path, duration, int(profile["seed"]), profile, events)
+    _synth_audio(audio_path, duration, int(profile["seed"]), profile, events, composition)
     _run_ffmpeg(FRAME_DIR, audio_path, output)
     quality = assess_video(output, (WIDTH, HEIGHT), events)
     if not quality.passed:

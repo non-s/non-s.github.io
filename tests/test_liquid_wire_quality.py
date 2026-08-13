@@ -3,7 +3,7 @@ from __future__ import annotations
 import cv2
 import numpy as np
 
-from utils.liquid_wire_quality import _frame_metrics
+from utils.liquid_wire_quality import _audio_metrics, _frame_metrics
 
 
 def _frame(x: int, hue: int) -> np.ndarray:
@@ -27,3 +27,20 @@ def test_frame_metrics_reject_visual_silence() -> None:
     assert metrics["active_ratio"] == 0.0
     assert metrics["motion_signal"] == 0.0
     assert metrics["color_bins"] == 0
+
+
+def test_audio_metrics_measure_level_width_and_silence() -> None:
+    time = np.linspace(0, 1, 48_000, endpoint=False)
+    left = 0.2 * np.sin(2 * np.pi * 220 * time)
+    right = 0.2 * np.sin(2 * np.pi * 220 * time + 0.3)
+    metrics = _audio_metrics(np.column_stack((left, right)).astype(np.float32))
+    assert -20.0 < metrics["rms_db"] < -10.0
+    assert 0.19 < metrics["peak"] < 0.21
+    assert metrics["stereo_width"] > 0.1
+    assert metrics["silence_ratio"] < 0.01
+
+
+def test_audio_metrics_detect_silence() -> None:
+    metrics = _audio_metrics(np.zeros((1000, 2), dtype=np.float32))
+    assert metrics["rms_db"] == -120.0
+    assert metrics["silence_ratio"] == 1.0

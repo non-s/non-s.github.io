@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from generate_liquid_wire_video import _profile, _synth_audio
+from utils.liquid_wire_composer import build_composition
 from utils.liquid_wire_timeline import build_timeline
 
 
@@ -24,7 +25,8 @@ def remaster(video: Path) -> Path:
     output = video.with_name(f"{video.stem}_lofi{video.suffix}")
     audio = video.with_name(f"{video.stem}_lofi.wav")
     events = build_timeline(seed, duration, profile["music"])
-    _synth_audio(audio, duration, seed, profile, events)
+    composition = build_composition(seed, duration, profile["music"], events)
+    _synth_audio(audio, duration, seed, profile, events, composition)
     subprocess.run(
         [
             "ffmpeg", "-y", "-i", str(video), "-i", str(audio), "-map", "0:v:0", "-map", "1:a:0",
