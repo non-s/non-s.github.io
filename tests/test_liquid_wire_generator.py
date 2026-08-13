@@ -5,6 +5,8 @@ import re
 import wave
 from pathlib import Path
 
+import numpy as np
+
 import generate_liquid_wire_video as liquid
 from utils.liquid_wire_timeline import build_timeline
 
@@ -26,6 +28,14 @@ def test_profiles_vary_shape_and_palette() -> None:
     assert len(families) >= 3
     assert len(palette_bases) == len(profiles)
     assert len({profile["music"]["meter"] for profile in profiles}) >= 2
+    assert len({profile["material"]["glow_stride"] for profile in profiles}) >= 2
+
+
+def test_rupture_opens_real_mesh_gaps() -> None:
+    intact = liquid._rupture_visibility(100, {"rupture": 0.0, "direction_x": 1.0, "direction_y": 0.0})
+    ruptured = liquid._rupture_visibility(100, {"rupture": 0.9, "direction_x": 1.0, "direction_y": 0.0})
+    assert np.all(intact)
+    assert 0 < int(np.count_nonzero(~ruptured)) < 30
 
 
 def test_creative_distance_rejects_near_duplicate() -> None:

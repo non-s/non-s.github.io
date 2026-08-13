@@ -45,6 +45,10 @@ OBJECT_FAMILIES = (
     "double_orb",
     "membrane",
     "comet",
+    "shell",
+    "knot",
+    "hourglass",
+    "coral",
 )
 
 GENERATOR_HISTORY_LIMIT = 5000
@@ -85,6 +89,12 @@ def _profile(seed: int, preset: str) -> dict:
         "twist": float(rng.uniform(-0.75, 0.75)),
         "strand_count": int(rng.integers(7, 17)),
         "line_step": int(rng.integers(1, 4)),
+        "material": {
+            "glow_stride": int(rng.integers(3, 8)),
+            "glow_radius": float(rng.uniform(4.0, 11.0)),
+            "strand_width": int(rng.integers(1, 3)),
+            "opacity": int(rng.integers(145, 216)),
+        },
         "camera_yaw": float(rng.uniform(0.07, 0.22)),
         "camera_roll": float(rng.uniform(0.08, 0.30)),
         "music": {
@@ -238,6 +248,27 @@ def _surface(
         x = tail * radius * np.sin(ph) * np.cos(th)
         y = radius * np.sin(ph) * np.sin(th) * (0.75 + 0.15 * np.sin(t))
         z = radius * np.cos(ph)
+    elif family == "shell":
+        spiral = 0.34 + 0.18 * th / (2 * np.pi)
+        chamber = 0.72 + 0.30 * np.sin(ph)
+        x = chamber * radius * np.cos(th) + spiral * np.cos(th * 2.0)
+        y = chamber * radius * np.sin(th) + spiral * np.sin(th * 2.0)
+        z = 1.15 * np.cos(ph) + 0.22 * th / np.pi
+    elif family == "knot":
+        knot = 1.0 + 0.24 * np.cos(3 * th + twist * np.sin(ph))
+        x = knot * np.cos(2 * th) + 0.26 * radius * np.sin(ph) * np.cos(th)
+        y = knot * np.sin(2 * th) + 0.26 * radius * np.sin(ph) * np.sin(th)
+        z = 0.72 * np.sin(3 * th) + 0.30 * radius * np.cos(ph)
+    elif family == "hourglass":
+        waist = 0.38 + 0.75 * np.abs(np.cos(ph)) ** 1.6
+        x = waist * radius * np.cos(th)
+        y = waist * radius * np.sin(th)
+        z = 1.35 * np.cos(ph) + 0.12 * np.sin(4 * th + t * 0.3)
+    elif family == "coral":
+        branches = 1.0 + 0.25 * np.sin(5 * th + 3 * ph) + 0.16 * np.sin(9 * th - 2 * ph + t * 0.2)
+        x = branches * radius * np.sin(ph) * np.cos(th)
+        y = branches * radius * np.sin(ph) * np.sin(th)
+        z = 1.15 * radius * np.cos(ph) + 0.18 * np.sin(6 * th)
     else:
         x = radius * np.sin(ph) * np.cos(th)
         y = radius * np.sin(ph) * np.sin(th)
@@ -276,6 +307,31 @@ def _rgb(value: float, t: float, palette: dict) -> tuple[int, int, int, int]:
     )
 
 
+def _rupture_visibility(cols: int, state: dict[str, float]) -> np.ndarray:
+    """Open directional cracks in mesh connectivity during rupture events."""
+    rupture = min(1.0, max(0.0, state["rupture"]))
+    if rupture < 0.02:
+        return np.ones(cols, dtype=bool)
+    center = (math.atan2(state["direction_y"], state["direction_x"] + 1e-9) / (2 * np.pi)) % 1.0
+    positions = np.arange(cols, dtype=np.float64) / max(1, cols - 1)
+    primary = np.minimum(np.abs(positions - center), 1.0 - np.abs(positions - center))
+    opposite = (center + 0.5) % 1.0
+    secondary = np.minimum(np.abs(positions - opposite), 1.0 - np.abs(positions - opposite))
+    return (primary > 0.012 + rupture * 0.072) & (secondary > max(0.0, rupture - 0.45) * 0.032)
+
+
+def _draw_visible_polyline(
+    draw: ImageDraw.ImageDraw,
+    points: list[tuple[float, float]],
+    visible: np.ndarray,
+    fill: tuple[int, int, int, int],
+    width: int,
+) -> None:
+    for index in range(len(points) - 1):
+        if visible[index] and visible[index + 1]:
+            draw.line((points[index], points[index + 1]), fill=fill, width=width)
+
+
 def _draw_frame(
     index: int, frame_count: int, profile: dict, events: list[CreativeEvent], frame_dir: Path
 ) -> Path:
@@ -289,25 +345,38 @@ def _draw_frame(
     rows, cols = sx.shape
 
     palette = profile["palette"]
+    material = profile["material"]
+    state = visual_state(t, events)
+    visible = _rupture_visibility(cols, state)
     for i in range(rows):
         pts = [(float(sx[i, j]), float(sy[i, j])) for j in range(cols)]
-        draw.line(pts, fill=_rgb(i / rows, t, palette), width=1, joint="curve")
-        if i % 5 == 0:
-            glow_draw.line(pts, fill=_rgb(i / rows + 0.2, t, palette)[:3] + (60,), width=4, joint="curve")
+        color = _rgb(i / rows, t, palette)[:3] + (int(material["opacity"]),)
+        _draw_visible_polyline(draw, pts, visible, color, 1)
+        if i % int(material["glow_stride"]) == 0:
+            _draw_visible_polyline(glow_draw, pts, visible, color[:3] + (55,), 4)
 
     for j in range(0, cols, int(profile["line_step"])):
+        if not visible[j]:
+            continue
         pts = [(float(sx[i, j]), float(sy[i, j])) for i in range(rows)]
         draw.line(pts, fill=_rgb(j / cols + 0.4, t, palette)[:3] + (95,), width=1, joint="curve")
 
     for strand in range(int(profile["strand_count"])):
         strand_count = int(profile["strand_count"])
         col = int((strand * cols / strand_count + index * 0.07) % cols)
+        if not visible[col]:
+            continue
         wobble = 14 * np.sin(np.linspace(0, 2 * np.pi, rows) + t * 0.6 + strand)
         pts = [(float(sx[i, col]), float(sy[i, col] + wobble[i])) for i in range(rows)]
-        draw.line(pts, fill=_rgb(strand / strand_count + 0.72, t, palette)[:3] + (115,), width=2, joint="curve")
+        draw.line(
+            pts,
+            fill=_rgb(strand / strand_count + 0.72, t, palette)[:3] + (115,),
+            width=int(material["strand_width"]),
+            joint="curve",
+        )
         glow_draw.line(pts, fill=_rgb(strand / strand_count + 0.72, t, palette)[:3] + (50,), width=6, joint="curve")
 
-    canvas.alpha_composite(glow.filter(ImageFilter.GaussianBlur(8)))
+    canvas.alpha_composite(glow.filter(ImageFilter.GaussianBlur(float(material["glow_radius"]))))
     canvas.alpha_composite(lines)
     out = frame_dir / f"frame_{index:05d}.png"
     canvas.convert("RGB").save(out, quality=92)
