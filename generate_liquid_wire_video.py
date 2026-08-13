@@ -85,6 +85,12 @@ def _profile(seed: int, preset: str) -> dict:
         "line_step": int(rng.integers(1, 4)),
         "camera_yaw": float(rng.uniform(0.07, 0.22)),
         "camera_roll": float(rng.uniform(0.08, 0.30)),
+        "music": {
+            "key_shift": int(rng.integers(-6, 7)),
+            "beat_seconds": float(rng.uniform(0.72, 1.12)),
+            "meter": int(rng.choice((3, 4, 5))),
+            "density": float(rng.uniform(0.55, 1.0)),
+        },
     }
 
 
@@ -102,6 +108,28 @@ def _load_history() -> list[dict]:
         return []
 
 
+def _materially_distinct(profile: dict, history: list[dict]) -> bool:
+    """Reject recent profiles that would read as the same work at a glance."""
+    recent = [item for item in history[-48:] if isinstance(item, dict)]
+    if any(item.get("family") == profile["family"] for item in recent[-2:]):
+        return False
+    hue = float(profile["palette"]["base_hue"])
+    for item in recent:
+        vector = item.get("creative_vector")
+        if not isinstance(vector, dict) or item.get("family") != profile["family"]:
+            continue
+        old_hue = float(vector.get("hue", -1.0))
+        hue_distance = min(abs(hue - old_hue), 1.0 - abs(hue - old_hue))
+        same_topology = (
+            int(vector.get("folds_theta", -99)) == int(profile["folds_theta"])
+            and int(vector.get("folds_phi", -99)) == int(profile["folds_phi"])
+        )
+        similar_motion = abs(float(vector.get("melt_rate", -9.0)) - float(profile["melt_rate"])) < 0.10
+        if hue_distance < 0.10 and (same_topology or similar_motion):
+            return False
+    return True
+
+
 def _reserve_profile(preset: str, requested_seed: int | None) -> dict:
     path = _history_file()
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -113,7 +141,7 @@ def _reserve_profile(preset: str, requested_seed: int | None) -> dict:
             seed = requested_seed if requested_seed is not None and attempt == 0 else secrets.randbits(63)
             profile = _profile(seed, preset)
             signature = _signature(profile)
-            if seed in used_seeds or signature in used_signatures:
+            if seed in used_seeds or signature in used_signatures or not _materially_distinct(profile, history):
                 if requested_seed is not None:
                     raise ValueError(f"Seed already used: {requested_seed}")
                 continue
@@ -124,6 +152,13 @@ def _reserve_profile(preset: str, requested_seed: int | None) -> dict:
                     "signature": signature,
                     "family": profile["family"],
                     "preset": preset,
+                    "creative_vector": {
+                        "hue": profile["palette"]["base_hue"],
+                        "folds_theta": profile["folds_theta"],
+                        "folds_phi": profile["folds_phi"],
+                        "melt_rate": profile["melt_rate"],
+                        "music": profile["music"],
+                    },
                     "created_at": datetime.now(UTC).isoformat(),
                 }
             )
@@ -264,7 +299,7 @@ def _draw_frame(index: int, frame_count: int, profile: dict, frame_dir: Path) ->
     return out
 
 
-def _synth_audio(path: Path, duration: float, seed: int) -> None:
+def _synth_audio(path: Path, duration: float, seed: int, profile: dict) -> None:
     rng = np.random.default_rng(seed)
     count = int(duration * SAMPLE_RATE)
     t = np.linspace(0, duration, count, endpoint=False)
@@ -272,11 +307,14 @@ def _synth_audio(path: Path, duration: float, seed: int) -> None:
 
     # Seeded neo-soul progressions keep every piece original while preserving
     # the warm, suspended harmony associated with instrumental lo-fi.
-    roots = np.array([48, 43, 45, 41, 50, 46, 43, 48], dtype=int)
+    music = profile["music"]
+    roots = np.array([48, 43, 45, 41, 50, 46, 43, 48], dtype=int) + int(music["key_shift"])
     roots = np.roll(roots, int(rng.integers(0, len(roots))))
     chord_shapes = ([0, 3, 7, 10], [0, 4, 7, 11], [0, 3, 7, 10, 14], [0, 5, 7, 10])
-    beat_seconds = float(rng.uniform(0.82, 1.02))
-    chord_seconds = beat_seconds * 4
+    beat_seconds = float(music["beat_seconds"])
+    meter = int(music["meter"])
+    density = float(music["density"])
+    chord_seconds = beat_seconds * meter
 
     def midi_hz(note: float) -> float:
         return 440.0 * 2 ** ((note - 69.0) / 12.0)
@@ -307,21 +345,24 @@ def _synth_audio(path: Path, duration: float, seed: int) -> None:
             humanize = float(rng.uniform(-0.028, 0.045)) + position * 0.018
             add_piano(root + 12 + interval, chord_start + humanize, chord_seconds * 1.55, velocity)
         # A small answering note makes the loop feel performed rather than tiled.
-        add_piano(root + 24 + int(rng.choice(shape)), chord_start + beat_seconds * 2.5, beat_seconds, 0.045)
+        if rng.random() < density:
+            answer_at = beat_seconds * float(rng.uniform(1.4, max(1.5, meter - 0.35)))
+            add_piano(root + 24 + int(rng.choice(shape)), chord_start + answer_at, beat_seconds, 0.045)
         chord_index += 1
 
     # Soft bass, kick and brushed snare follow the same clock as the chords.
     for beat, beat_start in enumerate(np.arange(0.0, duration, beat_seconds)):
-        root = int(roots[(beat // 4) % len(roots)])
+        root = int(roots[(beat // meter) % len(roots)])
         start_i = int(beat_start * SAMPLE_RATE)
         end_i = min(count, start_i + int(beat_seconds * SAMPLE_RATE))
         local_t = np.arange(end_i - start_i, dtype=np.float64) / SAMPLE_RATE
         bass = np.sin(2 * np.pi * midi_hz(root - 12) * local_t) * np.exp(-local_t * 2.8)
         signal[start_i:end_i] += 0.055 * bass
-        if beat % 4 in {0, 2}:
+        position = beat % meter
+        if position in {0, max(1, meter // 2)}:
             kick = np.sin(2 * np.pi * (62 * local_t - 22 * local_t**2)) * np.exp(-local_t * 18)
             signal[start_i:end_i] += 0.075 * kick
-        if beat % 4 == 2:
+        if position == max(1, meter // 2):
             brush = rng.normal(0, 1, len(local_t)) * np.exp(-local_t * 15)
             signal[start_i:end_i] += 0.022 * brush
 
@@ -456,7 +497,7 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
             thumb_frame = frame
     audio_path = OUTPUT_DIR / f"{stem}.wav"
     output = OUTPUT_DIR / f"{stem}.mp4"
-    _synth_audio(audio_path, duration, int(profile["seed"]))
+    _synth_audio(audio_path, duration, int(profile["seed"]), profile)
     _run_ffmpeg(FRAME_DIR, audio_path, output)
     thumbnail = THUMB_DIR / f"{stem}.jpg"
     Image.open(thumb_frame or FRAME_DIR / "frame_00000.png").save(thumbnail, quality=94)

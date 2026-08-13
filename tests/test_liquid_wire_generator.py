@@ -23,15 +23,33 @@ def test_profiles_vary_shape_and_palette() -> None:
     palette_bases = {round(profile["palette"]["base_hue"], 4) for profile in profiles}
     assert len(families) >= 3
     assert len(palette_bases) == len(profiles)
+    assert len({profile["music"]["meter"] for profile in profiles}) >= 2
+
+
+def test_creative_distance_rejects_near_duplicate() -> None:
+    profile = liquid._profile(321, "short")
+    history = [
+        {
+            "family": profile["family"],
+            "creative_vector": {
+                "hue": profile["palette"]["base_hue"],
+                "folds_theta": profile["folds_theta"],
+                "folds_phi": profile["folds_phi"],
+                "melt_rate": profile["melt_rate"],
+            },
+        }
+    ]
+    assert not liquid._materially_distinct(profile, history)
 
 
 def test_reserve_profile_records_unique_history(tmp_path: Path, monkeypatch) -> None:
     monkeypatch.setattr(liquid, "data_dir", lambda: tmp_path)
     first = liquid._reserve_profile("short", 111)
-    second = liquid._reserve_profile("short", 222)
+    second_seed = next(seed for seed in range(222, 500) if liquid._profile(seed, "short")["family"] != first["family"])
+    second = liquid._reserve_profile("short", second_seed)
     history = json.loads((tmp_path / "generator_history.json").read_text(encoding="utf-8"))
     assert first["signature"] != second["signature"]
-    assert [item["seed"] for item in history] == [111, 222]
+    assert [item["seed"] for item in history] == [111, second_seed]
 
 
 def test_reusing_requested_seed_fails(tmp_path: Path, monkeypatch) -> None:

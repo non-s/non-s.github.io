@@ -14,8 +14,8 @@ on:
         required: false
         default: ""
   schedule:
-    # Short diario, 15:17 em Brasilia.
-    - cron: "17 18 * * *"
+    # Um Short por hora, sempre aos 17 minutos para evitar o pico dos crons.
+    - cron: "17 * * * *"
     # Video horizontal ter/qui/sab, 18:17 em Brasilia.
     - cron: "17 21 * * 2,4,6"
 
@@ -58,7 +58,8 @@ jobs:
             duration="180"
           else
             preset="short"
-            duration="35"
+            # 27-45 segundos, deterministico por execucao e sempre dentro do limite de Short.
+            duration=$((27 + ${{ github.run_id }} % 19))
           fi
           echo "preset=$preset" >> "$GITHUB_OUTPUT"
           echo "duration=$duration" >> "$GITHUB_OUTPUT"

@@ -11,7 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from generate_liquid_wire_video import _synth_audio
+from generate_liquid_wire_video import _profile, _synth_audio
 
 
 def remaster(video: Path) -> Path:
@@ -19,9 +19,10 @@ def remaster(video: Path) -> Path:
     metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
     duration = float(metadata["duration"])
     seed = int(metadata["seed"])
+    profile = metadata.get("generator_profile") or _profile(seed, str(metadata.get("kind", "long")))
     output = video.with_name(f"{video.stem}_lofi{video.suffix}")
     audio = video.with_name(f"{video.stem}_lofi.wav")
-    _synth_audio(audio, duration, seed)
+    _synth_audio(audio, duration, seed, profile)
     subprocess.run(
         [
             "ffmpeg", "-y", "-i", str(video), "-i", str(audio), "-map", "0:v:0", "-map", "1:a:0",
