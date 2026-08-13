@@ -29,7 +29,7 @@ ignore = []
 "tests/*" = ["B017", "F841"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests/test_liquid_wire_generator.py"]
+testpaths = ["tests/test_liquid_wire_generator.py", "tests/test_liquid_wire_timeline.py"]
 addopts = "-q --strict-markers"
 markers = [
     "integration: tests que fazem I/O real (upload)",

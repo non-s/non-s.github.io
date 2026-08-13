@@ -13,10 +13,10 @@ format:
 	ruff format . && ruff check --fix .
 
 typecheck:
-	mypy generate_liquid_wire_video.py upload_youtube.py scripts/healthcheck.py scripts/remaster_procedural_audio.py scripts/run_liquid_wire_live.py scripts/generate_site.py utils/channel_config.py utils/content_funnel.py utils/paths.py utils/playlist_manager.py utils/youtube_oauth.py
+	mypy generate_liquid_wire_video.py upload_youtube.py scripts/healthcheck.py scripts/remaster_procedural_audio.py scripts/run_liquid_wire_live.py scripts/generate_site.py utils/channel_config.py utils/content_funnel.py utils/liquid_wire_timeline.py utils/paths.py utils/playlist_manager.py utils/youtube_oauth.py
 
 security:
-	bandit -r generate_liquid_wire_video.py upload_youtube.py scripts/healthcheck.py scripts/remaster_procedural_audio.py scripts/run_liquid_wire_live.py scripts/generate_site.py utils/channel_config.py utils/content_funnel.py utils/paths.py utils/playlist_manager.py utils/youtube_oauth.py -ll -q && pip-audit -r requirements.txt
+	bandit -r generate_liquid_wire_video.py upload_youtube.py scripts/healthcheck.py scripts/remaster_procedural_audio.py scripts/run_liquid_wire_live.py scripts/generate_site.py utils/channel_config.py utils/content_funnel.py utils/liquid_wire_timeline.py utils/paths.py utils/playlist_manager.py utils/youtube_oauth.py -ll -q && pip-audit -r requirements.txt
 
 healthcheck:
 	python scripts/healthcheck.py

@@ -23,6 +23,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 
 from utils.ai_helper import ai_text
+from utils.liquid_wire_timeline import CreativeEvent, build_timeline, event_envelope, visual_state
 from utils.paths import data_dir
 from utils.state_lock import state_lock
 
@@ -169,7 +170,9 @@ def _reserve_profile(preset: str, requested_seed: int | None) -> dict:
     raise RuntimeError("Could not reserve a unique Liquid Wire generator profile.")
 
 
-def _deform_radius(theta: np.ndarray, phi: np.ndarray, t: float, profile: dict) -> np.ndarray:
+def _deform_radius(
+    theta: np.ndarray, phi: np.ndarray, t: float, profile: dict, events: list[CreativeEvent]
+) -> np.ndarray:
     phase = float(profile["phase"])
     folds_theta = int(profile["folds_theta"])
     folds_phi = int(profile["folds_phi"])
@@ -180,7 +183,14 @@ def _deform_radius(theta: np.ndarray, phi: np.ndarray, t: float, profile: dict) 
     fold_b = 0.13 * np.cos(folds_phi * phi - 0.75 * t + np.sin(theta * 2 + phase))
     melt = 0.11 * np.sin((folds_theta + 3) * theta + (folds_phi + 1) * phi + t * melt_rate)
     slow_pull = 0.08 * np.cos(2 * theta - 3 * phi + t * 0.18 + phase)
-    return 1.0 + breath + fold_a + fold_b + melt + slow_pull
+    state = visual_state(t, events)
+    directional = np.cos(theta - math.atan2(state["direction_y"], state["direction_x"] + 1e-9))
+    bloom = state["bloom"] * (0.22 + 0.10 * np.sin(3 * phi))
+    compression = -state["compression"] * (0.18 + 0.08 * directional)
+    rupture = state["rupture"] * 0.24 * np.sign(np.sin((folds_theta + 1) * theta + phase))
+    tide = state["tide"] * 0.18 * np.sin(phi * 2 + theta + t * 0.35)
+    stillness = max(0.25, 1.0 - state["stillness"] * 0.72)
+    return 1.0 + stillness * (breath + fold_a + fold_b + melt + slow_pull) + bloom + compression + rupture + tide
 
 
 def _rotate(points: np.ndarray, ax: float, ay: float, az: float) -> np.ndarray:
@@ -193,11 +203,13 @@ def _rotate(points: np.ndarray, ax: float, ay: float, az: float) -> np.ndarray:
     return points @ (rz @ ry @ rx).T
 
 
-def _surface(t: float, profile: dict, n_theta: int = 86, n_phi: int = 42) -> tuple[np.ndarray, np.ndarray]:
+def _surface(
+    t: float, profile: dict, events: list[CreativeEvent], n_theta: int = 86, n_phi: int = 42
+) -> tuple[np.ndarray, np.ndarray]:
     theta = np.linspace(0, 2 * np.pi, n_theta)
     phi = np.linspace(0.06, np.pi - 0.06, n_phi)
     th, ph = np.meshgrid(theta, phi)
-    radius = _deform_radius(th, ph, t, profile)
+    radius = _deform_radius(th, ph, t, profile, events)
     family = str(profile["family"])
     twist = float(profile["twist"])
     if family == "torus":
@@ -263,9 +275,11 @@ def _rgb(value: float, t: float, palette: dict) -> tuple[int, int, int, int]:
     )
 
 
-def _draw_frame(index: int, frame_count: int, profile: dict, frame_dir: Path) -> Path:
+def _draw_frame(
+    index: int, frame_count: int, profile: dict, events: list[CreativeEvent], frame_dir: Path
+) -> Path:
     t = index / FPS
-    sx, sy = _surface(t, profile)
+    sx, sy = _surface(t, profile, events)
     canvas = Image.new("RGBA", (WIDTH, HEIGHT), "#000000ff")
     glow = Image.new("RGBA", (WIDTH, HEIGHT), (0, 0, 0, 0))
     lines = Image.new("RGBA", (WIDTH, HEIGHT), (0, 0, 0, 0))
@@ -299,7 +313,9 @@ def _draw_frame(index: int, frame_count: int, profile: dict, frame_dir: Path) ->
     return out
 
 
-def _synth_audio(path: Path, duration: float, seed: int, profile: dict) -> None:
+def _synth_audio(
+    path: Path, duration: float, seed: int, profile: dict, events: list[CreativeEvent] | None = None
+) -> None:
     rng = np.random.default_rng(seed)
     count = int(duration * SAMPLE_RATE)
     t = np.linspace(0, duration, count, endpoint=False)
@@ -366,6 +382,22 @@ def _synth_audio(path: Path, duration: float, seed: int, profile: dict) -> None:
             brush = rng.normal(0, 1, len(local_t)) * np.exp(-local_t * 15)
             signal[start_i:end_i] += 0.022 * brush
 
+    # The dramatic score is shared with the geometry: every visual event gets
+    # a restrained musical gesture and a matching dynamic envelope.
+    events = events or build_timeline(seed, duration, music)
+    dynamics = np.ones(count, dtype=np.float64)
+    for event in events:
+        gesture_at = event.start + event.duration * 0.5
+        root = int(roots[int(gesture_at // chord_seconds) % len(roots)])
+        if event.kind != "stillness":
+            add_piano(root + 24 + event.pitch_offset, gesture_at, beat_seconds * 1.8, 0.035 * event.intensity)
+        envelope = np.asarray(event_envelope(t, event), dtype=np.float64)
+        if event.kind == "stillness":
+            dynamics *= 1.0 - envelope * 0.48 * event.intensity
+        elif event.kind in {"bloom", "rupture"}:
+            dynamics *= 1.0 + envelope * 0.14 * event.intensity
+    signal *= dynamics
+
     # Tape hiss, slow wow and gentle saturation finish the lo-fi texture.
     hiss = rng.normal(0, 1, count)
     hiss = np.convolve(hiss, np.ones(7) / 7, mode="same")
@@ -376,9 +408,16 @@ def _synth_audio(path: Path, duration: float, seed: int, profile: dict) -> None:
     signal[:fade] *= ramp
     signal[-fade:] *= ramp[::-1]
     signal = np.clip(signal, -0.85, 0.85)
-    samples = (signal * 32767).astype(np.int16)
+    # A restrained decorrelated stereo field gives the piano space without
+    # relying on convolution impulses or any external audio asset.
+    delay = max(1, int(SAMPLE_RATE * 0.013))
+    delayed = np.zeros_like(signal)
+    delayed[delay:] = signal[:-delay]
+    left = np.clip(signal * 0.92 + delayed * 0.08, -0.85, 0.85)
+    right = np.clip(signal * 0.84 + delayed * 0.16, -0.85, 0.85)
+    samples = (np.column_stack((left, right)) * 32767).astype(np.int16)
     with wave.open(str(path), "wb") as wav:
-        wav.setnchannels(1)
+        wav.setnchannels(2)
         wav.setsampwidth(2)
         wav.setframerate(SAMPLE_RATE)
         wav.writeframes(samples.tobytes())
@@ -406,6 +445,8 @@ def _run_ffmpeg(frame_dir: Path, audio_path: Path, output: Path) -> None:
         "aac",
         "-b:a",
         "160k",
+        "-ar",
+        "48000",
         "-af",
         "loudnorm=I=-16:TP=-1.5:LRA=11",
         "-shortest",
@@ -425,10 +466,14 @@ def _metadata(output: Path, thumbnail: Path, duration: float, preset: str, profi
         "A living wireframe drifts through a black void while an original lo-fi piano piece unfolds.\n\n"
         "Every shape, color and note was generated from code for this Liquid Wire session."
     )
+    timeline = profile.get("timeline") or [
+        event.to_dict() for event in build_timeline(int(profile["seed"]), duration, profile["music"])
+    ]
     prompt = (
         "Create YouTube metadata for an original Liquid Wire video. Return JSON with exactly "
         "two string fields: title and description. The visual is one soft, living multicolor "
         f"wireframe object in a pure black void. Object family: {profile['family']}. Format: {preset}. "
+        f"Its dramatic arc is: {', '.join(event['kind'] for event in timeline)}. "
         "The soundtrack is original procedural lo-fi piano made in Python. Title: evocative, human, "
         "specific, maximum 70 characters; no dates, episode numbers, technical jargon, clickbait or emoji. "
         "For a short, end the title with #Shorts. Description: 2 brief paragraphs, natural English, "
@@ -490,14 +535,17 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     stem = f"liquid_wire_{preset}_{datetime.now(UTC).strftime('%Y%m%d_%H%M%S')}"
     frame_count = max(1, int(duration * FPS))
     profile = _reserve_profile(preset, seed)
+    events = build_timeline(int(profile["seed"]), duration, profile["music"])
+    profile["engine_version"] = "2.0"
+    profile["timeline"] = [event.to_dict() for event in events]
     thumb_frame = None
     for i in range(frame_count):
-        frame = _draw_frame(i, frame_count, profile, FRAME_DIR)
+        frame = _draw_frame(i, frame_count, profile, events, FRAME_DIR)
         if i == min(frame_count - 1, FPS * 2):
             thumb_frame = frame
     audio_path = OUTPUT_DIR / f"{stem}.wav"
     output = OUTPUT_DIR / f"{stem}.mp4"
-    _synth_audio(audio_path, duration, int(profile["seed"]), profile)
+    _synth_audio(audio_path, duration, int(profile["seed"]), profile, events)
     _run_ffmpeg(FRAME_DIR, audio_path, output)
     thumbnail = THUMB_DIR / f"{stem}.jpg"
     Image.open(thumb_frame or FRAME_DIR / "frame_00000.png").save(thumbnail, quality=94)

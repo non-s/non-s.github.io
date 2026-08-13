@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import json
 import re
+import wave
 from pathlib import Path
 
 import generate_liquid_wire_video as liquid
+from utils.liquid_wire_timeline import build_timeline
 
 
 def test_dimensions_match_youtube_format() -> None:
@@ -95,9 +97,21 @@ def test_frame_background_is_pure_black(tmp_path: Path, monkeypatch) -> None:
     monkeypatch.setattr(liquid, "WIDTH", 320)
     monkeypatch.setattr(liquid, "HEIGHT", 180)
     profile = liquid._profile(987, "long")
-    frame_path = liquid._draw_frame(0, 1, profile, tmp_path)
+    events = build_timeline(987, 10.0, profile["music"])
+    frame_path = liquid._draw_frame(0, 1, profile, events, tmp_path)
     with liquid.Image.open(frame_path) as frame:
         assert frame.getpixel((0, 0)) == (0, 0, 0)
         assert frame.getpixel((319, 0)) == (0, 0, 0)
         assert frame.getpixel((0, 179)) == (0, 0, 0)
         assert frame.getpixel((319, 179)) == (0, 0, 0)
+
+
+def test_procedural_score_is_native_stereo(tmp_path: Path) -> None:
+    profile = liquid._profile(2468, "short")
+    events = build_timeline(2468, 0.25, profile["music"])
+    audio = tmp_path / "score.wav"
+    liquid._synth_audio(audio, 0.25, 2468, profile, events)
+    with wave.open(str(audio), "rb") as score:
+        assert score.getnchannels() == 2
+        assert score.getframerate() == liquid.SAMPLE_RATE
+        assert score.getnframes() == int(0.25 * liquid.SAMPLE_RATE)
