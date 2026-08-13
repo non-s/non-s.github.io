@@ -23,6 +23,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 
 from utils.ai_helper import ai_text
+from utils.liquid_wire_quality import QualityGateError, assess_video
 from utils.liquid_wire_timeline import CreativeEvent, build_timeline, event_envelope, visual_state
 from utils.paths import data_dir
 from utils.state_lock import state_lock
@@ -547,9 +548,18 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     output = OUTPUT_DIR / f"{stem}.mp4"
     _synth_audio(audio_path, duration, int(profile["seed"]), profile, events)
     _run_ffmpeg(FRAME_DIR, audio_path, output)
+    quality = assess_video(output, (WIDTH, HEIGHT), events)
+    if not quality.passed:
+        output.unlink(missing_ok=True)
+        audio_path.unlink(missing_ok=True)
+        shutil.rmtree(FRAME_DIR, ignore_errors=True)
+        raise QualityGateError(
+            f"Render rejected with score {quality.score:.4f}: {', '.join(quality.issues) or 'score_below_threshold'}"
+        )
     thumbnail = THUMB_DIR / f"{stem}.jpg"
     Image.open(thumb_frame or FRAME_DIR / "frame_00000.png").save(thumbnail, quality=94)
     meta = _metadata(output, thumbnail, duration, preset, profile)
+    meta["quality_report"] = quality.to_dict()
     output.with_suffix(".json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
     audio_path.unlink(missing_ok=True)
     shutil.rmtree(FRAME_DIR, ignore_errors=True)
@@ -561,10 +571,23 @@ def main() -> int:
     parser.add_argument("--preset", choices=["short", "long", "live-test"], default="short")
     parser.add_argument("--duration", type=float, default=None, help="Duration in seconds")
     parser.add_argument("--seed", type=int, default=None)
+    parser.add_argument("--attempts", type=int, default=3, help="Maximum quality-gated render attempts")
     args = parser.parse_args()
     default_durations = {"short": 35.0, "long": 180.0, "live-test": 120.0}
     duration = args.duration if args.duration is not None else default_durations[args.preset]
-    output = generate(duration=duration, preset=args.preset, seed=args.seed)
+    if args.attempts < 1:
+        parser.error("--attempts must be at least 1")
+    output: Path | None = None
+    for attempt in range(1, args.attempts + 1):
+        try:
+            output = generate(duration=duration, preset=args.preset, seed=args.seed)
+            break
+        except QualityGateError as exc:
+            print(f"Quality attempt {attempt}/{args.attempts} failed: {exc}")
+            if args.seed is not None or attempt == args.attempts:
+                raise
+    if output is None:  # pragma: no cover - defensive invariant
+        raise RuntimeError("No render was produced.")
     print(output)
     return 0
 
