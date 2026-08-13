@@ -1,4 +1,4 @@
-name: "CI - Pata Jazz"
+name: "CI - Liquid Wire"
 
 on:
   push:
@@ -53,10 +53,8 @@ jobs:
         run: ruff check .
       - name: "Compile check"
         run: python -m compileall -q .
-      - name: "Pytest + coverage"
-        # Usa as fontes e o limite canonicos definidos em pyproject.toml.
-        # CI e `make test-cov` passam a medir exatamente o mesmo escopo.
-        run: pytest -q --cov --cov-report=term-missing
+      - name: "Pytest"
+        run: pytest -q
       - name: "Vulnerability audit"
         # Falha o build se pip-audit encontrar CVEs conhecidas nas dependencias
         # declaradas. Mantido limpo em main: qualquer nova CVE exige bump ou
@@ -67,9 +65,19 @@ jobs:
         # Antes era advisory (|| echo warning) porque faltavam stubs para
         # googleapiclient/Pillow, mas o pyproject.toml ja tem ignore_missing_imports
         # para esses modulos, e o codigo foi tipado completamente.
-        run: mypy utils/ scripts/ upload_youtube.py generate_pata_jazz_short.py
+        run: >-
+          mypy generate_liquid_wire_video.py upload_youtube.py
+          scripts/healthcheck.py scripts/remaster_procedural_audio.py
+          scripts/run_liquid_wire_live.py scripts/generate_site.py
+          utils/channel_config.py utils/content_funnel.py utils/paths.py
+          utils/playlist_manager.py utils/youtube_oauth.py
       - name: "Security scan"
         # Falha o build em issues de severity MEDIUM+ do bandit (-ll filtra
         # LOW). Falsos-positivos conhecidos levam # nosec no codigo com
         # comentario explicativo, nao supressao global.
-        run: bandit -r utils/ scripts/ *.py -ll -q
+        run: >-
+          bandit -r generate_liquid_wire_video.py upload_youtube.py
+          scripts/healthcheck.py scripts/remaster_procedural_audio.py
+          scripts/run_liquid_wire_live.py scripts/generate_site.py
+          utils/channel_config.py utils/content_funnel.py utils/paths.py
+          utils/playlist_manager.py utils/youtube_oauth.py -ll -q

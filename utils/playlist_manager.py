@@ -100,7 +100,7 @@ def _find_or_create_playlist(service: Any, title: str) -> str:
     # Cria nova (so quando a busca rodou completa e nao achou a playlist)
     try:
         body = {
-            "snippet": {"title": title, "description": "Playlist automatica do canal Pata Jazz"},
+            "snippet": {"title": title, "description": "Original procedural visuals and lo-fi music by Liquid Wire."},
             "status": {"privacyStatus": "public"},
         }
         resp = _retry_youtube_call(service.playlists().insert(part="snippet,status", body=body).execute)

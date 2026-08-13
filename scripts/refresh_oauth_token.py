@@ -1,14 +1,13 @@
-"""
-scripts/refresh_oauth_token.py — renova o token OAuth do YouTube em CI.
-
+﻿"""
+scripts/refresh_oauth_token.py â€” renova o token OAuth do YouTube em CI.
 Le o token OAuth de youtube_token.json (escrito a partir do secret
 YOUTUBE_TOKEN por .github/actions/restore-token-and-cache), tenta renovar
 o access_token via Credentials.refresh(Request()), e se o refresh
 funcionar escreve o novo token de volta no secret YOUTUBE_TOKEN usando
-`gh secret set` (requer um fine-grained Personal Access Token limitado a este
-repositorio no secret GH_PAT).
+`gh secret set` (requer um Personal Access Token com scope `repo` no
+secret GH_PAT).
 
-Se o refresh falhar (refresh_token expirado — 90 dias sem uso, padrao do
+Se o refresh falhar (refresh_token expirado â€” 90 dias sem uso, padrao do
 Google), abre uma issue no repositorio pedindo para rodar
 `python utils/youtube_oauth.py` localmente.
 
@@ -45,7 +44,7 @@ def refresh_and_persist(token_path: Path, secret_name: str, channel_slug: str) -
         print(f"::error::Nenhum token OAuth encontrado ({secret_name} nao setado?).")
         return 2
     if not creds.refresh_token:
-        print("::error::Token sem refresh_token — nao e possivel renovar automaticamente.")
+        print("::error::Token sem refresh_token â€” nao e possivel renovar automaticamente.")
         return 2
 
     try:
@@ -64,8 +63,8 @@ def refresh_and_persist(token_path: Path, secret_name: str, channel_slug: str) -
     gh_pat = os.environ.get("GH_PAT")
     if not gh_pat:
         print("::error::GH_PAT ausente: nao e possivel atualizar o secret automaticamente.")
-        print("::error::Configure um fine-grained PAT limitado a este repositorio como secret GH_PAT.")
-        _open_issue_token_expired("GH_PAT ausente — configure o secret GH_PAT.", channel_slug)
+        print("::error::Configure um Personal Access Token com scope 'repo' como secret GH_PAT.")
+        _open_issue_token_expired("GH_PAT ausente â€” configure o secret GH_PAT.", channel_slug)
         return 1
 
     rc = _gh_secret_set(secret_name, new_token_json, gh_pat)
@@ -79,11 +78,9 @@ def refresh_and_persist(token_path: Path, secret_name: str, channel_slug: str) -
 
 def _gh_secret_set(name: str, value: str, gh_pat: str) -> int:
     """Atualiza um secret do repositorio via `gh secret set`."""
-    # Envia o valor por stdin: passar o token em --body o deixaria visivel na
-    # linha de comando do processo para outros processos do runner.
-    cmd = ["gh", "secret", "set", name]
+    cmd = ["gh", "secret", "set", name, "--body", value]
     env = {**os.environ, "GH_TOKEN": gh_pat}
-    proc = subprocess.run(cmd, env=env, input=value, capture_output=True, text=True)
+    proc = subprocess.run(cmd, env=env, capture_output=True, text=True)
     if proc.returncode != 0:
         print(f"::error::gh secret set stderr: {proc.stderr}")
     return proc.returncode
@@ -98,7 +95,7 @@ def _open_issue_token_expired(reason: str, channel_slug: str) -> None:
         return
 
     channel_name = CHANNELS[channel_slug].name if channel_slug in CHANNELS else channel_slug
-    title = f"Token OAuth expirado — {channel_name}"
+    title = f"Token OAuth expirado â€” {channel_name}"
     body = (
         f"O refresh do token OAuth do {channel_name} falhou no workflow "
         f"`oauth-token-refresh.yml`:\n\n```\n"
@@ -109,8 +106,7 @@ def _open_issue_token_expired(reason: str, channel_slug: str) -> None:
         "2. Atualize o secret `YOUTUBE_TOKEN` no GitHub com o conteudo do "
         "`youtube_token.json` gerado.\n\n"
         "Aviso: o workflow `oauth-token-refresh.yml` requer um Personal Access "
-        "Token (PAT) fine-grained limitado a este repositorio, armazenado como "
-        "secret `GH_PAT`, para "
+        "Token (PAT) com scope `repo` armazenado como secret `GH_PAT` para "
         "atualizar os secrets automaticamente. Sem o `GH_PAT`, "
         "a renovacao do token e sempre manual."
     )
@@ -128,7 +124,7 @@ def main() -> int:
     if not token_path.exists():
         print("::error::youtube_token.json nao encontrado (secret YOUTUBE_TOKEN ausente?).")
         return 2
-    return refresh_and_persist(token_path, "YOUTUBE_TOKEN", "pata_jazz")
+    return refresh_and_persist(token_path, "YOUTUBE_TOKEN", "liquid_wire")
 
 
 if __name__ == "__main__":

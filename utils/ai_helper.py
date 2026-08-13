@@ -97,7 +97,7 @@ def ai_grounded_research(prompt: str, *, task: str = "grounded_research", timeou
         return {"text": "", "sources": []}
 
 
-_GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash-001")
+_GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
 _GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 _MIN_INTERVAL = 2.0  # segundos entre chamadas
 _GEMINI_429_CIRCUIT_THRESHOLD = 5

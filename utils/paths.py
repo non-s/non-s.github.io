@@ -1,9 +1,4 @@
-"""
-utils/paths.py — caminhos de dados do projeto.
-
-O projeto opera com um único canal (Pata Jazz), então todo estado fica em
-_data/.
-"""
+"""Project data paths for Liquid Wire."""
 
 from __future__ import annotations
 
@@ -14,11 +9,11 @@ _DATA_ROOT = ROOT / "_data"
 
 
 def data_dir() -> Path:
-    """Retorna o diretório de dados do projeto."""
+    """Return the project data directory."""
     return _DATA_ROOT
 
 
 def ensure_data_dir() -> Path:
-    """Garante que o diretório de dados existe e o retorna."""
+    """Create and return the project data directory."""
     _DATA_ROOT.mkdir(parents=True, exist_ok=True)
     return _DATA_ROOT

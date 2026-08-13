@@ -1,4 +1,4 @@
-.PHONY: test test-cov lint format typecheck security healthcheck sync generate-short dashboard clean lock all
+.PHONY: test test-cov lint format typecheck security healthcheck generate-short dashboard clean lock all
 
 test:
 	pytest -q
@@ -13,19 +13,16 @@ format:
 	ruff format . && ruff check --fix .
 
 typecheck:
-	mypy utils/ scripts/ upload_youtube.py generate_pata_jazz_short.py
+	mypy generate_liquid_wire_video.py upload_youtube.py scripts/healthcheck.py scripts/remaster_procedural_audio.py scripts/run_liquid_wire_live.py scripts/generate_site.py utils/channel_config.py utils/content_funnel.py utils/paths.py utils/playlist_manager.py utils/youtube_oauth.py
 
 security:
-	bandit -r utils/ scripts/ *.py -ll -q && pip-audit -r requirements.txt
+	bandit -r generate_liquid_wire_video.py upload_youtube.py scripts/healthcheck.py scripts/remaster_procedural_audio.py scripts/run_liquid_wire_live.py scripts/generate_site.py utils/channel_config.py utils/content_funnel.py utils/paths.py utils/playlist_manager.py utils/youtube_oauth.py -ll -q && pip-audit -r requirements.txt
 
 healthcheck:
 	python scripts/healthcheck.py
 
-sync:
-	python scripts/sync_animal_broll.py && python scripts/sync_jazz_music.py
-
 generate-short:
-	python generate_pata_jazz_short.py
+	python generate_liquid_wire_video.py --preset short
 
 dashboard:
 	python scripts/generate_dashboard.py

@@ -1,5 +1,5 @@
-name: "Restaurar token YouTube e caches"
-description: "Restaura o token OAuth do YouTube e os caches de b-roll/musica usados pelos workflows Pata Jazz."
+name: "Restaurar token YouTube e estado"
+description: "Restaura o token OAuth do YouTube e o estado persistente do canal Liquid Wire."
 
 inputs:
   youtube-token:
@@ -19,18 +19,6 @@ runs:
           printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
           chmod 600 youtube_token.json
         fi
-    - name: "Cache b-roll"
-      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-      with:
-        path: _assets/video/animal_broll
-        key: animal-broll-${{ github.run_id }}
-        restore-keys: animal-broll-
-    - name: "Cache musicas"
-      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-      with:
-        path: _assets/audio/animal_jazz
-        key: animal-jazz-${{ github.run_id }}
-        restore-keys: animal-jazz-
     - name: "Cache estado persistente (_data)"
       uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
@@ -56,10 +44,9 @@ runs:
           _data/trending_keywords.json
           _data/live_station_plan.json
           _data/open_research_catalog.json
-          _data/editorial_calendar.json
-          _data/channel_metadata_audit.json
-        key: pata-jazz-data-${{ github.run_id }}
-        restore-keys: pata-jazz-data-
+          _data/generator_history.json
+        key: liquid-wire-data-${{ github.run_id }}
+        restore-keys: liquid-wire-data-
     - name: "Cache analytics/dash"
       uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
@@ -68,5 +55,5 @@ runs:
           _data/analytics_history.json
           _dashboard/index.html
           _site/index.html
-        key: pata-jazz-analytics-${{ github.run_id }}
-        restore-keys: pata-jazz-analytics-
+        key: liquid-wire-analytics-${{ github.run_id }}
+        restore-keys: liquid-wire-analytics-

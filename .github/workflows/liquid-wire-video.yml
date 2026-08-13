@@ -1,0 +1,92 @@
+name: "Liquid Wire - Generate and Upload"
+
+on:
+  workflow_dispatch:
+    inputs:
+      preset:
+        description: "Video preset"
+        required: true
+        default: "short"
+        type: choice
+        options: ["short", "live-test", "long"]
+      duration:
+        description: "Optional duration in seconds"
+        required: false
+        default: ""
+  schedule:
+    # Short diario, 15:17 em Brasilia.
+    - cron: "17 18 * * *"
+    # Video horizontal ter/qui/sab, 18:17 em Brasilia.
+    - cron: "17 21 * * 2,4,6"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: liquid-wire-video
+  cancel-in-progress: false
+
+jobs:
+  generate-and-upload:
+    name: "Generate procedural Liquid Wire video"
+    if: ${{ vars.LIQUID_WIRE_ENABLED == '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      YOUTUBE_CHANNEL: liquid_wire
+      YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: "Setup"
+        uses: ./.github/actions/setup-env
+      - name: "Restaurar token e estado"
+        uses: ./.github/actions/restore-token-and-cache
+        with:
+          youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
+      - name: "Select format"
+        id: format
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            preset="${{ inputs.preset }}"
+            duration="${{ inputs.duration }}"
+          elif [ "${{ github.event.schedule }}" = "17 21 * * 2,4,6" ]; then
+            preset="long"
+            duration="180"
+          else
+            preset="short"
+            duration="35"
+          fi
+          echo "preset=$preset" >> "$GITHUB_OUTPUT"
+          echo "duration=$duration" >> "$GITHUB_OUTPUT"
+      - name: "Generate procedural video"
+        run: |
+          args=(--preset "${{ steps.format.outputs.preset }}")
+          if [ -n "${{ steps.format.outputs.duration }}" ]; then
+            args+=(--duration "${{ steps.format.outputs.duration }}")
+          fi
+          python generate_liquid_wire_video.py "${args[@]}"
+      - name: "Upload to YouTube"
+        if: hashFiles('youtube_token.json') != ''
+        run: >-
+          python upload_youtube.py --mode upload --language=en
+          --privacy "$YOUTUBE_PRIVACY"
+          --prefix "liquid_wire_${{ steps.format.outputs.preset }}_"
+      - name: "Upload artifacts"
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: liquid-wire-output-${{ github.run_id }}
+          path: |
+            _videos/*.mp4
+            _videos/*.json
+            _videos/last_error.txt
+            _assets/thumbnails/*.jpg
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: "Apagar token"
+        if: always()
+        run: rm -f youtube_token.json

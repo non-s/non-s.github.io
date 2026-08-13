@@ -85,5 +85,5 @@ def append_related_video_cta(description: str, meta: dict) -> tuple[str, str | N
     url = f"https://www.youtube.com/watch?v={target_id}"
     if url in description:
         return description, target_id
-    cta = f"Watch the matching full Pata Jazz session: {url}"
+    cta = f"Watch the matching full Liquid Wire session: {url}"
     return f"{description.rstrip()}\n\n{cta}", target_id

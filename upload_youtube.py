@@ -19,6 +19,7 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
 from utils import ffmpeg_helpers
+from utils.channel_config import active_channel
 from utils.content_funnel import append_related_video_cta, record_funnel_candidate
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.paths import data_dir
@@ -39,7 +40,7 @@ def _latest_video_meta(prefix: str = "") -> tuple[Path, dict] | None:
     pattern = f"{prefix}*.mp4" if prefix else "*.mp4"
     candidates = sorted(OUTPUT_DIR.glob(pattern), key=lambda p: p.stat().st_mtime, reverse=True)
     if not prefix:
-        candidates = [p for p in candidates if p.name.startswith("pata_jazz_")]
+        candidates = [p for p in candidates if p.name.startswith("liquid_wire_")]
     skipped = 0
     for video in candidates:
         meta_path = video.with_suffix(".json")
@@ -67,11 +68,9 @@ def _meta_path(meta: dict, key: str) -> Path | None:
 
 
 def _build_tags(scene: str, hashtags: list[str] | None = None) -> list[str]:
-    base = ["Pata Jazz", "cat", "dog", "jazz", "cute", "relaxing"]
-    if "cat" in scene or "kitten" in scene:
-        base.extend(["kitten", "cute cat"])
-    if "dog" in scene or "puppy" in scene:
-        base.extend(["puppy", "cute dog"])
+    base = list(active_channel.base_tags)
+    if scene:
+        base.extend(word for word in scene.replace("-", " ").split() if len(word) > 2)
     if hashtags:
         # Remove o # para normalizar e junta com as tags base
         cleaned = [h.lstrip("#") for h in hashtags]
@@ -157,7 +156,7 @@ def upload_video(
             success = True
         return video_id
     finally:
-        kind = prefix.rstrip("_") or "pata_jazz"
+        kind = prefix.rstrip("_") or "liquid_wire"
         record_pipeline_run(
             stage="upload",
             success=success,
@@ -202,7 +201,7 @@ def _upload_video_inner(
         )
         return None
 
-    title = str(meta.get("title", "Pata Jazz"))[:100]
+    title = str(meta.get("title", active_channel.name))[:100]
     description, related_long_id = append_related_video_cta(str(meta.get("description", "")), meta)
     description = description[:5000]
     if related_long_id:
@@ -223,10 +222,8 @@ def _upload_video_inner(
         privacy = "private"  # agendado exige privacy private no upload
         status["privacyStatus"] = privacy
 
-    # #7: categoryId dinamico - Pets (15) como default, mas alguns videos
-    # podem testar Entertainment (24) ou Travel (19) para alcancar audiencias
-    # diferentes na Home. Definido no metadata pelo gerador; default 15.
-    category_id = str(meta.get("category_id", "15"))
+    # Music (10) is the safest default for ambient audio/visual sessions.
+    category_id = str(meta.get("category_id", "10"))
 
     body = {
         "snippet": {
@@ -276,13 +273,13 @@ def _upload_video_inner(
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Upload Pata Jazz para YouTube")
+    parser = argparse.ArgumentParser(description="Upload Liquid Wire para YouTube")
     parser.add_argument("--mode", choices=["upload"], default="upload")
     parser.add_argument("--language", default="en")
     parser.add_argument(
         "--privacy", default=os.environ.get("YOUTUBE_PRIVACY", "public"), choices=["public", "unlisted", "private"]
     )
-    parser.add_argument("--prefix", default="pata_jazz_", help="Prefixo dos arquivos de video a enviar")
+    parser.add_argument("--prefix", default="liquid_wire_", help="Prefixo dos arquivos de video a enviar")
     parser.add_argument(
         "--publish-at",
         default=None,

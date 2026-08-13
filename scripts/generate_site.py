@@ -1,15 +1,14 @@
-"""
-scripts/generate_site.py — gera um site estático SEO (schema.org) a partir dos
+﻿"""
+scripts/generate_site.py â€” gera um site estÃ¡tico SEO (schema.org) a partir dos
 dados de analytics e video_tags.
-
-Lê _data/video_tags.json + _data/analytics.json e gera em _site/:
-- uma página index.html listando todos os vídeos com thumbnails (link youtu.be)
-- uma página por vídeo (video_{id}.html) com título, descrição, thumbnail,
+LÃª _data/video_tags.json + _data/analytics.json e gera em _site/:
+- uma pÃ¡gina index.html listando todos os vÃ­deos com thumbnails (link youtu.be)
+- uma pÃ¡gina por vÃ­deo (video_{id}.html) com tÃ­tulo, descriÃ§Ã£o, thumbnail,
   upload date e <script type="application/ld+json"> com VideoObject.
 
-O site é estático (sem backend) e pode ser deployado junto ao dashboard no
-GitHub Pages. A geração nunca quebra: arquivos ausentes produzem um site
-mínimo (aviso) em vez de erro.
+O site Ã© estÃ¡tico (sem backend) e pode ser deployado junto ao dashboard no
+GitHub Pages. A geraÃ§Ã£o nunca quebra: arquivos ausentes produzem um site
+mÃ­nimo (aviso) em vez de erro.
 """
 
 from __future__ import annotations
@@ -32,10 +31,10 @@ log = logging.getLogger(__name__)
 
 _THUMB_URL = "https://img.youtube.com/vi/{vid}/hqdefault.jpg"
 _WATCH_URL = "https://youtu.be/{vid}"
-_CHANNEL_URL = "https://www.youtube.com/@PataJazz-n5n"
+_CHANNEL_URL = "https://www.youtube.com/@LiquidWireStudio"
 _SITE_URL = "https://non-s.github.io"
-_CHANNEL_ID = "UCYAxnaW6H8g3XJMntkDXZjg"
-_FEED_URL = f"https://www.youtube.com/feeds/videos.xml?channel_id={_CHANNEL_ID}"
+_CHANNEL_ID = ""
+_FEED_URL = ""
 _ATOM_NS = "{http://www.w3.org/2005/Atom}"
 _YT_NS = "{http://www.youtube.com/xml/schemas/2015}"
 _MEDIA_NS = "{http://search.yahoo.com/mrss/}"
@@ -50,7 +49,7 @@ def _load_json(path: Path, default):
 
 def _build_video_entries(video_tags: dict, analytics: dict) -> list[dict]:
     """Cruza video_tags.json (cena/description) com analytics.json (views/
-    published_at) numa lista de entradas prontas para renderização."""
+    published_at) numa lista de entradas prontas para renderizaÃ§Ã£o."""
     all_videos_raw = analytics.get("all_videos") if analytics else []
     all_videos = all_videos_raw if isinstance(all_videos_raw, list) else []
     by_id = {str(v.get("video_id")): v for v in all_videos if isinstance(v, dict) and v.get("video_id")}
@@ -62,10 +61,14 @@ def _build_video_entries(video_tags: dict, analytics: dict) -> list[dict]:
             continue
         seen.add(vid)
         stat = by_id.get(vid, {})
-        description = str(tag.get("description") or stat.get("title") or "Cute cats and dogs with relaxing jazz music.")
+        description = str(
+            tag.get("description")
+            or stat.get("title")
+            or "Slow generative visuals, liquid wireframes, and ambient soundscapes."
+        )
         entry = {
             "video_id": vid,
-            "title": str(stat.get("title") or tag.get("title") or f"Pata Jazz video {vid}"),
+            "title": str(stat.get("title") or tag.get("title") or f"Liquid Wire video {vid}"),
             "description": description,
             "published_at": str(stat.get("published_at") or tag.get("uploaded_at") or ""),
             "views": int(stat.get("views", 0) or 0),
@@ -75,7 +78,7 @@ def _build_video_entries(video_tags: dict, analytics: dict) -> list[dict]:
             "scene": str(tag.get("scene") or ""),
         }
         entries.append(entry)
-    # Vídeos em analytics que não estão em video_tags (sem tags) — ainda aparecem.
+    # VÃ­deos em analytics que nÃ£o estÃ£o em video_tags (sem tags) â€” ainda aparecem.
     for vid, stat in by_id.items():
         if vid in seen:
             continue
@@ -83,8 +86,8 @@ def _build_video_entries(video_tags: dict, analytics: dict) -> list[dict]:
         entries.append(
             {
                 "video_id": vid,
-                "title": str(stat.get("title") or f"Pata Jazz video {vid}"),
-                "description": "Cute cats and dogs with relaxing jazz music.",
+                "title": str(stat.get("title") or f"Liquid Wire video {vid}"),
+                "description": "Slow generative visuals, liquid wireframes, and ambient soundscapes.",
                 "published_at": str(stat.get("published_at") or ""),
                 "views": int(stat.get("views", 0) or 0),
                 "likes": int(stat.get("likes", 0) or 0),
@@ -98,13 +101,15 @@ def _build_video_entries(video_tags: dict, analytics: dict) -> list[dict]:
 
 
 def _youtube_feed_entries(limit: int = 12) -> list[dict]:
-    """Lê o feed público oficial como fallback quando o cache ainda está vazio."""
+    """LÃª o feed pÃºblico oficial como fallback quando o cache ainda estÃ¡ vazio."""
+    if not _FEED_URL:
+        return []
     try:
-        request = Request(_FEED_URL, headers={"User-Agent": "PataJazzSite/1.0"})
+        request = Request(_FEED_URL, headers={"User-Agent": "LiquidWireSite/1.0"})
         with urlopen(request, timeout=15) as response:  # nosec B310 - URL fixa do feed oficial do YouTube.
             root = ET.fromstring(response.read())
     except Exception as exc:
-        log.warning("Feed público do YouTube indisponível: %s", exc)
+        log.warning("Feed pÃºblico do YouTube indisponÃ­vel: %s", exc)
         return []
 
     entries: list[dict] = []
@@ -126,7 +131,7 @@ def _youtube_feed_entries(limit: int = 12) -> list[dict]:
             {
                 "video_id": video_id,
                 "title": title,
-                "description": "A gentle Pata Jazz pet moment with soft jazz music.",
+                "description": "A gentle Liquid Wire pet moment with soft jazz music.",
                 "published_at": (item.findtext(f"{_ATOM_NS}published") or "").strip(),
                 "views": 0,
                 "likes": 0,
@@ -140,7 +145,7 @@ def _youtube_feed_entries(limit: int = 12) -> list[dict]:
 
 
 def _video_object_ld(entry: dict) -> str:
-    """Gera o JSON-LD schema.org VideoObject para uma entrada de vídeo."""
+    """Gera o JSON-LD schema.org VideoObject para uma entrada de vÃ­deo."""
     ld = {
         "@context": "https://schema.org",
         "@type": "VideoObject",
@@ -168,7 +173,7 @@ def _render_video_page(entry: dict) -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{escape(entry["title"])} — Pata Jazz</title>
+<title>{escape(entry["title"])} â€” Liquid Wire</title>
 <meta name="description" content="{escape(entry["description"][:160])}">
 <link rel="canonical" href="{page_url}">
 <meta property="og:type" content="video.other">
@@ -194,14 +199,14 @@ def _render_video_page(entry: dict) -> str:
 </style>
 </head>
 <body>
-  <a class="back" href="index.html">← All videos</a>
+  <a class="back" href="index.html">â† All videos</a>
   <h1>{escape(entry["title"])}</h1>
-  <p class="meta">{escape(entry["published_at"][:10] or "")} · {entry["views"]:,} views · {entry["likes"]:,} likes</p>
+  <p class="meta">{escape(entry["published_at"][:10] or "")} Â· {entry["views"]:,} views Â· {entry["likes"]:,} likes</p>
   <a href="{escape(entry["watch_url"])}" target="_blank" rel="noopener">
     <img src="{escape(entry["thumbnail"])}" alt="{escape(entry["title"])}" loading="lazy">
   </a>
   <p>{escape(entry["description"])}</p>
-  <p><a href="{escape(entry["watch_url"])}" target="_blank" rel="noopener">Watch on YouTube →</a></p>
+  <p><a href="{escape(entry["watch_url"])}" target="_blank" rel="noopener">Watch on YouTube â†’</a></p>
 </body>
 </html>
 """
@@ -219,7 +224,7 @@ def _render_index(entries: list[dict]) -> str:
         )
     cards_html = "\n".join(cards)
     empty_state = (
-        '<p class="empty">Fresh Pata Jazz videos are being indexed. '
+        '<p class="empty">Fresh Liquid Wire videos are being indexed. '
         f'<a href="{_CHANNEL_URL}" target="_blank" rel="noopener">Watch the channel on YouTube</a>.</p>'
         if not entries
         else ""
@@ -227,24 +232,24 @@ def _render_index(entries: list[dict]) -> str:
     item_list = {
         "@context": "https://schema.org",
         "@type": "ItemList",
-        "name": "Pata Jazz videos",
+        "name": "Liquid Wire videos",
         "itemListElement": [
             {"@type": "ListItem", "position": i + 1, "url": e["watch_url"], "name": e["title"]}
             for i, e in enumerate(entries)
         ],
     }
     ld_json = escape(json.dumps(item_list, ensure_ascii=False, indent=2), quote=False).replace("</", "<\\/")
-    desc = escape("Cute cats and dogs with relaxing jazz music."[:90])
+    desc = escape("Slow generative visuals, liquid wireframes, and ambient soundscapes."[:90])
     return f"""<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pata Jazz — Cute cats & dogs with relaxing music</title>
-<meta name="description" content="All Pata Jazz videos: {desc}">
+<title>Liquid Wire â€” Cute cats & dogs with relaxing music</title>
+<meta name="description" content="All Liquid Wire videos: {desc}">
 <link rel="canonical" href="{_SITE_URL}/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Pata Jazz: Soft jazz and gentle pet moments">
+<meta property="og:title" content="Liquid Wire: Soft jazz and gentle pet moments">
 <meta property="og:description" content="Soft jazz and gentle pet moments for quieter homes.">
 <meta property="og:url" content="{_SITE_URL}/">
 <meta name="twitter:card" content="summary">
@@ -277,9 +282,9 @@ def _render_index(entries: list[dict]) -> str:
 </style>
 </head>
 <body>
-  <h1>🐾🎷 Pata Jazz</h1>
+  <h1>ðŸ¾ðŸŽ· Liquid Wire</h1>
   <p>Soft jazz and gentle pet moments for quieter homes.</p>
-  <a class="channel-cta" href="{_CHANNEL_URL}" target="_blank" rel="noopener">Watch Pata Jazz on YouTube</a>
+  <a class="channel-cta" href="{_CHANNEL_URL}" target="_blank" rel="noopener">Watch Liquid Wire on YouTube</a>
   {empty_state}
   <div class="grid">
 {cards_html}
@@ -306,7 +311,7 @@ def _render_robots() -> str:
 
 
 def generate_site(output_dir: Path | None = None) -> Path:
-    """Gera o site estático em output_dir (default _site/). Retorna o caminho
+    """Gera o site estÃ¡tico em output_dir (default _site/). Retorna o caminho
     do index.html."""
     out = output_dir or (ROOT / "_site")
     out.mkdir(parents=True, exist_ok=True)
@@ -327,7 +332,7 @@ def generate_site(output_dir: Path | None = None) -> Path:
     (out / "sitemap.xml").write_text(_render_sitemap(entries), encoding="utf-8")
     (out / "robots.txt").write_text(_render_robots(), encoding="utf-8")
 
-    log.info("Site gerado: %s (%d páginas)", index_path, len(entries))
+    log.info("Site gerado: %s (%d pÃ¡ginas)", index_path, len(entries))
     return index_path
 
 
