@@ -24,7 +24,7 @@ from PIL import Image, ImageDraw, ImageFilter
 
 from utils.ai_helper import ai_text
 from utils.liquid_wire_composer import MODES, CompositionPlan, build_composition
-from utils.liquid_wire_quality import QualityGateError, assess_video
+from utils.liquid_wire_quality import QualityGateError, QualityReport, assess_video
 from utils.liquid_wire_timeline import CreativeEvent, build_timeline, event_envelope, visual_state
 from utils.paths import data_dir
 from utils.state_lock import state_lock
@@ -53,6 +53,7 @@ OBJECT_FAMILIES = (
 )
 
 GENERATOR_HISTORY_LIMIT = 5000
+QUALITY_HISTORY_LIMIT = 2000
 
 
 def _dimensions_for_preset(preset: str) -> tuple[int, int]:
@@ -61,6 +62,29 @@ def _dimensions_for_preset(preset: str) -> tuple[int, int]:
 
 def _history_file() -> Path:
     return data_dir() / "generator_history.json"
+
+
+def _record_quality(profile: dict, report: QualityReport) -> None:
+    path = data_dir() / "quality_history.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with state_lock(path):
+        try:
+            history = json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
+        except (OSError, json.JSONDecodeError):
+            history = []
+        if not isinstance(history, list):
+            history = []
+        history.append(
+            {
+                "created_at": datetime.now(UTC).isoformat(),
+                "seed": profile["seed"],
+                "signature": profile["signature"],
+                "family": profile["family"],
+                "engine_version": profile.get("engine_version"),
+                **report.to_dict(),
+            }
+        )
+        path.write_text(json.dumps(history[-QUALITY_HISTORY_LIMIT:], ensure_ascii=False, indent=2), encoding="utf-8")
 
 def _profile(seed: int, preset: str) -> dict:
     rng = np.random.default_rng(seed)
@@ -629,6 +653,7 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     _synth_audio(audio_path, duration, int(profile["seed"]), profile, events, composition)
     _run_ffmpeg(FRAME_DIR, audio_path, output)
     quality = assess_video(output, (WIDTH, HEIGHT), events)
+    _record_quality(profile, quality)
     if not quality.passed:
         output.unlink(missing_ok=True)
         audio_path.unlink(missing_ok=True)

@@ -17,7 +17,7 @@ on:
     # Um Short por hora, sempre aos 17 minutos para evitar o pico dos crons.
     - cron: "17 * * * *"
     # Video horizontal ter/qui/sab, 18:17 em Brasilia.
-    - cron: "17 21 * * 2,4,6"
+    - cron: "37 21 * * 2,4,6"
 
 permissions:
   contents: read
@@ -47,13 +47,19 @@ jobs:
         uses: ./.github/actions/restore-token-and-cache
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
+      - name: "Validate production credentials"
+        run: |
+          if [ ! -s youtube_token.json ]; then
+            echo "::error::YOUTUBE_TOKEN is missing or empty"
+            exit 1
+          fi
       - name: "Select format"
         id: format
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             preset="${{ inputs.preset }}"
             duration="${{ inputs.duration }}"
-          elif [ "${{ github.event.schedule }}" = "17 21 * * 2,4,6" ]; then
+          elif [ "${{ github.event.schedule }}" = "37 21 * * 2,4,6" ]; then
             preset="long"
             duration="180"
           else

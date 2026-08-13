@@ -8,6 +8,7 @@ from pathlib import Path
 import numpy as np
 
 import generate_liquid_wire_video as liquid
+from utils.liquid_wire_quality import QualityReport
 from utils.liquid_wire_timeline import build_timeline
 
 
@@ -73,6 +74,33 @@ def test_reusing_requested_seed_fails(tmp_path: Path, monkeypatch) -> None:
         assert "Seed already used" in str(exc)
     else:
         raise AssertionError("Expected duplicate seed to fail")
+
+
+def test_quality_history_is_persisted_and_bounded(tmp_path: Path, monkeypatch) -> None:
+    monkeypatch.setattr(liquid, "data_dir", lambda: tmp_path)
+    report = QualityReport(
+        passed=True,
+        score=0.95,
+        active_ratio=0.1,
+        border_activity=0.0,
+        motion_signal=2.0,
+        color_bins=120,
+        sync_signal=0.2,
+        audio_channels=2,
+        audio_sample_rate=48_000,
+        audio_rms_db=-18.0,
+        audio_peak=0.8,
+        stereo_width=0.12,
+        silence_ratio=0.0,
+        sampled_frames=16,
+        issues=(),
+    )
+    profile = liquid._profile(555, "short")
+    profile.update({"signature": "abc", "engine_version": "2.1"})
+    liquid._record_quality(profile, report)
+    history = json.loads((tmp_path / "quality_history.json").read_text(encoding="utf-8"))
+    assert history[0]["score"] == 0.95
+    assert history[0]["engine_version"] == "2.1"
 
 
 def test_metadata_uses_gemini_editorial_result(tmp_path: Path, monkeypatch) -> None:
