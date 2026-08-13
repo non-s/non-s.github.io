@@ -60,6 +60,8 @@ jobs:
           fi
       - name: "Renovar token e atualizar secret"
         env:
+          # Use um fine-grained PAT limitado a este repositorio. O valor do
+          # token OAuth e enviado ao gh por stdin, nunca pela linha de comando.
           GH_PAT: ${{ secrets.GH_PAT }}
         run: python scripts/refresh_oauth_token.py
       - name: "Apagar token local"

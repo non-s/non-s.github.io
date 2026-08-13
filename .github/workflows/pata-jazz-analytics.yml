@@ -10,8 +10,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: pata-jazz-analytics
-  cancel-in-progress: true
+  group: pata-jazz-state
+  cancel-in-progress: false
 
 jobs:
   analytics:
@@ -36,20 +36,6 @@ jobs:
         uses: ./.github/actions/restore-token-and-cache
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
-      - name: "Restaurar/persistir analytics"
-        # Sem isso, _data/analytics*.json e escrito e perdido junto com o
-        # runner efemero a cada semana - nada mais no repo le esse arquivo
-        # de volta hoje, mas ao menos fica disponivel entre runs para uso
-        # futuro (dashboards, feedback loop) em vez de ser sempre descartado.
-        # analytics_history.json precisa sobreviver entre runs de verdade
-        # (e onde a serie historica se acumula) - so cache resolve isso.
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: |
-            _data/analytics.json
-            _data/analytics_history.json
-          key: pata_jazz-analytics-${{ github.run_id }}
-          restore-keys: pata_jazz-analytics-
       - name: "Coletar analytics"
         run: python scripts/collect_analytics.py
       - name: "Gerar dashboard HTML"

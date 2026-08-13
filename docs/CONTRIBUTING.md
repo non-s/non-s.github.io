@@ -70,7 +70,7 @@ Antes de abrir um PR, rode pelo menos `make lint test`.
 Após `pre-commit install`, os hooks rodam automaticamente a cada commit:
 
 - `ruff --fix` + `ruff-format` (lint e formatação)
-- `mypy` (typecheck — advisory, não bloqueia se houver ruído de stubs)
+- `mypy` (typecheck bloqueante; novos módulos precisam passar sem erros)
 - `check-merge-conflict`, `check-yaml`, `end-of-file-fixer`, `trailing-whitespace`
 
 Para rodar manualmente em todos os arquivos:
@@ -110,8 +110,9 @@ chore: pin actions por SHA
 
 Checklist para criar `.github/workflows/<novo>.yml`:
 
-- [ ] **`concurrency:`** com `group:` único e `cancel-in-progress:` definido
-      (evita runs sobrepostos que competem pelo mesmo estado em `_data/`).
+- [ ] **`concurrency:`** com `group: pata-jazz-state` e
+      `cancel-in-progress: false` se o workflow lê/escreve `_data/` ou caches
+      de mídia. Workflows sem estado podem usar grupo próprio.
 - [ ] **`permissions:`** mínimas — só o que o workflow precisa
       (`contents: read` por default; `issues: write` só se abrir issue;
       `actions: write` só se manipular caches).
@@ -138,7 +139,8 @@ Checklist para criar `.github/workflows/<novo>.yml`:
 - **`monkeypatch`:** para mudar `QUOTA_FILE`, `LAST_HEALTH_FILE`, etc. sem
   afetar outros testes (os defaults de função são avaliados na definição,
   então use `monkeypatch.setattr` no atributo do módulo).
-- **Cobertura:** o alvo é ≥85% em `utils/` (ver `[tool.coverage.report]` em
+- **Cobertura:** o alvo é ≥85% no escopo canônico (`utils/`, `scripts/` e
+  `upload_youtube.py`; ver `[tool.coverage.run]` em
   `pyproject.toml`). Testes novos devem cobrir os caminhos de erro, não só
   o happy path.
 
@@ -181,10 +183,11 @@ python utils/youtube_oauth.py
 
 ```bash
 gh secret set YOUTUBE_TOKEN < youtube_token.json
-gh secret set GEMINI_API_KEY --body "sua-key"
-gh secret set PIXABAY_API_KEY --body "sua-key"
-gh secret set JAMENDO_CLIENT_ID --body "sua-key"
-gh secret set GH_PAT --body "seu-pat-com-scope-repo"  # para renovar token automaticamente
+printf '%s' "sua-key" | gh secret set GEMINI_API_KEY
+printf '%s' "sua-key" | gh secret set PIXABAY_API_KEY
+printf '%s' "sua-key" | gh secret set JAMENDO_CLIENT_ID
+# Fine-grained PAT limitado a este repositorio:
+printf '%s' "seu-fine-grained-pat" | gh secret set GH_PAT
 ```
 
 ### 4. Configurar variables no GitHub

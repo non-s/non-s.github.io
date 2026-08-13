@@ -54,7 +54,9 @@ jobs:
       - name: "Compile check"
         run: python -m compileall -q .
       - name: "Pytest + coverage"
-        run: pytest -q --cov=utils --cov-report=term-missing --cov-fail-under=85
+        # Usa as fontes e o limite canonicos definidos em pyproject.toml.
+        # CI e `make test-cov` passam a medir exatamente o mesmo escopo.
+        run: pytest -q --cov --cov-report=term-missing
       - name: "Vulnerability audit"
         # Falha o build se pip-audit encontrar CVEs conhecidas nas dependencias
         # declaradas. Mantido limpo em main: qualquer nova CVE exige bump ou

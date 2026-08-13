@@ -351,17 +351,14 @@ class TestNextCronSlots:
         now = datetime(2026, 7, 27, 9, 0, tzinfo=UTC)  # 09:00 UTC, seg
         slots = pv.next_cron_slots(now=now, n=4)
         assert len(slots) == 4
-        # Cron horario: proximos slots sao 10:00, 11:00, 12:00, 13:00 (mesmo dia).
-        assert slots[0] == (10, 0)
-        assert slots[1] == (11, 0)
-        assert slots[2] == (12, 0)
-        assert slots[3] == (13, 0)
+        # Um Short por dia, sempre às 18:07 UTC (o modelo usa apenas a hora).
+        assert slots == [(18, 0), (18, 1), (18, 2), (18, 3)]
 
     def test_late_night_wraps_to_next_day(self):
         now = datetime(2026, 7, 27, 23, 30, tzinfo=UTC)  # depois das 23:00
         slots = pv.next_cron_slots(now=now, n=2)
-        assert slots[0] == (0, 1)  # 00:00 ter (weekday 1)
-        assert slots[1] == (1, 1)  # 01:00 ter
+        assert slots[0] == (18, 1)  # 18:07 ter (weekday 1)
+        assert slots[1] == (18, 2)  # 18:07 qua
 
 
 class TestPredictViewsWithRealisticData:

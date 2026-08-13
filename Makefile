@@ -13,7 +13,7 @@ format:
 	ruff format . && ruff check --fix .
 
 typecheck:
-	mypy utils/ scripts/ upload_youtube.py generate_pata_jazz_short.py generate_site.py
+	mypy utils/ scripts/ upload_youtube.py generate_pata_jazz_short.py
 
 security:
 	bandit -r utils/ scripts/ *.py -ll -q && pip-audit -r requirements.txt

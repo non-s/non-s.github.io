@@ -28,7 +28,7 @@ sync (Pixabay/Jamendo) ─┐
 3. **Upload** (`upload_youtube.py`) publica no YouTube, anexa caption track,
    adiciona a playlists e grava `_data/video_tags.json` (cena/padrão de título
    que geraram cada vídeo).
-5. **Analytics** (`scripts/collect_analytics.py`) coleta views/likes/semana
+4. **Analytics** (`scripts/collect_analytics.py`) coleta views/likes/semana
    via YouTube Data API v3 e, via **YouTube Analytics API v2**, também
    `averageViewDuration`, `averageViewPercentage`, `ctr`, `impressions` e
    `subscribersGained`. Cruza com `video_tags.json` e grava pesos em
@@ -37,23 +37,23 @@ sync (Pixabay/Jamendo) ─┐
    `_data/viral_signals.json`; cenas recentes em virais recebem boost de escolha
    futuro, modulado por CTR/retenção.
 
-6. **Feedback loop**: `utils.content_strategy.scene_for_mood()` e
+5. **Feedback loop**: `utils.content_strategy.scene_for_mood()` e
    `utils.seo_keywords.pick_title_pattern()` leem esses pesos e passam a preferir
    o que performa melhor na geração futura, sem nunca zerar as demais opções.
-7. **Predict** (`scripts/predict_views.py`) treina um modelo de regressão linear
+6. **Predict** (`scripts/predict_views.py`) treina um modelo de regressão linear
    sobre os dados históricos e grava `_data/view_predictor.json`, consumido pelo
    dashboard para projeção de views nos próximos slots de cron. As features
    incluem scene/title_pattern one-hot, hora/dia/mês calendário, CTR, AVP e
    interações cena × bucket de horário.
-8. **Publish optimizer** (`utils/publish_optimizer.py`) cruza slots de cron do
+7. **Publish optimizer** (`utils/publish_optimizer.py`) cruza slots de cron do
    canal com desempenho real de cada horário (avg_views, CTR, retenção) e
    devolve os próximos slots mais promissores; workflows de upload passam
    `--publish-at` ISO 8601 UTC para `upload_youtube.py`.
-9. **Engagement** (`scripts/respond_comments.py`) responde comentários do canal
+8. **Engagement** (`scripts/respond_comments.py`) responde comentários do canal
    com IA (canal vivo) e grava `_data/comments_responded.json` para anti-repeat.
-10. **Identidade** (`scripts/update_channel_identity.py`) rotaciona about/keywords
+9. **Identidade** (`scripts/update_channel_identity.py`) rotaciona about/keywords
     do canal por semana ISO (IA + fallback local) e grava `_data/identity.json`.
-11. **Long-form** (`scripts/generate_pata_jazz_long.py`) monta 1 vídeo
+10. **Long-form** (`scripts/generate_pata_jazz_long.py`) monta 1 vídeo
     horizontal de 15-30min por semana (Loop & Relax) para watch time longo.
 
 ## Decisões de design
@@ -114,7 +114,7 @@ sync (Pixabay/Jamendo) ─┐
   similar (Jaccard) demais ao histórico; (5) **otimização ativa de cena/padrão**
   (`utils/slot_optimizer.py`) — escolhe cena e padrão de título com maior
   previsão de views para o slot de publicação, usando `view_predictor.json`.
-- **Long-form Loop & Relax**: 24 Shorts/dia dão frequência mas sessão curta. O
+- **Long-form Loop & Relax**: 1 Short/dia dá consistência mas sessão curta. O
   gerador `scripts/generate_pata_jazz_long.py` monta 1 vídeo horizontal
   (1920×1080) de 15-30min com clipes em `-stream_loop` até cobrir a duração,
   crossfade lento 2.0s e jazz em loop — poucos uploads que rendem semanas de
@@ -148,6 +148,13 @@ sync (Pixabay/Jamendo) ─┐
 | `video_validator.py` | Validação técnica (resolução, duração, codecs) via ffprobe |
 | `youtube_oauth.py` | OAuth YouTube (`youtube_token.json` ou `YOUTUBE_TOKEN`) |
 | `youtube_retry.py` | Retry exponencial para YouTube API + registro automático de quota |
+| `agency_council.py` | Conselho editorial assistido, sem autoridade de publicação |
+| `competitive_intelligence.py` | Benchmark de metadados públicos de canais de referência |
+| `content_funnel.py` | Fila editorial entre pesquisa, revisão e produção |
+| `editorial_calendar.py` | Plano editorial determinístico de 30 dias |
+| `live_station.py` | Planejamento auditável da estação visual ao vivo |
+| `openverse_catalog.py` / `gbif_research.py` | Pesquisa aberta e atribuível para revisão humana |
+| `visual_intelligence.py` | Sinais visuais conservadores extraídos de assets locais |
 
 ### `scripts/`
 
@@ -166,6 +173,12 @@ sync (Pixabay/Jamendo) ─┐
 | `sync_animal_broll.py` | Sync Pixabay (clipes de gatos/cachorros) |
 | `sync_jazz_music.py` | Sync Jamendo (faixas jazz) |
 | `update_channel_identity.py` | Atualiza about/keywords do canal (identidade viva) |
+| `collect_competitive_intelligence.py` | Coleta painel de referências por metadados públicos |
+| `collect_open_research.py` | Gera catálogo de pesquisa GBIF/Openverse para revisão |
+| `generate_editorial_calendar.py` | Gera plano editorial revisável, sem publicar |
+| `plan_live_station.py` | Verifica direitos e prepara o plano da estação ao vivo |
+| `run_agency_council.py` | Consolida sinais em um brief diário, sem publicar |
+| `refresh_oauth_token.py` | Renova OAuth e persiste o token no secret protegido |
 
 ### Geradores e upload (raiz)
 
@@ -178,17 +191,22 @@ sync (Pixabay/Jamendo) ─┐
 
 | Workflow | Trigger | O que faz |
 |----------|---------|-----------|
-| `ci.yml` | `push`/`pull_request` em `main` | ruff, compile, pytest+cov, pip-audit, mypy (advisory), bandit |
-| `pata-jazz-shorts.yml` | cron horário (minuto 7, `7 * * * *` UTC) / manual | Gera e publica 1 Short no YouTube (Pata Jazz) |
-| `pata-jazz-engagement.yml` | cron horário (minuto 37, `37 * * * *` UTC) / manual | Responde a comentários do canal (Pata Jazz) |
+| `ci.yml` | `push`/`pull_request` em `main` | ruff, compile, pytest+cov, pip-audit, mypy bloqueante, bandit |
+| `pata-jazz-shorts.yml` | diário, 18:07 UTC / manual | Gera e publica 1 Short no YouTube (Pata Jazz) |
+| `pata-jazz-engagement.yml` | diário, 19:37 UTC / manual | Responde a comentários do canal (Pata Jazz) |
 | `pata-jazz-sync.yml` | cron 2x/semana (Ter e Sex 06:00 UTC) / manual | Sync b-roll + jazz + evict caches antigos (Pata Jazz) |
-| `pata-jazz-analytics.yml` | cron semanal Seg 06:00 UTC / manual | Coleta analytics, gera dashboard + site, publica no GitHub Pages (Pata Jazz) |
+| `pata-jazz-analytics.yml` | cron semanal Seg 06:00 UTC / manual | Coleta analytics e gera dashboard como artifact |
 | `pata-jazz-analytics-daily.yml` | cron diário 06:00 UTC / manual | Snapshot leve de analytics para histórico fino (Pata Jazz) |
 | `pata-jazz-long.yml` | cron semanal Dom 01:13 UTC / manual | Gera e publica 1 long-form Loop & Relax (15-30min) (Pata Jazz) |
-| `pata-jazz-identity.yml` | cron semanal Seg 02:23 UTC / manual | Atualiza about/keywords do canal (Pata Jazz) |
+| `pata-jazz-identity.yml` | somente manual | Atualiza about/keywords do canal (Pata Jazz) |
 | `pata-jazz-batch.yml` | só manual (`workflow_dispatch`) | Gera N shorts em lote, opcionalmente agendando slots otimizados (Pata Jazz) |
-| `pata-jazz-weekly.yml` | só manual (`all`/`generate`/`publish`) | Lote semanal: 35 shorts, publica 6/dia (Pata Jazz) |
-| `oauth-token-refresh.yml` | cron domingo 02:00 UTC / manual | Renova o `access_token` e atualiza o secret `YOUTUBE_TOKEN` via `gh secret set` (requer secret `GH_PAT`) |
+| `pata-jazz-weekly.yml` | só manual (`all`/`generate`/`publish`) | Lote adicional controlado para revisão/publicação |
+| `oauth-token-refresh.yml` | domingo e quarta, 02:00 UTC / manual | Renova o `access_token` e atualiza `YOUTUBE_TOKEN` (requer `GH_PAT`) |
+| `pata-jazz-agency.yml` | diário, 05:35 UTC / manual | Gera brief editorial e memória de decisão |
+| `pata-jazz-planning.yml` | segunda, 05:40 UTC / manual | Gera calendário editorial revisável |
+| `pata-jazz-trending.yml` | terça e sexta, 05:00 UTC / manual | Atualiza sinais de busca e tendências |
+| `pata-jazz-site.yml` | segunda, 08:00 UTC / manual | Gera e publica o site SEO no Pages |
+| `pata-jazz-live.yml` | manual | Executa estação ao vivo após readiness explícito |
 | `release.yml` | cron domingo 00:00 UTC / manual | Gera tag `vYYYY-MM-DD` + release notes a partir de commits `feat:`/`fix:`/`security:` |
 
 ## Estado persistente (`_data/`)
@@ -214,8 +232,11 @@ sync (Pixabay/Jamendo) ─┐
 
 > **Nota sobre persistência entre runs:** os arquivos com lock (JSON de estado)
   são restaurados/persistidos entre runs do GitHub Actions via `actions/cache`
-  na composite action `.github/actions/restore-token-and-cache`. Sem isso, cada
-  run começa de um checkout limpo e o feedback loop nunca acumula dados.
+  na composite action `.github/actions/restore-token-and-cache`. Todos os
+  workflows que alteram esses snapshots usam o grupo global de concorrência
+  `pata-jazz-state`, com `cancel-in-progress: false`. O `filelock` coordena
+  processos no mesmo runner; o grupo global impede forks e perda de atualização
+  entre runners diferentes.
 
 ### OAuth refresh persistente (CI)
 
@@ -224,7 +245,8 @@ O `refresh_token` do Google expira após 90 dias sem uso. O workflow
 02:00 UTC) e tenta renovar o `access_token` via
 `Credentials.refresh(Request())`. Se o refresh funcionar, atualiza o
 secret `YOUTUBE_TOKEN` automaticamente com `gh secret set` — isso
-**requer um Personal Access Token (PAT) com scope `repo`** armazenado
+**requer um fine-grained Personal Access Token (PAT) limitado a este
+repositório** armazenado
 como secret `GH_PAT`. Se o `GH_PAT` não estiver configurado, ou se o
 `refresh_token` expirou, o workflow abre uma issue pedindo a renovação
 manual (`python utils/youtube_oauth.py` localmente + atualizar o secret

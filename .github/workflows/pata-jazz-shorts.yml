@@ -19,7 +19,10 @@ permissions:
   contents: read
 
 concurrency:
-  group: pata-jazz-shorts
+  # Todos os jobs que fazem read-modify-write em _data compartilham o mesmo
+  # grupo. filelock protege processos no mesmo runner; este grupo protege
+  # snapshots de cache entre runners diferentes.
+  group: pata-jazz-state
   cancel-in-progress: false
 
 jobs:

@@ -29,6 +29,8 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 - **Thumbnail A/B/C**: três variantes de thumbnail geradas por vídeo (paleta/wrap diferentes) para testar CTR, com shadow RGBA real (gradiente via `Image.linear_gradient`), redimensionadas automaticamente para <2MB
 - **Dashboard interativo**: `scripts/generate_dashboard.py` gera relatório HTML autocontido (sem deps novas) com analytics, performance por cena/padrão de título e projeção de views — publicado toda semana em **https://non-s.github.io/** via GitHub Pages
 - **Analytics preditivo**: `scripts/predict_views.py` treina regressão linear (Python puro, sem numpy/scikit-learn) sobre os dados históricos e prevê views nos primeiros 7 dias após o upload por cena/padrão/horário — modelo salvo em `_data/view_predictor.json`, consumido pelo dashboard
+- **Planejamento editorial auditável**: calendário de 30 dias, pesquisa aberta GBIF/Openverse, inteligência competitiva por metadados públicos e um conselho editorial assistido geram briefs para revisão — nenhum desses componentes tem autoridade para publicar
+- **Estação visual ao vivo**: planejamento e readiness separados da transmissão; apenas assets com licença verificada entram no plano e o workflow de live é exclusivamente manual
 - **Playlists automáticas**: Vídeos adicionados a playlists por mood/formato **e por animal** (gatos/cachorros), cache persistente em `_data/playlist_cache.json`
 - **Analytics semanal com feedback loop real**: coleta views/likes/comentários e, via **YouTube Analytics API v2**, também `averageViewDuration`, `averageViewPercentage`, `ctr`, `impressions` e `subscribersGained`. Cruza tudo com a cena e o padrão de título que geraram cada vídeo (`_data/video_tags.json`, gravado no upload) e grava um peso por cena (`_data/scene_performance.json`) e por padrão de título (`_data/title_pattern_performance.json`) — `scene_for_mood()` e `pick_title_pattern()` passam a preferir o que performa melhor de verdade, sem nunca zerar as demais opções
 - **Detecção de virais**: `scripts/collect_analytics.py` detecta vídeos acima de 8× a mediana de views e armazena `_data/viral_signals.json`; cenas de virais recentes recebem boost de escolha futuro, ponderado também por CTR/retenção
@@ -78,10 +80,15 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 │   ├── batch_generate.py                 # Geração em lote de shorts
 │   ├── cleanup_youtube.py                # Remove vídeos legados (horizontal/live) do canal
 │   ├── collect_analytics.py              # Coleta de métricas YouTube + feedback loop
+│   ├── collect_competitive_intelligence.py # Benchmark apenas de metadados públicos
+│   ├── collect_open_research.py          # Pesquisa GBIF/Openverse para revisão
+│   ├── generate_editorial_calendar.py    # Calendário editorial sem publicação
 │   ├── generate_dashboard.py             # Dashboard HTML a partir de _data/
 │   ├── generate_pata_jazz_long.py        # Gerador do long-form Loop & Relax (10-45min)
 │   ├── healthcheck.py                    # Verifica dependências e tokens
 │   ├── predict_views.py                  # Analytics preditivo (regressão linear)
+│   ├── plan_live_station.py              # Plano de live com validação de direitos
+│   ├── run_agency_council.py             # Brief editorial diário, sem publicar
 │   ├── publish_weekly_batch.py           # Publica próximos N do lote semanal
 │   ├── respond_comments.py               # Respostas automáticas a comentários (canal vivo)
 │   ├── sync_animal_broll.py              # Sync Pixabay (gatos/cachorros)
@@ -94,11 +101,14 @@ Canal automatizado de conteúdo exclusivo: **gatinhos e cachorrinhos fofos + jaz
 │   ├── caption_engine.py                 # Legendas ASS animadas + PT-BR + chapters
 │   ├── channel_config.py                 # Configuração do canal Pata Jazz
 │   ├── channel_identity.py               # Atualizador de identidade do canal (about/keywords semanais)
+│   ├── agency_council.py                 # Conselho editorial e memória de decisões
+│   ├── competitive_intelligence.py       # Inteligência por metadados públicos
 │   ├── comment_responder.py              # Resposta automática a comentários (IA + fallback + lock)
 │   ├── content_strategy.py               # Mood por horário + cena ponderada por performance
 │   ├── ffmpeg_helpers.py                 # FFmpeg e ffprobe (com timeout)
 │   ├── log_config.py                     # Logging centralizado
 │   ├── media_pool.py                     # Pool de mídia local (anti-repeat)
+│   ├── live_station.py                   # Plano auditável da estação visual
 │   ├── metadata_engine.py                # Títulos/descrições/hashtags
 │   ├── playlist_manager.py               # Playlists automáticas YouTube
 │   ├── quota_tracker.py                  # Rastreio de quota YouTube (_data/quota_usage.json)
@@ -164,6 +174,8 @@ Salve o JSON resultante como `youtube_token.json` na raiz do projeto (ou use o s
 - `PIXABAY_API_KEY`
 - `JAMENDO_CLIENT_ID`
 - `YOUTUBE_TOKEN` — JSON do token OAuth do YouTube (Pata Jazz)
+- `GH_PAT` — fine-grained PAT limitado a este repositório para renovar `YOUTUBE_TOKEN` e abrir issue de alerta.
+- `OPENVERSE_ACCESS_TOKEN` — opcional, para ampliar a pesquisa de mídia aberta.
 
 ### Variables
 

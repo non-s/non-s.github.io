@@ -204,7 +204,7 @@ _DAY_OF_WEEK_NAMES = [
 
 def _render_predicted_views(predictor: dict) -> str:
     """Seção "Predicted views (next 7 days)" — previsões para os próximos
-    4 slots de cron de shorts (cron horário, ver SHORTS_CRON_HOURS_UTC em
+    4 slots agendados de Shorts (um por dia, ver SHORTS_CRON_HOURS_UTC em
     scripts/predict_views.py).
 
     Consome apenas o modelo já salvo em _data/view_predictor.json por
@@ -259,10 +259,10 @@ def _render_recommendations(
     if not scenes or not title_patterns:
         return "<p class='empty'>Modelo preditivo sem vocabulário de cenas/padrões.</p>"
 
-    # Próximo slot otimizado (próximas 24h)
+    # Melhor slot entre as próximas sete publicações diárias.
     best_slot = None
     best_slot_score = -1.0
-    for hour, dow in next_cron_slots(n=24):
+    for hour, dow in next_cron_slots(n=7):
         score = expected_views_for_slot(hour, dow)
         if score > best_slot_score:
             best_slot_score = score

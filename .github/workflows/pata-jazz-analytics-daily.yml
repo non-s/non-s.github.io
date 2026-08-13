@@ -16,8 +16,8 @@ permissions:
 concurrency:
   # One shared lock prevents the daily snapshot and weekly enrichment from
   # restoring and saving the same analytics state concurrently.
-  group: pata-jazz-analytics
-  cancel-in-progress: true
+  group: pata-jazz-state
+  cancel-in-progress: false
 
 jobs:
   analytics-daily:
@@ -42,17 +42,6 @@ jobs:
         uses: ./.github/actions/restore-token-and-cache
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
-      - name: "Restaurar/persistir analytics"
-        # analytics_history.json e a serie historica que este snapshot
-        # diario alimenta - precisa sobreviver entre runs. Sem cache, o
-        # runner efemero descartaria o historico a cada run.
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: |
-            _data/analytics.json
-            _data/analytics_history.json
-          key: pata_jazz-analytics-${{ github.run_id }}
-          restore-keys: pata_jazz-analytics-
       - name: "Coletar snapshot diario"
         # --snapshot-only: pula computacao pesada, so coleta stats + historico.
         run: python scripts/collect_analytics.py --snapshot-only

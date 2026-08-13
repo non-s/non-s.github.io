@@ -52,7 +52,10 @@ MODEL_FILE = DATA_DIR / "view_predictor.json"
 # próximos agendamentos. Definido aqui (e não no workflow) para que o
 # dashboard não dependa de parsing de YAML do workflow. pata-jazz-shorts.yml
 # roda 1x por hora (minuto 7 de cada hora), entao todas as 24 horas contam.
-SHORTS_CRON_HOURS_UTC: tuple[int, ...] = tuple(range(24))
+# Deve permanecer alinhado com `.github/workflows/pata-jazz-shorts.yml`.
+# O canal publica um Short por dia às 18:07 UTC; o minuto não participa das
+# features do modelo, portanto somente a hora é necessária aqui.
+SHORTS_CRON_HOURS_UTC: tuple[int, ...] = (18,)
 
 
 def _load_json(path: Path, default):
@@ -474,9 +477,11 @@ def next_cron_slots(now: datetime | None = None, n: int = 4) -> list[tuple[int, 
     """
     if now is None:
         now = datetime.now(UTC)
+    if not SHORTS_CRON_HOURS_UTC:
+        return []
     result: list[tuple[int, int]] = []
     day_offset = 0
-    while len(result) < n and day_offset < 14:
+    while len(result) < n:
         base = now.replace(hour=0, minute=0, second=0, microsecond=0)
         from datetime import timedelta
 
