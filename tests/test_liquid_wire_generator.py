@@ -103,6 +103,14 @@ def test_quality_history_is_persisted_and_bounded(tmp_path: Path, monkeypatch) -
     assert history[0]["engine_version"] == "2.1"
 
 
+def test_recent_quality_fingerprints_ignore_legacy_entries(tmp_path: Path, monkeypatch) -> None:
+    monkeypatch.setattr(liquid, "data_dir", lambda: tmp_path)
+    (tmp_path / "quality_history.json").write_text(
+        json.dumps([{"score": 0.9}, {"fingerprint": [0.1, 0.2, 0.3]}]), encoding="utf-8"
+    )
+    assert liquid._recent_quality_fingerprints() == [(0.1, 0.2, 0.3)]
+
+
 def test_metadata_uses_gemini_editorial_result(tmp_path: Path, monkeypatch) -> None:
     monkeypatch.setattr(
         liquid,

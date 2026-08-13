@@ -35,6 +35,8 @@ class QualityReport:
     silence_ratio: float
     sampled_frames: int
     issues: tuple[str, ...]
+    fingerprint: tuple[float, ...] = ()
+    nearest_distance: float | None = None
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -119,15 +121,28 @@ def _audio_metrics(samples: np.ndarray) -> dict[str, float]:
 
 def _frame_metrics(frames: list[np.ndarray]) -> dict[str, Any]:
     if not frames:
-        return {"active_ratio": 0.0, "border_activity": 1.0, "motion_signal": 0.0, "color_bins": 0, "motion": []}
+        return {
+            "active_ratio": 0.0,
+            "border_activity": 1.0,
+            "motion_signal": 0.0,
+            "color_bins": 0,
+            "motion": [],
+            "fingerprint": (0.0,) * 20,
+        }
     active_ratios: list[float] = []
     border_ratios: list[float] = []
     color_cells: set[tuple[int, int, int]] = set()
+    hue_histogram = np.zeros(12, dtype=np.float64)
+    centroids_x: list[float] = []
+    centroids_y: list[float] = []
     reduced_gray: list[np.ndarray] = []
     for frame in frames:
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         active = gray > 8
         active_ratios.append(float(np.mean(active)))
+        ys, xs = np.nonzero(active)
+        centroids_x.append(float(np.mean(xs) / max(1, gray.shape[1] - 1)) if len(xs) else 0.5)
+        centroids_y.append(float(np.mean(ys) / max(1, gray.shape[0] - 1)) if len(ys) else 0.5)
         border = max(2, round(min(gray.shape) * 0.035))
         border_mask = np.zeros_like(active)
         border_mask[:border, :] = True
@@ -138,6 +153,7 @@ def _frame_metrics(frames: list[np.ndarray]) -> dict[str, Any]:
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         colorful = active & (hsv[:, :, 1] > 45) & (hsv[:, :, 2] > 35)
         if np.any(colorful):
+            hue_histogram += np.histogram(hsv[:, :, 0][colorful], bins=12, range=(0, 180))[0]
             quantized = hsv[colorful] // np.array([15, 32, 32], dtype=np.uint8)
             color_cells.update(map(tuple, np.unique(quantized, axis=0).tolist()))
         reduced_gray.append(cv2.resize(gray, (96, 96), interpolation=cv2.INTER_AREA))
@@ -145,12 +161,28 @@ def _frame_metrics(frames: list[np.ndarray]) -> dict[str, Any]:
         float(np.mean(cv2.absdiff(previous, current)))
         for previous, current in zip(reduced_gray, reduced_gray[1:], strict=False)
     ]
+    hue_total = float(np.sum(hue_histogram))
+    if hue_total:
+        hue_histogram /= hue_total
+    motion_median = float(np.median(motion)) if motion else 0.0
+    fingerprint = (
+        float(np.mean(active_ratios)),
+        float(np.std(active_ratios)),
+        float(np.mean(centroids_x)),
+        float(np.std(centroids_x)),
+        float(np.mean(centroids_y)),
+        float(np.std(centroids_y)),
+        min(1.0, motion_median / 12.0),
+        min(1.0, (float(np.std(motion)) if motion else 0.0) / 12.0),
+        *(float(value) for value in hue_histogram),
+    )
     return {
         "active_ratio": float(np.median(active_ratios)),
         "border_activity": float(np.median(border_ratios)),
-        "motion_signal": float(np.median(motion)) if motion else 0.0,
+        "motion_signal": motion_median,
         "color_bins": len(color_cells),
         "motion": motion,
+        "fingerprint": fingerprint,
     }
 
 
@@ -163,7 +195,20 @@ def _sync_signal(times: list[float], motion: list[float], events: list[CreativeE
     return float(np.corrcoef(np.asarray(energies), np.asarray(motion))[0, 1])
 
 
-def assess_video(video: Path, expected_size: tuple[int, int], events: list[CreativeEvent]) -> QualityReport:
+def _fingerprint_distance(left: tuple[float, ...], right: tuple[float, ...]) -> float:
+    if len(left) != len(right) or not left:
+        return 1.0
+    weights = np.array((3.0, 2.0, 1.5, 1.5, 1.5, 1.5, 1.5, 1.0, *((1.0,) * 12)))
+    delta = (np.asarray(left) - np.asarray(right)) * weights
+    return float(np.linalg.norm(delta) / np.sqrt(np.sum(weights**2)))
+
+
+def assess_video(
+    video: Path,
+    expected_size: tuple[int, int],
+    events: list[CreativeEvent],
+    reference_fingerprints: list[tuple[float, ...]] | None = None,
+) -> QualityReport:
     info = _media_info(video)
     streams = info.get("streams", [])
     visual: dict[str, Any] = next((stream for stream in streams if stream.get("codec_type") == "video"), {})
@@ -175,6 +220,9 @@ def assess_video(video: Path, expected_size: tuple[int, int], events: list[Creat
     motion = float(metrics["motion_signal"])
     colors = int(metrics["color_bins"])
     sync = _sync_signal(times, list(metrics["motion"]), events)
+    fingerprint = tuple(float(value) for value in metrics["fingerprint"])
+    distances = [_fingerprint_distance(fingerprint, reference) for reference in reference_fingerprints or []]
+    nearest_distance = min(distances) if distances else None
     channels = int(audio.get("channels", 0) or 0)
     sample_rate = int(audio.get("sample_rate", 0) or 0)
     audio_metrics = _audio_metrics(_decode_audio(video))
@@ -203,6 +251,8 @@ def assess_video(video: Path, expected_size: tuple[int, int], events: list[Creat
         issues.append("insufficient_motion")
     if colors < 12:
         issues.append("insufficient_color_variety")
+    if nearest_distance is not None and nearest_distance < 0.035:
+        issues.append("perceptual_near_duplicate")
     score = (
         0.20 * (not issues or "wrong_dimensions" not in issues)
         + 0.15 * (channels >= 2 and sample_rate == 48_000)
@@ -228,4 +278,6 @@ def assess_video(video: Path, expected_size: tuple[int, int], events: list[Creat
         silence_ratio=round(silence_ratio, 5),
         sampled_frames=len(frames),
         issues=tuple(issues),
+        fingerprint=tuple(round(value, 6) for value in fingerprint),
+        nearest_distance=round(nearest_distance, 6) if nearest_distance is not None else None,
     )

@@ -3,7 +3,7 @@ from __future__ import annotations
 import cv2
 import numpy as np
 
-from utils.liquid_wire_quality import _audio_metrics, _frame_metrics
+from utils.liquid_wire_quality import _audio_metrics, _fingerprint_distance, _frame_metrics
 
 
 def _frame(x: int, hue: int) -> np.ndarray:
@@ -44,3 +44,11 @@ def test_audio_metrics_detect_silence() -> None:
     metrics = _audio_metrics(np.zeros((1000, 2), dtype=np.float32))
     assert metrics["rms_db"] == -120.0
     assert metrics["silence_ratio"] == 1.0
+
+
+def test_perceptual_fingerprint_detects_duplicates() -> None:
+    first = tuple(_frame_metrics([_frame(120, 10), _frame(145, 70), _frame(165, 130)])["fingerprint"])
+    duplicate = tuple(_frame_metrics([_frame(120, 10), _frame(145, 70), _frame(165, 130)])["fingerprint"])
+    different = tuple(_frame_metrics([_frame(80, 160), _frame(95, 160), _frame(105, 160)])["fingerprint"])
+    assert _fingerprint_distance(first, duplicate) == 0.0
+    assert _fingerprint_distance(first, different) > 0.035

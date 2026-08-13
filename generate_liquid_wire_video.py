@@ -86,6 +86,20 @@ def _record_quality(profile: dict, report: QualityReport) -> None:
         )
         path.write_text(json.dumps(history[-QUALITY_HISTORY_LIMIT:], ensure_ascii=False, indent=2), encoding="utf-8")
 
+
+def _recent_quality_fingerprints(limit: int = 96) -> list[tuple[float, ...]]:
+    path = data_dir() / "quality_history.json"
+    try:
+        history = json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
+    except (OSError, json.JSONDecodeError):
+        return []
+    fingerprints: list[tuple[float, ...]] = []
+    for item in history[-limit:] if isinstance(history, list) else []:
+        values = item.get("fingerprint") if isinstance(item, dict) else None
+        if isinstance(values, list) and values:
+            fingerprints.append(tuple(float(value) for value in values))
+    return fingerprints
+
 def _profile(seed: int, preset: str) -> dict:
     rng = np.random.default_rng(seed)
     family = str(rng.choice(OBJECT_FAMILIES))
@@ -652,7 +666,7 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     output = OUTPUT_DIR / f"{stem}.mp4"
     _synth_audio(audio_path, duration, int(profile["seed"]), profile, events, composition)
     _run_ffmpeg(FRAME_DIR, audio_path, output)
-    quality = assess_video(output, (WIDTH, HEIGHT), events)
+    quality = assess_video(output, (WIDTH, HEIGHT), events, _recent_quality_fingerprints())
     _record_quality(profile, quality)
     if not quality.passed:
         output.unlink(missing_ok=True)
