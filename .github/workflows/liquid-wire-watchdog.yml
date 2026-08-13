@@ -1,0 +1,62 @@
+name: "Liquid Wire - Hourly Watchdog"
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Verifica a publicacao 30 minutos depois do cron principal.
+    - cron: "47 * * * *"
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: liquid-wire-watchdog
+  cancel-in-progress: false
+
+jobs:
+  ensure-hourly-short:
+    name: "Ensure this hour has a healthy Short run"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: "Audit current hour and dispatch recovery"
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          script: |
+            const now = new Date();
+            const hourStart = new Date(now);
+            hourStart.setUTCMinutes(0, 0, 0);
+            const { data } = await github.rest.actions.listWorkflowRuns({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: "liquid-wire-video.yml",
+              branch: "main",
+              per_page: 50,
+            });
+            const currentHour = data.workflow_runs.filter((run) => {
+              const created = new Date(run.created_at);
+              return created >= hourStart && ["schedule", "workflow_dispatch"].includes(run.event);
+            });
+            const healthy = currentHour.find((run) =>
+              ["queued", "in_progress", "waiting", "pending"].includes(run.status) ||
+              (run.status === "completed" && run.conclusion === "success")
+            );
+            await core.summary
+              .addHeading("Liquid Wire hourly SLA")
+              .addRaw(`Window: ${hourStart.toISOString()} - ${now.toISOString()}\n\n`)
+              .addRaw(`Runs found: ${currentHour.length}\n\n`)
+              .addRaw(`Healthy run: ${healthy ? healthy.html_url : "none"}\n`)
+              .write();
+            if (healthy) {
+              core.notice(`Hourly Short is healthy: ${healthy.html_url}`);
+              return;
+            }
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: "liquid-wire-video.yml",
+              ref: "main",
+              inputs: { preset: "short", duration: "35" },
+            });
+            core.warning("No healthy hourly run found; dispatched one recovery Short.");
