@@ -3,8 +3,8 @@ name: "Liquid Wire - Hourly Watchdog"
 on:
   workflow_dispatch:
   schedule:
-    # Verifica a publicacao 30 minutos depois do cron principal.
-    - cron: "47 * * * *"
+    # Audita a hora anterior; tolera ate 50 minutos de atraso do scheduler.
+    - cron: "7 * * * *"
 
 permissions:
   actions: write
@@ -25,8 +25,9 @@ jobs:
         with:
           script: |
             const now = new Date();
-            const hourStart = new Date(now);
-            hourStart.setUTCMinutes(0, 0, 0);
+            const hourEnd = new Date(now);
+            hourEnd.setUTCMinutes(0, 0, 0);
+            const hourStart = new Date(hourEnd.getTime() - 60 * 60 * 1000);
             const { data } = await github.rest.actions.listWorkflowRuns({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -36,7 +37,8 @@ jobs:
             });
             const currentHour = data.workflow_runs.filter((run) => {
               const created = new Date(run.created_at);
-              return created >= hourStart && ["schedule", "workflow_dispatch"].includes(run.event);
+              return created >= hourStart && created < hourEnd &&
+                ["schedule", "workflow_dispatch"].includes(run.event);
             });
             const healthy = currentHour.find((run) =>
               ["queued", "in_progress", "waiting", "pending"].includes(run.status) ||
@@ -44,7 +46,7 @@ jobs:
             );
             await core.summary
               .addHeading("Liquid Wire hourly SLA")
-              .addRaw(`Window: ${hourStart.toISOString()} - ${now.toISOString()}\n\n`)
+              .addRaw(`Window: ${hourStart.toISOString()} - ${hourEnd.toISOString()}\n\n`)
               .addRaw(`Runs found: ${currentHour.length}\n\n`)
               .addRaw(`Healthy run: ${healthy ? healthy.html_url : "none"}\n`)
               .write();
