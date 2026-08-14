@@ -24,7 +24,13 @@ from utils.content_funnel import append_related_video_cta, record_funnel_candida
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.paths import data_dir
 from utils.pipeline_metrics import record_pipeline_run
-from utils.quota_tracker import ALERT_THRESHOLD, daily_total
+from utils.quota_tracker import (
+    ALERT_THRESHOLD,
+    UPLOAD_ALERT_THRESHOLD,
+    UPLOAD_DAILY_LIMIT,
+    daily_call_count,
+    daily_total,
+)
 from utils.state_lock import state_lock
 from utils.youtube_oauth import get_youtube_service
 from utils.youtube_post_upload import add_to_playlists, apply_captions, apply_thumbnail
@@ -34,6 +40,32 @@ ROOT = Path(__file__).resolve().parent
 OUTPUT_DIR = ROOT / "_videos"
 
 log = logging.getLogger(__name__)
+
+
+def _production_contract_issues(meta: dict) -> list[str]:
+    """Require evidence that every published asset came from the active engine."""
+    issues: list[str] = []
+    if meta.get("visual_source") != "procedural_python":
+        issues.append("visual_source_not_procedural")
+    if meta.get("audio_source") != "synthetic_python":
+        issues.append("audio_source_not_procedural")
+    quality = meta.get("quality_report")
+    if not isinstance(quality, dict) or quality.get("passed") is not True:
+        issues.append("quality_gate_not_approved")
+    elif quality.get("issues"):
+        issues.append("quality_report_has_issues")
+    profile = meta.get("generator_profile")
+    version = str(profile.get("engine_version", "")) if isinstance(profile, dict) else ""
+    try:
+        version_parts = tuple(int(part) for part in version.split("."))
+    except ValueError:
+        version_parts = ()
+    if version_parts < (2, 1):
+        issues.append("engine_version_below_2_1")
+    fingerprint = quality.get("fingerprint") if isinstance(quality, dict) else None
+    if not isinstance(fingerprint, list) or len(fingerprint) != 20:
+        issues.append("perceptual_fingerprint_missing")
+    return issues
 
 
 def _latest_video_meta(prefix: str = "") -> tuple[Path, dict] | None:
@@ -178,6 +210,12 @@ def _upload_video_inner(
         return None
     video_path, meta = found
 
+    if prefix.startswith("liquid_wire_"):
+        contract_issues = _production_contract_issues(meta)
+        if contract_issues:
+            log.error("Contrato de producao rejeitou %s: %s", video_path.name, ", ".join(contract_issues))
+            return None
+
     # Sanity check antes de gastar quota da API: um .mp4 com duracao 0 (ffprobe
     # nao consegue ler, encode truncado, etc) sempre indica arquivo corrompido -
     # nunca um video legitimo de 0s. Aborta cedo em vez de subir lixo pro canal.
@@ -186,12 +224,17 @@ def _upload_video_inner(
         log.error("Video %s com duracao invalida (%.1fs) - upload abortado.", video_path.name, duration)
         return None
 
-    # Guarda de quota: videos.insert custa 1600 unidades do pool compartilhado
-    # de 10.000/dia. Se o dia ja estiver no limiar de alerta (8000), abortar
-    # antes de gastar mais - um upload que estoura a quota falha no meio do
-    # insert e deixa o video preso em "processing"/"private" no canal. Melhor
-    # nao subir do que subir pela metade. (daily_total() le _data/quota_usage.json,
-    # que so existe em CI via cache; localmente retorna 0 e nao bloqueia.)
+    # videos.insert usa bucket granular proprio de 100 chamadas/dia. O pool
+    # geral continua protegido separadamente para playlists, captions etc.
+    upload_count = daily_call_count("videos", "insert")
+    if upload_count >= UPLOAD_ALERT_THRESHOLD:
+        log.error(
+            "Bucket de uploads em %d/%d chamadas (limite operacional=%d) - upload abortado.",
+            upload_count,
+            UPLOAD_DAILY_LIMIT,
+            UPLOAD_ALERT_THRESHOLD,
+        )
+        return None
     if daily_total() >= ALERT_THRESHOLD:
         log.error(
             "Quota do dia ja em %d/%d unidades (alerta em %d) - upload abortado para nao estourar.",

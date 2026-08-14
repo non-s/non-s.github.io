@@ -1,15 +1,12 @@
 """utils/quota_tracker.py — rastreia unidades de quota da YouTube Data API v3.
 
-A YouTube API tem um limite diario de 10.000 unidades por projeto (default).
-Cada endpoint custa um numero fixo de unidades (videos.insert=1600,
-videos.list=1, etc). Sem rastreio, um workflow que sobe 7 videos/dia
-(7 x 1600 = 11.200) passa do limite e falha com quotaExceeded sem aviso
-previo - este modulo loga o consumo acumulado em _data/quota_usage.json
-e emite alerta quando passa de 8000/dia (margem antes do teto).
+A API usa um pool geral de 10.000 unidades e buckets granulares para alguns
+metodos. videos.insert tem bucket proprio de 100 chamadas/dia e custa uma
+unidade nesse bucket. Este modulo acompanha o pool e a contagem de uploads.
 
 Custos por endpoint (documentacao oficial:
 https://developers.google.com/youtube/v3/determine_quota_cost):
-    videos.insert        = 1600
+    videos.insert        = 1 (bucket proprio, 100 chamadas/dia)
     videos.list          = 1
     videos.update        = 50
     videos.delete        = 50
@@ -75,7 +72,7 @@ QUOTA_FILE: Path = _QuotaFileProxy()  # type: ignore[assignment]
 _LOCK = threading.Lock()
 
 QUOTA_COSTS: dict[str, int] = {
-    "videos.insert": 1600,
+    "videos.insert": 1,
     "videos.list": 1,
     "videos.update": 50,
     "videos.delete": 50,
@@ -90,6 +87,31 @@ QUOTA_COSTS: dict[str, int] = {
 
 ALERT_THRESHOLD = 8000
 DAILY_LIMIT = 10000
+UPLOAD_ALERT_THRESHOLD = 90
+UPLOAD_DAILY_LIMIT = 100
+
+
+def _migrate_legacy_upload_costs(data: dict) -> dict:
+    """Normalize persisted pre-2026 upload costs without losing call history."""
+    for entry in data.values():
+        if not isinstance(entry, dict):
+            continue
+        calls = entry.get("calls", [])
+        if not isinstance(calls, list):
+            continue
+        changed = False
+        for call in calls:
+            if (
+                isinstance(call, dict)
+                and call.get("resource") == "videos"
+                and call.get("method") == "insert"
+                and int(call.get("units", 0)) > 1
+            ):
+                call["units"] = 1
+                changed = True
+        if changed:
+            entry["total"] = sum(int(call.get("units", 0)) for call in calls if isinstance(call, dict))
+    return data
 
 
 def infer_cost(method_name: str | None, resource: str | None) -> int:
@@ -113,7 +135,8 @@ def _load(file: Path | None = None) -> dict:
     path = file if file is not None else QUOTA_FILE
     try:
         if path.exists():
-            return json.loads(path.read_text(encoding="utf-8"))
+            value = json.loads(path.read_text(encoding="utf-8"))
+            return _migrate_legacy_upload_costs(value) if isinstance(value, dict) else {}
     except (OSError, json.JSONDecodeError):
         log.warning("Falha ao ler %s; recomecando contagem do zero.", path)
     return {}
@@ -182,6 +205,18 @@ def daily_total(*, file: Path | None = None) -> int:
         today = _today()
         entry = data.get(today)
         return int(entry["total"]) if entry else 0
+
+
+def daily_call_count(resource: str, method: str, *, file: Path | None = None) -> int:
+    """Count calls in the current UTC day, including migrated legacy entries."""
+    with _LOCK:
+        entry = _load(file).get(_today(), {})
+        calls = entry.get("calls", []) if isinstance(entry, dict) else []
+        return sum(
+            1
+            for call in calls
+            if isinstance(call, dict) and call.get("resource") == resource and call.get("method") == method
+        )
 
 
 def reset_today(*, file: Path | None = None) -> None:

@@ -12,6 +12,7 @@ import colorsys
 import hashlib
 import json
 import math
+import os
 import secrets
 import shutil
 import subprocess
@@ -638,6 +639,7 @@ def _metadata(output: Path, thumbnail: Path, duration: float, preset: str, profi
         "visual_source": "procedural_python",
         "audio_source": "synthetic_python",
         "video_path": str(output),
+        "production_slot": os.environ.get("LIQUID_WIRE_SLOT", "").strip() or None,
     }
 
 
