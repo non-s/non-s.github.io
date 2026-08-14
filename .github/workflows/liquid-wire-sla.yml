@@ -1,0 +1,82 @@
+name: "Liquid Wire - 24 Hour SLA"
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "12 2 * * *"
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  audit:
+    name: "Audit 24 completed hourly Short slots"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: "Build production SLA report"
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          script: |
+            const now = new Date();
+            const windowEnd = new Date(now);
+            windowEnd.setUTCMinutes(0, 0, 0);
+            const windowStart = new Date(windowEnd.getTime() - 24 * 60 * 60 * 1000);
+            const { data } = await github.rest.actions.listWorkflowRuns({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: "liquid-wire-video.yml",
+              branch: "main",
+              per_page: 100,
+            });
+            const automatic = data.workflow_runs.filter((run) =>
+              run.display_title.includes("[scheduled:short]") ||
+              run.display_title.includes("[recovery:short]")
+            );
+            const slots = new Map();
+            for (const run of automatic) {
+              let slot;
+              const recovery = run.display_title.match(/slot=(\d{4}-\d{2}-\d{2}T\d{2})/);
+              if (recovery) {
+                slot = recovery[1];
+              } else {
+                const created = new Date(run.created_at);
+                created.setUTCMinutes(0, 0, 0);
+                slot = created.toISOString().slice(0, 13);
+              }
+              if (run.status === "completed" && run.conclusion === "success") {
+                slots.set(slot, run.html_url);
+              }
+            }
+            const expected = [];
+            for (let cursor = new Date(windowStart); cursor < windowEnd; cursor.setUTCHours(cursor.getUTCHours() + 1)) {
+              expected.push(cursor.toISOString().slice(0, 13));
+            }
+            const missing = expected.filter((slot) => !slots.has(slot));
+            const oldestAutomatic = automatic.length
+              ? new Date(Math.min(...automatic.map((run) => new Date(run.created_at).getTime())))
+              : null;
+            const warmup = !oldestAutomatic || oldestAutomatic > windowStart;
+            await core.summary
+              .addHeading("Liquid Wire rolling 24-hour SLA")
+              .addTable([
+                [
+                  { data: "Metric", header: true },
+                  { data: "Value", header: true },
+                ],
+                ["Window", `${windowStart.toISOString()} - ${windowEnd.toISOString()}`],
+                ["Healthy slots", `${expected.length - missing.length}/24`],
+                ["Missing", missing.join(", ") || "none"],
+                ["State", warmup ? "warming up" : (missing.length ? "failed" : "healthy")],
+              ])
+              .write();
+            if (warmup) {
+              core.notice(`SLA warmup: ${expected.length - missing.length}/24 completed slots observed.`);
+              return;
+            }
+            if (missing.length) {
+              core.setFailed(`Missing ${missing.length} hourly Short slots: ${missing.join(", ")}`);
+            } else {
+              core.notice("All 24 hourly Short slots are healthy.");
+            }

@@ -38,7 +38,8 @@ jobs:
             const currentHour = data.workflow_runs.filter((run) => {
               const created = new Date(run.created_at);
               return created >= hourStart && created < hourEnd &&
-                ["schedule", "workflow_dispatch"].includes(run.event);
+                (run.display_title.includes("[scheduled:short]") ||
+                  run.display_title.includes("[recovery:short]"));
             });
             const healthy = currentHour.find((run) =>
               ["queued", "in_progress", "waiting", "pending"].includes(run.status) ||
@@ -59,6 +60,11 @@ jobs:
               repo: context.repo.repo,
               workflow_id: "liquid-wire-video.yml",
               ref: "main",
-              inputs: { preset: "short", duration: "35" },
+              inputs: {
+                preset: "short",
+                duration: "35",
+                source: "recovery",
+                slot: hourStart.toISOString().slice(0, 13),
+              },
             });
             core.warning("No healthy hourly run found; dispatched one recovery Short.");

@@ -1,4 +1,8 @@
 name: "Liquid Wire - Generate and Upload"
+run-name: >-
+  Liquid Wire [${{ github.event_name == 'schedule' && 'scheduled' || inputs.source }}:${{
+  github.event_name == 'schedule' && (github.event.schedule == '37 21 * * 2,4,6' && 'long' || 'short') ||
+  inputs.preset }}]${{ inputs.slot && format(' slot={0}', inputs.slot) || '' }}
 
 on:
   workflow_dispatch:
@@ -11,6 +15,16 @@ on:
         options: ["short", "live-test", "long"]
       duration:
         description: "Optional duration in seconds"
+        required: false
+        default: ""
+      source:
+        description: "Dispatch source"
+        required: false
+        default: "manual"
+        type: choice
+        options: ["manual", "recovery"]
+      slot:
+        description: "Recovery slot (UTC hour)"
         required: false
         default: ""
   schedule:
@@ -36,6 +50,7 @@ jobs:
       YOUTUBE_CHANNEL: liquid_wire
       YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      LIQUID_WIRE_SLOT: ${{ inputs.slot }}
     steps:
       - name: "Checkout"
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
