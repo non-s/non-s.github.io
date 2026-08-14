@@ -9,7 +9,7 @@ jobs:
     if: ${{ vars.LIQUID_WIRE_ENABLED == '1' }}
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup-env
       - uses: ./.github/actions/restore-token-and-cache
       - name: Publish weekly batch
